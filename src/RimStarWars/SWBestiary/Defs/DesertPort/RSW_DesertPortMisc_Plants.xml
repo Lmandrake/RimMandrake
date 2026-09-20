@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch, flora. 7 of the batch's 8 plant
+rows ported; AB_GiantStikehr EXCLUDED per the item's own note (cut from the
+Extreme Desert the same day as misplaced, not part of this port - do not
+re-add it). Source: Alpha Biomes (1841354677, incl. its Odyssey submod for
+AB_DessertTree) and ReGrowth 2 (2260097569). Single-view (non-directional),
+matching vanilla plant convention. RG_Plant_CrimsonCushion's donor parent
+(RG_CarpetScrubsBase, a ReGrowth-internal abstract) is flattened directly onto
+PlantBase here rather than porting the abstract; AB_Aaklac's visualSizeRange
+was not set by the donor (it inherits BushBase's own default, which the
+census could not resolve either - "UNMEASURED") so 0.7~1.0 is AUTHORED here
+as a plausible growth curve, not carried from the donor.
+Dropped: VEF.Plants.DualCropExtension on AB_DessertTree (secondary dessert-item
+output tied to VanillaExpanded.VCookE, donor framework) - the tree still yields
+wood on harvest per its inherited TreeBase behaviour.
+
+TEXPATH NOTE (validate_patch.py, live-scanned run, 2026-09-20): five of these seven
+plants' own donor texPaths (AB_HardyGrass's "Grass_Leafless", and ReGrowth's
+RG_DesertGrass/RG_CreepStern/RG_TundraScrubsRed/RG_Dervish) do NOT exist as
+loose files anywhere under the donor mods on disk - CONFIRMED by find, not
+guessed - matching this batch's own MISC.json census, which had already
+flagged RG_Plant_AridGrass/CreepStern/CrimsonCushion/Dervish "art UNRESOLVED
+(no loose PNG and no bundle_textures cache entry)": that donor art is packed
+inside a Unity AssetBundle, not a copyable loose PNG. Per the item's own rule
+("point texPath at the donor's existing texture...so nothing renders
+magenta"), there is no donor loose file to point at for these five, so they
+instead point at Alpha Biomes' AB_Aaklac texture (CONFIRMED present on disk,
+already used correctly by RSW_VellaraBloom below) as a deliberately MISMATCHED
+but non-magenta placeholder - loudly commented at each site. RSW_Scrubgrass's
+broken path was not flagged by the validator run (a validator gap, not
+evidence the path is good) but was fixed here on the same evidence.
+-->
+<Defs>
+
+	<ThingDef ParentName="PlantBase">
+		<defName>RSW_Dunegrass</defName>
+		<label>dune grass</label>
+		<description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
+		<statBases>
+			<MaxHitPoints>85</MaxHitPoints>
+			<Flammability>1.3</Flammability>
+			<Nutrition>0.15</Nutrition>
+		</statBases>
+		<!-- TEMP PLACEHOLDER: donor texPath (Alpha Biomes' own "Grass_Leafless") does not exist as a loose file anywhere on disk - falling back to a CONFIRMED-valid texture (Alpha Biomes' AB_Aaklac) so this does not render magenta. Mismatched art until fill_queue.py renders land. -->
+		<graphicData>
+			<texPath>Things/Plants/AB_Aaklac</texPath>
+			<graphicClass>Graphic_Random</graphicClass>
+		</graphicData>
+		<hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+		<ingestible/>
+		<plant>
+			<fertilityMin>0.30</fertilityMin>
+			<fertilitySensitivity>0.3</fertilitySensitivity>
+			<growDays>2.5</growDays>
+			<pollution>Any</pollution>
+			<harvestWork>40</harvestWork>
+			<maxMeshCount>9</maxMeshCount>
+			<visualSizeRange>0.4~0.6</visualSizeRange>
+			<topWindExposure>0.4</topWindExposure>
+			<wildOrder>1</wildOrder>
+		</plant>
+	</ThingDef>
+
+	<ThingDef ParentName="PlantBase">
+		<defName>RSW_Scrubgrass</defName>
+		<label>scrubgrass</label>
+		<description>Wild grass that grows in arid regions where there is little light and minimally fertile ground.</description>
+		<statBases>
+			<MaxHitPoints>85</MaxHitPoints>
+			<Flammability>1.3</Flammability>
+			<Nutrition>0.50</Nutrition>
+		</statBases>
+		<!-- TEMP PLACEHOLDER: donor texPath (ReGrowth's own RG_DesertGrass) does not exist as a loose file - falling back to a CONFIRMED-valid texture (Alpha Biomes' AB_Aaklac) so this does not render magenta. Mismatched art until fill_queue.py renders land. -->
+		<graphicData>
+			<texPath>Things/Plants/AB_Aaklac</texPath>
+			<graphicClass>Graphic_Random</graphicClass>
+		</graphicData>
+		<hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+		<ingestible/>
+		<plant>
+			<fertilityMin>0.05</fertilityMin>
+			<fertilitySensitivity>0.3</fertilitySensitivity>
+			<growDays>2.5</growDays>
+			<harvestWork>40</harvestWork>
+			<maxMeshCount>9</maxMeshCount>
+			<visualSizeRange>0.4~0.6</visualSizeRange>
+			<topWindExposure>0.4</topWindExposure>
+			<wildOrder>1</wildOrder>
+			<maxGrowthTemperature>75</maxGrowthTemperature>
+		</plant>
+	</ThingDef>
+
+	<ThingDef ParentName="PlantBase">
+		<defName>RSW_Starvine</defName>
+		<label>starvine</label>
+		<description>Wild ivy with star-shaped leaves. Takes a long time to grow, but is very frost-resistant.</description>
+		<statBases>
+			<MaxHitPoints>120</MaxHitPoints>
+			<Flammability>0.6</Flammability>
+			<Nutrition>0.15</Nutrition>
+		</statBases>
+		<!-- TEMP PLACEHOLDER: donor texPath (ReGrowth's own RG_CreepStern) does not exist as a loose file - falling back to a CONFIRMED-valid texture (Alpha Biomes' AB_Aaklac) so this does not render magenta. Mismatched art until fill_queue.py renders land. -->
+		<graphicData>
+			<texPath>Things/Plants/AB_Aaklac</texPath>
+			<graphicClass>Graphic_Random</graphicClass>
+		</graphicData>
+		<hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+		<ingestible/>
+		<plant>
+			<fertilityMin>0.05</fertilityMin>
+			<fertilitySensitivity>0.2</fertilitySensitivity>
+			<growDays>15</growDays>
+			<harvestWork>75</harvestWork>
+			<maxMeshCount>4</maxMeshCount>
+			<wildClusterRadius>4</wildClusterRadius>
+			<wildClusterWeight>8</wildClusterWeight>
+			<visualSizeRange>0.8~1.3</visualSizeRange>
+			<topWindExposure>0.25</topWindExposure>
+			<wildOrder>1</wildOrder>
+		</plant>
+	</ThingDef>
+
+	<ThingDef ParentName="PlantBase">
+		<defName>RSW_EmberCarpet</defName>
+		<label>ember carpet</label>
+		<description>A wild crimson-colored carpet plant. Takes a long time to grow, but is very frost-resistant.</description>
+		<statBases>
+			<MaxHitPoints>120</MaxHitPoints>
+			<Flammability>0.6</Flammability>
+			<Nutrition>0.15</Nutrition>
+		</statBases>
+		<!-- TEMP PLACEHOLDER: donor texPath (ReGrowth's own RG_TundraScrubsRed) does not exist as a loose file - falling back to a CONFIRMED-valid texture (Alpha Biomes' AB_Aaklac) so this does not render magenta. Mismatched art until fill_queue.py renders land. -->
+		<graphicData>
+			<texPath>Things/Plants/AB_Aaklac</texPath>
+			<graphicClass>Graphic_Random</graphicClass>
+		</graphicData>
+		<hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+		<ingestible/>
+		<plant>
+			<fertilityMin>0.05</fertilityMin>
+			<fertilitySensitivity>0.2</fertilitySensitivity>
+			<growDays>5</growDays>
+			<harvestWork>50</harvestWork>
+			<maxMeshCount>16</maxMeshCount>
+			<wildClusterRadius>4</wildClusterRadius>
+			<wildClusterWeight>8</wildClusterWeight>
+			<visualSizeRange>0.5~0.9</visualSizeRange>
+			<topWindExposure>0.2</topWindExposure>
+			<wildOrder>1</wildOrder>
+			<wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+		</plant>
+	</ThingDef>
+
+	<ThingDef ParentName="PlantBase">
+		<defName>RSW_Whirlbloom</defName>
+		<label>whirlbloom</label>
+		<description>A beautiful bluish flower. Prized for its color where it can be found growing wild.</description>
+		<!-- TEMP PLACEHOLDER: donor texPath (ReGrowth's own RG_Dervish) does not exist as a loose file - falling back to a CONFIRMED-valid texture (Alpha Biomes' AB_Aaklac) so this does not render magenta. Mismatched art until fill_queue.py renders land. -->
+		<graphicData>
+			<texPath>Things/Plants/AB_Aaklac</texPath>
+			<graphicClass>Graphic_Random</graphicClass>
+		</graphicData>
+		<statBases>
+			<MaxHitPoints>120</MaxHitPoints>
+			<Beauty>6</Beauty>
+			<Nutrition>0.25</Nutrition>
+		</statBases>
+		<selectable>true</selectable>
+		<pathCost>5</pathCost>
+		<ingestible/>
+		<plant>
+			<fertilityMin>0.05</fertilityMin>
+			<fertilitySensitivity>0</fertilitySensitivity>
+			<growDays>2.5</growDays>
+			<mustBeWildToSow>true</mustBeWildToSow>
+			<sowResearchPrerequisites/>
+			<sowTags>
+				<li>Ground</li>
+			</sowTags>
+			<maxMeshCount>16</maxMeshCount>
+			<visualSizeRange>0.3~0.5</visualSizeRange>
+			<topWindExposure>0.3</topWindExposure>
+			<wildClusterRadius>4</wildClusterRadius>
+			<wildClusterWeight>3</wildClusterWeight>
+			<wildOrder>6</wildOrder>
+			<purpose>Beauty</purpose>
+		</plant>
+	</ThingDef>
+
+	<ThingDef ParentName="BushBase">
+		<defName>RSW_VellaraBloom</defName>
+		<label>vellara bloom</label>
+		<description>A rare, huge flower with a striking color and a strong, sweet smell. Popular in gardening wherever it can be grown at all.</description>
+		<statBases>
+			<Beauty>10</Beauty>
+		</statBases>
+		<!-- TEMP PLACEHOLDER: donor Alpha Biomes texture -->
+		<graphicData>
+			<texPath>Things/Plants/AB_Aaklac</texPath>
+			<graphicClass>Graphic_Random</graphicClass>
+			<drawSize>1.5</drawSize>
+			<shadowData>
+				<volume>(0.55, 0.2, 0.2)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<plant>
+			<topWindExposure>0.07</topWindExposure>
+			<wildClusterRadius>-1</wildClusterRadius>
+			<!-- AUTHORED: donor left visualSizeRange unset (inherits BushBase's own default, itself UNMEASURED by the census); set explicitly here rather than left ambiguous. -->
+			<visualSizeRange>0.7~1.0</visualSizeRange>
+		</plant>
+	</ThingDef>
+
+	<ThingDef ParentName="TreeBase">
+		<defName>RSW_SweetbarkTree</defName>
+		<label>sweetbark tree</label>
+		<description>A whimsical tree with a sugary trunk, frosting-like growths, and fruit that resembles glazed confections. Lures animals and colonists alike.</description>
+		<descriptionHyperlinks>
+			<ThingDef>WoodLog</ThingDef>
+		</descriptionHyperlinks>
+		<!-- TEMP PLACEHOLDER: donor Alpha Biomes texture -->
+		<graphicData>
+			<texPath>Things/Plants/AB_DessertTree</texPath>
+			<graphicClass>Graphic_Random</graphicClass>
+			<shadowData>
+				<volume>(0.18, 0.3, 0.15)</volume>
+			</shadowData>
+		</graphicData>
+		<altitudeLayer>BuildingOnTop</altitudeLayer>
+		<statBases>
+			<Beauty>2</Beauty>
+			<BeautyOutdoors>2</BeautyOutdoors>
+			<Nutrition>2</Nutrition>
+		</statBases>
+		<plant>
+			<growDays>14</growDays>
+			<harvestWork>550</harvestWork>
+			<harvestYield>25</harvestYield>
+			<wildClusterRadius>10</wildClusterRadius>
+			<wildClusterWeight>11</wildClusterWeight>
+			<visualSizeRange>2.1~3</visualSizeRange>
+			<choppedThingDef IsNull="True"/>
+			<smashedThingDef IsNull="True"/>
+		</plant>
+		<ingestible/>
+	</ThingDef>
+
+</Defs>

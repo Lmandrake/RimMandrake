@@ -1,0 +1,1649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch (16 fauna + 7 flora; AB_GiantStikehr
+EXCLUDED per the item's own note: cut from the Extreme Desert the same day as
+misplaced, not part of this port). Owner ruling 2026-09-20: "All of the desert
+sheet should be keep but replace with our own version of creature and art. Port.
+All of them. Now."
+
+Source mods (Steam Workshop content/294100, 1.6 branch): Alpha Animals
+(1541721856), Alpha Biomes (1841354677), ReGrowth 2 (2260097569), Horrors
+Continued (3535224844), Vanilla Factions Expanded - Insectoids 2 (3309003431).
+defNames renamed AA_/RG_Plant_/AB_/VFEI2_/bare -> RSW_, namespace
+RimMandrake.StarWars per design/NAMING_SCHEME_PLAN.md. Names are DRAFTED
+pseudo-Star-Wars names (NONCANON_BEAST_RENAME_1) - owner has not ruled on them.
+
+Per the BMT_FAUNA_ABSORPTION_1 precedent this copies: reference closure (leather,
+meat, eggs) is ported; comps/modExtensions whose C# lives in VEF.AnimalBehaviours,
+AlphaBehavioursAndEvents or VEF.Plants (none active once these donors are removed)
+are DROPPED - stats/body/form stay, donor AI/abilities/info-card flavor do not.
+Dropped per-species below in-line. ONE DEPARTURE FROM THE PRECEDENT: donor
+textures are NOT reused - texPaths here point at the donor's texture ONLY as a
+loud temporary placeholder until fill_queue.py renders land (art jobs filed
+separately, rimflow_item_id DESERT_FAMILY_PORT_EXECUTION_1).
+
+CUSTOM BODY SUBSTITUTION (not a framework drop, a scope call): five species used
+Alpha Animals' own custom BodyDefs (AA_EyeBody, AA_SentientPlant, AA_Squid,
+AA_WormWithArmorAndTusks, AA_ArmouredSlug), each with its own BodyPartDef graph
+in a shared BodyParts_Animal.xml. Porting that whole graph (further BodyPartDef
+chains) was cut for scope; instead each creature uses the closest EXISTING
+vanilla BodyDef, confirmed by inspecting that BodyDef's own part tree (never
+guessed): Eyeling and SandSquid -> Monkey (HeadAttackTool + Teeth groups
+present); Needleroll/Needlepost -> QuadrupedAnimalWithPawsAndTail (same body
+Cactipine/SandProwler already use, Teeth + HeadAttackTool present);
+MammothWorm -> Snake (HeadAttackTool present on SnakeHead, "Mouth" group on
+SnakeMouth). Every tool's linkedBodyPartsGroup below was remapped to a group
+tag confirmed present on the substitute body; this changes hit-location
+granularity, not stats or behaviour. Custom ToolCapacityDefs (AA_ToxicSting,
+AA_ToxicBite, AA_SiegeBlunt, AA_ExtraDamageMechanoidsTusk) are likewise
+substituted with the nearest vanilla capacity (Scratch/Bite/Blunt/Poke) rather
+than ported with their donor DamageDef/HediffDef poison chain - a deliberate
+mechanic drop, documented per species below.
+
+wildBiomes are omitted throughout - biome-table rewiring is a later step the
+parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
+-->
+<Defs>
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Horrors (mlie) Terrorworm -> RSW_Ashworm. Donor's HiveMind thinkTreeMain dropped (that mod's own AI framework); default AnimalThingBase think tree applies. Tools verbatim, capacities/groups already vanilla. -->
+		<defName>RSW_Ashworm</defName>
+		<label>ashworm</label>
+		<description>An alien worm of uncertain origin, large enough to threaten a lone traveler but neither fast nor especially ferocious. Ashworms are usually found trailing larger, stranger things, as if playing a supporting role in something else's hunt.</description>
+		<statBases>
+			<MoveSpeed>2.85</MoveSpeed>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<MarketValue>300</MarketValue>
+			<LeatherAmount>0</LeatherAmount>
+			<ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+			<Wildness>0.95</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>1.85</cooldownTime>
+				<linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>Snake</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>0.6</baseBodySize>
+			<baseHealthScale>2.5</baseHealthScale>
+			<baseHungerRate>0.35</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<trainability>Advanced</trainability>
+			<lifeExpectancy>6</lifeExpectancy>
+			<nameOnTameChance>1</nameOnTameChance>
+			<meatLabel>insect meat</meatLabel>
+			<gestationPeriodDays>10</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>EusocialInsectLarva</def><minAge>0</minAge></li>
+				<li><def>EusocialInsectJuvenile</def><minAge>0.03</minAge></li>
+				<li><def>EusocialInsectAdult</def><minAge>0.2</minAge>
+					<soundWounded>Pawn_BigInsect_Pain</soundWounded>
+					<soundDeath>Pawn_BigInsect_Death</soundDeath>
+					<soundCall>Pawn_BigInsect_Call</soundCall>
+					<soundAngry>Pawn_BigInsect_Angry</soundAngry>
+				</li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>Insectoid</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Ashworm</defName>
+		<label>ashworm</label>
+		<race>RSW_Ashworm</race>
+		<combatPower>50</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/Terrorworm/TerrorWorm</texPath>
+					<drawSize>2.0</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/Terrorworm/TerrorWorm</texPath>
+					<drawSize>2.0</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/Terrorworm/TerrorWorm</texPath>
+					<drawSize>2.0</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_DesertAve -> RSW_Sandstrider. useMeatFrom AA_MeadowAve (not ported, dangling) substituted with vanilla Cassowary. Dropped: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher (cosmetic refresh, donor framework), <renderTree>AA_Alternates (donor recolour system), VEF.AnimalBehaviours.AnimalStatExtension modExtension (info-card flavor only). Giddy-Up mod plug and artist credit removed from description; mechanic otherwise unchanged. -->
+		<defName>RSW_Sandstrider</defName>
+		<label>sandstrider</label>
+		<description>A large flightless bird adapted to living in very arid terrain. Bony plates across its neck defend it from predators and from the scalding heat of the open sand. Slower to anger than its wetland relatives, the sandstrider is prized as a mount - fast, sure-footed on loose ground, and steady under a rider even at speed.</description>
+		<statBases>
+			<MoveSpeed>7.0</MoveSpeed>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<ComfyTemperatureMax>75</ComfyTemperatureMax>
+			<MarketValue>400</MarketValue>
+			<CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+			<FilthRate>8</FilthRate>
+			<Wildness>0.75</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>1.55</cooldownTime>
+				<linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>1.85</cooldownTime>
+				<linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<comps>
+			<li Class="CompProperties_EggLayer">
+				<eggFertilizedDef>RSW_SandstriderEggFertilized</eggFertilizedDef>
+				<eggUnfertilizedDef>RSW_SandstriderEggUnfertilized</eggUnfertilizedDef>
+				<eggFertilizationCountMax>1</eggFertilizationCountMax>
+				<eggLayIntervalDays>6</eggLayIntervalDays>
+				<eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+				<eggCountRange>1</eggCountRange>
+			</li>
+		</comps>
+		<race>
+			<body>Bird</body>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>1.0</baseBodySize>
+			<baseHealthScale>1.0</baseHealthScale>
+			<baseHungerRate>0.55</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<leatherDef>Leather_Bird</leatherDef>
+			<useMeatFrom>Cassowary</useMeatFrom>
+			<trainability>Advanced</trainability>
+			<manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.04</manhunterOnTameFailChance>
+			<lifeExpectancy>35</lifeExpectancy>
+			<packAnimal>true</packAnimal>
+			<gestationPeriodDays>10</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Sandstrider</defName>
+		<label>sandstrider</label>
+		<race>RSW_Sandstrider</race>
+		<combatPower>70</combatPower>
+		<ecoSystemWeight>0.5</ecoSystemWeight>
+		<wildGroupSize>
+			<min>2</min>
+			<max>4</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<label>sandstrider chick</label>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_DesertAve/AA_DesertAve</texPath>
+					<drawSize>0.85</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_DesertAve/AA_DesertAve</texPath>
+					<drawSize>2.1</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_DesertAve/AA_DesertAve</texPath>
+					<drawSize>2.75</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Needleroll -> RSW_Spineroller. Body AA_SentientPlant substituted with the vanilla QuadrupedAnimalWithPawsAndTail body already used for Cactipine/SandProwler in this batch (confirmed to carry Teeth + HeadAttackTool groups); bite tool's linkedBodyPartsGroup remapped AA_Mouth -> Teeth. ToolCapacityDef AA_ToxicSting substituted with vanilla Scratch (donor poison-sting DamageDef/HediffDef chain dropped, mechanic simplification). Dropped: VEF.AnimalBehaviours.CompProperties_LightSustenance (sun-feeding, donor framework - eats normally per foodType instead), CompProperties_InitialAbility (venom-barb ranged ability, donor framework). -->
+		<defName>RSW_Spineroller</defName>
+		<label>spineroller</label>
+		<description>A cactus-form creature that has evolved to roll and creep across the most arid ground on the Rim. Spinerollers need almost no water, drawing what little they use from morning condensation, and depend on long unbroken sunlight to live - a sustained eclipse can kill a herd outright.</description>
+		<statBases>
+			<MoveSpeed>2.50</MoveSpeed>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<ComfyTemperatureMax>100</ComfyTemperatureMax>
+			<MarketValue>250</MarketValue>
+			<ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+			<Wildness>0.6</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>stings</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>1.35</cooldownTime>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.35</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPawsAndTail</body>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>0.15</baseBodySize>
+			<baseHealthScale>0.25</baseHealthScale>
+			<baseHungerRate>0.001</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<leatherDef>RSW_CactusHide</leatherDef>
+			<specificMeatDef>RSW_CactusMeat</specificMeatDef>
+			<trainability>None</trainability>
+			<lifeExpectancy>6</lifeExpectancy>
+			<gestationPeriodDays>6.66</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalExotic</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Spineroller</defName>
+		<label>spineroller</label>
+		<race>RSW_Spineroller</race>
+		<combatPower>33</combatPower>
+		<ecoSystemWeight>0.3</ecoSystemWeight>
+		<wildGroupSize>
+			<min>6</min>
+			<max>10</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Needleroll/AA_Needleroll</texPath>
+					<drawSize>1.25</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Needleroll/AA_Needleroll</texPath>
+					<drawSize>1.6</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Needleroll/AA_Needleroll</texPath>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Cactipine -> RSW_Spinerat. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic medicinal-quill harvest, donor framework). -->
+		<defName>RSW_Spinerat</defName>
+		<label>spinerat</label>
+		<description>A colonial effort to make the open sand liveable produced this rat-sized creature, its genome spliced with cactus DNA. The result is a hardened green hide studded with medicinal quills and a strange meat that reads as neither plant nor animal to most palates.</description>
+		<statBases>
+			<MoveSpeed>4.5</MoveSpeed>
+			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
+			<ComfyTemperatureMax>70</ComfyTemperatureMax>
+			<MarketValue>100</MarketValue>
+			<Wildness>0.75</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>left claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>right claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>5</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPawsAndTail</body>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>0.5</baseBodySize>
+			<baseHealthScale>0.75</baseHealthScale>
+			<baseHungerRate>0.2</baseHungerRate>
+			<foodType>OmnivoreAnimal, OvivoreAnimal</foodType>
+			<leatherDef>RSW_CactusHide</leatherDef>
+			<specificMeatDef>RSW_CactusMeat</specificMeatDef>
+			<trainability>Intermediate</trainability>
+			<manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+			<lifeExpectancy>4</lifeExpectancy>
+			<gestationPeriodDays>5.661</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalCommon</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Spinerat</defName>
+		<label>spinerat</label>
+		<race>RSW_Spinerat</race>
+		<combatPower>30</combatPower>
+		<ecoSystemWeight>0.3</ecoSystemWeight>
+		<wildGroupSize>
+			<min>1</min>
+			<max>10</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Cactipine/AA_Cactipine</texPath>
+					<drawSize>0.8</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Cactipine/AA_Cactipine</texPath>
+					<drawSize>1.0</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Cactipine/AA_Cactipine</texPath>
+					<drawSize>1.2</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Eyeling -> RSW_Stareling. Body AA_EyeBody substituted with vanilla Monkey (confirmed HeadAttackTool group present on Head). ToolCapacityDef AA_ToxicSting substituted with vanilla Scratch (donor poison chain dropped). -->
+		<defName>RSW_Stareling</defName>
+		<label>stareling</label>
+		<description>A grotesquely enlarged eye that drags itself along on a few fleshy tentacles. Not very useful for much of anything. Said to result from infusing an animal with strange energies from beyond ordinary space.</description>
+		<statBases>
+			<MoveSpeed>3.0</MoveSpeed>
+			<MarketValue>100</MarketValue>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<ComfyTemperatureMax>60</ComfyTemperatureMax>
+			<MeatAmount>0</MeatAmount>
+			<Wildness>0.2</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>eye</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>8</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>Monkey</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>0.4</baseBodySize>
+			<baseHealthScale>0.5</baseHealthScale>
+			<baseHungerRate>0.1</baseHungerRate>
+			<foodType>OmnivoreRoughAnimal</foodType>
+			<leatherDef>Leather_Light</leatherDef>
+			<useMeatFrom>Pig</useMeatFrom>
+			<trainability>Intermediate</trainability>
+			<lifeExpectancy>12</lifeExpectancy>
+			<herdMigrationAllowed>false</herdMigrationAllowed>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Stareling</defName>
+		<label>stareling</label>
+		<race>RSW_Stareling</race>
+		<combatPower>10</combatPower>
+		<ecoSystemWeight>0.30</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Eyeling/AA_Eyeling</texPath>
+					<drawSize>1</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Eyeling/AA_Eyeling</texPath>
+					<drawSize>1.25</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Eyeling/AA_Eyeling</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Needlepost -> RSW_Barbthorn. Same body substitution as Spineroller (QuadrupedAnimalWithPawsAndTail for AA_SentientPlant, AA_Mouth->Teeth). AA_ToxicSting->Scratch. Dropped: CompProperties_LightSustenance, CompProperties_InitialAbility (venom barb ability) - both VEF.AnimalBehaviours, donor framework. -->
+		<defName>RSW_Barbthorn</defName>
+		<label>barbthorn</label>
+		<description>A mobile cactus given crude sentience and toxic barbs. Early trials aimed for a stationary deterrent; giving it a body and a mind of its own proved a mistake, and the facility that made the first barbthorns was overrun soon after. Barbthorns can draw a little nutrition from rotting vegetation, but they live and die by direct sunlight - a long eclipse is usually fatal.</description>
+		<statBases>
+			<MoveSpeed>3.00</MoveSpeed>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<ComfyTemperatureMax>70</ComfyTemperatureMax>
+			<MarketValue>630</MarketValue>
+			<ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+			<Wildness>0.6</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>stings</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.35</cooldownTime>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>8</power>
+				<cooldownTime>1.35</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPawsAndTail</body>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>0.79</baseBodySize>
+			<baseHealthScale>2.2</baseHealthScale>
+			<baseHungerRate>0.05</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<leatherDef>RSW_CactusHide</leatherDef>
+			<specificMeatDef>RSW_CactusMeat</specificMeatDef>
+			<trainability>Intermediate</trainability>
+			<lifeExpectancy>6</lifeExpectancy>
+			<gestationPeriodDays>10</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalExotic</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Barbthorn</defName>
+		<label>barbthorn</label>
+		<race>RSW_Barbthorn</race>
+		<combatPower>90</combatPower>
+		<ecoSystemWeight>1</ecoSystemWeight>
+		<wildGroupSize>
+			<min>6</min>
+			<max>10</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost</texPath>
+					<drawSize>0.8</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost</texPath>
+					<drawSize>1.4</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost</texPath>
+					<drawSize>1.8</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Wildpawn -> RSW_Sporepaw. AA_ToxicBite->Bite. Dropped: VEF.AnimalBehaviours.CompProperties_AsexualReproduction (spore-clump reproduction), CompProperties_HighlyFlammable (burn hediff on fire), CompProperties_AnimalProduct (periodic raw-fungus harvest) - all donor framework. hasGenders=false kept so vanilla asexual reproduction still applies; the spore-cloud VISUAL/reproduction event itself is what was dropped, not the ability to breed. -->
+		<defName>RSW_Sporepaw</defName>
+		<label>sporepaw</label>
+		<description>A fungal quadruped adapted to life outside the swamp, smaller and less dangerous than its wetland kin for lack of water and rot to grow on. Sporepaws release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.</description>
+		<statBases>
+			<MoveSpeed>4</MoveSpeed>
+			<ComfyTemperatureMin>-15</ComfyTemperatureMin>
+			<MarketValue>200</MarketValue>
+			<LeatherAmount>0</LeatherAmount>
+			<ArmorRating_Blunt>0.75</ArmorRating_Blunt>
+			<ArmorRating_Heat>-100</ArmorRating_Heat>
+			<ArmorRating_Sharp>0.75</ArmorRating_Sharp>
+			<FilthRate>8</FilthRate>
+			<Wildness>0.75</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>left paw</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>11</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>right paw</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>11</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPaws</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>1.4</baseBodySize>
+			<baseHealthScale>1.3</baseHealthScale>
+			<baseHungerRate>0.2</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<specificMeatDef>RawFungus</specificMeatDef>
+			<trainability>Intermediate</trainability>
+			<manhunterOnTameFailChance>0.018</manhunterOnTameFailChance>
+			<lifeExpectancy>35</lifeExpectancy>
+			<hasGenders>false</hasGenders>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalExotic</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Sporepaw</defName>
+		<label>sporepaw</label>
+		<race>RSW_Sporepaw</race>
+		<combatPower>120</combatPower>
+		<ecoSystemWeight>1</ecoSystemWeight>
+		<wildGroupSize>
+			<min>1</min>
+			<max>3</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn</texPath>
+					<drawSize>0.7</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn</texPath>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Gigantelope -> RSW_Sandhorn. Dropped: CompProperties_InitialHediff (variable carry-weight hediff roll), AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher, <renderTree>AA_Alternates - all donor framework/recolour. CompProperties_Milkable (vanilla) kept. -->
+		<defName>RSW_Sandhorn</defName>
+		<label>sandhorn</label>
+		<description>Bred as a bigger, stronger relative of the muffalo, the sandhorn is an ideal pack beast - pneumatized bones keep it strong and dense without the weight. Its carrying capacity varies with the individual, set at birth, and colonies across the Rim have bred sandhorns for generations chasing the perfect pack animal.</description>
+		<statBases>
+			<MoveSpeed>4.5</MoveSpeed>
+			<ComfyTemperatureMin>-15</ComfyTemperatureMin>
+			<MarketValue>350</MarketValue>
+			<FilthRate>16</FilthRate>
+			<Wildness>0.6</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>13</power>
+				<cooldownTime>2.6</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>left hoof</label>
+				<capacities>
+					<li>Poke</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>right hoof</label>
+				<capacities>
+					<li>Poke</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+				<chanceFactor>0.5</chanceFactor>
+			</li>
+		</tools>
+		<comps>
+			<li Class="CompProperties_Milkable">
+				<milkDef>Milk</milkDef>
+				<milkIntervalDays>4</milkIntervalDays>
+				<milkAmount>15</milkAmount>
+			</li>
+		</comps>
+		<race>
+			<body>QuadrupedAnimalWithHooves</body>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>2</baseBodySize>
+			<baseHealthScale>1.75</baseHealthScale>
+			<baseHungerRate>0.535</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<leatherDef>Leather_Heavy</leatherDef>
+			<trainability>None</trainability>
+			<manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+			<lifeExpectancy>18</lifeExpectancy>
+			<packAnimal>true</packAnimal>
+			<roamMtbDays>2</roamMtbDays>
+			<gestationPeriodDays>10</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.50</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalCommon</li>
+			<li>AnimalFarm</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Sandhorn</defName>
+		<label>sandhorn</label>
+		<race>RSW_Sandhorn</race>
+		<combatPower>100</combatPower>
+		<ecoSystemWeight>1.1</ecoSystemWeight>
+		<wildGroupSize>
+			<min>3</min>
+			<max>9</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<label>sandhorn calf</label>
+				<labelPlural>sandhorn calves</labelPlural>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Gigantelope/AA_Gigantelope_baby</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Gigantelope/AA_Gigantelope</texPath>
+					<drawSize>2.25</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Gigantelope/AA_Gigantelope</texPath>
+					<drawSize>3</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_SandProwler -> RSW_Dunestalker. Dropped: VEF.AnimalBehaviours.CompProperties_GraphicByTerrain (sand-camouflage/burrow visual swap keyed to specific terrain defNames including several donor-only terrains) and <renderTree>VEF_GraphicByTerrainRenderTree - both donor framework; the burrow-and-strike AI is lost with them, the stats/body/predator role stay. Leather_RaptorPlates is a vanilla-adjacent name check pending (flagged UNCERTAIN in the port report, not a defName invented here - carried verbatim from the donor XML). -->
+		<defName>RSW_Dunestalker</defName>
+		<label>dunestalker</label>
+		<description>A genetic amalgamation of big-cat, shark and sand skink, bred as a ferocious hunter for desert worlds. The dunestalker can move through loose sand almost as easily as open ground, letting it close on prey from ambush. Dense soils are too firm for it to work through.</description>
+		<statBases>
+			<MoveSpeed>4</MoveSpeed>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<ComfyTemperatureMax>70</ComfyTemperatureMax>
+			<MarketValue>450</MarketValue>
+			<FilthRate>2</FilthRate>
+			<Wildness>0.65</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>left claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>12</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>right claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>12</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>15</power>
+				<cooldownTime>1.85</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>15</power>
+				<cooldownTime>1.75</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPawsAndTail</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>true</predator>
+			<baseBodySize>2</baseBodySize>
+			<baseHealthScale>2.5</baseHealthScale>
+			<baseHungerRate>0.1</baseHungerRate>
+			<foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+			<leatherDef>Leather_RaptorPlates</leatherDef>
+			<useMeatFrom>Cougar</useMeatFrom>
+			<trainability>Intermediate</trainability>
+			<manhunterOnDamageChance>1</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+			<lifeExpectancy>18</lifeExpectancy>
+			<gestationPeriodDays>10</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalFighter</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Dunestalker</defName>
+		<label>dunestalker</label>
+		<race>RSW_Dunestalker</race>
+		<combatPower>275</combatPower>
+		<ecoSystemWeight>0.3</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<label>dunestalker cub</label>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_SandProwler/AA_SandProwler</texPath>
+					<drawSize>1.8</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<label>dunestalker juvenile</label>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_SandProwler/AA_SandProwler</texPath>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_SandProwler/AA_SandProwler</texPath>
+					<drawSize>3.5</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Terramorph -> RSW_Ferroclaw. useMeatFrom AA_BoulderMit repointed to this batch's own RSW_Stoneback (sibling port, no dangling ref). Dropped: VEF.AnimalBehaviours.CompProperties_EatWeirdFood (steel/slag eating + auto-dig mechanic), CompProperties_NearbyEffecter - both donor framework; eats VegetarianRoughAnimal normally instead, which changes the creature's whole gimmick (steel diet) - flagged for the owner, since 'eats iron' was Terramorph's entire point and this port cannot keep it without VEF. -->
+		<defName>RSW_Ferroclaw</defName>
+		<label>ferroclaw</label>
+		<description>A strange crustacean bred for one purpose: mineral processing. The ferroclaw feeds on iron compounds, chemically working them into a hardened alloy otherwise found only in asteroids. The transmutation is slow, so a ferroclaw needs long stretches parked among mined steel to do its work.</description>
+		<statBases>
+			<MoveSpeed>1.8</MoveSpeed>
+			<ComfyTemperatureMin>-40</ComfyTemperatureMin>
+			<MarketValue>250</MarketValue>
+			<ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.75</ArmorRating_Sharp>
+			<LeatherAmount>0</LeatherAmount>
+			<MeatAmount>0</MeatAmount>
+			<Wildness>0.65</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>fangs</label>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>14</power>
+				<cooldownTime>2.6</cooldownTime>
+				<linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>TurtleLike</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>1.5</baseBodySize>
+			<baseHealthScale>1</baseHealthScale>
+			<baseHungerRate>0.1</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<useMeatFrom>RSW_Stoneback</useMeatFrom>
+			<trainability>None</trainability>
+			<lifeExpectancy>15</lifeExpectancy>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Ferroclaw</defName>
+		<label>ferroclaw</label>
+		<race>RSW_Ferroclaw</race>
+		<combatPower>80</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Terramorph/AA_Terramorph</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Terramorph/AA_Terramorph</texPath>
+					<drawSize>1.75</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Terramorph/AA_Terramorph</texPath>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_BoulderMit -> RSW_Stoneback. Tools inferred from vanilla TurtleLike groups (TurtleBeakAttackTool/HeadAttackTool), matching the sibling Terramorph pattern in the same donor mod - donor XML for this specific def's <tools> block was not re-transcribed verbatim but power/cooldown/group values match the shared AA turtle-body template used by Terramorph. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic resource harvest, donor framework). -->
+		<defName>RSW_Stoneback</defName>
+		<label>stoneback</label>
+		<description>A large genetically-engineered crab that carries a boulder for a shell, sometimes called an atlas crab elsewhere in the Rim. Stonebacks are immensely strong and live for centuries, plodding across the open desert at a fraction of a walking pace.</description>
+		<statBases>
+			<MoveSpeed>1.00</MoveSpeed>
+			<ComfyTemperatureMin>-65</ComfyTemperatureMin>
+			<MarketValue>350</MarketValue>
+			<ArmorRating_Blunt>0.7</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.7</ArmorRating_Sharp>
+			<LeatherAmount>0</LeatherAmount>
+			<MeatAmount>10</MeatAmount>
+			<FilthRate>12</FilthRate>
+			<Wildness>0.7</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>14</power>
+				<cooldownTime>2.6</cooldownTime>
+				<linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>TurtleLike</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>4.00</baseBodySize>
+			<baseHealthScale>9.0</baseHealthScale>
+			<baseHungerRate>0.05</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<trainability>None</trainability>
+			<manhunterOnDamageChance>0.01</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+			<lifeExpectancy>650</lifeExpectancy>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalExotic</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Stoneback</defName>
+		<label>stoneback</label>
+		<race>RSW_Stoneback</race>
+		<combatPower>350</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit</texPath>
+					<drawSize>2.7</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit</texPath>
+					<drawSize>3.5</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_SandSquid -> RSW_Sandmaw. Body AA_Squid substituted with vanilla Monkey (HeadAttackTool/Teeth confirmed present; Monkey carries no 'Arms' group tag on its Shoulder/Arm parts, so the tentacle tool is left UNGROUPED - always usable - rather than pointed at a group that resolves to nothing). Bite tool's AA_Mouth group remapped -> Teeth. Dropped: VEF.AnimalBehaviours.CompProperties_TerrainChanger (donor framework). -->
+		<defName>RSW_Sandmaw</defName>
+		<label>sandmaw</label>
+		<description>Despite the name, the sandmaw is a genetically modified creature combining cephalopod and cone-snail traits, bred as cattle for worlds too dry to support ordinary livestock. It tolerates extreme water deprivation and grazes in slow-moving herds across open sand.</description>
+		<statBases>
+			<MoveSpeed>1.00</MoveSpeed>
+			<ComfyTemperatureMin>-10</ComfyTemperatureMin>
+			<ComfyTemperatureMax>100</ComfyTemperatureMax>
+			<MarketValue>350</MarketValue>
+			<ArmorRating_Blunt>0.7</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.7</ArmorRating_Sharp>
+			<LeatherAmount>0</LeatherAmount>
+			<FilthRate>8</FilthRate>
+			<Wildness>0.7</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>8</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+		</tools>
+		<race>
+			<body>Monkey</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>2.00</baseBodySize>
+			<baseHealthScale>1.0</baseHealthScale>
+			<baseHungerRate>0.05</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<trainability>Intermediate</trainability>
+			<lifeExpectancy>25</lifeExpectancy>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+			<li>AnimalFarm</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Sandmaw</defName>
+		<label>sandmaw</label>
+		<race>RSW_Sandmaw</race>
+		<combatPower>350</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_SandSquid/AA_SandSquid</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_SandSquid/AA_SandSquid</texPath>
+					<drawSize>2.7</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_SandSquid/AA_SandSquid</texPath>
+					<drawSize>3.5</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Wildpod -> RSW_Sporemass. AA_ToxicBite->Bite. Dropped: CompProperties_AsexualReproduction, CompProperties_HighlyFlammable, CompProperties_AnimalProduct - all VEF.AnimalBehaviours donor framework, same as sibling RSW_Sporepaw. -->
+		<defName>RSW_Sporemass</defName>
+		<label>sporemass</label>
+		<description>A lumbering mass of what looks like decomposing plant matter, in fact a sentient mycoid creature. Its bulk is nearly impervious to gunfire, bullets punching through with little effect, but it burns extremely readily.</description>
+		<statBases>
+			<MoveSpeed>3</MoveSpeed>
+			<ComfyTemperatureMin>-15</ComfyTemperatureMin>
+			<MarketValue>400</MarketValue>
+			<LeatherAmount>0</LeatherAmount>
+			<ArmorRating_Blunt>1</ArmorRating_Blunt>
+			<ArmorRating_Heat>-100</ArmorRating_Heat>
+			<ArmorRating_Sharp>2</ArmorRating_Sharp>
+			<FilthRate>16</FilthRate>
+			<Wildness>0.95</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>left paw</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>23</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>right paw</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>23</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>15</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPaws</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>4.0</baseBodySize>
+			<baseHealthScale>3.6</baseHealthScale>
+			<baseHungerRate>0.33</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<specificMeatDef>RawFungus</specificMeatDef>
+			<trainability>Intermediate</trainability>
+			<manhunterOnTameFailChance>0.018</manhunterOnTameFailChance>
+			<lifeExpectancy>70</lifeExpectancy>
+			<hasGenders>false</hasGenders>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalExotic</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Sporemass</defName>
+		<label>sporemass</label>
+		<race>RSW_Sporemass</race>
+		<combatPower>250</combatPower>
+		<ecoSystemWeight>1</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Wildpod/AA_Wildpod</texPath>
+					<drawSize>1.8</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Wildpod/AA_Wildpod</texPath>
+					<drawSize>2.6</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_Wildpod/AA_Wildpod</texPath>
+					<drawSize>3.8</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_MammothWorm -> RSW_Tuskcoil. Body AA_WormWithArmorAndTusks substituted with vanilla Snake (HeadAttackTool on SnakeHead, group tag 'Mouth' on SnakeMouth - confirmed by reading the BodyDef, not guessed). ToolCapacityDefs AA_SiegeBlunt->Blunt and AA_ExtraDamageMechanoidsTusk->Poke (donor's anti-mechanoid bonus-damage mechanic dropped with it); TuskAttackTool group remapped -> Mouth (the only group Snake actually carries besides HeadAttackTool). Dropped: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher. CompProperties_EggLayer (vanilla) kept, pointed at this batch's own ported eggs. -->
+		<defName>RSW_Tuskcoil</defName>
+		<label>tuskcoil</label>
+		<description>An extremely large, genetically engineered worm, armored and tusked but strangely peaceful for its size. Old records suggest it was once the worker caste of an artificial ecosystem, now running wild and self-sustaining out on the open sand.</description>
+		<statBases>
+			<MoveSpeed>2.0</MoveSpeed>
+			<ComfyTemperatureMin>-30</ComfyTemperatureMin>
+			<MarketValue>600</MarketValue>
+			<ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.5</ArmorRating_Sharp>
+			<CaravanRidingSpeedFactor>1.2</CaravanRidingSpeedFactor>
+			<FilthRate>12</FilthRate>
+			<Wildness>0.9</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2.4</cooldownTime>
+			</li>
+			<li>
+				<label>tusk</label>
+				<capacities>
+					<li>Poke</li>
+				</capacities>
+				<power>12</power>
+				<cooldownTime>2.2</cooldownTime>
+				<linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+			</li>
+		</tools>
+		<comps>
+			<li Class="CompProperties_EggLayer">
+				<eggUnfertilizedDef>RSW_TuskcoilEggUnfertilized</eggUnfertilizedDef>
+				<eggFertilizedDef>RSW_TuskcoilEggFertilized</eggFertilizedDef>
+				<eggFertilizationCountMax>1</eggFertilizationCountMax>
+				<eggLayIntervalDays>10</eggLayIntervalDays>
+			</li>
+		</comps>
+		<race>
+			<body>Snake</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>3.00</baseBodySize>
+			<baseHealthScale>3.0</baseHealthScale>
+			<baseHungerRate>0.535</baseHungerRate>
+			<leatherDef>RSW_BlackChitin</leatherDef>
+			<useMeatFrom>Megaspider</useMeatFrom>
+			<trainability>Intermediate</trainability>
+			<lifeExpectancy>45</lifeExpectancy>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+			<li>AnimalFighter</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Tuskcoil</defName>
+		<label>tuskcoil</label>
+		<race>RSW_Tuskcoil</race>
+		<combatPower>200</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_MammothWorm/AA_MammothWorm</texPath>
+					<drawSize>1.8</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_MammothWorm/AA_MammothWorm</texPath>
+					<drawSize>3.2</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_MammothWorm/AA_MammothWorm</texPath>
+					<drawSize>4.1</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_TetraSlug -> RSW_Voltmaw. Body AA_ArmouredSlug substituted with vanilla TurtleLike (HeadAttackTool confirmed present, matching sibling RSW_Stoneback/RSW_Ferroclaw usage of the same body in this batch). useMeatFrom AA_Helixien (not ported, dangling - Helixien is not in this batch) substituted with Megaspider, matching the insectoid/exotic theme already used for RSW_Tuskcoil. Dropped: VEF.AnimalBehaviours.CompProperties_InitialAbility (a ranged ability - this removes the 'ejects volatile charge' gimmick that was this creature's whole point; flagged for the owner, same as RSW_Ferroclaw's dropped steel-diet) and CompProperties_Electrified (donor framework). -->
+		<defName>RSW_Voltmaw</defName>
+		<label>voltmaw</label>
+		<description>A massive slug, common on glitterworlds as a glorified mobile power plant. Off the grid it is deployed by research stations as a self-contained energy source; in the wild it simply grazes, slow and armored, across open ground.</description>
+		<statBases>
+			<MoveSpeed>0.6</MoveSpeed>
+			<ComfyTemperatureMin>-10</ComfyTemperatureMin>
+			<MarketValue>4000</MarketValue>
+			<LeatherAmount>0</LeatherAmount>
+			<Wildness>0.7</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2.4</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+			</li>
+		</tools>
+		<race>
+			<body>TurtleLike</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>5.00</baseBodySize>
+			<baseHealthScale>10</baseHealthScale>
+			<baseHungerRate>0.15</baseHungerRate>
+			<foodType>OmnivoreRoughAnimal</foodType>
+			<useMeatFrom>Megaspider</useMeatFrom>
+			<trainability>Advanced</trainability>
+			<manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+			<lifeExpectancy>30</lifeExpectancy>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalCommon</li>
+			<li>AnimalFarm</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Voltmaw</defName>
+		<label>voltmaw</label>
+		<race>RSW_Voltmaw</race>
+		<combatPower>650</combatPower>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_TetraSlug/AA_TetraSlug</texPath>
+					<drawSize>2.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_TetraSlug/AA_TetraSlug</texPath>
+					<drawSize>3.2</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_TetraSlug/AA_TetraSlug</texPath>
+					<drawSize>4.1</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- VFE - Insectoids 2 VFEI2_Fuelmite -> RSW_Cindermite. Tools/body/lifeStageAges already vanilla (BeetleLikeWithClaw, HeadClaw/HeadAttackTool, EusocialInsect* stages), no substitution needed. Dropped: VEF.AnimalBehaviours.CompProperties_InitialAbility (the chemfuel-ejection ranged ability) and CompProperties_AnimalProduct (periodic chemfuel harvest) - both donor framework; this removes the mite's entire chemfuel gimmick, same caveat as RSW_Ferroclaw/RSW_Voltmaw, flagged for the owner. -->
+		<defName>RSW_Cindermite</defName>
+		<label>cindermite</label>
+		<description>A large, genetically-engineered mite bred to synthesize volatile chemfuel in sacs beneath its shell. Once used to power industrial megaforges on distant worlds, wild cindermites now scavenge the open desert, restless and short-lived but fast-breeding.</description>
+		<statBases>
+			<MoveSpeed>3.75</MoveSpeed>
+			<Flammability>0</Flammability>
+			<ComfyTemperatureMin>-20</ComfyTemperatureMin>
+			<ComfyTemperatureMax>160</ComfyTemperatureMax>
+			<MarketValue>650</MarketValue>
+			<ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.22</ArmorRating_Sharp>
+			<ArmorRating_Heat>2</ArmorRating_Heat>
+			<LeatherAmount>30</LeatherAmount>
+			<Wildness>0.95</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Cut</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>BeetleLikeWithClaw</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>1.35</baseBodySize>
+			<baseHealthScale>2.85</baseHealthScale>
+			<baseHungerRate>0.62</baseHungerRate>
+			<leatherDef>RSW_InsectChitin</leatherDef>
+			<useMeatFrom>Megaspider</useMeatFrom>
+			<trainability>Advanced</trainability>
+			<lifeExpectancy>5</lifeExpectancy>
+			<lifeStageAges>
+				<li><def>EusocialInsectLarva</def><minAge>0</minAge></li>
+				<li><def>EusocialInsectJuvenile</def><minAge>0.03</minAge></li>
+				<li><def>EusocialInsectAdult</def><minAge>0.2</minAge>
+					<soundWounded>Pawn_BigInsect_Pain</soundWounded>
+					<soundDeath>Pawn_BigInsect_Death</soundDeath>
+					<soundCall>Pawn_BigInsect_Call</soundCall>
+					<soundAngry>Pawn_BigInsect_Angry</soundAngry>
+				</li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+	</ThingDef>
+	<PawnKindDef ParentName="InsectKindBase">
+		<defName>RSW_Cindermite</defName>
+		<label>cindermite</label>
+		<race>RSW_Cindermite</race>
+		<combatPower>200</combatPower>
+		<ecoSystemWeight>0.50</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/Fuelmite/Fuelmite</texPath>
+					<drawSize>1.2</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/Fuelmite/Fuelmite</texPath>
+					<drawSize>1.6</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/Fuelmite/Fuelmite</texPath>
+					<drawSize>2.5</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>
