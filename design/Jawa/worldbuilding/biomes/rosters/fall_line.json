@@ -17,124 +17,17 @@
       "why": "lifespan/territory not register fields; all picks are generalist vermin by design"
     }
   ],
-  "defNames": [
-    "ExtremeDesert",
-    "Desert",
-    "AridShrubland"
-  ],
+  "defNames": [],
   "evictions": [],
-  "fauna": [
-    {
-      "action": "import",
-      "band": "ship-vermin",
-      "commonality": 0.6,
-      "def": "Scavrat",
-      "law": "the name is the job — eats what falls (prep §8.4); generalist, fast-cycling, non-territorial (ban 6 pass)"
-    },
-    {
-      "action": "import",
-      "band": "ship-vermin",
-      "commonality": 0.4,
-      "def": "WompRat",
-      "law": "icon; nests under hulls (prep §8.4)"
-    },
-    {
-      "action": "import",
-      "band": "ship-vermin",
-      "commonality": 0.3,
-      "def": "Mynock",
-      "law": "icon — hull parasite, its literal canon niche (prep §8.4); §9 trims it to here + poison forest"
-    },
-    {
-      "action": "import",
-      "band": "ship-vermin",
-      "commonality": 0.3,
-      "def": "VFEI2_Fuelmite",
-      "law": "\"fuelmite\" — eats fuel (prep §8.4); homeless after the dune-sea band cut"
-    },
-    {
-      "action": "import",
-      "band": "ship-vermin",
-      "commonality": 0.1,
-      "def": "Rat",
-      "law": "owner card 2026-09-09: the Earth five appear NOWHERE except Rat here (prep §9: trim to Fall Line/settlements); ship rats fell with the ships"
-    },
-    {
-      "action": "import",
-      "band": "feral-droid",
-      "commonality": 0.1,
-      "def": "OuterRim_MSEDroid",
-      "law": "Outer Rim Droid Depot animal-classed droid (meatless, butcher-less — prep §8.4, MEASURED fig4); feral, Faction=null by wild spawn"
-    },
-    {
-      "action": "import",
-      "band": "feral-droid",
-      "commonality": 0.1,
-      "def": "OuterRim_SalvageAssistDroid",
-      "law": "as MSEDroid; salvage-assist body fits the belt"
-    },
-    {
-      "action": "import",
-      "band": "feral-droid",
-      "commonality": 0.08,
-      "def": "OuterRim_AstromechDroid",
-      "law": "icon-protected feral droid (prep §8.4)"
-    },
-    {
-      "action": "import",
-      "band": "feral-droid",
-      "commonality": 0.08,
-      "def": "OuterRim_DUMDroid",
-      "law": "pit droid — feral crash survivor"
-    },
-    {
-      "action": "import",
-      "band": "feral-droid",
-      "commonality": 0.05,
-      "def": "OuterRim_FX7Droid",
-      "law": "medical droid gone feral"
-    },
-    {
-      "action": "import",
-      "band": "feral-droid",
-      "commonality": 0.08,
-      "def": "OuterRim_GNKDroid",
-      "law": "power droid — lives longest beside live wrecks (§5)"
-    },
-    {
-      "action": "import",
-      "band": "feral-droid",
-      "commonality": 0.05,
-      "def": "OuterRim_MuckrakerDroid",
-      "law": "salvage body"
-    },
-    {
-      "action": "import",
-      "band": "feral-droid",
-      "commonality": 0.02,
-      "def": "OuterRim_DestroyerDroid",
-      "law": "rare dangerous fall; still flee-prone by ruling (§8b)"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "BMT_BunkerBug",
-      "law": "owner review 2026-09 (round2 move mapping): Superb for the Fall wreckage creature"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "BMT_Megapleura",
-      "law": "owner review 2026-09 (round2 move mapping): wreckage-based creature for the Fall"
-    }
-  ],
+  "fauna": [],
+  "fauna_deleted_2026_09_20": "This roster's biome-keyed injection_layer (defNames + 15 fauna rows) was DELETED 2026-09-20 per the owner's ruling that this content are ARRIVALS, not ambient biome fauna (fall_line.md §8a; EXTREME_DESERT_UNRULED_VERMIN_1; FALL_LINE_INJECTION_DEAD_BIOME_KEYS_1, superseded from 'rekey' to 'delete'). The full species list, commonalities and law text are preserved in infrastructure/state/items/FALL_LINE_ARRIVAL_MECHANISM_1.md, which is the new item for building the actual delivery mechanism (wreck incident / subregion landmark / generator). Do not re-add fauna rows here to re-inject into wildAnimals — that is exactly the mechanism the ruling rejected.",
   "fish": {
     "list": [],
     "ruling": "no fish — ban 5: no water; median rainfall 0; the only water is what a wreck's condenser makes"
   },
   "flora": [],
   "flora_purged": [],
-  "injection_layer": true,
+  "injection_layer": false,
   "law_sources": [
     "fall_line.md §6/§8b",
     "_assignment_prep.md §8, §9",
@@ -160,7 +53,7 @@
       "name": "wreck-shade flora pockets (gate hardy smalls on wreck mutators — flora authoring, not new species)"
     }
   ],
-  "note": "NOT a BiomeDef (ban 1). Entries are ADDITIONS injected over the underlying defs in region The Fall Line; the base rosters show through.",
+  "note": "NOT a BiomeDef (ban 1), and NOT a biome-fauna injection layer any more (owner ruling 2026-09-20, fall_line.md §8a): this sheet's content are ARRIVALS delivered by wreckage/subregion content, never ambient wildAnimals. See fauna_deleted_2026_09_20 and FALL_LINE_ARRIVAL_MECHANISM_1.",
   "sheet": "fall_line",
   "stat_adjustments": [],
   "tiles": 308
