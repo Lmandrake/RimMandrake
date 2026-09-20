@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AA_JOE_DESERT_PORT_BATCH_1 - AA_Groundrunner port.
+  Ported from Alpha Animals (`sarg.alphaanimals`, workshop 1541721856,
+  `1.6/Defs/ThingDefs_Races/Races_GroundRunner.xml`) under the RSW_ tier.
+  Ruled at 0.5 weight, RUT_Desert only
+  (`design/Jawa/fauna/cast_assignment.csv` row 94, note "desert"; also
+  `decisions_propagated.json` "homeless:AA_Groundrunner", decision "move").
+
+  Alpha Animals stays an active mod dependency for this batch, so donor
+  texPaths are kept live rather than copied (RSW_SandLion precedent). Body
+  is already vanilla Core `QuadrupedAnimalWithPawsAndTail` - no custom body
+  needed.
+
+  Dropped, per the `BMT_FAUNA_ABSORPTION_1` precedent (donor-framework comps
+  come out, the creature keeps its stats/body/form):
+  `AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher` (donor
+  recolour-refresh framework), `<renderTree>AA_AlternatesWithVariations_Six</renderTree>`
+  (its render nodes use `AlphaBehavioursAndEvents.PawnRenderNodeProperties_WithIndex`
+  / `PawnRenderNode_AlternatesWithVariations`, both donor C# classes that do
+  not exist without the donor mod present as a hard render dependency - the
+  vanilla PawnKindDef `alternateGraphicChance`/`alternateGraphics` fields below
+  substitute for the visual-variety intent without needing the custom node),
+  `<thinkTreeMain>AA_AnimalDigger</thinkTreeMain>` /
+  `<thinkTreeConstant>AA_AnimalDiggerConstant</thinkTreeConstant>` (the "helps
+  mine/haul rocks" job-giver behaviour rides donor JobGiver C# - falls back to
+  vanilla AnimalMain/AnimalConstant, losing the mining-helper gimmick but
+  keeping the creature itself), and the `VEF.AnimalBehaviours.AnimalStatExtension`
+  modExtension (info-card flavor only). `<race><wildBiomes>` dropped -
+  wiring happens via BiomeDef patches (`RUT_Desert.xml`).
+
+  Kept verbatim: statBases, tools, race stats, herdAnimal/litterSizeCurve,
+  lifeStageAges (Pawn_Muffalo_* sounds are VANILLA), soundMelee*, tradeTags.
+-->
+<Defs>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<defName>RSW_Groundrunner</defName>
+		<label>groundrunner</label>
+		<description>A strange chimera between a bear and mole, groundrunners were used as walking heavy tools by desert prospectors when they hit rock that plasteel can't break, and for hauling large boulders their owners can't lift.\n\nDue to their domesticated origins, they are surprisingly docile and easy to tame. Their incredible strength and sharp claws allow them to break rocks with relative ease. But out here, those claws are usually reserved for ripping apart anything foolish enough to corner one.</description>
+		<statBases>
+			<MoveSpeed>3.00</MoveSpeed>
+			<ComfyTemperatureMin>-10</ComfyTemperatureMin>
+			<MarketValue>250</MarketValue>
+			<ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+			<FilthRate>4</FilthRate>
+			<Wildness>0.3</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>left claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>12</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+			</li>
+			<li>
+				<label>right claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>12</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>12</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<body>QuadrupedAnimalWithPawsAndTail</body>
+			<baseBodySize>2</baseBodySize>
+			<baseHungerRate>0.535</baseHungerRate>
+			<baseHealthScale>3</baseHealthScale>
+			<foodType>OmnivoreRoughAnimal</foodType>
+			<leatherDef>Leather_Plain</leatherDef>
+			<trainability>Advanced</trainability>
+			<gestationPeriodDays>16</gestationPeriodDays>
+			<litterSizeCurve>
+				<points>
+					<li>(0.5, 0)</li>
+					<li>(1, 1)</li>
+					<li>(2, 1.7)</li>
+					<li>(3, 0.7)</li>
+					<li>(3.5, 0)</li>
+				</points>
+			</litterSizeCurve>
+			<lifeExpectancy>25</lifeExpectancy>
+			<lifeStageAges>
+				<li>
+					<def>AnimalBaby</def>
+					<minAge>0</minAge>
+				</li>
+				<li>
+					<def>AnimalJuvenile</def>
+					<minAge>0.25</minAge>
+				</li>
+				<li>
+					<def>AnimalAdult</def>
+					<minAge>0.3333</minAge>
+					<soundWounded>Pawn_Muffalo_Wounded</soundWounded>
+					<soundDeath>Pawn_Muffalo_Death</soundDeath>
+					<soundCall>Pawn_Muffalo_Call</soundCall>
+					<soundAngry>Pawn_Muffalo_Angry</soundAngry>
+				</li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalAlpha</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Groundrunner</defName>
+		<race>RSW_Groundrunner</race>
+		<label>groundrunner</label>
+		<combatPower>350</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<alternateGraphicChance>1</alternateGraphicChance>
+		<alternateGraphics>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunnerW</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner2</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner3</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner4</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner5</texPath>
+			</li>
+		</alternateGraphics>
+		<wildGroupSize>
+			<min>2</min>
+			<max>3</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+					<drawSize>1.0</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_Dessicated_GroundRunner</texPath>
+					<drawSize>1.0</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+					<drawSize>1.8</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_Dessicated_GroundRunner</texPath>
+					<drawSize>1.8</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+					<drawSize>2.5</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_Dessicated_GroundRunner</texPath>
+					<drawSize>2.5</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>

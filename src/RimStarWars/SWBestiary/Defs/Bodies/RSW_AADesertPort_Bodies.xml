@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AA_JOE_DESERT_PORT_BATCH_1 - support bodies/body parts for the Alpha Animals
+  desert port (RSW_GreatDevourer, RSW_MatureFleshbeast).
+
+  Source mod: Alpha Animals (`sarg.alphaanimals`, workshop 1541721856),
+  1.6/Defs/Bodies/Bodies_WormWithArmor.xml,
+  1.6/Defs/Bodies/Bodies_TentacledQuadrupedEyeless.xml and
+  1.6/Defs/Bodies/BodyParts_Animal.xml. Alpha Animals stays an active mod
+  dependency for this batch (only Joe's Cephaloids is being retired), so this
+  is a straight structural copy under the RSW_ prefix, not a textures-in
+  absorption - nothing here is donor-C#-dependent, body/body-part defs are
+  pure data.
+
+  defName-only rename, nothing else changed: AA_WormWithArmor -> RSW_WormWithArmor,
+  AA_TentacledQuadrupedEyeless -> RSW_TentacledQuadrupedEyeless,
+  AA_FirstWormSegment/AA_SecondWormSegment/AA_ThirdWormSegment/AA_FourthWormSegment
+  -> RSW_ equivalents, AA_EcholocationOrgan -> RSW_EcholocationOrgan (shared by
+  both bodies below, same as the donor), AA_JellyfishTentacle -> RSW_JellyfishTentacle.
+  Every other referenced part (SnakeBody, SnakeHead, Skull, Brain, Heart, Lung,
+  Stomach, Liver, Kidney, Nose, Jaw, Body, Spine, Neck, Head, Ear, AnimalJaw, Leg,
+  Paw) is VANILLA, untouched.
+-->
+<Defs>
+
+	<BodyPartDef>
+		<defName>RSW_FirstWormSegment</defName>
+		<label>first body segment</label>
+		<hitPoints>25</hitPoints>
+		<skinCovered>true</skinCovered>
+		<tags>
+			<li>ManipulationLimbCore</li>
+			<li>MovingLimbCore</li>
+		</tags>
+	</BodyPartDef>
+	<BodyPartDef>
+		<defName>RSW_SecondWormSegment</defName>
+		<label>second body segment</label>
+		<hitPoints>25</hitPoints>
+		<skinCovered>true</skinCovered>
+	</BodyPartDef>
+	<BodyPartDef>
+		<defName>RSW_ThirdWormSegment</defName>
+		<label>third body segment</label>
+		<hitPoints>25</hitPoints>
+		<skinCovered>true</skinCovered>
+	</BodyPartDef>
+	<BodyPartDef>
+		<defName>RSW_FourthWormSegment</defName>
+		<label>fourth body segment</label>
+		<hitPoints>25</hitPoints>
+		<skinCovered>true</skinCovered>
+	</BodyPartDef>
+	<BodyPartDef>
+		<defName>RSW_EcholocationOrgan</defName>
+		<label>echolocation organ</label>
+		<hitPoints>10</hitPoints>
+		<permanentInjuryChanceFactor>15</permanentInjuryChanceFactor>
+		<delicate>true</delicate>
+		<skinCovered>true</skinCovered>
+		<socketed>false</socketed>
+		<beautyRelated>false</beautyRelated>
+		<tags>
+			<li>SightSource</li>
+		</tags>
+		<hitChanceFactors>
+			<li>
+				<key>Blunt</key>
+				<value>0</value>
+			</li>
+		</hitChanceFactors>
+	</BodyPartDef>
+	<BodyPartDef>
+		<defName>RSW_JellyfishTentacle</defName>
+		<label>tentacle</label>
+		<hitPoints>5</hitPoints>
+		<frostbiteVulnerability>0.1</frostbiteVulnerability>
+		<permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
+		<skinCovered>true</skinCovered>
+		<tags>
+			<li>MovingLimbCore</li>
+			<li>ManipulationLimbCore</li>
+		</tags>
+	</BodyPartDef>
+
+	<BodyDef>
+		<defName>RSW_WormWithArmor</defName>
+		<label>worm with armor</label>
+		<corePart>
+			<def>SnakeBody</def>
+			<coverage>0.10</coverage>
+			<height>Middle</height>
+			<depth>Outside</depth>
+			<parts>
+				<li>
+					<def>RSW_FirstWormSegment</def>
+					<coverage>0.20</coverage>
+					<height>Middle</height>
+					<depth>Outside</depth>
+					<parts>
+						<li>
+							<def>Heart</def>
+							<coverage>0.1</coverage>
+							<depth>Inside</depth>
+						</li>
+					</parts>
+				</li>
+				<li>
+					<def>RSW_SecondWormSegment</def>
+					<coverage>0.20</coverage>
+					<height>Middle</height>
+					<depth>Outside</depth>
+					<parts>
+						<li>
+							<def>Lung</def>
+							<customLabel>left lung</customLabel>
+							<coverage>0.05</coverage>
+							<depth>Inside</depth>
+						</li>
+						<li>
+							<def>Lung</def>
+							<customLabel>right lung</customLabel>
+							<coverage>0.05</coverage>
+							<depth>Inside</depth>
+						</li>
+					</parts>
+				</li>
+				<li>
+					<def>RSW_ThirdWormSegment</def>
+					<coverage>0.20</coverage>
+					<height>Middle</height>
+					<depth>Outside</depth>
+					<parts>
+						<li>
+							<def>Stomach</def>
+							<coverage>0.05</coverage>
+							<depth>Inside</depth>
+						</li>
+						<li>
+							<def>Liver</def>
+							<coverage>0.05</coverage>
+							<depth>Inside</depth>
+						</li>
+					</parts>
+				</li>
+				<li>
+					<def>RSW_FourthWormSegment</def>
+					<coverage>0.20</coverage>
+					<height>Middle</height>
+					<depth>Outside</depth>
+					<parts>
+						<li>
+							<def>Kidney</def>
+							<customLabel>left kidney</customLabel>
+							<coverage>0.05</coverage>
+							<depth>Inside</depth>
+						</li>
+						<li>
+							<def>Kidney</def>
+							<customLabel>right kidney</customLabel>
+							<coverage>0.05</coverage>
+							<depth>Inside</depth>
+						</li>
+					</parts>
+				</li>
+				<li>
+					<def>SnakeHead</def>
+					<coverage>0.1</coverage>
+					<groups>
+						<li>HeadAttackTool</li>
+					</groups>
+					<parts>
+						<li>
+							<def>Skull</def>
+							<coverage>0.15</coverage>
+							<depth>Inside</depth>
+							<parts>
+								<li>
+									<def>Brain</def>
+									<coverage>0.5</coverage>
+									<depth>Inside</depth>
+								</li>
+							</parts>
+						</li>
+						<li>
+							<def>RSW_EcholocationOrgan</def>
+							<customLabel>echolocation organ</customLabel>
+							<coverage>0.3</coverage>
+						</li>
+						<li>
+							<def>Nose</def>
+							<coverage>0.1</coverage>
+						</li>
+						<li>
+							<def>Jaw</def>
+							<coverage>0.1</coverage>
+						</li>
+					</parts>
+				</li>
+			</parts>
+		</corePart>
+	</BodyDef>
+
+	<BodyDef>
+		<defName>RSW_TentacledQuadrupedEyeless</defName>
+		<label>eyeless tentacled quadruped animal</label>
+		<corePart>
+			<def>Body</def>
+			<height>Middle</height>
+			<depth>Outside</depth>
+			<parts>
+				<li>
+					<def>Spine</def>
+					<coverage>0.03</coverage>
+					<depth>Inside</depth>
+				</li>
+				<li>
+					<def>Stomach</def>
+					<coverage>0.03</coverage>
+					<depth>Inside</depth>
+				</li>
+				<li>
+					<def>Heart</def>
+					<coverage>0.03</coverage>
+					<depth>Inside</depth>
+				</li>
+				<li>
+					<def>Lung</def>
+					<customLabel>left lung</customLabel>
+					<coverage>0.03</coverage>
+					<depth>Inside</depth>
+				</li>
+				<li>
+					<def>Lung</def>
+					<customLabel>right lung</customLabel>
+					<coverage>0.03</coverage>
+					<depth>Inside</depth>
+				</li>
+				<li>
+					<def>Kidney</def>
+					<customLabel>left kidney</customLabel>
+					<coverage>0.03</coverage>
+					<depth>Inside</depth>
+				</li>
+				<li>
+					<def>Kidney</def>
+					<customLabel>right kidney</customLabel>
+					<coverage>0.03</coverage>
+					<depth>Inside</depth>
+				</li>
+				<li>
+					<def>Liver</def>
+					<coverage>0.03</coverage>
+					<depth>Inside</depth>
+				</li>
+				<li>
+					<def>Neck</def>
+					<coverage>0.20</coverage>
+					<height>Top</height>
+					<parts>
+						<li>
+							<def>Head</def>
+							<coverage>0.75</coverage>
+							<groups>
+								<li>HeadAttackTool</li>
+							</groups>
+							<parts>
+								<li>
+									<def>Skull</def>
+									<coverage>0.25</coverage>
+									<depth>Inside</depth>
+									<parts>
+										<li>
+											<def>Brain</def>
+											<coverage>0.7</coverage>
+											<depth>Inside</depth>
+										</li>
+									</parts>
+								</li>
+								<li>
+									<def>RSW_EcholocationOrgan</def>
+									<coverage>0.1</coverage>
+								</li>
+								<li>
+									<def>Ear</def>
+									<customLabel>left ear</customLabel>
+									<coverage>0.1</coverage>
+								</li>
+								<li>
+									<def>Ear</def>
+									<customLabel>right ear</customLabel>
+									<coverage>0.1</coverage>
+								</li>
+								<li>
+									<def>Nose</def>
+									<coverage>0.1</coverage>
+								</li>
+								<li>
+									<def>AnimalJaw</def>
+									<customLabel>gaping maw</customLabel>
+									<coverage>0.1</coverage>
+									<groups>
+										<li>Teeth</li>
+									</groups>
+								</li>
+							</parts>
+						</li>
+					</parts>
+				</li>
+				<li>
+					<def>RSW_JellyfishTentacle</def>
+					<customLabel>first tentacle</customLabel>
+					<groups>
+						<li>Arms</li>
+					</groups>
+					<coverage>0.01</coverage>
+					<height>Bottom</height>
+				</li>
+				<li>
+					<def>RSW_JellyfishTentacle</def>
+					<customLabel>second tentacle</customLabel>
+					<groups>
+						<li>Arms</li>
+					</groups>
+					<coverage>0.01</coverage>
+					<height>Bottom</height>
+				</li>
+				<li>
+					<def>RSW_JellyfishTentacle</def>
+					<customLabel>third tentacle</customLabel>
+					<groups>
+						<li>Arms</li>
+					</groups>
+					<coverage>0.01</coverage>
+					<height>Bottom</height>
+				</li>
+				<li>
+					<def>RSW_JellyfishTentacle</def>
+					<customLabel>fourth tentacle</customLabel>
+					<groups>
+						<li>Arms</li>
+					</groups>
+					<coverage>0.01</coverage>
+					<height>Bottom</height>
+				</li>
+				<li>
+					<def>RSW_JellyfishTentacle</def>
+					<customLabel>fifth tentacle</customLabel>
+					<groups>
+						<li>Arms</li>
+					</groups>
+					<coverage>0.01</coverage>
+					<height>Bottom</height>
+				</li>
+				<li>
+					<def>RSW_JellyfishTentacle</def>
+					<customLabel>sixth tentacle</customLabel>
+					<groups>
+						<li>Arms</li>
+					</groups>
+					<coverage>0.01</coverage>
+					<height>Bottom</height>
+				</li>
+				<li>
+					<def>Leg</def>
+					<customLabel>front left leg</customLabel>
+					<coverage>0.03</coverage>
+					<height>Bottom</height>
+					<parts>
+						<li>
+							<def>Paw</def>
+							<customLabel>front left paw</customLabel>
+							<coverage>0.15</coverage>
+							<groups>
+								<li>FrontLeftPaw</li>
+							</groups>
+						</li>
+					</parts>
+				</li>
+				<li>
+					<def>Leg</def>
+					<customLabel>front right leg</customLabel>
+					<coverage>0.03</coverage>
+					<height>Bottom</height>
+					<parts>
+						<li>
+							<def>Paw</def>
+							<customLabel>front right paw</customLabel>
+							<coverage>0.15</coverage>
+							<groups>
+								<li>FrontRightPaw</li>
+							</groups>
+						</li>
+					</parts>
+				</li>
+				<li>
+					<def>Leg</def>
+					<customLabel>rear left leg</customLabel>
+					<coverage>0.07</coverage>
+					<height>Bottom</height>
+					<parts>
+						<li>
+							<def>Paw</def>
+							<customLabel>rear left paw</customLabel>
+							<coverage>0.15</coverage>
+						</li>
+					</parts>
+				</li>
+				<li>
+					<def>Leg</def>
+					<customLabel>rear right leg</customLabel>
+					<coverage>0.07</coverage>
+					<height>Bottom</height>
+					<parts>
+						<li>
+							<def>Paw</def>
+							<customLabel>rear right paw</customLabel>
+							<coverage>0.15</coverage>
+						</li>
+					</parts>
+				</li>
+			</parts>
+		</corePart>
+	</BodyDef>
+
+</Defs>

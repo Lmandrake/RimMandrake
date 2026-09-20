@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AA_JOE_DESERT_PORT_BATCH_1 - egg items for RSW_GreatDevourer.
+
+  Source mod: Alpha Animals (`sarg.alphaanimals`, workshop 1541721856),
+  1.6/Defs/ThingDefs_Items/Items_Resource_Eggs.xml. Alpha Animals stays an
+  active mod dependency for this batch, so the shared donor texPath
+  (Things/Item/Resource/AA_EggBeetle - the same generic egg texture reused
+  across many AA egg items) is kept as-is, matching the RSW_SandLion
+  precedent of referencing live-donor art directly rather than copying it.
+
+  Changed from the donor: defName prefixed AA_ -> RSW_, hatcherPawn
+  repointed to RSW_GreatDevourer. Everything else (market value, description,
+  ParentName EggUnfertBase/EggFertBase - VANILLA) is the donor's own.
+-->
+<Defs>
+
+	<ThingDef ParentName="EggUnfertBase">
+		<defName>RSW_GreatDevourerEggUnfertilized</defName>
+		<label>great devourer egg (unfert.)</label>
+		<description>Unfertilized great devourer egg. It can be eaten raw, but it's much, much better cooked. Actually, it's a worm egg, it is disgusting either way...</description>
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
+			<color>(163,81,36)</color>
+		</graphicData>
+		<tradeability>Sellable</tradeability>
+		<statBases>
+			<MarketValue>9.0</MarketValue>
+		</statBases>
+	</ThingDef>
+
+	<ThingDef ParentName="EggFertBase">
+		<defName>RSW_GreatDevourerEggFertilized</defName>
+		<label>great devourer egg (fert.)</label>
+		<description>Fertilized great devourer egg. It can be eaten raw, but it's much, much better cooked. Actually, it's a worm egg, it is disgusting either way... If all goes well, it should hatch into a great devourer.</description>
+		<tradeability>None</tradeability>
+		<statBases>
+			<MarketValue>9.0</MarketValue>
+		</statBases>
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
+			<color>(163,81,36)</color>
+		</graphicData>
+		<comps>
+			<li Class="CompProperties_Hatcher">
+				<hatcherDaystoHatch>8</hatcherDaystoHatch>
+				<hatcherPawn>RSW_GreatDevourer</hatcherPawn>
+			</li>
+		</comps>
+	</ThingDef>
+
+</Defs>
