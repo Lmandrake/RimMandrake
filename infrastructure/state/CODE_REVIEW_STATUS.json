@@ -15820,10 +15820,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/DarkTower/gen_dark_tower_layout.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "bfc740b463dc3e53b8f2dd4c6b4da257cbdaa2c5126a400f72471643b81679a4",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "73a96cec390a34f5a7c561e015af9bbd20b68afd3f892efbc0e4b8ca307ccbb4",
+    "sha": "716288d39"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/Defs/HistoryEventDefs_Vaults.xml": {
     "cleanCount": 1,
