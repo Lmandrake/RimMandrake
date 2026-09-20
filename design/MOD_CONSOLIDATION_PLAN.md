@@ -81,8 +81,10 @@ Antiquities, AshkarrInhabited, AshkarrWeatherSuite, Doctrine, EmpirePursuit
 (data-pack half, R3), LanternDeeps, PlantGrowth, ResearchRetag,
 RestrainingBolts, ShipMemory. Dev-only mods stay: LoadTracer,
 PlanetPresetPrime, RimDefDump. R14 — NO retirements approved: SeasWaterline
-stays pending (VERIFY); BirthHatchDemo stays, gated on
-EGG_PROXIMITY_HATCH_TRIGGER_1 (VERIFY). Only the SPLIT_Phase3/Jawa_Patches
+stays pending (VERIFY); BirthHatchDemo stays — its extraction gate
+(EGG_PROXIMITY_HATCH_TRIGGER_1) closed 2026-09-09 as `mandrake.rm.proximityhatch`,
+but retirement itself is still a separate, not-yet-made owner call per the
+2026-09-08 sitting, not an automatic flip. Only the SPLIT_Phase3/Jawa_Patches
 tombstone is removed. Folders that die: PyrelandsFireEcology ✅ DELETED 2026-09-17 (straight deletion, FIREECOLOGY_SHIM_RETIREMENT_1 — no residue existed) and RiverSteam (Ashkarr residue folds into UtinniPatches — §7.11).
 
 ### 1c. The Ninefold / Property / Visibility / Doctrine cluster — RULED (R1/R2/R3)
@@ -288,7 +290,7 @@ solo mechanics    FlowWorks Oracle Pits    JawaRules JawaVoice (R13)        Anti
                   WreckedMachines            Cuisine                          PlantGrowth ResearchRetag AshkarrFlora
                   StrandedQuest(VERIFY tier)                                  RestrainingBolts ShipMemory
 dev-only (stay)   LoadTracer PlanetPresetPrime RimDefDump
-stay pending(R14)                            SeasWaterline                    BirthHatchDemo (gate: EGG_PROXIMITY_HATCH_TRIGGER_1)
+stay pending(R14)                            SeasWaterline                    BirthHatchDemo (gate closed 2026-09-09; retirement itself still owner-owed)
 dies-with-donor                              KotORBandolierNorthFix · MSEDroidFix
 ```
 
@@ -313,8 +315,9 @@ dies-with-donor                              KotORBandolierNorthFix · MSEDroidF
 7. **DesertVehicleReskin** — RULED (R11), overriding the draft: folds into
    **StarWarsPatches** — "the reskins were Star Wars"; re-tiers RSW.
 8. **Retirements** — RULED (R14): NOT approved. SeasWaterline and
-   BirthHatchDemo both stay; BirthHatchDemo gated on
-   EGG_PROXIMITY_HATCH_TRIGGER_1.
+   BirthHatchDemo both stay; BirthHatchDemo's extraction gate
+   (EGG_PROXIMITY_HATCH_TRIGGER_1) closed 2026-09-09 — retirement itself
+   remains a separate owner call, not yet made.
 9. **Fauna cell name** — RULED (R12): SWBestiary keeps its name; merge
    list stands.
 10. **JawaVoice** — RULED (R13): stays whole at RSW; one
