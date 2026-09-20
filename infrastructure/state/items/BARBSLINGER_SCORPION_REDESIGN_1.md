@@ -152,12 +152,14 @@ file already uses elsewhere, e.g. `Dessicated_Megaspider`) or the new
 (Gun_ChargeBlasterTurret's raw def), not confirmed against this mod's own
 live def-resolution pass.
 
-**NOT live-tested — owed at the next restart** (batched with
-`BRIDGETOOLS_TILE_LAYER_DROPPED_1`, `DESIGNATE_BATCH_OVER_DESIGNATES_1`,
-`PYRELANDS_WEATHER_SCAR_ART_1`, same session): spawn a `RUT_Barbslinger`,
-confirm two `CompProperties_TurretGun` comps present and both resolve
-`RUT_BarbslingerTailGun` cleanly (no ConfigErrors on load — watch
-`Player.log` for `RUT_BarbslingerTailGun`/`RUT_Barbslinger` config-error
-lines), confirm the ranged verb actually fires on a distant hostile and
-goes quiet inside `minRange`, confirm pincers still land in melee. Close
-once that's observed.
+**What is still owed live: COMBAT BEHAVIOUR only.** Def-side loading is
+already confirmed — the post-restart spot-check of 2026-09-20 (`8a3f1bc94`)
+found both `CompProperties_TurretGun` comps present and `RUT_BarbslingerTailGun`
+resolving cleanly, with no `RUT_Barbslinger`/`RUT_BarbslingerTailGun`
+ConfigErrors in `Player.log`. What that check could NOT settle is how the two
+verbs read in play, because it never put the animal in front of a target on an
+unpaused map. Owed at the next live look: confirm the ranged verb actually
+fires on a distant hostile, goes quiet inside `minRange`, and that pincers
+still land in melee — i.e. that it reads as "shoot from range, then close for
+pincer assault" rather than firing over its own shoulder mid-melee. Close once
+that is observed.
