@@ -62,3 +62,47 @@ explicitly kept by name.
 
 Every Fall-Line-injected vermin row on the extreme desert has been put to the
 owner and ruled, not inherited by default from an unrelated injection layer.
+
+
+---
+
+## 🔴 RULED 2026-09-20 — and the question was rejected, not answered
+
+The owner was asked to keep/cut/trim the 12 Fall-Line rows. He rejected the
+framing. Verbatim:
+
+> *"These falling injections should not be listed as 'sometimes appears' in the
+> deep desert but rather arrive with injected content from inhabited from
+> wreckage or, alternatively, if we pursue the generator option to produce the
+> same. They are not part of 'the biome' there are simply events and subregions
+> where you can meet them. Add that to the fall spec or other guidance docs as
+> appropriate. And the rat was there because actual terrestrial rats might be fun
+> to fall from a ship as a white lab rat. That is all. So keep it."*
+
+**So this is not a commonality-tuning job.** ⛔ Do not trim `Scavrat` to 0.1. ⛔ Do
+not cut `Rat`. Both of those were the recommended answer to the wrong question.
+
+### What the work actually is
+
+1. **Remove all Fall-Line injection rows from the biome `wildAnimals` tables** —
+   `RUT_ExtremeDesert`, `RUT_Desert`, `RUT_AridShrubland`. Ambient commonality is
+   the wrong mechanism for every one of them.
+2. **Re-home them onto injected wreckage content and subregions** — something you
+   walk into or that arrives, not something that lives there. A generator that
+   produces the same effect is an acceptable route.
+3. **`Rat` stays, as an arrival.** It is ruled in deliberately, for the white-lab-
+   rat-out-of-a-wreck joke. 🔴 It will look exactly like the Earth-organism ban
+   violation this sheet otherwise enforces — do not let a purity sweep cut it.
+4. Keep the 7 `OuterRim_*` droid rows; they are the sheet's "invisible to the
+   food web" beat and suit arrival scoping well.
+
+### The consequence, stated so nobody backfills it
+
+With the vermin gone, `RUT_ExtremeDesert` loses its two heaviest ambient rows
+(`Scavrat` 0.6, `WompRat` 0.4) across 3,969 tiles. 🔑 **That emptiness is the
+intended outcome, not a hole.** The deep desert is meant to be bare; what you
+meet there should be something that arrived. Do not add ambient species to
+compensate.
+
+The full ruling and its rationale live in
+`design/Jawa/worldbuilding/biomes/fall_line.md` §8a.
