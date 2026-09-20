@@ -23,8 +23,12 @@ The table still names the donor and vanilla defs it was compiled from —
 
 It is also wrong about ownership: it names
 `src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml` as the `wildAnimals`
-owner for the deserts. That file contains no `Desert` reference at all — the
-def files own those tables now.
+owner for 23 of the 29 rows. 🔴 **That file does not exist anywhere in the repo.**
+(BENCH first wrote here that it "contains no `Desert` reference"; that was wrong
+— a grep over a missing file returns nothing and reads exactly like a grep over a
+file with no match. The regeneration pass established it is absent.) 26 of the 27
+biomes declare `wildAnimals` inline in their own BiomeDef; `ZBiome_Grasslands`
+alone has no local override.
 
 ## why it matters
 
@@ -76,3 +80,38 @@ row's, or the row is gone. No row names a def with zero painted tiles.
 
 An agent picking an owning BiomeDef from this table wires content onto ground a
 player stands on.
+
+---
+
+## DONE 2026-09-20 — regenerated, and verified independently
+
+Table regenerated at `abb0e68a9` (proof notes at `dabc7e186`). Verified by BENCH
+re-parsing the CSV against the new table:
+
+- **29 rows → 27**, one per painted biome. Every row's tile count equals the
+  CSV's. **Rows sum to 21,872 — the exact CSV total.** No painted biome lacks a
+  row; no row names an unpainted def.
+- **Zero rows deleted for an unprovable successor.** Three rows MERGED into one:
+  `AB_PyroclasticConflagration` (31) + `LavaField` (8) + `Volcano` (5) →
+  `RUT_TheForge` (44, and 31+8+5=44). They already shared one sheet, and
+  `biome_flora.py` records the same consolidation independently.
+- Successors were proved sheet → `README_BIOME_GRAMMAR.md` → def `<label>`, with
+  tile identity only corroborating. The non-guessable ones came out as expected:
+  `AB_MycoticJungle`→`RUT_TheRot`, `ZBiome_Badlands`→`RUT_CrackedLands`,
+  `BiomeGRimond`→`RUT_BlueDesert`, `AB_PropaneLakes`→`RUT_Umbra`,
+  `AB_OcularForest`→`RUT_Contagion`, `AB_FeraliskInfestedJungle`→`RUT_Webwork`,
+  `COMIGO_GreaterSwamp_Tropical`→`RUT_FeverWood`, `AB_TarPits`→`RUT_Sump`.
+- The staleness warning block is gone, replaced by a dated header naming the CSV
+  as the instrument and stating the one-instrument caveat.
+
+⚠️ Still one instrument. `GRASSLANDS_TILES_CSV_STALE_1` bites exactly one row —
+`ZBiome_Grasslands` 222 — and no live world read was run.
+
+🔑 **Two findings this pass produced, filed separately:** two defs ship an empty
+`<wildAnimals />` over painted ground (`PAINTED_TILES_WITH_NO_CAST_1`), and the
+pass independently corroborated `PYRELANDS_WRONG_BIOME_DEF_1` —
+`Patches/WildAnimals_Pyrelands.xml` wires the ruled roster into
+`RM_FE_Pyrelands`, which carries 0 painted tiles.
+
+🔑 **`ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1` reads `BIOMECAST_DEFS` straight from
+this table's §1.** The regenerated §1 is now the correct input for it.
