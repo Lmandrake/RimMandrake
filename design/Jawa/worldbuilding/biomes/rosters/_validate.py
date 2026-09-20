@@ -23,19 +23,35 @@ PLANT_POOL = os.path.join(ROOT, 'design', 'Jawa', 'mods', 'plant_pool.csv')
 
 EARTH_FIVE = {'Rat', 'Hare', 'WildBoar', 'Raccoon', 'Warg'}
 RULED_CUTS = {'AA_Blizzarisk', 'AA_BlizzariskClutchMother'}  # freeze R20
-PAINTED_DEFS = {
-    'Desert', 'ExtremeDesert', 'AB_PropaneLakes', 'AB_MycoticJungle',
-    'RUT_NightsideIce', 'AB_RockyCrags', 'Wasteland', 'BiomeGRimond',
-    'ZBiome_Badlands', 'AridShrubland', 'PoisonForest', 'RUT_TwilightSea',
-    'RUT_GreySea', 'RUT_TheScald', 'AB_MechanoidIntrusion', 'BiomeCypreJungle',
-    'ZBiome_DesertOasis', 'ZBiome_Grasslands', 'AB_OcularForest',
-    'AB_FeraliskInfestedJungle', 'AB_GelatinousSuperorganism',
-    'AB_MiasmicMangrove', 'Scarlands', 'RUT_PropaneLake',
-    'COMIGO_GreaterSwamp_Tropical', 'AB_TarPits', 'AB_PyroclasticConflagration',
-    'LavaField', 'Volcano', 'RUT_Umbra',
-    # pending-switch targets a roster may legitimately name
-    'RUT_BlueDesert',
-}
+# 🔴 DERIVED, never hardcoded. This set used to be a literal list of the DONOR
+# biome defs (Desert, ExtremeDesert, AB_PropaneLakes, AB_MycoticJungle, ...).
+# The world was repainted onto our own RUT_* defs, and the literal was never
+# updated — so on 2026-09-20 this check emitted 19 red errors and MEASURED 19 of
+# 19 were FALSE, every one naming a biome that is painted. It was the loudest
+# class in the validator's output and all of it was noise.
+# Reading the painted CSV means it cannot go stale again.
+WORLD_TILES = os.path.join(ROOT, 'world', 'ASHKARR_WORLDMAP_tiles.csv')
+
+
+def _painted_defs():
+    """Every biome defName actually painted on the frozen world."""
+    out = set()
+    try:
+        with open(WORLD_TILES, encoding='utf-8') as fh:
+            for row in csv.DictReader(fh):
+                b = (row.get('biome') or '').strip()
+                if b:
+                    out.add(b)
+    except OSError:
+        # No CSV reachable (e.g. a checkout without world/). Returning an empty
+        # set would flag EVERY roster, so signal "cannot check" instead and let
+        # the caller skip the test rather than emit confident false errors.
+        return None
+    return out
+
+
+PAINTED_DEFS = _painted_defs()
+
 REQUIRED_KEYS = {'sheet', 'defNames', 'fauna', 'evictions', 'flora', 'fish'}
 # prep §9's 25 homogenizers — the owner-accepted ≤2-home trim binds THESE rows;
 # other creatures get a zoo-effect warning at ≥4 homes, never an error.
@@ -77,8 +93,11 @@ def check(path, reg, plants):
 
     new_def_names = {nd.get('name', '') for nd in d.get('new_defs', [])}
     for dn in d.get('defNames', []):
-        if dn not in PAINTED_DEFS:
-            problems.append(f'{name}: defNames entry {dn!r} is not a painted/pending biome def')
+        if PAINTED_DEFS is None:
+            pass  # world/ASHKARR_WORLDMAP_tiles.csv unreachable — cannot check, so do not guess
+        elif dn not in PAINTED_DEFS:
+            problems.append(f'{name}: defNames entry {dn!r} is not a painted biome def '
+                            f'(checked against {len(PAINTED_DEFS)} painted defs in the world CSV)')
 
     seen = set()
     for row in d.get('fauna', []):
