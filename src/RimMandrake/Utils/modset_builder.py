@@ -130,6 +130,23 @@ TIERS = {
         ],
         "dlc": True,
     },
+    "xenotypes": {
+        "why": "LOOK at our Star Wars species. Stages the naked-races grid for "
+               "XENOTYPE_CANON_CORRECTION_1's ruled sequence (skin colour -> grid "
+               "-> head shapes -> grid). Needs the xenotype mod plus whatever its "
+               "About.xml pulls in transitively -- Biotech for genes at all, and "
+               "the gene/head frameworks the defs actually reference. 🔑 Head types "
+               "carry TabulaRasa.DefModExt_HeadTypeStuff under MayRequire, so "
+               "neronix17.toolbox is named explicitly: a MayRequire that does not "
+               "resolve drops the extension SILENTLY and every head reads as "
+               "misconfigured rather than absent.",
+        "want": [
+            BRIDGE,
+            "mandrake.rsw.starwarsraces",
+            "neronix17.toolbox",
+        ],
+        "dlc": True,
+    },
     "warlab": {
         "why": "Prove ANCIENT_WAR_LAB_1's KCSG dungeon (RUT_WarLab_Complex) "
                "spawns, guardians/fauna present, connectivity holds -- "

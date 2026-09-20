@@ -260,6 +260,7 @@ Testing every biome in turn, the reset rule is simple (owner, 2026-09-17):
 | script | does |
 |---|---|
 | `stage_review.py` | the one-shot clean-stage this skill is built around |
+| `stage_xenotype_grid.py` | the naked-races grid: one pawn per XenotypeDef, stripped, faced south |
 | `rimbridge_client.py` | connection (`resolve_endpoint` scrapes host/port/token from Player.log) |
 | `rimbridge_lineup.py` | spawn one of every pawn kind in a framed grid — the roster line-up |
 | `rimbench/clear_chunks.py` | clear every loose chunk, read-back proven |
@@ -268,6 +269,52 @@ Testing every biome in turn, the reset rule is simple (owner, 2026-09-17):
 | `game_focus.py` | `preflight()` — turn on Run-in-background or every game call times out |
 | `system_screenshot.py` | OS-level desktop capture (`python.exe`), for when you need the whole screen incl. dialogs, not the game's own shot |
 | `modlist_swap.py` | swap to the minimal/review list and back before/after a load |
+
+## 8a. Four live param/name traps this cost, 2026-09-20
+
+All four returned something that looked like progress. Written down because each
+one wasted a staging pass.
+
+- 🔴 **There is no `jawa/get_cell_info`.** It is **`rimworld/get_cell_info`**, and
+  **`rimworld/get_cells_info`** takes a rect of up to 1024 cells in ONE call. Calling
+  the non-existent name made every cell read as blocked, so the grid placed nobody
+  and reported a tidy list of "NO CELL" rows.
+- 🔴 **`jawa/set_pawn_rotation` takes `pawnId`, NOT `pawn`** — while `jawa/pawn_gear`
+  right beside it takes `pawn`. The first grid was never actually rotated; it faced
+  south by luck. ⇒ Never assume two tools in one family name the pawn the same way.
+- 🔴 **`jawa/take_screenshot` takes `fileName`, not `name`.**
+- 🔴 **`jawa/set_fog` takes `action` + `rect:"x,z,w,h"`** — not `mode`/`x`/`z`/
+  `width`/`height`.
+
+🔑 **`rimbridge_client`'s unknown-parameter guard caught all four**, which is the whole
+reason it exists — the bridge would otherwise have DISCARDED the bad keys, run on
+defaults and returned `success: true`. ⛔ Never pass `check=False` to silence it.
+⚠️ But the guard RAISES, so a helper that wraps calls in try/except turns the raise
+into a quiet per-call failure: make the wrapper print the reason, or a whole staging
+step fails invisibly.
+
+## 8b. `sky_glow_set` does not survive to the shutter
+
+`jawa/sky_glow_set` forces `CurSkyGlow` and is overwritten by the next
+`SkyManagerUpdate()` — its own return says so. MEASURED 2026-09-20: shots taken with
+and without it had **identical mean brightness** (62.6 / 74.4 / 79.8 on both passes).
+⇒ **Get light from the CLOCK, not the glow.** `jawa/time_set_ticks` jumps `TicksGame`
+with nothing simulated — no incidents, no needs, no map culling — so it is safe on a
+staged scene where `step_game_ticks` is not. 2500 ticks = 1 game hour; read the local
+hour off one test shot and offset from there.
+
+⛔ **And do not post-brighten a COLOUR review.** Correcting the exposure of a shot whose
+entire purpose is judging hue destroys the thing being judged. If the scene is too dark,
+move the clock or change the ground — and say which.
+
+## 8c. A one-pawn-per-species grid is a SAMPLE, not a palette
+
+🔴 The most misleading thing you can hand someone for a colour review. A xenotype
+usually carries SEVERAL skin genes and each pawn rolls exactly ONE: MEASURED
+2026-09-20, Abednedo carries 9, Ithorian 6, Bith 5 — and only Ugnaught, Nelvaanian and
+Umbaran carry exactly 1, so only those three are honestly judged from a single pawn.
+Spawn **4+ per species in a labelled column**, or the reviewer rules on one random draw
+believing it is the species.
 
 ## 9. When a shot still comes out wrong — the checklist
 
