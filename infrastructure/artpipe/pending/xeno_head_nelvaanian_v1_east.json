@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T20:59:46Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "north",
+    "east",
+    "south"
+  ],
+  "id": "xeno_head_nelvaanian_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld humanlike HEAD sprite only (no body) of a Nelvaanian. Long, narrow canine/equine muzzle with a black nose pad and prominent sharp teeth, lower canines visible at rest. Small, dark, close-set eyes deeply recessed under a heavy overhanging brow ridge. Large upright pointed ears set high and angled outward, clearly visible past the mane. Long straight black mane springing from the crown and running down the nape. Bare slate blue-grey skin on the face with fur only as short scruff along the jaw-line.",
+  "reference": null,
+  "rimflow_item_id": "XENOTYPE_CANON_CORRECTION_1",
+  "style_notes": "Canon note, RECORDED HONESTLY: the CANON Wookieepedia article is a stub with a wholly EMPTY infobox - blue skin exists only on the Legends page (VERIFIED 2026-09-20). Slate blue-grey is therefore Legends-sourced, not canon-sourced. 'Blue-furred' is misleading: skin is predominantly BARE, not a full wolf pelt. REPLACES a borrowed RSW_BothanHead, which has no snout and is wrong for a long-snouted lupine."
+}

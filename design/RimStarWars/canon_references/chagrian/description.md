@@ -5,10 +5,24 @@
 that file is GENERATED, do not hand-edit). Matrix placement `Jawa_DeepwaterCompact: S`
 — **some**, in the water faction, which is exactly right for an amphibian.
 
+## ✅ INDEPENDENTLY RE-VERIFIED — 2026-09-20
+
+Re-sourced from the live web by an agent **forbidden from reading this library**, so this is corroboration rather than an echo. Source: Wookieepedia **raw wikitext** via the Fandom API (the rendered pages sit behind a Cloudflare wall; wikitext gives the infobox and its `<ref>` citations verbatim), with the CANON and LEGENDS pages kept apart.
+
+- canon infobox re-read and found to carry a second skin value — CORRECTED above.
+
+⚠️ **Text only.** No infobox image was rendered or pixel-sampled, so any claim in this entry that rests on how a picture *looks* is untouched by this pass and remains unmeasured.
+
+---
+
 ## Sourced text (Wookieepedia)
 
 Chagrians are an **amphibian** sentient species, native to **Champala**, habitat
-**ocean**. Infobox skin color is **blue only**; eye color **blue only**; the sole
+**ocean**. Infobox skin color is **blue AND orange** — blue cited to *The Phantom
+Menace*, orange cited to *Star Wars Adventures* (2020) #6, "The Incident, Part 2"
+(RE-VERIFIED against the canon infobox wikitext, 2026-09-20; this entry previously
+said "blue only", which is why a def audit proposed deleting BOTH orange skin genes
+when at most one is surplus). Eye color **blue only**; the sole
 listed distinction is **primary horns**. No height, mass or lifespan in the infobox
 — but the article body gives height (below). Class `Amphibian` is cited to *Tarkin*.
 

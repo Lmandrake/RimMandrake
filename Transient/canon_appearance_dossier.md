@@ -19,6 +19,35 @@ reading of a picture.
 
 ---
 
+## 🔴 INDEPENDENT WEB VERIFICATION — 2026-09-20, all 13 rows
+
+Three agents re-sourced every colour claim below **from the live web, forbidden from reading
+this file**, so their agreement is real corroboration rather than an echo. Sources were
+Wookieepedia raw wikitext (the rendered pages sit behind a Cloudflare wall) plus the
+starwars.com Databank, with CANON and LEGENDS pages kept apart.
+
+**11 of 13 CONFIRMED. 1 PARTIAL. 1 CONTRADICTED.** The three rows that were wrong have been
+corrected in the table below rather than annotated.
+
+| row | result | what changed |
+|---|---|---|
+| **11 Chagrian** | 🔴 **CONTRADICTED** | The canon infobox is **not blue-only** — it also carries **orange**, sourced to *Star Wars Adventures* (2020) #6. The filed fix ("drop the two oranges") would have deleted a canon colour. |
+| **6 Ewok** | ⚠️ **PARTIAL** | "Brown and black as the most common colors" describes **fur overall**, not a skin-brown / hair-black split. Canon skin is brown **/ light / pink / tan**. |
+| **10 Ugnaught** | ✅ upgraded | Graded `UNCHECKABLE` and "second-hand". It is **first-hand in both places** — canon infobox *and* a fetched starwars.com Databank page. |
+
+✅ Confirmed verbatim, no change: Ithorian · Bith · Zygerrian · Chadra-Fan · Abednedo · Lasat
+(including *"No two Lasat had the same striping"*) · Ortolan · Mimbanese · Nelvaanian
+(canon infobox genuinely **empty**; blue is Legends-only) · Umbaran (*"Pale and bluish"*).
+
+🔑 **The Umbaran lavender claim is corroborated as UNSOURCED** — the words "lavender" and
+"violet" appear **nowhere** in the canon article. It remains our own reading of an image.
+
+⚠️ **What this verification did NOT do:** nobody rendered or pixel-sampled any infobox image.
+Every claim resting on how a picture *looks* — the Ugnaught grey-brown reading, the Umbaran
+lavender reading — is still unmeasured, and a text source cannot settle it.
+
+---
+
 ## The table
 
 | # | Species | What ships (measured) | What canon says | Source strength | Defect class |
@@ -28,12 +57,12 @@ reading of a picture.
 | 3 | **Zygerrian** | `Skin_DeepRed`, `Outland_Skin_Red`, + brown/grey ×5 (xml:2261–2267); head is `RSW_CatharHead` (xml:2259) | infobox skin **"Light"** — a single entry, in **both** canon and Legends | `SOURCED` | **engine limit** — Cathar head is `useSkinShader:false`, so no skin gene reaches the face at all |
 | 4 | **Chadra-Fan** | **no skin gene**; `Furskin` (xml:286) | infobox skin **gray** / **light** / **tan**, one named work each | `SOURCED` | **data fix** |
 | 5 | **Abednedo** | ⛔ **eight** skin genes: `Skin_Orange`, `Outland_Skin_PaleOrange`, `Skin_Melanin5/1/3`, `Outland_Skin_PalePink`, `Outland_Skin_Brown`, `Outland_Skin_PaleBrown` (xml:33–40) | infobox **brown, cream, gray, orange, pink, tan**, one named work each | `SOURCED` | ⛔ **AUDIT WRONG** — not missing; missing only *grey/cream*. And it is an **engine limit**: face untintable |
-| 6 | **Ewok** | **no skin gene**; `Furskin` + 9 hair genes, darkest `Hair_DarkBrown` (xml:542–554) | infobox skin **brown**, hair **black**; body "brown and black as the most common colors" | `SOURCED` | ⛔ **AUDIT MIS-FRAMED** — the gap is a black **hair/fur** gene, not skin. **data fix** |
+| 6 | **Ewok** | **no skin gene**; `Furskin` + 9 hair genes, darkest `Hair_DarkBrown` (xml:542–554) | canon infobox skin = **brown, light, pink, tan** (four values, brown is not the only one); hair = nine values **including black**. The "brown and black as the most common colors" sentence is about **FUR overall**, not a skin/hair split | `SOURCED` (re-verified 2026-09-20) | ⛔ **AUDIT MIS-FRAMED** — the gap is a black **hair/fur** gene, not skin. **data fix** |
 | 7 | **Lasat** | `RSW_CatharHead` (xml:1153); `RSW_Skin_Lavender`, `RSW_Skin_SlateBlue` | infobox skin **light brown, gray, purple**; *"NO TWO LASAT HAD THE SAME STRIPING"* | `SOURCED` | **engine limit** (striping; Cathar face untintable) **+ RIG LIMIT** (digitigrade legs) |
 | 8 | **Ortolan** | `RSW_Head_kubaz` (xml:1462); `Skin_Blue` + `Outland_Skin_PaleAzure` | infobox skin **blue** (*Return of the Jedi*) | `SOURCED` | **skin already correct.** Head = **new art** (Kubaz mask *is* tintable) |
 | 9 | **Mimbanese** | `RSW_Head_Devolved` → **Tusken Raider art** (xml:1187); `Skin_DeepRed` | *"lurid, red skin"*; sourced red / brown / grey | `SOURCED` | **skin already correct.** Head = **new art** (Tusken mask *is* tintable) |
-| 10 | **Ugnaught** | **no skin gene** (xml:2049–2071) | infobox **"varying shades of pink"** — 🔴 **but the canon infobox IMAGE is dun grey-brown** | `UNCHECKABLE` (pink is second-hand via an unfetched Databank page) | **data fix** — but *which* colour is genuinely contested |
-| 11 | **Chagrian** | `Outland_Skin_DeepOrange`, `Skin_Orange`, `Skin_Blue`, `Outland_Skin_DeepAzure` (xml:314–317) | infobox skin **blue only**; blue is evolved radiation resistance under an unstable sun | `SOURCED` but **single-source** (*Lead by Example*), article flagged incomplete by the wiki | **data fix** (drop the two oranges) |
+| 10 | **Ugnaught** | **no skin gene** (xml:2049–2071) | infobox **"varying shades of pink"**, cited to *The Empire Strikes Back*; starwars.com Databank, FETCHED, agrees: *"They have pink skin, white hair, upturned noses"* | `SOURCED` (re-verified 2026-09-20 — pink is **first-hand in both places**) | **data fix** — pink. The grey-brown appearance is a *lighting* artefact of one Mandalorian promo image, never measured at pixel level |
+| 11 | **Chagrian** | `Outland_Skin_DeepOrange`, `Skin_Orange`, `Skin_Blue`, `Outland_Skin_DeepAzure` (xml:314–317) | 🔴 infobox carries **TWO** values, **blue AND orange** — orange sourced to *Star Wars Adventures* (2020) #6, "The Incident, Part 2". Blue ranges light blue→cerulean→indigo as evolved radiation resistance | `SOURCED`; the radiation claim is single-source (*Lead by Example*, a redlinked stub) and the article carries `{{Expand}}` | **data fix, but SMALLER than filed** — orange is canon, so at most ONE orange gene is surplus, not both |
 | 12 | **Nelvaanian** | `RSW_BothanHead` (xml:1407); `RSW_Skin_SlateBlue` | **canon article is a stub with an EMPTY infobox.** Skin "blue" is **Legends-only** | `UNCHECKABLE` in canon; Legends-sourced | **engine limit** (Bothan face untintable) + head = **new art** |
 | 13 | **Umbaran** | `Skin_LightGray` (xml:2091), `Head_Gaunt` (vanilla) | infobox **"Pale and bluish"**. The **lavender-violet** target is 🔴 **our own reading of an image** | `SOURCED` for "pale and bluish"; `UNSOURCED` for lavender | **data fix** |
 

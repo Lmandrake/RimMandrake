@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T20:59:46Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "north",
+    "east",
+    "south"
+  ],
+  "id": "xeno_head_mimbanese_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld humanlike HEAD sprite only (no body, no cape, no bandoliers) of a Mimbanese. Two large round protuberant pale-blue eyes with no eyelid fold, ringed by a dark orbital rim - a lidless read, not goggles or a mask. Two rows of short horns above the brows forming a serrated crown across the forehead. Broad flattened downward-tapering snout with paired nostril openings and no prominent mouth. Smooth domed hairless cranium with no visible ears. Saturated salmon-brick red face skin.",
+  "reference": null,
+  "rimflow_item_id": "XENOTYPE_CANON_CORRECTION_1",
+  "style_notes": "Canon skin is red, brown or grey with body text 'The Mimbanese had lurid, red skin' (Wookieepedia canon, CONFIRMED 2026-09-20) - our existing skin gene is already correct, so only the HEAD is the defect. REPLACES borrowed Tusken Raider art (RSW_Head_Devolved). HEAD ONLY - the ghillie cape and bandoliers in the canon brief are apparel, not part of this sprite."
+}

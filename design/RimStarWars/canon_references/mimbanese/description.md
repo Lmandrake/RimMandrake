@@ -4,6 +4,16 @@
 verified present). Matrix placement: `TribeCivil: R` — rare, tribal faction, which suits a
 species defined by guerrilla warfare and improvised camouflage.
 
+## ✅ INDEPENDENTLY RE-VERIFIED — 2026-09-20
+
+Re-sourced from the live web by an agent **forbidden from reading this library**, so this is corroboration rather than an echo. Source: Wookieepedia **raw wikitext** via the Fandom API (the rendered pages sit behind a Cloudflare wall; wikitext gives the infobox and its `<ref>` citations verbatim), with the CANON and LEGENDS pages kept apart.
+
+- canon infobox skin **brown / grey / red** and the body-text phrase *"lurid, red skin"* — CONFIRMED verbatim. The shipped skin gene is already correct; the defect is the borrowed head.
+
+⚠️ **Text only.** No infobox image was rendered or pixel-sampled, so any claim in this entry that rests on how a picture *looks* is untouched by this pass and remains unmeasured.
+
+---
+
 ## Sourced text (Wookieepedia)
 The Mimbanese, also **Mimbanites**, were **one of several sentient species native to Mimban**
 (so "a Mimbanese" is not the same as "a native of Mimban"). **Experts in guerrilla warfare, the

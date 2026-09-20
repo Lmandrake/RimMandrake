@@ -11,6 +11,16 @@ Legends-only it is marked. The species' entire screen life is **four episodes of
 2003–05 *Star Wars: Clone Wars* micro-series (Chapters 22–25)**, so the appearance
 record is small but consistent.
 
+## ✅ INDEPENDENTLY RE-VERIFIED — 2026-09-20
+
+Re-sourced from the live web by an agent **forbidden from reading this library**, so this is corroboration rather than an echo. Source: Wookieepedia **raw wikitext** via the Fandom API (the rendered pages sit behind a Cloudflare wall; wikitext gives the infobox and its `<ref>` citations verbatim), with the CANON and LEGENDS pages kept apart.
+
+- the canon infobox is **genuinely and wholly EMPTY** (every field, not just colour); blue exists only on the separate Legends page — CONFIRMED, exactly as this entry already states.
+
+⚠️ **Text only.** No infobox image was rendered or pixel-sampled, so any claim in this entry that rests on how a picture *looks* is untouched by this pass and remains unmeasured.
+
+---
+
 ## Sourced text (Wookieepedia)
 
 **Canon article** (`/wiki/Nelvaanian`). Nelvaanians were a sentient species native to

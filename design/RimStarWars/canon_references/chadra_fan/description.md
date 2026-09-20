@@ -5,6 +5,16 @@
 Carries `combatPowerFactor 0.6` and a generic icon (`CustomXenotypeIcon7`) rather than
 a bespoke one.
 
+## ✅ INDEPENDENTLY RE-VERIFIED — 2026-09-20
+
+Re-sourced from the live web by an agent **forbidden from reading this library**, so this is corroboration rather than an echo. Source: Wookieepedia **raw wikitext** via the Fandom API (the rendered pages sit behind a Cloudflare wall; wikitext gives the infobox and its `<ref>` citations verbatim), with the CANON and LEGENDS pages kept apart.
+
+- canon infobox skin **gray / light / tan**, one named work per value — CONFIRMED verbatim.
+
+⚠️ **Text only.** No infobox image was rendered or pixel-sampled, so any claim in this entry that rests on how a picture *looks* is untouched by this pass and remains unmeasured.
+
+---
+
 ## Sourced text (Wookieepedia)
 Chadra-Fan are a sentient species classed as **rodent** in the infobox and described
 in the body as **rodent- or bat-like humanoids**, from the Outer Rim world of **Chad**.
