@@ -777,6 +777,7 @@
       <li>Outland_UnusualSpeech</li>
       <li>AptitudeStrong_Social</li>
       <li>AptitudePoor_Intellectual</li>
+      <li>RSW_WaterBreathing</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -1259,6 +1260,7 @@
       <li>Outland_Skin_PaleBrown</li>
       <li>RSW_Skin_DarkGreen</li>
       <li>Turn_Gene_MotivationHigh</li>
+      <li>RSW_WaterBreathing</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -1349,6 +1351,7 @@
       <li>Outland_FamiliarScent</li>
       <li>AptitudePoor_Construction</li>
       <li>AptitudePoor_Mining</li>
+      <li>RSW_WaterBreathing</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -1660,6 +1663,7 @@
       <li>RSW_Skin_MidGray</li>
       <li>Outland_Hands_VenomTalons</li>
       <li>Outland_Scalebody</li>
+      <li>RSW_WaterBreathing</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
