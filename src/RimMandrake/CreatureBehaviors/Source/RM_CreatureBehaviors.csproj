@@ -96,6 +96,8 @@
     <Compile Include="RM_JobGiver_WanderInShadeGrid.cs" />
     <Compile Include="RM_HediffCompProperties_ShadeDrivenSeverity.cs" />
     <Compile Include="RM_HediffComp_ShadeDrivenSeverity.cs" />
+    <Compile Include="RM_CompProperties_HeatBurstPredator.cs" />
+    <Compile Include="RM_CompHeatBurstPredator.cs" />
   </ItemGroup>
 
   <ItemGroup>
