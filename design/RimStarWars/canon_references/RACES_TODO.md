@@ -141,9 +141,9 @@ player actually sees walking around.
 | ✅ | `nelvaanian` | Nelvaanian | `RSW_RimMandrakeNelvaanian` | R | TribeCivil:R |
 | ✅ | `ortolan` | Ortolan | `RSW_RimMandrakeOrtolan` | R | Jawa_HuttCartel:R, OutlanderCivil:R |
 | ✅ | `rakata` | Rakata | `RSW_RimMandrakeRakata` | R | Jawa_AscendantHelix:R |
-| ✅ | `sith_pureblood` | Sith Kissai (Pureblood) | `RSW_RimMandrakeSithKissaiPureblood` | R | Jawa_AscendantHelix:R |
-| ✅ | `massassi` | Sith Massassi (Pureblood) | `RSW_RimMandrakeSithMassassi` | R | Jawa_AscendantHelix:R |
-| ✅ | `sith_species` | Sith Zugurak (Pureblood) | `RSW_RimMandrakeSithZ` | R | Jawa_AscendantHelix:R |
+| ✅ | `sith_pureblood` | Sith Kissai (Red Sith) | `RSW_RimMandrakeSithKissai` | R | Jawa_AscendantHelix:R |
+| ✅ | `massassi` | Sith Massassi (Red Sith) | `RSW_RimMandrakeSithMassassi` | R | Jawa_AscendantHelix:R |
+| ✅ | `sith_species` | Sith Zuguruk (Red Sith) | `RSW_RimMandrakeSithZ` | R | Jawa_AscendantHelix:R |
 | ✅ | `taung` | Taung | `RSW_RimMandrakeTaung` | R | Pirate:R, TribeCivil:R |
 | ✅ | `gungan` | gungan | `RSW_RimMandrakeGungan` | R | Jawa_DeepwaterCompact:R |
 | ✅ | `dathomirian` | Dathomirian | `RSW_RimMandrakeDathomirian` | — | (none — empty in prefill) |
@@ -594,7 +594,7 @@ Every one of the five defs contradicts canon. The worst per species:
   Massassi-exclusive canon; `Hair_BaldOnly` against a sourced **hair colour: red** and
   against the *Massassi Warrior* concept sheet's long bound hair; the pupil-less
   whole-eye yellow — their one exclusive visual trait — unrepresented.
-- `RSW_RimMandrakeSithKissaiPureblood` — cleanest of the three, but **no lifespan gene**
+- `RSW_RimMandrakeSithKissai` — cleanest of the three, but **no lifespan gene**
   against a sourced **≤60 years**, `Skin_SlateGray`/`Skin_Orange` borrowed from the
   other castes' colour fields, and `Outland_DeceleratedPregnancy` on a short-lived
   species.

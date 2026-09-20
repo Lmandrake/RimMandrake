@@ -1,6 +1,12 @@
-# Sith Kissai (Pureblood)
+# Sith Kissai (Red Sith)
 
-**defName**: `RSW_RimMandrakeSithKissaiPureblood`, label `Sith Kissai (Pureblood)`
+⚠️ **Renamed 2026-09-20** (`XENOTYPE_CANON_CORRECTION_1`): defName and label both
+carried the false "(Pureblood)" — purebloods are hybrids, this caste is not one.
+Owner ruled the full fix; the ripple was swept across `src/`. The commentary
+below about the label being "questionable" predates that fix and now describes
+resolved history, not a live defect.
+
+**defName**: `RSW_RimMandrakeSithKissai`, label `Sith Kissai (Red Sith)`
 (`src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml`).
 Assigned `Jawa_AscendantHelix: R`.
 
@@ -134,7 +140,7 @@ none known
 
 ## Def-versus-canon (flagged — not fixed)
 
-`RSW_RimMandrakeSithKissaiPureblood` is the **best-formed of the three Sith
+`RSW_RimMandrakeSithKissai` is the **best-formed of the three Sith
 xenotypes** — it has a namer, a Sith head, tendrils, a psychic gene and red skin —
 but:
 
