@@ -106,26 +106,36 @@ column repointed to `RimMandrake: SW — Bestiary`, reason field annotated).
 
 ## ESCALATION — retirement is NOT safe yet, three open items
 
-1. **CORRECTED 2026-09-20 (FOUNDRY) — the deploy+dump-refresh precondition this
-   gate names is now MET, and doing so revealed the gate itself was mis-scoped.**
-   Both preconditions cleared this pass: SWBestiary's `BiomesTeamPort` defs are
-   deployed live (`Mods/SWBestiary/Defs/BiomesTeamPort/`, 7 files, byte-matching
-   the repo) and the 2026-09-20T07-47-24Z capture (the live 617-mod session)
-   resolves 395 `RSW_` PawnKindDefs. Re-running `gen_cast_patch.py` against that
-   fresh data produced a diff that changes nothing real: `BiomeCast_Ashkarr.xml`
-   targets biome defNames (`AB_FeraliskInfestedJungle`, `Desert`, `ExtremeDesert`,
-   `AB_MycoticJungle`, ...) that **predate `BIOME_OWNERSHIP_WAVE_1`** (2026-09-09),
-   which replaced every one of them with a new `RUT_`-prefixed `BiomeDef` that
-   carries its own hardcoded `wildAnimals` directly (24 of 26 `RUT_*.xml` biome
-   defs confirmed). The `PatchOperationConditional` xpath tests in this file never
-   match any live biome, so it silently no-ops — it has very likely been dead code
-   since that wave landed, unrelated to the retirement gate at all. Full writeup
-   and the regenerate confirming it: `BIOME_CAST_PATCH_DEAD_NAMES_1` (filed this
-   pass) — read that before actioning "regenerate BiomeCast_Ashkarr.xml" again.
+1. **GATE (1) IS MOOT, CLOSED 2026-09-20 (FOUNDRY) — `BiomeCast_Ashkarr.xml` is
+   retired, not regenerated.** The "regenerate once the SWBestiary `RSW_` port
+   deploys and the dump refreshes" framing this gate opened with was itself wrong:
+   both preconditions were met this pass (SWBestiary's `BiomesTeamPort` defs
+   deployed live, `Mods/SWBestiary/Defs/BiomesTeamPort/`, 7 files byte-matching
+   the repo; the 2026-09-20T07-47-24Z capture resolves 395 `RSW_` PawnKindDefs),
+   and regenerating against that fresh data still produced a file whose every
+   xpath targets a biome defName painted on **zero** of Ash'karr's 21,872 tiles
+   (independently re-measured off a fresh parse of `ASHKARR_WORLDMAP_tiles.csv`,
+   not just the generator's own coverage check) — all 22 are pre-
+   `BIOME_OWNERSHIP_WAVE_1` (2026-09-09) donor/vanilla names, superseded by
+   `RUT_`-prefixed BiomeDefs that carry their own hardcoded `wildAnimals`
+   natively. **Confirmed dead, not "very likely" — `BiomeCast_Ashkarr.xml` is now
+   deleted** (design/, src/, and the deployed Steam Mods copy), full writeup at
+   `infrastructure/state/items/closed/BIOME_CAST_PATCH_DEAD_NAMES_1.md`. There is
+   nothing left to regenerate; do not re-open this gate on a future pass without
+   reading that item first. `gen_cast_patch.py` itself was kept (a live,
+   unrelated mechanism — `biome_wildbiomes_evictions.py` — imports one of its
+   helper functions) and now refuses to write a dead cast file if re-run.
    **This file also carries zero `wildPlants` content and was never the source of
    any plant crossref error** — that mechanism belongs to
    `CUT_FALLOUT_GENERATED_DATA_1` (`BiomeFlora_Ashkarr.xml`/`biome_flora.py`), a
    separate item this pass also advanced (see its own notes).
+   ⚠️ **A sibling generator is NOT safe the same way**: `animal_tolerances.py`
+   (deployed as `AnimalTolerances_Ashkarr.xml`, 401 live `ComfyTemperatureMin/Max`
+   operations on ~200 animals) has the identical dead pre-migration-name join,
+   but because its xpath targets the animal's own def rather than a biome
+   defName, regenerating it would silently **delete** a live hard-spawn-gate
+   temperature safety net rather than no-op. Not fixed, not touched — flagged
+   separately at `infrastructure/state/items/ANIMAL_TOLERANCES_JOIN_BROKEN_1.md`.
 2. **7 defNames are live and marked "keep"/"import" in hand-authored biome
    files but are NOT in the ruled 68** — `BMT_ChemSnail` (kept at BOTH
    `the_cracked_lands` AND `the_rot`, contradicting this item's own read of
