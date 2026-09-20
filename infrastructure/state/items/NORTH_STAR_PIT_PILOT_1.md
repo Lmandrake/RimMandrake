@@ -58,9 +58,12 @@ authored.
 
 ## not chasing
 
-Fixing the pit's art. That is `PIT_TRAP_VISUAL_REDESIGN_1`, still open and still
-needing an owner sitting on mockups. This item proves the *validation* catches
-the defect; it does not repair it.
+Fixing the pit's art. That was `PIT_TRAP_VISUAL_REDESIGN_1`, superseded
+2026-09-19 by `PIT_SUPERDEEP_COLLAPSE_1` — a pit is now ruled a SUPERDEEP
+excavated cell, not a trap with covered/sprung/occupied states, and the
+four-depth legibility question that item still owed is answered there by
+ruling 33 (the depth read comes from the wall faces, not the occupant). This
+item proves the *validation* catches the defect; it does not repair it.
 
 ## Watch out
 

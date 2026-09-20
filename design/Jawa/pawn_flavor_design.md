@@ -457,9 +457,9 @@ origins → Chosen One / Dark Side Ascendant / Force Echo / Foresight-Touched /
 Outlander; the 10-rank ladder → Bounty Hunters' Guild threat ratings (letters
 kept), Rank Nation → sector-class threat. Mechanics bullets and
 conflictingTraits untouched; the 32 genre-neutral traits left as shipped.
-First-load check on COLD_LOAD_RUN_SHEET_2. Still open (owner's call, later):
-grant-items handing out `Jawa_` traits through its generic
-`CompProperties_UseEffectIsekaiTrait`.
+First-load check scored PASS via `COLD_LOAD_RUN_SHEET_2` (closed 2026-09-03).
+Still open (owner's call, later): grant-items handing out `Jawa_` traits
+through its generic `CompProperties_UseEffectIsekaiTrait`.
 
 ## SHIPPED v1 content (2026-08-29, `Jawa_PawnFlavor`, commit fb86639a)
 

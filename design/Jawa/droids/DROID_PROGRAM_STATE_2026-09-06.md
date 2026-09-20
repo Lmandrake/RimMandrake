@@ -23,14 +23,14 @@ donor can retire until it is. Everything below is evidence for that sentence.
 | item | state | what it is |
 |---|---|---|
 | `DROID_SYSTEM_EMBRACE_1` | done (closed `bbea1609`, 2026-08-29) | census → owner curates 39-row sheet → spec. Item file now at `infrastructure/state/items/` (moved by BENCH 2026-09-06) |
-| `DROID_SYSTEM_BUILD_1` | **doing** (FOUNDRY) | the parent build item; greenlit 2026-09-01; open criteria: port waves at save boundaries, Cherry Picker cuts, DroidsAreMachines retirement |
+| `DROID_SYSTEM_BUILD_1` | **done** (closed `5736f288`, 2026-09-12) | the parent build item; port waves at save boundaries, Cherry Picker cuts and DroidsAreMachines retirement all confirmed complete at close |
 | `DROIDWORKS_DLL_COMPILE_1` · `PHASE0_XML_1` · `ION_GUARD_1` · `DEF_GENERATOR_1` · `PILOT_GONK_1` · `CHARGING_TRIO_1` · `BOLT_CORE_1` · `WIPE_AND_SPIKE_1` · `FAMILY_LAYER_1` · `FLESHTYPE_NEEDS_GAP_1` · `ISFLESH_RELATIONS_CRASH_1` · `POWEREDDOWN_NOT_WIRED_1` · `CHARGER_STATE_MACHINE_SWEEP_1` · `GENERATOR_NAMING_DRIFT_1` | all **done** | Phase 0 + most of Phase 1 verbs, built 2026-08-30 → 09-05 |
 | `DROID_PSYCHICENTROPY_NULL_GAP_1` · `DROID_DATASPIKE_SURVIVES_FAILON_1` | done (`fe5dfe7d`) | code-review bugs, 2026-09-05 |
 | `DROID_KOTORDROIDS_PORT_WAVE1_1` | **ready** (freed 2026-09-05) | wave 1 found already generated; recipes wired; live proof owed |
 | `DROID_DONOR_PATCH_GATE_1` | **ready** (freed 2026-09-05) | sites 2–10 patched (`src/RimStarWars/StarWarsPatches/Patches/DroidDonor_ABFGate.xml`, fires on ABF absence); Site 1 + cold load owed |
 | `DROID_TILES_SOURED_TERRAIN_1` | doing, BLOCKED | needs Phase 3 (FDE goodwill layer) |
-| `BUILDING_THEFT_HAULER_1` | doing | built (`src/RimMandrake/TheftHauler/`), Muckraker patch `MayRequire`-gated on Droidworks — inert until activation |
-| `STARWARS_DONOR_SUNSET_1` | open | wave 1 (TSDA, themedsounds, swlights) EXECUTED 2026-09-02; wave 3 = the droid donors, "point at DROID_SYSTEM_BUILD_1, don't duplicate" |
+| `BUILDING_THEFT_HAULER_1` | **done** (closed `0ce4c1c3`, 2026-09-12) | built (`src/RimMandrake/TheftHauler/`) and live-proven on the loaded canonical colony map: chassis gate resolved live, uninstall job observed end-to-end |
+| `STARWARS_DONOR_SUNSET_1` | **done** (closed `c16fd4f0`, 2026-09-09) | wave 1 (TSDA, themedsounds, swlights) EXECUTED 2026-09-02; wave 3 (the droid donors) folded into `DROID_SYSTEM_BUILD_1`/`DROID_DONOR_PATCH_GATE_1` rather than duplicated |
 | `WEAPONS_DONOR_RETIREMENT_1` | open on kotorcore only | kotorcore blocked on `_DroidsBase` (the KotOR droid race parent) |
 | `KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1` | proposed | 4 Armoury files dangle the day kotorcore retires — the pattern for every retirement below |
 | `MECHANOID_ORIGIN_CANON_1` | proposed (owner) | the mindstone droid-mind race; touches the mechanoid/droid wall |
