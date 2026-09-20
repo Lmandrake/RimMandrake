@@ -6124,10 +6124,10 @@
     "sha": "6b81019d0"
   },
   "src/RimMandrake/Utils/rimbench/corpus_stats.py": {
-    "cleanCount": 2,
-    "date": "2026-09-08",
-    "hash": "7b03e835cbdfb9f6f6912031bcf0a4c168d8adfa2e73a29a1b58197ee79251b7",
-    "sha": "64eb8f3e"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "1448b07b76f61b85583505b2b841ef38fa9527e216ba64bd40f1dceb26ac5588",
+    "sha": "fc5131ad0"
   },
   "src/RimMandrake/Utils/rimbench/crater.py": {
     "cleanCount": 1,
@@ -6172,10 +6172,10 @@
     "sha": "86de40c5"
   },
   "src/RimMandrake/Utils/rimbench/render_terrain.py": {
-    "cleanCount": 2,
-    "date": "2026-09-08",
-    "hash": "17d34bdb1ccd82195bd9c2f3fe1fe43f1ed7d553322bb05d60f14731b0251e9c",
-    "sha": "64eb8f3e"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "be1c6d59c4e76ea74c66f26b64c027fae8110158d7379da4344844c58c4eb660",
+    "sha": "fc5131ad0"
   },
   "src/RimMandrake/Utils/rimbench/roll_arm_harvest.py": {
     "cleanCount": 1,
