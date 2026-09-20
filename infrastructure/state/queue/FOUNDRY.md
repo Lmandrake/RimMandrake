@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T13:39:41Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-20T13:56:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -867,7 +867,7 @@ prose:    infrastructure/state/items/NINEFOLD_LOUDNESS_FRONT_1.md
 ## BARBSLINGER_SCORPION_REDESIGN_1 Barbslinger redesigned: yellowish large scorpion-like creature, bulbous domed body, TWO independent tails each carrying an unusually large javelin-like needle - art regen now; def work owed: shoots two venomous missile weapons in battle every few rounds, then closes for pincer assault
 state:    doing
 row:      unassigned
-needs:    owner
+needs:    game-up
 target:   v1
 kind:     build
 summary:  the ask (owner, verbatim, 2026-09-17)
@@ -935,15 +935,6 @@ target:   v1
 kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
-
-## PYRELANDS_WEATHER_SCAR_ART_1 Pyrelands scar+weather art: ash rungs, filth legibility, Cinderfall drama
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  (no items/PYRELANDS_WEATHER_SCAR_ART_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_WEATHER_SCAR_ART_1.md
 
 ## QUICKGRASS_VISUAL_SCALE_2X_1 Double quickgrass on-screen size - scale only, no new art
 state:    doing
@@ -1464,7 +1455,7 @@ prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## ROT_PALE_TREE_1 The pale tree: Plant_TreeAnima reskin, psylink capped by a one-entry requiredSubplantCountPerPsylinkLevel list, RUT_PaleMoss subplants
 state:    ready
@@ -1472,7 +1463,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  (no items/ROT_PALE_TREE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_PALE_TREE_1.md
 
