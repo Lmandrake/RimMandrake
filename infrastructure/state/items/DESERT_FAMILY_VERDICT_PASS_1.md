@@ -7,20 +7,29 @@ Pyrelands passes: *"Then let's push on then next biome."*
 
 Tile counts MEASURED from `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows):
 
-| biome | tiles |
-|---|---:|
-| `RUT_ExtremeDesert` | 3,969 |
-| `RUT_Desert` | 2,390 |
-| `RUT_BlueDesert` | 1,029 |
-| **family total** | **7,388** |
+| biome | tiles | ours | 3rd-party | unguarded |
+|---|---:|---:|---:|---:|
+| `RUT_ExtremeDesert` | 3,969 | 0 | 22 | 3 |
+| `RUT_Desert` | 2,390 | 1 | 54 | 7 |
+| `RUT_AridShrubland` | 628 | 2 | 51 | 11 |
+| **family total** | **6,987** | **3** | **127** | **21** |
 
-That is a third of the planet, and it is where the player starts. One sheet
-covers all three because they share a roster problem; every row still records
-which of the three it belongs to.
+Roster ownership MEASURED 2026-09-20 off each entry's `MayRequire` packageId —
+full method and the planet-wide table in `infrastructure/state/facts/biome_rosters.md`.
+One sheet covers all three because they share a roster; every row records which
+of the three it belongs to.
 
-⛔ `RUT_Wasteland` (1,853) and `RUT_AridShrubland` (628) are ADJACENT and out of
-scope for this item. They share the family's roster and are the obvious next
-pass — do not let them creep in here.
+🔴 **`RUT_BlueDesert` (1,029 tiles) was in the original scope and is OUT.** It is
+deliberately sterile — `animalDensity` 0, `plantDensity` 0, an empty
+`<wildAnimals />` and no `<wildPlants>` element at all — by its own FROZEN sheet
+(`the_blue_desert.md`, `BIOME_FREEZE_FABLE_REVIEW_1`), which evicts the Earth
+desert zoo and all water-based flora wholesale. A verdict sheet over it is
+correctly zero rows. ⛔ Do not read that as a parser bug and do not repair it.
+`RUT_AridShrubland` took its place: it shares the family's roster and is the
+second-heaviest third-party donor load on the planet.
+
+⛔ `RUT_Wasteland` (1,853) is ADJACENT and out of scope — the obvious next pass,
+not this one.
 
 ## spec
 
@@ -65,6 +74,18 @@ already exist. Keep the two apart.
   point of discomfort* ("if the roster looks healthy, it is wrong",
   `biomes/_assignment_prep.md` §1). Do not read a thin result as a parser bug —
   but do not read a parser bug as a thin result either. Check which it is.
+- 🔴 **These wild tables are ELEMENT-KEYED, not `<li>`-keyed.** An entry is
+  `<Bantha MayRequire="mlie.starwarsanimalcollection">0.8</Bantha>`. A parser
+  looking for `<li>` returns zero rows for every biome — hit exactly that way
+  2026-09-20.
+- 🔴 **Never infer a donor from the defName prefix.** `mlie.starwarsanimalcollection`
+  ships BARE defNames (`Bantha`, `Kreetle`, `Scavrat`, `Shyrack`, `Gorg`,
+  `Gutkurr`, `Jamel`, `Rat`), so a prefix rule buckets the planet's single
+  largest donor as vanilla Core. Read the `MayRequire` attribute.
+- The family's **unguarded** entries (no `MayRequire`, not ours) include real
+  donor defs — `AB_HardyGrass`, `AB_Aaklac`, `AB_DessertTree`, `AB_GiantStikehr`,
+  and four `RG_Plant_*`. Those are what break when a donor is retired. Listed in
+  the facts file; not yet ruled a defect.
 
 ## verify
 
