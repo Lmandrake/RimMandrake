@@ -73,8 +73,15 @@ placeholder, and only where it is loudly commented as such.
    name and description, so naming gates art, not defs.
 3. **Land art** as the daemon clears it; review by eye before wiring, the way the
    Rot wave did — 4 of 61 renders there were bad and only an eye caught them.
-4. **Rewire the biome tables** last: donor entry out, our defName in, `MayRequire`
-   dropped because it is ours now.
+4. **Rewire the biome tables** last: donor entry out, our defName in, and the
+   `MayRequire` **re-pointed at the mod that now owns the def** — never dropped.
+   🔴 "It is ours now" is not "it is in the same mod". The biome defs live in
+   UtinniPatches (`mandrake.rut.patches`); the ported species live in SWBestiary
+   (`mandrake.rsw.swbestiary`). A bare cross-mod ref in `wildAnimals` is the
+   known-crash shape `WYYYSCHOKK_FERALISK_MERGE_1` removed `AA_Dunealisk` for.
+   MEASURED 2026-09-20: 65 of 67 cross-mod entries in the other UtinniPatches
+   biome defs are guarded, and `RSW_Jellypot` in this very file kept its guard —
+   dropping the guard on the 68 ported rows would have made them the exception.
 
 ## Watch out
 
