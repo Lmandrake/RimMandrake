@@ -554,7 +554,7 @@ The full sweep (queues + items, MEASURED tonight). Items blocked on
 | `FLUID_CANAL_FLOOD_LIVE_CHECK_1` | FOUNDRY's debug-surface item (mechanical, not design) |
 | `INHABITED_TILEMUTATOR_NO_ENTRY_1` | bridge + game-down window (mechanical) |
 | `HELIX_TELLUROX_SHELL_LOAD_CRASH_1` | reproduction evidence (mechanical) |
-| `DROID_TILES_SOURED_TERRAIN_1` | Droidworks Phase 3 (sequencing) |
+| `DROID_TILES_SOURED_TERRAIN_1` | CLOSED `64753301` (2026-09-20) — live-verified pollution + mutators on the Ash'karr tiles |
 | proposals suite | **not blocked** — ruled 2026-09-02; residue is execution + v1-pending-explanation rows |
 
 ---

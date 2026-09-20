@@ -874,8 +874,8 @@ recorded and judged, but it **never refuses a mod and never holds a build**:
   audio channel — the exact shape of Aftermath's eight letters that were written
   and never sent.
 
-⚠️ **Not yet specified**: the section format, the evidence artifact, and whether a
-`hears=` join exists at all (it may not, since there is no floor to enforce). Those
-are owed on `NORTH_STAR_HEAR_AXIS_1` and are explicitly *not* blocking anything.
-Do not build a gate here later without his word — non-blocking is the ruling, not
-an interim state.
+⚠️ **Never specified, and now never will be via this route**: the section format,
+the evidence artifact, and whether a `hears=` join exists at all. `NORTH_STAR_HEAR_AXIS_1`
+was retired outright by the owner 2026-09-17 ("sound is validated by PLAYTESTING,
+never by the automated north star script") — not merely non-blocking, dropped. Sound
+is judged by him in play, full stop. Do not build a gate here later without his word.

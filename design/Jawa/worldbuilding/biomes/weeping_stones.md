@@ -356,7 +356,7 @@ the one barbarism.**
 The landmark loadouts (architecture ruling, top) pair naturally with the faces:
 AncientUplink draws the Helix; Stockpile is a Blackstar cache; AnimalHabitat sits
 best near Compact stewardship; the dead rings belong to the Helix or the droids'
-aftermath. Placement rides `OASIS_LANDMARK_PLACEMENT_1` when it files.
+aftermath. Placement rode `OASIS_LANDMARK_PLACEMENT_1`, CLOSED 2026-09-18.
 
 ---
 
@@ -365,11 +365,13 @@ aftermath. Placement rides `OASIS_LANDMARK_PLACEMENT_1` when it files.
 - **The owner's pass** on §10–12 — none of it is ratified; the beasts, the dewback
   reassignment, the droid dying-oases and the Imperial metering are his to keep or
   cut.
-- `OASIS_LANDMARK_PLACEMENT_1` (to file) — hand-place and hand-name the pools with
-  per-site loadouts; seep-oasis siting waits on `VAPOR_EMITTER_PLACEMENT_1`.
-- `OASIS_MUTATOR_PATCH_1` (to file) — whitelist `ZBiome_DesertOasis` into the vanilla
-  Oasis mutator; strip snow weathers; re-point forage; alien-flora swap after the
-  roster.
+- `OASIS_LANDMARK_PLACEMENT_1` — CLOSED 2026-09-18: 186 pools hand-placed and
+  hand-named with per-site loadouts, committed to the live save.
+  `VAPOR_EMITTER_PLACEMENT_1` (the seep-oasis siting dependency) also CLOSED
+  2026-09-19.
+- `OASIS_MUTATOR_PATCH_1` — CLOSED 2026-09-09: `ZBiome_DesertOasis` whitelisted into
+  the vanilla Oasis mutator, snow weathers stripped, forage re-pointed, alien-flora
+  swap applied after the roster.
 - `WEEPING_STONES_ROSTER_1` (filed) — flora and fauna to the sheet: reconcile the
   29 cast (§10), the **dewback move from `LavaField` (RULED yes, owner
   2026-09-06)**, the sorts-of-animals frame above, the blade-flora.
