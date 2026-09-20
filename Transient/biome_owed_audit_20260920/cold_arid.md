@@ -245,7 +245,54 @@ seven distinct mechanics).
    owner picks; not ranking.
 
 ## wasteland.md
-(pending)
+
+Owed section (4 bullets) — split into 6 work items, cross-checked against
+`RUT_Wasteland.xml`'s own header comment, which independently lists its own unbuilt
+scope and matches the sheet closely.
+
+1. **Names** (the Throat's true name; radiotroph flora/excretors/radiothermal
+   solitaries/brine-battery creatures; halo-storm/plasma-storm player-facing names) —
+   placeholders, not ranking, except see item 5 below on "the Throat" itself.
+2. **Engine feasibility pass** (radiation/pollution spine → dose/geiger layer; three
+   storm WeatherDefs — ash, halo, plasma; storm map-reshuffle/mutator-churn tooling) —
+   **UNFILED (CONFIRMED)**, doubly so: searched `geiger`, `dose layer`, `halo-storm`,
+   `plasma-storm`, `storm map-reshuffle`, `radiotroph` — zero ledger hits either live or
+   closed — AND `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml`'s own
+   authoring comment independently confirms it, verbatim: *"NOT this pass's scope: the
+   dose/geiger layer; the three storm WeatherDefs (ash, halo, plasma); the
+   mutator/injection palette per family... the Junkers' tipping-fee economy."* Currently
+   `ToxRain`/`GrayPall` (Anomaly) stand in as reflavored placeholders; the biome's actual
+   named weather (ash storms, radiation-halo storms, plasma storms) does not exist as
+   WeatherDefs, and the radiological disease register the sheet's ban 4 requires
+   ("every resident visibly shaped by the contamination") was explicitly left un-authored
+   for the same reason ("SS Owed 'needs a dose/geiger layer'").
+3. **Def tails — 19 tiles at arc < 60** — **SAME UNCONFIRMED-EXECUTION FLAG as
+   `arid_shrubland.md`'s band mend** (see that section, item 1): both were ratified in
+   the same `WORLDMAP_DESERT_BAND_REPAIR_1` document under a "Wasteland tail" heading,
+   and that item's closing note names only the Desert bands (A/D) as landed, not this
+   19-tile Wasteland correction. Not calling it UNFILED outright (didn't re-measure the
+   live tiles), but the same gap applies here.
+4. **Tipping-fee economy / waste-caravan traffic faction-spec wiring** (Junkers,
+   Wildsteam, Deepwater) — **UNFILED (CONFIRMED)**. Searched `tipping-fee`, `tipping fee`,
+   `waste-caravan`, `waste caravan` — zero hits in items or closed items; and the same
+   def-header line above names "the Junkers' tipping-fee economy" as explicitly out of
+   this pass's scope.
+5. **"The Throat"** — **DONE, but with a naming/identity ambiguity worth flagging.** The
+   sheet describes the Throat as "the environmental doomsday clock," a place you could
+   "pour [the Slime] down," with a faction triangle and world-threatening buildup around
+   it (§ Owed's "Slime experiment" option). That description matches `GAPING_DOOM_SITE_1`
+   (closed, done) almost exactly: a dead-sarlacc toxic-waste pit, world-threatening
+   chemical/nuclear/exotic buildup ruled as "a plot element, not set dressing" (owner,
+   2026-09-08), Junker-operated dumping-rights economy. CONFIDENCE: high but not
+   certain — `GAPING_DOOM_SITE_1` places it at tile 2403 in `ZBiome_Badlands` (the
+   Cracked Lands)/"Junker territory," not explicitly tagged `Wasteland`, and the item's
+   own CSV note flags a region-bookkeeping mismatch at that tile ("Grey Sea" vs the
+   biome). `RUT_Wasteland.xml`'s header (authored 2026-09-09, same day
+   `GAPING_DOOM_SITE_1` was filed) still lists "the Throat" among things NOT in its
+   scope — plausibly just written before/independent of that landmark landing, or "the
+   Throat" and "the Gaping Doom" could be two names circling the same idea that never
+   got reconciled. Did not chase further; flagging the ambiguity rather than resolving
+   it under a read-only brief.
 
 ## the_cracked_lands.md
 (pending)
