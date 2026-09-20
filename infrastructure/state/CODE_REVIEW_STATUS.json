@@ -180,10 +180,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/gen_cast_patch.py": {
-    "cleanCount": 4,
-    "date": "2026-09-12",
-    "hash": "c7dc42d84b19d60a1b8b360f8318d3c256859a0f3568846d9c931c634d128630",
-    "sha": "efb2f02ad"
+    "cleanCount": 5,
+    "date": "2026-09-20",
+    "hash": "cb481b4c0d3d402f79d098576d76eea761d16d2c85895202ee2f02f1c3b9f205",
+    "sha": "9ec8a0bfb"
   },
   "design/Jawa/fauna/gen_creature_art_sheet.py": {
     "cleanCount": 1,
