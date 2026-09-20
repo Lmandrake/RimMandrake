@@ -132,7 +132,21 @@ def main(argv=None):
         n_warn = sum(1 for f in findings if f[0] == walklint.WARN)
         print("%d FAIL, %d WARN%s"
               % (n_fail, n_warn, "" if args.warn else "  (--warn to see WARNs)"))
-        return 1 if n_fail else 0
+
+        import readline_registry
+        try:
+            rl_findings, rl_counts = readline_registry.lint(runner.ROOT)
+        except FileNotFoundError as exc:
+            print("UNMEASURED: %s" % exc)
+            return 2
+        print("readline_registry: %d walks, %d registry ids, %d `shared` "
+              "citations checked" % (rl_counts["walks"], rl_counts["registry_ids"],
+                                     rl_counts["citations"]))
+        for f in rl_findings:
+            print(readline_registry.format_finding(f))
+        print("%d FAIL" % len(rl_findings))
+
+        return 1 if (n_fail or rl_findings) else 0
 
     if args.cmd == "floor":
         import floor
