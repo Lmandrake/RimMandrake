@@ -29,15 +29,31 @@
      tamer-friendly ship-vermin species to undercut this one without a
      structural change.
 
-     Art: NOT YET GENERATED (item note: "you likely don't need to invent new
-     species art right now, just make sure the def structure supports it").
-     texPath points at RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock,
-     which does not exist on disk yet - this WILL render magenta in game
-     until an art pass runs (generating-rimworld-sprites skill) and ships a
-     PNG at that path. Deliberately NOT reusing
-     mandrake.rsw.mynockartoverride's texture bytes (swanimals/Mynock/*): per
-     this item's own framing that mod retextures a different, donor mynock
-     and is unrelated to this species def. -->
+     Art: GENERATED - RSW_Mynock's own texPath
+     (RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock.png, Graphic_Single)
+     carries real owner-approved art since 75115178c (2026-09-11): the
+     "hideous wet practical-effects" redesign from IKEE_MYNOCK_ART_REGEN_1,
+     reused from mandrake.rsw.mynockartoverride's south-facing texture. One
+     static graphic, not a directional north/east/south set - the previous
+     "NOT YET GENERATED" note above was stale and was corrected during
+     MYNOCK_FLIGHT_ART_FIRST_1 (2026-09-20), which confirmed the art before
+     touching flight. mandrake.rsw.mynockartoverride's own texture bytes
+     (swanimals/Mynock/*) remain unrelated - that mod retextures a different,
+     donor mynock at the donor's own texPath.
+
+     Flight (MYNOCK_FLIGHT_ART_FIRST_1, 2026-09-20): MaxFlightTime/
+     FlightCooldown/flightStartChanceOnJobStart/flightSpeedFactor/
+     canFlyIntoMap match this repo's own house convention across every other
+     RSW_ bestiary flyer (Sketto/Shyrack/Convor/Whisperbird etc: 30/10/0.05,
+     plus flightSpeedFactor 2.5 per CLAUDE.md's Locust/Chicken shape and
+     RUT_PyrelandsFauna's own use) rather than the deleted desert-port
+     duplicate's numbers, which were donor intent only, not a spec.
+     canLeaveMapFlying is deliberately OMITTED: a mynock lairs on its host
+     hull rather than migrating off the map, unlike the wildlife above that
+     all set it true. No flyingAnimationFramePathPrefix - no flip-book frames
+     exist for this species' own art, so it flies with no wing-beat, which
+     is documented correct behaviour (CLAUDE.md, "the flying ANIMATION is
+     separate from the flight STAT"), not a thing to block on. -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
@@ -53,6 +69,8 @@
       <FilthRate>1</FilthRate>
       <Wildness>0.9</Wildness>
       <VacuumResistance>1</VacuumResistance>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
     </statBases>
     <uiIconScale>0.6</uiIconScale>
     <race>
@@ -63,6 +81,9 @@
       <herdAnimal>false</herdAnimal>
       <canBeVacuumBurnt>false</canBeVacuumBurnt>
       <canFlyInVacuum>true</canFlyInVacuum>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
       <baseBodySize>0.12</baseBodySize>
       <baseHealthScale>0.25</baseHealthScale>
       <baseHungerRate>0.2</baseHungerRate>
