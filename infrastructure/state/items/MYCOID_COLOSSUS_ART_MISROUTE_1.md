@@ -37,9 +37,23 @@ Caught by the owner on the size re-judge sheet, 2026-09-19, verbatim:
 1. **Regenerate the art** to the owner's brief: *a huge multi-legged purplish entity
    with glowing mushrooms sprouting from its back*. Three facings, at the same
    texPath `Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_<facing>.png`.
-   ⚠️ The art channel is refusing — Codex weekly quota resets **Mon 2026-09-21
-   09:32**, which is what failed the other 82 jobs. This is the whole remaining
-   scope of this item.
+   **QUEUED 2026-09-20** as `rut_mycoidcolossus_v1_{south,north,east}`, priority 100,
+   1024x1024, no reference (this is a restyle, and a `reference=` would trigger
+   reskin-validate against the wrong creature).
+
+   🔴 **The art channel is NOT quota-blocked and never was blocked until Monday.**
+   MEASURED from the newest manifest (`rut_firehawk_flying_5_south`, completed
+   00:12 today): the codex **weekly** meter is at **42%** and resets **2026-09-26**.
+   What was actually throttling it is the **5-hour** window at **86%** with the
+   daemon `grumpy`, which clears within the 300-minute window — which is why 21
+   older jobs are parked at priority 60-70 while these three sit at 100.
+
+   ⚠️ Facings: each of the three carries its OWN surface language per the owner's
+   2026-09-15 ruling — south is the front (face toward camera), north is the rear
+   (no face, no eyes, the mushroom garden seen from behind), east is a side profile.
+   The Rot v2 family's prompts do NOT do this — all three of `rot_agaripawn_v2_*`
+   share one identical "Top-down pawn sprite, three facings" prompt, which is the
+   exact defect `ARTPIPE_FACING_COHERENCE_1` exists for. Do not copy that family.
 
 **Size 12 is NOT owed here.** His `resize` ruling on this row belongs to
 `ROT_SIZE_REJUDGE_APPLY_1`, which applies all 11 re-judged Rot sizes as one wave.
