@@ -134,7 +134,50 @@ actual race build). Examined 9 items total.
 
 ## the_pyrelands.md
 
-(pending)
+Owed section: 5 bullets, split into 11 individual items (canon sitting = 3,
+cross-flow ledger = 4). Examined 11.
+
+1. `PYRELANDS_MECHANICS_1` — the sheet text literally reads "(to file)" but
+   this is STALE SHEET PROSE (flag, per CLAUDE.md's decay warning): the item
+   IS filed and closed (`6946c1873`). The sheet was not updated after filing.
+2. **Roster** (fire-hawks, furnace-beasts, three families, quickgrass/
+   scorch-fruit) — FILED/DONE, CONFIRMED by volume: `PYRELANDS_FAUNA_WIRING_1`,
+   `PYRELANDS_FIRE_WEB_COMMISSION_1`, `PYRELANDS_CREATURE_RERENDER_1`,
+   `PYRELANDS_FLORA_LEAK_1`, `PYRELANDS_FACING_COMPLETE_1`, plus the art-wave
+   items (`SCORCHFRUIT_ART_REGEN_1`, `EMBERGRASS_LEAFLESS_ALTS_1`) all exist —
+   this sheet's flora/fauna owed work is the best-covered of the set, matching
+   the briefing that Pyrelands already had its verdict pass + art wave.
+3. **FireEcology deploy collision** — DONE/addressed (CONFIRMED). Read
+   `src/RimMandrake/Utils/deploy_custom_mods.py:70-81` directly: it now hard
+   `sys.exit`s on a duplicate mod folder name across tiers, citing this exact
+   FireEcology precedent in its own comment. `MOD_NAMING_CONSOLIDATION_AUDIT_1`
+   (closed) is the item that produced the consolidation.
+4. **Canon sitting (Wednesday)**:
+   a. Sun-Debt reconciliation line into `faction_religions.md` §4 — UNFILED
+      (CONFIRMED). Read §4 (Deep Desert Tribes / the Sun-Debt) in full — no
+      mention of the Pyrelands, fire, or flame harvest anywhere in that
+      section. Searched: "Pyrelands", "flame harvest", "fire raid" against
+      the whole file — zero hits.
+   b. genetic-tech theme line into the Rakata spec — UNFILED (CONFIRMED).
+      Searched `ANCIENTS_AS_RAKATA_SPEC.md` for "Pyrelands" — zero hits (the
+      file does discuss genetic-tech revulsion generally, just never ties it
+      to this biome).
+   c. flame harvest/fire raids into the Tribes' dossier — UNFILED as a canon
+      doc-line (CONFIRMED no Pyrelands text in `faction_religions.md`); the
+      closest related item, `DESERT_TRIBES_FIRE_HARVEST_1` (a *scenario
+      event* for tribes visiting to light fires), is filed but **DROPPED**,
+      not done — so nothing satisfies this bullet either as canon prose or
+      as a mechanic.
+5. **Cross-flow ledger** (4 sub-items: R-H9 → `the_sump.md`; nightside mirror
+   → `the_propane_lakes.md`; Kiln overlap → `sacred_sites_pass_1.md`;
+   furnace-beast warmth routes → nightside travel canon) — UNCERTAIN across
+   all 4. Searched "R-H9", "Kiln overlap", "furnace-beast" + "travel" in
+   items and design docs; `sacred_sites_pass_1.md` does discuss the Kiln
+   (§ "The Kiln (Zizzik/Mob'Unloo contest)") but I did not verify it
+   specifically reconciles with the Pyrelands sheet's cross-flow note, nor
+   did I check `the_sump.md`/`the_propane_lakes.md` for the other two links —
+   this is a genuine gap in my coverage (budget), flagging UNCERTAIN rather
+   than guessing.
 
 ## the_twilight_deep.md
 
