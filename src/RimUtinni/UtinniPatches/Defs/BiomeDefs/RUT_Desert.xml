@@ -207,6 +207,20 @@
       <RSW_SweetbarkTree MayRequire="mandrake.rsw.swbestiary">0.06</RSW_SweetbarkTree>  <!-- dessert tree - tree -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
+
+    <!-- DESERT_PACK_ANIMALS_FOR_TRADERS_1 (owner, 2026-09-20: both deserts get traders).
+         allowedPackAnimals was absent (= empty list), so PawnGroupKindWorker_Trader.
+         CanGenerateFrom returned false and no trader caravan ever generated here.
+         MEASURED: all five ported herd beasts carry <packAnimal>true</packAnimal> in
+         their ThingDef (src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_{Bantha,
+         Ronto,Eopie,Jamel,Falumpaset}.xml), so all five are listed. -->
+    <allowedPackAnimals>
+      <li MayRequire="mandrake.rsw.swbestiary">RSW_Bantha</li>
+      <li MayRequire="mandrake.rsw.swbestiary">RSW_Ronto</li>
+      <li MayRequire="mandrake.rsw.swbestiary">RSW_Eopie</li>
+      <li MayRequire="mandrake.rsw.swbestiary">RSW_Jamel</li>
+      <li MayRequire="mandrake.rsw.swbestiary">RSW_Falumpaset</li>
+    </allowedPackAnimals>
   </BiomeDef>
 
 </Defs>
