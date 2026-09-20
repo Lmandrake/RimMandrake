@@ -1,0 +1,112 @@
+{
+  "posture": "worklist, default DEFER",
+  "criterion": "Grouped by build state as PROVEN from disk — def existence, texPath wiring, and each artpipe render's own rimflow_item_id/style_notes — never from an item's prose summary. It ranks what's real vs. owed vs. mislabeled. It cannot rank which owed cast member the owner most wants built first — the file_next/defer split below is my guess at priority, not a measurement, and is exactly the kind of call worth overruling.",
+  "generatedBy": "build_sheet.py (agent pre-fill, 2026-09-20)",
+  "decisions": {
+    "lanternstone_geology": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "thrakk_cap": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "ossk_bramble": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "fauna_drinker": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "fauna_grabber": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "fauna_soulchime": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "fauna_gembug": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "fauna_glowbulb": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "fauna_megapleura": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "fauna_mossbeetlelarvae": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "fauna_shatterjaw": {
+      "decision": "approve",
+      "prefill": "approve",
+      "note": ""
+    },
+    "cast_lantern": {
+      "decision": "file_next",
+      "prefill": "file_next",
+      "note": ""
+    },
+    "cast_creep": {
+      "decision": "file_next",
+      "prefill": "file_next",
+      "note": ""
+    },
+    "cast_cleavers": {
+      "decision": "file_next",
+      "prefill": "file_next",
+      "note": ""
+    },
+    "cast_chorus": {
+      "decision": "defer",
+      "prefill": "defer",
+      "note": ""
+    },
+    "cast_shardminds": {
+      "decision": "file_next",
+      "prefill": "file_next",
+      "note": ""
+    },
+    "cast_mindstone": {
+      "decision": "file_next",
+      "prefill": "file_next",
+      "note": ""
+    },
+    "cast_kindled": {
+      "decision": "file_next",
+      "prefill": "file_next",
+      "note": ""
+    },
+    "notdeeps_creepstern": {
+      "decision": "not_deeps",
+      "prefill": "not_deeps",
+      "note": ""
+    },
+    "notdeeps_crystalflower": {
+      "decision": "not_deeps",
+      "prefill": "not_deeps",
+      "note": ""
+    },
+    "notdeeps_crystalhorn": {
+      "decision": "not_deeps",
+      "prefill": "not_deeps",
+      "note": ""
+    }
+  }
+}
