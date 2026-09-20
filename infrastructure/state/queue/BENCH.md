@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T23:34:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T23:39:51Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -116,6 +116,15 @@ target:   v1
 kind:     build
 summary:  ROTSIZEREJUDGEAPPLY1
 prose:    infrastructure/state/items/ROT_SIZE_REJUDGE_APPLY_1.md
+
+## TITANOSLIME_SLIME_BIOME_1 Owner ask: a Titanoslime for RUT_Slime, devour-whole + grows-as-it-eats
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  TITANOSLIMESLIMEBIOME1 — owner ask: a titanic green slime for RUTSlime
+prose:    infrastructure/state/items/TITANOSLIME_SLIME_BIOME_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -642,16 +651,6 @@ kind:     design
 thin:     no ## spec
 summary:  FALLLINEARRIVALMECHANISM1 — build the Fall Line arrival delivery for the 15 species pulled from ambient wildA…
 prose:    infrastructure/state/items/FALL_LINE_ARRIVAL_MECHANISM_1.md
-
-## TITANOSLIME_SLIME_BIOME_1 Owner ask: a Titanoslime for RUT_Slime, devour-whole + grows-as-it-eats
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec
-summary:  TITANOSLIMESLIMEBIOME1 — owner ask: a titanic green slime for RUTSlime
-prose:    infrastructure/state/items/TITANOSLIME_SLIME_BIOME_1.md
 
 ## STALE_VIVIFIED_WORLDMAP_CITED_1 design/Jawa/worldbuilding/biomes/fall_line.md and other biome docs cite ASHKARR_VIVIFIED_2026-08-24_tiles.csv, which is a pre-rename artifact: it disagrees with the canonical ASHKARR_WORLDMAP_tiles.csv on the biome key of 21,660 of 21,872 tiles and on the region name of 1,136 - anything built against its names matches nothing
 state:    proposed
