@@ -5831,10 +5831,10 @@
     "sha": "91038bf96"
   },
   "src/RimMandrake/Utils/install_wt_seat_profiles.py": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "f97b61eefcdea4d50325d3e2ead2a67d6812f2d62a87b308182234e193c3551d",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "8d4b4a1074392e26601cbcb4666adf2b68fe90b91547dd8788ac097c1bec1c78",
+    "sha": "7fb03587e"
   },
   "src/RimMandrake/Utils/jawaese.py": {
     "cleanCount": 1,
