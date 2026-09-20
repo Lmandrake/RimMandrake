@@ -47,8 +47,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Horrors (mlie) Terrorworm -> RSW_Ashworm. Donor's HiveMind thinkTreeMain dropped (that mod's own AI framework); default AnimalThingBase think tree applies. Tools verbatim, capacities/groups already vanilla. -->
 		<defName>RSW_Ashworm</defName>
-		<label>ashworm</label>
-		<description>An alien worm of uncertain origin, large enough to threaten a lone traveler but neither fast nor especially ferocious. Ashworms are usually found trailing larger, stranger things, as if playing a supporting role in something else's hunt.</description>
+		<label>vurra</label>
+		<description>An alien worm of uncertain origin, large enough to threaten a lone traveler but neither fast nor especially ferocious. Vurras are usually found trailing larger, stranger things, as if playing a supporting role in something else's hunt.</description>
 		<statBases>
 			<MoveSpeed>2.85</MoveSpeed>
 			<ComfyTemperatureMin>0</ComfyTemperatureMin>
@@ -111,7 +111,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Ashworm</defName>
-		<label>ashworm</label>
+		<label>vurra</label>
 		<race>RSW_Ashworm</race>
 		<combatPower>50</combatPower>
 		<ecoSystemWeight>0.2</ecoSystemWeight>
@@ -143,8 +143,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_DesertAve -> RSW_Sandstrider. useMeatFrom AA_MeadowAve (not ported, dangling) substituted with vanilla Cassowary. Dropped: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher (cosmetic refresh, donor framework), <renderTree>AA_Alternates (donor recolour system), VEF.AnimalBehaviours.AnimalStatExtension modExtension (info-card flavor only). Giddy-Up mod plug and artist credit removed from description; mechanic otherwise unchanged. -->
 		<defName>RSW_Sandstrider</defName>
-		<label>sandstrider</label>
-		<description>A large flightless bird adapted to living in very arid terrain. Bony plates across its neck defend it from predators and from the scalding heat of the open sand. Slower to anger than its wetland relatives, the sandstrider is prized as a mount - fast, sure-footed on loose ground, and steady under a rider even at speed.</description>
+		<label>ossik</label>
+		<description>A large flightless bird adapted to living in very arid terrain. Bony plates across its neck defend it from predators and from the scalding heat of the open sand. Slower to anger than its wetland relatives, the ossik is prized as a mount - fast, sure-footed on loose ground, and steady under a rider even at speed.</description>
 		<statBases>
 			<MoveSpeed>7.0</MoveSpeed>
 			<ComfyTemperatureMin>0</ComfyTemperatureMin>
@@ -223,7 +223,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Sandstrider</defName>
-		<label>sandstrider</label>
+		<label>ossik</label>
 		<race>RSW_Sandstrider</race>
 		<combatPower>70</combatPower>
 		<ecoSystemWeight>0.5</ecoSystemWeight>
@@ -233,7 +233,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		</wildGroupSize>
 		<lifeStages>
 			<li>
-				<label>sandstrider chick</label>
+				<label>ossik chick</label>
 				<bodyGraphicData>
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
 					<texPath>Things/Pawn/Animal/AA_DesertAve/AA_DesertAve</texPath>
@@ -260,8 +260,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Needleroll -> RSW_Spineroller. Body AA_SentientPlant substituted with the vanilla QuadrupedAnimalWithPawsAndTail body already used for Cactipine/SandProwler in this batch (confirmed to carry Teeth + HeadAttackTool groups); bite tool's linkedBodyPartsGroup remapped AA_Mouth -> Teeth. ToolCapacityDef AA_ToxicSting substituted with vanilla Scratch (donor poison-sting DamageDef/HediffDef chain dropped, mechanic simplification). Dropped: VEF.AnimalBehaviours.CompProperties_LightSustenance (sun-feeding, donor framework - eats normally per foodType instead), CompProperties_InitialAbility (venom-barb ranged ability, donor framework). -->
 		<defName>RSW_Spineroller</defName>
-		<label>spineroller</label>
-		<description>A cactus-form creature that has evolved to roll and creep across the most arid ground on the Rim. Spinerollers need almost no water, drawing what little they use from morning condensation, and depend on long unbroken sunlight to live - a sustained eclipse can kill a herd outright.</description>
+		<label>kudda</label>
+		<description>A cactus-form creature that has evolved to roll and creep across the most arid ground on the Rim. Kuddas need almost no water, drawing what little they use from morning condensation, and depend on long unbroken sunlight to live - a sustained eclipse can kill a herd outright.</description>
 		<statBases>
 			<MoveSpeed>2.50</MoveSpeed>
 			<ComfyTemperatureMin>0</ComfyTemperatureMin>
@@ -325,7 +325,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Spineroller</defName>
-		<label>spineroller</label>
+		<label>kudda</label>
 		<race>RSW_Spineroller</race>
 		<combatPower>33</combatPower>
 		<ecoSystemWeight>0.3</ecoSystemWeight>
@@ -361,7 +361,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Cactipine -> RSW_Spinerat. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic medicinal-quill harvest, donor framework). -->
 		<defName>RSW_Spinerat</defName>
-		<label>spinerat</label>
+		<label>chikka</label>
 		<description>A colonial effort to make the open sand liveable produced this rat-sized creature, its genome spliced with cactus DNA. The result is a hardened green hide studded with medicinal quills and a strange meat that reads as neither plant nor animal to most palates.</description>
 		<statBases>
 			<MoveSpeed>4.5</MoveSpeed>
@@ -428,7 +428,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Spinerat</defName>
-		<label>spinerat</label>
+		<label>chikka</label>
 		<race>RSW_Spinerat</race>
 		<combatPower>30</combatPower>
 		<ecoSystemWeight>0.3</ecoSystemWeight>
@@ -464,7 +464,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Eyeling -> RSW_Stareling. Body AA_EyeBody substituted with vanilla Monkey (confirmed HeadAttackTool group present on Head). ToolCapacityDef AA_ToxicSting substituted with vanilla Scratch (donor poison chain dropped). -->
 		<defName>RSW_Stareling</defName>
-		<label>stareling</label>
+		<label>oxxa</label>
 		<description>A grotesquely enlarged eye that drags itself along on a few fleshy tentacles. Not very useful for much of anything. Said to result from infusing an animal with strange energies from beyond ordinary space.</description>
 		<statBases>
 			<MoveSpeed>3.0</MoveSpeed>
@@ -514,7 +514,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Stareling</defName>
-		<label>stareling</label>
+		<label>oxxa</label>
 		<race>RSW_Stareling</race>
 		<combatPower>10</combatPower>
 		<ecoSystemWeight>0.30</ecoSystemWeight>
@@ -546,8 +546,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Needlepost -> RSW_Barbthorn. Same body substitution as Spineroller (QuadrupedAnimalWithPawsAndTail for AA_SentientPlant, AA_Mouth->Teeth). AA_ToxicSting->Scratch. Dropped: CompProperties_LightSustenance, CompProperties_InitialAbility (venom barb ability) - both VEF.AnimalBehaviours, donor framework. -->
 		<defName>RSW_Barbthorn</defName>
-		<label>barbthorn</label>
-		<description>A mobile cactus given crude sentience and toxic barbs. Early trials aimed for a stationary deterrent; giving it a body and a mind of its own proved a mistake, and the facility that made the first barbthorns was overrun soon after. Barbthorns can draw a little nutrition from rotting vegetation, but they live and die by direct sunlight - a long eclipse is usually fatal.</description>
+		<label>skorra</label>
+		<description>A mobile cactus given crude sentience and toxic barbs. Early trials aimed for a stationary deterrent; giving it a body and a mind of its own proved a mistake, and the facility that made the first skorras was overrun soon after. Skorras can draw a little nutrition from rotting vegetation, but they live and die by direct sunlight - a long eclipse is usually fatal.</description>
 		<statBases>
 			<MoveSpeed>3.00</MoveSpeed>
 			<ComfyTemperatureMin>0</ComfyTemperatureMin>
@@ -611,7 +611,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Barbthorn</defName>
-		<label>barbthorn</label>
+		<label>skorra</label>
 		<race>RSW_Barbthorn</race>
 		<combatPower>90</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
@@ -647,8 +647,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Wildpawn -> RSW_Sporepaw. AA_ToxicBite->Bite. Dropped: VEF.AnimalBehaviours.CompProperties_AsexualReproduction (spore-clump reproduction), CompProperties_HighlyFlammable (burn hediff on fire), CompProperties_AnimalProduct (periodic raw-fungus harvest) - all donor framework. hasGenders=false kept so vanilla asexual reproduction still applies; the spore-cloud VISUAL/reproduction event itself is what was dropped, not the ability to breed. -->
 		<defName>RSW_Sporepaw</defName>
-		<label>sporepaw</label>
-		<description>A fungal quadruped adapted to life outside the swamp, smaller and less dangerous than its wetland kin for lack of water and rot to grow on. Sporepaws release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.</description>
+		<label>pukko</label>
+		<description>A fungal quadruped adapted to life outside the swamp, smaller and less dangerous than its wetland kin for lack of water and rot to grow on. Pukkos release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.</description>
 		<statBases>
 			<MoveSpeed>4</MoveSpeed>
 			<ComfyTemperatureMin>-15</ComfyTemperatureMin>
@@ -726,7 +726,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Sporepaw</defName>
-		<label>sporepaw</label>
+		<label>pukko</label>
 		<race>RSW_Sporepaw</race>
 		<combatPower>120</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
@@ -762,8 +762,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Gigantelope -> RSW_Sandhorn. Dropped: CompProperties_InitialHediff (variable carry-weight hediff roll), AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher, <renderTree>AA_Alternates - all donor framework/recolour. CompProperties_Milkable (vanilla) kept. -->
 		<defName>RSW_Sandhorn</defName>
-		<label>sandhorn</label>
-		<description>Bred as a bigger, stronger relative of the muffalo, the sandhorn is an ideal pack beast - pneumatized bones keep it strong and dense without the weight. Its carrying capacity varies with the individual, set at birth, and colonies across the Rim have bred sandhorns for generations chasing the perfect pack animal.</description>
+		<label>thurra</label>
+		<description>Bred as a bigger, stronger relative of the muffalo, the thurra is an ideal pack beast - pneumatized bones keep it strong and dense without the weight. Its carrying capacity varies with the individual, set at birth, and colonies across the Rim have bred thurras for generations chasing the perfect pack animal.</description>
 		<statBases>
 			<MoveSpeed>4.5</MoveSpeed>
 			<ComfyTemperatureMin>-15</ComfyTemperatureMin>
@@ -848,7 +848,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Sandhorn</defName>
-		<label>sandhorn</label>
+		<label>thurra</label>
 		<race>RSW_Sandhorn</race>
 		<combatPower>100</combatPower>
 		<ecoSystemWeight>1.1</ecoSystemWeight>
@@ -858,8 +858,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		</wildGroupSize>
 		<lifeStages>
 			<li>
-				<label>sandhorn calf</label>
-				<labelPlural>sandhorn calves</labelPlural>
+				<label>thurra calf</label>
+				<labelPlural>thurra calves</labelPlural>
 				<bodyGraphicData>
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
 					<texPath>Things/Pawn/Animal/AA_Gigantelope/AA_Gigantelope_baby</texPath>
@@ -886,8 +886,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_SandProwler -> RSW_Dunestalker. Dropped: VEF.AnimalBehaviours.CompProperties_GraphicByTerrain (sand-camouflage/burrow visual swap keyed to specific terrain defNames including several donor-only terrains) and <renderTree>VEF_GraphicByTerrainRenderTree - both donor framework; the burrow-and-strike AI is lost with them, the stats/body/predator role stay. Leather_RaptorPlates is a vanilla-adjacent name check pending (flagged UNCERTAIN in the port report, not a defName invented here - carried verbatim from the donor XML). -->
 		<defName>RSW_Dunestalker</defName>
-		<label>dunestalker</label>
-		<description>A genetic amalgamation of big-cat, shark and sand skink, bred as a ferocious hunter for desert worlds. The dunestalker can move through loose sand almost as easily as open ground, letting it close on prey from ambush. Dense soils are too firm for it to work through.</description>
+		<label>vosska</label>
+		<description>A genetic amalgamation of big-cat, shark and sand skink, bred as a ferocious hunter for desert worlds. The vosska can move through loose sand almost as easily as open ground, letting it close on prey from ambush. Dense soils are too firm for it to work through.</description>
 		<statBases>
 			<MoveSpeed>4</MoveSpeed>
 			<ComfyTemperatureMin>0</ComfyTemperatureMin>
@@ -964,13 +964,13 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Dunestalker</defName>
-		<label>dunestalker</label>
+		<label>vosska</label>
 		<race>RSW_Dunestalker</race>
 		<combatPower>275</combatPower>
 		<ecoSystemWeight>0.3</ecoSystemWeight>
 		<lifeStages>
 			<li>
-				<label>dunestalker cub</label>
+				<label>vosska cub</label>
 				<bodyGraphicData>
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
 					<texPath>Things/Pawn/Animal/AA_SandProwler/AA_SandProwler</texPath>
@@ -978,7 +978,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 				</bodyGraphicData>
 			</li>
 			<li>
-				<label>dunestalker juvenile</label>
+				<label>vosska juvenile</label>
 				<bodyGraphicData>
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
 					<texPath>Things/Pawn/Animal/AA_SandProwler/AA_SandProwler</texPath>
@@ -998,8 +998,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Terramorph -> RSW_Ferroclaw. useMeatFrom AA_BoulderMit repointed to this batch's own RSW_Stoneback (sibling port, no dangling ref). The steel diet is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_MetalEater below replaces VEF.AnimalBehaviours.CompProperties_EatWeirdFood, same nutrition/stack-bite/auto-dig numbers, measured from the donor's source. Still dropped: CompProperties_NearbyEffecter, the slow conversion of nearby steel into AA_SkySteel - that needs a sky-steel item this batch never ported, so it is owed work, not a decision. -->
 		<defName>RSW_Ferroclaw</defName>
-		<label>ferroclaw</label>
-		<description>A strange crustacean bred for one purpose: mineral processing. The ferroclaw feeds on iron compounds, chemically working them into a hardened alloy otherwise found only in asteroids. The transmutation is slow, so a ferroclaw needs long stretches parked among mined steel to do its work.</description>
+		<label>khorrak</label>
+		<description>A strange crustacean bred for one purpose: mineral processing. The khorrak feeds on iron compounds, chemically working them into a hardened alloy otherwise found only in asteroids. The transmutation is slow, so a khorrak needs long stretches parked among mined steel to do its work.</description>
 		<statBases>
 			<MoveSpeed>1.8</MoveSpeed>
 			<ComfyTemperatureMin>-40</ComfyTemperatureMin>
@@ -1075,7 +1075,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Ferroclaw</defName>
-		<label>ferroclaw</label>
+		<label>khorrak</label>
 		<race>RSW_Ferroclaw</race>
 		<combatPower>80</combatPower>
 		<ecoSystemWeight>0.2</ecoSystemWeight>
@@ -1107,8 +1107,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_BoulderMit -> RSW_Stoneback. Tools inferred from vanilla TurtleLike groups (TurtleBeakAttackTool/HeadAttackTool), matching the sibling Terramorph pattern in the same donor mod - donor XML for this specific def's <tools> block was not re-transcribed verbatim but power/cooldown/group values match the shared AA turtle-body template used by Terramorph. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic resource harvest, donor framework). -->
 		<defName>RSW_Stoneback</defName>
-		<label>stoneback</label>
-		<description>A large genetically-engineered crab that carries a boulder for a shell, sometimes called an atlas crab elsewhere in the Rim. Stonebacks are immensely strong and live for centuries, plodding across the open desert at a fraction of a walking pace.</description>
+		<label>bokka</label>
+		<description>A large genetically-engineered crab that carries a boulder for a shell, sometimes called an atlas crab elsewhere in the Rim. Bokkas are immensely strong and live for centuries, plodding across the open desert at a fraction of a walking pace.</description>
 		<statBases>
 			<MoveSpeed>1.00</MoveSpeed>
 			<ComfyTemperatureMin>-65</ComfyTemperatureMin>
@@ -1167,7 +1167,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Stoneback</defName>
-		<label>stoneback</label>
+		<label>bokka</label>
 		<race>RSW_Stoneback</race>
 		<combatPower>350</combatPower>
 		<ecoSystemWeight>0.2</ecoSystemWeight>
@@ -1199,8 +1199,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_SandSquid -> RSW_Sandmaw. Body AA_Squid substituted with vanilla Monkey (HeadAttackTool/Teeth confirmed present; Monkey carries no 'Arms' group tag on its Shoulder/Arm parts, so the tentacle tool is left UNGROUPED - always usable - rather than pointed at a group that resolves to nothing). Bite tool's AA_Mouth group remapped -> Teeth. Dropped: VEF.AnimalBehaviours.CompProperties_TerrainChanger (donor framework). -->
 		<defName>RSW_Sandmaw</defName>
-		<label>sandmaw</label>
-		<description>Despite the name, the sandmaw is a genetically modified creature combining cephalopod and cone-snail traits, bred as cattle for worlds too dry to support ordinary livestock. It tolerates extreme water deprivation and grazes in slow-moving herds across open sand.</description>
+		<label>ommok</label>
+		<description>Despite the name, the ommok is a genetically modified creature combining cephalopod and cone-snail traits, bred as cattle for worlds too dry to support ordinary livestock. It tolerates extreme water deprivation and grazes in slow-moving herds across open sand.</description>
 		<statBases>
 			<MoveSpeed>1.00</MoveSpeed>
 			<ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -1255,7 +1255,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Sandmaw</defName>
-		<label>sandmaw</label>
+		<label>ommok</label>
 		<race>RSW_Sandmaw</race>
 		<combatPower>350</combatPower>
 		<ecoSystemWeight>0.2</ecoSystemWeight>
@@ -1287,7 +1287,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Wildpod -> RSW_Sporemass. AA_ToxicBite->Bite. Dropped: CompProperties_AsexualReproduction, CompProperties_HighlyFlammable, CompProperties_AnimalProduct - all VEF.AnimalBehaviours donor framework, same as sibling RSW_Sporepaw. -->
 		<defName>RSW_Sporemass</defName>
-		<label>sporemass</label>
+		<label>grommo</label>
 		<description>A lumbering mass of what looks like decomposing plant matter, in fact a sentient mycoid creature. Its bulk is nearly impervious to gunfire, bullets punching through with little effect, but it burns extremely readily.</description>
 		<statBases>
 			<MoveSpeed>3</MoveSpeed>
@@ -1365,7 +1365,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Sporemass</defName>
-		<label>sporemass</label>
+		<label>grommo</label>
 		<race>RSW_Sporemass</race>
 		<combatPower>250</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
@@ -1397,7 +1397,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_MammothWorm -> RSW_Tuskcoil. Body AA_WormWithArmorAndTusks substituted with vanilla Snake (HeadAttackTool on SnakeHead, group tag 'Mouth' on SnakeMouth - confirmed by reading the BodyDef, not guessed). ToolCapacityDefs AA_SiegeBlunt->Blunt and AA_ExtraDamageMechanoidsTusk->Poke (donor's anti-mechanoid bonus-damage mechanic dropped with it); TuskAttackTool group remapped -> Mouth (the only group Snake actually carries besides HeadAttackTool). Dropped: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher. CompProperties_EggLayer (vanilla) kept, pointed at this batch's own ported eggs. -->
 		<defName>RSW_Tuskcoil</defName>
-		<label>tuskcoil</label>
+		<label>ulgga</label>
 		<description>An extremely large, genetically engineered worm, armored and tusked but strangely peaceful for its size. Old records suggest it was once the worker caste of an artificial ecosystem, now running wild and self-sustaining out on the open sand.</description>
 		<statBases>
 			<MoveSpeed>2.0</MoveSpeed>
@@ -1462,7 +1462,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Tuskcoil</defName>
-		<label>tuskcoil</label>
+		<label>ulgga</label>
 		<race>RSW_Tuskcoil</race>
 		<combatPower>200</combatPower>
 		<ecoSystemWeight>0.2</ecoSystemWeight>
@@ -1494,7 +1494,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_TetraSlug -> RSW_Voltmaw. Body AA_ArmouredSlug substituted with vanilla TurtleLike (HeadAttackTool confirmed present, matching sibling RSW_Stoneback/RSW_Ferroclaw usage of the same body in this batch). useMeatFrom AA_Helixien (not ported, dangling - Helixien is not in this batch) substituted with Megaspider, matching the insectoid/exotic theme already used for RSW_Tuskcoil. The ranged attack is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility below replaces VEF.AnimalBehaviours.CompProperties_InitialAbility, granting RSW_VoltmawPlasmaVolley - our own copy of the donor's AA_Plasma, four ionized bolts at range 20. MEASURED from Alpha Animals' own def: this creature's ability was a plasma/tesla volley, never a chemfuel ejection. Still dropped: CompProperties_Electrified, the slow recharging of nearby batteries - donor framework, and owed work rather than a decision. -->
 		<defName>RSW_Voltmaw</defName>
-		<label>voltmaw</label>
+		<label>vozzik</label>
 		<description>A massive slug, common on glitterworlds as a glorified mobile power plant. Off the grid it is deployed by research stations as a self-contained energy source; in the wild it simply grazes, slow and armored, across open ground.</description>
 		<statBases>
 			<MoveSpeed>0.6</MoveSpeed>
@@ -1547,7 +1547,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Voltmaw</defName>
-		<label>voltmaw</label>
+		<label>vozzik</label>
 		<race>RSW_Voltmaw</race>
 		<combatPower>650</combatPower>
 		<lifeStages>
@@ -1578,8 +1578,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- VFE - Insectoids 2 VFEI2_Fuelmite -> RSW_Cindermite. Tools/body/lifeStageAges already vanilla (BeetleLikeWithClaw, HeadClaw/HeadAttackTool, EusocialInsect* stages), no substitution needed. The chemfuel ejection is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility below replaces VEF.AnimalBehaviours.CompProperties_InitialAbility, granting RSW_CindermiteFuelSpew - a cone of raw chemfuel that coats without igniting, rebuilt rather than reusing vanilla's fire-spew comp precisely because vanilla's SETS IT ALIGHT. Still dropped: CompProperties_AnimalProduct, the ten-daily 15-chemfuel harvest off a tamed mite - owed work rather than a decision. -->
 		<defName>RSW_Cindermite</defName>
-		<label>cindermite</label>
-		<description>A large, genetically-engineered mite bred to synthesize volatile chemfuel in sacs beneath its shell. Once used to power industrial megaforges on distant worlds, wild cindermites now scavenge the open desert, restless and short-lived but fast-breeding.</description>
+		<label>zhakka</label>
+		<description>A large, genetically-engineered mite bred to synthesize volatile chemfuel in sacs beneath its shell. Once used to power industrial megaforges on distant worlds, wild zhakkas now scavenge the open desert, restless and short-lived but fast-breeding.</description>
 		<statBases>
 			<MoveSpeed>3.75</MoveSpeed>
 			<Flammability>0</Flammability>
@@ -1645,7 +1645,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="InsectKindBase">
 		<defName>RSW_Cindermite</defName>
-		<label>cindermite</label>
+		<label>zhakka</label>
 		<race>RSW_Cindermite</race>
 		<combatPower>200</combatPower>
 		<ecoSystemWeight>0.50</ecoSystemWeight>

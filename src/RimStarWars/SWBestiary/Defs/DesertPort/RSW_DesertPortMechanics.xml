@@ -68,7 +68,7 @@
   <AbilityDef>
     <defName>RSW_VoltmawPlasmaVolley</defName>
     <label>quad tesla cannon</label>
-    <description>Fire a volley of ionized plasma from the cores banked along the spine. Used defensively — a voltmaw would far rather leave than fight.</description>
+    <description>Fire a volley of ionized plasma from the cores banked along the spine. Used defensively — a vozzik would far rather leave than fight.</description>
     <!-- PLACEHOLDER icon: vanilla's EMP pulse command art. Real art owed. -->
     <iconPath>UI/Commands/LaunchEMPPulse</iconPath>
     <cooldownTicksRange>240</cooldownTicksRange>

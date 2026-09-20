@@ -554,8 +554,8 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggStonebackUnfertilized</defName>
-    <label>stoneback egg (unfert.)</label>
-    <description>An unfertilized stoneback egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <label>bokka egg (unfert.)</label>
+    <description>An unfertilized bokka egg. It can be eaten raw, but it's much, much better cooked.</description>
     <graphicData>
       <texPath>Things/Item/Resource/AnimalProductRaw/EggRound</texPath>
       <color>(220,202,183)</color>
@@ -1797,8 +1797,8 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggStonebackFertilized</defName>
-    <label>stoneback egg (fert.)</label>
-    <description>A fertilized stoneback egg. If all goes well, it should hatch into a baby stoneback. It can be eaten raw, but it's much better cooked.</description>
+    <label>bokka egg (fert.)</label>
+    <description>A fertilized bokka egg. If all goes well, it should hatch into a baby bokka. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
       <texPath>Things/Item/Resource/AnimalProductRaw/EggRound</texPath>
       <color>(230,212,193)</color>
