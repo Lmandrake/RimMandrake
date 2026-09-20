@@ -116,3 +116,50 @@ the 118-slug art-queue filing, freezing the decisions files). All of them
 are gated on the 5 calls above landing first — applying blind now risks
 exactly the kind of silent data loss this item exists to prevent.
 `needs=owner`.
+
+
+---
+
+# 🔴 OWNER RULINGS, 2026-09-20 — all five channels answered
+
+Verbatim: *"Yes cut the 6 fauna. Cut FissionMouse everywhere. 15 flora moves are
+approved. 4 flora purges remain purged. I don't want new versions of these silly
+plants. 148 flora should be improved/regened indeed, but please make sure nobody
+has already done so before you. Show me the 29 fauna issues."*
+
+| channel | rows | ruling |
+|---|---:|---|
+| fauna `decision=out` | 6 | **CUT.** Execute the cut that was graded and never applied |
+| `AA_FissionMouse` | — | **CUT EVERYWHERE** — not just from `wasteland.json`; sweep every roster and table |
+| flora `decision=move` | 15 | **APPROVED.** Apply the moves |
+| flora `decision=out` | 4 | **STAY PURGED**, and ⛔ **do not re-author replacements** — *"I don't want new versions of these silly plants"* |
+| flora `art:improve` | 148 | **DO IT** — but 🔴 **check prior work first** |
+
+## 🔴 The four purged plants do NOT get successors
+
+`AB_DessertTree`, `AB_EyeGrass`, `Boomshroom`, `PoisonPlantBush` are cut and stay
+cut. ⛔ **Do not author an `RSW_` equivalent, a reskin, or a "our own version" of
+any of them.** The standing donor-port ruling is *replace every donor def we use* —
+these are defs we have chosen NOT to use, so the port ruling does not reach them.
+A future port sweep will want to grab them; it must not.
+
+## 🔴 The 148 flora regens: prove nobody did it first
+
+Verbatim: *"please make sure nobody has already done so before you."*
+
+⛔ Do not queue 148 art jobs and find out afterwards. Before filing ANY of them:
+- check `infrastructure/artpipe/done/` for an existing render per slug;
+- check the artpipe pending/queue for one already filed;
+- check whether a later wave already regenerated it under a different name.
+
+🔑 This is a standing rule here, not a one-off caution — duplicate art costs real
+generation time and produces two candidates nobody ruled between. Report the
+measured split (already done / already queued / genuinely owed) **before** filing.
+
+## The 29 fauna sizeBin rows — he asked to SEE them
+
+The item's own UNKNOWN. He has asked for the list, so this is now the immediate
+deliverable: which rows, what the sheet's `sizeBin` says, what the prefill said,
+what the live `bodySize` is now, and whether the Law-3 size scaling already
+consumed the difference. ⚠️ Until that is measured, **nothing in this channel is
+"orphaned" — it is UNMEASURED.** Do not present it as a finding.
