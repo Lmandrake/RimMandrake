@@ -19,9 +19,11 @@
   PYRELANDS_FIRE_WEB_COMMISSION_1 igniter builds, and the round-2 move-mapping
   import of Dalgo) — NOT re-derived or rescaled here. That JSON
   is the actual ruling; this file only wires it into the def the game reads.
-  The 14-animal sum is 4.21 — not the placeholder's ~5.8, a deliberate
-  consequence of using the owner's real per-species numbers rather than matching
-  the placeholder's total.
+  The 14-animal sum is 4.91 (RE-VERIFIED 2026-09-20 against the weights actually
+  written below) — not the placeholder's ~5.8, a deliberate consequence of using
+  the owner's real per-species numbers rather than matching the placeholder's
+  total. (This comment previously said 4.21, stale from before Dalgo's round-2
+  import and the PYRELANDS_DONOR_PORT_4 rename pass; nothing below changed.)
 
   ⚠️ The JSON records the owner's RULINGS, and several of its rows still name the
   donor defName that carried the ruled creature at the time he ruled. Every one
