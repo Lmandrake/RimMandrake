@@ -295,7 +295,53 @@ scope and matches the sheet closely.
    it under a read-only brief.
 
 ## the_cracked_lands.md
-(pending)
+
+Owed section (10 bullets) — this sheet is the best-tracked of the ten: most bullets carry
+their own named ledger ID already, and `RUT_CrackedLands.xml`'s own header comment gives
+an independent NOT-in-scope list that cross-checks cleanly against the sheet. Split into
+12 work items.
+
+**FILED and DONE** (verified via `show`, all `closed`/`done`):
+- `CONTAGION_BIOME_PLACEMENT_1` — Contagion peaks placement. Done.
+- `WORLD_RIVER_COLORS_1` — river gradient colouring. Done.
+- `SAND_SWIMMERS_MOD_1` — sand fishing. Done.
+- `FISH_BY_BIOME_1` → superseded by **`FISH_TYPES_PATCH_BUILD_1`** — done, fills the
+  Cracked Lands' `SandFishing_CrackedLands.xml` fishTypes explicitly.
+- `FLOOD_CANYON_BIOME_1` — the flood-as-engine-event (warning chimes, wall of water,
+  explosive growth) — done, closed 2026-09-12. This also satisfies the Owed bullet's
+  "water chimes" (its spec generalizes "the Cracked Lands chime mechanic").
+- **Def label rename** — done: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
+  RUT_CrackedLands.xml` exists, `<label>the Cracked Lands</label>`.
+- **Def-tails check on 985 tiles** — folded into `BIOME_OWNERSHIP_WAVE_1`'s own
+  authoring measurement: the def's header states 985 tiles as its MEASURED count at
+  authoring time (2026-09-09), matching the sheet's own SS0 figure post-Contagion-cut.
+  Treating as satisfied rather than a separate open check.
+
+**FILED, in progress:**
+- `EXPLOSIVE_PLANT_GROWTH_1` — state `doing`.
+- `FLOOD_WITNESS_EVENT_1` — state `doing`, BLOCKED on `FLOOD_CANYON_BIOME_1`'s
+  production arm (which is itself now closed per above — worth a fresh look at whether
+  this unblocks; not chasing further under a read-only brief).
+- `TREE_GRAPHICS_OWNERSHIP_1` — covers the "twisted trees" part of flora authoring
+  (same item already discussed under `arid_shrubland.md`), state `doing`, BLOCKED.
+
+**UNFILED (CONFIRMED):**
+- **Grasses and mosses** (the other two-thirds of "Flora authoring") — no ledger item
+  covers non-tree flora for this biome specifically. Searched `cracked lands grass`,
+  `cracked lands moss` — zero hits; only the tree piece is tracked.
+- **Discovery surveys and crack-wax as item defs** — searched `discovery survey`,
+  `crack-wax`, `crackwax` — zero hits anywhere in items, closed items, or `src/`.
+- **The bloom as item defs** (§10b's boom-bust crop economy) — searched `the bloom`
+  (in items/closed) — zero hits; only descriptive sheet text exists, no item-def build.
+- **The flier-commute vector line to the Desert sheet** ("where they nest") — searched
+  `flier-commute`, `vector line` — zero hits. `RUT_CrackedLands.xml`'s own header
+  independently lists this exact phrase ("the flier-commute vector line to the Desert
+  sheet") among its NOT-in-scope items, corroborating the ledger search.
+Ranking these below the desert/nightside/crags findings above: the biome's core
+identity (terrain, weather, fauna roster, the flood mechanism, fish, sand-fishing) is
+built and playable; what's missing is flavour/economy dressing (crack-wax, the bloom,
+discovery surveys) and one cross-biome connective detail (flier nesting), not a
+load-bearing mechanic.
 
 ## fall_line.md
 (pending)
