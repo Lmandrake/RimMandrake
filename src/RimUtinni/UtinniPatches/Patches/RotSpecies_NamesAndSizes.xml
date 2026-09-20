@@ -648,4 +648,21 @@
     </match>
   </Operation>
 
+
+  <!-- ============== v3 regen landings, 2026-09-20 (rejected v2 replaced) ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/AgariluxPrime</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/RecurvedStropharia</texPath></value>
+    </match>
+  </Operation>
+
 </Patch>

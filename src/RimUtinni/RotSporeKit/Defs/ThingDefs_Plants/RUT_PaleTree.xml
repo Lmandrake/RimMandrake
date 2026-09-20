@@ -27,12 +27,12 @@
     Wildsteam flavor is lore text only — no faction identifiers in the defNames
     (naming law, design/NAMING_SCHEME_PLAN.md).
 
-    Art landed 2026-09-20: PaleMoss is rot_palemoss_v2 (ROT_FLORA_FAUNA_VERDICTS_1).
-    PaleTree is rut_paletree_v1 (ROT_ART_WAVE_1) as an interim — the re-ruled
-    rot_paletree_v2 regen was rejected on quality (flat achromatic render, no
-    color fill) and rot_paletree_v3 is pending in the artpipe queue; land v3's
-    art over this file the same way once it clears review. Neither texPath
-    reuses the vanilla Royalty TreeAnima/Grass_Anima art any more.
+    Art landed 2026-09-20: PaleMoss is rot_palemoss_v2, PaleTree is
+    rot_paletree_v3 (both ROT_FLORA_FAUNA_VERDICTS_1) — rot_paletree_v2 was
+    rejected on quality (flat achromatic render, no color fill) and
+    rut_paletree_v1 (ROT_ART_WAVE_1) stood in as the interim until v3 cleared
+    review. Neither texPath reuses the vanilla Royalty TreeAnima/Grass_Anima
+    art any more.
 
     The vanilla `CompProperties_MeditationFocus` building-bonus block
     (`FocusStrengthOffset_BuildingDefs` naming `NatureShrine_Small`/
