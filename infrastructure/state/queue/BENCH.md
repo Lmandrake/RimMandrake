@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T23:04:00Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-20T23:34:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -203,7 +203,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -211,7 +211,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -392,16 +392,6 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Read every xenotype in src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/ and list the
 prose:    infrastructure/state/items/UNSUBSTANTIATED_SPECIES_ABILITIES_1.md
-
-## PYRELANDS_SOUTH_TOPDOWN_REGEN_1 Regenerate three top-down south facings caught by the new viewpoint gate: GR_Mantistanis (v5 south, drained unattended, never eyeballed), FurnaceBeast (2026-09-13 set), AA_FireWasp (v3 - canon check graded symmetry, not camera elevation). South = eye-level front; regen via artpipe painterly family, re-run facing_set_audit before wiring
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md
 
 ## PIT_SUPERDEEP_COLLAPSE_1 Collapse the pit onto the D/F primitive: a superdeep cell you cannot climb out of, a room for prisoner storage, a ladder that works like a prison door, a sluice gate that works like a door (owner ruling 2026-09-17)
 state:    proposed
@@ -613,16 +603,6 @@ thin:     no ## spec
 summary:  LIVEITEMGLOBDRIFT1 — the live-item glob is 18% not-live
 prose:    infrastructure/state/items/LIVE_ITEM_GLOB_DRIFT_1.md
 
-## DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1 The desert biome tables were deployed before the species they name - 18 dangling refs in the deployed game, mitigated by reverting the deployed copies; the joint deploy and a resolve-against-DEPLOYED selftest are still owed
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  DESERTTABLESDEPLOYEDAHEADOFSPECIES1 — tables shipped before the species
-prose:    infrastructure/state/items/DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1.md
-
 ## SPECIES_TRAITS_OVER_APTITUDES_1 Species character is being expressed as plus-or-minus skill aptitudes, which cannot carry nuance - the owner asks whether purpose-built traits would do it better
 state:    proposed
 row:      unassigned
@@ -662,3 +642,33 @@ kind:     design
 thin:     no ## spec
 summary:  FALLLINEARRIVALMECHANISM1 — build the Fall Line arrival delivery for the 15 species pulled from ambient wildA…
 prose:    infrastructure/state/items/FALL_LINE_ARRIVAL_MECHANISM_1.md
+
+## TITANOSLIME_SLIME_BIOME_1 Owner ask: a Titanoslime for RUT_Slime, devour-whole + grows-as-it-eats
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec
+summary:  TITANOSLIMESLIMEBIOME1 — owner ask: a titanic green slime for RUTSlime
+prose:    infrastructure/state/items/TITANOSLIME_SLIME_BIOME_1.md
+
+## STALE_VIVIFIED_WORLDMAP_CITED_1 design/Jawa/worldbuilding/biomes/fall_line.md and other biome docs cite ASHKARR_VIVIFIED_2026-08-24_tiles.csv, which is a pre-rename artifact: it disagrees with the canonical ASHKARR_WORLDMAP_tiles.csv on the biome key of 21,660 of 21,872 tiles and on the region name of 1,136 - anything built against its names matches nothing
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  1. Establish, in one line in the repo, which worldmap CSV is canonical and say so
+prose:    infrastructure/state/items/STALE_VIVIFIED_WORLDMAP_CITED_1.md
+
+## FALL_LINE_MAJOR_REGION_LABEL_1 Owner directive 2026-09-20: make the Fall Line a major world region with a beautiful clear label - all 71 Ash'karr world features sit at maxDrawSizeInTiles 10, the bottom of the engine's size curve, so no label on the planet reads as major; raise the Fall Line and LOOK
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FALL_LINE_MAJOR_REGION_LABEL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FALL_LINE_MAJOR_REGION_LABEL_1.md
