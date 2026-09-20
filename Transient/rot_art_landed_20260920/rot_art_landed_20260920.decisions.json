@@ -1,6 +1,6 @@
 {
   "posture": "blacklist",
-  "savedBy": "prefill-script",
+  "savedBy": "owner-verbal-approval",
   "decisions": {
     "RUT_LiveIngredient_AgelessCap": {
       "decision": "keep"
@@ -185,5 +185,11 @@
     "RSW_FungalWeevil": {
       "decision": "keep"
     }
-  }
+  },
+  "approvedBy": "owner",
+  "approvedAt": "2026-09-20T08:53:15-07:00",
+  "approvedSaid": "The rot art is approved.",
+  "approvalRoute": "Blanket approval in conversation, 2026-09-20, NOT row-by-row in the sheet. touchedBySheet was false and savedBy was 'prefill-script' at the moment of approval: every one of these 61 'keep' rows is the agent's own pre-fill, ratified wholesale by the owner's sentence. No row carries an individual owner judgement.",
+  "frozen": true,
+  "frozenMeaning": "Owner approved the whole Rot art wave 2026-09-20. Blacklist posture, so every row keeps. Reopen only on his word."
 }

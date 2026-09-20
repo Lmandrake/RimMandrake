@@ -25,6 +25,25 @@ cost of a careful in-place migration is now a cost we have chosen not to pay.
 working article for live tests right up to the remake, and a broken one still
 costs a load round. It is licence to stop *designing around* it.
 
+## 🔴 the world gets REPAINTED — owner, 2026-09-20
+
+Verbatim: *"Correct we will repaint the whole world when all the biomes are in.
+You don't need to keep rediscovering this."*
+
+🔑 **Biome assignment is redone at the repaint.** The hand-authored geography
+survives (see below); which BiomeDef sits on which tile does not have to be
+correct today.
+
+⇒ **A biome def with zero tiles is not a defect.** If a biome's content is wired
+to a def we own and that def is not painted on the world yet, that is the
+expected state until the repaint — `PYRELANDS_WRONG_BIOME_DEF_1` is the worked
+example, and it cost a full reconciliation pass to rediscover. Do not "fix" such
+a mismatch by repointing content at a donor def; that entrenches the donor and
+is backwards from the retirement work.
+
+⇒ **The repaint needs a paint list.** Every owned BiomeDef that must land on the
+map belongs in it. Build that list as biomes finish, not at the end.
+
 ## carried across the remake — the only three
 
 - **The worldmap** — the hand-authored Ash'karr planet, already saved out.

@@ -53,26 +53,35 @@ third gap of this shape found on 2026-09-20 — see `BLUE_DESERT_LIFE_AUTHORING_
 content shipped under a finished-looking mechanic). 🔑 **All three look correct
 from inside the mod and wrong from inside the game.**
 
-## spec — the ruling comes first
+## spec — RULED 2026-09-20, option B by way of the repaint
 
-⛔ **Do not start patching until the owner rules on the direction.** There are two,
-and they are not equivalent:
+Owner, verbatim: *"Correct we will repaint the whole world when all the biomes
+are in. You don't need to keep rediscovering this."*
 
-- **(A) Move the content** — repoint every Pyrelands patch at `ZBiome_Grasslands`,
-  and replace the donor's weather table rather than appending to it. Cheapest;
-  leaves the Pyrelands living inside a donor def named "Grasslands", which is
-  also a donor-retirement question.
-- **(B) Paint the real def** — put `RM_FE_Pyrelands` onto the world's Pyrelands
-  tiles via the bridge, the way every other authored biome was placed, and leave
-  the patches where they are. Keeps the def we own; costs a world-edit pass and a
-  live look.
+🔑 **So this is not a patch job. The content stays where it is.**
+`RM_FE_Pyrelands` is the def we OWN, the patches already target it, and the
+world repaint — which happens once every biome is in, as the last act before the
+first play session (`WORLD_REMAKE_FINAL_STEP_1`) — is what puts it on the map.
 
-🔑 B is the one that matches how the rest of the planet was authored, and it
-removes a donor def instead of entrenching one. But it touches the frozen world,
-so it is his call, not mine.
+⛔ **Do NOT repoint the Pyrelands patches at `ZBiome_Grasslands`.** That was
+option (A) and it is now the wrong move: it would entrench a More Vanilla Biomes
+donor def as our fire biome permanently, in the exact opposite direction from the
+donor retirement this whole wave is for.
 
-⚠️ Either way the two patch files must stop disagreeing about their target — the
-6-vs-1 split is how this hid.
+⛔ **Do not re-file this as a defect.** The zero-tile reading is CORRECT and
+EXPECTED until the repaint. Anyone measuring `RM_FE_Pyrelands` tiles before then
+will get 0 and it means nothing is wrong.
+
+**What IS still owed here**, and it is small:
+
+1. The two patch files must stop disagreeing about their target. `WildAnimals_Pyrelands.xml`
+   hits `RM_FE_Pyrelands` 6× and `ZBiome_Grasslands` 1×; `AshStorms_Pyrelands.xml`
+   hits only `ZBiome_Grasslands`. Everything Pyrelands should sit on
+   `RM_FE_Pyrelands`, so that the repaint delivers a complete biome in one move.
+2. Anything currently reaching the player only via `ZBiome_Grasslands` needs to
+   exist on `RM_FE_Pyrelands` too, or it will be missing after the repaint.
+3. Add the Pyrelands tiles to whatever the repaint pass uses as its source of
+   truth, so `RM_FE_Pyrelands` is actually in the paint list.
 
 ## verify
 
