@@ -1881,6 +1881,16 @@ def cmd_artifact(args, seat):
 
 
 # ---------------------------------------------------------------------------
+# lint — read-only checks over the repo, never a ledger write
+# ---------------------------------------------------------------------------
+def cmd_lint(args, seat):
+    if not args.citations:
+        die("`lint` needs --citations. It is the only lint there is.")
+    import citations_lint
+    return citations_lint.main()
+
+
+# ---------------------------------------------------------------------------
 # sweep — LISTS, NEVER DELETES
 # ---------------------------------------------------------------------------
 def cmd_sweep(args, seat):
@@ -2217,6 +2227,12 @@ def build_parser():
     s = add("sweep", "list stale TRANSIENT_* files. LISTS ONLY", cmd_sweep)
     s.add_argument("--transient", action="store_true")
 
+    s = add("lint", "read-only repo checks. LISTS ONLY, never writes the ledger",
+            cmd_lint)
+    s.add_argument("--citations", action="store_true",
+                   help="a doc may not cite a closed/dropped/superseded item "
+                        "as still live (DETERMINISM_ASSESSMENT.md SS8, C6)")
+
     s = add("artifact", "accept a new game artifact. DRY RUN unless --apply",
             cmd_artifact)
     s.add_argument("action", choices=["accept"])
@@ -2240,7 +2256,7 @@ def build_parser():
     return p
 
 
-READ_ONLY = ("show", "why", "sweep", "render", "reindex")
+READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex")
 
 
 # \u26d4 Bare assent is not an instruction. These are the words that mean "I agree
