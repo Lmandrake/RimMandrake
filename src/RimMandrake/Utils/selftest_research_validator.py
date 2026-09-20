@@ -209,7 +209,13 @@ def main():
            and "RimFridge_PowerFactorSetting" not in names(cycle_issues, rv.FAIL))
 
     # ---- check 7: co-writer awareness ---------------------------------------
-    rr_active = {"petetimessix.researchreinvented"}
+    # RESEARCH_TRIO_RETIRE_1, 2026-09-20: the RR_ splice onto vanilla Electricity
+    # is Stepping Stones' own patch (confirmed on disk in that submod's
+    # Patches_ResearchProjectDefs.xml), not the base RR mod's - the base
+    # packageId alone was gating this check and false-FAILed every run once
+    # Stepping Stones was correctly retired. Gate the fixture the same way the
+    # function now does.
+    rr_active = {"petetimessix.researchreinvented.steppingstones"}
     pass_issues = rv.check_resolved_dump(live, rr_active)
     expect("check7 co-writer: PASSes when Electricity carries the RR stamp",
            not any(i.level == rv.FAIL for i in pass_issues))
