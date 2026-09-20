@@ -810,7 +810,7 @@
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RSW_RimMandrakeSithKissaiPureblood_Kind</defName>
+    <defName>RSW_RimMandrakeSithKissai_Kind</defName>
     <label>Sith Kissai (Red Sith)</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -820,7 +820,7 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RSW_RimMandrakeSithKissaiPureblood>1.0</RSW_RimMandrakeSithKissaiPureblood>
+        <RSW_RimMandrakeSithKissai>1.0</RSW_RimMandrakeSithKissai>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>

@@ -141,7 +141,7 @@
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
     <defName>RSW_Jawa_Spawn_SithK</defName>
     <label>sith (kissai)</label>
-    <xenotypeSet><xenotypeChances><RSW_RimMandrakeSithKissaiPureblood>999</RSW_RimMandrakeSithKissaiPureblood></xenotypeChances></xenotypeSet>
+    <xenotypeSet><xenotypeChances><RSW_RimMandrakeSithKissai>999</RSW_RimMandrakeSithKissai></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
