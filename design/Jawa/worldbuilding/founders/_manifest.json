@@ -1,0 +1,58 @@
+[
+  {
+    "id": "Human632207",
+    "kindDef": "RSW_RimMandrakeJawa_Kind",
+    "name": "WimTwice-KinAteeka",
+    "is_human": true,
+    "file": "founder_WimTwice_KinAteeka_Human632207.xml"
+  },
+  {
+    "id": "Human470527",
+    "kindDef": "RSW_Jawa",
+    "name": "GrizThe HandsUtinn",
+    "is_human": true,
+    "file": "founder_GrizThe_HandsUtinn_Human470527.xml"
+  },
+  {
+    "id": "Human470530",
+    "kindDef": "RSW_Jawa",
+    "name": "YekuFirst-HatchedYeku",
+    "is_human": true,
+    "file": "founder_YekuFirst_HatchedYeku_Human470530.xml"
+  },
+  {
+    "id": "Human470524",
+    "kindDef": "RSW_Jawa",
+    "name": "TobbKeeperNkik",
+    "is_human": true,
+    "file": "founder_TobbKeeperNkik_Human470524.xml"
+  },
+  {
+    "id": "Human470521",
+    "kindDef": "RSW_Jawa",
+    "name": "NekkoCaptainVok",
+    "is_human": true,
+    "file": "founder_NekkoCaptainVok_Human470521.xml"
+  },
+  {
+    "id": "Human669116",
+    "kindDef": "RUT_Jawa_Colonist",
+    "name": "SekkiThe Long PotVosh",
+    "is_human": true,
+    "file": "founder_SekkiThe_Long_PotVosh_Human669116.xml"
+  },
+  {
+    "id": "AA_Eyeling669122",
+    "kindDef": "AA_Eyeling",
+    "name": "Marquee",
+    "is_human": false,
+    "file": "animal_Marquee_AA_Eyeling669122.xml"
+  },
+  {
+    "id": "RSW_Dewback669123",
+    "kindDef": "RSW_Dewback",
+    "name": "Geonosis",
+    "is_human": false,
+    "file": "animal_Geonosis_RSW_Dewback669123.xml"
+  }
+]

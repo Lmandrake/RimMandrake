@@ -1,0 +1,619 @@
+# Mod list active when CANONICAL_ASHKARR_START_2026-09-12.rws was saved (617 mods)
+# packageId | name
+zetrith.prepatcher	Prepatcher
+brrainz.harmony	Harmony
+mandrake.rm.loadtracer	Load Tracer (local)
+aleksey.betterstacktraces	Better Stacktraces
+ludeon.rimworld	Core
+ludeon.rimworld.royalty	Royalty
+ludeon.rimworld.ideology	Ideology
+ludeon.rimworld.biotech	Biotech
+ludeon.rimworld.anomaly	Anomaly
+ludeon.rimworld.odyssey	Odyssey
+krkr.rule56	[1.6] CAI 5000 - Advanced AI + Fog Of War (continued)
+mlie.nwnrealfogofwar	(NWN) Real Fog of War (Continued)
+owlchemist.cherrypicker	Cherry Picker
+aoba.framework	Fortified Features Framework
+vanillaexpanded.backgrounds	Vanilla Backgrounds Expanded
+thesepeople.ritualattachableoutcomes	Custom Ritual Framework
+adaptive.storage.framework	Adaptive Storage Framework
+redmattis.betterprerequisites	Big and Small - Framework
+smashphil.vehicleframework	Vehicle Framework
+imranfish.xmlextensions	XML Extensions
+unlimitedhugs.hugslib	HugsLib
+oskarpotocki.vanillafactionsexpanded.core	Vanilla Expanded Framework
+ebsg.framework	EBSG Framework
+04.23.2020	[1.1]TO[1.6]MultipleTraders
+ap.huntingmeme	[AP] Hunting Meme
+dizzy.candlesandmeditation	[Dizzy] Candles and Hidden Meditation
+hmc.wall.furniture	[HMC]Wall Furniture
+jm.disstynan	[JM]Disable Pseudo Translate 禁用泰南语
+zal.calltradeships	[KV] Call Trade Ships (Continued)
+lc.tammybee.selectablesculpturegraphic	[LC] Selectable Sculpture Graphic
+mingtuwuxiang.spacebasedecorative	[MUS]太空基地家具Space Base Furniture
+nals.facialanimation	[NL] Facial Animation - WIP
+mlie.rfrumorhasit	[RF] Rumor Has It.... (Continued)
+rh2.cpers.arrest.here	[RH2] CPERS: Arrest Here!
+cp.uncle.boris.used.furniture	[RH2] Uncle Boris' - Used Furniture
+sbz.neatstoragefridge	[sbz] Fridge
+sbz.gravshipstorage	[sbz] Gravship Storage
+sr.modrimworld.factionalwarcontinued	[SR]Factional War (fork)
+mlie.syrmoreslaves	[SYR] More Slaves (Continued)
+zav.glowstoneforked	[ZAV] Glowstone
+armoredampharos.fancyrats	AA FancyRats
+adaptive.ideology.storage	Adaptive Ideology Storage
+adaptive.primitivestorage	Adaptive Primitive Storage
+adaptive.simplestorage	Adaptive Simple Storage
+mlie.advancedbiomes	Advanced Biomes (Continued)
+ali.growodysseyplants	Ali's Grow All Odyssey Plants
+7f.alienworlds	Alien Worlds Framework
+andrewraphaellukasik.allowdeadanimals	Allow Dead Animals
+unlimitedhugs.allowtool	Allow Tool
+duz.almosttherefork	Almost There! Fork
+sarg.alphabiomes	Alpha Biomes
+sarg.alphamechs	Alpha Mechs
+sarg.alphamemes	Alpha Memes
+swablu.ambience	Ambient Rim
+vita.campdangers	Ancient Dangers on Campsites and Encounter maps
+xmb.ancientminingindustry.mo	Ancient mining industry
+aqued.dredgeaberrations	Aqued Dredge Aberrations
+asp.halituisamaricanous	Astronomy Style Pack
+kshtantrumsounds.mod	AuthenticTantrumNoises
+automatic.autolinks	Auto links
+fuu.autostriponhaul	Auto Strip on Haul
+mlie.beastsoftherim	Beasts of the Rim (Continued)
+elsov.beliar	Beliar Xenotype
+io.github.relvl.rimworld.bestapparel	BestApparel
+ionfrigate12345.coolandgoodambush	Better Ambushes Continued
+mlie.betterbeggars	Better Beggars (Continued)
+nephlite.advexplosions	Better Explosions
+arkymn.bettergrowthmoments	Better Growth Moments
+zal.betterinfestations	Better Infestations (Continued)
+madeline.modmismatchformatter	Better ModMismatch Window
+mlie.betterprojectileorigin	Better Projectile Origin
+jm.bettertraders	Better Traders
+chaoticenrico.bettertrees	Better Trees
+falconne.bwm	Better Workbench Management
+redmattis.biggergravship	Bigger Gravships (and other Odyssey spaceship related settings)
+kopp.biomecompatibilityproject	Biome Compatibility Project
+biomesteam.biomesfossils	Biomes! Fossils
+biomesteam.coreframework	Biomes! Framework
+zal.biomeskit	BiomesKit (Continued)
+bs.mbifvte	Bradson's Main Button Icons (Forked + Expanded)
+gulmadred.breedingritual	Breeding Ritual
+memegoddess.buildfrominventory	Build From Inventory - Continued
+8z.callforintel	Call For Intel
+brrainz.cameraplus	Camera+
+iforgotmysocks.caravanadventures	Caravan Adventures
+kapitanoczywisty.changemapedge	Change map edge limit
+void.charactereditor	Character Editor
+heatherathebyne.childrenlearnoncaravan	Children Learn on Caravan
+kearril.choosewheretoland	Choose Where To Land
+kikohi.coloreddeepresources	Colored deep resources
+petetimessix.compacthediffs	Compact Hediffs
+com.makeitso.configurabletechprints	Configurable Techprints
+cozyfire.velcroboy333	Cozy Fires
+heatherathebyne.craftingspotslavegear	Crafting Spot Slave Gear
+thumb.bettercremation	Cremation smelts apparels
+greg.customgastypes	Custom Gas Types
+hailuan.customquestframework	Custom Quest Framework
+costel.customroomnames	Custom Room Names
+dimonsever000.ideologyvirtues	Cybranian - Ideology Virtues
+east.dancepartycustommusic	Dance Party Custom Music
+van.beasts	Dark Ages : Beasts and Monsters
+van.dacrypts	Dark Ages : Crypts and Tombs
+darkestdungeon.incidentsounds	Darkest Dungeon Incident Sounds
+troopersmith1.deathrattle	Death Rattle Continued [1.2+]
+mlie.decorativecliffs	Decorative Cliffs (Continued)
+clown.dedicatedturrets	Dedicated Turrets
+gondragon.defensivepositions	Defensive Positions - Forked
+merthsoft.designatorshapes	Designator Shapes
+milkwater.destinymod	Destiny Exotic Weapons
+garwel.destroyitem	Destroy Item
+det.avaloi	Det's Xenotypes - Avaloi
+det.boglegs	Det's Xenotypes - Boglegs
+det.brawnum	Det's Xenotypes - Brawnum
+det.buzzers	Det's Xenotypes - Buzzers
+det.keshig	Det's Xenotypes - Keshig
+det.venators	Det's Xenotypes - Venators
+cometopapa.deteriorated	Deteriorable Filter
+lornath.diseaseimmunityprogresstracker	Disease Immunity Progress Tracker
+jecrell.doorsexpanded	Doors Expanded
+dubwise.dubspaintshop	Dub's Paint Shop
+dubwise.dubsbadhygiene.thirst	Dubs Bad Hygiene - Thirst
+dubwise.dubsbadhygiene.lite	Dubs Bad Hygiene Lite
+dubwise.dubsmintmenus	Dubs Mint Menus
+dubwise.dubsmintminimap	Dubs Mint Minimap
+dubwise.dubsrimkit	Dubs Rimkit
+blues.forge	Dynamic Effects Forge
+yourname.effigys.mod	Effigys - Terror Spikes
+carnysenpai.enableoversizedweapons	Enable Oversized Weapons
+nep.enginesunlimited	Engines Unlimited
+det.epochsincense	Epochs - Incense
+det.epochspyrinth	Epochs - Pyrinth
+keshash.extraexplosioneffects	Extra Explosion Effects
+eoralmilk.faceaddonframework	Face Addon Framework
+azravos.factioncustomizer	Faction Customizer
+mlie.factionraidcooldown	Faction Raid Cooldown (Continued)
+kosaro.fahrenheitandcelsius	Fahrenheit and Celsius
+tyrannidae.fancyratsplus	FancyRats+
+realify.firefoam	Firefoam poppers aren't ugly!
+kathanon.floatsubmenu	Float Sub-Menus
+temeez.floorlights2	Floor Lights 2
+aoba.fortress.neolithic	Fortifications - Neolithic
+m00nl1ght.geologicallandforms	Geological Landforms
+memegoddess.giddyup	Giddy-Up 2 - Continued
+lts.geg	Glowing eyes genes
+albion.goexplore	Go Explore!
+arcjc007.gravshipcrashes	Gravship Crashes
+arcjc007.gravshipexporter	Gravship Exporter
+sk.gravshipraids	Gravship Raids
+imagitama.rimworldgravshiprangeonmap	Gravship Range On Map
+grimterra.biomesmod	GRiNDTerra Biomes
+grimterra.terrainretexturemod	GRiNDTerra Terrain Retexture
+arti.shrinez	Guaranteed Ancient Dangers
+ael.tua.helmetsaddtoxresistance	High Tech Helmets Give Tox Gas Resistance
+elsov.highborn	Highborn Xenotype
+mlie.horrors	Horrors (Continued)
+hazn.huntingtraps	Hunting Traps
+hailuan.iwbb	I will be back
+amegakull.scvrole	Ideology Scavenger Role
+kxp.ideosymbolsasideograms	Ideology symbols as Ideograms
+llunak.moreprecepts	Ideology: More Precepts
+agentblac.makepawnsprisoners	Imprisonment On The Go! (Continued)
+mlie.incidentdisabler	Incident Disabler (Continued)
+koth.isid	Infestations Spawn in Darkness 1.6
+gravtide.mod	GravTide
+mandrake.rm.injections	RimMandrake: Structure Injections
+mandrake.rsw.injections	RimStarWars: Structure Injections
+mandrake.rut.injections	RimUtinni: Structure Injections
+mandrake.rm.ninefold	RimMandrake Ninefold (M0 — safe core)
+mandrake.rm.aftermath	RimMandrake: Aftermath
+mandrake.rm.visibility	RimMandrake: Colony Visibility
+mandrake.rm.graffiti	RimMandrake: Graffiti Framework
+mandrake.rm.sacredgraffiti	RimMandrake Sacred Marks
+mandrake.rm.inhabited	Inhabited (local)
+mandrake.rut.inhabited	RimMandrake: Utinni — Inhabited (Ash'karr)
+haecriver.injuredcarry	Injured Carry
+ferny.easycaravanformation	Instant Caravan
+turnovus.biotech.integratedgenes	Integrated Genes
+jaxe.bubbles	Interaction Bubbles
+mlie.interactionareasettings	Interaction-Area Settings
+glitchgoblin.invisibleconduitcont	Invisible Conduit Continued
+zal.ionweaponry	Ion Weaponry (Continued)
+mandrake.rut.plantgrowth	Jawa Plant Growth (local)
+mandrake.rsw.jawarules	Jawa Rules (local)
+jecrell.jecstools	JecsTools Unofficial 1.6 BETA
+kikohi.jewelry	Jewelry
+nep.landonanything	Land On Anything
+timuttie.justleavealready.fork.mitasamodel	Just Leave Already
+mlie.justputitoverthere	Just Put It Over There
+linnun.keepconverting	Keep Converting
+vaguelysexual.modpackageid.goeshere	Knick Knacks - Let your colonists decorate!
+mlie.largefactionbases	Large Faction Bases (Continued)
+zal.largeoutpost	Large Outpost (Continued)
+arcjc007.lasercannon	Laser Cannon
+costel.layeredapparel	Layered Apparel
+noneobsidiaexpansion.ledlightsstrip	LED Lights Strip
+juanlopez2008.lightsout	LightsOut
+mlie.linkablesettings	Linkable Settings
+dorbo.watersfx	LiquidSFX
+mlie.logafterdeferror	Log After Def Error (Continued)
+zylle.mapdesigner	Map Designer
+nozome.mapmodeframework	Map Mode Framework
+m00nl1ght.mappreview	Map Preview
+udon.masslovein	Mass Lovin'
+sirdarkelf.meaningfulencounters	Meaningful Encounters
+bonible.medievalmeleesounds	Medieval Melee Sounds
+mewn.medievalsigns	Medieval Signs
+mlie.mercerbackpacks	Mercer's Backpacks (Continued)
+flangopink.metalpipe	Metal Pipe
+flangopink.metalpipehorseshoe	Metal Pipe Horseshoe Replacement
+andromeda.milkyway	Milky Way
+rabiosus.minesight	Mine Sight
+cain.mineshaft	Mines 2.0
+erdelf.minifyeverything	MinifyEverything
+mlie.miningcoalertspeaker	MiningCo. Alert speaker (Continued)
+mlie.miningcodrillturret	MiningCo. DrillTurret (Continued)
+mlie.miningcomms	MiningCo. MMS (Continued)
+mlie.miningcospaceship	MiningCo. Spaceship (Continued)
+mlie.moevents	Mo'Events (Continued)
+mandrake.rut.scavengerevents	Jawa Scavenger Events
+hali.modifylandingtile	Modify Tiles at Game Start
+deadmano.moodalerts	Mood Alerts
+acutus.moodchainreaction	Mood Chain Reaction
+mlie.morefactioninteraction	More Faction Interaction (Continued)
+bichang.moresculpture	More Sculpture
+garryflowers.moreslaverystuff	More Slavery Stuff
+zylle.morevanillabiomes	More Vanilla Biomes
+tidal.morevanilla.textures	More Vanilla Textures
+morphsassorted.biotechretex	Morphs Assorted Biotech Retex
+snobi.mutatorworldicons	MutatorWorldIcons
+oblitus.mylittleplanet	My Little Planet
+radzerp.naturalpaths	Natural Paths
+zylle.nightlights	Night Lights
+nightmare.core	Nightmare Core
+dingo.noforcedslowdown	No Forced Slowdown
+mlie.nomissinggeneicons	No Missing Gene Icons
+edern.norandomapparelonideoedit	No Random Apparel on Ideology Edit
+jaeger972.nomadfreindlyquests	Nomad Friendly Quests
+avilmask.nonunopinata	Non uno Pinata (don't drop items)
+planetace.nondestructivegravlaunch	Non-Destructive Gravlaunch
+mehni.numbers	Numbers
+karew.orcclan	Orc Clan + Xenotype
+coolzie.oocreboost	Out of Combat ReBoost
+alleykat.persistentprecepts	Persistent Precepts
+mlie.perspectivebuildings	Perspective: Buildings (Continued)
+meltup.polyamorybeds.vanilla	Polyamory Beds (Vanilla Edition)
+xylthixlm.races.core	Posthuman Drift Core Mod
+mlie.preceptsandmemes	Precepts and Memes (Continued)
+m00nl1ght.unofficialupdates.preparelanding	Prepare Landing (Continued)
+ironscruff.primordialgeysers	Primordial Geysers
+mlie.prisonersshouldfearturrets	Prisoners Should Fear Turrets
+laureeeeeeeeeeeeeeen.shrooms	Psilocap Cultivation
+dawnsglow.qualcolor	Quality Colors (Continued)
+leo.raidprotectionfee	Raid Protection Fee
+ingendum.raiderswarmcompression	Raider Swarm Compression
+zal.randomgrowthchoices	RandomGrowthChoices (Continued)
+wemd.realisticdarknesslight	Realistic Darkness (Light)
+mlie.realistichumansounds	Realistic Human Sounds (Continued)
+mlie.recyclethis	Recycle This (Continued)
+reel.turretpipeline	Reel's Turret Pipeline
+mlie.relevantstatsindescription	Relevant Stats In Description
+petetimessix.researchreinvented	Research Reinvented
+scorpio.resourcedictionary	Resource Dictionary
+alma.tossem	Right Click to Toss Carried Pawn
+lingluo.cockroach	Rim cockroach
+sihv.rombonesport	Rim of Madness - Bones Unofficial Fix
+kilokio.rimai.framework	RimAI Framework
+brrainz.rimbridgeserver	RimBridgeServer
+dubwise.rimefeller	Rimefeller
+rimfridge.kv.rw	RimFridge: Now with Shelves!
+mlie.rimquest	RimQuest (Continued)
+deon.rimtek.core	RimTek Core
+sierra.rt.generaltraits	RimTraits - General Traits
+depscian.rimtunes	RimTunes
+mianreplicate.romanceandintimacyontherim	Romance & Intimacy On The Rim
+kupie.isjustdoingitlive.plzdonthateme.roofedscanning	Roofed Scanning 1.6
+ghost.rootsofrimworld	Roots of Rimworld
+memegoddess.runandgun	RunAndGun - Continued
+mandrake.rut.empirepursuit	Empire Pursuit — Survey Shadow
+rwnodetree.rwplanetatmosphere	RW - Planet Atmosphere
+moja.salvagerubble	Salvage Rubble
+plusblankplus.scenarioamenderfork	Scenario Amender [1.6 Fixed]
+hellrevenger.searchoption	Search Option
+avilmask.selfdyeing	Self Dyeing
+sensiblebedownership.1trickpwnyta	Sensible Bed Ownership
+boots.sensiblefactions	Sensible Factions
+flyingsloth.scfilthreducer	Sentience Catalyst Filth Rate Reducer
+shavius.medieval.flavour	Shavius's Medieval Flavour Pack
+spacemoth.showknowntechprints	Show Known Techprints
+dark.signs	Signs and Comments
+stokes.simplehoodcape	Simple Cape and Hood Retexture
+usgiyi.slaveoutfits	Slave Outfits [1.6]
+mlie.slaverebellionsimproved	Slave Rebellions Improved (Continued)
+astryl.sleepingbuddies	Sleeping Buddies
+hol.smeltpatch	Smelt More Stuff
+weilbyte.snapout	Snap Out!
+krelinos.socialexpfromtrade	Social Experience from Trade
+mlie.spaceworms	Space Worms (Continued)
+jpt.speakup	SpeakUp
+elshender.stackablechunks	Stackable Chunks
+balistafreak.standalonehotspring	Standalone Hot Spring
+mlie.starwarsanimalcollection	Star Wars Animal Collection (Continued)
+mandrake.rsw.mynockartoverride	Mynock Art Override
+mandrake.rsw.kreetleartoverride	Kreetle Art Override
+mandrake.rsw.lockjawartoverride	Lockjaw Art Override
+mandrake.rsw.horaxartoverride	Horax Art Override
+mandrake.rsw.fambaaartoverride	Fambaa Art Override
+mandrake.rsw.dragonsnakeartoverride	Dragonsnake Art Override
+mandrake.rsw.zakkegartoverride	Zakkeg Art Override
+mandrake.rsw.insectomorphartoverride	Insectomorph Art Override
+mandrake.rsw.rontoartoverride	Ronto Art Override
+mandrake.rsw.anoobaartoverride	Anooba Art Override
+mandrake.rsw.iriazartoverride	Iriaz Art Override
+mandrake.rsw.nunaartoverride	Nuna Art Override
+mandrake.rsw.dewbackartoverride	Dewback Art Override
+amoruch.rimworldstealingmod	Stealing Mod
+karshou.storagememory	Storage Memory
+mlie.storytellerenhanced	Storyteller Enhanced (Continued)
+mandrake.rm.strandedquest	RM_Stranded
+kas.strongerscaling	Stronger Quality Scaling (1.6)
+moistestwhale.stuffontablesforked	Stuff on Tables Forked
+gerrymon.stylizedslavecollar	Stylized Slave Collars and Headgears
+jellypowered.survivaltools	Survival Tools Reborn
+mlie.tabsorting	Tab-sorting
+ucp.tabletopdecorations	Tabletop Decorations
+summersausages2ttv.techlevelenforcement	Tech Level Enforcement
+sapiently.theyatomicmonsters	They! (Giant Ants)
+propickelz.tinkerbench	Tinkering Bench and Biohacking Station
+vlvop.tormentmaster.expansion	Torment Master
+tsa.torturepod	Torture Pod
+smashphil.dropspot	Trade Ships Drop Spot
+hobtook.tradeui	Trade UI Revised
+mlie.tradeabletrinkets	Tradeable Trinkets (Continued)
+automatic.traderships	Trader ships
+kearril.tradingoptionscontinue	Trading Options Continue
+aelanna.transparentsubstructure	Transparent Substructure
+xercaine.tribal.furniture	Tribal Furniture
+geojak.tributedemand	Tribute Demand
+ferny.triumphantresearch	Triumphant Research
+trouperton.trystantravellersshuttleschematics	Trystan Traveller's Shuttle Schematics
+error277.tunneler.expanded	Tunneler Expanded
+marvinkosh.ughyougotme	Ugh You Got Me
+madarauchiha.undraftaftertucking	Undraft After Tucking
+universalpregnancy.1trickpwnyta	Universal Pregnancy
+nephlite.orbitaltradecolumn	Utility Columns
+sirvan.mwretextured	Van's Retexture : Melee Weapons
+sirvan.steelretexture	Van's Retexture : Steel
+vanillaexpanded.vappe	Vanilla Apparel Expanded
+vanillaexpanded.vaeaccessories	Vanilla Apparel Expanded — Accessories
+vanillaexpanded.vanillabackstoriesexpanded	Vanilla Backstories Expanded
+vanillaexpanded.vbrewe	Vanilla Brewing Expanded
+vanillaexpanded.vcooke	Vanilla Cooking Expanded
+vanillaexpanded.vee	Vanilla Events Expanded
+oskarpotocki.vfe.insectoid2	Vanilla Factions Expanded - Insectoids 2
+oskarpotocki.vfe.tribals	Vanilla Factions Expanded - Tribals
+vanillaexpanded.vfecore	Vanilla Furniture Expanded
+vanillaexpanded.vfearchitect	Vanilla Furniture Expanded - Architect
+vanillaexpanded.vfeart	Vanilla Furniture Expanded - Art
+vanillaexpanded.vfefactory	Vanilla Furniture Expanded - Factory
+vanillaexpanded.vfefarming	Vanilla Furniture Expanded - Farming
+vanillaexpanded.vfemedical	Vanilla Furniture Expanded - Medical Module
+vanillaexpanded.vfepower	Vanilla Furniture Expanded - Power
+vanillaexpanded.vfeproduction	Vanilla Furniture Expanded - Production
+vanillaexpanded.vfepropsanddecor	Vanilla Furniture Expanded - Props and Decor
+vanillaexpanded.vfesecurity	Vanilla Furniture Expanded - Security
+vanillaexpanded.vfespacer	Vanilla Furniture Expanded - Spacer Module
+vanillaexpanded.gravship	Vanilla Gravship Expanded - Chapter 1
+vanillaexpanded.helixiengas	Vanilla Helixien Gas Expanded
+vanillaexpanded.viehar	Vanilla Ideology Expanded - Hats and Rags
+vanillaexpanded.ideo.relicsandartifacts	Vanilla Ideology Expanded - Relics and Artifacts
+vanillaexpanded.vexploratione	Vanilla Landmarks Expanded
+vanillaexpanded.outposts	Vanilla Outposts Expanded
+vanillaquestsexpanded.ancients	Vanilla Quests Expanded - Ancients
+vanillaquestsexpanded.cryptoforge	Vanilla Quests Expanded - Cryptoforge
+vanillaquestsexpanded.generator	Vanilla Quests Expanded - The Generator
+vanillaracesexpanded.archon	Vanilla Races Expanded - Archon
+vanillaracesexpanded.fungoid	Vanilla Races Expanded - Fungoid
+vanillaracesexpanded.genie	Vanilla Races Expanded - Genie
+vanillaracesexpanded.phytokin	Vanilla Races Expanded - Phytokin
+vanillaracesexpanded.saurid	Vanilla Races Expanded - Saurid
+vanillaracesexpanded.starjack	Vanilla Races Expanded - Starjack
+gravenwitch.vsrexamined	Vanilla Skills Rexamined
+vanillaexpanded.vanillatradingexpanded	Vanilla Trading Expanded
+vanillaexpanded.vanillatraitsexpanded	Vanilla Traits Expanded
+vanillaexpanded.vwe	Vanilla Weapons Expanded
+vanillaexpanded.vwems	Vanilla Weapons Expanded - Makeshift
+gabrieel1482.raidvehicleframework	VehicleRaid Framework
+ninagoblin.visitsettlements	Visit Settlements
+addvans.walktheworld	Walk the World
+ogliss.g223.wanderingcaravans	Wandering Caravans
+addvans.wasdedpawn	WASDed Pawn
+sl4vp0wer.weareunited	We Are United
+aelanna.weaponracks	Weapon Racks
+bodlosh.weaponstats	WeaponStats
+revolus.whatsmissing	What's Missing?
+co.uk.epicguru.whatsthatmod	What's That Mod
+winggar.meaningfulparties	Wing's Meaningful Parties
+tleno.wireheadstyle	Wirehead Style
+fluffy.worktab	Work Tab
+zal.worldmapenhanced	World Map Enhanced (Continued)
+ferny.worldbuilder	Worldbuilder
+funkyshit.mods.worldedit.alpha	WorldEdit 2.0
+bs.xenotypespawncontrol	Xenotype Spawn Control
+mlie.yayoscaravan	Yayo's Caravan (Continued)
+mlie.yayoscombat3	Yayo's Combat 3 (Continued)
+mlie.yayosmeteor	Yayo's Meteor (Continued)
+btd.remix.gravshipblueprints	[BTD] Gravship Blueprints
+lazyfridaystudio.genesexpandedeyes	[LFS] Genes Expanded - Eyes
+nals.facialanimationexperimentals	[NL] Facial Animation - Experimentals
+7f.alienworlds.tidallylocked	Alien Worlds - Tidally Locked
+sarg.alphaanimals	Alpha Animals
+mandrake.rut.frostmiteartoverride	Frostmite Art Override
+xmb.ancienturbanruins.mo	Ancient urban ruins
+mandrake.rut.ashkarrlandmarkart	Ash'karr Landmark Art
+mandrake.rut.ishkolandmarks	RimUtinni: Ishko's Dark Landmarks
+groovytaco.beltextractors	Belt Extractors - VFE Factory Patch
+maal.bettertreesmod	Better Trees: More Djeeshka Like Textures
+m00nl1ght.geologicallandforms.biometransitions	Biome Transitions
+biomesteam.biomescore	Biomes! Core
+neronix17.retexture.charactereditor	Character Editor Retextured
+qux.comigo.bettertreesmod	Comigo - A Better Trees Mod
+hailuan.customquestframeworkai	Custom Quest Framework-Level AI
+mlie.dungeonpack	Dungeon Pack (Continued)
+vesper.egihologramsandprojectors	EGI Holograms and Projectors
+jaeger972.factionterritories	Faction Territories and Vassalage
+aoba.fortress.industrial	Fortifications - Industrial
+sd.fa.geneticheadsframework	Genetic Heads Framework for [NL] Facial Animation
+gmmp.dungeon	Gerrymon's Misc Props: Dungeon
+zal.gianttoads	Giant Toads (Continued)
+grimterra.worldmap	GRimTerra World Map
+who.vfee.isopodageneline	Insectoids 2 - Isopoda geneline
+icepickgma.invisibledisplaycase	Invisible Display Case Continued
+mandrake.rsw.jawavoice	JawaVoice (SpeakUp reskin)
+neku.largepawns	Large Pawns
+lwm.deepstorage	LWM's Deep Storage
+smxrez.makeshiftreexamined	Makeshift: Re-Examined
+zacharyfoster.mineralsframework	Minerals Framework
+mandrake.rsw.cuisine	RimStarWars: Cuisine
+sinnamon.moreritualrewards	More Ritual Rewards
+zal.moreutilitypacks	More Utility Packs (Continued)
+andromeda.niceresearchtab	Nice Research Tab
+mandrake.rm.planetpresetprime	Planet Preset Prime (local)
+xylthixlm.races.titan	Posthuman Drift Titan Xenotype
+mlie.preceptsandmemesritualsmodule	Precepts and Memes - Rituals module (Continued)
+lambda.psykshroom	Psyshrooms
+ogliss.thewhitecrayon.quarry	Quarry
+regrowth.botr.core	ReGrowth 2
+memegoddess.replacestuff	Replace Stuff - Continued
+aw.researchreinvented.retextured	Research Reinvented Retextured
+kilokio.rimai.core	RimAI Core (BETA)
+jaxe.rimhud	RimHUD
+zal.spaceports	Rimsential - Spaceports (Continued)
+co.uk.epicguru.factionloadout	Rimsential - Total Control: Continued
+deon.rimtek.digipal	RimTek DigiPal
+deon.rimtek.docmate	RimTek DocMate
+telardo.romanceontherim	Romance On The Rim
+kathanon.searchablemenus	Searchable Menus
+mlie.showmeyourhands	Show Me Your Hands
+scherub.stonecuttingextended	Stonecutting Extended
+cyanobot.toddlers	Toddlers
+vanillaexpanded.vchemfuele	Vanilla Chemfuel Expanded
+vanillaexpanded.vcookestews	Vanilla Cooking Expanded - Stews
+kuhlyus.modpatch.vanillaoutpost	Vanilla Mining Outpost Patch
+mrhydralisk.voeadditionaloutposts	Vanilla Outposts Expanded: Additional Outposts
+vanillaexpanded.vwel	Vanilla Weapons Expanded - Laser
+arcjc007.wallstuff	WallStuff
+fourtoo.glowingbush	[42G]Glowing Bushes | Fork by [ETF]
+kyzy.shipwallenhanced	[kyzy] Ship Wall Enhanced
+daria40k.alphaanimalspatchoutposts	Alpha Animals Patch for Outposts Mines
+ks.aaretextured	Alpha Animals Retextured
+sarg.alphagenes	Alpha Genes
+meteores.ancienturbanruinsalldeconstructible.aurad	Ancient Ruins All Deconstructible
+mandrake.rm.environmentalhazards	RimMandrake: Environmental Hazards Kit
+mandrake.rm.weathersuite	RimMandrake: SW — Weather Suite
+mandrake.rut.rotsporekit	RimUtinni: Rot Spore Kit
+zal.comigogreaterswamps	Comigo's Greater Swamps (Continued)
+mlie.functionalvanillaexpandedprops	Functional Vanilla Expanded Props (Continued)
+sd.fa.geneticheadsbiotech	Genetic Biotech for Facial Animation
+sd.fa.geneticheadsmods	Genetic Mods for Facial Animation
+erdelf.humanoidalienraces	Humanoid Alien Races
+zacharyfoster.mineralsfrozen	Minerals Frozen
+zacharyfoster.mineralsrock	Minerals Rock
+zacharyfoster.mineralssparkle	Minerals Sparkle
+mehni.pickupandhaul	Pick Up And Haul
+avius.prisonlabor	Prison Labor
+reel.facialanims	Reel's Facial Animation Textures
+oskarpotocki.vfe.pirates	Vanilla Factions Expanded - Pirates
+vanillaexpanded.vmemese	Vanilla Ideology Expanded - Memes and Structures
+vanillaexpanded.skills	Vanilla Skills Expanded
+sd.fa.reelsadjustments	Adjustments for Reel's Facial Animation Textures
+opa.allspecialistscanwork	All Specialists Can Work
+sarg.alphaskills	Alpha Skills
+meteores.ancienturbanruinsvanillaloot.aurvl	Ancient Urban Ruins Hit Point
+chezhou.chezhoulib.lib	ChezhouLib
+broms.deeporbit	Deep Orbit
+teiwaz.gtgtradercore	GTG Trader Core
+keyz182.keyzallowutilities	Keyz' Allow Utilities
+toastyman.moreritualseats	More Ritual Seats
+sugarcube.puahsharedstorage	Pick Up And Haul - Shared Storage Access
+legator.prisonerrealism	Prisoner Realism
+font.rimesis	Rimesis
+petetimessix.simplesidearms	Simple sidearms
+tribeagle.simpleslaverycollars	Simple Slavery Collars
+neronix17.toolbox	Tabula Rasa
+vanillaexpanded.vgeneticse	Vanilla Genetics Expanded
+mandrake.rut.spidercatartoverride	Spidercat Art Override
+mandrake.rut.gritheartoverride	Grithe Art Override
+mandrake.rut.gruttartoverride	Grutt Art Override
+vanillaexpanded.vtexe.facialanims	Vanilla Textures Expanded - [NL] Facial Animation
+oskarpotocki.vanillavehiclesexpanded	Vanilla Vehicles Expanded
+dmp.vfepirates.warcasketwork	VFE Pirates - Hardworking Warcaskets
+aoba.warcasket	WarCasket Expanded
+divinederivative.romance	Way Better Romance
+teiwaz.taajg	[GTG]Traders Accept All Junk Gear
+teiwaz.tacac	[GTG]Traders Accept Chunks & Corpses
+brrainz.achtung	Achtung!
+sd.fa.vteadjustments	Adjustments for Vanilla Textures Expanded - [NL] Facial Animation
+sarg.alphavehiclesneolithic	Alpha Vehicles - Neolithic
+kem.beardadjustment	Beard Adjustment
+redmattis.bigsmall.core	Big and Small - Genes & More
+lovelydovey.sex.witheuterpe	Intimacy - Friends n' Lovers
+chezhou.creature.sandworm	LEVIATHANS:SANDWORM
+mandrake.rut.longhunger	RimUtinni: The Long Hunger
+neronix17.outerrim.core	Outer Rim - Core
+neronix17.outland.genetics	Outland - Genetics
+neronix17.shieldgenerators	Shield Generators
+redmattis.optional	Big and Small - Enable All Optional Content
+redmattis.bigsmall	Big and Small - Races
+redmattis.bigweapons	Big and Small - Weapons
+avilmask.commonsense	Common Sense
+mandrake.rsw.desertvehiclereskin	Desert Vehicle Reskin — Alpha Vehicles Neolithic
+lovelydovey.sex.withrosaline	Intimacy - Gender Works
+lovelydovey.recreation.witheuterpe	Intimacy - Socio Butterfly
+leutiankane.mineablesor	LK Mineable Resources Outer Rim
+leutiankane.mines2patchouterrim	LK Mines 2.0 Compatability[Outer Rim Core]
+neronix17.outerrim.furnitureanddecor	Outer Rim - Furniture & Decor
+neronix17.outerrim.galacticempire	Outer Rim - Galactic Empire
+neronix17.outerrim.rebelalliance	Outer Rim - Rebel Alliance
+jelheb.rusticmealretexture	Rustic Meal Retexture
+frozensnowfox.complexjobs	[FSF] Complex Jobs
+dubwise.dubsbreakmod	Dubs Break Mod
+danzinagri.facialanimationcompatabilityproject	Facial Animation Compatability Project
+mandrake.rut.doctrine	Jawa Doctrine Patches
+taranchuk.performanceoptimizer	Performance Optimizer
+co.uk.epicguru.meleeanimation	Melee Animation
+lordfelix.rimcontrol	Rim Control
+meathax.showmeyourtools	Show Me Your Tools - Forked
+lee.theforce.lightsaber	Star Wars : The Force - Lightsaber
+mandrake.rsw.starwarsraces	RimMandrake - Star Wars Races
+mandrake.rsw.armoury	Jawa Armoury Rebalance
+mandrake.rm.proximityhatch	RimMandrake: Proximity Hatch
+mandrake.rm.creaturebehaviors	RimMandrake: Creature Behaviors
+mandrake.rsw.swbestiary	RimMandrake: SW — Bestiary
+mandrake.rsw.gizkastowaway	RimMandrake: SW — Gizka Stowaway
+mandrake.rm.shipvermin	RimMandrake: Ship Vermin
+mandrake.rsw.shokk	RimMandrake: SW — Shokk
+mandrake.rm.greentide	RimMandrake: Greentide
+mandrake.rsw.ionweapons	Jawa Ion Weapons (local)
+mandrake.rut.shipmemory	RimUtinni: Ship Memory — the Chains Below
+mandrake.rut.antiquities	Antiquities
+mandrake.rut.rites	The Rites
+mandrake.rut.researchretag	Research Retag
+zylle.sandcastles	Sand Castles
+mandrake.rm.patches	RimMandrake Patches
+mandrake.rsw.patches	RimStarWars Patches
+mandrake.rut.patches	RimUtinni Patches (Jawa campaign)
+mandrake.rut.lanterndeeps	RimUtinni: Lantern Deeps
+mandrake.rut.pawnflavor	Jawa Pawn Flavor — faction backstories and traits
+btd.gbp.shippack.kotor.vge	[BTD] Ship Pack: KotOR Ships VGE
+mandrake.rsw.droidworks	Droidworks
+mandrake.rut.droidrepairjobs	RimUtinni: Droid Repair Jobs
+mandrake.rm.wreckedmachines	Wrecked Machines
+mandrake.rm.pyrelands	Pyrelands
+mandrake.rut.pyrelandsmechanics	RimMandrake: Utinni — Pyrelands Mechanics
+mandrake.rm.movingdunes	Moving Dunes
+mandrake.rm.flowworks	RimMandrake: FlowWorks
+mandrake.rm.oracle	RimMandrake: Oracle
+mandrake.rm.property	RimProperty
+mandrake.rm.rimdefdump	RimDefDump (local tooling)
+mandrake.rut.birthhatchdemo	RimMandrake: Utinni — Birth & Hatch Demo
+arandomkiwi.rimthemes	RimThemes
+mandrake.rut.menushell	RimUtinni: Menu Shell
+mandrake.rut.shokkweaveeconomy	RimUtinni: Shokkweave Economy
+mandrake.rut.rustcathedralroaches	RimMandrake: Utinni — Rust Cathedral Roaches
+mandrake.rm.gravshiplanding	RimMandrake: Gravship Landing Reveal
+mandrake.rm.pits	RimMandrake Pits
+rw.mod.simplestairs	SimpleStairs (Fork)
+kutte.stairs	Simple Visual Stairs
+mandrake.rsw.dalgoartoverride	Dalgo Art Override
+mandrake.rsw.gizkaartoverride	Gizka Art Override
+mandrake.rsw.grankartoverride	Grank Art Override
+mandrake.rsw.greaterkraytdragonartoverride	Greater Krayt Dragon Art Override
+mandrake.rsw.hawkbatartoverride	Hawk-bat Art Override
+mandrake.rsw.kinrathartoverride	Kinrath Art Override
+mandrake.rsw.ollopomartoverride	Ollopom Art Override
+mandrake.rsw.orrayartoverride	Orray Art Override
+mandrake.rsw.pekopekoartoverride	Peko-Peko Art Override
+mandrake.rsw.shiroartoverride	Shiro Art Override
+mandrake.rsw.vornskyrartoverride	Vornskyr Art Override
+mandrake.rsw.whisperbirdartoverride	Whisperbird Art Override
+mandrake.rsw.wyyyschokkartoverride	Wyyyschokk Art Override
+mandrake.rsw.zeerartoverride	Zeer Art Override
+mandrake.rut.acanthamoebagigantealargeartoverride	AcanthamoebaGiganteaLarge Art Override
+mandrake.rut.agaripodartoverride	Agaripod Art Override
+mandrake.rut.bloodshrimpartoverride	BloodShrimp Art Override
+mandrake.rut.bumbledroneartoverride	Bumbledrone Art Override
+mandrake.rut.bumbledronehierophantartoverride	BumbledroneHierophant Art Override
+mandrake.rut.greengooartoverride	GreenGoo Art Override
+mandrake.rut.mantistanisartoverride	Mantistanis Art Override
+mandrake.rut.mycoidcolossusartoverride	MycoidColossus Art Override
+mandrake.rut.raptorshrimpartoverride	RaptorShrimp Art Override
+mandrake.rut.rimclawartoverride	Rimclaw Art Override
+mandrake.rut.shadowchargerartoverride	Shadow Charger Art Override
+mandrake.rut.targuzzlerartoverride	TarGuzzler Art Override
+mandrake.rut.terramorphartoverride	Terramorph Art Override
+mandrake.rut.thermadonartoverride	Thermadon Art Override
+mandrake.rut.thunderoxartoverride	Thunderox Art Override
+mandrake.rut.wildpodartoverride	Wildpod Art Override

@@ -1,0 +1,550 @@
+<!-- Extracted verbatim from CANONICAL_ASHKARR_START_2026-09-12.rws map.things <li Class="Pawn"> for pawn id=RSW_Dewback669123. See README.md for provenance and round-trip caveats. -->
+<li Class="Pawn">
+  <def>RSW_Dewback</def>
+  <id>RSW_Dewback669123</id>
+  <map>0</map>
+  <pos>(179, 0, 136)</pos>
+  <faction>Faction_21</faction>
+  <questTags IsNull="True" />
+  <spawnedTick>126811</spawnedTick>
+  <despawnedTick>-1</despawnedTick>
+  <customizationData IsNull="True" />
+  <seenByPlayer>True</seenByPlayer>
+  <AIAgentData.0>
+    <enemies.1 />
+    <allies.1 />
+  </AIAgentData.0>
+  <duties2>
+    <pawn>Thing_RSW_Dewback669123</pawn>
+    <curCustomDuty3 IsNull="True" />
+    <queue4 />
+  </duties2>
+  <abilities2 />
+  <OriginMap>null</OriginMap>
+  <isEnabled>True</isEnabled>
+  <disabled>True</disabled>
+  <ThingsHauledToInventory />
+  <EscapeTracker>
+    <Timer />
+  </EscapeTracker>
+  <targetHolder>null</targetHolder>
+  <lastStudiedTick>-9999999</lastStudiedTick>
+  <fertilizedBy>null</fertilizedBy>
+  <kindDef>RSW_Dewback</kindDef>
+  <name Class="NameSingle">
+    <name>Geonosis</name>
+  </name>
+  <deadlifeDustFaction>null</deadlifeDustFaction>
+  <mindState>
+    <meleeThreat>null</meleeThreat>
+    <enemyTarget>null</enemyTarget>
+    <knownExploder>null</knownExploder>
+    <lastMannedThing>null</lastMannedThing>
+    <droppedWeapon>null</droppedWeapon>
+    <lastAttackedTarget>(0, 0, 0)</lastAttackedTarget>
+    <thinkData>
+      <keys />
+      <values />
+    </thinkData>
+    <lastEngageTargetTick>-99999</lastEngageTargetTick>
+    <lastAttackTargetTick>-99999</lastAttackTargetTick>
+    <canFleeIndividual>True</canFleeIndividual>
+    <lastMeleeThreatHarmTick>-99999</lastMeleeThreatHarmTick>
+    <nextMoveOrderIsWait>False</nextMoveOrderIsWait>
+    <duty IsNull="True" />
+    <mentalStateHandler>
+      <curState IsNull="True" />
+    </mentalStateHandler>
+    <mentalBreaker />
+    <mentalFitGenerator />
+    <inspirationHandler>
+      <curState IsNull="True" />
+    </inspirationHandler>
+    <priorityWork>
+      <prioritizedCell>(-1000, -1000, -1000)</prioritizedCell>
+      <prioritizeTick>126811</prioritizeTick>
+    </priorityWork>
+    <lastSelfTendTick>-99999</lastSelfTendTick>
+    <breachingTarget IsNull="True" />
+    <babyAutoBreastfeedMoms>
+      <keys />
+      <values />
+    </babyAutoBreastfeedMoms>
+    <babyCaravanBreastfeed>
+      <keys />
+      <values />
+    </babyCaravanBreastfeed>
+    <resurrectTarget IsNull="True" />
+    <lastRangedHarmTick>0</lastRangedHarmTick>
+  </mindState>
+  <jobs>
+    <curJob IsNull="True" />
+    <curDriver IsNull="True" />
+    <jobQueue>
+      <jobs />
+    </jobQueue>
+    <formingCaravanTick>-1</formingCaravanTick>
+  </jobs>
+  <stances>
+    <stunner>
+      <showStunMote>True</showStunMote>
+      <adaptationTicksLeft>
+        <keys />
+        <values />
+      </adaptationTicksLeft>
+    </stunner>
+    <stagger />
+    <curStance Class="Stance_Mobile" />
+  </stances>
+  <infectionVectors IsNull="True" />
+  <verbTracker>
+    <verbs>
+      <li Class="Verb_MeleeAttackDamage">
+        <loadID>Thing_RSW_Dewback669123_0_Smash</loadID>
+        <currentTarget>(0, 0, 0)</currentTarget>
+        <currentDestination>(0, 0, 0)</currentDestination>
+        <lastShotTick>-999999</lastShotTick>
+        <canHitNonTargetPawnsNow>True</canHitNonTargetPawnsNow>
+        <MVCF_ManagedVerb>
+          <enabled>True</enabled>
+          <loadId>Thing_RSW_Dewback669123_0_Smash_Managed</loadId>
+        </MVCF_ManagedVerb>
+      </li>
+      <li Class="Verb_MeleeAttackDamage">
+        <loadID>Thing_RSW_Dewback669123_1_Smash</loadID>
+        <currentTarget>(0, 0, 0)</currentTarget>
+        <currentDestination>(0, 0, 0)</currentDestination>
+        <lastShotTick>-999999</lastShotTick>
+        <canHitNonTargetPawnsNow>True</canHitNonTargetPawnsNow>
+        <MVCF_ManagedVerb>
+          <enabled>True</enabled>
+          <loadId>Thing_RSW_Dewback669123_1_Smash_Managed</loadId>
+        </MVCF_ManagedVerb>
+      </li>
+    </verbs>
+  </verbTracker>
+  <natives>
+    <verbTracker>
+      <verbs IsNull="True" />
+    </verbTracker>
+  </natives>
+  <meleeVerbs>
+    <curMeleeVerb>Verb_Thing_RSW_Dewback669123_1_Smash</curMeleeVerb>
+    <curMeleeVerbUpdateTick>126811</curMeleeVerbUpdateTick>
+    <terrainVerbs IsNull="True" />
+  </meleeVerbs>
+  <rotationTracker />
+  <pather>
+    <moving>False</moving>
+    <nextCell>(176, 0, 134)</nextCell>
+    <nextCellCostInitial>1</nextCellCostInitial>
+    <lastEnteredCellTick>126811</lastEnteredCellTick>
+  </pather>
+  <carryTracker>
+    <innerContainer>
+      <maxStacks>1</maxStacks>
+      <innerList />
+    </innerContainer>
+  </carryTracker>
+  <apparel IsNull="True" />
+  <story IsNull="True" />
+  <equipment IsNull="True" />
+  <drafter IsNull="True" />
+  <ageTracker>
+    <ageBiologicalTicks>51983342</ageBiologicalTicks>
+    <birthAbsTicks>-51791531</birthAbsTicks>
+    <growth>1</growth>
+    <nextGrowthCheckTick>127051</nextGrowthCheckTick>
+    <ageReversalDemandedAtAgeTicks>91980000</ageReversalDemandedAtAgeTicks>
+    <lifeStageChange>True</lifeStageChange>
+  </ageTracker>
+  <healthTracker>
+    <beCarriedByCaravanIfSick>False</beCarriedByCaravanIfSick>
+    <hediffSet>
+      <hediffs />
+    </hediffSet>
+    <surgeryBills>
+      <bills />
+    </surgeryBills>
+    <immunity>
+      <imList />
+    </immunity>
+  </healthTracker>
+  <records>
+    <records>
+      <vals>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+      </vals>
+    </records>
+    <battleActive>null</battleActive>
+  </records>
+  <inventory>
+    <itemsNotForSale />
+    <unpackedCaravanItems />
+    <innerContainer>
+      <innerList />
+    </innerContainer>
+  </inventory>
+  <filth>
+    <carriedFilth />
+  </filth>
+  <roping>
+    <hitchingPostInt>null</hitchingPostInt>
+    <ropees />
+  </roping>
+  <needs>
+    <needs>
+      <li Class="Need_Food">
+        <def>Food</def>
+        <curLevel>2.03963518</curLevel>
+        <lastNonStarvingTick>126811</lastNonStarvingTick>
+      </li>
+      <li Class="Need_Rest">
+        <def>Rest</def>
+        <curLevel>0.924477816</curLevel>
+      </li>
+    </needs>
+  </needs>
+  <guest IsNull="True" />
+  <guilt IsNull="True" />
+  <royalty IsNull="True" />
+  <social>
+    <directRelations />
+    <virtualRelations />
+    <relativeInvolvedInRescueQuest>null</relativeInvolvedInRescueQuest>
+    <pregnancyApproaches>
+      <keys />
+      <values />
+    </pregnancyApproaches>
+    <romanceEnableTick>-1</romanceEnableTick>
+    <additionalPregnancyApproachData>
+      <partners>
+        <keys />
+        <values />
+      </partners>
+    </additionalPregnancyApproachData>
+  </social>
+  <psychicEntropy>
+    <limitEntropyAmount>True</limitEntropyAmount>
+  </psychicEntropy>
+  <shambler IsNull="True" />
+  <ownership>
+    <ownedBed>null</ownedBed>
+    <assignedMeditationSpot>null</assignedMeditationSpot>
+    <assignedGrave>null</assignedGrave>
+    <assignedThrone>null</assignedThrone>
+    <assignedDeathrestCasket>null</assignedDeathrestCasket>
+    <preferredBed>null</preferredBed>
+  </ownership>
+  <interactions />
+  <skills IsNull="True" />
+  <abilities>
+    <abilities>
+      <li>
+        <def>RSW_SW_Spur</def>
+        <Id>677</Id>
+        <sourcePrecept>null</sourcePrecept>
+        <verbTracker>
+          <verbs>
+            <li Class="Verb_CastAbility">
+              <loadID>Ability_677_0</loadID>
+              <currentTarget>(0, 0, 0)</currentTarget>
+              <currentDestination>(0, 0, 0)</currentDestination>
+              <lastShotTick>-999999</lastShotTick>
+              <canHitNonTargetPawnsNow>True</canHitNonTargetPawnsNow>
+              <MVCF_ManagedVerb IsNull="True" />
+              <ability>Ability_677</ability>
+            </li>
+          </verbs>
+        </verbTracker>
+        <maxCharges>0</maxCharges>
+        <charges>0</charges>
+      </li>
+    </abilities>
+  </abilities>
+  <ideo IsNull="True" />
+  <workSettings IsNull="True" />
+  <trader IsNull="True" />
+  <outfits IsNull="True" />
+  <drugs IsNull="True" />
+  <foodRestriction IsNull="True" />
+  <timetable IsNull="True" />
+  <playerSettings>
+    <joinTick>126811</joinTick>
+    <medCare>HerbalOrWorse</medCare>
+    <allowedAreas>
+      <keys />
+      <values />
+    </allowedAreas>
+    <master>null</master>
+    <displayOrder>-9999999</displayOrder>
+  </playerSettings>
+  <training>
+    <wantedTrainables>
+      <vals>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>True</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+      </vals>
+    </wantedTrainables>
+    <steps>
+      <vals>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>5</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+        <li>0</li>
+      </vals>
+    </steps>
+    <learned>
+      <vals>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>True</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+        <li>False</li>
+      </vals>
+    </learned>
+    <attackTarget>null</attackTarget>
+    <countDecayFrom>126811</countDecayFrom>
+  </training>
+  <style IsNull="True" />
+  <styleObserver IsNull="True" />
+  <connections>
+    <connectedThings />
+  </connections>
+  <inventoryStock IsNull="True" />
+  <treeSightings IsNull="True" />
+  <thinker />
+  <mechanitor IsNull="True" />
+  <genes IsNull="True" />
+  <learning IsNull="True" />
+  <reading IsNull="True" />
+  <creepjoiner IsNull="True" />
+  <duplicate />
+  <flight />
+  <oldName IsNull="True" />
+  <vehicleTrackers>
+    <keys />
+    <values />
+  </vehicleTrackers>
+  <MVCF_VerbManager>
+    <currentVerb>null</currentVerb>
+  </MVCF_VerbManager>
+</li>
