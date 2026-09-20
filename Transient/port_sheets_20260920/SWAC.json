@@ -1,0 +1,1081 @@
+[
+ {
+  "defName": "Plant_HydenockTree_Wild",
+  "kind": "flora",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_FeverWood": "1.5",
+   "RUT_Greentide": "1.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Kreetle",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.8",
+   "RUT_Desert": "1.3",
+   "RUT_ExtremeDesert": "0.2",
+   "RUT_Miasma": "1.0",
+   "RUT_Webwork": "0.8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Ollopom",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_WeepingStones": "1.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Plant_JoganTree_Wild",
+  "kind": "flora",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_FeverWood": "0.6",
+   "RUT_Greentide": "1.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "FrilledGorg",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "1.0",
+   "RUT_Desert": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Gizka",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.4",
+   "RUT_Desert": "0.1",
+   "RUT_ExtremeDesert": "0.01",
+   "RUT_Greentide": "1.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Gorg",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "1.0",
+   "RUT_Desert": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Iriaz",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "1.0",
+   "RUT_Desert": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "LongtailGorg",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "1.0",
+   "RUT_Desert": "0.4",
+   "RUT_FeverWood": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Plant_MujaFruit_Wild",
+  "kind": "flora",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "1.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Scavrat",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.6",
+   "RUT_Desert": "1.0",
+   "RUT_ExtremeDesert": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Bantha",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.5",
+   "RUT_Desert": "0.8",
+   "RUT_WeepingStones": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Eopie",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.8",
+   "RUT_CrackedLands": "0.25",
+   "RUT_Desert": "0.3",
+   "RUT_WeepingStones": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Lothcat",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Mudhorn",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Neebray",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_PoisonForest": "0.8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Plant_HubbaGourd_Wild",
+  "kind": "flora",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.2",
+   "RUT_Greentide": "0.8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Ronto",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.8",
+   "RUT_Desert": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Scurrier",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.8",
+   "RUT_ExtremeDesert": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Sketto",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.8",
+   "RUT_Desert": "0.8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Yobshrimp",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Miasma": "0.8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Borcatu",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Wasteland": "0.7"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Clodhopper",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.1",
+   "RUT_Greentide": "0.7"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Igitz",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.7"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Urusai",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.7",
+   "RUT_FeverWood": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Whisperbird",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.15",
+   "RUT_FeverWood": "0.3",
+   "RUT_Greentide": "0.7",
+   "RUT_Miasma": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "WompRat",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.4",
+   "RUT_Desert": "0.7",
+   "RUT_ExtremeDesert": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Worrt",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.4",
+   "RUT_Desert": "0.2",
+   "RUT_Greentide": "0.7"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Kybuck",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Massiff",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Plant_FelucianGlowspore_Wild",
+  "kind": "flora",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Shyrack",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.6",
+   "RUT_Webwork": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Fanback",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_WeepingStones": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Mynock",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.3",
+   "RUT_Desert": "0.3",
+   "RUT_ExtremeDesert": "0.3",
+   "RUT_PoisonForest": "0.2",
+   "RUT_Scarlands": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Plant_Bubblespore_Wild",
+  "kind": "flora",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Plant_Chakroot_Wild",
+  "kind": "flora",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.3",
+   "RUT_FeverWood": "0.4",
+   "RUT_Greentide": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Pufferpig",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Runyip",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.1",
+   "RUT_Miasma": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Shiro",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.5",
+   "RUT_Miasma": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "ShiroTrap",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Snoruuk",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_TheRot": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Anooba",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.4",
+   "RUT_Miasma": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Corinathoth",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Dewback",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_WeepingStones": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Gelagrub",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_FeverWood": "0.4",
+   "RUT_Greentide": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Gutkurr",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Jamel",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.4",
+   "RUT_WeepingStones": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Klorslug",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Mott",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Nuna",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.4",
+   "RUT_Desert": "0.2",
+   "RUT_FeverWood": "0.4",
+   "RUT_Greentide": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Wraid",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Wyyyschokk",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Webwork": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Convor",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.08",
+   "RUT_CrackedLands": "0.2",
+   "RUT_FeverWood": "0.3",
+   "RUT_Greentide": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Falumpaset",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.2",
+   "RUT_Greentide": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Gornt",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_CrackedLands": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Grank",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.2",
+   "RUT_Miasma": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Hrumph",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "IridonianReek",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Jimvu",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Kinrath",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Kwi",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Skalder",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.08",
+   "RUT_Desert": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Uvak",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Varactyl",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Zeer",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Fambaa",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_FeverWood": "0.02",
+   "RUT_Greentide": "0.25"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "LavaFlea",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_TheForge": "0.25"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "CanCell",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_CrackedLands": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Jakobeast",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Nerf",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "PekoPeko",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Qormot",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Shaak",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Strill",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "TeeMuss",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "WarWyrm",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_ExtremeDesert": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Dalgo",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.18"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Hawkbat",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.18"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Hssiss",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.18"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Cannok",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.16"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Boma",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_WeepingStones": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Dactillion",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_WeepingStones": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Dianoga",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "GraniteSlug",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_ExtremeDesert": "0.1",
+   "RUT_PoisonForest": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "KraytDragon",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_ExtremeDesert": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Vornskyr",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Miasma": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Woolamander",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_CrackedLands": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Dragonsnake",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.12"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Bolotaur",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "FeralGrazer",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Krykna",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Pikobis",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Beldon",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.008",
+   "RUT_TheForge": "0.08"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Vulptex",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.08"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Lylek",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Greentide": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Voorpak",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.02",
+   "RUT_Desert": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Zakkeg",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Miasma": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "FeralNerf",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.04"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Porg",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.04"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Horax",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_Desert": "0.01"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "KowakianMonkeyLizard",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_AridShrubland": "0.01"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "GreaterKraytDragon",
+  "kind": "fauna",
+  "mod": "mlie.starwarsanimalcollection",
+  "biomes": {
+   "RUT_ExtremeDesert": "0.001"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ }
+]

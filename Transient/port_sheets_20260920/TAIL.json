@@ -1,0 +1,333 @@
+[
+ {
+  "defName": "BMT_GiantLeaf",
+  "kind": "flora",
+  "mod": "biomesteam.biomescaverns",
+  "biomes": {
+   "RUT_FeverWood": "0.8",
+   "RUT_Greentide": "1.0"
+  },
+  "modActive": false,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "GR_Beetlefleet",
+  "kind": "fauna",
+  "mod": "vanillaexpanded.vgeneticse",
+  "biomes": {
+   "RUT_PoisonForest": "0.7",
+   "RUT_Wasteland": "0.7"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "GR_ParagonRat",
+  "kind": "fauna",
+  "mod": "vanillaexpanded.vgeneticse",
+  "biomes": {
+   "RUT_Wasteland": "0.7"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Terrorworm",
+  "kind": "fauna",
+  "mod": "mlie.horrors",
+  "biomes": {
+   "RUT_AridShrubland": "0.7"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "VFEI2_Swarmling",
+  "kind": "fauna",
+  "mod": "oskarpotocki.vfe.insectoid2",
+  "biomes": {
+   "RUT_Greentide": "0.4",
+   "RUT_Miasma": "0.7",
+   "RUT_Wasteland": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_SugarFamewort",
+  "kind": "flora",
+  "mod": "sarg.alphabiomes",
+  "biomes": {
+   "RUT_Greentide": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_Iashiphus",
+  "kind": "flora",
+  "mod": "sarg.alphabiomes",
+  "biomes": {
+   "RUT_FeverWood": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "GR_Mecharat",
+  "kind": "fauna",
+  "mod": "vanillaexpanded.vgeneticse",
+  "biomes": {
+   "RUT_RustCathedral": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "SW_Electrictick",
+  "kind": "fauna",
+  "mod": "who.vfee.isopodageneline",
+  "biomes": {
+   "RUT_Scarlands": "0.3",
+   "RUT_Wasteland": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "VFEI2_Megathrips",
+  "kind": "fauna",
+  "mod": "oskarpotocki.vfe.insectoid2",
+  "biomes": {
+   "RUT_FeverWood": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AM_Dryad_Corruptor",
+  "kind": "fauna",
+  "mod": "sarg.alphamemes",
+  "biomes": {
+   "RUT_PoisonForest": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AM_Dryad_Ocular",
+  "kind": "fauna",
+  "mod": "sarg.alphamemes",
+  "biomes": {
+   "RUT_PoisonForest": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AM_Dryad_Tumorous",
+  "kind": "fauna",
+  "mod": "sarg.alphamemes",
+  "biomes": {
+   "RUT_PoisonForest": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "GR_Molebear",
+  "kind": "fauna",
+  "mod": "vanillaexpanded.vgeneticse",
+  "biomes": {
+   "RUT_Wasteland": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "GR_Spidercat",
+  "kind": "fauna",
+  "mod": "vanillaexpanded.vgeneticse",
+  "biomes": {
+   "RUT_Wasteland": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "LavaSnail",
+  "kind": "fauna",
+  "mod": "sarg.alphabiomes",
+  "biomes": {
+   "RUT_TheForge": "0.35"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Visceral",
+  "kind": "fauna",
+  "mod": "mlie.horrors",
+  "biomes": {
+   "RUT_PoisonForest": "0.35"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "VFEI2_Fuelmite",
+  "kind": "fauna",
+  "mod": "oskarpotocki.vfe.insectoid2",
+  "biomes": {
+   "RUT_AridShrubland": "0.3",
+   "RUT_Desert": "0.3",
+   "RUT_ExtremeDesert": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "SW_Electricgryllotalpa",
+  "kind": "fauna",
+  "mod": "who.vfee.isopodageneline",
+  "biomes": {
+   "RUT_Scarlands": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "OuterRim_MSEDroid",
+  "kind": "fauna",
+  "mod": "neronix17.outerrim.droiddepot",
+  "biomes": {
+   "RUT_AridShrubland": "0.1",
+   "RUT_Desert": "0.1",
+   "RUT_ExtremeDesert": "0.1"
+  },
+  "modActive": false,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "OuterRim_SalvageAssistDroid",
+  "kind": "fauna",
+  "mod": "neronix17.outerrim.droiddepot",
+  "biomes": {
+   "RUT_AridShrubland": "0.1",
+   "RUT_Desert": "0.1",
+   "RUT_ExtremeDesert": "0.1"
+  },
+  "modActive": false,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "RG_Rimclaw",
+  "kind": "fauna",
+  "mod": "regrowth.botr.core",
+  "biomes": {
+   "RUT_Scarlands": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "OuterRim_DUMDroid",
+  "kind": "fauna",
+  "mod": "neronix17.outerrim.droiddepot",
+  "biomes": {
+   "RUT_AridShrubland": "0.08",
+   "RUT_Desert": "0.08",
+   "RUT_ExtremeDesert": "0.08"
+  },
+  "modActive": false,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "OuterRim_GNKDroid",
+  "kind": "fauna",
+  "mod": "neronix17.outerrim.droiddepot",
+  "biomes": {
+   "RUT_AridShrubland": "0.08",
+   "RUT_Desert": "0.08",
+   "RUT_ExtremeDesert": "0.08"
+  },
+  "modActive": false,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Ling_Cockroach",
+  "kind": "fauna",
+  "mod": "lingluo.cockroach",
+  "biomes": {
+   "RUT_RustCathedral": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "OuterRim_FX7Droid",
+  "kind": "fauna",
+  "mod": "neronix17.outerrim.droiddepot",
+  "biomes": {
+   "RUT_AridShrubland": "0.05",
+   "RUT_Desert": "0.05",
+   "RUT_ExtremeDesert": "0.05"
+  },
+  "modActive": false,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "OuterRim_MuckrakerDroid",
+  "kind": "fauna",
+  "mod": "neronix17.outerrim.droiddepot",
+  "biomes": {
+   "RUT_AridShrubland": "0.05",
+   "RUT_Desert": "0.05",
+   "RUT_ExtremeDesert": "0.05"
+  },
+  "modActive": false,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "SW_Juggernautbeetles",
+  "kind": "fauna",
+  "mod": "who.vfee.isopodageneline",
+  "biomes": {
+   "RUT_Scarlands": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "OuterRim_DestroyerDroid",
+  "kind": "fauna",
+  "mod": "neronix17.outerrim.droiddepot",
+  "biomes": {
+   "RUT_AridShrubland": "0.02",
+   "RUT_Desert": "0.02",
+   "RUT_ExtremeDesert": "0.02"
+  },
+  "modActive": false,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "GR_Chickenrabbit",
+  "kind": "fauna",
+  "mod": "vanillaexpanded.vgeneticse",
+  "biomes": {
+   "RUT_Slime": "0.005"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "GR_Manbear",
+  "kind": "fauna",
+  "mod": "vanillaexpanded.vgeneticse",
+  "biomes": {
+   "RUT_Slime": "0.002"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ }
+]

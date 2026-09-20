@@ -1,0 +1,978 @@
+[
+ {
+  "defName": "AB_MangroveTree",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Miasma": "25"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_Bryolux",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "10"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_ParasiticMangrove",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Miasma": "8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_MangrovePalm",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Miasma": "6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_Glowstool",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_JungleTree",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Greentide": "3.0",
+   "RUT_Webwork": "1.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_Agarilux",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_GiantAgarilux",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_Plant_TreeTanglerootMangrove",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Miasma": "1.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_KeeningCordax",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_FeverWood": "1.2",
+   "RUT_PoisonForest": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_AlienGrass",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "1.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_AlienTree",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "1.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_CrystalHorn",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_PoisonForest": "0.4",
+   "RUT_Umbra": "1.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_GlowingAgarilux",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_GlowingGrass",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_ForsakenCrags": "1.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_HardyGrass",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_CrackedLands": "1.0",
+   "RUT_Desert": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AB_TallSlimyGrass",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Slime": "1.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Plant_Reeds",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_WeepingStones": "1.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "RG_Plant_TropicalChokevine",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Webwork": "1.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Plant_Fireweed",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.9"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Plant_ShrubLow",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.9"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AB_CrystalFlower",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_PoisonForest": "0.5",
+   "RUT_Umbra": "0.8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_Plant_SewerReed",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Miasma": "0.8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "GRimMoss",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_CrackedLands": "0.8"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Plant_MagmaCactus",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.7"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_EyeGrass",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_FrostLeaf",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Umbra": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_RedLeaves",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_TarPuddle",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Sump": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_ToxicGamma",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_FireLavender",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_Plant_TreeTwistingThornwood",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_CrackedLands": "0.2",
+   "RUT_PoisonForest": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_RainbowTongue",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Miasma": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_GiantGamma",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.5",
+   "RUT_TheForge": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_HalfAlienTree",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_LilacBeacon",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_RedPlantsTall",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_SlimyFern",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Slime": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_SlimyTree",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Slime": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_WildRadagast",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_WitchesOyster",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AG_Gamma",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_Plant_Snaketails",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Miasma": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_Plant_TreeMartyr",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_PoisonForest": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_Plant_TwistingThorngrass",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_CrackedLands": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "JOE_Landopus",
+  "kind": "fauna",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Desert": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Plant_TookeTrap_Wild",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Greentide": "0.5",
+   "RUT_Webwork": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "RG_Plant_AridGrass",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AB_BloodBouquet",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "0.3",
+   "RUT_PoisonForest": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_GlobularPlant",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_Gomphoeria",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_FeverWood": "0.4",
+   "RUT_Webwork": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_GreenRockFern",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_WeepingStones": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_RavenNettle",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_PoisonForest": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_RimeNodules",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Umbra": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_Slimecasia",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Slime": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_SlimyPholiota",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Slime": "0.4",
+   "RUT_TheRot": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_TangleTea",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Webwork": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_TentacularPlant",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_Dewshrooms",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_WeepingStones": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_Plant_TwistingThornweed",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_CrackedLands": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_Sagecrust",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "IronScruff_PrimordialGrass",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.35"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_GiantAgariTox",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_PoisonForest": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_GiantStikehr",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AB_LargeSlimyTree",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Slime": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_RecurvedStropharia",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_RedBugloss",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_PoisonForest": "0.3",
+   "RUT_Webwork": "0.07"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_TinkleGrass",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "IronScruff_PrimordialTallGrass",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Plant_Brambles",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Plant_Bush",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Plant_Ripthorn",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AG_Septimum",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.25"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_Plant_ScorchedStars",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Scarlands": "0.25"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "IronScruff_Bindweed",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.25"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Plant_HealrootWild",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.25"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Plant_Nysyllin_Wild",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.22"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AB_ArbuscularMycorrhiza",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_FirevineTree",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_GiantSeptimum",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "BMT_HeatsinkFungus",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheForge": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "RG_Plant_CreepStern",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "RG_Plant_CrimsonCushion",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "RG_Plant_Dervish",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "RUT_Sytheclaw",
+  "kind": "fauna",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "0.15",
+   "RUT_Greentide": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "Rat",
+  "kind": "fauna",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_AridShrubland": "0.1",
+   "RUT_Desert": "0.2",
+   "RUT_ExtremeDesert": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "VAEWaste_Megatardi",
+  "kind": "fauna",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Wasteland": "0.18"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_AlienTree_Polluted",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Contagion": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_GargantuanLithops",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_CrackedLands": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_Aaklac",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Desert": "0.12",
+   "RUT_Webwork": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Plant_Ambrosia",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_WeepingStones": "0.12"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_AgaricusDomeCap",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_DribblingCap",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AB_DessertTree",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_Desert": "0.06"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "Plant_Bloddle",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_ExtremeDesert": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AB_AgariluxPrime",
+  "kind": "flora",
+  "mod": "(unguarded)",
+  "biomes": {
+   "RUT_TheRot": "0.01"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ }
+]
