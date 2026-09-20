@@ -319,3 +319,45 @@ pattern (comment out, don't guess a replacement, note why inline):
 **Not yet live-re-verified** — offline-only pass, rides the next natural full
 load per this repo's batching doctrine; expect "5 DEFS DISCARDED" to read 0 on
 the next harvest.
+
+## (7) 2026-09-20 FOUNDRY (belt-mode AFK, content-only verification reboot) —
+big real drops, remaining residue re-confirmed as the SAME two already-known gaps
+
+A dedicated second full 617-mod cold load this session, no DLL rebuilt (content-only:
+BMT_FAUNA_ABSORPTION_1's biome-cast-patch deletion + cast-assignment regen, the
+ANIMAL_TOLERANCES_JOIN_BROKEN_1 widen-only fix, the entry-(6) KotOR discarded-defs
+fix). `harvest_log.py` + `check_config_errors.py` against the fresh log:
+
+- **DEFS DISCARDED: 5 → 0.** Entry (6)'s KotOR fix is CONFIRMED live — the
+  `IgnoreConfigErrors`/`SWCP.Core` modExtension comment-outs took.
+- **patchfail: 80 → 7.** The dominant BMT_-statBases wave from `AnimalTolerances_
+  Ashkarr.xml`/`WeaponTags_Renormalise.xml` is CONFIRMED gone — `ANIMAL_TOLERANCES_
+  JOIN_BROKEN_1`'s regeneration (widen-only, zero-narrowing verified offline) worked
+  as designed. Remaining 7: pre-existing third-party `PatchOperationFindMod`/`Remove`
+  no-ops (Torment Master, Vanilla Mining Outpost, Intimacy x3 — all previously
+  baselined) plus exactly ONE new-shape pair (`BMT_GreyLady` statBases,
+  `BMT_Thrumbungus` lifeStages sequence) — both trace to the SAME still-open flora
+  gap below, not a new defect.
+- **crossref: 38, configerror: 155 — UNCHANGED IN SHAPE**, `check_config_errors.py`
+  confirms it's the exact same 21 `BMT_*` plant-species names
+  (`BiomePlantRecord`) and 6 `RUT_*` EnvironmentalHazards names as every prior
+  harvest this session. **This is expected, not a regression**: those defects are
+  about FLORA (BMT plant ThingDefs never ported — 3 of them,
+  `BMT_FireLavender`/`BMT_Sagecrust`/`BMT_HeatsinkFungus`, are the exact named
+  port-or-cut decision blocking `CUT_FALLOUT_GENERATED_DATA_1`'s `--write`, per the
+  deep investigation earlier this session) and RUT_ EnvironmentalHazards content
+  specced-but-unbuilt (`FORGE_MECHANICS_1`/`SCALD_MECHANICS_1`/`SUMP_MECHANICS_1`).
+  Today's content-only fixes touched FAUNA tolerances and the biome-cast join, not
+  flora authoring — so this residue was never going to move this pass, and didn't.
+- **1 DEAD MOD, unchanged**: `JumppackForMeleeAI`, fourth load in a row, still
+  third-party, still unowned.
+
+**Net effect**: `BMT_FAUNA_ABSORPTION_1`'s retirement gate (1) is now LIVE-CONFIRMED
+resolved (not just offline-confirmed) — the dead `BiomeCast_Ashkarr.xml` deletion
+and the corrected `cast_assignment.csv`/`AnimalTolerances_Ashkarr.xml` chain hold up
+under a real cold load. Gates (2) (RULED CUT, already applied) and (3) (RotSporeKit
+`GameCondition_SporeCloud` has no data-only substitute) remain the only things
+between `BMT_FAUNA_ABSORPTION_1` and closing. The plant-porting decision
+(`CUT_FALLOUT_GENERATED_DATA_1`) is the one item actually capable of moving the
+remaining crossref/configerror residue further, and it needs a content call, not
+another harvest pass.
