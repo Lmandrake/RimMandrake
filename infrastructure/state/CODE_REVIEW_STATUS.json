@@ -5172,10 +5172,10 @@
     "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/art_checks.py": {
-    "cleanCount": 4,
-    "date": "2026-09-18",
-    "hash": "e2ed699b0e185eeb7054eb1ee540539dffc21d67816b432789e27c66a485e82e",
-    "sha": "504ead829"
+    "cleanCount": 5,
+    "date": "2026-09-20",
+    "hash": "1f0d83322dada24d430e582b18aea70b70185349efa4e3fa333988065edb1cb1",
+    "sha": "74e20c8dc"
   },
   "src/RimMandrake/Utils/art_legibility.py": {
     "cleanCount": 1,
@@ -6352,10 +6352,10 @@
     "sha": "b87a3622"
   },
   "src/RimMandrake/Utils/selftest_art_checks.py": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "bf0ad68260508f3163455386a52ebce5fae34019e97f3e562c1ca4f12909b2f4",
-    "sha": "115846630"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "70723fb118c579b8e66a859375e4edc696ce8464fb78cb155677b378da003c38",
+    "sha": "74e20c8dc"
   },
   "src/RimMandrake/Utils/selftest_broadcast_frame.py": {
     "cleanCount": 1,
