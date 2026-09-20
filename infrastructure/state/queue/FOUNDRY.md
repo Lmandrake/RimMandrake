@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T18:09:07Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-20T18:39:09Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -352,7 +352,7 @@ summary:  Werner slab transport on Odyssey's Map.sandGrid, source/sink map edges
 prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
 
 ## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    bridge
 target:   v1
@@ -909,6 +909,15 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
+## PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1 plant_tolerances.py verify() reads pre-rename biome_climate.json keys, silently checks 0 rows
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  biomeclimate.json's biomes keys need to match the live RUT/AB-prefixed
+prose:    infrastructure/state/items/PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1072,16 +1081,6 @@ kind:     task
 blocked:  Engine is already built (~1,900 lines, dotnet build 0W/0E 2026-09-09, selftest 13/13) and not deployable-alone offline: the one remaining gate (design §2/§7.1 shader-tint check -- does MatBases.Sand respect material color) needs a deploy + ModsConfig write + restart, which the item's own run sheet already says should ride the next load round rather than burn a slot solo. Re-blocking so this doesn't keep surfacing as a 'ready' offline pick; run sheet is in the item file (5 steps, MaterialColor -> VertexColor -> texture fallback). (on COLD_LOAD_RUN_SHEET_4)
 summary:  Werner slab transport on Odyssey's Map.sandGrid, source/sink map edges,
 prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
-
-## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-blocked:  no concrete placeable defNames in desert.md/wasteland.md kits per the item's own note; needs owner to name mutators or rule on density approach
-summary:  BIOMEENRICHMENTDESERTWASTELAND1
-prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
 ## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
 state:    doing  (BLOCKED)
@@ -1355,16 +1354,6 @@ thin:     no ## spec
 summary:  PORTEDBEASTMECHANICSREBUILD1 — rebuild the three dropped donor mechanics in our own C
 prose:    infrastructure/state/items/PORTED_BEAST_MECHANICS_REBUILD_1.md
 
-## PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1 plant_tolerances.py verify() reads pre-rename biome_climate.json keys, silently checks 0 rows
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  biomeclimate.json's biomes keys need to match the live RUT/AB-prefixed
-prose:    infrastructure/state/items/PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1.md
-
 ## MYNOCK_FLIGHT_ART_FIRST_1 RSW_Mynock was wired for real 1.6 native flight against a texture folder that does not exist - the flyer rule is owed on it art-first
 state:    proposed
 row:      unassigned
@@ -1394,3 +1383,143 @@ kind:     task
 thin:     no ## spec
 summary:  PAINTEDTILESWITHNOCAST1 — 1,086 painted tiles carry no fauna at all
 prose:    infrastructure/state/items/PAINTED_TILES_WITH_NO_CAST_1.md
+
+## EXTREME_DESERT_SIGNATURE_FLORA_1 Author glass-nub light-pipe and silverbole flora for RUT_ExtremeDesert
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  EXTREMEDESERTSIGNATUREFLORA1 — author the extreme desert's own signature flora
+prose:    infrastructure/state/items/EXTREME_DESERT_SIGNATURE_FLORA_1.md
+
+## DESERT_FORAGEDFOOD_INERT_1 RUT_Desert forageability is inert with no foragedFood set
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  DESERTFORAGEDFOODINERT1 — RUTDesert forageability is inert, no foragedFood set
+prose:    infrastructure/state/items/DESERT_FORAGEDFOOD_INERT_1.md
+
+## DESERT_ROUND2_IMPORTS_UNLANDED_1 Wire the landed round-2 desert imports, port the rest
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  DESERTROUND2IMPORTSUNLANDED1 — wire the landed round-2 imports, port the rest
+prose:    infrastructure/state/items/DESERT_ROUND2_IMPORTS_UNLANDED_1.md
+
+## EXTREME_DESERT_SUBSURFACE_PREDATOR_1 Replace AA_Dunealisk with a real subsurface strike predator
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  EXTREMEDESERTSUBSURFACEPREDATOR1 — replace AADunealisk with a real predator
+prose:    infrastructure/state/items/EXTREME_DESERT_SUBSURFACE_PREDATOR_1.md
+
+## EXTREME_DESERT_UNRULED_VERMIN_1 Owner card: rule the 12 Fall Line vermin rows for extreme desert
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  EXTREMEDESERTUNRULEDVERMIN1 — owner card: rule the Fall Line vermin rows for extreme desert
+prose:    infrastructure/state/items/EXTREME_DESERT_UNRULED_VERMIN_1.md
+
+## DESERT_PORT_PLACEHOLDER_ART_1 16 desert species still carry donor texPaths, one renders wrong
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
+prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
+
+## DESERT_SIGNATURE_FLORA_1 Author ultracactus, staggerseed, and shade plants for RUT_Desert
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  DESERTSIGNATUREFLORA1 — author ultracactus, staggerseed, and shade plants
+prose:    infrastructure/state/items/DESERT_SIGNATURE_FLORA_1.md
+
+## BLODDLE_DUNE_SEA_EYE_TEST_1 Verify bloddle's green/leafy look against dune_sea's no-green ban
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  BLODDLEDUNESEAEYETEST1 — verify bloddle against dunesea's no-green ban
+prose:    infrastructure/state/items/BLODDLE_DUNE_SEA_EYE_TEST_1.md
+
+## DESERT_SHADE_GRID_KEYSTONE_1 Build the ShadeAt MapComponent the desert's whole AI design depends on
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  DESERTSHADEGRIDKEYSTONE1 — build the ShadeAt MapComponent
+prose:    infrastructure/state/items/DESERT_SHADE_GRID_KEYSTONE_1.md
+
+## EXTREME_DESERT_GIANT_COMMENSALS_1 Shade-commensal micro-fauna under giants, blocked on ShadeAt
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  EXTREMEDESERTGIANTCOMMENSALS1 — shade-commensal micro-fauna under giants
+prose:    infrastructure/state/items/EXTREME_DESERT_GIANT_COMMENSALS_1.md
+
+## EXTREME_DESERT_CAVERN_BEAST_1 Author the Mandalorian cave-beast and its portable-water eggs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  EXTREMEDESERTCAVERNBEAST1 — author the Mandalorian cave-beast and its eggs
+prose:    infrastructure/state/items/EXTREME_DESERT_CAVERN_BEAST_1.md
+
+## FALL_LINE_INJECTION_DEAD_BIOME_KEYS_1 fall_line.json injects vermin at pre-rename biome defNames
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  FALLLINEINJECTIONDEADBIOMEKEYS1 — fallline.json injects vermin at dead biome keys
+prose:    infrastructure/state/items/FALL_LINE_INJECTION_DEAD_BIOME_KEYS_1.md
+
+## DESERT_BURST_PREDATOR_FLAGSHIP_1 Author the desert's burst-predator flagship, blocked on ShadeAt
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  DESERTBURSTPREDATORFLAGSHIP1 — the desert's burst-predator flagship
+prose:    infrastructure/state/items/DESERT_BURST_PREDATOR_FLAGSHIP_1.md
+
+## DESERT_DEF_HEADER_STALE_COUNTS_1 Desert def header comments carry stale tile counts and donor names
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  DESERTDEFHEADERSTALECOUNTS1 — def header comments carry stale counts and donor names
+prose:    infrastructure/state/items/DESERT_DEF_HEADER_STALE_COUNTS_1.md
