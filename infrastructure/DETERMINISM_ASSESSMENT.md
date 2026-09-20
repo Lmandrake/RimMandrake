@@ -378,71 +378,9 @@ paragraph of prose spent explaining why, plus the matching warning in CLAUDE.md.
 already fired live once (Graffiti, 2026-09-16). **Documentation hygiene and validity are
 in direct conflict, and the conflict is a choice about which bytes get hashed.**
 
-### The deterministic replacement
-
-Extend `modcheck/northstar.py`. Spec §6a already specifies the narrower half of this and
-**already measured that it costs no re-validation**; this candidate finishes it.
-
-1. **Axis scoping (spec §6a, already ruled).** The show-axis canonical form excludes
-   every line from a `### must read`/`### cannot read` heading to the next `### `; the
-   read axis hashes only those, under its own `read-state:` / `read-validated-hash:`.
-   §6a's own table records that Pits and Graffiti keep their existing hashes under this
-   cut — verify that by re-deriving it before writing, do not take the table's word.
-2. **Bar scoping (the `NORTHSTAR_HASH_SCOPE_1` half).** The canonical form keeps, per
-   axis: every `- [ ] \`id\` …` line **and its indented continuation lines** (the
-   continuation *is* the bar — `text_for()` hands that prose to the judge verbatim, so it
-   must be hashed), plus the `### ` subheading each list sits under (polarity is
-   load-bearing: `_checklists()` uses it to separate must from cannot, and getting that
-   wrong once already put a rejection line into the visual floor). Everything else in the
-   section — banners, `### the experience` quotes, `🔑` through-lines, `⛔` notes,
-   bold group labels — is **excluded**.
-3. **`modcheck validate` prints the migration.** Bar scoping *does* change all four
-   recorded hashes, so it needs either his word or a re-record on his word. Ship it as
-   `modcheck rehash <mod> --owner-said "…"`, which prints old hash, new hash, and **a
-   diff of the bar lines only** — proving no bar text changed — then rewrites the header.
-   If any bar line differs, it refuses. That way the migration cannot smuggle a bar edit
-   through, which is the only real risk in the change.
-
-**Where it runs:** `northstar.py` (the parser), `selftest_northstar.py` (which already
-exists, 22 KB), and one new owner-authorised CLI verb.
-
-### What it cannot capture
-
-- **Whether a re-worded bar is the same bar.** If someone rewrites
-  `canal_partial_fill_distinct`'s prose from "distinguishable at a glance" to
-  "distinguishable", that IS a change to what he validated and *must* break the hash.
-  Bar scoping keeps that property; it must not be softened into "hash the ids only",
-  which would let the substance be rewritten under a stable hash. **Recommend: id +
-  prose in, commentary out. Take his word on that boundary before building.**
-- **Whether the commentary matters.** Some of it does — the `### the experience` block is
-  his verbatim words. Excluding it from the hash means an agent can edit his own quoted
-  words without tripping anything. Mitigation is deterministic and cheap: hash the
-  experience block **separately** as a third, non-gating fingerprint and have `walklint`
-  report a change to it as 🟠. That converts a silent rewrite into a visible one without
-  charging him a re-validation for a typo two paragraphs away.
-- **Nothing about whether the bars are the right bars.** Untouched. That is his sitting.
-
-### Cost and risk
-
-~80 LOC in one well-tested module, half a sitting. **Highest-risk candidate here**,
-because it changes the meaning of an owner approval that four mods already carry. Risks:
-
-- **Cut too wide** → a bar edit no longer breaks the hash → an agent can quietly rewrite
-  what he approved. This is the failure that matters and the `rehash` bar-diff refusal is
-  aimed squarely at it.
-- **Cut too narrow** → status quo, no harm.
-- **Migration writes a wrong hash** → the mod reads DRAFT and stops being refused,
-  silently. So `rehash` must **read back** the file after writing and re-parse it to
-  `VALIDATED` before reporting success. Never trust the write.
-
-### Who catches a wrong answer
-
-The parser is row 1 (`selftest_northstar.py`). **The scoping decision is row 3 — nobody
-catches it, it becomes the definition of what his approval covers — so it is opus work
-and the boundary in the bullet above goes to him as a card before a line is written.**
-`block_forged_validation.py` already prevents an agent hand-writing the header, and that
-protection must survive the change: `rehash` is the only new writer, and it must be added
-to that hook's allowlist explicitly, not by loosening the pattern.
+*(The build plan that followed this measurement — canonical-form surgery, a `rehash`
+verb, the migration — is deleted per the owner's 2026-09-17 ruling above; git holds it
+at `d11280cda`. Do not resurrect it without a fresh ruling.)*
 
 ---
 

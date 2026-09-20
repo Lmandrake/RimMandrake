@@ -5,9 +5,11 @@
 > and §5, §6, §6b — the run sequence, the decision strings and the 25 ride-alongs.
 >
 > 🔴 **§5 and §6 were a LIVE HAZARD in this file and that is why they moved.** They walk a reader
-> through generating a world and painting the 21,872-tile bundle onto it. `canon.yml` reads
-> `planet.status: remaking`, `FINAL_WORLD_PREP_1` is BLOCKED by the owner because it *"would prep
-> a dead map"*, and `W9` is `dropped`. **Do not execute them out of the archive either.**
+> through generating a world and painting the 21,872-tile bundle onto it. **Do not execute them
+> out of the archive either.** *(`canon.yml` now reads `planet.status: frozen`, not `remaking` —
+> the owner dropped `FINAL_WORLD_PREP_1` outright on 2026-08-24, killing the campaign-start lane
+> rather than merely pausing it, and `W9` is `dropped` too; the hazard these sections describe is
+> unrelated to that lane and stands regardless.)*
 >
 > ⚠️ **The archived §2b is WRONG and is corrected in the archive's own header.** It says
 > `OnlyOurFactions.xml` sets both `startingCountAtWorldCreation` and
