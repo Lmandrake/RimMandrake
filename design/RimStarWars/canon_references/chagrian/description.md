@@ -236,20 +236,26 @@ contradicted), `Outland_FamiliarScent` and `Outland_Eye_Orange` (see visual brie
 
 ## ruling
 
-⏸️ **AWAITING HIS RULING — and content was already deleted on a false premise.**
+🔴 **RULED — owner, 2026-09-20. Verbatim: *"2 shades of blue by choice."***
 
-🔴 `f60d197b0` (2026-09-17) dropped **both** `Outland_Skin_DeepOrange` and `Skin_Orange`
-from `RSW_RimMandrakeChagrian`, on this entry's own line *"Infobox skin color is blue
-only"*. **That line was false.** RE-VERIFIED 2026-09-20 against the canon infobox
-wikitext: it carries **two** values, blue **and** orange, orange cited to *Star Wars
-Adventures* (2020) #6, "The Incident, Part 2". The entry's text is corrected above.
+Shipped as `Skin_Blue` + `Outland_Skin_DeepAzure` on `RSW_RimMandrakeChagrian`.
 
-**The def has deliberately NOT been changed back.** Restoring a colour he may not want
-is his call, not a correctness fix — and "blue only, by choice" is defensible, since
-blue is both the dominant value and the causal one (evolved radiation resistance under
-an unstable sun). Filed in `infrastructure/state/species_skin_rulings.json` under
-`needs_ruling`.
+🔑 **This is a DELIBERATE DEPARTURE FROM CANON, made with the canon in front of him.**
+The canon infobox carries **two** skin values, **blue AND orange** — orange cited to
+*Star Wars Adventures* (2020) #6, "The Incident, Part 2", re-verified against the raw
+wikitext 2026-09-20. He was shown that and chose blue anyway, in two shades.
 
-🔑 The lesson worth keeping: **a single wrong word in a reference entry deleted shipped
-content three days later.** Nothing in the pipeline re-checked the claim before acting
-on it.
+⛔ **So a future canon-correctness sweep will find "missing canon orange" and must NOT
+add it.** Same shape as Gungan's `poor intellectual` and the Fall Line `Rat`: ruled in
+against the rule it violates. Recorded as data in
+`infrastructure/state/species_skin_rulings.json` and asserted by
+`Utils/selftest_species_skin_rulings.py`, so the sweep fails rather than wins.
+
+⚠️ **Provenance, recorded because it is not flattering.** The two orange genes were
+deleted at `f60d197b0` (2026-09-17) on this entry's own line *"Infobox skin color is
+blue only"* — which was **false**. The outcome is now correct, but for the owner's
+reason, not that one. The line is corrected above.
+
+🔑 Blue is also the **causal** value — evolved radiation resistance under an unstable
+sun — which is what makes blue-only read as a species trait rather than an omission.
+
