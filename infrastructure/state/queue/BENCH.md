@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T16:02:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T16:39:36Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -579,8 +579,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DONOR_DEFS_PORT_TO_OURS_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
 prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
 
 ## NONCANON_BEAST_RENAME_1 Rename every non-canon beast to a pseudo-Star-Wars equivalent - owner ruling 2026-09-20; applies to donor creatures with Earth or generic names that survive the port to our own defs
@@ -589,6 +589,36 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NONCANON_BEAST_RENAME_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  ⛔ Do not bulk-rename. This is kind: design — per AgentPolicy.md design
 prose:    infrastructure/state/items/NONCANON_BEAST_RENAME_1.md
+
+## BIOME_ROSTER_DEAD_SPECIES_REFS_1 23 species entries across 5 live biome defs name mods that are NOT in the active list - MayRequire-guarded so no crash, they simply never spawn; includes 7 droids in each desert biome and BMT_GiantLeaf at the 4th-heaviest weight in Greentide
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  1. Decide per dead reference: restore the mod, port the species, or drop the
+prose:    infrastructure/state/items/BIOME_ROSTER_DEAD_SPECIES_REFS_1.md
+
+## DESERT_FAMILY_PORT_EXECUTION_1 Port all 109 desert-family species to our own defs and our own art - owner ruled every row REPLACE 2026-09-20; ~99 donor + 6 vanilla to re-author, 4 already ours
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  DESERTFAMILYPORTEXECUTION1 — port the whole desert family to our own defs and art
+prose:    infrastructure/state/items/DESERT_FAMILY_PORT_EXECUTION_1.md
+
+## BMT_FLORA_ABSORPTION_1 BMT_FAUNA_ABSORPTION_1 did fauna only - 14 Biomes! Caverns FLORA defs are still referenced across 8 biome tables with no RSW_ equivalent, from a mod absent from the active list, including the top plant in Miasma and Greentide
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BMT_FLORA_ABSORPTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BMT_FLORA_ABSORPTION_1.md
