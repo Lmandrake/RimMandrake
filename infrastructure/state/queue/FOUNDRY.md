@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T14:37:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T14:53:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -891,15 +891,6 @@ kind:     design
 summary:  AQUATICWATERBREATHINGGENE1
 prose:    infrastructure/state/items/AQUATIC_WATER_BREATHING_GENE_1.md
 
-## ROT_ART_WAVE_1 Land the 22 rot artpipe jobs: review daemon output, deploy textures, verify texPaths render
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  ROTARTWAVE1 — land the 22 rot artpipe jobs
-prose:    infrastructure/state/items/ROT_ART_WAVE_1.md
-
 ## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
 state:    doing
 row:      unassigned
@@ -917,6 +908,15 @@ target:   v1
 kind:     investigate
 summary:  (no items/GIZKA_NEWGAME_NRE_FIX_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GIZKA_NEWGAME_NRE_FIX_1.md
+
+## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  None yet — this is an open design question, not a scoped build. Candidate
+prose:    infrastructure/state/items/TWILIGHT_DEEP_WATER_LAYER_1.md
 
 ## QUICKTEST_RIVER_WATER_MISSING_1 Quicktest maps generate zero river/lake water on any biome tried this session, blocking water-mechanism verification
 state:    doing
@@ -1463,24 +1463,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  None yet — this is an open design question, not a scoped build. Candidate
-prose:    infrastructure/state/items/TWILIGHT_DEEP_WATER_LAYER_1.md
-
-## CANONICAL_SAVE_SCENARIO_MISMATCH_1 Canonical start save ships vanilla Crashlanded scenario, not Flight of the Utinni per SCENARIO_SPEC
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
-prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
+_none._
