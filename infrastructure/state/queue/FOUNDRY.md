@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T16:47:01Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-20T17:32:36Z (the last event's own timestamp, not the render clock)
+game:  GOING_DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1352,4 +1352,24 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## PORTED_BEAST_MECHANICS_REBUILD_1 Rebuild the three dropped donor mechanics (steel-eating, chemfuel ejection x2) in our own C#
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  PORTEDBEASTMECHANICSREBUILD1 — rebuild the three dropped donor mechanics in our own C
+prose:    infrastructure/state/items/PORTED_BEAST_MECHANICS_REBUILD_1.md
+
+## PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1 plant_tolerances.py verify() reads pre-rename biome_climate.json keys, silently checks 0 rows
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  biomeclimate.json's biomes keys need to match the live RUT/AB-prefixed
+prose:    infrastructure/state/items/PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1.md
