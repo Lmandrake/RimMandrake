@@ -257,3 +257,6 @@ LESSONS: `rimworld/execute_debug_action {"path":"Actions\T: Damage To Death","pa
 - Never infer a def's owning mod from its defName prefix — mlie.starwarsanimalcollection ships bare names (Bantha, Rat), read MayRequire.
 - Donor mod sources are vendored at vendor/mod_sources/ — "not in the Workshop folder" is not "not available".
 - A blanket owner ruling over a whole sheet must never be recorded as a sitting; stamp the route (apply_blanket_ruling.py).
+- `./game --said` is owner-quotes-only; a self-initiated restart uses the bare `./game <state>` form — using `--said` with your own invented words falsely attributes them to the owner on the ledger.
+- `biome_flora.py --write` reads its hardcoded `FAMILIES` dict, not the roster JSON its own docstring calls "the source" — a roster edit alone does not change the generated patch.
+- A "not one has a port" census can be wrong if it only greps one tier's prefix (RSW_) — a plant/creature may already be ported under a different tier prefix (RUT_) in a different mod folder.
