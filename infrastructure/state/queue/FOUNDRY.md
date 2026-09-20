@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T18:49:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T18:51:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -909,23 +909,14 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
-## BLODDLE_DUNE_SEA_EYE_TEST_1 Verify bloddle's green/leafy look against dune_sea's no-green ban
+## PAINTED_TILES_WITH_NO_CAST_1 Two biome defs ship an empty wildAnimals over painted ground - RUT_BlueDesert 1029 tiles and RUT_PropaneLake 57 tiles, 1086 tiles with no fauna at all
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  BLODDLEDUNESEAEYETEST1 — verify bloddle against dunesea's no-green ban
-prose:    infrastructure/state/items/BLODDLE_DUNE_SEA_EYE_TEST_1.md
-
-## DESERT_DEF_HEADER_STALE_COUNTS_1 Desert def header comments carry stale tile counts and donor names
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  DESERTDEFHEADERSTALECOUNTS1 — def header comments carry stale counts and donor names
-prose:    infrastructure/state/items/DESERT_DEF_HEADER_STALE_COUNTS_1.md
+summary:  PAINTEDTILESWITHNOCAST1 — 1,086 painted tiles carry no fauna at all
+prose:    infrastructure/state/items/PAINTED_TILES_WITH_NO_CAST_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1382,16 +1373,6 @@ kind:     task
 thin:     no ## spec
 summary:  SWBESTIARYUNPREFIXEDDONORDEFS1 — donor names and dead bodies left in a shipping mod
 prose:    infrastructure/state/items/SWBESTIARY_UNPREFIXED_DONOR_DEFS_1.md
-
-## PAINTED_TILES_WITH_NO_CAST_1 Two biome defs ship an empty wildAnimals over painted ground - RUT_BlueDesert 1029 tiles and RUT_PropaneLake 57 tiles, 1086 tiles with no fauna at all
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  PAINTEDTILESWITHNOCAST1 — 1,086 painted tiles carry no fauna at all
-prose:    infrastructure/state/items/PAINTED_TILES_WITH_NO_CAST_1.md
 
 ## EXTREME_DESERT_SIGNATURE_FLORA_1 Author glass-nub light-pipe and silverbole flora for RUT_ExtremeDesert
 state:    proposed
