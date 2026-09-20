@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T09:39:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T09:45:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1532,13 +1532,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DETERMINISM_REMAINDER_C4_C6_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DETERMINISM_REMAINDER_C4_C6_1.md
-
-## NAME_PATCH_ZERO_MATCH_1 gen_name_patch.py matches 0 of 41 doc rows against either cast
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  NAMEPATCHZEROMATCH1 — gennamepatch.py matches 0 of the doc's 41 rows against either cast
-prose:    infrastructure/state/items/NAME_PATCH_ZERO_MATCH_1.md
