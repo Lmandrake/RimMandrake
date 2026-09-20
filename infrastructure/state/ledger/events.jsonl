@@ -10330,3 +10330,12 @@
 {"seat":"FOUNDRY","event":"start","id":"DRUM_LURE_PREDATOR_BUILD_1","ts":"2026-09-20T19:53:34Z"}
 {"seat":"FOUNDRY","event":"block","id":"DRUM_LURE_PREDATOR_BUILD_1","reason":"Code+defs complete, built (0 errors), validate_patch.py clean, deployed via deploy_custom_mods.py --apply (commit c2403b3f2). Live quicktest of both mechanics (lure draw-in, egg ambush) not done: bridge held the entire session by a concurrent live FOUNDRY window (flight-animation quicktest), never idle/stale. Next FOUNDRY pass: take bridge, quicktest RSW_Drazzik + RSW_DrazzikEggFertilized, then close.","ts":"2026-09-20T19:53:48Z"}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-20T19:54:28Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-20T19:59:16Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-20T19:59:44Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-20T19:59:54Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PORTED_BEAST_MECHANICS_REBUILD_1","ts":"2026-09-20T20:01:00Z"}
+{"seat":"FOUNDRY","event":"start","id":"PORTED_BEAST_MECHANICS_REBUILD_1","ts":"2026-09-20T20:01:01Z"}
+{"seat":"FOUNDRY","event":"claim","id":"AA_JOE_DESERT_PORT_BATCH_1","ts":"2026-09-20T20:01:52Z"}
+{"seat":"FOUNDRY","event":"start","id":"AA_JOE_DESERT_PORT_BATCH_1","ts":"2026-09-20T20:01:53Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-20T20:18:50Z"}
+{"seat":"FOUNDRY","event":"close","id":"AA_JOE_DESERT_PORT_BATCH_1","sha":"b28d674ef","ts":"2026-09-20T20:20:44Z"}
