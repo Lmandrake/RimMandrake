@@ -113,3 +113,91 @@ with no `NullReferenceException` in the response.
 Any wild animal or humanlike PawnKindDef can be spawned via the bridge on the
 owner's real modlist without crashing — the standard debug-testing method is
 usable again.
+
+---
+
+## 🔴 NEW, WORSE FINDING 2026-09-20 (FOUNDRY) — this is a full process crash, and it is NOT the VEF postfix
+
+Took the bridge (BENCH's hold was 88 min idle, past the 45-min staleness
+threshold) to re-verify the `jawa/spawn_pawn` workaround for
+`DRUM_LURE_PREDATOR_BUILD_1`/`PORTED_BEAST_MECHANICS_REBUILD_1`. Two calls in:
+`rimbridge/get_bridge_status` and `rimworld/get_game_info` both succeeded
+(`status: "game_loaded"`, `mapCount: 1`, 3 pawns) — the third call
+(`jawa/get_defs`) got `ConnectionRefusedError`. **`tasklist` confirms
+`RimWorldWin64.exe` is no longer running.** The game crashed to nothing (no
+window, no process) sometime in the ~60 seconds between those calls.
+
+`Player.log`'s last 48 lines, in order, on a small test-tier map
+(`brrainz.rimbridgeserver`, `Mlie.StarWarsAnimalCollection`,
+`OskarPotocki.VanillaFactionsExpanded.Core`, `sarg.alphaanimals`,
+`mandrake.rsw.swbestiary` all confirmed active):
+
+1. **Two NPEs during ordinary map generation** (both logged as recovered
+   GenStep errors, not fatal on their own):
+   - `RimWorld.ScenPart_StartingAnimal+<>c__DisplayClass8_0.<PossibleAnimals>b__0` —
+     the SAME method the item's "Watch out" section already names, but this
+     time `sarg.alphaanimals` **was present and active**, and it NPE'd anyway.
+     That contradicts this item's existing assumption that keeping AlphaAnimals
+     avoids this specific NPE — record as an open contradiction, not resolved.
+   - `RimWorld.BiomeDef.CommonalityOfAnimal`, via AlphaAnimals' own postfix
+     `MultiplyAlphaAnimalCommonality`, during `GenStep_Animals` /
+     `WildAnimalSpawner.DesiredAnimalDensity`.
+2. **The actual crash**: immediately after map gen finished, dev mode's
+   auto-open-palette post-long-event action fired
+   (`Verse.DebugWindowsOpener.TryOpenOrClosePalette` →
+   `LudeonTK.Dialog_DevPalette..ctor` → `EnsureAllNodesValid` →
+   `Dialog_Debug.GetNode` → `DebugActionNode.TrySetupChildren` →
+   `Verse.DebugToolsSpawning.SpawnPawn()` → **`GetCategoryForPawnKind(kindDef)`
+   throws `NullReferenceException`**), logged as `Could not execute
+   post-long-event action`. **12 lines later the log simply stops — no
+   shutdown message, no exit line, nothing.** `tasklist` says the process is
+   gone.
+
+🔑 **Read the method** (`mcp__rimsage__read_csharp_symbol DebugToolsSpawning
+GetCategoryForPawnKind`, `Verse/DebugToolsSpawning.cs:174-197` — this is a
+CORE game class, not VEF, so RimSage CAN read it):
+
+```csharp
+public static string GetCategoryForPawnKind(PawnKindDef kindDef)
+{
+    if (!kindDef.overrideDebugActionCategory.NullOrEmpty()) return kindDef.overrideDebugActionCategory;
+    if (kindDef.RaceProps.Humanlike) return "Humanlike";   // <- NPEs here if kindDef.race is null
+    ...
+}
+```
+
+`kindDef.RaceProps` is `kindDef.race.race` — this line throws **if and only if
+some live `PawnKindDef`'s `<race>` field is null**, i.e. it names a `ThingDef`
+that failed to resolve. This method runs once per `PawnKindDef` while building
+the Spawn-Pawn debug-menu category tree, which happens **automatically**
+whenever dev mode's auto-palette-open fires after a map loads — **not only on
+a manual click, and not only via the bridge.** This is a plausible SEPARATE
+root cause from the VEF `CompShieldField.SpawnSetup` postfix documented above —
+both may be real, on different code paths (`GenSpawn.Spawn` on a raw Thing vs.
+enumerating the whole `DefDatabase<PawnKindDef>` to build a menu).
+
+⚠️ **I do NOT know which `PawnKindDef` has the null `race`.** I attempted a
+quick regex sweep of `src/**/*.xml` for `PawnKindDef.race` values with no
+matching `ThingDef` defName in this repo, and it returned **133 hits, almost
+entirely false positives** (verified by direct grep: `RSW_DW_Race_JDSCIS_B1_
+Battle_Droid` IS defined, at `src/RimStarWars/Droidworks/Defs/Races_JDS.xml:38`
+— my regex simply failed to pair `<ThingDef>`/`<defName>` blocks correctly
+across that file). **Do not trust that sweep or repeat it as written** — this
+needs the live def dump (`jawa/get_defs` reflection on `PawnKindDef.race`
+across the SAME small mod list that crashed, once the game is back up on a
+tier where a crash is affordable to retry) or a proper XML-tree parse
+(`xml.etree.ElementTree`, not regex, per this project's own standing
+`measuring-large-artifacts` rule), not a hand-rolled regex against 1848 defs.
+A donor mod's own `PawnKindDef` (`Mlie.StarWarsAnimalCollection`,
+`sarg.alphaanimals`) is just as plausible a source as anything in `src/`.
+
+⛔ **Do not blindly relaunch the game to "just try it again."** Dev mode's
+auto-palette-open means the SAME crash will very likely refire on the very
+next map generation with the same mod list, wasting a load. Next steps, in
+order: (1) find the actual null-race `PawnKindDef` via a live def-dump query
+or a real XML parse, not a regex; (2) decide fix-or-guard once identified;
+(3) only then relaunch to verify. Turning off dev mode's auto-palette-open
+(if that setting exists) would sidestep the crash but not the underlying bug,
+and would also defeat the debug-testing workflow this item exists to unblock.
+
+Bridge released — nothing to hold, the game process is gone.
