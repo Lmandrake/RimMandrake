@@ -5968,10 +5968,10 @@
     "sha": "e3212aae"
   },
   "src/RimMandrake/Utils/modset_builder.py": {
-    "cleanCount": 4,
-    "date": "2026-09-18",
-    "hash": "688e169f33a3b39ef33394564a00d318e5e545e2ad34724811e37063f4301c86",
-    "sha": "1b8dabec8"
+    "cleanCount": 5,
+    "date": "2026-09-20",
+    "hash": "e5eea2cdd2055251509b1cacde71c08df8950fbdc05c32f61f90f9845c5b2294",
+    "sha": "23513b419"
   },
   "src/RimMandrake/Utils/naming_lint.py": {
     "cleanCount": 4,
@@ -6214,10 +6214,10 @@
     "sha": "86de40c5"
   },
   "src/RimMandrake/Utils/rimbridge_client.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "6a512d129754cbb44a7b97e34cda9abaf2bc089c38943977503090806040c842",
-    "sha": "4de5c0cf"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "c0066d94dcea1654fbbf12064730cce8e4e01ba57deb9c8196d2f04d6ed8df2c",
+    "sha": "23513b419"
   },
   "src/RimMandrake/Utils/rimbridge_lineup.py": {
     "cleanCount": 1,
@@ -7480,10 +7480,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimMandrake/rimflow/model.py": {
-    "cleanCount": 4,
-    "date": "2026-09-18",
-    "hash": "767b87f6f92f617c8e3cade7606389d5dfe0ef4bf6027f29fa5fa4b382b63473",
-    "sha": "534c14f53"
+    "cleanCount": 5,
+    "date": "2026-09-20",
+    "hash": "85d8dd34d72cf00b5b70f970ba15ea00af02cbd5dd8aa3671f1edf8accc1286f",
+    "sha": "23513b419"
   },
   "src/RimMandrake/rimflow/priority.py": {
     "cleanCount": 1,
