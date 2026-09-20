@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T08:43:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T08:48:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1287,7 +1287,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  Retirement gates now 2 of 3: (1) BiomeCast_Ashkarr.xml regenerate needs deploy+dump-refresh cycle; (3) RotSporeKit GameCondition_SporeCloud has no data-only substitute. Gate (2) RULED 2026-09-11: the 7 stragglers are CUT - delete their biome entries, not ported (see item file). Retirement itself RULED to stand once gates clear.
+blocked:  Retirement gate (1) as originally scoped (regenerate BiomeCast_Ashkarr.xml) is likely MOOT - that file appears to be dead code since BIOME_OWNERSHIP_WAVE_1 (see BIOME_CAST_PATCH_DEAD_NAMES_1, filed 2026-09-20). Real remaining blockers: gate (3) RotSporeKit GameCondition_SporeCloud has no data-only substitute (unchanged); confirm BIOME_CAST_PATCH_DEAD_NAMES_1's finding before treating gate (1) as done or needed. Gate (2) remains RULED/done. (on BIOME_CAST_PATCH_DEAD_NAMES_1)
 summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
 prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
 
@@ -1542,3 +1542,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DETERMINISM_REMAINDER_C4_C6_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DETERMINISM_REMAINDER_C4_C6_1.md
+
+## BIOME_CAST_PATCH_DEAD_NAMES_1 BiomeCast_Ashkarr.xml (gen_cast_patch.py) targets pre-BIOME_OWNERSHIP_WAVE_1 biome defNames - likely fully vestigial
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  BIOMECASTPATCHDEADNAMES1 — BiomeCastAshkarr.xml targets biome defNames that no longer exist
+prose:    infrastructure/state/items/BIOME_CAST_PATCH_DEAD_NAMES_1.md

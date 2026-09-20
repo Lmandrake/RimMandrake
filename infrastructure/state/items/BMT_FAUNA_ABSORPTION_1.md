@@ -106,17 +106,26 @@ column repointed to `RimMandrake: SW — Bestiary`, reason field annotated).
 
 ## ESCALATION — retirement is NOT safe yet, three open items
 
-1. **`src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml` is
-   GENERATED** (`design/Jawa/fauna/gen_cast_patch.py` from
-   `cast_assignment.csv`, header says "do not hand-edit"). It still carries
-   ~10 `PatchOperationConditional MayRequire="biomesteam.*"` blocks for
-   in-scope species. The CSV source is now fixed (above), but regenerating
-   correctly requires the generator's own packageId resolution, which reads
-   `defName → packageId` from a **live def dump** — `RSW_*` won't resolve
-   until SWBestiary's new defs are deployed and the dump refreshed. That's a
-   deploy + dump cycle (CHARTER expensive-list territory), not something to
-   run unattended from an isolated worktree. **Next step: deploy, refresh the
-   dump, re-run `gen_cast_patch.py`, diff the result.**
+1. **CORRECTED 2026-09-20 (FOUNDRY) — the deploy+dump-refresh precondition this
+   gate names is now MET, and doing so revealed the gate itself was mis-scoped.**
+   Both preconditions cleared this pass: SWBestiary's `BiomesTeamPort` defs are
+   deployed live (`Mods/SWBestiary/Defs/BiomesTeamPort/`, 7 files, byte-matching
+   the repo) and the 2026-09-20T07-47-24Z capture (the live 617-mod session)
+   resolves 395 `RSW_` PawnKindDefs. Re-running `gen_cast_patch.py` against that
+   fresh data produced a diff that changes nothing real: `BiomeCast_Ashkarr.xml`
+   targets biome defNames (`AB_FeraliskInfestedJungle`, `Desert`, `ExtremeDesert`,
+   `AB_MycoticJungle`, ...) that **predate `BIOME_OWNERSHIP_WAVE_1`** (2026-09-09),
+   which replaced every one of them with a new `RUT_`-prefixed `BiomeDef` that
+   carries its own hardcoded `wildAnimals` directly (24 of 26 `RUT_*.xml` biome
+   defs confirmed). The `PatchOperationConditional` xpath tests in this file never
+   match any live biome, so it silently no-ops — it has very likely been dead code
+   since that wave landed, unrelated to the retirement gate at all. Full writeup
+   and the regenerate confirming it: `BIOME_CAST_PATCH_DEAD_NAMES_1` (filed this
+   pass) — read that before actioning "regenerate BiomeCast_Ashkarr.xml" again.
+   **This file also carries zero `wildPlants` content and was never the source of
+   any plant crossref error** — that mechanism belongs to
+   `CUT_FALLOUT_GENERATED_DATA_1` (`BiomeFlora_Ashkarr.xml`/`biome_flora.py`), a
+   separate item this pass also advanced (see its own notes).
 2. **7 defNames are live and marked "keep"/"import" in hand-authored biome
    files but are NOT in the ruled 68** — `BMT_ChemSnail` (kept at BOTH
    `the_cracked_lands` AND `the_rot`, contradicting this item's own read of
