@@ -668,3 +668,30 @@ VCE_Plant_Schlumbergera,schlumbergera plant,Vanilla Plants Expanded - Succulents
 VCE_Plant_SnakePlant,snake plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/SnakePlant
 VCE_Plant_SweetheartPlant,sweetheart plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/SweetheartPlant
 VRE_PoluxBush,polux bush,Vanilla Races Expanded - Phytokin,True,Super,Misc,10,WoodLog,0,58,6,42,0.05000000074505806,False,False,Any,3,8,,Things/Plant/PoluxBush
+RUT_Arpeau,churrun mast,RimUtinni: Rot Spore Kit,True,Full,Misc,5,RUT_MushroomLog,0,58,6,42,0.7,True,False,CleanOnly,1,20,,RotSporeKit/Things/Plant/Arpeau
+RUT_BleedingTooth,rhukk tooth,RimUtinni: Rot Spore Kit,False,None,Misc,2,,0,58,6,42,0.7,False,False,Any,2,-1,,RotSporeKit/Things/Plant/BleedingTooth
+RUT_Brightbell,tinnik bell,RimUtinni: Rot Spore Kit,False,None,Misc,5,RawFungus,0,58,6,42,0.05,False,False,CleanOnly,3,8,Ground|Decorative,RotSporeKit/Things/Plant/Brightbell
+RUT_CrimsonCap,rhessa cap,RimUtinni: Rot Spore Kit,False,None,Beauty,5,,0,58,6,42,0.05,False,False,CleanOnly,3,8,Ground,RotSporeKit/Things/Plant/CrimsonCap
+RUT_Dewshrooms,sikkra lure,RimUtinni: Rot Spore Kit,False,None,Misc,3.5,,0,58,6,42,0.05,False,False,CleanOnly,1,4,,RotSporeKit/Things/Plant/Seadew
+RUT_FireLavender,fire lavender,RimUtinni Patches (Jawa campaign),False,None,Misc,5,,26.9,352.2,43.2,336,0.05,False,False,CleanOnly,3,8,Ground,Things/Plant/FireLavender
+RUT_FlakespireFungus,tarrusk spire,RimUtinni: Rot Spore Kit,True,Full,Misc,18,RUT_MushroomLog,0,58,6,42,0.7,False,False,CleanOnly,3,3,Ground,RotSporeKit/Things/Plant/FlakespireFungus
+RUT_FruitingBodies,pimmik mold,RimUtinni: Rot Spore Kit,False,None,Misc,4.5,,0,58,6,42,0.05,False,False,Any,1,5,,RotSporeKit/Things/Plant/FruitingBodies
+RUT_GiantLeaf,giant leaf,RimUtinni Patches (Jawa campaign),False,None,Food,12,RUT_RawGiantLeaf,0,74.6,7.7,54,1,False,False,CleanOnly,2,10,Ground,Things/Plant/GiantLeaf
+RUT_GreyLady,sylla lace,RimUtinni: Rot Spore Kit,False,None,Misc,8,Cloth,0,58,6,42,0.7,False,False,CleanOnly,2,3,Ground|RUT_Fungiponics,RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown
+RUT_HeatsinkFungus,heatsink fungus,RimUtinni Patches (Jawa campaign),True,Full,Health,5,WoodLog,26.9,352.2,43.2,336,0.05,False,False,CleanOnly,3,1,Ground,Things/Plant/HeatsinkFungus
+RUT_MortalMorelPlant,vennik salve,RimUtinni: Rot Spore Kit,False,None,Health,10,RUT_MedicineFungal,-53.1,352.2,-32.8,332,1,False,False,CleanOnly,2,4,,RotSporeKit/Things/Plant/MortalMorel
+RUT_Nogtyl,brommok timber,RimUtinni: Rot Spore Kit,True,Full,Misc,7,WoodLog,0,58,6,42,0,False,False,Any,1,4,Ground,RotSporeKit/Things/Plant/Nogtyl
+RUT_Nuitae,nissik gill,RimUtinni: Rot Spore Kit,False,None,Misc,3,,0,58,6,42,0.1,True,False,Any,1,4,,RotSporeKit/Things/Plant/Nuitae
+RUT_Pusmelon,gubbra gourd,RimUtinni: Rot Spore Kit,False,None,Misc,3.8,,0,58,6,42,0.5,False,False,CleanOnly,1,6,,RotSporeKit/Things/Plant/Pusmelon
+RUT_RustPuff,rustpuff,RimUtinni: Rot Spore Kit,False,None,Misc,5.5,,0,58,6,42,0.05,False,False,CleanOnly,1,6,,RotSporeKit/Things/Plant/RustPuff
+RUT_Sagecrust,tavvik crust,RimUtinni: Rot Spore Kit,False,None,Misc,3.5,,0,58,6,42,0.05,False,False,CleanOnly,1,3,,RotSporeKit/Things/Plant/Sagecrust
+RUT_ScorchedStars,scorched stars,RimUtinni Patches (Jawa campaign),False,None,Misc,5,,-28,65.5,-18.3,39.7,0.1,False,False,CleanOnly,2,4,,Things/Plant/ScorchedStars
+RUT_Shinecap,dremmik cap,RimUtinni: Rot Spore Kit,True,Full,Misc,30,RUT_Glimmerslime,0,58,6,42,0.7,False,False,CleanOnly,3,8,Ground|Ground,RotSporeKit/Things/Plant/Shinecap/ShinecapGrown
+RUT_Skulltop,vekkra choker,RimUtinni: Rot Spore Kit,True,Full,Misc,8,RUT_MushroomLog,0,58,6,42,0.05,False,False,Any,2,5,Ground,RotSporeKit/Things/Plant/Skulltop/Skulltop
+RUT_TreeMartyr,martyr tree,RimUtinni Patches (Jawa campaign),True,Full,Misc,10,WoodLog,-22.1,58,-13.8,35.9,0.1,False,False,CleanOnly,3,-1,Ground,Things/Plant/MartyrTree
+RUT_TwistingThorngrass,twisting thorngrass,RimUtinni Patches (Jawa campaign),False,None,Misc,2.5,,-8.6,70.1,-0.5,48.4,0.1,False,False,CleanOnly,1,-1,,Things/Plant/TwistingThorngrass
+RUT_TwistingThornweed,twisting thornweed,RimUtinni Patches (Jawa campaign),False,None,Misc,5,,-8.6,70.1,-0.5,48.4,0.1,False,False,CleanOnly,2,4,,Things/Plant/TwistingThornweed
+RUT_TwistingThornwood,twisting thornwood,RimUtinni Patches (Jawa campaign),True,Full,Misc,15,WoodLog,-18.7,68.2,-9.7,44.2,0.05,False,False,CleanOnly,3,-1,Ground,Things/Plant/TwistingThornwood
+RUT_VioletWimple,pursk hood,RimUtinni: Rot Spore Kit,False,None,Misc,5,RawFungus,0,58,6,42,0.05,False,False,CleanOnly,3,8,,RotSporeKit/Things/Plant/VioletWimple
+RUT_Wrinklecap,rukka cap,RimUtinni: Rot Spore Kit,False,None,Misc,3,,0,58,6,42,0.1,True,False,CleanOnly,1,4,,RotSporeKit/Things/Plant/Wrinklecap
+RM_FE_Plant_Quickgrass,quickgrass,Pyrelands,False,None,Misc,1,,-4,80,8,50,0.05,False,False,CleanOnly,1,5,,Things/Plant/RM_FE_Quickgrass
