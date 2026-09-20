@@ -1,4 +1,30 @@
-# PYRELANDS_WRONG_BIOME_DEF_1 — the Pyrelands was built onto a def nobody can reach
+# PYRELANDS_WRONG_BIOME_DEF_1
+
+## 🔴 THE PREMISE BELOW WAS NEVER ESTABLISHED — read this first
+
+This item was filed 2026-09-20 on a reading of `world/ASHKARR_WORLDMAP_tiles.csv`
+(`ZBiome_Grasslands` 222 tiles / `RM_FE_Pyrelands` 0). **That CSV is a RECORD exported
+from the savegame on 2026-09-12, not the planet** — its own freeze stamp says so:
+*"It is a RECORD of the planet, not a rival to it."* A committed comment from a **live**
+read on 2026-09-19 (`ManyWaters_RiverSteam_Ashkarr.xml`, `RiverSteamHook.cs`) asserts the
+exact reverse: 222 tiles `RM_FE_Pyrelands`, zero `ZBiome_Grasslands`. Both cannot describe
+one moment, and the live world decides. ⛔ Do not act on either number.
+
+✅ **And it no longer matters.** Owner ruling, same day — *"Don't worry about worldmap
+painting. Once we have all the biomes in mods we will do the painting once and for all."*
+The world-side half of this item is dissolved into `BIOME_PAINT_ONCE_AT_THE_END_1`.
+
+✅ **The offline half was real and is DONE** at `e07eca2d0`: `AshStorms_Pyrelands.xml` was
+adding `AB_VolcanicAsh` to the *More Vanilla Biomes* donor def instead of to
+`RM_FE_Pyrelands`, and three further files carried false prose about which def the world
+carries. That was a content-wiring defect and is independent of any tile count.
+
+⚠️ Everything under the next heading is the ORIGINAL filing, preserved only so the
+reasoning that produced a false premise can be read. Its numbers are not evidence.
+
+---
+
+## the original filing (premise unestablished)
 
 ## the defect
 
