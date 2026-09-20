@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T15:55:41Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-20T16:02:35Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -569,6 +569,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_ROSTER_DEAD_DONOR_NAMES_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  For each of the 14 remaining BMT names (the 17 minus the two ported and
 prose:    infrastructure/state/items/ROT_ROSTER_DEAD_DONOR_NAMES_1.md
+
+## DONOR_DEFS_PORT_TO_OURS_1 Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 262 of ~330 borrowed biome-roster entries alone
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DONOR_DEFS_PORT_TO_OURS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
+
+## NONCANON_BEAST_RENAME_1 Rename every non-canon beast to a pseudo-Star-Wars equivalent - owner ruling 2026-09-20; applies to donor creatures with Earth or generic names that survive the port to our own defs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NONCANON_BEAST_RENAME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NONCANON_BEAST_RENAME_1.md
