@@ -11716,10 +11716,10 @@
     "sha": "2f8d4a99a"
   },
   "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "d389fbec792c5f6fe62ce052413ca1e7fb66fd1d3dbc00956218d55c5fd0bf72",
-    "sha": "3f9a899d9"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "fb7f13df13df339b8331717ed054c88a89b73ee30e8576170ac2318bbac647b9",
+    "sha": "14aaf1757"
   },
   "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveB_Bodies.xml": {
     "cleanCount": 1,
@@ -17020,10 +17020,10 @@
     "sha": "51867f432"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-12",
-    "hash": "33885bd90279615e754edaa8c0a2fb1d8e957aa50e546881cd21c4dd2764576a",
-    "sha": "bfa7c2f92"
+    "cleanCount": 5,
+    "date": "2026-09-20",
+    "hash": "bfad58a8b783a7db31518103e66553d17bfe5bb6fa52fdd9973e1dfefd7e3430",
+    "sha": "14aaf1757"
   },
   "src/RimUtinni/UtinniPatches/Patches/ApparelTags_DeadTagRepair.xml": {
     "cleanCount": 1,
