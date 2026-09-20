@@ -27,9 +27,12 @@
     Wildsteam flavor is lore text only — no faction identifiers in the defNames
     (naming law, design/NAMING_SCHEME_PLAN.md).
 
-    No new art: texPaths below reuse `Plant_TreeAnima`/`Plant_GrassAnima`'s own
-    vanilla Royalty texPaths as placeholders (art owed — see the ticket's OWED
-    line, a Wildsteam-specific pale-tree/pale-moss sprite pair).
+    Art landed 2026-09-20: PaleMoss is rot_palemoss_v2 (ROT_FLORA_FAUNA_VERDICTS_1).
+    PaleTree is rut_paletree_v1 (ROT_ART_WAVE_1) as an interim — the re-ruled
+    rot_paletree_v2 regen was rejected on quality (flat achromatic render, no
+    color fill) and rot_paletree_v3 is pending in the artpipe queue; land v3's
+    art over this file the same way once it clears review. Neither texPath
+    reuses the vanilla Royalty TreeAnima/Grass_Anima art any more.
 
     The vanilla `CompProperties_MeditationFocus` building-bonus block
     (`FocusStrengthOffset_BuildingDefs` naming `NatureShrine_Small`/
@@ -62,7 +65,7 @@
         <volume>(0.2,0.35,0.13)</volume>
         <offset>(0,0,-0.25)</offset>
       </shadowData>
-      <texPath>Things/Plant/TreeAnima</texPath>
+      <texPath>RotSporeKit/Things/Plant/PaleTree</texPath>
     </graphicData>
     <minifiedDef IsNull="True" />
     <neverMultiSelect>True</neverMultiSelect>
@@ -180,7 +183,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <shaderType>CutoutPlant</shaderType>
-      <texPath>Things/Plant/Grass_Anima</texPath>
+      <texPath>RotSporeKit/Things/Plant/PaleMoss</texPath>
     </graphicData>
     <neverMultiSelect>True</neverMultiSelect>
     <pathCostIgnoreRepeat>false</pathCostIgnoreRepeat>
