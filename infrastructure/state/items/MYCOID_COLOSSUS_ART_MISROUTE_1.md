@@ -32,42 +32,49 @@ Caught by the owner on the size re-judge sheet, 2026-09-19, verbatim:
 - With no `Textures/` there, the donor's own colossus art wins again — wrong for the
   campaign, but strictly better than a droid.
 
-## owed
+## done 2026-09-20 — the art was already rendered, and he approved it on sight
 
-1. **Regenerate the art** to the owner's brief: *a huge multi-legged purplish entity
-   with glowing mushrooms sprouting from its back*. Three facings, at the same
-   texPath `Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_<facing>.png`.
-   **QUEUED 2026-09-20** as `rut_mycoidcolossus_v1_{south,north,east}`, priority 100,
-   1024x1024, no reference (this is a restyle, and a `reference=` would trigger
-   reskin-validate against the wrong creature).
+No regeneration was needed. Three facings had been rendered **2026-09-19** under
+`ROT_FLORA_FAUNA_VERDICTS_1` as `rot_mycoidcolossus_v2_{south,east,north}` at
+2048x2048, all `status: ok`, and never wired to anything. They match his brief —
+six-legged, purple hide, a grove of glowing lilac caps on the back — and they obey
+the 2026-09-15 facing convention: south is the front with the head to camera, north
+is the rear with no face, east is a clean profile. Owner, on the contact sheet:
+*"That's a cool mycoid. I like it."*
 
-   🔴 **The art channel is NOT quota-blocked and never was blocked until Monday.**
-   MEASURED from the newest manifest (`rut_firehawk_flying_5_south`, completed
-   00:12 today): the codex **weekly** meter is at **42%** and resets **2026-09-26**.
-   What was actually throttling it is the **5-hour** window at **86%** with the
-   daemon `grumpy`, which clears within the 300-minute window — which is why 21
-   older jobs are parked at priority 60-70 while these three sit at 100.
+Shipped at **1024x1024** from the 2048 masters:
 
-   ⚠️ Facings: each of the three carries its OWN surface language per the owner's
-   2026-09-15 ruling — south is the front (face toward camera), north is the rear
-   (no face, no eyes, the mushroom garden seen from behind), east is a side profile.
-   The Rot v2 family's prompts do NOT do this — all three of `rot_agaripawn_v2_*`
-   share one identical "Top-down pawn sprite, three facings" prompt, which is the
-   exact defect `ARTPIPE_FACING_COHERENCE_1` exists for. Do not copy that family.
+- the sub-visible export halo (alpha 1-16, ~80,000 px per facing) was zeroed first —
+  measured fringe 2.15% / 2.13% / 2.09% → 0.83% / 0.87% / 0.92%;
+- downscaled with **premultiplied** alpha, so the cutout carries no dark halo;
+- 1024 is a deliberate call, not a shortfall. At the ruled drawSize the 128 px/cell
+  target lands past what the generator fills with real detail, so this ships at
+  ~85 px/cell — the same call the sea-beast colossi shipped at.
+- three distinct sha256s, so no facing is a copy of another.
 
-**Size 12 is NOT owed here.** His `resize` ruling on this row belongs to
-`ROT_SIZE_REJUDGE_APPLY_1`, which applies all 11 re-judged Rot sizes as one wave.
-🔴 Whoever applies it: the live `bodyGraphicData.drawSize` is **4** (MEASURED from the
-running game's def data), so set 12 against 4 — the 15 in `df261b2bc` is not what the
-running game carries. No drawSize patch for `AA_MycoidColossus` exists in `src/` today.
+Deployed and `VERIFIED in sync`. The override sits at index **608** in the live
+`ModsConfig.xml` against `sarg.alphaanimals` at **409**, so it wins same-path
+resolution.
 
-## undeploy — DONE, verified 2026-09-20
+⚠️ The three `rut_mycoidcolossus_v1_*` jobs I queued before finding the existing
+renders were pulled; one (`_east`) was already running and its output is discarded.
 
-The live mod at
-`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\MycoidColossusArtOverride\`
-holds exactly `LICENSE` and `About/About.xml` — no `Textures/` tree, no droid PNGs —
-and its `About.xml` is byte-identical to the repo's. The game no longer renders a droid;
-the donor's own colossus art wins until the regeneration lands.
+## flagged for him, deliberately not fixed
+
+🔴 **North draws about half again as tall as the other two facings.** MEASURED on the
+shipped files: north's subject is 922x981 (aspect 0.94) against south 983x656 and
+east 1003x671 (aspect ~1.50). RimWorld scales every facing into the same drawSize
+box, so the creature will appear to change size as it turns — the same defect he
+named on Anooba (*"North is HUGE compared to east"*). Recomposing north changes the
+art, which is his call, so it stands as it is.
+
+## not owed here
+
+**Size 12 belongs to `ROT_SIZE_REJUDGE_APPLY_1`**, which applies all 11 re-judged Rot
+sizes as one wave. 🔴 The live `bodyGraphicData.drawSize` is **4** — set 12 against 4,
+not against the 15 in `df261b2bc`. ⚠️ Two owner notes disagree on the number: the Rot
+verdict sheet said *"15 wide"* (which is what the art was drawn to) and the size
+re-judge sheet said *"Size 12"*. The later note wins unless he says otherwise.
 
 ## the bigger question — needs the owner
 
