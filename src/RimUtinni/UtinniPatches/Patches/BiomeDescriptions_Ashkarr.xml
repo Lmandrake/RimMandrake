@@ -69,10 +69,18 @@
         onto, they ARE the source.
       - RUT_Jawa_BackgroundWater: isBackgroundBiome, implemented=false, no tile ever
         carries it — nothing to port onto.
-      - ZBiome_Grasslands ("the Pyrelands", donor text "stormy savanna"): no RUT_
-        BiomeDef exists yet for the Pyrelands (the_pyrelands.md is written, the def
-        is not) — not one of the 27 already-written descriptions, so not ported
-        here. Left as a known gap, not silently invented.
+      - ZBiome_Grasslands ("the Pyrelands", donor text "stormy savanna"): CORRECTED
+        2026-09-20 (PYRELANDS_WRONG_BIOME_DEF_1) — this line was wrong even when
+        written: the Pyrelands' own BiomeDef, `RM_FE_Pyrelands`, already existed
+        by 2026-09-11 (mandrake.rm.pyrelands, Defs/BiomeDefs/Pyrelands.xml) with
+        its own native `<description>`, just under the RimMandrake tier rather
+        than a `RUT_` name. Still deliberately NOT ported onto ZBiome_Grasslands
+        here: the owner's 2026-09-20 ruling is that Pyrelands content stays on
+        the def we own, not the donor, and the world repaint (owed,
+        WORLD_REMAKE_FINAL_STEP_1) is what gives players RM_FE_Pyrelands's real
+        description — porting it onto the donor now would entrench the donor as
+        the fire biome, the opposite of the ruled direction. Players still see
+        the donor's "stormy savanna" text until the repaint; known, accepted.
   -->
 
   <Operation Class="PatchOperationConditional">

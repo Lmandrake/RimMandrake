@@ -8,12 +8,20 @@
        "ZBiome_Grasslands" inside the engine's C# — backwards: which biome
        steams is campaign wiring, and campaign wiring lives here.
 
-       RM_FE_Pyrelands (mandrake.rm.pyrelands) is the Pyrelands biome the frozen
-       world actually carries — 222 tiles, MEASURED live 2026-09-19. The second
-       operation below is the one that does the work on the shipped world.
+       RM_FE_Pyrelands (mandrake.rm.pyrelands) is the mod's OWN Pyrelands biome
+       def, the one every Pyrelands content patch targets. CORRECTED 2026-09-20
+       (PYRELANDS_WRONG_BIOME_DEF_1): a 2026-09-19 comment here claimed
+       RM_FE_Pyrelands already carried the frozen world's 222 Pyrelands tiles and
+       ZBiome_Grasslands carried zero — the opposite is independently confirmed
+       today by re-parsing `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows):
+       ZBiome_Grasslands 222, RM_FE_Pyrelands 0. Whether a live world_tile_set
+       switch on 2026-09-19 ever landed in that frozen CSV is unreconciled; the
+       CSV is the canonical source and the second operation below (on
+       RM_FE_Pyrelands) is a no-op on today's world for exactly that reason.
        ZBiome_Grasslands is zylle's More Vanilla Biomes grassland, still labelled
-       "the Pyrelands" by BiomeNames_Ashkarr.xml but carrying ZERO tiles on the
-       canonical planet; it is patched too, conditionally, and costs nothing.
+       "the Pyrelands" by BiomeNames_Ashkarr.xml and carrying the world's 222
+       Pyrelands tiles today; it is patched too, conditionally, and costs
+       nothing when it eventually does not.
 
        ⚠️ Gated twice, both deliberately:
        - PatchOperationFindMod on ManyWaters, because a `Class=` naming a type
@@ -68,19 +76,22 @@
   </Operation>
 
 
-  <!-- 🔴 RM_FE_Pyrelands is the biome the FROZEN WORLD actually carries.
-       MEASURED live 2026-09-19 (FOUNDRY bridge wave 2) against the canonical
-       planet (seed "raven", coverage 1.0, jawa/world_tile_export, 21872
-       surface tiles): 222 tiles are BiomeDef RM_FE_Pyrelands and ZERO are
-       ZBiome_Grasslands. The Pyrelands moved off zylle's reskinned grassland
-       onto our own biome def in mandrake.rm.pyrelands, and the operation above
-       was never re-pointed — so on the shipped world MapComponent_RiverSteam
-       could never fire on a single tile, and the item's "steam has never been
-       seen" symptom had this as its cause, not a render bug.
+  <!-- RM_FE_Pyrelands is the def every Pyrelands content patch targets — the
+       world repaint (owed, PYRELANDS_WRONG_BIOME_DEF_1 / WORLD_REMAKE_FINAL_STEP_1)
+       is what makes this the operation that does the work on the shipped world.
+       CORRECTED 2026-09-20: a same-day-earlier version of this comment (dated
+       2026-09-19, "FOUNDRY bridge wave 2") claimed the opposite of the operation
+       block above and this one — that RM_FE_Pyrelands already held the 222 tiles
+       and ZBiome_Grasslands held zero. Re-parsing `world/ASHKARR_WORLDMAP_tiles.csv`
+       today shows RM_FE_Pyrelands 0, ZBiome_Grasslands 222 — so today this
+       operation is the no-op and the one above (on ZBiome_Grasslands) is the one
+       doing the work. Whether the 2026-09-19 live measurement was real and later
+       reverted, or never landed in the canonical CSV, is unreconciled — flagged
+       for BENCH, not resolved here.
 
-       Both defNames are patched, not one: ZBiome_Grasslands is still labelled
-       "the Pyrelands" live and may carry tiles on a non-canonical world, and
-       every operation here is conditional on the def existing, so patching a
+       Both defNames stay patched, not one: whichever def the canonical CSV
+       carries on a given day, this wiring keeps working with no XML edit needed,
+       and every operation here is conditional on the def existing, so patching a
        biome with no tiles costs nothing. -->
   <Operation Class="PatchOperationFindMod">
     <mods>

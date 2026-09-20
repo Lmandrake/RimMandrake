@@ -70,9 +70,24 @@
       <operations>
 
         <!-- Make ash storms occur over the Pyrelands. Shorthand form: the node
-             NAME is the weather def, its text is the commonality. -->
+             NAME is the weather def, its text is the commonality.
+
+             REPOINTED 2026-09-20 (PYRELANDS_WRONG_BIOME_DEF_1): this operation
+             targeted the donor `ZBiome_Grasslands` since 2026-08-20. Owner
+             ruling 2026-09-20: every actively converted biome is its own
+             RimMandrake-tier def, and content stays on the def we own
+             (`RM_FE_Pyrelands`) rather than being entrenched on the donor —
+             the world repaint (owed separately) is what puts this on the map,
+             not a patch aimed at the donor. `RM_FE_Pyrelands` already ships
+             its own rich `baseWeatherCommonalities` natively
+             (Defs/BiomeDefs/Pyrelands.xml — Clear/DryThunderstorm/
+             RM_FE_Weather_AshFall/RM_FE_Weather_Cinderfall/RM_FE_BlackRain),
+             so this operation is retargeted rather than duplicated: adding
+             Alpha Biomes' AB_VolcanicAsh here layers the donor's own named
+             "ash storm" on top of that table for players still on
+             ZBiome_Grasslands before the repaint lands. -->
         <li Class="PatchOperationAdd">
-          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities</xpath>
+          <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/baseWeatherCommonalities</xpath>
           <value>
             <AB_VolcanicAsh>3</AB_VolcanicAsh>
           </value>

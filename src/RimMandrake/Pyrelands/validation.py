@@ -11,8 +11,14 @@ for a folder-collision bug) were the original two halves. On disk today
 there is no `src/RimStarWars/FireEcology` at all, and the RimUtinni-tier
 wiring mod `PyrelandsFireEcology` was RETIRED outright 2026-09-17
 (FIREECOLOGY_SHIM_RETIREMENT_1 -- all four of its patches targeted the
-ZBiome_Grasslands donor, which PYRELANDS_WORLD_SWITCH_1 removed from the
-worldmap; measured: nothing of value remained). Its About.xml named its
+ZBiome_Grasslands donor; measured: nothing of value remained). CORRECTED
+2026-09-20 (PYRELANDS_WRONG_BIOME_DEF_1): `PYRELANDS_WORLD_SWITCH_1` closed
+2026-09-11 WITHOUT completing its own criterion #3 -- the owner went AFK
+mid-item and the live `jawa/world_tile_set` step never ran. MEASURED
+2026-09-20 against `world/ASHKARR_WORLDMAP_tiles.csv`: `ZBiome_Grasslands`
+still carries 222 tiles, `RM_FE_Pyrelands` carries 0. The donor was never
+removed from the worldmap; the repaint is still owed
+(`WORLD_REMAKE_FINAL_STEP_1`). Its About.xml named its
 dependency as `mandrake.rm.pyrelands`, "generic desert fire-ecology
 engine" -- confirmed by grep: only `src/RimMandrake/Pyrelands/About/About.xml`
 carries that packageId, and its `Source/FireEcologyHook.cs` is a byte-for-
