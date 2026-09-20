@@ -121,9 +121,15 @@ and nowhere else; never restate a model choice outside it.
   `mandrake.rm.flowworks` (RE-VERIFIED 2026-09-19 against `About.xml` and the live
   Mods folder). Owner: *"That file may be VERY old… do not accept stale info."*
   Sweep: `STALE_RENAME_GATE_SWEEP_1`.
-- **North stars: `FlowWorks`, `Graffiti`, `Pits` and `WreckedMachines` are VALIDATED** —
-  MEASURED 2026-09-17 through the parser: 13+3 / 8+2 / 11+1 / 12+2 = **44 bars**, every
-  recorded hash MATCHing. ⛔ Do not casually edit their `## north star` sections: the hash
+- **North stars: `FlowWorks`, `Graffiti` and `Pits` are VALIDATED; `WreckedMachines`
+  REVERTED TO DRAFT** — RE-MEASURED 2026-09-20 (`modcheck floor --all`, new this session):
+  `WreckedMachines.md`'s `### cannot show` prose was corrected at `6cdf52b39` (2026-09-17,
+  same day as the MEASURED line below) without a same-sitting re-validation, so its hash
+  no longer matches and it is exactly the failure mode two sentences below warns against —
+  it needs `modcheck/cli.py validate WreckedMachines --owner-said "..."` before it binds
+  again. The original MEASURED-2026-09-17 line (13+3 / 8+2 / 11+1 / 12+2 = 44 bars, every
+  hash MATCHing) was true when written and is not true now. ⛔ Do not casually edit their
+  `## north star` sections: the hash
   covers the **whole section including explanatory prose**, so correcting a stale caveat
   reverts the checklist to DRAFT and the mod quietly stops being refused (hit live
   2026-09-16). 🔴 **Owner ruled 2026-09-17 that this stays as it is** — verbatim: *"Change
