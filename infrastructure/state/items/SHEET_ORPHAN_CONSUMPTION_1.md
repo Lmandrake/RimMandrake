@@ -297,3 +297,54 @@ check `infrastructure/artpipe/done/`, `_artsrc/`, `registry.jsonl` and any
 drops the donor prefix and appends `_v<n>`, so a defName search reports a false
 absence. The audit that produced "141 owed" was re-measured to **37**; the same trap
 would re-queue art that already exists.
+
+---
+
+## fauna `decision=out` channel — CLOSED OUT, 2026-09-20 (FOUNDRY)
+
+Re-verified against the live tree (8 days after the audit, per this pass's own brief).
+The roster-json half of this channel was **already committed by a concurrent window**
+at `c2428fb6f` (a different session than this one) before this pass started — the
+5 `BMT_` species and `AA_FissionMouse` were already removed from every roster's live
+`fauna` list (JSON-parsed check across all 16 roster files, not grep: zero live hits),
+with eviction records recorded. `BMT_ChemSnail` was correctly caught in both
+`the_rot.json` AND `the_cracked_lands.json` (a second live location the item's own
+note hadn't named). `AA_FissionMouse` was only ever live in `wasteland.json` — every
+other roster's mention of it was already a pre-existing `move:Wasteland` eviction
+record pointing there, so "cut everywhere" was already satisfied at the roster layer.
+
+**What was NOT done, and what this pass added:** the roster-json fix never reached
+the live game. `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml` still
+carried a live `<AA_FissionMouse MayRequire="sarg.alphaanimals">0.3</AA_FissionMouse>`
+row in its `<wildAnimals>` block — this is the load-bearing layer
+(`rosters_to_cast.py`'s own header: "MEASURED 2026-09-20: every one of those biomes'
+own BiomeDef XML ... already declares `<wildAnimals>` natively", i.e. the roster JSON
+is provenance/authoring record, not what the game reads). Removed that one line.
+Swept every `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/*.xml` for all 6 defNames
+afterward: zero remaining hits. `RUT_TheRot.xml` and `RUT_CrackedLands.xml` never
+carried any of the 5 `BMT_` species natively, so no edit was owed there.
+
+Left alone, deliberately: `MegafaunaYield.xml`, `AnimalBiomeDuplicates_Generated.xml`,
+`BiomeCastEvictions_WildBiomes.xml` and `AnimalTolerances_Ashkarr.xml` still reference
+`AA_FissionMouse`/`BMT_CaveSpider`/etc. — these are generated compatibility/stat
+patches keyed off the donor `ThingDef`s themselves (yield amounts, vanilla/donor-biome
+`race.wildBiomes` eviction pairs, temperature tolerance), not our `RUT_*` custom biome
+rosters. The `ThingDef`s are not deleted, only excluded from our own world's biome
+casts, so these remain valid and are out of this channel's scope.
+
+**Cut-list sidecar: not applicable to this channel, by design.** Read
+`apply_assignment_verdicts.py` directly (`_side("cherry_pick_cut_list", plan.cut_list)`,
+~line 549): `plan.cut_list` is only ever populated for **`homeless:`** rows with
+decision `out` (a no-home creature Cherry-Picker would cut). An in-biome **`fauna:`**
+row with decision `out` takes a different code path entirely — it calls `_remove_def`
+on the roster's live `fauna` list and appends an `evictions` record in the same file
+(exactly the shape the concurrent window's roster edit already used by hand). So "no
+cut-list sidecar was ever written" for this channel was never a gap to fill — the
+tool has no sidecar for this row kind, and the roster's own `evictions` array already
+carries the provenance the sidecar would have. Confirmed by reading the source, not
+inferred.
+
+Selftests: `run_selftests.py` still passes at the pre-existing baseline after this
+change (see commit). Fauna `decision=out` channel of this item is done; the other
+four channels (flora move/purge/improve, the 118-row ledger, sizeBin) are untouched
+by this pass and remain whatever state the rest of this file already records.
