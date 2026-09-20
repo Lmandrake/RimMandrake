@@ -113,3 +113,103 @@ is kept.
 Consequence for the sibling items: the save must therefore be made loadable, so
 `CANONICAL_SAVE_MODLIST_DIVERGENCE_1` and `CANONICAL_SAVE_CUT_RESIDUE_1` are live
 work, not moot. A full residue scrub is no longer speculative.
+
+## executed, 2026-09-20
+
+Backed up twice before touching anything (`.bak-pre-sekki-stock-edit-20260920T141947Z`
+before the pawn/stock work, `.bak-pre-scenario-text-edit-20260920T142811Z` before the
+raw text edit) — both still on disk in `Saves/`, neither deleted.
+
+Loaded the live save via `rimworld/load_game` with `ignoreModCompatibility` (still
+needed — the 18-mod divergence is `CANONICAL_SAVE_MODLIST_DIVERGENCE_1`'s to fix, not
+touched here). Confirmed via `rimworld/list_colonists` before touching anything: only
+**5** living colonists exist on the map right now (Captain/Keeper/The Hands/
+First-Hatched/Twice-Kin) — the "many additional randomly-named colonists
+(Hernan/Ashly/Brandy...)" the original filing measured are NOT present as living
+player-faction pawns today. Not chased further here (could be dead, could be a
+different read of the raw save than a live colonist list gives) — but it means there
+was no "purge the extras" decision to make: the roster right now is exactly the 5
+founders plus the gap this item names.
+
+**Scope decision, made explicitly rather than assumed:** the ruling says "hand-edit
+the six founders... in", which is read here as ADDING the missing sixth, not
+retroactively rewriting the other five's already-played traits/skills to match
+`SCENARIO_SPEC.md` exactly (their current traits and backstories have visibly
+drifted from spec already, e.g. Yeku's `adulthood` is `Torturer37`, nothing to do
+with Star Wars). Touching five already-played pawns' established identities is a
+bigger, more destructive, more judgment-laden move than "world progress is kept"
+plainly authorizes. Flagging this reading rather than silently picking it — if the
+owner wants the other five corrected to spec too, that is a fresh, explicit ask.
+
+**Sekki Vosh — the sixth founder, built:**
+- Spawned `RUT_Jawa_Colonist` in faction `player`, forced `xenotype=RSW_MandrakeJawa`
+  (`jawa/spawn_pawn`) — matches the other five's kind/xenotype exactly
+  (`jawa/pawn_get` cross-checked against Yeku).
+- Identity: first `Sekki`, last `Vosh`, nick `The Long Pot` (`jawa/set_pawn_identity`).
+- Backstory: childhood `SewerKid57`, adulthood `HouseServant63` — chosen because
+  `HouseServant63` is one of the few Adulthood backstories whose `workDisables` is
+  exactly `Intellectual` (per spec) and it nudges Cooking, matching his role; flavour
+  text is generic and not Star Wars-themed, same as the other five's own backstories
+  already are (not a regression from an established norm).
+- Skills set exactly per spec: Cooking 7 (Major), Plants 5 (Minor), Construction 2,
+  Social 2 (`jawa/set_pawn_skill`). Other skills left at their random rolled values,
+  same convention as the other five.
+- Traits: added `Gourmand` and `Neurotic` (degree 1, the plain "neurotic" label, not
+  "very neurotic") on top of whatever the generator rolled (`Insomniac`, `Bisexual`,
+  `Wimp`) — the other five founders also carry random extra traits beyond their
+  named ones, so this is consistent, not a violation.
+- Gear: `guy762_Robes_jawa` + `guy762_JawaHood` worn (same defNames the other five
+  wear), `MeleeWeapon_Knife` equipped as primary. No gun, per spec.
+- Ideo set to `the Ascendant Genome`, matching the rest of the colony.
+- Age: spawned at 32; spec says 29 but `set_pawn_age` is forward-only and the
+  backwards path skips every `BirthdayBiological` (a documented corruption risk) —
+  left at 32 rather than risk that for a 3-year cosmetic difference.
+
+**Starting stock topped up** (checked live counts first — Steel was already 444,
+**above** the 300 target, left untouched; everything else read zero):
+`ComponentIndustrial` 20, `MealSurvivalPack` 30 (3×10 stacks, vanilla stack cap),
+`MedicineIndustrial` 15, `guy762_ionpistol` ×2, `guy762_ionrifle` ×1 — spawned loose
+near the base rather than force-equipped onto the existing five colonists (same
+scope reasoning as above: adding is authorized, rewriting established pawns is not).
+`guy762_ionpistol`/`guy762_ionrifle` are from "Jawa Armoury Rebalance" (`guy762`), the
+same weapon pack already carrying this campaign's other Jawa gear — picked for
+thematic consistency since the spec names no exact defName for "ion sidearm"/"rifle".
+
+**Pack animal and ikee:** spawned `AA_Eyeling` (the ikee) and `RSW_Dewback` (this
+mod's own dewback, not the donor `Dewback`) into the player faction, bonded the
+ikee to Yeku (`Thing_Human470530`) via `jawa/pawn_relations` `action=add
+relation=Bond` — matches "bonded to Yeku" and the scenario def's own
+`bondToRandomPlayerPawnChance` intent, made specific rather than random since we
+know which founder the spec means.
+
+**Opening story:** `Scenario_Utinni.xml`'s own `ScenPart_GameStartDialog` text is
+correct but was only ever shown at a true game start, which never happened for this
+save — replaying it is not possible. The closest achievable fix: the save's own
+`<game><scenario><name>`/`<summary>` read `Crashlanded` / "Three crashlanded
+survivors - the classic RimWorld experience." — corrected by a byte-exact binary
+find-replace (⚠️ a first attempt via Python text-mode I/O silently collapsed every
+CRLF to LF across the whole 17.5 MB file, a 500 KB size drop from touching two
+short strings — caught by checking the size delta, reverted from the backup, redone
+in binary mode; **any future raw edit to this save must open it `"rb"`/`"wb"`, never
+text mode**) to `the opened hull` / "Wake the dead ship. Leave before the owners
+arrive." — `Scenario_Utinni`'s own name/summary, verbatim.
+
+**Verified, not assumed:** saved via `rimworld/save_game` with the exact existing
+filename, then **reloaded the save fresh** (`rimworld/load_game`,
+`ignoreModCompatibility` again) to prove the file round-trips — `list_colonists`
+showed all 6 names (`Captain, First-Hatched, Keeper, The Hands, The Long Pot,
+Twice-Kin`), every stock defName's count matched what was added, and the ikee/dewback
+both resolved via `jawa/list_things` `includePawns=true`. The scenario text edit
+survived the reload (parsed with `xml.etree.ElementTree` before and after).
+
+**Not done, and why:** the 18-missing-mod divergence and its ~4,828 dead reference
+lines (`CANONICAL_SAVE_MODLIST_DIVERGENCE_1` / `CANONICAL_SAVE_CUT_RESIDUE_1`) — a
+separate, larger piece of surgery on the same file, sequenced next rather than
+combined with this one so each is independently attributable if something goes
+wrong.
+
+## needs: game-up
+
+Closing is reasonable once the sibling residue-scrub items are also resolved (they
+touch the same file and a human review of the whole result together makes more
+sense than three separate small looks) — left open rather than closed solo.
