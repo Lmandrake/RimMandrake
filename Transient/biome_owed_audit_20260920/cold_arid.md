@@ -375,7 +375,40 @@ instruction. Found one, and it's a big one.
    yet). Not ranking.
 
 ## weeping_stones.md
-(pending)
+
+The best-tracked sheet of the ten — every named item checks out FILED, most DONE. Owed
+section (7 bullets) split into 8 work items.
+
+**FILED and DONE:**
+- `OASIS_LANDMARK_PLACEMENT_1` — done, closed `43172ff44`.
+- `OASIS_MUTATOR_PATCH_1` — done, closed `c9af67d3e`.
+- `WEEPING_STONES_ROSTER_1` — done, closed `5851917a`.
+- `VAPOR_EMITTER_PLACEMENT_1` (the seep-oasis siting dependency) — done, closed
+  `ce76906fb`.
+- `HUTT_LORDS_AND_POSTS_1` (the cross-flow ledger's Hutt-palace note) — done.
+- **Grammar backfill** — done via `CRACKED_LANDS_ENRICHMENT_1` (closed), which filed
+  both the README step AND the Cracked Lands' own backfill in one item; this also
+  retroactively confirms my `the_cracked_lands.md` section above.
+
+**Not owed yet (correctly gated, not a gap):**
+- **The owner's pass on §10–12** — explicitly unratified by the sheet's own words; the
+  beasts, dewback reassignment, droid dying-oases and Imperial metering wait on him. Not
+  ranking — this is the sheet correctly declining to file work nobody has approved yet,
+  which is the opposite of the failure the owner is asking about.
+
+**UNFILED (CONFIRMED):**
+- **Engine feasibility pass** — fog-at-wind-hour weather, the condenser fin as a
+  buildable water-source structure, the servo-vent enclosure, aeolian ambient sound per
+  oasis state, and the truce mechanism (owner-ruled cheap-for-v1: spawn/flavor
+  suppression of predator hunts near water, with "the honest behavior mod" deferred to
+  v2). Searched: `condenser fin`, `servo-vent`, `fog-at-wind-hour`, `aeolian ambient`,
+  `the truce`, `predator hunts near water` — zero hits in items, closed items, or
+  `src/`. The v1-scoped truce mechanism in particular is a specific, cheap, owner-ruled
+  ask ("spawn/flavor suppression") with no build trace at all.
+  Ranking below the desert/nightside/fall-line findings: Weeping Stones' core (terrain,
+  oases, roster, mutators) is fully built and this sheet is otherwise the model of good
+  tracking — the gap is purely the ambient/mechanical polish layer, not a missing
+  ecosystem or missing gameplay loop.
 
 ## dune_sea.md
 (pending)
