@@ -1,59 +1,58 @@
-# Decision strings — FOUNDRY overnight batch, full 621-mod load, 2026-09-19
+# Decision strings — load of 2026-09-20, BENCH
 
-Written BEFORE launch per rimworld-load-round §2/§3. Five assemblies ride this one load
-(JawaRules, FireEcologyHook/Pyrelands, RimMandrakeFlowWorks, RimMandrake.CreatureBehaviors,
-RimMandrakeProperty) plus the JawaBench companion DLL and one XML-only gene (StarWarsRaces).
-Per the owner's standing three-assembly waiver, batching is affordable only because each
-assembly's failure mode is distinguishable — written down here first.
+Written BEFORE launch. A signature invented after reading the log is a story
+that fits, not evidence.
 
-## Per-assembly distinguishing signature (if it breaks, this is what names it)
-- JawaRules (`Patch_RedressPawn_ForceKind`): `Log.WarningOnce` hash `0x4A57A3`,
-  text names "pawnkind-redress-fix" and before/after kind. Startup arm line:
-  `[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: armed;`
-- FireEcologyHook (`WildPlantAllowlist`): no startup line expected (silent unless it fires);
-  failure mode is an exception naming `WildPlantAllowlist` or `CalculatePlantsWhichCanGrowAt`.
-- FlowWorks (`RM_WorldComponent_LiquidTags`/`RM_GenStep_LiquidShores`): a config error or
-  crossref naming `RM_LiquidBodyDef`, `RM_GenStep_LiquidShores`, or `RM_LiquidBodyRegistry`.
-- CreatureBehaviors (Grabber/Drinker/Soulchime comps): an exception naming
-  `RM_CompGrappler`, `RM_CompFluidSacs`, `RM_CompProximityPsychicStun`, or
-  `RM_CompShardArmor`.
-- RimProperty (Bribe/HirePlaceless/Pickpocket): an exception naming
-  `FloatMenuOptionProvider_Bribe`, `FloatMenuOptionProvider_HirePlaceless`, or
-  `FloatMenuOptionProvider_Pickpocket`.
-- JawaBench companion (`--gm` build, RunMapFinalizeSteps): tool list should show
-  `jawa/do_bill_now`, `jawa/droid_format_tier`, `jawa/fire_incident`, `jawa/send_letter`.
-  Absence of any = a build/deploy problem specific to that tool, not the others.
+**Item riding the load:** `DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1` — deploy
+SWBestiary (defs + `RimMandrakeBeastMechanicsRSW.dll`), lift both biome-table
+holds, prove the 18 previously-dangling refs resolve.
 
-## Per-item decision strings (written before launch)
+**Tier:** `fish` (`modset_builder.py --tier fish`) — BRIDGE + `mandrake.rut.patches`
++ `mandrake.rsw.swbestiary`, dependency-closed, all five DLC per the 2026-09-19
+ruling. Chosen because it is exactly the two mods whose interaction is in question.
 
-1. KCSG_PAWNKIND_COLONIST_FALLBACK_1 — `jawa/kcsg_place structure RUT_Ashfall_Spire` x5.
-   PASS: all 5 pawn-symbol cells per placement show Helix kind + faction xenotype (never
-   `Colonist`/`Baseliner`). Needs a stocked Ascendant Helix world-pawn pool first (redress
-   only fires with candidates in `Find.WorldPawns`).
-2. PYRELANDS_FLORA_LEAK_1 — generate a Pyrelands map. PASS: `jawa/list_things` (or census)
-   shows 0x `AB_SessileMechanoid`, 0x `AB_GiantStikehr`.
-3. DEEPS_FAUNA_MECHANICS_1/2 — spawn RSW_BovineBeetle (Grabber), RSW_BloodropMoth (Drinker),
-   RSW_FacetMothLarvae (Soulchime) + test pawns. PASS: grapple hediff `RM_Grappled` applies
-   and torso damage ticks; Drinker feed applies `RM_FluidSacks` gauge and poisons on
-   normal-blood victim; Soulchime proximity stun (`PsychicShock`) fires on approach.
-4. WORLDMAP_LIQUID_TAGS_1 — confirm 0 config errors naming `RM_LiquidBodyDef`/
-   `RM_GenStep_LiquidShores`/`RM_LiquidBodyRegistry`. No world-tile writes.
-5. AQUATIC_WATER_BREATHING_GENE_1 — add `RSW_WaterBreathing` gene to a test pawn via bridge.
-   PASS: no exception; pawn card shows the gene's effect description; if riggable, immune to
-   `RM_PitDrowning`.
-6. SETTLEMENT_VERBS_WAVE_1 — two pawns, right-click. PASS: Bribe/HirePlaceless/Pickpocket
-   float-menu options appear under correct gates and execute with no exception.
-7. BRIDGE_MAPGEN_STALE_FINALIZE_1 — `--list-tools` shows `jawa/do_bill_now` and
-   `jawa/droid_format_tier`. Destroy a plant via `world_tile_map_generate` reuse path (no
-   `map_commit`), screenshot. PASS: renders correctly, not stale.
-8. MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1 — re-check candidates post-full-load; no force-enable.
-9. LONGHUNGER_QUICKTEST_1 — per `design/validation_walks/RimUtinni/LongHunger.md`: def
-   read-backs (RUT_LongHunger, RUT_Groundcaller, RUT_LongHungerSurfaces,
-   RUT_LongHungerContract, RUT_DuneHaze), spawn RUT_LongHunger, eruption explosion,
-   tremor pulses, submerge at ~2500 ticks + loot, quest offer/fire.
-10. FULL_LOAD_RESIDUE_TRIAGE_1 — harvest_log.py full sweep; pull DEAD MODS(1)/DISCARDED
-    DEFS(5) threads if time allows.
+**Baseline:** the pre-launch `Player.log` is copied to
+`Transient/Player.log.pre_swbestiary_deploy_2026-09-20`. Every count below is
+against that copy, not against memory.
 
-Baseline standing counts (pre-existing, not this pass's concern unless they move):
-patchfail should now read 0 (was 10, fixed offline). configerror should now read ~17
-(was 93, fixed offline, minus RM_FE_Ground_SoilRich which is expected/accepted).
+## EXPECTED ABSENT — any hit is a failure
+
+| string | means |
+|---|---|
+| `Could not resolve cross-reference` naming any of the 18 | the deploy did not fix it |
+| `RSW_Sandstrider`, `RSW_Cindermite`, `RSW_Spineroller`, `RSW_Sandhorn`, `RSW_Dunestalker`, `RSW_Ferroclaw`, `RSW_Sandmaw`, `RSW_Tuskcoil`, `RSW_Stareling`, `RSW_Voltmaw`, `RSW_Dunegrass`, `RSW_Plant_Chakroot_Wild`, `RSW_Plant_HubbaGourd_Wild`, `RSW_VellaraBloom`, `RSW_SweetbarkTree`, `RSW_Plant_Bloddle` — in ANY error line | the 18 names, verbatim |
+| `Recovered from incompatible or corrupted mods` | assembly load failed; see §10, relaunch via Steam |
+| `TypeLoadException` | the new DLL collides with a Harmony/VEF version |
+| `Could not find type` naming `RimMandrake.StarWars.SWBestiary.*` | the DLL did not deploy, or did not load |
+| `defined more than once` | the dedup regressed |
+
+## EXPECTED PRESENT — absence of these is ALSO a failure
+
+🔑 A no-op logs nothing, so "zero errors" alone does not prove the deploy landed.
+
+| string | means |
+|---|---|
+| `Bridge token:` | the load is up. **Poll THIS, never JawaBench's ready line** — that one is lazy and only appears on the first tool call |
+| `RimMandrakeBeastMechanicsRSW` in the loaded-assemblies lines | the new DLL is actually in the game |
+
+## POSITIVE CHECK — the thing the log cannot tell me
+
+Via the bridge once up, `jawa/get_defs` (or equivalent) for **all 18 names**.
+**All 18 must resolve.** This is the real verdict; the log only says nothing
+screamed.
+
+Second: `RSW_Ferroclaw`, `RSW_Voltmaw`, `RSW_Cindermite` must each still carry
+their comp from the new assembly. A missing comp type discards the whole def
+**silently** — so a def that resolves is not proof its comp did.
+
+## Ride-along, free (config class, no attribution risk)
+
+- `Config error in` sweep across the whole load — `Def.ConfigErrors()` catches
+  dead pawnkinds, bad `forcedMiss` and out-of-order thought stages that offline
+  `validate_patch.py` cannot see.
+- Full `harvest_log.py` pass, not just my own strings.
+
+## Restore
+
+🔴 `modset_builder.py --restore` before the owner plays. Leaving his machine on
+the `fish` tier is the one unacceptable outcome.
