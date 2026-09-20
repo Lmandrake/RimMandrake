@@ -90,7 +90,47 @@ check" bullet is marked ✅ CLOSED in the sheet itself, not counted as owed).
 
 ## the_lantern_deeps.md
 
-(pending)
+Owed section: 8 bullets, one splits into two (mindstone race naming vs. the
+actual race build). Examined 9 items total.
+
+1. `LANTERN_DEEPS_INJECTION_1` — FILED/DONE (closed `2eb08d1a4`).
+2. `HORRORWASTES_BIOME_DISSOLVE_1` — FILED/DONE (closed `bb437a16`).
+3. `CRYSTAL_MODS_INGEST_1` — FILED, superseded by `CRYSTAL_INGEST_EXECUTION_1`,
+   which is itself FILED/DONE (closed `406dd95f4`). Chain intact.
+4. `MECHANOID_ORIGIN_CANON_1` — FILED/DONE (closed 2026-09-11) — but this item's
+   own `verify` clause is explicitly CANON/NAMING ONLY ("names ruled... design
+   reviewed"), not a build. See #7 below for the gap this leaves.
+5. `KYBER_TRADE_PLOT_1` — FILED, `ready`/BLOCKED (design spec written,
+   implementation genuinely still owed per the item's own blocked reason:
+   "Heat/Hutt-Interest GM blackboard (M4) unbuilt"). Matches the sheet's own
+   "implementation still owed" note — not a discrepancy, sheet is accurate.
+6. **Names ruling** — FILED/DONE via `MECHANOID_ORIGIN_CANON_1`
+   (`RUT_Mindstone` kept, new race named `RUT_Kindled`, Forgotten Sentinels
+   canon) — this is a NAMING ruling only, confirmed closed.
+7. **Crystal-life authoring (art + C#: piezo/light-draw, Creep's accretion,
+   Cleavers' fracture movement, Shard-mind animating dead gear)** — UNFILED
+   (CONFIRMED). `LANTERN_DEEPS_INJECTION_1` itself states explicitly: "the
+   crystal-life cast (Lantern, Creep, Cleavers, Chorus, Shard-minds,
+   mindstone) is authored content — art + C# scoped separately" — i.e. it was
+   deliberately deferred to a future item that was never filed. Searched:
+   "Crystal-life authoring", "piezo", "Creep" + "accretion", "Cleaver" +
+   "fracture", "ShardMind"/"Shard-mind", "RUT_Kindled", "RUT_Mindstone" —
+   zero defs, zero C#, zero items beyond the deferral note itself. **The
+   Kindled race that `MECHANOID_ORIGIN_CANON_1` ratified by name does not
+   exist as a def anywhere in `src/RimUtinni` or `src/RimMandrake`** — no
+   pawnkind, no mindstone findable item, no droid-mind crafting recipe. This
+   is the sheet's largest playability gap: a named, owner-ratified new
+   sapient race with zero engine representation.
+8. **Roster admission for the non-crystal cave fauna at the sitting** —
+   UNCERTAIN. `LANTERN_DEEPS_INJECTION_1` defers this to "the sitting"
+   (`BIOME_FAUNA_ASSIGNMENT_SITTING_1`, closed), but that item's own prose
+   only proves general sheet review + assignment-prep infrastructure, not
+   that Lantern Deeps' specific non-crystal fauna roster was actually
+   admitted. Searched: "non-crystal cave fauna", "Lantern Deeps" inside
+   `BIOME_FAUNA_ASSIGNMENT_SITTING_1.md` and `_assignment_prep.md` — did not
+   open `_assignment_prep.md` (611 lines, another agent's territory/frozen
+   prep doc) to confirm a per-species row; flagging as uncertain rather than
+   claiming UNFILED without that read.
 
 ## the_pyrelands.md
 
