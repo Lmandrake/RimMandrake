@@ -135,6 +135,48 @@ ship them. If you copy head types, decide deliberately whether you want that.
 
 ---
 
+## 3a. 🔴 A xenotype's gene list is given WHOLE to every pawn — it is NOT a pool
+
+**The single most expensive misconception about xenotype colour**, and it survives
+contact with a screenshot, which is what makes it dangerous.
+
+Listing six `skinColorOverride` genes on a xenotype does **not** mean each pawn rolls
+one of six. **Every pawn gets all six**, as endogenes. MEASURED 2026-09-20 via
+`jawa/pawn_genes` against 17 live Ithorians: all 17 carried the identical set —
+`Skin_PaleRed, Outland_Skin_DeepSage, Skin_Orange, Outland_Skin_DeepBrown,
+Outland_Skin_Brown, Outland_Skin_PaleBrown`. Not one was missing from any pawn.
+
+What actually varies pawn-to-pawn is what the **generator adds on top**: a
+`Skin_MelaninN` gene and the hair genes. Diffing three Ithorians, the only
+differences were `Skin_Melanin3` vs `Skin_Melanin9` and which `Hair_*` they got.
+
+⇒ **Consequences, in the order they bite:**
+
+1. 🔴 **Adding a skin-colour gene to a xenotype that already has one does not add
+   variety.** It adds a *competing override*. You have changed what is on the pawn,
+   not what the player sees.
+2. 🔴 **A line-up of N pawns of one species is a SAMPLE OF ONE**, however many bodies
+   are in the frame — they are genetically identical apart from melanin and hair. Do
+   not build a "palette review" on it and do not let anyone rule a colour from it
+   without saying this out loud.
+3. ⚠️ **`jawa/pawn_genes` cannot answer "which colour won".** It returns `endogenes` —
+   the whole list. Every pawn reads the same, so a census over it produces a
+   confident, uniform, meaningless number. (17/17 on one gene is what exposed this:
+   a suspiciously uniform count is a query bug until proven otherwise.)
+
+🔑 **OPEN, and do not guess it:** with several `GeneSkinColorOverride` genes on one
+pawn, **which one renders is NOT established here.** Observation muddies it further —
+Bith pawns with byte-identical gene sets visibly rendered orange, green and pink in
+the same shot, which no "one fixed winner" story explains. Candidate mechanisms worth
+checking against the decompiler before anyone acts: `displayOrderInCategory`
+precedence, a per-pawn seeded pick, or the added `Skin_MelaninN` compositing over the
+override. ⛔ Until that is measured, do not promise an owner that editing this gene
+list will change what they see.
+
+**If you need genuine per-pawn colour variety**, the mechanism that is documented to
+do it is `texPaths` on a render node (a LIST of variants picked by `texSeed`, §3
+above) — not a longer gene list.
+
 ## 3b. 🔴 Facial Animation overdraws your face — exclude the xenotype or it looks human
 
 **Facial Animation replaces the pawn's face at render time.** A xenotype can have a
