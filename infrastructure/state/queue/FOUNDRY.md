@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T10:17:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T10:18:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1531,13 +1531,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
-
-## WALKLINT_FINDINGS_CLEANUP_1 Clear walklint's 40 FAIL / 15 WARN, then arm C1's suite gate
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WALKLINT_FINDINGS_CLEANUP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WALKLINT_FINDINGS_CLEANUP_1.md
