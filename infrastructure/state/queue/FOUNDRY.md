@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T17:49:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T17:55:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## DESERT_PORT_DUPLICATE_DEFS_1 349 defNames are defined twice inside SWBestiary - every one involves a DesertPort file, RimWorld keeps the LAST and the earlier def vanishes silently
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  DESERTPORTDUPLICATEDEFS1 — 349 defs are defined twice inside SWBestiary
-prose:    infrastructure/state/items/DESERT_PORT_DUPLICATE_DEFS_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
