@@ -38,6 +38,30 @@ namespace RimMandrake.StructureInjections
         public int offsetX;
         public int offsetZ;
 
+        // TILE_STRUCTURE_DESIGNS_1 PROMISE #2 (The Sarlacc) engine gap,
+        // closed here: some TileMutatorDefs (sw_SarlaccLair) already carry
+        // their OWN extraGenSteps entry (a vanilla GenStep_ScatterThings,
+        // e.g. sw_SarlaccPit) that lands a Thing at a mapgen-time-random
+        // cell this def's own XML cannot know in advance. centerOnMap and
+        // offsetX/offsetZ both assume a coordinate known BEFORE mapgen —
+        // neither can "ring" a thing whose own position is rolled by a
+        // DIFFERENT, independently-scheduled GenStep. anchorThingDef closes
+        // that gap the other way: instead of computing dx/dz from the map
+        // or the caller, find an already-spawned Thing of this def on the
+        // map (this GenStepDef's own <order> in the owning mutator's
+        // extraGenSteps list MUST be set higher than the anchor's, so it
+        // runs strictly after — see MapGenerator.cs's own order-sort of
+        // every extraGenSteps entry) and center the plan's footprint on
+        // that Thing's OccupiedRect().CenterCell instead. Takes priority
+        // over centerOnMap when both are set. If no matching Thing exists
+        // on the map (the anchor mutator generated with none, or this
+        // GenStepDef's order was set too low), the plan is NOT applied at
+        // all — a totem ring built around nothing / around the wrong point
+        // is a worse result than an honestly skipped one (same call this
+        // item's own 2026-09-18 note already made about not force-placing
+        // at map-center instead).
+        public string anchorThingDef;
+
         public override int SeedPart => 8462013; // arbitrary, stable, distinct from vanilla gensteps
 
         public override void Generate(Map map, GenStepParams parms)
@@ -81,7 +105,45 @@ namespace RimMandrake.StructureInjections
             }
 
             int dx = offsetX, dz = offsetZ;
-            if (centerOnMap && plan.HasFootprint)
+            IntVec3? anchorCenter = null;
+            if (!string.IsNullOrEmpty(anchorThingDef))
+            {
+                var anchorDef = DefDatabase<ThingDef>.GetNamedSilentFail(anchorThingDef);
+                if (anchorDef == null)
+                {
+                    Log.Error("[RimMandrake.StructureInjections] GenStep_RimplacePlan on " +
+                              def.defName + " has anchorThingDef '" + anchorThingDef +
+                              "' but no such ThingDef exists.");
+                    return;
+                }
+                Thing found = null;
+                foreach (var t in map.listerThings.ThingsOfDef(anchorDef))
+                {
+                    found = t;
+                    break; // every anchor row wired so far comes from a scatter step whose
+                           // own countPer10kCellsRange places exactly one; first-found is fine.
+                }
+                if (found == null)
+                {
+                    Log.Warning("[RimMandrake.StructureInjections] GenStep_RimplacePlan on " +
+                                def.defName + ": no '" + anchorThingDef + "' found on the map " +
+                                "(anchor mutator generated with none, or this GenStepDef's order " +
+                                "runs before the anchor's own) — plan " + (planFile ?? "(debug)") +
+                                " NOT applied (a ring built around the wrong point would be worse " +
+                                "than skipping it).");
+                    return;
+                }
+                anchorCenter = found.OccupiedRect().CenterCell;
+            }
+
+            if (anchorCenter.HasValue && plan.HasFootprint)
+            {
+                var planCenterX = plan.FootprintX + plan.FootprintW / 2;
+                var planCenterZ = plan.FootprintZ + plan.FootprintH / 2;
+                dx = anchorCenter.Value.x - planCenterX + offsetX;
+                dz = anchorCenter.Value.z - planCenterZ + offsetZ;
+            }
+            else if (centerOnMap && plan.HasFootprint)
             {
                 var mapCenter = map.Center;
                 var planCenterX = plan.FootprintX + plan.FootprintW / 2;

@@ -1,0 +1,13 @@
+# rimplace flat plan v2
+# template  sarlacc_ring (sha ed77bad1c0385373)
+# min_rect  15x12   baked at 15x12
+FOOTPRINT	0	0	15	12
+CLEAR	-1	-1	17	14	soft
+CLEAR	0	0	15	12	all
+THING	SculptureSmall	2	0	0	-
+THING	SculptureSmall	3	0	0	-
+THING	SculptureSmall	2	1	0	-
+THING	SculptureSmall	4	1	0	-
+THING	SculptureSmall	6	1	0	-
+THING	SculptureSmall	8	2	0	-
+THING	SculptureSmall	1	6	0	-

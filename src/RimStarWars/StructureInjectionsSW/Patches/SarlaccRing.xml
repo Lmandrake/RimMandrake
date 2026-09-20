@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  SarlaccRing.xml   StructureInjectionsSW   TILE_STRUCTURE_DESIGNS_1
+  ============================================================================
+  Wires PROMISE #2 The Sarlacc's "responder polish" onto sw_SarlaccLair
+  (Mlie.StarWarsAnimalCollection, MayRequire="Ludeon.RimWorld.Odyssey" on
+  its own def) - same safety convention as WhisperSarlaccSign.xml: the
+  PatchOperationAdd is wrapped in a PatchOperationConditional whose xpath
+  is IDENTICAL to the inner operation's target, so an absent/renamed mod
+  or mutator makes the whole <li> a silent no-op.
+
+  sw_SarlaccLair's own <extraGenSteps> already carries <li>sw_SarlaccPit
+  </li> (confirmed by reading SW_Buildings_Natural.xml directly), and
+  WhisperSarlaccSign.xml (this same mod, filed 2026-09-17) already appends
+  a second <li>RSW_GenStep_WhisperSarlaccSign</li> alongside it. This
+  Add appends a THIRD <li>, RSW_GenStep_SarlaccRing - the three coexist
+  because every extraGenSteps entry is sorted and run independently by
+  its own <order> (sw_SarlaccPit=950, RSW_GenStep_WhisperSarlaccSign=430,
+  RSW_GenStep_SarlaccRing=960 - see GenStepDefs_SarlaccRing.xml's own
+  comment for why 960 is load-bearing).
+  ============================================================================
+-->
+<Patch>
+
+  <!-- PROMISE #2 The Sarlacc -> sw_SarlaccLair (Mlie.StarWarsAnimalCollection). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="sw_SarlaccLair"]/extraGenSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="sw_SarlaccLair"]/extraGenSteps</xpath>
+      <value>
+        <li>RSW_GenStep_SarlaccRing</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

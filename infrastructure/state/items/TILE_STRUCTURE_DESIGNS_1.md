@@ -1288,3 +1288,150 @@ whisper rows remain `MISSING-MECHANISM`, and the live mapgen-ordering proof
 because the bridge was genuinely held for other live work, not because it
 was skipped.
 
+**🔴 Correction, same day, found while re-deriving state for the next
+pass**: the paragraph directly above ("#11 The Kiln - re-confirmed
+skip-owner: still contested... batch 6's own reasoning stands") went stale
+within hours of being written. The owner ruled the same day (commit
+`70d98e9fa`) that the Kiln is `sacred_sites_pass_1.md`'s blast crater, not
+the roster's old "geothermal works, Ohm vs Sh'kaar" framing, and it was
+built immediately after (`2ba1f0027`, "The Kiln (#11) built - 20/22
+promises": `RUT_Kiln` TileMutatorDef, `kiln.lua`, `validate_patch.py` 0
+errors, `rimplace selftest` 62/62) — but that commit never added a matching
+prose section to THIS file, so the item's own narrative kept saying
+"contested" long after it was resolved and shipped. Confirmed directly
+against the lint table and `git log`, not assumed. **State as of this
+correction: 20/22 promises covered, 2 declared gaps (#2 The Sarlacc
+gap-design, #5 The Junkers' Field skip-tool) — #11 is no longer a gap.**
+
+## 2026-09-20 (FOUNDRY, AFK full-belt) — PROMISE #2 The Sarlacc: engine gap closed, 21/22 promises
+
+Owner AFK ("See how far you can go"). The live game is mid-reboot for an
+unrelated verification cycle this session — **no bridge, no live
+verification this pass**, matching the dispatch's own constraint. Re-ran
+`structure_roster_lint.py` before touching anything, per standing lesson
+(queue items decay): confirmed 20/22 promises (not 19 — see the correction
+above, caught in the same act of re-deriving), 2 declared gaps, 8/22
+whispers, 0 lint failures.
+
+**Went looking for the next concrete piece the item names as owed.** Every
+one of the 44 roster rows has now been individually investigated at least
+once (promises: 20 covered + 2 declared gaps = 22; whispers: 8 covered + 14
+`MISSING-MECHANISM`, and per the 2026-09-18 whisper-batch-4 note, all 14 of
+those already carry a reasoned rejection on record). With the bridge down,
+there is no blind "next batch" of untouched content rows left to author —
+the only two remaining gaps are a different-tool scoping pass (#5) and,
+until now, a genuine engine limitation (#2). So this pass closed the engine
+limitation instead of waiting on it.
+
+**PROMISE #2 The Sarlacc — the engine gap, closed.** Re-read
+`GenStep_RimplacePlan.cs` in full and re-confirmed the 2026-09-18 diagnosis
+by direct measurement against `vendor/mod_sources/
+StarWarsAnimalCollection_src/1.6/Defs/ThingDefs_Buildings/
+SW_Buildings_Natural.xml`: `SarlaccPit` is a 9x6 `ThingDef`, placed by its
+own `sw_SarlaccPit` `GenStepDef` (order 950) via vanilla
+`GenStep_ScatterThings` (`countPer10kCellsRange` 1~1) — a position this
+program's own `GenStepDef` XML cannot know ahead of mapgen time. The old
+`centerOnMap`/`offsetX`/`offsetZ` fields both assume a coordinate known
+BEFORE mapgen; neither can chase where a DIFFERENT, independently-scheduled
+`GenStep` lands its Thing.
+
+**Built**: `GenStep_RimplacePlan.cs` grew a third placement mode,
+`anchorThingDef` (a `ThingDef` name). At mapgen time, if set, it finds the
+first live `Thing` of that def already on the map (`map.listerThings.
+ThingsOfDef`) and centers the plan's footprint on that Thing's
+`OccupiedRect().CenterCell` instead of the map center or a caller-fixed
+offset — taking priority over `centerOnMap` when both are present. If no
+matching Thing exists (the anchor mutator generated with none, or this
+responder's own `order` was set lower than the anchor's), **the plan is
+skipped entirely, not mis-centered** — same "a wrong-looking result is
+worse than an honestly skipped one" call the 2026-09-18 pass already made
+about not force-placing at map-center. This is load-bearing on `order`:
+`RSW_GenStep_SarlaccRing`'s own `GenStepDef` sets `<order>960</order>`,
+strictly after `sw_SarlaccPit`'s `950` — `MapGenerator.cs` sorts every
+`extraGenSteps` entry (this one included, once wired below) by `order`
+before running any of them, confirmed by re-reading that sort, not assumed.
+Builds clean: `dotnet.exe build -c Release`, **0 Warning(s), 0 Error(s)**.
+
+**Content**: `design/Jawa/templates/sarlacc_ring.lua` — a 15x12 footprint
+(the pit's own measured 9x6 plus a uniform 3-cell margin), 6-9
+`SculptureSmall` warning totems scattered unevenly through the margin only,
+same "jittered scan, not a lattice" idiom `sarlacc_sign.lua`/
+`listening_dark.lua` already established, **and hand-verified to never
+overlap the real pit**: the template's own keep-clear rect and the C#'s
+anchor-centering both use the same truncated `W/2`-from-origin arithmetic,
+so plan-relative column/row 3..11 / 3..8 (the reserved 9x6 zone) maps
+exactly onto the anchor's real `OccupiedRect` after the `dx`/`dz` shift —
+checked by hand, both directions, not assumed to just work because the
+numbers looked close. `lint`: 0 findings across 5 seeds at the 15x12
+minimum and again at 20x16; correctly refuses below 15x12
+(`CANVAS TOO SMALL`). `verify`: 1/1 defName found (`SculptureSmall`).
+Known, declared limitation: `sw_SarlaccPit`'s own `GenStepDef` sets no
+rotation, so `SarlaccPit` always spawns at default `Rot4.North` and the
+9x6-vs-6x9 keep-clear assumption holds — would need re-checking if a future
+SWAC update ever adds scatter rotation to that def.
+
+**Wiring**: `Defs/GenStepDefs_SarlaccRing.xml` (new, RSW tier,
+`MayRequire="Ludeon.RimWorld.Odyssey"` matching `sw_SarlaccLair`'s own gate)
++ `Patches/SarlaccRing.xml` (new) append a THIRD `<li>` to
+`sw_SarlaccLair`'s own `extraGenSteps` — it already carries `sw_SarlaccPit`
+(order 950) and, since the 2026-09-17 whisper pass,
+`RSW_GenStep_WhisperSarlaccSign` (order 430); all three coexist because
+each runs independently at its own `order`, confirmed clean (not assumed)
+by the ordering re-check above. `Templates/sarlacc_ring.txt` exported via
+`rimplace export` (13 lines, baked at 15x12).
+
+**Verification, all offline (no bridge time used — the game is mid-reboot
+this session, confirmed by the dispatch, not probed further)**:
+- `validate_patch.py` against the whole RSW tier's `Defs/`+`Patches/` (29
+  files) using the most recent full-list snapshot
+  (`infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`, 617 active
+  mods): **0 errors, 0 warnings** on all 29 files, including the two new
+  ones — `SarlaccRing.xml`'s own `PatchOperationConditional` reports
+  exactly 1 match (`Star Wars Animal Collection (Continued):
+  SW_Buildings_Natural.xml`), same shape `WhisperSarlaccSign.xml` already
+  proved for the same mutator.
+- `rimplace selftest`: 62/62, unaffected (this pass touched
+  `GenStep_RimplacePlan.cs`'s placement-offset computation only, not the
+  Lua sandbox/lint engine `selftest` exercises).
+- `structure_roster_lint.py`: **21/22 promises covered (up from 20/22), 1
+  declared gap** (only #5 The Junkers' Field remains — needs the
+  `coastal_mesa`-style mapsynth pipeline, a different tool, still correctly
+  out of scope for a rimplace-template pass), **8/22 whispers (unchanged)**,
+  **0 lint failures**.
+
+**Not attempted this pass, and why**: the live mapgen-ordering proof
+(criterion 1, owed since 2026-08-31) — the dispatch explicitly said the
+game is DOWN/LOADING from another process's verification reboot this
+session and no bridge/live check may be touched. This pass's own new
+`anchorThingDef` mode is ALSO unproven live — it is a genuinely new
+runtime code path (the old `centerOnMap`/`offsetX`/`offsetZ` modes are the
+only ones any prior batch's live-proof debt ever covered), so whoever next
+holds the bridge should verify BOTH: the original ordering proof (any
+existing template) AND this pass's anchor-centering (`sarlacc_ring.lua`
+onto a `sw_SarlaccLair` tile — confirm the totems land in a real ring
+around the real pit, not offset or missing). **NOT deployed, NOT added to
+ModsConfig** — same discipline as every prior batch; `mandrake.rsw.
+injections` is already live/active (unlike `mandrake.rut.injections`,
+still absent from `ModsConfig.xml` exactly as found 2026-09-09), so this
+pass's new files ride the next restart's normal load, no manual enable
+needed — but they are still unproven live until that restart happens.
+
+**Coverage after this pass: 21/22 promises (up from 20/22), 1 declared gap,
+8/22 whispers (unchanged), 0 coverage-law violations.** Re-read this item's
+own `## criteria` section literally before considering closure, per
+standing practice — it does NOT close:
+- Criterion 1 (`GenStep_RimplacePlan` proven live via a quicktest) — still
+  open since 2026-08-31, and now covers TWO placement modes instead of one.
+- Criterion 2 (at least one new roster row shipped, coverage-lint clean) —
+  satisfied many times over.
+- Criterion 3 (remaining rows explicitly left open) — honored: #5 is the
+  only promise gap left, with a clear, unchanged reason; 14 whisper rows
+  remain `MISSING-MECHANISM`, each with a reasoned rejection already on
+  record.
+
+Left `doing` — one promise gap remains (a genuinely different tool, not a
+FOUNDRY content call), the whisper track is exhausted of nameable anchors
+without new engine or design work, and the live mapgen-ordering proof
+(now covering two placement modes) is still the item's one real remaining
+blocker, gated entirely on bridge access this session does not have.
+
