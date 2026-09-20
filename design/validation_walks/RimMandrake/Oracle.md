@@ -144,12 +144,15 @@ which is why the sharpest lines here are the rejections.
       preamble, no labels"*) and `OracleValidator` does not check it, so nothing
       catches it today. UNMEASURED whether `claude -p` obeys the instruction —
       that needs the game machine.
-- [ ] `never_engineering_marker_in_player_text` (absolute) 📐 — a bracketed
-      marker, a defName, a placeholder or a project codename in text the player
-      reads. 🔴 **Two instances ship today**, both named above: `[FALLBACK]` and
-      `(Oracle spike)`. This is the read axis's analogue of a tile with "Pit"
-      written on it, and it is the line the falsification test of the spec's §11
-      expects to turn this mod red.
+- [ ] `never_engineering_marker_in_player_text` (absolute, shared) 📐 — a
+      bracketed marker, a defName, a placeholder or a project codename in
+      text the player reads. Reconciled 2026-09-16 as the founding entry of
+      `design/validation_walks/_read_line_registry.md`
+      (`READ_LINE_REGISTRY_SHARED_1`) — this line is now the registry's, not
+      Oracle's alone. 🔴 **Two instances ship today**, both named above:
+      `[FALLBACK]` and `(Oracle spike)`. This is the read axis's analogue of
+      a tile with "Pit" written on it, and it is the line the falsification
+      test of the spec's §11 expects to turn this mod red.
 - [ ] `never_breaks_the_fourth_wall` (absolute) 🗣 — AI-talk, game-talk or meta
       commentary in a god's letter. R-W6 item 5 is his ruling and the Law block
       instructs against it; MEASURED, `OracleValidator`'s five tells are all

@@ -91,9 +91,9 @@ proves they ARRIVED. Of the 14 candidate lines below:
   *is* the distribution), the 2 `fixed` lines over the fallback string and the About
   description, and 3 of the 4 `absolute` lines. No game, no bridge, laptop-runnable.
 - **3 need a live channel capture** (`rimworld/list_letters`, per Oracle's walk):
-  `aftermath_telegraph_substitution_is_right`,
-  `aftermath_payload_arrival_names_its_cause`,
-  `rites_never_generic_raid_letter_for_an_authored_rule`.
+  `telegraph_substitution_is_right`,
+  `payload_arrival_names_its_cause`,
+  `never_generic_raid_letter_for_an_authored_rule`.
 
 ---
 
@@ -156,8 +156,8 @@ the doctrine's text half (`PYRELANDS_GENERIC_TEXT_1.md:4-7`):
 
 🔑 Read together these are a ruling **about the text of exactly this pair**: the
 engine's own strings must read generic, the campaign's words live in the data pack.
-Two lines below (`aftermath_prose_is_tier_neutral`,
-`rites_campaign_vocabulary_lives_here`) are that ruling and nothing else.
+Two lines below (`prose_is_tier_neutral`,
+`campaign_vocabulary_lives_here`) are that ruling and nothing else.
 
 **🗣 His own voice on prescripted text**, verbatim, from the frozen decision sheet
 `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`, row
@@ -199,7 +199,7 @@ Proposed placement: a new `## north star` section in
 
 **The telegraph channel — the mod's one letter call**
 
-- [ ] `aftermath_telegraph_fallback_reads_as_a_warning` (fixed) 📐 — the engine's own
+- [ ] `telegraph_fallback_reads_as_a_warning` (fixed) 📐 — the engine's own
       prescribed telegraph text, the string that ships when a data pack authors none,
       reads as an in-world warning naming a faction and a coming thing. 🔴 **Fails
       today for QUALITY**: the whole string is `"{0} is stirring."`
@@ -210,7 +210,7 @@ Proposed placement: a new `## north star` section in
       text), so this line binds a floor rather than a live defect — it earns its place
       because R6 makes Aftermath a pluggable RM engine whose next data pack may omit
       the field.
-- [ ] `aftermath_telegraph_substitution_is_right` (fixed) 📐 — every `{0}` a telegraph
+- [ ] `telegraph_substitution_is_right` (fixed) 📐 — every `{0}` a telegraph
       renders is filled with the faction the sentence actually means. 🔴 **Fails today
       for QUALITY, on rule 2, and it is a REACHABLE letter, not a dead one.** NEW
       FINDING this pass, from source: `SendTelegraph(def, targetFaction)` formats with
@@ -222,7 +222,7 @@ Proposed placement: a new `## north star` section in
       the name in the same sentence. A judge saying NO can quote the span.
       ⚠️ Needs a channel capture of a rule-2 telegraph; the defect itself was derived
       offline from the two code paths.
-- [ ] `aftermath_payload_arrival_names_its_cause` (fixed) 📐 — when the queued payload
+- [ ] `payload_arrival_names_its_cause` (fixed) 📐 — when the queued payload
       lands, the text the player reads names the thing that caused it: the battle he
       won, the prisoner he is holding, the break in his colony. 🔴 **Fails today for
       ABSENCE** — `letterLabel`/`letterText` are read nowhere
@@ -234,7 +234,7 @@ Proposed placement: a new `## north star` section in
 
 **The mod's own non-letter prose**
 
-- [ ] `aftermath_settings_read_as_player_options` (enumerated, **N=7** — every string
+- [ ] `settings_read_as_player_options` (enumerated, **N=7** — every string
       in `RM_AftermathSettings.DoWindowContents` plus `SettingsCategory()`) 📐🗣 — each
       settings string says what the *player* gets, in the player's words. Anchored in
       his 2026-09-12 ruling that every mod ships a real settings screen. ⚠️ **Passes
@@ -242,14 +242,14 @@ Proposed placement: a new `## north star` section in
       is the engine's noun for what the player experiences as a returning raid. His
       call whether that clears the bar; this is the weakest line in the set and the
       first I would cut.
-- [ ] `aftermath_prose_is_tier_neutral` (enumerated, **N=10** — all 10 authored
+- [ ] `prose_is_tier_neutral` (enumerated, **N=10** — all 10 authored
       strings from §1a) 🗣 — nothing the player reads from this RM engine names the
       campaign. Directly R6 + R9: *"labels/descriptions must read vanilla-generic."*
       🔴 **Fails today on one string**: `About.xml`'s description cites
       *"design/Jawa/proposals/plot_mechanisms_wave.md Part 2"* — a campaign word and a
       repo path in a generic-tier mod's player-facing description. The other nine
       pass.
-- [ ] `aftermath_about_description_reads_for_a_player` (fixed) 📐 — the mod-list
+- [ ] `about_description_reads_for_a_player` (fixed) 📐 — the mod-list
       description tells a player what the mod does. 🔴 **Fails today for QUALITY,
       comprehensively.** It opens *"PLOT_MECHANISM_MODS_WAVE_1 — the
       aftermath-hostilities engine from design/Jawa/proposals/plot_mechanisms_wave.md
@@ -267,17 +267,19 @@ Proposed placement: a new `## north star` section in
 
 Absolute, per §10.2: one occurrence fails the mod, no N and no k needed.
 
-- [ ] `aftermath_never_engineering_marker_in_player_text` (absolute) 📐 — a defName, a
-      repo path, an internal item id, a C# symbol, a `§` reference or a bracketed
-      marker in any text the player reads. 🔴 **Ships today** in `About.xml` (at least
-      eight distinct instances inside `<description>`, named above), and one path is
-      **latent in code**:
+- [ ] `never_engineering_marker_in_player_text` (absolute, shared) 📐 — cites
+      `design/validation_walks/_read_line_registry.md`'s founding entry
+      (`READ_LINE_REGISTRY_SHARED_1`); prose copied verbatim: a bracketed
+      marker, a defName, a placeholder or a project codename in text the
+      player reads — this draft additionally reads it as covering a repo
+      path, an internal item id, a C# symbol or a `§` reference, all of
+      which this mod's own evidence needs. 🔴 **Ships today** in `About.xml`
+      (at least eight distinct instances inside `<description>`, named
+      above), and one path is **latent in code**:
       `SendTelegraph`'s label chain is `def.telegraphLabel ?? def.label ?? def.defName`
       (`:335`), so a rule missing both fields puts `RM_AftermathRule_…` in the letter
       stack's title. No shipped rule triggers it; the line binds it so none ever does.
-      ⚠️ **Id-collision flag for BENCH below** — Oracle's DRAFT already uses the
-      unprefixed form of this id.
-- [ ] `aftermath_never_advertises_text_it_does_not_send` (absolute) 📐 — no
+- [ ] `never_advertises_text_it_does_not_send` (absolute) 📐 — no
       player-read string promises the player words the engine never delivers. 🔴
       **Fails today**: `About.xml` says *"Ships a deterministic templated-letter
       baseline per rule — literal English, faction- and reason-named, no LLM
@@ -309,7 +311,7 @@ Proposed placement: a new `## north star` section in
 
 **The telegraph — the 8 authored omens**
 
-- [ ] `rites_telegraph_is_an_observation_not_a_notification` (enumerated, **N=8**) 📐 —
+- [ ] `telegraph_is_an_observation_not_a_notification` (enumerated, **N=8**) 📐 —
       each telegraph reads as something a colonist *noticed* on Ash'karr, never as a
       rules notification about a queued event. **Passes today on all 8 by inspection**
       — *"A lone scout was seen at the edge of your land, studying your defenses
@@ -317,7 +319,7 @@ Proposed placement: a new `## north star` section in
       still lie unburied"* · *"A chartreuse flicker runs through the ship's old
       lights, three quick pulses, gone before anyone else sees it."* Evidence is the
       def file; no game needed.
-- [ ] `rites_telegraph_gives_the_player_lead_time` (enumerated, **N=8**) 🤔 — each
+- [ ] `telegraph_gives_the_player_lead_time` (enumerated, **N=8**) 🤔 — each
       telegraph lets the player understand that *something is coming*, not only that
       something odd happened. ⚠️ **Marginal today on 2 of 8, and this is the line he
       is most likely to rewrite or reject.** Rule 6 (*"three quick pulses, gone before
@@ -327,16 +329,16 @@ Proposed placement: a new `## north star` section in
       being taught to read the sky"*) that may be exactly right — the omen is
       illegible on first contact and legible on the fifth. If he agrees, this line
       should be **cut**, not softened.
-- [ ] `rites_campaign_vocabulary_lives_here` (enumerated, **N=34** — the 32
+- [ ] `campaign_vocabulary_lives_here` (enumerated, **N=34** — the 32
       letter/telegraph strings plus 2 About strings) 🗣 — the campaign's words (Sh'kaar,
       Zizzik, Ta'Baa, the Junkers, the Hutt Cartel, Ash'karr) live in **this** RUT data
-      pack and not in the RM engine. The mirror of `aftermath_prose_is_tier_neutral`,
+      pack and not in the RM engine. The mirror of `prose_is_tier_neutral`,
       same ruling (R6 + R9). **Passes today on all 34.** Kept as a pair because
       together they are the only enforcement R6's text half will ever have.
 
 **The payload letter — the 8 authored letters, judgeable from disk and dead in play**
 
-- [ ] `rites_payload_letter_names_the_cause` (enumerated, **N=8**) 📐 — each payload
+- [ ] `payload_letter_names_the_cause` (enumerated, **N=8**) 📐 — each payload
       letter names what the player did that brought this on. **Passes today on the
       WORDS** — rule 1: *"{0} did not forget what happened last time. This is the same
       enemy, returned to try you again."* rule 3: *"The Junkers were never going to let
@@ -345,7 +347,7 @@ Proposed placement: a new `## north star` section in
       cleanest illustration in the repo of §10.3's def-vs-channel split — the enumerated
       evidence passes from disk today and the channel evidence cannot be captured at
       all until `AFTERMATH_DEAD_LETTERS_1` is fixed.
-- [ ] `rites_god_is_named_as_a_presence_not_a_stat` (enumerated, **N=3** — the three
+- [ ] `god_is_named_as_a_presence_not_a_stat` (enumerated, **N=3** — the three
       letters that name a god) 📐 — where a god is named, the letter speaks of them as a
       presence in the world, never reporting a band, a delta or a number. **Passes
       today on the words**: *"Sh'kaar has noticed you"* (rule 5), *"Zizzik was already
@@ -358,11 +360,11 @@ Proposed placement: a new `## north star` section in
 
 ### cannot read
 
-- [ ] `rites_never_generic_raid_letter_for_an_authored_rule` (absolute) 📐 — an
+- [ ] `never_generic_raid_letter_for_an_authored_rule` (absolute) 📐 — an
       aftermath payload arriving with vanilla's stock raid letter while this mod ships
       a written one for that rule. 🔴 **This is the shipped behaviour, for ABSENCE.**
       Needs a channel capture; the cause is already measured offline.
-- [ ] `rites_never_names_a_mechanism` (absolute) 📐 — a defName, a trigger-kind name, a
+- [ ] `never_names_a_mechanism` (absolute) 📐 — a defName, a trigger-kind name, a
       god enum name, a tick count, a delta or a points number in any of the 32
       strings. **Passes today on all 32 by inspection.** ⚠️ Per §10.6 the
       substring-shaped part of this (`RM_`, `BattleOutcome`, digits) belongs in a lint
@@ -394,20 +396,20 @@ The distinction the brief asks for, stated per line. **7 of 14 fail.**
 
 | line | fails? | absence or quality |
 |---|---|---|
-| `aftermath_telegraph_fallback_reads_as_a_warning` | 🔴 FAILS | **quality** — the string exists, is reachable in code, and is a stub |
-| `aftermath_telegraph_substitution_is_right` | 🔴 FAILS | **quality** — a live, reachable letter renders the wrong faction's name (rule 2) |
-| `aftermath_payload_arrival_names_its_cause` | 🔴 FAILS | **absence** — no code reads the field |
-| `aftermath_settings_read_as_player_options` | passes (marginal) | — |
-| `aftermath_prose_is_tier_neutral` | 🔴 FAILS | **quality** — 1 of 10 strings names the campaign |
-| `aftermath_about_description_reads_for_a_player` | 🔴 FAILS | **quality** — a reachable string written for an agent |
-| `aftermath_never_engineering_marker_in_player_text` | 🔴 FAILS | **quality** (About.xml, shipping) + latent (defName label fallback) |
-| `aftermath_never_advertises_text_it_does_not_send` | 🔴 FAILS | **absence of the advertised thing**, via a present string |
-| `rites_telegraph_is_an_observation_not_a_notification` | passes | — |
-| `rites_telegraph_gives_the_player_lead_time` | marginal on 2 of 8 | **quality** — and probably the line is wrong, not the prose |
-| `rites_campaign_vocabulary_lives_here` | passes | — |
-| `rites_payload_letter_names_the_cause` | passes on words / unjudgeable in play | **absence** of the channel, not of the words |
-| `rites_god_is_named_as_a_presence_not_a_stat` | passes on words / unjudgeable in play | **absence** of the channel |
-| `rites_never_generic_raid_letter_for_an_authored_rule` | 🔴 FAILS | **absence** |
+| `telegraph_fallback_reads_as_a_warning` | 🔴 FAILS | **quality** — the string exists, is reachable in code, and is a stub |
+| `telegraph_substitution_is_right` | 🔴 FAILS | **quality** — a live, reachable letter renders the wrong faction's name (rule 2) |
+| `payload_arrival_names_its_cause` | 🔴 FAILS | **absence** — no code reads the field |
+| `settings_read_as_player_options` | passes (marginal) | — |
+| `prose_is_tier_neutral` | 🔴 FAILS | **quality** — 1 of 10 strings names the campaign |
+| `about_description_reads_for_a_player` | 🔴 FAILS | **quality** — a reachable string written for an agent |
+| `never_engineering_marker_in_player_text` | 🔴 FAILS | **quality** (About.xml, shipping) + latent (defName label fallback) |
+| `never_advertises_text_it_does_not_send` | 🔴 FAILS | **absence of the advertised thing**, via a present string |
+| `telegraph_is_an_observation_not_a_notification` | passes | — |
+| `telegraph_gives_the_player_lead_time` | marginal on 2 of 8 | **quality** — and probably the line is wrong, not the prose |
+| `campaign_vocabulary_lives_here` | passes | — |
+| `payload_letter_names_the_cause` | passes on words / unjudgeable in play | **absence** of the channel, not of the words |
+| `god_is_named_as_a_presence_not_a_stat` | passes on words / unjudgeable in play | **absence** of the channel |
+| `never_generic_raid_letter_for_an_authored_rule` | 🔴 FAILS | **absence** |
 
 🔑 **Four quality failures and three absence failures, and they are not the same
 bug.** `AFTERMATH_DEAD_LETTERS_1` closing would clear the three absence rows and
@@ -443,21 +445,25 @@ _send` and `payload_arrival_names_its_cause` must both be RED.
 
 **Flags — where I expect disagreement or a correction**
 
-- 🔴 **Id namespace collision.** Spec §10.1 says *"one id namespace across both axes,
-  and an id belongs to exactly one"* but does not say whether the namespace is per-mod
-  or global across the 77 walks. Oracle's DRAFT already holds
-  `never_engineering_marker_in_player_text`; I prefixed every id here with the mod
-  (`aftermath_`, `rites_`) to be safe. **BENCH should settle this before placing
-  lines**, because the wrong guess orphans claims later and §2 says an orphan is a
-  lint error.
-- ⚠️ **`rites_telegraph_gives_the_player_lead_time` is the line I would bet he
+- ✅ **Id namespace collision — RESOLVED 2026-09-16, `READ_LINE_REGISTRY_SHARED_1`
+  (owner ruling).** Spec §10.1 said *"one id namespace across both axes, and an id
+  belongs to exactly one"* but did not say whether the namespace is per-mod or
+  global; it is now **global**, with a shared registry
+  (`design/validation_walks/_read_line_registry.md`) for recurring demands and every
+  mod-specific line drawing its id from the same flat namespace. Every id below has
+  been de-prefixed accordingly (no more `aftermath_`/`rites_`), and
+  `never_engineering_marker_in_player_text` — this draft's Aftermath instance of it —
+  now **cites** the registry's founding entry (tagged `(absolute, shared)` below)
+  rather than defining its own copy, since Oracle's DRAFT already held the exact same
+  demand under that exact id.
+- ⚠️ **`telegraph_gives_the_player_lead_time` is the line I would bet he
   rejects.** It puts a legibility demand on the two best-written strings in the file.
   If he says the omen is *supposed* to be unreadable until you have seen it once, cut
   it outright rather than softening it — a softened version would be unfalsifiable.
-- ⚠️ **`aftermath_settings_read_as_player_options` may be beneath the axis.** It is
+- ⚠️ **`settings_read_as_player_options` may be beneath the axis.** It is
   the one line here that a careful proofread also catches, and §10.6 exists to keep
   such things out.
-- ⚠️ **`aftermath_prose_is_tier_neutral` / `rites_campaign_vocabulary_lives_here` are
+- ⚠️ **`prose_is_tier_neutral` / `campaign_vocabulary_lives_here` are
   a pair by design.** Validating one without the other leaves R6's text half
   half-enforced. If he wants only one, keep the RM-side one.
 - ⚠️ **Both mods are slated to be RENAMED** (R5: Aftermath → RimChronicle;
