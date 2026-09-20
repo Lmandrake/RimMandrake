@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_ExtremeDesertSignatureFlora.xml         EXTREME_DESERT_SIGNATURE_FLORA_1
+
+  Authors the Extreme Desert's own named signature flora, in place of the
+  single unverified donor plant (RSW_Plant_Bloddle) that was carrying the
+  whole 3,969-tile biome alone. Two design sheets, both FROZEN
+  (BIOME_FREEZE_FABLE_REVIEW_1):
+
+    dune_sea.md    SS4  "glass-nub light-pipes" — the only visible part of
+                        almost everything alive on the deep dayside; the
+                        actual photosynthetic biology is 1-3m underground.
+                   SS7  "Optical-grade biosilica" — the light-pipe nubs are
+                        real lenses.
+    deep_desert.md SS4b "the ollim, the tree that grows to cast shade" —
+                        an inverted plant, no leaves, non-photosynthetic,
+                        bone-white, geological growth rate. Final name
+                        **ollim** (owner ruling 2026-09-20, this item;
+                        supersedes the working names "Silverpan"/
+                        "Silverbole"). "Silverbole" survives only as
+                        descriptive prose for the look, never as a name.
+
+  Three ThingDefs, not two: the two FLORA defs the item names
+  (RSW_LightPipeNub, RSW_Ollim) plus RSW_OllimWood, the harvested wood
+  material deep_desert.md SS4b actually specifies the signature on
+  ("Silverbole wood is a material with a unique stat signature") — same
+  relationship as RSW_Plant_Bloddle -> RSW_RawBloddle in
+  RSW_DesertPortB_Plants.xml, one door down. The "silver required" ask
+  (deep_desert.md's Owed note) is satisfied here by the MATERIAL, not the
+  name: RSW_OllimWood is bone-white/silvery in colour and carries the
+  heat-immune / sharp-and-blunt-weak stat signature the sheet describes,
+  even though the coined name (check_pseudo_sw_name.py, PASS) does not
+  itself contain "silver".
+
+  Stats read from vanilla WoodLog via mcp__rimsage__get_def_details
+  2026-09-20 (Flammability 1, StuffPower_Armor_Sharp/Blunt 0.54,
+  StuffPower_Armor_Heat 0.4, StuffPower_Insulation_Heat 4) and deliberately
+  inverted on the heat axis, weakened on the sharp/blunt axis, per
+  deep_desert.md SS4b's own words: "near-total immunity to heat and flame
+  damage... and correspondingly helpless against sharp and blunt."
+
+  Art: no existing render found for ollim/silverbole/light-pipe/glass-nub
+  in infrastructure/artpipe/{done,_artsrc,registry.jsonl} (checked
+  2026-09-20 per CLAUDE.md's "Check for existing regenerated art before
+  queuing more"). Three jobs filed this pass (rslpn_v1, rswollim_v1,
+  rswollimwood_v1) — texPaths below point at vanilla WoodLog's own icon as
+  a non-magenta placeholder for the wood resource, and are otherwise novel
+  paths the fill_queue.py renders will land at.
+-->
+<Defs>
+
+  <!-- ============== Light-pipe nub — the dune sea's whole visible biome ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RSW_LightPipeNub</defName>
+    <label>light-pipe nub</label>
+    <description>A knuckle of water-clear, silica-cemented glass, flush with the sand and easy to miss until it catches the light. It is not a leaf and it has never been one — it is a lens, the only part of this organism that has ever seen the sun. Everything that actually does the plant's living is a metre or more underground, cool and out of sight, fed by whatever light this nub admits and nothing else. Walk the dune sea and you are walking over almost all of it.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- No existing render found (checked done/_artsrc/registry.jsonl, 2026-09-20). Job rslpn_v1 filed. -->
+      <texPath>Things/Plant/RSW_LightPipeNub</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <ingestible />
+    <plant>
+      <!-- Item-specified: fertilityMin 0.05. Tiny and glassy: near-zero footprint,
+           no wind exposure (it does not stand proud of the sand), no leaves to lose. -->
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.12~0.20</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>1</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Ollim — the tree that grows to cast shade ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RSW_Ollim</defName>
+    <label>ollim</label>
+    <description>A bone-white shield rising out of the sand on a flat-topped trunk, standing where the faintest hint of buried moisture fed the growth of a single cell — centuries ago, and again, and again. It is photosynthetic in nothing and grows no leaf; its entire purpose above ground is casting the one patch of permanent shade for kilometres, over the seep or the corpse or the buried water that might one day sustain it. A stand of them is older than any ruin, and the true bones of vast dead things are usually growing up through the sand around their feet.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RSW_OllimWood</ThingDef>
+    </descriptionHyperlinks>
+    <fillPercent>0.35</fillPercent>
+    <graphicData>
+      <!-- No existing render found (checked done/_artsrc/registry.jsonl, 2026-09-20). Job rswollim_v1 filed. -->
+      <texPath>Things/Plant/RSW_Ollim</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <!-- No fire ecology in this biome (dune_sea.md/deep_desert.md hard ban) and the
+           tree itself is the fireproof half of the "heat-immune / sharp-weak" signature -
+           see RSW_OllimWood below for the harvested material's own stats. -->
+      <Flammability>0</Flammability>
+      <MaxHitPoints>350</MaxHitPoints>
+      <Mass>220</Mass>
+      <Nutrition>0</Nutrition>
+      <Beauty>4</Beauty>
+      <BeautyOutdoors>6</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <!-- "Accretes cell by cell from the tiniest hint of moisture, over spans that
+           make its growth effectively geological" (deep_desert.md SS4b): near-zero
+           fertility requirement, fertility-insensitive growth rate, immortal once
+           grown (lifespanDaysPerGrowDays 0, as RUT_PaleTree — another single sacred
+           landmark tree in this repo), and no leaves to ever lose. -->
+      <fertilityMin>0.03</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>400</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieIfNoSunlight>False</dieIfNoSunlight>
+      <dieFromToxicFallout>False</dieFromToxicFallout>
+      <visualSizeRange>3.5~5.5</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <treeCategory>Super</treeCategory>
+      <harvestedThingDef>RSW_OllimWood</harvestedThingDef>
+      <harvestYield>15</harvestYield>
+      <harvestWork>700</harvestWork>
+      <harvestTag>Wood</harvestTag>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <allowAutoCut>false</allowAutoCut>
+      <warnIfMarkedForCut>true</warnIfMarkedForCut>
+      <!-- Solitary, not clustered: "a silverbole is a small ecosystem standing
+           alone in open ground" (deep_desert.md SS4b) — small radius, small
+           weight, so wild spawns come up alone rather than in a grove. Overall
+           rarity is governed by RUT_ExtremeDesert's wildPlants commonality
+           (0.01), not by these fields. -->
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Ollim wood — the "silver required" material signature ============== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_OllimWood</defName>
+    <label>ollim wood</label>
+    <description>Wood struck from an ollim stand — bone-white, dense as stone, and grown so slowly that a single plank predates most ruins on the planet. It shrugs off fire and blistering heat the way almost nothing else does, but a hard strike shatters it clean through: the tree traded strength for the one thing that actually kept it alive out here. Prized in a handful of recipes for exactly that trade-off.</description>
+    <graphicData>
+      <!-- Placeholder: vanilla WoodLog's own icon (CONFIRMED present) rather than a
+           dangling path, until job rswollimwood_v1 lands its own render. -->
+      <texPath>Things/Item/Resource/WoodLog</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <soundInteract>Wood_Drop</soundInteract>
+    <soundDrop>Wood_Drop</soundDrop>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <burnableByRecipe>true</burnableByRecipe>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>7</MarketValue>
+      <Mass>0.5</Mass>
+      <MaxHitPoints>150</MaxHitPoints>
+      <DeteriorationRate>0.3</DeteriorationRate>
+      <!-- Heat-immune / sharp-and-blunt-weak signature (deep_desert.md SS4b), calibrated
+           against measured vanilla WoodLog (Flammability 1, StuffPower_Armor_Sharp/Blunt
+           0.54, StuffPower_Armor_Heat 0.4, StuffPower_Insulation_Heat 4,
+           SharpDamageMultiplier 0.4, BluntDamageMultiplier 0.9 — mcp__rimsage__get_def_details,
+           2026-09-20): heat/flame axis inverted to near-immune, sharp/blunt axis inverted
+           to fragile. -->
+      <Flammability>0.03</Flammability>
+      <StuffPower_Armor_Sharp>0.15</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.15</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1.8</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>6</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>30</StuffPower_Insulation_Heat>
+      <SharpDamageMultiplier>1.6</SharpDamageMultiplier>
+      <BluntDamageMultiplier>1.6</BluntDamageMultiplier>
+    </statBases>
+    <stuffProps>
+      <stuffAdjective>ollim</stuffAdjective>
+      <categories>
+        <li>Woody</li>
+      </categories>
+      <appearance>Planks</appearance>
+      <commonality>0.015</commonality>
+      <!-- Bone-white/silvery — this is the "silver required" ask (deep_desert.md Owed
+           note), satisfied by the material's colour and stats rather than by the name. -->
+      <color>(232,227,214)</color>
+      <constructEffect>ConstructWood</constructEffect>
+      <soundImpactBullet>BulletImpact_Wood</soundImpactBullet>
+      <soundMeleeHitSharp>MeleeHit_Wood</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Wood</soundMeleeHitBlunt>
+      <soundImpactMelee>Pawn_Melee_Punch_HitBuilding_Wood</soundImpactMelee>
+      <statFactors>
+        <MaxHitPoints>0.55</MaxHitPoints>
+        <Beauty>1.5</Beauty>
+        <Flammability>0.05</Flammability>
+        <WorkToMake>1.1</WorkToMake>
+        <WorkToBuild>1.1</WorkToBuild>
+      </statFactors>
+      <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
+    </stuffProps>
+  </ThingDef>
+
+</Defs>

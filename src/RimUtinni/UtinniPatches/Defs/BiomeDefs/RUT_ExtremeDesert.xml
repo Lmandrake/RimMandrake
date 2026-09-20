@@ -36,10 +36,17 @@
     BiomeFlora_Ashkarr.xml (generated against rosters/dune_sea_deep_desert.json, the
     ONE merged roster file R22 already ruled).
 
-    NOT this pass's scope: the Silverbole tree def (deep_desert.md SS4b, name still
-    owner's pick); the sarlacc (deep_desert.md Owed, its own item); the megafauna
-    filter-feeders and glass-nub light-pipe flora (both sheets' SS4/SS10, new-art
-    owed); the wind-grain/yardang map-gen routine; any world repaint.
+    EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20): the biome's own signature flora
+    — glass-nub light-pipes (dune_sea.md SS4) and the ollim, deep_desert.md SS4b's
+    "tree that grows to cast shade" (final name, owner ruling this item; superseded
+    the "Silverbole"/"Silverpan" working names) — are now authored
+    (RSW_LightPipeNub, RSW_Ollim, RSW_ExtremeDesertSignatureFlora.xml) and wired
+    into wildPlants below. Their art is queued (fill_queue.py, this item), not yet
+    rendered.
+
+    NOT this pass's scope: the sarlacc (deep_desert.md Owed, its own item); the
+    megafauna filter-feeders (both sheets' SS4/SS10, new-art owed); the
+    wind-grain/yardang map-gen routine; any world repaint.
 
     WYYYSCHOKK_FERALISK_MERGE_1 (2026-09-10): AA_Dunealisk removed from
     wildAnimals: owner sitting ruling retired Alpha Animals' whole '-lisk'
@@ -169,9 +176,13 @@
            protected by the Forsaken [Crags]". It is correctly carried there at 0.3
            (RUT_ForsakenCrags.xml). A glowing mist-mushroom on the hottest, driest, sunniest
            biome on the planet was a stray copy - the entry carried no rationale comment,
-           unlike every other row here. ⚠️ This leaves Plant_Bloddle as the ONLY wildPlant on
-           3,969 tiles; sparse is this sheet's intent ("if the roster looks healthy, it is
-           wrong") but one species is thin even for that - tracked on DESERT_FAMILY_VERDICT_PASS_1. -->
+           unlike every other row here.
+           EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20): Plant_Bloddle is no longer the
+           ONLY wildPlant here — the two rows below are this biome's own named signature
+           flora (dune_sea.md SS4, deep_desert.md SS4b), sparse per the sheets' own
+           "if the roster looks healthy, it is wrong" ruling. -->
+      <RSW_LightPipeNub MayRequire="mandrake.rsw.swbestiary">0.1</RSW_LightPipeNub>  <!-- light-pipe nub - the dune sea's whole visible biome, dune_sea.md SS4 -->
+      <RSW_Ollim MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Ollim>  <!-- ollim - deep_desert.md SS4b's shade tree, final name per EXTREME_DESERT_SIGNATURE_FLORA_1 -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
 

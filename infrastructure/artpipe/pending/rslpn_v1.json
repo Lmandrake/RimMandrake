@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-20T19:10:26Z",
+  "drawsize": 0.2,
+  "facing": null,
+  "facings": [],
+  "id": "rslpn_v1",
+  "priority": 80,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a tiny knuckle of water-clear glass fused flush with the surface of a bare ochre sand dune, catching a hard bright highlight from directly overhead -- a lens, not a leaf, with no stem, no foliage and no green anywhere. The glass is faceted and mirror-bright at the rim, clear toward the centre. Single small object, centered, no ground shadow beyond a short hard-edged black sliver, no background scenery beyond a hint of dune sand at its base. Heavy, clean black outline around the whole silhouette, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "EXTREME_DESERT_SIGNATURE_FLORA_1",
+  "style_notes": "RSW_LightPipeNub, EXTREME_DESERT_SIGNATURE_FLORA_1. dune_sea.md SS4/SS6: nothing above ground is green or leafy, above-ground plant parts are glassy/white/mirrored and small. This nub IS the whole visible plant -- everything photosynthetic is underground."
+}
