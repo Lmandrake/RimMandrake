@@ -150,10 +150,14 @@ TIERS = {
     "beastmechanics": {
         "why": "Live-verify PORTED_BEAST_MECHANICS_REBUILD_1's three rebuilt donor "
                "mechanics (steel-eating ferroclaw, two chemfuel ejectors) on "
-               "RSW_Ferroclaw / RSW_Voltmaw / RSW_Cindermite. 🔑 Those three carry "
-               "comps from RimMandrakeBeastMechanicsRSW.dll, and a missing comp TYPE "
-               "discards the whole def silently -- so criterion 1 (no 'Could not find "
-               "type named') is the first thing this tier exists to answer. "
+               "RSW_Ferroclaw / RSW_Voltmaw / RSW_Cindermite, AND "
+               "DRUM_LURE_PREDATOR_BUILD_1's vibration-lure ambush + egg-trap clutch "
+               "on RSW_Drazzik / RSW_DrazzikEggFertilized -- both items live in "
+               "mandrake.rsw.swbestiary and share this same dependency closure. "
+               "🔑 All of these carry comps from RimMandrakeBeastMechanicsRSW.dll or "
+               "RimMandrake.CreatureBehaviors, and a missing comp TYPE discards the "
+               "whole def silently -- so criterion 1 (no 'Could not find type named') "
+               "is the first thing this tier exists to answer. "
                "sarg.alphaanimals is a REQUIRED dependency, not a convenience: "
                "removing it breaks ScenPart_StartingAnimal because some SWBestiary "
                "defs inherit an Alpha-Animals parent (MEASURED, ruled out as a "
@@ -177,6 +181,14 @@ TIERS = {
             #    fine and renders as a magenta X.
             "mandrake.rm.creaturebehaviors",
             "oskarpotocki.vfe.insectoid2",
+            # 🔑 ADDED 2026-09-20 for DRUM_LURE_PREDATOR_BUILD_1: RSW_DrazzikEgg-
+            # Fertilized's trap comp is MayRequire="mandrake.rm.proximityhatch" and
+            # is also only in SWBestiary's <loadAfter>, not <modDependencies> --
+            # same invisible-to-closure shape as the two above. Without it the def
+            # still loads (MayRequire degrades gracefully) but falls back to
+            # CompHatcher's vanilla timer, so the actual trap mechanic (hatch on
+            # approach) is unprovable without this mod present.
+            "mandrake.rm.proximityhatch",
         ],
         "dlc": True,
     },

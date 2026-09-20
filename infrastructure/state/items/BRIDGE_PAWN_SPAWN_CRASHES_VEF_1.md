@@ -277,20 +277,52 @@ no rework, only confirmation that it addresses this item's actual root cause
 pulls in both former gaps, verified via `modset_builder.py --tier
 beastmechanics` this session).
 
-## ⚠️ still open
+## ✅ LIVE RE-VERIFIED 2026-09-20 (FOUNDRY) — CLOSING
 
-- **Not yet live-reverified.** Nobody has relaunched the game on this or any
-  tier since the crash. The `About.xml` dependency fix should prevent the
-  5-def discard on any FUTURE tier build (closure now walks
-  `modDependencies` and includes `mandrake.rm.creaturebehaviors` +
-  `oskarpotocki.vfe.insectoid2`), but "should" is not "confirmed" — bridge
-  work for later, per this item's own standing rule.
+Took the bridge, extended `modset_builder.py`'s `beastmechanics` tier to also
+include `mandrake.rm.proximityhatch` (needed by `DRUM_LURE_PREDATOR_BUILD_1`'s
+egg trap, unrelated to this item but same session), applied it (15 mods,
+`deployed/config/ModsConfig.before-tier-beastmechanics.xml` holds the prior
+618-mod state), and launched via Steam
+(`"/mnt/c/Program Files (x86)/Steam/steam.exe" -applaunch 294100`, never the
+bare exe).
+
+**(i) No crash on map load / dev-palette-open with SWBestiary active — CONFIRMED.**
+Bridge up in 24 s. `Player.log` scanned end-to-end after main-menu load, after
+`rimworld/start_debug_game_ready` (quicktest map+world generation, the exact
+moment the previous session crashed at), and after ~90 minutes of subsequent
+bridge-driven testing: **zero** `NullReferenceException`, zero
+`Could not find type named`, zero `Could not execute post-long-event action`.
+`rimbridge/get_bridge_status` read `programState: Playing`, `playable: true`
+throughout. `tasklist.exe` confirmed `RimWorldWin64.exe` alive at every check,
+including after the heaviest test load (repeated `step_game_ticks` calls,
+multiple pawn spawns, an active combat/ambush sequence). The process never
+died.
+
+**(ii) `jawa/spawn_pawn` works for a pawn — CONFIRMED.** Spawned `Chicken` via
+`jawa/spawn_pawn {kindDef, x, z}` (note: the param is `kindDef`, not `defName`
+— `rimbridge_client.py`'s param-name guard caught this on the first attempt).
+`jawa/list_pawns` count read 7 → 8 independently of the call's own
+`success: true`, satisfying the rimbridge skill's "read back the RAW field"
+law. Also spawned `RSW_Drazzik`, `RSW_Ferroclaw`, `RSW_Ferroclaw` (second),
+`RSW_Voltmaw`, `RSW_Cindermite` and further `Chicken`s via the same route
+throughout the session with zero failures — full account in
+`DRUM_LURE_PREDATOR_BUILD_1.md` and `PORTED_BEAST_MECHANICS_REBUILD_1.md`.
+
+Both of this item's closing criteria are met. `About.xml`'s
+`mandrake.rm.creaturebehaviors`/`OskarPotocki.VFE.Insectoid2` dependency fix
+(commit `3bb3e6966`) holds under live re-test — closing this item.
+
+## ⚠️ still open (moved to other items, not blocking this close)
+
 - **The ORIGINAL (non-"worse") finding above — `GenSpawn.Spawn` NPE'ing in
   VEF's `CompShieldField.SpawnSetup_Patch`/`PhasingPatches` postfixes on a
-  `ThingMaker`-built `Pawn` — is UNRELATED and UNRESOLVED.** That is a
+  `ThingMaker`-built `Pawn` — is UNRELATED and remains UNRESOLVED.** That is a
   different code path (`rimworld/spawn_thing`/`jawa/spawn_batch` building a
-  raw Thing and handing it to `GenSpawn`, vs. this section's whole-
-  `DefDatabase<PawnKindDef>` enumeration for the debug-menu category tree).
-  Fixing today's null-race defect does not touch it. `jawa/spawn_pawn` remains
-  the correct workaround for that one.
-- Do not close this item on this finding alone.
+  raw Thing and handing it to `GenSpawn`, vs. this item's null-race
+  `DefDatabase<PawnKindDef>` enumeration bug, now fixed). `jawa/spawn_pawn`
+  remains the correct and only proven-safe route to spawn a pawn via the
+  bridge; `rimworld/spawn_thing`/`jawa/spawn_batch` should still be assumed
+  broken for pawns until someone files and fixes that separately. This item's
+  own criteria never required fixing that path — only that the standard
+  debug-testing method (via `jawa/spawn_pawn`) be usable again, which it is.
