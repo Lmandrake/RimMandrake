@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T21:26:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T21:55:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1440,16 +1440,6 @@ kind:     design
 thin:     no ## spec
 summary:  DESERTSHADEPLANTSDESIGN1 — design pass on the desert's defending shade plants
 prose:    infrastructure/state/items/DESERT_SHADE_PLANTS_DESIGN_1.md
-
-## ROSTER_VALIDATOR_STALE_REFS_1 All 38 remaining roster-validator red errors are instrument staleness, not data defects - every flagged def resolves live; plant_pool.csv is from Aug 23 and the creature register from Sep 5
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  ROSTERVALIDATORSTALEREFS1 — the validator's remaining errors are all its own
-prose:    infrastructure/state/items/ROSTER_VALIDATOR_STALE_REFS_1.md
 
 ## BRIDGE_PAWN_SPAWN_CRASHES_VEF_1 rimworld/spawn_thing and Spawn Pawn... debug action NPE on ANY pawn spawn (VEF CompShieldField SpawnSetup postfix)
 state:    proposed
