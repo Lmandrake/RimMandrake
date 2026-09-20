@@ -128,3 +128,61 @@ is correct, because a non-canon beast must not take them.
 owner's ear, and his overrule is the signal worth having — run every draft
 through it before he ever sees the list, so his attention is spent on taste
 rather than on catching English compounds.
+
+---
+
+## Batch 2 — DRAFTED 2026-09-20, awaiting the owner's ear
+
+⚠️ **DRAFTED, NOT RULED.** Do not apply any row below until the owner reacts.
+Every name passes `check_pseudo_sw_name.py` — shape and non-collision against all
+137 canon entries. The checker cannot judge taste; that is his.
+
+🔴 **Batch 1 is the rejected one** (Sandstrider, Spineroller, EmberCarpet,
+Ferroclaw, Dunestalker, Whirlbloom — 23/23 English compounds). Those labels are
+still live in `src/RimStarWars/SWBestiary/Defs/DesertPort/`. Batch 1 was lost off
+disk once already; this section exists so batch 2 cannot be.
+
+🔑 **defNames do NOT change here.** This item renames what the PLAYER reads.
+Whether the defName follows is `DONOR_DEFS_PORT_TO_OURS_1`'s question.
+
+### Fauna (16)
+
+| defName | current label (rejected) | drafted label | the creature |
+|---|---|---|---|
+| `RSW_Ashworm` | ashworm | **vurra** | worm that trails larger things |
+| `RSW_Barbthorn` | barbthorn | **skorra** | mobile cactus, toxic barbs |
+| `RSW_Cindermite` | cindermite | **zhakka** | mite that synthesizes chemfuel |
+| `RSW_Dunestalker` | dunestalker | **vosska** | cat/shark/skink hunter, swims sand |
+| `RSW_Ferroclaw` | ferroclaw | **khorrak** | crustacean that eats iron |
+| `RSW_Sandhorn` | sandhorn | **thurra** | muffalo-kin pack beast |
+| `RSW_Sandmaw` | sandmaw | **ommok** | cephalopod/cone-snail desert cattle |
+| `RSW_Sandstrider` | sandstrider | **ossik** | armoured flightless bird |
+| `RSW_Spinerat` | spinerat | **chikka** | rat spliced with cactus |
+| `RSW_Spineroller` | spineroller | **kudda** | cactus-form, rolls across sand |
+| `RSW_Sporemass` | sporemass | **grommo** | mycoid bulk; shrugs bullets, burns |
+| `RSW_Sporepaw` | sporepaw | **pukko** | fungal quadruped |
+| `RSW_Stareling` | stareling | **oxxa** | enlarged eye on tentacles |
+| `RSW_Stoneback` | stoneback | **bokka** | crab wearing a boulder |
+| `RSW_Tuskcoil` | tuskcoil | **ulgga** | giant armoured tusked worm |
+| `RSW_Voltmaw` | voltmaw | **vozzik** | slug used as a power plant |
+
+### Flora (7)
+
+Canon plant names are a coined stem plus a plain noun — `chak-root`,
+`hubba gourd`, `nysyllin`. These follow that shape, not the fauna shape.
+
+| defName | current label (rejected) | drafted label |
+|---|---|---|
+| `RSW_Dunegrass` | dune grass | **surra grass** |
+| `RSW_Scrubgrass` | scrubgrass | **jekka grass** |
+| `RSW_Starvine` | starvine | **tanni vine** |
+| `RSW_EmberCarpet` | ember carpet | **ruzzo carpet** |
+| `RSW_Whirlbloom` | whirlbloom | **quissa bloom** |
+| `RSW_SweetbarkTree` | sweetbark tree | **dommo tree** |
+| `RSW_VellaraBloom` | vellara bloom | **vellara bloom** — NO CHANGE, already a coinage |
+
+### On acceptance
+
+Wire **label and description together** on every row — a renamed def carrying the
+donor's old description reads to the player as a bug. Then re-run the label
+collision sweep across `src/`.
