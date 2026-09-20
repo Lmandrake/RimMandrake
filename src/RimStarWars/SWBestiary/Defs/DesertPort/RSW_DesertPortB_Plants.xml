@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RSW_DesertPortB_Plants.xml - DESERT_FAMILY_PORT_EXECUTION_1, SWAC batch B.
+     4 flora ported from Star Wars Animal Collection (mlie): real SW canon crop
+     names (chak-root, nysillin, hubba gourd, bloddle), no rename needed. Base+Wild
+     donor def pairs are FLATTENED into one self-contained RSW_ ThingDef (no donor
+     abstract parent survives), harvestedThingDef raw-food items ported alongside
+     for closure. texPaths are TEMP donor placeholders pending the RSW_ art job. -->
+<Defs>
+<ThingDef ParentName="PlantBase">
+    <defName>RSW_Plant_Chakroot_Wild</defName>
+    <label>wild chak-root plant</label>
+    <description>Chak-root was a flavorful red root plant that grew in the marshlands of the planet Erysthes, but was also be found on Naboo (amongst others where it was exported). The sale of this plant carried high taxes, so it was a favorite of smugglers who often developed a taste for it themselves.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swplants/Chakroot</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <ingestible />
+    <plant>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>250</wildClusterWeight>
+      <sowTags Inherit="False" />
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <immatureGraphicPath>swplants/Chakroot_Immature</immatureGraphicPath>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RSW_RawChakroot</harvestedThingDef>
+      <harvestYield>11</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+        <li>Hydroponic</li>
+      </sowTags>
+      <topWindExposure>0.1</topWindExposure>
+      <growDays>4</growDays>
+      <visualSizeRange>0.5~1.5</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+    </plant>
+  </ThingDef>
+<ThingDef ParentName="PlantBase">
+    <defName>RSW_Plant_Nysyllin_Wild</defName>
+    <label>wild nysyllin plant</label>
+    <description>The Nysillin plants also known as nysillim was a healing herb grown as a common crop plant across the galaxy.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swplants/Nysillin</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <ingestible />
+    <plant>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>250</wildClusterWeight>
+      <sowTags Inherit="False" />
+      <fertilityMin>0.8</fertilityMin>
+      <fertilitySensitivity>0.8</fertilitySensitivity>
+      <maxMeshCount>9</maxMeshCount>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <immatureGraphicPath>swplants/Nysillin_Immature</immatureGraphicPath>
+      <growDays>10</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <drugForHarvestPurposes>True</drugForHarvestPurposes>
+      <harvestedThingDef>RSW_RawNysyllin</harvestedThingDef>
+      <harvestYield>10</harvestYield>
+      <sowMinSkill>6</sowMinSkill>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0.1</topWindExposure>
+      <visualSizeRange>0.7~1.3</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <maxGrowthTemperature>75</maxGrowthTemperature>
+    </plant>
+  </ThingDef>
+<ThingDef ParentName="PlantBase">
+    <defName>RSW_Plant_HubbaGourd_Wild</defName>
+    <label>wild hubba gourd plant</label>
+    <description>A hardy gourd crop native to the planet Tatooine. It was popular with both the Jawa and Tusken people and was a major staple in their diet. It was soon exported to other worlds with arid evironments where it thrived in such harsh conditions.</description>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swplants/HubbaGourd</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <ingestible />
+    <plant>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>250</wildClusterWeight>
+      <sowTags Inherit="False" />
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <immatureGraphicPath>swplants/HubbaGourd_Immature</immatureGraphicPath>
+      <fertilitySensitivity>0.8</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RSW_RawHubbaGourd</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+        <li>Hydroponic</li>
+      </sowTags>
+      <topWindExposure>0.1</topWindExposure>
+      <growDays>3</growDays>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <maxGrowthTemperature>75</maxGrowthTemperature>
+    </plant>
+  </ThingDef>
+<ThingDef ParentName="PlantBase">
+    <defName>RSW_Plant_Bloddle</defName>
+    <label>bloddle plant</label>
+    <description>Bloddle was a tasty bulb vegetable grown in the hydroponic gardens and was a popular crop on Tatooine (although it could be found on several worlds). It could be used to enhance the flavor of other foods and was commonly grown for such purposes.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swplants/Bloddle</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <ingestible />
+    <plant>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <immatureGraphicPath>swplants/Bloddle_Immature</immatureGraphicPath>
+      <dieIfLeafless>true</dieIfLeafless>
+      <maxMeshCount>16</maxMeshCount>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RSW_RawBloddle</harvestedThingDef>
+      <harvestYield>5</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+        <li>Hydroponic</li>
+      </sowTags>
+      <topWindExposure>0.1</topWindExposure>
+      <growDays>4</growDays>
+      <visualSizeRange>0.3~0.6</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+    </plant>
+  </ThingDef>
+<ThingDef ParentName="PlantFoodRawBase">
+    <defName>RSW_RawBloddle</defName>
+    <label>bloddle</label>
+    <description>Raw bloddle. An aromatic root vegetable used in many culinary dishes for it's strong flavour.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/PlantFoodRaw/Bloddle</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <tasteThought>AteRawFood</tasteThought>
+      <specialThoughtAsIngredient>AteBloddle</specialThoughtAsIngredient>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>30</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="PlantFoodRawBase">
+    <defName>RSW_RawChakroot</defName>
+    <label>chak-root</label>
+    <description>Raw chak-root. An aromatic root vegetable used in many culinary dishes for it's unique flavour.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/PlantFoodRaw/Chakroot</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <tasteThought>AteRawFood</tasteThought>
+      <specialThoughtAsIngredient>AteChakroot</specialThoughtAsIngredient>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>30</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="PlantFoodRawBase">
+    <defName>RSW_RawHubbaGourd</defName>
+    <label>hubba gourd</label>
+    <description>Raw hubba gourd. A keystone crop for both the Tusken and Jawa people of Tatooine as it can stay edible for a long time without refrigeration.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/PlantFoodRaw/HubbaGourd</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.3</MarketValue>
+      <Nutrition>0.25</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <tasteThought>AteRawFood</tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>60</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="RoughPlantBase">
+    <defName>RSW_RawNysyllin</defName>
+    <label>nysyllin</label>
+    <description>Raw nysyllin pods plant. Can be refined into large quantities of primitive medicine.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/PlantFoodRaw/Nysyllin</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <Flammability>1.3</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>45</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>PlantMatter</li>
+    </thingCategories>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+      <canAutoSelectAsFoodForCaravan>false</canAutoSelectAsFoodForCaravan>
+    </ingestible>
+  </ThingDef>
+</Defs>

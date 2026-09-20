@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch reference closure: leather, meat and
+egg ThingDefs pulled in by the ported fauna in RSW_DesertPortMisc_Races.xml, so
+none of those defs dangle. Ported verbatim from Alpha Animals (Leather_Cactus,
+AA_CactusMeat, Leather_BlackChitin) and VFE - Insectoids 2 (VFEI2_Chitin),
+renamed RSW_. AA_CactusMeat's donor parent (AA_PlantFoodRawBase, an Alpha
+Animals abstract) is swapped for vanilla PlantFoodRawBase directly (CONFIRMED
+present in Core's Items_Resource_RawPlant.xml, same base RawFungus/RawPotatoes
+use) - its own overrides
+(foodType VegetableOrFruit, CompProperties_Rottable) are carried inline so the
+result is behaviourally identical, without porting the abstract chain.
+-->
+<Defs>
+
+	<ThingDef ParentName="LeatherBase">
+		<defName>RSW_CactusHide</defName>
+		<label>sentient plant skin</label>
+		<description>Part animal hide, part living plant tissue. Traps cold water inside, acting as a good thermal insulator in hot climates.</description>
+		<graphicData>
+			<color>(162,175,90)</color>
+		</graphicData>
+		<statBases>
+			<MarketValue>3.8</MarketValue>
+			<StuffPower_Armor_Sharp>1</StuffPower_Armor_Sharp>
+			<StuffPower_Insulation_Cold>0</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>45</StuffPower_Insulation_Heat>
+		</statBases>
+		<stuffProps>
+			<color>(162,175,90)</color>
+			<commonality>0.001</commonality>
+			<statFactors>
+				<MaxHitPoints>1.5</MaxHitPoints>
+				<Beauty>1.3</Beauty>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+	<ThingDef ParentName="LeatherBase">
+		<defName>RSW_BlackChitin</defName>
+		<label>black insect chitin</label>
+		<description>Hard overlapping scales of insectoid chitin. Exceptionally durable in combat, but a poor defense against weather.</description>
+		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_Chitin</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+			<color>(66,57,60)</color>
+		</graphicData>
+		<statBases>
+			<MarketValue>4.2</MarketValue>
+			<StuffPower_Armor_Sharp>1.75</StuffPower_Armor_Sharp>
+			<StuffPower_Armor_Blunt>0.54</StuffPower_Armor_Blunt>
+			<StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+		</statBases>
+		<stuffProps>
+			<color>(26,12,16)</color>
+			<commonality>0.001</commonality>
+			<statFactors>
+				<MaxHitPoints>1.5</MaxHitPoints>
+				<Beauty>1.7</Beauty>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+	<ThingDef ParentName="LeatherBase">
+		<defName>RSW_InsectChitin</defName>
+		<label>chitin</label>
+		<description>An extremely thick composition of rare minerals and biomass, commonly found in a form of insect exoskeletons.</description>
+		<!-- TEMP PLACEHOLDER: donor VFE - Insectoids 2 texture -->
+		<graphicData>
+			<texPath>Things/Item/VFEI_Chitin</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>3.2</MarketValue>
+			<Mass>0.05</Mass>
+			<StuffPower_Armor_Sharp>0.48</StuffPower_Armor_Sharp>
+			<StuffPower_Armor_Blunt>1.27</StuffPower_Armor_Blunt>
+			<StuffPower_Armor_Heat>1.15</StuffPower_Armor_Heat>
+			<StuffPower_Insulation_Cold>6</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>6</StuffPower_Insulation_Heat>
+		</statBases>
+		<stuffProps>
+			<color>(98,73,62)</color>
+			<commonality>0</commonality>
+			<statFactors>
+				<MaxHitPoints>1.5</MaxHitPoints>
+				<Flammability>0.5</Flammability>
+				<Beauty>0.8</Beauty>
+				<WorkToMake>1.2</WorkToMake>
+				<WorkToBuild>1.2</WorkToBuild>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+	<ThingDef ParentName="PlantFoodRawBase">
+		<defName>RSW_CactusMeat</defName>
+		<label>plant meat</label>
+		<description>A strange meat, part vegetable, part animal, harvested from cactus-hybrid creatures.</description>
+		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_Cactipine_Meat</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>1.1</MarketValue>
+		</statBases>
+		<ingestible>
+			<foodType>VegetableOrFruit</foodType>
+		</ingestible>
+		<comps>
+			<li Class="CompProperties_Rottable">
+				<daysToRotStart>30</daysToRotStart>
+				<rotDestroys>true</rotDestroys>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="EggUnfertBase">
+		<defName>RSW_SandstriderEggUnfertilized</defName>
+		<label>sandstrider egg (unfert.)</label>
+		<description>Unfertilized sandstrider egg. Edible raw, much better cooked.</description>
+		<graphicData>
+			<color>(125,138,97)</color>
+			<drawSize>1.2</drawSize>
+		</graphicData>
+		<statBases>
+			<MarketValue>15.0</MarketValue>
+		</statBases>
+	</ThingDef>
+
+	<ThingDef ParentName="EggFertBase">
+		<defName>RSW_SandstriderEggFertilized</defName>
+		<label>sandstrider egg (fert.)</label>
+		<description>Fertilized sandstrider egg. If all goes well, it should hatch into a baby sandstrider.</description>
+		<graphicData>
+			<color>(125,138,97)</color>
+			<drawSize>1.2</drawSize>
+		</graphicData>
+		<statBases>
+			<MarketValue>19.0</MarketValue>
+		</statBases>
+		<comps>
+			<li Class="CompProperties_Hatcher">
+				<hatcherDaystoHatch>7</hatcherDaystoHatch>
+				<hatcherPawn>RSW_Sandstrider</hatcherPawn>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="EggUnfertBase">
+		<defName>RSW_TuskcoilEggUnfertilized</defName>
+		<label>tuskcoil egg (unfert.)</label>
+		<description>Unfertilized tuskcoil egg. Edible raw, much better cooked.</description>
+		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
+			<color>(126,113,117)</color>
+		</graphicData>
+		<tradeability>Sellable</tradeability>
+		<statBases>
+			<MarketValue>9.0</MarketValue>
+		</statBases>
+	</ThingDef>
+
+	<ThingDef ParentName="EggFertBase">
+		<defName>RSW_TuskcoilEggFertilized</defName>
+		<label>tuskcoil egg (fert.)</label>
+		<description>Fertilized tuskcoil egg. If all goes well, it should hatch into a tuskcoil.</description>
+		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
+			<color>(126,113,117)</color>
+		</graphicData>
+		<tradeability>None</tradeability>
+		<statBases>
+			<MarketValue>9.0</MarketValue>
+		</statBases>
+		<comps>
+			<li Class="CompProperties_Hatcher">
+				<hatcherDaystoHatch>45</hatcherDaystoHatch>
+				<hatcherPawn>RSW_Tuskcoil</hatcherPawn>
+			</li>
+		</comps>
+	</ThingDef>
+
+</Defs>

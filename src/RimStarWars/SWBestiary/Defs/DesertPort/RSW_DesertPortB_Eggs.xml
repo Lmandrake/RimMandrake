@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RSW_DesertPortB_Eggs.xml - egg ThingDefs for the SWAC-batch-B fauna that lay
+     eggs, ported from Items_Resource_swanimal_Items.xml, renamed RSW_. Icon texPaths
+     are shared donor icons (EggWiggly/EggScaled/etc), kept as TEMP placeholders. -->
+<Defs>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggUvakUnFertilized</defName>
+    <label>uvak egg (unfert.)</label>
+    <description>An unfertilized uvak egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggWiggly</texPath>
+      <color>(250,100,100)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggUvakFertilized</defName>
+    <label>uvak egg (fert.)</label>
+    <description>A fertilized uvak egg. If all goes well, it should hatch into a baby uvak. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggWiggly</texPath>
+      <color>(250,100,100)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Uvak</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggVaractylUnFertilized</defName>
+    <label>varactyl egg (unfert.)</label>
+    <description>A fertilized varactyl egg. If all goes well, it should hatch into a baby varactyl. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggScaled</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,215,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggVaractylFertilized</defName>
+    <label>varactyl egg (fert.)</label>
+    <description>A fertilized varactyl egg. If all goes well, it should hatch into a baby varactyl. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggScaled</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,215,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Varactyl</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggKraytDragonUnFertilized</defName>
+    <label>krayt dragon egg (unfert.)</label>
+    <description>Unfertilized Krayt Dragon egg.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSpiked</texPath>
+      <color>(156,148,125)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>140.0</MarketValue>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggKraytDragonFertilized</defName>
+    <label>krayt dragon egg (fert.)</label>
+    <description>Fertilized Krayt Dragon egg.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSpiked</texPath>
+      <color>(156,148,125)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>140.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_KraytDragon</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggWhisperbirdUnFertilized</defName>
+    <label>whisperbird egg (unfert.)</label>
+    <description>An unfertilized whisperbird egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSpeckled</texPath>
+      <drawSize>0.5</drawSize>
+      <color>(0,255,200)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>20</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggWhisperbirdFertilized</defName>
+    <label>whisperbird egg (fert.)</label>
+    <description>A fertilized whisperbird egg. If all goes well, it should hatch into a baby whisperbird. It can be eaten raw, but it's much better cooked..</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSpeckled</texPath>
+      <drawSize>0.5</drawSize>
+      <color>(0,255,200)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>20</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>6</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Whisperbird</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggBolotaurUnFertilized</defName>
+    <label>bolotaur egg (unfert.)</label>
+    <description>An unfertilized bolotaur egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSaurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,150,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggBolotaurFertilized</defName>
+    <label>bolotaur egg (fert.)</label>
+    <description>A fertilized bolotaur egg. If all goes well, it should hatch into a baby bolotaur. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSaurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,150,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Bolotaur</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggClodhopperUnFertilized</defName>
+    <label>clodhopper egg (unfert.)</label>
+    <description>An unfertilized clodhopper egg. It can be eaten raw, but it's much better cooked</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSpeckled</texPath>
+      <color>(204,102,0)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>4</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggClodhopperFertilized</defName>
+    <label>clodhopper egg (fert.)</label>
+    <description>Fertilized clodhopper egg.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSpeckled</texPath>
+      <color>(204,102,0)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>4</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>2</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Clodhopper</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggKryknaUnFertilized</defName>
+    <label>krykna egg (unfert.)</label>
+    <description>An unfertilized kinrath egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggNodule</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggKryknaFertilized</defName>
+    <label>krykna egg (fert.)</label>
+    <description>A fertilized kinrath egg. If all goes well, it should hatch into a baby krykna. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggNodule</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Krykna</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggPikobisUnFertilized</defName>
+    <label>pikobis egg (unfert.)</label>
+    <description>An unfertilized pikobis egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggReptavian</texPath>
+      <color>(255,255,155)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggPikobisFertilized</defName>
+    <label>pikobis egg (fert.)</label>
+    <description>A fertilized pikobis egg. If all goes well, it should hatch into a baby pikobis. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggReptavian</texPath>
+      <color>(255,255,155)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Pikobis</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggConvorUnFertilized</defName>
+    <label>convor egg (unfert.)</label>
+    <description>An unfertilized convor egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSwirl</texPath>
+      <color>(225,255,255)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggConvorFertilized</defName>
+    <label>convor egg (fert.)</label>
+    <description>A fertilized convor egg. If all goes well, it should hatch into a baby convor. It can be eaten raw, but it's much better cooked..</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSwirl</texPath>
+      <color>(225,255,255)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Convor</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggPorgUnFertilized</defName>
+    <label>porg egg (unfert.)</label>
+    <description>Unfertilized Porg egg.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggMammavian</texPath>
+      <color>(245,245,245)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>6</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggPorgFertilized</defName>
+    <label>porg egg (fert.)</label>
+    <description>Fertilized Porg egg.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggMammavian</texPath>
+      <color>(245,245,245)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>6</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Porg</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggHoraxUnFertilized</defName>
+    <label>horax egg (unfert.)</label>
+    <description>An unfertilized frilled horax egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggDapple</texPath>
+      <color>(0,75,150)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>140.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggHoraxFertilized</defName>
+    <label>horax egg (fert.)</label>
+    <description>A fertilized horax egg. If all goes well, it should hatch into a baby horax. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggDapple</texPath>
+      <color>(0,75,150)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>140.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Horax</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggGreaterKraytDragonUnFertilized</defName>
+    <label>greater krayt dragon egg (unfert.)</label>
+    <description>An unfertilized greater krayt dragon egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSpiked</texPath>
+      <color>(250,250,150)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>250.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggGreaterKraytDragonFertilized</defName>
+    <label>greater krayt dragon egg (fert.)</label>
+    <description>A fertilized greater krayt dragon egg. If all goes well, it should hatch into a baby greater krayt dragon. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
+      <texPath>swresource/EggSpiked</texPath>
+      <color>(250,250,150)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>250.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_GreaterKraytDragon</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>
