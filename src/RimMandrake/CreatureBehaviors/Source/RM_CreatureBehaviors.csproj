@@ -91,6 +91,11 @@
     <Compile Include="RM_CompShardArmor.cs" />
     <Compile Include="RM_CompProperties_TameSootheAura.cs" />
     <Compile Include="RM_CompTameSootheAura.cs" />
+    <Compile Include="RM_MapComponent_ShadeGrid.cs" />
+    <Compile Include="RM_ShadeSeekingWanderExtension.cs" />
+    <Compile Include="RM_JobGiver_WanderInShadeGrid.cs" />
+    <Compile Include="RM_HediffCompProperties_ShadeDrivenSeverity.cs" />
+    <Compile Include="RM_HediffComp_ShadeDrivenSeverity.cs" />
   </ItemGroup>
 
   <ItemGroup>

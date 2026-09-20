@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- DESERT_SHADE_GRID_KEYSTONE_1. insertTag="Animal_PreWander" is vanilla's own
+     extension point (Verse.AI.ThinkNode_SubtreesByTag), sitting immediately
+     before Core's own tame/wild wander branches in Animal.xml — a job returned
+     here pre-empts ordinary wander for that tick; returning none (the case for
+     any untagged pawn) falls through to vanilla wander unchanged. Separate
+     ThinkTreeDef from RM_ThinkTree_VerminBehaviors (insertTag Animal_PreMain,
+     a different and earlier hook) so this always sees ordinary wander-time
+     decisions rather than competing with that tree's higher-priority jobs. -->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_ShadeSeekingWander</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_WanderInShadeGrid" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

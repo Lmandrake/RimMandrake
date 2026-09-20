@@ -100,6 +100,20 @@ namespace RimMandrake.CreatureBehaviors
     //  19. soulchimeTameSootheEnabled — RM_CompTameSootheAura
     //      (DEEPS_FAUNA_MECHANICS_1, Soulchime). Off: a tamed carrier stops
     //      handing out its soothing memory to nearby colonists.
+    //  20. shadeGridEnabled — RM_MapComponent_ShadeGrid (DESERT_SHADE_GRID_
+    //      KEYSTONE_1). Off: ShadeAt reports full sun everywhere and the map
+    //      stops recomputing the grid at all — every consumer below degrades
+    //      to its "no shade found" behaviour, never a stale or wrong read.
+    //  21. shadeSeekingWanderEnabled — RM_JobGiver_WanderInShadeGrid. Off: a
+    //      shade-wander-tagged animal's idle wandering stops steering toward
+    //      shaded cells and falls through to ordinary vanilla wander.
+    //  22. heatDrivenBurstEnabled / heatDrivenBurstDecayMultiplier —
+    //      RM_HediffComp_ShadeDrivenSeverity (RM_HeatDrivenBurst). Off: the
+    //      hediff's severity freezes wherever it currently sits (never
+    //      climbs or decays) — a content mod's own trigger and stages decide
+    //      what a frozen severity means. The dial scales the decay rate in
+    //      both sun and shade together (never the stage thresholds or the
+    //      stat offsets, which stay whatever the def says).
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -130,6 +144,10 @@ namespace RimMandrake.CreatureBehaviors
         public static bool soulchimeShardArmorEnabled = true;
         public static float soulchimeShardArmorRateMultiplier = 1f;
         public static bool soulchimeTameSootheEnabled = true;
+        public static bool shadeGridEnabled = true;
+        public static bool shadeSeekingWanderEnabled = true;
+        public static bool heatDrivenBurstEnabled = true;
+        public static float heatDrivenBurstDecayMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -161,6 +179,10 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref soulchimeShardArmorEnabled, "soulchimeShardArmorEnabled", true);
             Scribe_Values.Look(ref soulchimeShardArmorRateMultiplier, "soulchimeShardArmorRateMultiplier", 1f);
             Scribe_Values.Look(ref soulchimeTameSootheEnabled, "soulchimeTameSootheEnabled", true);
+            Scribe_Values.Look(ref shadeGridEnabled, "shadeGridEnabled", true);
+            Scribe_Values.Look(ref shadeSeekingWanderEnabled, "shadeSeekingWanderEnabled", true);
+            Scribe_Values.Look(ref heatDrivenBurstEnabled, "heatDrivenBurstEnabled", true);
+            Scribe_Values.Look(ref heatDrivenBurstDecayMultiplier, "heatDrivenBurstDecayMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -261,6 +283,18 @@ namespace RimMandrake.CreatureBehaviors
             soulchimeShardArmorRateMultiplier = list.Slider(soulchimeShardArmorRateMultiplier, 0f, 3f);
             list.CheckboxLabeled("Soulchime tamed soothing", ref soulchimeTameSootheEnabled,
                 "A tamed Soulchime stops handing out its soothing calm to nearby colonists.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Shade grid", ref shadeGridEnabled,
+                "The per-cell shade grid stops computing entirely; every shade-reading behavior "
+              + "below acts as if the whole map were in full sun.");
+            list.CheckboxLabeled("Shade-seeking wander", ref shadeSeekingWanderEnabled,
+                "A shade-wander-tagged animal stops steering its idle wandering toward shaded cells.");
+            list.CheckboxLabeled("Heat-driven burst/retreat hediff", ref heatDrivenBurstEnabled,
+                "A heat-driven-burst hediff's severity stops climbing or decaying at all (frozen "
+              + "wherever it currently sits).");
+            list.Label("Heat-driven burst decay rate: " + heatDrivenBurstDecayMultiplier.ToString("0.00") + "x");
+            heatDrivenBurstDecayMultiplier = list.Slider(heatDrivenBurstDecayMultiplier, 0.25f, 3f);
 
             list.End();
         }
