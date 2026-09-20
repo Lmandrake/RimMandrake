@@ -193,7 +193,56 @@ Owed section (5 bullets) — 5 work items, one split further by cross-reference.
    low-stakes doc accuracy issue, not ranking it.
 
 ## arid_shrubland.md
-(pending)
+
+Owed section (6 bullets) — split into 8 work items (the engine-feasibility bullet lists
+seven distinct mechanics).
+
+1. **The band mend** (248 sunward-tail tiles → Desert/ExtremeDesert; Ashfall Range/Dew
+   Horn judged individually; keep arc 95–100 fog margin; cull past arc 100; paint by
+   plumes) — **FILED but EXECUTION UNCONFIRMED (flag, not a clean UNFILED)**. It rode
+   `WORLDMAP_DESERT_BAND_REPAIR_1` (closed, `d2f0e37d8`) under a "AridShrubland folds
+   in" section, ratified same session as the Desert band repair. ⚠️ **But that item's own
+   closing note (2026-09-09T19:06:21Z) names only the Desert side as landed** — *"bands
+   A(797 tiles)->ExtremeDesert and D(745)->Wasteland landed live+frozen... Band C
+   intentionally left untouched."* It says nothing about the 248-tile AridShrubland cut
+   or the 19-tile Wasteland tail that were ratified in the same document. I did not
+   re-measure the live tile CSV myself (would need the offline dump/measure tooling, out
+   of scope for a report-only pass) so I am not calling this UNFILED — but the item's own
+   closing note does not evidence the shrubland-specific work happened, which is exactly
+   the failure shape the owner is asking about: work ratified inside a ticket, ticket
+   closed, and the specific line item silently dropped. Recommend a live re-measure
+   before trusting this line closed.
+2. **Tiles CSV frozen-stamp staleness** → `TILES_STAMP_VERIFY_1` — **FILED, DONE**
+   (`show`: closed).
+3. **`TREE_GRAPHICS_OWNERSHIP_1`** (own sweetline-tree art/scale, drop tree-mod
+   rescaling) — **FILED**, state `doing`, BLOCKED on an owner art pick (14 recovered
+   candidates awaiting selection per the item's blocker note). Filed and actively
+   blocked, not silently dropped.
+4. **Names** (giants, snake-analogs, bird-analogs, sweetline trees, the fuzz, venomvine,
+   the Stall, the Gale) — owner-pick placeholders, not build work. Not ranking.
+5. **Engine feasibility pass** — seven distinct mechanics, checked individually:
+   - Stall/Gale wind-driven weather events + AI hooks — **UNFILED (CONFIRMED)**.
+   - Parental enrage on approach — **UNFILED (CONFIRMED)**.
+   - Canopy-concealment vs the colony-visibility stat — **UNFILED (CONFIRMED)**. The
+     general dial exists and is built (`COLONY_VISIBILITY_BUILD_1`, closed/done — a
+     threat-scoped raid-point Postfix), but neither it nor its predecessor
+     (`COLONY_VISIBILITY_STAT_1`) mentions canopy, cover or shrubland as an input; the
+     specific "shrubland canopy feeds the visibility stat" wiring this bullet asks for is
+     not there.
+   - Venomvine passability by body size — **UNFILED (CONFIRMED)**.
+   - Nest-theft behaviour — **UNFILED (CONFIRMED)**.
+   - Giants' wall-indifference and fire-stamping — **UNFILED (CONFIRMED)**.
+   - Vaporator desertification (V-blight) as a map effect — **UNFILED (CONFIRMED)**; the
+     only vaporator items found (`MOISTURE_VAPORATOR_WALL_CLIP_1`,
+     `MOISTURE_FARM_TEMPLATES_1`, both closed) are about moisture-farm building
+     templates and a wall-clip render bug, not an ecological desertification effect.
+   Searched across all seven: `the Stall`, `the Gale`, `parental enrage`, `venomvine`,
+   `nest-theft`/`nest theft`, `vaporator`, `V-blight`, `colony_visibility_stat` — in
+   `infrastructure/state/items/`, `.../closed/`, and (for the visibility items) their
+   full text. Zero build items and zero matching C# for any of the seven.
+6. **Candidates not yet ruled** (tree-guardian animals; birds stealing from player bases)
+   — explicitly not-yet-ruled by the sheet's own wording, so not owed work until the
+   owner picks; not ranking.
 
 ## wasteland.md
 (pending)
