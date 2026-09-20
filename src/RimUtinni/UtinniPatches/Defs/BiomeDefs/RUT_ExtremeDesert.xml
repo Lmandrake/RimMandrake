@@ -166,6 +166,12 @@
            (rosters/dune_sea_deep_desert.json "fauna", owner review 2026-09, commonality
            0.5), wired for the first time. -->
       <RSW_TruffleMole MayRequire="mandrake.rsw.swbestiary">0.5</RSW_TruffleMole>  <!-- truffle mole - sand burrower, desert & extreme desert, import -->
+      <!-- EXTREME_DESERT_SUBSURFACE_PREDATOR_1 2026-09-20: AA_SandLion round-2 import row
+           (rosters/dune_sea_deep_desert.json "fauna", owner review 2026-09, commonality
+           0.5, "sand burrower swimmer") — ported as RSW_SandLion, the interim subsurface
+           strike predator for this biome (the drum-lure predator proper is separately
+           filed C# work). -->
+      <RSW_SandLion MayRequire="mandrake.rsw.swbestiary">0.5</RSW_SandLion>  <!-- vekka - sand burrower swimmer, interim strike predator, import -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
