@@ -198,10 +198,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/gen_name_patch.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "d0bc1927888b7b4da93afcb47cc37c677f0ac8c3a759ea23c282490deb8a7e7b",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "70415fcea5fc6d22983f062af8770ab44fda145a755e228d18424523f856ad51",
+    "sha": "e3f4de1e2"
   },
   "design/Jawa/fauna/gen_stat_adjustments.py": {
     "cleanCount": 1,
