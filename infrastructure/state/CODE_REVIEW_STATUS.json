@@ -162,10 +162,10 @@
     "sha": "582e9432"
   },
   "design/Jawa/fauna/animal_tolerances.py": {
-    "cleanCount": 2,
-    "date": "2026-09-10",
-    "hash": "b63988134359e5926f27064ce65fc94fb132139ce879bcea86e750929c6232d7",
-    "sha": "05e084a5"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "cc1efdaba38f2608d61b377c82c4f35993fd4ba2a4e11fd83f531e6a00eba5b5",
+    "sha": "6023bae63"
   },
   "design/Jawa/fauna/biome_fit.py": {
     "cleanCount": 1,
@@ -180,10 +180,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/gen_cast_patch.py": {
-    "cleanCount": 5,
+    "cleanCount": 6,
     "date": "2026-09-20",
-    "hash": "cb481b4c0d3d402f79d098576d76eea761d16d2c85895202ee2f02f1c3b9f205",
-    "sha": "9ec8a0bfb"
+    "hash": "602fac1a40eb307fcb092968a7a8f947d2c13300c06e61263fead8afab9284eb",
+    "sha": "6023bae63"
   },
   "design/Jawa/fauna/gen_creature_art_sheet.py": {
     "cleanCount": 1,
@@ -216,10 +216,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/rosters_to_cast.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "a86f4702705cb1215a64e38a52ed9598188b1d7aa96c5b13eea3b2e54a2d305f",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "76965d6bd64b72c00144db454c328965a171b569ccddd6155cf93f1958e6f1e0",
+    "sha": "6023bae63"
   },
   "design/Jawa/mods/biome_flora.py": {
     "cleanCount": 6,
