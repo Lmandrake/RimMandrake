@@ -74,9 +74,14 @@ def main():
     if unmatched:
         print(f"⚠️ {len(unmatched)} table rows matched no cast creature: {unmatched}")
         print("   These are NOT missing defs. They are names authored against an older cast:")
-        print("   the cast was re-run after the naming doc was written (density scaling, then")
-        print("   diet constraints) and these creatures fell out of it. The names are held in")
-        print("   reserve - if the creature returns to a cast, its name is already coined.")
+        print("   either (a) the cast was re-run after the naming doc was written (density")
+        print("   scaling, then diet constraints) and these creatures fell out of it, held in")
+        print("   reserve - if the creature returns to a cast, its name is already coined - or")
+        print("   (b) the row's donor mod was formally RETIRED from the active mod list (owner")
+        print("   ruling, creature_recognizability_rule.md §6) and the creature is simply gone")
+        print("   for good; check ModsConfig.xml's activeMods for the mod before assuming (a).")
+        print("   NAME_PATCH_ZERO_MATCH_1: all 41 rows in the doc as of 2026-09-20 are (b) -")
+        print("   Jurassic Rimworld + Megafauna, both retired - so 0 renames was correct, not a bug.")
         print("   🔴 If this list is ever non-empty, RE-READ the doc against the cast before")
         print("      assuming a def is broken.")
     if ambiguous:

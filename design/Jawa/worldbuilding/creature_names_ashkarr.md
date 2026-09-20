@@ -16,6 +16,16 @@ Measured against the cast (`design/Jawa/fauna/cast_assignment.csv`, 633 creature
 | Mythic Ages: Megafauna | 18 | ⛔ **no** |
 | Insectoids 2 / Alpha Animals / Biomes! | 9 | ⛔ **no** |
 
+🔴 **Both retired since.** Jurassic Rimworld and Megafauna were later ruled OUT of the
+game entirely on the "reads as a dinosaur/terrestrial hybrid" test
+(`creature_recognizability_rule.md` §6, owner ruling 2026-09-05) — Jurassic Rimworld
+deactivated in `ModsConfig.xml` 2026-09-13 (`MODLIST_RULED_CUTS_1`), Megafauna likewise.
+All 41 rows in this doc's tables below now name creatures that are gone from the active
+mod list and from `cast_assignment.csv`; the shipped `CreatureNames_Ashkarr.xml` patch
+is harmlessly inert. `gen_name_patch.py` correctly reports 0 renames — see
+`NAME_PATCH_ZERO_MATCH_1`. The rows stand as a coined-name reserve only, per §5's
+restoration path, should any of these ever return under new art.
+
 ⛔ **Mythic Ages and the English compounds stay, on the bestiary's own rule.**
 `Alien_Bestiary.md` §1: *"Avoid English compounds ('sandstalker') except as **nicknames** —
 those read as spacer slang, which is a different register and useful for contrast."*

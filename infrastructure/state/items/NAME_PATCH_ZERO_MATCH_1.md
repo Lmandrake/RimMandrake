@@ -20,12 +20,36 @@ The accidental overwrite from testing this was reverted (`git checkout --
 design/Jawa/fauna/CreatureNames_Ashkarr.xml`); the shipped 37-rename patch is untouched
 on disk and in the deployed mod.
 
-## Owed
+## Resolved 2026-09-20 (FOUNDRY) — not a defect, root cause found
 
-1. Work out whether `creature_names_ashkarr.md`'s label column drifted (the cast's
-   `label` values changed under it — resize/diet-constraint re-runs are named in the
-   script's own "NOT missing defs" note) or the matching key itself broke (case,
-   whitespace, a defName vs label mismatch).
-2. Until fixed, `gen_name_patch.py` cannot be used to add any new rename even though 41
-   candidate rows are sitting in the doc — treat any future run's "0 renames" as a red
-   flag needing this fixed first, not as "nothing to rename".
+**`gen_name_patch.py`'s matching logic is correct.** All 41 of the doc's rows are
+verified to be exclusively Jurassic Rimworld (22 rows: Protovermes…Torosaurus) and
+Megafauna (19 rows: castoroides…titanoboa) creatures — no other mod is represented in
+`creature_names_ashkarr.md` at all. Both donor mods were **retired from the active mod
+list**, per the owner's dinosaur/mod-retirement ruling
+(`design/Jawa/worldbuilding/creature_recognizability_rule.md` §6, ruled 2026-09-05):
+
+- `mlie.jurassicrimworlddinosaursonly` — deactivated 2026-09-13, executing that ruling
+  (`infrastructure/state/items/MODLIST_RULED_CUTS_1.md`; 5 survivors already absorbed
+  into `mandrake.rsw.swbestiary` as `RSW_Absorbed_*`).
+- Megafauna — likewise ruled retired 2026-09-05 ("retire, cleanup only" —
+  `creature_recognizability_rule.md` §6 correction table).
+
+MEASURED against the live game: neither packageId appears anywhere in the current
+617-entry `ModsConfig.xml` (checked by parsing `activeMods`, not a text grep), and
+neither mod's creatures appear in `cast_assignment.csv` (419 rows, `rosters_to_cast.py`'s
+hand-authored-roster regime since `BIOME_FAUNA_ASSIGNMENT_SITTING_1`). So **0 renames is
+the objectively correct output**: there is nothing left in the game to rename. The
+41-row doc and the shipped 37-rename `CreatureNames_Ashkarr.xml` describe content that
+no longer exists in the mod list — not a stale join, not a broken matching key, not
+caused by the biome-name-join fix chain this was found investigating.
+
+No code change needed. `CreatureNames_Ashkarr.xml`'s 37 `PatchOperationConditional`
+ops are harmlessly inert now (their defNames' donor mods are gone, so the guard never
+matches) — cleanup of that dead patch, if wanted, belongs with the broader Megafauna/
+Jurassic retirement cleanup already named in `creature_recognizability_rule.md` §6's
+correction table, not this item.
+
+Added a short pointer to `gen_name_patch.py`'s own "NOT missing defs" print (a third,
+now-measured cause: the row's donor mod was formally retired) so a future 0-match run
+is diagnosed faster.
