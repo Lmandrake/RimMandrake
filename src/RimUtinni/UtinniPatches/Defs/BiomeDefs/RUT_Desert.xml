@@ -228,6 +228,20 @@
            wired for the first time. -->
       <RSW_Stoneback MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Stoneback>  <!-- bokka - anywhere on the dayside, import -->
       <RSW_TruffleMole MayRequire="mandrake.rsw.swbestiary">0.5</RSW_TruffleMole>  <!-- truffle mole - sand burrower, desert & extreme desert, import -->
+      <!-- AA_JOE_DESERT_PORT_BATCH_1 2026-09-20: the remaining round-2 import rows
+           (design/Jawa/fauna/cast_assignment.csv, owner review 2026-09, commonality
+           0.5 each) ported from scratch (RSW_GreatDevourer/RSW_Groundrunner/
+           RSW_MatureFleshbeast, Defs/ThingDefs_Races) and wired for the first time.
+           JOE_Cephalope is NOT a new port here - it was already absorbed verbatim
+           (defName preserved) by STAT_NORM_WAVE2_RETIRE_1 on 2026-09-11, into this
+           SAME mod (Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml), and the
+           donor mod (joe.cephaloids) was already removed from ModsConfig.xml that day
+           - only its biome wiring here was ever owed, so no MayRequire guard is
+           needed (same mod, unconditionally loaded together). -->
+      <RSW_GreatDevourer MayRequire="mandrake.rsw.swbestiary">0.5</RSW_GreatDevourer>  <!-- great devourer - relative of the sarlacc, import -->
+      <RSW_Groundrunner MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Groundrunner>  <!-- groundrunner - desert, import -->
+      <RSW_MatureFleshbeast MayRequire="mandrake.rsw.swbestiary">0.5</RSW_MatureFleshbeast>  <!-- mature fleshbeast - desert, immature sarlacc, import -->
+      <JOE_Cephalope>0.5</JOE_Cephalope>  <!-- cephalope - sand burrower & swimmer, already absorbed & mod already retired (STAT_NORM_WAVE2_RETIRE_1) -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

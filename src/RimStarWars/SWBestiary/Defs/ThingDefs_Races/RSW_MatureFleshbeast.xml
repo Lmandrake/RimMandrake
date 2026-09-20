@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AA_JOE_DESERT_PORT_BATCH_1 - AA_MatureFleshbeast port.
+  Ported from Alpha Animals (`sarg.alphaanimals`, workshop 1541721856,
+  `1.6/Defs/ThingDefs_Races/Races_MatureFleshbeast.xml`) under the RSW_ tier.
+  Ruled at 0.5 weight, RUT_Desert only
+  (`design/Jawa/fauna/cast_assignment.csv` row 95, note "desert, immature
+  sarlacc"; also `decisions_propagated.json` "homeless:AA_MatureFleshbeast",
+  decision "move"). Owner ruling 2026-09-20 (recorded on
+  DESERT_ROUND2_IMPORTS_UNLANDED_1): PORT, not superseded by
+  SARLACC_HABITAT_BUILD_1.
+
+  Alpha Animals stays an active mod dependency for this batch, so
+  `useMeatFrom AA_Helixien` and the `AA_TarGuzzler_*` life-stage sounds are
+  kept live (both confirmed to exist unconditionally in Alpha Animals 1.6 -
+  `Defs/ThingDefs_Races/Races_Helixien.xml`,
+  `Defs/SoundDefs/Sounds_Animals.xml`) rather than substituted.
+
+  Dropped, per the `BMT_FAUNA_ABSORPTION_1` precedent (donor-framework
+  mechanics come out, the creature keeps its stats/body/form):
+  `<thingClass>AlphaBehavioursAndEvents.Pawn_SwallowWhole</thingClass>` - the
+  donor's "swallow prey whole and store it in the stomach" mechanic is a
+  compiled C# Thing subclass with no data-only substitute; falls back to
+  vanilla `Pawn`, losing the swallow-and-store behaviour but keeping a normal
+  predator. Its melee tool's `AA_SwallowWhole` capacity is likewise donor-
+  entangled (the paired DamageDef uses
+  `workerClass AlphaBehavioursAndEvents.DamageWorker_SwallowWhole`, also
+  compiled C#) and is substituted with vanilla `Bite` on the same tool
+  (power/cooldown/linkedBodyPartsGroup unchanged). The
+  `VEF.AnimalBehaviours.AnimalStatExtension` modExtension (info-card flavor
+  only) is dropped too. `<race><wildBiomes>` dropped - wiring happens via
+  BiomeDef patches (`RUT_Desert.xml`).
+
+  Kept: the custom body (AA_TentacledQuadrupedEyeless ->
+  RSW_TentacledQuadrupedEyeless, Defs/Bodies/RSW_AADesertPort_Bodies.xml),
+  stats, the head tool, race fields and tradeTags verbatim. `canArriveManhunter`
+  false and the manhunter-on-damage/tame-fail rates are the donor's own,
+  unrelated to the dropped swallow mechanic.
+-->
+<Defs>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<defName>RSW_MatureFleshbeast</defName>
+		<label>mature fleshbeast</label>
+		<description>The unwanted result of a genetic experiment gone wrong, fleshbeasts are usually miserable, weak creatures that ooze pus and struggle to keep breathing for longer than a few days. Sometimes, however, a fleshbeast manages to survive, and even thrive - released into the wild, or simply stronger than average, growing into a pulsating, fleshy behemoth with a ravenous appetite.\n\nOut in the deep desert a mature fleshbeast will tear into anything it can catch, and rumor holds the biggest of them are cousins to something far larger sleeping under the dunes.</description>
+		<statBases>
+			<MoveSpeed>2.00</MoveSpeed>
+			<ComfyTemperatureMin>-70</ComfyTemperatureMin>
+			<MarketValue>550</MarketValue>
+			<MeatAmount>30</MeatAmount>
+			<LeatherAmount>30</LeatherAmount>
+			<FilthRate>24</FilthRate>
+			<Wildness>0.8</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>20</power>
+				<cooldownTime>1.85</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+				<chanceFactor>0.6</chanceFactor>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>15</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.4</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>RSW_TentacledQuadrupedEyeless</body>
+			<baseBodySize>6</baseBodySize>
+			<baseHealthScale>2.7</baseHealthScale>
+			<baseHungerRate>1.5</baseHungerRate>
+			<foodType>CarnivoreAnimalStrict</foodType>
+			<predator>true</predator>
+			<maxPreyBodySize>4</maxPreyBodySize>
+			<trainability>Intermediate</trainability>
+			<manhunterOnDamageChance>1</manhunterOnDamageChance>
+			<leatherDef>Leather_Light</leatherDef>
+			<hasGenders>false</hasGenders>
+			<useMeatFrom>AA_Helixien</useMeatFrom>
+			<lifeExpectancy>75</lifeExpectancy>
+			<lifeStageAges>
+				<li>
+					<def>AnimalAdult</def>
+					<minAge>0</minAge>
+					<soundWounded>AA_TarGuzzler_Wounded</soundWounded>
+					<soundDeath>AA_TarGuzzler_Death</soundDeath>
+					<soundAngry>AA_TarGuzzler_Angry</soundAngry>
+				</li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+			<li>AnimalFighter</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_MatureFleshbeast</defName>
+		<label>mature fleshbeast</label>
+		<race>RSW_MatureFleshbeast</race>
+		<combatPower>500</combatPower>
+		<ecoSystemWeight>1</ecoSystemWeight>
+		<canArriveManhunter>false</canArriveManhunter>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_MatureFleshbeast/AA_MatureFleshbeast</texPath>
+					<drawSize>6</drawSize>
+					<shadowData>
+						<volume>(0.30, 0.25, 0.20)</volume>
+					</shadowData>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_MatureFleshbeast/AA_Dessicated_MatureFleshbeast</texPath>
+					<drawSize>6</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>

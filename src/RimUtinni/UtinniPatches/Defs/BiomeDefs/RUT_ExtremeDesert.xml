@@ -179,6 +179,14 @@
            tenth of RSW_SandLion's — the item's own "rare, dangerous encounter, not a
            common spawn" instruction and this sheet's §5/§6 population bans. -->
       <RSW_Drazzik MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Drazzik>  <!-- drazzik - drum-lure subsurface predator -->
+      <!-- AA_JOE_DESERT_PORT_BATCH_1 2026-09-20: round-2 import row
+           (design/Jawa/fauna/cast_assignment.csv row 160, owner review 2026-09,
+           commonality 0.5). JOE_Cephalope was already absorbed verbatim (defName
+           preserved) by STAT_NORM_WAVE2_RETIRE_1 on 2026-09-11 into this SAME mod
+           (Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml) and joe.cephaloids
+           was already removed from ModsConfig.xml that day - only the biome wiring
+           was ever owed, so no MayRequire guard is needed. -->
+      <JOE_Cephalope>0.5</JOE_Cephalope>  <!-- cephalope - sand burrower & swimmer, dune_sea + deep_desert -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

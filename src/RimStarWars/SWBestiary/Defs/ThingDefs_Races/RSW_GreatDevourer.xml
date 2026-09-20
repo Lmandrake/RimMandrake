@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AA_JOE_DESERT_PORT_BATCH_1 - AA_GreatDevourer port.
+  Ported from Alpha Animals (`sarg.alphaanimals`, workshop 1541721856,
+  `1.6/Defs/ThingDefs_Races/Races_GreatDevourer.xml`) under the RSW_ tier.
+  Ruled at 0.5 weight, RUT_Desert only
+  (`design/Jawa/fauna/cast_assignment.csv` row 93, note "Relative of the
+  Sarlacc wandering the desert"; also `decisions_propagated.json`
+  "homeless:AA_GreatDevourer", decision "move"). Owner ruling 2026-09-20
+  (recorded on DESERT_ROUND2_IMPORTS_UNLANDED_1): PORT, not superseded by
+  SARLACC_HABITAT_BUILD_1.
+
+  Alpha Animals stays an active mod dependency for this batch (only Joe's
+  Cephaloids is being retired), so donor texPaths and cross-mod references
+  (useMeatFrom Megaspider is VANILLA; the donor's own AA_EggBeetle egg
+  texture) are kept live rather than copied, matching the RSW_SandLion
+  precedent from the same wave.
+
+  Dropped, per the `BMT_FAUNA_ABSORPTION_1` precedent (donor-framework comps
+  come out, the creature keeps its stats/body/form):
+  `VEF.AnimalBehaviours.CompProperties_Regeneration` (VEF is not a dependency
+  of this mod) and the `VEF.AnimalBehaviours.AnimalStatExtension`
+  modExtension (info-card flavor only). `<race><wildBiomes>` is dropped
+  throughout this batch - our own wiring happens via BiomeDef patches
+  (`RUT_Desert.xml`), not the creature's own donor wildBiomes dictionary
+  (which names AA's own biome set, several of which don't exist in this
+  campaign).
+
+  Kept: the vanilla `CompProperties_EggLayer` comp (repointed to
+  RSW_GreatDevourerEggUnfertilized/Fertilized,
+  Defs/ThingDefs_Items/RSW_GreatDevourerEggs.xml), the custom body
+  (AA_WormWithArmor -> RSW_WormWithArmor, Defs/Bodies/RSW_AADesertPort_Bodies.xml),
+  the vanilla `alternateGraphicChance`/`alternateGraphics` PawnKindDef fields
+  (a real 1.6 field, confirmed against Core's own CowGroup/CatGroup and
+  Odyssey's Races_Animal.xml - not donor-only), tools, stats, sounds and
+  tradeTags verbatim.
+-->
+<Defs>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<defName>RSW_GreatDevourer</defName>
+		<label>great devourer</label>
+		<description>Great Devourers are armoured worms known for their unquenchable appetite. Once a Great Devourer arrives, it will proceed to gorge itself on small prey, and total ecosystem collapse is almost a certainty.\n\nLuckily, they won't attack large creatures, including humans, unless provoked. Their whole name is in fact a pun, since they are not very resilient and are easily dispatched. They have however slow regenerative capabilities.</description>
+		<statBases>
+			<MoveSpeed>2.8</MoveSpeed>
+			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
+			<MarketValue>400</MarketValue>
+			<ArmorRating_Blunt>.4</ArmorRating_Blunt>
+			<ArmorRating_Sharp>.4</ArmorRating_Sharp>
+			<FilthRate>8</FilthRate>
+			<Wildness>0.75</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>20</power>
+				<cooldownTime>2.6</cooldownTime>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>12</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>16</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+				<chanceFactor>0.3</chanceFactor>
+			</li>
+		</tools>
+		<comps>
+			<li Class="CompProperties_EggLayer">
+				<eggUnfertilizedDef>RSW_GreatDevourerEggUnfertilized</eggUnfertilizedDef>
+				<eggFertilizedDef>RSW_GreatDevourerEggFertilized</eggFertilizedDef>
+				<eggFertilizationCountMax>1</eggFertilizationCountMax>
+				<eggLayIntervalDays>6</eggLayIntervalDays>
+			</li>
+		</comps>
+		<race>
+			<body>RSW_WormWithArmor</body>
+			<predator>true</predator>
+			<maxPreyBodySize>0.75</maxPreyBodySize>
+			<baseBodySize>2.5</baseBodySize>
+			<baseHealthScale>2.0</baseHealthScale>
+			<baseHungerRate>1.0</baseHungerRate>
+			<foodType>CarnivoreAnimal</foodType>
+			<leatherDef>Leather_Chitin</leatherDef>
+			<fleshType>Insectoid</fleshType>
+			<bloodDef>Filth_BloodInsect</bloodDef>
+			<useMeatFrom>Megaspider</useMeatFrom>
+			<trainability>Intermediate</trainability>
+			<lifeExpectancy>55</lifeExpectancy>
+			<lifeStageAges>
+				<li>
+					<def>AnimalBaby</def>
+					<minAge>0</minAge>
+				</li>
+				<li>
+					<def>AnimalJuvenile</def>
+					<minAge>0.25</minAge>
+				</li>
+				<li>
+					<def>AnimalAdult</def>
+					<minAge>0.5</minAge>
+					<soundWounded>Pawn_BigInsect_Pain</soundWounded>
+					<soundDeath>Pawn_BigInsect_Death</soundDeath>
+					<soundCall>Pawn_BigInsect_Call</soundCall>
+					<soundAngry>Pawn_BigInsect_Angry</soundAngry>
+				</li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+			<li>AnimalFighter</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_GreatDevourer</defName>
+		<label>great devourer</label>
+		<race>RSW_GreatDevourer</race>
+		<combatPower>200</combatPower>
+		<ecoSystemWeight>1</ecoSystemWeight>
+		<alternateGraphicChance>1</alternateGraphicChance>
+		<alternateGraphics>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer2</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer3</texPath>
+			</li>
+		</alternateGraphics>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_Dessicated_GreatDevourer</texPath>
+					<drawSize>1.5</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<drawSize>2.5</drawSize>
+					<shadowData>
+						<volume>(0.3, 0.3, 0.3)</volume>
+						<offset>(0,0,-0.3)</offset>
+					</shadowData>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_Dessicated_GreatDevourer</texPath>
+					<drawSize>2.5</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<drawSize>3.5</drawSize>
+					<shadowData>
+						<volume>(0.4, 0.4, 0.4)</volume>
+						<offset>(0,0,-0.2)</offset>
+					</shadowData>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_Dessicated_GreatDevourer</texPath>
+					<drawSize>3.5</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>
