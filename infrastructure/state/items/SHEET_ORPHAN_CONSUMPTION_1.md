@@ -300,6 +300,41 @@ would re-queue art that already exists.
 
 ---
 
+## flora `art:improve` channel — CLOSED OUT, 2026-09-20 (FOUNDRY, offline)
+
+`BMT_FLORA_ABSORPTION_1` closed today, unblocking the 20 held `BMT_Plant_*` rows.
+Re-derived all 37 "owed" rows against current ground truth per the owner's
+standing rule (*"make sure nobody has already done so before you"*).
+🔴 **The 17/20 split in the two sections above is backwards** — a script-parsed
+count of this item's own "### The 37 owed" list gives **17 `BMT_Plant_*` rows,
+20 non-BMT rows** (both still sum to 37). Acted on the real split.
+
+**Result: 0 of the 37 rows are genuinely owed. Zero art jobs filed.**
+
+- 5 `BMT_Plant_*` rows already have a live `RUT_` ThingDef AND real, non-placeholder
+  art on disk (`RUT_TwistingThornwood/Thorngrass/Thornweed`, `RUT_TreeMartyr`,
+  `RUT_ScorchedStars` — `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_PollutedFlora.xml`).
+- 12 `BMT_Plant_*` rows are CUT, not merely unported: no ThingDef anywhere in
+  `src/`, and `wasteland.json`/`the_miasma.json`'s `flora_purged` arrays record
+  an explicit reason for each (`POLLUTED_LANDS_FLORA_PORT_1`: the donor mod
+  retired 2026-09-18, our own vanilla/`AB_` poison flora already carries the
+  identity). No art owed against a cut subject.
+- 18 of the 20 non-BMT rows already have a finished, `status:"ok"` render in
+  `infrastructure/artpipe/done/` — matched by an exact `"Source row:
+  flora:<biome>:<defName>"` citation inside the job's own `style_notes`/`prompt`,
+  landed via the closed `ART_REGEN_FLORA_WAVE1_QUEUE_1` (or an earlier wave).
+- The remaining 2 (`Plant_YellowGrass`, `Plant_YellowTallGrass`) are vanilla
+  RimWorld `ThingDef`s we only relabel (`PlantNames_Ashkarr.xml`), absent from
+  every biome roster — `ART_REGEN_FLORA_WAVE1_QUEUE_1`'s own closed record
+  already excluded both as superseded/dead before filing its 14 jobs; this
+  item's "37 owed" figure had not carried that exclusion forward.
+
+Full per-row table: `Transient/sheet_orphan_flora_improve_channel_2026-09-20.md`.
+Not touched by this pass: the 118-row ledger, the 12 OWED sizeBin rows, and
+executing the flora move/purge channels — this item stays open for those.
+
+---
+
 ## fauna `decision=out` channel — CLOSED OUT, 2026-09-20 (FOUNDRY)
 
 Re-verified against the live tree (8 days after the audit, per this pass's own brief).
