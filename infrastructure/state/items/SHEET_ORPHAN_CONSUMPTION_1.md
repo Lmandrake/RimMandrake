@@ -446,3 +446,60 @@ Selftests: `run_selftests.py` re-run after this pass, same pre-existing baseline
 (see commit). **Not touched by this pass**: the sizeBin OWED rows, executing the
 flora move/purge channels — this item stays open for those; they are not this
 pass's scope.
+
+---
+
+## flora `decision=move` (15) / `decision=out` (4) channels — CLOSED OUT, 2026-09-20 (FOUNDRY, offline)
+
+Ran concurrently with the fauna and 118-ledger passes above, and its own closing
+note was never appended here — recorded now for accuracy. Full detail in that
+pass's commit `90e203d46`.
+
+Most of the 15 moves (12 of 15) and all 4 purges were **already applied by an
+earlier pass today** (`c2428fb6f`, `b416de522`, `ef4500918`, `ac8b64d1c`) —
+verified correct against current rosters, not re-done. The remaining 3
+(`AB_GiantGamma`, `AG_Gamma`, `AG_Septimum`, all sourced from `the_forge.json`)
+were applied this pass, landing in `forsaken_crags.json`. **`AG_Gamma`/
+`AG_Septimum`'s known-bad target claim was resolved, not left unapplied**: the
+mapping doc's "already in forsaken_crags" was false, but the destination itself
+was still correct (the same Alpha Genes gamma/septimum family already resident
+there, matching climate band) — moved with the corrected reasoning recorded.
+All 4 purges (`AB_DessertTree`, `AB_EyeGrass`, `Boomshroom`, `PoisonPlantBush`)
+confirmed absent from every roster, each with a `flora_purged` sidecar reason;
+no forbidden successor authored.
+
+Two real defects caught and fixed along the way, not just the graded moves:
+`biome_flora.py`'s `FAMILIES` dict was out of sync with today's roster edits
+(hand-corrected before `--write`), and `RUT_BlueDesert.xml` had **no
+`<wildPlants>` element at all**, meaning its generated patch would have
+silently matched nothing and dropped the blue-desert flora move — added the
+missing anchor element. Also fixed `_validate.py`'s cross-check, which only
+checked a flora move's target against the target roster's `fauna` list (a false
+"target does not roster it" on every flora move, all 15).
+
+Selftests: 66/66, 2 skipped — baseline held.
+
+---
+
+## Where this item stands now, 2026-09-20 (FOUNDRY)
+
+Four of the five original orphan channels are closed out: fauna `decision=out`,
+flora `decision=move`, flora `decision=out`, flora `art:improve`. The 118-row
+NEW-ART/DEF ledger is measured and its genuinely-owed remainder (85 of 118)
+filed cleanly as `COMMISSION_LEDGER_CLEANUP_1` rather than commissioned blind,
+since (unlike the other four) the owner never ruled on this channel by name.
+
+**Still open, and why this item does not close yet:**
+- The 12 OWED sizeBin corrections (`## The 29 fauna sizeBin rows` section
+  above) — the owner asked to see them (done, this doc), but no ruling exists
+  yet on whether to actually apply any bodySize/grade correction. Not FOUNDRY's
+  call to make alone; needs his read of the table above, especially
+  `AA_GreenGoo` and `RSW_CrimsonOpee` (several bins off, likely a graded-wrong
+  species rather than a numeric drift).
+- The 1 flagged register conflict (`forsaken_crags:dusk-rat-art-redo` vs.
+  `AA_DuskRat`'s already-approved art) — same posture, needs an owner/BENCH call
+  on which channel is authoritative.
+- `COMMISSION_LEDGER_CLEANUP_1` itself is a fresh, unstarted item.
+- Freezing both decisions files (`frozen-artifacts` skill, item's own spec step
+  5) is premature while the two items above are still open — freeze once they
+  land, not before.
