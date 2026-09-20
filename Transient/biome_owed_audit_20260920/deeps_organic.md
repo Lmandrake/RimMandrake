@@ -426,4 +426,30 @@ plus 10 single-item bullets). Examined 14.
 
 ## assailant_weapon_remnants.md
 
-(pending)
+Owed section: 4 bullets, each a distinct item already named by ID (no
+splitting needed). Examined 4.
+
+1. `HORRORWASTES_BIOME_DISSOLVE_1` — FILED/DONE (closed `bb437a16`,
+   confirmed earlier in this report under the Lantern Deeps section).
+2. `HORRORS_RAIDING_FACTION_1` — FILED, but flag: STALE BLOCKED STATE
+   (CONFIRMED). It is `doing`/BLOCKED with the recorded reason "hold the
+   WHOLE item until `HORRORWASTES_BIOME_DISSOLVE_1`'s owner-reviewed
+   tile-reassignment render lands." That blocker item is now CLOSED
+   (`bb437a16`, done) — the stated unblock condition has been satisfied but
+   the item's own status still reads BLOCKED. This is the exact "gate cited
+   by name outlives the item it names" pattern CLAUDE.md warns about — worth
+   a fresh look, not a rebuild.
+3. `OCULAR_OVERDRIVE_SITE_1` — FILED, `doing` (in progress, not stale).
+4. **Whether the Horrors' reach is nightside-only — owner's confirmation** —
+   FILED/DONE, folded into `HORRORS_RAIDING_FACTION_1` itself: its own text
+   reads "**Gating confirmed**: nightside/cold-reach" — the ruling landed,
+   this is not a separate open question.
+
+---
+
+# Summary
+
+Sheets examined: 9. Owed-list entries examined (after splitting compound
+bullets into individual work items): 11 (Rot) + 9 (Lantern Deeps) + 11
+(Pyrelands) + 10 (Twilight Deep) + 7 (Grey Deep) + 12 (Propane Lakes) + 9
+(Webwork) + 14 (Contagion) + 4 (Assailant remnants) = **87 individual items**.
