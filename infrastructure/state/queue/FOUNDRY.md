@@ -7,25 +7,25 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T15:48:44Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-20T15:55:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
-
-# IN PROGRESS
-
-Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
 
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
-state:    doing
+state:    ready
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 summary:  Close the gap on the 3 non-compliant tiles only (8735, 9077, 733) —
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
+
+# IN PROGRESS
+
+Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
 
 ## VAULT_DUNGEON_BUILD_1 Build the six Forsaken vaults: concentric grammar templates, LARGE maps, quicktest-proven
 state:    doing
@@ -855,15 +855,6 @@ kind:     build
 summary:  Full spec: design/Jawa/worldbuilding/fishbestiarycommission2026-09-10.md
 prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
 
-## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  None yet — this is an open design question, not a scoped build. Candidate
-prose:    infrastructure/state/items/TWILIGHT_DEEP_WATER_LAYER_1.md
-
 ## QUICKTEST_RIVER_WATER_MISSING_1 Quicktest maps generate zero river/lake water on any biome tried this session, blocking water-mechanism verification
 state:    doing
 row:      unassigned
@@ -1364,6 +1355,16 @@ kind:     build
 waiting:  needs `deploy`, game is UP
 summary:  (no items/ROT_PALE_TREE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_PALE_TREE_1.md
+
+## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+waiting:  needs `deploy`, game is UP
+summary:  None yet — this is an open design question, not a scoped build. Candidate
+prose:    infrastructure/state/items/TWILIGHT_DEEP_WATER_LAYER_1.md
 
 # NOT THIS TARGET
 
