@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T17:49:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T18:09:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -612,3 +612,23 @@ kind:     build
 thin:     no ## spec
 summary:  DESERTFAMILYPORTEXECUTION1 — port the whole desert family to our own defs and art
 prose:    infrastructure/state/items/DESERT_FAMILY_PORT_EXECUTION_1.md
+
+## LIVE_ITEM_GLOB_DRIFT_1 32 of 181 files in infrastructure/state/items/ are not live items - 24 are closed in the ledger and 8 have no ledger row at all, so the documented live-set glob is 18 percent wrong
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  LIVEITEMGLOBDRIFT1 — the live-item glob is 18% not-live
+prose:    infrastructure/state/items/LIVE_ITEM_GLOB_DRIFT_1.md
+
+## DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1 The desert biome tables were deployed before the species they name - 18 dangling refs in the deployed game, mitigated by reverting the deployed copies; the joint deploy and a resolve-against-DEPLOYED selftest are still owed
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  DESERTTABLESDEPLOYEDAHEADOFSPECIES1 — tables shipped before the species
+prose:    infrastructure/state/items/DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1.md
