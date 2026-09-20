@@ -437,6 +437,75 @@
   </PawnKindDef>
 
   <!-- ======================================================================
+       RUT_BarbslingerTailGun — turret-gun weapon backing RUT_Barbslinger's
+       two tail-mounted ranged attacks. Owner ask, 2026-09-17 (approved
+       2026-09-20 against barbslinger_redesign_v1_{south,east,north}):
+       "shoot two venomous missile weapons in battle every few rounds, then
+       close for pincer assault." BARBSLINGER_SCORPION_REDESIGN_1.
+
+       Verbs-only, no visible sprite — the two CompProperties_TurretGun
+       instances on RUT_Barbslinger below carry no renderNodeProperties
+       (RimSage-confirmed optional on CompProperties_TurretGun/CompTurretGun:
+       CompRenderNodes() returns nothing without it), so the redesigned art's
+       own two needle-tipped tails are the only thing drawn — this ThingDef
+       exists purely to give CompTurretGun a Verb_Shoot to fire, same shape
+       as vanilla's own Gun_ChargeBlasterTurret (Mech_Warqueen's turret gun,
+       ParentName="BaseWeaponTurret", RimSage-verified).
+
+       Projectile is vanilla Anomaly's own Bullet_ToxicNeedleGun (Gun_ToxicNeedle's
+       ammo) unchanged — its damageDef BulletToxic already carries the
+       additionalHediffs injection into ToxicBuildup, which is the SAME
+       vanilla venom idiom RUT_Barbslinger's own existing "sting" tool uses
+       (ToxicBite capacity, above) — reusing it rather than inventing a
+       third toxin pattern, and matching "javelin-like needle" in the art
+       brief almost too well to pass up.
+
+       minRange keeps the tails from firing at point-blank range. RimSage-
+       verified mechanism (Verse/Pawn.cs TryGetAttackVerb, RimWorld/
+       JobGiver_Manhunter.cs): a wild animal's own combat think tree calls
+       pawn.TryGetAttackVerb(target) with allowTurrets defaulting false, so
+       it drives movement/melee-job selection off the pincer tools, NOT the
+       turret — while CompTurretGun.CompTick() fires the tail verb
+       completely independently, every tick, whenever a target is in
+       range [minRange, range] regardless of the pawn's current job. No
+       custom C# needed: the pawn paths/melees via its pincers exactly as if
+       the turret didn't exist, and the tails shoot on their own initiative
+       whenever a target is far enough away — which is "shoot, then close
+       for pincer assault" for free, out of two independent vanilla systems
+       that were never designed to work together on purpose.
+       ====================================================================== -->
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>RUT_BarbslingerTailGun</defName>
+    <label>barbslinger tail spike</label>
+    <description>Not a real weapon — exists only to give a barbslinger's tails a ranged verb. Never spawned as a loose item.</description>
+    <tradeability>None</tradeability>
+    <destroyOnDrop>true</destroyOnDrop>
+    <graphicData>
+      <texPath>Things/Projectile/ToxicNeedleShot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.1</Mass>
+      <AccuracyTouch>0.7</AccuracyTouch>
+      <AccuracyShort>0.85</AccuracyShort>
+      <AccuracyMedium>0.75</AccuracyMedium>
+      <AccuracyLong>0.55</AccuracyLong>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <defaultProjectile>Bullet_ToxicNeedleGun</defaultProjectile>
+        <range>15.9</range>
+        <minRange>2.9</minRange>
+        <warmupTime>1</warmupTime>
+        <soundCast>Shot_ToxicNeedleGun</soundCast>
+        <muzzleFlashScale>4</muzzleFlashScale>
+        <defaultCooldownTime>5</defaultCooldownTime>
+      </li>
+    </verbs>
+  </ThingDef>
+
+  <!-- ======================================================================
        RUT_Barbslinger — was AA_Barbslinger (Alpha Animals).
        Ash-grazer band by the owner's routing call, Pyrelands commonality 0.15
        (the roster's own note is explicit that "ash-grazer" is a role label and
@@ -447,6 +516,14 @@
        donor's AA_AlphaBaseInsect, and body is Core's BeetleLikeWithClaw —
        MEASURED to carry HeadClaw, Mouth and HeadAttackTool, which is what the
        donor's AA_PincerAttackTool / AA_Sting / HeadAttackTool tools map onto.
+
+       REDESIGN 2026-09-20 (owner: "Approve barbslinger", against
+       barbslinger_redesign_v1_{south,east,north}): two independent tails,
+       each ending in a javelin-like needle, now carry a ranged venomous
+       attack via two RUT_BarbslingerTailGun turret comps (below) — see
+       that ThingDef's own header for the full mechanism. Pincers/sting
+       tools above are UNCHANGED; "close for pincer assault" falls out of
+       the turret's minRange rather than needing a rewrite of them.
        ====================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RUT_Barbslinger</defName>
@@ -556,6 +633,16 @@
       <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
       <soundEating>Insectoid_Eat</soundEating>
     </race>
+    <comps>
+      <li Class="CompProperties_TurretGun">
+        <turretDef>RUT_BarbslingerTailGun</turretDef>
+        <autoAttack>true</autoAttack>
+      </li>
+      <li Class="CompProperties_TurretGun">
+        <turretDef>RUT_BarbslingerTailGun</turretDef>
+        <autoAttack>true</autoAttack>
+      </li>
+    </comps>
     <tradeTags>
       <li>AnimalExotic</li>
       <li>AnimalInsect</li>
