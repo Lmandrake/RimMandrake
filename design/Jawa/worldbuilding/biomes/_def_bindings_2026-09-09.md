@@ -1,74 +1,73 @@
 # Biome/def binding table — work-packet prep for the fauna/flora assignment pass
 
-_Compiled 2026-09-09, BENCH subagent. Painted-def tile counts are the caller's
-MEASURED figures from `world/ASHKARR_WORLDMAP_tiles.csv`; sheet-stated tile counts
-in `README_BIOME_GRAMMAR.md` are sometimes stale against them by a few tiles
-(paint drifts after a sheet is written) — the painted CSV wins per `canon.yml`
-rule 1. Every binding below was verified by opening the named sheet and/or
-`README_BIOME_GRAMMAR.md`'s progress table (not guessed from name similarity)._
+_Regenerated 2026-09-20 from `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 tiles,
+27 distinct painted biomes), parsed with Python's `csv` module; the `def` and
+`tiles` columns are that parse and the `wildAnimals owner` column is a parse of
+every `BiomeDef` in `src/**/Defs/**/*.xml` plus every `<xpath>` in the patch
+files. The sheet and §10 columns are unchanged human knowledge from the
+2026-09-09 compilation._
+
+⚠️ **The painted CSV is ONE instrument.** A live world read is the confirming
+instrument and has not been run. `GRASSLANDS_TILES_CSV_STALE_1` is open against
+this very CSV on `ZBiome_Grasslands` — that is the one row it bites.
+
+🔑 **Every painted biome has exactly one row and every row carries painted
+ground**; the tile column sums to 21,872.
 
 ## 1. Def → sheet → §10 → wildAnimals owner
 
-> 🔴 **MEASURED 2026-09-20: 25 of the 29 rows below name a defName that carries
-> ZERO painted tiles.** The world was repainted onto our own `RUT_*` biome defs
-> after this table was compiled. Only the two desert rows (corrected that day),
-> `RUT_NightsideIce`, `RUT_TheScald`, `ZBiome_Grasslands` and `RUT_PropaneLake`
-> are trustworthy. Choosing an owning def from any other row wires content onto
-> a biome no player visits — see `BIOME_BINDINGS_TABLE_STALE_1`, which is the
-> work to regenerate this table.
-
-
-| def | tiles | sheet | §10 "Bestiary sorts"? | wildAnimals owner (current) |
+| def | tiles | sheet | §10 "Bestiary sorts"? | wildAnimals owner |
 |---|---:|---|---|---|
 | `RUT_Desert` | 2390 | `desert.md` | no (§10 = "Implementation", not bestiary) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml` |
 | `RUT_ExtremeDesert` | 3969 | `dune_sea.md` + `deep_desert.md` (ONE merged roster, R22) | no (neither sheet) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml` |
-| AB_PropaneLakes | 2531 | `the_propane_lakes.md` | no | `BiomeCast_Ashkarr.xml` |
-| AB_MycoticJungle | 2258 | `the_rot.md` | no | `BiomeCast_Ashkarr.xml` |
-| RUT_NightsideIce | 1506 | `nightside_ice.md` | no (§10 = "The door — occupied") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml` |
-| AB_RockyCrags | 1170 | `forsaken_crags.md` | no | `BiomeCast_Ashkarr.xml` |
-| Wasteland | 1126 | `wasteland.md` | no (§10 = "Campaign hooks") | `BiomeCast_Ashkarr.xml` |
-| BiomeGRimond | 1029 | `the_blue_desert.md` | no | **donor mod only — no local override.** (`RUT_BlueDesert.xml` exists as the pending-switch target def with `<wildAnimals />` still empty — not live yet.) |
-| ZBiome_Badlands | 985 | `the_cracked_lands.md` | **YES** — §10 "The bestiary sorts — a fauna divided by TIME, not space" | `BiomeCast_Ashkarr.xml` |
-| AridShrubland | 665 | `arid_shrubland.md` | no | `BiomeCast_Ashkarr.xml` |
-| PoisonForest | 557 | `poison_forest.md` | no | `BiomeCast_Ashkarr.xml` |
-| RUT_TwilightSea | 479 | `terminator_sea.md` (surface); `the_twilight_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `RUT_TwilightSea.xml` |
-| RUT_GreySea | 429 | `terminator_sea.md` (surface); `the_grey_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `RUT_GreySea.xml` |
-| RUT_TheScald | 312 | `the_scald.md` | no | own def file: `RUT_TheScald.xml` |
-| AB_MechanoidIntrusion | 236 | `the_rust_cathedral.md` | no | `BiomeCast_Ashkarr.xml` |
-| BiomeCypreJungle | 235 | `the_greentide.md` | no | `BiomeCast_Ashkarr.xml` |
-| ZBiome_DesertOasis | 223 | `weeping_stones.md` — **VERIFIED**, README row: "`ZBiome_DesertOasis` ('the Weeping Stones')" | **YES** — §10 "The bestiary — who comes to the water" (bestiary-content, titled slightly differently than "sorts" but is the enrichment-pass §10) | `BiomeCast_Ashkarr.xml` |
-| ZBiome_Grasslands | 222 | `the_pyrelands.md` | no | `BiomeCast_Ashkarr.xml` |
-| AB_OcularForest | 179 | `the_contagion.md` | no | `BiomeCast_Ashkarr.xml` |
-| AB_FeraliskInfestedJungle | 161 | `the_webwork.md` | no | `BiomeCast_Ashkarr.xml` |
-| AB_GelatinousSuperorganism | 96 | `the_slime.md` | no | `BiomeCast_Ashkarr.xml` |
-| AB_MiasmicMangrove | 93 | `the_miasma.md` | no | `BiomeCast_Ashkarr.xml` |
-| Scarlands | 90 | `the_scarlands.md` | no | `BiomeCast_Ashkarr.xml` |
-| RUT_PropaneLake | 57 | `the_propane_lakes.md` (a second, RUT-tier def line 242: "authored, reuses the donor's own...") | no | own def file: `RUT_PropaneLake.xml` |
-| COMIGO_GreaterSwamp_Tropical | 43 | `the_fever_wood.md` | no | `BiomeCast_Ashkarr.xml` |
-| AB_TarPits | 42 | `the_sump.md` | no | `BiomeCast_Ashkarr.xml` |
-| AB_PyroclasticConflagration | 31 | `the_forge.md` (shares one sheet with Volcano + LavaField — "one sheet, one massif") | no | `BiomeCast_Ashkarr.xml` |
-| LavaField | 8 | `the_forge.md` | no | `BiomeCast_Ashkarr.xml` |
-| Volcano | 5 | `the_forge.md` | no | `BiomeCast_Ashkarr.xml` |
+| `RUT_Umbra` | 2531 | `the_propane_lakes.md` (the antistellar cap the sheet names "Umbra") | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml` |
+| `RUT_TheRot` | 2204 | `the_rot.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml` |
+| `RUT_Wasteland` | 1853 | `wasteland.md` | no (§10 = "Campaign hooks") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml` |
+| `RUT_NightsideIce` | 1506 | `nightside_ice.md` | no (§10 = "The door — occupied") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml` |
+| `RUT_ForsakenCrags` | 1135 | `forsaken_crags.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml` |
+| `RUT_BlueDesert` | 1029 | `the_blue_desert.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml` — 🔴 `<wildAnimals />` is EMPTY |
+| `RUT_CrackedLands` | 970 | `the_cracked_lands.md` | **YES** — §10 "The bestiary sorts — a fauna divided by TIME, not space" | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml` |
+| `RUT_AridShrubland` | 628 | `arid_shrubland.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_AridShrubland.xml` |
+| `RUT_TwilightSea` | 607 | `terminator_sea.md` (surface); `the_twilight_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml` |
+| `RUT_PoisonForest` | 546 | `poison_forest.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml` |
+| `RUT_GreySea` | 472 | `terminator_sea.md` (surface); `the_grey_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml` |
+| `RUT_TheScald` | 312 | `the_scald.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml` |
+| `RUT_RustCathedral` | 236 | `the_rust_cathedral.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml` |
+| `RUT_Greentide` | 235 | `the_greentide.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml` |
+| `RUT_WeepingStones` | 223 | `weeping_stones.md` | **YES** — §10 "The bestiary — who comes to the water" (bestiary-content, titled slightly differently than "sorts" but is the enrichment-pass §10) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml` |
+| `ZBiome_Grasslands` | 222 | `the_pyrelands.md` | no | **donor mod only — no local override.** Our only local ops on it REMOVE duplicates (`AnimalBiomeDuplicates_Fix.xml`, `ZZZ_BiomeWildAnimalDuplicates_Generated.xml`). 🔴 `WildAnimals_Pyrelands.xml` wires the ruled roster into `RM_FE_Pyrelands` (0 painted tiles), not here — `PYRELANDS_WRONG_BIOME_DEF_1` |
+| `RUT_Contagion` | 179 | `the_contagion.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml` |
+| `RUT_Webwork` | 161 | `the_webwork.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml` |
+| `RUT_Slime` | 96 | `the_slime.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml` |
+| `RUT_Miasma` | 93 | `the_miasma.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml` |
+| `RUT_Scarlands` | 90 | `the_scarlands.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml` |
+| `RUT_PropaneLake` | 57 | `the_propane_lakes.md` (the lake proper; `RUT_Umbra` is the cap it sits under) | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml` — 🔴 `<wildAnimals />` is EMPTY |
+| `RUT_TheForge` | 44 | `the_forge.md` — one sheet, one massif | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml` |
+| `RUT_FeverWood` | 43 | `the_fever_wood.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml` |
+| `RUT_Sump` | 41 | `the_sump.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml` |
 
-**§10 tally: 2 of 29 painted defs sit under a sheet with an enriched bestiary §10**
-(`ZBiome_Badlands`/the_cracked_lands.md, `ZBiome_DesertOasis`/weeping_stones.md —
-these are the two "worked examples" `README_BIOME_GRAMMAR.md` itself names for the
+**§10 tally: 2 of the 27 painted defs sit under a sheet with an enriched bestiary
+§10** (`RUT_CrackedLands`/the_cracked_lands.md, `RUT_WeepingStones`/weeping_stones.md —
+the two "worked examples" `README_BIOME_GRAMMAR.md` itself names for the
 enrichment pass). Every other sheet's numbered §10, where one exists at all
 (`desert.md`, `nightside_ice.md`, `wasteland.md`, `wreck_fields.md`), is a
-differently-purposed section, not a bestiary. CONFIRMED by grep of all 32 sheet
-files for "bestiary" case-insensitive (only 3 files match at all: the_cracked_lands,
-the_sump [passing mention, not a section], weeping_stones).
+differently-purposed section, not a bestiary.
 
-**wildAnimals ownership: CONFIRMED by two-step grep** (defName string anywhere in
-`src/**/*.xml`, then which of those files also mention `wildAnimals`) —
-`src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml` owns 23 of the 29
-painted defs wholesale-replace (`PatchOperationConditional` on
-`/Defs/BiomeDef[defName="…"]/wildAnimals`, generated by
-`design/Jawa/fauna/gen_cast_patch.py`, `OUT = .../BiomeCast_Ashkarr.xml`). The
-5 `RUT_`-tier defs (own biome, own file) declare `wildAnimals` directly in their
-own `Defs/BiomeDefs/*.xml`. `BiomeGRimond` alone has **no** local override —
-donor-mod default only — matching the doc's own note that its replacement,
-`RUT_BlueDesert`, is authored but not yet the world's live paint.
+**wildAnimals ownership, MEASURED 2026-09-20.** 26 of the 27 painted defs
+declare `wildAnimals` directly in their own
+`src/RimUtinni/UtinniPatches/Defs/BiomeDefs/<def>.xml`; no patch file
+wholesale-replaces any of them. `ZBiome_Grasslands` is the sole donor def and
+has no local override. Two of the 26 declare an EMPTY `<wildAnimals />` —
+`RUT_BlueDesert` (1,029 tiles) and `RUT_PropaneLake` (57) — so 1,086 painted
+tiles currently have no cast.
+
+🔑 **How each row's def was established.** The row's SHEET was looked up in
+`README_BIOME_GRAMMAR.md`'s progress table, which states the owner-given biome
+NAME for that sheet; that name was matched against the live def's `<label>`
+(`the_rot.md` → "the Rot" → `RUT_TheRot`; `the_cracked_lands.md` → "the Cracked
+Lands" → `RUT_CrackedLands`; `the_blue_desert.md` → "Blue Desert" →
+`RUT_BlueDesert`). Tile-count identity corroborated but never decided. Per-row
+working: `Transient/biome_bindings_regen_20260920.md`.
 
 ## 2. Flags
 
@@ -113,24 +112,19 @@ tolerances/sowTags/texPath; it is the `POOL` constant read by
 `json.load` + `len()`) — matches `_assignment_prep.md`'s stated "1,165 rows,
 595-mod dump 2026-09-05, calibration PASSED" claim exactly.
 
-**3. `biome_flora.py` FAMILIES.** Yes — CONFIRMED by `ast.literal_eval`, it is a
-**two-level** dict: 8 top-level narrative-category keys (`'A. dayside desert'`,
-`'B. contamination'`, `'C. mycoid belt'`, `'D. river jungle'`, `'E. frozen
-nightside'`, `'F. volcanic'`, `'G. machine and scar'`, `'H. alien'`), each holding
-a nested dict keyed by **BiomeDef defName** (22 distinct defName keys total:
-`AB_FeraliskInfestedJungle, AB_GelatinousSuperorganism, AB_MechanoidIntrusion,
-AB_MiasmicMangrove, AB_MycoticJungle, AB_OcularForest, AB_PropaneLakes,
-AB_PyroclasticConflagration, AB_RockyCrags, AB_TarPits, AridShrubland,
-BMT_FungalForest, Desert, ExtremeDesert, LavaField, PoisonForest, Scarlands,
-Volcano, Wasteland, ZBiome_Badlands, ZBiome_DesertOasis, ZBiome_Grasslands`).
-Note `BMT_FungalForest` is a stale key (dissolved per R29/R30, merged into
-`AB_MycoticJungle`/`Desert`/`BiomeGRimond`/`AB_RockyCrags`/`RUT_NightsideIce`) —
-still present in FAMILIES, not yet cleaned up. Missing painted-def keys entirely:
-`RUT_NightsideIce, BiomeGRimond, RUT_TwilightSea, RUT_GreySea, RUT_TheScald,
-BiomeCypreJungle, RUT_PropaneLake, COMIGO_GreaterSwamp_Tropical,
-AB_MechanoidIntrusion` — wait, `AB_MechanoidIntrusion` IS present; the real gap
-list is the 5 `RUT_` defs, `BiomeGRimond`, `BiomeCypreJungle`,
-`COMIGO_GreaterSwamp_Tropical` — 8 painted defs with no flora family yet.
+**3. `biome_flora.py` FAMILIES.** Yes — it is a **two-level** dict (MEASURED
+2026-09-20 via `ast.literal_eval` of the module's AST): **5** top-level
+narrative-category keys, holding **20** distinct BiomeDef defName keys, all of
+them painted `RUT_*`/`ZBiome_Grasslands` defs: `RUT_AridShrubland,
+RUT_Contagion, RUT_CrackedLands, RUT_Desert, RUT_ExtremeDesert, RUT_FeverWood,
+RUT_ForsakenCrags, RUT_Greentide, RUT_Miasma, RUT_PoisonForest, RUT_Scarlands,
+RUT_Slime, RUT_Sump, RUT_TheForge, RUT_TheRot, RUT_Umbra, RUT_Wasteland,
+RUT_Webwork, RUT_WeepingStones, ZBiome_Grasslands`. The other **7** painted
+defs are in the module's own `PLANTLESS` set on purpose — `RUT_NightsideIce,
+RUT_BlueDesert, RUT_RustCathedral, RUT_TwilightSea, RUT_GreySea, RUT_TheScald,
+RUT_PropaneLake`. 20 + 7 = 27: **there is no flora gap.** ⚠️ FOUNDRY was
+mid-edit on this file when it was measured, so re-measure before acting on the
+weights; the key SET is what matters here.
 
 **4. De-dup union machinery (`BIOME_DUPLICATES_STILL_LIVE_1`).** Generated file:
 `src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml`
