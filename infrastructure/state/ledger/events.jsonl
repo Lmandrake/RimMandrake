@@ -10291,3 +10291,4 @@
 {"seat":"FOUNDRY","event":"note","id":"EXTREME_DESERT_SIGNATURE_FLORA_1","text":"Defs authored+wired at commit ef3bca1a3: RSW_LightPipeNub/RSW_Ollim/RSW_OllimWood, RUT_ExtremeDesert wildPlants at nub 0.1/ollim 0.01. Art queued (rslpn_v1, rswollim_v1, rswollimwood_v1 in infrastructure/artpipe/pending/), not yet rendered. Item's own verify requires 'real (non-placeholder) art in a rendered contact sheet' — left claimed/doing, not closed, pending the daemon's renders and a contact-sheet check.","ts":"2026-09-20T19:11:26Z"}
 {"seat":"FOUNDRY","event":"claim","id":"DESERT_SHADE_GRID_KEYSTONE_1","ts":"2026-09-20T19:11:32Z"}
 {"seat":"FOUNDRY","event":"start","id":"DESERT_SHADE_GRID_KEYSTONE_1","ts":"2026-09-20T19:11:34Z"}
+{"seat":"FOUNDRY","event":"close","id":"DESERT_SHADE_GRID_KEYSTONE_1","sha":"50c022770","ts":"2026-09-20T19:12:24Z"}
