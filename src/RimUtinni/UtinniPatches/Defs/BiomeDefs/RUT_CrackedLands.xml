@@ -123,7 +123,7 @@
       <GRimMoss>0.8</GRimMoss>  <!-- moss -->
       <BMT_Plant_TwistingThorngrass>0.5</BMT_Plant_TwistingThorngrass>  <!-- twisting thorngrass -->
       <BMT_Plant_TwistingThornweed>0.4</BMT_Plant_TwistingThornweed>  <!-- twisting thornweed -->
-      <BMT_Plant_TreeTwistingThornwood>0.2</BMT_Plant_TreeTwistingThornwood>  <!-- twisting thornwood - tree -->
+      <RUT_TwistingThornwood>0.2</RUT_TwistingThornwood>  <!-- twisting thornwood - tree -->
       <AB_GargantuanLithops>0.15</AB_GargantuanLithops>  <!-- gargantuan lithops -->
     </wildPlants>
     <wildPlantRegrowDays>28</wildPlantRegrowDays>
