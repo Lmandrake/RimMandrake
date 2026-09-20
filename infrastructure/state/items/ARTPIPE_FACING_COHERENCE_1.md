@@ -98,3 +98,41 @@ clone; and burning down the installed backlog.
   in the PNG, south = face in the PNG, and in game a north-walking pawn shows
   its back. Owner (or a screenshot he accepts) confirms the in-game half.
 - Audit list of remaining broken sets exists and shrinks.
+
+
+---
+
+## 🔴 2026-09-20 — the viewpoint judge cannot find this defect, MEASURED
+
+§3 of this item asks for "a facing validator at the gate". One exists —
+`facing_set_audit.py`'s `claude -p` viewpoint check — and **it must not be armed as a
+gate**, because it fails art that was never ours.
+
+| corpus | sets | judged south-OVERHEAD |
+|---|---|---|
+| our own generated art (the 50 flagged sets) | 50 | 33 — **66%** |
+| 🔑 **DONOR art from SWBestiary, never touched by our pipeline** | 6 | 5 — **83%** |
+
+The judge fails the donor sprites the game ships at a *higher* rate than it fails ours.
+⇒ It is measuring **"RimWorld animal art"**, whose camera is a high three-quarter view by
+design, not measuring our defect. Evidence:
+`Transient/viewpoint_judge_calibration_20260920.txt`.
+
+⚠️ **Its prior calibration was circular.** The 2026-09-17 pass recorded "0 false flags on
+the 10 clean fronts" — but those ten were OUR OWN wired Pyrelands sets, i.e. the art under
+suspicion. Art cannot calibrate its own judge. That claim is now corrected in the code.
+
+✅ **Corroborated independently the same day, from the other direction.** The art agent
+audited all 50 flagged sets, then re-checked every one of the judge's 33 OVERHEAD verdicts
+**by looking**, and kept **12**. Of the 21 it discarded, the pattern was a legitimate
+front-lunge/roar predator pose; 5 more were faceless body plans (the cephalope/landopus
+family) that no camera angle resolves. Two methods, one conclusion.
+
+**Shipped in response:** the OVERHEAD verdict is now printed as an ADVISORY and no longer
+contributes to the exit code. `UNMEASURED` stays a hard FLAG — ignorance is never a silent
+pass. So the tool still refuses to pretend it looked, and stops refusing correct art.
+
+🔑 **What this means for §3.** A cheap automatic validator for this defect does not exist
+yet and the obvious one has now been tried and measured. The owner's complaint is real and
+specific — he named creatures — but finding the rest is currently a human-look problem,
+not a gate problem. ⛔ Do not close §3 by arming this judge.
