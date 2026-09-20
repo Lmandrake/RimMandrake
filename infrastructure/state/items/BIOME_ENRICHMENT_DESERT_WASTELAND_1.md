@@ -65,6 +65,19 @@ this register of content with real defNames).
   display time from hilliness/topology/elevation and they never enter
   `mutatorsNullable`.
 
+## ruling (owner, 2026-09-20)
+
+Owner chose option (b): **use what already exists, turned up.** Raising how
+often the game's own existing Desert/Wasteland-legal terrain features
+(Caves/Oasis/MineralRich/AncientRuins/etc. — whichever pass
+`TileMutatorDef.IsValidTile` for these biomes) already appear COUNTS as
+building the "wide gaps" — no new thematic TileMutatorDefs need to be
+authored, and no new defNames need to be invented to stand in for
+`desert.md`/`wasteland.md`'s narrative categories. This was the item's own
+sole blocker (confirmed via `rimflow why`: "needs owner to name mutators or
+rule on density approach") — now answered, so the item is unblocked. The
+density-raising work itself is still owed.
+
 ## Disposition
 
 Left **`doing`**, not closed. No bridge call made (bridge stayed FREE the whole
