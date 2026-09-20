@@ -275,3 +275,25 @@ carry a wave prefix, and appends `_v<n>`. A membership test written against defN
 finds almost nothing and reports it as "owed" — which is exactly the failure above,
 and it fails in the expensive direction. Match on the STEM, both directions, before
 concluding any art is missing.
+
+---
+
+# 🔴 OWNER RULING, 2026-09-20 — the flora channel is UNBLOCKED
+
+He was asked directly and chose: **file the 17 non-BMT flora art jobs now, HOLD the
+20 `BMT_Plant_*` jobs until `BMT_FLORA_ABSORPTION_1` lands.**
+
+This is the question the 2026-09-20 handoff recorded as *"he has not answered that"*.
+It is answered. The reason for the hold is that the 20 `BMT_Plant_*` subjects are
+exactly that item's scope, and absorption may move or cut their defs — art generated
+against a def that then moves is art thrown away.
+
+⇒ **FOUNDRY's to execute** (this item is theirs, state `doing`). BENCH relayed the
+ruling and did not file the jobs.
+
+⚠️ **Before filing any of the 17, search first** — owner's standing rule, 2026-09-20:
+check `infrastructure/artpipe/done/`, `_artsrc/`, `registry.jsonl` and any
+`Transient/*.decisions.json` by SUBJECT, not by defName. An artpipe slug lowercases,
+drops the donor prefix and appends `_v<n>`, so a defName search reports a false
+absence. The audit that produced "141 owed" was re-measured to **37**; the same trap
+would re-queue art that already exists.
