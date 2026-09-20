@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:12:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T19:14:46Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -632,3 +632,13 @@ kind:     task
 thin:     no ## spec
 summary:  SPECIESTRAITSOVERAPTITUDES1 — skill bonuses are the wrong instrument for species character
 prose:    infrastructure/state/items/SPECIES_TRAITS_OVER_APTITUDES_1.md
+
+## FOUNDERS_EXPORT_TO_REPO_1 The founders exist only inside a savegame in the Steam-Cloud Saves folder - one of the three artifacts that must survive the world remake is not in the repo
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  FOUNDERSEXPORTTOREPO1 — the founders are not in the repo
+prose:    infrastructure/state/items/FOUNDERS_EXPORT_TO_REPO_1.md

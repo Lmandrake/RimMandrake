@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:12:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T19:14:46Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -927,14 +927,14 @@ kind:     task
 summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
 prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
 
-## PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1 Regenerate + deploy PlantTolerances_Ashkarr.xml now that sheet_demands() sees real sheet medians
+## DESERT_SIGNATURE_FLORA_1 Author ultracactus, staggerseed, and shade plants for RUT_Desert
 state:    doing
 row:      unassigned
-needs:    deploy
+needs:    offline
 target:   v1
 kind:     task
-summary:  Re-run python3 design/Jawa/mods/planttolerances.py --write, review the diff against the
-prose:    infrastructure/state/items/PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1.md
+summary:  DESERTSIGNATUREFLORA1 — author ultracactus, staggerseed, and shade plants
+prose:    infrastructure/state/items/DESERT_SIGNATURE_FLORA_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1411,16 +1411,6 @@ kind:     task
 thin:     no ## spec
 summary:  EXTREMEDESERTUNRULEDVERMIN1 — owner card: rule the Fall Line vermin rows for extreme desert
 prose:    infrastructure/state/items/EXTREME_DESERT_UNRULED_VERMIN_1.md
-
-## DESERT_SIGNATURE_FLORA_1 Author ultracactus, staggerseed, and shade plants for RUT_Desert
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  DESERTSIGNATUREFLORA1 — author ultracactus, staggerseed, and shade plants
-prose:    infrastructure/state/items/DESERT_SIGNATURE_FLORA_1.md
 
 ## EXTREME_DESERT_GIANT_COMMENSALS_1 Shade-commensal micro-fauna under giants, blocked on ShadeAt
 state:    proposed
