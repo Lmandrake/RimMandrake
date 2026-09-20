@@ -259,7 +259,62 @@ def load_job(path: Path) -> dict:
     if ref is not None and (not isinstance(ref, str) or not ref):
         raise JobError(f"{path}: 'reference' must be a non-empty string path or null")
 
+    _refuse_contradicted_facing(path, job)
+
     return job
+
+
+# Viewpoint phrases that CONTRADICT the per-facing direction build_job_prompt()
+# stamps onto every job carrying a `facing`. The stamp tells the model "we see
+# its BACK, no face, no eyes" for north and "NOT a top-down or overhead view"
+# for east/west; a prompt body that also says "top-down pawn sprite, three
+# facings" hands the model both instructions at once and lets it pick.
+#
+# MEASURED 2026-09-20 over the whole done/ queue: 348 jobs carry a facing, and
+# **42 of them had the stamp fire while their own body said "top-down"** — the
+# deeps_* v2 and rot_* v2 families. That is the mechanism behind the defect the
+# owner has named repeatedly ("south isn't south, north isn't north",
+# ARTPIPE_FACING_COHERENCE_1) — not a missing stamp, which has been in place
+# since 2026-09-14, but a stamp being argued with.
+#
+# There is no exemption list and none is needed: the check only fires when the
+# job declares a `facing`. An asset that genuinely wants an overhead view — a
+# floor tile, a map icon — simply does not set one.
+_FACING_CONTRADICTIONS = {
+    "top-down": "an overhead camera, which the owner ruled is never a facing",
+    "top down": "an overhead camera, which the owner ruled is never a facing",
+    "overhead": "an overhead camera, which the owner ruled is never a facing",
+    "three facings": "several facings at once, when this job draws exactly one",
+    "four facings": "several facings at once, when this job draws exactly one",
+    "all facings": "several facings at once, when this job draws exactly one",
+}
+
+
+def _refuse_contradicted_facing(path, job: dict) -> None:
+    """Refuse a single-facing job whose prompt argues with its own stamp.
+
+    ARTPIPE_FACING_COHERENCE_1 §1: a facing job that the hook has not stamped
+    is refused "the same way the canvas ceiling refuses". The stamp itself was
+    built 2026-09-14 (PYRELANDS_FACING_REGRESSION_1); this is the refusal half,
+    and it catches the case the stamp cannot — a body that overrides it.
+    """
+    facing = job.get("facing")
+    if not facing:
+        return
+    low = (job.get("prompt") or "").lower()
+    hits = sorted(ph for ph in _FACING_CONTRADICTIONS if ph in low)
+    if not hits:
+        return
+    why = "; ".join(f"{ph!r} asks for {_FACING_CONTRADICTIONS[ph]}" for ph in hits)
+    raise JobError(
+        f"{path}: this job declares facing {facing!r}, so the daemon stamps an "
+        f"explicit per-facing view direction onto it — but the prompt body "
+        f"contradicts that stamp: {why}. Say the SURFACE, never the camera or "
+        f"the set: 'rear view, seen from behind, no face or eyes visible' / "
+        f"'front view, eyes toward the viewer' / 'side profile at the "
+        f"creature's own eye level'. If this asset really wants an overhead "
+        f"view, drop the 'facing' key instead."
+    )
 
 
 def atomic_write_json(path: Path, obj: dict) -> None:
