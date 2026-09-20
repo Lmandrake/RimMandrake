@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T09:22:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T09:38:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1532,13 +1532,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DETERMINISM_REMAINDER_C4_C6_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DETERMINISM_REMAINDER_C4_C6_1.md
-
-## ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1 rosters_to_cast.py's BIOMECAST_DEFS still names pre-migration biomes; excludes almost every live roster row
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  ROSTERSTOCASTBIOMECASTDEFSSTALE1 — rosterstocast.py excludes nearly every live roster row
-prose:    infrastructure/state/items/ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1.md
