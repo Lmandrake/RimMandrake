@@ -83,31 +83,10 @@ EPSILON = 1.0                         # the gate is a STRICT inequality
 # that same rekey — a commonality-multiset match against the live rosters, not a name
 # guess — plus `9350e29a3` (PROPANE_LAKES_ROSTER_STALE_1) for the one pair that moved to a
 # differently-named biome outright. See `ANIMAL_TOLERANCES_JOIN_BROKEN_1`.
-_OLD_TO_NEW_BIOME = {
-    'AB_FeraliskInfestedJungle': 'RUT_Webwork',
-    'AB_GelatinousSuperorganism': 'RUT_Slime',
-    'AB_MechanoidIntrusion': 'RUT_RustCathedral',
-    'AB_MiasmicMangrove': 'RUT_Miasma',
-    'AB_MycoticJungle': 'RUT_TheRot',
-    'AB_OcularForest': 'RUT_Contagion',
-    'AB_PropaneLakes': 'RUT_Umbra',
-    'AB_PyroclasticConflagration': 'RUT_TheForge',
-    'AB_RockyCrags': 'RUT_ForsakenCrags',
-    'AB_TarPits': 'RUT_Sump',
-    'AridShrubland': 'RUT_AridShrubland',
-    'BiomeCypreJungle': 'RUT_Greentide',
-    'COMIGO_GreaterSwamp_Tropical': 'RUT_FeverWood',
-    'Desert': 'RUT_Desert',
-    'ExtremeDesert': 'RUT_ExtremeDesert',
-    'LavaField': 'RUT_TheForge',
-    'PoisonForest': 'RUT_PoisonForest',
-    'Scarlands': 'RUT_Scarlands',
-    'Volcano': 'RUT_TheForge',
-    'Wasteland': 'RUT_Wasteland',
-    'ZBiome_Badlands': 'RUT_CrackedLands',
-    'ZBiome_DesertOasis': 'RUT_WeepingStones',
-    # ZBiome_Grasslands was never renamed - carried unchanged in both CSVs.
-}
+# Factored into `biome_name_migration.py` for `ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1` so
+# the table is not copy-pasted a third time; this module's own copy above is now that
+# shared source, imported below.
+from biome_name_migration import OLD_TO_NEW_BIOME as _OLD_TO_NEW_BIOME  # noqa: E402
 
 
 def animals():

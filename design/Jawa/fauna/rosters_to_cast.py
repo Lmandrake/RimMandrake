@@ -6,20 +6,34 @@ refill_cast.py - a SCORING model over wildlife.csv (belong/standout/defence) tha
 a pyramid per biome. Since BIOME_FAUNA_ASSIGNMENT_SITTING_1 (owner cards 2026-09-09) the
 cast is AUTHORED, not scored: design/Jawa/worldbuilding/biomes/rosters/*.json is the
 source, every row citing the sheet law it passed. This script is the bridge from those
-rosters to the CSV contract gen_cast_patch.py already consumes, so the XML generator and
-its hard-won silent-failure guards (Cherry Picker cuts, PawnKindDef check, Anomaly
-entities, MayRequire donor gating, the <li> trap) are kept exactly as they are.
+rosters to the CSV CONTRACT gen_cast_patch.py defines (columns, PawnKindDef check,
+Cherry Picker cuts, Anomaly entities, MayRequire donor gating, the <li> trap) - that
+contract is kept exactly as it is, even though gen_cast_patch.py itself now REFUSES to
+consume it (see below).
 
 ⛔ Do NOT hand-edit cast_assignment.csv, and do NOT edit the roster JSONs to make this
 script happy. If a roster is wrong, stop and say so - the rosters are the owner-facing
 design record; this file is derived.
 
 WHICH BIOMES THIS WRITES
-    The 23 painted defs whose wildAnimals is owned by
-    src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml, per
-    design/Jawa/worldbuilding/biomes/_def_bindings_2026-09-09.md §1.
-    The 5 RUT_-tier defs declare wildAnimals in their own Defs/BiomeDefs/*.xml and
-    BiomeGRimond has no local override at all - all six are deliberately absent here.
+    The biomes BiomeCast_Ashkarr.xml used to own wildAnimals for, before that file was
+    confirmed fully dead and deleted (BIOME_CAST_PATCH_DEAD_NAMES_1). BIOMECAST_DEFS is
+    kept as a LIVE-defName set - rebuilt from biome_name_migration.py's OLD_TO_NEW_BIOME
+    (ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1) - purely so this script's output stays
+    correct for the OTHER consumers of cast_assignment.csv (animal_tolerances.py,
+    gen_creature_art_sheet.py, gen_creature_size_sheet.py, gen_name_patch.py), NOT
+    because gen_cast_patch.py is expected to consume it again.
+    🔴 MEASURED 2026-09-20: every one of those biomes' own BiomeDef XML under
+    src/RimUtinni/UtinniPatches/Defs/BiomeDefs/ already declares <wildAnimals> natively
+    (transplanted from BiomeCast_Ashkarr.xml at authoring time, 2026-09-09) - ownership
+    fully moved to the def files, and gen_cast_patch.py's own refusal guard now checks
+    that directly rather than relying on the old biome names never painting a tile.
+    ZBiome_Grasslands (never renamed, a donor biome with no RUT_ def of its own) is the
+    one exception with no other declared owner today; re-enabling gen_cast_patch.py for
+    it alone is unassessed future work, not something this fix does.
+    The RUT_-tier defs whose wildAnimals BIOMECAST_DEFS never claimed (RUT_BlueDesert,
+    RUT_GreySea, RUT_NightsideIce, RUT_PropaneLake, RUT_TheScald, RUT_TwilightSea) and
+    BiomeGRimond (no local override at all) stay deliberately absent here.
 
 INJECTION LAYERS
     A roster whose sheet is an injection layer (fall_line, wreck_fields - rosters/_SCHEMA.md)
@@ -56,23 +70,30 @@ REGISTER = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'review',
                         'creature_register_rows.json')
 OUT = os.path.join(FA, 'cast_assignment.csv')
 
+sys.path.insert(0, FA)
+from biome_name_migration import OLD_TO_NEW_BIOME                    # noqa: E402
+
 COLUMNS = ['biome', 'defName', 'label', 'mod', 'band', 'bodySize', 'commonality',
            'belong', 'standout', 'defence', 'status', 'reason', 'promoted']
 
-# The 23 defs BiomeCast_Ashkarr.xml owns. Sourced from
-# design/Jawa/worldbuilding/biomes/_def_bindings_2026-09-09.md §1 ("wildAnimals owner"),
-# which established the table by two-step grep, not by name similarity.
+# The defs BiomeCast_Ashkarr.xml owned, keyed to their LIVE defNames. Originally sourced
+# from design/Jawa/worldbuilding/biomes/_def_bindings_2026-09-09.md §1 ("wildAnimals
+# owner"), which established the table by two-step grep, not by name similarity - but that
+# doc, and this set, still named the 23 PRE-MIGRATION biome defNames `BIOME_OWNERSHIP_WAVE_1`
+# (2026-09-09) replaced with `RUT_`-prefixed BiomeDefs, while the roster JSONs this script
+# reads were already re-authored with the live names — so `b in BIOMECAST_DEFS` was false
+# for nearly every roster row and almost the whole cast silently routed to `offowner`
+# (`ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1`, MEASURED: 62 rows across 5 biomes, versus
+# hundreds sitting in the rosters). Rebuilt here via `biome_name_migration.py`'s
+# `OLD_TO_NEW_BIOME` (the same table `animal_tolerances.py` uses) rather than by
+# name-guessing a second time. `AB_PyroclasticConflagration`, `LavaField` and `Volcano`
+# all resolve to the single live biome `RUT_TheForge`, so the 22 pre-migration keys with a
+# rename collapse to 20 live names; `ZBiome_Grasslands` was never renamed and is added back
+# unchanged, for 21 live biome defNames total (a real drop from 23, entirely the 3-into-1
+# TheForge merge — not a loss of coverage).
 # ⚠️ Adding a def here without also confirming nothing else declares its wildAnimals
 # means two owners for one list and the later loader wins silently.
-BIOMECAST_DEFS = {
-    'Desert', 'ExtremeDesert', 'AB_PropaneLakes', 'AB_MycoticJungle', 'AB_RockyCrags',
-    'Wasteland', 'ZBiome_Badlands', 'AridShrubland', 'PoisonForest',
-    'AB_MechanoidIntrusion', 'BiomeCypreJungle', 'ZBiome_DesertOasis',
-    'ZBiome_Grasslands', 'AB_OcularForest', 'AB_FeraliskInfestedJungle',
-    'AB_GelatinousSuperorganism', 'AB_MiasmicMangrove', 'Scarlands',
-    'COMIGO_GreaterSwamp_Tropical', 'AB_TarPits', 'AB_PyroclasticConflagration',
-    'LavaField', 'Volcano',
-}
+BIOMECAST_DEFS = set(OLD_TO_NEW_BIOME.values()) | {'ZBiome_Grasslands'}
 
 # Sheets that INJECT onto defs they do not own (rosters/_SCHEMA.md).
 INJECTION_SHEETS = {'fall_line', 'wreck_fields', 'the_lantern_deeps'}
@@ -133,9 +154,16 @@ def build_rows():
             if not defnames:
                 unbound.append(sheet)
                 continue
-            for b in defnames:
+            for b_raw in defnames:
+                # A roster is allowed to still name a pre-migration biome on purpose -
+                # `fall_line.json` and `the_lantern_deeps.json` do, deliberately targeting
+                # an OLD defName that BIOMECAST_DEFS no longer carries now it is keyed to
+                # live names (ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1). Resolve through the
+                # same shared table before the ownership check, so those rows land on the
+                # live biome instead of silently falling to offowner.
+                b = OLD_TO_NEW_BIOME.get(b_raw, b_raw)
                 if b not in BIOMECAST_DEFS:
-                    offowner[b] += len(fauna)
+                    offowner[b_raw] += len(fauna)
                     continue
                 for f in fauna:
                     dn = f['def']
