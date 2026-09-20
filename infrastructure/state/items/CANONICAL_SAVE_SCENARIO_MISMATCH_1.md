@@ -100,3 +100,16 @@ editing, is a real fork the owner should pick, not one for FOUNDRY to guess at o
 Left in `doing`. Original filing's title stands (it correctly names the mismatch even
 though "corruption" was never the right frame); no rename performed since the underlying
 description of what's wrong was already accurate.
+
+## ruling — owner, 2026-09-20
+
+Verbatim: **"Hand-edit the founders in"**.
+
+Do **not** redo the flight from a fresh `Scenario_Utinni` start. The six founders,
+their starting stock and the opening story are hand-edited into the existing
+`CANONICAL_ASHKARR_START_2026-09-12.rws`; the world progress already in that save
+is kept.
+
+Consequence for the sibling items: the save must therefore be made loadable, so
+`CANONICAL_SAVE_MODLIST_DIVERGENCE_1` and `CANONICAL_SAVE_CUT_RESIDUE_1` are live
+work, not moot. A full residue scrub is no longer speculative.
