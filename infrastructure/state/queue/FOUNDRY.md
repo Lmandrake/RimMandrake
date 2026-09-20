@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T20:20:44Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-20T21:26:47Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -910,7 +910,7 @@ summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you ha
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
 ## PORTED_BEAST_MECHANICS_REBUILD_1 Rebuild the three dropped donor mechanics (steel-eating, chemfuel ejection x2) in our own C#
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1359,6 +1359,16 @@ blocked:  Owner ruled 2026-09-18: no race def is patched until BMT_FAUNA_ABSORPT
 summary:  (no items/ROT_FAUNA_KIN_WIRING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
+## PORTED_BEAST_MECHANICS_REBUILD_1 Rebuild the three dropped donor mechanics (steel-eating, chemfuel ejection x2) in our own C#
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  C# build + deploy already done (0 errors, DLL live since 10:29). Live verification (criteria 2-6) blocked: BRIDGE_PAWN_SPAWN_CRASHES_VEF_1 -- rimworld/spawn_thing NPEs on ANY pawn right now, so RSW_Ferroclaw/Voltmaw/Cindermite cannot be spawned to test. Also bridge now held by BENCH for an unrelated task. Next FOUNDRY pass: once BRIDGE_PAWN_SPAWN_CRASHES_VEF_1 closes, quicktest and close this.
+summary:  PORTEDBEASTMECHANICSREBUILD1 — rebuild the three dropped donor mechanics in our own C
+prose:    infrastructure/state/items/PORTED_BEAST_MECHANICS_REBUILD_1.md
+
 ## DRUM_LURE_PREDATOR_BUILD_1 Drum-lure subsurface predator (vibration-lure ambush) + egg-trap clutch
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1440,3 +1450,13 @@ kind:     task
 thin:     no ## spec
 summary:  ROSTERVALIDATORSTALEREFS1 — the validator's remaining errors are all its own
 prose:    infrastructure/state/items/ROSTER_VALIDATOR_STALE_REFS_1.md
+
+## BRIDGE_PAWN_SPAWN_CRASHES_VEF_1 rimworld/spawn_thing and Spawn Pawn... debug action NPE on ANY pawn spawn (VEF CompShieldField SpawnSetup postfix)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+thin:     no ## spec
+summary:  BRIDGEPAWNSPAWNCRASHESVEF1 — bridge-triggered pawn spawns NPE, universally
+prose:    infrastructure/state/items/BRIDGE_PAWN_SPAWN_CRASHES_VEF_1.md
