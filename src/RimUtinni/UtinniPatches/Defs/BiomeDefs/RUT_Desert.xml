@@ -126,7 +126,7 @@
       <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <Bantha MayRequire="mlie.starwarsanimalcollection">0.8</Bantha>  <!-- bantha - huge-herd, adjust-keep -->
+      <RSW_Bantha>0.8</RSW_Bantha>  <!-- bantha - huge-herd, adjust-keep -->
       <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
            45.0% small, the biggest roster in the sweep. JOE_Landopus is already an
            OWNER-RULED member of this exact biome's fauna list
@@ -136,47 +136,47 @@
            The rest of the fix raises the grain already here (Kreetle/Scavrat/Sketto/
            WompRat/Rat all boosted below), same shape as the Gizka fix: no megafauna cut. -->
       <JOE_Landopus>0.5</JOE_Landopus>  <!-- landopus - small ambush predator, ruled, this mod's own def -->
-      <Kreetle MayRequire="mlie.starwarsanimalcollection">1.3</Kreetle>  <!-- kreetle - ambush-small, keep; boosted from 0.8 for the ecosystem pyramid law -->
+      <RSW_Kreetle>1.3</RSW_Kreetle>  <!-- kreetle - ambush-small, keep; boosted from 0.8 for the ecosystem pyramid law -->
       <RSW_Jellypot MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Jellypot>  <!-- jellypot - ambush-small, keep -->
-      <Scavrat MayRequire="mlie.starwarsanimalcollection">1.0</Scavrat>  <!-- Scavrats - ship-vermin, import; boosted from 0.6 for the ecosystem pyramid law -->
-      <Shyrack MayRequire="mlie.starwarsanimalcollection">0.6</Shyrack>  <!-- shyrack - ambush-flier, keep -->
-      <Gorg MayRequire="mlie.starwarsanimalcollection">0.4</Gorg>  <!-- gorg - ambush-small, keep -->
-      <Gutkurr MayRequire="mlie.starwarsanimalcollection">0.4</Gutkurr>  <!-- gutkurr - burst-predator, adjust-keep -->
-      <Jamel MayRequire="mlie.starwarsanimalcollection">0.4</Jamel>  <!-- Jamel - herd, keep -->
-      <LongtailGorg MayRequire="mlie.starwarsanimalcollection">0.4</LongtailGorg>  <!-- longtail gorg - ambush-small, keep -->
-      <Ronto MayRequire="mlie.starwarsanimalcollection">0.4</Ronto>  <!-- ronto - huge-herd, keep -->
-      <Sketto MayRequire="mlie.starwarsanimalcollection">0.8</Sketto>  <!-- sketto - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
-      <WompRat MayRequire="mlie.starwarsanimalcollection">0.7</WompRat>  <!-- womp rat - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
-      <Wraid MayRequire="mlie.starwarsanimalcollection">0.4</Wraid>  <!-- wraid - burst-predator, adjust-keep -->
-      <AA_DesertAve MayRequire="sarg.alphaanimals">0.4</AA_DesertAve>  <!-- desert ave - navigator, keep -->
-      <Eopie MayRequire="mlie.starwarsanimalcollection">0.3</Eopie>  <!-- eopie - herd, keep -->
-      <Hrumph MayRequire="mlie.starwarsanimalcollection">0.3</Hrumph>  <!-- hrumph - herd, import -->
-      <IridonianReek MayRequire="mlie.starwarsanimalcollection">0.3</IridonianReek>  <!-- iridonian reek - herd, import -->
-      <Jimvu MayRequire="mlie.starwarsanimalcollection">0.3</Jimvu>  <!-- jimvu - herd, import -->
-      <Kwi MayRequire="mlie.starwarsanimalcollection">0.3</Kwi>  <!-- Kwi - herd, import -->
-      <Mynock MayRequire="mlie.starwarsanimalcollection">0.3</Mynock>  <!-- mynock - ship-vermin, import -->
-      <Skalder MayRequire="mlie.starwarsanimalcollection">0.3</Skalder>  <!-- skalder - huge-herd, import -->
-      <Uvak MayRequire="mlie.starwarsanimalcollection">0.3</Uvak>  <!-- uvak - herd, import -->
-      <Varactyl MayRequire="mlie.starwarsanimalcollection">0.3</Varactyl>  <!-- varactyl - herd, import -->
-      <Zeer MayRequire="mlie.starwarsanimalcollection">0.3</Zeer>  <!-- zeer - herd, import -->
-      <VFEI2_Fuelmite MayRequire="oskarpotocki.vfe.insectoid2">0.3</VFEI2_Fuelmite>  <!-- fuelmite - ship-vermin, import -->
-      <Falumpaset MayRequire="mlie.starwarsanimalcollection">0.2</Falumpaset>  <!-- falumpaset - herd, import -->
-      <FrilledGorg MayRequire="mlie.starwarsanimalcollection">0.2</FrilledGorg>  <!-- frilled gorg - ambush-small, keep -->
-      <Jakobeast MayRequire="mlie.starwarsanimalcollection">0.2</Jakobeast>  <!-- jakobeast - herd, import -->
-      <Nerf MayRequire="mlie.starwarsanimalcollection">0.2</Nerf>  <!-- nerf - herd, keep -->
-      <Nuna MayRequire="mlie.starwarsanimalcollection">0.2</Nuna>  <!-- nuna - herd-small, keep -->
-      <Shaak MayRequire="mlie.starwarsanimalcollection">0.2</Shaak>  <!-- shaak - herd, import -->
-      <TeeMuss MayRequire="mlie.starwarsanimalcollection">0.2</TeeMuss>  <!-- tee muss - herd, import -->
-      <Worrt MayRequire="mlie.starwarsanimalcollection">0.2</Worrt>  <!-- worrt - ambush-small, keep -->
-      <AA_Needleroll MayRequire="sarg.alphaanimals">0.2</AA_Needleroll>  <!-- needleroll - grain, keep -->
+      <RSW_Scavrat>1.0</RSW_Scavrat>  <!-- Scavrats - ship-vermin, import; boosted from 0.6 for the ecosystem pyramid law -->
+      <RSW_Shyrack>0.6</RSW_Shyrack>  <!-- shyrack - ambush-flier, keep -->
+      <RSW_Gorg>0.4</RSW_Gorg>  <!-- gorg - ambush-small, keep -->
+      <RSW_Gutkurr>0.4</RSW_Gutkurr>  <!-- gutkurr - burst-predator, adjust-keep -->
+      <RSW_Jamel>0.4</RSW_Jamel>  <!-- Jamel - herd, keep -->
+      <RSW_LongtailGorg>0.4</RSW_LongtailGorg>  <!-- longtail gorg - ambush-small, keep -->
+      <RSW_Ronto>0.4</RSW_Ronto>  <!-- ronto - huge-herd, keep -->
+      <RSW_Sketto>0.8</RSW_Sketto>  <!-- sketto - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
+      <RSW_WompRat>0.7</RSW_WompRat>  <!-- womp rat - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
+      <RSW_Wraid>0.4</RSW_Wraid>  <!-- wraid - burst-predator, adjust-keep -->
+      <RSW_Sandstrider>0.4</RSW_Sandstrider>  <!-- desert ave - navigator, keep -->
+      <RSW_Eopie>0.3</RSW_Eopie>  <!-- eopie - herd, keep -->
+      <RSW_Hrumph>0.3</RSW_Hrumph>  <!-- hrumph - herd, import -->
+      <RSW_IridonianReek>0.3</RSW_IridonianReek>  <!-- iridonian reek - herd, import -->
+      <RSW_Jimvu>0.3</RSW_Jimvu>  <!-- jimvu - herd, import -->
+      <RSW_Kwi>0.3</RSW_Kwi>  <!-- Kwi - herd, import -->
+      <RSW_Mynock>0.3</RSW_Mynock>  <!-- mynock - ship-vermin, import -->
+      <RSW_Skalder>0.3</RSW_Skalder>  <!-- skalder - huge-herd, import -->
+      <RSW_Uvak>0.3</RSW_Uvak>  <!-- uvak - herd, import -->
+      <RSW_Varactyl>0.3</RSW_Varactyl>  <!-- varactyl - herd, import -->
+      <RSW_Zeer>0.3</RSW_Zeer>  <!-- zeer - herd, import -->
+      <RSW_Cindermite>0.3</RSW_Cindermite>  <!-- fuelmite - ship-vermin, import -->
+      <RSW_Falumpaset>0.2</RSW_Falumpaset>  <!-- falumpaset - herd, import -->
+      <RSW_FrilledGorg>0.2</RSW_FrilledGorg>  <!-- frilled gorg - ambush-small, keep -->
+      <RSW_Jakobeast>0.2</RSW_Jakobeast>  <!-- jakobeast - herd, import -->
+      <RSW_Nerf>0.2</RSW_Nerf>  <!-- nerf - herd, keep -->
+      <RSW_Nuna>0.2</RSW_Nuna>  <!-- nuna - herd-small, keep -->
+      <RSW_Shaak>0.2</RSW_Shaak>  <!-- shaak - herd, import -->
+      <RSW_TeeMuss>0.2</RSW_TeeMuss>  <!-- tee muss - herd, import -->
+      <RSW_Worrt>0.2</RSW_Worrt>  <!-- worrt - ambush-small, keep -->
+      <RSW_Spineroller>0.2</RSW_Spineroller>  <!-- needleroll - grain, keep -->
       <Rat>0.2</Rat>  <!-- brown rat - ship-vermin, import; boosted from 0.1 for the ecosystem pyramid law -->
-      <Bolotaur MayRequire="mlie.starwarsanimalcollection">0.1</Bolotaur>  <!-- bolotaur - herd, import -->
-      <Clodhopper MayRequire="mlie.starwarsanimalcollection">0.1</Clodhopper>  <!-- clodhopper - ambush-small, keep -->
-      <FeralGrazer MayRequire="mlie.starwarsanimalcollection">0.1</FeralGrazer>  <!-- feral grazer - herd, import -->
-      <Gizka MayRequire="mlie.starwarsanimalcollection">0.1</Gizka>  <!-- gizka - ambush-small, keep -->
-      <Iriaz MayRequire="mlie.starwarsanimalcollection">0.1</Iriaz>  <!-- iriaz - herd-small, keep -->
-      <Krykna MayRequire="mlie.starwarsanimalcollection">0.1</Krykna>  <!-- krykna - ambush-small, keep -->
-      <Runyip MayRequire="mlie.starwarsanimalcollection">0.1</Runyip>  <!-- runyip - herd, import -->
+      <RSW_Bolotaur>0.1</RSW_Bolotaur>  <!-- bolotaur - herd, import -->
+      <RSW_Clodhopper>0.1</RSW_Clodhopper>  <!-- clodhopper - ambush-small, keep -->
+      <RSW_FeralGrazer>0.1</RSW_FeralGrazer>  <!-- feral grazer - herd, import -->
+      <RSW_Gizka>0.1</RSW_Gizka>  <!-- gizka - ambush-small, keep -->
+      <RSW_Iriaz>0.1</RSW_Iriaz>  <!-- iriaz - herd-small, keep -->
+      <RSW_Krykna>0.1</RSW_Krykna>  <!-- krykna - ambush-small, keep -->
+      <RSW_Runyip>0.1</RSW_Runyip>  <!-- runyip - herd, import -->
       <!-- DROID_DEPOT_REPOINT 2026-09-20 (owner: "Droid depot is our custom mod we are
            building"). These 7 were pointing at neronix17.outerrim.droiddepot, which is NOT
            in the active mod list - MayRequire-guarded, so they silently never spawned.
@@ -187,24 +187,24 @@
       <RSW_DW_OuterRim_SalvageAssistDroid MayRequire="mandrake.rsw.droidworks">0.1</RSW_DW_OuterRim_SalvageAssistDroid>  <!-- salvage assist droid - feral-droid, import -->
       <RSW_DW_OuterRim_DUMDroid MayRequire="mandrake.rsw.droidworks">0.08</RSW_DW_OuterRim_DUMDroid>  <!-- DUM Repair Droid - feral-droid, import -->
       <RSW_DW_OuterRim_GNKDroid MayRequire="mandrake.rsw.droidworks">0.08</RSW_DW_OuterRim_GNKDroid>  <!-- GNK Power Droid - feral-droid, import -->
-      <Voorpak MayRequire="mlie.starwarsanimalcollection">0.05</Voorpak>  <!-- voorpak - ambush-small, keep -->
+      <RSW_Voorpak>0.05</RSW_Voorpak>  <!-- voorpak - ambush-small, keep -->
       <RSW_DW_OuterRim_FX7Droid MayRequire="mandrake.rsw.droidworks">0.05</RSW_DW_OuterRim_FX7Droid>  <!-- fx-7 medical droid - feral-droid, import -->
       <RSW_DW_OuterRim_MuckrakerDroid MayRequire="mandrake.rsw.droidworks">0.05</RSW_DW_OuterRim_MuckrakerDroid>  <!-- Muckraker Crab Droid - feral-droid, import -->
-      <AA_Gigantelope MayRequire="sarg.alphaanimals">0.05</AA_Gigantelope>  <!-- gigantelope - herd, keep -->
-      <AA_SandProwler MayRequire="sarg.alphaanimals">0.05</AA_SandProwler>  <!-- sand prowler - ambush-burrow, keep -->
-      <AA_Terramorph MayRequire="sarg.alphaanimals">0.035</AA_Terramorph>  <!-- terramorph - ambush-flat, keep -->
-      <AA_SandSquid MayRequire="sarg.alphaanimals">0.025</AA_SandSquid>  <!-- sand squid - subsurface-slow, keep -->
+      <RSW_Sandhorn>0.05</RSW_Sandhorn>  <!-- gigantelope - herd, keep -->
+      <RSW_Dunestalker>0.05</RSW_Dunestalker>  <!-- sand prowler - ambush-burrow, keep -->
+      <RSW_Ferroclaw>0.035</RSW_Ferroclaw>  <!-- terramorph - ambush-flat, keep -->
+      <RSW_Sandmaw>0.025</RSW_Sandmaw>  <!-- sand squid - subsurface-slow, keep -->
       <RSW_DW_OuterRim_DestroyerDroid MayRequire="mandrake.rsw.droidworks">0.02</RSW_DW_OuterRim_DestroyerDroid>  <!-- Destroyer Droid - feral-droid, import -->
-      <AA_MammothWorm MayRequire="sarg.alphaanimals">0.015</AA_MammothWorm>  <!-- mammoth worm - subsurface-slow, keep -->
-      <Horax MayRequire="mlie.starwarsanimalcollection">0.01</Horax>  <!-- horax - megafauna, import -->
+      <RSW_Tuskcoil>0.015</RSW_Tuskcoil>  <!-- mammoth worm - subsurface-slow, keep -->
+      <RSW_Horax>0.01</RSW_Horax>  <!-- horax - megafauna, import -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_HardyGrass>0.6</AB_HardyGrass>  <!-- hardy grass -->
-      <Plant_Chakroot_Wild>0.3</Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
-      <Plant_HubbaGourd_Wild>0.2</Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
-      <AB_Aaklac>0.12</AB_Aaklac>  <!-- aaklac -->
-      <AB_DessertTree>0.06</AB_DessertTree>  <!-- dessert tree - tree -->
+      <RSW_Dunegrass>0.6</RSW_Dunegrass>  <!-- hardy grass -->
+      <RSW_Plant_Chakroot_Wild>0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
+      <RSW_Plant_HubbaGourd_Wild>0.2</RSW_Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
+      <RSW_VellaraBloom>0.12</RSW_VellaraBloom>  <!-- aaklac -->
+      <RSW_SweetbarkTree>0.06</RSW_SweetbarkTree>  <!-- dessert tree - tree -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
   </BiomeDef>
