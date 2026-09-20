@@ -133,18 +133,39 @@ pre-existing staleness, not touched here.
    against the live 2026-09-20T07-47-24Z capture — 77,387 defs, 0 gaps.
    `biome_flora.py --check` now runs and reports exactly the 3 RUT_TheForge problems
    named in (b)/§5 above, nothing else.
-3. Now the ONLY blocker: land the port-or-cut call for RUT_TheForge's 3 plants (§5
-   below), then run `biome_flora.py --write`, diff `BiomeFlora_Ashkarr.xml` against
-   HEAD, confirm it's exactly the (b) renames/cuts with no other drift, validate with
-   `validate_patch.py --live <capture>`, deploy.
+3. ✅ DONE 2026-09-20 (FOUNDRY, two parallel agents + one reconciling fix): the
+   TheForge trio's port-or-cut decision resolved itself — `BMT_FLORA_ABSORPTION_1`
+   (closed same day) authored real `RUT_FireLavender`/`RUT_HeatsinkFungus` and
+   confirmed `RUT_Sagecrust` already existed; `RUT_GiantLeaf` likewise ported for both
+   Greentide and FeverWood. What was actually still broken: the *hand-authored*
+   `Defs/BiomeDefs/RUT_*.xml` base files still named the dead `BMT_` defNames
+   directly — the generator (`biome_flora.py --write` → `BiomeFlora_Ashkarr.xml`,
+   a `PatchOperationReplace`) only ever overwrites that content at load time, it
+   never edits the base file, so `--check` (which compares roster vs. `FAMILIES`,
+   never vs. the base XML) couldn't see the base file was still stale. Fixed all 14
+   dead `BMT_` plant cross-refs directly in the base files across all 8 biomes
+   (Greentide, FeverWood, TheForge, WeepingStones, Scarlands, Miasma, PoisonForest,
+   CrackedLands): 9 repointed to their existing RUT_ ports, 4 Miasma rows cut
+   outright (already-purged in the roster — the mangal family covers the tree
+   identity, no port needed), 1 (`TreeTwistingThornwood`) already ported and
+   repointed. Zero `BMT_` plant names remain in any `<wildPlants>` table (confirmed
+   by direct regex scoped to that tag, not a raw grep). `biome_flora.py --write` was
+   NOT run — nothing needed it, since the generated patch layer was already correct;
+   only the redundant/misleading base-file copy needed sync. `validate_patch.py
+   --live` clean on every touched file; selftests 66/66 both before and after.
+   Commits: `fe98d2ed9`, `8725fb338`, `61c6a9233`.
+   ⚠️ NOT re-verified against a live cold load — `FULL_LOAD_RESIDUE_TRIAGE_1` entry
+   (5)'s 38-line crossref count (which names several of these same defNames) needs a
+   fresh load to confirm it actually drops; that count comes from the game's own
+   `BiomePlantRecord` resolution, a different instrument than `biome_flora.py --check`.
 4. (a): the same purge as (b) but for `cast_assignment.csv` — BUT see
    `BIOME_CAST_PATCH_DEAD_NAMES_1` (filed 2026-09-20) first: `BiomeCast_Ashkarr.xml`
    may be entirely dead code (targets pre-`BIOME_OWNERSHIP_WAVE_1` biome defNames that
    no longer exist on any live BiomeDef), in which case there is nothing to purge —
    confirm that item's finding before spending time on (a) or on
-   `AnimalTolerances_Ashkarr.xml`.
-5. (b) residual: a climate-aware port-or-cut decision for `RUT_TheForge`'s 3
-   heat-tolerant BMT_ plants (FireLavender/Sagecrust/HeatsinkFungus), and separately a
-   port decision for `BMT_GiantLeaf`'s two understory slots.
+   `AnimalTolerances_Ashkarr.xml`. ⚠️ Note: `cast_assignment.csv` is showing as
+   uncommitted-modified in the shared working tree as of this session — check whether
+   a concurrent window already has this in flight before touching it.
+5. (b) is now fully DONE — see item 3 above. Nothing left in this subtask.
 6. (c): a one-time hand clean of the live `Mod_3532608331_DeepStorageMod.xml` settings
    file, done at the keyboard.
