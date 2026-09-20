@@ -387,36 +387,76 @@ def main():
         byb[r['biome']].append(r)
 
     # 🔴 REFUSE RATHER THAN REGENERATE A DEAD FILE - BIOME_CAST_PATCH_DEAD_NAMES_1,
-    # 2026-09-20. BIOME_OWNERSHIP_WAVE_1 (2026-09-09) repainted every Ash'karr tile
-    # onto a brand-new RUT_-prefixed BiomeDef that carries its own hardcoded
-    # wildAnimals natively - so EVERY biome defName cast_assignment.csv names (all
-    # pre-migration donor/vanilla names: Desert, ExtremeDesert, AB_MycoticJungle,
-    # ...) is painted on ZERO tiles of the frozen world. A PatchOperationConditional
-    # whose xpath never matches is a silent no-op, which is exactly how the
-    # deployed BiomeCast_Ashkarr.xml went dead unnoticed - confirmed, then the file
-    # retired outright, at BIOME_CAST_PATCH_DEAD_NAMES_1. Re-running this script
-    # would just write that dead file straight back. So: if not ONE cast_assignment
-    # biome is painted, refuse rather than emit 16KB of inert XML. _animal_side_
-    # biomes() below is unaffected and stays importable - biome_wildbiomes_
-    # evictions.py depends on it for a live, unrelated mechanism.
+    # 2026-09-20, STRENGTHENED same day for ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1.
+    # BIOME_OWNERSHIP_WAVE_1 (2026-09-09) repainted every Ash'karr tile onto a
+    # brand-new RUT_-prefixed BiomeDef that carries its own hardcoded wildAnimals
+    # natively. The ORIGINAL form of this guard tested only whether
+    # cast_assignment.csv's `biome` column was painted on any tile - true by
+    # construction back then, because rosters_to_cast.py's own BIOMECAST_DEFS still
+    # named the 23 PRE-MIGRATION biomes, so the column could never paint anything.
+    # ⛔ ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1 fixed BIOMECAST_DEFS to the LIVE
+    # RUT_ names, which would make the tile-paint test pass trivially from now on -
+    # not because the generator became safe again, but because the biomes it names
+    # are simply real. Left alone, that flip would have silently re-armed this
+    # generator to emit a patch that REPLACES wildAnimals on biomes that already
+    # declare it natively: exactly the "two owners for one list, the later loader
+    # wins silently" hazard BIOMECAST_DEFS's own docstring warns about.
+    #
+    # MEASURED 2026-09-20: every RUT_-prefixed BiomeDef file under
+    # src/RimUtinni/UtinniPatches/Defs/BiomeDefs/ that BIOMECAST_DEFS names already
+    # has its own <wildAnimals> block (all 21, `grep -c '<wildAnimals>'` on each
+    # file), each one "transplanted from BiomeCast_Ashkarr.xml" at authoring time
+    # (2026-09-09) per that file's own header comment. Ownership already moved to
+    # the def files themselves; the CSV column being paintable again does not
+    # reverse that. So the guard now checks NATIVE OWNERSHIP directly - the real
+    # invariant - rather than using tile-paint as a proxy for it.
     try:
         import csv as _csv
+        import glob as _glob
+        import re as _re
         _tiles = os.path.normpath(os.path.join(FA, '..', '..', '..', 'world',
                                                 'ASHKARR_WORLDMAP_tiles.csv'))
         _painted = {r['biome'] for r in _csv.DictReader(open(_tiles, encoding='utf-8'))}
         _live = set(byb) & _painted
-        if not _live:
+        _biomedefs_dir = os.path.normpath(os.path.join(
+            FA, '..', '..', '..', 'src', 'RimUtinni', 'UtinniPatches', 'Defs', 'BiomeDefs'))
+        _natively_owned = set()
+        for _fp in _glob.glob(os.path.join(_biomedefs_dir, '*.xml')):
+            _txt = open(_fp, encoding='utf-8-sig', errors='replace').read()
+            if '<wildAnimals>' not in _txt:
+                continue
+            for _dn in _re.findall(r'<defName>([^<]+)</defName>', _txt):
+                _natively_owned.add(_dn)
+        # Generation below is NOT filtered per-biome - it emits one operation per
+        # distinct `byb` biome. So even ONE natively-owned biome inside `_live` is
+        # enough to make a real run collide; refusing only when ALL of them are
+        # natively owned would still let the other 20 through. MEASURED 2026-09-20:
+        # 20 of the 21 live biomes are natively owned (every RUT_-prefixed one);
+        # only `ZBiome_Grasslands` (a donor biome, never given its own RUT_ def) is
+        # not - re-enabling this generator for that one biome alone is real future
+        # work, not something this guard should quietly allow as a side effect of a
+        # biome-name fix. See BIOME_CAST_PATCH_DEAD_NAMES_1 and
+        # ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1.
+        _conflicts = _live & _natively_owned
+        if not _live or _conflicts:
             sys.exit(
-                "REFUSED: none of cast_assignment.csv's "
-                f"{len(byb)} biome name(s) are painted on any tile in "
-                f"{_tiles}\n  (all {len(byb)} are pre-BIOME_OWNERSHIP_WAVE_1 "
-                "donor/vanilla names; every live biome now carries its own "
-                "wildAnimals natively). See BIOME_CAST_PATCH_DEAD_NAMES_1 before "
-                "re-enabling this generator or renaming cast_assignment.csv's "
-                "biome column to a live RUT_ defName.")
+                "REFUSED: "
+                + (f"{len(_conflicts)} of cast_assignment.csv's {len(_live)} live "
+                   "biome(s) already declare <wildAnimals> natively in their own "
+                   f"def file under {_biomedefs_dir} ({sorted(_conflicts)}), "
+                   "transplanted from BiomeCast_Ashkarr.xml at authoring time "
+                   "(2026-09-09). Regenerating here would create a second owner "
+                   "for their list."
+                   if _conflicts else
+                   f"none of cast_assignment.csv's {len(byb)} biome name(s) are "
+                   f"painted on any tile in {_tiles}.")
+                + "\n  See BIOME_CAST_PATCH_DEAD_NAMES_1 and "
+                "ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1 before re-enabling this "
+                "generator - it needs biomes whose wildAnimals genuinely has no "
+                "other owner, not just a live biome name.")
     except OSError as _e:
-        print(f"⚠️ UNMEASURED: could not check tile coverage ({_e}) - "
-              "proceeding without the dead-biome refusal check.")
+        print(f"⚠️ UNMEASURED: could not check tile/native-ownership coverage "
+              f"({_e}) - proceeding without the dead-biome refusal check.")
 
     parts = ['<?xml version="1.0" encoding="utf-8"?>',
              '<Patch>',
