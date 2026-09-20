@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T17:32:36Z (the last event's own timestamp, not the render clock)
-game:  GOING_DOWN   bridge: FOUNDRY
+as-of: 2026-09-20T17:49:49Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## DESERT_PORT_DUPLICATE_DEFS_1 349 defNames are defined twice inside SWBestiary - every one involves a DesertPort file, RimWorld keeps the LAST and the earlier def vanishes silently
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  DESERTPORTDUPLICATEDEFS1 — 349 defs are defined twice inside SWBestiary
+prose:    infrastructure/state/items/DESERT_PORT_DUPLICATE_DEFS_1.md
 
 # IN PROGRESS
 
@@ -909,15 +918,6 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
-## BMT_FLORA_ABSORPTION_1 BMT_FAUNA_ABSORPTION_1 did fauna only - 14 Biomes! Caverns FLORA defs are still referenced across 8 biome tables with no RSW_ equivalent, from a mod absent from the active list, including the top plant in Miasma and Greentide
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Follows DONORDEFSPORTTOOURS1 (owner: "Everything should be moved t our
-prose:    infrastructure/state/items/BMT_FLORA_ABSORPTION_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1373,3 +1373,13 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  biomeclimate.json's biomes keys need to match the live RUT/AB-prefixed
 prose:    infrastructure/state/items/PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1.md
+
+## BIOME_BINDINGS_TABLE_STALE_1 25 of 29 rows in _def_bindings_2026-09-09.md name a biome defName that carries ZERO painted tiles - the table any fauna/flora pass consults to pick the owning def
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  BIOMEBINDINGSTABLESTALE1 — the def→sheet table points 25 of 29 rows at dead defs
+prose:    infrastructure/state/items/BIOME_BINDINGS_TABLE_STALE_1.md
