@@ -28,19 +28,22 @@ biomes it was ruled for.
    `AA_Groundrunner`, `AA_MatureFleshbeast`) plus the `JOE_Cephalope` absorb as
    **one port batch**, with reference closure, following the pattern in
    `BMT_FAUNA_ABSORPTION_1` (`infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md`).
-3. Before filing the port batch, read
-   `design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md` §8 (not read in
-   the source review) — `AA_GreatDevourer` and `AA_MatureFleshbeast` are
-   sarlacc-adjacent and `SARLACC_HABITAT_BUILD_1` may already supersede them.
-4. Card to the owner only on those two creatures, and only if §8 does not
-   settle it.
+3. `AA_GreatDevourer` and `AA_MatureFleshbeast` are **PORT BOTH** — see
+   ruling below. Not superseded by `SARLACC_HABITAT_BUILD_1`.
+
+## ruling (owner, 2026-09-20)
+
+Owner chose: **PORT BOTH** `AA_GreatDevourer` and `AA_MatureFleshbeast`.
+They are NOT superseded by `SARLACC_HABITAT_BUILD_1` — that item does not
+replace them. Answered; no card to the owner is needed on this question.
+The port itself (all 4 `AA_` creatures + the `JOE_Cephalope` absorb, as one
+batch per point 2 above) is still this item's own owed work.
 
 ## Watch out
 
-Do not port `AA_GreatDevourer`/`AA_MatureFleshbeast` before checking
-`SARLACC_HABITAT_BUILD_1`'s sarlacc-draft §8 — the review could not determine
-supersession because that section was not read this pass. That single read
-may remove 2 of the 4 ports from this item's scope entirely.
+The `AA_` port batch (point 2) is still owed — this ruling only settles
+whether `AA_GreatDevourer`/`AA_MatureFleshbeast` are in scope (they are);
+it does not do the porting.
 
 ## verify
 
