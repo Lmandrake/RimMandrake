@@ -5585,10 +5585,10 @@
     "sha": "f2fdef82"
   },
   "src/RimMandrake/Utils/deploy_custom_mods.py": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "49d18427797e7a7d3d78019e9fb40bbf2082e20af7e9933034dea6c817bcc962",
-    "sha": "52dee04f"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "3399610aa714fb2d7d27eb7eecb047198fadb14af69b3c4c2fb15cf0737e0ffc",
+    "sha": "8d05e542d"
   },
   "src/RimMandrake/Utils/design_doc_render.py": {
     "cleanCount": 1,
