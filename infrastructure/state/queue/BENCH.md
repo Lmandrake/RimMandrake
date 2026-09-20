@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:23:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T19:26:12Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -642,3 +642,13 @@ kind:     task
 thin:     no ## spec
 summary:  FOUNDERSEXPORTTOREPO1 — the founders are not in the repo
 prose:    infrastructure/state/items/FOUNDERS_EXPORT_TO_REPO_1.md
+
+## DEAD_BIOME_DEFS_IN_PROSE_1 Pre-repaint donor biome defNames are still embedded in item and design prose - three found by accident today, each carrying a number or a plot fact that reasoning depends on
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEAD_BIOME_DEFS_IN_PROSE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEAD_BIOME_DEFS_IN_PROSE_1.md

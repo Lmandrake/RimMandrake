@@ -10303,3 +10303,6 @@
 {"seat":"FOUNDRY","event":"file","id":"DESERT_STAGGERSEED_BUILD_1","title":"Author the staggerseed cycle plant (corpse-dispersal + euphoric prepared-seed dish)","kind":"build","target":"v1","needs":"owner","caused_by":"DESERT_SIGNATURE_FLORA_1","for":"FOUNDRY","ts":"2026-09-20T19:19:53Z"}
 {"seat":"FOUNDRY","event":"file","id":"DESERT_SHADE_PLANTS_DESIGN_1","title":"Design pass: desert's defending shade plants (thorn/contact damage, no native CompProperties)","kind":"design","target":"v1","needs":"offline","caused_by":"DESERT_SIGNATURE_FLORA_1","for":"FOUNDRY","ts":"2026-09-20T19:19:55Z"}
 {"seat":"FOUNDRY","event":"close","id":"DESERT_SIGNATURE_FLORA_1","sha":"a74a7a4fb","ts":"2026-09-20T19:23:55Z"}
+{"seat":"FOUNDRY","event":"claim","id":"EXTREME_DESERT_GIANT_COMMENSALS_1","ts":"2026-09-20T19:25:10Z"}
+{"seat":"FOUNDRY","event":"start","id":"EXTREME_DESERT_GIANT_COMMENSALS_1","ts":"2026-09-20T19:25:11Z"}
+{"seat":"BENCH","event":"file","id":"DEAD_BIOME_DEFS_IN_PROSE_1","title":"Pre-repaint donor biome defNames are still embedded in item and design prose - three found by accident today, each carrying a number or a plot fact that reasoning depends on","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-20T19:26:12Z"}
