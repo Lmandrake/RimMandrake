@@ -819,3 +819,20 @@ own 32-species build and its owed live quicktest are unchanged by this pass.
 **Git**: none — no code change this wave, only this log entry (committed with
 the ledger-sync note).
 
+## correction — 2026-09-20 (FOUNDRY)
+
+The line above ("`TWILIGHT_DEEP_WATER_LAYER_1` (owner ruling, AFK)") is now
+stale: that item closed 2026-09-20 on the owner's ruling — verbatim, **"Just
+make the surface fishable."** — dropping the split-water/pocket-map premise
+entirely; the 8 Twilight species fish `RUT_TwilightSea` directly. The Twilight
+`fishTypes` hold this item filed in wave 5 has already been lifted as PART of
+that item's own close: `DEPLOY_HOLD.txt`'s entry for
+`Patches/BiomeFishTypes_TwilightDeep.xml` was removed, the file re-validated
+(0 errors) and deployed. Not yet confirmed live in a running game — the
+closed item's own last note says one game process loaded before the deploy
+landed and needs one more restart to show `RUT_TwilightSea.maxFishPopulation
+700` — but there is no remaining ruling or structural blocker on this item's
+side; the next restart plus a live fishing spot-check on Twilight closes this
+item's own long-standing hold. This item is otherwise unchanged — still
+`doing`, still owed a live quicktest per the criteria bars above.
+
