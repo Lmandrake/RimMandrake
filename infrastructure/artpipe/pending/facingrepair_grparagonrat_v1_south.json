@@ -1,0 +1,19 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "width": 512,
+    "height": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T09:08:57Z",
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "facingrepair_grparagonrat_v1_south",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, seen from directly in front at eye level: eyes, face and chest toward the camera, standing in a natural stance facing the viewer, painterly vanilla-RimWorld animal art style: the Star Wars/Utinni canon creature \u2014 a large armored rat-like paragon beast, segmented plated thorax, a pair of long swept-back antennae, sharp foreclaws held forward, small dark eyes and a short snout clearly visible at the center of the face. The face must be the dominant, clearly-lit feature of the image, not the dorsal plating. Single creature, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_FACING_REPAIR_WAVE_1",
+  "style_notes": "South-only repair, hand-authored prompt (no earlier artpipe job JSON existed for this creature to build from). facing_set_audit.py viewpoint check + a human look both confirmed: GR_ParagonRat (hand-written \u2014 no prior job JSON found; shipped south shows the segmented dorsal plates dominating with only a sliver of face visible at the very bottom, reading as a top-down view of the back). Owner ruling 2026-09-15: south = face toward camera."
+}

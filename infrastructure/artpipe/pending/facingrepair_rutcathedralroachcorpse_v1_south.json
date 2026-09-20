@@ -1,0 +1,19 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "width": 512,
+    "height": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T09:08:57Z",
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "facingrepair_rutcathedralroachcorpse_v1_south",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, seen from directly in front at eye level: eyes, face and chest toward the camera, standing in a natural stance facing the viewer, painterly vanilla-RimWorld animal art style: the Star Wars/Utinni canon creature \u2014 a large dead/inert armored roach-like war machine, a cracked and scorched domed plated hull with exposed damaged internals on one side, six jointed mechanical legs. Show the front face plate and its glowing eye-lenses or mouth vents clearly and prominently, rather than the top of the shell. Single creature, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_FACING_REPAIR_WAVE_1",
+  "style_notes": "South-only repair, hand-authored prompt (no earlier artpipe job JSON existed for this creature to build from). facing_set_audit.py viewpoint check + a human look both confirmed: RUT_CathedralRoachCorpse (hand-written \u2014 no prior job JSON found; shipped south is a pure top-down view of the cracked shell with legs splayed to the sides and the face barely visible at the bottom edge). Owner ruling 2026-09-15: south = face toward camera."
+}

@@ -1,0 +1,19 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "width": 512,
+    "height": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T09:08:57Z",
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "facingrepair_flamefang_v1_south",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, seen from directly in front at eye level: eyes, face and chest toward the camera, standing in a natural stance facing the viewer, painterly vanilla-RimWorld animal art style: the Star Wars/Utinni canon creature \u2014 a venomous black-yellow-red banded serpent reared up with its head and neck raised toward the viewer, fangs bared, red eyes, the body coiled beneath and behind it rather than spiraled flat under the camera. The head must be the highest, most forward and most prominent part of the silhouette, mouth open toward the viewer. Single creature, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_FACING_REPAIR_WAVE_1",
+  "style_notes": "South-only repair, hand-authored prompt (no earlier artpipe job JSON existed for this creature to build from). facing_set_audit.py viewpoint check + a human look both confirmed: Flamefang (hand-written \u2014 no prior job JSON found; shipped south is a flat coiled spiral shown from directly above with the head pointing down and away from the viewer at the bottom of the coil). Owner ruling 2026-09-15: south = face toward camera."
+}
