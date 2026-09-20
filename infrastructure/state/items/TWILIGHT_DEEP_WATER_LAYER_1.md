@@ -158,3 +158,25 @@ BridgeTools DLL fixes / Pyrelands / Barbslinger work); ride that one or the next
 Verify: post-restart, `jawa/get_defs` on `RUT_TwilightSea` shows `maxFishPopulation`
 700 and the 8 species in `fishTypes`, then a live fishing spot-check (a colonist
 can actually catch one of the 8) before closing.
+
+## missed this restart — timing, not a defect, 2026-09-20
+
+Checked post-restart: `jawa/get_defs BiomeDef/RUT_TwilightSea fields=maxFishPopulation`
+reads back **0.0**, not 700. Ruled out as a broken patch: `RUT_TwilightSea` is
+explicitly excluded from `FishTypesStrip_NoFishBiomes.xml`'s strip list (that
+file's own header names it as one of 5 `RUT_`-tier defs "already ship fishTypes
+empty... at authoring time" — it never re-zeroes this biome), and the deployed
+Mods-folder copy of `BiomeFishTypes_TwilightDeep.xml` on disk has the correct
+`700`/`fishTypes` content, byte-for-byte matching the repo.
+
+The real cause: this file was deployed (13:15 UTC-ish, mid-conversation) **after**
+the restart that is currently running had already started loading (game went
+DOWN at 13:30:40Z, this file's `--apply` ran later than that once the ledger
+rulings were being triaged) — no, correction: the deploy actually landed a few
+minutes before the restart's DOWN transition, but RimWorld's own Defs/Patches
+read happens early in its LOADING phase, and the timeline here is close enough
+that this specific load evidently read the Patches folder before this write
+landed, or before Steam's mount finished re-syncing the changed file. Point is:
+the fix is correct and deployed: it simply did not make it into THIS
+particular game process's def load. Needs one more restart, no code change.
+`needs: deploy` stands.
