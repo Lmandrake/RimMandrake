@@ -1,5 +1,26 @@
 # DESERT_PACK_ANIMALS_FOR_TRADERS_1 — allowedPackAnimals empty, trader caravans never spawn
 
+## ruling (owner, 2026-09-20)
+
+Owner chose: BOTH deserts get traders. MEASURED which of the five ported herd
+beasts carry `<packAnimal>true</packAnimal>` in their ThingDef
+(`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_{Bantha,Ronto,Eopie,
+Jamel,Falumpaset}.xml`) — **all five** do:
+
+| species | `<packAnimal>` |
+|---|---|
+| RSW_Bantha | true |
+| RSW_Ronto | true |
+| RSW_Eopie | true |
+| RSW_Jamel | true |
+| RSW_Falumpaset | true |
+
+None rejected — all five qualify and are wired into `allowedPackAnimals` on
+both `RUT_Desert` and `RUT_ExtremeDesert`
+(`src/RimUtinni/UtinniPatches/Defs/BiomeDefs/`), each `<li>` guarded with
+`MayRequire="mandrake.rsw.swbestiary"` matching the existing wildAnimals/
+wildPlants pattern in those same files. Landed.
+
 ## what is wrong
 
 `allowedPackAnimals` is absent on both RUT_Desert and RUT_ExtremeDesert,
