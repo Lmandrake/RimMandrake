@@ -1,0 +1,16 @@
+CALIBRATION CONTROL for the viewpoint judge in facing_set_audit.py
+MEASURED 2026-09-20 by BENCH. Subject: DONOR art from SWBestiary — sprites WE DID
+NOT GENERATE, shipped by the donor mod and never touched by our pipeline.
+
+Purpose: the art agent's run returned 33 OVERHEAD-FAIL of 50 sets (66%). A fail rate
+that high is a query bug until proven otherwise. If donor art fails at a similar
+rate, the judge is measuring 'RimWorld animal art' rather than 'our defect'.
+
+AbyssalColo              south-OVERHEAD=YES  anchor drift   28.1%
+FoundryBeetle            south-OVERHEAD=YES  anchor drift   11.9%
+Smogapillar              south-OVERHEAD=YES  anchor drift   21.3%
+Gelagrub                 south-OVERHEAD=no   anchor drift   20.3%
+LongtailGorgA            south-OVERHEAD=YES  anchor drift   23.0%
+Shaak                    south-OVERHEAD=YES  anchor drift   10.5%
+
+RESULT: 5 of 6 DONOR sets judged south-OVERHEAD (83%).
