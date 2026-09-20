@@ -3,7 +3,7 @@ namespace confirmed to live in guy762.mm.kotorcore's OWN bundled DLLs
 (AthenaPort.dll, SWCP_Core.dll, SWCP_Currencies.dll,
 SWCP_RimframeGrineerDoors.dll, taranchuk_homingprojectiles.dll under
 kotorcore's AdditionalMods/SharedCodeFromShun/) or ModularWeapons2 (cut,
-ARMOUR_MW2_CUT_1), not an independent framework that stays active
+ARMOURY_MW2_CUT_1), not an independent framework that stays active
 regardless -- see BLOCKED_NAMESPACES and its comment in this script for the
 measured basis. CompExtraSounds/MentalBreakBlocker/SecondaryMineableYield/
 SelfHediffVerb are ported into JawaArmoury's own assembly and are NO LONGER

@@ -495,7 +495,7 @@ def main():
                 "(AthenaPort.dll, SWCP_Core.dll, SWCP_Currencies.dll,\n"
                 "SWCP_RimframeGrineerDoors.dll, taranchuk_homingprojectiles.dll under\n"
                 "kotorcore's AdditionalMods/SharedCodeFromShun/) or ModularWeapons2 (cut,\n"
-                "ARMOUR_MW2_CUT_1), not an independent framework that stays active\n"
+                "ARMOURY_MW2_CUT_1), not an independent framework that stays active\n"
                 "regardless -- see BLOCKED_NAMESPACES and its comment in this script for the\n"
                 "measured basis. CompExtraSounds/MentalBreakBlocker/SecondaryMineableYield/\n"
                 "SelfHediffVerb are ported into JawaArmoury's own assembly and are NO LONGER\n"
