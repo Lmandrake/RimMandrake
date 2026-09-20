@@ -397,3 +397,79 @@ the queue.
 
 🔑 **Mood-sensitive fur is the interesting one** — it is a mechanic, not a palette. It
 belongs with `SPECIES_TRAITS_OVER_APTITUDES_1`'s question rather than in a colour pass.
+
+---
+
+# 🔴 STEP 2 DISCHARGED — independent web verification, 2026-09-20
+
+The owner's ordered sequence is **dossier → his verification → skin colour → grid
+screenshot → head shapes → grid again**. He ruled that the verification be done by
+agents first, with only contested rows reaching him. That pass is done.
+
+Three agents re-sourced all 13 appearance rows from the live web, **forbidden from
+reading `Transient/canon_appearance_dossier.md` or the canon library**, so their
+agreement is corroboration rather than an echo. Instrument: Wookieepedia **raw
+wikitext via the Fandom API** — the rendered pages sit behind a Cloudflare wall, and
+wikitext returns the infobox with its `<ref>` citations verbatim. CANON and LEGENDS
+pages were kept apart throughout.
+
+**11 of 13 CONFIRMED verbatim. 1 PARTIAL. 1 CONTRADICTED.**
+
+## The two that were wrong — and one of them would have destroyed canon content
+
+| row | result | consequence |
+|---|---|---|
+| **Chagrian** | 🔴 **CONTRADICTED** | Our library said "infobox skin color is **blue only**". It carries **blue AND orange** (orange → *Star Wars Adventures* 2020 #6). This item's Pattern 6 proposed **"drop the two oranges"** — that fix would have **deleted a canon colour**. At most ONE orange gene is surplus. |
+| **Ewok** | ⚠️ **PARTIAL** | Canon infobox skin is **brown / light / pink / tan**, not brown alone; the "brown and black as the most common colors" line describes **FUR**, not a skin-brown / hair-black split. |
+
+## One correction in our own favour
+
+**Ugnaught** was graded `UNCHECKABLE` and its pink called "Legends colour asserted
+over canon art". Pink is **first-hand CANON in two places** — the infobox cited to
+*The Empire Strikes Back*, and the starwars.com Databank ("They have pink skin,
+white hair, upturned noses"), fetched directly. The *observation* that the canon
+infobox image looks dun grey-brown is untouched and still stands; only the
+provenance was misattributed. The conflict is **canon-vs-canon**, not canon-vs-Legends.
+
+## Corroborated, no change
+
+Ithorian · Bith · Zygerrian · Chadra-Fan · Abednedo · Lasat (including *"No two
+Lasat had the same striping"*) · Ortolan · Mimbanese · Nelvaanian (canon infobox
+**genuinely and wholly empty**; blue is Legends-only) · Umbaran (*"Pale and bluish"*).
+
+🔑 **The Umbaran lavender claim is confirmed UNSOURCED** — the words "lavender" and
+"violet" appear **nowhere** in the canon article. Any lavender-violet target is our
+own reading of an image.
+
+## ⚠️ What this pass did NOT do, and it is the part he still owns
+
+**No infobox image was rendered or pixel-sampled.** Every claim resting on how a
+picture *looks* is untouched and remains unmeasured — specifically the **Ugnaught
+dun-grey-brown** reading and the **Umbaran lavender** reading. A text source cannot
+settle either. 🔑 That is the one place the owner's own eyes still beat the agents,
+and it is what a browser tab is actually for here.
+
+## Where this landed
+
+- `design/RimStarWars/canon_references/` — the three wrong claims **corrected in
+  place** (not annotated), and all 13 entries stamped with what was verified and
+  with the image caveat above. `427acdbae`.
+- `Transient/canon_appearance_dossier.md` — same three rows corrected, verification
+  summary inserted above the table.
+
+## Next in the sequence
+
+**Skin colour fixes**, then the in-game grid screenshot of the naked races facing
+south. ⚠️ Chagrian's fix is now SMALLER than this item originally filed it.
+
+## Head art — queued 2026-09-20, in parallel on his ruling
+
+Pattern 2's four borrowed heads (Lasat←Cathar, Nelvaanian←Bothan, Ortolan←Kubaz,
+Mimbanese←Tusken) are **new art, not a data fix**, so they were filed to artpipe to
+render while verification ran: 12 jobs (4 species × north/east/south) at 512×512,
+matching the shipping RSW head set. Absence of existing art was verified by hand
+first — `infrastructure/artpipe/` holds nothing for lasat, ortolan or mimbanese, and
+the `nelvaan` hits are `horax` creature jobs, not heads.
+
+🔑 Head SHAPE does not depend on the colour verification — the four heads are the
+wrong species' regardless of what the web says about hue.

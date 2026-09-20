@@ -41,19 +41,57 @@ enabled mod, and nothing does except deploying the two together.
 ⚠️ The deployed copies are therefore **hand-edited and behind the repo** — the
 deploy tool reports them HELD, not in sync. That is deliberate, not drift.
 
+## 🔴 RE-MEASURED 2026-09-20 — SWBestiary IS DEPLOYED, and the figure is now 3
+
+The prose above says SWBestiary "is not deployed". **That is no longer true.**
+`Mods/SWBestiary/About/About.xml` carries `mandrake.rsw.swbestiary` on disk, and
+15 of the original 18 dangling names now resolve there (`RSW_Cindermite`,
+`RSW_Sandstrider` and the rest, all in `Defs/DesertPort/RSW_DesertPortMisc_Races.xml`).
+
+**Three still dangle, and they are a LIVE deploy gap, not a stale one:**
+`RSW_GreatDevourer`, `RSW_Groundrunner`, `RSW_MatureFleshbeast`. All three exist in
+the repo at `src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/`, none is in
+`DEPLOY_HOLD.txt`, and `deploy_custom_mods.py --mod SWBestiary` reports them as
+plain drift (`+`) alongside `RSW_AADesertPort_Bodies.xml` and
+`RSW_GreatDevourerEggs.xml`. They are the `DRUM_LURE_PREDATOR_BUILD_1` build,
+which FOUNDRY has claimed with live verification owed.
+
+⛔ **BENCH did not deploy them.** The game is RUNNING on FOUNDRY's 14-mod test tier
+with FOUNDRY holding the bridge; deploying into their flight test is theirs to
+time, not BENCH's to force.
+
 ## what is still owed
 
-1. **Deploy SWBestiary and lift both holds in the SAME sitting.** Never one
-   without the other. SWBestiary now carries an assembly
+1. ~~**Deploy SWBestiary**~~ — DONE, see above. What remains is the 5-file gap:
+   deploy `RSW_GreatDevourer`, `RSW_Groundrunner`, `RSW_MatureFleshbeast`,
+   `RSW_AADesertPort_Bodies.xml` and `RSW_GreatDevourerEggs.xml`, and lift both
+   biome-table holds in the SAME sitting. Never one without the other. SWBestiary now carries an assembly
    (`RimMandrakeBeastMechanicsRSW.dll`, `PORTED_BEAST_MECHANICS_REBUILD_1`), so
    this needs the **game down** — a DLL cannot be written while RimWorld runs.
    ⛔ Do not deploy the defs without the DLL: three of the dangling names
    (`RSW_Ferroclaw`, `RSW_Voltmaw`, `RSW_Cindermite`) carry comps from it, and a
    missing comp type discards the whole def silently.
-2. **Add a selftest to `run_selftests.py`**: every `wildAnimals`/`wildPlants`
-   entry in `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/*.xml` must resolve to a
-   def in the **DEPLOYED** mod folders. 🔑 Resolving against the repo is what
-   made this invisible — the repo was consistent the whole time.
+2. ✅ **DONE 2026-09-20** — `src/RimMandrake/Utils/selftest_deployed_biome_refs.py`
+   (`427acdbae`), auto-discovered by `run_selftests.py`. Currently **PASS, 0 of 499
+   deployed entries dangling, 38s warm.**
+
+   🔑 **It asserts on the DEPLOYED tables and only WARNS on the repo ones.** The repo
+   half prints `WOULD-FAIL-ON-DEPLOY` with every row named, and is deliberately not a
+   failure: four threads share this tree and a permanently-red suite blocks every
+   commit. That warning is what currently names the three defs above.
+
+   🔴 **Two false numbers were produced while building it, both of which read as
+   findings.** Recorded because both will be made again:
+   - Resolving against `Mods/` + `Data/` alone reported **339 dangling, 100% false**.
+     ~500 of the ~618 active mods are Steam Workshop subscriptions under
+     `steamapps/workshop/content/294100/`, a wholly separate root. A subagent then
+     asserted it had "verified several of the missing packageIds are absent from the
+     Workshop cache too" — that claim was false; one `grep` found `sarg.alphaanimals`
+     immediately in a root holding 1271 folders.
+   - A block regex matching **across an XML comment** reported **17 tag names**
+     (`defName`, `label`, `texture`…) as dangling animals, because
+     `RUT_PropaneLake.xml` mentions `<wildAnimals />` inside a 92-line comment and the
+     per-block comment strip had no opening `<!--` left to anchor on.
 
 ## Watch out
 
