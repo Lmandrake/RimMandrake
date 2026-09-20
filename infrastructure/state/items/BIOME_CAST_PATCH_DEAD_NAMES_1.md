@@ -54,14 +54,17 @@ xpath never matches).
    still be Core's own vanilla Desert biome, used on non-Ash'karr world content if any
    exists) or (b) is fully dead. If ALL 23 are case (b), the file and its generator are
    pure dead weight.
-2. **If dead**: retire `gen_cast_patch.py` + `BiomeCast_Ashkarr.xml` (both the `design/`
-   and deployed `src/` copies) the same way other donor/superseded mechanisms in this
-   repo get retired — delete, don't leave commented-out, per CLAUDE.md's "Inaccurate
-   material is deleted, not superseded-in-place." `cast_assignment.csv` and
-   `decisions_propagated.json` remain as the historical record of WHICH creatures were
-   cast where; that provenance doesn't need the dead generator to stay meaningful, since
-   each `RUT_*.xml` BiomeDef's own header already cites "transplanted from
-   BiomeCast_Ashkarr.xml ... against rosters/<name>.json" as its own provenance trail.
+2. ~~**If dead**: retire `gen_cast_patch.py` + `BiomeCast_Ashkarr.xml`~~ **CORRECTED
+   2026-09-20**: `gen_cast_patch.py` itself must NOT be deleted — it was wrong to say
+   so. `src/RimMandrake/Utils/biome_wildbiomes_evictions.py` imports
+   `gen_cast_patch._animal_side_biomes` for a live, unrelated mechanism (evicting an
+   animal's own `race.wildBiomes` entry when it names a *painted* `RUT_` biome its
+   roster doesn't admit — confirmed deployed as
+   `src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml`). Deleting
+   the file would have broken that import. Only the dead XML artifact (`BiomeCast_
+   Ashkarr.xml`, all three copies) is retired; the generator file stays, with a refusal
+   guard added to `main()` so it can never silently regenerate the dead file again
+   (see resolution below).
 3. **If any biome name is still genuinely live** (case (a) above): scope the generator
    down to only that subset, and rename this item's understanding accordingly.
 4. Once this is resolved, `BMT_FAUNA_ABSORPTION_1`'s gate (1) should be re-read: if
@@ -69,6 +72,50 @@ xpath never matches).
    regenerate" — the item's escalation prose naming this file should be corrected
    in the same pass (CLAUDE.md "correctness outranks seat ownership": that escalation
    text is now demonstrably wrong and should be fixed on sight by whoever closes this).
+
+## resolved 2026-09-20 FOUNDRY
+
+**Hypothesis CONFIRMED, independently re-measured.** Extracted the exact 22 unique
+`BiomeDef[defName="X"]` targets the deployed file's xpaths used, then cross-checked
+every one against a fresh parse of `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows,
+not a scan — `csv.DictReader` over the `biome` column, `measuring-large-artifacts`
+discipline): **zero hits for all 22.** Every painted tile carries an `RUT_`-prefixed
+biome (or `ZBiome_Grasslands`, unrelated to this file's target list — that one is
+`GRASSLANDS_CAST_DEAD_BIOME_1`'s Pyrelands question, already closed separately). This
+matches `BIOME_OWNERSHIP_WAVE_1`'s own closing verify line ("zero defs from the donor
+list above remain painted") and the prior pass's finding above.
+
+**Action taken**: deleted `BiomeCast_Ashkarr.xml` — `design/Jawa/fauna/` copy,
+`src/RimUtinni/UtinniPatches/Patches/` copy, and the deployed Steam Mods copy (via
+`deploy_custom_mods.py --apply --prune`, verified gone from
+`.../Mods/UtinniPatches/Patches/`). Per CLAUDE.md, deleted outright rather than
+commented out; `cast_assignment.csv` and `decisions_propagated.json` are untouched
+and remain the historical cast record, exactly as this item originally reasoned.
+
+**Kept `gen_cast_patch.py`** (see Owed §2 correction above) and added a refusal guard
+to its `main()`: it now checks whether any `cast_assignment.csv` biome name is
+painted on a live tile before writing anything, and `sys.exit`s with a named reason
+if not, rather than silently writing another dead 16KB patch file. `_animal_side_
+biomes()`, `_vanilla_biomes()` and `_cherry_picker_cuts()` are unaffected and stay
+importable for `biome_wildbiomes_evictions.py` and the other diagnostics below.
+
+**Checked every other reader of `BiomeCast_Ashkarr.xml` before deleting** —
+`src/RimMandrake/Utils/biome_commonality_zeroed.py` (`CAST_PATCH`, guarded with
+`os.path.isfile`, degrades to a clean `sys.exit("UNMEASURED: no cast patch at …")`)
+and `src/RimMandrake/Utils/biome_animal_conflicts.py` (default `casts` list, guarded
+per-path with `os.path.isfile` inside `conflicts()`) both fail safe, not loud, on the
+now-missing file — no crash, no silent wrong number.
+
+🔴 **New, separate, more serious finding this pass surfaced — filed as its own item,
+NOT resolved here**: `design/Jawa/fauna/animal_tolerances.py` (which generates the
+DEPLOYED, currently-live `AnimalTolerances_Ashkarr.xml`, 401 real
+`ComfyTemperatureMin/Max` operations on ~200 animals) has the **same** dead pre-
+migration-name join as this file did, but because its xpath targets the animal's own
+`ThingDef/statBases` rather than a biome defName, its failure mode is NOT a harmless
+no-op — regenerating it today would silently emit **zero** operations and delete a
+live, hard-spawn-gate temperature safety net. See
+`infrastructure/state/items/ANIMAL_TOLERANCES_JOIN_BROKEN_1.md`. Not fixed here —
+out of this item's scope and needs its own pass.
 
 ## Not the cause of the live BMT_ plant crossref errors
 
