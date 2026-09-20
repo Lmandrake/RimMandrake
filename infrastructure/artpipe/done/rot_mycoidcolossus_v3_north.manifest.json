@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 171.49851505600236,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 171.49851505600236,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 2048,
+  "id": "rot_mycoidcolossus_v3_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 90.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T01-22-15-01a0bde8-a4ce-72a0-972c-5620acb5163a.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 42.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 83.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T00-08-09-01a0bda4-ce0e-7fc3-8ef3-c91c85b1e42a.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 41.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 2048,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 2048,
+    "id": "rot_mycoidcolossus_v3_north",
+    "note": "Recomposed as a low, broad rear view matching v2 references. Built-in output was resized from 1254px to the required 2048px while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_mycoidcolossus_v3_north\\rot_mycoidcolossus_v3_north.png",
+    "status": "ok",
+    "width": 2048
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_mycoidcolossus_v3_north/rot_mycoidcolossus_v3_north.png\n    2048x2048  rgba  5,662,274 bytes  (170s)\n"
+}

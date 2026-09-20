@@ -17,11 +17,13 @@
        HISTORY: this mod previously carried a DROID, mis-routed here by the bulk install
        cea007c3a. Those renders were kept, not deleted, at
        src/RimStarWars/Droidworks/ArtIncoming/ on the owner's word.
-       ⚠️ MEASURED and NOT fixed, because it is a cosmetic call that is his: north's
-       subject is 922x981 (aspect 0.94) against south 983x656 and east 1003x671 (aspect
-       ~1.50), so at one drawSize box north draws about half again as tall as the other
-       two facings. That is the same "north is HUGE compared to east" defect he named on
-       Anooba. Recomposing north would change the art, so it waits on his word. -->
+       NORTH RECOMPOSED 2026-09-20 on his ruling ("Recompose north now"). The first
+       north drew at subject aspect 0.94 against south 1.498 and east 1.495, so at one
+       drawSize box it read about half again as tall and the creature appeared to change
+       size as it turned — the defect he named on Anooba. `rot_mycoidcolossus_v3_north`
+       replaces it: wide-and-low stance, caps spreading sideways instead of stacking into
+       a vertical crown. All three facings now measure 1.490-1.498 and carry three
+       distinct sha256s, so no facing is a copy of another. -->
   <description>Replaces sarg.alphaanimals's AA_MycoidColossus art (adult lifeStage look, south/east/north
 facings only - any alternate-skin or dessicated-corpse textures stay on donor
 art) with an invented-recast render generated for this campaign. LABEL/ART
