@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T14:00:27Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-20T14:31:27Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -114,7 +114,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/CAVERNS_PARITY_BUILD_1.md yet — write one when you have something to say)
+summary:  CAVERNSPARITYBUILD1
 prose:    infrastructure/state/items/CAVERNS_PARITY_BUILD_1.md
 
 ## ROT_SIZE_REJUDGE_APPLY_1 Apply the owner's 11 re-judged Rot sizes, measured against the TRUE numbers not the sheet's false ones
@@ -485,7 +485,7 @@ prose:    infrastructure/state/items/ROT_FLORA_FAUNA_VERDICTS_1.md
 ## DEEPS_FAUNA_MECHANICS_2 Deeps fauna mechanics, second pass on DEEPS_FAUNA_MECHANICS_1: grabber-side crush comp + rescue roll, soulchime LoS/damage trigger/psychic-deaf immunity, drinker hydrocarbon-blood extension + fluid-sack gauge + drained-fluids drop
 state:    proposed
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 thin:     no ## verify, no ## criteria
@@ -521,3 +521,33 @@ kind:     bug
 thin:     no ## spec, no ## criteria
 summary:  GRASSLANDSTILESCSVSTALE1 — world/ASHKARRWORLDMAPtiles.csv may be stale vs. the live game for Grasslands/Pyrel…
 prose:    infrastructure/state/items/GRASSLANDS_TILES_CSV_STALE_1.md
+
+## BAZAAR_STOLEN_GOODS_PROPERTY_1 Stolen goods as a trade mechanic: RimProperty integration, the scanner registry, and the transponder reader
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## criteria
+summary:  Buying goods someone else still owns becomes a real decision with real
+prose:    infrastructure/state/items/BAZAAR_STOLEN_GOODS_PROPERTY_1.md
+
+## FALLZONE_LOST_CARGO_QUESTS_1 Injected wreckage in the fall zone leads to quests about lost cargo of interest
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## criteria
+summary:  The wreckage already injected into the fall zone is a quest surface. A manifest
+prose:    infrastructure/state/items/FALLZONE_LOST_CARGO_QUESTS_1.md
+
+## WORLD_REMAKE_FINAL_STEP_1 Remake the world from scratch as the LAST act before the official first play session - expected, not a failure; worldmap + gravship + founders are the only things carried across, everything else regenerates
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Unwritten on purpose — the remake procedure is authored when the gates above are
+prose:    infrastructure/state/items/WORLD_REMAKE_FINAL_STEP_1.md
