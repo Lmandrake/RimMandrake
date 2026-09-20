@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T18:39:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T18:41:30Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -909,15 +909,6 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
-## PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1 plant_tolerances.py verify() reads pre-rename biome_climate.json keys, silently checks 0 rows
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  biomeclimate.json's biomes keys need to match the live RUT/AB-prefixed
-prose:    infrastructure/state/items/PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1523,3 +1514,13 @@ kind:     task
 thin:     no ## spec
 summary:  DESERTDEFHEADERSTALECOUNTS1 — def header comments carry stale counts and donor names
 prose:    infrastructure/state/items/DESERT_DEF_HEADER_STALE_COUNTS_1.md
+
+## PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1 Regenerate + deploy PlantTolerances_Ashkarr.xml now that sheet_demands() sees real sheet medians
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Re-run python3 design/Jawa/mods/planttolerances.py --write, review the diff against the
+prose:    infrastructure/state/items/PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1.md
