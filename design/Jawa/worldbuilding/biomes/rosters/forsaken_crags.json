@@ -293,6 +293,16 @@
       "commonality": 0.2,
       "def": "AB_GiantSeptimum",
       "law": "§7: ultima fibers — the giant septimum's hardened line, per donor lore"
+    },
+    {
+      "commonality": 0.5,
+      "def": "AG_Gamma",
+      "law": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; the_forge → forsaken_crags; owner review 2026-09-11 'to crags'. Corrects flora_move_mapping.md's false 'already in forsaken_crags' claim (MEASURED FALSE, audit 2026-09-12) — the base gamma joins its Giant/Toxic siblings already here; commonality carried over from the_forge.json unchanged"
+    },
+    {
+      "commonality": 0.25,
+      "def": "AG_Septimum",
+      "law": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; the_forge → forsaken_crags; owner review 2026-09-11 'elsewhere, not heat resistant'. Corrects flora_move_mapping.md's false 'already in forsaken_crags' claim (MEASURED FALSE, audit 2026-09-12) — the base septimum joins AB_GiantSeptimum already here; commonality carried over from the_forge.json unchanged"
     }
   ],
   "flora_purged": [

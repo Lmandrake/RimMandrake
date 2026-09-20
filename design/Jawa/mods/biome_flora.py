@@ -77,22 +77,28 @@ DOC = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'biome_flora_rosters
 #   0.2-0.5  punctuation                       <0.2     trees and set pieces
 FAMILIES = {
  'A. dayside desert, badlands and the river jungles': {
-  'RUT_Desert': {   # 2,390 tiles · 5 plants
+  'RUT_Desert': {   # 2,390 tiles · 4 plants — AB_DessertTree purged (SHEET_ORPHAN_
+                     # CONSUMPTION_1, owner ruling 2026-09-20, no successor authored)
     'AB_HardyGrass': 0.6, 'Plant_Chakroot_Wild': 0.3, 'Plant_HubbaGourd_Wild': 0.2,
-    'AB_Aaklac': 0.12, 'AB_DessertTree': 0.06},
+    'AB_Aaklac': 0.12},
   'RUT_Umbra': {   # 2,531 tiles · 4 plants — the_propane_lakes.json's shore flora, rekeyed
-                    # from the pre-rename defName `AB_PropaneLakes` (PROPANE_LAKES_ROSTER_STALE_1)
-    'AB_CrystalHorn': 1.0, 'AB_CrystalFlower': 0.8, 'AB_FrostLeaf': 0.6,
-    'AB_RimeNodules': 0.4},
+                    # from the pre-rename defName `AB_PropaneLakes` (PROPANE_LAKES_ROSTER_STALE_1).
+                    # AB_CrystalFlower moved out (kept only at poison_forest, its "elsewhere");
+                    # PoisonShrub moved in (SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20:
+                    # wasteland -> here, ".8 cells, propane lakes")
+    'AB_CrystalHorn': 1.0, 'AB_FrostLeaf': 0.6,
+    'AB_RimeNodules': 0.4, 'PoisonShrub': 0.35},
   'RUT_CrackedLands': {   # 970 tiles · 6 plants
     'AB_HardyGrass': 1.0, 'GRimMoss': 0.8, 'RUT_TwistingThorngrass': 0.5,
     'RUT_TwistingThornweed': 0.4, 'RUT_TwistingThornwood': 0.2,
     'AB_GargantuanLithops': 0.15},
-  'RUT_PoisonForest': {   # 546 tiles · 9 plants
+  'RUT_PoisonForest': {   # 546 tiles · 9 plants — AB_CrystalHorn moved out (owner review
+                          # 2026-09-20: "propane lakes and blue desert only"); AB_GiantToxicFlower
+                          # moved in (SHEET_ORPHAN_CONSUMPTION_1: wasteland -> here, "poison forest")
     'RUT_TwistingThornwood': 0.6, 'RUT_TreeMartyr': 0.5,
-    'AB_CrystalFlower': 0.5, 'AB_CrystalHorn': 0.4, 'AB_BloodBouquet': 0.4,
+    'AB_CrystalFlower': 0.5, 'AB_BloodBouquet': 0.4,
     'AB_RavenNettle': 0.4, 'AB_RedBugloss': 0.3, 'AB_GiantAgariTox': 0.3,
-    'AB_KeeningCordax': 0.2},
+    'AB_KeeningCordax': 0.2, 'AB_GiantToxicFlower': 0.08},
   'RUT_Greentide': {   # 235 tiles · 11 plants — BMT_GiantLeaf ported to RUT_GiantLeaf
                        # 2026-09-20 (BMT_FLORA_ABSORPTION_1), un-purging the 2026-09-19
                        # CUT_FALLOUT_GENERATED_DATA_1 stopgap now that the port exists
@@ -103,10 +109,14 @@ FAMILIES = {
   'ZBiome_Grasslands': {   # 222 tiles · 1 plant — roster redesigned since 2026-09-09,
                            # was a 3-plant grass mix, now a single grass at higher weight
     'RM_FE_Plant_Quickgrass': 4.0},
-  'RUT_Contagion': {   # 179 tiles · 10 plants
-    'AB_AlienTree': 1.0, 'AB_AlienGrass': 1.0, 'AB_EyeGrass': 0.6, 'AB_RedLeaves': 0.6,
+  'RUT_Contagion': {   # 179 tiles · 10 plants — AB_EyeGrass purged (SHEET_ORPHAN_
+                       # CONSUMPTION_1, owner ruling 2026-09-20, no successor authored);
+                       # RUT_RustPuff moved in (owner review 2026-09-20 (move); the_rot ->
+                       # here; "The Contagion... and hatches occular creature when damaged")
+    'AB_AlienTree': 1.0, 'AB_AlienGrass': 1.0, 'AB_RedLeaves': 0.6,
     'AB_RedPlantsTall': 0.5, 'AB_HalfAlienTree': 0.5, 'AB_TentacularPlant': 0.4,
-    'AB_GlobularPlant': 0.4, 'AB_BloodBouquet': 0.3, 'AB_AlienTree_Polluted': 0.15},
+    'AB_GlobularPlant': 0.4, 'AB_BloodBouquet': 0.3, 'AB_AlienTree_Polluted': 0.15,
+    'RUT_RustPuff': 0.3},
   'RUT_Webwork': {   # 161 tiles · 7 plants
     'AB_JungleTree': 1.1, 'RG_Plant_TropicalChokevine': 1.0, 'AB_TangleTea': 0.4,
     'Plant_TookeTrap_Wild': 0.3, 'AB_Gomphoeria': 0.15, 'AB_RedBugloss': 0.07,
@@ -117,6 +127,20 @@ FAMILIES = {
     'Plant_HydenockTree_Wild': 1.5, 'AB_KeeningCordax': 1.2,
     'Plant_JoganTree_Wild': 0.6, 'RUT_GiantLeaf': 0.8, 'AB_Iashiphus': 0.5, 'AB_Gomphoeria': 0.4,
     'Plant_Chakroot_Wild': 0.4},
+  'RUT_BlueDesert': {   # 0 tiles by prior design (was PLANTLESS, §6 ban 1) — 3 plants added
+                        # 2026-09-20 (SHEET_ORPHAN_CONSUMPTION_1, owner-graded sheet moves):
+                        # AB_CrystalHorn (propane_lakes' own crystal-fuel family, poison_forest
+                        # -> here, "propane lakes and blue desert only" — the shared cold-
+                        # darkside hydrocarbon regime, not a water-metabolism plant) and
+                        # AB_ToxiGrass/PoisonPlantTallGrass (wasteland -> here, "blue desert
+                        # rare", owner's own words). Family A because AB_CrystalHorn is already
+                        # owned by RUT_Umbra/RUT_PoisonForest here — a shared plant can't split
+                        # families. 🔴 If either toxic-grass def turns out to carry an ordinary
+                        # water metabolism, that is a live conflict with the_blue_desert.md §6
+                        # ban 1 ("no water-based plants") — not re-litigated by this pass, which
+                        # only executes the owner's already-graded, already-applied move; flag it
+                        # if BENCH/owner revisits this roster.
+    'AB_CrystalHorn': 0.4, 'AB_ToxiGrass': 0.6, 'PoisonPlantTallGrass': 0.4},
  },
 
  'B. the mycoid and fire massif': {
@@ -129,55 +153,73 @@ FAMILIES = {
                      # BUILD_1 already hand-applied to the deployed patch and a later
                      # --write reverted because this dict (the roster's mirror) still
                      # said BMT_
+    # RUT_Nogtyl moved -> the_miasma, RUT_RustPuff moved -> the_contagion, Boomshroom
+    # purged outright (SHEET_ORPHAN_CONSUMPTION_1, owner ruling 2026-09-20, all three)
     'AB_Bryolux': 10, 'AB_Glowstool': 3, 'AB_Agarilux': 2, 'AB_GiantAgarilux': 2,
     'AB_GlowingAgarilux': 1, 'AB_LilacBeacon': 0.5, 'AB_WitchesOyster': 0.5,
     'RUT_Dewshrooms': 0.5, 'RUT_FruitingBodies': 0.5, 'RUT_Nuitae': 0.5,
-    'RUT_Wrinklecap': 0.5, 'RUT_Arpeau': 0.4, 'RUT_Nogtyl': 0.4,
+    'RUT_Wrinklecap': 0.5, 'RUT_Arpeau': 0.4,
     'AB_RecurvedStropharia': 0.3, 'RUT_FlakespireFungus': 0.3, 'RUT_Pusmelon': 0.3,
-    'RUT_RustPuff': 0.3, 'RUT_Sagecrust': 0.3, 'AB_ArbuscularMycorrhiza': 0.2,
+    'RUT_Sagecrust': 0.3, 'AB_ArbuscularMycorrhiza': 0.2,
     'AB_SlimyPholiota': 0.2, 'RUT_BleedingTooth': 0.2, 'RUT_Brightbell': 0.2,
     'RUT_CrimsonCap': 0.2, 'RUT_GreyLady': 0.2, 'RUT_Shinecap': 0.2,
     'RUT_VioletWimple': 0.2, 'RUT_MortalMorelPlant': 0.15, 'AB_AgaricusDomeCap': 0.1,
-    'AB_DribblingCap': 0.1, 'RUT_Skulltop': 0.1, 'Boomshroom': 0.05,
+    'AB_DribblingCap': 0.1, 'RUT_Skulltop': 0.1,
     'AB_AgariluxPrime': 0.01},
-  'RUT_ForsakenCrags': {   # 1,135 tiles · 6 plants
+  'RUT_ForsakenCrags': {   # 1,135 tiles · 8 plants — AG_Gamma/AG_Septimum moved in
+                           # (SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11 "to
+                           # crags" / "elsewhere, not heat resistant"; flora_move_mapping.md's
+                           # "already in forsaken_crags" claim was false, MEASURED 2026-09-12 —
+                           # this is the actual first landing, joining their Giant/Toxic kin)
     'AB_GlowingGrass': 1.0, 'AB_ToxicGamma': 0.6, 'AB_GiantGamma': 0.5,
-    'AB_WildRadagast': 0.5, 'AB_GiantStikehr': 0.3, 'AB_GiantSeptimum': 0.2},
+    'AB_WildRadagast': 0.5, 'AG_Gamma': 0.5, 'AB_GiantStikehr': 0.3,
+    'AG_Septimum': 0.25, 'AB_GiantSeptimum': 0.2},
   'RUT_WeepingStones': {   # 223 tiles · 4 plants — BMT_Dewshrooms -> RUT_Dewshrooms
                            # 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1), same port as TheRot's
     'Plant_Reeds': 1.0, 'AB_GreenRockFern': 0.4, 'RUT_Dewshrooms': 0.4,
     'Plant_Ambrosia': 0.12},
-  'RUT_Slime': {   # 96 tiles · 6 plants
+  'RUT_Slime': {   # 96 tiles · 5 plants — AB_SlimyPholiota removed as a duplicate listing
+                    # (kept only at the_rot, its "elsewhere"; SHEET_ORPHAN_CONSUMPTION_1,
+                    # owner ruling 2026-09-20)
     'AB_TallSlimyGrass': 1.0, 'AB_SlimyFern': 0.5, 'AB_SlimyTree': 0.5,
-    'AB_Slimecasia': 0.4, 'AB_SlimyPholiota': 0.4, 'AB_LargeSlimyTree': 0.3},
-  'RUT_TheForge': {   # 44 tiles · 13 plants — AB_PyroclasticConflagration (31),
+    'AB_Slimecasia': 0.4, 'AB_LargeSlimyTree': 0.3},
+  'RUT_TheForge': {   # 44 tiles · 10 plants — AB_PyroclasticConflagration (31),
                        # LavaField (8) and Volcano (5) were consolidated into this single
                        # live biome (31+8+5=44 tiles matches exactly); one roster now, not three.
                        # BMT_FireLavender/BMT_Sagecrust/BMT_HeatsinkFungus repointed to their
                        # RUT_ ports 2026-09-20 (BMT_FLORA_ABSORPTION_1) — Sagecrust already
-                       # existed (RotSporeKit), FireLavender/HeatsinkFungus newly ported
+                       # existed (RotSporeKit), FireLavender/HeatsinkFungus newly ported.
+                       # AG_Gamma/AB_GiantGamma/AG_Septimum moved out to forsaken_crags the
+                       # same day (SHEET_ORPHAN_CONSUMPTION_1) — the Forge's 42-56 C floor
+                       # was already above their optimal band (opt max 42 C, MEASURED
+                       # plant_pool.csv), and AB_GiantGamma was already resident at the crags
     'Plant_Fireweed': 0.9, 'Plant_MagmaCactus': 0.7, 'RUT_FireLavender': 0.6,
-    'AG_Gamma': 0.5, 'RUT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
-    'AB_GiantGamma': 0.3, 'AB_TinkleGrass': 0.3, 'IronScruff_PrimordialTallGrass': 0.3,
-    'AG_Septimum': 0.25, 'IronScruff_Bindweed': 0.25, 'AB_FirevineTree': 0.2,
+    'RUT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
+    'AB_TinkleGrass': 0.3, 'IronScruff_PrimordialTallGrass': 0.3,
+    'IronScruff_Bindweed': 0.25, 'AB_FirevineTree': 0.2,
     'RUT_HeatsinkFungus': 0.2},
  },
 
  'C. contamination': {
-  'RUT_Wasteland': {   # 1,853 tiles · 14 plants — 11 Polluted-Lands filler rows cut
+  'RUT_Wasteland': {   # 1,853 tiles · 9 plants — 11 Polluted-Lands filler rows cut
                         # 2026-09-18 (POLLUTED_LANDS_FLORA_PORT_1); toxic-ground identity
-                        # already carried by the vanilla/AB_ poison flora below
-    'RG_Plant_ToxiGrass': 1.2, 'RG_Plant_TallToxiGrass': 0.8, 'AB_ToxiGrass': 0.6,
-    'PoisonPlantTallGrass': 0.4, 'Plant_GrayGrass': 0.35,
-    'PoisonShrub': 0.35, 'RUT_ScorchedStars': 0.3,
-    'PoisonPlantBush': 0.3, 'AB_WeepingToxberry': 0.2,
+                        # already carried by the vanilla/AB_ poison flora below.
+                        # AB_ToxiGrass/PoisonPlantTallGrass -> the_blue_desert, PoisonShrub
+                        # -> the_propane_lakes, AB_GiantToxicFlower -> poison_forest (all
+                        # moved), PoisonPlantBush purged outright (all SHEET_ORPHAN_
+                        # CONSUMPTION_1, owner ruling 2026-09-20)
+    'RG_Plant_ToxiGrass': 1.2, 'RG_Plant_TallToxiGrass': 0.8,
+    'Plant_GrayGrass': 0.35, 'RUT_ScorchedStars': 0.3,
+    'AB_WeepingToxberry': 0.2,
     'Plant_Toxipotato': 0.2,
     'AB_ToxiBulb': 0.1, 'Plant_TreePolux': 0.1,
-    'AB_GiantToxicFlower': 0.08, 'VRE_PoluxBush': 0.08},
-  'RUT_Miasma': {   # 93 tiles · 3 plants — 4 Polluted-Lands understory rows cut
+    'VRE_PoluxBush': 0.08},
+  'RUT_Miasma': {   # 93 tiles · 4 plants — 4 Polluted-Lands understory rows cut
                      # 2026-09-18 (POLLUTED_LANDS_FLORA_PORT_1); the mangal family below
-                     # was already 92% of this roster's weight
-    'AB_MangroveTree': 25, 'AB_ParasiticMangrove': 8, 'AB_MangrovePalm': 6},
+                     # was already 92% of this roster's weight. RUT_Nogtyl moved in from
+                     # the_rot (SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20 "miasma")
+    'AB_MangroveTree': 25, 'AB_ParasiticMangrove': 8, 'AB_MangrovePalm': 6,
+    'RUT_Nogtyl': 0.4},
   'RUT_Scarlands': {   # 90 tiles · 1 plants
     'RUT_ScorchedStars': 0.25},
  },
@@ -219,7 +261,6 @@ FAMILIES = {
 #   RUT_NightsideIce   nightside_ice.json flora_purged "ALL": §6 admits no photosynthesis
 #                      or photosynthetic tissue of any kind, no soil, nothing that reads
 #                      as a plant.
-#   RUT_BlueDesert     the_blue_desert.json lands zero flora rows (§6 ban 1).
 #   RUT_RustCathedral  the_rust_cathedral.json lands zero flora rows. (Renamed from
 #                      AB_MechanoidIntrusion — both defs still exist in the dump with the
 #                      same label/description, but only RUT_RustCathedral is on the live map.)
@@ -231,7 +272,12 @@ FAMILIES = {
 #                      Its life is the ruled propane-native exotics, owed as new defs.
 # Ocean/Lake/SeaIce/IceSheet are not painted on Ash'karr at all and are kept only so this
 # set still answers for a world that carries them.
-PLANTLESS = {'RUT_NightsideIce', 'RUT_BlueDesert', 'RUT_RustCathedral',
+# 🔴 RUT_BlueDesert moved OUT of this set 2026-09-20 (SHEET_ORPHAN_CONSUMPTION_1) — the
+# roster now carries 3 flora rows from the owner-graded flora move sheet. This is in
+# tension with the_blue_desert.md §6 ban 1 ("no water-based plants or animals"); not
+# re-litigated here (see the RUT_BlueDesert family-A entry above), flagging for whoever
+# next reads that sheet's hard bans.
+PLANTLESS = {'RUT_NightsideIce', 'RUT_RustCathedral',
              'RUT_TwilightSea', 'RUT_GreySea', 'RUT_TheScald', 'RUT_PropaneLake',
              'Ocean', 'Lake', 'SeaIce', 'IceSheet'}
 
