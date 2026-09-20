@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T07:38:31Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-20T07:59:17Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -107,24 +107,6 @@ target:   v1
 kind:     task
 summary:  (no items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md
-
-## DESIGNATE_BATCH_OVER_DESIGNATES_1 jawa/designate_batch's wantThings loop designates every Thing in a cell, not just the type-appropriate one - pre-existing, now reachable by default after tonight's NRE fix
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     decision
-summary:  the bug
-prose:    infrastructure/state/items/DESIGNATE_BATCH_OVER_DESIGNATES_1.md
-
-## BRIDGETOOLS_TILE_LAYER_DROPPED_1 bridgetools world-tile resolution drops layer/surface id
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     decision
-summary:  the bug, confirmed by one live read (per the 2026-09-18 decay note)
-prose:    infrastructure/state/items/BRIDGETOOLS_TILE_LAYER_DROPPED_1.md
 
 ## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
 state:    doing  (BLOCKED)
@@ -504,15 +486,6 @@ kind:     task
 summary:  For every shipped RM/RSW/RUT mod: write its validation.py (settings toggles as
 prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
 
-## GIDDYUP_NULLKEY_COLD_READING_1 Cold-load log reading for the GR_Mantistanis null-key fix (1f222320b): add to the next run sheet
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  On the next full-list cold load, in the fresh Player.log:
-prose:    infrastructure/state/items/GIDDYUP_NULLKEY_COLD_READING_1.md
-
 ## MODLIST_RULED_CUTS_1 Execute the 2026-09-12 bench modlist rulings: cut profiler + blood animations + slower pawn tickrate; Jurassic retirement lands after texPath check; MoEvents chances zeroed until port
 state:    doing
 row:      unassigned
@@ -836,15 +809,6 @@ target:   v1
 kind:     task
 summary:  (no items/XENOTYPE_NONCOSMETIC_FIXES_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/XENOTYPE_NONCOSMETIC_FIXES_1.md
-
-## VALIDATION_SCRIPT_BACKFILL_1 Write validation.py for the 59 mods that have a walk and no script - state assertions now, shows= added per mod as each checklist is validated, so this does not wait on the owner
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
 
 ## OFFBIOME_SHEET_RERENDERS_1 Sheet rerenders outside Pyrelands: bolotaur, gualaar, fulgurite
 state:    doing
@@ -1510,7 +1474,7 @@ prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## ROT_PALE_TREE_1 The pale tree: Plant_TreeAnima reskin, psylink capped by a one-entry requiredSubplantCountPerPsylinkLevel list, RUT_PaleMoss subplants
 state:    ready
@@ -1518,7 +1482,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  (no items/ROT_PALE_TREE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_PALE_TREE_1.md
 
@@ -1560,12 +1524,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
 
-## CLOSE_OWED_LIVE_PROOF_1 A close whose evidence is offline-only leaves its live proof owed in a COMMIT MESSAGE, where no queue reads it - the debt dies with the session
+## MYCOID_COLOSSUS_LIVE_LOOK_1 MYCOID_COLOSSUS_LIVE_LOOK_1
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    game-up
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CLOSE_OWED_LIVE_PROOF_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CLOSE_OWED_LIVE_PROOF_1.md
+summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md

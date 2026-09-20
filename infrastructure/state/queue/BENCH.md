@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T07:54:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T07:59:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -521,13 +521,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask (owner, 2026-09-19)
 prose:    infrastructure/state/items/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md
-
-## MYCOID_COLOSSUS_ART_MISROUTE_1 Vorrugath/mycoid colossus rendered as a DROID; our override art was mis-routed by the bulk install
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  MYCOIDCOLOSSUSARTMISROUTE1
-prose:    infrastructure/state/items/MYCOID_COLOSSUS_ART_MISROUTE_1.md
