@@ -11,45 +11,51 @@ still refused.** Every count in "Measured" below is the PRE-scrub state.
 
 ## Measured
 
-MEASURED 2026-09-19 (FOUNDRY, offline). Both lists parsed with `ElementTree`,
-never grepped — `ModsConfig.xml` puts many `<li>` on one line and a
-`grep -c '<li>'` returns a plausible wrong number.
+RE-MEASURED 2026-09-20 by BENCH, superseding the 2026-09-19 pass. Both lists parsed
+with `ElementTree` — the save by streaming `iterparse` and stopping at `</meta>`, so
+the 17.6 MB body is never loaded. ⛔ Never `grep -c '<li>'` either file.
 
-- `CANONICAL_ASHKARR_START_2026-09-12.rws` — `<meta><modIds>`: **635** entries
-  pre-scrub, **630** now.
-  `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/CANONICAL_ASHKARR_START_2026-09-12.rws`
-- Live `activeMods`: **621** entries (**620** when re-read during the scrub).
-  `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml`
-  ⚠️ This file describes the NEXT load, and it was being rewritten by the other
-  window during this measurement (it read 632 an hour earlier) — so the count is a
-  moment, not a constant. The absence **set** below is the durable finding.
-- **19 mods the save needed and the live list lacked** (re-measured during the
-  scrub; the first pass recorded 16 and missed the last three rows):
+- `CANONICAL_ASHKARR_START_2026-09-12.rws` — `<meta><modIds>`: **630** entries.
+- Live `activeMods`: **617** entries. ⚠️ This file describes the NEXT load and other
+  windows rewrite it, so the count is a moment; the absence **set** is the durable
+  finding.
+- **18 mods the save needs and the live list lacks** — not the 14 this item
+  previously recorded. Four more `*ArtOverride` retirements landed after that pass:
+  `barbslinger`, `boomsnake`, `firewasp`, `razorjack`.
+- 5 mods live but not in the save (harmless — a save loads fine with extras).
 
-| packageId | name | why absent |
-|---|---|---|
-| `biomesteam.biomescaverns` | Biomes! Caverns | **deliberately cut** 2026-09-18 (`ModsConfig_before_caverns_cut_2026-09-18.xml`) |
-| `mandrake.rut.puffmiteartoverride` | Puffmite Art Override | **deliberately retired** 2026-09-18 (`ModsConfig_before_artoverride_retire_2026-09-18.xml`) |
-| `mandrake.rut.kroffaartoverride` | Kroffa Art Override | same retirement |
-| `mandrake.rut.aaroxisdendoriaartoverride` | AaroxisDendoria Art Override | same retirement |
-| `mandrake.rut.bloodletterpetrelartoverride` | BloodletterPetrel Art Override | same retirement |
-| `mandrake.rut.bovinebeetleartoverride` | BovineBeetle Art Override | same retirement |
-| `mandrake.rut.cresteddragonartoverride` | CrestedDragon Art Override | same retirement |
-| `mandrake.rut.foundrybeetleartoverride` | FoundryBeetle Art Override | same retirement |
-| `mandrake.rut.fungalmantisartoverride` | FungalMantis Art Override | same retirement |
-| `mandrake.rut.jamelartoverride` | Jamel Art Override | same retirement |
-| `mandrake.rut.screecherartoverride` | Screecher Art Override | same retirement |
-| `als.gravtech` | GravTech | deliberate (`RESEARCH_TRIO_RETIRE_1`) — ✅ **SCRUBBED** |
-| `als.gravtech.bc` | GravTech - Big cannons | deliberate (same) — ✅ **SCRUBBED** |
-| `halituisamaricanous.gravtechbigcannons` | GravTech - Big cannons Retextured | deliberate (same) — ✅ **SCRUBBED** |
-| `petetimessix.researchreinvented.steppingstones` | Research Reinvented: Stepping Stones | deliberate (same) — ✅ **SCRUBBED** |
-| `biomesteam.biomespollutedlands` | Biomes! Polluted Lands | deliberate (`POLLUTED_LANDS_FLORA_PORT_1`) — ✅ **SCRUBBED** |
-| `badoaks.meatonastick` | Meat on a Stick | 🔴 **untraced**. ON DISK: workshop `3435027361` *and* `3577333297` |
-| `badoaks.meatonastick.expansion` | Meat on a Stick - Expansion | 🔴 **untraced**. **NOT on disk** — restoring it is a Steam action, not a ModsConfig edit |
-| `guy762.mm.kotorcore` | Star Wars KotOR Resources and Materials | 🔴 **untraced**. ON DISK: workshop `3254370945` |
+### 🔴 14 of the 18 CANNOT be restored, because they are not on disk
 
-- 2 mods live but not in the save (harmless — a save loads fine with extra mods):
-  `mandrake.rm.weathersuite`, `mandrake.rut.lanterndeeps`.
+This is the finding that changes his decision, and the previous pass did not have it.
+
+| group | count | on disk? | restorable by a ModsConfig edit? |
+|---|---|---|---|
+| `mandrake.rut.*artoverride` (the retirement wave) | **14** | 🔴 **no folder exists** | ⛔ **no — nothing to activate** |
+| `biomesteam.biomescaverns` | 1 | yes, workshop `2969748433` | ✅ yes |
+| `badoaks.meatonastick` | 1 | yes, workshop `3435027361` | ✅ yes |
+| `badoaks.meatonastick.expansion` | 1 | yes, workshop `3577333297` | ✅ yes |
+| `guy762.mm.kotorcore` | 1 | yes, workshop `3254370945` | ✅ yes |
+
+The 14 are: `puffmite`, `kroffa`, `aaroxisdendoria`, `barbslinger`,
+`bloodletterpetrel`, `boomsnake`, `bovinebeetle`, `cresteddragon`, `firewasp`,
+`foundrybeetle`, `fungalmantis`, `jamel`, `razorjack`, `screecher`. They were
+**rehomed into SWBestiary and their folders deleted** (`3f891c5c7`,
+`CAVERNS_ARTOVERRIDE_REHOME_1`) — the art survives, the mods do not. 47 other
+`*ArtOverride` folders are still on disk, so this is a targeted retirement, not a
+wholesale one.
+
+⇒ **Route 1 (restore) does not exist for 14 of the 18.** For those, only scrub-and-
+re-mint or force-load are available. Route 1 is a live option only for Caverns, the
+two Meat on a Stick mods and KotOR Resources.
+
+### Corrections to the previous pass
+
+- ⛔ **"`badoaks.meatonastick.expansion` is NOT on disk — restoring it is a Steam
+  action" is FALSE.** It is installed at workshop `3577333297`. All four non-
+  ArtOverride absences are ordinary ModsConfig edits; none needs Steam.
+- The ArtOverride count was 10; it is **14**.
+- The live count was 621; it is **617**.
+- The live-but-not-in-save count was 2; it is **5**.
 
 ## Why this needs the owner, not a seat
 
@@ -64,10 +70,12 @@ He picked **route 2 for the 5 ported-then-cut mods** (*"Yes, scrub it now"*,
 2026-09-19) and that is applied. The route for the remaining **14** — Caverns, the
 10 ArtOverrides, and the 3 untraced — is still his:
 
-1. **Restore** those 14 to the live list (reverts the Caverns and ArtOverride
-   cuts for the campaign's sake). ModsConfig write — expensive list.
-   `badoaks.meatonastick.expansion` is not installed, so for that one this is a
-   Steam action, not a ModsConfig edit.
+1. **Restore** — available for only **4** of the 18: Caverns, the two Meat on a
+   Stick mods and KotOR Resources. All four are on disk, so all four are ordinary
+   ModsConfig writes (expensive list, his call). ⛔ **Not available for the 14
+   ArtOverrides at all** — their folders were deleted when they were rehomed into
+   SWBestiary, so there is nothing to activate. Whatever he picks, the 14 need
+   route 2 or route 3.
 2. **Scrub and re-mint** the canonical save against the current list. The `<meta>`
    half is cheap (the 5-mod scrub took 15 lines and 477 bytes). The DATA half is
    much larger: `CANONICAL_SAVE_CAVERNS_SCRUB_1`'s own finding MEASURED **3,279
