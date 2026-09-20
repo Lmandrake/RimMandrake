@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:31:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T19:33:28Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -935,15 +935,6 @@ target:   v1
 kind:     task
 summary:  EXTREMEDESERTCAVERNBEAST1 — author the Mandalorian cave-beast and its eggs
 prose:    infrastructure/state/items/EXTREME_DESERT_CAVERN_BEAST_1.md
-
-## DESERT_BURST_PREDATOR_FLAGSHIP_1 Author the desert's burst-predator flagship, blocked on ShadeAt
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  DESERTBURSTPREDATORFLAGSHIP1 — the desert's burst-predator flagship
-prose:    infrastructure/state/items/DESERT_BURST_PREDATOR_FLAGSHIP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

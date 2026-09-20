@@ -10311,3 +10311,4 @@
 {"seat":"FOUNDRY","event":"start","id":"EXTREME_DESERT_CAVERN_BEAST_1","ts":"2026-09-20T19:28:21Z"}
 {"seat":"FOUNDRY","event":"file","id":"DRUM_LURE_PREDATOR_BUILD_1","title":"Drum-lure subsurface predator (vibration-lure ambush) + egg-trap clutch","kind":"build","target":"v1","needs":"offline","caused_by":"EXTREME_DESERT_SUBSURFACE_PREDATOR_1","for":"FOUNDRY","ts":"2026-09-20T19:30:51Z"}
 {"seat":"FOUNDRY","event":"close","id":"EXTREME_DESERT_SUBSURFACE_PREDATOR_1","sha":"1a0c8969c","reason":"RSW_SandLion (AA_SandLion port) wired into RUT_ExtremeDesert wildAnimals at 0.5; DRUM_LURE_PREDATOR_BUILD_1 filed for the drum-lure predator + egg-trap clutch, no overlap with SARLACC_HABITAT_BUILD_1's own clutch mechanic","ts":"2026-09-20T19:31:31Z"}
+{"seat":"FOUNDRY","event":"close","id":"DESERT_BURST_PREDATOR_FLAGSHIP_1","sha":"1d9360a71a4a3ea473b9e253c68fad41b8fe6237","ts":"2026-09-20T19:33:28Z"}
