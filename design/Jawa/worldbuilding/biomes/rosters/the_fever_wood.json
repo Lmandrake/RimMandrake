@@ -261,6 +261,11 @@
       "commonality": 0.4,
       "def": "Plant_Chakroot_Wild",
       "law": "SW root plant — water-table feeder read (§3)"
+    },
+    {
+      "commonality": 0.8,
+      "def": "RUT_GiantLeaf",
+      "law": "understory canopy leaf. Un-purged (BMT_FLORA_ABSORPTION_1, 2026-09-20): biomesteam.biomescaverns retired 2026-09-19 cut BMT_GiantLeaf as a stopgap marked \"port/replace owed\"; ported field-for-field to src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_CavernsFlora.xml"
     }
   ],
   "flora_purged": [
@@ -307,10 +312,6 @@
     {
       "def": "Plant_Rafflesia",
       "reason": "Earth-nameable (rafflesia)"
-    },
-    {
-      "def": "BMT_GiantLeaf",
-      "reason": "Biomes! Caverns retired (CAVERNS_PARITY_BUILD_1/CUT_FALLOUT_GENERATED_DATA_1, 2026-09-19) — no RUT_ port exists yet for this commonality-0.8 understory slot (unlike the_rot.json's 18 same-shape renames); cut-not-port stopgap so the roster stops naming a dead def, port/replace owed"
     }
   ],
   "law_sources": [

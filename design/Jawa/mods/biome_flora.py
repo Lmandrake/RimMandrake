@@ -93,11 +93,11 @@ FAMILIES = {
     'AB_CrystalFlower': 0.5, 'AB_CrystalHorn': 0.4, 'AB_BloodBouquet': 0.4,
     'AB_RavenNettle': 0.4, 'AB_RedBugloss': 0.3, 'AB_GiantAgariTox': 0.3,
     'AB_KeeningCordax': 0.2},
-  'RUT_Greentide': {   # 235 tiles · 10 plants — BMT_GiantLeaf (1.0, commonality-top
-                       # understory slot) cut 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1):
-                       # Biomes! Caverns retired, no RUT_ port exists yet, port owed
+  'RUT_Greentide': {   # 235 tiles · 11 plants — BMT_GiantLeaf ported to RUT_GiantLeaf
+                       # 2026-09-20 (BMT_FLORA_ABSORPTION_1), un-purging the 2026-09-19
+                       # CUT_FALLOUT_GENERATED_DATA_1 stopgap now that the port exists
     'AB_JungleTree': 3.0, 'Plant_HydenockTree_Wild': 1.5, 'Plant_JoganTree_Wild': 1.2,
-    'Plant_MujaFruit_Wild': 1.0, 'Plant_HubbaGourd_Wild': 0.8,
+    'Plant_MujaFruit_Wild': 1.0, 'RUT_GiantLeaf': 1.0, 'Plant_HubbaGourd_Wild': 0.8,
     'Plant_FelucianGlowspore_Wild': 0.6, 'AB_SugarFamewort': 0.6,
     'Plant_TookeTrap_Wild': 0.5, 'Plant_Bubblespore_Wild': 0.5, 'Plant_Chakroot_Wild': 0.5},
   'ZBiome_Grasslands': {   # 222 tiles · 1 plant — roster redesigned since 2026-09-09,
@@ -111,11 +111,11 @@ FAMILIES = {
     'AB_JungleTree': 1.1, 'RG_Plant_TropicalChokevine': 1.0, 'AB_TangleTea': 0.4,
     'Plant_TookeTrap_Wild': 0.3, 'AB_Gomphoeria': 0.15, 'AB_RedBugloss': 0.07,
     'AB_Aaklac': 0.05},
-  'RUT_FeverWood': {   # 43 tiles · 6 plants — BMT_GiantLeaf (0.8, understory slot) cut
-                       # 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1): Biomes! Caverns
-                       # retired, no RUT_ port exists yet, port owed
+  'RUT_FeverWood': {   # 43 tiles · 7 plants — BMT_GiantLeaf ported to RUT_GiantLeaf
+                       # 2026-09-20 (BMT_FLORA_ABSORPTION_1), un-purging the 2026-09-19
+                       # CUT_FALLOUT_GENERATED_DATA_1 stopgap now that the port exists
     'Plant_HydenockTree_Wild': 1.5, 'AB_KeeningCordax': 1.2,
-    'Plant_JoganTree_Wild': 0.6, 'AB_Iashiphus': 0.5, 'AB_Gomphoeria': 0.4,
+    'Plant_JoganTree_Wild': 0.6, 'RUT_GiantLeaf': 0.8, 'AB_Iashiphus': 0.5, 'AB_Gomphoeria': 0.4,
     'Plant_Chakroot_Wild': 0.4},
  },
 
@@ -152,12 +152,15 @@ FAMILIES = {
     'AB_Slimecasia': 0.4, 'AB_SlimyPholiota': 0.4, 'AB_LargeSlimyTree': 0.3},
   'RUT_TheForge': {   # 44 tiles · 13 plants — AB_PyroclasticConflagration (31),
                        # LavaField (8) and Volcano (5) were consolidated into this single
-                       # live biome (31+8+5=44 tiles matches exactly); one roster now, not three
-    'Plant_Fireweed': 0.9, 'Plant_MagmaCactus': 0.7, 'BMT_FireLavender': 0.6,
-    'AG_Gamma': 0.5, 'BMT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
+                       # live biome (31+8+5=44 tiles matches exactly); one roster now, not three.
+                       # BMT_FireLavender/BMT_Sagecrust/BMT_HeatsinkFungus repointed to their
+                       # RUT_ ports 2026-09-20 (BMT_FLORA_ABSORPTION_1) — Sagecrust already
+                       # existed (RotSporeKit), FireLavender/HeatsinkFungus newly ported
+    'Plant_Fireweed': 0.9, 'Plant_MagmaCactus': 0.7, 'RUT_FireLavender': 0.6,
+    'AG_Gamma': 0.5, 'RUT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
     'AB_GiantGamma': 0.3, 'AB_TinkleGrass': 0.3, 'IronScruff_PrimordialTallGrass': 0.3,
     'AG_Septimum': 0.25, 'IronScruff_Bindweed': 0.25, 'AB_FirevineTree': 0.2,
-    'BMT_HeatsinkFungus': 0.2},
+    'RUT_HeatsinkFungus': 0.2},
  },
 
  'C. contamination': {
