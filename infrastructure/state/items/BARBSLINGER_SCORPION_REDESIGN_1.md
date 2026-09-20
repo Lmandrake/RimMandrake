@@ -81,18 +81,68 @@ elsewhere in this file (see Flamefang) as the established pattern for "this
 mod's own toxin, not AA's" — the missile weapon's damage/venom should reuse
 that idiom rather than inventing a third one.
 
-## needs: owner
+## needs: deploy (live spot-check owed at next restart)
 
 2026-09-20: all 3 renders landed (`barbslinger_redesign_v1_{south,east,north}`,
 `infrastructure/artpipe/_artsrc/.../*.png`, `facts: PASS` on all three, no
 obvious defects on look — two independent tails each with a large needle tip,
 bulbous domed body, consistent yellow-gold, no missing limbs). Built a 3-facing
-review page: https://claude.ai/artifact/TqEA4oxv57teqaLAczUZ8n. Not wired into
-`RUT_Barbslinger`'s texPath yet and the turret-gun mechanics are not built —
-both wait on his verdict per this item's own instruction ("candidates go to
-the owner's eye before wiring"; tail geometry decides the turret-gun shape).
+review page: https://claude.ai/artifact/TqEA4oxv57teqaLAczUZ8n.
 
-Def/mechanics work correctly waits on reviewed art (tail geometry decides
-the turret-gun shape), not on the owner. Reclaim once
-`barbslinger_redesign_v1_*` lands in `infrastructure/artpipe/done/` and has
-been shown to the owner.
+**Owner approved, typed verbatim this session: "Approve barbslinger."**
+
+Tail geometry read off the art: the two tails are spatially distinct in all
+three facings (splayed left/right south and north, stacked along the back
+east) — separate independently-posed limbs, not a merged shape. Built
+**option (b): two separate `CompProperties_TurretGun` instances**, one per
+tail.
+
+Wired and deployed (`deploy_custom_mods.py --mod UtinniPatches --apply`,
+4 files VERIFIED in sync):
+- 3 art files copied over `RUT_Barbslinger`'s existing texPath
+  (`Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger_{south,east,north}.png`).
+- New `RUT_BarbslingerTailGun` `ThingDef` (`ParentName="BaseWeaponTurret"`,
+  same shape as vanilla's `Gun_ChargeBlasterTurret`/`Mech_Warqueen`,
+  RimSage-verified) — verbs-only, no `graphicData` rendered on the pawn (no
+  `renderNodeProperties` on the comps below, RimSage-confirmed optional on
+  `CompProperties_TurretGun`/`CompTurretGun.CompRenderNodes()`), so the
+  redesigned art's own tails are the only thing drawn. `defaultProjectile`
+  is vanilla Anomaly's own `Bullet_ToxicNeedleGun` (`Gun_ToxicNeedle`'s ammo)
+  **unchanged** — its `damageDef` `BulletToxic` already carries
+  `additionalHediffs` into `ToxicBuildup`, the SAME vanilla venom idiom
+  `RUT_Barbslinger`'s own existing "sting" tool uses (`ToxicBite` capacity)
+  — reused rather than inventing a third toxin pattern, and it happens to
+  already be a literal "toxic needle." `range=15.9`, `minRange=2.9`,
+  `defaultCooldownTime=5`.
+- Two `CompProperties_TurretGun` instances added to `RUT_Barbslinger`'s
+  `<race>` block, both referencing `RUT_BarbslingerTailGun`.
+- Pincers/sting tools left **unchanged** — "then close for pincer assault"
+  was not built as new logic. RimSage-verified mechanism instead
+  (`Verse/Pawn.cs TryGetAttackVerb`, `RimWorld/JobGiver_Manhunter.cs`): a
+  wild animal's own combat think tree calls `pawn.TryGetAttackVerb(target)`
+  with `allowTurrets` defaulting `false`, so movement/melee-job selection is
+  driven off the pincer tools regardless of the turret comps, while
+  `CompTurretGun.CompTick()` fires the tail verb completely independently,
+  every tick, whenever a target sits in `[minRange, range]`. **Assumption,
+  not yet observed live:** that this reads in play as "shoot from range,
+  then close for pincer assault" rather than something else (e.g. the
+  animal closing to melee while the tails also keep firing over its own
+  shoulder at the same target — vanilla doesn't forbid both firing at once).
+
+`validate_patch.py` (no `--defs`, dump path not on hand this pass): 0 errors,
+13 warnings, all pre-existing-pattern (vanilla asset-bundle texPaths this
+file already uses elsewhere, e.g. `Dessicated_Megaspider`) or the new
+`RUT_BarbslingerTailGun` texPath following that same accepted pattern.
+`ParentName="BaseWeaponTurret"` confirmed to exist in vanilla via RimSage
+(Gun_ChargeBlasterTurret's raw def), not confirmed against this mod's own
+live def-resolution pass.
+
+**NOT live-tested — owed at the next restart** (batched with
+`BRIDGETOOLS_TILE_LAYER_DROPPED_1`, `DESIGNATE_BATCH_OVER_DESIGNATES_1`,
+`PYRELANDS_WEATHER_SCAR_ART_1`, same session): spawn a `RUT_Barbslinger`,
+confirm two `CompProperties_TurretGun` comps present and both resolve
+`RUT_BarbslingerTailGun` cleanly (no ConfigErrors on load — watch
+`Player.log` for `RUT_BarbslingerTailGun`/`RUT_Barbslinger` config-error
+lines), confirm the ranged verb actually fires on a distant hostile and
+goes quiet inside `minRange`, confirm pincers still land in melee. Close
+once that's observed.
