@@ -380,19 +380,6 @@ UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml    # BENCH: n
 #    deploy together in one --apply, same pattern as the holds above.
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_DryAirBlower.xml   # BENCH: no art yet, 2026-09-14
 
-# --- FISH_BESTIARY_BUILD_1 wave 5: Twilight Deep fishTypes, structurally HELD ---
-# Owner-ruled hold (fish_bestiary_commission_2026-09-10.md §2D, ratified
-# 2026-09-18), not a missing-art gap: RUT_TwilightSea is ONE BiomeDef shared
-# by the ruled no-fish SURFACE and the fishable UNDER-ROOF deep water.
-# Applying this patch would make the surface fishable too. Not resolvable by
-# GravTide's existing dive mechanism — MEASURED wave 5: its seabed maps
-# (Biomes_Seabed.xml) are dry, maxFishPopulation 0, no water on them at all.
-# Needs a new BiomeDef/map layer for the under-roof water plus a way to
-# reach it (new biome/mechanism authoring) before this can deploy.
-# => LIFT when the under-roof water gets its own def/layer — see
-#    FISH_BESTIARY_BUILD_1 wave 5 section for the open question filed on it.
-UtinniPatches/Patches/BiomeFishTypes_TwilightDeep.xml   # FOUNDRY: structurally HELD, needs a new under-roof water layer, 2026-09-18
-
 # --- LanternDeeps: donor-free parity build waits for the shutdown window ---
 # CAVERNS_PARITY_BUILD_1 (BENCH, 2026-09-18): the new defs reference GenStep
 # classes in the rebuilt DLL, and a DLL cannot be written while the game runs.
