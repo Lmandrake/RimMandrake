@@ -98,8 +98,9 @@ Stated so a linter can check it — for every rostered animal `A`:
 
 1. **Domain** `B(A)` = the biome keys assigned by
    `review/round2/decisions_propagated.json` (fauna rows `decision: in`) plus
-   `review/round2/move_mapping_v2.md` resolved targets (rosters lag until
-   ROSTER_MOVE_APPLY_1 lands).
+   `review/round2/move_mapping_v2.md` resolved targets (the 114 ruled moves
+   landed in `biomes/rosters/*.json` — `ROSTER_MOVE_APPLY_1` closed
+   2026-09-11 — so rosters no longer lag the mapping).
 2. **Envelope**: per biome key, map to its painted BiomeDef(s) via
    `biomes/_def_bindings_2026-09-09.md` (the painted CSV wins), then over that
    def's tiles in `world/ASHKARR_WORLDMAP_tiles.csv`:

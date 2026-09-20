@@ -135,9 +135,11 @@ currently starts at blasters with nothing beneath them.
 
 **Route.** Reflavor label/description only; keep the defs and the
 `BioferriteShaper` as their bench. **Gated on cluster 1** — no beast-metal, no
-charge. If the owner takes option (c) on `ANOMALY_EXCEPTION_ACCESS_1`, patch
-both costLists to `Chemfuel` and the family stands alone. **[HYPOTHESIS — the
-costList patch is trivially expressible but has not been written or tested]**
+charge. `ANOMALY_EXCEPTION_ACCESS_1` closed 2026-09-04 on option (b), the
+Memory-Core reveal event — option (c) (no player access at all) is DEAD, so
+this costList-patch branch will never trigger; the family stays gated on
+cluster 1 as written above. **[HYPOTHESIS — the costList patch is trivially
+expressible but has not been written or tested]**
 
 ## 3. Clean industrial gear misfiled in the Anomaly tab — RECOVER (2 rows)
 

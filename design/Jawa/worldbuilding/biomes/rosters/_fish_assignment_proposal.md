@@ -128,9 +128,11 @@ terrain) but Earth names linger in def data; the sweep should take them too.
    flatten-to-one-family outcome the other way — *"Commission lots of fishes!
    ... a plethora of different kinds for each biome ... Squid like. Octopus
    like. Eel like. Crustaceans. Floaters. Jellyfish. Cucumbers. Bring in that
-   Star Wars creature richness."* Filed as `FISH_BESTIARY_COMMISSION_1`; the
-   swfish_-backed tables above ship as v1 placeholders until the bestiary lands.
+   Star Wars creature richness."* Filed as `FISH_BESTIARY_COMMISSION_1`
+   (superseded by `FISH_BESTIARY_BUILD_1`, now the live build item — wave 2
+   already shipped the wasteland brine-mining mechanism); the swfish_-backed
+   tables above ship as v1 placeholders until the bestiary lands.
 5. **New-def commissioning order: all four wait** for their biomes' build passes
    (Scald thermophile, Cathedral coolant eel, wasteland brine-battery, twilight
-   silver shoal) — but they fold into the `FISH_BESTIARY_COMMISSION_1` scope
-   when that item runs.
+   silver shoal) — but they fold into `FISH_BESTIARY_BUILD_1`'s scope (the
+   commission item's successor) as its waves land.
