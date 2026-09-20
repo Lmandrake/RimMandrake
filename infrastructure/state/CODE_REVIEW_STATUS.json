@@ -6052,10 +6052,10 @@
     "sha": "9e5089f22"
   },
   "src/RimMandrake/Utils/queue_staleness_review.py": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "b0a2f072818d1a482ba4f6639572dabc779bdb93cf4f1932de546b5b9a3aa0b7",
-    "sha": "d79860270"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "bf72ee54e18aa243ab56d4d417b0f36ac30fd452688c4ac8c6560a08ff84a9be",
+    "sha": "3c987c56f"
   },
   "src/RimMandrake/Utils/refresh.py": {
     "cleanCount": 2,
