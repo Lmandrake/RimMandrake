@@ -137,3 +137,39 @@ decision; each is work.
   Settings entries (Ikee, Livestock, BeastMechanics). `MOD_OPTIONS_RETROFIT_1`
   owes this mod one consolidated screen; this item deliberately did not start
   that, because merging the assemblies is a bigger change than it looks.
+
+---
+
+# 🔴 THE BLOCKER ON THIS ITEM IS FALSE — corrected by BENCH, 2026-09-20
+
+This item is recorded as BLOCKED with the reason: *"`rimworld/spawn_thing` NPEs on
+ANY pawn right now, so RSW_Ferroclaw/Voltmaw/Cindermite cannot be spawned to test."*
+
+**That is not true, and the live verification this item is waiting on can proceed.**
+
+MEASURED on a VEF-loaded game, same map, same session, back-to-back calls:
+
+| tool | pawn (`Chicken`) | non-pawn |
+|---|---|---|
+| `rimworld/spawn_thing` | 🔴 NPE | ✅ |
+| `jawa/spawn_batch` | 🔴 NPE | ✅ |
+| **`jawa/spawn_pawn`** | ✅ **success**, pawn count 81 → 82 | n/a |
+
+**65 pawns were spawned through `jawa/spawn_pawn` in that same session** with zero
+failures. Only the `GenSpawn`-on-a-`ThingMaker`-Thing routes are broken; the
+`PawnGenerator` route is fine. Full account: `BRIDGE_PAWN_SPAWN_CRASHES_VEF_1`.
+
+⇒ **To verify criteria 2–6: call `jawa/spawn_pawn`, not `rimworld/spawn_thing`.**
+
+⚠️ **But there IS a real precondition, and it is a different one.**
+`RSW_Ferroclaw`, `RSW_Voltmaw` and `RSW_Cindermite` carry comps from this item's own
+`RimMandrakeBeastMechanicsRSW.dll`, and **three SWBestiary def files are in the repo
+but NOT deployed** — `RSW_GreatDevourer`, `RSW_Groundrunner`, `RSW_MatureFleshbeast`,
+plus `RSW_AADesertPort_Bodies.xml` and `RSW_GreatDevourerEggs.xml`
+(`deploy_custom_mods.py --mod SWBestiary` reports them as plain drift, not held).
+Deploy those in the same sitting as the quicktest. See
+`DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1`.
+
+⛔ **BENCH did not move this item's state** — `rimflow unblock` correctly refuses to
+move work in flight for another seat. Correcting false prose is the part that is
+BENCH's, and this is that. FOUNDRY decides when to unblock and run it.
