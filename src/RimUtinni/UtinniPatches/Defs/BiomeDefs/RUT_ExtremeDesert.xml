@@ -11,8 +11,9 @@
     MEASURED: dune_sea.md's SS2 puts the merged def's arc band at roughly theta 0-45
     deg (deep dayside, +70 C at the substellar point falling toward +52 C at theta 40);
     deep_desert.md's SS0 table (region-level, partly superseded by repaint per its own
-    Owed note) names the far ring past the Pyrelands. `_def_bindings_2026-09-09.md`
-    gives the CURRENT painted total: 3,172 tiles.
+    Owed note) names the far ring past the Pyrelands. Tile count is not restated
+    here — it is repainted by world edits and drifts; read it live from
+    `world/ASHKARR_WORLDMAP_tiles.csv`.
 
     allowRoads FALSE, overriding the general "all our biomes allow roads" ruling
     (RUT_NightsideIce/RUT_TheScald's own comment): dune_sea.md SS6 carries an explicit
@@ -154,6 +155,10 @@
       <RSW_Gizka MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Gizka>  <!-- gizka - grain-scale, keep -->
       <RSW_GreaterKraytDragon MayRequire="mandrake.rsw.swbestiary">0.001</RSW_GreaterKraytDragon>  <!-- greater krayt dragon - giant, keep -->
       <RSW_Voltmaw MayRequire="mandrake.rsw.swbestiary">0.0005</RSW_Voltmaw>  <!-- tetra slug - giant, keep -->
+      <!-- DESERT_ROUND2_IMPORTS_UNLANDED_1 2026-09-20: round-2 import row
+           (rosters/dune_sea_deep_desert.json "fauna", owner review 2026-09, commonality
+           0.5), wired for the first time. -->
+      <RSW_TruffleMole MayRequire="mandrake.rsw.swbestiary">0.5</RSW_TruffleMole>  <!-- truffle mole - sand burrower, desert & extreme desert, import -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
