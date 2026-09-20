@@ -70,6 +70,7 @@ GENES, not on the XenotypeDef) are NOT touched here and the item stays open for 
 """
 import collections
 import csv
+import glob
 import json
 import os
 import statistics
@@ -133,6 +134,62 @@ def plant_homes():
 CLIM_MARGIN = 10.0    # °C either side of the sheet median — the fix wave's stated margin
 REPICK_LIMIT = 30.0   # beyond this much extension past a DONOR bound, the plant is a LIE
 
+# 🔴 FOUND 2026-09-20 (PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1): `biome_climate.json`'s
+# keys are frozen at their 2026-09-09 extraction time — several predate the tier rename
+# (`Desert`, `Wasteland`, `AridShrubland`, `Scarlands`, ...) and one predates a later
+# rebrand (`AB_RockyCrags` is now `RUT_ForsakenCrags`). `FAMILIES` below keys by whatever
+# a biome's def is called TODAY, so a bare `clim.get(defName)` misses every one of those and
+# `verify()`'s dead-row check was silently inspecting zero rows. Never rename the frozen
+# extraction to chase this — it is "EXTRACTED VERBATIM", re-transcribed only when a sheet's
+# §0 is re-measured. Instead resolve through `design/Jawa/worldbuilding/biomes/rosters/*.json`,
+# whose own `defNames` list IS the live-name authority and is what `FAMILIES` is built from.
+ROSTERS_DIR = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'biomes', 'rosters')
+# biome_climate.json's own free-text `sheet` field doesn't always match a rosters/*.json
+# filename verbatim; these three are the only mismatches (found by diffing every `sheet`
+# string against the rosters glob).
+SHEET_SLUG_ALIASES = {
+    'dune_sea + deep_desert': 'dune_sea_deep_desert',
+    'terminator_sea + the_grey_deep': 'the_grey_sea',
+    'terminator_sea + the_twilight_deep': 'the_twilight_sea',
+}
+
+
+def _defname_to_sheet():
+    """live defName -> rosters/*.json slug, from each roster's own `defNames` list."""
+    out = {}
+    for path in glob.glob(os.path.join(ROSTERS_DIR, '*.json')):
+        slug = os.path.splitext(os.path.basename(path))[0]
+        if slug.startswith('_'):
+            continue
+        with open(path, encoding='utf-8') as fh:
+            names = json.load(fh).get('defNames') or []
+        for name in names:
+            out[name] = slug
+    return out
+
+
+def _climate_by_sheet(clim):
+    """rosters/*.json slug -> its biome_climate.json entry.
+
+    `the_forge` carries three biome_climate.json entries (painted defs later merged into
+    one live BiomeDef); they state the same figures, so whichever is seen first — or
+    whichever actually states a median — wins.
+    """
+    out = {}
+    for entry in clim.values():
+        slug = SHEET_SLUG_ALIASES.get(entry.get('sheet'), entry.get('sheet'))
+        if not slug:
+            continue
+        if slug not in out or (out[slug].get('median') is None and entry.get('median') is not None):
+            out[slug] = entry
+    return out
+
+
+def _climate_lookup(clim):
+    """live defName -> its biome_climate.json entry, resolved through the rosters."""
+    by_sheet = _climate_by_sheet(clim)
+    return {name: by_sheet[slug] for name, slug in _defname_to_sheet().items() if slug in by_sheet}
+
 # 🔴 "DONOR" MEANS WHAT THE MOD SHIPPED, and the live def dump is NOT that — it already
 # carries this patch's own previous widening. `plant_pool.csv` was built 2026-08-23, before
 # any tolerance patch existed, so it is the last honest record of shipped values and the
@@ -147,10 +204,11 @@ def sheet_demands():
     """plant defName -> (lo, hi) demanded by the sheet medians of its landed biomes."""
     with open(CLIMATE, encoding='utf-8') as fh:
         clim = json.load(fh)['biomes']
+    lookup = _climate_lookup(clim)
     out = {}
     for _fam, bs in bf.FAMILIES.items():
         for b, roster in bs.items():
-            med = (clim.get(b) or {}).get('median')
+            med = (lookup.get(b) or {}).get('median')
             if med is None:
                 continue
             for p in roster:
@@ -278,12 +336,13 @@ def verify(rows):
     """
     with open(CLIMATE, encoding='utf-8') as fh:
         clim = json.load(fh)['biomes']
+    lookup = _climate_lookup(clim)
     new = {r[0]: r[2] for r in rows}
     donors = donor_bands()
     dead, total = [], 0
     for _fam, bs in bf.FAMILIES.items():
         for b, roster in bs.items():
-            med = (clim.get(b) or {}).get('median')
+            med = (lookup.get(b) or {}).get('median')
             if med is None:
                 continue
             for p in roster:

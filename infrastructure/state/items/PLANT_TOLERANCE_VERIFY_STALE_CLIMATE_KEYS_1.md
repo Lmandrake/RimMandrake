@@ -12,10 +12,16 @@ while `biome_flora.py`'s `FAMILIES` (and every live BiomeDef) key by `RUT_Desert
 skipped via `continue`, `total` stays 0, and the function trivially reports success.
 
 **Found incidentally** while regenerating `PlantTolerances_Ashkarr.xml` for
-`BMT_FLORA_ABSORPTION_1` (3 new plants) — the WRITE path (`compute()` → `sheet_demands()`)
-does not use this file and is unaffected; only the separate `verify()` safety check is
-dead. So the 85-operation patch that got written this session is correct; the net that is
-supposed to catch a *future* bad fit is not currently able to catch anything.
+`BMT_FLORA_ABSORPTION_1` (3 new plants).
+
+🔴 **CORRECTED 2026-09-20 (was wrong when first written):** `sheet_demands()` — the WRITE
+path's own second demand source — does the identical `clim.get(b)` lookup as `verify()` and
+carries the SAME bug, not a separate one. Of the 20 biome keys `FAMILIES` actually uses, only
+`ZBiome_Grasslands` already matched `biome_climate.json` verbatim; the other 19 (`RUT_Desert`,
+`RUT_Wasteland`, `RUT_ForsakenCrags`, ...) all missed, so `compute()`'s "union of tile-CSV and
+sheet-median demand" was silently just the tile-CSV demand for every biome except Pyrelands.
+The 85-operation patch written this session was **not** unaffected — it under-widened every
+plant whose sheet median sat outside its tile-derived band, for 19 of 20 biomes.
 
 ## why this matters
 
