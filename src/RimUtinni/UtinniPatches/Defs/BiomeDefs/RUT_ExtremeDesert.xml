@@ -152,7 +152,15 @@
     <coastalWildAnimals />
     <wildPlants>
       <Plant_Bloddle>0.05</Plant_Bloddle>  <!-- bloddle plant -->
-      <AB_GiantStikehr>0.04</AB_GiantStikehr>  <!-- giant stikehr -->
+      <!-- AB_GiantStikehr REMOVED 2026-09-20 on the owner's eye ("The giant mushroom seems
+           misplaced"). Alpha Biomes' own description makes it a Forsaken Crags organism: "A
+           giant alien mushroom that glows in the strange darkening mist... as long as it is
+           protected by the Forsaken [Crags]". It is correctly carried there at 0.3
+           (RUT_ForsakenCrags.xml). A glowing mist-mushroom on the hottest, driest, sunniest
+           biome on the planet was a stray copy - the entry carried no rationale comment,
+           unlike every other row here. ⚠️ This leaves Plant_Bloddle as the ONLY wildPlant on
+           3,969 tiles; sparse is this sheet's intent ("if the roster looks healthy, it is
+           wrong") but one species is thin even for that - tracked on DESERT_FAMILY_VERDICT_PASS_1. -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
   </BiomeDef>

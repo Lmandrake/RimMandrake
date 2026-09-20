@@ -1,7 +1,14 @@
 {
   "sheetId": "desert_family_review_2026-09-20",
   "posture": "blacklist",
-  "frozen": false,
+  "frozen": true,
   "writeCount": 0,
-  "decisions": {}
+  "decisions": {},
+  "savedBy": "owner-verbal-approval",
+  "approvedBy": "owner",
+  "approvedAt": "2026-09-20T09:02:17-07:00",
+  "approvedSaid": "Desert graphics approved. The giant mushroom seems misplaced. Everything should be moved t our own thing defs. Any non canon beasts need renaming as well into pseudo Star Wars equivalents.",
+  "approvalRoute": "Blanket approval of the GRAPHICS in conversation, 2026-09-20. ⚠️ This file held ZERO decision rows and savedBy null at the moment of approval - it is an empty sidecar, never a pre-fill and never clicked. So it records the owner's sentence and NOTHING about any individual species. In the same breath he ordered three changes this file does not capture: AB_GiantStikehr removed as misplaced (done, RUT_ExtremeDesert.xml); every donor def ported to our own thing defs (DONOR_DEFS_PORT_TO_OURS_1); non-canon beasts renamed to pseudo-Star-Wars equivalents (NONCANON_BEAST_RENAME_1). ⛔ Do not consume this file as a keep/cut ruling on the 109-row roster - there is no such ruling.",
+  "frozenMeaning": "Owner approved the desert ART 2026-09-20. The roster keep/cut question is NOT settled by this file - it is superseded by the port-to-our-own-defs ruling. Reopen only on his word.",
+  "decisionRowCount": 0
 }
