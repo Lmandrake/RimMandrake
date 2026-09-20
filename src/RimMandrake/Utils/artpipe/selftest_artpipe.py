@@ -677,6 +677,78 @@ def test_load_job_validates_value_shapes_not_just_key_presence():
            (q.done / "healthy.json").is_file())
 
 
+def test_load_job_refuses_a_facing_job_whose_prompt_contradicts_the_stamp():
+    """ARTPIPE_FACING_COHERENCE_1 §1's refusal half.
+
+    build_job_prompt() has stamped explicit per-facing view language onto
+    every job carrying a `facing` since 2026-09-14. MEASURED 2026-09-20 over
+    the whole done/ queue: 348 jobs carry a facing and **42 of them said
+    "top-down" in their own prompt body**, so the model was handed the stamp
+    and its contradiction together and allowed to choose. That is the
+    mechanism behind "south isn't south, north isn't north", and the stamp
+    alone cannot catch it.
+    """
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+
+        bad = q.pending / "contradicted.json"
+        common.atomic_write_json(bad, {
+            "id": "contradicted", "rimflow_item_id": "SELFTEST_ARTPIPE",
+            "canvas": {"width": 256, "height": 256}, "facing": "north",
+            "prompt": "Top-down pawn sprite, three facings: a six-legged beast.",
+        })
+        try:
+            common.load_job(bad)
+            ok("load_job: refuses a facing job whose body says 'top-down'", False,
+               "load_job did not raise")
+        except common.JobError as exc:
+            msg = str(exc)
+            ok("load_job: refuses a facing job whose body says 'top-down'", True)
+            ok("load_job: names BOTH offending phrases, not just the first",
+               "top-down" in msg and "three facings" in msg, msg)
+            ok("load_job: tells the author what to write instead",
+               "rear view" in msg and "eyes toward the viewer" in msg, msg)
+            ok("load_job: offers the escape hatch (drop the facing key)",
+               "drop the 'facing' key" in msg, msg)
+
+        # A job with per-facing surface language is fine.
+        good = q.pending / "surfacelang.json"
+        common.atomic_write_json(good, {
+            "id": "surfacelang", "rimflow_item_id": "SELFTEST_ARTPIPE",
+            "canvas": {"width": 256, "height": 256}, "facing": "north",
+            "prompt": "Rear view, seen from behind, no face or eyes visible: a six-legged beast.",
+        })
+        try:
+            common.load_job(good)
+            ok("load_job: a per-facing surface prompt passes", True)
+        except common.JobError as exc:
+            ok("load_job: a per-facing surface prompt passes", False, str(exc))
+
+        # The gate fires ONLY when the job declares a facing — an overhead
+        # asset (a floor tile, a map icon) is legitimate and simply has none.
+        overhead = q.pending / "overheadtile.json"
+        common.atomic_write_json(overhead, {
+            "id": "overheadtile", "rimflow_item_id": "SELFTEST_ARTPIPE",
+            "canvas": {"width": 256, "height": 256},
+            "prompt": "Top-down floor tile, seamless overhead view of cracked sand.",
+        })
+        try:
+            common.load_job(overhead)
+            ok("load_job: a facing-less overhead asset is NOT caught", True)
+        except common.JobError as exc:
+            ok("load_job: a facing-less overhead asset is NOT caught", False, str(exc))
+
+        # End to end: the daemon fails it cleanly and does not leak a slot.
+        make_job(q.pending, "healthy_after_contradiction", q.reference)
+        proc = q.run({}, "--once", "--workers", "1")
+        ok("facing-gate e2e: daemon exits 0 despite the refused job",
+           proc.returncode == 0, proc.stderr)
+        ok("facing-gate e2e: the contradicted job lands in failed/",
+           (q.failed / "contradicted.json").is_file())
+        ok("facing-gate e2e: a healthy job alongside it still completes",
+           (q.done / "healthy_after_contradiction.json").is_file())
+
+
 # --------------------------------------------------------------------------
 # in-process detector/helper unit checks — cheap, no subprocess needed
 # --------------------------------------------------------------------------
@@ -2776,6 +2848,7 @@ def main() -> int:
         test_dry_run_never_touches_the_queue,
         test_fill_queue_refuses_duplicate_id,
         test_load_job_validates_value_shapes_not_just_key_presence,
+        test_load_job_refuses_a_facing_job_whose_prompt_contradicts_the_stamp,
         test_detector_meter_thresholds,
         test_meters_flow_end_to_end_through_codex_grumpiness,
         test_meter_after_never_reads_a_previous_jobs_rollout,
