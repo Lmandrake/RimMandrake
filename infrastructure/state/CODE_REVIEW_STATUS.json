@@ -6076,10 +6076,10 @@
     "sha": "113ad7131"
   },
   "src/RimMandrake/Utils/research_manifest_validate.py": {
-    "cleanCount": 3,
-    "date": "2026-09-04",
-    "hash": "30be758eccdda3078da7c562b97845fab65ba8e45a69fefcdb2556225975cf18",
-    "sha": "f1ebc8c1"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "ac53fce87965b9089533d94a356aa1d7afc62efe83f400ada21e8bbf01413dfd",
+    "sha": "819162787"
   },
   "src/RimMandrake/Utils/retired_mods.py": {
     "cleanCount": 2,
