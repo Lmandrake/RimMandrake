@@ -1,30 +1,81 @@
 {
- "generatedAt": "2026-09-19T21:43:00Z",
+ "generatedAt": "2026-09-20T08:22:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 730819,
-  "sha256_12": "1f9ca47bff89"
+  "bytes": 700565,
+  "sha256_12": "5085cc73e5e7"
  },
- "head": "68534f6ef",
+ "head": "74535d4dd",
  "counts": {
   "red": 29,
-  "blue": 842,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 2268,
-  "total": 3139
+  "blue": 845,
+  "green": 1828,
+  "grey": 445,
+  "unmeasured": 0,
+  "total": 3147
  },
  "loc": {
-  "red": 10377,
-  "blue": 347172,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 683513,
-  "total": 1041062
+  "red": 10388,
+  "blue": 339455,
+  "green": 587279,
+  "grey": 107659,
+  "unmeasured": 0,
+  "total": 1044781
  },
- "reviewEntries": 3003,
- "recidivists": [],
+ "reviewEntries": 2924,
+ "recidivists": [
+  {
+   "path": "src/RimMandrake/rimflow/selftest_model.py",
+   "loc": 1214,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORLightRepeater.xml",
+   "loc": 605,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBowcaster.xml",
+   "loc": 538,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORHeavyRepeater.xml",
+   "loc": 520,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/Utils/selftest_research_validator.py",
+   "loc": 244,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml",
+   "loc": 150,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGroupTools.cs",
+   "loc": 1078,
+   "cycles": 1
+  },
+  {
+   "path": "design/Jawa/worldbuilding/review/gen_creature_art_register.py",
+   "loc": 641,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs",
+   "loc": 424,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimUtinni/StructureInjectionsRUT/Source/DarkTower/gen_dark_tower_layout.py",
+   "loc": 343,
+   "cycles": 1
+  }
+ ],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": false,
- "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
+ "measurementOk": true,
+ "headline": "OK: measured 3147 files (1828 clean, 445 dirty, 0 unmeasured)."
 }
