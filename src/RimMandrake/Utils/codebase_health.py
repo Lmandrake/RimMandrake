@@ -124,7 +124,17 @@ STATUSES = ("red", "blue", "green", "grey", "unmeasured")
 # hard timeout after concurrent review agents were observed hammering .git into
 # lock contention and hanging a caller for 10 minutes on this exact shared mount.
 # This file's git()/git_z() had no timeout and were exposed to the same hang.
-GIT_TIMEOUT = 8  # seconds
+#
+# 8s was too tight for THIS file's own heaviest call: `working_tree_changes()`
+# runs `git status --porcelain=1 -z --untracked-files=all` over the whole repo
+# (3145+ tracked files), which MEASURED 8.0-8.4s on this drvfs mount across
+# three consecutive runs 2026-09-20 — a legitimate, successful call that the
+# old 8s cap killed almost every time, silently degrading the entire board to
+# "every file UNMEASURED" (wt_known=False) even though git had not hung at
+# all. 30s still fails fast against the multi-minute lock-contention hang this
+# guard was built for; it just stops treating "git status took 8.3s" the same
+# as "git status never returned".
+GIT_TIMEOUT = 30  # seconds
 
 # HEALTH_UNMEASURED_HEADLINE_1: an `index.lock` collision is the ONLY git failure
 # this retries. It is transient and self-clears — another concurrent agent
