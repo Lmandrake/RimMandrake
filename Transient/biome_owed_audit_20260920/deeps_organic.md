@@ -372,7 +372,57 @@ self-resolved). Examined 9.
 
 ## the_contagion.md
 
-(pending)
+⚠️ **Could not confirm the task brief's "two owed-style sections" claim.**
+Read the whole 252-line file; grepped case-insensitively for "owed", "TODO",
+"not built", "unbuilt", "still needs", "remains to", "to file", and every
+🔴/⚠️ inline marker. Result: exactly ONE `## Owed` heading exists (line 226,
+running to EOF), and no other heading or inline marker in §§0-9 names
+deferred work in owed-list form — §6's 🔴 lines are HARD BANS (permanent
+rules), not owed work. `git log` on the file shows no recent consolidation
+of two sections into one. Reporting this as UNCERTAIN/possibly-stale-brief
+rather than inventing a second section; treated the single section as
+authoritative.
+
+Owed section: 9 bullets → 14 individual items (engine feasibility pass = 4,
+plus 10 single-item bullets). Examined 14.
+
+1. `CONTAGION_BIOME_PLACEMENT_1` — FILED/DONE (closed `c0f0b6024`).
+2. **Art: the half-transformed tree** ("half plant" redo) — FILED, rides
+   `TREE_GRAPHICS_OWNERSHIP_1`, which is `doing`/BLOCKED (14 recovered
+   sweetline-tree art candidates await an owner pick) — matches the sheet's
+   own "rides" framing, not a gap.
+3. `WATER_KINDS_TAXONOMY_1` — FILED/DONE (closed, confirmed earlier in this
+   report under the Rot section).
+4. `MUTATION_MODIFIERS_SURVEY_1` — FILED/DONE (closed `f4a40fd1d`).
+5. **The Unfinished — art line + C# spawner** (random stats, random
+   `Hediff_AddedPart` limbs, short lifespan, goo-corpse) — UNFILED
+   (CONFIRMED). Searched "The Unfinished" + "goo-corpse", "Hediff_AddedPart"
+   + "Contagion" — only hit was `MUTATION_MODIFIERS_SURVEY_1`'s own survey
+   text (which surveyed the MECHANISM generically, not built this specific
+   creature). No spawner C#, no art, no item.
+6. **Engine feasibility pass — the Burn as weather with radiation + UV
+   damage to natives** — UNFILED (CONFIRMED, zero hits).
+7. **...the jelly/rattle tells** — UNFILED (CONFIRMED, zero hits).
+8. **...sun-sterilization of hauled water and mulch (timed item
+   transformation in sunlight)** — UNFILED (CONFIRMED, zero hits).
+9. **...mulch that infects fields** — UNFILED (CONFIRMED, zero hits).
+10. **The green below — CypreJungle / Feralisk jungle / Desert Oasis want
+    their own short definitions** — UNFILED (CONFIRMED). These three names
+    appear widely as EXISTING biome/fauna-roster names across `design/Jawa`
+    (census CSVs, palette JSON, etc.), but no dedicated short-definition
+    sheet exists for any of them in `design/Jawa/worldbuilding/biomes/` the
+    way the_contagion.md itself is one — unlike the 9 sheets in this audit,
+    they have no `the_*.md`/named sheet of their own.
+11. **Contagion-touched cure ruling** — UNFILED (CONFIRMED, zero hits for
+    "Contagion-touched cure" or "cure ruling" in items; §7 of the sheet
+    itself only states the HARD BAN that it never upgrades you, not a cure
+    mechanism ruling).
+12. **Doc hygiene: find and link the primary R-H rule list** — UNFILED
+    (CONFIRMED, still open). Searched for a dedicated "R-H rules" document;
+    only found scattered R-H citations inline in individual sheets (e.g.
+    `wasteland.md:195` cites R-H1 directly) — no single primary list doc
+    exists anywhere in `design/Jawa`, matching the sheet's own note that "the
+    primary R-H rule list was not located this session."
 
 ## assailant_weapon_remnants.md
 
