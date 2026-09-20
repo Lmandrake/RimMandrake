@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:23:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T19:27:01Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1410,16 +1410,6 @@ kind:     task
 thin:     no ## spec
 summary:  EXTREMEDESERTUNRULEDVERMIN1 — owner card: rule the Fall Line vermin rows for extreme desert
 prose:    infrastructure/state/items/EXTREME_DESERT_UNRULED_VERMIN_1.md
-
-## EXTREME_DESERT_GIANT_COMMENSALS_1 Shade-commensal micro-fauna under giants, blocked on ShadeAt
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  EXTREMEDESERTGIANTCOMMENSALS1 — shade-commensal micro-fauna under giants
-prose:    infrastructure/state/items/EXTREME_DESERT_GIANT_COMMENSALS_1.md
 
 ## EXTREME_DESERT_CAVERN_BEAST_1 Author the Mandalorian cave-beast and its portable-water eggs
 state:    proposed

@@ -10306,3 +10306,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"EXTREME_DESERT_GIANT_COMMENSALS_1","ts":"2026-09-20T19:25:10Z"}
 {"seat":"FOUNDRY","event":"start","id":"EXTREME_DESERT_GIANT_COMMENSALS_1","ts":"2026-09-20T19:25:11Z"}
 {"seat":"BENCH","event":"file","id":"DEAD_BIOME_DEFS_IN_PROSE_1","title":"Pre-repaint donor biome defNames are still embedded in item and design prose - three found by accident today, each carrying a number or a plot fact that reasoning depends on","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-20T19:26:12Z"}
+{"seat":"FOUNDRY","event":"close","id":"EXTREME_DESERT_GIANT_COMMENSALS_1","sha":"9120f45ab","reason":"design item fleshed out: keystone dependency satisfied, open design questions (giant choice, commensal species, caravan-buff scope) laid out for a future decision rather than invented","ts":"2026-09-20T19:27:01Z"}
