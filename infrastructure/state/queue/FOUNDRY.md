@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T16:39:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T16:47:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -908,6 +908,15 @@ target:   v1
 kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
+
+## BMT_FLORA_ABSORPTION_1 BMT_FAUNA_ABSORPTION_1 did fauna only - 14 Biomes! Caverns FLORA defs are still referenced across 8 biome tables with no RSW_ equivalent, from a mod absent from the active list, including the top plant in Miasma and Greentide
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Follows DONORDEFSPORTTOOURS1 (owner: "Everything should be moved t our
+prose:    infrastructure/state/items/BMT_FLORA_ABSORPTION_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
