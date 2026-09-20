@@ -200,6 +200,28 @@ def test_real_repo_indexes_are_positive():
        % len(walklint._symbol_index(index)))
 
 
+def test_live_repo_walklint_is_clean():
+    """The suite gate (WALKLINT_FINDINGS_CLEANUP_1, DETERMINISM_ASSESSMENT.md
+    SS3 C1): a live walklint FAIL fails this whole selftest run. WARN never
+    gates -- it prints in the CLI but is not asserted here. This intentionally
+    runs against the REAL repo tree (not a fixture): the module's own report,
+    never repair, promise means the fix always lives in the walk file that
+    caused the finding, never in this test."""
+    print("--- live repo: walklint reports zero FAIL findings ---")
+    repo_root = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
+    findings, counts = walklint.lint(repo_root)
+    ok(counts["walks"] > 0, "live repo: walks found > 0 (got %d)"
+       % counts["walks"])
+    n_fail = sum(1 for f in findings if f[0] == walklint.FAIL)
+    if n_fail:
+        print("%d live walklint FAIL finding(s):" % n_fail)
+        for f in findings:
+            if f[0] == walklint.FAIL:
+                print("  -", walklint.format_finding(f))
+    ok(n_fail == 0, "live repo: 0 walklint FAIL findings (got %d)" % n_fail)
+
+
 def main():
     for t in (test_positive_counts_on_the_fixture,
               test_clean_walk_has_no_findings,
@@ -208,7 +230,8 @@ def main():
               test_bad_packageid_outside_absence_context,
               test_unknown_id_and_bad_file_are_warn,
               test_glob_returning_nothing_is_not_silently_clean,
-              test_real_repo_indexes_are_positive):
+              test_real_repo_indexes_are_positive,
+              test_live_repo_walklint_is_clean):
         t()
     print()
     if FAILED:

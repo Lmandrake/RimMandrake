@@ -14,7 +14,7 @@ status-hint: patches best-hit melee tool power/cooldown on 105 SW beasts (bs>=1)
 - Beasts under bodySize 1 (55 of them) are untouched — this mod's own manifest excludes them, not a runtime gate.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rsw.beastnorm" and no XML error naming BeastNorm_Law3.xml   # load-time
+1. [L] Player.log after load contains no "Config error in mandrake.rsw.swbestiary" and no XML error naming BeastNorm_Law3.xml   # load-time
 2. [D] def read-back: ThingDef Dewback/tools/li[2]/power=45.0, cooldownTime=2.6
 3. [D] def read-back: ThingDef Rancor/tools/li[3]/power=90.0, cooldownTime=3.67
 4. [D] def read-back: ThingDef Bantha/tools/li[1]/power=60.0, cooldownTime=3.0; race/manhunterOnDamageChance=0.9; race/manhunterOnTameFailChance=0.4

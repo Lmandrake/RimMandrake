@@ -14,7 +14,7 @@ status-hint: the campaign's UI shell — one RimThemes theme ("Utinni Shell": ru
 - This mod ships no def whose absence would be a red load error if RimThemes or VBE are both absent — MayRequire covers the background def, and the theme folder is inert data RimThemes reads only when selected.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rut.shell" and no XML error naming Defs/VBE_Backgrounds_Utinni.xml
+1. [L] Player.log after load contains no "Config error in mandrake.rut.menushell" (the id this shell now ships under, since it absorbed into MenuShell) and no XML error naming Defs/VBE_Backgrounds_Utinni.xml
 2. [D] def read-back: VBE.BackgroundImageDef RUT_BG_ShellIshkoGate exists; path = "UI/Backgrounds/utinni_menu_1"; iconPath = "UI/Backgrounds/utinni_menu_1"; animated = true
 3. [D] file exists: `RimThemes/Utinni Shell/Textures/UI/Backgrounds/utinni_menu_1.png` under this mod's deployed Textures/ root (the static picker/fallback asset path referenced) — resolve relative to Textures/, not RimThemes/
 4. [D] file exists: `Videos/UI/Backgrounds/utinni_menu_1.webm` under this mod's deployed Videos/ root (the animated asset `path` must resolve when animated=true)

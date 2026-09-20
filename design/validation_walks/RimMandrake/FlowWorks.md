@@ -27,6 +27,7 @@ Until then this walk proves digging and terrain recovery, not filling.
 
 ## the walk
 1. [L] Player.log after load contains no "Config error in mandrake.rm.flowworks" and no XML error naming `FlowWorks_ThingDefs.xml`/`FlowWorks_Terrain.xml`/`FlowWorks_Fluids.xml`   # load-time
+   <!-- walklint-ok: mandrake.rm.fluidcanals below is a deliberate historical record of the pre-rename id, per NAMING_SCHEME_EXECUTION_1 (ruling 20) -- not a live assertion -->
    ⚠️ Until 2026-09-17 these four strings read `mandrake.rm.fluidcanals` and `FluidCanal_*.xml` — names that stopped existing at the rename and appear nowhere on disk. Because this step asserts an error's ABSENCE, it passed vacuously however broken the XML was. Corrected against `About/About.xml` (`mandrake.rm.flowworks`) and the three real files in `Defs/Canals/`. A negative check keyed to a dead name is a test that cannot fail, not a cosmetic staleness.
 2. [D] def read-back: `RimMandrake.FlowWorks.FluidDef` `RM_Fluid_Water` exists; `floodTerrain` = `ShallowFloodwater`; `volumePerTile` = 1; `ticksPerTile` = 60; `floodedTicks` = 300000
 3. [D] def read-back: `TerrainDef` `RM_Channel_Empty` exists; `affordances` contains `Diggable`; `natural` = true

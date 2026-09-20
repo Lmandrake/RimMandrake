@@ -7,7 +7,9 @@ status-hint: no Defs, no Patches, no Assemblies — a single loose PNG (`Texture
 ## must be true
 - The mod ships exactly one content file, `Textures/OuterRim/Droid/MSE_north.png`, and no Defs/Patches/Assemblies at all — "no defs are patched, no code runs" (About.xml, verbatim).
 - `MSE_north.png` is 256×256 (matches the donor's own `MSE_south`/`MSE_east` canvas), with its inked bounding box at (97, 80, 159, 178) and a 3px black keyline — copied pixel-for-pixel from the donor's `MSE_south` silhouette per About.xml's own claim, so registration cannot drift from the other three directions.
-- Outer Rim - Droid Depot's own `PawnKindDef OuterRim_MSEDroid` (`1.6/Defs/ThingDefs_Automatons/Animal/Droid_MSEDroid.xml`, quoted in About.xml) declares `texPath OuterRim/Droid/MSE` and `graphicClass Graphic_Multi` — so `Graphic_Multi`'s own direction-resolution logic must find `OuterRim/Droid/MSE_north` at load, given loose files win over the donor's AssetBundle regardless of load order.
+- Outer Rim - Droid Depot's own `PawnKindDef OuterRim_MSEDroid`
+  (<!-- walklint-ok: 1.6/Defs/ThingDefs_Automatons/Animal/Droid_MSEDroid.xml is the DONOR's (Neronix17.OuterRim.DroidDepot) own shipped file, not ours -- never present under src/ -->
+  `1.6/Defs/ThingDefs_Automatons/Animal/Droid_MSEDroid.xml`, quoted in About.xml) declares `texPath OuterRim/Droid/MSE` and `graphicClass Graphic_Multi` — so `Graphic_Multi`'s own direction-resolution logic must find `OuterRim/Droid/MSE_north` at load, given loose files win over the donor's AssetBundle regardless of load order.
 - Before this mod exists, walking an MSE droid north (away from camera) shows its `MSE_south` (front) texture as a silent fallback — Graphic_Multi degrades quietly, no "Failed to find any textures at" error, because 2 of 4 directions (south, east) were present. After this mod, the same walk shows `MSE_north` (rear) instead.
 
 ## the walk

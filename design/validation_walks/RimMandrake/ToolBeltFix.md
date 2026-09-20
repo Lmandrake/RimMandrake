@@ -14,7 +14,7 @@ status-hint: one loose PNG replacing a donor-mod worn-apparel texture that ships
 - Because this mod loads AFTER the donor and both ship loose PNGs, ContentFinder's last-mod-wins resolution must pick this mod's `_west` over the donor's blank one.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rm.toolbeltfix" and no XML error naming this mod (ships no XML/Defs at all, only a loose PNG)   # load-time
+1. [L] Player.log after load contains no "Config error in mandrake.rm.patches" (the id this fix now ships under, since it absorbed into MandrakePatches) and no XML error naming this fix (ships no XML/Defs of its own, only a loose PNG)   # load-time
 2. [D] confirm via file inspection (no def of its own — pure loose-texture override) that `ToolBeltFix/Textures/Things/Apparel/ToolBelt/ToolBelt_west.png` exists, is a valid PNG, and its alpha channel is NOT uniformly zero — the exact defect being fixed
 3. [D] confirm this mod's file loads AFTER `VanillaExpanded.VAEAccessories` in the resolved mod order (`ModsConfig.xml` / live `jawa/mod_inventory` load-order listing) — order is the entire mechanism; a misordered list makes this mod a silent no-op
 4. [B] `jawa/spawn_pawn`, then `jawa/inventory_transfer {mode: "add", ...}` a `VAEA_Apparel_ToolBelt` item onto the pawn (or `rimworld/right_click_cell` → wear order), rotate the pawn to face west, then use `jawa/inspect_string` on the pawn to confirm the apparel is worn — this proves the def resolves and equips, though whether the WEST-FACING TEXTURE actually renders is a visual property no bridge tool can assert (see [S] line)

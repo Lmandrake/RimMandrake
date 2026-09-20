@@ -33,6 +33,7 @@ postfixes a relations-tracker crash for Humanlike non-flesh pawns.
   and DLC animals (`Core`, `Biotech`, `Odyssey`, `Anomaly` groups) that need no third-party
   mod at all. `LeatherAmount` is deliberately left untouched (already linear in bodySize).
 - `JawaDoctrineCoreMod`'s static constructor installs one Harmony instance
+  <!-- walklint-ok: mandrake.jawadoctrine.core is the LITERAL Harmony id in DoctrinePatches.cs (new Harmony("mandrake.jawadoctrine.core")) -- a pre-tier-rename string never updated to match the packageId, correctly quoted here, not a stale walk reference -->
   (`"mandrake.jawadoctrine.core"`) and calls `DoctrinePatches.Apply`, which Harmony-postfixes
   `PawnComponentsUtility.CreateInitialComponents` to allocate `pawn.relations` for any
   Humanlike pawn whose `RaceProps.IsFlesh` is false — vanilla only allocates it when

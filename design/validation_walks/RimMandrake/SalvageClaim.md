@@ -15,7 +15,7 @@ status-hint: adds ONE right-click float-menu order, "pay claim fee," any colonis
 - The float-menu label reads exactly `"Pay salvage claim fee (" + fee + " silver) on " + clickedThing.LabelShort`.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rm.salvageclaim" and no XML error naming SalvageClaim's About.xml (mod ships no Defs — confirmed no `Defs/` folder)   # load-time
+1. [L] Player.log after load contains no "Config error in mandrake.rm.property" (the id this verb now ships under, since it merged into RimProperty) and no XML error naming SalvageClaim (mod ships no Defs of its own — confirmed no `Defs/` folder)   # load-time
 2. [B] `jawa/spawn_batch` (or `rimworld/spawn_thing`) a colonist-reachable `Steel` chunk with `MarketValue > 0`, then `jawa/spawn_pawn` a colonist near it
 3. [B] `jawa/inventory_transfer {mode: "add", ...}` to give the colonist ≥ `MaxFeeSilver` (350) silver, then confirm via `rimworld/get_selected_pawn_inventory_state`
 4. [B] `rimworld/right_click_cell` on the spawned Thing's cell with the colonist selected, then `rimworld/get_context_menu_options` → expect an option starting with "Pay salvage claim fee (" and containing " silver) on "

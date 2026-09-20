@@ -13,7 +13,7 @@ status-hint: replaces the fully-transparent OuterRim/Hairs/Cerean/CereanMane_sou
 - HairDef OuterRim_CereanMane (owned by Outer Rim - Galactic Diversity, Hairs_Cerean.xml line 37) still resolves with texPath OuterRim/Hairs/Cerean/CereanMane.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rsw.cereanmanefix"   # load-time
+1. [L] Player.log after load contains no "Config error in mandrake.rsw.patches"   # load-time
 2. [D] asset check: script (PIL, same pattern as Source/draw_mane_south.py) opens the deployed .../CereanManeFix/Textures/OuterRim/Hairs/Cerean/CereanMane_south.png; confirms canvas 512x512 and max alpha > 0
 3. [B] jawa/get_def {defType: "HairDef", defName: "OuterRim_CereanMane"} resolves and its texPath field reads OuterRim/Hairs/Cerean/CereanMane — confirms the donor mod that owns this def is present and its path is unchanged
 X. [S] (human pass) put a Cerean pawn wearing the Cerean mane hairstyle on the map, view from the south/front, and confirm the crest renders instead of a bald scalp

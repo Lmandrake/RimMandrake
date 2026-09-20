@@ -1,5 +1,6 @@
 # RimMandrake: AtmosphericBase — validation walk
 
+<!-- walklint-ok: mod intentionally NOT BUILT yet (see status-hint below, WreckedMachines precedent) -- subject/packageId name the INTENDED path, never a stale/dead one -->
 subject: src/RimMandrake/AtmosphericBase  (packageId `mandrake.rm.atmosphericbase`)   # INTENDED path — mod NOT BUILT, so this folder does not exist yet; see status-hint. Not a stale subject.
 deps: none intended (loadAfter Ludeon.RimWorld only)
 list: minimal
