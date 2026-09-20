@@ -144,7 +144,7 @@
     <wildPlants>
       <Plant_Reeds>1.0</Plant_Reeds>  <!-- sarnreed -->
       <AB_GreenRockFern>0.4</AB_GreenRockFern>  <!-- green rock fern -->
-      <BMT_Dewshrooms>0.4</BMT_Dewshrooms>  <!-- dewshrooms -->
+      <RUT_Dewshrooms>0.4</RUT_Dewshrooms>  <!-- dewshrooms -->
       <Plant_Ambrosia>0.12</Plant_Ambrosia>  <!-- ambrosia bush -->
     </wildPlants>
     <wildPlantRegrowDays>17</wildPlantRegrowDays>

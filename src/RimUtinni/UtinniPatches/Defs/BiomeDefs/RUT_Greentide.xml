@@ -220,7 +220,7 @@
       <AB_JungleTree MayRequire="sarg.alphabiomes">3.0</AB_JungleTree>  <!-- deep jungle tree - tree -->
       <Plant_HydenockTree_Wild MayRequire="mlie.starwarsanimalcollection">1.5</Plant_HydenockTree_Wild>  <!-- wild hydenock tree - tree -->
       <Plant_JoganTree_Wild MayRequire="mlie.starwarsanimalcollection">1.2</Plant_JoganTree_Wild>  <!-- wild jogan tree - tree -->
-      <BMT_GiantLeaf MayRequire="biomesteam.biomescaverns">1.0</BMT_GiantLeaf>  <!-- giant leaf -->
+      <RUT_GiantLeaf>1.0</RUT_GiantLeaf>  <!-- giant leaf -->
       <Plant_MujaFruit_Wild MayRequire="mlie.starwarsanimalcollection">1.0</Plant_MujaFruit_Wild>  <!-- wild muja fruit bush -->
       <Plant_HubbaGourd_Wild MayRequire="mlie.starwarsanimalcollection">0.8</Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
       <AB_SugarFamewort MayRequire="sarg.alphabiomes">0.6</AB_SugarFamewort>  <!-- sugar famewort -->

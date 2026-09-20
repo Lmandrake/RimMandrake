@@ -172,7 +172,7 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <BMT_Plant_ScorchedStars>0.25</BMT_Plant_ScorchedStars>  <!-- scorched stars -->
+      <RUT_ScorchedStars>0.25</RUT_ScorchedStars>  <!-- scorched stars -->
     </wildPlants>
     <wildPlantRegrowDays>20</wildPlantRegrowDays>
   </BiomeDef>
