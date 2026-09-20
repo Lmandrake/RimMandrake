@@ -343,7 +343,32 @@ because it is real biome-completeness work with no item name to search for).
 
 ## the_webwork.md
 
-(pending)
+Owed section: 6 bullets → 9 individual items (Roster = 4, cross-flow = 2, one
+self-resolved). Examined 9.
+
+1. `WEBWORK_MECHANICS_1` — FILED/DONE (closed `0167e7af`).
+2. `SHOKKWEAVE_SOLE_SOURCE_1` — FILED, `doing` (in progress, matches sheet).
+3. **Roster** — rides the full assignment pass — MOSTLY FILED/DONE.
+   `WYYYSCHOKK_FERALISK_MERGE_1` (closed, cuts every donor 'lisk duplicate),
+   `WEBWORK_KIT_BUILD_1` (closed, "the roster's web/anchor/gutter ThingDefs"),
+   plus `BIOME_FAUNA_ASSIGNMENT_SITTING_1` cover most of this. One piece
+   UNCERTAIN/leaning UNFILED: the bestiary clade naming ("nettik/chirrik/
+   rothrik available for the guilds") and the explicit "donor density
+   correction" — searched both terms across all items, zero hits.
+4. **Wildsteam kit** (still-burner weapon + liquor fuel item + mandible
+   bounty quest) — UNFILED (CONFIRMED). Searched: "still-burner", "mandible
+   bounty", "Wildsteam" + "Webwork" — zero item or design-doc hits beyond
+   the sheet's own line ("lands with their template/faction work" — no such
+   faction-template item found naming this content).
+5. **Egg economy** (item, offworld sale route, carried-eggs mark) — UNFILED
+   (CONFIRMED). Searched: "egg economy", "carried-eggs", "Shokk" + "egg" —
+   zero hits in items or design docs.
+6. **Cross-flow ledger — the Contagion's UV cage** — UNCERTAIN, not checked
+   against `the_contagion.md` yet (see that section below in this report).
+7. **...the Greentide margin** — UNCERTAIN, not independently verified.
+8. **...`VAPOR_EMITTER_PLACEMENT_1` owes nothing here** — self-resolved by
+   the sheet's own text ("no steam sources — the Webwork's wet is silent"),
+   not a work item at all. Correctly not owed.
 
 ## the_contagion.md
 
