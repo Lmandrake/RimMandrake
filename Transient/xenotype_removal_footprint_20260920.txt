@@ -1,0 +1,43 @@
+VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1 — removal footprint, MEASURED 2026-09-20
+defs.sqlite mods=617/6a41e05c828eed67 captured 2026-09-20T07:47:24Z
+
+🔴 TWO COUNTING ARTIFACTS WERE CAUGHT AND EXCLUDED — both made every xenotype look
+   expensive to remove, and both are CONSTANT across all of them, so neither is a cost:
+   1. 'Outland - Genetics' ships ~228 XenotypeAscension genes whose DESCRIPTIONS
+      enumerate every xenotype by name.
+   2. Each of those same genes carries a modExtensions list of 136 DefModExt_Xenotype
+      entries — one per xenotype in the whole game, ours included. That is why every
+      target showed an identical ~226-228 'structural GeneDef reference' count.
+   ⇒ The numbers below are the ones that actually DIFFER between xenotypes.
+
+xenotype                       own defs  PawnKind  Faction
+Baseliner                             4       100       15
+Dirtmole                             19         6        7
+Genie                                 8        29        8
+Highmate                              8        10        3
+Hussar                                9        32       11
+Impid                                13         9        4
+Neanderthal                          17        26        9
+Pigskin                              12        12        6
+Sanguophage                          46        10        1
+Starjack                             27        21        6
+VRESaurids_Saurid                    15         8        2
+Waster                               15        10        2
+Yttakin                              41        12        7
+guy762_debugxenotype_droid            0         0        0
+
+--- factions that name each (reachability: no faction + no pawnkind = unreachable) ---
+Baseliner: OutlanderCivil[Core], TribeCivil[Core], Pirate[Core], Empire[Royalty], CannibalPirate[Ideology], OuterRim_BinaryStarRaiders[Outer Rim - Core]
+Dirtmole: OutlanderRough[Core], OutlanderRefugee[Royalty], Beggars[Ideology], Pilgrims[Ideology], PirateWaster[Biotech], KAR_OrcClan[Orc Clan + Xenotype]
+Genie: OutlanderRough[Core], OutlanderRefugee[Royalty], Beggars[Ideology], Pilgrims[Ideology], PirateWaster[Biotech], TradersGuild[Odyssey]
+Highmate: OutlanderRefugee[Royalty], Beggars[Ideology], Pilgrims[Ideology]
+Hussar: OutlanderRough[Core], OutlanderRefugee[Royalty], Beggars[Ideology], Pilgrims[Ideology], PirateWaster[Biotech], TradersGuild[Odyssey]
+Impid: TribeSavageImpid[Biotech], PirateWaster[Biotech], VRESaurids_OutlanderRoughSaurid[Vanilla Races Expanded - Saurid], VFEP_Junkers[Vanilla Factions Expanded - Pirates]
+Neanderthal: OutlanderRough[Core], OutlanderRefugee[Royalty], Beggars[Ideology], Pilgrims[Ideology], TribeRoughNeanderthal[Biotech], PirateWaster[Biotech]
+Pigskin: OutlanderRefugee[Royalty], Beggars[Ideology], Pilgrims[Ideology], OutlanderRoughPig[Biotech], PirateWaster[Biotech], KAR_OrcClan[Orc Clan + Xenotype]
+Sanguophage: Sanguophages[Biotech]
+Starjack: OutlanderRough[Core], OutlanderRefugee[Royalty], Beggars[Ideology], Pilgrims[Ideology], TradersGuild[Odyssey], Salvagers[Odyssey]
+VRESaurids_Saurid: PirateWaster[Biotech], VRESaurids_OutlanderRoughSaurid[Vanilla Races Expanded - Saurid]
+Waster: PirateWaster[Biotech], VFEP_Junkers[Vanilla Factions Expanded - Pirates]
+Yttakin: OutlanderRefugee[Royalty], Beggars[Ideology], Pilgrims[Ideology], PirateYttakin[Biotech], PirateWaster[Biotech], KAR_OrcClan[Orc Clan + Xenotype]
+guy762_debugxenotype_droid: (none)
