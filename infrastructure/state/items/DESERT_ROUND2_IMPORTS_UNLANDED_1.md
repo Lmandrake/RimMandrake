@@ -1,0 +1,55 @@
+# DESERT_ROUND2_IMPORTS_UNLANDED_1 — wire the landed round-2 imports, port the rest
+
+## what is wrong
+
+Of the owner's round-2 imports at 0.5 weight in the design rosters, **7 of 8
+rows in `desert.json` and 3 of 3 rows in `dune_sea_deep_desert.json` were
+never wired** into the deployed biome tables.
+
+- `RSW_Stoneback` and `RSW_TruffleMole` already exist as defs (BiomesTeamPort)
+  — wiring them is a one-line change each.
+- `AA_SandLion`, `AA_GreatDevourer`, `AA_Groundrunner`, `AA_MatureFleshbeast`
+  need porting under the 2026-09-20 "port all of them" ruling — no def exists
+  for any of the four yet.
+- `JOE_Cephalope` was ruled "absorb & retire mod" — no def exists anywhere in
+  `src/`.
+
+## why it matters
+
+Half the owner's already-approved round-2 roster is simply missing from the
+biomes it was ruled for.
+
+## the work
+
+1. Wire `RSW_Stoneback` 0.5 + `RSW_TruffleMole` 0.5 into RUT_Desert, and
+   `RSW_TruffleMole` 0.5 into RUT_ExtremeDesert, now — guard both with
+   `MayRequire="mandrake.rsw.swbestiary"`.
+2. File the 4 `AA_` ports (`AA_SandLion`, `AA_GreatDevourer`,
+   `AA_Groundrunner`, `AA_MatureFleshbeast`) plus the `JOE_Cephalope` absorb as
+   **one port batch**, with reference closure, following the pattern in
+   `BMT_FAUNA_ABSORPTION_1` (`infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md`).
+3. Before filing the port batch, read
+   `design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md` §8 (not read in
+   the source review) — `AA_GreatDevourer` and `AA_MatureFleshbeast` are
+   sarlacc-adjacent and `SARLACC_HABITAT_BUILD_1` may already supersede them.
+4. Card to the owner only on those two creatures, and only if §8 does not
+   settle it.
+
+## Watch out
+
+Do not port `AA_GreatDevourer`/`AA_MatureFleshbeast` before checking
+`SARLACC_HABITAT_BUILD_1`'s sarlacc-draft §8 — the review could not determine
+supersession because that section was not read this pass. That single read
+may remove 2 of the 4 ports from this item's scope entirely.
+
+## verify
+
+RUT_Desert and RUT_ExtremeDesert's `wildAnimals` lists carry
+`RSW_Stoneback`/`RSW_TruffleMole` at the stated weights and guard; a
+port-batch item (or an owner card) exists for the remaining 4 `AA_` creatures
++ `JOE_Cephalope`.
+
+## criteria
+
+Every round-2 import the owner already approved is either live in the biome
+tables or has a named, filed successor.
