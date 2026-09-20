@@ -7474,10 +7474,10 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/rimflow/cli.py": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "80bbde27edc98629a77b15622fea0a29aba17efd27add22b29dd0f952abf0e46",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "6c855851e98ac8b96977ea74794db18f124149ab61fead25560862319aea0185",
+    "sha": "c5463a763"
   },
   "src/RimMandrake/rimflow/model.py": {
     "cleanCount": 5,
