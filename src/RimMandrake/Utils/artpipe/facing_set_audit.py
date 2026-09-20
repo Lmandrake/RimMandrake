@@ -142,8 +142,14 @@ def main(argv):
         if not (COVERAGE_RANGE[0] <= m["coverage"] <= COVERAGE_RANGE[1]):
             flags.append(f"{name}: coverage {m['coverage']:.1f}% outside {COVERAGE_RANGE}")
 
-    if len({m["size"] for m in ms}) > 1:
-        flags.append("canvas sizes differ across facings: " +
+    # RimWorld sprites legitimately TRANSPOSE between facings — vanilla's own
+    # AutomatedSmelter is 512x640 north/south and 640x512 east/west. So the gate is
+    # "every canvas is the same set of two edge lengths", not "every canvas is
+    # identical": {(512,640),(640,512)} passes, {(512,640),(512,512)} does not.
+    # Measured 2026-09-20: the identity form false-flagged AutomatedSmelter, whose
+    # art is correct and whose transposition the sprite skill documents.
+    if len({tuple(sorted(m["size"])) for m in ms}) > 1:
+        flags.append("canvas sizes differ across facings (beyond transposition): " +
                      ", ".join(f"{Path(m['path']).name}={m['size']}" for m in ms))
 
     majors = [m["major"] for m in ms if m["major"]]
