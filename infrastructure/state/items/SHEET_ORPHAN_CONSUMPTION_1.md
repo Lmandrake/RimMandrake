@@ -163,3 +163,62 @@ deliverable: which rows, what the sheet's `sizeBin` says, what the prefill said,
 what the live `bodySize` is now, and whether the Law-3 size scaling already
 consumed the difference. ⚠️ Until that is measured, **nothing in this channel is
 "orphaned" — it is UNMEASURED.** Do not present it as a finding.
+
+
+## ✅ THE sizeBin UNKNOWN IS RESOLVED — MEASURED 2026-09-20
+
+The item asked whether ~29 fauna rows whose `sizeBin` differs from the prefill were
+orphaned, or already consumed by the Law-3 size scaling. Measured by joining
+`fauna_assignment_register.decisions.json` to live `race.baseBodySize` from the def
+dump (618 mods, `a48bc71544df1a7e`, captured 2026-09-20T17:44:19Z), against the
+sheet's own bands — small <1.0, medium 1.0–2.2, large 2.2–5.0, titan ≥5.0
+(`gen_fauna_assignment_sheet.py:49`).
+
+🔴 **It is 27 rows, not ~29.** 13 carry `decision=in`, 14 carry `decision=move`.
+Every one is a distinct defName; no row is double-counted across biomes.
+
+**13 DONE · 12 OWED · 2 genuinely unresolvable.**
+
+### DONE — the size pass already delivered these (13)
+`AA_Locusts` 0.01 · `AA_SmallButterfly` 0.01 · `GR_AnimusHare` 0.35 ·
+`RSW_Faa` 0.2 · `Rikknit` 0.3 · `SW_Electrictick` 0.25 · `Stintaril` 0.5 ·
+`TetnissCrab` 0.5 · `VFEI2_Boomtick` 0.18 · `SW_Electricgryllotalpa` 1.5 ·
+`RSW_MutatingTumorfishSpawn` 0.8 · `RSW_Stoneback` 0.4 · `RSW_TruffleMole` 0.9
+
+### OWED — live bin still disagrees with the graded bin (12)
+
+| defName | graded | live bodySize | live bin |
+|---|---|---:|---|
+| `Ling_Cockroach` | small | 2.0 | medium |
+| `AA_Mantrap` | large | 2.0 | medium |
+| `AA_Plasmorph` | large | 1.0 | medium |
+| `RSW_SandoAquaMonster` | large | 14.0 | titan |
+| `AA_Agaripod` | titan | 4.0 | large |
+| `AA_GreenGoo` | titan | 0.5 | **small** |
+| `AA_Wildpod` | titan | 4.0 | large |
+| `Dianoga` | titan | 4.0 | large |
+| `GR_ParagonThrumbo` | titan | 4.5 | large |
+| `RSW_CrimsonOpee` | titan | 1.7 | **medium** |
+| `RSW_CaveLemming` | small | 1.0 | medium |
+| `RSW_Megapleura` | medium | 2.4 | large |
+
+⚠️ **`AA_GreenGoo` (graded titan, live 0.5) and `RSW_CrimsonOpee` (graded titan,
+live 1.7) are the two worth looking at first** — those are not one-bin drifts, they
+are several bins apart, which usually means the grading and the def disagree about
+what the creature IS rather than about its number.
+
+### Unresolvable (2)
+`VFEI2_Macrofly`, `VFEI2_Silverfish` — absent from the live def set under both the
+donor name and an `RSW_` name.
+
+### 🔑 The trap this row hit, recorded because it nearly produced a wrong answer
+
+A first pass reported **7** rows as "NOT IN LIVE DEFS": the five `BMT_*` and the two
+`VFEI2_*`. **Five of those seven are ours already**, absorbed under `RSW_` names —
+`BMT_CaveLemming`→`RSW_CaveLemming`, `BMT_Stoneback`→`RSW_Stoneback`,
+`BMT_TruffleMole`→`RSW_TruffleMole`, `BMT_MutatingTumorfishSpawn`→`RSW_…`,
+`BMT_Megapleura`→`RSW_Megapleura`. Three of them are in fact **DONE**.
+
+⇒ **A donor defName absent from the live set does NOT mean the content is gone.**
+This repo absorbs donors routinely and the absorbed def usually keeps a recognisable
+name. Always check the `RSW_` form before reporting an absence.
