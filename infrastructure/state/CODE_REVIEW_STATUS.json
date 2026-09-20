@@ -3485,12 +3485,6 @@
     "hash": "d25a9cd9a7b4137f7faf3fc4c2d8610526dae34df9bda2bcde47b8919443d576",
     "sha": "21d72dc5"
   },
-  "src/RimMandrake/MandrakePatches/Patches/RRElectricityBasicsSelfPrereq_Fix.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "9fa6fe00cdc74edbd3901008faa967a094a8c449576a0e8ee7b235a87b0b46a0",
-    "sha": "f69955e42"
-  },
   "src/RimMandrake/MandrakePatches/Patches/ThirdPartySignConfigErrors_Fix.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -5771,10 +5765,10 @@
     "sha": "8193b35c"
   },
   "src/RimMandrake/Utils/handoff.py": {
-    "cleanCount": 4,
-    "date": "2026-09-18",
-    "hash": "6a53f42a744d160b764486945359059099fbf6059bd83dbed16e392bdfb2e887",
-    "sha": "d946c8522"
+    "cleanCount": 5,
+    "date": "2026-09-20",
+    "hash": "3a69419166d50549b9bf617526142ce34214439e9cf04a809fd8d9c9d1ee6124",
+    "sha": "6ecce8a3d"
   },
   "src/RimMandrake/Utils/harvest_log.py": {
     "cleanCount": 2,
@@ -9001,12 +8995,6 @@
     "cleanCount": 1,
     "date": "2026-09-05",
     "hash": "42f9d81c43ebf26d768d7295b5bcdd6738ae1d9580649ade6a73e3c70f47c954",
-    "sha": "ef81a0b7"
-  },
-  "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorweapons/BiomesCaverns/Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "8a6aed497ecdc77851b2a593aecfbdaec67afed1139c118d0bcb045b6195db3f",
     "sha": "ef81a0b7"
   },
   "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_Patch_HandModPositioning.xml": {
@@ -13035,36 +13023,6 @@
     "hash": "bb61e38dd27c32a84a32795e1d5316f842c85edc4ea940a119af064ff623123d",
     "sha": "9aaf55cec"
   },
-  "src/RimUtinni/AaroxisDendoriaArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "0cbeb209985904838f983b9b96b8134e30b2cd3c318781e0f85d44c5e9ed95be",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/AaroxisDendoriaArtOverride/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/AaroxisDendoriaArtOverride/Textures/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "3c87b423524221b44c7e8d925beaa428f5c701fd8d8feb74810eea5b27fcecff",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/AaroxisDendoriaArtOverride/Textures/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "0fe58b18e94413f59e694d121060422ddfb13789626ecf5591184893758a0982",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/AaroxisDendoriaArtOverride/Textures/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "03a45f0c8df06d1f6fa13cd7075a4bea1e48105a9c1982b35c318bf43cdc4e64",
-    "sha": "38ce6b1fa"
-  },
   "src/RimUtinni/AcanthamoebaGiganteaLargeArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -13383,30 +13341,6 @@
     "hash": "81a4bfa044271304047f0b9e8b0b62ddf948bfebf00a4b14d30cd37ccdd3a328",
     "sha": "52dee04f"
   },
-  "src/RimUtinni/BarbslingerArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "cbe4485a207025b3a8aff0a06d15c5c179b93996142f245ebee2feeea95297e0",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BarbslingerArtOverride/Textures/Things/Pawn/Animal/AA_BarbSlinger/AA_BarbSlinger_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "3a669bf78631e0db8565ad63ca943e946e9e32cf048c42016f5c70b35f9d94fe",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BarbslingerArtOverride/Textures/Things/Pawn/Animal/AA_BarbSlinger/AA_BarbSlinger_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "50bbbb378ab0ec38fd57a3fde953d69f787c7dfd58e241df6ddb54a516e0fdf4",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BarbslingerArtOverride/Textures/Things/Pawn/Animal/AA_BarbSlinger/AA_BarbSlinger_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "7e2e72918bd1f92e57e5c6dd1d57174db237a41fc84a1264838cd770a10f7e5a",
-    "sha": "38ce6b1fa"
-  },
   "src/RimUtinni/BirthHatchDemo/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -13454,90 +13388,6 @@
     "date": "2026-09-17",
     "hash": "c2ef932dd351e847a6bb812442e07a15b440d9f5268295cd20a0eee224d2c317",
     "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BloodletterPetrelArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "57849526e90a1a5d62835c3c82affa3337ddcd559b67ba6c6a08184d474d7ae3",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BloodletterPetrelArtOverride/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BloodletterPetrelArtOverride/Textures/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "c98b9cc79b22fc9811786f892a13dade5804f805581d53ffd2de4f013de599e1",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BloodletterPetrelArtOverride/Textures/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "52cfaa849811e8f707c9b9a0c9479a880aad1dab398e7991b4912d5bacccb86c",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BloodletterPetrelArtOverride/Textures/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "df16fb690b530d90cb77bb6660eab2db2d2214dab75b0783f43aee5d8ab0f3ff",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BoomsnakeArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "eb10505c1da51315a366d27cf6e282d9ddfc9ca94e68d483df3c4117c51b8968",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BoomsnakeArtOverride/Textures/Things/Pawn/Animal/Reptile/Boomsnake/Boomsnake_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "52df2d63b4c6dadf0cb8bc21912a41033edecb0411cc2139097551cb2749810c",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BoomsnakeArtOverride/Textures/Things/Pawn/Animal/Reptile/Boomsnake/Boomsnake_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "caac1f7558836da15440e7961d79829f225ecee377a55767bd80749cce0b5801",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BoomsnakeArtOverride/Textures/Things/Pawn/Animal/Reptile/Boomsnake/Boomsnake_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "3eea5e59ed62336eb1e9cde9c481b9a1369914a1bb21e3ba39b6bdad3c701dd7",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/BovineBeetleArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "a0962dc768960fb7e5c1e9a90f5e42dd2c619194371984ce1eca55fc520db372",
-    "sha": "9aaf55cec"
-  },
-  "src/RimUtinni/BovineBeetleArtOverride/LICENSE": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "9aaf55cec"
-  },
-  "src/RimUtinni/BovineBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "1b275937ab695dd9b797ebf61a333ffc38bcf58a28b5538c3a10913cd8e24788",
-    "sha": "9aaf55cec"
-  },
-  "src/RimUtinni/BovineBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "34b1670bfa3471284227bf8cec1cd7b5daa12c3463850cc93b14f87cc14bff41",
-    "sha": "9aaf55cec"
-  },
-  "src/RimUtinni/BovineBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "63ff6ce01132266d4a11fe4d100f0bf00693f166abc3d846a9458aaa9a4465e7",
-    "sha": "9aaf55cec"
   },
   "src/RimUtinni/BumbledroneArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -13597,36 +13447,6 @@
     "cleanCount": 1,
     "date": "2026-09-17",
     "hash": "34971dec296318313dd5c3305ddef994c8aa28896e1b1925685d908f0446e5c7",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/CrestedDragonArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "182d68a7fc3ca761c542b5d2b985d38ee97879ca100d25f5aff11e7bbc1a4e4a",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/CrestedDragonArtOverride/LICENSE": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/CrestedDragonArtOverride/Textures/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "2596e413f59fb0ce672475161f2d50b6ae5dac86177721cb0e21b4c0de02fcf2",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/CrestedDragonArtOverride/Textures/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "5893fffe56954bcdb4126ae98077d051e2b89be03b0f49d43c0e043f3c0f2b18",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/CrestedDragonArtOverride/Textures/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "7e4a9d3357aa96747ec1093b9310ed05d9f234b1f5bb6e859b9f8eace9d63289",
     "sha": "7d6efe921"
   },
   "src/RimUtinni/Doctrine/About/About.xml": {
@@ -13797,60 +13617,6 @@
     "hash": "a6967511944351015c05344e31d12c807301de9bbdbae625d33657ffa2a3a89f",
     "sha": "57ce5707"
   },
-  "src/RimUtinni/FireWaspArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6ab86899b2083cfece22f4a4d890816bac28b53ac3c82e507371a8cc9a7df1b6",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/FireWaspArtOverride/Textures/Things/Pawn/Animal/AA_FireWasp/AA_FireWasp_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "774c704211a6cb102a453d75109b1358b727a1752769d5b0aefd1682e548ceb9",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/FireWaspArtOverride/Textures/Things/Pawn/Animal/AA_FireWasp/AA_FireWasp_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "dec2a9a8defa2c3be552738a5fe629470d0d6d000a64ef202dc61f7b6db46bcd",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/FireWaspArtOverride/Textures/Things/Pawn/Animal/AA_FireWasp/AA_FireWasp_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "e34a4477ffc04f9c954a8911b3dc99042598a59f1fad712f5defbd13963a86c7",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/FoundryBeetleArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "e9118c5ccfab7f3d80a72eff1f8cb5e01526506cbe6313f40026f3fb550ceeb9",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/FoundryBeetleArtOverride/LICENSE": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/FoundryBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "35b66a2ad4d6ba7e67b086be048302b9981e506d038c159d590f2b68ea63a288",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/FoundryBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "d5c46d60da621c47d296691a68d6c860eaa5544bd8948d838f31d395e9f2150c",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/FoundryBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "7a2d190015ccfccb423fc130e1e06215572ece40a4dd9acc48ffc2bdf38224b7",
-    "sha": "7d6efe921"
-  },
   "src/RimUtinni/FrostmiteArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -13880,36 +13646,6 @@
     "date": "2026-09-17",
     "hash": "36c6224e50618f54c61ff46c3e077e75edbcc2d35e97986f72dc7fbf29c43450",
     "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/FungalMantisArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "9d7facd9bc11224e9b2666601aa2f1387423e323adc569970e303109798f5366",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/FungalMantisArtOverride/LICENSE": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/FungalMantisArtOverride/Textures/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "5d8f29856374508693ec9b3cacb6a4b0b179887fb03b7976db3e8187e8a288a7",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/FungalMantisArtOverride/Textures/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "d11601e0410a503964a473c8deaf7af6604ecc3db8631105bac5e1c8bb50238b",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/FungalMantisArtOverride/Textures/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "87563ec7d2c0f20c018d1a0f98c4e4ef9e337bebb15a12f6f9a863703bb5ea61",
-    "sha": "7d6efe921"
   },
   "src/RimUtinni/FungalSoilTrade/About/About.xml": {
     "cleanCount": 2,
@@ -14096,90 +13832,6 @@
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "6e65d276"
-  },
-  "src/RimUtinni/JamelArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "9844aefe402b4840890906952012fe2a9cb4875b07c4498ba038c8edeefdbe24",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/JamelArtOverride/LICENSE": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/JamelArtOverride/Textures/swanimals/Jamel/Jamel_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "a0e576417866b99fd313d9c04c7d964d7c9aedcff1b994272cf9c5aa0fc4bc91",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/JamelArtOverride/Textures/swanimals/Jamel/Jamel_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6e69283222a063c5f84ee2cd24f59778e4c02e04da37885cb1e7d075be0bf581",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/JamelArtOverride/Textures/swanimals/Jamel/Jamel_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "cd21af6751294b44af38af9c54cdf6bde4d9b02aeec5bb8b2504ee754bb33d05",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/KroffaArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "46e849421b8f2f8df47f3b4d063ad2ebbd3a753371c058cfa7adee3accdca653",
-    "sha": "8da0c5c8e"
-  },
-  "src/RimUtinni/KroffaArtOverride/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/KroffaArtOverride/Patches/Kroffa_LabelPatch.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "1ed2c35c67eadd5489e649549112cd8158f766e5af2490bbc1403fbe982871a9",
-    "sha": "8da0c5c8e"
-  },
-  "src/RimUtinni/KroffaArtOverride/Textures/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/KroffaArtOverride/Textures/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/KroffaArtOverride/Textures/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "091517b19af2d6ffef2edd74271d65be96ed342bab561a735f8eaa126e124573",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/KroffaArtOverride/Textures/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/KroffaArtOverride/Textures/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/KroffaArtOverride/Textures/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "091517b19af2d6ffef2edd74271d65be96ed342bab561a735f8eaa126e124573",
-    "sha": "38ce6b1fa"
   },
   "src/RimUtinni/KyberTradePlot/About/About.xml": {
     "cleanCount": 1,
@@ -14787,24 +14439,6 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "7d6efe921"
   },
-  "src/RimUtinni/MycoidColossusArtOverride/Textures/Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "63a9ef6e34a2acacfd2cab63cc0be70ab410e1cc66c7fc5f2c49b5991fe409a5",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/MycoidColossusArtOverride/Textures/Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6b62d57d51bbd7b5f120b6d1206ed895eb0cb1ab98a297ba62e9edf38b6f1222",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/MycoidColossusArtOverride/Textures/Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "733761bba07c214a4d22ff32788cfe0228584b7b3873af9372d598faf8175892",
-    "sha": "7d6efe921"
-  },
   "src/RimUtinni/PawnFlavor/About/About.xml": {
     "cleanCount": 3,
     "date": "2026-09-18",
@@ -14936,42 +14570,6 @@
     "date": "2026-09-05",
     "hash": "6ff0b6da33c4b8855ae09b629f4d2b9e27116828a3d1947b9b89b847bcab107d",
     "sha": "ff35f27f"
-  },
-  "src/RimUtinni/PuffmiteArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "169b737004a5453729b9286fa45b00e4faf1882f48a5e0f53354b7184da9c505",
-    "sha": "8da0c5c8e"
-  },
-  "src/RimUtinni/PuffmiteArtOverride/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/PuffmiteArtOverride/Patches/Puffmite_LabelPatch.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "6df0d22ae155a603d1f1530614cca5ad6e7dedc4d4be1239508c97dc4c4d14e2",
-    "sha": "8da0c5c8e"
-  },
-  "src/RimUtinni/PuffmiteArtOverride/Textures/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "36e746ed820761ac0f237bb8f77a7dbae4010edf412940c30bc0766e354e037b",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/PuffmiteArtOverride/Textures/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "c723d4a37b3313ffe352beeca4044ba92e0e6c5d7f30f06968ae7fcb41970f07",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/PuffmiteArtOverride/Textures/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "cdb417dcc45554753e1a665dce2e6fecf46dcc6965bc2eeaf12069006317d6df",
-    "sha": "38ce6b1fa"
   },
   "src/RimUtinni/PyrelandsMechanics/About/About.xml": {
     "cleanCount": 3,
@@ -15122,30 +14720,6 @@
     "date": "2026-09-17",
     "hash": "8ab3cadbf2712a734d28bea2eea1957a28f6e18b1dfa1270942c6fac7f5d82d7",
     "sha": "7d6efe921"
-  },
-  "src/RimUtinni/RazorjackArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "0bc6c1981b1278e1561ce25b8c972bd1c450cad8a1133b68667c56a8dca5741a",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/RazorjackArtOverride/Textures/Things/Pawn/Animal/AA_Razorjack/AA_Razorjack_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "a567c1f9546fe2267fe1ba34c65564c6c0668dddb4e5a2e659924f225077821e",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/RazorjackArtOverride/Textures/Things/Pawn/Animal/AA_Razorjack/AA_Razorjack_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "f9aba3ea91ae64656d1a27474cf3f3576047a2034654033e9bf76cabcb3e2fb1",
-    "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/RazorjackArtOverride/Textures/Things/Pawn/Animal/AA_Razorjack/AA_Razorjack_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "0a3f88f97146e6c96d773286fce0891582ac57ad18d1e8f0272fdfac41508ded",
-    "sha": "38ce6b1fa"
   },
   "src/RimUtinni/ResearchRetag/About/About.xml": {
     "cleanCount": 4,
@@ -15758,36 +15332,6 @@
     "date": "2026-09-12",
     "hash": "9ece338325196542efdf5ae5c8c8591293954185aad3187c4a030f859f8b9f41",
     "sha": "18e1ab1b6"
-  },
-  "src/RimUtinni/ScreecherArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "34fa72cb1f32feb4ca76e57d8cbe629e2f7e24332c20e86a6d29cfb51dc1d5aa",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/ScreecherArtOverride/LICENSE": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/ScreecherArtOverride/Textures/BMT_PollutedLands/Things/Animal/Screecher/Screecher_east.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "329ba0809e745b9e153383d6c9360f4e1127c7088bc31d5f784e8e842bb4f020",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/ScreecherArtOverride/Textures/BMT_PollutedLands/Things/Animal/Screecher/Screecher_north.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "30cb690ac5a38186a3b7ccc95497a40ffca12e2216f75ef38e187bd13171864f",
-    "sha": "7d6efe921"
-  },
-  "src/RimUtinni/ScreecherArtOverride/Textures/BMT_PollutedLands/Things/Animal/Screecher/Screecher_south.png": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "4350b5daca9bda496cf78865b547bd80c594a8d8888d27741f5b67b366a38ae1",
-    "sha": "7d6efe921"
   },
   "src/RimUtinni/ShadowChargerArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -17499,18 +17043,6 @@
     "hash": "d3170d3f7181320d807d9b24bc4ad31e7f4e107c8492366be84212e31d4c8a8e",
     "sha": "bb73b6bd"
   },
-  "src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_Ashkarr.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-10",
-    "hash": "f013d2cfab5c6805ceb1a2b4eb218a58748b8fb7dcdf4ad5c75bd9cdc905c80f",
-    "sha": "429d1760"
-  },
-  "src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_Greentide.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "b07137a4cd0f0fe709a211eb8cbf0a37afba3cb590819bd97bd9b905c5636054",
-    "sha": "774ed90f1"
-  },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFloraStatAdjustments_Generated.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -17864,12 +17396,6 @@
     "date": "2026-09-18",
     "hash": "2805bb93dfab364b78f7f68cc7da2fa87f8f25ba7357940bd1985f0b9bba03a9",
     "sha": "2ed696dd2"
-  },
-  "src/RimUtinni/UtinniPatches/Patches/RazorjackIdentity_Sytheclaw.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "7346f9bb6a15aa3ab901fcd15955d99a503fb722da895eec412e247be0a4a636",
-    "sha": "c81215592"
   },
   "src/RimUtinni/UtinniPatches/Patches/RebelAlliance_Suppress.xml": {
     "cleanCount": 1,
