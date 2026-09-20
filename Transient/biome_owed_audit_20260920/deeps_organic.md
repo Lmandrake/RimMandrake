@@ -274,7 +274,72 @@ zero hits in `src/RimUtinni` or `src/RimMandrake`), which is exactly what
 
 ## the_propane_lakes.md
 
-(pending)
+🔴 **Correction to the task brief**: the brief states `RUT_Umbra` "has had no
+flora/fauna pass at all" as if it were a second Blue Desert. Read the live
+def, `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml`, in full —
+**this is FALSE as stated**. `<wildAnimals>` carries 4 species
+(`AA_Frostmite`, `AA_FrostboundBehemoth`, `AA_Terramorph`, `AA_Slurrypede`,
+weights 0.02-0.35) and `<wildPlants>` carries 4 (`AB_CrystalHorn`,
+`AB_CrystalFlower`, `AB_FrostLeaf`, `AB_RimeNodules`, weights 0.4-1.0) — both
+non-empty, non-zero. The def's own header states these were "transplanted
+from BiomeCast_Ashkarr.xml/BiomeFlora_Ashkarr.xml against
+`rosters/the_propane_lakes.json`" with ban 1/ban 2 enforced by that JSON's
+evictions — i.e. a roster/ban pass DID happen. **What's actually true**: the
+species are still raw DONOR names (Alpha Animals/Alpha Biomes prefixes), not
+renamed/verdict-passed campaign content the way the Rot's and Pyrelands'
+rosters were — so Umbra is populated but has not been through the
+naming/art/hybrid-verdict pass those sheets got. That's a real, lesser gap
+(cosmetic/canon ownership, not "empty biome"), and it is NOT named anywhere
+in this sheet's own Owed section — the Owed list is silent on flora/fauna
+entirely.
+
+Owed section: 7 bullets → 12 individual items (engine feasibility pass = 5,
+cross-flow ledger = 2). Examined 12, plus the flora/fauna gap above (not
+itself an Owed-list line item, so not counted in the 12, but reported
+because it is real biome-completeness work with no item name to search for).
+
+1. `ANCIENT_WAR_LAB_1` — FILED, `doing` (in progress, not stale).
+2. `LIQUID_BIOMES_MAP_1` — FILED/DONE (closed `182c69842`); sheet's own text
+   confirms "paint DONE," matches.
+3. `TERRAMANUFACTURE_CANON_1` — FILED/DONE (closed `3c2993420`).
+4. `MECHANOID_BIOME_PRESENCE_REVIEW_1` — FILED, superseded by
+   `MECH_PRESENCE_ENFORCEMENT_1`, which is FILED/DONE (closed `023beee3`).
+   Chain intact.
+5. **The Frostling → `forsaken_crags.md` roster** — FILED/DONE (CONFIRMED).
+   `forsaken_crags.md:254`: "The Frostling joins this roster (owner,
+   2026-09-06: moved back from the propane...)" — line is present verbatim.
+6. **Engine feasibility pass — aurora weather with radiation + GIC surge
+   events** — UNFILED (CONFIRMED). Searched: "aurora" + "radiation", "GIC
+   surge", "GameConditionDef" list under `UtinniPatches/Defs/
+   GameConditionDefs/` (13 files, none Umbra-scoped — closest name match,
+   `RUT_GradientSurge`, is unrelated: label "the breath-tide surge", not
+   Umbra). No item names it either.
+7. **...the tap building** — UNFILED (CONFIRMED). Searched "electrojet tap",
+   "tap building". `RUT_TibannaTap_BeldonWiring.xml` exists but is
+   `FORGE_MECHANICS_1`'s unrelated Tibanna-gas tap for a different biome
+   (the Forge) — false-positive name collision, not this one.
+8. **...fuel-snow weather** — UNCERTAIN. `RUT_Umbra.xml`'s own comment says
+   SnowGentle/SnowHard are "reflavored per the sheet as 'fuel snow'... not
+   literal water snow" — so the WEATHER-DEF reskin exists as flavor text on
+   vanilla snow weather, but no new fuel-snow-specific mechanic (precipitation
+   feeding crystal flora, described in SS4b) was found. Searched "fuel snow",
+   "FuelSnow". Partial credit, not a clean DONE.
+9. **...the lake terrain (flammable, off-gassing into saturation)** —
+   UNFILED (CONFIRMED). Searched "off-gass", "Flammable" + "Propane",
+   `AB_PropaneLake`/`AB_SolidPropane` terrain defs — no custom comp or patch
+   adding flammability/off-gassing found; `RUT_PropaneLake.xml` is the
+   worldmap BiomeDef only (paint layer), not local-map terrain behavior.
+10. **...the crater event (map permanence)** — FILED, folded into
+    `ANCIENT_WAR_LAB_1`'s own scope ("the crater ending as a permanent map
+    change") — in progress, not a separate unfiled item as the sheet's
+    phrasing might suggest.
+11. **Cross-flow ledger — Umbra→crags tholins** — appears consistent
+    (UNCERTAIN on completeness): `forsaken_crags.md:68/73/260` already
+    discusses tholin-rime chemistry and variant mapping; did not verify it
+    specifically cites Umbra as the warm-end source.
+12. **...Blue Desert→Umbra haze/dead** — appears consistent (UNCERTAIN):
+    `the_blue_desert.md` already has its own haze section (§ "The haze, and
+    the 'snow'"); did not verify a two-way citation of Umbra specifically.
 
 ## the_webwork.md
 
