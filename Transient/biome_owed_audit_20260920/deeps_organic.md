@@ -181,7 +181,49 @@ cross-flow ledger = 4). Examined 11.
 
 ## the_twilight_deep.md
 
-(pending)
+Owed section: 5 bullets → 10 individual items (implementation-deferred
+bullet = 5 named systems, canon sitting = 3, cross-flow ledger = 4; v2 full
+settlement excluded as explicitly out-of-scope v2). Examined 12.
+
+1. **Implementation deferred to diving mods** (roof/ceiling rendering,
+   skylight drift, bottom-river currents, fishing/kelp economies, Compact
+   dwelling gen, gardener set-piece) — PARTIALLY FILED. `TWILIGHT_DEEP_WATER_
+   LAYER_1` (doing) and `LIQUID_TYPES_MOD_1` (doing) are both in-flight and
+   cover the water-layer/current half; no item found for skylight drift,
+   Compact dwelling gen or the gardener set-piece specifically. UNCERTAIN on
+   those three — searched "skylight drift", "Compact dwelling", "gardener
+   set-piece", found nothing, but this whole bullet is explicitly marked
+   "deferred to the diving mods" in the sheet (i.e. deferred to a FUTURE
+   framework decision), so absence may be intentional non-scope rather than
+   a gap — flagging rather than calling it UNFILED outright.
+2. **v2 Compact settlement** — correctly out of scope (marked 🔵 v2, plan of
+   record), not owed work.
+3. **Roster — "the generous pass"** — UNCERTAIN, leaning UNFILED. Searched
+   "twilight deep" across all items: only `BIOME_FAUNA_ASSIGNMENT_SITTING_1`
+   (general sitting) and `TWILIGHT_DEEP_WATER_LAYER_1` (water-layer
+   blocker) reference this biome — no dedicated fauna/flora wiring item
+   like the Rot's or Pyrelands' several-item chains. Given the sheet's own
+   emphasis ("this biome alone populates richly"), the thin item trail is
+   suspicious but I did not check the live def dump for actually-spawned
+   Twilight Deep fauna, so not calling it CONFIRMED UNFILED.
+4. **Canon sitting**:
+   a. Compact's ark-keeper reveal into their faction dossier — UNFILED
+      (CONFIRMED). Searched "ark-keeper" across `design/Jawa` — only the
+      sheet itself and `README_BIOME_GRAMMAR.md` (which flags it 🔴 as
+      still-important content) mention it; no faction dossier file for "the
+      Compact" exists anywhere in `design/Jawa/worldbuilding`.
+   b. mat-roof mechanism into `terminator_sea.md` canon — FILED/DONE
+      (CONFIRMED). Read `terminator_sea.md:15`: "beneath the mat-roof, the
+      crowding exception lives" — the scoping line is already there.
+   c. skylight/roof physics into the hydrology doc — UNFILED (CONFIRMED).
+      Searched `hydrology_and_fire_ecology.md` (the only hydrology doc in
+      the tree) for "skylight", "roof physics", "Twilight" — zero hits.
+5. **Cross-flow ledger** (the_grey_deep.md sister-underworld statuary/ark
+   link; terminator_sea.md surface law — done, see 4b; the Miasma
+   crèche-comparison; `LIQUID_TYPES_MOD_1` density-current grade) —
+   UNCERTAIN on the grey_deep and Miasma links (not yet checked at time of
+   writing — the_grey_deep.md is this sheet's own next section below and
+   will cross-check there); `LIQUID_TYPES_MOD_1` is FILED/doing (see #1).
 
 ## the_grey_deep.md
 
