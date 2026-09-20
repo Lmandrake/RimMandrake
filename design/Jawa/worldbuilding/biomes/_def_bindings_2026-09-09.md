@@ -9,10 +9,19 @@ rule 1. Every binding below was verified by opening the named sheet and/or
 
 ## 1. Def → sheet → §10 → wildAnimals owner
 
+> 🔴 **MEASURED 2026-09-20: 25 of the 29 rows below name a defName that carries
+> ZERO painted tiles.** The world was repainted onto our own `RUT_*` biome defs
+> after this table was compiled. Only the two desert rows (corrected that day),
+> `RUT_NightsideIce`, `RUT_TheScald`, `ZBiome_Grasslands` and `RUT_PropaneLake`
+> are trustworthy. Choosing an owning def from any other row wires content onto
+> a biome no player visits — see `BIOME_BINDINGS_TABLE_STALE_1`, which is the
+> work to regenerate this table.
+
+
 | def | tiles | sheet | §10 "Bestiary sorts"? | wildAnimals owner (current) |
 |---|---:|---|---|---|
-| Desert | 3932 | `desert.md` | no (§10 = "Implementation", not bestiary) | `src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml` |
-| ExtremeDesert | 3172 | `dune_sea.md` + `deep_desert.md` (ONE merged roster, R22) | no (neither sheet) | `BiomeCast_Ashkarr.xml` |
+| `RUT_Desert` | 2390 | `desert.md` | no (§10 = "Implementation", not bestiary) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml` |
+| `RUT_ExtremeDesert` | 3969 | `dune_sea.md` + `deep_desert.md` (ONE merged roster, R22) | no (neither sheet) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml` |
 | AB_PropaneLakes | 2531 | `the_propane_lakes.md` | no | `BiomeCast_Ashkarr.xml` |
 | AB_MycoticJungle | 2258 | `the_rot.md` | no | `BiomeCast_Ashkarr.xml` |
 | RUT_NightsideIce | 1506 | `nightside_ice.md` | no (§10 = "The door — occupied") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml` |
