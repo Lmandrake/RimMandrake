@@ -175,6 +175,58 @@ the player must reach to earn.
 Its inhabitants run. The gameplay verb is *pursuit and capture*, which is why the
 wreckage matters — it is the cover they break for.
 
+## 8a. 🔴 RULED — the fall fauna are ARRIVALS, not biome fauna (owner, 2026-09-20)
+
+Verbatim: *"These falling injections should not be listed as 'sometimes appears'
+in the deep desert but rather arrive with injected content from inhabited from
+wreckage or, alternatively, if we pursue the generator option to produce the
+same. They are not part of 'the biome' there are simply events and subregions
+where you can meet them."*
+
+🔑 **This ruling AGREES with this roster's own note and overrules the
+implementation.** `rosters/fall_line.json` already says *"NOT a BiomeDef (ban 1).
+Entries are ADDITIONS injected over the underlying defs"* — but the 15 rows were
+wired as ordinary `wildAnimals` entries on the underlying biome defs, which is
+precisely "sometimes appears in the biome". Design said arrival; the build said
+ambient.
+
+### What this means concretely
+
+- ⛔ **A Fall Line row is NOT a `wildAnimals` entry on `RUT_ExtremeDesert`,
+  `RUT_Desert` or `RUT_AridShrubland`.** Ambient commonality is the wrong
+  mechanism for all 15.
+- ✅ They attach to **injected wreckage content and to subregions** — a place you
+  walk into, or an event that brings them. A generator producing the same effect
+  is an acceptable alternative route, not a different ruling.
+- 🔑 **The consequence that matters for the deep desert:** with these removed,
+  `RUT_ExtremeDesert`'s ambient cast loses its two heaviest rows (`Scavrat` 0.6,
+  `WompRat` 0.4). That is the intended result, not a hole to backfill with more
+  ambient vermin — the deep desert is supposed to be empty, and what you meet
+  there should be something that *arrived*.
+
+### The one deliberate exception
+
+**`Rat` (0.1) STAYS.** Owner, verbatim: *"the rat was there because actual
+terrestrial rats might be fun to fall from a ship as a white lab rat. That is
+all. So keep it."*
+
+⚠️ It stays **as a fall arrival**, not as ambient biome fauna — the ruling above
+still applies to it. A plain Earth rat is otherwise exactly the "instantly
+nameable Earth organism" this sheet bans, so 🔴 **do not let a linter or a future
+purity sweep cut it**: it is ruled in, for the joke, and the joke needs it to
+arrive out of a wreck rather than to live in the sand.
+
+### Watch out
+
+- ⚠️ **`FALL_LINE_INJECTION_DEAD_BIOME_KEYS_1` is now solving the wrong problem.**
+  It proposed rekeying `defNames` from the dead `ExtremeDesert`/`Desert`/
+  `AridShrubland` to the live `RUT_*` names. Under this ruling the rows do not
+  belong in a biome table under EITHER key. Re-home them first; rekey only
+  whatever genuinely remains biome-scoped.
+- ⚠️ The 7 `OuterRim_*` droid rows are the sheet's "invisible to the food web"
+  beat and are a good fit for arrival-scoped content — they are wreck salvage
+  that walks. Do not drop them when the vermin come out.
+
 ## 9. Artistic theme
 
 **"A slow rain of other people's ruin, and everything alive is hiding under it."**
