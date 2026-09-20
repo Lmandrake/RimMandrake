@@ -10016,3 +10016,13 @@
 {"seat":"FOUNDRY","event":"start","id":"DESIGNATE_BATCH_OVER_DESIGNATES_1","ts":"2026-09-19T22:43:45Z"}
 {"seat":"FOUNDRY","event":"claim","id":"BRIDGETOOLS_TILE_LAYER_DROPPED_1","ts":"2026-09-19T22:50:55Z"}
 {"seat":"FOUNDRY","event":"start","id":"BRIDGETOOLS_TILE_LAYER_DROPPED_1","ts":"2026-09-19T22:50:56Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-20T07:26:43Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-20T07:27:23Z"}
+{"seat":"BENCH","event":"claim","id":"TEMP_TERRAIN_DLC_GATE_1","ts":"2026-09-20T07:27:57Z"}
+{"seat":"BENCH","event":"start","id":"TEMP_TERRAIN_DLC_GATE_1","ts":"2026-09-20T07:27:58Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY reboot: deploy DESIGNATE_BATCH_OVER_DESIGNATES_1 + BRIDGETOOLS_TILE_LAYER_DROPPED_1 DLL fixes","ts":"2026-09-20T07:29:03Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ts":"2026-09-20T07:29:09Z"}
+{"seat":"BENCH","event":"close","id":"TEMP_TERRAIN_DLC_GATE_1","sha":"bd7834ff8","reason":"MEASURED yes: TerrainDef.temporary (Verse/TerrainDef.cs:266), TempTerrainProps, TerrainGrid.SetTempTerrain (:398) and TempTerrainManager are all Core, and Map.tempTerrain ticks unconditionally - only the six shipped temp terrain DEFS are Data/Odyssey. Answer already applied: FlowWorks ships its own temporary terrains and declares no DLC.","ts":"2026-09-20T07:29:32Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-20T07:29:40Z"}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"FOUNDRY","ts":"2026-09-20T07:29:51Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-20T07:29:58Z"}

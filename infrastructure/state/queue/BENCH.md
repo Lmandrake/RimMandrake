@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T22:50:56Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-20T07:29:58Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -212,7 +212,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -220,7 +220,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -351,16 +351,6 @@ kind:     task
 thin:     no ## verify
 summary:  1. The owner reads the DRAFT section and validates, edits, or rejects it.
 prose:    infrastructure/state/items/NORTH_STAR_PIT_PILOT_1.md
-
-## TEMP_TERRAIN_DLC_GATE_1 DESKTOP FIRST TASK - can we ship our OWN temporary=true terrains? Every base-game temporary terrain is MayRequireOdyssey, which is why FloodedCanyon went permanent-SetTerrain and DLC-free while FluidCanals went temp-terrain and Odyssey-locked. If TerrainDef.temporary and TempTerrainManager are Core, the whole liquids family drops its hard Odyssey dependency and the two terrain models unify
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TEMP_TERRAIN_DLC_GATE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TEMP_TERRAIN_DLC_GATE_1.md
 
 ## READ_LINE_REGISTRY_SHARED_1 OWNER RULING 2026-09-16: read-line ids are GLOBAL with a shared registry — recurring demands (no engineering marker in player text, tier-neutral prose) are authored ONCE and cited by every walk that holds them; mod-specific lines stay local. Amends spec §10.1's silence on per-mod vs global. Owed: the registry file, a lint that a cited line matches it, de-prefixing the Aftermath draft's ids, and reconciling Oracle's existing never_engineering_marker_in_player_text as the first registry entry. ⚠️ Editing a shared line re-hashes every walk citing it — cheapest to build now, at 3 validated walks
 state:    proposed
