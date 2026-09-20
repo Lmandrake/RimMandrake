@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T18:51:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T18:58:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -168,7 +168,7 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
+summary:  - ⚠️ The line below is the ORIGINAL 2026-09-06 filing and its def is DEAD.
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
 ## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
@@ -909,14 +909,23 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
-## PAINTED_TILES_WITH_NO_CAST_1 Two biome defs ship an empty wildAnimals over painted ground - RUT_BlueDesert 1029 tiles and RUT_PropaneLake 57 tiles, 1086 tiles with no fauna at all
+## DESERT_PORT_PLACEHOLDER_ART_1 16 desert species still carry donor texPaths, one renders wrong
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  PAINTEDTILESWITHNOCAST1 — 1,086 painted tiles carry no fauna at all
-prose:    infrastructure/state/items/PAINTED_TILES_WITH_NO_CAST_1.md
+summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
+prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
+
+## PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1 Regenerate + deploy PlantTolerances_Ashkarr.xml now that sheet_demands() sees real sheet medians
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  Re-run python3 design/Jawa/mods/planttolerances.py --write, review the diff against the
+prose:    infrastructure/state/items/PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1404,16 +1413,6 @@ thin:     no ## spec
 summary:  EXTREMEDESERTUNRULEDVERMIN1 — owner card: rule the Fall Line vermin rows for extreme desert
 prose:    infrastructure/state/items/EXTREME_DESERT_UNRULED_VERMIN_1.md
 
-## DESERT_PORT_PLACEHOLDER_ART_1 16 desert species still carry donor texPaths, one renders wrong
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
-prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
-
 ## DESERT_SIGNATURE_FLORA_1 Author ultracactus, staggerseed, and shade plants for RUT_Desert
 state:    proposed
 row:      unassigned
@@ -1473,16 +1472,6 @@ kind:     task
 thin:     no ## spec
 summary:  DESERTBURSTPREDATORFLAGSHIP1 — the desert's burst-predator flagship
 prose:    infrastructure/state/items/DESERT_BURST_PREDATOR_FLAGSHIP_1.md
-
-## PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1 Regenerate + deploy PlantTolerances_Ashkarr.xml now that sheet_demands() sees real sheet medians
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Re-run python3 design/Jawa/mods/planttolerances.py --write, review the diff against the
-prose:    infrastructure/state/items/PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1.md
 
 ## AA_JOE_DESERT_PORT_BATCH_1 Port AA_GreatDevourer, AA_Groundrunner, AA_MatureFleshbeast + absorb JOE_Cephalope, as one batch (round-2 desert imports)
 state:    proposed
