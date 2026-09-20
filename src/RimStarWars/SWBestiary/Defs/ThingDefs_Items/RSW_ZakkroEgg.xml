@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_ZakkroEgg.xml                               EXTREME_DESERT_CAVERN_BEAST_1
+
+  The egg half of this item, paired with RSW_Zakkro (DesertPort/RSW_Zakkro.xml
+  — read that file's header first). deep_desert.md SS4 "Eggs are canteens":
+  "A large egg is portable water in a rigid shell... It is not food, it is
+  drink you can carry." This is NOT the mudhorn's already-shipped hatching/
+  food egg pair (RSW_EggMudhornFertilized/Unfertilized, MLIE_FAUNA_ABSORPTION_1)
+  — deliberately a single, non-hatching resource item:
+
+  - Parented on vanilla EggUnfertBase (the same abstract every never-hatches
+    unfertilized egg in this mod uses, e.g. RSW_EggMudhornUnFertilized) and
+    carries NO CompProperties_Hatcher — there is no fertilized sibling and
+    nothing here ever produces a Zakkro pawn. See RSW_Zakkro.xml's header for
+    why the creature itself also carries no CompProperties_EggLayer.
+  - No CompProperties_Rottable. deep_desert.md SS6 hard-bans rot/decay content
+    in this biome outright ("nothing rots... any content assuming
+    putrefaction... is a violation"), and narratively the sealed shell is
+    exactly why the water inside keeps.
+  - ingestible foodType Fluid + DesperateOnlyForHumanlikes preferability,
+    matching FlowWorks' own bottled-water items
+    (RM_LiquidBottles.xml:RM_Bottle_FreshWater) — "drunk for survival," not a
+    tasty meal. Not wired into FlowWorks' RM_BottledLiquidExtension/bottle-fill
+    job system: that framework is for refillable containers filled from
+    terrain, and this is a found, single-use natural resource, not a bottle.
+  - High Nutrition/Mass/MarketValue relative to a normal egg, since the whole
+    point is that one of these is worth crossing a desert for.
+
+  Not wired into any ThingSetMaker/loot table or cavern-generation content —
+  that placement is cavern map-generation's job and out of scope for this item.
+
+  Art: checked infrastructure/artpipe/{done,_artsrc,registry.jsonl,
+  art_status.json} for "zakkro egg"/"cave beast egg" first — nothing existed.
+  Job rsw_zakkroegg_v1 filed this pass; texPath below is where the render will
+  land, pending until the artpipe daemon delivers.
+-->
+<Defs>
+
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_ZakkroEgg</defName>
+    <label>zakkro egg</label>
+    <description>A single massive egg out of a zakkro's cavern nest, its thick shell packed with cool reserve water rather than yolk — the reason a Jawa will cross open sand for one. Cracked open it drains like a canteen; there is no chick inside to lose, and nothing about it rots or spoils in the shell.</description>
+    <graphicData>
+      <!-- No existing render found (checked done/_artsrc/registry.jsonl/art_status.json,
+           2026-09-20). Job rsw_zakkroegg_v1 filed. -->
+      <texPath>swresource/RSW_ZakkroEgg</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>1.8</drawSize>
+      <color>(216,204,178)</color>
+      <!-- bone/dust pale, per the biome's ban on anything reading mineralized or gemstone -->
+    </graphicData>
+    <statBases>
+      <MarketValue>320</MarketValue>
+      <Mass>4.0</Mass>
+      <Nutrition>2.5</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <tasteThought>AteRawFood</tasteThought>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+
+</Defs>

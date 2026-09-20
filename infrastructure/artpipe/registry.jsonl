@@ -3346,3 +3346,13 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rswultracactus_v1", "notes": "", "target": "rswultracactus", "ts": 1789931985.1655955}
 {"by": "fill_queue", "event": "registered", "source": "DESERT_SIGNATURE_FLORA_1", "target": "rswrawultracactus", "ts": 1789931985.1711054}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rswrawultracactus_v1", "notes": "", "target": "rswrawultracactus", "ts": 1789931985.1830702}
+{"by": "fill_queue", "event": "registered", "source": "EXTREME_DESERT_CAVERN_BEAST_1", "target": "rsw_zakkro/south", "ts": 1789933052.4588308}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rsw_zakkro_v1_south", "notes": "", "target": "rsw_zakkro/south", "ts": 1789933052.4709141}
+{"by": "fill_queue", "event": "registered", "source": "EXTREME_DESERT_CAVERN_BEAST_1", "target": "rsw_zakkro/east", "ts": 1789933052.47635}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rsw_zakkro_v1_east", "notes": "", "target": "rsw_zakkro/east", "ts": 1789933052.4862666}
+{"by": "fill_queue", "event": "registered", "source": "EXTREME_DESERT_CAVERN_BEAST_1", "target": "rsw_zakkro/north", "ts": 1789933052.4912188}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rsw_zakkro_v1_north", "notes": "", "target": "rsw_zakkro/north", "ts": 1789933052.501534}
+{"by": "fill_queue", "event": "registered", "source": "EXTREME_DESERT_CAVERN_BEAST_1", "target": "rsw_zakkro_dessicated", "ts": 1789933052.5073748}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rsw_zakkro_dessicated_v1", "notes": "", "target": "rsw_zakkro_dessicated", "ts": 1789933052.5171216}
+{"by": "fill_queue", "event": "registered", "source": "EXTREME_DESERT_CAVERN_BEAST_1", "target": "rsw_zakkroegg", "ts": 1789933052.526141}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rsw_zakkroegg_v1", "notes": "", "target": "rsw_zakkroegg", "ts": 1789933052.5371747}
