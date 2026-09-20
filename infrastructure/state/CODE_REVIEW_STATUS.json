@@ -14026,10 +14026,10 @@
     "sha": "3e9a9f20"
   },
   "src/RimUtinni/LongHunger/Defs/IncidentDefs/IncidentDefs_LongHunger.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "e0d6d4ca91cd01fbc948b473307263df46ddb6b9b86cb8cb4b83bb89dd386c9e",
-    "sha": "3e9a9f20"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "eb29399f865a23722d1af5fbc9e7df95fca47911ba9bb18b215e80d5da3e11e4",
+    "sha": "d4559b984"
   },
   "src/RimUtinni/LongHunger/Defs/QuestScriptDefs/Quest_LongHunger.xml": {
     "cleanCount": 1,
@@ -14428,10 +14428,10 @@
     "sha": "0b7206abc"
   },
   "src/RimUtinni/MycoidColossusArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "ba94a5fa058f8c322eef8f5676a5f89976813945fb780124f2aa4dc4fa37a0bc",
-    "sha": "7d6efe921"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "ec19d0ad4392fb73771df49ae45490d85677eda0c458f2a26a7d0c758f05a9e7",
+    "sha": "42c0ef6d4"
   },
   "src/RimUtinni/MycoidColossusArtOverride/LICENSE": {
     "cleanCount": 2,
@@ -14914,10 +14914,10 @@
     "sha": "211b2f0c8"
   },
   "src/RimUtinni/RotSporeKit/Defs/HediffDefs/RUT_RotSporeKit_Hediffs.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "06f79663c081267ee0dfa91d1b11136a11b6aa1cdf84e12ce374db7249bfeff3",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "adf4e10981e29b8e92525a1e8b5245ce2b8e3960347bcec4fa7958ad5a56703f",
+    "sha": "d4559b984"
   },
   "src/RimUtinni/RotSporeKit/Defs/HediffDefs/RUT_RotSporeKit_SheenHediffs.xml": {
     "cleanCount": 1,
@@ -14980,10 +14980,10 @@
     "sha": "785100e16"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_FurnaceCap.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "540184506dd45371ac2214016e2e90635af1f5aac4d646ababb4e51b50991252",
-    "sha": "562ae2718"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "4de33224c350ab7a783f8a9aee8372a54876998d9f0d46ed06f612eafb1d7a5c",
+    "sha": "d4559b984"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_Resources.xml": {
     "cleanCount": 1,
@@ -15004,10 +15004,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_FurnaceCap.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "9cae346377d4f1c7f995c2c863c231a211575437ab36ba8119407b8c0e7126a1",
-    "sha": "785100e16"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "ad6c8597423641884e260197f475796e07065e256e3518b150c2778c997aa648",
+    "sha": "d4559b984"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Weapons/RUT_RotSporeKit_MantisScythe.xml": {
     "cleanCount": 3,
