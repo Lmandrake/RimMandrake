@@ -118,10 +118,12 @@ not food, it is **drink you can carry**.
 drink the intruder as fast as it can with **sharp beaks and needle claws**. The clutch is
 bait; the mother invested water in a weapon, not only in offspring.
 
-## 4b. The Silverbole — the tree that grows to cast shade
+## 4b. The Ollim — the tree that grows to cast shade
 
-_(Working name; `Silverpan` and `Silverbole` both fit. Owner asked that **silver** be in the
-name, for how reflective they are.)_
+_(Final name **ollim**, owner ruling 2026-09-20, `EXTREME_DESERT_SIGNATURE_FLORA_1` —
+supersedes the earlier working names `Silverpan`/`Silverbole` and the "silver in the name"
+ask; the pseudo-Star-Wars coined-name rule (`check_pseudo_sw_name.py`) governs naming now.
+"Silverbole" below is retained as descriptive prose for the tree's look, not its name.)_
 
 The one plant that matters, and an **inverted plant**: it is not photosynthetic, it has **no
 leaves**, and its product is **shadow**.
@@ -260,7 +262,8 @@ ruin, or something older.
 
 - 🎫 **The sarlacc is its own item** — native to this biome, **three life-cycle stages**, and
   a **dungeon-like module**. Deliberately not defined in this sheet.
-- The silverbole's final name (owner to pick; **silver** is required).
+- The silverbole's final name is **ollim** (owner ruling, 2026-09-20,
+  `EXTREME_DESERT_SIGNATURE_FLORA_1`; passes `check_pseudo_sw_name.py`).
 - Cavern authoring is a substantial piece of work in its own right.
 - Wind-grain / yardang generation in the map-modification routine.
 - ⚠️ **The §0 per-region table is stale against V23.** `biome_sheet_stats.py` measures
