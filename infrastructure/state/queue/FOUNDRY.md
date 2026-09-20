@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T13:13:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T13:18:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -939,7 +939,7 @@ prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
 ## PYRELANDS_WEATHER_SCAR_ART_1 Pyrelands scar+weather art: ash rungs, filth legibility, Cinderfall drama
 state:    doing
 row:      unassigned
-needs:    harvest
+needs:    deploy
 target:   v1
 kind:     task
 summary:  (no items/PYRELANDS_WEATHER_SCAR_ART_1.md yet — write one when you have something to say)
@@ -989,15 +989,6 @@ target:   v1
 kind:     task
 summary:  RMLiquidDrill: impassable, player-buildable, and shootable over
 prose:    infrastructure/state/items/DRILL_IMPASSABLE_FILLPERCENT_1.md
-
-## DEEPS_FAUNA_VERDICTS_1 Lantern Deeps fauna verdicts: cut 7 kinds from RUT_LanternDeeps, rename 4 (Drinker, Grabber, Soulchime, Glowbulb), file 8 restyle art jobs with the owner's briefs
-state:    doing
-row:      unassigned
-needs:    harvest
-target:   v1
-kind:     build
-summary:  Flora: all 12 kept, no action.
-prose:    infrastructure/state/items/DEEPS_FAUNA_VERDICTS_1.md
 
 ## DEEPS_FAUNA_MECHANICS_1 Deeps creature mechanics from the fauna verdicts: Grabber hold-and-crush, Soulchime psychic stun + tamed soothe aura, Drinker fluid sacks + dies on warm-iron blood
 state:    doing
