@@ -655,6 +655,36 @@ biomes:
     Different question from `survivors`: a def can survive the cut and be painted nowhere.
 
 # ===========================================================================
+# ECOSYSTEM LAWS — rules a wildAnimals roster must satisfy, not measurements
+# ===========================================================================
+ecosystem_laws:
+  food_pyramid:
+    rule: "every biome's wildAnimals roster needs small fauna (race.baseBodySize < 1.0) carrying >= 50% of the roster's total commonality (weight = commonality, not def count)"
+    threshold_pct: 50
+    ruled: 2026-09-20
+    src: >
+      ECOSYSTEM_PYRAMID_LAW_1 (infrastructure/state/items/ECOSYSTEM_PYRAMID_LAW_1.md).
+      Owner, 2026-09-14: "So there's a standing rule that all ecosystems must have many
+      more smaller critters than large ones. Food pyramid and all that." Threshold ruled
+      2026-09-20, verbatim: "50% small". No exemption for near-empty rosters — a habitat
+      with 1-6 animals is judged by the same 50% bar as any other.
+    first_applied: >
+      Gizka, RM_FE_Pyrelands roster (WildAnimals_Pyrelands.xml) — lifted commonality
+      0.3 -> 1.0, making it the most-seen animal there, above Zeer at 0.6.
+    swept_2026_09_20: >
+      Against defs.sqlite mods=617/6a41e05c828eed67, captured 2026-09-20T07:47:24Z. 9 of
+      24 biome rosters failed and were fixed same-day: RUT_RustCathedral (0.0% -> 92.5%),
+      RUT_TheScald (0.0% -> 96.6%), RUT_NightsideIce (16.7% -> 68.8%), RUT_ForsakenCrags
+      (33.3% -> 55.6%), RUT_TheRot (35.9% -> 57.6%), RUT_Webwork (36.4% -> 58.8%),
+      RUT_TheForge (43.4% -> 56.1%), RUT_WeepingStones (44.4% -> 54.5%), RUT_Desert
+      (45.0% -> 52.8%). Fixed by raising the grain (boosting or wiring already-built,
+      already-ruled small fauna), never by cutting megafauna.
+    checker_owed: >
+      No automatic/measure-backed checker exists yet for this law — the sweep above was
+      a one-off script, not selftested tooling. Still owed; do not build it as part of a
+      roster fix, file it separately.
+
+# ===========================================================================
 # THE `Lake` BIOME — resolved by measurement, 2026-08-20
 # ---------------------------------------------------------------------------
 # 🔴 `Lake` STAYS, and the reason is not a preference. `The Scald` — one of the three
