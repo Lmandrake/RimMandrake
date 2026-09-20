@@ -468,9 +468,20 @@ def main():
             # by definition the hand-edits --pull exists to rescue, and a
             # refused copy is not a deploy to prune behind (review 2026-09-06).
             if args.prune and not refused and not failed:
+                # Mirrors copy()'s per-file OSError handling: a locked DLL or a
+                # permissions error on os.remove() must not crash the whole run
+                # mid-loop (which would skip every later mod's deploy and print
+                # a raw traceback instead of this script's own "STILL DIFFERS"
+                # report). The leftover file still shows up in g2 below, which
+                # already sets any_leftover — this only stops the exception.
+                pruned = 0
                 for r in gone:
-                    os.remove(os.path.join(dst, r))
-                wrote += len(gone)
+                    try:
+                        os.remove(os.path.join(dst, r))
+                        pruned += 1
+                    except OSError as e:
+                        print("  ! FAILED to delete %s: %s" % (r, e))
+                wrote += pruned
             n2, c2, g2, _ = compare(src, dst)
             # Held files legitimately still differ after a deploy — that is the
             # whole point of holding them. Without this filter the verify step
