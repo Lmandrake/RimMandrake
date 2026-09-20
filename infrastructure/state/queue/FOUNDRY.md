@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T18:48:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T18:49:32Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -909,15 +909,6 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
-## DESERT_ROUND2_IMPORTS_UNLANDED_1 Wire the landed round-2 desert imports, port the rest
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  DESERTROUND2IMPORTSUNLANDED1 — wire the landed round-2 imports, port the rest
-prose:    infrastructure/state/items/DESERT_ROUND2_IMPORTS_UNLANDED_1.md
-
 ## BLODDLE_DUNE_SEA_EYE_TEST_1 Verify bloddle's green/leafy look against dune_sea's no-green ban
 state:    doing
 row:      unassigned
@@ -1518,6 +1509,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/AA_JOE_DESERT_PORT_BATCH_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Owner ruling 2026-09-20 (recorded on DESERTROUND2IMPORTSUNLANDED1): port
 prose:    infrastructure/state/items/AA_JOE_DESERT_PORT_BATCH_1.md
