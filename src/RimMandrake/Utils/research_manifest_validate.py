@@ -633,10 +633,23 @@ def check_resolved_dump(live, active_ids):
                              "could not read ModsConfig.xml - resolved-dump signature check "
                              "skipped"))
         return issues
-    if "petetimessix.researchreinvented" not in active_ids:
+    # 🔴 RESEARCH_TRIO_RETIRE_1, 2026-09-20: this signature is the STEPPINGSTONES
+    # expansion's own splice, not the base RR mod's. Read live, on disk, from
+    # the steppingstones mod itself: `Patches_ResearchProjectDefs.xml` (workshop
+    # id 2868389782) xpaths `Defs/ResearchProjectDef[defName="Electricity"]` and
+    # PatchOperationAdd's `RR_ElectricityBasics` into its `prerequisites` -
+    # nothing under the base `petetimessix.researchreinvented` mod (2868392160)
+    # touches "Electricity" at all (confirmed by grep across its whole tree).
+    # Gating on the base packageId meant this check FAILed every run after
+    # steppingstones was correctly retired (base RR still active, splice
+    # correctly gone) - a false "dump looks raw/pre-patch" alarm on a resolved,
+    # post-patch dump. Gate on the submod that actually owns the splice.
+    if "petetimessix.researchreinvented.steppingstones" not in active_ids:
         issues.append(Issue(INFO, "co-writer", None,
-                             "Research Reinvented is not active in the live mod list - "
-                             "resolved-dump signature has nothing to confirm against"))
+                             "Research Reinvented: Stepping Stones is not active in the live "
+                             "mod list - its Electricity/RR_ElectricityBasics splice has "
+                             "nothing to confirm against (retired by RESEARCH_TRIO_RETIRE_1; "
+                             "the base Research Reinvented mod never touched Electricity)"))
         return issues
     elec = live.get("Electricity")
     if elec is None:
@@ -646,18 +659,18 @@ def check_resolved_dump(live, active_ids):
         return issues
     # techprintCount on vanilla projects is Configurable Techprints'
     # (com.makeitso.configurabletechprints) stamp, NOT Research Reinvented's:
-    # neither RR DLL references the field (settled 2026-09-01). RR's own
-    # signature is the RR_ prerequisite it splices in.
+    # neither RR DLL references the field (settled 2026-09-01). Stepping
+    # Stones' own signature is the RR_ prerequisite it splices in.
     tp = elec.get("techprintCount") or 0
     prereqs = elec.get("prerequisites") or []
     if any(str(p).startswith("RR_") for p in prereqs):
         issues.append(Issue(INFO, "co-writer", "Electricity",
-                             "resolved-dump signature confirmed: prereqs=%s (RR's splice); "
-                             "techprintCount=%d is Configurable Techprints', if active"
+                             "resolved-dump signature confirmed: prereqs=%s (Stepping Stones' "
+                             "splice); techprintCount=%d is Configurable Techprints', if active"
                              % (prereqs, tp)))
     else:
         issues.append(Issue(FAIL, "co-writer", "Electricity",
-                             "prereqs=%s - Research Reinvented's RR_ splice is NOT visible "
+                             "prereqs=%s - Stepping Stones' RR_ splice is NOT visible "
                              "here. This dump looks RAW/PRE-PATCH; validating against it "
                              "would produce a report that fights RR at load "
                              "(taxonomy section 4, 'co-writer awareness')" % (prereqs,)))

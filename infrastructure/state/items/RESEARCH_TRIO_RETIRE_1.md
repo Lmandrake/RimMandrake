@@ -301,5 +301,73 @@ closed — the retirement itself is real and verified structurally
 full closure per this item's own `## verify` criteria needs that live-game
 re-check.
 
+## 🔴 RECONCILED 2026-09-20 (FOUNDRY) — the four OWED checks, closed
+
+The 2026-09-18 blocker was `--inventory` refusing because the def dump's
+modCount (635) didn't match live `ModsConfig.xml` (632) — that was simply
+the dump being one restart stale. A newer capture already existed from the
+game's own restart activity since then
+(`2026-09-19T18-15-44Z`, `capturedUtc` 2026-09-19T18:15:44Z, fingerprint
+`90afce4a745c18a6`) whose `manifest.json` mod list is **617**, matching
+live `ModsConfig.xml`'s 617 active mods exactly (measured via `ET.parse`,
+never a grep — `ModsConfig.xml` mtime 2026-09-19 17:28:43Z predates the
+capture and has not changed since, so this is not a mid-swap read). No
+game restart or bridge touch was needed — the dump was simply sitting there.
+Re-ran `research_manifest_validate.py --inventory` against it:
+
+- **(a) zero orphan/dead-prereq FAILs on the 18 ported defNames** — CONFIRMED.
+  Orphan check: 0 FAIL (77 WARN, all "empty unlock cache, not on the
+  allowlist" — expected/documented behavior, not a defect; several of the
+  18 ported rows are among them since their production chains were
+  explicitly not ported this pass, per the EXECUTED section above).
+- **(b) the "112 collision rows" figure is gone** — CONFIRMED, and root-caused
+  precisely rather than assumed: check 7 ("co-writer awareness") was
+  FAILing on every run, reading as "dump looks raw/pre-patch". Traced to a
+  genuine bug in `check_resolved_dump()` (`research_manifest_validate.py`),
+  unrelated to this item's retirement itself — it gated on the BASE
+  `petetimessix.researchreinvented` packageId (still active; it's a
+  separate mod from steppingstones and was never touched by this
+  retirement) to decide whether vanilla `Electricity` should still carry
+  an `RR_ElectricityBasics` prereq. Read on disk: that splice is
+  Stepping Stones' OWN patch
+  (`Patches_ResearchProjectDefs.xml` in workshop id `2868389782`, xpath
+  `Defs/ResearchProjectDef[defName="Electricity"]`, `PatchOperationAdd`
+  of `RR_ElectricityBasics`) — the base RR mod (workshop id `2868392160`)
+  never references "Electricity" anywhere in its tree (confirmed by grep
+  across its full folder). So losing that prereq is the correct, intended
+  effect of retiring steppingstones, and the check was gating on the wrong
+  packageId. Fixed: gate on `petetimessix.researchreinvented.steppingstones`
+  instead. `check7` now correctly reads `[pass]` with an INFO explaining
+  steppingstones is retired, rather than a false FAIL. Selftest fixture
+  (`selftest_research_validator.py`) used the same wrong packageId in its
+  "raw/pre-patch" FAIL case — corrected to match; `run_selftests.py` 62/62
+  green after the fix.
+- **(c) zero references to the 3+1 retired packageIds in a fresh dump** —
+  CONFIRMED: none of `petetimessix.researchreinvented.steppingstones`,
+  `als.gravtech`, `als.gravtech.bc`, `halituisamaricanous.gravtechbigcannons`
+  appear in the capture's `manifest.json` mod list, and a full parse of
+  every `defs/*.json` file in the capture (not a text scan — each file
+  loaded and its structure searched) found zero occurrences of any of the
+  four packageId strings.
+- **(d) the 18 ported defNames appear correctly, right cost/tab/prereqs** —
+  CONFIRMED: all 18 present in `ResearchProjectDef.json`; the 7 gravtech/
+  ship-tree rows carry cost 5200 (T4) except `GravEngineBuild` at 3000,
+  tabbed `RUT_Tree_Utinni`/`RUT_Tree_StrangeSchools`/`RUT_Tree_Reach`
+  matching the Rust Cathedral boon-gate and Ship-tree placements the
+  EXECUTED section describes; the 10 `RR_*` Jawa Scavenging rows sit on
+  `RUT_Tree_Scavenging`/`RUT_Tree_Workshop` with the documented
+  `RR_ElectricityBasics -> RR_HeatingElements`/`RR_PowerGenerators`
+  prereq chain intact.
+
+**Fixed in this pass** (both committed alongside this closure):
+`src/RimMandrake/Utils/research_manifest_validate.py`
+(`check_resolved_dump`) and `src/RimMandrake/Utils/selftest_research_validator.py`.
+
+Route 1's own `## verify` block is now fully satisfied: 18 native rows exist
+post-port, `--inventory` shows no new orphan/dead-prereq FAILs where they
+used to sit, and the retired mods (including the companion retexture) are
+out of `ModsConfig.xml`, backed up, with the delta confirmed by measurement.
+
 ## done
-Not fully — see the EXECUTED section above for what's done vs. owed.
+Yes — Route 1 executed 2026-09-18, reconciliation completed 2026-09-20.
+Nothing left owed on this item.
