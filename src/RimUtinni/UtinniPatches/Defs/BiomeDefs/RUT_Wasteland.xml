@@ -140,7 +140,6 @@
       <GR_Molebear MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Molebear>  <!-- molebear - wretched-medium, keep -->
       <GR_Spidercat MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Spidercat>  <!-- spidercat - wretched-medium, keep -->
       <RSW_PustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.3</RSW_PustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
-      <AA_FissionMouse MayRequire="sarg.alphaanimals">0.3</AA_FissionMouse>  <!-- fission mouse - extremophile-odd, import -->
       <RSW_ColonyPustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.2</RSW_ColonyPustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
       <RSW_PustuleHornetSpawned MayRequire="mandrake.rsw.swbestiary">0.2</RSW_PustuleHornetSpawned>  <!-- pustule hornet - wretched-small, import -->
       <AA_Terramorph MayRequire="sarg.alphaanimals">0.2</AA_Terramorph>  <!-- terramorph - extremophile-odd, keep -->
