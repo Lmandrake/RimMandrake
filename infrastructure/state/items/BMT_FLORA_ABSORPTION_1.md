@@ -90,3 +90,63 @@ with its flagship flora present; confirmed from a post-load def dump.
 
 The Miasma has its mangroves, the Greentide its giant leaf, and no biome's
 headline plant depends on a mod we removed.
+
+---
+
+## 🔴 CORRECTIONS — BENCH, 2026-09-20, after FOUNDRY picked this up
+
+Three things above are WRONG. Re-measured this window; act on these, not on the
+original text.
+
+### 1. It is NOT one donor, and mostly not Caverns
+
+Only **5** of the 14 come from `biomesteam.biomescaverns`. **9 come from
+`BiomesPollutedLands`** — a different mod, also ABSENT from the 621-mod active
+list. Sources located in the repo's own vendored tree:
+
+| from | defs |
+|---|---|
+| `vendor/mod_sources/BiomesCaverns_src/1.6/Defs/Plants/` | `BMT_GiantLeaf`, `BMT_FireLavender`, `BMT_Sagecrust`, `BMT_HeatsinkFungus`, `BMT_Dewshrooms` (⚠️ its file is `BMT_Seadew.xml` — name mismatch) |
+| `vendor/mod_sources/BiomesPollutedLands/BiomesPollutedLands-main/1.6/Defs/ThingDefs_Plants/` | `BMT_Plant_TreeTanglerootMangrove`, `BMT_Plant_SewerReed`, `BMT_RainbowTongue`, `BMT_Plant_TreeMartyr`, `BMT_Plant_Snaketails`, `BMT_Plant_ScorchedStars`, `BMT_Plant_TreeTwistingThornwood`, `BMT_Plant_TwistingThorngrass`, `BMT_Plant_TwistingThornweed` |
+
+### 2. ✅ The source IS available — this is a PORT, not from-scratch authoring
+
+The spec's step 1 asked whether the donor files still exist and warned that
+from-scratch authoring would be "a much larger job". **They exist.** All 14 were
+located in `vendor/mod_sources/` (paths above). That risk is closed — do not
+spend a pass re-establishing it.
+
+### 3. 🔴 13 of the 14 are UNGUARDED — this is the CRASH class, not the silent one
+
+The original text said these are `MayRequire`-guarded and therefore fail
+silently. **Only `BMT_GiantLeaf` carries a guard.** MEASURED:
+
+- **GUARDED (1):** `BMT_GiantLeaf` (`biomesteam.biomescaverns`) — fails silently.
+- **UNGUARDED (13):** every other one, all in `<wildPlants>` — `BMT_Plant_TreeTanglerootMangrove`
+  (Miasma 1.5), `BMT_Plant_SewerReed` (Miasma 0.8), `BMT_Plant_TreeTwistingThornwood`
+  (PoisonForest 0.6, CrackedLands 0.2), `BMT_RainbowTongue` (Miasma 0.6),
+  `BMT_FireLavender` (Forge 0.6), `BMT_Plant_TwistingThorngrass` (CrackedLands 0.5),
+  `BMT_Plant_Snaketails` (Miasma 0.5), `BMT_Plant_TreeMartyr` (PoisonForest 0.5),
+  `BMT_Plant_TwistingThornweed` (CrackedLands 0.4), `BMT_Sagecrust` (Forge 0.4),
+  `BMT_Dewshrooms` (WeepingStones 0.4), `BMT_Plant_ScorchedStars` (Scarlands 0.25),
+  `BMT_HeatsinkFungus` (Forge 0.2).
+
+**All 14 MEASURED as 0 in the live dump** (`measure find --type ThingDef`,
+`defs.sqlite mods=617/6a41e05c828eed67`, captured 2026-09-20T07:47:24Z) — a
+measured absence, not a lookup failure.
+
+⚠️ An unresolved cross-reference in a biome table is the failure mode
+`BIOME_CAST_REFS_BREAK_MAPGEN_1` records, and it is exactly why
+`WYYYSCHOKK_FERALISK_MERGE_1` removed `AA_Dunealisk` rather than leaving it: its
+commit says *"an unresolved cross-ref in wildAnimals is a known crash"*. These 13
+are the `wildPlants` equivalent and have been sitting unguarded across **7
+biomes**. 🔑 **Establish whether `wildPlants` actually crashes mapgen the way
+`wildAnimals` does before deciding urgency — I have not verified that, and the
+two tables may not behave the same.** If it does, this stops being a content port
+and becomes a live defect.
+
+### 4. Not affected, do not chase
+
+`BMT_Boneblade` and `BMT_Rocktooth` appear in a raw text grep of the BiomeDefs
+folder but are NOT entries in any `wildPlants`/`wildAnimals` table — they are
+prose in comments. 14 is the real count.
