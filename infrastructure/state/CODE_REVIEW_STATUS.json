@@ -7084,10 +7084,10 @@
     "sha": "af2d8daa"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapTools.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-19",
-    "hash": "5a64ff5331d7b21a977aaaec15c956af942310846ad833a0775b378fc504abf8",
-    "sha": "fad263d00"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "9a59ed7b898e76da4b32a6262d54aa23dd1f53d26d833c1d85b4b3e8300b2e9e",
+    "sha": "e7ecf5934"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMiscTools2.cs": {
     "cleanCount": 1,
