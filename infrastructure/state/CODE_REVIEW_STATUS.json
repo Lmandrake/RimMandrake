@@ -16126,10 +16126,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "ffd9934e39227a17e4eb0f1ada964d00cc0a082845cbfad55ffb6097c8de7fc2",
-    "sha": "ea0108daa"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "5f11cf2ae9bdac3e4367cc4670da2f33f77376f0abfff6efab5946f187909099",
+    "sha": "fc096ad8c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml": {
     "cleanCount": 4,
@@ -16246,10 +16246,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "16073a5b000d103a53bbad80f6b0bb36243f0c026e857525dc141790b8737807",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "500c0b2a6de7a893a5fa15923f2bfbf37f7eaf68fd625ac27b49f5f83f2e7fad",
+    "sha": "fc096ad8c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml": {
     "cleanCount": 4,
