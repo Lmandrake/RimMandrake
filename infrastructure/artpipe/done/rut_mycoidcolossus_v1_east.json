@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-20T07:54:15Z",
+  "drawsize": 12.0,
+  "facing": "east",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "rut_mycoidcolossus_v1_east",
+  "priority": 100,
+  "prompt": "SIDE PROFILE, facing to the viewer's right: the full length of the body from head to rear in profile, all the legs on the near side clearly separated and readable, and the glowing mushrooms standing up along the spine in a ridge. The MYCOID COLOSSUS: a huge, heavy, MULTI-LEGGED fungal beast \u2014 at least six thick trunk-like legs splayed wide under a broad low body, so it reads as massive and many-legged at a glance. Its hide is deep purple and violet, mottled with damp blue-purple and bruise-plum, wet-looking at the seams. A forest of GLOWING MUSHROOMS sprouts from its BACK \u2014 tall stalked caps and clustered knobs, their gills and cap edges lit with a cold bioluminescent cyan-white light that spills onto the purple hide beneath them. The mushrooms are the creature's signature and must be unmistakable. Every growth terminates flush within the body's outline; nothing projects past the silhouette. Painterly vanilla-RimWorld animal art style. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read at standard RimWorld zoom and below. Single creature, centered, filling the canvas, transparent background, no ground shadow, no background scenery, no ground plane.",
+  "reference": null,
+  "rimflow_item_id": "MYCOID_COLOSSUS_ART_MISROUTE_1",
+  "style_notes": "Owner's brief, verbatim 2026-09-19: 'Mycoid colossus is supposed to be a huge multi-legged purplish entity with glowing mushrooms sprouting from its back. Size 12.' Replaces a mis-routed droid render."
+}

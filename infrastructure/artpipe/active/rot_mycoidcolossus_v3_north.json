@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 2048,
+    "width": 2048
+  },
+  "channel": "codex",
+  "created": "2026-09-20T08:22:11Z",
+  "drawsize": 15.0,
+  "facing": "north",
+  "facings": [
+    "north"
+  ],
+  "id": "rot_mycoidcolossus_v3_north",
+  "priority": 100,
+  "prompt": "REAR VIEW of a creature walking directly away from the viewer, seen from behind: no face, no eyes and no head features are visible from this angle. COMPOSITION IS THE POINT OF THIS RENDER: the animal is drawn WIDE AND LOW, in a broad landscape stance that fills the frame horizontally, so that its overall proportions match its own side-profile view \u2014 noticeably wider than it is tall, roughly three units wide to two units tall. The six legs are splayed out to the sides across the full width of the frame. The grove of caps on its back SPREADS SIDEWAYS across the width of the back, low and mounded, rather than stacking up into a tall vertical crown. Nothing rears up; the whole silhouette stays low and broad. THE CREATURE: a vast, low, six-legged body like a hill on legs, two ridged spines running the length of the back and diverging, the entire back carrying a full grove \u2014 several big lilac-and-white caps, glowing nubs, hanging hyphae, a spore haze. Hide wet black-grey with bone-white plates, purple and violet mottling, Sheen gloss everywhere, the caps the same palette as the flora so it reads as forest that stood up. Nothing angular. Painterly RimWorld sprite, transparent background, single creature centered, no ground shadow, no background scenery, no ground plane.",
+  "reference": null,
+  "rimflow_item_id": "MYCOID_COLOSSUS_NORTH_RECOMPOSE_1",
+  "style_notes": "Recompose ONLY. Owner approved the v2 set on sight then ruled 2026-09-20 'Recompose north now'. Defect MEASURED on the shipped files: north's subject is 922x981 (aspect 0.94) against south 983x656 and east 1003x671 (aspect ~1.50), so at one drawSize box north draws ~1.5x taller and the creature appears to change size as it turns \u2014 the same defect he named on Anooba. Target subject aspect ~1.50 (wide). Palette, hide, cap treatment and line quality must match rot_mycoidcolossus_v2_south and _east exactly; only the framing changes."
+}
