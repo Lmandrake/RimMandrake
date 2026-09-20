@@ -5202,10 +5202,10 @@
     "sha": "74e9d4953"
   },
   "src/RimMandrake/Utils/artpipe/artreg.py": {
-    "cleanCount": 4,
-    "date": "2026-09-17",
-    "hash": "0ad92ff353b7aaed2ab9476abd67f73c0c6d05c876d5086acf0059c1e508e2f2",
-    "sha": "74e9d4953"
+    "cleanCount": 5,
+    "date": "2026-09-20",
+    "hash": "fb5b881a9894b212f67541a5cbe08991b67d48d6882a39f84965dcaad2730710",
+    "sha": "41ff665a4"
   },
   "src/RimMandrake/Utils/artpipe/common.py": {
     "cleanCount": 3,
