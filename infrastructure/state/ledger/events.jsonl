@@ -10044,3 +10044,4 @@
 {"seat":"FOUNDRY","event":"note","id":"BRIDGETOOLS_TILE_LAYER_DROPPED_1","text":"Deployed 2026-09-20 in the same FOUNDRY belt-mode reboot as DESIGNATE_BATCH_OVER_DESIGNATES_1 (same DLL, same build.py --gm --apply, same game-down/relaunch). DLL now live.","ts":"2026-09-20T07:54:35Z"}
 {"seat":"FOUNDRY","event":"close","id":"BRIDGETOOLS_TILE_LAYER_DROPPED_1","sha":"f761f0966","ts":"2026-09-20T07:54:36Z"}
 {"seat":"BENCH","event":"unblock","id":"MYCOID_COLOSSUS_ART_MISROUTE_1","reason":"The quota blocker was measurably false: codex weekly is at 42% and resets 2026-09-26, not Monday. Three facings queued at priority 100.","ts":"2026-09-20T07:54:39Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-20T07:54:56Z"}

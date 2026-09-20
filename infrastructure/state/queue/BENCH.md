@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T07:38:31Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-20T07:54:56Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -210,19 +210,9 @@ blocked:  All named def-side gaps closed (TreeDrago/Agave/Dandelion evicted, now
 summary:  (no items/PYRELANDS_GRASS_SATURATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
-## MYCOID_COLOSSUS_ART_MISROUTE_1 Vorrugath/mycoid colossus rendered as a DROID; our override art was mis-routed by the bulk install
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     build
-blocked:  Only the art regeneration remains; the Codex art channel is refusing until the weekly quota resets Mon 2026-09-21 09:32. Undeploy verified DONE 2026-09-20 (live mod holds only LICENSE + About.xml, byte-identical to repo, no Textures tree) and the size-12 ruling was rehomed to ROT_SIZE_REJUDGE_APPLY_1.
-summary:  MYCOIDCOLOSSUSARTMISROUTE1
-prose:    infrastructure/state/items/MYCOID_COLOSSUS_ART_MISROUTE_1.md
-
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -230,7 +220,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -531,3 +521,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask (owner, 2026-09-19)
 prose:    infrastructure/state/items/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md
+
+## MYCOID_COLOSSUS_ART_MISROUTE_1 Vorrugath/mycoid colossus rendered as a DROID; our override art was mis-routed by the bulk install
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  MYCOIDCOLOSSUSARTMISROUTE1
+prose:    infrastructure/state/items/MYCOID_COLOSSUS_ART_MISROUTE_1.md
