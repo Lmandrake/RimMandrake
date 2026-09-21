@@ -337,6 +337,14 @@
       "commonality": 0.5,
       "def": "AA_TeratogenicOriginator",
       "law": "owner review 2026-09 (round2 move mapping): Slime, tint green | SIZE RULED: drawSize 3 ONLY (current def bodySize 5 — oversized); stays large bin (sitting ruling 2026-09-10)"
+    },
+    {
+      "action": "new-def",
+      "band": "apex-native",
+      "commonality": 0.12,
+      "def": "RM_Titanoslime",
+      "law": "owner ask 2026-09-20 (TITANOSLIME_SLIME_BIOME_1): a titanic green slime that swallows pawns whole and grows as it eats; §1 the body's own imperative (ingest, analyze, store), resistant by identity; distinct from the Harvester eviction because it IS the body, not a foreign apex",
+      "note": "spec design/RimMandrake/RM_titanoslime_spec.md; built 2026-09-20 in mandrake.rm.gelatinousslime; ecoSystemWeight 6, so one titanoslime costs the map's animal budget what six gelatids would"
     }
   ],
   "fish": {
@@ -389,6 +397,12 @@
       "kind": "creature",
       "mechanic_load": "none blocking — graze mechanic is vanilla; art is the ask",
       "name": "filter-feeder line (scooping-mouthed slime-grazers)"
+    },
+    {
+      "from_sheet": "owner ask 2026-09-20, item TITANOSLIME_SLIME_BIOME_1",
+      "kind": "creature",
+      "mechanic_load": "BUILT 2026-09-20 — RM_CompEngulfer (hold/digest/absorb) + RM_Verb_MeleeEngulf, five LifeStageDefs locked by Pawn_AgeTracker.LockCurrentLifeStageIndex; no Harmony, no DLC def. Art owed: one 1024px three-facing set at Things/Pawn/Animal/Titanoslime/RM_Titanoslime",
+      "name": "titanoslime (RM_Titanoslime)"
     }
   ],
   "sheet": "the_slime",
