@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:55:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:56:37Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -650,3 +650,23 @@ kind:     build
 thin:     no ## spec, no ## verify
 summary:  ARIDSHRUBLANDSHIPPINGNAMES1 — owner card: aridshrubland working names
 prose:    infrastructure/state/items/ARIDSHRUBLAND_SHIPPING_NAMES_1.md
+
+## OUR_MODS_DEPLOYED_NEVER_ACTIVATED_1 Two of our own mods are built and deployed but absent from ModsConfig, so their content is inert - including RUT_Fuzz, the heaviest row in the AridShrubland table, which never spawns
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  1. Decide whether each mod should be in the list (this is the owner's call — a mod-list
+prose:    infrastructure/state/items/OUR_MODS_DEPLOYED_NEVER_ACTIVATED_1.md
+
+## FORGE_ROSTER_UNRECONCILED_BMT_1 RUT_TheForge's roster JSON carries 27 unreconciled BMT_ names with zero live wiring - the same gap the Rot has, and the largest of four
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FORGE_ROSTER_UNRECONCILED_BMT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FORGE_ROSTER_UNRECONCILED_BMT_1.md
