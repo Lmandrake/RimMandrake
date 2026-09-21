@@ -10412,3 +10412,7 @@
 {"seat":"FOUNDRY","event":"file","id":"VENOMVINE_CONTACT_VENOM_BUILD_1","title":"Build the venomvine (desert form) and its contact-venom comp/MapComponent in EnvironmentalHazards (tier c)","kind":"build","target":"v1","needs":"offline","spec":"design/Jawa/worldbuilding/desert_shade_plants_design.md","caused_by":"DESERT_SHADE_PLANTS_DESIGN_1","for":"FOUNDRY","ts":"2026-09-21T00:16:16Z"}
 {"seat":"FOUNDRY","event":"file","id":"DESERT_LEACHMOSS_BUILD_1","title":"Author the leachmoss, the desert's fertile-ground spawn competitor (tier b, pure XML)","kind":"build","target":"v1","needs":"offline","spec":"design/Jawa/worldbuilding/desert_shade_plants_design.md","caused_by":"DESERT_SHADE_PLANTS_DESIGN_1","for":"FOUNDRY","ts":"2026-09-21T00:16:19Z"}
 {"seat":"FOUNDRY","event":"close","id":"DESERT_SHADE_PLANTS_DESIGN_1","sha":"417c7f516bd57b177d2d64f4a319bfb9aea68ea0","ts":"2026-09-21T00:17:24Z"}
+{"seat":"FOUNDRY","event":"claim","id":"VENOMVINE_CONTACT_VENOM_BUILD_1","ts":"2026-09-21T00:18:29Z"}
+{"seat":"FOUNDRY","event":"start","id":"VENOMVINE_CONTACT_VENOM_BUILD_1","ts":"2026-09-21T00:18:30Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DESERT_LEACHMOSS_BUILD_1","ts":"2026-09-21T00:18:31Z"}
+{"seat":"FOUNDRY","event":"start","id":"DESERT_LEACHMOSS_BUILD_1","ts":"2026-09-21T00:18:32Z"}
