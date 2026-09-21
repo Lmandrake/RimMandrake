@@ -10607,3 +10607,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"SHEET_REVIEWED_FLAG_UNIFORM_1","ts":"2026-09-21T09:23:23Z"}
 {"seat":"FOUNDRY","event":"start","id":"SHEET_REVIEWED_FLAG_UNIFORM_1","ts":"2026-09-21T09:23:24Z"}
 {"seat":"FOUNDRY","event":"close","id":"SHEET_REVIEWED_FLAG_UNIFORM_1","sha":"632cfb6273a8a8318956b4946200e8d52e82648b","ts":"2026-09-21T09:35:30Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SWEETLINE_WOOL_HARVEST_1","ts":"2026-09-21T09:46:51Z"}
+{"seat":"FOUNDRY","event":"start","id":"SWEETLINE_WOOL_HARVEST_1","ts":"2026-09-21T09:46:52Z"}
+{"seat":"FOUNDRY","event":"close","id":"SWEETLINE_WOOL_HARVEST_1","sha":"5f35f97970c801cdb8c196ec7f1296306aadda6f","ts":"2026-09-21T10:12:32Z"}
