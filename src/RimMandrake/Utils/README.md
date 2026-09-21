@@ -565,6 +565,12 @@ tool only the first one existed on disk.
 ⇒ Running it answers a question nothing else can: **has the world we authored actually
 arrived in the game, and where has it not?**
 
+⛔ **Its output is a one-time drift snapshot, never a design citation.** A
+`*_VIVIFIED_*` bundle goes stale the moment the canonical CSV changes under it,
+and nothing re-runs it automatically — `ASHKARR_VIVIFIED_2026-08-24_tiles.csv`
+predates the `RUT_` rename entirely (`STALE_VIVIFIED_WORLDMAP_CITED_1`). Always
+cite `world/ASHKARR_WORLDMAP_tiles.csv` in a design doc.
+
 ### Run
 
 ```bash

@@ -17,6 +17,14 @@ authored one has always been the only one on disk.
 This writes the second one, in the first one's format, so every tool we already have
 reads it with no change.
 
+⛔ **A vivified bundle is a one-time drift SNAPSHOT, never a design citation.**
+`world/ASHKARR_WORLDMAP_tiles.csv` is always the canonical worldmap; a
+`*_VIVIFIED_*` file is stale the moment the canonical CSV changes under it
+(a rename, a repaint), and nothing re-runs it automatically. A design doc
+that cites `ASHKARR_VIVIFIED_2026-08-24_tiles.csv` for a region name or
+biome key predates the `RUT_` rename entirely — see
+`STALE_VIVIFIED_WORLDMAP_CITED_1`. Cite `ASHKARR_WORLDMAP_tiles.csv`.
+
 ⭐ THE COLUMN ORDER IS THE CONTRACT. The first fourteen columns are byte-for-byte the
 existing header, in the existing order:
 
