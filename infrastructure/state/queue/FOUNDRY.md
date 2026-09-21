@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T08:25:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T08:31:38Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1438,6 +1438,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FEATURE_DRAWCENTER_UNVERIFIED_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. For each of the 71, check the drawCenter against the region's actual tiles.
 prose:    infrastructure/state/items/FEATURE_DRAWCENTER_UNVERIFIED_1.md
+
+## SWEETLINE_WOOL_HARVEST_1 The giant-wool harvest the sweetline trees are built around does not exist as a def
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SWEETLINE_WOOL_HARVEST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SWEETLINE_WOOL_HARVEST_1.md
+
+## TUNNELSNAKE_VIOLATES_SIZE_LADDER_1 RSW_TunnelSnake ships at baseBodySize 2.0, inside the large band a ratified ruling declares empty
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TUNNELSNAKE_VIOLATES_SIZE_LADDER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TUNNELSNAKE_VIOLATES_SIZE_LADDER_1.md
