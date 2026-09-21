@@ -139,9 +139,12 @@
       <RSW_Screecher MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import -->
       <GR_Molebear MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Molebear>  <!-- molebear - wretched-medium, keep -->
       <GR_Spidercat MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Spidercat>  <!-- spidercat - wretched-medium, keep -->
-      <RSW_PustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.3</RSW_PustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
-      <RSW_ColonyPustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.2</RSW_ColonyPustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
-      <RSW_PustuleHornetSpawned MayRequire="mandrake.rsw.swbestiary">0.2</RSW_PustuleHornetSpawned>  <!-- pustule hornet - wretched-small, import -->
+      <!-- ROT_ROSTER_DEAD_DONOR_NAMES_1 (this pass): RSW_PustuleHornetQueen/
+           RSW_ColonyPustuleHornetQueen/RSW_PustuleHornetSpawned removed — the
+           owner's 2026-09-10 sitting ruled them "move" to the Rot
+           (decisions_propagated.json), wasteland.json's roster no longer admits
+           them, and they are now wired in RUT_TheRot.xml instead. Leaving them
+           here too would have doubled a species the owner moved out. -->
       <AA_Terramorph MayRequire="sarg.alphaanimals">0.2</AA_Terramorph>  <!-- terramorph - extremophile-odd, keep -->
       <VAEWaste_Megatardi>0.18</VAEWaste_Megatardi>  <!-- megatardi - extremophile-odd, import; STAT_NORM_WAVE2_RETIRE_1 absorbed this def natively into UtinniPatches itself (Defs/Absorbed_VAEWasteMegatardi/), so it needs no MayRequire on the retired donor mod at all. The old gate on vanillaexpanded.vaewaste (not in the live mod list) was silently dropping this animal from the roster every load (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave) -->
       <AA_AcanthamoebaGiganteaSmall MayRequire="sarg.alphaanimals">0.1</AA_AcanthamoebaGiganteaSmall>  <!-- acanthamoeba gigantea, small - wretched-small, import -->
