@@ -10583,3 +10583,5 @@
 {"seat":"BENCH","event":"file","id":"SHEET_REVIEWED_FLAG_UNIFORM_1","title":"No uniform way to tell an owner-ruled sheet from an agent prefill - six different keys across 13 sheets","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T08:18:18Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"deploy the Pyrelands rename + Titanoslime build that were blocked by the running game, and activate GelatinousSlime","ts":"2026-09-21T08:20:31Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-21T08:21:55Z"}
+{"seat":"BENCH","event":"file","id":"WORLDVIEW_MISLABEL_FALLOUT_1","title":"worldview.py labelled the wrong regions on every render - re-check conclusions drawn by LOOKING","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-21T08:25:29Z"}
+{"seat":"BENCH","event":"file","id":"FEATURE_DRAWCENTER_UNVERIFIED_1","title":"Only 2 of 71 world features have a verified drawCenter, and growing labels make a wrong one worse","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T08:25:31Z"}
