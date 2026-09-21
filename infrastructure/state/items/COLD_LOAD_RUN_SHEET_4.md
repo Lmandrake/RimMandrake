@@ -118,7 +118,7 @@ running (`deploy_custom_mods.py --mod <name>`, plan first, then `--apply`).
 |---|---|---|---|
 | 1 | `PYRELANDS_DEFNAME_RENAME_1` | `RM_Pyrelands` resolves; no red errors from the 3 renamed C# string literals | built + 3 assemblies rebuilt clean at `84d42c63b`, **NOT deployed** |
 | 2 | `OUR_MODS_DEPLOYED_NEVER_ACTIVATED_1` | GelatinousSlime loads | ⛔ **not yet in `ModsConfig`** — activate it BEFORE the load, not after. AshkarrFlora is already active (re-measured: 619 active mods) |
-| 3 | `TITANOSLIME_SLIME_BIOME_1` | the spec's seven §8 gates, with growth now **PERMANENT** (his one overturned default) | deployed, 0 validation errors; the permanent-growth change is still owed in the build |
+| 3 | `TITANOSLIME_SLIME_BIOME_1` | the spec's seven §8 gates, with growth now **PERMANENT** (his one overturned default) | permanent growth **BUILT** at `8b9483b2e` (69/69 selftests, 0 warnings) — **NOT deployed**, the game was running. The Mod Settings toggle stays, unchecked by default |
 | 4 | `FOUNDERS_IMPORTER_OWED_1` | all 6 founders carry `Wimp` | `FOUNDER_IMPORTER_LIVETEST_2026-09-21.rws` built and verified offline. **One load and it closes** |
 | 5 | `BRIDGE_SELECT_NONCOLONIST_PAWN_1` | "does not refuse on faction" | DLL deployed, all 3 tools in the live tool list. 🔑 **Does NOT need this load** — a ~90 s beastmechanics quicktest closes it, and `PORTED_BEAST_MECHANICS_REBUILD_1` 4–6 with it |
 | 6 | `WORLD_LABEL_SIZE_HIERARCHY_1` | the 71 resized labels read as a hierarchy | offline pass in flight; needs the bridge (`world_features_set` + `world_commit`) and a NEW save slot, ⛔ never the canonical save |
