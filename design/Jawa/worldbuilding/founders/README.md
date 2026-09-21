@@ -149,8 +149,11 @@ mechanitor state, and every mod component's saved data for that pawn.
   they carry with a non-null `<sourceGene>` — point at one of the destination's
   own genes, and the trait is silently dropped with nothing in `Player.log`.
   MEASURED 2026-09-21: 5 of 6 founders lost it; the sixth (Sekki, `Gene_2009`,
-  above the destination's `nextGeneID`) kept it. **Offset every `<loadID>` by a
-  large constant and rewrite the `Gene_<n>` references with it.**
+  above the destination's `nextGeneID`) kept it. **Reallocate every `<loadID>`
+  above the destination's issued range and rewrite the `Gene_<n>` references with
+  it** — `import_founders.py` does this, computing the base per destination. A
+  fixed constant (the +1,000,000 of the proving run) is correct only for
+  destinations that happen to sit below it.
 - **The destination's `<uniqueIDsManager>` counters must be raised past every id
   the fragments carry** — `nextThingID`, `nextGeneID`, `nextHediffID`,
   `nextJobID` — or the receiving game hands out ids that collide with the
@@ -179,3 +182,27 @@ Without the `<loadID>` offset the load still "succeeds" and quietly costs a trai
 see the bullet above. Evidence and method:
 `Transient/founders_roundtrip_2026-09-21.md`; item:
 `infrastructure/state/items/FOUNDERS_EXPORT_TO_REPO_1.md`.
+
+## The importer — `import_founders.py`
+
+```
+python3 design/Jawa/worldbuilding/founders/import_founders.py <destination.rws>
+python3 design/Jawa/worldbuilding/founders/import_founders.py <destination.rws> --dry-run
+```
+
+One command, all four remaps, no prose to rediscover. It reads the destination's
+own PlayerColony faction, its primary ideo, its map uniqueID and size, and the
+**highest id it has actually issued** in each class, then allocates the fragments'
+gene / hediff / job / ability ids above those and rewrites every reference with
+them — including the `Gene_<n>` refs that cost the `Wimp` trait. It raises
+`nextThingID`/`nextGeneID`/`nextHediffID`/`nextJobID`/`nextAbilityID` past
+everything it imported, lands the eight pawns in a row beside the destination's own
+colonists, writes in binary mode only, backs the destination up first, and
+**refuses by name to write to `CANONICAL_ASHKARR_START_*` or `ASHKARR_FALLLINE_*`**.
+
+Thing ids are left as exported — the closed 62-reference relation graph is what
+makes the founders arrive as a family — unless the destination already holds one,
+in which case all 22 are reallocated together.
+
+Regression guard: `src/RimMandrake/Utils/selftest_import_founders.py`, 28 cases,
+calibrated against both evidence saves from the 2026-09-21 run.

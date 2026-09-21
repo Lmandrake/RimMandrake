@@ -72,3 +72,49 @@ that all 6 founders carry `Wimp` and their relation clique. The two evidence sav
 
 Someone who has never read this item can restore the founders into a new world with one
 command and lose nothing.
+
+## built 2026-09-21
+
+`design/Jawa/worldbuilding/founders/import_founders.py` — one command, all four
+remaps, plus two the spec did not name (ability ids, and Thing ids when the
+destination forces it). Guard: `src/RimMandrake/Utils/selftest_import_founders.py`,
+28 cases. Repo runner 67/68 before (1 pre-existing failure,
+`selftest_deployed_biome_refs.py`) → **68/69 after**, same one failure.
+
+**Allocation is computed, per destination, per class:**
+`base = max(destination counter, highest id the destination actually issued) + 1`,
+both read by PARSING the destination. The counter alone is not enough — a counter
+can sit behind an id already in the file — and the issued maximum alone is not
+enough either, since the receiving game is about to hand out from the counter.
+Against `XENOTYPE_SKIN_REVIEW_2026-09-20.rws` that yields gene base 1634 (its
+`nextGeneID`; issued max 1633), hediff 527, job 4, ability 136. The selftest proves
+it is not a constant by splicing into a destination whose genes run **past
+1,000,000**, where the proving run's +1,000,000 would collide, and finding it clean.
+
+**Tested against** a scratch copy of the same foreign save the 2026-09-21 run used:
+8 of 8 pawns arrive, faction `Faction_17`, ideo `Ideo_12`, **0 gene loadIDs shared
+with the destination's 1,633**, all 6 `Wimp` `sourceGene` refs resolving inside the
+founders' own 240 genes, 0 lone LF in 11,003,021 bytes.
+
+**The detector is calibrated on the evidence saves**, so it is known to see the real
+defect and not merely to agree with itself: `FOUNDER_ROUNDTRIP_2026-09-21.rws`
+(attempt 1) reports **200 colliding gene loadIDs and 5 of 6 colliding `Wimp`
+sourceGenes** — exactly the five founders that lost the trait, Sekki the one
+survivor; `FOUNDER_ROUNDTRIP_V2_2026-09-21.rws` reports 0. Neither fixture was
+written to. ⚠️ A count assertion cannot catch this: the broken save still holds 6
+`Wimp` elements. The selftest carries that as an explicit control case.
+
+⚠️ **Two traps found while building it, both silent.** The fragments' provenance
+comment contains the literal text `<li Class="Pawn">`, so `data.index(b"<li")` cuts
+inside the comment; and `<loadID>` is not always an integer — verb loadIDs are
+strings like `Thing_RSW_Dewback669123_0_Smash`. A blind text substitution of
+`<loadID>N</loadID>` is wrong for a third reason too: gene and hediff ranges
+overlap, so the same integer is two different ids and the class must come from the
+element's path.
+
+**Still owed:** a live load of an importer-produced save. The offline evidence is
+strong (byte-identical detector agreement with the V2 save that WAS loaded live on
+2026-09-21) but the importer's own output has not itself been through a game.
+Keeper md5s re-verified unchanged: `CANONICAL_ASHKARR_START_2026-09-12.rws`
+`75be9ecd4764a397e9802d997bb9e0b9`, `ASHKARR_FALLLINE_LABEL26_2026-09-21.rws`
+`31c981515d9e90dcacdb1f2110068527`.

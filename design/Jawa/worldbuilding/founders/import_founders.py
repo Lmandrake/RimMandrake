@@ -508,12 +508,17 @@ def rewrite(frag: Fragment, dest: Destination, mapping: dict[str, dict[int, int]
 
     # Verb loadIDs embed the ability id as a string (`Ability_677_0`), and thing
     # ids appear inside verb loadIDs too (`Thing_RSW_Dewback669123_0_Smash`).
-    # Token substitution is the only thing that reaches those; it is safe because
-    # each token is long and unique. Longest first, so no token eats another's prefix.
-    for old, new in sorted(mapping["ability"].items(), key=lambda kv: -kv[0]):
-        out = out.replace(b"Ability_%d_" % old, b"Ability_%d_" % new)
-    for old, new in sorted(thing_id_map.items(), key=lambda kv: -len(kv[0])):
-        out = out.replace(old.encode("utf-8"), new.encode("utf-8"))
+    # Token substitution is the only thing that reaches those.
+    # ⚠️ ONE pass, via a single alternation — chained `.replace()` calls re-replace
+    # their own output, which silently collapsed two ids onto one when a new id
+    # reused a number still present in the text.
+    tokens = {("Ability_%d_" % old): ("Ability_%d_" % new)
+              for old, new in mapping["ability"].items()}
+    tokens.update(thing_id_map)
+    if tokens:
+        pat = re.compile(b"|".join(re.escape(k.encode("utf-8"))
+                                   for k in sorted(tokens, key=len, reverse=True)))
+        out = pat.sub(lambda m: tokens[m.group(0).decode("utf-8")].encode("utf-8"), out)
 
     ET.fromstring(out.decode("utf-8"))            # a fragment that no longer parses
     return out                                    # must never reach the save
@@ -531,7 +536,13 @@ def plan_thing_ids(dest: Destination, fragments: list[Fragment]) -> dict[str, st
     declared = [tid for f in fragments for tid in f.thing_ids]
     if not any(tid in dest.thing_ids for tid in declared):
         return {}
-    base = dest.issued_max["thing"] + 1
+    # The new ids must clear the fragments' OWN numbers as well as the
+    # destination's, because the rewrite is a token substitution over the
+    # fragment text: a new id that reuses a number still present in the text
+    # would be indistinguishable from the old one it replaced.
+    own_max = max((int(m.group(1)) for tid in declared
+                   if (m := re.search(r"(\d+)$", tid))), default=-1)
+    base = max(dest.issued_max["thing"], own_max) + 1
     out = {}
     for i, tid in enumerate(sorted(set(declared))):
         out[tid] = "%s%d" % (re.sub(r"\d+$", "", tid), base + i)
