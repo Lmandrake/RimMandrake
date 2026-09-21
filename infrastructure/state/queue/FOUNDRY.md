@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T08:35:58Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-21T08:58:11Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1381,16 +1381,6 @@ kind:     design
 thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
-
-## PYRELANDS_DEFNAME_RENAME_1 RM_FE_Pyrelands -> RM_Pyrelands: owner ruled rename now, before the biome split
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. RMFEPyrelands → RMPyrelands across all 14 files, including the 3 C string
-prose:    infrastructure/state/items/PYRELANDS_DEFNAME_RENAME_1.md
 
 ## SCARLANDS_RENAME_OURS_1 RUT_Scarlands collides with vanilla Odyssey Scarlands - owner ruled rename OURS
 state:    proposed

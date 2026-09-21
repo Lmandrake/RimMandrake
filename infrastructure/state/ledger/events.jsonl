@@ -10588,3 +10588,9 @@
 {"seat":"BENCH","event":"file","id":"SWEETLINE_WOOL_HARVEST_1","title":"The giant-wool harvest the sweetline trees are built around does not exist as a def","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T08:31:37Z"}
 {"seat":"BENCH","event":"file","id":"TUNNELSNAKE_VIOLATES_SIZE_LADDER_1","title":"RSW_TunnelSnake ships at baseBodySize 2.0, inside the large band a ratified ruling declares empty","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T08:31:38Z"}
 {"seat":"BENCH","event":"close","id":"FORGE_ROSTER_UNRECONCILED_BMT_1","sha":"a1ad39b1d1c2fcd346ace3feb9132ff14bdded12","reason":"Premise falsified: all 28 BMT_ strings in the_forge.json sit under .evictions[].def - already-dispositioned records, not live roster gaps (BENCH re-measured 2026-09-21 by parsing the JSON, confirming a subagent's independent finding). The one ever-live BMT_ name, BMT_Maguana, was already ported and wired as RSW_Maguana. Zero unreconciled names; nothing to do","ts":"2026-09-21T08:35:58Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"batched cold load: prove the Pyrelands rename, Titanoslime permanent growth, GelatinousSlime activation and the founders importer","ts":"2026-09-21T08:41:27Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-09-21T08:42:45Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-21T08:44:35Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_DEFNAME_RENAME_1","ts":"2026-09-21T08:46:28Z"}
+{"seat":"FOUNDRY","event":"start","id":"PYRELANDS_DEFNAME_RENAME_1","ts":"2026-09-21T08:46:29Z"}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_DEFNAME_RENAME_1","sha":"bf43fce41cd50ae1f7dbc5d17c8cbd29aecd772f","ts":"2026-09-21T08:58:11Z"}
