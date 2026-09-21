@@ -85,6 +85,24 @@ in `<wildAnimals>`.
 5. **Mod Settings** — per the standing rule, every shipped mechanic gets a
    toggle; the detonation behaviours are exactly the kind a player may want off.
 
+## progress — step 1 DONE (Fable design pass, 2026-09-21)
+
+Design brief written: `design/Jawa/worldbuilding/creatures/blue_desert_hydrocarbon_life.md`
+— dorrak (Swallower), krissek (Burner), vekkit (Picker), and the engine spec for the
+three flora cards the earlier `RUT_hydrocarbon_ecology_commission.md` §6 already named
+(glassfern / chimeglobe / palefloss) plus the shared `RM_ColdWax` product. Every
+mechanic is read from 1.6 source via RimSage; §1 of the brief lists the engine facts
+the build must not rediscover (Ice fertility 0 → `completelyIgnoreFertility` or nothing
+spawns; per-plant temperature band; `HediffComp_ExplodeOnDeath` via `startingHediffs`
+sidesteps the life-stage-index radius trap; `CompExplosive` cannot go on a Long-ticker
+plant and wicks on first scratch on a pawn; heatstroke IS the warm-reactivity).
+
+🔴 **Tier correction:** these defs are `RM_` in `mandrake.rm.bluedesert`, not `RUT_` —
+`biome_mod_architecture.md` §3a + Phase A row 7 rule it; the `RUT_` in this item's spec
+step 3 is superseded. Steps 2–5 (art, defs, wiring, Mod Settings) remain open; brief
+§10 lists what is deliberately undecided (dovvik as a 4th resident, corpse
+warm-reactivity gap, juvenile radius, tameability, the three donor plants).
+
 ## Watch out
 
 - ⛔ **Do not solve this by importing pool creatures.** The def comment rules it
