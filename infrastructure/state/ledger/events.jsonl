@@ -10610,3 +10610,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"SWEETLINE_WOOL_HARVEST_1","ts":"2026-09-21T09:46:51Z"}
 {"seat":"FOUNDRY","event":"start","id":"SWEETLINE_WOOL_HARVEST_1","ts":"2026-09-21T09:46:52Z"}
 {"seat":"FOUNDRY","event":"close","id":"SWEETLINE_WOOL_HARVEST_1","sha":"5f35f97970c801cdb8c196ec7f1296306aadda6f","ts":"2026-09-21T10:12:32Z"}
+{"seat":"FOUNDRY","event":"claim","id":"TUNNELSNAKE_VIOLATES_SIZE_LADDER_1","ts":"2026-09-21T10:29:09Z"}
+{"seat":"FOUNDRY","event":"start","id":"TUNNELSNAKE_VIOLATES_SIZE_LADDER_1","ts":"2026-09-21T10:29:11Z"}
+{"seat":"FOUNDRY","event":"close","id":"TUNNELSNAKE_VIOLATES_SIZE_LADDER_1","sha":"c0c3009776465bd68470910532371c5ab7eb5a40","ts":"2026-09-21T10:29:58Z"}
