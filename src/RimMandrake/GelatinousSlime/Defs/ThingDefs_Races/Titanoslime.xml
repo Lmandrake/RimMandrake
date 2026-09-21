@@ -91,7 +91,6 @@
       <!-- It buds; it does not breed. No genders, no gestation, no litter. -->
       <hasGenders>false</hasGenders>
       <herdAnimal>false</herdAnimal>
-      <wildGroupSize>1~1</wildGroupSize>
       <bloodDef>RM_Filth_SlimeSmear</bloodDef>
       <bloodSmearDef>RM_Filth_SlimeSmear</bloodSmearDef>
       <!-- Butcher a titanoslime, get the body back. MEASURED precedent:
