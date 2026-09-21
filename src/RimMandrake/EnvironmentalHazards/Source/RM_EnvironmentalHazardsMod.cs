@@ -222,6 +222,23 @@ namespace RimMandrake.EnvironmentalHazards
     //      disables and still has to be waited out — it just never finishes
     //      anyone. Turning it off never heals a carrier already past the
     //      threshold; it only stops pushing.
+    //  40. bodySizeBarrierEnabled — RM_CompBodySizeBarrier /
+    //      RM_MapComponent_BodySizeBarrier / RM_BodySizeBarrierPatches
+    //      (VENOMVINE_FORTRESS_PASSABILITY_1). Off: a plant built as a
+    //      size-gated barrier stops gating — it still grows, still scratches
+    //      if it also carries contact venom, still costs its own pathCost,
+    //      but every pawn routes and moves through it on the same terms.
+    //      Both hooks read this flag on their first line, so turning it off
+    //      also removes the cost of consulting them. Takes effect at once,
+    //      on every map: nothing is baked at map generation.
+    //  41. bodySizeBarrierThreadCostMultiplier — how heavily a
+    //      middle-band pawn (big enough to be slowed, small enough to get
+    //      through) is charged per cell inside a barrier. The BLOCK is not
+    //      on this dial and cannot be tuned away here, because "larger ones
+    //      simply cannot" is the mechanic rather than its difficulty; this
+    //      only moves what threading one costs the creatures that can. At 0
+    //      a barrier is free to walk through for anything not outright
+    //      blocked.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -265,6 +282,8 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool contactVenomEnabled = true;
         public static float contactVenomScratchMultiplier = 1f;
         public static bool contactVenomLethal = true;
+        public static bool bodySizeBarrierEnabled = true;
+        public static float bodySizeBarrierThreadCostMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -309,6 +328,8 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref contactVenomEnabled, "contactVenomEnabled", true);
             Scribe_Values.Look(ref contactVenomScratchMultiplier, "contactVenomScratchMultiplier", 1f);
             Scribe_Values.Look(ref contactVenomLethal, "contactVenomLethal", true);
+            Scribe_Values.Look(ref bodySizeBarrierEnabled, "bodySizeBarrierEnabled", true);
+            Scribe_Values.Look(ref bodySizeBarrierThreadCostMultiplier, "bodySizeBarrierThreadCostMultiplier", 1f);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -321,7 +342,7 @@ namespace RimMandrake.EnvironmentalHazards
             // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
             // the same edit as whoever adds the next toggle, or their block is
             // invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3700f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3880f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -437,6 +458,11 @@ namespace RimMandrake.EnvironmentalHazards
                 "On: staying in a thorn stand long enough is fatal. Off: the venom still hurts and "
               + "disables, but is always held just short of killing. Turning this off does not heal "
               + "anyone already past that point.");
+            list.CheckboxLabeled("Thickets block large creatures", ref bodySizeBarrierEnabled,
+                "On: a plant built as a fortress thicket is impassable to anything big — herds, "
+              + "pack animals and the largest wildlife route around a stand instead of through it, "
+              + "while small creatures cross freely and people force a slow way through. Off: "
+              + "everything moves through it on the same terms.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
@@ -444,6 +470,12 @@ namespace RimMandrake.EnvironmentalHazards
                      + "The venom dose follows the damage, so this moves the poison too. At 0 the "
                      + "plant scratches nobody.");
             contactVenomScratchMultiplier = list.Slider(contactVenomScratchMultiplier, 0f, 3f);
+
+            list.Label("Forcing a thicket: " + bodySizeBarrierThreadCostMultiplier.ToString("0.00") + "x");
+            list.Label("How slowly someone big enough to be slowed — but not big enough to be "
+                     + "stopped — crosses a fortress thicket. Does not change WHO is stopped; at 0 "
+                     + "a thicket costs nothing extra to anyone who can enter it at all.");
+            bodySizeBarrierThreadCostMultiplier = list.Slider(bodySizeBarrierThreadCostMultiplier, 0f, 1.5f);
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");
             list.Label("Scales every damage/severity number the mechanisms above deal. Never "

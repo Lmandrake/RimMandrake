@@ -167,6 +167,9 @@
     <Compile Include="ContactVenomImmunity.cs" />
     <Compile Include="CompContactVenom.cs" />
     <Compile Include="MapComponent_ContactVenom.cs" />
+    <Compile Include="RM_CompBodySizeBarrier.cs" />
+    <Compile Include="RM_MapComponent_BodySizeBarrier.cs" />
+    <Compile Include="RM_BodySizeBarrierPatches.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -188,6 +191,16 @@
     </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- VENOMVINE_FORTRESS_PASSABILITY_1. PathRequest.IPathGridCustomizer —
+         the engine's own per-request path-cost extension point — is declared
+         in terms of NativeArray<ushort>, so the barrier grid cannot be
+         written without this. It ships with the game
+         (RimWorldWin64_Data\Managed\Unity.Collections.dll) and is loaded
+         before any mod assembly, exactly like UnityEngine.CoreModule above. -->
+    <Reference Include="Unity.Collections">
+      <HintPath>$(RimWorldManaged)\Unity.Collections.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <!-- FEVER_WOOD_MECHANICS_1 F2: RUT_IncidentWorker_MirrorBreak reuses

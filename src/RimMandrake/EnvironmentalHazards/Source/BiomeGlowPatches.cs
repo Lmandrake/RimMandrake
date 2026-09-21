@@ -54,9 +54,38 @@ namespace RimMandrake.EnvironmentalHazards
                   AccessTools.Method(typeof(ConditionalStatAffecter_InSunlight), nameof(ConditionalStatAffecter_InSunlight.Applies)),
                   AccessTools.Method(typeof(BiomeGlowPatches), nameof(BiomeGlowPatches.InSunlightApplies_Postfix)),
                   "biome-sunlight-suppression");
+
+            // VENOMVINE_FORTRESS_PASSABILITY_1. Both targets are resolved by
+            // explicit parameter types rather than by name alone: each has an
+            // overload beside it, and AccessTools.Method would otherwise pick
+            // whichever the reflection order happens to hand it.
+            Apply(harmony,
+                  AccessTools.Method(typeof(Verse.PathFinder), nameof(Verse.PathFinder.CreateRequest), new[]
+                  {
+                      typeof(Verse.IntVec3),
+                      typeof(Verse.LocalTargetInfo),
+                      typeof(Verse.IntVec3?),
+                      typeof(Verse.TraverseParms),
+                      typeof(Verse.PathFinderCostTuning?),
+                      typeof(Verse.AI.PathEndMode),
+                      typeof(Verse.Pawn),
+                      typeof(Verse.PathRequest.IPathGridCustomizer)
+                  }),
+                  AccessTools.Method(typeof(RM_BodySizeBarrierPatches), nameof(RM_BodySizeBarrierPatches.CreateRequest_Prefix)),
+                  "body-size-barrier-routing",
+                  asPrefix: true);
+
+            Apply(harmony,
+                  AccessTools.Method(typeof(Verse.AI.Pawn_PathFollower), nameof(Verse.AI.Pawn_PathFollower.GetPawnCellBaseCostOverride), new[]
+                  {
+                      typeof(Verse.Pawn),
+                      typeof(Verse.IntVec3)
+                  }),
+                  AccessTools.Method(typeof(RM_BodySizeBarrierPatches), nameof(RM_BodySizeBarrierPatches.GetPawnCellBaseCostOverride_Postfix)),
+                  "body-size-barrier-move-cost");
         }
 
-        private static void Apply(Harmony harmony, MethodBase target, MethodInfo postfix, string rule)
+        private static void Apply(Harmony harmony, MethodBase target, MethodInfo patch, string rule, bool asPrefix = false)
         {
             if (target == null)
             {
@@ -65,9 +94,22 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
+            if (patch == null)
+            {
+                Log.Error("[RM EnvironmentalHazards] " + rule + ": patch method not found — rule NOT armed.");
+                return;
+            }
+
             try
             {
-                harmony.Patch(target, postfix: new HarmonyMethod(postfix));
+                if (asPrefix)
+                {
+                    harmony.Patch(target, prefix: new HarmonyMethod(patch));
+                }
+                else
+                {
+                    harmony.Patch(target, postfix: new HarmonyMethod(patch));
+                }
             }
             catch (Exception e)
             {

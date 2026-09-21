@@ -31,9 +31,12 @@
       neighbour is also vine — clear a stand from the edge inward. That is
       the intended player verb.
     - The shrubland thicket's "small creatures pass through easily; larger
-      ones simply cannot" is body-size passability, a separate owed slug
-      (venomvine-fortress-flora-passability-by-body-size, tracked by
-      COMMISSION_LEDGER_CLEANUP_1). Nothing here precludes it.
+      ones simply cannot" is body-size passability. It is BUILT, and it is
+      built on the SIBLING def at the bottom of this file
+      (RM_VenomvineThicket, VENOMVINE_FORTRESS_PASSABILITY_1) — never on
+      RM_Venomvine, because the desert's own use of this plant is scattered
+      stands ("strange vines and thorny venom writhing around some areas"),
+      not a fortress. Do not add RM_CompProperties_BodySizeBarrier here.
 
   PLANT_GROWTH_SPEC.md's planetary x4 growth postfix applies on top of
   growDays 8 — the 8 is authored against that, not instead of it.
@@ -125,6 +128,120 @@
         <contactIntervalTicks>2500</contactIntervalTicks>
         <!-- Thorns take the legs. -->
         <bodyHeight>Bottom</bodyHeight>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!--
+    VENOMVINE_FORTRESS_PASSABILITY_1 — the SHRUBLAND lineage of the same
+    plant: arid_shrubland.md §4 "Venomvine — the fortress flora".
+
+    Why a sibling def rather than a comp added to RM_Venomvine above: one
+    ThingDef, two biomes, two different jobs. The desert form is scattered
+    ("strange vines and thorny venom writhing around some areas") and must
+    keep behaving exactly as it did before this item — its own ledger entry
+    says so in as many words. The shrubland form is the one the sheet calls
+    a fortress and a dungeon, and it is dense, harder to kill, and gated by
+    body size. Everything the two share (the contact-venom mechanism, the
+    numbers on it, the art, the fire resistance, Nutrition 0) is written the
+    same in both; everything that differs is what this def exists for.
+
+    Art: deliberately the SAME texPath as RM_Venomvine. The artpipe job
+    rmvenomvine_v1's own style_notes were written to double as "its
+    shrubland sibling" (checked 2026-09-21 per CLAUDE.md "Check for existing
+    regenerated art before queuing more") — so this def is what that note
+    was anticipating and NO new art job is owed for it. If the two forms are
+    ever to read differently on screen, that is a future art decision, not a
+    missing asset.
+
+    PLANT_GROWTH_SPEC.md's planetary x4 growth postfix applies on top of
+    growDays 12 — the 12 is authored against that, not instead of it.
+  -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_VenomvineThicket</defName>
+    <label>venomvine thicket</label>
+    <description>The shrubland lineage of the venomvine, and the only thing on this plain that grows in a mass. Where the desert form scatters, this one closes: runner over runner over runner until the tangle is chest-high, matted into itself, and lightless inside. Its thorns carry the same sap. A womprat runs the tangle at speed and a person can force a way in if they are patient and do not mind bleeding; nothing bigger gets past the first arm's length of it. The settlements plant it instead of building walls.</description>
+    <statBases>
+      <!-- "Nearly impossible to cut down", and denser than the desert form:
+           the fortification reading in §7 ("living venomvine — transplantable
+           fortification") only works if a stand outlasts a raid. -->
+      <MaxHitPoints>500</MaxHitPoints>
+      <!-- arid_shrubland.md §6.9: no flammable living flora. The dead,
+           desiccated form burning hot is the smother-craft industry, which is
+           not this def. -->
+      <Flammability>0.1</Flammability>
+      <!-- Nothing grazes it. -->
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <!-- §9: "venomvine as near-black islands" — the same rust-umber as the
+           desert form, taken down toward black for the shrubland palette. -->
+      <color>(78, 47, 33)</color>
+    </graphicData>
+    <selectable>true</selectable>
+    <!-- Above the desert form's 60. This is the cost EVERY pawn pays for the
+         cell; the body-size gate below is a separate thing layered on top of
+         it, not a replacement for it, so a small creature still finds a
+         thicket slower going than open ground — just not impossible. -->
+    <pathCost>90</pathCost>
+    <plant>
+      <!-- Same partition as the desert form: patch ground only, never sand. -->
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <!-- Slower than the desert form's 8. A thicket is the work of years —
+           "my grandmother darkened this stand" — and the smother-craft that
+           kills one only pays because replacing it is slow. -->
+      <growDays>12</growDays>
+      <!-- 0 = no age limit. A stand is permanent until something kills it. -->
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <!-- 🔑 The dungeon, in engine terms. arid_shrubland.md §6.6 bans dense
+           flora in this biome with exactly one carve-out, and this is it —
+           so the clustering is deliberately far past the desert form's 4/6:
+           a wide radius and a heavy weight are what make WildPlantSpawner
+           produce solid islands with interiors rather than the biome's
+           quincunx spacing. The maze is the cluster; no TerrainDef or
+           structure is involved. -->
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>25</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <!-- Harder to cut than the desert form's 900, for the same reason
+           MaxHitPoints is higher. -->
+      <harvestWork>1400</harvestWork>
+      <!-- A stand is cleared on purpose, never by a growing-zone auto-cut
+           sweep that walks a colonist into it. -->
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <!-- Identical to the desert form's, on purpose: item point 3 — a
+           creature small enough to thread the thicket is still scratched by
+           it. "Small enough to pass" must never quietly mean "immune". -->
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <!-- "Small creatures pass through easily; larger ones simply cannot."
+           The three bands, and where each number comes from, are documented
+           on RM_CompProperties_BodySizeBarrier — in short: 1.5 is vanilla's
+           own "this pawn fills the cell" constant (PawnUtility.PawnsCanShare
+           CellBecauseOfBodySize), which puts every huge grazer on the wrong
+           side of the wall, and 0.8 is ours, set so the womprat/shyrack/
+           scurrier runway floor crosses free while humanlikes thread. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
       </li>
     </comps>
   </ThingDef>

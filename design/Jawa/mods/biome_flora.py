@@ -272,13 +272,16 @@ FAMILIES = {
  },
 
  'D. the shrub belt': {
-  'RUT_AridShrubland': {   # 628 tiles · 10 plants — RUT_Fuzz replaced the Plant_ShrubLow
+  'RUT_AridShrubland': {   # 628 tiles · 11 plants — RUT_Fuzz replaced the Plant_ShrubLow
                             # stand-in at the same weight when this sheet's own owed def
-                            # landed (COMMISSION_LEDGER_CLEANUP_1, 2026-09-20)
+                            # landed (COMMISSION_LEDGER_CLEANUP_1, 2026-09-20);
+                            # RM_VenomvineThicket is the §4 fortress flora and the sole
+                            # carve-out from §6.6's ban on dense flora here
+                            # (VENOMVINE_FORTRESS_PASSABILITY_1, 2026-09-21)
     'RUT_Fuzz': 0.9, 'RG_Plant_AridGrass': 0.5, 'Plant_Brambles': 0.3,
     'Plant_Bush': 0.3, 'Plant_Ripthorn': 0.3, 'Plant_HealrootWild': 0.25,
     'Plant_Nysyllin_Wild': 0.22, 'RG_Plant_CreepStern': 0.2, 'RG_Plant_CrimsonCushion': 0.2,
-    'RG_Plant_Dervish': 0.2},
+    'RG_Plant_Dervish': 0.2, 'RM_VenomvineThicket': 0.15},
  },
 
  'E. the tar': {
