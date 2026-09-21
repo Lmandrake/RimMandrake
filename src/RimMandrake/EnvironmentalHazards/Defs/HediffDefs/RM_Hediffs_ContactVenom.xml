@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Hediffs_ContactVenom.xml                VENOMVINE_CONTACT_VENOM_BUILD_1
+
+  The venom a contact-venom plant's scratch carries. Design:
+  design/Jawa/worldbuilding/desert_shade_plants_design.md SS1b "the venom".
+
+  Arithmetic behind the stage thresholds, so nobody has to re-derive it:
+  each scratch adds 0.12 (3 damage x 0.04 severityPerDamageDealt, before
+  inverse-body-size scaling), a pawn lingering takes one scratch an hour,
+  and this hediff sheds 0.5/day = ~0.021/h. Net +0.10/h. So one crossing
+  peaks at 0.12 (minor, gone in ~6 h); three hours of lingering passes 0.30
+  (serious); nine hours reaches 1.0.
+
+  lethalSeverity is gated by a Mod Setting, but NOT from this file — it is a
+  HediffDef field the engine reads directly. The gate lives in
+  MapComponent_ContactVenom.ApplyLethalityOption, which holds severity just
+  under this threshold when the option is off. It is safe there because the
+  only thing that ever RAISES this severity is a scratch.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_VenomvineVenom</defName>
+    <label>thorn venom</label>
+    <description>A plant venom carried into the blood by a thorn. It is not an infection and it is not a toxin the body has any answer to; it is simply a load that has to be waited out, and a body kept in the thorns never gets to start waiting.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.35, 0.25)</defaultLabelColor>
+    <lethalSeverity>1.0</lethalSeverity>
+    <makesSickThought>true</makesSickThought>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.5</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>trace</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <label>minor</label>
+        <minSeverity>0.05</minSeverity>
+        <painOffset>0.10</painOffset>
+      </li>
+      <li>
+        <label>serious</label>
+        <minSeverity>0.30</minSeverity>
+        <painOffset>0.25</painOffset>
+        <vomitMtbDays>1.5</vomitMtbDays>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.20</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>grave</label>
+        <minSeverity>0.60</minSeverity>
+        <painOffset>0.35</painOffset>
+        <vomitMtbDays>0.6</vomitMtbDays>
+        <lifeThreatening>true</lifeThreatening>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.30</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.30</offset>
+          </li>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>-0.20</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>
