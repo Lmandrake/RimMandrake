@@ -47,7 +47,16 @@ are shipping in defs right now, marked as drafted. A sample:
 | `RG_Plant_Dervish` | **Whirlbloom** |
 | `AB_DessertTree` | **Sweetbark tree** |
 
-- **DO:** skim the full list and strike the ones you dislike.
+**The full batch is built and waiting:**
+`D:\Luke\dev\Rimworld\Transient\drafted_creature_names_2026-09-21.md` — 16 rows, no
+canon name among them.
+
+🔑 **There are TWO layers and you may want to rule on them separately.** MEASURED: the
+defName is plain English (`RSW_Stoneback`) and the **label the player actually reads** is
+pseudo-Star-Wars (**bokka**). The table gives you both.
+
+- **DO:** strike what you dislike, or say "all fine" and they stop being drafts. Partial
+  answers work — the rows you leave alone ship as they are.
 - **DON'T:** a drafted name that goes unreacted-to becomes a real name by default —
   that is how a placeholder ships.
 

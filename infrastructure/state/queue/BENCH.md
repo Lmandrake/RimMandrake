@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:24:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:26:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -657,8 +657,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SHRUBLAND_TREE_GUARDIAN_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## verify
+summary:  SHRUBLANDTREEGUARDIAN1 — owner card: tree-guardian uniques (candidate, not yet ruled)
 prose:    infrastructure/state/items/SHRUBLAND_TREE_GUARDIAN_1.md
 
 ## ARIDSHRUBLAND_SHIPPING_NAMES_1 Owner card: arid_shrubland working names (fuzz, giant, tunnel-snake, venomvine, Stall/Gale)
@@ -667,6 +667,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARIDSHRUBLAND_SHIPPING_NAMES_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## verify
+summary:  ARIDSHRUBLANDSHIPPINGNAMES1 — owner card: aridshrubland working names
 prose:    infrastructure/state/items/ARIDSHRUBLAND_SHIPPING_NAMES_1.md
