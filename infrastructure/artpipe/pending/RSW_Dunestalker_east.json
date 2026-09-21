@@ -14,7 +14,7 @@
     "north"
   ],
   "id": "RSW_Dunestalker_east",
-  "priority": 150,
+  "priority": 10,
   "prompt": "A predatory quadruped combining big-cat, shark and skink features, sleek sand-colored hide with darker stripes, low hunting posture, sharp claws and teeth, Star Wars creature design, desert palette, painterly game-art style.",
   "reference": null,
   "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
