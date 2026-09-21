@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 80.85364450899942,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 80.85364450899942,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "xeno_head_lasat_v1_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 6.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T19-20-12-01a0c1c3-8a57-7403-bca0-67a95c4cc2a8.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 76.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 92.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T15-39-01-01a0c0f9-0afc-7fb0-bbfa-8884d369fca1.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 75.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "xeno_head_lasat_v1_south",
+    "note": "Generated with built-in imagegen, copied into the workspace, and resized to exactly 512\u00d7512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\xeno_head_lasat_v1_south\\xeno_head_lasat_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/xeno_head_lasat_v1_south/xeno_head_lasat_v1_south.png\n    512x512  rgba  254,992 bytes  (80s)\n"
+}

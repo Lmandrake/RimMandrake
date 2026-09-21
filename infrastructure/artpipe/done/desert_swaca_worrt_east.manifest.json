@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 154.52967039200303,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 154.52967039200303,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desert_swaca_worrt_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 69.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T20-19-13-01a0c1f9-917a-7f43-9bd4-2d810819ef07.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 85.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 63.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T20-14-12-01a0c1f4-fa57-71e0-b002-129578e53c08.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 85.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desert_swaca_worrt_east",
+    "note": "Generated with built-in imagegen, then resized to exactly 256x256 while preserving transparent alpha. East-facing side-profile Worrt; no backdrop or shadow.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_worrt_east\\desert_swaca_worrt_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_worrt_east/desert_swaca_worrt_east.png\n    256x256  rgba  65,196 bytes  (153s)\n"
+}

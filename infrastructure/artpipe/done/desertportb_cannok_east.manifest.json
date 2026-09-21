@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 149.93429112101148,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 149.93429112101148,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desertportb_cannok_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 86.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T20-36-01-01a0c208-f2ac-75f3-a05f-409bd29ca7b9.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 88.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 79.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T20-30-54-01a0c204-436c-7712-8db3-927b54aa8715.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 87.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desertportb_cannok_east",
+    "note": "Generated via built-in imagegen, copied into the workspace, resized to exactly 256x256, and verified as RGBA with four transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_cannok_east\\desertportb_cannok_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_cannok_east/desertportb_cannok_east.png\n    256x256  rgba  59,331 bytes  (149s)\n"
+}

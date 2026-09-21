@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 109.49242648000654,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 109.49242648000654,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desert_swaca_shyrack_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T19-54-57-01a0c1e3-586e-7591-b94f-4e435a10a83e.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 82.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T19-49-53-01a0c1de-b4aa-7d30-b7c7-ccc8f9ba6ebf.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 81.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desert_swaca_shyrack_north",
+    "note": "Built-in imagegen; original rear-facing Shyrack pawn sprite, resized to exactly 256x256 with transparent alpha preserved.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_shyrack_north\\desert_swaca_shyrack_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_shyrack_north/desert_swaca_shyrack_north.png\n    256x256  rgba  81,318 bytes  (108s)\n"
+}

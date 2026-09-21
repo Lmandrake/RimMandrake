@@ -1,0 +1,51 @@
+{
+  "attempt_elapsed_s": 141.85696821499732,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 141.85696821499732,
+  "height": 1254,
+  "id": "xeno_head_mimbanese_v1_south",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T19-24-51-01a0c1c7-c9a5-74f2-b1f8-0385335acef4.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 77.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 6.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T19-20-12-01a0c1c3-8a57-7403-bca0-67a95c4cc2a8.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 76.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "returned 1254x1254, job asked for 512x512 \u2014 the image tool is known to ignore requested size; never a silent ok, reference or not",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "width": 1254,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "xeno_head_mimbanese_v1_south",
+    "note": "Built-in image generation returned no image artifact on both attempts, so no PNG could be copied or verified.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "size_mismatch",
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-47b8e18d-e8b1-4ee7-9092-f8d4e32a7076.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/xeno_head_mimbanese_v1_south/xeno_head_mimbanese_v1_south.png\n    1254x1254  rgba  1,010,352 bytes  (139s)\n"
+}

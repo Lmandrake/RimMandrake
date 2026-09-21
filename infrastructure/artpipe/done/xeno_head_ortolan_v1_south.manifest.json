@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 85.06208711200452,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 85.06208711200452,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "xeno_head_ortolan_v1_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 23.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T19-36-13-01a0c1d2-339f-7931-93d6-a00a27d84df2.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 78.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 18.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T19-30-58-01a0c1cd-6304-7313-8074-54a93ca6ca94.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 77.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "xeno_head_ortolan_v1_south",
+    "note": "Generated a blue, hairless, front-facing Ortolan head with long tapered pendulous ears, solid black eyes, straight trunk, dark keyline, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\xeno_head_ortolan_v1_south\\xeno_head_ortolan_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/xeno_head_ortolan_v1_south/xeno_head_ortolan_v1_south.png\n    512x512  rgba  201,816 bytes  (83s)\n"
+}
