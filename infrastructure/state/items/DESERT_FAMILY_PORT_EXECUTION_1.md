@@ -217,3 +217,35 @@ the patch files.
 
 The desert family is ours. Removing Star Wars Animal Collection, Alpha Animals,
 Alpha Biomes, ReGrowth or Droid Depot changes nothing a player sees in the desert.
+
+## the art review sheet — built 2026-09-20, waiting on the owner's eye
+
+`D:\Luke\dev\Rimworld\Transient\desert_art_verdict_2026-09-20.html`
+decisions → `D:\Luke\dev\Rimworld\Transient\desert_art_verdict_2026-09-20.decisions.json`
+
+Serve it:
+```
+python3 ~/.claude/skills/review-sheets/assets/serve_sheet.py \
+  --sheet Transient/desert_art_verdict_2026-09-20.html \
+  --decisions Transient/desert_art_verdict_2026-09-20.decisions.json
+```
+
+- **25 rows** — 24 desert-port creatures whose three facings all PASS, plus a 25th for
+  `RSW_Ferroclaw` showing its **earlier** `aa_terramorph` art (south+east PASS, north
+  failed), because today's own job is still queued.
+- **Excluded, with nothing to look at:** 179 still-queued facings across the wave's
+  remaining ~52 creatures, and Kybuck's north facing (`generated`, not yet validated).
+- **Donor art recovered for all 25**, so every row is judged as a *replacement*, not an
+  image in isolation.
+- **Canon `## Must show` checklist shown for 9 of 25** (Anooba, Bantha, Corinathoth,
+  Eopie, Gizka, Iriaz, Kreetle, Mudhorn, Nuna). The other 16 have no
+  `canon_references/` entry — flagged on the row, **not invented**.
+- Gate: `check_sheet.py` 0 FAIL / 0 WARN / 34 ok; both script blocks pass `node --check`.
+  ⚠️ **Not click-tested in a live browser** — no GUI was available to the builder.
+
+🔑 Re-run `Transient/desert_art_verdict_build_2026-09-20.py` then
+`..._assemble_2026-09-20.py`, in that order, as more of the queue lands.
+
+⚠️ Neither `make_verdict_sheet.py` nor `build_flora_legibility_sheet.py` was reusable —
+both hand-roll a localStorage-only page predating the current
+`sheet_template.html`/`check_sheet.py` contract.
