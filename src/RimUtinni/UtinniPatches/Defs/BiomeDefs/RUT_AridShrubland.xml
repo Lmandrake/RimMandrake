@@ -46,6 +46,14 @@
     (ARIDSHRUBLAND_SHIPPING_NAMES_1) - every RUT_/RSW_ defName above added this
     pass is a working name, same status as RUT_Staggerseed.
 
+    SHRUBLAND_SCRAPNEST_BIRDS_1 (2026-09-20) added `RSW_ScrapNestBird`, the §4
+    scrap-nest bird-analog the tunnel snake's own description already preys on.
+    It reuses RSW_Whisperbird's art and flight frames under a new defName and a
+    retint, so the four donor birds this file already places (Whisperbird,
+    Convor, Porg, Nuna) are untouched and no species is double-booked. Its
+    nests (`RSW_ScrapNest`) are built by the birds at runtime, not by map gen,
+    so nothing here places them.
+
   -->
 
   <BiomeDef>
@@ -142,6 +150,7 @@
       <Ronto MayRequire="mlie.starwarsanimalcollection">0.8</Ronto>  <!-- ronto - huge-grazer, keep -->
       <RSW_ShrublandGiant MayRequire="mandrake.rsw.swbestiary">0.35</RSW_ShrublandGiant>  <!-- COMMISSION_LEDGER_CLEANUP_1: the huge-grazer flagship, large-young/parental-enrage slug -->
       <RSW_TunnelSnake MayRequire="mandrake.rsw.swbestiary">0.5</RSW_TunnelSnake>  <!-- COMMISSION_LEDGER_CLEANUP_1: the signature corridor predator, alongside the Terrorworm interim -->
+      <RSW_ScrapNestBird MayRequire="mandrake.rsw.swbestiary">0.45</RSW_ScrapNestBird>  <!-- SHRUBLAND_SCRAPNEST_BIRDS_1: the §4 scrap-nest bird-analog; the tunnel snake's own prey -->
       <Scurrier MayRequire="mlie.starwarsanimalcollection">0.8</Scurrier>  <!-- scurrier - small-runway, keep -->
       <Sketto MayRequire="mlie.starwarsanimalcollection">0.8</Sketto>  <!-- sketto - small-runway, keep -->
       <RSW_ImperialToad MayRequire="mandrake.rsw.swbestiary">0.7</RSW_ImperialToad>  <!-- imperial toad - small-runway, keep -->

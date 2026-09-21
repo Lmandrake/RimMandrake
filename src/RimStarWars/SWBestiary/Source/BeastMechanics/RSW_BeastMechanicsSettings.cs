@@ -30,11 +30,20 @@ namespace RimMandrake.StarWars.SWBestiary
         // left alone, so turning this off stops new creatures gaining one.
         public static bool innateAbilitiesEnabled = true;
 
+        // SHRUBLAND_SCRAPNEST_BIRDS_1 — the scrap-nest bird's hoarding drive:
+        // the job giver, the nest-building fallback and the haul job all read
+        // this. Off, the bird keeps every stat, its flight and its eggs and
+        // simply stops collecting — and any nest already on the map stays put
+        // and keeps restocking, because that half is a pure vanilla
+        // CompProperties_Spawner this flag does not reach.
+        public static bool scrapHoardingEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref metalEatingEnabled, "metalEatingEnabled", true);
             Scribe_Values.Look(ref innateAbilitiesEnabled, "innateAbilitiesEnabled", true);
+            Scribe_Values.Look(ref scrapHoardingEnabled, "scrapHoardingEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -53,6 +62,13 @@ namespace RimMandrake.StarWars.SWBestiary
                 "Innate creature abilities",
                 ref innateAbilitiesEnabled,
                 "The voltmaw fires a plasma volley and the cindermite sprays raw chemfuel. Off: neither gains its ranged attack.");
+
+            list.Gap();
+
+            list.CheckboxLabeled(
+                "Scrap-hoarding birds",
+                ref scrapHoardingEnabled,
+                "Scrap-nest birds build nests in the wild and carry loose scrap, components and precious metals back to them. They never take from inside your base. Off: they forage and fly like any other bird, and existing nests still slowly accumulate scrap on their own.");
 
             list.End();
         }
