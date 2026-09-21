@@ -132,3 +132,58 @@ verification rule I am NOT closing on an unconfirmed live claim. Owed: spawn
 confirm `RSW_Filth_WhaleDung` actually appears at the cell. Whoever gets the
 bridge next and can reach this should do that and close with the confirming
 observation, per the skill's own rule that whoever proves it closes it.
+
+## LIVE-CONFIRMED 2026-09-21 — `RSW_Filth_WhaleDung` places on open, unroofed Sand
+
+Run environment: `shrublandfauna` tier (19 mods, all five DLC), quicktest map.
+`deploy_custom_mods.py --mod SWBestiary` read "in sync (2420 files, 96 held)"
+before launch, and `jawa/get_defs` resolved `ThingDef/RSW_Filth_WhaleDung` and
+`ThingDef/RSW_ShadeWhale` — the new def is live, not merely written.
+
+**The arena.** `jawa/clear_area 185,145,40,40` (1,020 things destroyed), then
+`jawa/set_terrain_batch` → 1,600 cells of `Sand`. `get_cell_info` at the centre:
+`terrainDefName Sand`, `roofDefName null`, `walkable true`, nothing on the cell.
+No roof, no enclosed room — i.e. the exact case `CanMakeFilth`'s escape hatch
+does NOT cover, which is what killed `Filth_AnimalFilth` here.
+
+**Baseline**, before any whale: **0** `RSW_Filth_WhaleDung` anywhere on the map.
+
+**The run.** Four `RSW_ShadeWhale` spawned at (205,165), (213,169), (197,169) and
+(205,157) at `ticksGame` 143,398, each with Food forced to 0.50 — below
+`beginBelowFoodPercent` 0.75, which is what arms the filter-feed.
+
+| observation | evidence |
+|---|---|
+| filth appears at all | by T=150,000 (6,602 ticks): **4** `RSW_Filth_WhaleDung`, one on each whale's spawn cell |
+| **filter-feed bout → filth** | whale `…41857` caught on job **`RM_FilterFeedTerrain`** at (189,145) at T=158,987; a `RSW_Filth_WhaleDung` stood at (189,145) at the next sample |
+| **dung event → filth** | at 400-tick sampling: T=169,400 new filth at (212,140) with whale `…41859` standing there on job `LayDown`; T=170,200 new filth at (210,148) with whale `…41856` on `LayDown`. No filter-feed job running at either — that is `RM_CompDungSeeder.DoDungEvent`, which drops its filth before the shade check |
+
+**Final census — 11 `RSW_Filth_WhaleDung`, every one of them unroofed:**
+
+```
+(205,165) Sand   roof=None      (189,145) Sand   roof=None
+(205,157) Sand   roof=None      (234,173) Soil   roof=None
+(197,169) Sand   roof=None      (212,140) Gravel roof=None
+(213,169) Sand   roof=None      (210,148) Sand   roof=None
+(212,145) Sand   roof=None
+(209,150) Sand   roof=None
+(224,171) Sand   roof=None
+```
+
+9 on Sand, 1 on Soil, 1 on Gravel — all three `NaturalTerrainBase` children with
+`filthAcceptanceMask [Unnatural]`, all open sky.
+
+**Control.** `Filth_AnimalFilth` inside that same 40×40 Sand rect: **0** for the
+whole run (24 on the map in total, every one of them far from the whales and
+predating the test). That reproduces the 2026-09-21 measurement this item was
+filed on, in the same session, on the same ground, while the new def was landing
+11 filth beside it.
+
+### criteria — met
+
+"A live whale, on open Sand, leaves visible filth at its cell after one dung
+event and after one filter-feed bout." Both mechanisms observed separately and
+attributed by job. Closing.
+
+Screenshot:
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\WHALE_DUNG_ON_SAND_live.png`

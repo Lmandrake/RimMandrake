@@ -78,3 +78,14 @@ got for the sweetline-tree guardians.
 - Options for you to LOOK at would be cheap here: the bird, a nest and a hoard
   can all be staged on one map through the bridge and saved
   (`rimworld-live-review`), so a ruling need not be made from prose alone.
+
+## The guard as it stands today is MEASURED live, 2026-09-21
+
+So a ruling here is a choice about a mechanic that demonstrably works, not a
+guess. From `SCRAPNEST_BIRD_LIVE_VERIFY_1`'s run, distance-matched control on one
+quicktest map: two identical 20-`Silver` stacks were placed ~6 cells from the same
+four fresh birds, one at (70,205) **inside** a painted Home area and one at
+(70,211) **outside** it. The outside stack was hauled to the nest **inside the
+first 20-second play window**; the inside stack was **still on its cell 132,962
+ticks (≈2.2 in-game days) later**. `IsTakeable`'s `map.areaManager.Home` test is
+what holds it, and nests likewise never appeared inside the painted area.
