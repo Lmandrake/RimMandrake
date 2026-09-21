@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T18:06:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T18:09:33Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -891,15 +891,6 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
-## BLUE_DESERT_LIFE_AUTHORING_1 Author the Blue Desert's commissioned hydrocarbon life - Swallowers, Burners, Pickers and the transparent fractal flora - 1029 tiles currently carrying ZERO fauna and ZERO flora because the owner-ratified biology was specced and never built
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. Design pass first — kind: design, so per AgentPolicy.md it is
-prose:    infrastructure/state/items/BLUE_DESERT_LIFE_AUTHORING_1.md
-
 ## SLIME_GENE_ARCHIVE_BUILD_1 Build the Slime's campaign gene archive: the owner-ACCEPTED 33-target + 25-rider lists (frozen 2026-09-06) exist as design only - 1 of 34 GeneDefs is built and a 17-gene universal PLACEHOLDER archive ships in their place, so the biome's headline mechanic serves the wrong content while looking finished in-game
 state:    doing
 row:      unassigned
@@ -1730,3 +1721,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  For each of the 7 BMT names above, follow the exact method
 prose:    infrastructure/state/items/MIASMA_FEVERWOOD_GREENTIDE_BMT_1.md
+
+## FURNACEBEAST_WORLD_MIGRATION_1 Furnace-beast world-scale thermal migration: herd crosses biomes off-map (world leg, split from FURNACEBEAST_THERMAL_CYCLE_1)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  FURNACEBEASTWORLDMIGRATION1
+prose:    infrastructure/state/items/FURNACEBEAST_WORLD_MIGRATION_1.md
