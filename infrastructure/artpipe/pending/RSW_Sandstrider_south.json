@@ -14,7 +14,7 @@
     "north"
   ],
   "id": "RSW_Sandstrider_south",
-  "priority": 150,
+  "priority": 10,
   "prompt": "A large flightless desert bird with bony neck plates, long powerful legs built for speed, sturdy mount-sized build, sun-bleached tan and rust plumage, Star Wars creature design, desert Tatooine palette, painterly game-art style.",
   "reference": null,
   "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",

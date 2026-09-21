@@ -10,7 +10,7 @@
   "facing": null,
   "facings": [],
   "id": "RSW_SweetbarkTree",
-  "priority": 150,
+  "priority": 10,
   "prompt": "A whimsical desert tree with a thick sugary-looking trunk and frosting-like growths along its branches, warm tan and cream coloring, simple game-art plant/tree icon, Star Wars desert palette, painterly style, transparent background.",
   "reference": null,
   "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",

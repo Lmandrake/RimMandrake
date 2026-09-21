@@ -14,7 +14,7 @@
     "north"
   ],
   "id": "RSW_Sandhorn_north",
-  "priority": 150,
+  "priority": 10,
   "prompt": "A large hooved pack-beast, bigger and huskier than a muffalo, thick tan hide, short curved horns, sturdy build for carrying cargo, Star Wars creature design, desert Tatooine palette, painterly game-art style.",
   "reference": null,
   "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
