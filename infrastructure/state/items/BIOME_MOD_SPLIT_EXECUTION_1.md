@@ -38,11 +38,28 @@ Q3 is executed already: `RM_FE_Pyrelands` → `RM_Pyrelands`, committed at `84d4
 (0 occurrences remain, 3 C# string literals included, 3 assemblies rebuilt clean).
 ⚠️ That rename is **built but NOT deployed** — the game was running. Deploy before testing.
 
-## ⏸️ The one thing still owed before Phase A: two names
+## 🔴 Names ruled 2026-09-21 — three of four landed, row 9 held
 
-`RM_DeepDesert` / `RM_ShadowDesert` / `RM_FogShrubland` (Q2) and the Scarlands replacement
-(Q5) await only his pick from `Transient/biome_name_drafts_2026-09-21.md` — drafted and
-waiting, not blocked on anyone here. Every row whose name is already settled can start now.
+- **Row 1, `RUT_ExtremeDesert` → `RM_Stillsand`, "the Stillsand"** (`mandrake.rm.stillsand`).
+  Owner picked draft row 1 over the recommendation. The campaign label "the Dune Sea" stays
+  a Utinni-tier patch over it.
+- **Row 2, `RUT_Desert` → `RM_LongShade`, "the Long Shade"** (`mandrake.rm.longshade`).
+- **Row 20, `RUT_Scarlands` → `RM_Warscar`, "Warscar"**, article deliberately dropped —
+  ruled and the label shipped on FOUNDRY (`SCARLANDS_RENAME_OURS_1`, closed); the defName
+  move is row 20's own migration, `SCARLANDS_STANDALONE_MOD_1`.
+
+⏸️ **Row 9, `RUT_AridShrubland`, is HELD — and not on a name.** Put to the owner, he
+answered with the biome rather than the name: *"I had thought the periodic scrub bushes
+would grow big as a man and everywhere else is the low fuzz. No? Please check sheet."*
+Checked: `arid_shrubland.md` does NOT say that — it puts the entire canopy at knee height
+(§"The two floors": "The fuzz is a canopy at knee height") and makes a biped's wrongness
+the biome's whole point ("too large to hide in it, too small to be safe over it"). But §1
+opens with *"Sightlines are gone. Cover is everywhere, for everything, all the time"*,
+which is only true of a canopy at least shoulder-high. **The sheet contradicts itself, the
+owner's instinct found it, and the sheet is frozen** — so the vegetation structure is his
+card, and the name follows it. Do not pick row 9's name first.
+
+Every other row can start now.
 
 ## what is already established and needs no ruling
 
