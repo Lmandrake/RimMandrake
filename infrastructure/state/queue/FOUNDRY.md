@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:23:43Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-21T01:24:37Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1450,3 +1450,33 @@ kind:     investigate
 thin:     spec, verify and criteria all present
 summary:  Find what guy762Robesjawa (and any sibling robe def on these pawns) sets as its
 prose:    infrastructure/state/items/FOUNDER_ROBE_MAGENTA_1.md
+
+## SHRUBLAND_SCRAPNEST_BIRDS_1 Scrap-nest bird-analogs: nest-theft C# + base-stealing candidate
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify
+summary:  SHRUBLANDSCRAPNESTBIRDS1 — scrap-nest bird-analogs: nest-theft C + base-stealing candidate
+prose:    infrastructure/state/items/SHRUBLAND_SCRAPNEST_BIRDS_1.md
+
+## SHRUBLAND_GIANT_ENRAGE_1 RSW_ShrublandGiant: large-young life-stage + parental enrage-on-approach C#
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SHRUBLAND_GIANT_ENRAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHRUBLAND_GIANT_ENRAGE_1.md
+
+## VENOMVINE_FORTRESS_PASSABILITY_1 Venomvine fortress: size-gated passability C# for the shrubland thicket
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/VENOMVINE_FORTRESS_PASSABILITY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
