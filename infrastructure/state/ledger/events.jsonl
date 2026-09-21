@@ -10509,3 +10509,14 @@
 {"seat":"FOUNDRY","event":"close","id":"DESERT_LEACHMOSS_LIVE_VERIFY_1","sha":"d07d993f6fa5b7a977fbf2518e77997e256a695b","ts":"2026-09-21T03:35:29Z"}
 {"seat":"FOUNDRY","event":"close","id":"VENOMVINE_LIVE_VERIFY_1","sha":"d07d993f6fa5b7a977fbf2518e77997e256a695b","ts":"2026-09-21T03:35:30Z"}
 {"seat":"FOUNDRY","event":"close","id":"SHADE_WHALE_ECOLOGY_LIVEPROOF_1","sha":"d07d993f6fa5b7a977fbf2518e77997e256a695b","ts":"2026-09-21T03:35:30Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T03:36:02Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FOUNDER_ROBE_MAGENTA_1","ts":"2026-09-21T03:37:05Z"}
+{"seat":"FOUNDRY","event":"start","id":"FOUNDER_ROBE_MAGENTA_1","ts":"2026-09-21T03:37:06Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHRUBLAND_GIANT_ENRAGE_1","ts":"2026-09-21T03:37:07Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHRUBLAND_GIANT_ENRAGE_1","ts":"2026-09-21T03:37:08Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHRUBLAND_SCRAPNEST_BIRDS_1","ts":"2026-09-21T03:37:09Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHRUBLAND_SCRAPNEST_BIRDS_1","ts":"2026-09-21T03:37:09Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDER_ROBE_MAGENTA_1 live-verify: founders' robe worn graphics after Armoury texture fix","ts":"2026-09-21T03:48:21Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-21T03:48:39Z"}
+{"seat":"FOUNDRY","event":"note","id":"SHRUBLAND_GIANT_ENRAGE_1","text":"BUILT at 5a853a4cb: RM_ParentalEnrageExtension + RM_CompParentalEnrage + RM_MentalState_ParentalEnrage (CreatureBehaviors), wired onto RSW_ShrublandGiant. Compiles clean, validate_patch clean, selftests 69/69. Feasibility answered: subclassing MentalState_Manhunter needs NO think-tree patch and NO Harmony (ThinkNode_ConditionalMentalStateClass is an IsInstanceOfType check, unlike its def-identity sibling). LIVE VERIFY OWED - bridge held by the other window all pass, nothing deployed, mechanism never observed. Item prose carries the run sheet and four false-pass traps.","ts":"2026-09-21T03:52:57Z"}
+{"seat":"FOUNDRY","event":"needs","id":"SHRUBLAND_GIANT_ENRAGE_1","to":"bridge","reason":"live verification of a never-observed mechanism is the item's own stated criterion; build is done and pushed","ts":"2026-09-21T03:53:02Z"}

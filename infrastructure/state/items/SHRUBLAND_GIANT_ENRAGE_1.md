@@ -69,3 +69,104 @@ Approaching a juvenile `RSW_ShrublandGiant` triggers a scoped aggressive
 response from its nearest adult, verified live (quicktest or full load) —
 this is explicitly a "never-observed mechanism" until someone runs it, same
 caution `VENOMVINE_LIVE_VERIFY_1` records for its own build.
+
+## status — BUILT, LIVE VERIFICATION OWED (2026-09-20, `5a853a4cb`)
+
+Steps 1–3 are done. **The item stays open on its own criteria**: the mechanism
+has never been observed running, and nothing below is a substitute for that.
+
+### What was built
+
+In `mandrake.rm.creaturebehaviors` (RM tier, names no species):
+
+| file | role |
+|---|---|
+| `src/RimMandrake/CreatureBehaviors/Source/RM_ParentalEnrageExtension.cs` | `DefModExtension` carrying ALL tuning |
+| `src/RimMandrake/CreatureBehaviors/Source/RM_CompParentalEnrage.cs` | the trigger — bounded radial scan on the CALF at `CompTickRare` |
+| `src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ParentalEnrage.cs` | bare ticker props; `ConfigErrors` refuses a carrier with no extension |
+| `src/RimMandrake/CreatureBehaviors/Source/RM_MentalState_ParentalEnrage.cs` | the scoped, time-boxed rage |
+| `src/RimMandrake/CreatureBehaviors/Defs/MentalStateDefs/RM_ParentalEnrage_MentalStates.xml` | `MentalStateDef RM_ParentalEnrage` |
+
+Wired onto `RSW_ShrublandGiant` (`MayRequire="mandrake.rm.creaturebehaviors"`),
+two XML blocks, no per-species C#. Mod Settings toggle #27
+(`parentalEnrageEnabled`) shipped per the every-mod-ships-settings ruling.
+
+### Step 1, the engine feasibility answer (the thing the item asked for first)
+
+🔑 **No Harmony, and no think-tree patch of any kind is needed.** MEASURED
+against the decompiled 1.6 engine, 2026-09-20:
+
+- Core's `ThinkTreeDef MentalStateNonCritical` routes manhunting through
+  **`ThinkNode_ConditionalMentalStateClass`**, whose `Satisfied()` is
+  `stateClass.IsInstanceOfType(mentalState)` — an **instance** check, NOT the
+  def-identity check its sibling `ThinkNode_ConditionalMentalState` performs
+  (`pawn.MentalStateDef == state`). So a **subclass** of
+  `MentalState_Manhunter` inherits `JobGiver_Manhunter`'s whole chase-and-melee
+  behaviour for free. ⛔ This inheritance is load-bearing: flatten it and a pawn
+  holds a mental state with no behaviour and nothing appears in the log.
+- **Scope** is `GenHostility.HostileTo(Thing, Thing)` consulting
+  `MentalState.ForceHostileTo(Thing)` before any faction logic.
+  `RM_MentalState_ParentalEnrage` answers true for the intruder alone and
+  `ForceHostileTo(Faction)` **false**, so faction hostility never flips and
+  `AttackTargetFinder.BestAttackTarget`'s `searcher.HostileTo(thing)` filter
+  finds exactly that pawn. A melee-only animal takes `BestAttackTarget`'s
+  `GenClosest.ClosestThingReachable` branch, not `GetPotentialTargetsFor`, so
+  a factionless wild giant genuinely can reach a player colonist this way.
+  Hostility is symmetric for free, so the targeted pawn may fight back while
+  their colony does not go to war with the wildlife.
+- **Time-box** is vanilla's own `MentalState.forceRecoverAfterTicks`, already
+  honoured by `MentalState.MentalStateTick`. No custom timer.
+- 🔴 **There is no vanilla parent bond to hook for a WILD herd.**
+  `Hediff_Pregnant.DoBirthSpawn` DOES add a real `PawnRelationDefOf.Parent`
+  direct relation for any flesh race that gives live birth — so a calf **born**
+  on the map knows its mother — but map-gen/ambient wildlife is generated
+  pawn-by-pawn with no relation at all. Hence: relation used as a *preference*
+  (`preferTrueParent`), nearest adult of the same race as the fallback.
+- **Trigger cost**: `GenRadial.RadialDistinctThingsAround` bounded by
+  `triggerRadius` (~80 cells at the shipped 5) on the calf at `CompTickRare`;
+  adults carry the comp and are inert. The wider guardian search
+  (`AllPawnsSpawned`) is paid **only** on the rare tick an intruder was found —
+  cheaper than a 30-cell radial (~2800 cells) on the common path.
+
+### Offline verification done
+
+- `RM_CreatureBehaviors.csproj` builds **clean** (0 warnings, 0 errors).
+- `validate_patch.py` clean on both XML files (full 618-mod load set for the
+  ThingDef; the two `info` lines are the expected "first user of a new Class").
+- `run_selftests.py`: **69/69 passed**, 0 failed.
+
+### 🔴 What is OWED — do not close this item without it
+
+The bridge was held by the other window (`FOUNDER_ROBE_MAGENTA_1`, provably
+alive) for this whole pass, so **nothing has been deployed and nothing has been
+observed**. Owed, in order:
+
+1. `deploy_custom_mods.py --mod CreatureBehaviors --apply` and `--mod SWBestiary
+   --apply`. ⚠️ Assemblies cannot be written while the game runs. ⚠️ As of this
+   pass another agent had **uncommitted in-flight work** in SWBestiary
+   (`ScrapNest`, `CompScrapHoarder`/`JobGiver_HoardScrap`, a modified
+   `RimMandrakeBeastMechanicsRSW.dll`) — read the deploy PLAN before `--apply`
+   and do not push a peer's untested work into the live Mods folder.
+2. A tier with SWBestiary + CreatureBehaviors + the shrubland biome (per
+   `modset_builder.py`; all tiers now force all five DLC).
+3. Spawn an adult/juvenile `RSW_ShrublandGiant` pair close together, walk a
+   colonist within 5 cells of the **juvenile**, and confirm the **adult**
+   enrages. Spawn several pairs — one pawn's result can be pure RNG.
+
+**The positive observation to name** (never "no error"): the adult's inspect
+line reads **`Enraged: defending young: <calf label>`** and it takes an
+`AttackMelee` job on the approaching colonist **specifically**.
+
+**How a pass could be false:**
+- The adult charges because the colonist walked near the **adult** too — keep
+  the adult ≥ 8 cells from the intruder's path so only the calf is approached.
+- The adult attacks because something **damaged** it: `RSW_ShrublandGiant` has
+  `manhunterOnDamageChance 0.02`, an unrelated vanilla route. Do not hit it.
+- It reads as working but is actually plain vanilla `Manhunter` — confirm the
+  state is `RM_ParentalEnrage` (the inspect line above, not "Maddened:
+  Manhunter") and that a **second, untouched colonist standing in plain sight
+  is NOT attacked**. That second check is what proves the scoping, and it is
+  the one that would be skipped.
+- The calf is spawned as an adult: `jawa` spawn tools substitute silently, so
+  verify the juvenile's life stage (its label should be **"giant calf"**)
+  before believing anything.
