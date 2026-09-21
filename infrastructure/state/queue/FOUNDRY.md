@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:53:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:55:31Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -936,6 +936,15 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
+## BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 BiomeFlora_Ashkarr.xml's PatchOperationReplace wipes RUT_Desert's authored wildPlants, so RM_Leachmoss/RM_Venomvine/RSW_Ultracactus never spawn
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  BIOMEFLORAPATCHWIPESWILDPLANTS1 — a generated patch replaces RUTDesert's whole wildPlants list, so nothing we…
+prose:    infrastructure/state/items/BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1461,13 +1470,3 @@ kind:     build
 thin:     no ## spec, no ## verify
 summary:  VENOMVINEFORTRESSPASSABILITY1 — venomvine fortress: size-gated passability C for the shrubland thicket
 prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
-
-## BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 BiomeFlora_Ashkarr.xml's PatchOperationReplace wipes RUT_Desert's authored wildPlants, so RM_Leachmoss/RM_Venomvine/RSW_Ultracactus never spawn
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify
-summary:  BIOMEFLORAPATCHWIPESWILDPLANTS1 — a generated patch replaces RUTDesert's whole wildPlants list, so nothing we…
-prose:    infrastructure/state/items/BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1.md
