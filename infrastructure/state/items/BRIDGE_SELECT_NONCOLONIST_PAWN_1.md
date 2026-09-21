@@ -160,3 +160,40 @@ under an assault Lord, and a cast onto 45 cells of `WoodLog x40` that left 19 co
 started no fire over 1500 ticks) — `PORTED_BEAST_MECHANICS_REBUILD_1`'s closing section
 holds the numbers. Use it as a calibration target for the new tool: if
 `jawa/pawn_use_ability` cannot reproduce that cone, the tool is wrong, not the mechanic.
+
+## DEPLOYED AND LIVE 2026-09-21 — the silent failure is ruled out
+
+The companion DLL was built and **deployed in the shutdown window** at 2026-09-21T00:4x
+(`build.py --gm --apply`; the game copy was at `81ac49419eac`, this build `e54bff34692c`).
+RimWorld was then cold-loaded on the full 618-mod list.
+
+✅ **All three tools are present in the LIVE tool list**, queried from the running game:
+
+- `jawa/select_things`
+- `jawa/pawn_use_ability`
+- `jawa/pawn_use_verb`
+
+🔑 That is the item's own named acceptance check — *"verified by the tool appearing in the
+live tool list — a newly added tool missing from that list is the known silent failure."*
+**The silent failure did not occur.**
+
+## what is still owed — the functional proof
+
+⚠️ **Appearing in the tool list is not the same as not refusing on faction.** The item's
+spec requires *"neither refusing on faction"*, and that has **not** been exercised against
+a real non-colonist yet. It is UNMEASURED.
+
+The proof is the `PORTED_BEAST_MECHANICS_REBUILD_1` verification itself, on the
+beastmechanics minimal tier (a ~90 s quicktest, not a 21-minute cold load):
+
+1. Select a wild `RSW_Voltmaw` with `jawa/select_things` — that single call closes this
+   item's criterion.
+2. `jawa/pawn_use_ability` `action=cast` `RSW_VoltmawPlasmaVolley` at a colonist,
+   `waitTicks=600`. 🔴 Require `readBack.lastCastTickAdvanced=true` **and**
+   `onCooldown=true` — ⛔ **not** `success: true`, which only means the call was made.
+3. Repeat with `RSW_CindermiteFuelSpew` at an `x`/`z` cell and confirm `Filth_Fuel`.
+4. One deliberate out-of-range `mode='verb'` call, to confirm it refuses for the right
+   reason.
+
+⚠️ The DLL is deployed, so **no further shutdown window is needed** — only a mod-list swap
+to the beastmechanics tier and a quicktest.
