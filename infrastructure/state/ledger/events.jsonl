@@ -10432,3 +10432,12 @@
 {"seat":"BENCH","event":"claim","id":"FALL_LINE_MAJOR_REGION_LABEL_1","ts":"2026-09-21T00:37:53Z"}
 {"seat":"BENCH","event":"start","id":"FALL_LINE_MAJOR_REGION_LABEL_1","ts":"2026-09-21T00:37:56Z"}
 {"seat":"FOUNDRY","event":"close","id":"OWNER_SAID_FLAG_BYPASS_1","sha":"03a73e17df8897e2da5ba0ee84fca3b237bdec02","ts":"2026-09-21T00:39:21Z"}
+{"seat":"BENCH","event":"close","id":"ENVHAZARDS_NEVER_ACTIVATED_1","sha":"9bf9ccf4e","reason":"VERIFIED by BENCH 2026-09-21: mandrake.rm.environmentalhazards is present in the LIVE ModsConfig.xml (parsed with ET, 618 active mods), activated at 9bf9ccf4e on the owner's 'Yes, both lists'. The defect the item names no longer exists.","ts":"2026-09-21T00:39:54Z"}
+{"seat":"BENCH","event":"close","id":"PYRELANDS_DENSITY_TRIPLE_1","sha":"1d55fa45d","reason":"VERIFIED by BENCH 2026-09-21: RM_PyrelandsDensityEnforcer.cs exists in src/RimMandrake/Pyrelands/Source/, built at 1d55fa45d, and ee05d75b6 records the live readback PASS 3.0 the item asked for.","ts":"2026-09-21T00:39:56Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SWBESTIARY_MISSING_BODYPART_DEFS_1","ts":"2026-09-21T00:39:57Z"}
+{"seat":"BENCH","event":"close","id":"READ_LINE_REGISTRY_SHARED_1","sha":"556403f99","reason":"VERIFIED by BENCH 2026-09-21: _read_line_registry.md, modcheck/readline_registry.py and selftest_readline_registry.py all exist on disk; floor --all byte-unchanged and run_selftests 67/67 at commit time.","ts":"2026-09-21T00:39:57Z"}
+{"seat":"FOUNDRY","event":"start","id":"SWBESTIARY_MISSING_BODYPART_DEFS_1","ts":"2026-09-21T00:39:58Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DESERT_SHADE_WHALE_FILTERFEED_1","ts":"2026-09-21T00:39:59Z"}
+{"seat":"FOUNDRY","event":"start","id":"DESERT_SHADE_WHALE_FILTERFEED_1","ts":"2026-09-21T00:40:00Z"}
+{"seat":"BENCH","event":"unblock","id":"FLOOD_WITNESS_EVENT_1","ts":"2026-09-21T00:40:39Z"}
+{"seat":"BENCH","event":"block","id":"FLOOD_WITNESS_EVENT_1","reason":"CORRECTED 2026-09-21 (BENCH): the old blocker named FLOOD_CANYON_BIOME_1, which closed at e319ec73f — the mechanism mod SHIPPED and src/RimMandrake/FloodedCanyon/ is live. The real and only residual is a PRODUCTION arm-the-flood route: RM_MapComponent_CanyonFlood.StartFlood is private and the only public entry points are DebugArmFloodSoon()/DebugStartFloodNow(), reachable solely from [DebugAction]s. A quest cannot call a debug action, so this needs one production verb/QuestNode/incident that arms a flood, then the quest def build.","ts":"2026-09-21T00:40:40Z"}

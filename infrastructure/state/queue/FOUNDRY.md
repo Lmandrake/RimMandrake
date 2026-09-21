@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T00:39:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T00:40:40Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -936,6 +936,15 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
+## DESERT_SHADE_WHALE_FILTERFEED_1 sand filter-feeding + dung-seeding for the desert shade whale
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  DESERTSHADEWHALEFILTERFEED1 — sand filter-feeding + dung-seeding for the shade whale
+prose:    infrastructure/state/items/DESERT_SHADE_WHALE_FILTERFEED_1.md
+
 ## VENOMVINE_CONTACT_VENOM_BUILD_1 Build the venomvine (desert form) and its contact-venom comp/MapComponent in EnvironmentalHazards (tier c)
 state:    doing
 row:      unassigned
@@ -944,6 +953,15 @@ target:   v1
 kind:     build
 summary:  VENOMVINECONTACTVENOMBUILD1 — build the venomvine and its contact-venom comp
 prose:    infrastructure/state/items/VENOMVINE_CONTACT_VENOM_BUILD_1.md
+
+## SWBESTIARY_MISSING_BODYPART_DEFS_1 Eight RSW_ body-part defs are referenced by RSW_DesertPortA_Bodies.xml and defined nowhere
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  what is wrong
+prose:    infrastructure/state/items/SWBESTIARY_MISSING_BODYPART_DEFS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1391,16 +1409,6 @@ thin:     spec, verify and criteria all present
 summary:  A bridge call that takes a pawn id or defName and selects it, and a call that makes it
 prose:    infrastructure/state/items/BRIDGE_SELECT_NONCOLONIST_PAWN_1.md
 
-## DESERT_SHADE_WHALE_FILTERFEED_1 sand filter-feeding + dung-seeding for the desert shade whale
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec
-summary:  DESERTSHADEWHALEFILTERFEED1 — sand filter-feeding + dung-seeding for the shade whale
-prose:    infrastructure/state/items/DESERT_SHADE_WHALE_FILTERFEED_1.md
-
 ## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
 state:    proposed
 row:      unassigned
@@ -1410,16 +1418,6 @@ kind:     design
 thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
-
-## SWBESTIARY_MISSING_BODYPART_DEFS_1 Eight RSW_ body-part defs are referenced by RSW_DesertPortA_Bodies.xml and defined nowhere
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify
-summary:  what is wrong
-prose:    infrastructure/state/items/SWBESTIARY_MISSING_BODYPART_DEFS_1.md
 
 ## DESERT_LEACHMOSS_LIVE_VERIFY_1 DESERT_LEACHMOSS_LIVE_VERIFY_1
 state:    proposed
