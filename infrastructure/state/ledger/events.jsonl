@@ -10547,3 +10547,4 @@
 {"seat":"FOUNDRY","event":"close","id":"SHRUBLAND_GIANT_ENRAGE_1","sha":"37b8105facfe953d5cd5e2f83d16c7f8b828149d","ts":"2026-09-21T06:12:25Z"}
 {"seat":"FOUNDRY","event":"close","id":"SCRAPNEST_BIRD_LIVE_VERIFY_1","sha":"37b8105facfe953d5cd5e2f83d16c7f8b828149d","ts":"2026-09-21T06:12:26Z"}
 {"seat":"FOUNDRY","event":"close","id":"FILTH_ON_NATURAL_TERRAIN_NOOP_1","sha":"37b8105facfe953d5cd5e2f83d16c7f8b828149d","ts":"2026-09-21T06:12:29Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T06:13:16Z"}
