@@ -679,10 +679,26 @@ ecosystem_laws:
       RUT_TheForge (43.4% -> 56.1%), RUT_WeepingStones (44.4% -> 54.5%), RUT_Desert
       (45.0% -> 52.8%). Fixed by raising the grain (boosting or wiring already-built,
       already-ruled small fauna), never by cutting megafauna.
-    checker_owed: >
-      No automatic/measure-backed checker exists yet for this law — the sweep above was
-      a one-off script, not selftested tooling. Still owed; do not build it as part of a
-      roster fix, file it separately.
+    checker: >
+      BUILT 2026-09-21 at ec6e58a94: src/RimMandrake/Utils/ecosystem_pyramid_check.py,
+      with src/RimMandrake/Utils/selftest_ecosystem_pyramid_check.py in run_selftests
+      (67/68; the one failure is a pre-existing unrelated timeout in
+      selftest_deployed_biome_refs.py). Re-derives the owned biome set live rather than
+      reading a pinned list: 28 RUT_ BiomeDefs today, 4 more than the 2026-09-20 sweep's
+      24. Reads this threshold from canon.yml, so the ruling stays in one place.
+      Current: 26 PASS, 0 FAIL, 2 EMPTY.
+    empty_rosters_are_not_all_failures: >
+      🔴 The checker exits non-zero on a roster with ZERO wildAnimals, which is right by
+      default ("zero rows is a failure, not a footnote") but is WRONG for a roster that is
+      empty ON PURPOSE. MEASURED 2026-09-21: of its 2 EMPTY rows, NEITHER is a defect.
+      RUT_Jawa_BackgroundWater is labelled "mineral water" — a background/utility biome.
+      RUT_BlueDesert is deliberately empty and says so in its own roster: the_blue_desert
+      .json's fauna_note reads "Deliberately empty of existing defs" — the sheet's §4
+      admission test (hydrocarbon-metabolic, no water-based life, §6 ban 1) is failed by
+      every one of the 895 live register rows. ⛔ Do NOT "fix" either by adding fauna.
+      Owed: the checker should read the roster's own fauna_note/law as the authority for a
+      deliberate emptiness rather than carrying a hardcoded allowlist. Until it does, a red
+      exit code on those two rows is expected and is not a finding.
 
 # ===========================================================================
 # THE `Lake` BIOME — resolved by measurement, 2026-08-20
