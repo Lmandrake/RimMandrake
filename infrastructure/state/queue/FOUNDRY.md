@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T07:58:05Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-21T08:08:37Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -942,7 +942,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     verify
-summary:  VENOMVINEPATHCOSTANDFLYER1 — the flyer exemption, the one venomvine property still unobserved
+summary:  VENOMVINEPATHCOSTANDFLYER1 — both venomvine properties, MEASURED
 prose:    infrastructure/state/items/VENOMVINE_PATHCOST_AND_FLYER_1.md
 
 # BLOCKED — something is WRONG and someone must act
@@ -1417,6 +1417,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/UMBRA_IS_A_REGION_NOT_A_BIOME_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Umbra leaves the biome row list (§2 of the architecture spec is already corrected).
 prose:    infrastructure/state/items/UMBRA_IS_A_REGION_NOT_A_BIOME_1.md
+
+## BARREN_REGIONS_NAME_NOTHING_1 10 of 22 BARREN_REGIONS entries name regions that do not exist - the keep-empty test fails open
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BARREN_REGIONS_NAME_NOTHING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BARREN_REGIONS_NAME_NOTHING_1.md
