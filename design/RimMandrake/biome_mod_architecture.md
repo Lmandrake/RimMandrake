@@ -78,8 +78,8 @@ and in the deserts' case the owner named them separately in the ruling.
 
 | # | painted def today | tiles (record) | campaign label (stays in Utinni) | sheet | target mod folder `src/RimMandrake/` | packageId | BiomeDef defName | status |
 |---|---|---:|---|---|---|---|---|---|
-| 1 | `RUT_ExtremeDesert` | 3969 | the Deep Desert / the Dune Sea | `dune_sea.md` + `deep_desert.md` (one merged roster, R22) | `DeepDesert` | `mandrake.rm.deepdesert` | `RM_DeepDesert` | PROPOSED — owner-named standalone |
-| 2 | `RUT_Desert` | 2390 | the Desert | `desert.md` | `ShadowDesert` | `mandrake.rm.shadowdesert` | `RM_ShadowDesert` | PROPOSED — owner-named standalone; name from the sheet's identity ("life is a sprint between islands of shade"); §7 Q2 |
+| 1 | `RUT_ExtremeDesert` | 3969 | the Stillsand / the Dune Sea (RULED 2026-09-21 — §7 Q2) | `dune_sea.md` + `deep_desert.md` (one merged roster, R22) | `Stillsand` | `mandrake.rm.stillsand` | `RM_Stillsand` | PROPOSED — owner-named standalone |
+| 2 | `RUT_Desert` | 2390 | the Long Shade (RULED 2026-09-21 — §7 Q2) | `desert.md` | `LongShade` | `mandrake.rm.longshade` | `RM_LongShade` | PROPOSED — owner-named standalone; name from the sheet's identity (shadows four times an object's height at a 14° sun) |
 | 3 | `RUT_TheRot` | 2204 | the Rot | `the_rot.md`, `kits/rot_kit_spec.md` | `TheRot` | `mandrake.rm.therot` | `RM_TheRot` | PROPOSED — owner-named standalone; absorbs `mandrake.rut.rotsporekit` (151 files, biome mechanics, not campaign) |
 | 4 | `RUT_Wasteland` | 1853 | the Wasteland | `wasteland.md` | `Wasteland` | `mandrake.rm.wasteland` | `RM_Wasteland` | PROPOSED; owns the `RUT_WastelandBrine*` terrain family |
 | 5 | `RUT_NightsideIce` | 1506 | the Nightside Ice | `nightside_ice.md` | `NightsideIce` | `mandrake.rm.nightsideice` | `RM_NightsideIce` | PROPOSED; thin (no plants by design) but it is a Lantern Deeps host surface |
@@ -97,7 +97,7 @@ and in the deserts' case the owner named them separately in the ruling.
 | 17 | `RUT_Webwork` | 161 | the Webwork | `the_webwork.md`, `kits/webwork_kit_spec.md` | `Webwork` | `mandrake.rm.webwork` | `RM_Webwork` | PROPOSED |
 | 18 | `RUT_Slime` | 96 | the Slime | `the_slime.md`, `the_slime_gene_lists.md` | `GelatinousSlime` (EXISTS) | `mandrake.rm.gelatinousslime` | `RM_GelatinousSlime` | twin pair, §4; `TITANOSLIME_SLIME_BIOME_1` builds here |
 | 19 | `RUT_Miasma` | 93 | the Miasma | `the_miasma.md`, `kits/miasma_kit_spec.md` | `Miasma` | `mandrake.rm.miasma` | `RM_Miasma` | PROPOSED |
-| 20 | `RUT_Scarlands` | 90 | the Scarlands | `the_scarlands.md`, `kits/scarlands_kit_spec.md` | `Scarlands` | `mandrake.rm.scarlands` | `RM_Scarlands` | PROPOSED; absorbs `mandrake.rut.scarlandsladder`; ⚠️ its worker is vanilla `RimWorld.BiomeWorker_Scarlands`, i.e. the label collides with a vanilla 1.6 biome — §7 Q5 |
+| 20 | `RUT_Scarlands` | 90 | Warscar (RULED 2026-09-21, was "the Scarlands" — §7 Q5) | `the_scarlands.md`, `kits/scarlands_kit_spec.md` | `Scarlands` | `mandrake.rm.warscar` | `RM_Warscar` | PROPOSED; absorbs `mandrake.rut.scarlandsladder`; label collision with vanilla's own `Scarlands` biome fixed on `RUT_Scarlands` directly — defName move to `RM_Warscar` is the row's own migration, item `SCARLANDS_STANDALONE_MOD_1` |
 | 21 | `RUT_TheForge` | 44 | the Forge | `the_forge.md`, `kits/forge_kit_spec.md` | `TheForge` | `mandrake.rm.theforge` | `RM_TheForge` | PROPOSED |
 | 22 | `RUT_FeverWood` | 43 | the Fever Wood | `the_fever_wood.md`, `kits/fever_wood_kit_spec.md` | `FeverWood` | `mandrake.rm.feverwood` | `RM_FeverWood` | PROPOSED |
 | 23 | `RUT_Sump` | 41 | the Sump | `the_sump.md`, `kits/sump_kit_spec.md` | `TheSump` | `mandrake.rm.thesump` | `RM_TheSump` | PROPOSED |
@@ -465,9 +465,20 @@ unaffected either way because it uses the painted world.
 ⛔ The spec's original `mandrake.rm.propanelakes` / `mandrake.rm.terminalseas` pairing is
 dead — do not build it.
 
-**Q2 — names for the two deserts and the shrubland: DRAFTS OWED HIM.** He ruled *"bring me
-a drafted list"*; the drafts are at `Transient/biome_name_drafts_2026-09-21.md` awaiting
-his pick. Nothing depending on a name starts until he picks.
+**Q2 — names for the two deserts and the shrubland. TWO RULED 2026-09-21, one held.**
+Drafts: `Transient/biome_name_drafts_2026-09-21.md`.
+
+- `RUT_ExtremeDesert` → **the Stillsand** (`RM_Stillsand`, `mandrake.rm.stillsand`) —
+  owner picked draft row 1 over the recommended row 0. Rows 1 and 20 can start.
+- `RUT_Desert` → **the Long Shade** (`RM_LongShade`, `mandrake.rm.longshade`) — owner
+  picked the recommended row.
+- `RUT_AridShrubland` → **HELD.** Not a name problem: the owner's reading of the biome
+  ("the periodic scrub bushes grow big as a man and everywhere else is the low fuzz")
+  is not what `arid_shrubland.md` says, and the sheet contradicts itself on the point —
+  §1 says "sightlines are gone, cover is everywhere, for everything" while §1's next
+  paragraph and §3's two-floors section put the whole canopy at KNEE height, where a
+  biped is "too large to hide in it, too small to be safe over it". The vegetation
+  structure is ruled before the name, because the name follows it. Row 9 does not start.
 
 **Q3 — rename `RM_FE_Pyrelands` → `RM_Pyrelands`: YES, NOW.** Ruled. Item:
 `PYRELANDS_DEFNAME_RENAME_1`.
@@ -476,9 +487,16 @@ his pick. Nothing depending on a name starts until he picks.
 merges into the RimMandrake mod under the campaign label "the Cracked Lands". One biome,
 one mod. The Cracked Lands does NOT get its own row.
 
-**Q5 — "Scarlands" collides with vanilla: RENAME OURS.** Not the DLC's label, not keeping
-the name. Item: `SCARLANDS_RENAME_OURS_1`; replacement drafts are in
-`Transient/biome_name_drafts_2026-09-21.md` awaiting his pick.
+**Q5 — "Scarlands" collides with vanilla: RENAME OURS. RULED 2026-09-21: `Warscar`, no
+article** (owner, verbatim: "Warscar. Drop the 'the'" — every other biome label in this
+table keeps the house `the Xxx` form; this one deliberately doesn't). Not the DLC's label,
+not keeping the name. `RUT_Scarlands`'s own `<label>` is changed to `Warscar` immediately
+(zero live-tile risk — defName untouched, the 90 live tiles still resolve by shortHash);
+the defName move to `RM_Warscar` plus absorbing `mandrake.rut.scarlandsladder` is the
+row-20 twin-pair migration itself, tracked as its own build item so it gets the same care
+Pyrelands/GelatinousSlime got, not folded into the naming pick. Item:
+`SCARLANDS_RENAME_OURS_1` (closed on the label fix + this ruling); follow-on:
+`SCARLANDS_STANDALONE_MOD_1`.
 
 **Q8 — `mandrake.rut.ashkarrflora`: DISSOLVE IT.** Each plant moves into the RimMandrake
 mod of the biome whose `wildPlants` lists it, renamed `RM_`. Every biome mod ships with its
@@ -507,5 +525,7 @@ re-authoring, so none of them is Star Wars content.
 
 ### Nothing is open
 
-🔴 **All ten questions in this section are RULED as of 2026-09-21.** Q2 and Q5 await only
-his pick from `Transient/biome_name_drafts_2026-09-21.md`; every other row can start.
+🔴 **All ten questions in this section are RULED as of 2026-09-21.** Q5 landed
+(`Warscar`) and Q2 landed for both deserts (`the Stillsand`, `the Long Shade`). The ONLY
+thing still held is row 9's name, and it is held behind a vegetation-structure question,
+not behind a naming pick — see Q2. Every other row can start.
