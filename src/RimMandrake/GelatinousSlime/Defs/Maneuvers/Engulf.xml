@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_Engulf (spec §3.3) — the swallow, expressed as an ordinary melee
+    maneuver so the vanilla animal think tree reaches it through the predator
+    hunt and through any melee exchange. No AbilityDef, no PawnFlyer, no custom
+    think tree, and therefore no Anomaly dependency.
+
+    Shape MEASURED against Core's Maneuvers.xml (Bite / KickMaterialInEyes):
+    requiredCapacity + verb{verbClass} + logEntryDef + four combatLogRules.
+
+    🔑 THE COMBAT LOG RULE PACKS ARE VANILLA'S BITE PACKS, DELIBERATELY. Spec
+    §3.3 prices hand-authored RulePackDefs and rules the log wording is not
+    load-bearing; a missing or malformed RulePackDef reference would make the
+    whole ManeuverDef unresolvable and silently disarm the creature.
+  -->
+
+  <ManeuverDef>
+    <defName>RM_Engulf</defName>
+    <requiredCapacity>RM_Engulf</requiredCapacity>
+    <verb>
+      <verbClass>RimMandrake.GelatinousSlime.RM_Verb_MeleeEngulf</verbClass>
+      <meleeDamageDef>Blunt</meleeDamageDef>
+      <commonalityVsEdificeFactor>0.01</commonalityVsEdificeFactor>
+    </verb>
+    <logEntryDef>MeleeAttack</logEntryDef>
+    <combatLogRulesHit>Maneuver_Bite_MeleeHit</combatLogRulesHit>
+    <combatLogRulesDeflect>Maneuver_Bite_MeleeDeflect</combatLogRulesDeflect>
+    <combatLogRulesMiss>Maneuver_Bite_MeleeMiss</combatLogRulesMiss>
+    <combatLogRulesDodge>Maneuver_Bite_MeleeDodge</combatLogRulesDodge>
+  </ManeuverDef>
+
+</Defs>

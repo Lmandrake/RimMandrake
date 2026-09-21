@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    TITANOSLIME_SLIME_BIOME_1 — body part groups for RM_AmorphousBody
+    (design/RimMandrake/RM_titanoslime_spec.md §3.2/§3.3).
+
+    Two groups only, because the titanoslime has exactly two ways of touching
+    a thing: it rolls over it (the maw) or it slams it (the pseudopods).
+    Melee tools link to these; nothing else reads them.
+  -->
+
+  <BodyPartGroupDef>
+    <defName>RM_Maw</defName>
+    <label>engulfing mass</label>
+  </BodyPartGroupDef>
+
+  <BodyPartGroupDef>
+    <defName>RM_Pseudopods</defName>
+    <label>pseudopods</label>
+  </BodyPartGroupDef>
+
+</Defs>

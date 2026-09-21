@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_AmorphousBody (spec §3.2) — three parts, no organs to fail, one nucleus
+    to kill. Shape copied from Core's Bodies_Animal_Snake.xml (a legless body
+    whose core part carries the movement tag).
+  -->
+
+  <BodyDef>
+    <defName>RM_AmorphousBody</defName>
+    <label>amorphous</label>
+    <corePart>
+      <def>RM_SlimeMass</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <groups>
+        <li>RM_Maw</li>
+      </groups>
+      <parts>
+        <li>
+          <def>RM_Nucleus</def>
+          <coverage>0.12</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_Pseudopod</def>
+          <customLabel>left pseudopod</customLabel>
+          <coverage>0.16</coverage>
+          <depth>Outside</depth>
+          <groups>
+            <li>RM_Pseudopods</li>
+          </groups>
+        </li>
+        <li>
+          <def>RM_Pseudopod</def>
+          <customLabel>right pseudopod</customLabel>
+          <coverage>0.16</coverage>
+          <depth>Outside</depth>
+          <groups>
+            <li>RM_Pseudopods</li>
+          </groups>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+</Defs>

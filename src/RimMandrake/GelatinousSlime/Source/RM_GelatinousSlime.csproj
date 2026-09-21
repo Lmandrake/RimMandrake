@@ -50,6 +50,8 @@
     <Compile Include="GeneArchive.cs" />
     <Compile Include="GeneSeeker.cs" />
     <Compile Include="SlimeAlerts.cs" />
+    <Compile Include="Titanoslime.cs" />
+    <Compile Include="TitanoslimeVerb.cs" />
   </ItemGroup>
 
   <ItemGroup>

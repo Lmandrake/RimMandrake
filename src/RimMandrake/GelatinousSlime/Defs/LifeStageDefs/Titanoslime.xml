@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    TITANOSLIME_SLIME_BIOME_1 — the growth ladder (spec §2.2).
+
+    🔑 THESE ARE THE GROWTH MECHANISM. There is no Harmony patch and no
+    BodySize postfix: Pawn.BodySize is ageTracker.CurLifeStage.bodySizeFactor *
+    RaceProps.baseBodySize (MEASURED, Verse/Pawn.cs), and RM_CompEngulfer locks
+    the stage index with Pawn_AgeTracker.LockCurrentLifeStageIndex(int) —
+    public and scribed (MEASURED, Verse/Pawn_AgeTracker.cs:504). Lock the
+    index and mass, health, melee damage, hunger, sprite size, the Titanic
+    Creatures tier and the Large Pawns footprint all move together.
+
+    ⚠️ ORDER IS LOAD-BEARING, TWICE OVER. The race's lifeStageAges and the
+    PawnKindDef's lifeStages are indexed in parallel by CurLifeStageIndex —
+    five entries each, this order. Adding a stage here without adding one to
+    both lists gives an index mismatch, not an error.
+
+    🔑 statFactors DOES reach MoveSpeed — MEASURED this build against
+    StatWorker.GetValueUnfinalized (RimWorld/StatWorker.cs:297,
+    `num *= pawn.ageTracker.CurLifeStage.statFactors.GetStatFactorFromList(stat)`,
+    applied to every stat on a pawn). Spec §2.1 flagged this VERIFY AT BUILD;
+    it is verified, so the per-stage slowdown lives here and needs no hediff.
+
+    All factors [INVENTED] per spec §2.2. The shape is the design: mass x6.7
+    across the ladder, health x4, damage x2.2, speed /1.7.
+  -->
+
+  <LifeStageDef>
+    <defName>RM_TitanoslimeStage1</defName>
+    <label>young titanoslime</label>
+    <adjective>young</adjective>
+    <visible>true</visible>
+    <developmentalStage>Adult</developmentalStage>
+    <reproductive>false</reproductive>
+    <bodySizeFactor>1.00</bodySizeFactor>
+    <healthScaleFactor>1.0</healthScaleFactor>
+    <meleeDamageFactor>1.0</meleeDamageFactor>
+    <foodMaxFactor>1.0</foodMaxFactor>
+    <hungerRateFactor>1.0</hungerRateFactor>
+    <statFactors>
+      <MoveSpeed>1.00</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+
+  <LifeStageDef>
+    <defName>RM_TitanoslimeStage2</defName>
+    <label>titanoslime</label>
+    <adjective>adult</adjective>
+    <visible>true</visible>
+    <developmentalStage>Adult</developmentalStage>
+    <reproductive>false</reproductive>
+    <bodySizeFactor>1.67</bodySizeFactor>
+    <healthScaleFactor>1.5</healthScaleFactor>
+    <meleeDamageFactor>1.25</meleeDamageFactor>
+    <foodMaxFactor>1.5</foodMaxFactor>
+    <hungerRateFactor>1.5</hungerRateFactor>
+    <statFactors>
+      <MoveSpeed>0.90</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+
+  <LifeStageDef>
+    <defName>RM_TitanoslimeStage3</defName>
+    <label>great titanoslime</label>
+    <adjective>great</adjective>
+    <visible>true</visible>
+    <developmentalStage>Adult</developmentalStage>
+    <reproductive>false</reproductive>
+    <bodySizeFactor>2.67</bodySizeFactor>
+    <healthScaleFactor>2.2</healthScaleFactor>
+    <meleeDamageFactor>1.5</meleeDamageFactor>
+    <foodMaxFactor>2.2</foodMaxFactor>
+    <hungerRateFactor>2.2</hungerRateFactor>
+    <statFactors>
+      <MoveSpeed>0.80</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+
+  <LifeStageDef>
+    <defName>RM_TitanoslimeStage4</defName>
+    <label>elder titanoslime</label>
+    <adjective>elder</adjective>
+    <visible>true</visible>
+    <developmentalStage>Adult</developmentalStage>
+    <reproductive>false</reproductive>
+    <bodySizeFactor>4.00</bodySizeFactor>
+    <healthScaleFactor>3.0</healthScaleFactor>
+    <meleeDamageFactor>1.8</meleeDamageFactor>
+    <foodMaxFactor>3.0</foodMaxFactor>
+    <hungerRateFactor>3.0</hungerRateFactor>
+    <statFactors>
+      <MoveSpeed>0.70</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+
+  <LifeStageDef>
+    <defName>RM_TitanoslimeStage5</defName>
+    <label>titanoslime colossus</label>
+    <adjective>colossal</adjective>
+    <visible>true</visible>
+    <developmentalStage>Adult</developmentalStage>
+    <reproductive>false</reproductive>
+    <bodySizeFactor>6.67</bodySizeFactor>
+    <healthScaleFactor>4.0</healthScaleFactor>
+    <meleeDamageFactor>2.2</meleeDamageFactor>
+    <foodMaxFactor>4.0</foodMaxFactor>
+    <hungerRateFactor>4.0</hungerRateFactor>
+    <statFactors>
+      <MoveSpeed>0.60</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+
+</Defs>

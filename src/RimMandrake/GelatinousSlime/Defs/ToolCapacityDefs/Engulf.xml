@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- TITANOSLIME_SLIME_BIOME_1 (spec §3.3). A tool capacity is defName+label
+       and nothing else — MEASURED against Core's ToolCapacityDefs/ToolCapacity.xml. -->
+
+  <ToolCapacityDef>
+    <defName>RM_Engulf</defName>
+    <label>engulf</label>
+  </ToolCapacityDef>
+
+</Defs>
