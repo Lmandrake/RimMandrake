@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T00:17:24Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-21T00:40:40Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -126,6 +126,15 @@ kind:     design
 summary:  TITANOSLIMESLIMEBIOME1 — owner ask: a titanic green slime for RUTSlime
 prose:    infrastructure/state/items/TITANOSLIME_SLIME_BIOME_1.md
 
+## FALL_LINE_MAJOR_REGION_LABEL_1 Owner directive 2026-09-20: make the Fall Line a major world region with a beautiful clear label - all 71 Ash'karr world features sit at maxDrawSizeInTiles 10, the bottom of the engine's size curve, so no label on the planet reads as major; raise the Fall Line and LOOK
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  FALLLINEMAJORREGIONLABEL1 — make the Fall Line read as a major world region
+prose:    infrastructure/state/items/FALL_LINE_MAJOR_REGION_LABEL_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -136,7 +145,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  Design + quest spec done (invitation quest authored, alert-unlock flagged unruled); waits on FLOOD_CANYON_BIOME_1 (the mechanism mod, FOUNDRY) and its one production arm-the-flood verb, then quest def build (on FLOOD_CANYON_BIOME_1)
+blocked:  CORRECTED 2026-09-21 (BENCH): the old blocker named FLOOD_CANYON_BIOME_1, which closed at e319ec73f — the mechanism mod SHIPPED and src/RimMandrake/FloodedCanyon/ is live. The real and only residual is a PRODUCTION arm-the-flood route: RM_MapComponent_CanyonFlood.StartFlood is private and the only public entry points are DebugArmFloodSoon()/DebugStartFloodNow(), reachable solely from [DebugAction]s. A quest cannot call a debug action, so this needs one production verb/QuestNode/incident that arms a flood, then the quest def build.
 summary:  FLOODWITNESSEVENT1 — the player sees the flood, once, on purpose
 prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
 
@@ -212,7 +221,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -220,7 +229,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -352,16 +361,6 @@ thin:     no ## verify
 summary:  1. The owner reads the DRAFT section and validates, edits, or rejects it.
 prose:    infrastructure/state/items/NORTH_STAR_PIT_PILOT_1.md
 
-## READ_LINE_REGISTRY_SHARED_1 OWNER RULING 2026-09-16: read-line ids are GLOBAL with a shared registry — recurring demands (no engineering marker in player text, tier-neutral prose) are authored ONCE and cited by every walk that holds them; mod-specific lines stay local. Amends spec §10.1's silence on per-mod vs global. Owed: the registry file, a lint that a cited line matches it, de-prefixing the Aftermath draft's ids, and reconciling Oracle's existing never_engineering_marker_in_player_text as the first registry entry. ⚠️ Editing a shared line re-hashes every walk citing it — cheapest to build now, at 3 validated walks
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/READ_LINE_REGISTRY_SHARED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/READ_LINE_REGISTRY_SHARED_1.md
-
 ## REACTIVE_SHIP_LIGHTING_1 NO MOD OWNS mood lighting, reactive light pulses, or lights that act alive — MEASURED 2026-09-16: zero such dir in src/, zero ledger items, zero design-doc mentions; the 631-mod snapshot (2026-09-13) carries only STATIC sources (glowstoneforked, floorlights2, ledlightsstrip, nightlights) plus one darkness mod and one power-saver (lightsout), and none of their assemblies is readable from the laptop. His ruling cutting the omen lead-time line MOVES the warning burden onto lighting, so this capability is now load-bearing for the Aftermath omens
 state:    proposed
 row:      unassigned
@@ -421,26 +420,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Not written. Design work; goes to a backgrounded high-tier subagent per
 prose:    infrastructure/state/items/FLOWWORKS_DOOR_FAMILY_1.md
-
-## ENVHAZARDS_NEVER_ACTIVATED_1 mandrake.rm.environmentalhazards has NEVER been in any mod list — every MayRequire-gated mechanic riding it has silently not existed in any load
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     decide
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ENVHAZARDS_NEVER_ACTIVATED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ENVHAZARDS_NEVER_ACTIVATED_1.md
-
-## PYRELANDS_DENSITY_TRIPLE_1 Pyrelands plantDensity tripled to 3.0 with a C# enforcer — DLL deploy + live verification owed at next shutdown/load
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_DENSITY_TRIPLE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_DENSITY_TRIPLE_1.md
 
 ## DEEPS_FAUNA_REPOPULATION_1 Repopulate the Lantern Deeps fauna: a proposal portfolio of truly alien hydrocarbon-based life forms for the owner to pick from
 state:    proposed
@@ -652,16 +631,6 @@ thin:     spec, verify and criteria all present
 summary:  1. Establish, in one line in the repo, which worldmap CSV is canonical and say so
 prose:    infrastructure/state/items/STALE_VIVIFIED_WORLDMAP_CITED_1.md
 
-## FALL_LINE_MAJOR_REGION_LABEL_1 Owner directive 2026-09-20: make the Fall Line a major world region with a beautiful clear label - all 71 Ash'karr world features sit at maxDrawSizeInTiles 10, the bottom of the engine's size curve, so no label on the planet reads as major; raise the Fall Line and LOOK
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  FALLLINEMAJORREGIONLABEL1 — make the Fall Line read as a major world region
-prose:    infrastructure/state/items/FALL_LINE_MAJOR_REGION_LABEL_1.md
-
 ## BIOME_PAINT_ONCE_AT_THE_END_1 Owner ruling 2026-09-20: the worldmap is painted ONCE, after every biome is its own RimMandrake mod - no per-biome repaint, no work gated on a tile count, and stop reading the exported tiles CSV as the state of the planet
 state:    proposed
 row:      unassigned
@@ -681,3 +650,13 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  Execute the phases in biomemodarchitecture.md §5, in order, once §7 is ruled.
 prose:    infrastructure/state/items/BIOME_MOD_SPLIT_EXECUTION_1.md
+
+## STALE_V24_NAMES_IN_FROZEN_SHEETS_1 V24 name consolidation never propagated: Venom Wood/South Crags/Thornend still used as current in 5 frozen biome sheets 12 days after the owner-approved rename to Fuelmere/Sootreach/Frostvein
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Replace the three old names with the ruled names in all six files, in the same change,
+prose:    infrastructure/state/items/STALE_V24_NAMES_IN_FROZEN_SHEETS_1.md
