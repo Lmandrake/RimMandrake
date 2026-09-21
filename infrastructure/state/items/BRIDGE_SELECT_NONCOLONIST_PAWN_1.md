@@ -1,41 +1,48 @@
-# BRIDGE_SELECT_NONCOLONIST_PAWN_1 — the bridge cannot drive a non-colonist pawn's ability
+# BRIDGE_SELECT_NONCOLONIST_PAWN_1 — a direct, headless route to cast a non-colonist pawn's ability
 
 ## what is wrong
 
-MEASURED live 2026-09-20 (FOUNDRY, during `PORTED_BEAST_MECHANICS_REBUILD_1`'s
-verification pass): **`rimworld/select_pawn` and `ToolMapForPawns` both REFUSE a
-non-colonist pawn.** There is no bridge route to select, or to force a mental state on,
-a hostile or wild creature.
+MEASURED live 2026-09-20, and RE-MEASURED the same day: **`rimworld/select_pawn` and
+`ToolMapForPawns` both REFUSE a non-colonist pawn** — `select_pawn` resolves
+`IsColonistPlayerControlled`, which no animal satisfies even after
+`jawa/instant_recruit` puts it in `PlayerColony`. That much is true and permanent.
 
-## why it matters
+🔴 **What is NOT true, and was corrected on 2026-09-20: this is not a wall.** Three
+existing tools already reach a wild or hostile pawn, all three MEASURED working that day:
 
-It is the sole blocker on three criteria of a build that is otherwise proven:
+| need | existing tool |
+|---|---|
+| select any pawn | **`rimworld/click_cell`** — returns `selectionAfter.selectedObjects`; selected a wild-spawned, faction-less animal and a `PlayerColony` animal alike |
+| read/press its ability gizmo | **`rimworld/list_selected_gizmos`** + **`rimworld/execute_gizmo`**, then `click_cell` on the target |
+| make the AI use the ability | **`jawa/lord_assault_spawn`** — a real `LordJob_AssaultColony`; six hostile creatures cast unprompted within ~1000 ticks |
+| force a mental state | **`jawa/pawn_mental {action:"start", state:"Manhunter"}`** — `started: true` on a faction-less wild pawn; it has never had a faction check |
+| check the ability was granted | **`jawa/grant_ability`** — its `alreadyHad` field is a READ of `Pawn_AbilityTracker` |
 
-- `PORTED_BEAST_MECHANICS_REBUILD_1` criteria **4, 5 and 6** — the ability gizmo and its
-  AI use, the cindermite's chemfuel cone, and settings persistence — all require making
-  a **hostile predator** fire a ranged ability on command. Criterion 2 (ferroclaw eats
-  steel, 75 → 60, exactly 1/5) and criterion 3's core mechanism are **DEFINITIVELY
-  confirmed live**; only this capability gap stands between the item and closing.
+## why it still matters
+
+`PORTED_BEAST_MECHANICS_REBUILD_1` closed on those tools alone — all six criteria PASS,
+no new C# required. So this item is **an ergonomics and rigour improvement, not a
+blocker on anything**:
+
+- Gizmo-clicking needs the camera on the subject and gives no refusal reason; a cast
+  that silently queues instead of firing reads identically to one that failed (that
+  cost one measurement cycle — the answer was `"Ability already queued."`).
+- `lord_assault_spawn` proves the AI *will* cast, not that a *named* ability casts on a
+  *named* target at a *named* cell.
+- `jawa/pawn_use_ability`'s `refusedBy` (below) names which engine predicate said no,
+  which neither route above can.
 
 More generally: every creature mechanic we rebuild from a donor framework is a mechanic
-on a *wild or hostile* pawn. Without this, none of them can be verified except by
-waiting for the AI to volunteer the behaviour, which is not a test.
+on a *wild or hostile* pawn, and a direct cast-and-report call is the instrument that
+makes each one a one-call test instead of a staged scenario.
 
-## the two candidate routes
+## the route
 
-1. **A companion `[Tool]` that selects an arbitrary pawn** and/or forces a mental state
-   / triggers a verb on it, bypassing the colonist check. This is the direct fix and the
-   `rimbridge-companion` skill is the how-to — the C# pattern, the edit-build-deploy-test
-   cycle on a minimal mod list, and `build.py`'s guards.
-   ⚠️ **A companion DLL cannot be written while RimWorld is running.** This lands in a
-   shutdown window.
-2. **A scripted colonist-attacks-first provocation** — spawn a colonist in reach, have it
-   attack, and let the predator retaliate. Cheaper, needs no DLL, but it proves the
-   ability fires under AI control rather than that the gizmo works, so it cannot close
-   criterion 4 on its own.
-
-⇒ Route 1 is the real answer; route 2 is worth doing first if a shutdown window is far
-off, because it would close criterion 5 (the cone) immediately.
+**A companion `[Tool]` that selects an arbitrary pawn and casts a named ability or verb
+on it, bypassing the colonist check.** The `rimbridge-companion` skill is the how-to —
+the C# pattern, the edit-build-deploy-test cycle on a minimal mod list, and `build.py`'s
+guards. ⚠️ **A companion DLL cannot be written while RimWorld is running.** This lands
+in a shutdown window. The code is already written and compiling; see below.
 
 ## spec
 
@@ -46,12 +53,13 @@ use a named ability or verb, with neither refusing on faction. Named tools, wire
 
 ## verify
 
-`PORTED_BEAST_MECHANICS_REBUILD_1` criteria 4, 5 and 6 can be exercised on
-`RSW_Voltmaw` and `RSW_Cindermite` in a quicktest without a colonist provoking them.
+A named ability on a wild `RSW_Voltmaw` / `RSW_Cindermite` casts at a named target in
+ONE call, in a quicktest, with a refusal that names the predicate that refused.
 
 ## criteria
 
-A wild or hostile creature's mechanic can be tested from outside the game, on demand.
+A wild or hostile creature's mechanic can be tested from outside the game, on demand,
+without staging a selection through the camera.
 
 ## progress 2026-09-20 — route 1 written and COMPILING, deploy owed
 
@@ -146,5 +154,9 @@ shaped like the others in that folder — `rimworld/start_debug_game_ready` with
 6. Exercise a refusal: cast at a cell past `verbProps.range` with `mode='verb'`
    and check `refusedBy` names `CanHitTarget`, not a bare false.
 
-That discharges `PORTED_BEAST_MECHANICS_REBUILD_1` criteria 4, 5 and 6 without a
-colonist provoking anything, which is what route 2 could never do.
+⚠️ **Step 5 is now a re-confirmation, not a first proof.** `Filth_Fuel` in a cone with
+zero fire was MEASURED three ways on 2026-09-20 (player-driven cast, AI-driven casts
+under an assault Lord, and a cast onto 45 cells of `WoodLog x40` that left 19 coated and
+started no fire over 1500 ticks) — `PORTED_BEAST_MECHANICS_REBUILD_1`'s closing section
+holds the numbers. Use it as a calibration target for the new tool: if
+`jawa/pawn_use_ability` cannot reproduce that cone, the tool is wrong, not the mechanic.

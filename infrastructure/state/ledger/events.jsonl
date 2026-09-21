@@ -10416,3 +10416,9 @@
 {"seat":"FOUNDRY","event":"start","id":"VENOMVINE_CONTACT_VENOM_BUILD_1","ts":"2026-09-21T00:18:30Z"}
 {"seat":"FOUNDRY","event":"claim","id":"DESERT_LEACHMOSS_BUILD_1","ts":"2026-09-21T00:18:31Z"}
 {"seat":"FOUNDRY","event":"start","id":"DESERT_LEACHMOSS_BUILD_1","ts":"2026-09-21T00:18:32Z"}
+{"seat":"BENCH","event":"file","id":"STALE_V24_NAMES_IN_FROZEN_SHEETS_1","title":"V24 name consolidation never propagated: Venom Wood/South Crags/Thornend still used as current in 5 frozen biome sheets 12 days after the owner-approved rename to Fuelmere/Sootreach/Frostvein","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-21T00:25:49Z"}
+{"seat":"FOUNDRY","event":"file","id":"SWBESTIARY_MISSING_BODYPART_DEFS_1","title":"Eight RSW_ body-part defs are referenced by RSW_DesertPortA_Bodies.xml and defined nowhere","kind":"defect","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T00:25:59Z"}
+{"seat":"FOUNDRY","event":"close","id":"PORTED_BEAST_MECHANICS_REBUILD_1","sha":"ed0ec38fc35b3849c6b6d423683ec3eaafa79096","ts":"2026-09-21T00:26:18Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY closing the beastmechanics verification load","ts":"2026-09-21T00:28:10Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T00:28:22Z"}
+{"seat":"FOUNDRY","event":"note","id":"PORTED_BEAST_MECHANICS_REBUILD_1","text":"Ledger title is WRONG; the item body corrects it. RSW_Voltmaw fires a four-shot PLASMA volley (Alpha Animals AA_Plasma), not a chemfuel ejection - only RSW_Cindermite ejects chemfuel. All six criteria PASS, verified live 2026-09-20.","ts":"2026-09-21T00:28:51Z"}
