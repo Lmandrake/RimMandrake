@@ -26,6 +26,15 @@ Wild-biome spawn wiring (race.wildBiomes / the desert-family biome tables)
 is deliberately NOT set here - DESERT_FAMILY_PORT_EXECUTION_1 sequencing
 step 4 rewires the biome tables last, once all batches land; the precedent
 also leaves this field unset in its ported defs.
+
+SWBESTIARY_MISSING_BODYPART_DEFS_1 (2026-09-20): the 8 body-part/group refs
+below (SW_Club, SWTailAttackTool, SWHornAttackTool, SW_LeftWing, SW_RightWing,
+SW_FrontHorn, SW_LeftHorn, SW_RightHorn) were originally authored with a
+stray RSW_ prefix (RSW_Club, RSW_TailAttackTool, ...) that matched no def on
+the machine - the sibling RSW_DesertPortA_BodyParts.xml in this same folder
+already defines them bare, and SWTailAttackTool/SWHornAttackTool were already
+resolving correctly for RSW_DesertPortB_Bodies.xml. Repointed to the existing
+bare names rather than adding duplicate RSW_-prefixed defs.
 -->
 <Defs>
   <BodyDef>
@@ -41,10 +50,10 @@ also leaves this field unset in its ported defs.
           <coverage>0.10</coverage>
           <parts>
             <li>
-              <def>RSW_Club</def>
+              <def>SW_Club</def>
               <coverage>0.20</coverage>
               <groups>
-                <li>RSW_TailAttackTool</li>
+                <li>SWTailAttackTool</li>
               </groups>
             </li>
           </parts>
@@ -215,7 +224,7 @@ also leaves this field unset in its ported defs.
           <def>Tail</def>
           <coverage>0.1</coverage>
           <groups>
-            <li>RSW_TailAttackTool</li>
+            <li>SWTailAttackTool</li>
           </groups>
         </li>
         <li>
@@ -308,24 +317,24 @@ also leaves this field unset in its ported defs.
                   </groups>
                 </li>
                 <li>
-                  <def>RSW_LeftHorn</def>
+                  <def>SW_LeftHorn</def>
                   <coverage>0.1</coverage>
                   <groups>
-                    <li>RSW_HornAttackTool</li>
+                    <li>SWHornAttackTool</li>
                   </groups>
                 </li>
                 <li>
-                  <def>RSW_RightHorn</def>
+                  <def>SW_RightHorn</def>
                   <coverage>0.1</coverage>
                   <groups>
-                    <li>RSW_HornAttackTool</li>
+                    <li>SWHornAttackTool</li>
                   </groups>
                 </li>
                 <li>
-                  <def>RSW_FrontHorn</def>
+                  <def>SW_FrontHorn</def>
                   <coverage>0.1</coverage>
                   <groups>
-                    <li>RSW_HornAttackTool</li>
+                    <li>SWHornAttackTool</li>
                   </groups>
                 </li>
               </parts>
@@ -512,13 +521,13 @@ also leaves this field unset in its ported defs.
           </parts>
         </li>
         <li>
-          <def>RSW_LeftWing</def>
+          <def>SW_LeftWing</def>
           <customLabel>front left wing</customLabel>
           <coverage>0.07</coverage>
           <height>Bottom</height>
         </li>
         <li>
-          <def>RSW_RightWing</def>
+          <def>SW_RightWing</def>
           <customLabel>front right wing</customLabel>
           <coverage>0.07</coverage>
           <height>Bottom</height>
@@ -687,13 +696,13 @@ also leaves this field unset in its ported defs.
           </parts>
         </li>
         <li>
-          <def>RSW_LeftWing</def>
+          <def>SW_LeftWing</def>
           <customLabel>front left wing</customLabel>
           <coverage>0.1</coverage>
           <height>Bottom</height>
         </li>
         <li>
-          <def>RSW_RightWing</def>
+          <def>SW_RightWing</def>
           <customLabel>front right wing</customLabel>
           <coverage>0.1</coverage>
           <height>Bottom</height>
@@ -714,11 +723,11 @@ also leaves this field unset in its ported defs.
           <coverage>0.10</coverage>
           <parts>
             <li>
-              <def>RSW_Club</def>
+              <def>SW_Club</def>
               <customLabel>tail tip</customLabel>
               <coverage>0.20</coverage>
               <groups>
-                <li>RSW_TailAttackTool</li>
+                <li>SWTailAttackTool</li>
               </groups>
             </li>
           </parts>
@@ -825,13 +834,13 @@ also leaves this field unset in its ported defs.
           </parts>
         </li>
         <li>
-          <def>RSW_LeftWing</def>
+          <def>SW_LeftWing</def>
           <customLabel>front left wing</customLabel>
           <coverage>0.09</coverage>
           <height>Bottom</height>
         </li>
         <li>
-          <def>RSW_RightWing</def>
+          <def>SW_RightWing</def>
           <customLabel>front right wing</customLabel>
           <coverage>0.09</coverage>
           <height>Bottom</height>
