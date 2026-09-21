@@ -56,6 +56,27 @@ that enters or lingers in the plant's territory** — and neither has a native
    decided; the moss (if pure-fertility) can ship straight from this pass
    without a further item.
 
+## decided — 2026-09-20, `design/Jawa/worldbuilding/desert_shade_plants_design.md`
+
+**Two plants, not three.** §4b has two bullets, and arid_shrubland.md §Venomvine
+names its venomvine ("a scratch carries venom with serious results") as **"Desert
+lineage"** — so "strange vines and thorny venom" is one plant, the venomvine's
+ancestral form, sharing one mechanism with the shrubland's thicket form.
+
+| plant | tier | trigger | damage shape |
+|---|---|---|---|
+| **venomvine** (desert form) | **c** | one scratch on first contact with any vine cell, then one per in-game hour of lingering (per-pawn contact clock, sampled every 15 ticks by a MapComponent over a cell set the plant's comp maintains — the `Building_Trap.Tick` shape, which a Long-ticking plant cannot do itself) | new `RM_VenomvineScratch` (`ParentName="Scratch"`, `additionalHediffs`, the `ScratchToxic` shape) → new `RM_VenomvineVenom` hediff; not `ToxicBuildup`. Avoidable by route (`pathCost 60`), Sharp armour, flight, or a race `DefModExtension`; a flat tax only where a stand walls the patch |
+| **leachmoss** (working name) | **b** | none — never touches a pawn | none. MEASURED: 1.6 `PlantProperties` has no reproduction fields and no plant affects a neighbour, so "leaching" is owning `WildPlantSpawner`'s rolls on Gravel/Soil (`fertilityMin 0.5`, highest commonality, `plantRespawningCommonalityFactor 2`) — split out from the vine, ships independently |
+
+Both land in `mandrake.rm.environmentalhazards` (`RM_` prefix, generic content).
+The shrubland thicket's body-size passability is NOT this mechanism and stays an
+owed commission slug. No owner card: the sheets answered count, name and
+seriousness; every remaining number is a Mod Settings default.
+
+Successors: `VENOMVINE_CONTACT_VENOM_BUILD_1` (tier c) and
+`DESERT_LEACHMOSS_BUILD_1` (tier b — filed rather than shipped from this pass
+because the parent ruled this pass design-only, no XML).
+
 ## verify
 
 A design doc or item update names, per plant: the mechanism decided (tier b or
