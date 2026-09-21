@@ -124,3 +124,238 @@ per-cell crossing times; a muffalo that walks out of a stand it was spawned in.
 Every step above observed, or the defect it found filed. A step that cannot be
 staged is recorded as not-run with the reason MEASURED rather than asserted —
 the standard `VENOMVINE_LIVE_VERIFY_1` set.
+
+## RUN 2026-09-21 — 9 of 10 steps observed, the mechanism WORKS
+
+FOUNDRY, bridge held, 19-mod `shrublandfauna` tier (all five DLC), quicktest map
+(250×250, TemperateForest, `start_debug_game_ready`) plus four bridge-generated
+`RUT_AridShrubland` maps. **Deployed first with the game down**: both
+`RimMandrake.EnvironmentalHazards.dll` + `RM_Venomvine.xml` and
+`RUT_AridShrubland.xml` report `VERIFIED in sync`, and the repo and game copies
+were then md5-compared independently — 3 of 3 MATCH.
+
+🔑 **The unprecedented use is sound.** A persistent, shared,
+mutated-between-requests `NativeArray<ushort>` handed to the ASYNCHRONOUS pawn
+request queue through `PathRequest.IPathGridCustomizer` routes correctly, stays
+correct across a save/load, and disposes on map removal without a single native
+collection diagnostic. Neither silent failure mode occurred: it is not a no-op,
+and it does not over-block.
+
+### 1 — the line this item exists for ✅ PASS, with the control
+
+Two independent geometries, because "the muffalo went round" is the named false
+pass and both stagings remove the round.
+
+**A sealed chamber** (13×13 steel walls, 50,50→62,62) whose ONLY opening is a
+3-wide gap in the south wall filled by a 3×3 `RM_VenomvineThicket` band
+(55..57, 49..51, 9 plants read back):
+
+| pawn | BodySize | barrier | ended inside the chamber |
+|---|---|---|---|
+| Hare38590 | 0.2 | ON | **YES** — (58,54) |
+| Muffalo38585/86/87 | 2.4 | ON | **0 of 3** |
+| Muffalo38585/86/87 | 2.4 | **OFF** | **2 of 3** — (55,51) standing IN the band, (58,54) inside |
+
+**A sealed 1-wide corridor** (z=41, x 44..76, walls at z=40/z=42 and caps at
+x=43/x=77, 10-cell band at x 56..65) — there is no detour to prefer:
+
+| run | barrier | furthest x reached |
+|---|---|---|
+| Muffalo38927 | ON | **55** — one cell short of the band, then retreated to x=44 |
+| Muffalo38927 (same pawn, same order) | **OFF** | **74** — crossed all 10 band cells |
+
+⛔ The false pass the item names is closed: with no alternative route at all, the
+muffalo still did not enter. The control is the same pawn on the same order with
+`bodySizeBarrierEnabled` toggled live through `jawa/mod_settings_field`
+(`valueBefore True → valueAfter False`, static field), which is the toggle Mod
+Settings writes — no relaunch and no settings-file edit was needed.
+
+⚠️ Recorded, not a defect: every blocked muffalo reported `canReach: true` and
+`orderAccepted: true`, then the Goto failed in the pather and the AI fell back to
+`Wait_Wander` / `GotoWander`. That is exactly the parent item's judgement call 3
+(reachability runs on the Normal grid), observed rather than reasoned.
+
+### 2 — three bands, three distinct readings ✅ PASS
+
+Per-cell ticks, sampled by polling `jawa/list_pawns` position against `ticksGame`
+in the sealed corridor. The colonist trace is cell-by-cell and unambiguous:
+
+| pawn | BodySize | band | open ground | in the 10-cell band | mechanism |
+|---|---|---|---|---|---|
+| Hare38793 | 0.2 | free | ~27 t/cell | **~127 t/cell** | no override; the plant's own `pathCost` 90 |
+| Human38811 | 1.0 | thread | ~21 t/cell | **315–336 t/cell** (10 consecutive per-cell deltas) | `threadMoveCost` 300 |
+| Muffalo38927 | 2.4 | blocked | — | **never entered** | `custom[index] >= 10000` |
+
+🔑 The middle band is the one a wrong `GetPawnCellBaseCostOverride` postfix would
+silently drop, and it is the one measured most precisely: ~16× a normal step, and
+distinct from the hare's 127 by a factor of 2.6 on the same cells.
+
+### 3 — the start-cell carve-out ✅ PASS (the worst outcome did not occur)
+
+Three muffalo spawned by `jawa/spawn_pawn` directly ONTO thicket cells
+((55,49), (56,50), (57,51) — all three confirmed planted), barrier then set ON,
+each ordered to (56,44) outside:
+
+| pawn | spawned on | ended | left the stand |
+|---|---|---|---|
+| Muffalo38740 | (55,49) | (52,44) | **YES**, fully out, south side |
+| Muffalo38741 | (56,50) | (68,47) | **YES**, walked 12 cells away |
+| Muffalo38742 | (57,51) | (57,52) | **YES** — stepped off the thicket onto the chamber-interior side |
+
+⛔ None stood still failing to path. `RM_MapComponent_BodySizeBarrier.CustomizerFor`'s
+carve-out works. Muffalo38742 could not then cross the band to the ordered cell,
+because once it is off a barrier cell it gets a customizer again — the documented
+"it cannot path back IN" behaviour, seen directly.
+
+### 4 — wander rejection ✅ PASS, 436 samples
+
+Four UNDRAFTED, factionless muffalo placed at the four corners of a solid 64-cell
+`RM_VenomvineThicket` stand (40,58 → 47,65) and left alone for **101,230 game
+ticks** (≈1.7 in-game days) at Superfast, position-sampled 436 times against the
+64 known stand cells.
+
+**Muffalo standing on a thicket cell: 0 of 436 samples.** The `RCellFinder` half
+of the move-cost postfix does its job — `trappedMoveCost` 450 is far over
+`RCellFinder`'s 20-tick rejection bar, so a blocked animal never chooses a thicket
+cell as a destination and never generates a request it cannot satisfy.
+
+### 5 — small creatures still get scratched ✅ PASS, with a null baseline
+
+Five hares penned individually inside 3×3 steel boxes so none could wander off —
+**three on a `RM_VenomvineThicket` cell, two on bare Soil in identical pens** —
+and run 17,975 ticks:
+
+| pen | hares | outcome after 17,975 ticks |
+|---|---|---|
+| on thicket (66,60) (70,60) (74,60) | 3 | **3 of 3 DEAD** (`dead: true`, corpses read back in their pens) |
+| on bare Soil (66,66) (70,66) | 2 | **2 of 2 alive**, `hediffs: []`, pain 0.00, bleed 0.000 |
+
+The thicket carries a byte-identical `CompProperties_ContactVenom` block to
+`RM_Venomvine` (`RM_VenomvineScratch`, damage 3, `contactIntervalTicks` 2500,
+`bodyHeight` Bottom). "Small enough to pass" is emphatically NOT "immune" — the
+parent item's point 3 holds. Seen incidentally too: two hares crossing the chamber
+band earlier were downed ON thicket cells mid-crossing, and one died there.
+
+### 6 — the desert form is unchanged ✅ PASS
+
+Better than the item's one-order check: the corridor's 10-cell band was replanted
+from `RM_VenomvineThicket` to `RM_Venomvine` and NOTHING else changed — same
+corridor, same walls, same muffalo, barrier ON.
+
+| band def | barrier | muffalo | per-cell in band |
+|---|---|---|---|
+| `RM_VenomvineThicket` | ON | blocked at x=55 | — |
+| `RM_Venomvine` | ON | **crossed all 10 cells, x74 → x46** | **~73 t/cell** (pathCost 60 + move) |
+
+The desert's own use of the plant is untouched: no block, no thread cost, and the
+per-cell number is the plant's plain `pathCost`. A `RUT_Desert` map was not needed
+— swapping only the def is a tighter control than swapping the map.
+
+### 7 — save/load ✅ PASS
+
+Saved as `LIVEVERIFY_vvfortress_step7` with a colonist standing mid-band at
+(60,41) and a muffalo mid-detour at (56,45). 🔴 Saves folder stat'd before and
+after: **exactly one new file** (10,646,497 bytes), **no existing save changed
+size** — `saveName` was honoured this time. Reloaded (`ticksGame` 194,364):
+
+- 10 of 10 corridor thicket plants restored, barriers re-registered.
+- Colonist ordered on: **324 ticks/cell** through the band (x60→x65), then ~27
+  ticks/cell on open ground (x65→x74). Identical to the pre-save reading.
+- Muffalo ordered into the chamber: `canReach: true`, never entered, job back to
+  `Wait_Wander`. Still blocked.
+
+⇒ The grids are NOT saved and do not need to be: `PostSpawnSetup` registration
+during load repopulates them correctly. Staged on the player's own map, per the
+item's own warning.
+
+### 8 — map removal ✅ PASS, no leak and no crash
+
+The player's own map — holding two `RM_VenomvineThicket` stands (the 94-cell
+corridor/chamber set plus a 64-cell stand) **and an allocated blocked-bucket
+`NativeArray<ushort>(62500, Allocator.Persistent)`**, forced into existence by a
+BodySize-2.4 path request beforehand — was dropped with `jawa/map_drop`.
+
+- Game **ALIVE** afterwards: `programState: Playing`, `mapCount: 0`,
+  `hasCurrentGame: true`. No crash, no hang.
+- 400 log messages drained after the drop: **0** lines matching `NativeArray`,
+  `Unity.Collections`, `leak`, `deallocat`, `dispos`, `jobhandle`,
+  `AtomicSafetyHandle`, `PathFinder`, `PathGrid` or `BodySizeBarrier`. **0**
+  non-draw errors.
+- Whole-`Player.log` scan for the session: **0** occurrences of `NativeArray` /
+  `Unity.Collections` / "A Native Collection has not been disposed".
+
+Corroborated four more times: four bridge-generated maps that each held
+registered barriers (one of them a 76-plant stand plus an allocated grid) were
+culled by the engine's own `MapDeiniter` path during the session, and the game
+survived every one with the same clean log.
+
+⚠️ `jawa/map_drop` threw on SERIALIZING its reply — `Self referencing loop
+detected for property 'tile' with type 'RimWorld.Planet.PlanetTile'. Path
+'result.removedMap.tile.Tile'`. The drop itself executed correctly. That is a
+companion-tool bug, nothing to do with this build; filed as
+`BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1`.
+
+### 9 — wild spawning ⛔ NOT RUN — the instrument is disqualified, MEASURED
+
+The wiring IS live and was verified directly: `jawa/biome_probe` on the loaded
+`RUT_AridShrubland` reports 7 wildPlants, and `RM_VenomvineThicket` is one of
+them at **commonality 0.15** (the lowest of the seven; biome `plantDensity` 0.35).
+
+But the count of stands on a generated map **cannot be measured by the only route
+available here**, and a zero would have been a false finding:
+
+| map | how generated | total wild plants | any of the biome's 7 declared wildPlants |
+|---|---|---|---|
+| quicktest TemperateForest | `start_debug_game_ready` (normal) | **17,904** | n/a |
+| 4 × `RUT_AridShrubland` | `jawa/world_tile_map_generate` | **0, 0, 0, 231** | **none** — the 231 were `RUT_Plant_Wick`, `Plant_Potato`, `Plant_Tinctoria`, `Plant_HubbaGourd` |
+
+⇒ Not one of `RUT_Fuzz` (0.9), `Plant_Bush`, `Plant_Brambles`, `Plant_Ripthorn`,
+`Plant_HealrootWild` or `Plant_Nysyllin_Wild` appeared either, so 0 thickets is
+the instrument, not the def. 🔑 Reporting "the thicket does not spawn wild" from
+these maps would have been the `zero-rows-is-a-failure-not-a-footnote` trap
+exactly. `wildClusterRadius 8` / `wildClusterWeight 25` remain **UNSEEN**, and
+answering that needs a real settlement/caravan-arrival generation on a shrubland
+tile — campaign-scale, not a quicktest.
+
+⚠️ Separately MEASURED and worth knowing before anyone authors terrain for this
+plant: `RM_VenomvineThicket` is refused by a lot of ground. `jawa/set_plants`
+rejected **52 of 100** cells on untouched shrubland-map terrain with "terrain or
+conditions cannot support RM_VenomvineThicket", and still **6 of 100** after the
+same rect was painted to plain `Soil`.
+
+### 10 — log triage ✅ PASS
+
+`body-size-barrier-routing` / `body-size-barrier-move-cost` appear only when a
+patch fails to arm. **0 occurrences in `Player.log`**, checked at session start
+and again at session end.
+
+Stronger than silence, both patches were read out of the LIVE Harmony registry:
+
+```
+Verse.PathFinder.CreateRequest              prefix   mandrake.rm.environmentalhazards
+                                            RM_BodySizeBarrierPatches.CreateRequest_Prefix
+Verse.AI.Pawn_PathFollower                  postfix  mandrake.rm.environmentalhazards
+  .GetPawnCellBaseCostOverride              RM_BodySizeBarrierPatches.GetPawnCellBaseCostOverride_Postfix
+```
+
+⚠️ Noted for whoever touches this next: VEF (`OskarPotocki.VEF`) also prefixes
+`PathFinder.CreateRequest` at the same priority 400
+(`VEF.Hediffs.PhasingPatches.CreateRequest_Prefix`). Ours only ever fills in a
+customizer nobody supplied, so the two coexist — but a future change that
+OVERWRITES a supplied customizer would break VEF phasing.
+
+⚠️ The 8 `Could not resolve cross-reference` lines naming `RUT_ScaldVent`,
+`RUT_TibannaGas`, `RUT_RoilWeather`, `RUT_DeadCreep`, `RUT_FoundrySalvageCache`,
+`RUT_FoundryTowerEntrance`, `RUT_ToxinSealant` and `RUT_Filth_MouseTrack` are the
+known `DEPLOY_HOLD.txt` held defs and have nothing to do with this build.
+
+### what was NOT chased
+
+Flyers over a thicket (the prefix's `pawn.Flying` carve-out) — `VENOMVINE_PATHCOST_AND_FLYER_1`
+owns that. Two barrier defs with different `blockBodySize` on one map (the
+multi-threshold bucket code) — no second def exists to stage it with. A
+`RSW_ShrublandGiant` (6.0) run — it is in the same blocked band as the muffalo
+(2.4) and the same grid, so it adds no information the muffalo did not give.
+
+⇒ Criteria met: 9 of 10 steps observed, the 10th recorded as not-run with the
+reason MEASURED rather than asserted. **CLOSED.**
