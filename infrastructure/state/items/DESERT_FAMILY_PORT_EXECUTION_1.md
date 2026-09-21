@@ -82,12 +82,48 @@ came **2026-09-20**, one day later, and sweeps it back in. Two owner rulings one
 apart disagree about the same creature. ⛔ Do not generate art for it and ⛔ do not
 silently drop it — it is his call which ruling governs.
 
-### the 11 unblocked rows still to author
+### ✅ the def half is DONE except for the 12 rows that need him
 
-`AA_BoulderMit` (Alpha Animals) · `Terrorworm` (Horrors) · `VFEI2_Fuelmite` (VFE
-Insectoids 2) · `AB_Aaklac`, `AB_DessertTree`, `AB_HardyGrass` (Alpha Biomes) ·
-`Plant_Brambles`, `RG_Plant_AridGrass`, `RG_Plant_CreepStern`, `RG_Plant_CrimsonCushion`,
-`RG_Plant_Dervish` (ReGrowth 2)
+FINAL, 2026-09-21. The "11 unblocked rows" this section used to list was itself wrong:
+**9 of the 11 were already ported** under drafted names. Only two genuinely needed
+authoring, and both landed at `1ab7b6f09`:
+
+| donor | ours | state |
+|---|---|---|
+| `AA_BoulderMit` | `RSW_Stoneback` ("korrum") | **newly authored** |
+| `Plant_Brambles` | `RSW_Thornscrub` ("krenna bramble") | **newly authored** |
+| `Terrorworm` | `RSW_Ashworm` ("vurra") | already live |
+| `VFEI2_Fuelmite` | `RSW_Cindermite` ("zhakka") | already live |
+| `AB_Aaklac` | `RSW_VellaraBloom` | already live |
+| `AB_DessertTree` | `RSW_SweetbarkTree` | already live |
+| `AB_HardyGrass` | `RSW_Dunegrass` | already live |
+| `RG_Plant_AridGrass` | `RSW_Scrubgrass` | already live |
+| `RG_Plant_CreepStern` | `RSW_Starvine` | already live |
+| `RG_Plant_CrimsonCushion` | `RSW_EmberCarpet` | already live |
+| `RG_Plant_Dervish` | `RSW_Whirlbloom` | already live |
+
+⚠️ **Every one of those names is DRAFTED, not ruled** (`NONCANON_BEAST_RENAME_1`'s design
+is *"agent drafts, owner reacts"*). They need to reach him as a batch.
+
+✅ Authoring `RSW_Stoneback` also fixed a real dangling reference: `RSW_Ferroclaw`'s
+`<useMeatFrom>RSW_Stoneback</useMeatFrom>` pointed at a def that did not exist.
+
+⇒ **96 of 109 rows are ported. 12 are blocked on the owner. 1 is out of scope.**
+The def half of this item is finished; what remains is his 12 answers, the art review,
+and step 4 (rewiring the biome tables).
+
+### 🔴 the instrument lesson — stop re-measuring this wrong
+
+**A `RSW_<donorName>` prefix test CANNOT find a ported row, because the port renames it.**
+This produced a wrong count three times in one sitting: first "~105 to author" (counted
+all 109 as unported), then "11 to author" (found the 13 Alpha Animals renames but missed
+the Alpha Biomes / ReGrowth / Horrors / VFEI2 renames, which use the same mechanism).
+
+✅ **The mapping is authoritative and it is in the source**, as
+`<!-- <donor> -> RSW_<ours>. ... -->` header comments in
+`src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml` and
+`RSW_DesertPortMisc_Plants.xml`. Read those comments before counting anything on this
+item. ⛔ Do not count by prefix.
 
 ### the 12 rows that need him first
 
