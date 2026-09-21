@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T03:53:02Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T04:10:46Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -945,15 +945,6 @@ kind:     investigate
 summary:  Find what guy762Robesjawa (and any sibling robe def on these pawns) sets as its
 prose:    infrastructure/state/items/FOUNDER_ROBE_MAGENTA_1.md
 
-## SHRUBLAND_SCRAPNEST_BIRDS_1 Scrap-nest bird-analogs: nest-theft C# + base-stealing candidate
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  SHRUBLANDSCRAPNESTBIRDS1 — scrap-nest bird-analogs: nest-theft C + base-stealing candidate
-prose:    infrastructure/state/items/SHRUBLAND_SCRAPNEST_BIRDS_1.md
-
 ## SHRUBLAND_GIANT_ENRAGE_1 RSW_ShrublandGiant: large-young life-stage + parental enrage-on-approach C#
 state:    doing
 row:      unassigned
@@ -1468,3 +1459,13 @@ kind:     verify
 thin:     no ## spec
 summary:  VENOMVINEPATHCOSTANDFLYER1 — the two venomvine properties still unobserved
 prose:    infrastructure/state/items/VENOMVINE_PATHCOST_AND_FLYER_1.md
+
+## SCRAPNEST_BIRD_LIVE_VERIFY_1 live-verify the scrap-nest bird: spawn, nest-building, hoarding, loot
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     verify
+thin:     no ## spec, no ## verify
+summary:  SCRAPNESTBIRDLIVEVERIFY1 — live-verify the scrap-nest bird: spawn, nest-building, hoarding, loot
+prose:    infrastructure/state/items/SCRAPNEST_BIRD_LIVE_VERIFY_1.md
