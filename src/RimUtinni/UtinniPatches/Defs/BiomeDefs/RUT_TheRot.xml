@@ -41,9 +41,12 @@
     below now points at our own `RUT_`-prefixed flora
     (`src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_Flora.xml`)
     instead of the donor's `BMT_`-prefixed defs, per the ingestion ruling in
-    `the_rot.md` §7b. wildAnimals is UNCHANGED (still donor `BMT_`/`AA_` defNames,
-    MayRequire'd) — fauna admission is a separate sitting,
-    `BIOME_FAUNA_ASSIGNMENT_SITTING_1`. The 425-tile `BMT_FungalForest` -> biome-merge
+    `the_rot.md` §7b. wildAnimals was UNCHANGED at the time of this note (still
+    donor `BMT_`/`AA_` defNames, MayRequire'd) — fauna admission was a separate
+    sitting, `BIOME_FAUNA_ASSIGNMENT_SITTING_1`. CORRECTION (ROT_ROSTER_DEAD_DONOR_NAMES_1,
+    2026-09-21): wildAnimals below has since been reconciled — every dead `BMT_`
+    name was renamed to its owned `RSW_`/active-donor equivalent or dropped; none
+    remain. The 425-tile `BMT_FungalForest` -> biome-merge
     repaint itself (the other half of that item) has NOT happened yet — still owed,
     gated on the owner reviewing the offline render this pass produced.
   -->
