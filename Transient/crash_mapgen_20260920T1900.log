@@ -1,0 +1,1506 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.120 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.684600 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod RimUtinni: Aftermath Rites dependency (mandrake.rm.aftermath) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Inhabited (Ash'karr) dependency (mandrake.rm.inhabited) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Weather Suite (Ash'karr) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Droid Repair Jobs dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Environmental Hazards Kit dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Flooded Canyon dependency (mandrake.rm.flowworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Greentide dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod JawaVoice (SpeakUp reskin) dependency (JPT.speakup) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Pyrelands Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod The Rites dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Rust Cathedral Roaches dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake Sacred Marks dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Scarlands Ladder dependency (mandrake.rm.lorestages) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rsw.swbestiary) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Shokk dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (OskarPotocki.VanillaFactionsExpanded.Core) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimStarWars: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (OskarPotocki.VFE.Insectoid2) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (sarg.alphaanimals) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni Patches (Jawa campaign) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Colony Visibility dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Exception loading from System.Xml.XmlElement: System.MissingMethodException: Default constructor not found for type System.String
+  at System.RuntimeType.CreateInstanceMono (System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00076] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceSlow (System.Boolean publicOnly, System.Boolean wrapExceptions, System.Boolean skipCheckThis, System.Boolean fillCache) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceDefaultCtor (System.Boolean publicOnly, System.Boolean skipCheckThis, System.Boolean fillCache, System.Boolean wrapExceptions, System.Threading.StackCrawlMark& stackMark) [0x00027] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00020] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0045c] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXmlReflection[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0060e] in <61e4173561894da49d210260257b5097>:0 
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001E8E6E0B090.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001E8E6C360E0.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 56 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=160 elapsedMs=161
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=161
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=161 elapsedMs=161
+Exception loading def from file RSW_ShadeWhale.xml: System.ArgumentException: Could not find type named RimMandrake.CreatureBehaviors.RM_CompProperties_DungSeeder from node <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_DungSeeder"><intervalTicksRange>15000~30000</intervalTicksRange><minShadeToSeed>0.35</minShadeToSeed><dungFilthDef>Filth_AnimalFilth</dungFilthDef><dungFilthCount>4</dungFilthCount><seedRadius>5.9</seedRadius><growthBoost>0.25</growthBoost><maxPlantsBoosted>12</maxPlantsBoosted><seedPlants><li>RSW_Ultracactus</li></seedPlants><seedPlantCount>1~3</seedPlantCount><seedPlantGrowth>0.05</seedPlantGrowth><wildlifeSpawnChance>0.15</wildlifeSpawnChance><maxWildlifeBodySize>0.6</maxWildlifeBodySize><seededWildlifeAgeYears>0.4</seededWildlifeAgeYears></li>
+Parameter name: node
+[Ref D7802C72]
+  at Verse.DirectXmlToObjectNew.ResolveTypeForNode (System.Type defaultType, System.Xml.XmlNode node) [0x0005a] in <61e4173561894da49d210260257b5097>:0 
+(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndSetListField_Verse_CompProperties(object,System.Reflection.FieldInfo,System.Xml.XmlNode,System.Type)
+(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndReturnDef_Verse_ThingDef(int,int,System.Xml.XmlNode,System.Type)
+  at Verse.DirectXmlToObjectNew.DefFromNodeNew (System.Xml.XmlNode node, Verse.LoadableXmlAsset loadingAsset) [0x000dd] in <61e4173561894da49d210260257b5097>:0 
+XML error: <specialTrainables><li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li></specialTrainables> doesn't correspond to any field in type PawnKindDef. Context: <PawnKindDef ParentName="AnimalKindBase"><defName>RSW_TunnelSnake</defName><label>the tunnel snake</label><race>RSW_TunnelSnake</race><combatPower>320</combatPower><ecoSystemWeight>0.35</ecoSystemWeight><wildGroupSize>1</wildGroupSize><specialTrainables><li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li></specialTrainables><lifeStages><li><bodyGraphicData><texPath>swanimals/Klorslug/Klorslug_j</texPath><color>(110, 95, 78)</color><drawSize>1.0</drawSize></bodyGraphicData><dessicatedBodyGraphicData><texPath>swanimals/Klorslug/Klorslug_Dessicated</texPath><drawSize>1.0</drawSize></dessicatedBodyGraphicData></li><li><bodyGraphicData><texPath>swanimals/Klorslug/Klorslug</texPath><color>(110, 95, 78)</color><drawSize>1.7</drawSize></bodyGraphicData><dessicatedBodyGraphicData><texPath>swanimals/Klorslug/Klorslug_Dessicated</texPath><drawSize>1.7</drawSize></dessicatedBodyGraphicData></li><li><bodyGraphicData><texPath>swanimals/Klorslug/Klorslug</texPath><color>(110, 95, 78)</color><drawSize>2.7</drawSize><shadowData><volume>(0.4, 0.6, 0.33)</volume></shadowData></bodyGraphicData><dessicatedBodyGraphicData><texPath>swanimals/Klorslug/Klorslug_Dessicated</texPath><drawSize>2.7</drawSize></dessicatedBodyGraphicData></li></lifeStages></PawnKindDef>
+Could not find a type named AlphaBiomes.BiomeWorker_OcularForest
+Could not find a type named VanillaBiomes.BiomeWorker_Badlands
+Could not find a type named ReGrowthCore.UniversalBiomeWorker
+Could not find a type named AlphaBiomes.BiomeWorker_RockyCrags
+Could not find a type named BiomeWorker_CypreJungle
+Could not find a type named AlphaBiomes.BiomeWorker_MiasmicMangrove
+Could not find a type named BiomesPlus.BiomeWorker_PoisonForest
+Could not find a type named AlphaBiomes.BiomeWorker_MechanoidIntrusion
+Could not find a type named AlphaBiomes.BiomeWorker_GelatinousSuperorganism
+Could not find a type named AlphaBiomes.BiomeWorker_TarPits
+Could not find a type named AlphaBiomes.BiomeWorker_PyroclasticConflagration
+Could not find a type named AlphaBiomes.BiomeWorker_MycoticJungle
+Could not find a type named AlphaBiomes.BiomeWorker_PropaneLakes
+Could not find a type named BiomesPlus.BiomeWorker_Wasteland
+Could not find a type named AlphaBiomes.BiomeWorker_FeraliskInfestedJungle
+Could not find a type named VanillaBiomes.BiomeWorker_DesertOasis
+Exception loading def from file JawaFactionRoster.xml: System.ArgumentException: Could not find type named TabulaRasa.DefModExt_PawnKindExtended from node <li Class="TabulaRasa.DefModExt_PawnKindExtended"><additionalHediffs><li><hediff>OuterRim_StormtrooperTraining</hediff><severityRange>0.1~0.48</severityRange></li></additionalHediffs><randomAdditionalHediff>false</randomAdditionalHediff></li>
+Parameter name: node
+[Ref 9A3C22CA]
+  at Verse.DirectXmlToObjectNew.ResolveTypeForNode (System.Type defaultType, System.Xml.XmlNode node) [0x0005a] in <61e4173561894da49d210260257b5097>:0 
+(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndSetListField_Verse_DefModExtension(object,System.Reflection.FieldInfo,System.Xml.XmlNode,System.Type)
+(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndReturnDef_Verse_PawnKindDef(int,int,System.Xml.XmlNode,System.Type)
+  at Verse.DirectXmlToObjectNew.DefFromNodeNew (System.Xml.XmlNode node, Verse.LoadableXmlAsset loadingAsset) [0x000dd] in <61e4173561894da49d210260257b5097>:0 
+Exception loading def from file JawaFactionRoster.xml: System.ArgumentException: Could not find type named TabulaRasa.DefModExt_PawnKindExtended from node <li Class="TabulaRasa.DefModExt_PawnKindExtended"><additionalHediffs><li><hediff>OuterRim_StormtrooperTraining</hediff><severityRange>0.2~0.68</severityRange></li></additionalHediffs><randomAdditionalHediff>false</randomAdditionalHediff></li>
+Parameter name: node
+[Ref 9A3C22CA] Duplicate stacktrace, see ref for original
+Exception loading def from file JawaFactionRoster.xml: System.ArgumentException: Could not find type named TabulaRasa.DefModExt_PawnKindExtended from node <li Class="TabulaRasa.DefModExt_PawnKindExtended"><additionalHediffs><li><hediff>OuterRim_StormtrooperTraining</hediff><severityRange>0.3~0.45</severityRange></li></additionalHediffs><randomAdditionalHediff>false</randomAdditionalHediff></li>
+Parameter name: node
+[Ref 9A3C22CA] Duplicate stacktrace, see ref for original
+[RimMandrake: SW — Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\SWBestiary\Patches\SeasWaterline\Waterline_Lane1.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/PawnKindDef[defName="AncientSoldierBoss"]/weaponTags/li[text()="IndustrialGunAdvanced"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AncientArsenal_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Boomsnake"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GiantAnt_Race"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="Terrorworm"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="AG_OcularSlinger"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="AM_Dryad_Corruptor"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="AM_Dryad_Ocular"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="AM_Dryad_Spitter"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="AM_Dryad_Unstable"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="AM_UnshackledDryad"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BI_Queen"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_LandOctopus"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BiomesIslands_Flamingo"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_ArcticOwlcat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_BlackScribe"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_ForestOwlcat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_ImperialRedhound"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_IroncasketBeetle"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_Karabal"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_Phrak"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_Pilgrim"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_SilverMole"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_Snaptoad"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_SnowTaraal"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_Taraal"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_BearBug"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Bearcat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Bearchicken"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Bearman"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Bearmole"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Bearodile"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Bearscarab"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Bearwolf"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Beaverwolf"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Beetlefleet"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Boomachicken"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Booman"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Boomhorse"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Boomwolf"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Catalope"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Catbear"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Catchicken"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Catffalo"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Cathorse"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Catman"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Chickenffalo"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Chickenlizard"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Chickenrabbit"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Chickenspider"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Chickenwolf"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Dogman"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Fleshling"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Lizardman"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Manbear"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Mancat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Manffalo"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Manscarab"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Mansquirrel"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Manwolf"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Molebear"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Molehorse"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Moleman"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Muffalobear"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Muffalocat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Muffalochicken"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Muffalohorse"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Muffaloman"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Muffalope"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Muffalopede"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Muffalorat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Muffalowolf"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Needlechicken"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_ParagonBear"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_ParagonChicken"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_ParagonHumanoid"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_ParagonIguana"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_ParagonInsectoid"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_ParagonRat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_ParagonThrumbo"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_ParagonWolf"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Rabbitchicken"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Ratffalo"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Snakecat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Spidercat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Spiderhorse"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Spidersnake"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Thrumbalope"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Thrumbocat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Thrumborat"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Thrumbospider"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Turkeyman"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Wolfalope"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Wolfbear"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Wolfbeaver"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Wolfchicken"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Wolffalo"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Wolfhorse"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Wolfscarab"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GR_Wolfsnake"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GRimCobra"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GRimLavaSnail"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GRimMonitorLizard"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GRimStoneCrab"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="GRimTortoise"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="Ling_Cockroach"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="PoisonButterfly"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="PoisonDeer"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Hemolope"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_KiwiBird"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Neutrolope"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Rimclaw"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_WoollyStegosaurus"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="SWPotF_RaceDef_ysalamir"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="SW_Electricgryllotalpa"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="SW_Electrictick"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="SW_Grenadierworm"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="Scuttlebug"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="VQEA_Splicefiend"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="VQEA_Spliceling"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="VQEA_Splicetoot"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AnimalTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationReplace(/Defs/BiomeDef[defName="AB_PropaneLakes"]/allowRoads) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeAllowRoads_PropaneLakes.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GreyLady"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_AridGrass"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_CreepStern"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_CrimsonCushion"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_Dervish"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationSequence(count=60, lastFailedOperation=Verse.PatchOperationReplace(Defs/PawnKindDef[defName="BMT_Thrumbungus"]/lifeStages/li[1]/bodyGraphicData/drawSize)) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\CreatureResize_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeGamorrean"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeHerglic"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeTrandoshan"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeTogorian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeLasat"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeFeeorin"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeAqualish"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeCathar"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeChagrian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeGungan"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeKaleesh"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeKlatoonian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeNelvaanian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationFindMod(Alpha Animals) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\Ikee_Rename.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/BiomeDef[defName="HorrorWastes"]/texture) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\JawaTerrain_HorrorWastes.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationAdd(/Defs/TerrainDef[defName="RM_TarShallow"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\RUT_TarShallow_FilthAcceptance.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+Mod mandrake.rsw.swbestiary has multiple Verse.BuildableDefs named RSW_Stoneback. Skipping.
+Mod mandrake.rsw.swbestiary has multiple Verse.ThingDefs named RSW_Stoneback. Skipping.
+Mod mandrake.rsw.swbestiary has multiple Verse.PawnKindDefs named RSW_Stoneback. Skipping.
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Dog_Wounded found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Squirrel_Call found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Squirrel_Call found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Squirrel_Call found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Squirrel_Call found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+Could not resolve cross-reference to Verse.ThingDef named guy762_Robes_jawa (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_JawaHood (wanter=apparelRequired)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_Durasteel found to give to Verse.PawnInventoryOption Verse.PawnInventoryOption
+Could not resolve cross-reference to Verse.ThingDef named guy762_Robes_jawa (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_JawaHood (wanter=apparelRequired)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_Durasteel found to give to Verse.PawnInventoryOption Verse.PawnInventoryOption
+Could not resolve cross-reference to Verse.ThingDef named guy762_Robes_jawa (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_JawaHood (wanter=apparelRequired)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_Durasteel found to give to Verse.PawnInventoryOption Verse.PawnInventoryOption
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_Durasteel found to give to Verse.PawnInventoryOption Verse.PawnInventoryOption
+Could not resolve cross-reference to Verse.ThingDef named VFEP_WarcasketHelmet_Warcasket (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named VFEP_Warcasket_Warcasket (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named VFEP_WarcasketShoulders_Warcasket (wanter=apparelRequired)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_Durasteel found to give to Verse.PawnInventoryOption Verse.PawnInventoryOption
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_Durasteel found to give to Verse.PawnInventoryOption Verse.PawnInventoryOption
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_Durasteel found to give to Verse.PawnInventoryOption Verse.PawnInventoryOption
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_ComponentHypertech found to give to Verse.PawnInventoryOption Verse.PawnInventoryOption
+Could not resolve cross-reference to Verse.ThingDef named VFEP_Warcasket_Warcasket (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named VFEP_WarcasketShoulders_Warcasket (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named VFEP_WarcasketHelmet_Warcasket (wanter=apparelRequired)
+Could not resolve cross-reference: No RimWorld.XenotypeDef named RSW_MandrakeJawa found to give to RimWorld.XenotypePawnKind RimWorld.XenotypePawnKind
+Could not resolve cross-reference: No RimWorld.XenotypeDef named RSW_MandrakeJawa found to give to RimWorld.XenotypeCount RimWorld.XenotypeCount
+Could not resolve cross-reference: No Verse.ThingDef named AB_Gomphoeria found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_RedBugloss found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_Aaklac found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GreenRockFern found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Dewshrooms found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_PaleTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference to Verse.TerrainDef named AB_MycoticGrass (wanter=warmTerrains)
+Could not resolve cross-reference to Verse.TerrainDef named AB_MycoticSoilRich (wanter=warmTerrains)
+Could not resolve cross-reference: No Verse.ThingDef named RG_Plant_Dervish found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_ToxiGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_CrystalHorn found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named PoisonPlantTallGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named AB_SolidPropane found to give to RimWorld.BiomeDef RUT_PropaneLake
+Could not resolve cross-reference: No Verse.TerrainDef named AB_PropaneLake found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named AB_SoilOnCrackedMetal found to give to RimWorld.BiomeDef RUT_RustCathedral
+Could not resolve cross-reference: No Verse.TerrainDef named AB_SoilOnCrackedMetal found to give to RimWorld.BiomeDef RUT_RustCathedral
+Could not resolve cross-reference: No Verse.TerrainDef named AB_SoilOnCrackedMetal found to give to RimWorld.BiomeDef RUT_RustCathedral
+Could not resolve cross-reference: No Verse.TerrainDef named GU_MetalFloor1 found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_RawSlime found to give to RimWorld.BiomeDef RUT_Slime
+Could not resolve cross-reference: No Verse.TerrainDef named AB_Slime found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named AB_RichSlime found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_TallSlimyGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_SlimyFern found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_SlimyTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_Slimecasia found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_LargeSlimyTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named AB_GrassySand found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named AB_LushGrass found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_TarPuddle found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_RawBrownBarrelCactus found to give to RimWorld.BiomeDef RUT_TheForge
+Could not resolve cross-reference: No Verse.TerrainDef named AB_BlackPebbles found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named AB_HardenedGrass found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No RimWorld.ThoughtDef named AteUltracactus found to give to RimWorld.IngestibleProperties RimWorld.IngestibleProperties
+Could not resolve cross-reference: No Verse.KeyBindingDef named Misc13 found to give to Verse.ThingDef RUT_DigShaft
+Could not resolve cross-reference: No Verse.TerrainDef named GU_AlienSandFine found to give to RimWorld.BiomeDef RUT_Contagion
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Nuitae found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_HardyGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named GRimMoss found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GargantuanLithops found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_HardyGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_Aaklac found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GiantStikehr found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_KeeningCordax found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_Iashiphus found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_Gomphoeria found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named AB_FineForsakenSand found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named AB_ForsakenSand found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_GlowingGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_ToxicGamma found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GiantGamma found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_WildRadagast found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AG_Gamma found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GiantStikehr found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AG_Septimum found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GiantSeptimum found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named CypreJungleMud found to give to RimWorld.BiomeDef RUT_Greentide
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Wrinklecap found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named CypreJungleSoil found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named LightGrass found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_JungleTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_SugarFamewort found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named AB_FertileMud found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_MangroveTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_ParasiticMangrove found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_MangrovePalm found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Nogtyl found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named PoisonSoil found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named PoisonSoilRich found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_CrystalFlower found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_BloodBouquet found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_RavenNettle found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_RedBugloss found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GiantAgariTox found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_KeeningCordax found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GiantToxicFlower found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named AB_PropaneLake found to give to RimWorld.BiomeDef RUT_PropaneLake
+Could not resolve cross-reference: No Verse.ThingDef named TreePalma found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named VEE_Plant_DatePalm found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference to RimWorld.BiomeDef named ZBiome_DesertOasis (wanter=biomeWhitelist)
+Could not resolve cross-reference: No Verse.TerrainDef named AB_PackedSnow found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named AB_PackedIce found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_CrystalHorn found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_FrostLeaf found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_RimeNodules found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named PoisonShrub found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named VolcanoSoil found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named WastelandAsphalt found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named RG_Plant_ToxiGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RG_Plant_TallToxiGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_WeepingToxberry found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_ToxiBulb found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named VRE_PoluxBush found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named AB_DenseMud found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named AB_DenseGrass found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_JungleTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RG_Plant_TropicalChokevine found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_TangleTea found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named GU_AlienSandFine found to give to RimWorld.BiomeDef RUT_Contagion
+Could not resolve cross-reference: No Verse.TerrainDef named GU_AlienSandFine found to give to RimWorld.BiomeDef RUT_Contagion
+Could not resolve cross-reference: No Verse.TerrainDef named GU_AlienSandFine found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named GU_AlienSand found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named GU_RichAlienSand found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_AlienTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_AlienGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_RedLeaves found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_RedPlantsTall found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_HalfAlienTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_TentacularPlant found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GlobularPlant found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_BloodBouquet found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_RustPuff found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_AlienTree_Polluted found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Jawa_Gamorrean_Guard found to give to RimWorld.PawnGenOption (null w=6.00 c=null)
+Could not resolve cross-reference: No Verse.ThingDef named RUT_DeadCreep found to give to RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBandFilth RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBandFilth
+Could not resolve cross-reference: No Verse.ThingDef named RUT_TibannaGas found to give to RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas
+Could not resolve cross-reference: No Verse.TerrainDef named RUT_ToxinSealant found to give to RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Arpeau found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named AB_HardenedGrassFertile found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Jawa_Gamorrean_Enforcer found to give to RimWorld.PawnGenOption (null w=2.00 c=null)
+Could not resolve cross-reference: No Verse.ThingDef named RUT_FoundrySalvageCache found to give to RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker
+Could not resolve cross-reference: No Verse.ThingDef named RUT_FoundryTowerEntrance found to give to RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Filth_MouseTrack found to give to RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail
+Could not resolve cross-reference to Verse.TerrainDef named RM_TarShallow (wanter=validTerrains)
+Could not resolve cross-reference: No Verse.WeatherDef named RSW_SW_RedFog found to give to RimWorld.WeatherCommonalityRecord RimWorld.WeatherCommonalityRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Sagecrust found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named IronScruff_PrimordialGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_TinkleGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named IronScruff_PrimordialTallGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named IronScruff_Bindweed found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_FirevineTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named AB_MycoticGrass found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named AB_MycoticSoilRich found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Jawa_Spawn_Hutt found to give to RimWorld.PawnGenOption (null w=1.00 c=null)
+Could not resolve cross-reference: No Verse.ThingDef named RUT_ScaldVent found to give to RimMandrake.EnvironmentalHazards.RM_ScattererValidator_NearThingDef RimMandrake.EnvironmentalHazards.RM_ScattererValidator_NearThingDef
+Could not resolve cross-reference to Verse.ThingDef named guy762_Robes_jawa (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_JawaHood (wanter=apparelRequired)
+Could not resolve cross-reference: No RimWorld.XenotypeDef named RSW_MandrakeJawa found to give to RimWorld.XenotypeChance RimWorld.XenotypeChance
+Could not resolve cross-reference to Verse.ThingDef named guy762_Robes_jawa (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_JawaHood (wanter=apparelRequired)
+Could not resolve cross-reference: No RimWorld.XenotypeDef named RSW_MandrakeJawa found to give to RimWorld.XenotypeChance RimWorld.XenotypeChance
+Could not resolve cross-reference: No RimWorld.XenotypeDef named RSW_MandrakeJawa found to give to RimWorld.XenotypeChance RimWorld.XenotypeChance
+Could not resolve cross-reference to Verse.ThingDef named guy762_Robes_jawa (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_JawaHood (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_Robes_jawa (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_JawaHood (wanter=apparelRequired)
+Could not resolve cross-reference: No RimWorld.XenotypeDef named RSW_MandrakeJawa found to give to RimWorld.XenotypeChance RimWorld.XenotypeChance
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_StormtrooperCuirass (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_StormtrooperHelmet (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_ImperialArmyCuirass (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_ImperialArmyHelmet (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_ImperialArmyPauldrons (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_ImperialOfficerUniform (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_ImperialOfficerCap (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_ImperialOfficerUniform_Black (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_ImperialOfficerCap_Black (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_MandoArmor_battle (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_MandoHelmet_supercom (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_Robes_jawa (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_JawaHood (wanter=apparelRequired)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_Durasteel found to give to Verse.PawnInventoryOption Verse.PawnInventoryOption
+Could not resolve cross-reference: No Verse.ThingDef named AB_Bryolux found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_Glowstool found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_Agarilux found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GiantAgarilux found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_GlowingAgarilux found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_LilacBeacon found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_WitchesOyster found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Dewshrooms found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_FruitingBodies found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_RecurvedStropharia found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_FlakespireFungus found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Pusmelon found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Sagecrust found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_ArbuscularMycorrhiza found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_SlimyPholiota found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_BleedingTooth found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Brightbell found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_CrimsonCap found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_GreyLady found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Shinecap found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_VioletWimple found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_MortalMorelPlant found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_AgaricusDomeCap found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_DribblingCap found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Skulltop found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_AgariluxPrime found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RSW_ShadeWhale found to give to Verse.PawnKindDef RSW_ShadeWhale
+Could not resolve cross-reference: No Verse.WeatherDef named RUT_RoilWeather found to give to RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension
+Could not resolve cross-reference: No RimWorld.StatDef named BoneAmount found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No Verse.ThingDef named RG_Plant_AridGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RG_Plant_CreepStern found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RG_Plant_CrimsonCushion found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Failed to find Verse.PawnKindDef named VAEWaste_Wasteboar. There are 916 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxscorpion. There are 916 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxiguana. There are 916 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxlion. There are 916 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxbear. There are 916 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxafox. There are 916 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Pestigator. There are 916 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Hydra. There are 916 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Wasteffalo. There are 916 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Wastedeer. There are 916 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_AttackTree. There are 365 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_AttackSelf. There are 365 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_EatWastepack. There are 365 defs of this type loaded.
+Failed to find Verse.HediffDef named VAEWaste_LongToxflu. There are 465 defs of this type loaded.
+Failed to find Verse.HediffDef named VAEWaste_Toxflu. There are 465 defs of this type loaded.
+Config error in RUT_RoilLock: EnvironmentalWeatherExtension has no effect configured at all.
+Config error in CannibalPirate: has a required meme which is not allowed: Cannibal
+Config error in PirateYttakin: has a required meme which is not allowed: AnimalPersonhood
+Config error in RSW_ToxinDependence: needClass is null
+Config error in RUT_ComplexStructures: LandmarkDef RUT_ComplexStructures has no mutators with a chance of 1 or higher.
+Config error in RUT_Slough_GelatinousBreach: LandmarkDef RUT_Slough_GelatinousBreach has no mutators with a chance of 1 or higher.
+Config error in RUT_Miasma: RM_GradientAxisExtension.waterBands' last band has max 0.34 < 1 — salinity above it would never be repainted.
+Config error in RUT_TheRot: RM_WarmGroundExtension lists no warmTerrains — no room can ever qualify, so the extension does nothing at all.
+Config error in RSW_ShadeWhale: no race
+Exception in ConfigErrors() of RSW_ShadeWhale: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 44156460]
+  at Verse.PawnKindDef+<ConfigErrors>d__156.MoveNext () [0x002c2] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DefDatabase`1[T].ErrorCheckAllDefs () [0x00065] in <61e4173561894da49d210260257b5097>:0 
+Config error in RUT_Jawa_Homestead_Grunt: Cheapest weapon with one of my weaponTags costs 135.4 but weaponMoney min is 130, so could end up weaponless.
+Config error in RUT_Jawa_Homestead_Heavy: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 300, so could end up weaponless.
+Config error in RUT_Jawa_Homestead_Specialist: Cheapest weapon with one of my weaponTags costs 530 but weaponMoney min is 450, so could end up weaponless.
+Config error in RUT_Jawa_DeepDesert_Grunt: Cheapest weapon with one of my weaponTags costs 164.25 but weaponMoney min is 150, so could end up weaponless.
+Config error in RUT_Jawa_Junkers_Specialist: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 200, so could end up weaponless.
+Config error in RM_Venomvine: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Venomvine: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RSW_LightPipeNub: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RSW_Ollim: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RSW_LightPipeNub: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RSW_Ollim: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RSW_Nizzek: has tool with linkedBodyPartsGroup FrontLeftPaw but body Bird has no parts with that group.
+Config error in RSW_Nizzek: has tool with linkedBodyPartsGroup FrontRightPaw but body Bird has no parts with that group.
+Config error in RSW_Nizzek: has tool with linkedBodyPartsGroup FrontLeftPaw but body Bird has no parts with that group.
+Config error in RSW_Orray: has tool with linkedBodyPartsGroup Teeth but body RSW_Orray has no parts with that group.
+Config error in RSW_Nizzek: has tool with linkedBodyPartsGroup FrontRightPaw but body Bird has no parts with that group.
+Config error in RSW_Orray: has tool with linkedBodyPartsGroup Teeth but body RSW_Orray has no parts with that group.
+Config error in RUT_BrineDeposit_Tekk: claimable item is compressible; faction will be unset after load
+Config error in RUT_BrineDeposit_Tekk: claimable item is compressible; faction will be unset after load
+Config error in RUT_BrineDeposit_Drazz: claimable item is compressible; faction will be unset after load
+Config error in RUT_BrineDeposit_BrinePlate: claimable item is compressible; faction will be unset after load
+Config error in RUT_BrineDeposit_Drazz: claimable item is compressible; faction will be unset after load
+Config error in RUT_BrineDeposit_BrinePlate: claimable item is compressible; faction will be unset after load
+Config error in RUT_BrinePlate: graphicClass is null
+Config error in RUT_BrinePlate: graphicClass is null
+Collection cannot init: No textures found at path Things/Plant/RM_Leachmoss
+Collection cannot init: No textures found at path Things/Plant/RM_Venomvine
+Collection cannot init: No textures found at path Things/Plants/AB_DessertTree
+Failed to find any textures at Things/Pawn/Animal/Terrorworm/TerrorWorm while constructing Multi(initPath=Things/Pawn/Animal/Terrorworm/TerrorWorm, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Collection cannot init: No textures found at path Things/Plant/RSW_LightPipeNub
+Collection cannot init: No textures found at path Things/Plant/RSW_Ollim
+Collection cannot init: No textures found at path Things/Plant/RSW_Ultracactus
+Could not load Texture2D at 'Things/Item/Plant/RSW_RawUltracactus' for def 'RSW_RawUltracactus' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Failed to find any textures at swanimals/DesertPort/Zakkro/Zakkro while constructing Multi(initPath=swanimals/DesertPort/Zakkro/Zakkro, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Collection cannot init: No textures found at path swresource/AbsorbedEggs/RSW_InsectEgg
+Collection cannot init: No textures found at path swresource/Trophies/BanthaHorn
+Collection cannot init: No textures found at path Things/Pawn/Animal/SeaBeasts/Mee/Mee_south
+Collection cannot init: No textures found at path Things/Pawn/Animal/SeaBeasts/Faa/Faa_south
+Collection cannot init: No textures found at path Things/Pawn/Animal/SeaBeasts/Laa/Laa_south
+Collection cannot init: No textures found at path swresource/RSW_ZakkroEgg
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F]
+  at Verse.RaceProperties.get_AnyPawnKind () [0x00019] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.ThingDef.ResolveIcon () [0x00042] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.BuildableDef.<PostLoad>b__78_0 () [0x00021] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not load Texture2D at 'Things/Building/Misc/DeepDrillPowered' for def 'RUT_FeverTrunkCore' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Building/Misc/DeepDrillPowered' for def 'RUT_GreatboleCore' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Item/Resource/RUT_Hardwood
+Collection cannot init: No textures found at path Things/Item/Resource/RUT_Greenwood
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/JadePlant/JadePlantA
+Collection cannot init: No textures found at path Things/Plant/AloeVera/AloeVeraA
+Collection cannot init: No textures found at path Things/Plant/Peyote/PeyoteA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA
+Collection cannot init: No textures found at path Things/Plant/SweetheartPlant/SweetheartPlantA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Schlumbergera/SchlumbergeraA
+Collection cannot init: No textures found at path Things/Plant/JadePlant/JadePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Item/Resource/RUT_Greenwood
+Collection cannot init: No textures found at path Things/Item/Resource/RUT_Hardwood
+Collection cannot init: No textures found at path Things/Item/ToxicMeat/ToxicMeat_a
+Collection cannot init: No textures found at path Things/Item/ToxicMeat/ToxicMeat_b
+Collection cannot init: No textures found at path Things/Item/ToxicMeat/ToxicMeat_c
+Collection cannot init: No textures found at path Things/Item/Special/JawaClaimRumour
+Collection cannot init: No textures found at path Things/Item/Resource/RUT_Greenwood
+Collection cannot init: No textures found at path swplants/Bloddle/BloddleA
+Collection cannot init: No textures found at path Things/Plant/AloeVera/AloeVeraB
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantB
+Collection cannot init: No textures found at path Things/Plant/SweetheartPlant/SweetheartPlantB
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantB
+Collection cannot init: No textures found at path Things/Plant/Schlumbergera/SchlumbergeraB
+Collection cannot init: No textures found at path Things/Plant/JadePlant/JadePlantB
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaB
+Collection cannot init: No textures found at path Things/Plants/AB_CrystalHorn/AB_CrystalHornA
+Collection cannot init: No textures found at path Things/Item/Resource/RUT_Hardwood
+Collection cannot init: No textures found at path Things/Plants/AB_CrystalHorn/AB_CrystalHornA
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1D87C7A6]
+  at Verse.ThingDef.<PostLoad>b__398_0 () [0x00046] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 
+Collection cannot init: No textures found at path Things/Plant/AloeVera/AloeVeraA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA
+Collection cannot init: No textures found at path Things/Plant/SweetheartPlant/SweetheartPlantA
+Collection cannot init: No textures found at path Things/Plant/Schlumbergera/SchlumbergeraA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Peyote/PeyoteA
+Collection cannot init: No textures found at path Things/Plants/AB_CrystalHorn/AB_CrystalHornA
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A6099C6F] Duplicate stacktrace, see ref for original
+Collection cannot init: No textures found at path Things/Plants/AB_DessertTree
+Collection cannot init: No textures found at path Things/Plant/RSW_Ollim
+RSW_Biomes_GiantSnail_Angry SubSound RSW_Biomes_GiantSnail_Angry_0 has no resolvedGrains.
+RSW_Pawn_Mantis_Call SubSound RSW_Pawn_Mantis_Call_0 has no resolvedGrains.
+RSW_Biomes_GiantSnail_Death SubSound RSW_Biomes_GiantSnail_Death_0 has no resolvedGrains.
+RSW_Biomes_GiantSnail_Wounded SubSound RSW_Biomes_GiantSnail_Wounded_0 has no resolvedGrains.
+RSW_Biomes_GiantSnail_Call SubSound RSW_Biomes_GiantSnail_Call_0 has no resolvedGrains.
+KCSG has Created 7292 symbolDefs for vanilla and DLCs
+[RimMandrake.StarWars.WeatherSuite] loaded — terminator-band and nightside-band geometry checks armed (MapComponent_TerminatorBand, IncidentWorker_NightsideAurora). No Harmony patches: both hooks are ordinary MapComponent/IncidentWorker overrides.
+Type RUT_WeatherOverlay_ScaldSteam probably needs a StaticConstructorOnStartup attribute, because it has a field SteamOverlayWorld of type Material. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 6)
+MVCF successfully applied 0 patches
+Unloading 228 unused Assets to reduce memory usage. Loaded Objects now: 34601.
+Total: 220.499400 ms (FindLiveObjects: 1.129500 ms CreateObjectMapping: 1.291700 ms MarkObjects: 217.676600 ms  DeleteObjects: 0.401400 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=21 elapsedMs=43388
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=429 elapsedMs=43818
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=43818
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=43820
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=43820
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=43820
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=43820
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=43821
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=43824
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=43825
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=1 elapsedMs=43826
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=43828
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=25 elapsedMs=43854
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=466 elapsedMs=43855
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=26 elapsedMs=43855
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: a62a46cea18543cb9de6f21d3ed5edb6
+[JawaBench] ready: 335 tools, build e54bff34692c
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] context: modSet 19/92dfc78d, toolSet a0bbec1b, defDump ARMED, engine 1.6.4871 rev591
+Error in WorldGenStep: System.ArgumentNullException: Value cannot be null.
+Parameter name: key
+[Ref F3A51647]
+ [0x00006] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].FindEntry (TKey key) [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].TryGetValue (TKey key, TValue& value) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.GenWorker`1[T].Get (System.Type type) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.BiomeDef.get_Worker () [0x0000a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Terrain.BiomeFrom (RimWorld.Planet.Tile ws, RimWorld.Planet.PlanetTile tile, RimWorld.Planet.PlanetLayer layer) [0x0002d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Terrain.GenerateTileFor (RimWorld.Planet.PlanetTile tile, RimWorld.Planet.PlanetLayer layer) [0x001c9] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Tiles.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00017] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Terrain.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x0001f] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref FCD67343]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.CalculatedMovementDifficultyAt (RimWorld.Planet.PlanetTile tile, System.Boolean perceivedStatic, System.Nullable`1[T] ticksAbs, System.Text.StringBuilder explanation) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.RecalculatePerceivedMovementDifficultyAt (RimWorld.Planet.PlanetTile tile, System.Boolean& needsRecache, System.Nullable`1[T] ticksAbs) [0x0002a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.RecalculateLayerPerceivedPathCosts (RimWorld.Planet.PlanetLayer layer, System.Nullable`1[T] ticksAbs) [0x00028] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.RecalculateLayerPerceivedPathCosts (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Rivers.GenerateRivers (RimWorld.Planet.PlanetLayer layer) [0x0000b] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Rivers.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 60A848AD]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder+<>c__DisplayClass2_0.<RandomSettlementTileFor>b__1 (System.Int32 x) [0x00029] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX VFEInsectoidsMod: Boolean VFEInsectoids.TileFinder_RandomSettlementTileFor_Patch:Prefix(Single& __result, Int32 x, Faction ___faction)
+    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Patch:Postfix(Single& __result, Int32 x)
+  at Verse.GenCollection.TryRandomElementByWeight[T] (System.Collections.Generic.IEnumerable`1[T] source, System.Func`2[T,TResult] weightSelector, T& result) [0x0012a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder.RandomSettlementTileFor (RimWorld.Planet.PlanetLayer layer, RimWorld.Faction faction, System.Boolean mustBeAutoChoosable, System.Predicate`1[T] extraValidator) [0x0007d] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Patch+VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Prefix_Patch:Prefix(Faction faction)
+    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Patch+VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Prefix_Patch:Postfix()
+  at RimWorld.Planet.WorldGenStep_AncientSites.GenerateAncientSites (RimWorld.Planet.PlanetLayer layer) [0x0004c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_AncientSites.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref A4388C76]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.CalculatedMovementDifficultyAt (RimWorld.Planet.PlanetTile tile, System.Boolean perceivedStatic, System.Nullable`1[T] ticksAbs, System.Text.StringBuilder explanation) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.RecalculatePerceivedMovementDifficultyAt (RimWorld.Planet.PlanetTile tile, System.Boolean& needsRecache, System.Nullable`1[T] ticksAbs) [0x0002a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.RecalculateLayerPerceivedPathCosts (RimWorld.Planet.PlanetLayer layer, System.Nullable`1[T] ticksAbs) [0x00028] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_AncientRoads.GenerateAncientRoads (RimWorld.Planet.PlanetLayer layer) [0x00012] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_AncientRoads.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 39B42966]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Pollution.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x0001c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref B9A84287]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.SurfaceLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (System.Int32 tileID) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at VFEInsectoids.TileFinder_RandomSettlementTileFor_Patch.Prefix (System.Single& __result, System.Int32 x, RimWorld.Faction ___faction) [0x00018] in <bc9812dd4574446189dbbee773c3b831>:0 
+  at RimWorld.Planet.TileFinder+<>c__DisplayClass2_0.<RandomSettlementTileFor>b__1 (System.Int32 x) [0x00015] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX VFEInsectoidsMod: Boolean VFEInsectoids.TileFinder_RandomSettlementTileFor_Patch:Prefix(Single& __result, Int32 x, Faction ___faction)
+    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Patch:Postfix(Single& __result, Int32 x)
+  at Verse.GenCollection.TryRandomElementByWeight[T] (System.Collections.Generic.IEnumerable`1[T] source, System.Func`2[T,TResult] weightSelector, T& result) [0x0012a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder.RandomSettlementTileFor (RimWorld.Planet.PlanetLayer layer, RimWorld.Faction faction, System.Boolean mustBeAutoChoosable, System.Predicate`1[T] extraValidator) [0x0007d] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Patch+VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Prefix_Patch:Prefix(Faction faction)
+    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Patch+VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Prefix_Patch:Postfix()
+  at RimWorld.FactionGenerator.NewGeneratedFaction (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionGeneratorParms parms) [0x00209] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX OskarPotocki.VEF: Void VEF.Planet.VanillaExpandedFramework_FactionGenerator_NewGeneratedFaction_Patch:Postfix(PlanetLayer layer, FactionGeneratorParms parms, Faction& __result)
+  at RimWorld.FactionGenerator.CreateFactionAndAddToManager (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionDef facDef) [0x000cf] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.AddFactionToManager (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionDef facDef) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.InitializeFactions (RimWorld.Planet.PlanetLayer layer, System.Collections.Generic.List`1[T] factions) [0x000b0] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.GenerateFactionsIntoWorldLayer (RimWorld.Planet.PlanetLayer layer, System.Collections.Generic.List`1[T] factions) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Factions.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 186A1C29]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder+<>c__DisplayClass2_0.<RandomSettlementTileFor>b__1 (System.Int32 x) [0x00029] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX VFEInsectoidsMod: Boolean VFEInsectoids.TileFinder_RandomSettlementTileFor_Patch:Prefix(Single& __result, Int32 x, Faction ___faction)
+    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Patch:Postfix(Single& __result, Int32 x)
+  at Verse.GenCollection.TryRandomElementByWeight[T] (System.Collections.Generic.IEnumerable`1[T] source, System.Func`2[T,TResult] weightSelector, T& result) [0x0012a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder.RandomSettlementTileFor (RimWorld.Planet.PlanetLayer layer, RimWorld.Faction faction, System.Boolean mustBeAutoChoosable, System.Predicate`1[T] extraValidator) [0x0007d] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Patch+VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Prefix_Patch:Prefix(Faction faction)
+    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Patch+VanillaExpandedFramework_TileFinder_RandomSettlementTileFor_Prefix_Patch:Postfix()
+  at RimWorld.Planet.WorldGenStep_Roads.GenerateRoadEndpoints (RimWorld.Planet.PlanetLayer layer) [0x0007d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Roads.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 5DE2A56E]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (RimWorld.Planet.PlanetTile tile) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.LandmarkDef.IsValidTile (RimWorld.Planet.PlanetTile tile, RimWorld.Planet.PlanetLayer layer, System.Boolean canUseCache) [0x0000b] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Landmarks.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00148] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Island: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_FloodFill.CalculateRootsAndPossiblyAllowedTiles (RimWorld.Planet.PlanetLayer layer) [0x00021] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_FloodFill.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Archipelago: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref CB80C57E]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Archipelago.IsRoot (RimWorld.Planet.PlanetTile tile) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Cluster.CalculateRootTiles (RimWorld.Planet.PlanetLayer layer) [0x0001f] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Cluster.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Peninsula: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 7820BBC4]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Peninsula.IsRoot (RimWorld.Planet.PlanetTile tile) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Protrusion.CalculateRoots (RimWorld.Planet.PlanetLayer layer) [0x0001f] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Protrusion.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Bay: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref BE2EC8EF]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Bay.IsRoot (RimWorld.Planet.PlanetTile tile) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Protrusion.CalculateRoots (RimWorld.Planet.PlanetLayer layer) [0x0001f] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Protrusion.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Lake: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def Sea: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def OceanBay: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref BE2EC8EF] Duplicate stacktrace, see ref for original
+Could not generate world features of def Ocean: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def OuterOcean: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 1BF1316A]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_OuterOcean.CanTraverse (RimWorld.Planet.PlanetTile tile) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_OuterOcean.IsRoot (RimWorld.Planet.PlanetTile tile) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_OuterOcean.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00031] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def MountainRange: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref C15F7B43]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_MountainRange.IsRoot (RimWorld.Planet.PlanetTile tile) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Cluster.CalculateRootTiles (RimWorld.Planet.PlanetLayer layer) [0x0001f] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Cluster.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Desert: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def TemperateSwamp: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def TropicalSwamp: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def ColdBog: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def TemperateForest: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def Scarlands: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def LavaField: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def GlacialPlain: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def Glowforest: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def TropicalRainforest: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def BorealForest: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def AridShrubland: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def IceSheet: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def Tundra: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def Grasslands: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+No tiles on layer RimWorld.SurfaceLayer, layer should have a world gen step worker which initializes tiles such as WorldGenStep_Tiles
+Unloading 3 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.904800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 34796.
+Total: 170.460800 ms (FindLiveObjects: 1.053800 ms CreateObjectMapping: 1.141600 ms MarkObjects: 168.193900 ms  DeleteObjects: 0.071000 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - sarg.alphaanimals
+  - mandrake.rm.creaturebehaviors
+  - mandrake.rm.environmentalhazards
+  - mandrake.rm.proximityhatch
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.ashkarrflora
+  - mandrake.rut.patches
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 83742,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref D21F2223]
+  at RimWorld.ScenPart_StartingAnimal+<>c__DisplayClass8_0.<PossibleAnimals>b__0 (Verse.PawnKindDef td) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at System.Linq.Utilities+<>c__DisplayClass1_0`1[TSource].<CombinePredicates>b__0 (TSource x) [0x00000] in <1f993cbf88314b1baa1e10ca917bdc64>:0 
+  at System.Linq.Enumerable+WhereListIterator`1[TSource].MoveNext () [0x00037] in <1f993cbf88314b1baa1e10ca917bdc64>:0 
+  at Verse.GenCollection.TryRandomElementByWeight[T] (System.Collections.Generic.IEnumerable`1[T] source, System.Func`2[T,TResult] weightSelector, T& result) [0x00228] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.GenCollection.RandomElementByWeightWithFallback[T] (System.Collections.Generic.IEnumerable`1[T] source, System.Func`2[T,TResult] weightSelector, T fallback) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.ScenPart_StartingAnimal+<PlayerStartingThings>d__17.MoveNext () [0x0004a] in <61e4173561894da49d210260257b5097>:0 
+  at System.Collections.Generic.List`1[T].AddEnumerable (System.Collections.Generic.IEnumerable`1[T] enumerable) [0x00059] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].InsertRange (System.Int32 index, System.Collections.Generic.IEnumerable`1[T] collection) [0x000f4] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].AddRange (System.Collections.Generic.IEnumerable`1[T] collection) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.ScenPart_PlayerPawnsArriveMethod.GenerateIntoMap (Verse.Map map) [0x0002e] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Scenario.GenerateIntoMap (Verse.Map map) [0x00014] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.GenStep_ScenParts.Generate (Verse.Map map, Verse.GenStepParams parms) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.MapGenerator.GenerateContentsIntoMap (System.Collections.Generic.IEnumerable`1[T] genStepDefs, Verse.Map map, System.Int32 seed, System.Boolean stepDebugger) [0x0016a] in <61e4173561894da49d210260257b5097>:0 
+[RimMandrake.StarWars.WeatherSuite] no PlanetGeometryDef loaded — terminator-band and nightside-band checks will always return false. The RimUtinni wiring mod ships the one Ash'karr needs.
+[RM EnvironmentalHazards] RM_GenStep_EdgeBandFilth from def RUT_ContagionRingScatter has no filthDef configured — nothing to paint.
+Scatterer Verse.GenStep_ScatterThings from def RUT_Jawa_ScatterWastelandBrineTekk could not find cell to generate at.
+Scatterer Verse.GenStep_ScatterThings from def RUT_Jawa_ScatterWastelandBrineDrazz could not find cell to generate at.
+Scatterer Verse.GenStep_ScatterThings from def RUT_Jawa_ScatterWastelandBrinePlate could not find cell to generate at.
+[RM EnvironmentalHazards] RM_ScattererValidator_NearThingDef has no thingDef configured — refusing every site rather than placing globally.
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 67AB645E]
+  at RimWorld.BiomeDef.CommonalityOfAnimal (Verse.PawnKindDef animalDef) [0x0007d] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX com.alphaanimals: Void AlphaBehavioursAndEvents.AlphaAnimals_BiomeDef_CommonalityOfAnimal_Patch:MultiplyAlphaAnimalCommonality(PawnKindDef animalDef, Single& __result)
+  at RimWorld.BiomeDef+<get_AllWildAnimals>d__94.MoveNext () [0x00049] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildAnimalSpawner.get_DesiredAnimalDensity () [0x000b7] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX VFEInsectoidsMod: Void VFEInsectoids.WildAnimalSpawner_DesiredAnimalDensity_Patch:Postfix(Single& __result, WildAnimalSpawner __instance)
+  at RimWorld.WildAnimalSpawner.get_DesiredTotalAnimalWeight () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildAnimalSpawner.get_AnimalEcosystemFull () [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.GenStep_Animals.Generate (Verse.Map map, Verse.GenStepParams parms) [0x00032] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.MapGenerator.GenerateContentsIntoMap (System.Collections.Generic.IEnumerable`1[T] genStepDefs, Verse.Map map, System.Int32 seed, System.Boolean stepDebugger) [0x0016a] in <61e4173561894da49d210260257b5097>:0 
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref C5A6F7DD]
+  at Verse.DebugToolsSpawning.GetCategoryForPawnKind (Verse.PawnKindDef kindDef) [0x00014] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DebugToolsSpawning.SpawnPawn () [0x00083] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.DebugActionNode.TrySetupChildren () [0x00010] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.Dialog_Debug.GetNode (System.String path) [0x0005b] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.Dialog_DevPalette.EnsureAllNodesValid () [0x00021] in <61e4173561894da49d210260257b5097>:0 
+LudeonTK.Dialog_DevPalette..ctor()
+  at Verse.DebugWindowsOpener.TryOpenOrClosePalette () [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Game+<>c.<FinalizeInit>b__86_0 () [0x0000f] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 41189.
+Total: 194.585500 ms (FindLiveObjects: 1.245600 ms CreateObjectMapping: 1.393500 ms MarkObjects: 191.883000 ms  DeleteObjects: 0.063200 ms)
+
+Random state stack is not empty. There were more calls to PushState than PopState. Fixing.
+[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=83745,0 BEFORE GetOrGenerateMap
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 77860930]
+  at VEF.Factions.VanillaExpandedFramework_GenStep_Settlement_ScatterAt_Patch.SettlementGenerationSymbol (System.String original, RimWorld.Faction faction) [0x00000] in <7eddde1c14e54f10a749f8be0aad91e2>:0 
+  at RimWorld.GenStep_Settlement.ScatterAt (Verse.IntVec3 c, Verse.Map map, Verse.GenStepParams parms, System.Int32 stackCount) [0x0014e] in <61e4173561894da49d210260257b5097>:0 
+    - TRANSPILER OskarPotocki.VEF: IEnumerable`1 VEF.Factions.VanillaExpandedFramework_GenStep_Settlement_ScatterAt_Patch:Transpiler(IEnumerable`1 instructions)
+  at Verse.GenStep_Scatterer.Generate (Verse.Map map, Verse.GenStepParams parms) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.MapGenerator.GenerateContentsIntoMap (System.Collections.Generic.IEnumerable`1[T] genStepDefs, Verse.Map map, System.Int32 seed, System.Boolean stepDebugger) [0x0016a] in <61e4173561894da49d210260257b5097>:0 
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 9EFD084]
+  at RimWorld.WildPlantSpawner.EnoughLowerOrderPlantsNearby (Verse.IntVec3 c, System.Single plantDensityFactor, System.Single radiusToScan, Verse.ThingDef plantDef) [0x00056] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildPlantSpawner.CalculatePlantsWhichCanGrowAt (Verse.IntVec3 c, System.Collections.Generic.List`1[T] outPlants, System.Boolean cavePlants, System.Single plantDensityFactor) [0x00100] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildPlantSpawner.CheckSpawnWildPlantAt (Verse.IntVec3 c, System.Single plantDensityFactor, System.Single wholeMapNumDesiredPlants, System.Boolean setRandomGrowth) [0x000b5] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.GenStep_Plants.Generate (Verse.Map map, Verse.GenStepParams parms) [0x0003f] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.MapGenerator.GenerateContentsIntoMap (System.Collections.Generic.IEnumerable`1[T] genStepDefs, Verse.Map map, System.Int32 seed, System.Boolean stepDebugger) [0x0016a] in <61e4173561894da49d210260257b5097>:0 
+StatRequest for null def.
+StatRequest for null def.
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 8595EE3A]
+  at VEF.AnimalBehaviours.VanillaExpandedFramework_MapTemperature_SeasonAcceptableFor_Patch.AllowAnimalSpawns (Verse.ThingDef animalRace, System.Boolean& __result, Verse.Map ___map) [0x0001b] in <7eddde1c14e54f10a749f8be0aad91e2>:0 
+  at Verse.MapTemperature.SeasonAcceptableFor (Verse.ThingDef animalRace, System.Single buffer) [0x0003f] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX OskarPotocki.VEF: Void VEF.AnimalBehaviours.VanillaExpandedFramework_MapTemperature_SeasonAcceptableFor_Patch:AllowAnimalSpawns(ThingDef animalRace, Boolean& __result, Map ___map)
+    - POSTFIX com.alphaanimals: Void AlphaBehavioursAndEvents.AlphaAnimals_MapTemperature_SeasonAcceptableFor_Patch:AllowAnimalSpawns(ThingDef animalRace, Boolean& __result)
+  at RimWorld.WildAnimalSpawner.get_DesiredAnimalDensity () [0x00091] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX VFEInsectoidsMod: Void VFEInsectoids.WildAnimalSpawner_DesiredAnimalDensity_Patch:Postfix(Single& __result, WildAnimalSpawner __instance)
+  at RimWorld.WildAnimalSpawner.get_DesiredTotalAnimalWeight () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildAnimalSpawner.get_AnimalEcosystemFull () [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.GenStep_Animals.Generate (Verse.Map map, Verse.GenStepParams parms) [0x00032] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.MapGenerator.GenerateContentsIntoMap (System.Collections.Generic.IEnumerable`1[T] genStepDefs, Verse.Map map, System.Int32 seed, System.Boolean stepDebugger) [0x0016a] in <61e4173561894da49d210260257b5097>:0 
+[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=83745,0 got map.Tile=83745,0 map.uniqueID=1 map.Index=1
+Random state stack is not empty. There were more calls to PushState than PopState. Fixing.
+[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=83750,0 BEFORE GetOrGenerateMap
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 77860930] Duplicate stacktrace, see ref for original
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 67AB645E] Duplicate stacktrace, see ref for original
+[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=83750,0 got map.Tile=83750,0 map.uniqueID=2 map.Index=2
+Random state stack is not empty. There were more calls to PushState than PopState. Fixing.
+[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=83752,0 BEFORE GetOrGenerateMap
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 77860930] Duplicate stacktrace, see ref for original
+[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=83752,0 got map.Tile=83752,0 map.uniqueID=3 map.Index=3
+Random state stack is not empty. There were more calls to PushState than PopState. Fixing.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 53975.
+Total: 261.097800 ms (FindLiveObjects: 1.665600 ms CreateObjectMapping: 1.934500 ms MarkObjects: 257.409700 ms  DeleteObjects: 0.087600 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47611.
+Total: 229.941200 ms (FindLiveObjects: 1.951000 ms CreateObjectMapping: 1.876200 ms MarkObjects: 226.053400 ms  DeleteObjects: 0.060400 ms)
+
+StatRequest for null def.
+StatRequest for null def.
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 48B0E9CC]
+  at VEF.AnimalBehaviours.VanillaExpandedFramework_MapTemperature_SeasonAcceptableFor_Patch.AllowAnimalSpawns (Verse.ThingDef animalRace, System.Boolean& __result, Verse.Map ___map) [0x0001b] in <7eddde1c14e54f10a749f8be0aad91e2>:0 
+  at Verse.MapTemperature.SeasonAcceptableFor (Verse.ThingDef animalRace, System.Single buffer) [0x0003f] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX OskarPotocki.VEF: Void VEF.AnimalBehaviours.VanillaExpandedFramework_MapTemperature_SeasonAcceptableFor_Patch:AllowAnimalSpawns(ThingDef animalRace, Boolean& __result, Map ___map)
+    - POSTFIX com.alphaanimals: Void AlphaBehavioursAndEvents.AlphaAnimals_MapTemperature_SeasonAcceptableFor_Patch:AllowAnimalSpawns(ThingDef animalRace, Boolean& __result)
+  at RimWorld.WildAnimalSpawner.get_DesiredAnimalDensity () [0x00091] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX VFEInsectoidsMod: Void VFEInsectoids.WildAnimalSpawner_DesiredAnimalDensity_Patch:Postfix(Single& __result, WildAnimalSpawner __instance)
+  at RimWorld.WildAnimalSpawner.get_DesiredTotalAnimalWeight () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildAnimalSpawner.get_AnimalEcosystemFull () [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildAnimalSpawner.WildAnimalSpawnerTick () [0x00012] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Map.MapPostTick () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX VFEInsectoidsMod: Void VFEInsectoids.Map_MapPostTick_Patch:Postfix(Map __instance)
+StatRequest for null def.
+StatRequest for null def.
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 48B0E9CC] Duplicate stacktrace, see ref for original
+StatRequest for null def.
+StatRequest for null def.
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 48B0E9CC] Duplicate stacktrace, see ref for original
+StatRequest for null def.
+StatRequest for null def.
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 48B0E9CC] Duplicate stacktrace, see ref for original
+StatRequest for null def.
+StatRequest for null def.
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 48B0E9CC] Duplicate stacktrace, see ref for original
+StatRequest for null def.
+StatRequest for null def.
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 48B0E9CC] Duplicate stacktrace, see ref for original
+StatRequest for null def.
+StatRequest for null def.
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 48B0E9CC] Duplicate stacktrace, see ref for original
+StatRequest for null def.
+StatRequest for null def.
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 48B0E9CC] Duplicate stacktrace, see ref for original
+StatRequest for null def.
+StatRequest for null def.
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 48B0E9CC] Duplicate stacktrace, see ref for original
