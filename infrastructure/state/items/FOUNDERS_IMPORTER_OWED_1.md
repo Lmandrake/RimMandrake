@@ -163,3 +163,23 @@ clique. That is the whole remaining step.
 unrelated live-verify batch, and ⛔ taking it would have ended their session. The game was
 already up on the full 618-mod list — so whoever gets the next bridge window should spend
 it here first; the artifact is built and waiting.
+
+
+## ⚠️ the live load was ATTEMPTED 2026-09-20 ~19:00 and DID NOT RUN
+
+BENCH took the bridge the moment it freed and called `rimworld/load_game` on
+`FOUNDER_IMPORTER_LIVETEST_2026-09-21`. **The save was never loaded.**
+
+MEASURED: the name `FOUNDER_IMPORTER_LIVETEST` appears **0 times** in `Player.log`, and
+`rimworld/load_game` returned no response at all — the bridge was already unreachable
+(`WinError 10061`) and `tasklist.exe` showed no RimWorld process. The game had died
+independently, during a map generation this window did not drive
+(`MAPGEN_NRE_FULL_LIST_20260920_1`).
+
+🔴 **So this is NOT evidence against the importer.** Nothing was tested. An earlier report
+in that sitting said the load had crashed the game; that was wrong and was corrected once
+the log was actually read — the log had been truncated by a process restart, which is what
+made a crash look like *this* crash.
+
+⇒ The live load is still owed, unchanged. The artifact is built and waiting; the next
+bridge window on a healthy game closes it.
