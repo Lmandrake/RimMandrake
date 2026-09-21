@@ -61,3 +61,31 @@ these; they were the rows where the sheet had lied to him and he chose not to ru
 `validate_patch.py` with BOTH `--defs` and `--live`, then confirm from a post-load def
 dump — not from the patch file. A `PatchOperationConditional` returns true on no match,
 so a clean log does not prove a size landed.
+
+## state (2026-09-21, FOUNDRY) — already applied, deployed, now closing
+
+The 11 rulings were already applied and committed at `dab0bba2b` (2026-09-19) — checked
+source directly: all 10 flora targets' `visualSizeRange` max and the colossus PawnKindDef's
+adult `drawSize` already match every ruling in the table above byte-for-byte, and the 5
+undecided rows are byte-unchanged. That commit's own message flagged two things still
+owed: **deploy**, and a **post-load def dump check** (a `PatchOperationConditional` returns
+true on no match, so a clean source diff alone doesn't prove it landed live).
+
+**Deploy**: `deploy_custom_mods.py --mod RotSporeKit` / `--mod UtinniPatches` both already
+report "in sync" — the fix has been in the live Mods folder for some time, nothing to push.
+
+**Post-load verification**: read `ThingDef.json` from the most recent def dump
+(`captures/2026-09-21T08-56-31Z`, mods=post-rename). The dump does not carry the nested
+`<plant>` block at all (a known blind-spot of this capture format — no `visualSizeRange`
+on ANY ThingDef in it, donor or ours), so the exact numeric field is UNMEASURABLE by this
+instrument. What IS measurable: the **label** field, set by a sibling operation inside the
+same `PatchOperationSequence`/outer `PatchOperationConditional` as the `visualSizeRange`
+replace. All 5 AB_ donor labels read live as their campaign renames (`skarrow dome`,
+`turrok shelf`, `vokkun pillar`, `bollusk trunk`, `ruvvak weeper`) — proof the same gated
+operation block actually fired against the live defs, not silently no-op'd for a missing
+donor mod. Combined with the original commit's own `validate_patch.py --live --defs: 0
+errors` and the source match, this is as much confirmation as the available instruments
+give; the `<plant>` field itself was never independently re-measured live and is not
+claimed as MEASURED.
+
+Closing.
