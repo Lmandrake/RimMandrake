@@ -10530,3 +10530,13 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-21T04:27:25Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T04:27:27Z"}
 {"seat":"FOUNDRY","event":"close","id":"FOUNDER_ROBE_MAGENTA_1","sha":"435086e29810c269e3695ecc20db1f602ab2174a","ts":"2026-09-21T04:27:55Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ASHKARRFLORA_NOT_IN_MODLIST_1","ts":"2026-09-21T04:29:31Z"}
+{"seat":"FOUNDRY","event":"start","id":"ASHKARRFLORA_NOT_IN_MODLIST_1","ts":"2026-09-21T04:29:32Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FILTH_ON_NATURAL_TERRAIN_NOOP_1","ts":"2026-09-21T04:29:33Z"}
+{"seat":"FOUNDRY","event":"start","id":"FILTH_ON_NATURAL_TERRAIN_NOOP_1","ts":"2026-09-21T04:29:34Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"ASHKARRFLORA_NOT_IN_MODLIST_1: add mandrake.rut.ashkarrflora to FULL list and live-verify","ts":"2026-09-21T04:31:06Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"restart to load the corrected full mod list with AshkarrFlora added","ts":"2026-09-21T04:31:26Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-21T04:31:32Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-21T05:12:36Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T05:12:47Z"}
+{"seat":"FOUNDRY","event":"close","id":"ASHKARRFLORA_NOT_IN_MODLIST_1","sha":"ad6d1fd579897b577c25030b3b3ef05ee3acfe2e","ts":"2026-09-21T05:13:23Z"}

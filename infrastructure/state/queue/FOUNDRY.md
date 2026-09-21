@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T04:27:55Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-21T05:13:23Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -945,6 +945,15 @@ kind:     build
 summary:  SHRUBLANDGIANTENRAGE1 — RSWShrublandGiant: large-young life-stage + parental enrage-on-approach C
 prose:    infrastructure/state/items/SHRUBLAND_GIANT_ENRAGE_1.md
 
+## FILTH_ON_NATURAL_TERRAIN_NOOP_1 Filth_AnimalFilth cannot be placed on natural ground - dung and churned-ground are no-ops outdoors
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  FILTHONNATURALTERRAINNOOP1 — FilthAnimalFilth cannot be placed on natural ground
+prose:    infrastructure/state/items/FILTH_ON_NATURAL_TERRAIN_NOOP_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1410,26 +1419,6 @@ kind:     build
 thin:     no ## spec, no ## verify
 summary:  VENOMVINEFORTRESSPASSABILITY1 — venomvine fortress: size-gated passability C for the shrubland thicket
 prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
-
-## ASHKARRFLORA_NOT_IN_MODLIST_1 mandrake.rut.ashkarrflora is in no stored mod list, so RUT_Staggerseed and RUT_Fuzz can never spawn in the campaign
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify
-summary:  ASHKARRFLORANOTINMODLIST1 — a mod we ship is in no stored mod list, so two of its plants can never spawn
-prose:    infrastructure/state/items/ASHKARRFLORA_NOT_IN_MODLIST_1.md
-
-## FILTH_ON_NATURAL_TERRAIN_NOOP_1 Filth_AnimalFilth cannot be placed on natural ground - dung and churned-ground are no-ops outdoors
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec
-summary:  FILTHONNATURALTERRAINNOOP1 — FilthAnimalFilth cannot be placed on natural ground
-prose:    infrastructure/state/items/FILTH_ON_NATURAL_TERRAIN_NOOP_1.md
 
 ## VENOMVINE_PATHCOST_AND_FLYER_1 Venomvine: pathCost 60 avoidance in practice, and the flyer exemption
 state:    proposed
