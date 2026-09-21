@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T07:50:08Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-21T07:58:05Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1397,8 +1397,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_DEFNAME_RENAME_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. RMFEPyrelands → RMPyrelands across all 14 files, including the 3 C string
 prose:    infrastructure/state/items/PYRELANDS_DEFNAME_RENAME_1.md
 
 ## SCARLANDS_RENAME_OURS_1 RUT_Scarlands collides with vanilla Odyssey Scarlands - owner ruled rename OURS
@@ -1407,6 +1407,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SCARLANDS_RENAME_OURS_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Take the replacement name from WORLDLABELSIZEHIERARCHY1's sibling draft file
 prose:    infrastructure/state/items/SCARLANDS_RENAME_OURS_1.md
+
+## UMBRA_IS_A_REGION_NOT_A_BIOME_1 RUT_Umbra is a REGION, not a biome - owner ruled it out of the biome list
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/UMBRA_IS_A_REGION_NOT_A_BIOME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/UMBRA_IS_A_REGION_NOT_A_BIOME_1.md
