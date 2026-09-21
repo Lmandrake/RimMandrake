@@ -52,6 +52,15 @@ namespace RimMandrake.GelatinousSlime
         // whatever stage it rolled and never moves off it.
         public static bool titanoslimeGrows = true;
 
+        // SLIME_GENE_ARCHIVE_BUILD_1: on (default) is the shipped mechanism
+        // GeneArchiveDef.priority exists for — the highest-priority archive
+        // with any targetGenes wins, so the campaign's own frozen gene
+        // lists (RUT_SlimeGeneArchive, priority 100) replace this mod's
+        // 17-entry universal default (priority 0) with no patch. Off: this
+        // mod ignores any higher-priority archive and always offers its own
+        // universal list, even in a campaign that ships a better one.
+        public static bool preferHigherPriorityArchive = true;
+
         // On: mass can decrease again — starving, dry ground and wounds take
         // it back, so nothing is permanently huge. OFF is the owner's shipped
         // default (ruling, 2026-09-21, TITANOSLIME_SLIME_BIOME_1): growth is
@@ -69,6 +78,7 @@ namespace RimMandrake.GelatinousSlime
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref preferHigherPriorityArchive, "preferHigherPriorityArchive", true, true);
             Scribe_Values.Look(ref rarityFactor, "rarityFactor", 1f, true);
             Scribe_Values.Look(ref flavorEntryRecorded, "flavorEntryRecorded", true, true);
             Scribe_Values.Look(ref flavorReadMarks, "flavorReadMarks", true, true);
@@ -84,6 +94,15 @@ namespace RimMandrake.GelatinousSlime
         {
             Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
             list.Begin(inRect);
+
+            list.Label("THE GENE ARCHIVE");
+            list.CheckboxLabeled("Prefer the higher-priority gene archive", ref preferHigherPriorityArchive,
+                "On (default): if another mod or the campaign ships its own gene archive with a "
+                + "higher priority than this mod's own 17-entry universal one, the gene machine "
+                + "offers that archive instead — this is how a campaign swaps in its own gene "
+                + "lists with no patch. Off: always use this mod's own universal archive, even "
+                + "if a higher-priority one is loaded.");
+            list.GapLine();
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 the gelatinous slime never generates on a new planet. "
@@ -193,6 +212,7 @@ namespace RimMandrake.GelatinousSlime
         {
             base.WriteSettings();
             TitanoslimeSpawnTuning.Apply();
+            GeneArchiveDef.InvalidateActiveCache();
         }
     }
 
@@ -239,5 +259,16 @@ namespace RimMandrake.GelatinousSlime
 
         public static readonly TerrainDef SlimeLiquid =
             DefDatabase<TerrainDef>.GetNamedSilentFail("RM_Slime_Liquid");
+
+        // SLIME_GENE_ARCHIVE_BUILD_1 — the two P7-named exceptions
+        // (the_slime_gene_lists.md): B25 doubles the Slime-marked
+        // increment, A16 fights it to a draw. GetNamedSilentFail, not
+        // [DefOf]: both genes are Biotech-gated and this mod must still
+        // load clean without Biotech.
+        public static readonly GeneDef TheReek =
+            DefDatabase<GeneDef>.GetNamedSilentFail("RM_Gene_B25_TheReek");
+
+        public static readonly GeneDef PheromoneCharm =
+            DefDatabase<GeneDef>.GetNamedSilentFail("RM_Gene_A16_PheromoneCharm");
     }
 }

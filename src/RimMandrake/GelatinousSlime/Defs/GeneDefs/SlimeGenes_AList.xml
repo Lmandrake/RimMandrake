@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    SLIME_GENE_ARCHIVE_BUILD_1 — the A-list (targets), from
+    design/Jawa/worldbuilding/biomes/the_slime_gene_lists.md, FROZEN
+    2026-09-07. 33 usable entries (A1-A22 "from the visitors", A24-A34
+    "from the local denizens" — A23 battle premonition is STRUCK, owner
+    ruling, and is not built). A34 "Slime-resistant" is NOT re-authored
+    here: it is the mod's own RM_Gene_SlimeResistance
+    (Defs/GeneDefs/SlimeGenes.xml), which the sheet's entry already
+    describes almost exactly ("the ironic entry, ruled") — the campaign
+    archive (RUT layer) references that existing def for A34 rather than
+    duplicating it.
+
+    Every entry prices its gift in a real stat/field (P4) — never flavor
+    text alone. Where the sheet's described cost is hunger/rest-rate/social-
+    opinion, there is no such field on GeneDef itself (only on HediffStage),
+    so the cost rides Gene_ForcesHediff + a small permanent condition in
+    Defs/HediffDefs/SlimeGeneConditions.xml (see that file's header) —
+    everything else uses GeneDef's own native fields directly (statOffsets/
+    statFactors/capMods/aptitudes/disabledWorkTags/the *ChanceFactor
+    fields), confirmed against the decompiled 1.6 source (RimSage) rather
+    than guessed. `canGenerateInGeneSet=false` on every entry: these are
+    lore-gated (P1, "provenance is the list") and reach a pawn only through
+    the injector, never through a randomly-generated genepack.
+
+    A few sheet costs describe something no GeneDef/HediffStage field can
+    express at all — a per-hour distraction window, a conditional penalty
+    "near a corpse", damage-type-specific stagger — and are narrowed to the
+    closest real, always-on stat rather than invented as new C#. Each such
+    narrowing is called out inline as [SIMPLIFIED].
+
+    iconPath is a placeholder shared with the mod's existing
+    RM_Gene_SlimeResistance (Defs/GeneDefs/SlimeGenes.xml) — art bill OWED,
+    same as that def's own comment already states.
+  -->
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A1_AmphibiousLungs</defName>
+    <label>amphibious lungs</label>
+    <labelShortAdj>amphibious</labelShortAdj>
+    <description>Nautolan/Mon Calamari-derived lungs and skin: the carrier breathes and swims clean through open water. The same surface chemistry that makes that possible needs to stay wet — on dry desert tiles the body burns extra food keeping itself moist, and dry air itself wears at the mood.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A1_MoistSkin</hediff>
+      </li>
+    </modExtensions>
+    <statOffsets>
+      <MoveSpeed>0.15</MoveSpeed>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A2_KoltoGlands</defName>
+    <label>kolto glands</label>
+    <labelShortAdj>kolto-glanded</labelShortAdj>
+    <description>Selkath-derived subdermal glands secrete a kolto analogue into any wound tended on the carrier. The glands never stop, whether or not there is a wound: constant hunger, and a faint medicinal reek that puts people off.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A2_GlandDrain</hediff>
+      </li>
+    </modExtensions>
+    <statOffsets>
+      <MedicalTendQualityOffset>0.25</MedicalTendQualityOffset>
+      <SocialImpact>-0.05</SocialImpact>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- [SIMPLIFIED] True whole-limb regrowth is a deeper Archite-tier vanilla
+       system than is safe to reuse without guessing at its internals; this
+       reuses the one piece of it that IS a plain, verified vanilla call
+       (Gene_Healing's periodic HediffComp_HealPermanentWounds.
+       TryHealRandomPermanentWound, folded into Gene_ForcesHediff via
+       alsoHealsPermanentWounds since geneClass is exclusive) — real
+       periodic healing, scoped down from "grows back a whole arm" to
+       "heals old wounds and scars" over the same ~1-season cadence. -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A3_LimbRegrowth</defName>
+    <label>limb regrowth</label>
+    <labelShortAdj>regrowing</labelShortAdj>
+    <description>Trandoshan regenerative tissue: old wounds and scars heal over on their own, roughly once a season. While the body is doing that work it eats for two and its immune system runs thin — regrowth season is a danger season.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>3</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A3_RegrowthDrain</hediff>
+        <alsoHealsPermanentWounds>true</alsoHealsPermanentWounds>
+      </li>
+    </modExtensions>
+    <statFactors>
+      <ImmunityGainSpeedFactor>0.7</ImmunityGainSpeedFactor>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A4_GreatFrame</defName>
+    <label>great frame</label>
+    <labelShortAdj>heavy-framed</labelShortAdj>
+    <description>Wookiee-grade muscle and bone. Strikes land harder and the carrier hauls far more, but a frame like this burns fuel constantly, slows down anything that calls for a delicate touch, and most tailored gear no longer fits until it is retailored.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-3</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A4_GreatFrameDrain</hediff>
+      </li>
+    </modExtensions>
+    <statFactors>
+      <MeleeDamageFactor>1.25</MeleeDamageFactor>
+      <WorkSpeedGlobal>0.9</WorkSpeedGlobal>
+    </statFactors>
+    <statOffsets>
+      <CarryingCapacity>0.4</CarryingCapacity>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A5_LowLightEyes</defName>
+    <label>low-light eyes</label>
+    <labelShortAdj>low-light-eyed</labelShortAdj>
+    <description>Chiss/Umbaran-derived eyes see clean in the dark, indoors and out. They are not built for the surface at noon: open dayside sun costs accuracy and work speed alike.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <WorkSpeedGlobal>0.85</WorkSpeedGlobal>
+    </statFactors>
+    <statOffsets>
+      <ShootingAccuracyOutdoorsDarkOffset>0.15</ShootingAccuracyOutdoorsDarkOffset>
+      <ShootingAccuracyIndoorsDarkOffset>0.15</ShootingAccuracyIndoorsDarkOffset>
+      <ShootingAccuracyOutdoorsLitOffset>-0.15</ShootingAccuracyOutdoorsLitOffset>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A6_HeatPitSenses</defName>
+    <label>heat-pit senses</label>
+    <labelShortAdj>heat-sensing</labelShortAdj>
+    <description>Rodian heat-pit organs read warm bodies through dark and cover. Every heater, forge and campfire glares back just as hard, though: accuracy suffers indoors near anything running hot.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <ShootingAccuracyPawn>0.9</ShootingAccuracyPawn>
+    </statFactors>
+    <statOffsets>
+      <ShootingAccuracyOutdoorsDarkOffset>0.10</ShootingAccuracyOutdoorsDarkOffset>
+      <ShootingAccuracyIndoorsDarkOffset>0.20</ShootingAccuracyIndoorsDarkOffset>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A7_ToxinProofGut</defName>
+    <label>toxin-proof gut</label>
+    <labelShortAdj>iron-gutted</labelShortAdj>
+    <description>Hutt digestive biochemistry shrugs off food poisoning and ingested poison outright. The same indifference dulls everything else that goes in through the gut — medicine included.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <foodPoisoningChanceFactor>0</foodPoisoningChanceFactor>
+    <addictionChanceFactor>0.5</addictionChanceFactor>
+    <overdoseChanceFactor>0.5</overdoseChanceFactor>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A8_LeatherHide</defName>
+    <label>leather hide</label>
+    <labelShortAdj>leather-hided</labelShortAdj>
+    <description>Weequay hide shrugs off sunburn and holds heat well. It also holds a needle badly: surgery and tending on the carrier go worse, and the hide itself is nobody's idea of handsome.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <SurgerySuccessChanceFactor>0.85</SurgerySuccessChanceFactor>
+    </statFactors>
+    <statOffsets>
+      <ComfyTemperatureMax>15</ComfyTemperatureMax>
+      <PawnBeauty>-1</PawnBeauty>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A9_AmmoniaLungs</defName>
+    <label>ammonia lungs</label>
+    <labelShortAdj>ammonia-lunged</labelShortAdj>
+    <description>Gand-derived lungs shrug off toxic gas outright. Bred for foul air, they never quite settle in clean air — rest comes harder, and clean ground itself sours the mood.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <immuneToToxGasExposure>true</immuneToToxGasExposure>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A9_CleanAirCraving</hediff>
+      </li>
+    </modExtensions>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A10_ThickBlubber</defName>
+    <label>thick blubber</label>
+    <labelShortAdj>blubbery</labelShortAdj>
+    <description>Herglic blubber pads every blow and shrugs off deep cold. It also traps heat the carrier cannot afford: the dayside becomes genuinely dangerous, and the extra mass slows every step.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-15</ComfyTemperatureMax>
+      <MoveSpeed>-0.2</MoveSpeed>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A11_SpringLegs</defName>
+    <label>spring legs</label>
+    <labelShortAdj>spring-legged</labelShortAdj>
+    <description>Lasat-derived legs cross rubble and elevation like flat ground, fast. They burn fuel doing it, and the same jittery energy that powers them makes fine work with the hands unreliable.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A11_SpringLegsDrain</hediff>
+      </li>
+    </modExtensions>
+    <statOffsets>
+      <MoveSpeed>0.6</MoveSpeed>
+    </statOffsets>
+    <aptitudes>
+        <Crafting>-1</Crafting>
+    </aptitudes>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A12_NaturalClaws</defName>
+    <label>natural claws</label>
+    <labelShortAdj>clawed</labelShortAdj>
+    <description>Cathar/Togorian claws mean the carrier is never unarmed and hits harder bare-handed. They are useless for anything delicate, and strangers read them as a threat before they read anything else.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <MeleeDamageFactor>1.2</MeleeDamageFactor>
+    </statFactors>
+    <statOffsets>
+      <SocialImpact>-0.1</SocialImpact>
+    </statOffsets>
+    <aptitudes>
+        <Artistic>-2</Artistic>
+        <Medicine>-2</Medicine>
+    </aptitudes>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A13_MirrorReflexes</defName>
+    <label>mirror reflexes</label>
+    <labelShortAdj>reflexive</labelShortAdj>
+    <description>Echani reflex-mirroring makes the carrier hard to hit in melee. The mirror never fully shuts off: it is exhausting to run all the time, and a crowded room is close to unbearable.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <MeleeDodgeChance>0.2</MeleeDodgeChance>
+      <SocialImpact>-0.02</SocialImpact>
+    </statOffsets>
+    <capMods>
+      <li>
+        <capacity>Consciousness</capacity>
+        <offset>-0.05</offset>
+      </li>
+    </capMods>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A14_TunnelSense</defName>
+    <label>tunnel sense</label>
+    <labelShortAdj>tunnel-sensed</labelShortAdj>
+    <description>Sullustan tunnel sense makes the carrier a fast, unerring miner who is never lost underground. Open sky gnaws at them instead — the scavenger who hates the dunes.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A14_OpenSkyAche</hediff>
+      </li>
+    </modExtensions>
+    <statFactors>
+      <MiningSpeed>1.3</MiningSpeed>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A15_ForgeHands</defName>
+    <label>forge hands</label>
+    <labelShortAdj>forge-handed</labelShortAdj>
+    <description>Ugnaught forge-hands turn out better work more often. The same calluses that make them good at the anvil make them bad at anything gentler — a scalpel, a lover's touch.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <SocialImpact>-0.1</SocialImpact>
+    </statOffsets>
+    <aptitudes>
+        <Crafting>2</Crafting>
+        <Medicine>-2</Medicine>
+    </aptitudes>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A16_PheromoneCharm</defName>
+    <label>pheromone charm</label>
+    <labelShortAdj>pheromone-charmed</labelShortAdj>
+    <description>Falleen/Zeltron pheromones tilt every negotiation and every room in the carrier's favour. It cannot be switched off: jealousy and social fights follow them everywhere, and the people closest to them never quite trust "the too-smooth one".</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>3</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <socialFightChanceFactor>2</socialFightChanceFactor>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A16_Distrust</hediff>
+      </li>
+    </modExtensions>
+    <statOffsets>
+      <TradePriceImprovement>0.4</TradePriceImprovement>
+      <SocialImpact>0.2</SocialImpact>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A17_TradersHead</defName>
+    <label>trader's head</label>
+    <labelShortAdj>sharp-headed</labelShortAdj>
+    <description>Muun cognition prices everything correctly and thinks fast in general. Once it has priced something, it never really lets that price go — losing or giving away goods stings in a way it does not for anyone else.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-3</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A17_RisingExpectations</hediff>
+      </li>
+    </modExtensions>
+    <statOffsets>
+      <TradePriceImprovement>0.15</TradePriceImprovement>
+    </statOffsets>
+    <statFactors>
+      <ResearchSpeedFactor>1.25</ResearchSpeedFactor>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A18_PrehensileTail</defName>
+    <label>prehensile tail</label>
+    <labelShortAdj>tailed</labelShortAdj>
+    <description>A spacer-stock prehensile tail carries one more thing hands-free and never slows the carrier climbing. It is bare skin in cold weather, no leg- or robe-wear fits over it unaltered, and it is not a pretty thing to most eyes.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <CarryingCapacity>0.15</CarryingCapacity>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <PawnBeauty>-1</PawnBeauty>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A19_SonicBellow</defName>
+    <label>sonic bellow</label>
+    <labelShortAdj>bellowing</labelShortAdj>
+    <description>Ithorian sonic bellow organs give the carrier a commanding presence in any room. There is no quiet setting on the instrument, though — sneaking and stealing anywhere near them gets much harder.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <SocialImpact>0.1</SocialImpact>
+    </statOffsets>
+    <statFactors>
+      <HuntingStealth>0.7</HuntingStealth>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A20_AcuteEars</defName>
+    <label>acute ears</label>
+    <labelShortAdj>keen-eared</labelShortAdj>
+    <description>Bith/Chadra-Fan hearing catches an approach — or a raid — long before anyone else notices. The same ears make any room with running machinery or gunfire close to unbearable.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A20_MachineryAche</hediff>
+      </li>
+    </modExtensions>
+    <statOffsets>
+      <ShootingAccuracyOutdoorsDarkOffset>0.15</ShootingAccuracyOutdoorsDarkOffset>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A21_WaterDiscipline</defName>
+    <label>water discipline</label>
+    <labelShortAdj>water-disciplined</labelShortAdj>
+    <description>Tusken-kin water discipline lets the carrier cross the open desert on almost nothing. The trade runs the other way in the cold: a disciplined body is a body that never built up tolerance for it, and cold turns dangerous fast.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-3</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A21_DisciplineEase</hediff>
+      </li>
+    </modExtensions>
+    <statOffsets>
+      <ComfyTemperatureMin>20</ComfyTemperatureMin>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A22_ScavengerNose</defName>
+    <label>scavenger's nose</label>
+    <labelShortAdj>keen-nosed</labelShortAdj>
+    <description>A Jawa-grade nose for what is worth pulling out of a ruin or a wreck. It never closes, and closes least of all around a corpse, spent chemfuel, or an unwashed neighbour — and it cannot resist sniffing any new trade good, which traders notice.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <SocialImpact>-0.05</SocialImpact>
+    </statOffsets>
+    <capMods>
+      <li>
+        <capacity>Consciousness</capacity>
+        <offset>-0.1</offset>
+      </li>
+    </capMods>
+    <aptitudes>
+        <Mining>1</Mining>
+    </aptitudes>
+  </GeneDef>
+
+  <!-- ── From the local denizens (A24-A34; A34 reuses RM_Gene_SlimeResistance) ── -->
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A24_Sleepless</defName>
+    <label>sleepless</label>
+    <labelShortAdj>sleepless</labelShortAdj>
+    <description>Cells borrowed from the Slime itself barely register fatigue: the need for sleep falls a fraction as fast as normal. Awake all the time is not the same thing as well all the time — the mood floor drops permanently, and joy fades faster than it should.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>3</biostatCpx>
+    <biostatMet>-3</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A24_SleeplessMind</hediff>
+      </li>
+    </modExtensions>
+  </GeneDef>
+
+  <!-- [SIMPLIFIED] Real reduce-all-bleeding is Verse.Gene_Clotting's own
+       territory (a vanilla Gene subclass built for exactly this), reused
+       directly rather than reinvented; there is no generic pawn-wide bleed
+       stat exposed for a from-scratch statFactor. -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A25_ClottingFlesh</defName>
+    <label>clotting flesh</label>
+    <labelShortAdj>quick-clotting</labelShortAdj>
+    <description>Flesh grown from Green Goo clots fast and scars fade over the years. It is thicker than ordinary blood, though — the carrier moves slower, tending them takes longer, and cold thickens them further still.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>Gene_Clotting</geneClass>
+    <statOffsets>
+      <MoveSpeed>-0.15</MoveSpeed>
+    </statOffsets>
+    <statFactors>
+      <SurgerySuccessChanceFactor>0.9</SurgerySuccessChanceFactor>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A26_SandSwimmer</defName>
+    <label>sand-swimmer</label>
+    <labelShortAdj>sand-swimming</labelShortAdj>
+    <description>Sand-prowler-derived legs and skin move fast across loose sand and leave no print in it. Skin bred for the scour of sand itself does not like soft floors or a day spent off it — it itches, and it costs the mood.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A26_ScourCraving</hediff>
+      </li>
+    </modExtensions>
+    <statOffsets>
+      <MoveSpeed>0.5</MoveSpeed>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A27_AntifreezeBlood</defName>
+    <label>antifreeze blood</label>
+    <labelShortAdj>antifreeze-blooded</labelShortAdj>
+    <description>Blood drawn from the crag rime-life runs at temperatures that would stop a normal heart, and frostbite cannot take hold. It runs cold all the time, though — warm rooms cost real work speed, and the carrier is a nightsider now.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-20</ComfyTemperatureMax>
+    </statOffsets>
+    <statFactors>
+      <WorkSpeedGlobal>0.95</WorkSpeedGlobal>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A28_Thermogene</defName>
+    <label>thermogene</label>
+    <labelShortAdj>warm-blooded</labelShortAdj>
+    <description>Rot-hybrid cells run the body warm around the clock — cold floors feel less brutal, even to the carrier alone. Radiating heat costs food constantly, and it does not stop just because the carrier would like it to.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A28_ThermogeneDrain</hediff>
+      </li>
+    </modExtensions>
+    <statOffsets>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A29_SheenAdaptedLungs</defName>
+    <label>Sheen-adapted lungs</label>
+    <labelShortAdj>Sheen-adapted</labelShortAdj>
+    <description>Lungs and blood grown to answer the Rot's own colonising Sheen resist it outright. The adaptation carries the Rot's own scent everywhere the carrier goes — colony animals do not trust them, and every animal they try to handle knows it.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <ImmunityGainSpeedFactor>1.3</ImmunityGainSpeedFactor>
+    </statFactors>
+    <aptitudes>
+        <Animals>-2</Animals>
+    </aptitudes>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A30_IronStomach</defName>
+    <label>iron stomach</label>
+    <labelShortAdj>iron-stomached</labelShortAdj>
+    <description>Sarlacc-lineage digestion handles anything raw, ever, with no poisoning and no disgust. Taste itself is dead along with the disgust reflex — even the gourmet planet's best cooking does nothing for this palate, and this palate cannot season for anyone else's either.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <foodPoisoningChanceFactor>0</foodPoisoningChanceFactor>
+    <dontMindRawFood>true</dontMindRawFood>
+    <aptitudes>
+        <Cooking>-1</Cooking>
+    </aptitudes>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A31_CamelFlesh</defName>
+    <label>camel flesh</label>
+    <labelShortAdj>camel-fleshed</labelShortAdj>
+    <description>Desert-megafauna metabolism banks a real reserve, so hunger and thirst fall slower and a skipped meal costs nothing. The reserve shows on the outside, and it slows the carrier down carrying it.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A31_ReserveEase</hediff>
+      </li>
+    </modExtensions>
+    <statOffsets>
+      <PawnBeauty>-1</PawnBeauty>
+      <MoveSpeed>-0.1</MoveSpeed>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A32_RadEater</defName>
+    <label>rad-eater</label>
+    <labelShortAdj>rad-tolerant</labelShortAdj>
+    <description>Wasteland-radiotroph metabolism tolerates fallout and irradiated ground far better than baseline, healing a little on ground that would sicken anyone else. It never fully forgets the glow, and a long stretch with none of it sours the mood.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_A32_RadCraving</hediff>
+      </li>
+    </modExtensions>
+    <statFactors>
+      <ImmunityGainSpeedFactor>1.2</ImmunityGainSpeedFactor>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_A33_BuoyantStep</defName>
+    <label>buoyant step</label>
+    <labelShortAdj>light-stepped</labelShortAdj>
+    <description>Aerofleet-derived light bones and a buoyant step wade soft, wet ground like a local rather than fighting it. The same light frame carries far less before it is overloaded.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <MoveSpeed>0.1</MoveSpeed>
+      <CarryingCapacity>-0.2</CarryingCapacity>
+    </statOffsets>
+  </GeneDef>
+
+</Defs>

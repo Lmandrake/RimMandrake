@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    SLIME_GENE_ARCHIVE_BUILD_1 — the B-list (riders), from
+    design/Jawa/worldbuilding/biomes/the_slime_gene_lists.md, FROZEN
+    2026-09-07. 25 entries, B1-B25.
+
+    🔴 HIDDEN BY DESIGN (the sheet's own header: "player never sees this
+    list"). Two structural guarantees, neither of them new UI code:
+      1. Dialog_GeneArchive (Source/GeneArchive.cs) only ever iterates
+         archive.targetGenes when building its rows — riderGenes is a
+         separate list the dialog never reads, so these entries cannot
+         appear there no matter how the archive def is authored.
+      2. Every entry below sets <canGenerateInGeneSet>false</canGenerateInGeneSet>,
+         the real vanilla field that keeps a GeneDef out of any randomly
+         generated GeneSet (GeneSet.cs: `if (!gene.canGenerateInGeneSet)
+         continue;`) — the mechanism that would otherwise let one of these
+         leak into a quest-reward or trader genepack and be selectable in
+         Dialog_CreateXenotype/Dialog_CreateXenogerm like an ordinary gene.
+      A rider still shows, correctly, on the pawn's own Genes tab once
+      injected — that is P5 ("visible and felt"), not a leak.
+
+    P5 — every rider below moves a real stat (never flavor-only) and,
+    where a cosmetic change is possible without new art (a direct colour
+    override), actually changes how the pawn renders. A few entries
+    describe something genuinely periodic/conditional (a monthly binge, a
+    once-a-season pocketed item, sleepwalking, an interrogation tell) that
+    no GeneDef/HediffStage field can express without new per-gene C#; each
+    of those is narrowed to the closest always-on real stat rather than
+    invented, flagged inline [SIMPLIFIED].
+
+    iconPath is the same placeholder as the A-list — art bill OWED.
+  -->
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B1_VividSkin</defName>
+    <label>vivid skin</label>
+    <labelShortAdj>vivid-skinned</labelShortAdj>
+    <description>A permanent, unmistakable Twi'lek-palette hue. Strangers haggle harder against a face like that, and raiders who meet it once remember it.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <skinColorOverride>(0.62, 0.45, 0.75)</skinColorOverride>
+    <statOffsets>
+      <TradePriceImprovement>-0.1</TradePriceImprovement>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- [SIMPLIFIED] Actual lekku geometry needs new body-part art (owed,
+       same standing as this repo's other "art bill OWED" genes); the
+       mechanical bite here is the lost head coverage. -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B2_VestigialLekku</defName>
+    <label>vestigial lekku</label>
+    <labelShortAdj>lekku-tailed</labelShortAdj>
+    <description>Two small head-tails that no tight headgear was ever cut for. A Jawa hood sits wrong over them, and no close helmet covers what it should.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B3_NictitatingMembrane</defName>
+    <label>nictitating membrane</label>
+    <labelShortAdj>membrane-eyed</labelShortAdj>
+    <description>A visible sideways-blinking membrane shields the eyes in ash and sand storms. It flickers across the eye in bright light, and shooting suffers for it.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <ShootingAccuracyOutdoorsDarkOffset>0.05</ShootingAccuracyOutdoorsDarkOffset>
+      <ShootingAccuracyOutdoorsLitOffset>-0.1</ShootingAccuracyOutdoorsLitOffset>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- [SIMPLIFIED] The barracks-wide rest penalty needs a room-radius
+       broadcaster (new C#, out of scope for one rider); the always-on bite
+       kept here is the carrier's own broken concealment. -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B4_BanthaSnore</defName>
+    <label>bantha snore</label>
+    <labelShortAdj>thunder-snoring</labelShortAdj>
+    <description>A snore loud enough to carry through a barracks wall. The carrier can never sleep hidden — the snoring gives the position away long before anything else does.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <HuntingStealth>0.7</HuntingStealth>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B5_GlowFreckles</defName>
+    <label>glow freckles</label>
+    <labelShortAdj>freckle-glowing</labelShortAdj>
+    <description>Faint bioluminescent freckling, genuinely pretty in low light. It also means the carrier is the first thing any night-time watcher sees.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <SocialImpact>0.05</SocialImpact>
+    </statOffsets>
+    <statFactors>
+      <HuntingStealth>0.8</HuntingStealth>
+    </statFactors>
+  </GeneDef>
+
+  <!-- [SIMPLIFIED] The real-forecast/hour-long distraction window is
+       inherently event-based; kept here as a small permanent trade. -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B6_PetrichorGland</defName>
+    <label>petrichor gland</label>
+    <labelShortAdj>petrichor-glanded</labelShortAdj>
+    <description>A gland that catches slime rain on the wind an hour before it falls. It never fully clears, and the carrier always smells faintly of wet dirt.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <SocialImpact>-0.02</SocialImpact>
+    </statOffsets>
+    <capMods>
+      <li>
+        <capacity>Consciousness</capacity>
+        <offset>-0.03</offset>
+      </li>
+    </capMods>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B7_PhoticSneeze</defName>
+    <label>photic sneeze</label>
+    <labelShortAdj>photic-sneezing</labelShortAdj>
+    <description>Stepping from shade into bright light triggers a real sneezing fit. It breaks concealment on the dayside every time it happens.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <HuntingStealth>0.85</HuntingStealth>
+    </statFactors>
+  </GeneDef>
+
+  <!-- Gene_Healing (Source/Verse/Gene_Healing.cs) is the exact vanilla
+       mechanism for "periodically heals a permanent wound/scar" — reused
+       directly rather than reinvented, matching this build's precedent on
+       A3. No forced-condition detour needed here (nothing hunger/rest/
+       mood-shaped in this rider's cost). -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B8_SeasonalMolt</defName>
+    <label>seasonal molt</label>
+    <labelShortAdj>molting</labelShortAdj>
+    <description>Twice a year the carrier sheds whole, taking old scars with it. Molt week itself is miserable — raw skin underneath, hands that will not cooperate, and no armour fits over any of it until it is done.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>Gene_Healing</geneClass>
+    <capMods>
+      <li>
+        <capacity>Manipulation</capacity>
+        <offset>-0.05</offset>
+      </li>
+    </capMods>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B9_ContentedPurr</defName>
+    <label>contented purr</label>
+    <labelShortAdj>purring</labelShortAdj>
+    <description>An audible purr whenever mood runs high, comforting to whoever shares the room. It gives the carrier away completely whenever it happens — stealth and a straight face both fail while it is running.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <HuntingStealth>0.85</HuntingStealth>
+    </statFactors>
+  </GeneDef>
+
+  <!-- [SIMPLIFIED] True per-eye heterochromia rendering is an engine limit
+       (RimWorld colours skin/hair uniformly; there is no per-eye colour
+       field on GeneDef) — mechanical bite kept honest, visual is
+       description-only until real art exists. -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B10_MismatchedEyes</defName>
+    <label>mismatched eyes</label>
+    <labelShortAdj>mismatched-eyed</labelShortAdj>
+    <description>Genuinely two-colour eyes, unforgettable once seen. Depth perception is off for it, and nobody who has met this face forgets it — infiltration is over before it starts.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <ShootingAccuracyPawn>-0.05</ShootingAccuracyPawn>
+      <SocialImpact>0.05</SocialImpact>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- [SIMPLIFIED] The monthly binge/denial event needs a scheduled job
+       interrupt (new C#); kept here as a standing, always-on work cost. -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B11_SlimeCraving</defName>
+    <label>slime craving</label>
+    <labelShortAdj>slime-craving</labelShortAdj>
+    <description>A standing craving for the colony's own slime stores. Denied or not, the pull never fully lets go of the carrier's attention.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <WorkSpeedGlobal>0.95</WorkSpeedGlobal>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B12_StartleJawaese</defName>
+    <label>startle-Jawaese</label>
+    <labelShortAdj>startle-shouting</labelShortAdj>
+    <description>A loud, involuntary burst of Jawaese on any real surprise. It ends whatever quiet job was running the moment it happens.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <HuntingStealth>0.8</HuntingStealth>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B13_WebbedToes</defName>
+    <label>webbed toes</label>
+    <labelShortAdj>web-toed</labelShortAdj>
+    <description>Small webbing between the toes helps in open water. No boot was ever cut for it, and it goes cold fast in anything less than a proper shoe.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <MoveSpeed>0.05</MoveSpeed>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- [SIMPLIFIED] True blood-colour rendering (trails, wound VFX) is not
+       a GeneDef field; kept as description-only until a real hook exists. -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B14_GreenBlood</defName>
+    <label>green blood</label>
+    <labelShortAdj>green-blooded</labelShortAdj>
+    <description>Mimbanese-tinted blood, unmistakable wherever it lands. Medics are unfamiliar with it and tend it worse, and anyone tracking a blood trail finds this one easily.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <MedicalTendQualityOffset>-0.1</MedicalTendQualityOffset>
+    </statOffsets>
+    <statFactors>
+      <HuntingStealth>0.8</HuntingStealth>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B15_EarTufts</defName>
+    <label>ear tufts</label>
+    <labelShortAdj>tufted-eared</labelShortAdj>
+    <description>Downy tufts keep the ears warm in the cold. They also telegraph every flinch to whoever is watching in melee.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <MeleeDodgeChance>-0.05</MeleeDodgeChance>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B16_AudibleDigestion</defName>
+    <label>audible digestion</label>
+    <labelShortAdj>loud-gutted</labelShortAdj>
+    <description>The gut narrates itself loudly for an hour after every meal. Going hungry to stay quiet is a real choice this carrier gets to make.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <HuntingStealth>0.85</HuntingStealth>
+    </statFactors>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B17_ColdNose</defName>
+    <label>cold nose</label>
+    <labelShortAdj>cold-nosed</labelShortAdj>
+    <description>A nose that is always cold and always finding someone to touch it to — endearing to whoever it lands on. It is the first thing to frostbite in a cold snap.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <SocialImpact>0.05</SocialImpact>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+    </statOffsets>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B18_DullMusk</defName>
+    <label>dull musk</label>
+    <labelShortAdj>dull-musked</labelShortAdj>
+    <description>A musk that reads as uninteresting to predators — genuinely useful in the wild. Animals in general read the carrier the same way: taming, training and a bond both drift.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <aptitudes>
+        <Animals>-3</Animals>
+    </aptitudes>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B19_VestigialGills</defName>
+    <label>vestigial gills</label>
+    <labelShortAdj>gilled</labelShortAdj>
+    <description>Neck slits that pass air normally, most of the time. Desert air dries and cracks them, and an infection through the neck is a real risk here that it is not for anyone else.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <capMods>
+      <li>
+        <capacity>Breathing</capacity>
+        <offset>-0.05</offset>
+      </li>
+    </capMods>
+  </GeneDef>
+
+  <!-- [SIMPLIFIED] The biome-triggered colour flip and its terminator-
+       crossing mood spike need a live-tile hook (new C#); kept here as a
+       standing beauty cost, honest about the part that stays unmodeled. -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B20_SunShyPigment</defName>
+    <label>sun-shy pigment</label>
+    <labelShortAdj>sun-shy</labelShortAdj>
+    <description>Skin that darkens sharply in the sun and fades pale in the dark, never settling on one face for long. Whose skin this is depends on the day.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statOffsets>
+      <PawnBeauty>-1</PawnBeauty>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- [SIMPLIFIED] The weekly item-pocketing/discovery beat needs a
+       standalone job-interrupt system (new C#, out of scope for one
+       rider); kept as the reputational cost alone. -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B21_PocketInstinct</defName>
+    <label>pocket instinct</label>
+    <labelShortAdj>pocketing</labelShortAdj>
+    <description>Small things go missing into this one's kit while hauling, without them quite meaning to. Colonists notice, eventually, and it costs standing when they do.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <aptitudes>
+        <Social>-1</Social>
+    </aptitudes>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B22_ScentMemory</defName>
+    <label>scent memory</label>
+    <labelShortAdj>scent-keen</labelShortAdj>
+    <description>A nose that knows a returning caravan before it is in sight. The same nose cannot bear a corpse, spent chemfuel, or the Reek up close — this one will never work a butcher's table.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <disabledWorkTags>Cooking</disabledWorkTags>
+    <statOffsets>
+      <SocialImpact>0.05</SocialImpact>
+    </statOffsets>
+    <capMods>
+      <li>
+        <capacity>Consciousness</capacity>
+        <offset>-0.1</offset>
+      </li>
+    </capMods>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B23_SomnambulantHoming</defName>
+    <label>somnambulant homing</label>
+    <labelShortAdj>sleepwalking</labelShortAdj>
+    <description>Rarely, this one sleepwalks toward the nearest slime terrain and wakes far from bed, exhausted. Even the nights it does not happen, rest never quite settles right.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_ForcesHediff</geneClass>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_ForcedConditionExtension">
+        <hediff>RM_Cond_B23_RestlessWandering</hediff>
+      </li>
+    </modExtensions>
+  </GeneDef>
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B24_HiccupBubbles</defName>
+    <label>hiccup bubbles</label>
+    <labelShortAdj>bubble-hiccuping</labelShortAdj>
+    <description>Under real stress, hiccups produce small floating slime bubbles that pop audibly and leave filth behind. Every one of them is a small, real chance of blowing a quiet job.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <statFactors>
+      <HuntingStealth>0.85</HuntingStealth>
+    </statFactors>
+  </GeneDef>
+
+  <!-- B25 — THE REEK, owner-commissioned. Gas visual: Gene_TheReek
+       (Source/GeneConditions.cs), reusing vanilla GasType.RotStink exactly
+       as CompRottable does for a rotting corpse — see that class's header
+       comment for the full precedent chain. P7's own text names this
+       gene's exception: it doubles the Slime-marked penalty rather than
+       adding the usual one point (CompTargetEffect_InjectSlimeGenes,
+       Source/GeneArchive.cs). -->
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_B25_TheReek</defName>
+    <label>the Reek</label>
+    <labelShortAdj>reeking</labelShortAdj>
+    <description>This one stinks past the Jawa baseline, offensive even to other Jawas. An animated stink cloud visibly hangs around them at all times, thick enough that animals and Rodians can find them by scent alone from tiles away. It carries one mercy: whatever it is guarding, insects and vermin want no part of it.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>2</biostatMet>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <geneClass>RimMandrake.GelatinousSlime.Gene_TheReek</geneClass>
+    <statOffsets>
+      <TradePriceImprovement>-0.15</TradePriceImprovement>
+      <SocialImpact>-0.15</SocialImpact>
+    </statOffsets>
+    <statFactors>
+      <HuntingStealth>0.3</HuntingStealth>
+    </statFactors>
+  </GeneDef>
+
+</Defs>

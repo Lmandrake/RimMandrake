@@ -48,6 +48,16 @@ namespace RimMandrake.GelatinousSlime
                         {
                             continue;
                         }
+                        // SLIME_GENE_ARCHIVE_BUILD_1 mod setting: off means
+                        // "always use this mod's own universal archive" —
+                        // only an archive at priority 0 (this mod's own
+                        // shipped default) is eligible. On (default) is the
+                        // shipped behaviour this whole mechanism exists for:
+                        // highest priority wins, no restriction.
+                        if (!SlimeSettings.preferHigherPriorityArchive && d.priority > 0)
+                        {
+                            continue;
+                        }
                         if (cachedActive == null || d.priority > cachedActive.priority)
                         {
                             cachedActive = d;
@@ -56,6 +66,14 @@ namespace RimMandrake.GelatinousSlime
                 }
                 return cachedActive;
             }
+        }
+
+        // Called from SlimeMod.WriteSettings() so flipping the "prefer
+        // higher-priority archive" checkbox takes effect without a restart.
+        public static void InvalidateActiveCache()
+        {
+            cacheResolved = false;
+            cachedActive = null;
         }
 
         public GeneDef RollRider()

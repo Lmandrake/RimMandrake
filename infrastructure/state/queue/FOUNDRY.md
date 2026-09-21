@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T18:09:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T18:30:17Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -899,15 +899,6 @@ target:   v1
 kind:     build
 summary:  1. Author the GeneDefs for the accepted A-list and B-list. Read
 prose:    infrastructure/state/items/SLIME_GENE_ARCHIVE_BUILD_1.md
-
-## LIVE_ITEM_GLOB_DRIFT_1 32 of 181 files in infrastructure/state/items/ are not live items - 24 are closed in the ledger and 8 have no ledger row at all, so the documented live-set glob is 18 percent wrong
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  LIVEITEMGLOBDRIFT1 — the live-item glob is 18% not-live
-prose:    infrastructure/state/items/LIVE_ITEM_GLOB_DRIFT_1.md
 
 ## EXTREME_DESERT_SIGNATURE_FLORA_1 Author glass-nub light-pipe and silverbole flora for RUT_ExtremeDesert
 state:    doing

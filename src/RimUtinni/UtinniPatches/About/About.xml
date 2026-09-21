@@ -53,6 +53,8 @@
       <li>mandrake.rm.patches</li>
     <li>mandrake.rsw.patches</li>
     <li>mandrake.rm.shipvermin</li>                          <!-- WreckVerminNest_ShipChunk.xml: RM_CompProperties_VerminNest -->
+    <li>mandrake.rm.gelatinousslime</li>                     <!-- SLIME_GENE_ARCHIVE_BUILD_1: RUT_SlimeGeneArchive.xml builds on
+                                                                   RimMandrake.GelatinousSlime.GeneArchiveDef and its GeneDefs -->
 
 
     <!-- Added PATCHMODS_LOADAFTER_SWEEP_1 (2026-09-08): real MayRequire/FindMod
