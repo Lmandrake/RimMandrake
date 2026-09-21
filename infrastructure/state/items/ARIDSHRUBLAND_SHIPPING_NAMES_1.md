@@ -101,6 +101,23 @@ save-compat risk — MEASURED via literal-string check against
 `CANONICAL_ASHKARR_START_2026-09-12.rws`: no placed `RSW_ShrublandGiant` instance exists on
 the canonical save.
 
-**Still open — 4 of 5, not yet asked:** the fuzz (`RUT_Fuzz`), the tunnel snake
-(`RSW_TunnelSnake`), venomvine ("working name stands?" confirmation), and the Stall/the Gale
-weather names (no `WeatherDef` built yet — fine to defer). Item stays open until those land.
+## 🔴 Owner ruling 2026-09-21 — 4 of 5 now landed
+
+**#3, the tunnel snake (`RSW_TunnelSnake`): RULED — `yanker`.** Label changed on both the
+`ThingDef` and the `PawnKindDef` (same defName reused for both). No life-stage sub-labels
+existed to rename. No live-tile/save risk — MEASURED via literal-string check against
+`CANONICAL_ASHKARR_START_2026-09-12.rws`: no placed `RSW_TunnelSnake` instance exists.
+
+**#4, venomvine (`RM_Venomvine`): RULED — stands, no rename.** Card closes with no action
+on this def.
+
+**#5, the Stall/the Gale: RULED — stand, locked in now** ahead of their `WeatherDef`s being
+built, so whoever builds them has a name to build against.
+
+**#1, the fuzz (`RUT_Fuzz`): STILL OPEN, do not pick a name.** Owner, verbatim: "Bench is
+currently shipping you work items for this question, please wait." BENCH has a work item
+in flight for this specific name — this item stays open on this one entry only until that
+lands; do not rename `RUT_Fuzz` ahead of it.
+
+`arid_shrubland.md`'s "Owed" names line updated to reflect all four landed rulings plus the
+one still-waiting name.
