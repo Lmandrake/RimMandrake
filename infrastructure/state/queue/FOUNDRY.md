@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T10:45:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T11:06:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1411,16 +1411,6 @@ kind:     task
 thin:     no ## verify
 summary:  1. For each of the 71, check the drawCenter against the region's actual tiles.
 prose:    infrastructure/state/items/FEATURE_DRAWCENTER_UNVERIFIED_1.md
-
-## GELATINOUSSLIME_FIRST_LOAD_ERRORS_1 First load with GelatinousSlime active: wildGroupSize in the wrong element twice, plus an RM_Titanoslime def error
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  GELATINOUSSLIMEFIRSTLOADERRORS1 — the first load with the mod active found three faults
-prose:    infrastructure/state/items/GELATINOUSSLIME_FIRST_LOAD_ERRORS_1.md
 
 ## TITANOSLIME_PERMANENT_GROWTH_LIVE_1 Prove Titanoslime growth is permanent in a running game - not testable from a load, needs a scratch map
 state:    proposed
