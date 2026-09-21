@@ -354,12 +354,12 @@ RIDGES = [
     ("The Scald Spine", None, 1450, 3.2),          # ring - built separately, notched
     ("The Ashteeth",  [(21.5, 116), (23.5, 142), (24.5, 168), (24, 203),
                        (22, 230), (19.5, 254)], 1450, 4.0),   # cradles the Scald
-    ("The Fall Line", [(26, 352), (34, 357), (43, 2), (52, 6), (61, 9)], 780, 3.4),
-    ("The Dew Horn",  [(58, 148), (64, 162), (67, 178), (63, 196), (57, 210)], 1850, 4.6),
-    ("The Ashfall Range", [(56, 338), (63, 352), (66, 8), (61, 24)], 1700, 4.4),
-    ("The Twilight Crags", [(104, 210), (110, 186), (108, 160), (114, 134)], 900, 4.0),
-    ("The Gray Crags", [(106, 340), (112, 12), (109, 42), (116, 68)], 820, 4.0),
-    ("The South Crags", [(118, 250), (127, 272), (131, 300), (124, 322)], 760, 4.0),
+    ("Fall Line", [(26, 352), (34, 357), (43, 2), (52, 6), (61, 9)], 780, 3.4),
+    ("Dew Horn",  [(58, 148), (64, 162), (67, 178), (63, 196), (57, 210)], 1850, 4.6),
+    ("Ashfall Range", [(56, 338), (63, 352), (66, 8), (61, 24)], 1700, 4.4),
+    ("Twilight Crags", [(104, 210), (110, 186), (108, 160), (114, 134)], 900, 4.0),
+    ("Gray Crags", [(106, 340), (112, 12), (109, 42), (116, 68)], 820, 4.0),
+    ("Sootreach", [(118, 250), (127, 272), (131, 300), (124, 322)], 760, 4.0),
 ]
 # ---- basins. Sea level is a threshold on the field, so a coast is a consequence.
 # ⭐ Each basin carries a WATER LEVEL, and the Scald's is high.
@@ -373,13 +373,13 @@ BASINS = [
     # name, (arc, bear), radius, floor amp, water level m, is it a sink
     ("Scald",       (35, 185), 10.5, -1500, None,   False),   # level = auto
     ("Twilight Sea", (91, 170), 22.0, -1650,    0.0, True),
-    ("The Gray Sea",    (92, 8),   16.5, -1550,    0.0, True),
+    ("Grey Sea",    (92, 8),   16.5, -1550,    0.0, True),
     ("The Umbra Trap",  (158, 62), 19.5, -1150,  -900.0, False),   # ammonia, not water
 ]
 TROUGHS = [
-    ("The Salt",     [(34, 288), (42, 296), (52, 304), (62, 312), (71, 320)], -430, 5.0),
+    ("Salt",     [(34, 288), (42, 296), (52, 304), (62, 312), (71, 320)], -430, 5.0),
     ("The Ember Sink", [(36, 96), (46, 88), (57, 80), (68, 74)], -380, 4.6),
-    ("The Dew Belt", [(38, 184), (45, 181), (52, 178), (64, 178), (76, 179),
+    ("Dew Belt", [(38, 184), (45, 181), (52, 178), (64, 178), (76, 179),
                       (89, 180)], -255, 6.0),
     ("scald_gate",   [(49, 180), (44, 182), (39, 184)], -1250, 3.0),  # the crater breach
 ]
@@ -820,36 +820,36 @@ def build():
     regions = []
     for i, (name, (a, b), r, amp, level, is_sink) in enumerate(BASINS):
         if name == "The Umbra Trap":
-            regions.append(("The Ammonia Flats", "waste",
+            regions.append(("Ammonia Flats", "waste",
                             np.nonzero((d_umbra < 22) & ~sea)[0]))
         else:
             regions.append((name, "sea", np.nonzero(sea_id == i)[0]))
-    regions.append(("The Rust Cathedral", "waste",
+    regions.append(("Rust Cathedral", "waste",
                     np.nonzero([x == "AB_MechanoidIntrusion" for x in B])[0]))
-    regions.append(("The Scorch", "waste",
+    regions.append(("Scorch", "waste",
                     np.nonzero([x == "Scarlands" for x in B])[0]))
-    regions.append(("The Anvil", "waste", np.nonzero((arc < 20) & ~sea)[0]))
-    regions.append(("The Dune Sea", "waste",
+    regions.append(("Anvil", "waste", np.nonzero((arc < 20) & ~sea)[0]))
+    regions.append(("Dune Sea", "waste",
                     np.nonzero((arc >= 20) & (arc < 40) & ~sea)[0]))
     for name, anchors, amp, halfw in RIDGES:
         d = ridge_dist.get(name)
         if d is None:
             continue
         regions.append((name, "massif", np.nonzero((d < halfw * 1.5) & ~sea)[0]))
-    regions.append(("The Dew Belt", "waste",
+    regions.append(("Dew Belt", "waste",
                     np.nonzero((off_twi < 24) & (arc > 40) & (arc < 92) & ~sea)[0]))
     regions.append(("The Fall Line Barrens", "waste",
                     np.nonzero((off_gray < 20) & (arc > 26) & (arc < 62) & ~sea)[0]))
-    regions.append(("The Salt", "waste",
+    regions.append(("Salt", "waste",
                     np.nonzero((d_gray < 26) & (bear_off(18.0) < 36) & ~sea)[0]))
-    regions.append(("The Pyrelands", "waste",
+    regions.append(("Pyrelands", "waste",
                     np.nonzero([x == "ZBiome_Grasslands" for x in B])[0]))
-    regions.append(("The Sunreach", "waste",
+    regions.append(("Sunreach", "waste",
                     np.nonzero((arc > 96) & (arc < 124) & (off_gray < 55) & ~sea)[0]))
-    regions.append(("The Nightspill", "waste",
+    regions.append(("Nightspill", "waste",
                     np.nonzero((arc > 96) & (arc < 124) & (off_twi < 55) & ~sea)[0]))
-    regions.append(("The Umbra", "waste", np.nonzero((arc > 152) & ~sea)[0]))
-    regions.append(("The Salt Gate", "waste", np.nonzero(delta)[0]))
+    regions.append(("Umbra", "waste", np.nonzero((arc > 152) & ~sea)[0]))
+    regions.append(("Salt Gate", "waste", np.nonzero(delta)[0]))
     regions = [(nm, kd, tl) for nm, kd, tl in regions if len(tl) >= 6]
 
     return dict(regions=regions, geo=geo, n=n, V=V, th=arc, arc=arc,

@@ -82,3 +82,53 @@ Strip the article from all 10 region literals in `ashkarr_paint.py` (and
 `ashkarr_settle.py` if it carries them) so the scripts match the planet. ⛔ Do NOT rename
 any live region — the planet is not edited by this ruling. The `Sootreach` ruling stands
 and `The South Crags` must not be resurrected.
+
+
+## 🔴 EXECUTED 2026-09-21 — and the divergence was four times larger than this item measured
+
+His ruling: **no leading `"The "`; the live planet is right, the painter is wrong.** Applied.
+
+**Instrument:** the canonical save parsed offline — `CANONICAL_ASHKARR_START_2026-09-12.rws`,
+the `<features>` block, **71 features, 0 unnamed**. Not the tiles CSV (a stale record), not
+the bridge (another window holds it, and the loaded mod set is a 19-mod tier, not the
+canonical world).
+
+🔑 **68 of 71 planet features carry no article — but THREE do:** `The Abandoned Mines`,
+`The Breaks`, `The Verge`. So "strip every `The `" would have been wrong. Each literal was
+matched to its planet counterpart by name.
+
+**Rewritten: 19 literals / 21 occurrences in `ashkarr_paint.py`, 10 literals / 13
+occurrences in `ashkarr_settle.py`.** Beyond the 17 plain article strips, three were not
+article strips at all and a blanket fix would have got them wrong:
+
+| painter said | planet says | why |
+|---|---|---|
+| `"The Gray Sea"` | **`Grey Sea`** | spelling, not an article — in BOTH files |
+| `"The South Crags"` | **`Sootreach`** | his rename, 2026-09-08 |
+| `"The Ashen Waste"` | **`Ashen Wastes`** | plural on the planet |
+
+⛔ **No live region was renamed.** The planet was read, never written.
+
+## 🔴 Found while doing it: 10 of 22 `BARREN_REGIONS` entries name nothing
+
+`ashkarr_settle.py`'s `BARREN_REGIONS` is the set the placer uses to keep areas EMPTY —
+*"the owner asked for large areas of barrenness by name"*. MEASURED against the same 71
+features: **12 of 22 entries match the planet; 10 match nothing at all.**
+
+`The Frostbloom` · `The Deep Bloom` · `The Coldspore` · `The Crown Rot` · `The Last Scrub` ·
+`The Cold Bloom` · `The High Rot` · `The Grayrot` · `The Shoulder` · `The Last Green`
+
+🔑 **A barren-region test that names a region which does not exist matches nothing and
+fails OPEN** — it does not error, it just places settlements in ground he asked to keep
+empty. This is the same failure the item's own "Watch out" flagged for `The Venom Wood`,
+except it is 10 entries, not one. ⛔ `ashkarr_settle.py` must not be run until these are
+resolved. Own item: `BARREN_REGIONS_NAME_NOTHING_1`.
+
+## Still his call — 5 painter literals that are on no feature
+
+`The Ashteeth` · `The Ember Sink` · `The Fall Line Barrens` · `The Scald Spine` ·
+`The Umbra Trap`
+
+Running the painter would CREATE these as new regions. They were left exactly as they are.
+(`The Galactic Empire` is a faction and `The Setdown` is the colony's home name — neither is
+a region and neither was touched.)

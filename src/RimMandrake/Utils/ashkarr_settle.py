@@ -91,11 +91,11 @@ MIN_EMPTY_FRACTION = 0.55  # at least this much of the land must stay that empty
 # ⛔ Nothing is ever placed in these. The night side and the seas are meant to be blank,
 # and the owner asked for large areas of barrenness by name.
 BARREN_REGIONS = {
-    "The Deadstone", "The Ammonia Flats", "The Umbra", "The Nightspill",
-    "Twilight Sea", "The Gray Sea", "Scald", "The Rust Cathedral",
-    "The Cinderdark", "The Frostbloom", "The Deep Bloom", "The Venom Wood",
-    "The Coldspore", "The Crown Rot", "The Last Scrub", "The Rimewall",
-    "The Cold Bloom", "The Ashen Waste", "The High Rot", "The Grayrot",
+    "Deadstone", "Ammonia Flats", "Umbra", "Nightspill",
+    "Twilight Sea", "Grey Sea", "Scald", "Rust Cathedral",
+    "Cinderdark", "The Frostbloom", "The Deep Bloom", "Fuelmere",
+    "The Coldspore", "The Crown Rot", "The Last Scrub", "Rimewall",
+    "The Cold Bloom", "Ashen Wastes", "The High Rot", "The Grayrot",
     "The Shoulder", "The Last Green",
 }
 
@@ -321,7 +321,7 @@ def main():
     # nobody else can drink and CRACK IT FOR FUEL", and a propane lake is exactly that.
     # ⛔ Deliberately a HANDFUL, with a long road: the point is one destination worth an
     # expedition, not a populated night side.
-    pl = [t for t in T if ok(t, {"The Ammonia Flats"})
+    pl = [t for t in T if ok(t, {"Ammonia Flats"})
           and (T[t]["biome"] == "AB_PropaneLakes"
                or any(T[n]["biome"] == "AB_PropaneLakes" for n in nb[t]))
           and T[t]["biome"] != "AB_PropaneLakes"]
@@ -329,7 +329,7 @@ def main():
                   PROPANE_WHY, pl, a.propane, False))
 
     # ── Ascendant Helix: cold, isolated, on the nightward edge ────────────────
-    HELIX_BARREN_OK = {"The Rimewall", "The Cold Bloom", "The Ashen Waste", "The Grayrot",
+    HELIX_BARREN_OK = {"Rimewall", "The Cold Bloom", "Ashen Wastes", "The Grayrot",
                        "The Shoulder", "The Last Green", "The High Rot"}
     hx = [t for t in T if ok(t, HELIX_BARREN_OK) and 98 <= T[t]["arc"] <= 128
           and T[t]["hill"] <= 4 and T[t]["biome"] not in ("Ocean", "Lake")]
