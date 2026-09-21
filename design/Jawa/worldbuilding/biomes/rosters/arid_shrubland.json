@@ -1303,6 +1303,12 @@
       "def": "Plant_Nysyllin_Wild",
       "law": "SW medicinal herb (nysyllin), wild variant — not a food crop, ban 8 clean",
       "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
+    },
+    {
+      "commonality": 0.15,
+      "def": "RM_VenomvineThicket",
+      "law": "§4 \"Venomvine — the fortress flora\"; the sole carve-out from §6 ban 6 (no dense flora except venomvine) — VENOMVINE_FORTRESS_PASSABILITY_1",
+      "note": "OURS, not a donor: Flammability 0.1 as authored, so ban 9 (no flammable living flora) is satisfied at the def and needs no entry in BiomeFloraStatAdjustments_Generated.xml. Shrubland lineage of the desert's RM_Venomvine and a SEPARATE defName on purpose — the desert form stays scattered and ungated, this one is dense (wildClusterRadius 8 / weight 25) and carries RM_CompProperties_BodySizeBarrier, so nothing over BodySize 1.5 can path into a stand. The low commonality sets how MANY stands a map gets, never how solid one is."
     }
   ],
   "flora_purged": [

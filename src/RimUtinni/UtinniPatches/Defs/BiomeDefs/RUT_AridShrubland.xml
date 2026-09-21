@@ -29,9 +29,7 @@
     wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
     BiomeFlora_Ashkarr.xml against rosters/arid_shrubland.json.
 
-    NOT this pass's scope: venomvine as a dungeon-thicket TerrainDef/structure (and
-    its size-gated passability mechanic, filed separately per
-    COMMISSION_LEDGER_CLEANUP_1); the sweetline trees (owner's pick, huge/ancient,
+    NOT this pass's scope: the sweetline trees (owner's pick, huge/ancient,
     TREE_GRAPHICS_OWNERSHIP_1); the Stall/Gale WeatherDefs and their AI hooks (SS
     Owed, engine feasibility pass not run); the band-mend repaint
     (WORLDMAP_DESERT_BAND_REPAIR_1).
@@ -53,6 +51,16 @@
     Convor, Porg, Nuna) are untouched and no species is double-booked. Its
     nests (`RSW_ScrapNest`) are built by the birds at runtime, not by map gen,
     so nothing here places them.
+
+    VENOMVINE_FORTRESS_PASSABILITY_1 (2026-09-21) added `RM_VenomvineThicket` to
+    wildPlants — §4's "fortress flora", the shrubland lineage of the desert's
+    `RM_Venomvine` and the sole carve-out from §6.6's ban on dense flora here. The
+    dungeon is the def's own clustering (radius 8, weight 25), NOT a TerrainDef or
+    a structure; "small creatures pass through easily; larger ones simply cannot"
+    is `RM_CompProperties_BodySizeBarrier` on that def, which makes a thicket cell
+    impassable to the pathfinder for anything over BodySize 1.5 — every huge grazer
+    on this plain, `RSW_ShrublandGiant` included. Live verification is owed
+    (`VENOMVINE_FORTRESS_LIVE_VERIFY_1`).
 
   -->
 
@@ -197,6 +205,7 @@
       <RG_Plant_CreepStern>0.2</RG_Plant_CreepStern>  <!-- creep stern -->
       <RG_Plant_CrimsonCushion>0.2</RG_Plant_CrimsonCushion>  <!-- crimson cushion -->
       <RG_Plant_Dervish>0.2</RG_Plant_Dervish>  <!-- dervish -->
+      <RM_VenomvineThicket MayRequire="mandrake.rm.environmentalhazards">0.15</RM_VenomvineThicket>  <!-- the fortress flora, §4 — VENOMVINE_FORTRESS_PASSABILITY_1. Lowest weight in this list on purpose and it is NOT a density dial: §4 says thickets "sometimes manage to colonize" and §6.6 bans dense flora here with this as the sole carve-out, so what must stay rare is the NUMBER of stands. How solid each one is comes from wildClusterRadius 8 / wildClusterWeight 25 on the def, not from this weight — raising this scatters more islands rather than thickening the ones there are. -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
   </BiomeDef>
