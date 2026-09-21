@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.069556601985823,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 8.09156147998874,
+  "id": "rot_giantagarilux_v2",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-23-41-01a0ba44-1dfd-7463-a900-ec441d2d842b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-23-32-01a0ba43-f90d-7d92-9bd5-10c816982007.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_giantagarilux_v2\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba44-1dfd-7463-a900-ec441d2d842b\n--------\nuser\nUse $imagegen to [artpipe job rot_giantagarilux_v2] Six cells wide and taller than wide: the silhouette is a PILLAR \u2014 a thick, straight, fibrous stalk with visible woody grain and bark-like ridges, topped by a comparatively small domed lilac cap with a few glowing nubs. Stalk bone-white shading to grey-lilac in the grain, cap lilac, nubs glow-blue, wet gloss on the cap only. It must read as timber-on-the-hoof; the stalk is the point, the cap is a hat. Distinct from the bollusk trunk (no buttresses, no tiers) and the tarrusk spire (not purple, not tree-shaped). Owner's note: \"wrong size, 6 wide, rename\". painterly RimWorld sprite, transparent background Canvas: exactly 1024x1024 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient.\n\nThen copy the generated image into the current working directory as rot_giantagarilux_v2.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

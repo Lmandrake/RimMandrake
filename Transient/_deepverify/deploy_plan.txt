@@ -1,0 +1,1265 @@
+repo : /mnt/d/Luke/dev/Rimworld/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 26 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+AcanthamoebaGiganteaLargeArtOverride mandrake.rut.acanthamoebagigantealargeartoverride
+    in sync (5 files)
+
+Aftermath        mandrake.rm.aftermath
+    in sync (3 files)
+
+AftermathRites   mandrake.rut.aftermath     not enabled in ModsConfig
+    in sync (4 files)
+
+AgaripodArtOverride mandrake.rut.agaripodartoverride
+    in sync (5 files)
+
+AnoobaArtOverride mandrake.rsw.anoobaartoverride
+    in sync (8 files)
+
+Antiquities      mandrake.rut.antiquities
+    in sync (9 files)
+
+Armoury          mandrake.rsw.armoury       118 file(s) HELD
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_BLOCKED_manifest.txt   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_ColorDefs_structure.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_DevPrefab_ParkingLotRuler.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_JobDef_JumppackForMeleeAI.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_JobDefs_misc.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_LetterDef_StorytellerJoiner.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_ModOptionsMenu.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_MotesAndFlecks.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_PawnGroupKind_TaxCollectors.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_PawnKindDefs_HeroBase.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_RulePackDefs_CloneTrooper.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_RulePacks_StormtrooperNameMaker.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/Absorbed_KotorCore_Thing_VATS_Zoomer.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_BlasterDamages.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_DamageAndProjectileDefs_KotORDroidUtilityWeapons.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_GrenadeDamages.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_MeleeDamages.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_SpecialDamages.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediff_Electrocuted.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediff_IonBuildup.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediff_Poison.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediff_SonicDisorientation.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediffs_KoltoTank.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore__hediff_base.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_Base.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_BeamMotes.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_Kinetics.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_KotORGrenades.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_Special.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_BuildingSounds_Ambience.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_BuildingSounds_Ambience_PowerGenerators.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_BuildingSounds_Doors.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_BuildingSounds_RandomAmbienceNoises.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_BuildingSounds_ShipAmbience.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_Kotor_Misc_Sounds.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_Sounds_Containers.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_Sounds_GUI.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_Sounds_Lightsaber.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_Sounds_Misc.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_VehicleSounds_Engines.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_VehicleSounds_Misc.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_VehicleSounds_Weapons.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Basic.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Beams.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Cannons.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Grenades.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Melee.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Misc.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Missiles.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_SWWarlords.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Special.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingCategoryDefs/Absorbed_KotorCore_ThingCategories_All.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Banner.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_DecorativeTerminals.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_GonkDroids.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_KotORWorkbenches.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_MoistureVaporators.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_ShieldRecharger.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Carpets.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Czerkatech_Holo.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Czerkatech_Instruments.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Czerkatech_Table.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Lights.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Structure_SWDoors.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Structure_SWWalls.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Terrain_SWFloors.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Throne.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_RecipeDefs_Medpacs.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Deathsticks.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_DrugBases.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Medpacs.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Stimulants_Battle.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Stimulants_Con.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Stimulants_Dex.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Stimulants_Str.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Items/Absorbed_KotorCore_ThingDefs_Credits.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Items/Absorbed_KotorCore_ThingDefs_LightsaberParts.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Items/Absorbed_KotorCore_ThingDefs_RocketItems.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Items/Absorbed_KotorCore_ThingDefs_UpgradeItemBases.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_CrystalMapGenerator.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_JunkMapGenerator.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_CrystalFormation_Base.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_JunkPile.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Kolto.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Metals2.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_MiscCraftingItems.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Rhydonium.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Spice.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Stygium.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_TibannaPlasma.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_DevModeTools.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWAccessories.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWBackpacks.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWClothes.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWFactions_Scum.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWGenericFlightSuits.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWGenericHeadgear.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWJediSithCloaksHoods.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWRobes.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SovereignTusken.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_KotORArmbands.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_KotORThrowingKnifeBandolier.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_SWBelts.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_SWGloves.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_SWJetpacks.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_SWStealthBelts.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_WeaponMelee_GamorreanAxe.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_WeaponMelee_SovereignGaffiStick.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore__BASE_SWKotORApparel.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore__BASE_SWKotORWeapons.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/interfaceDefs/Absorbed_KotorCore_Kotor_Build_Designator.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/researchDefs/Absorbed_KotorCore_Czerkatech_Base_Research.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/researchDefs/Absorbed_KotorCore_Czerkatech_Research.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/researchDefs/Absorbed_KotorCore_Czerkatech_Techprint_Research.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/researchDefs/Absorbed_KotorCore_ResearchProjects_KotORDebugUncraftables.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Defs/Absorbed_KotorCore/researchDefs/Absorbed_KotorCore_ResearchProjects_KotORWeapons.xml   (repo-only; not deployed)
+           held: FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+    H  Patches/Armour_Ratings.xml   (repo-only; not deployed)
+           held: owner: SHIP NEITHER, 2026-08-12
+    H  Patches/Warcasket_HazardRetune.xml   (repo-only; not deployed)
+           held: owner: SHIP NEITHER, 2026-08-12
+    +  Defs/ThingDefs/RSW_DesertWraps.xml
+    +  Textures/SWApparel/DesertWraps/Banded/Wraps.png
+    +  Textures/SWApparel/DesertWraps/Banded/Wraps_Male_south.png
+    +  Textures/SWApparel/DesertWraps/Draped/Wraps.png
+    +  Textures/SWApparel/DesertWraps/Draped/Wraps_Male_south.png
+    +  Textures/SWApparel/DesertWraps/Segmented/Wraps.png
+    +  Textures/SWApparel/DesertWraps/Segmented/Wraps_Male_south.png
+    +  Textures/SWApparel/DesertWraps/Spiral/Wraps.png
+    +  Textures/SWApparel/DesertWraps/Spiral/Wraps_Female_north.png
+    +  Textures/SWApparel/DesertWraps/Spiral/Wraps_Female_south.png
+    +  Textures/SWApparel/DesertWraps/Spiral/Wraps_Male_east.png
+    +  Textures/SWApparel/DesertWraps/Spiral/Wraps_Male_north.png
+    +  Textures/SWApparel/DesertWraps/Spiral/Wraps_Male_south.png
+    ~  About/About.xml
+    ~  Defs/Absorbed_KotorWeapons/Absorbed_KotorWeapons_BLOCKED_manifest.txt
+    ~  Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_ImmortalusSithLords.xml
+    ~  Defs/ThingDefs/Absorbed_OPTurret.xml
+
+AshkarrFlora     mandrake.rut.ashkarrflora  not enabled in ModsConfig
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeA.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeB.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeC.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeD.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeE.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeF.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeG.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeH.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeI.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeJ.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeK.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeL.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeM.png
+    +  Textures/Things/Plant/RUT_SweetlineTree/RUT_SweetlineTreeN.png
+    ~  Defs/ThingDefs_Plants/RUT_AshkarrFlora_Plants.xml
+
+AshkarrInhabited mandrake.rut.inhabited
+    in sync (8 files)
+
+AshkarrLandmarkArt mandrake.rut.ashkarrlandmarkart
+    in sync (55 files)
+
+AshkarrWeatherSuite mandrake.rut.weathersuite  not enabled in ModsConfig
+    in sync (4 files)
+
+Bacta            mandrake.rsw.bacta         NOT DEPLOYED · not enabled in ModsConfig
+    +  About/About.xml
+    +  Assemblies/RimMandrake.StarWars.Bacta.dll
+    +  Defs/ResearchProjectDefs/RSW_BactaResearch.xml
+    +  Defs/ThingDefs_Buildings/RSW_BactaTank.xml
+    +  Defs/ThingDefs_Items/RSW_Bacta.xml
+    +  Defs/WorkGiverDefs/RSW_BactaWorkGivers.xml
+    +  Languages/English/Keyed/RSW_Bacta.xml
+    +  Patches/RSW_Bacta_TraderStock.xml
+    +  Textures/Things/Building/Bacta/RSW_BactaTankShell_east.png
+    +  Textures/Things/Building/Bacta/RSW_BactaTankShell_north.png
+    +  Textures/Things/Building/Bacta/RSW_BactaTankShell_south.png
+    +  Textures/Things/Building/Bacta/RSW_BactaTank_east.png
+    +  Textures/Things/Building/Bacta/RSW_BactaTank_north.png
+    +  Textures/Things/Building/Bacta/RSW_BactaTank_south.png
+    +  Textures/Things/Item/Bacta/RSW_Bacta.png
+
+BarbslingerArtOverride mandrake.rut.barbslingerartoverride
+    in sync (4 files)
+
+BirthHatchDemo   mandrake.rut.birthhatchdemo
+    in sync (3 files)
+
+BloodShrimpArtOverride mandrake.rut.bloodshrimpartoverride
+    in sync (5 files)
+
+BoomsnakeArtOverride mandrake.rut.boomsnakeartoverride
+    in sync (4 files)
+
+BrainWorms       mandrake.rsw.brainworms    not enabled in ModsConfig
+    in sync (11 files)
+
+BumbledroneArtOverride mandrake.rut.bumbledroneartoverride
+    in sync (5 files)
+
+BumbledroneHierophantArtOverride mandrake.rut.bumbledronehierophantartoverride
+    in sync (5 files)
+
+CreatureBehaviors mandrake.rm.creaturebehaviors
+    ~  Assemblies/RimMandrake.CreatureBehaviors.dll
+
+Cuisine          mandrake.rsw.cuisine       not enabled in ModsConfig
+    in sync (15 files)
+
+DalgoArtOverride mandrake.rsw.dalgoartoverride
+    in sync (5 files)
+
+DesertVehicleReskin mandrake.rsw.desertvehiclereskin
+    in sync (39 files)
+
+DewbackArtOverride mandrake.rsw.dewbackartoverride
+    in sync (5 files)
+
+DivingInteraction mandrake.rm.divinginteraction not enabled in ModsConfig
+    in sync (7 files)
+
+Doctrine         mandrake.rut.doctrine
+    in sync (6 files)
+
+DragonsnakeArtOverride mandrake.rsw.dragonsnakeartoverride
+    in sync (5 files)
+
+DroidRepairJobs  mandrake.rut.droidrepairjobs
+    in sync (6 files)
+
+Droidworks       mandrake.rsw.droidworks
+    in sync (560 files)
+
+EmpirePursuit    mandrake.rut.empirepursuit
+    in sync (8 files)
+
+EnvironmentalHazards mandrake.rm.environmentalhazards
+    in sync (13 files)
+
+FambaaArtOverride mandrake.rsw.fambaaartoverride
+    in sync (5 files)
+
+FireWaspArtOverride mandrake.rut.firewaspartoverride
+    in sync (4 files)
+
+FloodedCanyon    mandrake.rm.floodedcanyon  not enabled in ModsConfig
+    in sync (4 files)
+
+FlowWorks        mandrake.rm.flowworks
+    +  Patches/LiquidTypes/RM_LiquidDef_AstrofuelAdoption.xml
+    ~  Assemblies/RimMandrakeFlowWorks.dll
+
+FrostmiteArtOverride mandrake.rut.frostmiteartoverride
+    in sync (5 files)
+
+FungalSoilTrade  mandrake.rut.fungalsoiltrade not enabled in ModsConfig
+    in sync (8 files)
+
+GelatinousSlime  mandrake.rm.gelatinousslime not enabled in ModsConfig
+    in sync (19 files)
+
+GizkaArtOverride mandrake.rsw.gizkaartoverride
+    in sync (8 files)
+
+GizkaStowaway    mandrake.rsw.gizkastowaway
+    in sync (7 files)
+
+Graffiti         mandrake.rm.graffiti
+    in sync (24 files)
+
+GrankArtOverride mandrake.rsw.grankartoverride
+    in sync (5 files)
+
+GravshipLanding  mandrake.rm.gravshiplanding
+    in sync (3 files)
+
+GreaterKraytDragonArtOverride mandrake.rsw.greaterkraytdragonartoverride
+    in sync (5 files)
+
+GreenGooArtOverride mandrake.rut.greengooartoverride
+    in sync (5 files)
+
+Greentide        mandrake.rm.greentide
+    ~  About/About.xml
+    ~  Defs/BiomeDefs/RM_Greentide_Biome.xml
+    ~  Defs/TerrainDefs/RM_Churnmud_Terrains.xml
+
+GritheArtOverride mandrake.rut.gritheartoverride
+    in sync (6 files)
+
+GruttArtOverride mandrake.rut.gruttartoverride
+    in sync (6 files)
+
+HawkbatArtOverride mandrake.rsw.hawkbatartoverride
+    in sync (8 files)
+
+HoraxArtOverride mandrake.rsw.horaxartoverride
+    in sync (5 files)
+
+Inhabited        mandrake.rm.inhabited
+    ~  Defs/GenStepDefs/GenSteps_Inhabited.xml
+    ~  Defs/PlaceDefs/Places_Inhabited.xml
+
+InsectomorphArtOverride mandrake.rsw.insectomorphartoverride
+    in sync (5 files)
+
+IriazArtOverride mandrake.rsw.iriazartoverride
+    in sync (5 files)
+
+IshkoDarkLandmarks mandrake.rut.ishkolandmarks
+    in sync (3 files)
+
+JawaIonWeapons   mandrake.rsw.ionweapons
+    in sync (12 files)
+
+JawaRules        mandrake.rsw.jawarules
+    in sync (3 files)
+
+JawaVoice        mandrake.rsw.jawavoice
+    in sync (13 files)
+
+KinrathArtOverride mandrake.rsw.kinrathartoverride
+    in sync (5 files)
+
+KotORBandolierNorthFix mandrake.rsw.kotorbandoliernorthfix not enabled in ModsConfig
+    in sync (22 files)
+
+KreetleArtOverride mandrake.rsw.kreetleartoverride
+    in sync (5 files)
+
+KyberTradePlot   mandrake.rut.kybertradeplot not enabled in ModsConfig
+    ~  Defs/QuestScriptDefs/RUT_KyberDonationSmuggle.xml
+
+LanternDeeps     mandrake.rut.lanterndeeps
+    in sync (81 files)
+
+LoadTracer       mandrake.rm.loadtracer
+    in sync (3 files)
+
+LockjawArtOverride mandrake.rsw.lockjawartoverride
+    in sync (8 files)
+
+LongHunger       mandrake.rut.longhunger    not enabled in ModsConfig
+    in sync (7 files)
+
+LoreStages       mandrake.rm.lorestages     not enabled in ModsConfig
+    in sync (2 files)
+
+MSEDroidFix      mandrake.rsw.msedroidfix   not enabled in ModsConfig
+    in sync (3 files)
+
+MandrakePatches  mandrake.rm.patches        1 file(s) HELD
+    H  Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png   (repo-only; not deployed)
+           held: owner: pulled pending art verification, 2026-08-14
+    ~  Patches/AnimalDessicatedTexPaths_Fix.xml
+
+MantistanisArtOverride mandrake.rut.mantistanisartoverride
+    in sync (4 files)
+
+MenuShell        mandrake.rut.menushell
+    in sync (37 files)
+
+MovingDunes      mandrake.rm.movingdunes
+    in sync (6 files)
+
+MycoidColossusArtOverride mandrake.rut.mycoidcolossusartoverride
+    in sync (5 files)
+
+MynockArtOverride mandrake.rsw.mynockartoverride
+    in sync (5 files)
+
+Ninefold         mandrake.rm.ninefold
+    ~  Assemblies/RimMandrakeNinefold.dll
+
+NunaArtOverride  mandrake.rsw.nunaartoverride
+    in sync (8 files)
+
+OllopomArtOverride mandrake.rsw.ollopomartoverride
+    in sync (5 files)
+
+Oracle           mandrake.rm.oracle
+    in sync (3 files)
+
+OrrayArtOverride mandrake.rsw.orrayartoverride
+    in sync (5 files)
+
+PawnFlavor       mandrake.rut.pawnflavor
+    ~  About/About.xml
+    ~  Patches/PawnFlavorPhase2_ThoughtDef.xml
+    ~  Patches/PawnFlavorPhase2_Xenotype.xml
+
+PekoPekoArtOverride mandrake.rsw.pekopekoartoverride
+    in sync (8 files)
+
+PlanetPresetPrime mandrake.rm.planetpresetprime
+    in sync (3 files)
+
+PlantGrowth      mandrake.rut.plantgrowth
+    in sync (4 files)
+
+ProximityHatch   mandrake.rm.proximityhatch
+    in sync (2 files)
+
+Pyrelands        mandrake.rm.pyrelands
+    ~  Defs/BiomeDefs/Pyrelands.xml
+
+PyrelandsMechanics mandrake.rut.pyrelandsmechanics
+    in sync (11 files)
+
+Pyrinth          mandrake.rm.pyrinth        not enabled in ModsConfig
+    in sync (25 files)
+
+RaidRedesigner   mandrake.rm.raidredesigner not enabled in ModsConfig
+    in sync (3 files)
+
+RaptorShrimpArtOverride mandrake.rut.raptorshrimpartoverride
+    in sync (5 files)
+
+RazorjackArtOverride mandrake.rut.razorjackartoverride
+    in sync (4 files)
+
+ResearchRetag    mandrake.rut.researchretag
+    in sync (13 files)
+
+RestrainingBolts mandrake.rut.restrainingbolts not enabled in ModsConfig
+    in sync (4 files)
+
+RimDefDump       mandrake.rm.rimdefdump
+    in sync (3 files)
+
+RimProperty      mandrake.rm.property
+    ~  Assemblies/RimMandrakeProperty.dll
+
+RimclawArtOverride mandrake.rut.rimclawartoverride
+    in sync (5 files)
+
+Rites            mandrake.rut.rites
+    in sync (3 files)
+
+RiverColors      mandrake.rut.rivercolors   not enabled in ModsConfig
+    in sync (3 files)
+
+RontoArtOverride mandrake.rsw.rontoartoverride
+    in sync (5 files)
+
+RotSporeKit      mandrake.rut.rotsporekit
+    in sync (135 files)
+
+RustCathedralHum mandrake.rut.rustcathedralhum not enabled in ModsConfig
+    +  Defs/HediffDefs/RUT_CoolantLoad.xml
+    ~  Defs/ThingDefs_Items/RUT_CoolantEel.xml
+
+RustCathedralRoaches mandrake.rut.rustcathedralroaches
+    in sync (14 files)
+
+RustCathedralWalls mandrake.rut.rustcathedralwalls not enabled in ModsConfig
+    in sync (11 files)
+
+RustChrome       mandrake.rm.rustchrome     not enabled in ModsConfig
+    in sync (17 files)
+
+SWBestiary       mandrake.rsw.swbestiary    96 file(s) HELD
+    H  art/Livestock/mockups/karrask_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/karrask_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/onnik_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    +  Defs/ThingDefs_Races/RSW_Runyip.xml
+    +  Defs/ThingDefs_Races/RSW_Scavrat.xml
+    +  Defs/ThingDefs_Races/RSW_Scurrier.xml
+    +  Defs/ThingDefs_Races/RSW_Shaak.xml
+    +  Defs/ThingDefs_Races/RSW_Shiro.xml
+    +  Defs/ThingDefs_Races/RSW_ShiroTrap.xml
+    +  Defs/ThingDefs_Races/RSW_Shyrack.xml
+    +  Defs/ThingDefs_Races/RSW_Skalder.xml
+    +  Defs/ThingDefs_Races/RSW_Sketto.xml
+    +  Defs/ThingDefs_Races/RSW_Strill.xml
+    +  Defs/ThingDefs_Races/RSW_TeeMuss.xml
+    +  Defs/ThingDefs_Races/RSW_Urusai.xml
+    +  Defs/ThingDefs_Races/RSW_Uvak.xml
+    +  Defs/ThingDefs_Races/RSW_Varactyl.xml
+    +  Defs/ThingDefs_Races/RSW_Voorpak.xml
+    +  Defs/ThingDefs_Races/RSW_Vornskyr.xml
+    +  Defs/ThingDefs_Races/RSW_WarWyrm.xml
+    +  Defs/ThingDefs_Races/RSW_Whisperbird.xml
+    +  Defs/ThingDefs_Races/RSW_WompRat.xml
+    +  Defs/ThingDefs_Races/RSW_Woolamander.xml
+    +  Defs/ThingDefs_Races/RSW_Worrt.xml
+    +  Defs/ThingDefs_Races/RSW_Wraid.xml
+    +  Defs/ThingDefs_Races/RSW_Wyyyschokk.xml
+    +  Defs/ThingDefs_Races/RSW_Yobshrimp.xml
+    +  Defs/ThingDefs_Races/RSW_Zakkeg.xml
+    +  Defs/ThingDefs_Races/RSW_Zeer.xml
+    +  Textures/UI/Abilities/Ability_AnimalForceFocus.png
+    +  Textures/UI/Abilities/Ability_AnimalGoldForage.png
+    +  Textures/UI/Abilities/Ability_AnimalSwarmCall.png
+    +  Textures/swanimals/Runyip/Runyip_Dessicated.png
+    +  Textures/swanimals/Runyip/Runyip_Swimming_east.png
+    +  Textures/swanimals/Runyip/Runyip_Swimming_north.png
+    +  Textures/swanimals/Runyip/Runyip_Swimming_south.png
+    +  Textures/swanimals/Runyip/Runyip_east.png
+    +  Textures/swanimals/Runyip/Runyip_j_Dessicated.png
+    +  Textures/swanimals/Runyip/Runyip_j_Swimming_east.png
+    +  Textures/swanimals/Runyip/Runyip_j_Swimming_north.png
+    +  Textures/swanimals/Runyip/Runyip_j_Swimming_south.png
+    +  Textures/swanimals/Runyip/Runyip_j_east.png
+    +  Textures/swanimals/Runyip/Runyip_j_north.png
+    +  Textures/swanimals/Runyip/Runyip_j_south.png
+    +  Textures/swanimals/Runyip/Runyip_north.png
+    +  Textures/swanimals/Runyip/Runyip_south.png
+    +  Textures/swanimals/Scavrat/Scavrat_Dessicated.png
+    +  Textures/swanimals/Scavrat/Scavrat_east.png
+    +  Textures/swanimals/Scavrat/Scavrat_north.png
+    +  Textures/swanimals/Scavrat/Scavrat_south.png
+    +  Textures/swanimals/Scurrier/Scurrier_Dessicated.png
+    +  Textures/swanimals/Scurrier/Scurrier_f_east.png
+    +  Textures/swanimals/Scurrier/Scurrier_f_north.png
+    +  Textures/swanimals/Scurrier/Scurrier_f_south.png
+    +  Textures/swanimals/Scurrier/Scurrier_m_east.png
+    +  Textures/swanimals/Scurrier/Scurrier_m_north.png
+    +  Textures/swanimals/Scurrier/Scurrier_m_south.png
+    +  Textures/swanimals/Shaak/Shaak_Dessicated.png
+    +  Textures/swanimals/Shaak/Shaak_east.png
+    +  Textures/swanimals/Shaak/Shaak_north.png
+    +  Textures/swanimals/Shaak/Shaak_south.png
+    +  Textures/swanimals/Shiro/Shiro_Dessicated.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_Dessicated.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_east.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_i_Dessicated.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_i_east.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_i_north.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_i_south.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_j_Dessicated.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_j_east.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_j_north.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_j_south.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_north.png
+    +  Textures/swanimals/ShiroTrap/ShiroTrap_south.png
+    +  Textures/swanimals/Shyrack/Shyrack_Dessicated.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_1_east.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_1_north.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_1_south.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_2_east.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_2_north.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_2_south.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_3_east.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_3_north.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_3_south.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_44_east.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_44_north.png
+    +  Textures/swanimals/Shyrack/Shyrack_Flying_44_south.png
+    +  Textures/swanimals/Shyrack/Shyrack_east.png
+    +  Textures/swanimals/Shyrack/Shyrack_north.png
+    +  Textures/swanimals/Shyrack/Shyrack_south.png
+    +  Textures/swanimals/Skalder/Skalder_Dessicated.png
+    +  Textures/swanimals/Skalder/Skalder_Swimming_east.png
+    +  Textures/swanimals/Skalder/Skalder_Swimming_north.png
+    +  Textures/swanimals/Skalder/Skalder_Swimming_south.png
+    +  Textures/swanimals/Skalder/Skalder_east.png
+    +  Textures/swanimals/Skalder/Skalder_north.png
+    +  Textures/swanimals/Skalder/Skalder_south.png
+    +  Textures/swanimals/Sketto/Sketto_Dessicated.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_1_east.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_1_north.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_1_south.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_2_east.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_2_north.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_2_south.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_3_east.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_3_north.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_3_south.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_4_east.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_4_north.png
+    +  Textures/swanimals/Sketto/Sketto_Flying_4_south.png
+    +  Textures/swanimals/Sketto/Sketto_east.png
+    +  Textures/swanimals/Sketto/Sketto_north.png
+    +  Textures/swanimals/Sketto/Sketto_south.png
+    +  Textures/swanimals/Strill/Strill_Dessicated.png
+    +  Textures/swanimals/Strill/Strill_Flying_1_east.png
+    +  Textures/swanimals/Strill/Strill_Flying_1_north.png
+    +  Textures/swanimals/Strill/Strill_Flying_1_south.png
+    +  Textures/swanimals/Strill/Strill_east.png
+    +  Textures/swanimals/Strill/Strill_north.png
+    +  Textures/swanimals/Strill/Strill_south.png
+    +  Textures/swanimals/TeeMuss/TeeMuss_Dessicated.png
+    +  Textures/swanimals/TeeMuss/TeeMuss_east.png
+    +  Textures/swanimals/TeeMuss/TeeMuss_north.png
+    +  Textures/swanimals/TeeMuss/TeeMuss_south.png
+    +  Textures/swanimals/Urusai/Urusai_Dessicated.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_1_east.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_1_north.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_1_south.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_2_east.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_2_north.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_2_south.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_3_east.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_3_north.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_3_south.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_4_east.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_4_north.png
+    +  Textures/swanimals/Urusai/Urusai_Flying_4_south.png
+    +  Textures/swanimals/Urusai/Urusai_east.png
+    +  Textures/swanimals/Urusai/Urusai_north.png
+    +  Textures/swanimals/Urusai/Urusai_south.png
+    +  Textures/swanimals/Uvak/Uvak_Dessicated.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_1_east.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_1_north.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_1_south.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_2_east.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_2_north.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_2_south.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_3_east.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_3_north.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_3_south.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_4_east.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_4_north.png
+    +  Textures/swanimals/Uvak/Uvak_Flying_4_south.png
+    +  Textures/swanimals/Uvak/Uvak_east.png
+    +  Textures/swanimals/Uvak/Uvak_north.png
+    +  Textures/swanimals/Uvak/Uvak_south.png
+    +  Textures/swanimals/Varactyl/Varactyl_Dessicated.png
+    +  Textures/swanimals/Varactyl/Varactyl_f_east.png
+    +  Textures/swanimals/Varactyl/Varactyl_f_north.png
+    +  Textures/swanimals/Varactyl/Varactyl_f_south.png
+    +  Textures/swanimals/Varactyl/Varactyl_m_east.png
+    +  Textures/swanimals/Varactyl/Varactyl_m_north.png
+    +  Textures/swanimals/Varactyl/Varactyl_m_south.png
+    +  Textures/swanimals/Voorpak/Voorpak_Dessicated.png
+    +  Textures/swanimals/Voorpak/Voorpak_east.png
+    +  Textures/swanimals/Voorpak/Voorpak_north.png
+    +  Textures/swanimals/Voorpak/Voorpak_south.png
+    +  Textures/swanimals/Vornskyr/Vornskyr_Dessicated.png
+    +  Textures/swanimals/WarWyrm/WarWyrm_Dessicated.png
+    +  Textures/swanimals/WarWyrm/WarWyrm_east.png
+    +  Textures/swanimals/WarWyrm/WarWyrm_north.png
+    +  Textures/swanimals/WarWyrm/WarWyrm_south.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Dessicated.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_1_east.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_1_north.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_1_south.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_2_east.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_2_north.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_2_south.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_3_east.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_3_north.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_3_south.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_4_east.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_4_north.png
+    +  Textures/swanimals/Whisperbird/Whisperbird_Flying_4_south.png
+    +  Textures/swanimals/WompRat/WompRat_Dessicated.png
+    +  Textures/swanimals/WompRat/WompRat_east.png
+    +  Textures/swanimals/WompRat/WompRat_north.png
+    +  Textures/swanimals/WompRat/WompRat_south.png
+    +  Textures/swanimals/Woolamander/Woolamander_Dessicated.png
+    +  Textures/swanimals/Woolamander/Woolamander_east.png
+    +  Textures/swanimals/Woolamander/Woolamander_north.png
+    +  Textures/swanimals/Woolamander/Woolamander_south.png
+    +  Textures/swanimals/Worrt/WorrtA_Swimming_east.png
+    +  Textures/swanimals/Worrt/WorrtA_Swimming_north.png
+    +  Textures/swanimals/Worrt/WorrtA_Swimming_south.png
+    +  Textures/swanimals/Worrt/WorrtA_east.png
+    +  Textures/swanimals/Worrt/WorrtA_north.png
+    +  Textures/swanimals/Worrt/WorrtA_south.png
+    +  Textures/swanimals/Worrt/WorrtB_Swimming_east.png
+    +  Textures/swanimals/Worrt/WorrtB_Swimming_north.png
+    +  Textures/swanimals/Worrt/WorrtB_Swimming_south.png
+    +  Textures/swanimals/Worrt/WorrtB_east.png
+    +  Textures/swanimals/Worrt/WorrtB_north.png
+    +  Textures/swanimals/Worrt/WorrtB_south.png
+    +  Textures/swanimals/Worrt/WorrtC_Swimming_east.png
+    +  Textures/swanimals/Worrt/WorrtC_Swimming_north.png
+    +  Textures/swanimals/Worrt/WorrtC_Swimming_south.png
+    +  Textures/swanimals/Worrt/WorrtC_east.png
+    +  Textures/swanimals/Worrt/WorrtC_north.png
+    +  Textures/swanimals/Worrt/WorrtC_south.png
+    +  Textures/swanimals/Worrt/Worrt_Dessicated.png
+    +  Textures/swanimals/Worrt/Worrt_Swimming_east.png
+    +  Textures/swanimals/Worrt/Worrt_Swimming_north.png
+    +  Textures/swanimals/Worrt/Worrt_Swimming_south.png
+    +  Textures/swanimals/Worrt/Worrt_east.png
+    +  Textures/swanimals/Worrt/Worrt_j_Dessicated.png
+    +  Textures/swanimals/Worrt/Worrt_j_Swimming_east.png
+    +  Textures/swanimals/Worrt/Worrt_j_Swimming_north.png
+    +  Textures/swanimals/Worrt/Worrt_j_Swimming_south.png
+    +  Textures/swanimals/Worrt/Worrt_j_east.png
+    +  Textures/swanimals/Worrt/Worrt_j_north.png
+    +  Textures/swanimals/Worrt/Worrt_j_south.png
+    +  Textures/swanimals/Worrt/Worrt_north.png
+    +  Textures/swanimals/Worrt/Worrt_south.png
+    +  Textures/swanimals/Wraid/Wraid_Dessicated.png
+    +  Textures/swanimals/Wraid/Wraid_east.png
+    +  Textures/swanimals/Wraid/Wraid_north.png
+    +  Textures/swanimals/Wraid/Wraid_south.png
+    +  Textures/swanimals/Wyyyschokk/Wyyyschokk_Dessicated.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_Dessicated.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_Swimming_east.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_Swimming_north.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_Swimming_south.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_east.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_j_Swimming_east.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_j_Swimming_north.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_j_Swimming_south.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_j_east.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_j_north.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_j_south.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_north.png
+    +  Textures/swanimals/Yobshrimp/Yobshrimp_south.png
+    +  Textures/swanimals/Zakkeg/Zakkeg_Dessicated.png
+    +  Textures/swanimals/Zeer/Zeer_Dessicated.png
+    +  Textures/swresource/EggSilk/EggSilk_a.png
+    +  Textures/swresource/EggSilk/EggSilk_b.png
+    +  Textures/swresource/Meat_Cameloid/Meat_Cameloid_a.png
+    +  Textures/swresource/Meat_Cameloid/Meat_Cameloid_b.png
+    +  Textures/swresource/Meat_Cameloid/Meat_Cameloid_c.png
+    ~  Defs/AbilityDefs/RSW_MlieWaveC_Abilities.xml
+    ~  Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
+    ~  Defs/Bodies/RSW_MlieWaveC_Bodies.xml
+    ~  Defs/ThingDefs_Items/RSW_MlieWaveC_Resources.xml
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria_east.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria_north.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria_south.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle_east.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle_north.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle_south.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon_east.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon_north.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon_south.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider_east.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider_north.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider_south.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle_east.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle_north.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle_south.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis_east.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis_north.png
+    ~  Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis_south.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_east.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_north.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_south.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale_east.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale_north.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale_south.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_east.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_north.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale_south.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_east.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_north.png
+    ~  Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_south.png
+    ~  Textures/swanimals/Jamel/Jamel_east.png
+    ~  Textures/swanimals/Jamel/Jamel_north.png
+    ~  Textures/swanimals/Jamel/Jamel_south.png
+
+SacredGraffiti   mandrake.rm.sacredgraffiti
+    in sync (7 files)
+
+Sarlacc          mandrake.rsw.sarlacc       not enabled in ModsConfig
+    in sync (8 files)
+
+ScarlandsLadder  mandrake.rut.scarlandsladder not enabled in ModsConfig
+    in sync (2 files)
+
+ScavengerEvents  mandrake.rut.scavengerevents
+    in sync (5 files)
+
+ShadowChargerArtOverride mandrake.rut.shadowchargerartoverride
+    in sync (5 files)
+
+ShipMemory       mandrake.rut.shipmemory
+    in sync (6 files)
+
+ShipShields      mandrake.rut.shipshields   not enabled in ModsConfig
+    ~  About/About.xml
+    ~  Assemblies/RimMandrake.Utinni.ShipShields.dll
+    ~  Defs/ThingDefs_Buildings/RUT_ShieldGenerator.xml
+
+ShipVermin       mandrake.rm.shipvermin
+    in sync (3 files)
+
+ShiroArtOverride mandrake.rsw.shiroartoverride
+    in sync (5 files)
+
+Shokk            mandrake.rsw.shokk
+    in sync (6 files)
+
+ShokkweaveEconomy mandrake.rut.shokkweaveeconomy
+    in sync (10 files)
+
+SpidercatArtOverride mandrake.rut.spidercatartoverride
+    in sync (5 files)
+
+StarWarsPatches  mandrake.rsw.patches
+    ~  Defs/Absorbed_LumiDoorsExpanded/Absorbed_Lumi_BlastDoors_ResearchProjects.xml
+    ~  Defs/Absorbed_LumiDoorsExpanded/Absorbed_Lumi_BlastDoors_ThingDefs.xml
+    ~  Patches/WeaponTags_Renormalise.xml
+
+StarWarsRaces    mandrake.rsw.starwarsraces
+    +  Defs/HeadTypeDefs/DesertWraps_DevolvedNomadHeads.xml
+    +  Textures/RimMandrakeSW/SWX/Pawn/HeadType/desert_nomad/HeadPot_south.png
+    +  Textures/RimMandrakeSW/SWX/Pawn/HeadType/desert_nomad/HeadRidged_south.png
+    ~  Defs/GeneDefs/SW_Genes.xml
+    ~  Defs/HeadTypeDefs/SW_HeadTypes.xml
+    ~  Defs/PawnKindDefs/RimMandrakePawnKinds.xml
+    ~  Defs/XenotypeDefs/RimMandrakeXenotypes.xml
+
+StrandedQuest    mandrake.rm.strandedquest
+    in sync (4 files)
+
+StructureInjections mandrake.rm.injections
+    +  Defs/GenStepDefs_Batch1.xml
+    +  Patches/SignalMast.xml
+    +  Templates/signal_mast.txt
+    ~  About/About.xml
+
+StructureInjectionsRUT mandrake.rut.injections
+    ~  Defs/VaultDungeons/QuestScriptDefs/RUT_VaultThaw.xml
+
+StructureInjectionsSW mandrake.rsw.injections
+    +  Defs/GenStepDefs_Batch7.xml
+    +  Defs/GenStepDefs_BeastLair.xml
+    +  Defs/GenStepDefs_CrashedShip.xml
+    +  Defs/GenStepDefs_Whisper_Batch1.xml
+    +  Defs/TileMutatorDefs_Batch7.xml
+    +  Defs/TileMutatorDefs_BeastLair.xml
+    +  Defs/TileMutatorDefs_CrashedShip.xml
+    +  Patches/WhisperSarlaccSign.xml
+    +  Templates/beast_lair.txt
+    +  Templates/crashed_ship.txt
+    +  Templates/dead_crawler.txt
+    +  Templates/sarlacc_sign.txt
+
+TarGuzzlerArtOverride mandrake.rut.targuzzlerartoverride
+    in sync (5 files)
+
+TerramorphArtOverride mandrake.rut.terramorphartoverride
+    in sync (5 files)
+
+TheBazaar        mandrake.rm.bazaar         NOT DEPLOYED · not enabled in ModsConfig
+    +  About/About.xml
+    +  Assemblies/RimMandrakeBazaar.dll
+
+ThermadonArtOverride mandrake.rut.thermadonartoverride
+    in sync (5 files)
+
+ThunderoxArtOverride mandrake.rut.thunderoxartoverride
+    in sync (5 files)
+
+TitanicCreatures mandrake.rm.titaniccreatures not enabled in ModsConfig
+    in sync (8 files)
+
+TrophyCraft      mandrake.rsw.trophycraft   NOT DEPLOYED · not enabled in ModsConfig
+    +  About/About.xml
+    +  Assemblies/RimMandrake.StarWars.TrophyCraft.dll
+    +  Defs/ApparelLayerDefs/RSW_TrophyCraft_ApparelLayerDefs.xml
+    +  Defs/RecipeDefs/RSW_TrophyCraft_Recipes.xml
+    +  Defs/ThingDefs/RSW_TrophyCraft_Items.xml
+    +  Defs/ThoughtDefs/RSW_TrophyCraft_Thoughts.xml
+    +  Patches/RSW_TrophyCraft_WyyyschokkFangDrop.xml
+    +  Textures/Things/Item/RSW_Apparel_FangPendant/RSW_Apparel_FangPendant.png
+    +  Textures/swresource/WyyyschokkFang.png
+
+UtinniPatches    mandrake.rut.patches       21 file(s) HELD
+    H  Defs/MapGeneration/RUT_ScaldWreckScatter.xml   (repo-only; not deployed)
+           held: BENCH: held with the ThingDefs it scatters, 2026-09-13
+    H  Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml   (repo-only; not deployed)
+           held: BENCH: held with the ThingDef it scatters, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_BeastBulge.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_DryAirBlower.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-14
+    H  Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-14
+    H  Defs/ThingDefs_Buildings/RUT_FoundryTowerEntrance.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-14
+    H  Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_ScaldVent.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_ScaldWrecks.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_SteamCatch.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_VentForge.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_VentKiln.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_VentSmelter.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Items/RUT_DeadCreep.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Items/RUT_TibannaGas.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-14
+    H  Defs/ThingDefs_Plants/RUT_DyingCreep.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Patches/BiomeFishTypes_TwilightDeep.xml   (repo-only; not deployed)
+           held: FOUNDRY: structurally HELD, needs a new under-roof water layer, 2026-09-18
+    H  Patches/RUT_BeastBulge_DreadRegistration.xml   (repo-only; not deployed)
+           held: BENCH: held with RUT_BeastBulge.xml, 2026-09-14
+    H  Patches/RUT_ScaldWreckScatter_Register.xml   (repo-only; not deployed)
+           held: BENCH: held with the ThingDefs it scatters, 2026-09-13
+    H  Patches/RUT_SumpTarBeastGenStep_Register.xml   (repo-only; not deployed)
+           held: BENCH: held with the ThingDef it scatters, 2026-09-13
+    ~  Patches/AnimalBiomeDuplicates_Fix.xml
+    ~  Patches/BiomeCast_Ashkarr.xml
+    -  Patches/BiomeFishTypes_Ashkarr.xml   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Patches/BiomeFishTypes_Greentide.xml   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/BMT_PollutedLands/Things/Plant/TanglerootMangrove/TanglerootMangrove.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/BMT_PollutedLands/Things/Plant/TwistingThornwood/TwistingThornwood_a.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+
+Visibility       mandrake.rm.visibility
+    in sync (3 files)
+
+VornskyrArtOverride mandrake.rsw.vornskyrartoverride
+    in sync (5 files)
+
+WeatherSuite     mandrake.rm.weathersuite
+    in sync (8 files)
+
+WhisperbirdArtOverride mandrake.rsw.whisperbirdartoverride
+    in sync (5 files)
+
+WildpodArtOverride mandrake.rut.wildpodartoverride
+    in sync (5 files)
+
+WreckedMachines  mandrake.rm.wreckedmachines
+    in sync (19 files)
+
+WyyyschokkArtOverride mandrake.rsw.wyyyschokkartoverride
+    in sync (5 files)
+
+ZakkegArtOverride mandrake.rsw.zakkegartoverride
+    in sync (5 files)
+
+ZeerArtOverride  mandrake.rsw.zeerartoverride
+    in sync (5 files)
+
+Drift found. Re-run with --apply to deploy.

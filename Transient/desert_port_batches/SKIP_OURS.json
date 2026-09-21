@@ -1,0 +1,38 @@
+[
+ {
+  "defName": "RSW_ImperialToad",
+  "label": "imperial toad [RSW_ImperialToad]",
+  "origin": "OURS \u2014 SWBestiary",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.7",
+  "unguarded": "no",
+  "effect": "[OURS \u2014 SWBestiary] in AridShrubland=0.7. adult bodyGraphicData.drawSize 0.87\u00d70.87 cells (last lifeStage). The imperial toad is native to the cave systems below deserts on the Rim. It tends to be preyed upon quite easily but many cave dwellers have taken a shine to it as a pet due to its regal posture."
+ },
+ {
+  "defName": "RSW_Jellypot",
+  "label": "jellypot [RSW_Jellypot]",
+  "origin": "OURS \u2014 SWBestiary",
+  "kind": "animal",
+  "biomes": "Desert=0.7",
+  "unguarded": "no",
+  "effect": "[OURS \u2014 SWBestiary] in Desert=0.7. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). Named the jellypot for its ability to produce insect jelly in its large thoracic sac, this rare animal is almost exclusively found near insectoid hives. Despite being farmed much like ants do with aphids, it does not\u2026"
+ },
+ {
+  "defName": "JOE_Landopus",
+  "label": "landopus [JOE_Landopus]",
+  "origin": "OURS \u2014 UtinniPatches",
+  "kind": "animal",
+  "biomes": "Desert=0.5",
+  "unguarded": "YES",
+  "effect": "[OURS \u2014 UtinniPatches] in Desert=0.5. adult bodyGraphicData.drawSize 0.80\u00d70.80 cells (last lifeStage). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Despite the name, this bad-tempered creature evolved from squid and has eight tentacles and two arms. The landopus has a venomous bite and a full load of its deadly neurotoxin will kill a healthy adult human in a minute\u2026"
+ },
+ {
+  "defName": "RSW_MossBeetle",
+  "label": "moss beetle [RSW_MossBeetle]",
+  "origin": "OURS \u2014 SWBestiary",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.3",
+  "unguarded": "no",
+  "effect": "[OURS \u2014 SWBestiary] in AridShrubland=0.3. adult bodyGraphicData.drawSize 1.20\u00d71.20 cells (last lifeStage). A large beetle, commonly found in dark, damp places.\\n\\nIt feeds off low underbrush in fungal forests and while not the best source of meat, it works when little else is available."
+ }
+]

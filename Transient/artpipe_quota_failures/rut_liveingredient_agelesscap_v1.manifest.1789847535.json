@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.007730090990663,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 7.768885082012275,
+  "id": "rut_liveingredient_agelesscap_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-27-27-01a0ba47-9272-7a11-9d70-0fc42ec14048.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-27-18-01a0ba47-6c60-7ba1-8691-d18b0060c8e8.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\n Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_liveingredient_agelesscap_v1\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba47-9272-7a11-9d70-0fc42ec14048\n--------\nuser\nUse $imagegen to [artpipe job rut_liveingredient_agelesscap_v1] RimWorld item sprite, painterly vanilla-RimWorld style: Freshly cut flesh from an ageless cap mushroom \u2014 a pale, faintly steaming wedge of moist fungal tissue, cut surface visible, still faintly warm as if alive. Small hand-sized chunk. Single object, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses the MushroomlLog_a donor texture shared with an unrelated item (RUT_Symbiont_Mycoid, a completely different symbiont) \u2014 needs its own cut-mushroom-flesh identity.\n\nThen copy the generated image into the current working directory as rut_liveingredient_agelesscap_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

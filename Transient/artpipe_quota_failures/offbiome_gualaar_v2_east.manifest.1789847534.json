@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.293733475000408,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 8.471591968001121,
+  "id": "offbiome_gualaar_v2_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T09-55-19-01a0ba98-0423-7383-bd78-bdb9736c3b97.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T09-55-10-01a0ba97-de72-7b21-b312-5b7d207311e4.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\n-necked mountain goat crossed with a llama. Cream-white and tan-brown patchy fur coat, longer shaggy fur along the neck and chest, short fur on the legs. A long tapering snout, small forward-curving horns on the head, upright pointed ears, dark eyes. Slender legs with cloven hooves, a short stubby tail. Single creature, centered, standing pose, no ground shadow, no background scenery, no pack saddle. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 512x512 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Owner ruling 2026-09-16: rerender. Gualaar ships as pure donor content (Star Wars Animal Collection (Continued)) with no owned art override yet -- deploys as a new GualaarArtOverride mod (packageId mandrake.rsw.gualaarartoverride), same pattern as ZeerArtOverride/OrrayArtOverride: loose Textures/swanimals/Gualaar/Gualaar_<facing>.png, loadAfter Mlie.StarWarsAnimalCollection, no defName/Defs touched. Reference sprite for current look only (not passed to the generator): design/Jawa/fauna/sprites/Gualaar.png. Facing: east \u2014 strict side profile with the camera at the creature's own eye level, the creature's head points to the RIGHT edge of the image. NOT a top-down or overhead view: we do not look down on its back, and only the near side of the body is visible.\n\nThen copy the generated image into the current working directory as offbiome_gualaar_v2_east.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

@@ -1,0 +1,364 @@
+{
+ "ticksGame": 85336,
+ "outdoorTemp": 24.954895,
+ "mapBiome": "RUT_TheRot",
+ "weather": {
+  "success": true,
+  "readErrors": [],
+  "weather": {
+   "current": "RUT_SheenFall",
+   "last": "RUT_SheenMist",
+   "curWeatherAge": 74489,
+   "rainRate": 1.0,
+   "snowRate": 0.0
+  },
+  "activeConditionCount": 3,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 74489,
+    "ticksLeft": -1
+   },
+   {
+    "def": "RUT_SheenExposureLock",
+    "label": "The Sheen's breath",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 74489,
+    "ticksLeft": -1
+   },
+   {
+    "def": "RUT_SporeCloud",
+    "label": "Spore cloud",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 20854,
+    "ticksLeft": -1
+   }
+  ],
+  "threatPoints": 203.2278,
+  "wealth": {
+   "total": 28315.416,
+   "items": 9917.069,
+   "buildings": 3497.34644,
+   "pawns": 14901.0
+  },
+  "storyteller": {
+   "def": "Cassandra",
+   "difficulty": "Rough",
+   "threatScale": 1.0,
+   "allowBigThreats": true
+  },
+  "weatherDefs": null,
+  "conditionDefs": null,
+  "note": "TransitionTo does not HOLD - WeatherDecider rerolls when the duration expires. Use jawa/weather_set lock=true.",
+  "ticksGame": 85336,
+  "operation": {
+   "OperationId": "op_b639b2d19ae3418eb9bb99d48054b011",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/weather-get",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-18T05:59:04.7088799+00:00",
+   "CompletedAtUtc": "2026-09-18T05:59:04.7163966+00:00",
+   "DurationMs": 7,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "rooms": {
+  "R1_control": {
+   "roomTemp": 24.1497269,
+   "cells": 25,
+   "openRoof": 0,
+   "cellTemp": 24.1497269
+  },
+  "R2_produce": {
+   "roomTemp": 24.6745014,
+   "cells": 25,
+   "openRoof": 0,
+   "cellTemp": 24.6745014
+  },
+  "R3_mat": {
+   "roomTemp": 23.8625431,
+   "cells": 25,
+   "openRoof": 0,
+   "cellTemp": 23.8625431
+  },
+  "R4_stone": {
+   "roomTemp": 22.2806988,
+   "cells": 25,
+   "openRoof": 0,
+   "cellTemp": 22.2806988
+  },
+  "R5_furnace": {
+   "roomTemp": 27.51033,
+   "cells": 25,
+   "openRoof": 0,
+   "cellTemp": 27.51033
+  },
+  "R6_shelter": {
+   "roomTemp": 25.6506386,
+   "cells": 25,
+   "openRoof": 0,
+   "cellTemp": 25.6506386
+  }
+ },
+ "meat": {
+  "outdoor": [],
+  "control": [
+   {
+    "id": "Meat_Cow36831",
+    "x": 142,
+    "z": 102,
+    "text": "Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>16 hours</color>)"
+   },
+   {
+    "id": "Meat_Cow36832",
+    "x": 143,
+    "z": 102,
+    "text": "Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>16 hours</color>)"
+   },
+   {
+    "id": "Meat_Cow36833",
+    "x": 144,
+    "z": 102,
+    "text": "Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>16 hours</color>)"
+   }
+  ]
+ },
+ "pawns": {
+  "BARE": {
+   "Human36838": {
+    "xz": [
+     179,
+     106
+    ],
+    "roof": null,
+    "dead": false,
+    "SheenCoating": 1.407311,
+    "SporeFlesh": 0.0343000032,
+    "SporesBuildup": 0.0918000638,
+    "SheenSymbiosis": null,
+    "all": [
+     "RUT_SheenCoating",
+     "RUT_SporeFlesh",
+     "RUT_SporesBuildup"
+    ]
+   },
+   "Human36841": {
+    "xz": [
+     238,
+     212
+    ],
+    "roof": null,
+    "dead": false,
+    "SheenCoating": 1.41142154,
+    "SporeFlesh": 0.06266664,
+    "SporesBuildup": 0.114800066,
+    "SheenSymbiosis": null,
+    "all": [
+     "RUT_SheenCoating",
+     "RUT_SporeFlesh",
+     "RUT_SporesBuildup"
+    ]
+   },
+   "Human36844": {
+    "xz": [
+     161,
+     103
+    ],
+    "roof": "RoofConstructed",
+    "dead": false,
+    "SheenCoating": 1.41876006,
+    "SporeFlesh": null,
+    "SporesBuildup": 0.0918000638,
+    "SheenSymbiosis": null,
+    "all": [
+     "RUT_SheenCoating",
+     "RUT_SporesBuildup"
+    ]
+   }
+  },
+  "ROOF": {
+   "Human36847": {
+    "xz": [
+     192,
+     102
+    ],
+    "roof": "RoofConstructed",
+    "dead": false,
+    "SheenCoating": null,
+    "SporeFlesh": null,
+    "SporesBuildup": null,
+    "SheenSymbiosis": null,
+    "all": [
+     "Malnutrition"
+    ]
+   },
+   "Human36850": {
+    "xz": [
+     194,
+     105
+    ],
+    "roof": "RoofConstructed",
+    "dead": false,
+    "SheenCoating": null,
+    "SporeFlesh": null,
+    "SporesBuildup": null,
+    "SheenSymbiosis": null,
+    "all": [
+     "Malnutrition",
+     "Scratch"
+    ]
+   },
+   "Human36853": {
+    "xz": [
+     191,
+     103
+    ],
+    "roof": "RoofConstructed",
+    "dead": false,
+    "SheenCoating": null,
+    "SporeFlesh": null,
+    "SporesBuildup": null,
+    "SheenSymbiosis": null,
+    "all": [
+     "Bruise",
+     "Crack"
+    ]
+   }
+  },
+  "HELM": {
+   "Human36856": {
+    "xz": [
+     195,
+     99
+    ],
+    "roof": null,
+    "dead": false,
+    "SheenCoating": 0.0971526057,
+    "SporeFlesh": null,
+    "SporesBuildup": 0.114800073,
+    "SheenSymbiosis": null,
+    "all": [
+     "RUT_SheenCoating",
+     "RUT_SporesBuildup"
+    ]
+   },
+   "Human36859": {
+    "xz": [
+     147,
+     106
+    ],
+    "roof": null,
+    "dead": false,
+    "SheenCoating": 0.0865952447,
+    "SporeFlesh": null,
+    "SporesBuildup": 0.0918,
+    "SheenSymbiosis": null,
+    "all": [
+     "Bite",
+     "RUT_SheenCoating",
+     "RUT_SporesBuildup"
+    ]
+   },
+   "Human36862": {
+    "xz": [
+     129,
+     115
+    ],
+    "roof": null,
+    "dead": false,
+    "SheenCoating": 0.110155143,
+    "SporeFlesh": null,
+    "SporesBuildup": 0.114800066,
+    "SheenSymbiosis": null,
+    "all": [
+     "RUT_SheenCoating",
+     "RUT_SporesBuildup"
+    ]
+   }
+  },
+  "SYM": {
+   "Human36865": {
+    "xz": [
+     154,
+     129
+    ],
+    "roof": "RoofConstructed",
+    "dead": false,
+    "SheenCoating": 0.0001,
+    "SporeFlesh": null,
+    "SporesBuildup": 0.0227999315,
+    "SheenSymbiosis": 1.0,
+    "all": [
+     "Cataract",
+     "Dementia",
+     "Frail",
+     "HearingLoss",
+     "Malnutrition",
+     "RUT_SheenCoating",
+     "RUT_SheenSymbiosis",
+     "RUT_SporesBuildup",
+     "Scratch",
+     "Stab"
+    ]
+   },
+   "Human36868": {
+    "xz": [
+     154,
+     130
+    ],
+    "roof": null,
+    "dead": false,
+    "SheenCoating": 0.0001,
+    "SporeFlesh": null,
+    "SporesBuildup": 0.06879993,
+    "SheenSymbiosis": 1.0,
+    "all": [
+     "Malnutrition",
+     "RUT_SheenCoating",
+     "RUT_SheenSymbiosis",
+     "RUT_SporesBuildup"
+    ]
+   },
+   "Human36871": {
+    "xz": [
+     154,
+     131
+    ],
+    "roof": "RoofConstructed",
+    "dead": false,
+    "SheenCoating": 0.0001,
+    "SporeFlesh": null,
+    "SporesBuildup": 0.0227999315,
+    "SheenSymbiosis": 1.0,
+    "all": [
+     "Asthma",
+     "Cataract",
+     "Frostbite",
+     "Malnutrition",
+     "RUT_SheenCoating",
+     "RUT_SheenSymbiosis",
+     "RUT_SporesBuildup"
+    ]
+   }
+  }
+ },
+ "furnace": [
+  {
+   "id": "RUT_GrownFurnace36837",
+   "text": "Expires in: 14 days"
+  }
+ ]
+}

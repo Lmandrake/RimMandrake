@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 6.702540192985907,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 12.500860536994878,
+  "id": "rot_falsefruit_v2",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-23-20-01a0ba43-cdbd-7450-97c7-9ee316b193a0.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-23-07-01a0ba43-98bf-7d23-8d75-b6cd4e347a7a.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_falsefruit_v2\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba43-cdbd-7450-97c7-9ee316b193a0\n--------\nuser\nUse $imagegen to [artpipe job rot_falsefruit_v2] Just over half a cell: a small, tempting, rounded pale cap with the same milk-white-and-lilac colouring as the lussa crown, deliberately similar at a glance but with a subtly wrong detail up close \u2014 the gills run in a spiral rather than radially, and the stalk is threaded with fine dark root-hairs into the mat. No glow. Currently the mold-fruiting-bodies placeholder; must become a single small cap, not a carpet. Owner's note: \", rename\". painterly RimWorld sprite, transparent background Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient.\n\nThen copy the generated image into the current working directory as rot_falsefruit_v2.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

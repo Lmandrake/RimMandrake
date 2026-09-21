@@ -1,0 +1,308 @@
+[
+ {
+  "defName": "Uvak",
+  "label": "uvak [Uvak]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.3",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 3.50\u00d73.50 cells (last lifeStage). Uvak were a large, membranous-winged reptavian species with sharp beaks. They were native to the planet of Kesh, where they were used by the indigenous Keshiri as pack animals and mounts. It's was believed that the\u2026"
+ },
+ {
+  "defName": "Varactyl",
+  "label": "varactyl [Varactyl]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.3",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). Varactyls, also known as 'dragonmounts', were reptavian herbivores native to the planet Utapau, though some specimens found their way to other worlds (such as Kashyyyk and Belsavis) as their eggs were easily transported\u2026"
+ },
+ {
+  "defName": "Zeer",
+  "label": "zeer [Zeer]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.3",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). The Zeer were a species of long-necked herbivorous animals of unknown planetary origin. They were sociable herd animals. Their exotic appearance made them popular in both galactic zoological exhibits and circuses,\u2026"
+ },
+ {
+  "defName": "Falumpaset",
+  "label": "falumpaset [Falumpaset]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.2",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). The falumpaset were a large mammalalian creature native to the planet Naboo. Their distinctive bellowing calls could be heard for kilometers around and their intelligence made them likely to form strong bonds with their\u2026"
+ },
+ {
+  "defName": "Grank",
+  "label": "Grank [Grank]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.2",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.2. adult bodyGraphicData.drawSize 1.75\u00d71.75 cells (last lifeStage). The Grank (or 'saw-toothed grank') were a medium-sized carnivore believed to have originated on the planet Naboo. They were a species of predatory scavengers with sharp teeth and powerful jaws. Despite their fearsome\u2026"
+ },
+ {
+  "defName": "Jakobeast",
+  "label": "jakobeast [Jakobeast]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.2",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). Jakobeasts were polar herd animals found in the tundras of icy planets in the Outer Rim. Jakobeasts were domesticated primarily for their meat, milk, and fur. While excellent livestock, they were ill-suited to serve as\u2026"
+ },
+ {
+  "defName": "Nerf",
+  "label": "nerf [Nerf]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.2",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Nerfs were a species of furry, non-sentient animals raised for their milk, meat, and hide. They could be found on a variety of planets across the galaxy, from Alderaan to Lothal. Despite their usefulness, nerfs were\u2026"
+ },
+ {
+  "defName": "Qormot",
+  "label": "qormot [Qormot]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.2",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.2. adult bodyGraphicData.drawSize 1.75\u00d71.75 cells (last lifeStage). Qormots were omnivorous forest creatures from the planet Yeshocq. During the mating season their ferocity increased, usually making anyone bold (or foolish) enough to stray into Qormot territory a likely target.\u2026"
+ },
+ {
+  "defName": "Shaak",
+  "label": "shaak [Shaak]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.2",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Shaaks were plump pachydermoid herd animals native to the planet of Naboo. Shaaks were often raised for their meat, and had large, rotund bodies. Due to their high rate of reproduction they were often sold offworld in\u2026"
+ },
+ {
+  "defName": "Strill",
+  "label": "strill [Strill]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.2",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.2. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Strills were a species of highly intelligent, six-legged carnivorous mammals native to the planet Mandalore. They had folds of leathery skin between their legs which allowed them to glide short distances with sufficient\u2026"
+ },
+ {
+  "defName": "TeeMuss",
+  "label": "tee muss [TeeMuss]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.2",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Tee-muss were a species of domesticated farm animals native to the jungle planet Onderon. They were found on various worlds around the galaxy due to escape from domestic populations."
+ },
+ {
+  "defName": "WarWyrm",
+  "label": "war wyrm [WarWyrm]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.2",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.2. adult bodyGraphicData.drawSize 10.00\u00d710.00 cells (last lifeStage). The war wyrm (or sometimes called the 'sith wyrm') were a truly colossal creature believed to have been created on the fourth moon of Yavin where one such creature lived in a large subterranean lair beneath a Massassi\u2026"
+ },
+ {
+  "defName": "Cannok",
+  "label": "cannok [Cannok]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.16",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.16. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Cannoks were small, aggressive predators native to the moon of Dxun. They had a habit of eating anything that could fit in their mouths and were known as pests, due to a high reproduction rate and notable curiosity.\u2026"
+ },
+ {
+  "defName": "KraytDragon",
+  "label": "krayt dragon [KraytDragon]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.15",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.15. adult bodyGraphicData.drawSize 8.30\u00d78.30 cells (last lifeStage). Krayt dragons are large, carnivorous reptiles from Tatooine, a desert planet in the galaxy's Outer Rim Territories. They come in two native subspecies and, despite their fierceness, are hunted for the valuable skulls."
+ },
+ {
+  "defName": "Whisperbird",
+  "label": "whisperbird [Whisperbird]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.15",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.15. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Whisper birds were energetic avians native to the moon Yavin 4. They were known for their radiant plumage and gained their name due to their seemingly noiseless flight. They used their dexterous tongue to emit their\u2026"
+ },
+ {
+  "defName": "Bolotaur",
+  "label": "bolotaur [Bolotaur]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.1",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). The Bolotaur are a large, long-necked herbivorous reptilian creatures native to the planet Kashyyyk. They were short-lived but reproduced quickly and were a favoured mount by the Trandoshan species, which resulted in\u2026"
+ },
+ {
+  "defName": "Clodhopper",
+  "label": "clodhopper [Clodhopper]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.1",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). Clodhoppers were omnivorous and dim-witted flightless avians from the planet Naboo but could be found as castaway populations on numerous worlds due to illegal egg exports. Clodhopper weren't large creatures, but they\u2026"
+ },
+ {
+  "defName": "FeralGrazer",
+  "label": "feral grazer [FeralGrazer]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.1",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). These slow-moving herbivorous mammalia were native to Alderaan. 'Feral' or 'wild' grazers were significantly leaner than the fatter and more well-fed domestic grazer; however both species were distantly related to\u2026"
+ },
+ {
+  "defName": "GraniteSlug",
+  "label": "granite slug [GraniteSlug]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.1",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.1. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). The granite slug was a silica parasite native to the planet Coruscant. This small terrestrial mollusk has corrosive acidic green-gray slime blood. Its body consisted of four eyestalks, two retractable mouths, one foot,\u2026"
+ },
+ {
+  "defName": "Krykna",
+  "label": "krykna [Krykna]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.1",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1. adult bodyGraphicData.drawSize 2.50\u00d72.50 cells (last lifeStage). Krykna were predatory, non-sentient, spider-like creatures native to the planet Atollon. They were resistant to heat based damage and were highly tempramental, making them extremely difficult to tame."
+ },
+ {
+  "defName": "Pikobis",
+  "label": "pikobis [Pikobis]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.1",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.1. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Pikobi were fast-moving, flightless reptavians which were native to the swamps of Naboo and the jungles of Onderon. Pikobis also had long, pointed beaks lined with sharp teeth that were used to spear and hold onto\u2026"
+ },
+ {
+  "defName": "Runyip",
+  "label": "runyip [Runyip]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.1",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1. adult bodyGraphicData.drawSize 2.25\u00d72.25 cells (last lifeStage). Runyip or Yavin Runyip were a species of squat quadrupeds from the moon Yavin 4. The creatures had antlered heads with a flexible nose. Their coats had a characteristic pattern of black or dark brown stripes on a\u2026"
+ },
+ {
+  "defName": "Convor",
+  "label": "convor [Convor]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.08",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.08. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Convor (also known as \"Trandoshan birds\"), were a species of beautiful mammavian from the Wasskah moon of Hsskhor. Although Convor had short, plump bodies, they were excellent fliers. Their popularity as a pet meant\u2026"
+ },
+ {
+  "defName": "Vulptex",
+  "label": "vulptex [Vulptex]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.08",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.08. adult bodyGraphicData.drawSize 1.45\u00d71.45 cells (last lifeStage). Vulptices were a non-sentient species of omnivorous and gregarious canids from the mineral world Crait. They were distinguished by their coats made up of white crystalline bristles."
+ },
+ {
+  "defName": "Voorpak",
+  "label": "voorpak [Voorpak]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.05, AridShrubland=0.02",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.05, AridShrubland=0.02. adult bodyGraphicData.drawSize 0.85\u00d70.85 cells (last lifeStage). Voorpaks were a non-sentient but still quite smart species of puffy-looking mammalians that were native to the planet of Naboo. Diminutive carnivores, voorpaks were much beloved by many due to their cuteness and as pets\u2026"
+ },
+ {
+  "defName": "FeralNerf",
+  "label": "feral nerf [FeralNerf]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.04",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.04. adult bodyGraphicData.drawSize 2.25\u00d72.25 cells (last lifeStage). Nerfs were a species of antlered, herbivorous mammalia found all across the galaxy. Because of the nerf's ability to easily adapt to harsh environments, several defined sub-species existed and were often referred to as\u2026"
+ },
+ {
+  "defName": "Porg",
+  "label": "porg [Porg]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.04",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.04. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). The Porg."
+ },
+ {
+  "defName": "Horax",
+  "label": "horax [Horax]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.01",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.01. adult bodyGraphicData.drawSize 8.00\u00d78.00 cells (last lifeStage). Horaxes were colossal, slow reptiles native to the planet Nelvaan. They were capable of growing to huge sizes thanks to the low gravity of their homeworld. Their powerfully muscled frames were covered in thick, knobby,\u2026"
+ },
+ {
+  "defName": "KowakianMonkeyLizard",
+  "label": "kowakian monkey-lizard [KowakianMonkeyLizard]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.01",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.01. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Kowakian monkey-lizards were a bipedal reptillian primate species native to a jungle-like Outer Rim planet called Kowak. Their intelligence and cunning made them popular exports as exotic pets, with some specimens\u2026"
+ },
+ {
+  "defName": "GreaterKraytDragon",
+  "label": "greater krayt dragon [GreaterKraytDragon]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.001",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.001. adult bodyGraphicData.drawSize 10.00\u00d710.00 cells (last lifeStage). The greater krayt dragon was the largest species of krayt dragon, and the apex predator of the planet Tatooine. Using its ten strong legs, it literally swam through the shifting sands. This larger subspecies is both\u2026"
+ },
+ {
+  "defName": "Plant_Chakroot_Wild",
+  "label": "wild chak-root plant [Plant_Chakroot_Wild]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "plant",
+  "biomes": "Desert=0.3",
+  "unguarded": "YES",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. mature size 1.50 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.50, grows from 0.50). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Chak-root was a flavorful red root plant that grew in the marshlands of the planet Erysthes, but was also be found on Naboo (amongst others where it was exported). The sale of this plant carried high taxes, so it w"
+ },
+ {
+  "defName": "Plant_Nysyllin_Wild",
+  "label": "wild nysyllin plant [Plant_Nysyllin_Wild]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "plant",
+  "biomes": "AridShrubland=0.22",
+  "unguarded": "YES",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.22. mature size 1.30 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.30, grows from 0.70). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) The Nysillin plants also known as nysillim was a healing herb grown as a common crop plant across the galaxy."
+ },
+ {
+  "defName": "Plant_HubbaGourd_Wild",
+  "label": "wild hubba gourd plant [Plant_HubbaGourd_Wild]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "plant",
+  "biomes": "Desert=0.2",
+  "unguarded": "YES",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. mature size 1.00 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.00, grows from 0.50). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A hardy gourd crop native to the planet Tatooine. It was popular with both the Jawa and Tusken people and was a major staple in their diet. It was soon exported to other worlds with arid evironments where it thrive"
+ },
+ {
+  "defName": "Plant_Bloddle",
+  "label": "bloddle plant [Plant_Bloddle]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "plant",
+  "biomes": "ExtremeDesert=0.05",
+  "unguarded": "YES",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.05. mature size 0.60 cells (drawSize 1.00 \u00d7 visualSizeRange max 0.60, grows from 0.30). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Bloddle was a tasty bulb vegetable grown in the hydroponic gardens and was a popular crop on Tatooine (although it could be found on several worlds). It could be used to enhance the flavor of other foods an"
+ }
+]

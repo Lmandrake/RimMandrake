@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 3.827166456991108,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 11.203958111989778,
+  "id": "rot_swarmling_v2_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-25-13-01a0ba45-84c0-7142-b21b-4f4c37471154.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-24-54-01a0ba45-39b7-7262-97af-d03f9ff50d25.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_swarmling_v2_south\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba45-84c0-7142-b21b-4f4c37471154\n--------\nuser\nUse $imagegen to [artpipe job rot_swarmling_v2_south] Top-down pawn sprite, three facings, adult drawn half a cell wide (tiny \u2014 a colonist is three of these long): a small many-legged crawler with a pale segmented body, a bulbous spore-sac abdomen in milk-white with a faint lilac glow, dark wet-black head and legs, mandibles. The sac is the identity: it should look like a puffball that grew legs. Read cleanly at 0.5 cells \u2014 strong silhouette, few details. Distinct from the grellik (which is a fat weevil with a cap on its back). Owner's note: \"0.5 wide, rename\". painterly RimWorld sprite, transparent background Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Facing: south \u2014 the creature walks TOWARD the viewer; we see its FACE and chest straight on.\n\nThen copy the generated image into the current working directory as rot_swarmling_v2_south.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

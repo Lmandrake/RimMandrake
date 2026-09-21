@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 3.671728824992897,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 7.680048276000889,
+  "id": "rot_mycoidcolossus_v2_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-24-16-01a0ba44-a6cc-7e00-bc9c-20f0d48911b8.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-23-59-01a0ba44-65dd-7a51-aeb7-f96b6dc729b9.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_mycoidcolossus_v2_north\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba44-a6cc-7e00-bc9c-20f0d48911b8\n--------\nuser\nUse $imagegen to [artpipe job rot_mycoidcolossus_v2_north] Top-down pawn sprite, three facings, adult drawn fifteen cells wide: a vast, low, six-legged body like a hill on legs, two ridged spines running the length of the back and diverging, six small pale eyes in a broad flat head, and the entire back carrying a full grove \u2014 several big lilac-and-white caps the size of the tolluk cap, glowing nubs, hanging hyphae, a spore haze. Hide wet black-grey with bone-white plates, Sheen gloss everywhere, the caps the same palette as the flora so it reads as forest that stood up. Nothing angular. Must not resemble the donor MycoidColossusArtOverride art. Owner's note: \"15 wide, , rename\". painterly RimWorld sprite, transparent background Canvas: exactly 2048x2048 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Facing: north \u2014 the creature walks AWAY from the viewer; we see its BACK, rear haunches and the back of its head. No face, no eyes visible.\n\nThen copy the generated image into the current working directory as rot_mycoidcolossus_v2_north.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.459913717000745,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 10.538210650003748,
+  "id": "rot_agaricusdomecap_v2",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-22-10-01a0ba42-bc45-73f1-a9bf-a4baa74b9af5.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789815259,
+    "primary_used_percent": 4.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T22-54-09-01a0b83a-b24e-75c0-90e8-c3ed51ae84a9.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 97.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_agaricusdomecap_v2\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba42-bc45-73f1-a9bf-a4baa74b9af5\n--------\nuser\nUse $imagegen to [artpipe job rot_agaricusdomecap_v2] A single broad, low dome seven cells across \u2014 height about a third of its width, so the silhouette is a squashed hemisphere sitting almost flat on the mat, the stem hidden. Skin bone-white going lilac at the crown, blotched with sickly yellow-gold warning rings and a wet Sheen gloss on top; thin dark gill-slits visible only around the rim. No stalk, no protrusions: this is the one flat dome in a forest of towers. Scale cue: a colonist is shorter than the dome's edge is thick. Owner's note: \"7 wide, rename\". painterly RimWorld sprite, transparent background Canvas: exactly 1024x1024 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient.\n\nThen copy the generated image into the current working directory as rot_agaricusdomecap_v2.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

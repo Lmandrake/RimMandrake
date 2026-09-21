@@ -1,0 +1,115 @@
+
+WHICH RUN IS THIS
+  log            C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log
+  15,606 lines   last written 2026-09-18 19:39:25
+  build          RimWorld 1.6.4871 rev591
+  state          no exit marker, not growing right now - game may be sitting at the menu, or paused mid-load
+  ModsConfig     621 active mods, written 2026-09-18 19:14:29  (-1497s vs the log)
+  def dump       621 mods, captured 2026-09-19T02:35:03Z  (1.6.4871 rev591), written 19:35:03
+  previous run   ended 19:20:26 (Player-prev.log)
+
+   8827: Could not load reference to Verse.ThingDef named Meat_TYR_HotfootRat
+   8828: Could not load reference to Verse.ThingDef named Meat_TYR_KangarooRat
+   8829: Could not load reference to Verse.ThingDef named Meat_TYR_Lemming
+   8830: Could not load reference to Verse.ThingDef named Meat_TYR_Mouse
+   8831: Could not load reference to Verse.ThingDef named Meat_TYR_MousePoison
+   8832: Could not load reference to Verse.ThingDef named Meat_BMT_BarbedPangolin
+   8833: Could not load reference to Verse.ThingDef named Meat_BMT_BiliousVarog
+   8834: Could not load reference to Verse.ThingDef named Meat_BMT_BloodletterPetrel
+   8835: Could not load reference to Verse.ThingDef named Meat_BMT_CarrionVulture
+   8836: Could not load reference to Verse.ThingDef named Meat_BMT_FenridStoat
+   8837: Could not load reference to Verse.ThingDef named Meat_BMT_Glowtail
+   8838: Could not load reference to Verse.ThingDef named Meat_BMT_Maligoat
+   8839: Could not load reference to Verse.ThingDef named Meat_BMT_Screecher
+   8840: Could not load reference to Verse.ThingDef named Meat_BMT_TaintedTurtle
+   8841: Could not load reference to Verse.ThingDef named Meat_BMT_TripleSnapper
+   8842: Could not load reference to Verse.ThingDef named Meat_BMT_Varmot
+   8843: Could not load reference to Verse.ThingDef named Meat_BMT_WasteHound
+   8844: Could not load reference to Verse.ThingDef named BMT_CryingWolfBerries
+   8845: Could not load reference to Verse.ThingDef named BMT_PoxSorghumHarvested
+   8846: Could not load reference to Verse.ThingDef named BMT_ClawhandCitron
+   8847: Could not load reference to Verse.ThingDef named BMT_RegalMilk
+   8848: Could not load reference to Verse.ThingDef named BMT_EggBiliousVarogUnfertilized
+   8849: Could not load reference to Verse.ThingDef named BMT_EggBloodletterPetrelUnfertilized
+   8850: Could not load reference to Verse.ThingDef named BMT_EggCarrionVultureUnfertilized
+   8851: Could not load reference to Verse.ThingDef named BMT_EggFamineLocustUnfertilized
+   8852: Could not load reference to Verse.ThingDef named BMT_EggGastroToadUnfertilized
+   8853: Could not load reference to Verse.ThingDef named BMT_EggGlowtailUnfertilized
+   8854: Could not load reference to Verse.ThingDef named BMT_EggMegakrillUnfertilized
+   8855: Could not load reference to Verse.ThingDef named BMT_EggMegaroachUnfertilized
+   8856: Could not load reference to Verse.ThingDef named BMT_EggMucklurkerCatfishUnfertilized
+   8857: Could not load reference to Verse.ThingDef named BMT_EggNorpheaUnfertilized
+   8858: Could not load reference to Verse.ThingDef named BMT_EggMutatingTumorfishUnfertilized
+   8859: Could not load reference to Verse.ThingDef named BMT_EggSacapillarUnfertilized
+   8860: Could not load reference to Verse.ThingDef named BMT_EggScreecherUnfertilized
+   8861: Could not load reference to Verse.ThingDef named BMT_EggSludgeCrawlerUnfertilized
+   8862: Could not load reference to Verse.ThingDef named BMT_SmogMothEggUnfertilized
+   8863: Could not load reference to Verse.ThingDef named BMT_EggSwarmcallerUnfertilized
+   8864: Could not load reference to Verse.ThingDef named BMT_EggTaintedTurtleUnfertilized
+   8865: Could not load reference to Verse.ThingDef named BMT_EggTripleSnapperUnfertilized
+   8866: Could not load reference to Verse.ThingDef named BMT_EggBiliousVarogFertilized
+   8867: Could not load reference to Verse.ThingDef named BMT_EggBloodletterPetrelFertilized
+   8868: Could not load reference to Verse.ThingDef named BMT_EggCarrionVultureFertilized
+   8869: Could not load reference to Verse.ThingDef named BMT_EggFamineLocustFertilized
+   8870: Could not load reference to Verse.ThingDef named BMT_EggGastroToadFertilized
+   8871: Could not load reference to Verse.ThingDef named BMT_EggGlowtailFertilized
+   8872: Could not load reference to Verse.ThingDef named BMT_EggMegakrillFertilized
+   8873: Could not load reference to Verse.ThingDef named BMT_EggMegaroachFertilized
+   8874: Could not load reference to Verse.ThingDef named BMT_EggMucklurkerCatfishFertilized
+   8875: Could not load reference to Verse.ThingDef named BMT_EggNorpheaFertilized
+   8876: Could not load reference to Verse.ThingDef named BMT_EggMutatingTumorfishFertilized
+   8877: Could not load reference to Verse.ThingDef named BMT_EggPustuleHornetQueenFertilized
+   8878: Could not load reference to Verse.ThingDef named BMT_EggSacapillarFertilized
+   8879: Could not load reference to Verse.ThingDef named BMT_EggScreecherFertilized
+   8880: Could not load reference to Verse.ThingDef named BMT_EggSludgeCrawlerFertilized
+   8881: Could not load reference to Verse.ThingDef named BMT_SmogMothEggFertilized
+   8882: Could not load reference to Verse.ThingDef named BMT_EggSwarmcallerFertilized
+   8883: Could not load reference to Verse.ThingDef named BMT_EggTaintedTurtleFertilized
+   8884: Could not load reference to Verse.ThingDef named BMT_EggTripleSnapperFertilized
+   8885: Could not load reference to Verse.ThingDef named BMT_BufoBile
+   8886: Could not load reference to Verse.ThingDef named BMT_MutapoxVial
+   8887: Could not load reference to Verse.ThingDef named BMT_ToxClear
+   8888: Could not load reference to Verse.ThingDef named BMT_HagbloomNectar
+   8889: Could not load reference to Verse.ThingDef named Corpse_TYR_HotfootRat
+   8890: Could not load reference to Verse.ThingDef named Corpse_TYR_KangarooRat
+   8891: Could not load reference to Verse.ThingDef named Corpse_TYR_Lemming
+   8892: Could not load reference to Verse.ThingDef named Corpse_TYR_Mouse
+   8893: Could not load reference to Verse.ThingDef named Corpse_TYR_MousePoison
+   8894: Could not load reference to Verse.ThingDef named Corpse_BMT_BarbedPangolin
+   8895: Could not load reference to Verse.ThingDef named Corpse_BMT_BiliousVarog
+   8896: Could not load reference to Verse.ThingDef named Corpse_BMT_BloodletterPetrel
+   8897: Could not load reference to Verse.ThingDef named Corpse_BMT_CarrionVulture
+   8898: Could not load reference to Verse.ThingDef named Corpse_BMT_FenridStoat
+   8899: Could not load reference to Verse.ThingDef named Corpse_BMT_Polluwog
+   8900: Could not load reference to Verse.ThingDef named Corpse_BMT_GastroToad
+   8901: Could not load reference to Verse.ThingDef named Corpse_BMT_Glowtail
+   8902: Could not load reference to Verse.ThingDef named Corpse_BMT_Maligoat
+   8903: Could not load reference to Verse.ThingDef named Corpse_BMT_Creature_Mantrap
+   8904: Could not load reference to Verse.ThingDef named Corpse_BMT_MegaphoridLarva
+   8905: Could not load reference to Verse.ThingDef named Corpse_BMT_MucklurkerCatfish
+   8906: Could not load reference to Verse.ThingDef named Corpse_BMT_MutatingTumorfishSpawn
+   8907: Could not load reference to Verse.ThingDef named Corpse_BMT_MutatingTumorfishFry
+   8908: Could not load reference to Verse.ThingDef named Corpse_BMT_MutatingTumorfishAdult
+   8909: Could not load reference to Verse.ThingDef named Corpse_BMT_Screecher
+   8910: Could not load reference to Verse.ThingDef named Corpse_BMT_SludgeCrawler
+   8911: Could not load reference to Verse.ThingDef named Corpse_BMT_TaintedTurtle
+   8912: Could not load reference to Verse.ThingDef named Corpse_BMT_ToxSheep
+   8913: Could not load reference to Verse.ThingDef named Corpse_BMT_TripleSnapper
+   8914: Could not load reference to Verse.ThingDef named Corpse_BMT_Varmot
+   8915: Could not load reference to Verse.ThingDef named Corpse_BMT_WasteHound
+   8916: Could not load reference to Verse.ThingDef named Corpse_BMT_BunkerBug
+   8917: Could not load reference to Verse.ThingDef named Corpse_BMT_FamineLocust
+   8918: Could not load reference to Verse.ThingDef named Corpse_BMT_Megakrill
+   8919: Could not load reference to Verse.ThingDef named Corpse_BMT_Megaphorid
+   8920: Could not load reference to Verse.ThingDef named Corpse_BMT_Megaroach
+   8921: Could not load reference to Verse.ThingDef named Corpse_BMT_MutagenicNorphea
+   8922: Could not load reference to Verse.ThingDef named Corpse_BMT_PustuleHornet
+   8923: Could not load reference to Verse.ThingDef named Corpse_BMT_PustuleHornetSpawned
+   8924: Could not load reference to Verse.ThingDef named Corpse_BMT_ColonyPustuleHornet
+   8925: Could not load reference to Verse.ThingDef named Corpse_BMT_PustuleHornetQueen
+   8926: Could not load reference to Verse.ThingDef named Corpse_BMT_ColonyPustuleHornetQueen
+   8927: Could not load reference to Verse.ThingDef named Corpse_BMT_Sacapillar
+   8928: Could not load reference to Verse.ThingDef named Corpse_BMT_SmogMothLarvae
+   8929: Could not load reference to Verse.ThingDef named Corpse_BMT_SmogPupa
+   8930: Could not load reference to Verse.ThingDef named Corpse_BMT_SmogMoth
+   8931: Could not load reference to Verse.ThingDef named Corpse_BMT_Swarmcaller

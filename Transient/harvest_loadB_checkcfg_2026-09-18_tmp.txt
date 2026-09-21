@@ -1,0 +1,108 @@
+log       /mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log
+baseline  /mnt/d/Luke/dev/Rimworld/infrastructure/state/facts/config_error_baseline_2026-09-06.json
+lines     350 total, 103 distinct
+
+  known [ours-open-bug]: 3 distinct line(s), 3 occurrence(s)
+  known [third-party-cosmetic]: 1 distinct line(s), 1 occurrence(s)
+  known [third-party-unattributed]: 2 distinct line(s), 2 occurrence(s)
+
+🔴 NEW — not in config_error_baseline_2026-09-06.json (97 distinct):
+   x2  Config error in AB_LiquidSlime: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x1  Config error in AM_AncientLogisticsSystem: Hyperweave tradeability doesn't allow traders to sell this thing
+   x2  Config error in Marsh: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in MarshFlood: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x1  Config error in ModernFixtures: same research view coords and tab as RR_Furniture: 0, 0(RUT_Tree_Hearth)
+   x4  Config error in RM_Churnmud: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_CoolantDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_CoolantShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x1  Config error in RM_Dunes_Sand: depositFilthChance is set but depositFilthDef is null — no filth can be laid.
+   x2  Config error in RM_FE_Ash_Light: burnedDef is flammable
+   x2  Config error in RM_FE_Ash_Trace: burnedDef is flammable
+   x2  Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+   x2  Config error in RM_FE_Ground_Sand: burnedDef is flammable
+   x2  Config error in RM_FE_Ground_Soil: burnedDef is flammable
+   x2  Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+   x2  Config error in RM_Fill_Tar_Brim: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_Fill_Tar_Half: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_Fill_Tar_Superdeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_Fill_Tar_Trace: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_Fill_Water_Brim: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_Fill_Water_Half: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_Fill_Water_Superdeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_Fill_Water_Trace: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_IchorDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_IchorShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_OozeDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_OozeShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_TarDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_TarShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_WaterBrackishDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_WaterBrackishShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_WaterBrineDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_WaterBrineShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_WaterMineralDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in RM_WaterMineralShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x1  Config error in RR_Furniture: same research view coords and tab as ModernFixtures: 0, 0(RUT_Tree_Hearth)
+   x1  Config error in RR_LateralThinking: researchViewX and/or researchViewY not set
+   x1  Config error in RR_Organization: researchViewX and/or researchViewY not set
+   x6  Config error in RSW_FaaJuv: lifeStages minAges are not in ascending order
+   x2  Config error in RSW_KilnClay: ingestible preferability > DesperateOnlyForHumanlikes but socialPropernessMatters=false. This will cause bugs wherein wardens will look in prison cells for food to give to prisoners and so will repeatedly pick up and drop food inside the cell.
+   x6  Config error in RSW_LaaJuv: lifeStages minAges are not in ascending order
+   x6  Config error in RSW_MeeJuv: lifeStages minAges are not in ascending order
+   x6  Config error in RSW_OpeeSeaKillerJuv: lifeStages minAges are not in ascending order
+   x2  Config error in RSW_Orray: has tool with linkedBodyPartsGroup Teeth but body RSW_Orray has no parts with that group.
+   x6  Config error in RSW_RustNipperJuv: lifeStages minAges are not in ascending order
+   x6  Config error in RSW_SiltLampreyJuv: lifeStages minAges are not in ascending order
+   x1  Config error in RSW_ToxinDependence: needClass is null
+   x6  Config error in RSW_YobshrimpJuv: lifeStages minAges are not in ascending order
+   x2  Config error in RUT_BrineDeposit_BrinePlate: claimable item is compressible; faction will be unset after load
+   x2  Config error in RUT_BrineDeposit_Drazz: claimable item is compressible; faction will be unset after load
+   x2  Config error in RUT_BrineDeposit_Tekk: claimable item is compressible; faction will be unset after load
+   x2  Config error in RUT_BrinePlate: graphicClass is null
+   x1  Config error in RUT_GiveQuest_VaultThaw_V1_RustCathedral: quest is run from both incident and random quest.
+   x1  Config error in RUT_GiveQuest_VaultThaw_V2_Scorch: quest is run from both incident and random quest.
+   x1  Config error in RUT_GiveQuest_VaultThaw_V3_FallLine: quest is run from both incident and random quest.
+   x1  Config error in RUT_GiveQuest_VaultThaw_V4_Deadstone: quest is run from both incident and random quest.
+   x1  Config error in RUT_GiveQuest_VaultThaw_V5_Slough: quest is run from both incident and random quest.
+   x1  Config error in RUT_GiveQuest_VaultThaw_V6_Umbra: quest is run from both incident and random quest.
+   x1  Config error in RUT_Slough_GelatinousBreach: LandmarkDef RUT_Slough_GelatinousBreach has no mutators with a chance of 1 or higher.
+   x2  Config error in RUT_TwinkleSpikeTestPlant: has nutrition but ingestible properties are null
+   x2  Config error in ShallowFloodwater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x1  Config error in TargetedInsultingSpree: label contains illegal character(s): "[]{}". This can cause issues during grammar resolution. If this was intended, you can use the "ignoreIllegalLabelCharacterConfigError" flag.
+   x1  Config error in Utinni Shellmandrake.rut.menushell: defName Utinni Shellmandrake.rut.menushell should only contain letters, numbers, underscores, or dashes.
+   x2  Config error in VEE_StagnantRiverWater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in VEE_TidalFloodwater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in WaterDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in WaterMovingChestDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in WaterMovingShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in WaterOceanDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in WaterOceanShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x2  Config error in WaterShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+   x1  Config error in guy762_BaseTraderKind_Czerka: Hyperweave tradeability doesn't allow traders to sell this thing
+   x1  Config error in guy762_BaseTraderKind_HuttGalleon: Hyperweave tradeability doesn't allow traders to sell this thing
+   x1  Config error in guy762_TraderKind_Czerka: Hyperweave tradeability doesn't allow traders to sell this thing
+   x1  Config error in guy762_TraderKind_HuttGalleon: Hyperweave tradeability doesn't allow traders to sell this thing
+   x1  Could not resolve cross-reference to RimWorld.AbilityDef named RSW_SW_GoldForage (wanter=abilities)
+   x1  Could not resolve cross-reference to RimWorld.TrainableDef named RSW_SW_GoldForage (wanter=specialTrainables)
+   x1  Could not resolve cross-reference to Verse.TerrainDef named RM_GreentideChurnmud (wanter=basinTerrains)
+   x2  Could not resolve cross-reference to Verse.ThingDef named EmptyAICore (wanter=thingDefs)
+   x111  Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   x39  Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   x1  Could not resolve cross-reference: No Verse.BodyDef named RSW_Qormot found to give to Verse.RaceProperties Verse.RaceProperties
+   x3  Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Runyip found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   x6  Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scavrat found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   x4  Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scurrier found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   x4  Could not resolve cross-reference: No Verse.SoundDef named Pawn_Squirrel_Call found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+   x1  Could not resolve cross-reference: No Verse.ThingDef named RSW_Leather_Ronto found to give to Verse.RaceProperties Verse.RaceProperties
+   x1  Could not resolve cross-reference: No Verse.ThingDef named RSW_Ronto_Meat found to give to Verse.RaceProperties Verse.RaceProperties
+   x1  Could not resolve cross-reference: No Verse.ThingDef named RUT_DeadCreep found to give to RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBandFilth RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBandFilth
+   x1  Could not resolve cross-reference: No Verse.ThingDef named RUT_Filth_MouseTrack found to give to RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail
+   x1  Could not resolve cross-reference: No Verse.ThingDef named RUT_FoundrySalvageCache found to give to RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker
+   x1  Could not resolve cross-reference: No Verse.ThingDef named RUT_FoundryTowerEntrance found to give to RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker
+   x1  Could not resolve cross-reference: No Verse.ThingDef named RUT_ScaldVent found to give to RimMandrake.EnvironmentalHazards.RM_ScattererValidator_NearThingDef RimMandrake.EnvironmentalHazards.RM_ScattererValidator_NearThingDef
+   x1  Could not resolve cross-reference: No Verse.ThingDef named RUT_TibannaGas found to give to RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas
+   x1  Exception in ConfigErrors() of AridShrubland: System.NullReferenceException: Object reference not set to an instance of an object
+   x1  Exception in ConfigErrors() of Desert: System.NullReferenceException: Object reference not set to an instance of an object
+   x1  Exception in ConfigErrors() of ExtremeDesert: System.NullReferenceException: Object reference not set to an instance of an object
+
+NOT CLEAN against config_error_baseline_2026-09-06.json

@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 3.915939881000668,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 7.959789927001111,
+  "id": "rot_palemoss_v2",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T08-24-25-01a0ba44-cba3-7f22-ac38-46f7f3791580.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T08-24-17-01a0ba44-a8d5-76a3-b907-dee074521654.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_palemoss_v2\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba44-cba3-7f22-ac38-46f7f3791580\n--------\nuser\nUse $imagegen to [artpipe job rot_palemoss_v2] Owner's direction: 'make look really like moss'. Under half a cell, nine meshes per cell: a low, dense, cushiony moss texture with visible tiny fronds and a velvety surface, pale white-green (glowColor 200,230,205) with a very soft glow at the tips, no caps, no stalks, no mushroom shapes at all. Must read unmistakably as MOSS from above and tile seamlessly. Distinct from the hessuk moss (blue, stringy, sticky). Currently vanilla Grass_Anima; must not look like grass. Owner's note: \"make look really like moss, rename\". painterly RimWorld sprite, transparent background Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient.\n\nThen copy the generated image into the current working directory as rot_palemoss_v2.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

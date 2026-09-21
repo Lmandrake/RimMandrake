@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.135020026995335,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 8.352422600990394,
+  "id": "rot_bryolux_v2",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-22-48-01a0ba43-4f38-7743-9c99-bb1a814c1b00.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-22-39-01a0ba43-2bc0-7920-9ec6-d39306b4c351.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_bryolux_v2\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba43-4f38-7743-9c99-bb1a814c1b00\n--------\nuser\nUse $imagegen to [artpipe job rot_bryolux_v2] A ground-cover tile (four meshes per cell, tiles seamlessly): a dense low tangle of fine fibres, glow-blue at the tips over a milk-white base, with wet gloss highlights and a few darker strands. It must read as MOSS from directly above \u2014 texture, not a shape \u2014 with no cap, no stalk and no hard edge, feathering to transparent at the tile edge. Palette glow-blue and bone-white; no green at all (this is not the pale-tree moss, lumma, which is white-green and only grows under one tree). Currently vanilla Core's Bryolux art; must not look like it. Owner's note: \"rename\". painterly RimWorld sprite, transparent background Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient.\n\nThen copy the generated image into the current working directory as rot_bryolux_v2.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}
