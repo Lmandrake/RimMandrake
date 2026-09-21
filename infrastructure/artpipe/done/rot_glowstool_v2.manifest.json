@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 95.68472572500104,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 95.68472572500104,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rot_glowstool_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 65.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T13-09-25-01a0bb49-b699-7b02-94ee-80f27223ff9e.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 10.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 59.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T13-08-03-01a0bb48-749c-73e3-9323-52493d3429ac.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 9.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rot_glowstool_v2",
+    "note": "Built-in imagegen; normalized prompt specified a muted, wet tan-grey flat cap, off-white stalk, RimWorld style, no glow/shadow/scenery. Resized to exact canvas after one tool error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_glowstool_v2\\rot_glowstool_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_glowstool_v2/rot_glowstool_v2.png\n    256x256  rgba  18,225 bytes  (94s)\n"
+}

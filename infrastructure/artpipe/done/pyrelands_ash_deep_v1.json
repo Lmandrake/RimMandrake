@@ -1,0 +1,18 @@
+{
+  "background": "#302e2b",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-19T22:24:49Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "pyrelands_ash_deep_v1",
+  "priority": 45,
+  "prompt": "Tiling ground terrain texture: a dead, smothering drift of deep grey-black ash, soft and dune-like, utterly lifeless -- the burned-out floor of a scar nothing grows through. Fine, almost velvet-soft ash ripples, cold and spent, with a few long-dead charcoal fragments barely visible under the surface. No embers, no glow, no colour beyond grey and near-black. Must tile seamlessly edge-to-edge. Painterly vanilla-RimWorld terrain art style, top-down, darkest of the four ash tiers. Full-bleed opaque seamless tiling texture filling the entire canvas edge to edge -- no transparency, no isolated subject, no vignette, no border; every edge must wrap to its opposite edge.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_WEATHER_SCAR_ART_1",
+  "style_notes": "PYRELANDS_WEATHER_SCAR_ART_1: rung 4 of 4 (AshLadder.xml RM_FE_Ash_Deep). TerrainDef tint (48,46,43,255), no burnedDef -- this is the ladder's floor."
+}

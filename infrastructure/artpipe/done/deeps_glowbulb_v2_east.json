@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T06:12:02Z",
+  "drawsize": 2.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "deeps_glowbulb_v2_east",
+  "priority": 50,
+  "prompt": "Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Call it a Glowbulb. Make it actually glow. hydrocarbon-based life: glowing pale blue exterior, pale yellow internal liquids, painterly RimWorld sprite, top-down-ish south facing, transparent background",
+  "reference": null,
+  "rimflow_item_id": "DEEPS_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

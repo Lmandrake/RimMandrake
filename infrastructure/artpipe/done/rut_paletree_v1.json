@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-17T00:00:00Z",
+  "drawsize": 2.5,
+  "facing": null,
+  "facings": [],
+  "id": "rut_paletree_v1",
+  "priority": 60,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: A massive, ancient bone-white tree with pale, smooth bark that seems to faintly glow at dusk, twisting sinewy branches reaching upward, sparse pale-silver foliage. Sacred and otherworldly in bearing \u2014 reads as a Force-sensitive shrine tree, calm and immense, not a normal desert plant. Single plant, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ROT_PALE_TREE_1",
+  "style_notes": "Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses vanilla Royalty's own Plant_TreeAnima texture (Things/Plant/TreeAnima) verbatim \u2014 confirmed placeholder per the def's own header. TreeBase's drawSize is not explicit in this def; canvas sized generous (drawsize 2.5) against the def's own visualSizeRange ceiling (1.8~2.5) and its treeCategory Super (the game's largest tree class), per ART_PAINTERLY_RESTORATION_1's 'err generous' ruling. MayRequire=Ludeon.RimWorld.Royalty; art has no DLC gate."
+}

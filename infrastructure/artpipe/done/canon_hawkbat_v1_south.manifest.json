@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 96.41280037199613,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 96.41280037199613,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "canon_hawkbat_v1_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 61.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T01-25-27-01a0b39e-dc07-7061-ae25-1c081d2f1e0e.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 59.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 56.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T00-32-56-01a0b36e-c665-7db0-bf41-abf1d66c8724.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 58.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "canon_hawkbat_v1_south",
+    "note": "Generated via built-in imagegen, resized to exactly 256\u00d7256, and preserved genuine transparent alpha. One export-tool retry was needed.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\canon_hawkbat_v1_south\\canon_hawkbat_v1_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/canon_hawkbat_v1_south/canon_hawkbat_v1_south.png\n    256x256  rgba  54,347 bytes  (94s)\n"
+}

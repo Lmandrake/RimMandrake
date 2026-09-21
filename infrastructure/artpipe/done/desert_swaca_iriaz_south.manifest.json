@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 102.22058074500819,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 102.22058074500819,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desert_swaca_iriaz_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 22.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T14-34-29-01a0c0bd-f3cf-7cc0-8006-685c6f848e5c.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 64.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 17.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T14-29-52-01a0c0b9-bb40-7322-baa9-9c00f3bf7c9e.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 63.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desert_swaca_iriaz_south",
+    "note": "Generated via built-in imagegen, resized to exactly 256\u00d7256, and preserved transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_iriaz_south\\desert_swaca_iriaz_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_iriaz_south/desert_swaca_iriaz_south.png\n    256x256  rgba  56,655 bytes  (101s)\n"
+}

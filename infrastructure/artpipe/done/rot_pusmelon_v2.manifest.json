@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 120.92840856299881,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 120.92840856299881,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rot_pusmelon_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 86.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T13-23-36-01a0bb56-b12b-7b41-98ee-71c7acf215ac.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 13.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 80.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T13-18-37-01a0bb52-211b-7463-8880-3bf9bbc6d44d.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 13.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rot_pusmelon_v2",
+    "note": "Generated via built-in imagegen, then scaled to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_pusmelon_v2\\rot_pusmelon_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_pusmelon_v2/rot_pusmelon_v2.png\n    256x256  rgba  75,089 bytes  (120s)\n"
+}

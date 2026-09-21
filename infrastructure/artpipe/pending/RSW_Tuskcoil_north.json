@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:51:44Z",
+  "drawsize": 4.1,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RSW_Tuskcoil_north",
+  "priority": 150,
+  "prompt": "A huge armored worm with a coiling segmented body, thick tusks near the head, dark banded chitin plating, imposing but calm, Star Wars creature design, desert palette, painterly game-art style.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

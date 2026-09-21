@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 125.68615355399379,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 125.68615355399379,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rut_furnacecap_plant_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 19.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T23-08-02-01a0bd6d-c1ba-7c12-b4fc-8ee0808235e3.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 31.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T23-02-34-01a0bd68-c39d-7ad1-ad3c-dfff49e30090.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 30.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rut_furnacecap_plant_v1",
+    "note": "Generated a new rust-orange heat-mushroom sprite and resized it to exactly 256\u00d7256; one local conversion retry was needed after a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_furnacecap_plant_v1\\rut_furnacecap_plant_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rut_furnacecap_plant_v1/rut_furnacecap_plant_v1.png\n    256x256  rgba  92,122 bytes  (125s)\n"
+}

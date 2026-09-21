@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "codex",
+  "created": "2026-09-19T22:35:26Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "graffiti_vandal_regen_v1_0",
+  "priority": 60,
+  "prompt": "A single bold spray-paint graffiti mark: one thick jagged lightning-bolt shaped tag, sprayed fast and aggressive, drips of paint running down from the bottom edge. Punk/urban vandalism register, ONE large readable motif filling most of the frame, no lettering, no words, no readable text of any kind, no other marks anywhere else in the frame. Bright acid-green spray paint over transparent background, rough uneven spray edges.",
+  "reference": null,
+  "rimflow_item_id": "GRAFFITI_VANDAL_ART_REGEN_1",
+  "style_notes": "GRAFFITI_VANDAL_ART_REGEN_1: owner ruled 2026-09-16 to regenerate all 6 RM_Graffiti_Vandal variants -- the current set (vandal_0.png etc) scatters a dozen tiny legible-lettering doodles (including the donor's own 'TARTE' tag and other English words) across the tile, unreadable pixel mush at ~64px play zoom. Replace with ONE bold motif per tile, zero real-world lettering. Match graffiti_scratches_p1's job shape (640x640, transparent, single centered icon)."
+}

@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:50Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rot_wildpod_v2_south",
+  "priority": 40,
+  "prompt": "Top-down pawn sprite, three facings, adult drawn five cells wide: a huge sagging mound of matted pale fibre, moss-like growth and wet dark rot, four thick legs almost hidden under the overhang, a slack front with no eyes, strands and drips trailing from the underside. Bone-white and ash-grey with lilac and wet-black, heavy Sheen gloss. No caps (that is the gromma). The durrok is this at a third the mass. Must not resemble the donor WildpodArtOverride art. Owner's note: \"5 wide, rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

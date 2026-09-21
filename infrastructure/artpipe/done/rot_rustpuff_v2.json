@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:50Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_rustpuff_v2",
+  "priority": 40,
+  "prompt": "Regen with NO rename and NO size change (his note is empty): under one cell, four meshes per cell, a plump round puffball, bone-white with a rust-brown dusting on top and a split at the crown leaking a puff of rust-coloured spores. The rust-orange is a deliberate warm accent against the pale palette. No glow. Keep the existing composition; improve the drawing and add the Sheen gloss. Owner's note: \"\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

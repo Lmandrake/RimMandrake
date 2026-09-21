@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 88.27082598500056,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 88.27082598500056,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "rot_agaripawn_v2_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 22.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T12-57-14-01a0bb3e-8e94-7ef3-b339-484d6c1c3236.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 3.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 17.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T12-55-40-01a0bb3d-1ea8-7851-8cd1-1e98312fabad.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 3.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "rot_agaripawn_v2_south",
+    "note": "Generated with built-in imagegen, copied to the workspace, and resized from 1254\u00d71254 to the required 1024\u00d71024 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_agaripawn_v2_south\\rot_agaripawn_v2_south.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_agaripawn_v2_south/rot_agaripawn_v2_south.png\n    1024x1024  rgba  873,726 bytes  (87s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 100.82589010699303,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 100.82589010699303,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 640,
+  "id": "graffiti_tally_p3",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789938994,
+    "primary_used_percent": 41.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T09-50-35-01a0bfba-0b0e-7071-a1a0-31e52aaf7230.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 52.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789938994,
+    "primary_used_percent": 35.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T09-46-04-01a0bfb5-e88e-72a1-87cb-5cb961e2e1a2.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 52.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 640,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 640,
+    "id": "graffiti_tally_p3",
+    "note": "Generated with built-in imagegen, copied into the workspace, resized to exactly 640\u00d7640, and verified RGBA transparency at all four corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\graffiti_tally_p3\\graffiti_tally_p3.png",
+    "status": "ok",
+    "width": 640
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/graffiti_tally_p3/graffiti_tally_p3.png\n    640x640  rgba  148,804 bytes  (98s)\n"
+}

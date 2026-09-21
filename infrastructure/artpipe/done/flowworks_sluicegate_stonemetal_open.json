@@ -1,0 +1,16 @@
+{
+ "background": "transparent",
+ "canvas": {
+  "height": 256,
+  "width": 256
+ },
+ "channel": "codex",
+ "created": "2026-09-16T00:00:00Z",
+ "drawsize": 1.0,
+ "id": "flowworks_sluicegate_stonemetal_open",
+ "priority": 90,
+ "prompt": "RimWorld building sprite, painterly vanilla-RimWorld style: a heavy-duty sluice gate for a dug canal, built of DRESSED STONE piers and RIVETED DARK METAL \u2014 the industrial sibling of the wooden sluice gate in the seed image, made to hold back harsher fluids (tar, fuel, corrosive slime). Keep EXACTLY the seed's perspective, footprint, proportions and composition \u2014 only the materials change: wood beams become cut stone blocks, plank gate leaf becomes riveted metal plate with a metal wheel or lever, rope becomes chain. Same painterly shading language, heavy clean black outline, transparent background, no ground shadow. The gate leaf is RAISED/OPEN, the channel clear beneath it.",
+ "reference": "/mnt/d/Luke/dev/Rimworld/Transient/flowworks_art_2026-09-16/buildings/RUT_SluiceGate_A_open.png",
+ "rimflow_item_id": "FLOWWORKS_BUILD_PROGRAM_1",
+ "style_notes": "Ruling 32 (owner, 2026-09-16): sluice A accepted for wood+stone; a matching stone+metal variant for harsher fluids, same perspective, seeded from A. reference= is correct here: this is a true reskin (material swap, silhouette held), so reskin-validation against the seed is the intended gate."
+}

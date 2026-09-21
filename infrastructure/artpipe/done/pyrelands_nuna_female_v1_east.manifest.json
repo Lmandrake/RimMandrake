@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 129.4995046039985,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 129.4995046039985,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "pyrelands_nuna_female_v1_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 7.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/16/rollout-2026-09-16T17-51-30-01a0acd8-e1f9-7842-a845-7d08f34f9f8a.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 27.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789588916,
+    "primary_used_percent": 85.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/16/rollout-2026-09-16T10-57-04-01a0ab5d-756b-7bf0-bddf-540eb538684c.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 26.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_nuna_female_v1_east",
+    "note": "Generated via built-in imagegen, visually inspected, resized to exactly 256\u00d7256, and verified as 32-bit PNG with fully transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_nuna_female_v1_east\\pyrelands_nuna_female_v1_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_nuna_female_v1_east/pyrelands_nuna_female_v1_east.png\n    256x256  rgba  65,274 bytes  (129s)\n"
+}

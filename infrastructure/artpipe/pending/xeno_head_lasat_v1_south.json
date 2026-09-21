@@ -14,7 +14,7 @@
     "south"
   ],
   "id": "xeno_head_lasat_v1_south",
-  "priority": 100,
+  "priority": 10,
   "prompt": "RimWorld humanlike HEAD sprite only (no body, no shoulders below the neckline) of a Lasat. Deep, heavy furred muzzle - NOT a flat face - with a pronounced brow ridge and visible canines. Enormous pointed ears set high and wide on the skull, swept outward and upward, each with a visible tuft. Desaturated grey-violet base coat with broad dark charcoal transverse bands across the crown and muzzle.",
   "reference": null,
   "rimflow_item_id": "XENOTYPE_CANON_CORRECTION_1",

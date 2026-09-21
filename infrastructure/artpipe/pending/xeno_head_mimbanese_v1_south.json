@@ -14,7 +14,7 @@
     "south"
   ],
   "id": "xeno_head_mimbanese_v1_south",
-  "priority": 100,
+  "priority": 10,
   "prompt": "RimWorld humanlike HEAD sprite only (no body, no cape, no bandoliers) of a Mimbanese. Two large round protuberant pale-blue eyes with no eyelid fold, ringed by a dark orbital rim - a lidless read, not goggles or a mask. Two rows of short horns above the brows forming a serrated crown across the forehead. Broad flattened downward-tapering snout with paired nostril openings and no prominent mouth. Smooth domed hairless cranium with no visible ears. Saturated salmon-brick red face skin.",
   "reference": null,
   "rimflow_item_id": "XENOTYPE_CANON_CORRECTION_1",

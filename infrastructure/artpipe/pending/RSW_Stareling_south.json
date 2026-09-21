@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:51:43Z",
+  "drawsize": 1.5,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RSW_Stareling_south",
+  "priority": 150,
+  "prompt": "A crawling creature that is mostly one enormous eye, dragging itself on a few thin fleshy tentacles, unsettling but small, pale mottled skin, Star Wars alien creature design, desert palette, painterly game-art style.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

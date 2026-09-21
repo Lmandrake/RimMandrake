@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 128.47005508000439,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 128.47005508000439,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "desert_swaca_mudhorn_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 73.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T15-19-41-01a0c0e7-54bf-70a1-92a5-628c4604b919.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 72.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 67.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T15-15-19-01a0c0e3-55c0-7363-9590-e8952b1ba7e5.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 71.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "desert_swaca_mudhorn_east",
+    "note": "Generated via built-in imagegen and resized to exactly 1024\u00d71024 while preserving transparent alpha. Strict right-facing side profile verified visually.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_mudhorn_east\\desert_swaca_mudhorn_east.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_mudhorn_east/desert_swaca_mudhorn_east.png\n    1024x1024  rgba  1,102,832 bytes  (127s)\n"
+}

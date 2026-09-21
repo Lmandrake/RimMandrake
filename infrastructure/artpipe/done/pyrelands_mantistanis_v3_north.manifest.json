@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 90.90023497599759,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 90.90023497599759,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "pyrelands_mantistanis_v3_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 71.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/16/rollout-2026-09-16T21-36-43-01a0ada7-1446-7730-87bc-46666f1a5b7c.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 37.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 66.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/16/rollout-2026-09-16T21-35-08-01a0ada5-a345-76d2-bac4-e9d910943c2d.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 36.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "pyrelands_mantistanis_v3_north",
+    "note": "Generated via built-in imagegen and resized to exactly 512x512 while preserving transparent alpha. One retry followed a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_mantistanis_v3_north\\pyrelands_mantistanis_v3_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_mantistanis_v3_north/pyrelands_mantistanis_v3_north.png\n    512x512  rgba  194,926 bytes  (89s)\n"
+}

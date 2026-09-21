@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:51:43Z",
+  "drawsize": 2.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RSW_Ashworm_north",
+  "priority": 150,
+  "prompt": "A large alien desert worm, segmented ash-grey hide with dull chitin plating, no legs, slow-moving and unthreatening in posture, sand-scarred, Star Wars creature design, desert Tatooine palette, painterly game-art style, not photorealistic.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

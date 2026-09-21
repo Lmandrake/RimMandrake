@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-18T08:25:19Z",
+  "drawsize": 2.0,
+  "facing": "east",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_hawkbat_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Hawk-bat -- a pterosaur-like reptavian predator native to Coruscant (the Legends field-guide design, NOT the Star Wars Rebels loth-bat and NOT a generic fanged dragon-bat). Wing membrane violet-purple on the dorsal (upper) side fading to cream/pale-gold on the ventral (under) side, a ribbed wing membrane structure with a hook-like claw at each wingtip and a hooked claw on each foot. A small forward-curling horn-like growth on the forehead. A short beaked head with a hooked beak -- not bared fangs, not an open dragon jaw -- and an amber or green eye. A long tail trailing behind the body. Compact reptilian body with clawed feet. Single creature, centered, wings spread open, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": ""
+}

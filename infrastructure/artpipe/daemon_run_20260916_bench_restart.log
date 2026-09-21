@@ -1,0 +1,21 @@
+artpiped: gemini channel already at/over its $0.00 budget ($4.02 spent, per throughput.jsonl) — gemini jobs will not be claimed this run
+artpiped: NOTE artreg event skipped for pyrelands_mantistanis_v3_north: no 'queued' event found for job_id='pyrelands_mantistanis_v3_north' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_boomsnake_v3_north: no 'queued' event found for job_id='pyrelands_boomsnake_v3_north' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_barbslinger_v3_east: no 'queued' event found for job_id='pyrelands_barbslinger_v3_east' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_gizka_biped_v4_east_r2: no 'queued' event found for job_id='pyrelands_gizka_biped_v4_east_r2' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_mantistanis_v3_south: no 'queued' event found for job_id='pyrelands_mantistanis_v3_south' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_gizka_biped_v4_south_r2: no 'queued' event found for job_id='pyrelands_gizka_biped_v4_south_r2' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_gizka_dino_v5_south: no 'queued' event found for job_id='pyrelands_gizka_dino_v5_south' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_gizka_dino_v5_east: no 'queued' event found for job_id='pyrelands_gizka_dino_v5_east' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_boomsnake_v3_north: no 'queued' event found for job_id='pyrelands_boomsnake_v3_north' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_mantistanis_v3_north: no 'queued' event found for job_id='pyrelands_mantistanis_v3_north' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_barbslinger_v3_east: no 'queued' event found for job_id='pyrelands_barbslinger_v3_east' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_barbslinger_v3_east: no 'queued' event found for job_id='pyrelands_barbslinger_v3_east' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_mantistanis_v3_north: no 'queued' event found for job_id='pyrelands_mantistanis_v3_north' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_boomsnake_v3_north: no 'queued' event found for job_id='pyrelands_boomsnake_v3_north' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_mantistanis_v3_north: no 'queued' event found for job_id='pyrelands_mantistanis_v3_north' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_boomsnake_v3_north: no 'queued' event found for job_id='pyrelands_boomsnake_v3_north' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_barbslinger_v3_east: no 'queued' event found for job_id='pyrelands_barbslinger_v3_east' — pass --target explicitly
+artpiped: NOTE artreg event skipped for pyrelands_gizka_dino_v5_north: no 'queued' event found for job_id='pyrelands_gizka_dino_v5_north' — pass --target explicitly
+artpiped: NOTE artreg event skipped for flowworks_sluicegate_stonemetal_closed: no 'queued' event found for job_id='flowworks_sluicegate_stonemetal_closed' — pass --target explicitly
+artpiped: NOTE artreg event skipped for flowworks_sluicegate_stonemetal_open: no 'queued' event found for job_id='flowworks_sluicegate_stonemetal_open' — pass --target explicitly

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 85.88803799799643,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 85.88803799799643,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rot_swarmling_v2_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 17.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T17-55-43-01a0bc4f-d351-7ba3-bf42-8ec2085c7a2b.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 17.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 12.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T17-54-04-01a0bc4e-518f-78f1-871f-97ee18edeb74.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 16.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rot_swarmling_v2_south",
+    "note": "Generated with built-in imagegen and downscaled to the exact 256\u00d7256 canvas while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_swarmling_v2_south\\rot_swarmling_v2_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_swarmling_v2_south/rot_swarmling_v2_south.png\n    256x256  rgba  43,423 bytes  (85s)\n"
+}

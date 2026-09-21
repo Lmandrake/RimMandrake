@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 100.14355282600445,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 100.14355282600445,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 128,
+  "id": "yumbulbs_a_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789797130,
+    "primary_used_percent": 5.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T17-51-55-01a0b725-fd10-7653-a370-4b3c736d3f21.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 82.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 90.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T13-26-31-01a0b633-03a8-78d2-8e8e-a86acb55063e.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 79.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 128,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 128,
+    "id": "yumbulbs_a_v1",
+    "note": "Generated warm amber-tipped, faceted grey-green YumBulbs with cool blue rim light; resized to 128\u00d7128 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\yumbulbs_a_v1\\yumbulbs_a_v1.png",
+    "status": "ok",
+    "width": 128
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/yumbulbs_a_v1/yumbulbs_a_v1.png\n    128x128  rgba  13,904 bytes  (99s)\n"
+}

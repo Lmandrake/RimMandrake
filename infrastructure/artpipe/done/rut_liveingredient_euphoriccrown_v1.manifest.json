@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 107.36544102000335,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 107.36544102000335,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rut_liveingredient_euphoriccrown_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T23-15-08-01a0bd74-44af-7500-ba54-bf94648f949b.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T23-10-09-01a0bd6f-b424-74f3-9cb7-bf7edf9b0aad.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rut_liveingredient_euphoriccrown_v1",
+    "note": "Generated via built-in imagegen and downscaled to the exact 256x256 project PNG while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_liveingredient_euphoriccrown_v1\\rut_liveingredient_euphoriccrown_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rut_liveingredient_euphoriccrown_v1/rut_liveingredient_euphoriccrown_v1.png\n    256x256  rgba  84,946 bytes  (106s)\n"
+}

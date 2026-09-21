@@ -1,0 +1,56 @@
+{
+  "attempt_elapsed_s": 116.07292544999655,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 116.07292544999655,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "pyrelands_ash_trace_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 42.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T18-03-41-01a0bc57-1f83-7e11-8960-da0037062e9d.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 21.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883557,
+    "primary_used_percent": 36.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T18-01-45-01a0bc55-5a00-7033-a3cd-775143dc5310.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 20.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "#8f8a80",
+    "corners_transparent": false,
+    "has_alpha": false,
+    "height": 1024,
+    "id": "pyrelands_ash_trace_v1",
+    "note": "Generated with built-in imagegen; normalized its 1254px output to the required opaque 1024\u00d71024 PNG after one resize-tool error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_ash_trace_v1\\pyrelands_ash_trace_v1.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_ash_trace_v1/pyrelands_ash_trace_v1.png\n    1024x1024  rgb  2,700,838 bytes  (115s)\n"
+}

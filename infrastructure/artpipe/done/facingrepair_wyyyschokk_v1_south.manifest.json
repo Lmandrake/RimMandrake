@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 94.09938873400097,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 94.09938873400097,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "facingrepair_wyyyschokk_v1_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789919588,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T04-04-29-01a0be7d-2ae7-7fe1-bbd4-7b5a62f5b44d.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 45.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789919588,
+    "primary_used_percent": 9.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T03-59-46-01a0be78-d96a-7123-81d0-eeb04851ab6f.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 44.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "facingrepair_wyyyschokk_v1_south",
+    "note": "Built-in imagegen; normalized prompt emphasized an eye-level frontal south view. One file-processing retry followed a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\facingrepair_wyyyschokk_v1_south\\facingrepair_wyyyschokk_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/facingrepair_wyyyschokk_v1_south/facingrepair_wyyyschokk_v1_south.png\n    512x512  rgba  375,769 bytes  (93s)\n"
+}

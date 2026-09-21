@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 75.76972292400023,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 75.76972292400023,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desert_swaca_massiff_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 71.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T15-18-23-01a0c0e6-268c-7123-bae7-123cb1faa00e.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 71.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 65.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T15-13-46-01a0c0e1-ea62-7ca2-81be-0e0727496988.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 70.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desert_swaca_massiff_south",
+    "note": "Built-in imagegen; original prompt normalized into a frontal, south-facing Massiff sprite spec. Resized to exactly 256\u00d7256; retry followed a resize-tool error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_massiff_south\\desert_swaca_massiff_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_massiff_south/desert_swaca_massiff_south.png\n    256x256  rgba  61,573 bytes  (75s)\n"
+}

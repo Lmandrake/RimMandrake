@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-20T14:32:38Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_paletree_v3",
+  "priority": 55,
+  "prompt": "Six cells wide: a tree-shaped fungus \u2014 a smooth bone-white trunk splitting into a few thick pale limbs, each ending not in leaves but in a cluster of small milk-white caps, so the crown is a canopy of caps; a soft grey-white glow at the crown (glowColor 110,116,125) and lumma moss painted faintly at the base. Nothing angular, a hum you can almost see. Must not resemble vanilla TreeAnima (its current art) and must not have leaves. The most sacred silhouette in the biome; give it grace. Owner's note: \"6 wide, rename\". painterly RimWorld sprite, transparent background. VISIBLE COLOR IS REQUIRED: warm cream/tan undertones in the trunk shadow, a faint lilac-grey cast in the cap clusters, warm light bleeding through cracks \u2014 not a pure achromatic grayscale render.",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": "REGEN v3, quality rejection of rot_paletree_v2 (human-eye catch, same defect class as rut_agelesscap_v1): v2 rendered as a flat, purely achromatic white/gray sculptural render with zero hue anywhere in the canvas \u2014 not a style choice, a bad generation. Compare against rut_paletree_v1 (the WAVE-1 render for this same def, landed 2026-09-18, ROT_ART_WAVE_1) which has real warm cream/tan color and glowing highlights \u2014 that is the quality bar this v3 must clear. v1's art is standing in as the deployed interim art for RUT_PaleTree until this regen lands."
+}

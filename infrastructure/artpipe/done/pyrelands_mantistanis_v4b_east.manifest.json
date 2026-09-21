@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 99.92292566099968,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.92292566099968,
+  "height": 512,
+  "id": "pyrelands_mantistanis_v4b_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789421524,
+    "primary_used_percent": 52.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/14/rollout-2026-09-14T12-08-30-01a0a152-26e4-7f91-b7d7-663e297f7616.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 8.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789421524,
+    "primary_used_percent": 47.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/14/rollout-2026-09-14T12-06-55-01a0a150-b142-7023-9d55-639cf104272c.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 7.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "pyrelands_mantistanis_v4b_east",
+    "note": "Generated via built-in imagegen as a north-facing dorsal/away-view sprite; resized to exactly 512x512 and preserved transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_mantistanis_v4b_east\\pyrelands_mantistanis_v4b_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_mantistanis_v4b_east/pyrelands_mantistanis_v4b_east.png\n    512x512  rgba  181,345 bytes  (99s)\n"
+}

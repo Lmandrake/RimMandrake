@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 100.48295025300467,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 100.48295025300467,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rot_greylady_v3",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789919589,
+    "primary_used_percent": 19.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T07-34-39-01a0bf3d-95d8-71d1-a247-242ad4a238b0.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 45.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789919588,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T04-03-11-01a0be7b-fc0c-78f2-90ee-ba350ce51215.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 45.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rot_greylady_v3",
+    "note": "Built-in imagegen; visible lilac shading, translucent hanging mesh-lace skirt, dim stalk, no glow. First resize utility was unavailable; platform image library succeeded.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_greylady_v3\\rot_greylady_v3.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_greylady_v3/rot_greylady_v3.png\n    256x256  rgba  76,049 bytes  (99s)\n"
+}

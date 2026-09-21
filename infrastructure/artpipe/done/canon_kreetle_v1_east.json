@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-18T08:25:20Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_kreetle_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Kreetle -- a small parasitic, burrowing arthropod found on Tatooine, Naboo, Kashyyyk and Geonosis. A low, domed, segmented and ribbed carapace like a pillbug or hermit-crab shell, coloured reddish-brown to maroon. A mottled tan/gold head with dark reddish spots, visibly different in colour from the shell rather than a uniform single tone. Dark, curved mandibles/tusks at the front of the face. Bright, glowing yellow eyes -- not dark or black. Many short jointed legs along both sides of the body. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": ""
+}

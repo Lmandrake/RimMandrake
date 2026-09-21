@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:51:43Z",
+  "drawsize": 3.8,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RSW_Sporemass_north",
+  "priority": 150,
+  "prompt": "A huge lumbering mass of mottled fungal matter shaped vaguely like a quadruped, bullet-riddled looking rubbery hide, slow and heavy, Star Wars alien creature design, desert palette, painterly game-art style.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

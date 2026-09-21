@@ -3356,3 +3356,129 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rsw_zakkro_dessicated_v1", "notes": "", "target": "rsw_zakkro_dessicated", "ts": 1789933052.5171216}
 {"by": "fill_queue", "event": "registered", "source": "EXTREME_DESERT_CAVERN_BEAST_1", "target": "rsw_zakkroegg", "ts": 1789933052.526141}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rsw_zakkroegg_v1", "notes": "", "target": "rsw_zakkroegg", "ts": 1789933052.5371747}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_lasat/north", "ts": 1789937986.1784627}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_lasat_v1_north", "notes": "", "target": "xeno_head_lasat/north", "ts": 1789937986.1916883}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_lasat/east", "ts": 1789937986.199231}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_lasat_v1_east", "notes": "", "target": "xeno_head_lasat/east", "ts": 1789937986.2112389}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_lasat/south", "ts": 1789937986.218277}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_lasat_v1_south", "notes": "", "target": "xeno_head_lasat/south", "ts": 1789937986.2290175}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_nelvaanian/north", "ts": 1789937986.2357678}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_nelvaanian_v1_north", "notes": "", "target": "xeno_head_nelvaanian/north", "ts": 1789937986.2469754}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_nelvaanian/east", "ts": 1789937986.2536457}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_nelvaanian_v1_east", "notes": "", "target": "xeno_head_nelvaanian/east", "ts": 1789937986.266127}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_nelvaanian/south", "ts": 1789937986.2722125}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_nelvaanian_v1_south", "notes": "", "target": "xeno_head_nelvaanian/south", "ts": 1789937986.2849383}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_ortolan/north", "ts": 1789937986.2912705}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_ortolan_v1_north", "notes": "", "target": "xeno_head_ortolan/north", "ts": 1789937986.3023021}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_ortolan/east", "ts": 1789937986.3086872}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_ortolan_v1_east", "notes": "", "target": "xeno_head_ortolan/east", "ts": 1789937986.3191586}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_ortolan/south", "ts": 1789937986.3256996}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_ortolan_v1_south", "notes": "", "target": "xeno_head_ortolan/south", "ts": 1789937986.3375094}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_mimbanese/north", "ts": 1789937986.344283}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_mimbanese_v1_north", "notes": "", "target": "xeno_head_mimbanese/north", "ts": 1789937986.3574982}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_mimbanese/east", "ts": 1789937986.3637803}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_mimbanese_v1_east", "notes": "", "target": "xeno_head_mimbanese/east", "ts": 1789937986.374097}
+{"by": "fill_queue", "event": "registered", "source": "XENOTYPE_CANON_CORRECTION_1", "target": "xeno_head_mimbanese/south", "ts": 1789937986.3813407}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "xeno_head_mimbanese_v1_south", "notes": "", "target": "xeno_head_mimbanese/south", "ts": 1789937986.3925378}
+{"by": "artpiped", "elapsed_s": 77.68160535700736, "event": "generated", "job_id": "rslpn_v1", "target": "rslpn", "ts": 1789939074.111542}
+{"by": "artpiped", "event": "validated", "job_id": "rslpn_v1", "target": "rslpn", "ts": 1789939074.1252055, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 109.2443007969996, "event": "generated", "job_id": "rswollim_v1", "target": "rswollim", "ts": 1789939185.7629724}
+{"by": "artpiped", "event": "validated", "job_id": "rswollim_v1", "target": "rswollim", "ts": 1789939185.7753081, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 120.02671113998804, "event": "generated", "job_id": "rswollimwood_v1", "target": "rswollimwood", "ts": 1789939308.0434742}
+{"by": "artpiped", "event": "validated", "job_id": "rswollimwood_v1", "target": "rswollimwood", "ts": 1789939308.055751, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 92.18966858599742, "event": "generated", "job_id": "desert_swaca_hrumph_east", "target": "desert_swaca_hrumph/east", "ts": 1789939403.1428485}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_hrumph_east", "target": "desert_swaca_hrumph/east", "ts": 1789939403.1554148, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 93.5760837179987, "event": "generated", "job_id": "desert_swaca_hrumph_north", "target": "desert_swaca_hrumph/north", "ts": 1789939499.7237833}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_hrumph_north", "target": "desert_swaca_hrumph/north", "ts": 1789939499.7350578, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 105.09094458000618, "event": "generated", "job_id": "desert_swaca_hrumph_south", "target": "desert_swaca_hrumph/south", "ts": 1789939607.673155}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_hrumph_south", "target": "desert_swaca_hrumph/south", "ts": 1789939607.6847293, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 73.66304479200335, "event": "generated", "job_id": "desert_swaca_igitz_east", "target": "desert_swaca_igitz/east", "ts": 1789939684.2236066}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_igitz_east", "target": "desert_swaca_igitz/east", "ts": 1789939684.235588, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.2412903150107, "event": "generated", "job_id": "desert_swaca_igitz_north", "target": "desert_swaca_igitz/north", "ts": 1789939789.7225902}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_igitz_north", "target": "desert_swaca_igitz/north", "ts": 1789939789.737831, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 94.19657571800053, "event": "generated", "job_id": "desert_swaca_igitz_south", "target": "desert_swaca_igitz/south", "ts": 1789939886.7056088}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_igitz_south", "target": "desert_swaca_igitz/south", "ts": 1789939886.7228727, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 84.25954561699473, "event": "generated", "job_id": "desert_swaca_iriaz_east", "target": "desert_swaca_iriaz/east", "ts": 1789939973.187217}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_iriaz_east", "target": "desert_swaca_iriaz/east", "ts": 1789939973.207965, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 89.29234004499449, "event": "generated", "job_id": "desert_swaca_iriaz_north", "target": "desert_swaca_iriaz/north", "ts": 1789940065.7999134}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_iriaz_north", "target": "desert_swaca_iriaz/north", "ts": 1789940065.8700013, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 102.22058074500819, "event": "generated", "job_id": "desert_swaca_iriaz_south", "target": "desert_swaca_iriaz/south", "ts": 1789940170.795616}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_iriaz_south", "target": "desert_swaca_iriaz/south", "ts": 1789940170.8070211, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.05152019100206, "event": "generated", "job_id": "desert_swaca_iridonianreek_east", "target": "desert_swaca_iridonianreek/east", "ts": 1789940275.6970658}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_iridonianreek_east", "target": "desert_swaca_iridonianreek/east", "ts": 1789940275.7087064, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 84.8131998200115, "event": "generated", "job_id": "desert_swaca_iridonianreek_north", "target": "desert_swaca_iridonianreek/north", "ts": 1789940362.3093703}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_iridonianreek_north", "target": "desert_swaca_iridonianreek/north", "ts": 1789940362.3211982, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 87.44601034000516, "event": "generated", "job_id": "desert_swaca_iridonianreek_south", "target": "desert_swaca_iridonianreek/south", "ts": 1789940452.121172}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_iridonianreek_south", "target": "desert_swaca_iridonianreek/south", "ts": 1789940452.1319592, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 84.50992279499769, "event": "generated", "job_id": "desert_swaca_jamel_east", "target": "desert_swaca_jamel/east", "ts": 1789940538.4294918}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_jamel_east", "target": "desert_swaca_jamel/east", "ts": 1789940538.4419088, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 106.22271307300252, "event": "generated", "job_id": "desert_swaca_jamel_north", "target": "desert_swaca_jamel/north", "ts": 1789940647.1229713}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_jamel_north", "target": "desert_swaca_jamel/north", "ts": 1789940647.1350856, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 107.29840506099572, "event": "generated", "job_id": "desert_swaca_jamel_south", "target": "desert_swaca_jamel/south", "ts": 1789940756.8656545}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_jamel_south", "target": "desert_swaca_jamel/south", "ts": 1789940756.8760302, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 98.25749577200622, "event": "generated", "job_id": "desert_swaca_jimvu_east", "target": "desert_swaca_jimvu/east", "ts": 1789940856.9750676}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_jimvu_east", "target": "desert_swaca_jimvu/east", "ts": 1789940856.985818, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 82.95079723600065, "event": "generated", "job_id": "desert_swaca_jimvu_north", "target": "desert_swaca_jimvu/north", "ts": 1789940941.674455}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_jimvu_north", "target": "desert_swaca_jimvu/north", "ts": 1789940941.6859224, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 104.40758382300555, "event": "generated", "job_id": "desert_swaca_jimvu_south", "target": "desert_swaca_jimvu/south", "ts": 1789941047.764495}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_jimvu_south", "target": "desert_swaca_jimvu/south", "ts": 1789941047.7758508, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 105.60241562800366, "event": "generated", "job_id": "desert_swaca_kreetle_east", "target": "desert_swaca_kreetle/east", "ts": 1789941155.1549532}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_kreetle_east", "target": "desert_swaca_kreetle/east", "ts": 1789941155.1678598, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 91.31551793600374, "event": "generated", "job_id": "desert_swaca_kreetle_north", "target": "desert_swaca_kreetle/north", "ts": 1789941249.0534196}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_kreetle_north", "target": "desert_swaca_kreetle/north", "ts": 1789941249.067438, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.67822046700167, "event": "generated", "job_id": "desert_swaca_kreetle_south", "target": "desert_swaca_kreetle/south", "ts": 1789941354.6323454}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_kreetle_south", "target": "desert_swaca_kreetle/south", "ts": 1789941354.6427908, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 93.69606558000669, "event": "generated", "job_id": "desert_swaca_kwi_east", "target": "desert_swaca_kwi/east", "ts": 1789941450.359087}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_kwi_east", "target": "desert_swaca_kwi/east", "ts": 1789941450.3712206, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 108.62378922500648, "event": "generated", "job_id": "desert_swaca_kwi_north", "target": "desert_swaca_kwi/north", "ts": 1789941560.8738315}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_kwi_north", "target": "desert_swaca_kwi/north", "ts": 1789941560.884696, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 92.83054304600228, "event": "generated", "job_id": "desert_swaca_kwi_south", "target": "desert_swaca_kwi/south", "ts": 1789941655.9903245}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_kwi_south", "target": "desert_swaca_kwi/south", "ts": 1789941656.001265, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 85.11111925401201, "event": "generated", "job_id": "desert_swaca_kybuck_east", "target": "desert_swaca_kybuck/east", "ts": 1789941742.831213}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_kybuck_east", "target": "desert_swaca_kybuck/east", "ts": 1789941742.8416748, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 95.55329813000571, "event": "generated", "job_id": "desert_swaca_kybuck_north", "target": "desert_swaca_kybuck/north", "ts": 1789941840.3961968}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_kybuck_north", "target": "desert_swaca_kybuck/north", "ts": 1789941840.4085164, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 77.2952528270107, "event": "generated", "job_id": "desert_swaca_kybuck_south", "target": "desert_swaca_kybuck/south", "ts": 1789941919.4396408}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_kybuck_south", "target": "desert_swaca_kybuck/south", "ts": 1789941919.4501214, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 88.24176961398916, "event": "generated", "job_id": "desert_swaca_longtailgorg_east", "target": "desert_swaca_longtailgorg/east", "ts": 1789942009.5068352}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_longtailgorg_east", "target": "desert_swaca_longtailgorg/east", "ts": 1789942009.5175157, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 99.59434602000692, "event": "generated", "job_id": "desert_swaca_longtailgorg_north", "target": "desert_swaca_longtailgorg/north", "ts": 1789942111.2341635}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_longtailgorg_north", "target": "desert_swaca_longtailgorg/north", "ts": 1789942111.247605, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 97.44616053999925, "event": "generated", "job_id": "desert_swaca_longtailgorg_south", "target": "desert_swaca_longtailgorg/south", "ts": 1789942210.831743}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_longtailgorg_south", "target": "desert_swaca_longtailgorg/south", "ts": 1789942210.8454745, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 100.0000409570057, "event": "generated", "job_id": "desert_swaca_lothcat_east", "target": "desert_swaca_lothcat/east", "ts": 1789942312.9992695}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_lothcat_east", "target": "desert_swaca_lothcat/east", "ts": 1789942313.0151212, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 104.01845804399636, "event": "generated", "job_id": "desert_swaca_lothcat_north", "target": "desert_swaca_lothcat/north", "ts": 1789942420.0526016}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_lothcat_north", "target": "desert_swaca_lothcat/north", "ts": 1789942420.0712209, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 93.00321016499947, "event": "generated", "job_id": "desert_swaca_lothcat_south", "target": "desert_swaca_lothcat/south", "ts": 1789942516.2732115}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_lothcat_south", "target": "desert_swaca_lothcat/south", "ts": 1789942516.2837424, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 85.34420938500261, "event": "generated", "job_id": "desert_swaca_massiff_east", "target": "desert_swaca_massiff/east", "ts": 1789942604.015163}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_massiff_east", "target": "desert_swaca_massiff/east", "ts": 1789942604.0261266, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 94.92846935299167, "event": "generated", "job_id": "desert_swaca_massiff_north", "target": "desert_swaca_massiff/north", "ts": 1789942701.1576784}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_massiff_north", "target": "desert_swaca_massiff/north", "ts": 1789942701.1684144, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 75.76972292400023, "event": "generated", "job_id": "desert_swaca_massiff_south", "target": "desert_swaca_massiff/south", "ts": 1789942778.8034523}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_massiff_south", "target": "desert_swaca_massiff/south", "ts": 1789942778.8147287, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 128.47005508000439, "event": "generated", "job_id": "desert_swaca_mudhorn_east", "target": "desert_swaca_mudhorn/east", "ts": 1789942909.1656148}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_mudhorn_east", "target": "desert_swaca_mudhorn/east", "ts": 1789942909.1775362, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 104.75179474199831, "event": "generated", "job_id": "desert_swaca_mudhorn_north", "target": "desert_swaca_mudhorn/north", "ts": 1789943017.330831}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_mudhorn_north", "target": "desert_swaca_mudhorn/north", "ts": 1789943017.3517466, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 83.04839350700786, "event": "generated", "job_id": "desert_swaca_mudhorn_south", "target": "desert_swaca_mudhorn/south", "ts": 1789943105.6778822}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_mudhorn_south", "target": "desert_swaca_mudhorn/south", "ts": 1789943105.6912003, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 96.888409924999, "event": "generated", "job_id": "desert_swaca_mynock_east", "target": "desert_swaca_mynock/east", "ts": 1789943205.5860856}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_mynock_east", "target": "desert_swaca_mynock/east", "ts": 1789943205.5969746, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 97.65753934699751, "event": "generated", "job_id": "desert_swaca_mynock_north", "target": "desert_swaca_mynock/north", "ts": 1789943307.080173}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_mynock_north", "target": "desert_swaca_mynock/north", "ts": 1789943307.110155, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 126.27621383599762, "event": "generated", "job_id": "desert_swaca_mynock_south", "target": "desert_swaca_mynock/south", "ts": 1789943439.459989}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_mynock_south", "target": "desert_swaca_mynock/south", "ts": 1789943439.4765975, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 98.35202987700177, "event": "generated", "job_id": "desert_swaca_nuna_east", "target": "desert_swaca_nuna/east", "ts": 1789943540.227121}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_nuna_east", "target": "desert_swaca_nuna/east", "ts": 1789943540.2389672, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 95.85506071100826, "event": "generated", "job_id": "desert_swaca_nuna_north", "target": "desert_swaca_nuna/north", "ts": 1789943637.7796946}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_nuna_north", "target": "desert_swaca_nuna/north", "ts": 1789943637.7912369, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 97.01876524400723, "event": "generated", "job_id": "desert_swaca_nuna_south", "target": "desert_swaca_nuna/south", "ts": 1789943737.274881}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_nuna_south", "target": "desert_swaca_nuna/south", "ts": 1789943737.2882605, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 93.61452041300072, "event": "generated", "job_id": "desert_swaca_pufferpig_east", "target": "desert_swaca_pufferpig/east", "ts": 1789943835.6510415}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_pufferpig_east", "target": "desert_swaca_pufferpig/east", "ts": 1789943835.6679606, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 99.45135224399564, "event": "generated", "job_id": "desert_swaca_pufferpig_north", "target": "desert_swaca_pufferpig/north", "ts": 1789943938.6336656}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_pufferpig_north", "target": "desert_swaca_pufferpig/north", "ts": 1789943938.645933, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 91.31016601099691, "event": "generated", "job_id": "desert_swaca_pufferpig_south", "target": "desert_swaca_pufferpig/south", "ts": 1789944032.5585318}
+{"by": "artpiped", "event": "validated", "job_id": "desert_swaca_pufferpig_south", "target": "desert_swaca_pufferpig/south", "ts": 1789944032.570871, "verdict": "pass"}

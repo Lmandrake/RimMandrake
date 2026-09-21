@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-17T00:00:00Z",
+  "drawsize": 1.9,
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "rut_brewingvessel_v1_south",
+  "priority": 60,
+  "prompt": "RimWorld building sprite, painterly vanilla-RimWorld style: A wide, low fungal-leather vat lashed onto a rough wooden frame, built to be assembled on-site at a mushroom grove. Pale-violet stitched leather stretched over a hooped wooden hull, a simple open top for stirring and drinking, portable and improvised-looking rather than industrial \u2014 a field still, not a factory bench. South-facing canonical view. Heavy, clean black outline, transparent background, no ground shadow.",
+  "reference": null,
+  "rimflow_item_id": "ROT_LIVE_PREPARATIONS_1",
+  "style_notes": "Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses vanilla's FermentingBarrel texture (Things/Building/Production/FermentingBarrel), tinted pale-violet via the def's own <color> field \u2014 needs bespoke art. graphicClass is Graphic_Multi (rotatable, default true) so a full set wants south/east/north facings; per the task's own fallback rule ('if unclear, file the single/_south canonical view and note it') this pass files ONLY the south view \u2014 east and north are still owed as a follow-up job."
+}

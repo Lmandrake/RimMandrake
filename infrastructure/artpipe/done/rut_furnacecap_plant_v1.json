@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-17T00:00:00Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rut_furnacecap_plant_v1",
+  "priority": 60,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: A squat, thick-walled mushroom with a heavy domed cap and stubby stalk, faint heat-shimmer visible rising off its surface as if genuinely warm to the touch, deep rust-orange coloring suggesting internal heat rather than decay. Single plant, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ROT_WARM_MAT_1",
+  "style_notes": "Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses the CrimsonCap donor texture shared with rut_agelesscap_v1 and an unrelated plant in RUT_RotSporeKit_Flora.xml \u2014 needs its own heat-mushroom identity, visually distinct from the ageless cap."
+}

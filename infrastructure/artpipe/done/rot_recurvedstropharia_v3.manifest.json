@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 99.7709221719997,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.7709221719997,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "rot_recurvedstropharia_v3",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789919588,
+    "primary_used_percent": 23.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T07-38-24-01a0bf41-0498-7473-871f-d57658dc98ac.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 46.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789919588,
+    "primary_used_percent": 17.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T07-32-44-01a0bf3b-d344-7b50-9e1a-519b2f6b3fe4.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 45.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "rot_recurvedstropharia_v3",
+    "note": "Built-in imagegen output was normalized from 1254\u00d71254 to the required 1024\u00d71024, preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_recurvedstropharia_v3\\rot_recurvedstropharia_v3.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_recurvedstropharia_v3/rot_recurvedstropharia_v3.png\n    1024x1024  rgba  1,158,222 bytes  (98s)\n"
+}

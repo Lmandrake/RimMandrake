@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 94.412777947,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 94.412777947,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "pyrelands_boomsnake_v3_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 72.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/16/rollout-2026-09-16T21-36-50-01a0ada7-31a3-7dc0-92e9-5c26a281984b.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 37.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 67.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/16/rollout-2026-09-16T21-35-08-01a0ada5-a33c-7020-82ed-77781b18c696.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 36.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "pyrelands_boomsnake_v3_north",
+    "note": "Generated from scratch with no reference, then resized to exactly 512\u00d7512 while preserving transparent alpha. North-facing back view; no face or eyes visible.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_boomsnake_v3_north\\pyrelands_boomsnake_v3_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_boomsnake_v3_north/pyrelands_boomsnake_v3_north.png\n    512x512  rgba  357,605 bytes  (92s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 85.17668268400303,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 85.17668268400303,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rut_liveingredient_agelesscap_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 25.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T23-13-42-01a0bd72-f2f9-7b80-98b8-ebe3b49f3975.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 19.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T23-08-02-01a0bd6d-c1ba-7c12-b4fc-8ee0808235e3.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 31.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rut_liveingredient_agelesscap_v1",
+    "note": "Created new painterly cut ageless-cap flesh sprite with moist fungal anatomy, heavy black linework, faint steam, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_liveingredient_agelesscap_v1\\rut_liveingredient_agelesscap_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rut_liveingredient_agelesscap_v1/rut_liveingredient_agelesscap_v1.png\n    256x256  rgba  70,949 bytes  (84s)\n"
+}
