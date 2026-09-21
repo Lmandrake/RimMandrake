@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T11:43:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T12:00:19Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1391,16 +1391,6 @@ kind:     task
 thin:     no ## verify
 summary:  1. Take the replacement name from WORLDLABELSIZEHIERARCHY1's sibling draft file
 prose:    infrastructure/state/items/SCARLANDS_RENAME_OURS_1.md
-
-## UMBRA_IS_A_REGION_NOT_A_BIOME_1 RUT_Umbra is a REGION, not a biome - owner ruled it out of the biome list
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Umbra leaves the biome row list (§2 of the architecture spec is already corrected).
-prose:    infrastructure/state/items/UMBRA_IS_A_REGION_NOT_A_BIOME_1.md
 
 ## FEATURE_DRAWCENTER_UNVERIFIED_1 Only 2 of 71 world features have a verified drawCenter, and growing labels make a wrong one worse
 state:    proposed
