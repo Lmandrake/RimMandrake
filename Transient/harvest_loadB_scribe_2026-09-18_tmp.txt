@@ -1,0 +1,20 @@
+
+WHICH RUN IS THIS
+  log            C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log
+  15,275 lines   last written 2026-09-18 15:01:03
+  build          RimWorld 1.6.4871 rev591
+  state          no exit marker, not growing right now - game may be sitting at the menu, or paused mid-load
+  ModsConfig     632 active mods, written 2026-09-18 13:45:06  (-4558s vs the log)
+  def dump       632 mods, captured 2026-09-18T21:57:04Z  (1.6.4871 rev591), written 14:57:23
+  previous run   ended 14:36:43 (Player-prev.log)
+
+   7971: Could not load reference to Verse.ThingDef named Meat_TYR_HotfootRat
+   7972: Could not load reference to Verse.ThingDef named Meat_TYR_KangarooRat
+   7973: Could not load reference to Verse.ThingDef named Meat_TYR_Lemming
+   7974: Could not load reference to Verse.ThingDef named Meat_TYR_Mouse
+   7975: Could not load reference to Verse.ThingDef named Meat_TYR_MousePoison
+   7976: Could not load reference to Verse.ThingDef named Corpse_TYR_HotfootRat
+   7977: Could not load reference to Verse.ThingDef named Corpse_TYR_KangarooRat
+   7978: Could not load reference to Verse.ThingDef named Corpse_TYR_Lemming
+   7979: Could not load reference to Verse.ThingDef named Corpse_TYR_Mouse
+   7980: Could not load reference to Verse.ThingDef named Corpse_TYR_MousePoison

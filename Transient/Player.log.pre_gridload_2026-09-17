@@ -1,0 +1,302 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.108 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.673300 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod RimUtinni: Aftermath Rites dependency (mandrake.rm.aftermath) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Inhabited (Ash'karr) dependency (mandrake.rm.inhabited) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Weather Suite (Ash'karr) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Droid Repair Jobs dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Greentide dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod JawaVoice (SpeakUp reskin) dependency (JPT.speakup) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Lantern Deeps dependency (BiomesTeam.BiomesCaverns) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Fire Ecology (Pyrelands) dependency (zylle.morevanillabiomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Fire Ecology (Pyrelands) dependency (mandrake.rm.pyrelands) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Pyrelands Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod The Rites dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Rust Cathedral Roaches dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake Sacred Marks dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Scarlands Ladder dependency (mandrake.rm.lorestages) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rsw.swbestiary) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Shokk dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (OskarPotocki.VanillaFactionsExpanded.Core) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimStarWars: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (sarg.alphaanimals) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni Patches (Jawa campaign) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Colony Visibility dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Exception loading from System.Xml.XmlElement: System.MissingMethodException: Default constructor not found for type System.String
+  at System.RuntimeType.CreateInstanceMono (System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00076] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceSlow (System.Boolean publicOnly, System.Boolean wrapExceptions, System.Boolean skipCheckThis, System.Boolean fillCache) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceDefaultCtor (System.Boolean publicOnly, System.Boolean skipCheckThis, System.Boolean fillCache, System.Boolean wrapExceptions, System.Threading.StackCrawlMark& stackMark) [0x00027] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00020] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0045c] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXmlReflection[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0060e] in <61e4173561894da49d210260257b5097>:0 
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000002A5648EF040.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000002A567CC00D0.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 56 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=120 elapsedMs=120
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=120
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=120 elapsedMs=120
+1.6.9701 ::
+<color=#00FFFFFF>:: Outer Rim - Core ::</color> 1.6.9306 ::
+Error while instantiating a mod of type OuterRimCore.OuterRimCoreMod: System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object
+[Ref D3840D9A]
+  at OuterRimCore.OuterRimCoreMod.get_VersionDir () [0x0000b] in <f175bbca770d41f481b7d51826e7d2dd>:0 
+OuterRimCore.OuterRimCoreMod..ctor(ModContentPack content)
+(wrapper managed-to-native) System.Reflection.RuntimeConstructorInfo.InternalInvoke(System.Reflection.RuntimeConstructorInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeConstructorInfo.InternalInvoke (System.Object obj, System.Object[] parameters, System.Boolean wrapExceptions) [0x00005] in <51fded79cd284d4d911c5949aff4cb21>:0 
+   --- End of inner exception stack trace ---
+[Ref 63660D84]
+  at System.Reflection.RuntimeConstructorInfo.InternalInvoke (System.Object obj, System.Object[] parameters, System.Boolean wrapExceptions) [0x0001a] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Reflection.RuntimeConstructorInfo.DoInvoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00086] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Reflection.RuntimeConstructorInfo.Invoke (System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceImpl (System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Object[] args, System.Globalization.CultureInfo culture, System.Object[] activationAttributes, System.Threading.StackCrawlMark& stackMark) [0x0022b] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Object[] args, System.Globalization.CultureInfo culture, System.Object[] activationAttributes) [0x0009c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Object[] args) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.LoadedModManager.CreateModClasses () [0x00085] in <61e4173561894da49d210260257b5097>:0 
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19HeavyBlasterRifle found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Droids_CaptainFourteen
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19HeavyBlasterRifle found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Droids_Wallop
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_StormtrooperHelmet (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19XTargetingBlaster found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Empire_TrooperBoAnder
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference: No Verse.ThingDef named Force_Lightsaber_Inquisitor found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Empire_InquisitorVaunt
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named DV_MeleeWeapon_SerratedScimitar found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Hutt_MargraveSarrick
+Could not resolve cross-reference: No Verse.ThingDef named GS_Gaffi found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Tusken_GhurrVex
+Could not resolve cross-reference to Verse.ThingDef named guy762_TuskenMask (wanter=apparel)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Reassembly
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_PrimitiveFabrication
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Formatting
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_A280Blaster found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Wildsteam_BoKesh
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference: No RimWorld.StatDef named EBSG_SkillLossRate found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Reboot
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Bolting
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Spiking
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_ShopRepair
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named TST_TerrainForMeditationStone (wanter=affordances)
+Could not resolve cross-reference to Verse.TerrainAffordanceDef named BMT_DeepWaterBridgeable (wanter=affordances)
+Config error in WaterDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterOceanDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterMovingChestDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterOceanShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterMovingShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in Marsh: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in ShallowFloodwater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in MarshFlood: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in AB_LiquidSlime: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Water_Trace: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Water_Half: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Water_Brim: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Water_Superdeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Tar_Trace: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Tar_Half: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Tar_Brim: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Tar_Superdeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Churnmud: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Churnmud: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_CoolantShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_CoolantDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_FuelSapShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_FuelSapDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_IchorShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_IchorDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_OozeShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_OozeDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_PropaneShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_PropaneDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_TarShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_TarDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterBrackishShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterOceanDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterMovingChestDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterOceanShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in WaterMovingShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterBrackishDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterBrineShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterBrineDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterMineralShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterMineralDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in Marsh: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in ShallowFloodwater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in MarshFlood: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in AB_LiquidSlime: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Water_Trace: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Water_Half: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Water_Brim: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Water_Superdeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Tar_Trace: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Tar_Half: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Tar_Brim: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Fill_Tar_Superdeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Churnmud: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_Churnmud: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_CoolantShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_CoolantDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_FuelSapShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_FuelSapDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_IchorShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_IchorDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_OozeShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_OozeDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_PropaneShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_PropaneDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_TarShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_TarDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterBrackishShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterBrackishDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterBrineShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterBrineDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterMineralShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Config error in RM_WaterMineralDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a complete, working liquid) — this is a naming/authoring check, not a hard error.
+Translation data for language English has 30 errors. Generate translation report for more info.
+KCSG has Created 7272 symbolDefs for vanilla and DLCs
+[RimMandrake.Inhabited] ready: 2 patches, 294 characters, 4 places, 0 casts.
+Alien race successfully completed 280 patches (50 pre, 82 post, 148 trans) with harmony.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 8)
+MVCF successfully applied 0 patches
+Unloading 158 unused Assets to reduce memory usage. Loaded Objects now: 31539.
+Total: 168.498400 ms (FindLiveObjects: 2.480500 ms CreateObjectMapping: 1.043100 ms MarkObjects: 164.580100 ms  DeleteObjects: 0.394300 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=19 elapsedMs=22751
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=860 elapsedMs=23612
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=23612
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=23613
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=23613
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=23613
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=1 elapsedMs=23614
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=23615
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=23618
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=23618
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=1 elapsedMs=23619
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=23621
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=18 elapsedMs=23640
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=889 elapsedMs=23641
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=19 elapsedMs=23641
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: 2a7fb54a02a74523a47e2bfc711dff7d
+Unloading 3 Unused Serialized files (Serialized files now loaded: 8)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.784500 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 31737.
+Total: 151.231800 ms (FindLiveObjects: 1.543900 ms CreateObjectMapping: 0.995200 ms MarkObjects: 148.643400 ms  DeleteObjects: 0.048900 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - brrainz.rimbridgeserver
+  - 7f.alienworlds
+  - 7f.alienworlds.tidallylocked
+  - sarg.alphabiomes
+  - Oblitus.MyLittlePlanet
+  - mandrake.rm.inhabited
+  - neronix17.toolbox
+  - Neronix17.OuterRim.Core
+  - erdelf.HumanoidAlienRaces
+  - mandrake.rsw.ionweapons
+  - mandrake.rsw.droidworks
+  - mandrake.rm.flowworks
+  - mandrake.rut.shipmemory
+  - rw.mod.simplestairs
+  - Kutte.Stairs
+  - Mlie.DecorativeCliffs
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 0 Unused Serialized files (Serialized files now loaded: 8)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 38164.
+Total: 189.024100 ms (FindLiveObjects: 1.181200 ms CreateObjectMapping: 1.274500 ms MarkObjects: 186.356800 ms  DeleteObjects: 0.211300 ms)
+

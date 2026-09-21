@@ -1,0 +1,43 @@
+== start_debug_game_ready (timeout is normal) ==
+start timed out as documented: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+poll 0: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_4e
+poll 1: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_10
+poll 2: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_b1
+poll 3: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_4b
+poll 4: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_8f
+poll 5: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_7a
+poll 6: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_0b
+poll 7: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_1a
+poll 8: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_fe
+poll 9: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_15
+poll 10: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_af
+poll 11: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_78
+poll 12: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_cf
+poll 13: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_61
+poll 14: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_da
+poll 15: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_e6
+poll 16: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_7b
+poll 17: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_70
+poll 18: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_39
+poll 19: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_51
+poll 20: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_43
+poll 21: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_14
+poll 22: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_8d
+poll 23: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_a0
+poll 24: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_d9
+poll 25: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_8f
+poll 26: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_91
+poll 27: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_45
+poll 28: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_7b
+poll 29: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_37
+poll 30: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_cc
+poll 31: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_a7
+poll 32: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_d9
+poll 33: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_02
+poll 34: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_d4
+poll 35: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_f1
+poll 36: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_2d
+poll 37: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_09
+poll 38: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_f4
+poll 39: not yet — {'success': False, 'message': 'No current map. Load a game first.', 'details': None, 'operation': {'OperationId': 'op_9a
+FATAL: map never came up

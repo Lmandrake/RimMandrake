@@ -1,0 +1,1 @@
+bridge error: session/hello failed: Invalid authentication token

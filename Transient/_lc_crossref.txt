@@ -1,0 +1,231 @@
+
+WHICH RUN IS THIS
+  log            C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log
+  15,606 lines   last written 2026-09-18 19:39:25
+  build          RimWorld 1.6.4871 rev591
+  state          no exit marker, not growing right now - game may be sitting at the menu, or paused mid-load
+  ModsConfig     621 active mods, written 2026-09-18 19:14:29  (-1497s vs the log)
+  def dump       621 mods, captured 2026-09-19T02:35:03Z  (1.6.4871 rev591), written 19:35:03
+  previous run   ended 19:20:26 (Player-prev.log)
+
+   1625: Could not resolve cross-reference: No Verse.SoundDef named Pawn_Squirrel_Call found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+   1626: Could not resolve cross-reference: No Verse.SoundDef named Pawn_Squirrel_Call found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+   1627: Could not resolve cross-reference: No Verse.SoundDef named Pawn_Squirrel_Call found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+   1628: Could not resolve cross-reference: No Verse.SoundDef named Pawn_Squirrel_Call found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+   1639: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scurrier found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1644: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1649: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1654: Could not resolve cross-reference: No Verse.ThingDef named RUT_TibannaGas found to give to RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas RimMandrake.EnvironmentalHazards.CompProperties
+   1659: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1664: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1669: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1674: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1679: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1684: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1689: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1694: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1699: Could not resolve cross-reference to RimWorld.TrainableDef named RSW_SW_GoldForage (wanter=specialTrainables)
+   1704: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Sketto found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1709: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1714: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1719: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1724: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1729: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1734: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1739: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1744: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scavrat found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1749: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1754: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1759: Could not resolve cross-reference to RimWorld.AbilityDef named RSW_SW_GoldForage (wanter=abilities)
+   1764: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1769: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1774: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Strill found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1779: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1784: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1789: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1794: Could not resolve cross-reference: No Verse.BodyDef named RSW_Qormot found to give to Verse.RaceProperties Verse.RaceProperties
+   1801: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1806: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1811: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1816: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1821: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1826: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Skalder found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1831: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1836: Could not resolve cross-reference: No Verse.ThingDef named RSW_Leather_Ronto found to give to Verse.RaceProperties Verse.RaceProperties
+   1841: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1846: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1851: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1856: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1861: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Shiro found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1866: Could not resolve cross-reference: No Verse.ThingDef named RSW_Ronto_Meat found to give to Verse.RaceProperties Verse.RaceProperties
+   1871: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scavrat found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1876: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1881: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1886: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1891: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_ShiroTrap found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1896: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1901: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Shyrack found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1906: Could not resolve cross-reference to Verse.ThingDef named EmptyAICore (wanter=thingDefs)
+   1911: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1916: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1921: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1926: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scurrier found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1931: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1936: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Sketto found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1941: Could not resolve cross-reference to Verse.ThingDef named EmptyAICore (wanter=thingDefs)
+   1946: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1951: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1956: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Sketto found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1961: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1966: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Shyrack found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1971: Could not resolve cross-reference: No Verse.ThingDef named BMT_GiantLeaf found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   1982: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Skalder found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   1987: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   1992: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   1997: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scavrat found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2002: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Shaak found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2007: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2012: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Runyip found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2017: Could not resolve cross-reference to Verse.TerrainDef named RM_GreentideChurnmud (wanter=basinTerrains)
+   2022: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2027: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2032: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Strill found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2037: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Runyip found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2042: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Shiro found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2047: Could not resolve cross-reference: No Verse.ThingDef named BMT_GiantLeaf found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2058: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2063: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2068: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2073: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Skalder found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2078: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scavrat found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2083: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2088: Could not resolve cross-reference: No Verse.ThingDef named BMT_FireLavender found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2097: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2102: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2107: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scavrat found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2112: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2117: Could not resolve cross-reference: No Verse.ThingDef named BMT_Sagecrust found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2126: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scurrier found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2131: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2136: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2141: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2146: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2151: Could not resolve cross-reference: No Verse.ThingDef named BMT_HeatsinkFungus found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2160: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Shyrack found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2165: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2170: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2175: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2180: Could not resolve cross-reference: No Verse.ThingDef named BMT_Dewshrooms found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2189: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2194: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2199: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Sketto found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2204: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2209: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2214: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2219: Could not resolve cross-reference: No Verse.ThingDef named BMT_FruitingBodies found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2226: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2231: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2236: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Skalder found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2241: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2246: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2251: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2256: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2261: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2266: Could not resolve cross-reference: No Verse.ThingDef named BMT_Nuitae found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2273: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Shaak found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2278: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2283: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2288: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2293: Could not resolve cross-reference: No Verse.ThingDef named BMT_Wrinklecap found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2300: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2305: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2310: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2315: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Runyip found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2320: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2325: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2330: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2335: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2340: Could not resolve cross-reference: No Verse.ThingDef named BMT_Arpeau found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2347: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scavrat found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2352: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2357: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2362: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2367: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2372: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2377: Could not resolve cross-reference: No Verse.ThingDef named BMT_Nogtyl found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2384: Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Scurrier found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+   2389: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2394: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2399: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2404: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2409: Could not resolve cross-reference: No Verse.ThingDef named BMT_FlakespireFungus found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2416: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2421: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2426: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2431: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2436: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2441: Could not resolve cross-reference: No Verse.ThingDef named BMT_Pusmelon found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2448: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2453: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2458: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2463: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2468: Could not resolve cross-reference: No Verse.ThingDef named BMT_RustPuff found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2475: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2480: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2485: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2490: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2495: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2500: Could not resolve cross-reference: No Verse.ThingDef named BMT_Sagecrust found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2509: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2514: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2519: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2524: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2529: Could not resolve cross-reference: No Verse.ThingDef named BMT_BleedingTooth found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2536: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2541: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2546: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2551: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2556: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2561: Could not resolve cross-reference: No Verse.ThingDef named BMT_Brightbells found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2568: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2573: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2578: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2583: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2588: Could not resolve cross-reference: No Verse.ThingDef named BMT_CrimsonCap found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2595: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2600: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2605: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2610: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2615: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2620: Could not resolve cross-reference: No Verse.ThingDef named BMT_GreyLady found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2629: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2634: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2639: Could not resolve cross-reference: No Verse.ThingDef named BMT_Shinecap found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2646: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2651: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2656: Could not resolve cross-reference: No Verse.ThingDef named BMT_VioletWimple found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2663: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2668: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2673: Could not resolve cross-reference: No Verse.ThingDef named BMT_MortalMorelPlant found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2680: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2685: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2690: Could not resolve cross-reference: No Verse.ThingDef named BMT_Skulltop found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2697: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2702: Could not resolve cross-reference: No Verse.ThingDef named BMT_Dewshrooms found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+   2711: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2716: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2721: Could not resolve cross-reference to Verse.ThingDef named RUT_VentKiln (wanter=recipeUsers)
+   2726: Could not resolve cross-reference: No Verse.ThingDef named RUT_DeadCreep found to give to RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBandFilth RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBand
+   2731: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2736: Could not resolve cross-reference: No Verse.ThingDef named RUT_FoundrySalvageCache found to give to RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker RimMandrake.EnvironmentalHazards.RM_
+   2741: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2746: Could not resolve cross-reference: No Verse.ThingDef named RUT_FoundryTowerEntrance found to give to RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker RimMandrake.EnvironmentalHazards.RM
+   2751: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2756: Could not resolve cross-reference: No Verse.ThingDef named RUT_ScaldVent found to give to RimMandrake.EnvironmentalHazards.RM_ScattererValidator_NearThingDef RimMandrake.EnvironmentalHazards.RM_Scatte
+   2761: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2766: Could not resolve cross-reference: No Verse.KeyBindingDef named Misc13 found to give to Verse.ThingDef RUT_DigShaft
+   2771: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2776: Could not resolve cross-reference: No Verse.ThingDef named RUT_Filth_MouseTrack found to give to RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail RimMandrake.EnvironmentalHazards.CompPropert
+   2781: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2786: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)
+   2791: Could not resolve cross-reference to Verse.ThingDef named RUT_VentForge (wanter=recipeUsers)

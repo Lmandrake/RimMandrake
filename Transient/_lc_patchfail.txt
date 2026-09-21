@@ -1,0 +1,116 @@
+
+WHICH RUN IS THIS
+  log            C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log
+  15,606 lines   last written 2026-09-18 19:39:25
+  build          RimWorld 1.6.4871 rev591
+  state          no exit marker, not growing right now - game may be sitting at the menu, or paused mid-load
+  ModsConfig     621 active mods, written 2026-09-18 19:14:29  (-1497s vs the log)
+  def dump       621 mods, captured 2026-09-19T02:35:03Z  (1.6.4871 rev591), written 19:35:03
+  previous run   ended 19:20:26 (Player-prev.log)
+
+   1413: [Torment Master] Patch operation Verse.PatchOperationFindMod(Humanoid Alien Races) failed
+   1415: [Vanilla Mining Outpost Patch] Patch operation Verse.PatchOperationFindMod(Gemstones, Jewelry) failed
+   1417: [Intimacy - Gender Works] Patch operation Verse.PatchOperationRemove(Defs/RecipeDef[defName="ExtractOvum"]/genderPrerequisite) failed
+   1419: [Intimacy - Gender Works] Patch operation Verse.PatchOperationRemove(Defs/RecipeDef[defName="TerminatePregnancy"]/genderPrerequisite) failed
+   1421: [Intimacy - Gender Works] Patch operation Verse.PatchOperationRemove(Defs/RecipeDef[defName="ImplantIUD"]/genderPrerequisite) failed
+   1423: [Jawa Armoury Rebalance] Patch operation Verse.PatchOperationAdd(Defs/GenStepDef[defName="BMT_CrystalsGenerator"]/genStep/groups) failed
+   1425: [RimMandrake: SW — Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes) failed
+   1427: [RimMandrake: SW — Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes) failed
+   1429: [RimMandrake: SW — Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes) failed
+   1431: [RimMandrake: SW — Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes) failed
+   1433: [RimMandrake: SW — Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes) failed
+   1435: [RimStarWars Patches] Patch operation Verse.PatchOperationFindMod(ABF: Artificial Beings Framework) failed
+   1437: [RimStarWars Patches] Patch operation Verse.PatchOperationFindMod(ABF: Artificial Beings Framework) failed
+   1439: [RimStarWars Patches] Patch operation Verse.PatchOperationFindMod(ABF: Artificial Beings Framework) failed
+   1441: [RimStarWars Patches] Patch operation Verse.PatchOperationFindMod(ABF: Artificial Beings Framework) failed
+   1443: [RimStarWars Patches] Patch operation Verse.PatchOperationFindMod(ABF: Artificial Beings Framework) failed
+   1445: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_BlastSpore"]/weaponTags) failed
+   1447: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_BunkerClaw"]/weaponTags) failed
+   1449: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_CaveSpiderHead"]/weaponTags) failed
+   1451: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_CrystalMantisClaw"]/weaponTags) failed
+   1453: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_FungalMantisClaw"]/weaponTags) failed
+   1455: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_PustuleHornetStinger"]/weaponTags) failed
+   1457: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_ResourceBlueCrystal"]/weaponTags) failed
+   1459: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_RoyalRhinoHorn"]/weaponTags) failed
+   1461: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_ThrumbungusShroom"]/weaponTags) failed
+   1463: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Toxwood"]/weaponTags) failed
+   1465: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="OuterRim_DroidWeapon_BlasterCannon"]/weaponTags) failed
+   1467: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="OuterRim_DroidWeapon_TwinWristBlaster"]/weaponTags) failed
+   1469: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlaster"]/weaponTags) failed
+   1471: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlasterIon"]/weaponTags) failed
+   1473: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_AaroxisDendoria"]/statBases) failed
+   1475: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Batbird"]/statBases) failed
+   1477: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_BeardedYak"]/statBases) failed
+   1479: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_BiliousVarog"]/statBases) failed
+   1481: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_BloodletterPetrel"]/statBases) failed
+   1483: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_BloodropMoth"]/statBases) failed
+   1485: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_BrownBat"]/statBases) failed
+   1487: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_BunkerBug"]/statBases) failed
+   1489: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_CactusCrab"]/statBases) failed
+   1491: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_CarrionVulture"]/statBases) failed
+   1493: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_CaveCricket"]/statBases) failed
+   1495: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_CaveLemming"]/statBases) failed
+   1497: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_ChemSnail"]/statBases) failed
+   1499: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_ColonyPustuleHornet"]/statBases) failed
+   1501: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_ColonyPustuleHornetQueen"]/statBases) failed
+   1503: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Creature_Mantrap"]/statBases) failed
+   1505: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_CrestedDragon"]/statBases) failed
+   1507: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_DarkAxolotl"]/statBases) failed
+   1509: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Diggerpede"]/statBases) failed
+   1511: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_FacetMoth"]/statBases) failed
+   1513: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_FamineLocust"]/statBases) failed
+   1515: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_FenridStoat"]/statBases) failed
+   1517: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_FleeceSpider"]/statBases) failed
+   1519: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_FungalFerret"]/statBases) failed
+   1521: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_FungalWeevil"]/statBases) failed
+   1523: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GastroToad"]/statBases) failed
+   1525: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Gembug"]/statBases) failed
+   1527: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GiantSlug"]/statBases) failed
+   1529: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GiantSnail"]/statBases) failed
+   1531: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GlarralPenguin"]/statBases) failed
+   1533: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GlowBat"]/statBases) failed
+   1535: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GlowSlug"]/statBases) failed
+   1537: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Glowtail"]/statBases) failed
+   1539: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GoetoTadpole"]/statBases) failed
+   1541: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GoetoToad"]/statBases) failed
+   1543: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_ImperialToad"]/statBases) failed
+   1545: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Jellypot"]/statBases) failed
+   1547: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Maguana"]/statBases) failed
+   1549: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Megabat"]/statBases) failed
+   1551: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Megakrill"]/statBases) failed
+   1553: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Megaphorid"]/statBases) failed
+   1555: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Megapleura"]/statBases) failed
+   1557: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Megaroach"]/statBases) failed
+   1559: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Molebear"]/statBases) failed
+   1561: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_MossyFennec"]/statBases) failed
+   1563: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/statBases) failed
+   1565: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_MutagenicNorphea"]/statBases) failed
+   1567: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/statBases) failed
+   1569: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/statBases) failed
+   1571: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/statBases) failed
+   1573: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Polluwog"]/statBases) failed
+   1575: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_PustuleHornet"]/statBases) failed
+   1577: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_PustuleHornetQueen"]/statBases) failed
+   1579: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Sacapillar"]/statBases) failed
+   1581: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_SandLeaper"]/statBases) failed
+   1583: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_SandPillar"]/statBases) failed
+   1585: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Screecher"]/statBases) failed
+   1587: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_ShatterjawBeetle"]/statBases) failed
+   1589: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_ShimmershellSnail"]/statBases) failed
+   1591: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_SludgeCrawler"]/statBases) failed
+   1593: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_SmogMoth"]/statBases) failed
+   1595: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Snowstalker"]/statBases) failed
+   1597: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_SonarRabbit"]/statBases) failed
+   1599: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Stoneback"]/statBases) failed
+   1601: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Swarmcaller"]/statBases) failed
+   1603: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_TaintedTurtle"]/statBases) failed
+   1605: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Thrumbungus"]/statBases) failed
+   1607: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_ToxSheep"]/statBases) failed
+   1609: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_TripleSnapper"]/statBases) failed
+   1611: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_TruffleMole"]/statBases) failed
+   1613: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Varmot"]/statBases) failed
+   1615: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_WasteHound"]/statBases) failed
+   1617: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_Xyrion"]/statBases) failed
+   1619: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GreyLady"]/statBases) failed
+   1621: [RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationSequence(count=60, lastFailedOperation=Verse.PatchOperationReplace(Defs/PawnKindDef[defName="BMT_Thrumbungus"]/lifeStages/li[1]/
+   1623: [Jawa Pawn Flavor — faction backstories and traits] Patch operation Verse.PatchOperationFindMod(Star Wars KotOR Resources and Materials) failed

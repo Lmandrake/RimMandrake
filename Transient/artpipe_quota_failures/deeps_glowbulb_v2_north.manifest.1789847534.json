@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.4691483760252595,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 15.400148458022159,
+  "id": "deeps_glowbulb_v2_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T08-26-07-01a0ba46-5777-7621-85c0-d1086f3c3ea2.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T08-25-51-01a0ba46-19c3-7062-815a-e63340f687d9.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 3s (exit 1).\n--- last codex output ---\nfrastructure\\artpipe\\_artsrc\\deeps_glowbulb_v2_north\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba46-5777-7621-85c0-d1086f3c3ea2\n--------\nuser\nUse $imagegen to [artpipe job deeps_glowbulb_v2_north] Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Call it a Glowbulb. Make it actually glow. hydrocarbon-based life: glowing pale blue exterior, pale yellow internal liquids, painterly RimWorld sprite, top-down-ish south facing, transparent background Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Facing: north \u2014 the creature walks AWAY from the viewer; we see its BACK, rear haunches and the back of its head. No face, no eyes visible.\n\nThen copy the generated image into the current working directory as deeps_glowbulb_v2_north.png. Report the absolute path of the file you saved.\n2026-09-19T15:26:07.694796Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-19T15:26:08.287711Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-19T15:26:08.719632Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 2/5\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

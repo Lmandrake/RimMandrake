@@ -1,0 +1,26 @@
+
+WHICH RUN IS THIS
+  log            C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log
+  15,275 lines   last written 2026-09-18 15:01:03
+  build          RimWorld 1.6.4871 rev591
+  state          no exit marker, not growing right now - game may be sitting at the menu, or paused mid-load
+  ModsConfig     632 active mods, written 2026-09-18 13:45:06  (-4558s vs the log)
+  def dump       632 mods, captured 2026-09-18T21:57:04Z  (1.6.4871 rev591), written 14:57:23
+  previous run   ended 14:36:43 (Player-prev.log)
+
+   1056: [Torment Master] Patch operation Verse.PatchOperationFindMod(Humanoid Alien Races) failed
+   1058: [Vanilla Mining Outpost Patch] Patch operation Verse.PatchOperationFindMod(Gemstones, Jewelry) failed
+   1060: [Biomes! Caverns] Patch operation Verse.PatchOperationReplace(Defs/ThingDef[defName="GroundPenetratingScanner"]/placeWorkers/li[text()="PlaceWorker_NotUnderRoof"]) failed
+   1062: [Intimacy - Gender Works] Patch operation Verse.PatchOperationRemove(Defs/RecipeDef[defName="ExtractOvum"]/genderPrerequisite) failed
+   1064: [Intimacy - Gender Works] Patch operation Verse.PatchOperationRemove(Defs/RecipeDef[defName="TerminatePregnancy"]/genderPrerequisite) failed
+   1066: [Intimacy - Gender Works] Patch operation Verse.PatchOperationRemove(Defs/RecipeDef[defName="ImplantIUD"]/genderPrerequisite) failed
+   1068: [RimStarWars Patches] Patch operation Verse.PatchOperationFindMod(ABF: Artificial Beings Framework) failed
+   1070: [RimStarWars Patches] Patch operation Verse.PatchOperationFindMod(ABF: Artificial Beings Framework) failed
+   1072: [RimStarWars Patches] Patch operation Verse.PatchOperationFindMod(ABF: Artificial Beings Framework) failed
+   1074: [RimStarWars Patches] Patch operation Verse.PatchOperationFindMod(ABF: Artificial Beings Framework) failed
+   1076: [RimStarWars Patches] Patch operation Verse.PatchOperationFindMod(ABF: Artificial Beings Framework) failed
+   1078: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="OuterRim_DroidWeapon_BlasterCannon"]/weaponTags) failed
+   1080: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="OuterRim_DroidWeapon_TwinWristBlaster"]/weaponTags) failed
+   1082: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlaster"]/weaponTags) failed
+   1084: [RimStarWars Patches] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlasterIon"]/weaponTags) failed
+   1086: [Jawa Pawn Flavor — faction backstories and traits] Patch operation Verse.PatchOperationFindMod(Star Wars KotOR Resources and Materials) failed

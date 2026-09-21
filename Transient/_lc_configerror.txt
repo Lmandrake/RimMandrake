@@ -1,0 +1,178 @@
+
+WHICH RUN IS THIS
+  log            C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log
+  15,606 lines   last written 2026-09-18 19:39:25
+  build          RimWorld 1.6.4871 rev591
+  state          no exit marker, not growing right now - game may be sitting at the menu, or paused mid-load
+  ModsConfig     621 active mods, written 2026-09-18 19:14:29  (-1497s vs the log)
+  def dump       621 mods, captured 2026-09-19T02:35:03Z  (1.6.4871 rev591), written 19:35:03
+  previous run   ended 19:20:26 (Player-prev.log)
+
+   3126: Config error in TargetedInsultingSpree: label contains illegal character(s): "[]{}". This can cause issues during grammar resolution. If this was intended, you can use the "ignoreIllegalLabelCharacter
+   3131: Config error in Eclipse: world-targeting incident has a biome restriction list
+   3146: Exception in ConfigErrors() of AB_MiasmicMangrove: System.NullReferenceException: Object reference not set to an instance of an object
+   3196: Config error in Utinni Shellmandrake.rut.menushell: defName Utinni Shellmandrake.rut.menushell should only contain letters, numbers, underscores, or dashes.
+   3197: Exception in ConfigErrors() of BiomeCypreJungle: System.NullReferenceException: Object reference not set to an instance of an object
+   3221: Config error in WaterDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extens
+   3226: Config error in SolarFlare: world-targeting incident has a biome restriction list
+   3233: Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of an object
+   3255: Exception in ConfigErrors() of AridShrubland: System.NullReferenceException: Object reference not set to an instance of an object
+   3643: Config error in RM_Dunes_Sand: depositFilthChance is set but depositFilthDef is null — no filth can be laid.
+   3648: Config error in RUT_ComplexStructures: LandmarkDef RUT_ComplexStructures has no mutators with a chance of 1 or higher.
+   3653: Config error in RSW_ToxinDependence: needClass is null
+   3658: Config error in AM_AncientLogisticsSystem: Hyperweave tradeability doesn't allow traders to sell this thing
+   3663: Exception in ConfigErrors() of PirateYttakin: System.NullReferenceException: Object reference not set to an instance of an object
+   3681: Exception in ConfigErrors() of Desert: System.NullReferenceException: Object reference not set to an instance of an object
+   4247: Config error in WaterDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extens
+   4252: Config error in WaterOceanDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty e
+   4257: Config error in Aurora: world-targeting incident has a biome restriction list
+   4272: Exception in ConfigErrors() of ExtremeDesert: System.NullReferenceException: Object reference not set to an instance of an object
+   4588: Config error in RUT_Slough_GelatinousBreach: LandmarkDef RUT_Slough_GelatinousBreach has no mutators with a chance of 1 or higher.
+   4593: Config error in guy762_BaseTraderKind_Czerka: Hyperweave tradeability doesn't allow traders to sell this thing
+   4598: Config error in WaterOceanDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty e
+   4603: Config error in WaterMovingChestDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an e
+   4608: Config error in guy762_BaseTraderKind_HuttGalleon: Hyperweave tradeability doesn't allow traders to sell this thing
+   4613: Config error in WaterMovingChestDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an e
+   4618: Config error in WaterShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty ext
+   4623: Config error in guy762_TraderKind_Czerka: Hyperweave tradeability doesn't allow traders to sell this thing
+   4628: Config error in WaterShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty ext
+   4633: Config error in WaterOceanShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empt
+   4638: Config error in guy762_TraderKind_HuttGalleon: Hyperweave tradeability doesn't allow traders to sell this thing
+   4643: Config error in WaterOceanShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empt
+   4648: Config error in WaterMovingShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an emp
+   4653: Config error in WaterMovingShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an emp
+   4658: Config error in Marsh: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension 
+   4663: Config error in Marsh: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension 
+   4668: Config error in ShallowFloodwater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empt
+   4673: Config error in ShallowFloodwater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empt
+   4678: Config error in MarshFlood: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty exten
+   4683: Config error in MarshFlood: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty exten
+   4688: Config error in AB_LiquidSlime: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty e
+   4693: Config error in AB_LiquidSlime: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty e
+   4698: Config error in VEE_TidalFloodwater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an em
+   4703: Config error in VEE_TidalFloodwater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an em
+   4708: Config error in VEE_StagnantRiverWater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an
+   4713: Config error in VEE_StagnantRiverWater: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an
+   4718: Config error in RM_FE_Ash_Trace: burnedDef is flammable
+   4723: Config error in RSW_Orray: has tool with linkedBodyPartsGroup Teeth but body RSW_Orray has no parts with that group.
+   4730: Config error in RM_FE_Ash_Light: burnedDef is flammable
+   4735: Config error in RSW_KilnClay: ingestible preferability > DesperateOnlyForHumanlikes but socialPropernessMatters=false. This will cause bugs wherein wardens will look in prison cells for food to give t
+   4740: Config error in RM_FE_Ground_Sand: burnedDef is flammable
+   4745: Config error in RSW_MeeJuv: lifeStages minAges are not in ascending order
+   4750: Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+   4755: Config error in RSW_MeeJuv: lifeStages minAges are not in ascending order
+   4760: Config error in RM_FE_Ground_Soil: burnedDef is flammable
+   4765: Config error in RSW_MeeJuv: lifeStages minAges are not in ascending order
+   4770: Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+   4775: Config error in RSW_FaaJuv: lifeStages minAges are not in ascending order
+   4780: Config error in RM_Fill_Water_Trace: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an em
+   4785: Config error in RSW_FaaJuv: lifeStages minAges are not in ascending order
+   4790: Config error in RM_Fill_Water_Half: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an emp
+   4795: Config error in RSW_FaaJuv: lifeStages minAges are not in ascending order
+   4800: Config error in RM_Fill_Water_Brim: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an emp
+   4805: Config error in RSW_LaaJuv: lifeStages minAges are not in ascending order
+   4810: Config error in RM_Fill_Water_Superdeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: a
+   4815: Config error in RSW_LaaJuv: lifeStages minAges are not in ascending order
+   4820: Config error in RM_Fill_Tar_Trace: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empt
+   4825: Config error in RSW_LaaJuv: lifeStages minAges are not in ascending order
+   4830: Config error in RM_Fill_Tar_Half: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty
+   4835: Config error in RSW_YobshrimpJuv: lifeStages minAges are not in ascending order
+   4840: Config error in RM_Fill_Tar_Brim: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty
+   4845: Config error in RSW_YobshrimpJuv: lifeStages minAges are not in ascending order
+   4850: Config error in RM_Fill_Tar_Superdeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an 
+   4855: Config error in ModernFixtures: same research view coords and tab as RR_Furniture: 0, 0(RUT_Tree_Hearth)
+   4860: Config error in RSW_YobshrimpJuv: lifeStages minAges are not in ascending order
+   4865: Config error in RM_Churnmud: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty exte
+   4872: Config error in AdvancedShowers: same research view coords and tab as VCE_StewCooking: 2, 0(RUT_Tree_Hearth)
+   4877: Config error in RSW_SiltLampreyJuv: lifeStages minAges are not in ascending order
+   4882: Config error in RM_Churnmud: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty exte
+   4889: Config error in RR_Furniture: same research view coords and tab as ModernFixtures: 0, 0(RUT_Tree_Hearth)
+   4894: Config error in RSW_SiltLampreyJuv: lifeStages minAges are not in ascending order
+   4899: Config error in RM_CoolantShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empt
+   4904: Config error in VCE_StewCooking: same research view coords and tab as AdvancedShowers: 2, 0(RUT_Tree_Hearth)
+   4909: Config error in RSW_SiltLampreyJuv: lifeStages minAges are not in ascending order
+   4914: Config error in RM_CoolantDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty e
+   4919: Config error in RR_LateralThinking: researchViewX and/or researchViewY not set
+   4924: Config error in RSW_RustNipperJuv: lifeStages minAges are not in ascending order
+   4929: Config error in RM_IchorShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty 
+   4934: Config error in RR_Organization: researchViewX and/or researchViewY not set
+   4939: Config error in RSW_RustNipperJuv: lifeStages minAges are not in ascending order
+   4944: Config error in RM_IchorDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty ext
+   4949: Config error in RSW_RustNipperJuv: lifeStages minAges are not in ascending order
+   4954: Config error in RM_OozeShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty e
+   4959: Config error in RSW_OpeeSeaKillerJuv: lifeStages minAges are not in ascending order
+   4964: Config error in RM_OozeDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty exte
+   4969: Config error in RSW_OpeeSeaKillerJuv: lifeStages minAges are not in ascending order
+   4974: Config error in RM_TarShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty ex
+   4979: Config error in RSW_OpeeSeaKillerJuv: lifeStages minAges are not in ascending order
+   4984: Config error in RM_TarDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty exten
+   4989: Config error in RUT_BrineDeposit_Tekk: claimable item is compressible; faction will be unset after load
+   4994: Config error in RM_WaterBrackishShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: a
+   4999: Config error in RUT_BrineDeposit_Drazz: claimable item is compressible; faction will be unset after load
+   5004: Config error in RM_WaterBrackishDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an e
+   5009: Config error in RUT_BrineDeposit_BrinePlate: claimable item is compressible; faction will be unset after load
+   5014: Config error in RM_WaterBrineShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an e
+   5019: Config error in RUT_BrinePlate: graphicClass is null
+   5024: Config error in RM_WaterBrineDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empt
+   5029: Config error in RUT_TwinkleSpikeTestPlant: has nutrition but ingestible properties are null
+   5034: Config error in RM_WaterMineralShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an
+   5039: Config error in RM_FE_Ash_Trace: burnedDef is flammable
+   5044: Config error in RM_WaterMineralDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an em
+   5049: Config error in RM_FE_Ash_Light: burnedDef is flammable
+   5054: Config error in RM_FE_Ground_Sand: burnedDef is flammable
+   5059: Config error in RSW_Orray: has tool with linkedBodyPartsGroup Teeth but body RSW_Orray has no parts with that group.
+   5066: Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+   5071: Config error in RSW_KilnClay: ingestible preferability > DesperateOnlyForHumanlikes but socialPropernessMatters=false. This will cause bugs wherein wardens will look in prison cells for food to give t
+   5076: Config error in RM_FE_Ground_Soil: burnedDef is flammable
+   5081: Config error in RSW_MeeJuv: lifeStages minAges are not in ascending order
+   5086: Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+   5091: Config error in RSW_MeeJuv: lifeStages minAges are not in ascending order
+   5096: Config error in RM_Fill_Water_Trace: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an em
+   5101: Config error in RSW_MeeJuv: lifeStages minAges are not in ascending order
+   5106: Config error in RM_Fill_Water_Half: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an emp
+   5111: Config error in RSW_FaaJuv: lifeStages minAges are not in ascending order
+   5116: Config error in RM_Fill_Water_Brim: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an emp
+   5121: Config error in RSW_FaaJuv: lifeStages minAges are not in ascending order
+   5126: Config error in RM_Fill_Water_Superdeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: a
+   5131: Config error in RSW_FaaJuv: lifeStages minAges are not in ascending order
+   5136: Config error in RM_Fill_Tar_Trace: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empt
+   5141: Config error in RSW_LaaJuv: lifeStages minAges are not in ascending order
+   5146: Config error in RM_Fill_Tar_Half: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty
+   5151: Config error in RSW_LaaJuv: lifeStages minAges are not in ascending order
+   5156: Config error in RM_Fill_Tar_Brim: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty
+   5161: Config error in RSW_LaaJuv: lifeStages minAges are not in ascending order
+   5166: Config error in RM_Fill_Tar_Superdeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an 
+   5171: Config error in RSW_YobshrimpJuv: lifeStages minAges are not in ascending order
+   5176: Config error in RM_Churnmud: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty exte
+   5183: Config error in RSW_YobshrimpJuv: lifeStages minAges are not in ascending order
+   5188: Config error in RM_Churnmud: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty exte
+   5195: Config error in RSW_YobshrimpJuv: lifeStages minAges are not in ascending order
+   5200: Config error in RM_CoolantShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empt
+   5205: Config error in RSW_SiltLampreyJuv: lifeStages minAges are not in ascending order
+   5210: Config error in RM_CoolantDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty e
+   5215: Config error in RSW_SiltLampreyJuv: lifeStages minAges are not in ascending order
+   5220: Config error in RM_IchorShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty 
+   5225: Config error in RSW_SiltLampreyJuv: lifeStages minAges are not in ascending order
+   5230: Config error in RM_IchorDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty ext
+   5235: Config error in RSW_RustNipperJuv: lifeStages minAges are not in ascending order
+   5240: Config error in RM_OozeShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty e
+   5245: Config error in RSW_RustNipperJuv: lifeStages minAges are not in ascending order
+   5250: Config error in RM_OozeDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty exte
+   5255: Config error in RSW_RustNipperJuv: lifeStages minAges are not in ascending order
+   5260: Config error in RM_TarShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty ex
+   5265: Config error in RSW_OpeeSeaKillerJuv: lifeStages minAges are not in ascending order
+   5270: Config error in RM_TarDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty exten
+   5275: Config error in RSW_OpeeSeaKillerJuv: lifeStages minAges are not in ascending order
+   5280: Config error in RM_WaterBrackishShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: a
+   5285: Config error in RSW_OpeeSeaKillerJuv: lifeStages minAges are not in ascending order
+   5290: Config error in RM_WaterBrackishDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an e
+   5295: Config error in RUT_BrineDeposit_Tekk: claimable item is compressible; faction will be unset after load
+   5300: Config error in RM_WaterBrineShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an e
+   5305: Config error in RUT_BrineDeposit_Drazz: claimable item is compressible; faction will be unset after load
+   5310: Config error in RM_WaterBrineDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empt
+   5315: Config error in RUT_BrineDeposit_BrinePlate: claimable item is compressible; faction will be unset after load
+   5320: Config error in RM_WaterMineralShallow: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an
+   5325: Config error in RUT_BrinePlate: graphicClass is null
+   5330: Config error in RM_WaterMineralDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an em
+   5335: Config error in RUT_TwinkleSpikeTestPlant: has nutrition but ingestible properties are null
+   5340: Config error in Techprint_RR_lighting: description has trailing whitespace

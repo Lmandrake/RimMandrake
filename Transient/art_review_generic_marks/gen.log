@@ -1,0 +1,37 @@
+note: seeded worker CODEX_HOME /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_tally from /mnt/c/Users/Mandrake/.codex (auth.json, config.toml, models_cache.json, version.json, installation_id, skills/)
+note: seeded worker CODEX_HOME /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_sun from /mnt/c/Users/Mandrake/.codex (auth.json, config.toml, models_cache.json, version.json, installation_id, skills/)
+note: seeded worker CODEX_HOME /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_handprint from /mnt/c/Users/Mandrake/.codex (auth.json, config.toml, models_cache.json, version.json, installation_id, skills/)
+note: seeded worker CODEX_HOME /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_arrow from /mnt/c/Users/Mandrake/.codex (auth.json, config.toml, models_cache.json, version.json, installation_id, skills/)
+note: seeded worker CODEX_HOME /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_hazard from /mnt/c/Users/Mandrake/.codex (auth.json, config.toml, models_cache.json, version.json, installation_id, skills/)
+note: seeded worker CODEX_HOME /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_spiral from /mnt/c/Users/Mandrake/.codex (auth.json, config.toml, models_cache.json, version.json, installation_id, skills/)
+note: seeded /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_sun's sandbox setup from /mnt/c/Users/Mandrake/.codex_sandbox_seed - no UAC prompt expected
+note: seeded /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_arrow's sandbox setup from /mnt/c/Users/Mandrake/.codex_sandbox_seed - no UAC prompt expected
+note: seeded /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_spiral's sandbox setup from /mnt/c/Users/Mandrake/.codex_sandbox_seed - no UAC prompt expected
+note: seeded /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_handprint's sandbox setup from /mnt/c/Users/Mandrake/.codex_sandbox_seed - no UAC prompt expected
+note: seeded /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_tally's sandbox setup from /mnt/c/Users/Mandrake/.codex_sandbox_seed - no UAC prompt expected
+note: seeded /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/.ch_hazard's sandbox setup from /mnt/c/Users/Mandrake/.codex_sandbox_seed - no UAC prompt expected
+note: timed out after 360s; harvested exec-579f1583-671e-4f6c-ae4d-608cc965c5d7.png from generated_images/
+OK  /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/raw/tally.png
+    1254x1254  rgba  601,827 bytes  (360s)
+note: timed out after 360s; harvested exec-e0d06cfa-a742-432c-984e-17ed8300b5a9.png from generated_images/
+note: timed out after 360s; harvested exec-5d073c8d-ff7f-42e8-8fbc-37428acaf182.png from generated_images/
+OK  /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/raw/sun.png
+    1254x1254  rgb  1,449,086 bytes  (360s)
+note: timed out after 360s; harvested exec-086c6236-7353-421b-bb7e-7ce8730c3f07.png from generated_images/
+OK  /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/raw/arrow.png
+    1254x1254  rgb  1,317,939 bytes  (360s)
+OK  /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/raw/spiral.png
+    1254x1254  rgb  1,544,610 bytes  (360s)
+note: timed out after 360s; harvested exec-a82788cd-c87c-4e29-9171-5eb77f7c43a1.png from generated_images/
+note: timed out after 360s; harvested exec-2e59f320-76f1-4af3-b28e-540408e15ee4.png from generated_images/
+OK  /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/raw/handprint.png
+    1254x1254  rgba  1,274,668 bytes  (360s)
+OK  /mnt/d/Luke/dev/Rimworld/Transient/art_review_generic_marks/raw/hazard.png
+    1254x1254  rgb  1,368,582 bytes  (360s)
+OK sun
+OK arrow
+OK tally
+OK spiral
+OK hazard
+OK handprint
+ALL DONE

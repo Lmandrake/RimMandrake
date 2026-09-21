@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 3.880189118004637,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 7.854524532012874,
+  "id": "rot_wildpod_v2_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-25-29-01a0ba45-c4fe-7241-8dd0-e623950c75ef.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-25-21-01a0ba45-a32a-7d92-8545-009fd124c57a.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_wildpod_v2_north\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba45-c4fe-7241-8dd0-e623950c75ef\n--------\nuser\nUse $imagegen to [artpipe job rot_wildpod_v2_north] Top-down pawn sprite, three facings, adult drawn five cells wide: a huge sagging mound of matted pale fibre, moss-like growth and wet dark rot, four thick legs almost hidden under the overhang, a slack front with no eyes, strands and drips trailing from the underside. Bone-white and ash-grey with lilac and wet-black, heavy Sheen gloss. No caps (that is the gromma). The durrok is this at a third the mass. Must not resemble the donor WildpodArtOverride art. Owner's note: \"5 wide, rename\". painterly RimWorld sprite, transparent background Canvas: exactly 1024x1024 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Facing: north \u2014 the creature walks AWAY from the viewer; we see its BACK, rear haunches and the back of its head. No face, no eyes visible.\n\nThen copy the generated image into the current working directory as rot_wildpod_v2_north.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

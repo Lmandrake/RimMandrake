@@ -1,0 +1,423 @@
+{
+  "decidedCount": 82,
+  "decisions": {
+    "BMT_Caverns/Things/Plant/Arpeau/Arpeau_A": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "BMT_Caverns/Things/Plant/BleedingTooth/BMT_BleedingToothA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "BMT_Caverns/Things/Plant/CrimsonCap/CrimsonCap_a": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "BMT_Caverns/Things/Plant/FruitingBodies/FruitingBodyA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "BMT_Caverns/Things/Plant/GiantLeaf/GiantLeafA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "BMT_Caverns/Things/Plant/GreyLady/GreyLadyGrown/GreyLadyGrownA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "BMT_Caverns/Things/Plant/Seadew/BMT_SeadewA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "BMT_PollutedLands/Things/Plant/TanglerootMangrove/TanglerootMangrove": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_Bumbledrone/AA_BumbledroneHierophant": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus": {
+      "decision": "misrouted",
+      "note": "CONFIRMED 2026-09-19: a droid. Already pulled; renders kept at Droidworks/ArtIncoming.",
+      "prefill": "misrouted"
+    },
+    "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_TarGuzzler/AA_TarGuzzler": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_Terramorph/AA_Terramorph": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_Thermadon/AA_Thermadon": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plant/Agarilux/AgariluxA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plant/Ambrosia/Ambrosia_A": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plant/BMT_Brightbells/BrightbellsA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plant/Bryolux/BryoluxA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plant/Fireweed/FireweedA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plant/Glowstool/GlowstoolA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plant/RG_DesertGrass/DesertGrassA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plant/TwistingThornwood/TwistingThornwood_a": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_Aaklac/AB_AaklacA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_AgaricusDomeCap": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_AgariluxPrime": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_ArbuscularMycorrhiza/AB_ArbuscularMycorrhizaA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_BloodBouquet": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_CrystalHorn/AB_CrystalHornA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_DribblingCap/AB_DribblingCapA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_FirevineTree/AB_FirevineTreeA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_GiantAgariTox": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_GiantAgarilux/AB_GiantAgariluxA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_GiantGamma/AB_GiantGammaA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_GlobularPlant": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_Gomphoeria": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_GreenRockFern": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_Iashiphus": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_JungleTree/AB_JungleTreeA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_KeeningCordax/AB_KeeningCordaxA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_LargeSlimyTree": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_LilacBeacon/AB_LilacBeaconA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_MangroveTree/AB_MangroveTreeA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_OcularTree/AB_OcularTreeA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_PollutedAlienTree": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_SugarFamewort": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_ToxiGrass": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_ToxicGamma": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/AB_WildRadagast": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/GU_AlienGrass/GU_AlienGrassA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "Things/Plants/IronScruff_Bindweed/IronScruff_BindweedA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/Grank/Grank": {
+      "at": "2026-09-19T17:29:38.769Z",
+      "decision": "misrouted",
+      "note": "You already got the description. Huge teeth, red skin: https://static.wikia.nocookie.net/starwars/images/e/ef/Saw-toothed_grank.jpg/revision/latest?cb=20060719203513",
+      "prefill": "right"
+    },
+    "swanimals/GreaterKraytDragon/GreaterKraytDragon": {
+      "at": "2026-09-19T17:31:13.838Z",
+      "decision": "misrouted",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/Hawkbat/Hawkbat": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/Hawkbat/Hawkbat_j": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/Jamel/Jamel": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/Kinrath/Kinrath": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/Ollopom/Ollopom": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/PekoPeko/PekoPeko_f": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/PekoPeko/PekoPeko_m": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/Shiro/Shiro": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/Vornskyr/Vornskyr": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/Whisperbird/Whisperbird": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swanimals/Wyyyschokk/Wyyyschokk": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swplants/Bloddle/BloddleA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swplants/HydenockTree/HydenockTreeA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    },
+    "swplants/JoganTree/JoganTreeA": {
+      "decision": "right",
+      "note": "",
+      "prefill": "right"
+    }
+  },
+  "note": "Pre-fill only. Every 'right' here is the generator's null hypothesis, not a human judgement. The keys the sheet's own plumbing stamps when a human writes are deliberately absent from this file, so a consumer can tell these suggestions from his decisions.",
+  "posture": "blacklist",
+  "savedAt": "2026-09-19T10:31:14-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "bulk_art_misroute_2026-09-19",
+  "writeCount": 6
+}

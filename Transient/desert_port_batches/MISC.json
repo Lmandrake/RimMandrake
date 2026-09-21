@@ -1,0 +1,218 @@
+[
+ {
+  "defName": "Terrorworm",
+  "label": "terrorworm [Terrorworm]",
+  "origin": "Horrors (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.7",
+  "unguarded": "no",
+  "effect": "[Horrors (mlie)] in AridShrubland=0.7. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). An alien (or at least unknown) worm. It is large enough to pose a threat to a human, however they do not seem incredibly fast or ferocious They are often accompanied by other Horrors and seem to have a supporting role\u2026"
+ },
+ {
+  "defName": "AA_DesertAve",
+  "label": "desert ave [AA_DesertAve]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "Desert=0.4",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in Desert=0.4. adult bodyGraphicData.drawSize 2.75\u00d72.75 cells (last lifeStage). The Desert Ave is a large flightless bird adapted to living in very arid terrains. Large bony plates cover its neck, giving it a much-needed defense both from predators and from the scalding heat of the desert sun.\u2026"
+ },
+ {
+  "defName": "AA_Needleroll",
+  "label": "needleroll [AA_Needleroll]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.3, Desert=0.2",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in ExtremeDesert=0.3, Desert=0.2. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Needlerolls are needleposts that have evolved to grow in the most arid and dry environments in the Rim.\\n\\nNeedleposts need almost no sustenance, absorbing all the energy they need from sunlight and minute amounts of\u2026"
+ },
+ {
+  "defName": "VFEI2_Fuelmite",
+  "label": "fuelmite [VFEI2_Fuelmite]",
+  "origin": "VFE \u2014 Insectoids 2 (Oskar Potocki)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3",
+  "unguarded": "no",
+  "effect": "[VFE \u2014 Insectoids 2 (Oskar Potocki)] in ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3. adult bodyGraphicData.drawSize 2.50\u00d72.50 cells (last lifeStage). A large, genetically-engineered mite native to the planet Nuchadus, where it fuels gigantic megaforges of the corporations. Fuelmites are capable of synthesising volatile chemfuel in their fuel sacks, and can eject it\u2026"
+ },
+ {
+  "defName": "AA_Cactipine",
+  "label": "cactipine [AA_Cactipine]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.25",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in AridShrubland=0.25. adult bodyGraphicData.drawSize 1.20\u00d71.20 cells (last lifeStage). In an effort to make deserts more viable for colonization, scientists introduced a variety of genetically modified creatures that are made to survive the melting heat and provide food to those who wished to live in such\u2026"
+ },
+ {
+  "defName": "AA_Eyeling",
+  "label": "eyeling [AA_Eyeling]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.15",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in ExtremeDesert=0.15. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). A grotesquely enlarged eye, crawling around with the help of a few fleshy tentacles. Not very useful at all. Created by infusing an animal with the strange energies from an extradimensional corruption."
+ },
+ {
+  "defName": "AA_Needlepost",
+  "label": "needlepost [AA_Needlepost]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.1",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in AridShrubland=0.1. adult bodyGraphicData.drawSize 1.80\u00d71.80 cells (last lifeStage). A cactus genetically modified to give it sentience. The first iteration of this creature was supposed to be a stationary tactical deterrent (the Whip Cactus), but having no intelligence or mobility crippled its\u2026"
+ },
+ {
+  "defName": "AA_Wildpawn",
+  "label": "wildpawn [AA_Wildpawn]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.1",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in AridShrubland=0.1. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Wildpawns are a variant of the wildpods that have adapted to life outside of swamps and rainforests. Since they have less access to water and rotting vegetation, they grow much less, and are much less dangerous.\u2026"
+ },
+ {
+  "defName": "AA_Gigantelope",
+  "label": "gigantelope [AA_Gigantelope]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "Desert=0.05",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in Desert=0.05. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Gigantelopes were once designed as bigger, more powerful variants of the muffalo. An ideal pack beast that carries more weight than their body mass would usually allow. While they are mammals, Gigantelopes have\u2026"
+ },
+ {
+  "defName": "AA_SandProwler",
+  "label": "sand prowler [AA_SandProwler]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "Desert=0.05",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in Desert=0.05. adult bodyGraphicData.drawSize 3.50\u00d73.50 cells (last lifeStage). A genetic amalgamation possessing features of a lion, a shark and a sand skink, the Sand Prowler was originally created as a ferocious hunting animal for desert planets.\\n\\n.The Sand Prowler can quickly burrow and\u2026"
+ },
+ {
+  "defName": "AA_Terramorph",
+  "label": "terramorph [AA_Terramorph]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "Desert=0.035",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in Desert=0.035. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). This strange looking crustacean was created with a single goal in mind: mineral processing. The Terramorph can feed on iron compounds, and process them chemically to slowly turn them into a hardened mineral usually know\u2026"
+ },
+ {
+  "defName": "AA_BoulderMit",
+  "label": "bouldermit [AA_BoulderMit]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.025",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in ExtremeDesert=0.025. adult bodyGraphicData.drawSize 3.50\u00d73.50 cells (last lifeStage). A large genetically-engineered crab which uses a boulder for a shell. It is alternatively known as the Atlas Crab throughout various colonized planets. These massive creatures sport incredible strength and are commonly\u2026"
+ },
+ {
+  "defName": "AA_SandSquid",
+  "label": "sand squid [AA_SandSquid]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "Desert=0.025",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in Desert=0.025. adult bodyGraphicData.drawSize 3.50\u00d73.50 cells (last lifeStage). Despite their common name, sand squids are actually genetically modified creatures that incorporate features from both cephalopods and cone snails. Sand squids were created as cattle adapted to extremely water deprived\u2026"
+ },
+ {
+  "defName": "AA_Wildpod",
+  "label": "wildpod [AA_Wildpod]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.025",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in AridShrubland=0.025. adult bodyGraphicData.drawSize 3.80\u00d73.80 cells (last lifeStage). This lumbering mass of apparently decomposing plant matter is a Wildpod, a sentient mycoid creature native to some jungle infested planet on the Rim. The Wildpod is almost impervious to gunfire, with bullets simply\u2026"
+ },
+ {
+  "defName": "AA_MammothWorm",
+  "label": "mammoth worm [AA_MammothWorm]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "Desert=0.015",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in Desert=0.015. adult bodyGraphicData.drawSize 4.10\u00d74.10 cells (last lifeStage). An extremely large, genetically-engineered worm. Despite its incredibly intimidating size and arsenal, these huge creatures are rather quite peaceful. It was once part of the worker caste of an artificial ecosystem of\u2026"
+ },
+ {
+  "defName": "AA_TetraSlug",
+  "label": "tetra slug [AA_TetraSlug]",
+  "origin": "Alpha Animals (sarg)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.0005",
+  "unguarded": "no",
+  "effect": "[Alpha Animals (sarg)] in ExtremeDesert=0.0005. adult bodyGraphicData.drawSize 4.10\u00d74.10 cells (last lifeStage). These massive slugs are a common sight among Glitterworld controlled territories, where they lumber about as glorified power plants. Outside of one, they are deployed as a mobile power source for Glitterworld research\u2026"
+ },
+ {
+  "defName": "AB_HardyGrass",
+  "label": "hardy grass [AB_HardyGrass]",
+  "origin": "Alpha Biomes (sarg)",
+  "kind": "plant",
+  "biomes": "Desert=0.6",
+  "unguarded": "YES",
+  "effect": "[Alpha Biomes (sarg)] in Desert=0.6. mature size 0.60 cells (drawSize 1.00 \u00d7 visualSizeRange max 0.60, grows from 0.40). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Wild grass. Grows anywhere there is a little light and minimally fertile ground."
+ },
+ {
+  "defName": "RG_Plant_AridGrass",
+  "label": "grass [RG_Plant_AridGrass]",
+  "origin": "ReGrowth 2 (BOTR core)",
+  "kind": "plant",
+  "biomes": "AridShrubland=0.5",
+  "unguarded": "YES",
+  "effect": "[ReGrowth 2 (BOTR core)] in AridShrubland=0.5. mature size 0.60 cells (drawSize 1.00 \u00d7 visualSizeRange max 0.60, grows from 0.40). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry); art UNRESOLVED (no loose PNG and no bundle_textures cache entry) Wild grass. Grows in arid regions where there is little light and minimally fertile ground."
+ },
+ {
+  "defName": "RG_Plant_CreepStern",
+  "label": "creep stern [RG_Plant_CreepStern]",
+  "origin": "ReGrowth 2 (BOTR core)",
+  "kind": "plant",
+  "biomes": "AridShrubland=0.2",
+  "unguarded": "YES",
+  "effect": "[ReGrowth 2 (BOTR core)] in AridShrubland=0.2. mature size 1.30 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.30, grows from 0.80). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry); art UNRESOLVED (no loose PNG and no bundle_textures cache entry) Wild Ivy with star shaped leaves that grows in patches in cold and wet biomes. Takes a long time to grow, but is very frost-resistant."
+ },
+ {
+  "defName": "RG_Plant_CrimsonCushion",
+  "label": "crimson cushion [RG_Plant_CrimsonCushion]",
+  "origin": "ReGrowth 2 (BOTR core)",
+  "kind": "plant",
+  "biomes": "AridShrubland=0.2",
+  "unguarded": "YES",
+  "effect": "[ReGrowth 2 (BOTR core)] in AridShrubland=0.2. mature size 0.90 cells (drawSize 1.00 \u00d7 visualSizeRange max 0.90, grows from 0.50). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry); art UNRESOLVED (no loose PNG and no bundle_textures cache entry) Wild crimson colored carpet plant. Takes a long time to grow, but is very frost-resistant."
+ },
+ {
+  "defName": "RG_Plant_Dervish",
+  "label": "dervish [RG_Plant_Dervish]",
+  "origin": "ReGrowth 2 (BOTR core)",
+  "kind": "plant",
+  "biomes": "AridShrubland=0.2",
+  "unguarded": "YES",
+  "effect": "[ReGrowth 2 (BOTR core)] in AridShrubland=0.2. mature size 0.50 cells (drawSize 1.00 \u00d7 visualSizeRange max 0.50, grows from 0.30). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry); art UNRESOLVED (no loose PNG and no bundle_textures cache entry) A beautiful bluish flower growing in colder and wet biomes. Can only be found in cold bogs."
+ },
+ {
+  "defName": "AB_Aaklac",
+  "label": "aaklac [AB_Aaklac]",
+  "origin": "Alpha Biomes (sarg)",
+  "kind": "plant",
+  "biomes": "Desert=0.12",
+  "unguarded": "YES",
+  "effect": "[Alpha Biomes (sarg)] in Desert=0.12. drawSize 1.50\u00d71.50 cells; visualSizeRange UNMEASURED. \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A rare, huge flower which can be found in the deepest jungles. Its quite striking colour and nice smell makes it popular in gardening, if it can be extracted from the deep jungle, of course.\\n\\nBased on artwork by Rob\u2026"
+ },
+ {
+  "defName": "AB_DessertTree",
+  "label": "dessert tree [AB_DessertTree]",
+  "origin": "Alpha Biomes (sarg)",
+  "kind": "plant",
+  "biomes": "Desert=0.06",
+  "unguarded": "YES",
+  "effect": "[Alpha Biomes (sarg)] in Desert=0.06. mature size 3.00 cells (drawSize 1.00 \u00d7 visualSizeRange max 3.00, grows from 2.10). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) An easy answer to the question: \"what would you create if you were an insane plant geneticist?\". This whimsical tree with a sugary trunk, frosting-like growths, and fruit that resembles glazed confections lures animals\u2026"
+ },
+ {
+  "defName": "AB_GiantStikehr",
+  "label": "giant stikehr [AB_GiantStikehr]",
+  "origin": "Alpha Biomes (sarg)",
+  "kind": "plant",
+  "biomes": "ExtremeDesert=0.04",
+  "unguarded": "YES",
+  "effect": "[Alpha Biomes (sarg)] in ExtremeDesert=0.04. mature size 3.80 cells (drawSize 1.00 \u00d7 visualSizeRange max 3.80, grows from 2.00). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A giant alien mushroom that glows in the strange darkening mist. Contrary to the smaller domesticated strands, the giant Stikehr can grow in light environments, as long as it is protected by the Forsaken mists. Its\u2026"
+ }
+]

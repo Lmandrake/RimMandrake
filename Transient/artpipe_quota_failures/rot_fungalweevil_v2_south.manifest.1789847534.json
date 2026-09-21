@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.102658225019695,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 8.350423121999484,
+  "id": "rot_fungalweevil_v2_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-23-40-01a0ba44-1b19-7351-baad-a84dda610933.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-23-31-01a0ba43-f5f9-72e2-b951-63f694513f12.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_fungalweevil_v2_south\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba44-1b19-7351-baad-a84dda610933\n--------\nuser\nUse $imagegen to [artpipe job rot_fungalweevil_v2_south] Owner's direction: 'disgusting fungus bug hybrid'. Top-down pawn sprite, three facings, adult drawn four cells wide: a bloated, glossy, dark-shelled weevil with a long snout, whose carapace has split open under a mass of fungal growth \u2014 pale caps, milk-white gill-frills and lilac knobs erupting from the seams of the shell, strands of hyphae trailing from the leg joints, a wet black-and-bone palette with a sickly gloss. It should make a viewer wince: the bug is visibly being grown through. Distinct from the chittik (tiny, clean, spore-sac) and skerrith (long, elegant, camouflaged). Owner's note: \"disgusting fungus bug hybrid, rename, 4 cells wide\". painterly RimWorld sprite, transparent background Canvas: exactly 512x512 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Facing: south \u2014 the creature walks TOWARD the viewer; we see its FACE and chest straight on.\n\nThen copy the generated image into the current working directory as rot_fungalweevil_v2_south.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

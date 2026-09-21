@@ -1,0 +1,56 @@
+[
+ {
+  "defName": "Rat",
+  "label": "rat [Rat]",
+  "origin": "Vanilla Core",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.1, Desert=0.2, AridShrubland=0.1",
+  "unguarded": "YES",
+  "effect": "[Vanilla Core] in ExtremeDesert=0.1, Desert=0.2, AridShrubland=0.1. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A widely-hated rodent known for soiling kitchens and spreading disease, rats have a way of following humans everywhere they go. It eats almost anything and lives almost anywhere."
+ },
+ {
+  "defName": "Plant_ShrubLow",
+  "label": "low shrubs [Plant_ShrubLow]",
+  "origin": "Vanilla Core",
+  "kind": "plant",
+  "biomes": "AridShrubland=0.9",
+  "unguarded": "YES",
+  "effect": "[Vanilla Core] in AridShrubland=0.9. mature size 1.05 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.05, grows from 0.85). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Various low broadleaf shrubs. These grow in clusters and slow down movement."
+ },
+ {
+  "defName": "Plant_Brambles",
+  "label": "brambles [Plant_Brambles]",
+  "origin": "Vanilla Core",
+  "kind": "plant",
+  "biomes": "AridShrubland=0.3",
+  "unguarded": "YES",
+  "effect": "[Vanilla Core] in AridShrubland=0.3. mature size 1.44 cells (drawSize 1.70 \u00d7 visualSizeRange max 0.85, grows from 1.19). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Tangled, thorny, woody shoots covered with leaves. Brambles grow in clusters, and slow down anyone moving over them."
+ },
+ {
+  "defName": "Plant_Bush",
+  "label": "bush [Plant_Bush]",
+  "origin": "Vanilla Core",
+  "kind": "plant",
+  "biomes": "AridShrubland=0.3",
+  "unguarded": "YES",
+  "effect": "[Vanilla Core] in AridShrubland=0.3. mature size 1.26 cells (drawSize 1.15 \u00d7 visualSizeRange max 1.10, grows from 0.80). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A short shrub. Does not typically talk."
+ },
+ {
+  "defName": "Plant_Ripthorn",
+  "label": "ripthorn [Plant_Ripthorn]",
+  "origin": "Vanilla Biotech DLC",
+  "kind": "plant",
+  "biomes": "AridShrubland=0.3",
+  "unguarded": "YES",
+  "effect": "[Vanilla Biotech DLC] in AridShrubland=0.3. mature size 1.19 cells (drawSize 1.40 \u00d7 visualSizeRange max 0.85, grows from 0.98). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A short toxin-adapted shrub that looks like a dense, tough tangle of thorny branches. Difficult to move through, it slows down anyone moving over it. It can only grow in polluted areas."
+ },
+ {
+  "defName": "Plant_HealrootWild",
+  "label": "wild healroot [Plant_HealrootWild]",
+  "origin": "Vanilla Core",
+  "kind": "plant",
+  "biomes": "AridShrubland=0.25",
+  "unguarded": "YES",
+  "effect": "[Vanilla Core] in AridShrubland=0.25. mature size 1.00 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.00, grows from 0.50). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A slow-growing plant which yields herbal medicine when harvested.\\n\\nThis wild breed of healroot is hardier than domesticated healroot, but too difficult to cultivate. It is prized by tribespeople in colder climates."
+ }
+]

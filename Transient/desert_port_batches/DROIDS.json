@@ -1,0 +1,65 @@
+[
+ {
+  "defName": "OuterRim_MSEDroid",
+  "label": "MSE Repair Droid [OuterRim_MSEDroid]",
+  "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1",
+  "unguarded": "no",
+  "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). An MSE Repair Droid, repairs other droids within a 2 tile radius and is capable of hauling and cleaning."
+ },
+ {
+  "defName": "OuterRim_SalvageAssistDroid",
+  "label": "salvage assist droid [OuterRim_SalvageAssistDroid]",
+  "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1",
+  "unguarded": "no",
+  "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). A groundmech salvage assist droid, cheap to produce but not capable of much beyond hauling and cleaning."
+ },
+ {
+  "defName": "OuterRim_DUMDroid",
+  "label": "DUM Repair Droid [OuterRim_DUMDroid]",
+  "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08",
+  "unguarded": "no",
+  "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). A DUM-series pit droid, a model of repair droid manufactured by Serv-O-Droid Inc. They are a common sight in salvage yards, despite their intended design of maintaining podracers, they are cheap and expendable enough\u2026"
+ },
+ {
+  "defName": "OuterRim_GNKDroid",
+  "label": "GNK Power Droid [OuterRim_GNKDroid]",
+  "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08",
+  "unguarded": "no",
+  "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08. adult drawSize UNMEASURED (no PawnKindDef/lifeStages resolved). An GNK Power Droid, simply functions as a moving power generator, filling batteries it's close to."
+ },
+ {
+  "defName": "OuterRim_FX7Droid",
+  "label": "fx-7 medical droid [OuterRim_FX7Droid]",
+  "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05",
+  "unguarded": "no",
+  "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05. adult drawSize UNMEASURED (no PawnKindDef/lifeStages resolved). An fx-7 medical droid, capable of performing medical procedures."
+ },
+ {
+  "defName": "OuterRim_MuckrakerDroid",
+  "label": "Muckraker Crab Droid [OuterRim_MuckrakerDroid]",
+  "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05",
+  "unguarded": "no",
+  "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05. adult bodyGraphicData.drawSize 1.70\u00d71.70 cells (last lifeStage). The LM-432 \"Muckraker\" crab droid, commonly referred to as the crab droid or simply \"Muckraker,\" was a four-legged droid walker of various sizes manufactured by the Techno Union. These droids are the equivalent of a\u2026"
+ },
+ {
+  "defName": "OuterRim_DestroyerDroid",
+  "label": "Destroyer Droid [OuterRim_DestroyerDroid]",
+  "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.02, Desert=0.02, AridShrubland=0.02",
+  "unguarded": "no",
+  "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.02, Desert=0.02, AridShrubland=0.02. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Manufactured by the Colicoids on Colla IV, droidekas were dangerous and deadly, designed to exterminate their adversaries with extreme prejudice. They are configured with a deflector shield built in."
+ }
+]

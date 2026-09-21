@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.159078616000443,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 10.519296708000184,
+  "id": "offbiome_bolotaur_v2_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T09-55-10-01a0ba97-de72-7b21-b312-5b7d207311e4.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-28-16-01a0ba48-4f85-7a83-b52c-6bda88257a08.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nb7d207311e4\n--------\nuser\nUse $imagegen to [artpipe job offbiome_bolotaur_v2_south] RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Bolotaur -- a large domesticated reptilian mount used by Imperial scout troopers on forest moons. Low-slung, wide turtle-like body on four short thick legs, each foot ending in several long heavy claws. Olive-green leathery hide with dark mottled scale texture across the back and flanks, paler cream-tan underside. Blunt, wide rounded snout, small dark eyes set into a bumpy-textured head, a short row of blunt horn-like spikes running from the crown of the head down the back of the neck. A short thick tail. Single creature, centered, standing pose, no ground shadow, no background scenery, no saddle or rider. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 512x512 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Owner ruling 2026-09-16: current sprite is cartoonish, redo to canon. Canon reference: design/RimStarWars/canon_references/bolotaur/ (two Wookieepedia images) -- wide reptilian mount, mottled hide, spiky head ridge, heavy clawed feet, NOT the current thin-tailed cartoon blob. Facing: south \u2014 the creature walks TOWARD the viewer; we see its FACE and chest straight on.\n\nThen copy the generated image into the current working directory as offbiome_bolotaur_v2_south.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

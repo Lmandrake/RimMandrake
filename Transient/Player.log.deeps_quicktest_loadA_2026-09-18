@@ -1,0 +1,417 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.110 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.636800 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod RimUtinni: Aftermath Rites dependency (mandrake.rm.aftermath) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Inhabited (Ash'karr) dependency (mandrake.rm.inhabited) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Weather Suite (Ash'karr) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Droid Repair Jobs dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Flooded Canyon dependency (mandrake.rm.flowworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Greentide dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod JawaVoice (SpeakUp reskin) dependency (JPT.speakup) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Pyrelands Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod The Rites dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Rust Cathedral Roaches dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake Sacred Marks dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Scarlands Ladder dependency (mandrake.rm.lorestages) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rsw.swbestiary) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Shokk dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (OskarPotocki.VanillaFactionsExpanded.Core) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimStarWars: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (sarg.alphaanimals) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni Patches (Jawa campaign) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Colony Visibility dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Exception loading from System.Xml.XmlElement: System.MissingMethodException: Default constructor not found for type System.String
+  at System.RuntimeType.CreateInstanceMono (System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00076] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceSlow (System.Boolean publicOnly, System.Boolean wrapExceptions, System.Boolean skipCheckThis, System.Boolean fillCache) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceDefaultCtor (System.Boolean publicOnly, System.Boolean skipCheckThis, System.Boolean fillCache, System.Boolean wrapExceptions, System.Threading.StackCrawlMark& stackMark) [0x00027] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00020] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0045c] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXmlReflection[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0060e] in <61e4173561894da49d210260257b5097>:0 
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-0000022E7F4B1060.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-0000022E7F7A51A0.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 56 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=141 elapsedMs=141
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=141
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=141 elapsedMs=141
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_ShatterjawBeetle found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_FacetMothLarvae found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_BloodropMoth found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference to Verse.ThingDef named RSW_RoyalRhino (wanter=allowedPackAnimals)
+Could not resolve cross-reference to Verse.ThingDef named RSW_BovineBeetle (wanter=allowedPackAnimals)
+Could not resolve cross-reference to Verse.ThingDef named RSW_ShatterjawBeetle (wanter=allowedPackAnimals)
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_GlowSlug found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Megapleura found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_BovineBeetleLarvae found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Gembug found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_FacetMoth found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_PodWorm found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_AaroxisDendoria found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_MossBeetle found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_MossBeetleLarvae found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_RoyalRhino found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_AaroxisDendoriaLarvae found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_BovineBeetle found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_BloodropLarvae found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Config error in Eclipse: world-targeting incident has a biome restriction list
+Config error in SolarFlare: world-targeting incident has a biome restriction list
+Config error in Aurora: world-targeting incident has a biome restriction list
+Exception in ConfigErrors() of RUT_LanternDeeps: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 50CAEF97]
+  at RimWorld.BiomeDef+<ConfigErrors>d__109.MoveNext () [0x000ed] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DefDatabase`1[T].ErrorCheckAllDefs () [0x00065] in <61e4173561894da49d210260257b5097>:0 
+Could not load Texture2D at 'RUT_LanternDeeps/Terrains/Lanternstone' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'RUT_LanternDeeps/Terrains/Lanternstone' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'RUT_LanternDeeps/Terrains/Lanternstone' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Item/Lanternstone
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Chunks/LanternstoneChunk
+Could not load Texture2D at 'RUT_LanternDeeps/Things/Item/Crops/Dulcis' for def 'RUT_DeepRawDulcis' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Crystals/LanternstoneSmall
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Crystals/LanternstoneMedium
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Crystals/LanternstoneLarge
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Crystals/LanternstoneHuge
+Could not load Texture2D at 'RUT_LanternDeeps/Things/Natural/Linked/lanternstone_wall_icon' in any active mod or in base resources.
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Mycelium
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Gleamtip
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Fungusfern
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/CrystaltipBrambles
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/YumBulbs
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Dulcis/DulcisGrown
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Dulcis/DulcisHarvested
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Dulcis/DulcisImmature
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Crystalcap
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/GreyLady/GreyLadyGrown
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/GreyLady/GreyLadyImmature
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Arpeau
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/LuminousSpout
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Nuitae
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Crystals/LanternstoneMedium
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Crystals/LanternstoneSowableImmature
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Crystalcap
+Collection cannot init: No textures found at path RUT_LanternDeeps/Things/Plant/Arpeau
+[XML Extensions] Initialized 0 SettingsMenuDef(s) and found 255 unused key(s) from 9 mod(s)
+[XML Extensions] 56 total patch operations run in 48ms, 0 failed
+[XML Extensions] Emitted 0 mod class(es)
+Unloading 5 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 97 unused Assets to reduce memory usage. Loaded Objects now: 26520.
+Total: 132.263000 ms (FindLiveObjects: 0.996000 ms CreateObjectMapping: 0.975400 ms MarkObjects: 129.977700 ms  DeleteObjects: 0.313600 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=31 elapsedMs=6679
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=313 elapsedMs=6993
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=6993
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=6994
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=6995
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=6995
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=6995
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=6996
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=7000
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=7001
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=7001
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=7006
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=31 elapsedMs=7038
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=359 elapsedMs=7039
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=32 elapsedMs=7039
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: 49a3a52f7527467d936159fbbb64898f
+Error in WorldGenStep: System.ArgumentNullException: Value cannot be null.
+Parameter name: key
+[Ref F3A51647]
+ [0x00006] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].FindEntry (TKey key) [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].TryGetValue (TKey key, TValue& value) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.GenWorker`1[T].Get (System.Type type) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.BiomeDef.get_Worker () [0x0000a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Terrain.BiomeFrom (RimWorld.Planet.Tile ws, RimWorld.Planet.PlanetTile tile, RimWorld.Planet.PlanetLayer layer) [0x0002d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Terrain.GenerateTileFor (RimWorld.Planet.PlanetTile tile, RimWorld.Planet.PlanetLayer layer) [0x001c9] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Tiles.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00017] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Terrain.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x0001f] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref FCD67343]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.CalculatedMovementDifficultyAt (RimWorld.Planet.PlanetTile tile, System.Boolean perceivedStatic, System.Nullable`1[T] ticksAbs, System.Text.StringBuilder explanation) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.RecalculatePerceivedMovementDifficultyAt (RimWorld.Planet.PlanetTile tile, System.Boolean& needsRecache, System.Nullable`1[T] ticksAbs) [0x0002a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.RecalculateLayerPerceivedPathCosts (RimWorld.Planet.PlanetLayer layer, System.Nullable`1[T] ticksAbs) [0x00028] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.RecalculateLayerPerceivedPathCosts (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Rivers.GenerateRivers (RimWorld.Planet.PlanetLayer layer) [0x0000b] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Rivers.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 2FF134C0]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder+<>c__DisplayClass2_0.<RandomSettlementTileFor>b__1 (System.Int32 x) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.GenCollection.TryRandomElementByWeight[T] (System.Collections.Generic.IEnumerable`1[T] source, System.Func`2[T,TResult] weightSelector, T& result) [0x0012a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder.RandomSettlementTileFor (RimWorld.Planet.PlanetLayer layer, RimWorld.Faction faction, System.Boolean mustBeAutoChoosable, System.Predicate`1[T] extraValidator) [0x00052] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_AncientSites.GenerateAncientSites (RimWorld.Planet.PlanetLayer layer) [0x0004c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_AncientSites.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref A4388C76]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.CalculatedMovementDifficultyAt (RimWorld.Planet.PlanetTile tile, System.Boolean perceivedStatic, System.Nullable`1[T] ticksAbs, System.Text.StringBuilder explanation) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.RecalculatePerceivedMovementDifficultyAt (RimWorld.Planet.PlanetTile tile, System.Boolean& needsRecache, System.Nullable`1[T] ticksAbs) [0x0002a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldPathGrid.RecalculateLayerPerceivedPathCosts (RimWorld.Planet.PlanetLayer layer, System.Nullable`1[T] ticksAbs) [0x00028] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_AncientRoads.GenerateAncientRoads (RimWorld.Planet.PlanetLayer layer) [0x00012] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_AncientRoads.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 39B42966]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Pollution.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x0001c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref DA7AF334]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder+<>c__DisplayClass2_0.<RandomSettlementTileFor>b__1 (System.Int32 x) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.GenCollection.TryRandomElementByWeight[T] (System.Collections.Generic.IEnumerable`1[T] source, System.Func`2[T,TResult] weightSelector, T& result) [0x0012a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder.RandomSettlementTileFor (RimWorld.Planet.PlanetLayer layer, RimWorld.Faction faction, System.Boolean mustBeAutoChoosable, System.Predicate`1[T] extraValidator) [0x00052] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.NewGeneratedFaction (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionGeneratorParms parms) [0x001c7] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.CreateFactionAndAddToManager (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionDef facDef) [0x000cf] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.AddFactionToManager (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionDef facDef) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.InitializeFactions (RimWorld.Planet.PlanetLayer layer, System.Collections.Generic.List`1[T] factions) [0x000b0] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.GenerateFactionsIntoWorldLayer (RimWorld.Planet.PlanetLayer layer, System.Collections.Generic.List`1[T] factions) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Factions.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 8B40434E]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder+<>c__DisplayClass2_0.<RandomSettlementTileFor>b__1 (System.Int32 x) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.GenCollection.TryRandomElementByWeight[T] (System.Collections.Generic.IEnumerable`1[T] source, System.Func`2[T,TResult] weightSelector, T& result) [0x0012a] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder.RandomSettlementTileFor (RimWorld.Planet.PlanetLayer layer, RimWorld.Faction faction, System.Boolean mustBeAutoChoosable, System.Predicate`1[T] extraValidator) [0x00052] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Roads.GenerateRoadEndpoints (RimWorld.Planet.PlanetLayer layer) [0x0007d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Roads.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Error in WorldGenStep: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 5DE2A56E]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (RimWorld.Planet.PlanetTile tile) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.LandmarkDef.IsValidTile (RimWorld.Planet.PlanetTile tile, RimWorld.Planet.PlanetLayer layer, System.Boolean canUseCache) [0x0000b] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Landmarks.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00148] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Island: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.PlanetLayer.get_Item (System.Int32 tileID) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_FloodFill.CalculateRootsAndPossiblyAllowedTiles (RimWorld.Planet.PlanetLayer layer) [0x00021] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_FloodFill.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Archipelago: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref CB80C57E]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Archipelago.IsRoot (RimWorld.Planet.PlanetTile tile) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Cluster.CalculateRootTiles (RimWorld.Planet.PlanetLayer layer) [0x0001f] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Cluster.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Peninsula: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 7820BBC4]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Peninsula.IsRoot (RimWorld.Planet.PlanetTile tile) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Protrusion.CalculateRoots (RimWorld.Planet.PlanetLayer layer) [0x0001f] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Protrusion.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Bay: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref BE2EC8EF]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Bay.IsRoot (RimWorld.Planet.PlanetTile tile) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Protrusion.CalculateRoots (RimWorld.Planet.PlanetLayer layer) [0x0001f] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Protrusion.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Lake: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def Sea: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def OceanBay: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref BE2EC8EF] Duplicate stacktrace, see ref for original
+Could not generate world features of def Ocean: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def OuterOcean: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 1BF1316A]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_OuterOcean.CanTraverse (RimWorld.Planet.PlanetTile tile) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_OuterOcean.IsRoot (RimWorld.Planet.PlanetTile tile) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_OuterOcean.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00031] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def MountainRange: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref C15F7B43]
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.WorldGrid.get_Item (RimWorld.Planet.PlanetTile tile) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_MountainRange.IsRoot (RimWorld.Planet.PlanetTile tile) [0x00005] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Cluster.CalculateRootTiles (RimWorld.Planet.PlanetLayer layer) [0x0001f] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FeatureWorker_Cluster.GenerateWhereAppropriate (RimWorld.Planet.PlanetLayer layer) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenStep_Features.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00062] in <61e4173561894da49d210260257b5097>:0 
+Could not generate world features of def Desert: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def TemperateSwamp: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def TropicalSwamp: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def ColdBog: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def TemperateForest: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def Scarlands: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def LavaField: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def GlacialPlain: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def Glowforest: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def TropicalRainforest: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def BorealForest: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def AridShrubland: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def IceSheet: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def Tundra: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+Could not generate world features of def Grasslands: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+[Ref 922D4C67] Duplicate stacktrace, see ref for original
+No tiles on layer RimWorld.SurfaceLayer, layer should have a world gen step worker which initializes tiles such as WorldGenStep_Tiles
+Unloading 3 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.614400 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 26714.
+Total: 107.791500 ms (FindLiveObjects: 1.699700 ms CreateObjectMapping: 0.825600 ms MarkObjects: 105.221300 ms  DeleteObjects: 0.044600 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - imranfish.xmlextensions
+  - brrainz.rimbridgeserver
+  - mandrake.rut.lanterndeeps
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+[JawaBench] ready: 326 tools, build d2256aea5aa3
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] context: modSet 10/40176b79, toolSet a83d4d05, defDump ARMED, engine 1.6.4871 rev591
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 33180.
+Total: 122.933000 ms (FindLiveObjects: 1.003100 ms CreateObjectMapping: 1.089700 ms MarkObjects: 120.778900 ms  DeleteObjects: 0.060900 ms)
+
+System.ArgumentNullException: Value cannot be null.
+Parameter name: key
+[Ref 9DFD6059]
+ [0x00006] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].TryInsert (TKey key, TValue value, System.Collections.Generic.InsertionBehavior behavior) [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].Add (TKey key, TValue value) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.BiomeDef.CommonalityOfAnimal (Verse.PawnKindDef animalDef) [0x0003d] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.BiomeDef+<get_AllWildAnimals>d__94.MoveNext () [0x00049] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildAnimalSpawner.get_DesiredAnimalDensity () [0x000a7] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildAnimalSpawner.get_DesiredTotalAnimalWeight () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildAnimalSpawner.get_AnimalEcosystemFull () [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildAnimalSpawner.WildAnimalSpawnerTick () [0x00012] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Map.MapPostTick () [0x00000] in <61e4173561894da49d210260257b5097>:0 

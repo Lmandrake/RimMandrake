@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.647095138992881,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 8.686148221982876,
+  "id": "rot_arbuscularmycorrhiza_v2",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-22-29-01a0ba43-04ed-7213-8b01-dda2afb1b289.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-22-20-01a0ba42-e1ec-7af0-ac1a-9fd0ce34a6da.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 3s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_arbuscularmycorrhiza_v2\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0ba43-04ed-7213-8b01-dda2afb1b289\n--------\nuser\nUse $imagegen to [artpipe job rot_arbuscularmycorrhiza_v2] Nine cells wide: a thick pale trunk, ridged and buttressed like a tree's, rising to a flat plate-cap that spreads far wider than the trunk, with a second, smaller cap tiered above it. Bone-white bark with grey seams, gill-underside lilac, cap tops dusted milk-white. The silhouette is a tree drawn by someone who has only seen mushrooms \u2014 tree mass, fungus surfaces. Distinct from the timber mushrooms (brommok, churrun) by its buttressed trunk and tiered plate caps; it must NOT read as an oak. Owner's note: \"9 wide, rename\". painterly RimWorld sprite, transparent background Canvas: exactly 2048x2048 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient.\n\nThen copy the generated image into the current working directory as rot_arbuscularmycorrhiza_v2.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

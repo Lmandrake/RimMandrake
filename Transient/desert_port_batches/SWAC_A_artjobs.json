@@ -1,0 +1,512 @@
+[
+ {
+  "id": "desert_swaca_kreetle",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A kreetle (Kreetle), a Star Wars canon creature. Kreetle were a fast breeding arthropod native to the planet Tatooine. They were was often found in cities, homes, and other urban areas and were universally considered a pest. They gave birth to young in the form of maggot-like larvae. Kreetles thrived on dead creatures, garbage and vegetable remains (including waste). They were found on many worlds having stowed away in supplies and once escaping RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_frilledgorg",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A frilled gorg (FrilledGorg), a Star Wars canon creature. Frilled Gorgs, were small frilled amphibians that could be found on several planets. This subspecies was notable for the frills along it's back and tail (hence the name) and for being slightly more aggressive in nature. Their spread to others worlds is often the consequence of culinary import of either eggs or escaped live specimens. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_gorg",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A gorg (Gorg), a Star Wars canon creature. Gorgs, known as 'chubas' in Huttese, were small precocious amphibians that could be found on several planets. They were popularly favored as food by many humanoid species. Thus they became popular livestock on sparse worlds due to their high temperature tolerance, minimal food consumption and fast breeding. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_iriaz",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A iriaz (Iriaz), a Star Wars canon creature. Iriaz were docile creatures from the grassland planet Dantooine. While not normally aggressive, they could attack if provoked. They were a prey of choice for local hunters (and natural predators alike) given that they were a relatively common creature; furthering their export to many planets. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_longtailgorg",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A longtail gorg (LongtailGorg), a Star Wars canon creature. Longtail Gorgs, were small tailed amphibians that could be found on several planets. This subspecies was slightly larger than the usual and had a tail (hence the name) and could lay unfertilized eggs. Their spread can be attributed to this variety being a favoured snack among the Hutt species. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_scavrat",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A Scavrats (Scavrat), a Star Wars canon creature. Scavrats were large, omnivorous rodents of unknown planetary origin albeit common enough on multiple worlds that they were considered pests. They were often mistaken for the Tattooinian Womp Rat, but the big behavioural distinction here being that they were not predatory and far more sociable creatures despite their strange appearance. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_bantha",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A bantha (Bantha), a Star Wars canon creature. Banthas are a species of large, hairy mammals with sharp, spiraling horns. They inhabit the desert planet Tatooine, though they are bred on many worlds throughout the galaxy. They are social herd animals, and are often domesticated, and used prominently, by Tusken Raiders as mounts and companionship. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_eopie",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A eopie (Eopie), a Star Wars canon creature. Eopies were a species of quadrupedal mammallian herbivores native to the planet Tatooine. These tough creatures were acclimated to their homeworld's endless deserts, and as a result were domesticated and exported offworld as pack animals. The eopie's rough skin helped to protect it against the heat while its hooves were adapted to climbing rocky cliffs. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_lothcat",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A loth-cat (Lothcat), a Star Wars canon creature. Loth-cats were a non-sentient feline species from the planet Lothal. They were small, temperamental creatures, and while at times friendly, were still able hunters with sharp teeth and claws. They were often kept as pets. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_mudhorn",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A mudhorn (Mudhorn), a Star Wars canon creature. Mudhorns were large horned creatures that originated from the planet Arvala-7. The eggs of mudhorns were considered a delicacy by Jawas. It was this reason that populations of these creatures were established on other worlds as a result of unscrupulous bartering deals. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_ronto",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A ronto (Ronto), a Star Wars canon creature. Ronto were large, quadruped mammals that were commonly used as beasts of burden on Tatooine. They were known for their loyalty and strength, being able to carry heavy cargo. Their tolerance to heat and relatively low food consuption made them a popular export to arid worlds as beasts of burden. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_scurrier",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A scurrier (Scurrier), a Star Wars canon creature. The scurrier was a rodent native to the planet Tatooine. They were fast breeding, curious omnivores that many considered a pest. The males could be distinguished from females by their curved display horns. They were known to find their way aboard docked freighters and transports, thus propagating the scurrier population across the galaxy. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_sketto",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A sketto (Sketto), a Star Wars canon creature. Skettos were carnivorous flying reptiles that dwelled in the caverns of the planet Tatooine. Only emerging at daybreak and twilight, they possessed many rods in their eyes to assist their vision in low-light conditions as they ate airborne insects. Though reptilian, they were warm-blooded and gave birth to a single offspring at a time. Their small size and lower metabolism made them excellent stow RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_igitz",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A igitz (Igitz), a Star Wars canon creature. Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. Because of the environment in which they had evolved, the igitz were well-adapted to both land and water: while their front paws were clawed for treading on land, their hindquarters were finned, allowing it speed when in water. The igitz were a  RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_urusai",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A urusai (Urusai), a Star Wars canon creature. Urusai were winged reptavians native to the desert planet Tatooine. They were predominantly opportunistic scavengers of carrion that would use the thermal currents of their homeworld to travel far and wide in search of an easy meal. Their tolerance to harsh climates and propensity to be clean, efficive corpse disposal meant they were spread to numerous worlds by various corporate and criminal orga RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_womprat",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A womp rat (WompRat), a Star Wars canon creature. Womp rats were large, omnivorous rodents native to Tatooine that were widely considered to be pests. While womp rats were opportunists and fond of carrion, they were also predators. Although their normal prey included smaller animals, such as scurriers. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_kybuck",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A kybuck (Kybuck), a Star Wars canon creature. Kybucks were bipedal ungulates native to the planet Kashyyyk, and similar in appearance to the tauntauns of Hoth. These herding pack animals were fast and sociable, which made domestication and export offworld common. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_massiff",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A massiff (Massiff), a Star Wars canon creature. Massiffs were reptilian creatures found on both Geonosis and Tatooine, although it's planet of origin is unknown. Massiffs were reptiles that had coarse skin, large jaws, toothy mouths, big dark eyes and a line of hard spikes along their backs. Canine in appearance with an armored hide, the beasts could be domesticated and used for sentry and guard tasks and were often exported to other worlds for RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_shyrack",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A shyrack (Shyrack), a Star Wars canon creature. Shyracks were large, bat-like avian creatures with razor like teeth native to the caves of the planet Korriban. While ungainly and slow-moving without eyes, Shyracks were potentially dangerous pests, especially when they converged as a flock on an opponent. It's believed these creatures were spread to various planets as \"live prey\" for the others beasts in Sith armies (such as the Tuk'ata). RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_pufferpig",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A Pufferpig (Pufferpig), a Star Wars canon creature. Pufferpigs were a non-sentient, herbivorous porcine species native to the planet Kyryll. Puffer pigs were occasionally bred for their meat, which was consumable by several sentient species and resulted in the animal being exported to numerous planets. The true value of a Puffer pig was it's ability to sniff out certain precious metals. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_anooba",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A anooba (Anooba), a Star Wars canon creature. Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such as scurriers). RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_corinathoth",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A corinathoth (Corinathoth), a Star Wars canon creature. Corinathoths were large, slow-moving herbivores native to the planet Maridun. Although large and intimidating, they were fairly harmless unless provoked. It is likely they were spread as a large game animal to several worlds due to their fearsome appearance. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_gizka",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A gizka (Gizka), a Star Wars canon creature. Whatever their native world, their extraordinary reproduction rate led to a fair amount of gizka on many worlds, even including uncharted planets such as Lehon, finding their way from the wreckage of crashed starships. It has been alternatively postulated that they came from that planet originally, spreading along with the Infinite Empire. Their exponential population growth led to them being cons RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_gutkurr",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A gutkurr (Gutkurr), a Star Wars canon creature. Gutkurrs were fierce insectile predators native to the planet Ryloth. They were aggressive and displayed very limited intelligence, however they were observed to work in small hunting packs. These traits however has made them popular game animals and \"pets\" for criminal organisations across the galaxy, spreading these monsterous creatures to many worlds. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_jamel",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A Jamel (Jamel), a Star Wars canon creature. Jamel were a slow moving reptomammal creature native to the planet Utapau. Jamels were one of the many creatures used as beasts of burden on their planet of origin and exported offworld for such purposes. Their natural resilience meant they made great livestock even in harsh environments. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_nuna",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A nuna (Nuna), a Star Wars canon creature. Nuna (commonly called 'swamp turkeys'), were reptavian gamebirds native to the planet Naboo. Nuna were diminutive bipeds, mostly covered in scaly skin and sporting a distinctive dorsal ridge. They possessed a notably prominent jutting jaw and two large wattles hanging from either side of their mouths. They were transported as livestock as well as a game animal, allowing for wild populations on oth RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_worrt",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A worrt (Worrt), a Star Wars canon creature. The Worrt was an amphibious creature native to the planet Tatooine, though they could also be found on other worlds (including Nal Hutta and Phaeda). Worrts were omnivorous, but was also known to attempt to eat rocks and metal objects. They used their long, prehensile tongue to catch smaller prey, such as gorgs, but were known to also attack creatures larger than itself. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_wraid",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A wraid (Wraid), a Star Wars canon creature. Wraids were large reptilian creatures found on many desert planets across the galaxy (including but not limited to Tatooine, Ruhnuk, Korriban and even Tython). They were carnivorous creatures, relying on scavening and ambush to find their prey. Wraids were often over hunted for their valuable hides, causing their populations to spike and fall. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_hrumph",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A hrumph (Hrumph), a Star Wars canon creature. The hrumphs were powerful, thick-necked herbivores native to planet Naboo, but also found on other worlds like Aargonar. Hrumphs received their name from the loud, deep, guttural sounds they produced. They had four long horns for defense and for the protection of their two long, sensitive ears. They were not choosy about their food which made them hardy enough to survive on many other worlds. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_iridonianreek",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A iridonian reek (IridonianReek), a Star Wars canon creature. Reek could be found on the planets Iridonia, Kashyyyk, Ithor, Codian Moon, Tatooine and Saleucami (to name just a few). Various subspecies invariably sprung up as the base stock adapted to new environments. The Iridonian Reek was bred as a 'war mount' by the Iridonian Zabraks. Instead of giving them a meat diet, the Iridonian reeks were given a natural diet consisting of plant matter to keep them  RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_jimvu",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A jimvu (Jimvu), a Star Wars canon creature. The jimvu were native to the grasslands of the planet Naboo. The jimvu was an agile, six-legged, ungulate-like reptile whose best defense was its swiftness. Their main predators were the veermok and narglatch. They were exported as a prey species on various worlds where typically large predators where hunted for sport. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_kwi",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A Kwi (Kwi), a Star Wars canon creature. The Kwi were large, bipedal saurians native to the planet Dathomir. They were herbivorous and yet remarkably sociable and intelligent. They were believed to be the degenerated descendants of the saurian 'Kwa' race. How they arrived on the various worlds they populated is unknown; perhaps they are the long descendants of the pan-galactic 'Kwa' or maybe they are just escaped circus specimens. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_mynock",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A mynock (Mynock), a Star Wars canon creature. Mynocks were silicon-based parasitical organisms found across the galaxy. They were considered parasites by pilots and starport personnel. Their strange metabolism allowed them to digest various metals and components for nutritional value. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ },
+ {
+  "id": "desert_swaca_skalder",
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "prompt": "A skalder (Skalder), a Star Wars canon creature. The skalder were a mammalian desert species of herbivorous quadrupeds native to the plains of the planet Florrum. They were not normally ridden by sentient beings, but were surprisingly fast if such a feat was managed. They made exceptional pack animals, even in toxic environments and so were exported by pirate bands for use offworld. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "reference": "",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's).",
+  "priority": 100
+ }
+]

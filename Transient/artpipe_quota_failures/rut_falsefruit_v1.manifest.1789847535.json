@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.168704095995054,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 7.761673086992232,
+  "id": "rut_falsefruit_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-27-16-01a0ba47-66bf-7630-9edc-f114a544984e.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T08-27-07-01a0ba47-4108-7f90-b66d-8e688e1b0a18.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\noning summaries: none\nsession id: 01a0ba47-66bf-7630-9edc-f114a544984e\n--------\nuser\nUse $imagegen to [artpipe job rut_falsefruit_v1] RimWorld plant sprite, painterly vanilla-RimWorld flora art style: A small ring of fruiting bodies growing at the base of a euphoric crown, deliberately shaped and colored to mimic that mushroom's glowing cap at a smaller scale \u2014 a convincing decoy fruit, slightly duller and less symmetrical than the real thing on close inspection. Small, low, clustered. Single plant, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses the FruitingBodies donor texture shared with an unrelated plant (RUT_RotSporeKit_Flora.xml). Must visually rhyme with rut_euphoriccrown_v1 (same palette/shape family, since it is a mimic-lure) while reading as smaller and slightly off \u2014 visualSizeRange 0.4~0.6 vs the crown's 1.2~1.5, so draw it noticeably more compact.\n\nThen copy the generated image into the current working directory as rut_falsefruit_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

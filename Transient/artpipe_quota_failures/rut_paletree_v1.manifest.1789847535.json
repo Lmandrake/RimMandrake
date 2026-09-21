@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 5.29990428101155,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 9.294111595023423,
+  "id": "rut_paletree_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-27-48-01a0ba47-e354-7232-8780-89698acfc987.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T08-27-39-01a0ba47-c0d1-7df0-b6d2-1bd728e625bf.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nt_paletree_v1] RimWorld plant sprite, painterly vanilla-RimWorld flora art style: A massive, ancient bone-white tree with pale, smooth bark that seems to faintly glow at dusk, twisting sinewy branches reaching upward, sparse pale-silver foliage. Sacred and otherworldly in bearing \u2014 reads as a Force-sensitive shrine tree, calm and immense, not a normal desert plant. Single plant, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 512x512 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses vanilla Royalty's own Plant_TreeAnima texture (Things/Plant/TreeAnima) verbatim \u2014 confirmed placeholder per the def's own header. TreeBase's drawSize is not explicit in this def; canvas sized generous (drawsize 2.5) against the def's own visualSizeRange ceiling (1.8~2.5) and its treeCategory Super (the game's largest tree class), per ART_PAINTERLY_RESTORATION_1's 'err generous' ruling. MayRequire=Ludeon.RimWorld.Royalty; art has no DLC gate.\n\nThen copy the generated image into the current working directory as rut_paletree_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 9:32 AM.\n\n",
+  "worker_stdout_tail": ""
+}

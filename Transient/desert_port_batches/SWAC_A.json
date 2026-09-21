@@ -1,0 +1,308 @@
+[
+ {
+  "defName": "Kreetle",
+  "label": "kreetle [Kreetle]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.2, Desert=1.3, AridShrubland=0.8",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.2, Desert=1.3, AridShrubland=0.8. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). Kreetle were a fast breeding arthropod native to the planet Tatooine. They were was often found in cities, homes, and other urban areas and were universally considered a pest. They gave birth to young in the form of\u2026"
+ },
+ {
+  "defName": "FrilledGorg",
+  "label": "frilled gorg [FrilledGorg]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.2, AridShrubland=1.0",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2, AridShrubland=1.0. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). Frilled Gorgs, were small frilled amphibians that could be found on several planets. This subspecies was notable for the frills along it's back and tail (hence the name) and for being slightly more aggressive in nature.\u2026"
+ },
+ {
+  "defName": "Gorg",
+  "label": "gorg [Gorg]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.4, AridShrubland=1.0",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4, AridShrubland=1.0. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). Gorgs, known as 'chubas' in Huttese, were small precocious amphibians that could be found on several planets. They were popularly favored as food by many humanoid species. Thus they became popular livestock on sparse\u2026"
+ },
+ {
+  "defName": "Iriaz",
+  "label": "iriaz [Iriaz]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.1, AridShrubland=1.0",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1, AridShrubland=1.0. adult bodyGraphicData.drawSize 1.65\u00d71.65 cells (last lifeStage). Iriaz were docile creatures from the grassland planet Dantooine. While not normally aggressive, they could attack if provoked. They were a prey of choice for local hunters (and natural predators alike) given that they\u2026"
+ },
+ {
+  "defName": "LongtailGorg",
+  "label": "longtail gorg [LongtailGorg]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.4, AridShrubland=1.0",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4, AridShrubland=1.0. adult bodyGraphicData.drawSize 1.75\u00d71.75 cells (last lifeStage). Longtail Gorgs, were small tailed amphibians that could be found on several planets. This subspecies was slightly larger than the usual and had a tail (hence the name) and could lay unfertilized eggs. Their spread can\u2026"
+ },
+ {
+  "defName": "Scavrat",
+  "label": "Scavrats [Scavrat]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.6, Desert=1.0, AridShrubland=0.6",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.6, Desert=1.0, AridShrubland=0.6. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Scavrats were large, omnivorous rodents of unknown planetary origin albeit common enough on multiple worlds that they were considered pests. They were often mistaken for the Tattooinian Womp Rat, but the big behavioural\u2026"
+ },
+ {
+  "defName": "Bantha",
+  "label": "bantha [Bantha]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.8, AridShrubland=0.5",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.8, AridShrubland=0.5. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Banthas are a species of large, hairy mammals with sharp, spiraling horns. They inhabit the desert planet Tatooine, though they are bred on many worlds throughout the galaxy. They are social herd animals, and are often\u2026"
+ },
+ {
+  "defName": "Eopie",
+  "label": "eopie [Eopie]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.3, AridShrubland=0.8",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3, AridShrubland=0.8. adult bodyGraphicData.drawSize 2.25\u00d72.25 cells (last lifeStage). Eopies were a species of quadrupedal mammallian herbivores native to the planet Tatooine. These tough creatures were acclimated to their homeworld's endless deserts, and as a result were domesticated and exported\u2026"
+ },
+ {
+  "defName": "Lothcat",
+  "label": "loth-cat [Lothcat]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.8",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.8. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). Loth-cats were a non-sentient feline species from the planet Lothal. They were small, temperamental creatures, and while at times friendly, were still able hunters with sharp teeth and claws. They were often kept as\u2026"
+ },
+ {
+  "defName": "Mudhorn",
+  "label": "mudhorn [Mudhorn]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.8",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.8. adult bodyGraphicData.drawSize 4.50\u00d74.50 cells (last lifeStage). Mudhorns were large horned creatures that originated from the planet Arvala-7. The eggs of mudhorns were considered a delicacy by Jawas. It was this reason that populations of these creatures were established on other\u2026"
+ },
+ {
+  "defName": "Ronto",
+  "label": "ronto [Ronto]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.4, AridShrubland=0.8",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4, AridShrubland=0.8. adult bodyGraphicData.drawSize 7.00\u00d77.00 cells (last lifeStage). Ronto were large, quadruped mammals that were commonly used as beasts of burden on Tatooine. They were known for their loyalty and strength, being able to carry heavy cargo. Their tolerance to heat and relatively low\u2026"
+ },
+ {
+  "defName": "Scurrier",
+  "label": "scurrier [Scurrier]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.1, AridShrubland=0.8",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.1, AridShrubland=0.8. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). The scurrier was a rodent native to the planet Tatooine. They were fast breeding, curious omnivores that many considered a pest. The males could be distinguished from females by their curved display horns. They were\u2026"
+ },
+ {
+  "defName": "Sketto",
+  "label": "sketto [Sketto]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.8, AridShrubland=0.8",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.8, AridShrubland=0.8. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Skettos were carnivorous flying reptiles that dwelled in the caverns of the planet Tatooine. Only emerging at daybreak and twilight, they possessed many rods in their eyes to assist their vision in low-light conditions\u2026"
+ },
+ {
+  "defName": "Igitz",
+  "label": "igitz [Igitz]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.7",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.7. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. Because of the environment in which they had evolved, the igitz\u2026"
+ },
+ {
+  "defName": "Urusai",
+  "label": "urusai [Urusai]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.7",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.7. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Urusai were winged reptavians native to the desert planet Tatooine. They were predominantly opportunistic scavengers of carrion that would use the thermal currents of their homeworld to travel far and wide in search of\u2026"
+ },
+ {
+  "defName": "WompRat",
+  "label": "womp rat [WompRat]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.4, Desert=0.7, AridShrubland=0.4",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.4, Desert=0.7, AridShrubland=0.4. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). Womp rats were large, omnivorous rodents native to Tatooine that were widely considered to be pests. While womp rats were opportunists and fond of carrion, they were also predators. Although their normal prey included\u2026"
+ },
+ {
+  "defName": "Kybuck",
+  "label": "kybuck [Kybuck]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.6",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.6. adult bodyGraphicData.drawSize 1.80\u00d71.80 cells (last lifeStage). Kybucks were bipedal ungulates native to the planet Kashyyyk, and similar in appearance to the tauntauns of Hoth. These herding pack animals were fast and sociable, which made domestication and export offworld common."
+ },
+ {
+  "defName": "Massiff",
+  "label": "massiff [Massiff]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.6",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.6. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Massiffs were reptilian creatures found on both Geonosis and Tatooine, although it's planet of origin is unknown. Massiffs were reptiles that had coarse skin, large jaws, toothy mouths, big dark eyes and a line of hard\u2026"
+ },
+ {
+  "defName": "Shyrack",
+  "label": "shyrack [Shyrack]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.6",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.6. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Shyracks were large, bat-like avian creatures with razor like teeth native to the caves of the planet Korriban. While ungainly and slow-moving without eyes, Shyracks were potentially dangerous pests, especially when\u2026"
+ },
+ {
+  "defName": "Pufferpig",
+  "label": "Pufferpig [Pufferpig]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.5",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.5. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). Pufferpigs were a non-sentient, herbivorous porcine species native to the planet Kyryll. Puffer pigs were occasionally bred for their meat, which was consumable by several sentient species and resulted in the animal\u2026"
+ },
+ {
+  "defName": "Anooba",
+  "label": "anooba [Anooba]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.4",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.4. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such\u2026"
+ },
+ {
+  "defName": "Corinathoth",
+  "label": "corinathoth [Corinathoth]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "AridShrubland=0.4",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.4. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). Corinathoths were large, slow-moving herbivores native to the planet Maridun. Although large and intimidating, they were fairly harmless unless provoked. It is likely they were spread as a large game animal to several\u2026"
+ },
+ {
+  "defName": "Gizka",
+  "label": "gizka [Gizka]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.01, Desert=0.1, AridShrubland=0.4",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.01, Desert=0.1, AridShrubland=0.4. adult bodyGraphicData.drawSize 0.87\u00d70.87 cells (last lifeStage). Whatever their native world, their extraordinary reproduction rate led to a fair amount of gizka on many worlds, even including uncharted planets such as Lehon, finding their way from the wreckage of crashed starships.\u2026"
+ },
+ {
+  "defName": "Gutkurr",
+  "label": "gutkurr [Gutkurr]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.4",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Gutkurrs were fierce insectile predators native to the planet Ryloth. They were aggressive and displayed very limited intelligence, however they were observed to work in small hunting packs. These traits however has\u2026"
+ },
+ {
+  "defName": "Jamel",
+  "label": "Jamel [Jamel]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.4",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Jamel were a slow moving reptomammal creature native to the planet Utapau. Jamels were one of the many creatures used as beasts of burden on their planet of origin and exported offworld for such purposes. Their natural\u2026"
+ },
+ {
+  "defName": "Nuna",
+  "label": "nuna [Nuna]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.2, AridShrubland=0.4",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2, AridShrubland=0.4. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Nuna (commonly called 'swamp turkeys'), were reptavian gamebirds native to the planet Naboo. Nuna were diminutive bipeds, mostly covered in scaly skin and sporting a distinctive dorsal ridge. They possessed a notably\u2026"
+ },
+ {
+  "defName": "Worrt",
+  "label": "worrt [Worrt]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.2, AridShrubland=0.4",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2, AridShrubland=0.4. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). The Worrt was an amphibious creature native to the planet Tatooine, though they could also be found on other worlds (including Nal Hutta and Phaeda). Worrts were omnivorous, but was also known to attempt to eat rocks\u2026"
+ },
+ {
+  "defName": "Wraid",
+  "label": "wraid [Wraid]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.4",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Wraids were large reptilian creatures found on many desert planets across the galaxy (including but not limited to Tatooine, Ruhnuk, Korriban and even Tython). They were carnivorous creatures, relying on scavening and\u2026"
+ },
+ {
+  "defName": "Hrumph",
+  "label": "hrumph [Hrumph]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.3",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 3.50\u00d73.50 cells (last lifeStage). The hrumphs were powerful, thick-necked herbivores native to planet Naboo, but also found on other worlds like Aargonar. Hrumphs received their name from the loud, deep, guttural sounds they produced. They had four long\u2026"
+ },
+ {
+  "defName": "IridonianReek",
+  "label": "iridonian reek [IridonianReek]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.3",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Reek could be found on the planets Iridonia, Kashyyyk, Ithor, Codian Moon, Tatooine and Saleucami (to name just a few). Various subspecies invariably sprung up as the base stock adapted to new environments. The\u2026"
+ },
+ {
+  "defName": "Jimvu",
+  "label": "jimvu [Jimvu]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.3",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 2.50\u00d72.50 cells (last lifeStage). The jimvu were native to the grasslands of the planet Naboo. The jimvu was an agile, six-legged, ungulate-like reptile whose best defense was its swiftness. Their main predators were the veermok and narglatch. They were\u2026"
+ },
+ {
+  "defName": "Kwi",
+  "label": "Kwi [Kwi]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.3",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). The Kwi were large, bipedal saurians native to the planet Dathomir. They were herbivorous and yet remarkably sociable and intelligent. They were believed to be the degenerated descendants of the saurian 'Kwa' race. How\u2026"
+ },
+ {
+  "defName": "Mynock",
+  "label": "mynock [Mynock]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Mynocks were silicon-based parasitical organisms found across the galaxy. They were considered parasites by pilots and starport personnel. Their strange metabolism allowed them to digest various metals and components\u2026"
+ },
+ {
+  "defName": "Skalder",
+  "label": "skalder [Skalder]",
+  "origin": "Star Wars Animal Collection (mlie)",
+  "kind": "animal",
+  "biomes": "Desert=0.3, AridShrubland=0.08",
+  "unguarded": "no",
+  "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3, AridShrubland=0.08. adult bodyGraphicData.drawSize 3.80\u00d73.80 cells (last lifeStage). The skalder were a mammalian desert species of herbivorous quadrupeds native to the plains of the planet Florrum. They were not normally ridden by sentient beings, but were surprisingly fast if such a feat was managed.\u2026"
+ }
+]

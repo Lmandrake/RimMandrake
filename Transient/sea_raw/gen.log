@@ -1,0 +1,35 @@
+LATE ShaleGorger_south_raw.png (210s, try 1)
+LATE ShaleGorger_north_raw.png (210s, try 1)
+LATE ColoClawFish_south_raw.png (210s, try 1)
+LATE ColoClawFish_north_raw.png (210s, try 2)
+LATE AbyssalColo_south_raw.png (210s, try 2)
+FAIL AbyssalColo_north_raw.png: ERROR codex exec exceeded 210s. Image generation is slow but not this slow - check whether the Codex app needs
+LATE ThornbackColo_south_raw.png (210s, try 1)
+LATE ThornbackColo_north_raw.png (210s, try 2)
+LATE SandoAquaMonster_south_raw.png (210s, try 1)
+LATE SandoAquaMonster_north_raw.png (212s, try 2)
+LATE ElderSando_south_raw.png (211s, try 1)
+LATE ElderSando_north_raw.png (211s, try 1)
+LATE StormSando_south_raw.png (211s, try 1)
+LATE StormSando_north_raw.png (210s, try 2)
+LATE Mee_south_raw.png (211s, try 1)
+OK   Mee_north_raw.png (118s, try 1)
+LATE Faa_south_raw.png (211s, try 3)
+LATE Faa_north_raw.png (211s, try 1)
+LATE Laa_south_raw.png (211s, try 1)
+LATE Laa_north_raw.png (211s, try 1)
+LATE Yobshrimp_south_raw.png (213s, try 3)
+LATE Yobshrimp_north_raw.png (211s, try 1)
+LATE SiltLamprey_south_raw.png (211s, try 1)
+LATE SiltLamprey_north_raw.png (212s, try 1)
+LATE RustNipper_south_raw.png (212s, try 1)
+LATE RustNipper_north_raw.png (212s, try 1)
+OK   Reefback_south_raw.png (174s, try 1)
+OK   Reefback_north_raw.png (184s, try 1)
+OK   Starmaw_south_raw.png (80s, try 1)
+FAIL Starmaw_north_raw.png: ERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.co
+FAIL Lanternwhale_south_raw.png: ERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.co
+FAIL Lanternwhale_north_raw.png: ERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.co
+FAIL OpeeSeaKiller_south_raw.png: ERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.co
+FAIL OpeeSeaKiller_north_raw.png: ERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.co
+DONE
