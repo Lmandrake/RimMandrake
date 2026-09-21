@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:57:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T02:03:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1470,3 +1470,13 @@ kind:     build
 thin:     no ## spec, no ## verify
 summary:  VENOMVINEFORTRESSPASSABILITY1 — venomvine fortress: size-gated passability C for the shrubland thicket
 prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
+
+## MAPGEN_NRE_FULL_LIST_20260920_1 Map generation NRE'd to death on the full 618-mod list - GenStep_Plants/WildPlantSpawner and GenStep_Settlement, then an unbounded StatRequest-for-null-def storm; same shape as the CLOSED FULL_LIST_CANNOT_LOAD_GAME_1
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MAPGEN_NRE_FULL_LIST_20260920_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MAPGEN_NRE_FULL_LIST_20260920_1.md
