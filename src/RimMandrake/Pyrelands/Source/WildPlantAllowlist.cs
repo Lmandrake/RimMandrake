@@ -77,7 +77,7 @@ namespace RimMandrake.StarWars.FireEcology
 
     public static class Patch_EnforcePyrelandsWildPlantAllowlist
     {
-        private const string PyrelandsDefName = "RM_FE_Pyrelands";
+        private const string PyrelandsDefName = "RM_Pyrelands";
 
         // Kept in step with Pyrelands.xml's own <wildPlants> list by hand —
         // this IS that list's runtime backstop, not a second source of

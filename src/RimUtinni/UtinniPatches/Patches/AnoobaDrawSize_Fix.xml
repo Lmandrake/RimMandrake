@@ -8,7 +8,7 @@
     Root cause is in the DONOR mod itself, "Star Wars Animal Collection
     (Continued)" (packageId mlie.starwarsanimalcollection, workshop id
     3497316713) — this is the mod whose bare `Anooba` PawnKindDef is wired
-    into RM_FE_Pyrelands's wildAnimals by WildAnimals_Pyrelands.xml (NOT this
+    into RM_Pyrelands's wildAnimals by WildAnimals_Pyrelands.xml (NOT this
     repo's own RSW_Anooba port in src/RimStarWars/SWBestiary, which is a
     separate def used only to resolve a ZBiome_Grasslands collision and is
     not wired to any biome by that change).

@@ -16,7 +16,7 @@ ZBiome_Grasslands donor; measured: nothing of value remained). CORRECTED
 2026-09-11 WITHOUT completing its own criterion #3 -- the owner went AFK
 mid-item and the live `jawa/world_tile_set` step never ran. MEASURED
 2026-09-20 against `world/ASHKARR_WORLDMAP_tiles.csv`: `ZBiome_Grasslands`
-still carries 222 tiles, `RM_FE_Pyrelands` carries 0. The donor was never
+still carries 222 tiles, `RM_Pyrelands` carries 0. The donor was never
 removed from the worldmap; the repaint is still owed
 (`WORLD_REMAKE_FINAL_STEP_1`). Its About.xml named its
 dependency as `mandrake.rm.pyrelands`, "generic desert fire-ecology
@@ -42,7 +42,7 @@ this is it.
 Grounded in `Source/FireEcologyHook.cs` (the two Harmony postfixes, the
 biome worker, the ashfall MapComponent), `Source/RM_PyrelandsMod.cs` (the
 five real Mod Settings toggles), and `Defs/BiomeDefs/Pyrelands.xml` (the
-engine's own self-contained `RM_FE_Pyrelands` BiomeDef -- this validator
+engine's own self-contained `RM_Pyrelands` BiomeDef -- this validator
 targets THIS biome directly, not the RimUtinni wiring mod's separate
 `ZBiome_Grasslands` patch, which is `PyrelandsFireEcology`'s own concern).
 
@@ -72,7 +72,7 @@ Still not proven / likely first-live-run corrections:
      `BiomeWorker_Pyrelands.GetScore` at all -- it only ever runs during
      world generation, which this project does not automate or test
      (CLAUDE.md: "no worldgen feature, in any version"). The component
-     below proves only that `RM_FE_Pyrelands` resolves with its expected
+     below proves only that `RM_Pyrelands` resolves with its expected
      `terrainPatchMakers` shape -- the toggle's actual gate (whether the
      biome can win a tile) is unverified by construction, not by omission.
   3. Black Rain (`RM_FE_BlackRain`) and the firefoam sprayer/firebreak are
@@ -241,17 +241,17 @@ def startup_and_def_wiring(t):
     with t.component("biome_def_wiring", toggle="biomeGenerationEnabled"):
         # See module docstring point 2 for why this cannot exercise the
         # toggle's actual gate (world-generation-only).
-        d = t.bridge_call("jawa/get_def", defName="RM_FE_Pyrelands", defType="BiomeDef")
+        d = t.bridge_call("jawa/get_def", defName="RM_Pyrelands", defType="BiomeDef")
         if _live(t):
             makers = (d or {}).get("terrainPatchMakers") or []
             if len(makers) < 1:
                 raise ExpectationFailed(
-                    "RM_FE_Pyrelands resolved with no terrainPatchMakers -- expected the "
+                    "RM_Pyrelands resolved with no terrainPatchMakers -- expected the "
                     "burn-scar ladder patchmaker (trace/light/heavy thresholds); got %r" % d)
             thresholds = (makers[0] or {}).get("thresholds") or []
             names = [th.get("terrain") for th in thresholds]
             if "RM_FE_Ash_Trace" not in names:
                 raise ExpectationFailed(
-                    "RM_FE_Pyrelands's first terrainPatchMaker does not list "
+                    "RM_Pyrelands's first terrainPatchMaker does not list "
                     "RM_FE_Ash_Trace among its thresholds: %r" % names)
         t.screenshot()

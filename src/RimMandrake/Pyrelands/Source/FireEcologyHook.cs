@@ -249,7 +249,7 @@ namespace RimMandrake.StarWars.FireEcology
     // worker, and it is the ONLY route.
     //
     // The numbers themselves stay in XML so they can be retuned without a
-    // rebuild — see the <modExtensions> block on RM_FE_Pyrelands in
+    // rebuild — see the <modExtensions> block on RM_Pyrelands in
     // Defs/BiomeDefs/Pyrelands.xml.
     // ════════════════════════════════════════════════════════════════════
 
@@ -265,7 +265,7 @@ namespace RimMandrake.StarWars.FireEcology
         public float rainfallDivisor = 120f;
     }
 
-    // TRIGGERED BY: <workerClass> on the RM_FE_Pyrelands BiomeDef.
+    // TRIGGERED BY: <workerClass> on the RM_Pyrelands BiomeDef.
     //
     // Scored against vanilla's own BiomeWorker_AridShrubland, which owns
     // this rainfall corridor today (22.5 + (T-20)*2.2 + (R-600)/100).
@@ -453,9 +453,9 @@ namespace RimMandrake.StarWars.FireEcology
     // cannot do: react to WHERE another genstep just built something.
     //
     // TRIGGERED BY: <extraGenSteps><li>RM_FE_ScorchRuins</li></extraGenSteps>
-    // on RM_FE_Pyrelands (Defs/BiomeDefs/Pyrelands.xml). BiomeDef.extraGenSteps
+    // on RM_Pyrelands (Defs/BiomeDefs/Pyrelands.xml). BiomeDef.extraGenSteps
     // is concatenated into a map's genstep list ONLY when that map's biome IS
-    // RM_FE_Pyrelands (RimSage, Verse/MapGenerator.cs:163 —
+    // RM_Pyrelands (RimSage, Verse/MapGenerator.cs:163 —
     // `map.Biome.extraGenSteps.Where(IsValidBiome)`), so this genstep never
     // runs, and needs no internal biome check, on any other biome's map.
     //
