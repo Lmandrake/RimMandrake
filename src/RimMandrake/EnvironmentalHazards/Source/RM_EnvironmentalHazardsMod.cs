@@ -189,6 +189,39 @@ namespace RimMandrake.EnvironmentalHazards
     //      F1). WORLDGEN-AFFECTING: off means no mirror pools are painted on
     //      any map generated while it is off. Maps already generated keep
     //      whatever pools they already have.
+    //  36. leachmossEnabled — RM_LeachmossWildSpawnGatePatch
+    //      (DESERT_LEACHMOSS_BUILD_1). Off: RM_Leachmoss stops being offered
+    //      by the wild-plant spawner on any map, for both initial seeding
+    //      and later regrowth — checked live, so it takes effect the moment
+    //      this is toggled, not only on the next map generated. Any moss
+    //      already growing is left standing; it simply never re-takes an
+    //      emptied cell and never appears on fresh ground until this is
+    //      back on.
+    //  37. contactVenomEnabled — CompContactVenom /
+    //      MapComponent_ContactVenom (VENOMVINE_CONTACT_VENOM_BUILD_1). Off:
+    //      a plant built to scratch whoever stands in it stays exactly where
+    //      it is and goes inert — it still grows, still costs path, still
+    //      blocks, still gets cut, it simply never scratches. Every per-pawn
+    //      contact clock already running FREEZES rather than clearing, so
+    //      turning this back on resumes instead of forgiving; venom a pawn
+    //      already carries decays on its own hediff clock either way.
+    //  38. contactVenomScratchMultiplier — the SAME mechanism's damage dial,
+    //      applied on top of hazardDamageMultiplier (the two multiply).
+    //      Separate from the kit-global because the venom dose is
+    //      proportional to damage actually dealt, so this one dial moves both
+    //      the injury and how fast the poison builds, and a player who wants
+    //      only THIS hazard softened should not have to soften every hazard
+    //      in the kit. At 0 the scratch is skipped outright, so no venom is
+    //      delivered at all.
+    //  39. contactVenomLethal — whether contact venom can finish a pawn.
+    //      lethalSeverity is a HediffDef field the engine reads directly, so
+    //      this cannot be an XML toggle: on (shipped), the venom reaches its
+    //      own lethal threshold and kills, which is what lying down in a
+    //      stand for a day costs. Off: severity is held just below that
+    //      threshold after every scratch, so the venom still hurts, still
+    //      disables and still has to be waited out — it just never finishes
+    //      anyone. Turning it off never heals a carrier already past the
+    //      threshold; it only stops pushing.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -228,6 +261,10 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool treasureConscienceEnabled = true;
         public static bool sunlightScaldEnabled = true;
         public static bool mirrorPoolsEnabled = true;
+        public static bool leachmossEnabled = true;
+        public static bool contactVenomEnabled = true;
+        public static float contactVenomScratchMultiplier = 1f;
+        public static bool contactVenomLethal = true;
 
         public override void ExposeData()
         {
@@ -268,6 +305,10 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref treasureConscienceEnabled, "treasureConscienceEnabled", true);
             Scribe_Values.Look(ref sunlightScaldEnabled, "sunlightScaldEnabled", true);
             Scribe_Values.Look(ref mirrorPoolsEnabled, "mirrorPoolsEnabled", true);
+            Scribe_Values.Look(ref leachmossEnabled, "leachmossEnabled", true);
+            Scribe_Values.Look(ref contactVenomEnabled, "contactVenomEnabled", true);
+            Scribe_Values.Look(ref contactVenomScratchMultiplier, "contactVenomScratchMultiplier", 1f);
+            Scribe_Values.Look(ref contactVenomLethal, "contactVenomLethal", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -280,7 +321,7 @@ namespace RimMandrake.EnvironmentalHazards
             // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
             // the same edit as whoever adds the next toggle, or their block is
             // invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3400f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3700f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -383,7 +424,26 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Mirror pool placement (WORLDGEN-AFFECTING)", ref mirrorPoolsEnabled,
                 "A biome built to scatter small still-water pools stops placing new ones on any map "
               + "generated while this is off. Maps already generated keep whatever pools they already have.");
+            list.CheckboxLabeled("Leachmoss wild spawning", ref leachmossEnabled,
+                "A fast-spreading moss built to race everything else for fertile open ground stops being "
+              + "offered by the wild-plant spawner, on every map immediately. Moss already growing is left "
+              + "standing; it just never re-takes an emptied cell or appears on fresh ground until this is "
+              + "back on.");
+            list.CheckboxLabeled("Contact venom (thorn plants)", ref contactVenomEnabled,
+                "A plant built to scratch whoever stands in it goes inert — it still grows, still "
+              + "slows movement and can still be cut, it just never scratches. Clocks already "
+              + "running freeze rather than reset, so turning this back on resumes.");
+            list.CheckboxLabeled("Contact venom can kill", ref contactVenomLethal,
+                "On: staying in a thorn stand long enough is fatal. Off: the venom still hurts and "
+              + "disables, but is always held just short of killing. Turning this off does not heal "
+              + "anyone already past that point.");
             list.GapLine();
+
+            list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
+            list.Label("How hard a thorn plant scratches, on top of the overall hazard damage dial. "
+                     + "The venom dose follows the damage, so this moves the poison too. At 0 the "
+                     + "plant scratches nobody.");
+            contactVenomScratchMultiplier = list.Slider(contactVenomScratchMultiplier, 0f, 3f);
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");
             list.Label("Scales every damage/severity number the mechanisms above deal. Never "

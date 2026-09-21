@@ -58,11 +58,10 @@
     DESERT_SIGNATURE_FLORA_1 (2026-09-20): the ultracactus (§4b/§7) now has a def
     (RSW_Ultracactus, RSW_ExtremeDesertSignatureFlora.xml's neighbour
     RSW_Ultracactus.xml) and is wired into wildPlants below — the note above that
-    it was undefined is now false and was corrected in this commit. The two "shade
-    plants, which defend" (§4b) still have no def — thorn/contact damage has no
-    native CompProperties equivalent. DESERT_SHADE_PLANTS_DESIGN_1 designed them
-    and CLOSED (417c7f516, 2026-09-20): two plants, not three, and the build is
-    now owed by its two successors, VENOMVINE_CONTACT_VENOM_BUILD_1 (tier c) and
+    it was undefined is now false and was corrected in this commit.
+    DESERT_SHADE_PLANTS_DESIGN_1 designed §4b's two "shade plants, which defend"
+    and CLOSED (417c7f516, 2026-09-20): two plants, not three, built by its two
+    successors, VENOMVINE_CONTACT_VENOM_BUILD_1 (tier c) and
     DESERT_LEACHMOSS_BUILD_1 (tier b). Cite those, not the closed parent.
 
     DESERT_STAGGERSEED_BUILD_1 (2026-09-20): the cycle plant (§4b "The seed that
@@ -77,6 +76,28 @@
     owner's pick (§4b) and the card is items/STAGGERSEED_SHIPPING_NAME_1.md, so
     every RUT_Staggerseed* defName in this file and in AshkarrFlora is provisional
     until it returns.
+
+    DESERT_LEACHMOSS_BUILD_1 (2026-09-20, this pass): the moss half of §4b's
+    "shade plants, which defend" pair now has a def (RM_Leachmoss,
+    mandrake.rm.environmentalhazards,
+    src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Plants/RM_Leachmoss.xml)
+    and is wired into wildPlants below at the highest weight in the list, per
+    the design's own spawn-competition numbers
+    (design/Jawa/worldbuilding/desert_shade_plants_design.md §2b).
+
+    VENOMVINE_CONTACT_VENOM_BUILD_1 (2026-09-20): the vine half of that pair —
+    the one that "holds territory by injury" — now has a def (RM_Venomvine,
+    mandrake.rm.environmentalhazards,
+    src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Plants/RM_Venomvine.xml)
+    and is wired into wildPlants below at 0.25. Its mechanism is
+    RimMandrake.EnvironmentalHazards.CompContactVenom +
+    MapComponent_ContactVenom: one RM_VenomvineScratch on first contact, then
+    one per in-game hour of lingering, carrying the RM_VenomvineVenom hediff.
+    Flyers and races carrying the ContactVenomImmunity extension are untouched,
+    and the whole mechanism sits behind a Mod Setting. Both this and the moss
+    ship in the RM hazards kit rather than beside RSW_Ultracactus because a
+    defName must carry its own mod's tier prefix and neither plant is Star Wars
+    content. The pair is complete; nothing of §4b's shade plants remains owed.
 
   -->
 
@@ -254,8 +275,10 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
+      <RM_Leachmoss MayRequire="mandrake.rm.environmentalhazards">1.5</RM_Leachmoss>  <!-- leachmoss: the fertile ground's fastest claimant, DESERT_LEACHMOSS_BUILD_1. Highest weight in this list on purpose (design §2b) — Gravel/Soil only (fertilityMin 0.5, never Sand), so it wins most rolls on ground it can take without ever competing with the ultracactus for sand. -->
       <RSW_Ultracactus MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Ultracactus>  <!-- ultracactus: the buried canopy holding the open ground, DESERT_SIGNATURE_FLORA_1 -->
       <RUT_Staggerseed MayRequire="mandrake.rut.ashkarrflora">0.1</RUT_Staggerseed>  <!-- the cycle plant, DESERT_STAGGERSEED_BUILD_1. Lowest weight of the three desert plants on purpose: §4b puts it in "the protected water pockets" only, and its own fertilityMin 0.45 already keeps it off Sand, so this weight sets how thickly it fills the pockets it CAN take, not how far it spreads. Working name — see the header. -->
+      <RM_Venomvine MayRequire="mandrake.rm.environmentalhazards">0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, §4b "the shade plants, which defend" — VENOMVINE_CONTACT_VENOM_BUILD_1. fertilityMin 0.5 already keeps it off Sand (the ultracactus's ground), so this weight sets how thickly it takes the patch ground it CAN reach, not how far it spreads. -->
       <RSW_Dunegrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Dunegrass>  <!-- surra grass -->
       <RSW_Plant_Chakroot_Wild MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
       <RSW_Plant_HubbaGourd_Wild MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->

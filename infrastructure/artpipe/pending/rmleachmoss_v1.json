@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-21T00:25:15Z",
+  "drawsize": 0.7,
+  "facing": null,
+  "facings": [],
+  "id": "rmleachmoss_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a low, dense mat of dull, dust-dulled moss hugging flat to gravelly desert ground, patchy and uneven in coverage like it just raced across the soil to claim it, dull olive-umber colour, no bright or lush green anywhere, no flowers, no visible stems above the mat, a slightly ragged and opportunistic silhouette rather than a neat lawn. Single plant clump, viewed from directly above at a slight isometric RimWorld camera angle, centered, a short soft shadow beneath it, pale sandy-gravel ground implied only at the edges, no other background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_LEACHMOSS_BUILD_1",
+  "style_notes": "RM_Leachmoss, the desert's nutrient racer (desert_shade_plants_design.md \u00a72b, DESERT_LEACHMOSS_BUILD_1). Must read as dull, low and opportunistic -- darker and duller than the ultracactus's pale green (176,196,158), never a lush or healthy-looking growth. Colour is set in the def via graphicData/color (98,92,60), so the art itself should be a fairly neutral/desaturated base the tint multiplies over -- avoid baking in a strong hue of its own."
+}

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Leachmoss.xml                                    DESERT_LEACHMOSS_BUILD_1
+
+  The desert's nutrient racer — desert.md §4b's second "shade plant, which
+  defends": "Mossy growth leaching nutrients as fast as it can — fast,
+  shallow, opportunistic." Design authority (numbers below are lifted from
+  it verbatim, not re-derived):
+  design/Jawa/worldbuilding/desert_shade_plants_design.md §2b.
+  DESERT_SHADE_PLANTS_DESIGN_1 split this from the venomvine (tier c, its own
+  item VENOMVINE_CONTACT_VENOM_BUILD_1) so it never waits on that item's
+  assembly — pure XML, no C#.
+
+  MEASURED against the decompiled 1.6 engine (design doc §2a, re-confirmed
+  this build pass): PlantProperties has no reproduction/neighbour-effect
+  fields at all. "Leaching nutrients as fast as it can" is therefore realized
+  entirely as spawn-COMPETITION, via the exact three WildPlantSpawner levers
+  that exist:
+    - fertilityMin/fertilitySensitivity partition it onto Gravel/Soil only
+      (Core Sand is fertility 0.10, SoftSand 0 — RM_Leachmoss can never reach
+      the ultracactus's sand, same partition RM_Venomvine uses).
+    - the highest wildPlants commonality weight in RUT_Desert's list (1.5,
+      above ultracactus's 0.8) so it wins most rolls on ground it can take.
+    - plantRespawningCommonalityFactor 2.0 so a cell that just emptied (cut,
+      an ash-pulse, a megafauna dung stop) goes to the moss first — "racing
+      everything else to whatever the wind just delivered."
+  Rejected: CompPlantDamager (plant-only Rotting from CompTick, which never
+  fires on a Long-ticking plant and would rot its own stand) and any
+  terrain-swap hack to fake fertility depletion — both named and rejected in
+  the design doc.
+
+  Settings: RM_EnvironmentalHazardsSettings.leachmossEnabled (default on,
+  RM_Patch_LeachmossWildSpawnGate.cs) — the mod's own toggle-drops-a-def-from
+  -wildPlants pattern, generalized minimally from RimMandrake.StarWars.
+  FireEcology.Patch_EnforcePyrelandsWildPlantAllowlist (Pyrelands/Source/
+  WildPlantAllowlist.cs), the one other place in the RimMandrake family that
+  gates wildPlants membership by a Mod Settings bool.
+
+  Colour: dull olive-umber (98,92,60) — darker and duller than
+  RSW_Ultracactus's pale green (176,196,158), per §6.8's "no lush" ban and §9
+  "the only greens are the pale ultracactus and the dew-line halo" (this
+  plant is permitted the halo's own muted green later, once placement can
+  follow the shade grid — §2b, not attempted here).
+
+  Art: infrastructure/artpipe/{done,_artsrc,registry.jsonl,art_status.json}
+  searched for moss/lichen/nutrient/leach on 2026-09-20 per CLAUDE.md's
+  "Check for existing regenerated art before queuing more" — three moss hits
+  exist (grimmoss_v1, rut_palemoss_v1, rot_palemoss_v2) and all three are
+  other rosters' plants (Greentide/Rot family), already named as such in the
+  design doc's own art note. Job rmleachmoss_v1 filed this pass; texPath
+  below is where that render lands, pending the daemon. No harvested item:
+  the design specifies no harvest product.
+-->
+<Defs>
+
+  <!-- ============== Leachmoss — the fertile ground's fastest claimant ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Leachmoss</defName>
+    <label>leachmoss</label>
+    <description>A low mat of dull, dust-dulled moss that races everything else on the ground for whatever nutrient the wind just delivered. It is shallow and short-lived, but it is fast: the instant a patch of fertile ground opens up, this is what fills it first, over and over, ahead of anything slower. It holds no territory by strength -- only by getting there before anything else can.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Nutrition>0.3</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- Job rmleachmoss_v1, filed this pass. Pending until the daemon lands it. -->
+      <texPath>Things/Plant/RM_Leachmoss</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(98,92,60)</color>
+      <!-- dull olive-umber, darker/duller than the ultracactus, no lush green -->
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <fillPercent>0.15</fillPercent>
+    <pathCost>0</pathCost>
+    <ingestible />
+    <plant>
+      <!-- Design §2b, verbatim. Gravel/Soil only (never the ultracactus's Sand),
+           the highest wildPlants weight in RUT_Desert (set on the biome def, not
+           here), and the aggressive respawn factor that lets it re-take an
+           emptied fertile cell before anything else. -->
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>1.0</fertilitySensitivity>
+      <growDays>1.5</growDays>
+      <lifespanDaysPerGrowDays>4</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <plantRespawningCommonalityFactor>2.0</plantRespawningCommonalityFactor>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.4~0.7</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <harvestWork>60</harvestWork>
+      <!-- no harvestedThingDef: design specifies no harvest product, same
+           shape as RSW_Dunegrass (a wild grass cut for nothing) one mod over. -->
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>
