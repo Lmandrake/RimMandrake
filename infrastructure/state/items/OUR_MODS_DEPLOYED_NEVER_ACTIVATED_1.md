@@ -74,3 +74,34 @@ correct load position. `RUT_Fuzz` (0.9, the heaviest AridShrubland row) starts s
 colour, not a defect, and is not a reason to hold the activation.
 ⚠️ A cold load is the cost of proving this. Sequence it with whatever else is waiting on a
 load rather than spending one on it alone.
+
+
+## 🔴 RE-MEASURED 2026-09-21 by BENCH — half of this item's premise is no longer true
+
+Instrument: `ET.parse(ModsConfig.xml).find("activeMods")` on the live file
+(`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`).
+⛔ Never `grep -c '<li>'` this file — it returns 48 where the truth is 619.
+
+| | state now |
+|---|---|
+| **`mandrake.rut.ashkarrflora`** | ✅ **ACTIVE.** It is in the live list of **619**. |
+| **GelatinousSlime** | ❌ still absent under any spelling (`gelatinousslime`, `slime`). |
+
+⇒ 🔴 **The claim that `RUT_Fuzz` never spawns is FALSE as of today.** AshkarrFlora is
+loaded, so the heaviest AridShrubland row is live. Only GelatinousSlime is still inert.
+⚠️ The live file's mtime is 2026-09-20 21:30 PDT, which is AFTER this item was written, so
+the item was probably true when filed and something activated AshkarrFlora since. Either
+way it is not true now, and the owner was told the stronger version.
+
+### Why the remaining activation was NOT done on his ruling
+
+He ruled **"activate both"**. One is already done. The other was deliberately deferred:
+FOUNDRY holds the bridge and `modset_builder.py` swaps this exact file per test tier, so
+editing it mid-swap risks destroying another window's live test list. Nothing is lost by
+waiting — `ModsConfig.xml` only describes the NEXT load, and he separately ruled that the
+next cold load is a single batched one.
+
+**NEXT (one act, when the bridge is free):** add `mandrake.rut.gelatinousslime` to
+`activeMods` at the correct load position, parse-verify the count went 619 → 620, and put
+it on the cold-load run sheet. ⚠️ It renders magenta until its art lands — the
+missing-texture colour, not a defect.
