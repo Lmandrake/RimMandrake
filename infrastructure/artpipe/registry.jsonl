@@ -3612,3 +3612,9 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rut_wildhealroot", "notes": "", "target": "rut_wildhealroot", "ts": 1789979417.1176262}
 {"by": "fill_queue", "event": "registered", "source": "DESERT_FAMILY_PORT_EXECUTION_1", "target": "rut_grellspine", "ts": 1789979417.123018}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rut_grellspine", "notes": "", "target": "rut_grellspine", "ts": 1789979417.133693}
+{"by": "fill_queue", "event": "registered", "source": "TITANOSLIME_SLIME_BIOME_1", "target": "rmtitanoslime/south", "ts": 1790010331.2868657}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rmtitanoslime_v1_south", "notes": "", "target": "rmtitanoslime/south", "ts": 1790010331.299889}
+{"by": "fill_queue", "event": "registered", "source": "TITANOSLIME_SLIME_BIOME_1", "target": "rmtitanoslime/east", "ts": 1790010331.3074174}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rmtitanoslime_v1_east", "notes": "", "target": "rmtitanoslime/east", "ts": 1790010331.321167}
+{"by": "fill_queue", "event": "registered", "source": "TITANOSLIME_SLIME_BIOME_1", "target": "rmtitanoslime/north", "ts": 1790010331.327538}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rmtitanoslime_v1_north", "notes": "", "target": "rmtitanoslime/north", "ts": 1790010331.3409436}
