@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T05:13:23Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-21T05:41:38Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -945,6 +945,15 @@ kind:     build
 summary:  SHRUBLANDGIANTENRAGE1 — RSWShrublandGiant: large-young life-stage + parental enrage-on-approach C
 prose:    infrastructure/state/items/SHRUBLAND_GIANT_ENRAGE_1.md
 
+## VENOMVINE_FORTRESS_PASSABILITY_1 Venomvine fortress: size-gated passability C# for the shrubland thicket
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  VENOMVINEFORTRESSPASSABILITY1 — venomvine fortress: size-gated passability C for the shrubland thicket
+prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
+
 ## FILTH_ON_NATURAL_TERRAIN_NOOP_1 Filth_AnimalFilth cannot be placed on natural ground - dung and churned-ground are no-ops outdoors
 state:    doing
 row:      unassigned
@@ -1410,16 +1419,6 @@ thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
 
-## VENOMVINE_FORTRESS_PASSABILITY_1 Venomvine fortress: size-gated passability C# for the shrubland thicket
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify
-summary:  VENOMVINEFORTRESSPASSABILITY1 — venomvine fortress: size-gated passability C for the shrubland thicket
-prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
-
 ## VENOMVINE_PATHCOST_AND_FLYER_1 Venomvine: pathCost 60 avoidance in practice, and the flyer exemption
 state:    proposed
 row:      unassigned
@@ -1439,3 +1438,13 @@ kind:     verify
 thin:     no ## spec, no ## verify
 summary:  SCRAPNESTBIRDLIVEVERIFY1 — live-verify the scrap-nest bird: spawn, nest-building, hoarding, loot
 prose:    infrastructure/state/items/SCRAPNEST_BIRD_LIVE_VERIFY_1.md
+
+## VENOMVINE_FORTRESS_LIVE_VERIFY_1 quicktest the venomvine fortress body-size barrier in a live game
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/VENOMVINE_FORTRESS_LIVE_VERIFY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VENOMVINE_FORTRESS_LIVE_VERIFY_1.md
