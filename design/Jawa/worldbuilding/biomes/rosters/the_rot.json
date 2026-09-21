@@ -350,6 +350,11 @@
       "def": "RUT_RustPuff",
       "disposition": "move:the_contagion",
       "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); the_rot → the_contagion; The Contagion... and hatches occular creature when damaged"
+    },
+    {
+      "def": "MA_Sporemole",
+      "disposition": "cut-for-real",
+      "reason": "ROT_ROSTER_DEAD_DONOR_NAMES_1: DROP ruling 2026-09-21. Donor mod veterano.mythicages.megafaunabestiary (Mythic Ages: Megafauna Bestiary) is not in the active mod list and no RSW_/RUT_ port exists. Its only documented mechanic (web-researched: a burrow-defending manhunter, part of a generic hunt/tame/butcher resource-cycle bestiary) is not distinct from creatures the Rot already carries, it is native to Boreal/Cold/Temperate biomes (animal_census.csv) rather than a fungal-rot-swamp species, and every in-repo record of it is a bulk-census \"keep\" tag with no authored flavor or design-sheet backing (unlike RSW_FungalWeevil/FungalMantis, which had explicit §7b sheet language). Porting would mean inventing a new creature wholesale from a name and a body-size number, which this hygiene item's own instructions rule out; DROP is the safer default. Row removed from fauna."
     }
   ],
   "fauna": [
@@ -478,12 +483,6 @@
       "commonality": 0.5,
       "def": "RSW_Yooka",
       "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_Yooka to the ported RSW_ name, now wired"
-    },
-    {
-      "action": "pending-owner-decision",
-      "commonality": 0.5,
-      "def": "MA_Sporemole",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1/FORGE_ROSTER_UNRECONCILED_BMT_1 2026-09-21: genuine port-or-drop call, unresolved. Donor mod veterano.mythicages.megafaunabestiary (Mythic Ages: Megafauna Bestiary) is NOT in the active mod list and no RSW_/RUT_ port exists anywhere in src/ — cannot wire. Left un-renamed and unwired pending the owner's port-or-drop ruling."
     },
     {
       "action": "import",
