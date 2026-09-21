@@ -10555,3 +10555,14 @@
 {"seat":"FOUNDRY","event":"close","id":"VENOMVINE_FORTRESS_LIVE_VERIFY_1","sha":"6f43699c0ccf2e8a2db90552f2748ff52661cc2f","ts":"2026-09-21T07:00:49Z"}
 {"seat":"FOUNDRY","event":"close","id":"VENOMVINE_FORTRESS_PASSABILITY_1","sha":"6f43699c0ccf2e8a2db90552f2748ff52661cc2f","ts":"2026-09-21T07:00:50Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T07:00:54Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRIDGE_SELECT_NONCOLONIST_PAWN_1","ts":"2026-09-21T07:01:56Z"}
+{"seat":"FOUNDRY","event":"start","id":"BRIDGE_SELECT_NONCOLONIST_PAWN_1","ts":"2026-09-21T07:01:57Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1","ts":"2026-09-21T07:01:58Z"}
+{"seat":"FOUNDRY","event":"start","id":"BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1","ts":"2026-09-21T07:01:59Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"map_drop fix + non-colonist pawn tool proof","ts":"2026-09-21T07:05:19Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-21T07:14:18Z"}
+{"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-21T07:14:42Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-21T07:43:56Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1","sha":"2a4442d9d9f6769330c73620207d8fd57de32370","ts":"2026-09-21T07:46:13Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGE_SELECT_NONCOLONIST_PAWN_1","sha":"2a4442d9d9f6769330c73620207d8fd57de32370","ts":"2026-09-21T07:46:14Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T07:46:18Z"}
