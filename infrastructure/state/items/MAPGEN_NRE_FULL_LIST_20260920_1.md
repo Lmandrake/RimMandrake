@@ -59,6 +59,32 @@ three maps generated (`map.uniqueID` 1, 2, 3 in the same log).
    failures, 0 `StatRequest for null def`, 0 `Error in GenStep`** — 16 cross-reference
    failures in total, against 219 on the tier load.
 
+### the verify criterion, met — and the split is population-wide
+
+Every archived `Transient` log that reached `InitNewGame` sorts perfectly by mod count:
+
+| loaded mods | logs | `BiomePlantRecord` xref failures | `StatRequest for null def` |
+|---|---|---|---|
+| 19 – 48 (tier lists) | 5 | 58 – 108 | this log 20, others 0 |
+| 592 – 633 (full lists) | 11 | **0 in every one** | **0 in every one** |
+
+The criterion itself — *"a map generates on the full 618-mod list with no `GenStep` NRE and
+no `StatRequest for null def`"* — is met by
+`Transient/Player.log.pre_swbestiary_deploy_2026-09-20`, a **618-mod** load from the same
+day that ran `InitNewGame` (and therefore `GenerateMap`) with **0 `Error in GenStep` and
+0 `StatRequest for null def`**.
+
+### one real full-list defect was found on the way, and it is already fixed
+
+That morning 618-mod log carried `Exception in ConfigErrors() of RUT_Desert` and
+`… of RUT_ExtremeDesert` — `BiomeDef.ConfigErrors` does `wa.animal.defName` inside its
+duplicate-record check, which NREs when two `wildAnimals` records both hold a null
+`animal` (dev-mode only, so it never reached play). **It is GONE from the current live
+618-mod load**, cleared by this session's `BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1`
+reconciliation. The 4 NREs remaining on the live full-list load are all third-party
+(Worldbuilder's `IdeoUtility_IsMemeAllowedFor` postfix calling `Find.FactionManager` during
+def error-checking) and none is ours or a `GenStep`.
+
 ## ⛔ it is NOT a regression of `FULL_LIST_CANNOT_LOAD_GAME_1`
 
 That item was a deterministic NRE in `new Game()` → `ReadingPolicyDatabase..ctor` →
