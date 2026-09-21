@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T05:41:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T06:12:29Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -936,15 +936,6 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
-## SHRUBLAND_GIANT_ENRAGE_1 RSW_ShrublandGiant: large-young life-stage + parental enrage-on-approach C#
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  SHRUBLANDGIANTENRAGE1 — RSWShrublandGiant: large-young life-stage + parental enrage-on-approach C
-prose:    infrastructure/state/items/SHRUBLAND_GIANT_ENRAGE_1.md
-
 ## VENOMVINE_FORTRESS_PASSABILITY_1 Venomvine fortress: size-gated passability C# for the shrubland thicket
 state:    doing
 row:      unassigned
@@ -953,15 +944,6 @@ target:   v1
 kind:     build
 summary:  VENOMVINEFORTRESSPASSABILITY1 — venomvine fortress: size-gated passability C for the shrubland thicket
 prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
-
-## FILTH_ON_NATURAL_TERRAIN_NOOP_1 Filth_AnimalFilth cannot be placed on natural ground - dung and churned-ground are no-ops outdoors
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  FILTHONNATURALTERRAINNOOP1 — FilthAnimalFilth cannot be placed on natural ground
-prose:    infrastructure/state/items/FILTH_ON_NATURAL_TERRAIN_NOOP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1425,19 +1407,9 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     verify
-thin:     no ## spec
-summary:  VENOMVINEPATHCOSTANDFLYER1 — the two venomvine properties still unobserved
-prose:    infrastructure/state/items/VENOMVINE_PATHCOST_AND_FLYER_1.md
-
-## SCRAPNEST_BIRD_LIVE_VERIFY_1 live-verify the scrap-nest bird: spawn, nest-building, hoarding, loot
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     verify
 thin:     no ## spec, no ## verify
-summary:  SCRAPNESTBIRDLIVEVERIFY1 — live-verify the scrap-nest bird: spawn, nest-building, hoarding, loot
-prose:    infrastructure/state/items/SCRAPNEST_BIRD_LIVE_VERIFY_1.md
+summary:  VENOMVINEPATHCOSTANDFLYER1 — the flyer exemption, the one venomvine property still unobserved
+prose:    infrastructure/state/items/VENOMVINE_PATHCOST_AND_FLYER_1.md
 
 ## VENOMVINE_FORTRESS_LIVE_VERIFY_1 quicktest the venomvine fortress body-size barrier in a live game
 state:    proposed
@@ -1445,6 +1417,6 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VENOMVINE_FORTRESS_LIVE_VERIFY_1.md yet — write one when you have something to say)
+thin:     no ## spec
+summary:  VENOMVINEFORTRESSLIVEVERIFY1 — quicktest the venomvine fortress body-size barrier in a live game
 prose:    infrastructure/state/items/VENOMVINE_FORTRESS_LIVE_VERIFY_1.md
