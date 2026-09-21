@@ -19,7 +19,7 @@ _One table per undefined biome, ready to open its conversation loop. Sun elevati
 - arc: p10 126.0 / med 135.0 / p90 142.8  (sun med -45.0°)
 - temp med -44.4 °C (-55.3..-30.1); elev med 691 m; hilliness {1: 31, 2: 1160, 3: 512, 4: 8}
 - water tiles 0, river tiles 0
-- regions: Deadstone (1457), South Crags (93), Thornend (61), Rimewall (36), Gray Crags (21), Nightspill (20)
+- regions: Deadstone (1457), Sootreach (93), Frostvein (61), Rimewall (36), Gray Crags (21), Nightspill (20)
 
 ## AB_PropaneLakes — 1589 tiles
 - arc: p10 144.7 / med 155.0 / p90 170.0  (sun med -65.0°)
@@ -49,7 +49,7 @@ _One table per undefined biome, ready to open its conversation loop. Sun elevati
 - arc: p10 84.7 / med 117.7 / p90 127.8  (sun med -27.7°)
 - temp med -23.6 °C (-43.9..24.3); elev med 711 m; hilliness {1: 90, 2: 226, 3: 106, 4: 3}
 - water tiles 0, river tiles 0
-- regions: Nightspill (107), Sporefields (85), South Crags (78), Stillwood (49), Sweatwood (44), Frostcaps (30)
+- regions: Nightspill (107), Sporefields (85), Sootreach (78), Stillwood (49), Sweatwood (44), Frostcaps (30)
 
 ## ZBiome_DesertOasis — 236 tiles
 - arc: p10 26.3 / med 58.0 / p90 79.9  (sun med +32.0°)

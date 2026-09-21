@@ -24,9 +24,9 @@ MEASURED off `world/ASHKARR_WORLDMAP_tiles.csv`: `BiomeGRimond` holds **1,029 ti
 arc 118→149 (p10/median/p90 124.6/134.7/143.2 — sun 35°–53° below the horizon, median
 −45°), temp median **−42.6 °C** (−58…−19; summer maximum below 0 °C on every tile),
 elevation median 640 m, a rolling plateau (406 small-hill tiles, 224 flat, 203 large-hill,
-190 mountainous, 6 impassable), **zero water, zero rivers**. Regions: Deadstone 527, South
-Crags 159, Cinderdark 102, Ammonia Flats 96, The Verge 49, Thornend 38, Sunreach 35, Quiet
-Ground 18, Venom Wood 3, Ashen Wastes 2. Nightside ladder: Rot −19 → **Blue Desert −42.6**
+190 mountainous, 6 impassable), **zero water, zero rivers**. Regions: Deadstone 527, Sootreach
+159, Cinderdark 102, Ammonia Flats 96, The Verge 49, Frostvein 38, Sunreach 35, Quiet
+Ground 18, Fuelmere 3, Ashen Wastes 2. Nightside ladder: Rot −19 → **Blue Desert −42.6**
 → PropaneLakes −62.2.
 
 🔴 **The ring, and the ruling that breaks it (owner, 2026-09-06: "ensure there is no

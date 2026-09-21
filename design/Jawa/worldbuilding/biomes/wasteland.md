@@ -32,12 +32,12 @@ The per-region stats split into three families:
 |---|---|---|---|---|
 | **Dayside basins** | Salt, Pan, Glass Reach, Blight, Cinders, Scour | 73–92 | +10…+27 °C | low (5–32 m) |
 | **The margin** | Ashen Wastes, Nightspill | ~101–108 | −9…−1 °C | mid |
-| **The dark scour** | Sunreach, Cinderdark, South Crags, Gray Crags | 110–129 | −13…−35 °C | high (200–544 m) |
+| **The dark scour** | Sunreach, Cinderdark, Sootreach, Gray Crags | 110–129 | −13…−35 °C | high (200–544 m) |
 
 ⚠️ **Amendment (measurement refresh, not a ruling change):** re-measured against the
-current world, **Cinderdark and South Crags now carry zero `Wasteland` tiles** — both
+current world, **Cinderdark and Sootreach now carry zero `Wasteland` tiles** — both
 regions have moved off this def since the table above was written (Cinderdark 102 and
-South Crags 159 tiles now register under `BiomeGRimond` instead). The dark-scour row's
+Sootreach 159 tiles now register under `BiomeGRimond` instead). The dark-scour row's
 region list is stale on that point; its arc/temp/elev columns are not re-derivable from
 the per-def instrument (no per-region climate breakdown) and are left as measured, not
 recomputed. Also newly present in the current tile set: **~130 tiles now sit in regions
