@@ -69,6 +69,8 @@ A mod-list change is his call, so nothing was edited.
   🔑 **The lesson: a crash log's mod count comes from the log's own
   `Initializing new game with mods:` line, never from which list you believe was active.**
   Full account: `Transient/mapgen_nre_diagnosis_2026-09-21.md`.
+  **NEXT: nothing.** The item is CLOSED at `fa21d88857a` and this entry is kept only so the
+  next reader does not re-derive the false claim. It is not half-done work.
   ⚠️ Still UNCONFIRMED by anyone this session: that the owner's real ~618-mod list is
   clean. That rests on a prior `selftest_deployed_biome_refs.py` run and an older
   Player.log, neither re-executed.
