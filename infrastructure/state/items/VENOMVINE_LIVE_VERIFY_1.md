@@ -62,3 +62,118 @@ Also worth watching for, since neither can be seen offline:
 Every step above observed, or the defect it found filed. A step that cannot be
 staged (step 5 needs a def that does not exist) is recorded as not-run rather
 than passed.
+
+## live run — 2026-09-21: the gate line is DISCHARGED; three steps remain
+
+Run by FOUNDRY on the bridge, `modset_builder.py --tier desertplants` (19 mods,
+all five DLC), on a genuine `RUT_Desert` map (tile 83745, 250×250, generated
+through `jawa/world_tile_map_generate`). The DLL and all four def files were
+deployed this pass — none of it had ever reached the game folder.
+
+### the one line this item exists for — OBSERVED
+
+> *"a `MapComponent` damages a pawn for standing on a registered cell"*
+
+A 14×14 Soil rect at (120,120) was painted and planted solid: `jawa/set_plants`
+placed **196 of 196** `RM_Venomvine`, confirmed by `jawa/list_things`
+(`countMatched 196`, still 196 at the end of the run). Five colonists were
+spawned inside it and three outside as controls. **Within 30 ticks of the first
+sweep, four of the five inside carried `Scratch` injuries labelled "scratch
+(venomvine)" and the hediff `RM_VenomvineVenom`; all three outside carried
+nothing.** The mechanism runs.
+
+### step 1 — crossing: PASS, with the predicted number corrected
+
+| | predicted by the item | measured |
+|---|---|---|
+| injury site | a leg | left leg · right leg+right foot · left leg+left foot · left leg+**torso** |
+| `RM_VenomvineVenom` on first contact | ~0.12 | **0.0536 · 0.1608 · 0.1608 · 0.201** |
+| decay | to 0 in ~6 h | **exactly `severityPerDay -0.5`** |
+
+The ~0.12 prediction assumed the full 3 damage; the engine applies 2.01 after
+`victimSeverityScalingByInvBodySize` and armour, and one contact produces two
+injury records (a leg and its child foot), hence 2 × 2.01 × 0.04 = **0.1608**
+for an unarmoured pawn. Crink, who spawned with more apparel, took 0.67 per
+injury and 0.0536 of venom — that is step 6's armour reduction visible without
+being staged for.
+
+Decay MEASURED rather than estimated: Ash 0.2983 → 0.2833 across 1,800 ticks.
+`severityPerDay -0.5` predicts −0.0150 over that window; the reading is
+−0.0150. From 0.16, zero at ~19,000 ticks ≈ 5.3 h — the item's "~6 h" is right.
+
+⚠️ One injury landed on a **torso**, not the Bottom region. Recorded as
+measured, not judged: `SetBodyRegion(Bottom, Outside)` admits parts whose
+`height` is Undefined, and Torso is one, so this may be correct engine
+behaviour rather than a defect. 12 of 13 injuries across the run were legs and
+feet.
+
+### step 2 — lingering: PASS, cadence exact
+
+Pawns drafted and parked on fixed vine cells, then stepped forward in
+`rimworld/step_game_ticks` increments (note: the call completes ~600 ticks per
+invocation and returns `status: timedout`, so a cadence test needs a loop, not
+one big step). Reconstructing event times from venom severity net of the known
+decay rate:
+
+```
+events at ticks ~31, ~2530, ~5030, ~7530, ~10030      spacing 2500, 2500, 2500, 2500
+windows with no event: 2760->4561 (1801 ticks), 8160->9962 (1802 ticks)   as predicted
+```
+
+**One scratch per 2,500 ticks — `contactIntervalTicks` exactly, one per in-game
+hour.** Not per tick, not per 15-tick sweep.
+
+All three hediff stages were seen in game with their own labels, crossed at the
+thresholds the def declares: **"thorn venom (minor)"** below 0.30 →
+**"thorn venom (serious)"** (Mal, 0.3803) → **"thorn venom (grave)"** (Mal,
+0.7423). By tick 11,162 three of the five in-stand pawns were **downed by the
+venom alone** (Crink 0.6035, Mal 0.9133, Winnie 0.7123) with a live "Colonists
+need rescue / Medical emergency" alert. Screenshot:
+`Transient/venomvine_stand_20260921.png`.
+
+### control — the strongest single piece of evidence
+
+Two of the three pawns parked outside the stand finished the whole run at
+**0 injuries, 0 venom**. The third (Reeves) wandered through the stand before
+being parked, took two injuries, and then — parked outside — **took no further
+injury for 8,400 ticks while its venom decayed monotonically 0.1877 → 0.1177**
+across exactly the windows in which every in-stand pawn's venom rose. Same
+pawn, in and then out; that is the contrast the item needed.
+
+### what did NOT run, and why
+
+- **step 3 (cutting from an adjacent cell)** — not staged. No defect suspected.
+- **step 4 (a flyer crosses)** — not staged: 1.6 flight is a stat-driven state
+  a bird enters on its own, and nothing here can force `pawn.Flying` on demand.
+  **NOT-RUN, not passed.**
+- **step 5 (`ContactVenomImmunity`)** — unstageable as the item already
+  predicted: no def in the repo carries the extension. **NOT-RUN.**
+- **step 6 (Sharp leg armour)** — only incidental evidence (Crink's apparel cut
+  the damage 2.01 → 0.67). The "reduced to 0 ⇒ no venom at all" half was not
+  staged. **PARTIAL.**
+- **step 8 (save/load mid-contact)** — not run. `ExposeData` on the per-pawn
+  clock is unproven.
+- **wild-spawn under map generation** (the item's "also worth watching for") —
+  **BLOCKED, and the block is a real defect.** `RM_Venomvine` is not in
+  `RUT_Desert`'s runtime `wildPlants` at all: a `PatchOperationReplace` in
+  `BiomeFlora_Ashkarr.xml` swaps the whole node for four other defs, so the
+  0.25 wiring in `RUT_Desert.xml` never survives load. Filed as
+  `BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1`. `pathCost 60` in practice is
+  unobservable for the same reason (no natural stands exist).
+
+### one anomaly, unexplained
+
+Ash stopped taking events after tick ~7562 while still inside the rect at
+(123,121), where a vine is present and the stand was never cleared (196 plants
+throughout). Every other in-stand pawn kept taking the hourly event. Not
+diagnosed; recorded so the next reader does not have to rediscover it.
+
+### also found
+
+`Config error in RM_Venomvine: Nutrition == 0 but preferability is RawBad
+instead of NeverForNutrition` — new on this load, a one-line def fix, carried
+in `BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1`'s "also found".
+
+⇒ This item **stays open** for steps 3, 4, 5, 6 and 8 and for the wild-spawn
+check once the biome-flora defect is fixed. The mechanism it was filed to
+witness has been witnessed.

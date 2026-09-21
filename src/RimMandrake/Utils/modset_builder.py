@@ -217,6 +217,31 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rut.patches", "mandrake.rsw.swbestiary"],
         "dlc": True,
     },
+    "desertplants": {
+        "why": "Live-verify the desert shade plants and the SWBestiary body-part "
+               "repoint in one load: DESERT_LEACHMOSS_LIVE_VERIFY_1 (RM_Leachmoss "
+               "spawn competition on RUT_Desert), VENOMVINE_LIVE_VERIFY_1 "
+               "(CompContactVenom / MapComponent_ContactVenom), and "
+               "SWBESTIARY_BODYPART_LIVE_VERIFY_1 (zero 'BodyPartRecord with null "
+               "def' / RSW_ body-part cross-reference lines). All three subjects "
+               "meet in RUT_Desert's wildPlants, which names RM_Leachmoss and "
+               "RM_Venomvine (mandrake.rm.environmentalhazards), RSW_Ultracactus "
+               "and four more SWBestiary plants, and RUT_Staggerseed "
+               "(mandrake.rut.ashkarrflora) -- a MayRequire that does not resolve "
+               "drops the entry SILENTLY, so every one of those mods must be "
+               "present or the biome reads as misconfigured rather than absent. "
+               "mandrake.rm.proximityhatch is named explicitly because SWBestiary "
+               "carries it only under <loadAfter>, which closure does not walk.",
+        "want": [
+            BRIDGE,
+            "mandrake.rm.environmentalhazards",
+            "mandrake.rut.patches",
+            "mandrake.rut.ashkarrflora",
+            "mandrake.rsw.swbestiary",
+            "mandrake.rm.proximityhatch",
+        ],
+        "dlc": True,
+    },
     "diving": {
         "why": "Prove SCALD_DIVING_MOD_1's dive-site float menu, job "
                "completion, terrain burn ticks and Mod Settings load clean "
