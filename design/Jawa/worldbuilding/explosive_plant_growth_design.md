@@ -56,7 +56,7 @@ Qualifying, per `water_taxonomy.csv`:
 | `crack_flood` | the flood — the canonical soak; its row already says `soak->explosive plant growth` | the Cracked Lands bloom |
 | `river_steam` | Greentide rivers + the steam | ⚠️ **No longer a permanent soak.** Owner 2026-09-21 replaced permanent-soak-in-the-wet-biomes with the standing ×10 ambient rate (§0). The Greentide is this mechanic's daily home as *growth*, never as a repeating detonation. |
 | `slime_flood` | Slime floodwater | soaks on its way through |
-| `miasma_axis` | fresh side only | the surge line decides which half blooms |
+| `miasma_axis` | fresh side only | the surge line decides which half blooms ⚠️ the Miasma is a ×10 biome (§0) and therefore never detonates — read "blooms" as Churn, not Burst |
 | `red_water` | Contagion rain, and the sterilized descent into dayside rivers (R-H7) | rain-fed soak at the peaks |
 | `scald_melt` | peak runoff | floods with a schedule (R-H1) |
 | player irrigation | any potable/fresh water spent onto ground | the player verb, §4 |
@@ -303,16 +303,19 @@ What keeps the watching *dangerous* rather than cute:
 
 ### 2026-09-20 — the default Burst, and it sows
 
-**The Burst is the ruled default terminal moment, and its sown ring ignores the
-player's zones.** He was offered three shapes — sow-and-ignore-zones, a pop that
-sows nothing, and a middle that sows only outside built ground — and took the
-first. So a burst is always an encroachment event: sprouts come up in fields, on
-floors and in doorways, and grow ×4 the moment they exist.
+**The Burst's sown ring ignores the player's zones.** He was offered three shapes —
+sow-and-ignore-zones, a pop that sows nothing, and a middle that sows only outside built
+ground — and took the first. So a Burst is always an encroachment event: sprouts come up in
+fields, on floors and in doorways, and grow the moment they exist.
 
-⇒ What this settles beyond §3: the SURVIVE verbs in §4 are now load-bearing rather
-than optional flavour, because the player must have an answer — cut the charging
-plant, keep ground dry, salt it, or never build where water pools. And the
-per-biome variants below inherit a ruled default to diverge FROM.
+⚠️ **The Burst is no longer the DEFAULT top** — it was on 2026-09-20 and is not now. The
+default is the Churn (§3, owner 2026-09-21), and the Burst is the rare violent top reserved
+for dry-adapted plants. Everything above about the Burst's *content* still stands; only its
+reach changed.
+
+⇒ What this settles beyond §3: the SURVIVE verbs in §4 are load-bearing rather than
+optional flavour, because the player must have an answer — cut the charging plant, keep
+ground dry, salt it, or never build where water pools.
 
 ### 2026-09-10 morning batch — all four answered
 
@@ -404,9 +407,9 @@ trait, and is **NOT yet ruled** — it was asked as a biome question and he redi
 
 | case | ruling |
 |---|---|
-| **Greentide** | **Fruit-glut, not burst.** Permanently-soaked plants dump a heavy fruit crop and reset. Keeps the Burst rare and frightening where water is an event. |
+| **Greentide** | ⚠️ **Retired 2026-09-21.** The fruit dump is now part of the default Churn, so there is no separate fruit-glut behaviour; those plants are Churn plants with a heavy produce yield. The intent — keep the Burst rare and frightening — is carried by the water-scarcity rule instead. |
 | **Slime** | **Slime comes up, not sprouts.** The burst still pays its harvest, but the ring it sows turns the ground to slime — farming there becomes a decision, not free food. |
-| **Pyrelands** | **Burst leaves dry tinder** — husk, chaff, a ring of quickgrass, all fuel. Growth loads the fire loop instead of fighting it. CHEAP: the normal Burst with different debris. |
+| **Pyrelands** | **Burst leaves dry tinder** — husk, chaff, a ring of quickgrass, all fuel. Growth loads the fire loop instead of fighting it. CHEAP: the normal Burst with different debris. 🔑 `TINDER` **is a Burst**, so under ruling 4 it only lands on plants whose own identity is dry-adaptation — which the Pyrelands' burn-scar flora are. A wet-living plant cannot carry it. |
 
 ⚠️ Each is recorded above as a plant property, per the reframing.
 
@@ -426,7 +429,7 @@ itself.
 ## 9. The 2026-09-21 sitting — the owner reshaping the whole capability
 
 He opened it with a worry: *"I fear that this entire capability has become distorted, and
-I'd like to restore its original intention."* Six rulings came out of it. They are recorded
+I'd like to restore its original intention."* Seven rulings came out of it. They are recorded
 in place above; this is the index.
 
 | # | ruling | where |
