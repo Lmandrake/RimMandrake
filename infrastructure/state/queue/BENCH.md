@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:53:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:55:31Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -580,16 +580,6 @@ kind:     task
 thin:     no ## spec
 summary:  SPECIESTRAITSOVERAPTITUDES1 — skill bonuses are the wrong instrument for species character
 prose:    infrastructure/state/items/SPECIES_TRAITS_OVER_APTITUDES_1.md
-
-## DEAD_BIOME_DEFS_IN_PROSE_1 Pre-repaint donor biome defNames are still embedded in item and design prose - three found by accident today, each carrying a number or a plot fact that reasoning depends on
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  DEADBIOMEDEFSINPROSE1 — the repaint cleaned the table, not the prose
-prose:    infrastructure/state/items/DEAD_BIOME_DEFS_IN_PROSE_1.md
 
 ## FALL_LINE_ARRIVAL_MECHANISM_1 Build the Fall Line arrival mechanism for the 15 species pulled from ambient wildAnimals
 state:    proposed
