@@ -69,10 +69,33 @@ def case_command(quote):
             '--owner-said "%s"') % quote
 
 
+def game_said_command(quote, state="down"):
+    """The OWNER_SAID_FLAG_BYPASS_1 shape: `./game --said "..." <state>`."""
+    return './game --said "%s" %s' % (quote, state)
+
+
+def blanket_ruling_said_command(quote):
+    """apply_blanket_ruling.py's own `--said` flag -- same contract, same field."""
+    return ('python3 src/RimMandrake/Utils/apply_blanket_ruling.py '
+            '--decision replace --said "%s" --apply') % quote
+
+
 CASES = [
     # ---- must DENY: quote never typed this session -------------------------
     (DENY, TRANSCRIPT_WITH_REAL_QUOTE, case_command("autonomous FOUNDRY work")),
     (DENY, TRANSCRIPT_LAUNDERED_ONLY, case_command("autonomous FOUNDRY work")),
+
+    # ---- OWNER_SAID_FLAG_BYPASS_1: bare --said (./game, apply_blanket_ruling.py) ----
+    (DENY, TRANSCRIPT_WITH_REAL_QUOTE,
+     game_said_command("FOUNDRY closing the beastmechanics verification load")),
+    (DENY, TRANSCRIPT_WITH_REAL_QUOTE,
+     blanket_ruling_said_command("autonomous FOUNDRY work")),
+    (ALLOW, TRANSCRIPT_WITH_REAL_QUOTE, game_said_command(REAL_QUOTE)),
+    (ALLOW, TRANSCRIPT_WITH_REAL_QUOTE, blanket_ruling_said_command(REAL_QUOTE)),
+    # --owner-said must never double-match as a bare --said and vice versa --
+    # both are just "provable or refused", so this is really an ALLOW/DENY
+    # symmetry check, not a new code path.
+    (ALLOW, TRANSCRIPT_WITH_REAL_QUOTE, "./game up"),  # no --said at all
 
     # ---- must ALLOW: the owner really typed it, this session ---------------
     (ALLOW, TRANSCRIPT_WITH_REAL_QUOTE, case_command(REAL_QUOTE)),
