@@ -38,6 +38,17 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 
+# 🔴 A TIER'S `why` TEXT CARRIES EMOJI, AND WINDOWS PYTHON DEFAULTS TO cp1252.
+# Printing the `shrublandfauna` tier's 🔑 raised UnicodeEncodeError and aborted
+# --apply BEFORE ModsConfig was written, so the swap silently did not happen and
+# the next launch ran the previous list (FOUNDRY, 2026-09-21). PYTHONIOENCODING
+# does not survive the WSL->python.exe hop, so the fix has to live in the script.
+for _s in (sys.stdout, sys.stderr):
+    try:
+        _s.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 ROOT = os.path.abspath(os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 # Per-platform, not hardcoded to C:\ — see src/RimMandrake/Utils/game_paths.py. These were
