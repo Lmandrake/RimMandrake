@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T09:05:00Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-21T09:10:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1470,3 +1470,13 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  GELATINOUSSLIMEFIRSTLOADERRORS1 — the first load with the mod active found three faults
 prose:    infrastructure/state/items/GELATINOUSSLIME_FIRST_LOAD_ERRORS_1.md
+
+## TITANOSLIME_PERMANENT_GROWTH_LIVE_1 Prove Titanoslime growth is permanent in a running game - not testable from a load, needs a scratch map
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  TITANOSLIMEPERMANENTGROWTHLIVE1 — the one ruling from 2026-09-21 still unproven
+prose:    infrastructure/state/items/TITANOSLIME_PERMANENT_GROWTH_LIVE_1.md

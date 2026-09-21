@@ -183,3 +183,40 @@ made a crash look like *this* crash.
 
 ⇒ The live load is still owed, unchanged. The artifact is built and waiting; the next
 bridge window on a healthy game closes it.
+
+
+## ✅ PROVEN LIVE 2026-09-21 — 6 of 6 founders carry `Wimp`
+
+The live test the item was waiting on. `FOUNDER_IMPORTER_LIVETEST_2026-09-21` loaded on the
+full **620-mod** list (cold load, bridge up 1005 s), then each founder read back by
+`jawa/pawn_traits`:
+
+| founder | traits |
+|---|---|
+| Griz / The Hands | Jealous, RUT_Jawa_ReapsTheFlames, Bisexual, **Wimp**, Greedy, Industriousness |
+| Nekko / Captain | Brawler, VTE_Ecologist, Gay, **Wimp**, Nerves |
+| Sekki / The Long Pot | VTE_Insomniac, Bisexual, **Wimp**, Gourmand, Neurotic |
+| Tobb / Keeper | Immunity, VTE_Dunce, Bisexual, **Wimp**, Ascetic |
+| Wim / Twice-Kin | VTE_Submissive, Bisexual, **Wimp**, Kind |
+| Yeku / First-Hatched | TooSmart, Psychopath, Gay, **Wimp**, ShootingAccuracy |
+
+**6 of 6 resolved, 6 of 6 carry `Wimp`.** Attempt 1 lost it from 5 of the 6 with nothing in
+`Player.log`; the gene-loadID remap holds live, not just offline.
+
+🔑 **The founders are spliced into a 74-colonist destination**, so "6 pawns carry Wimp" would
+NOT have been proof on its own — `Wimp` is an ordinary vanilla trait others could hold. Each
+founder was addressed by its own pawn id from
+`design/Jawa/worldbuilding/founders/founder_*.xml` and checked individually.
+
+### Two query bugs on the way, both of which produced a confident wrong zero
+
+⚠️ Worth recording because each looked exactly like a catastrophic result:
+1. `jawa/pawn_detail` **does not exist** — guessed, not read. Every call errored per pawn and
+   the script printed **"0 of 74 colonists carry Wimp"**.
+2. `jawa/pawn_traits` takes **`pawn`**, not `pawnId`. The client refused rather than letting
+   the bridge silently discard the argument — the guard working — but the tally again read
+   **"0 of 6"**.
+
+🔑 Both are the house rule: **a count that is alarmingly clean is a query bug until proven
+otherwise.** Read the tool's schema; never type a parameter or a `jawa/` leaf you have not
+just read.

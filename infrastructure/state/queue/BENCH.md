@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T08:25:31Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-21T09:10:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -221,7 +221,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -229,7 +229,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -611,16 +611,6 @@ thin:     spec, verify and criteria all present
 summary:  1. Ask him: do region names carry The ? (Live says no; the painter says yes, for all 10.)
 prose:    infrastructure/state/items/ASHKARR_PAINTER_NAMES_DIVERGED_1.md
 
-## FOUNDERS_IMPORTER_OWED_1 The founders round trip needs a committed importer, not prose: a gene loadID collision silently drops the Wimp trait from 5 of 6 founders with nothing in the log
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  1. importfounders.py <destination.rws: splice the 8 fragments into the destination's
-prose:    infrastructure/state/items/FOUNDERS_IMPORTER_OWED_1.md
-
 ## SHRUBLAND_TREE_GUARDIAN_1 Tree-guardian uniques: owner card (candidate, not yet ruled)
 state:    proposed
 row:      unassigned
@@ -651,16 +641,6 @@ thin:     spec, verify and criteria all present
 summary:  1. Decide whether each mod should be in the list (this is the owner's call — a mod-list
 prose:    infrastructure/state/items/OUR_MODS_DEPLOYED_NEVER_ACTIVATED_1.md
 
-## FORGE_ROSTER_UNRECONCILED_BMT_1 RUT_TheForge's roster JSON carries 27 unreconciled BMT_ names with zero live wiring - the same gap the Rot has, and the largest of four
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  For each of the 49 names, in the Rot's pattern: is it already owned (under any name)?
-prose:    infrastructure/state/items/FORGE_ROSTER_UNRECONCILED_BMT_1.md
-
 ## WORLD_LABEL_SIZE_HIERARCHY_1 All 71 world features sit at the maxDrawSizeInTiles floor - owner ruled size the whole planet
 state:    proposed
 row:      unassigned
@@ -677,6 +657,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WORLDVIEW_MISLABEL_FALLOUT_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Find every artifact produced by worldview.py/worldmap.py that carries region LABELS
 prose:    infrastructure/state/items/WORLDVIEW_MISLABEL_FALLOUT_1.md
