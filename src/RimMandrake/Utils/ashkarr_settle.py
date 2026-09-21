@@ -77,6 +77,7 @@ import csv
 import heapq
 import os
 import sys
+import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
@@ -84,20 +85,46 @@ WORLD = os.path.join(REPO, "world")
 STEM = os.path.join(WORLD, "ASHKARR_WORLDMAP")
 NEIGHBOURS = os.path.join(WORLD, "world_neighbors_sub7b.csv")
 
+# BARREN_REGIONS_NAME_NOTHING_1: the canonical save is the only trustworthy source
+# of live region/feature names. `world/ASHKARR_WORLDMAP_tiles.csv` is a RECORD
+# exported 2026-09-12, not the planet - a live edit after that date is invisible
+# to it. Never read region names from the CSV for this guard.
+CANONICAL_SAVE_NAME = "CANONICAL_ASHKARR_START_2026-09-12.rws"
+
 MIN_SPACING = 4            # hexes between any two settlements
 EMPTY_RADIUS = 6           # "empty" means no settlement within this many hexes
 MIN_EMPTY_FRACTION = 0.55  # at least this much of the land must stay that empty
 
 # ⛔ Nothing is ever placed in these. The night side and the seas are meant to be blank,
 # and the owner asked for large areas of barrenness by name.
+# 🔴 BARREN_REGIONS_NAME_NOTHING_1, 2026-09-21: 10 of these 22 were old draft names that
+# went through two later renames (the 2026-08-22 fiction polish, then the 2026-09-08 V19
+# pass) without this set ever being updated, so they matched no live feature and silently
+# un-protected that ground. Traced name-for-name via git history
+# (design/Jawa/worldbuilding/named_places_draft.md commit 8770e19f3, then commit
+# 2174503fe for the two that were renamed a second time) and confirmed against the
+# canonical save's live <features> block, not the stale tiles CSV:
+#   The Frostbloom -> Stillwood        The Deep Bloom -> Blindwood
+#   The Coldspore   -> Ashwood         The Crown Rot   -> Capwood
+#   The Last Scrub  -> Frostvein (via "The Thornend", V19-renamed 2026-09-08)
+#   The Cold Bloom  -> Frostcaps       The High Rot    -> Hanging Wood
+#   The Grayrot     -> Mould Marches   The Shoulder    -> Sunshelf (via "The Coldshelf")
+#   The Last Green  -> The Verge
+# validate_barren_regions() below re-checks this set (and HELIX_BARREN_OK) against the
+# live planet every run, so a future rename fails loud instead of failing open again.
 BARREN_REGIONS = {
     "Deadstone", "Ammonia Flats", "Umbra", "Nightspill",
     "Twilight Sea", "Grey Sea", "Scald", "Rust Cathedral",
-    "Cinderdark", "The Frostbloom", "The Deep Bloom", "Fuelmere",
-    "The Coldspore", "The Crown Rot", "The Last Scrub", "Rimewall",
-    "The Cold Bloom", "Ashen Wastes", "The High Rot", "The Grayrot",
-    "The Shoulder", "The Last Green",
+    "Cinderdark", "Stillwood", "Blindwood", "Fuelmere",
+    "Ashwood", "Capwood", "Frostvein", "Rimewall",
+    "Frostcaps", "Ashen Wastes", "Hanging Wood", "Mould Marches",
+    "Sunshelf", "The Verge",
 }
+
+# The Ascendant Helix are exempt from BARREN_REGIONS in exactly these named regions -
+# see `ok()`'s docstring below. Same 2026-09-21 staleness as BARREN_REGIONS, same fix.
+HELIX_BARREN_OK = {"Rimewall", "Frostcaps", "Ashen Wastes", "Mould Marches",
+                   "Sunshelf", "The Verge", "Hanging Wood"}
 
 HOMESTEAD_NAMES = [
     "Dryhold", "Fogline", "The Catchment", "Saltfurrow", "Dewfall", "Stillwater Farm",
@@ -135,6 +162,62 @@ HOMESTEAD_WHY = ("moisture farming reaches wherever the air holds anything - "
                  "vaporators, aquifers, and a covenant that the wells stay free")
 HUTT_WHY = ("beside a near-desert oasis - the well is guarded and is NOT free")
 OASIS_WHY = "a Hutt well - dug for the holding beside it, and charged for"
+
+
+def live_feature_names(save_path=None):
+    """The planet's real region/feature names, read straight from the canonical
+    save's <features> block - never from the tiles CSV (`world/ASHKARR_WORLDMAP_
+    tiles.csv`), which is a RECORD exported 2026-09-12, not the planet: a live
+    edit after that date is invisible to it (BARREN_REGIONS_NAME_NOTHING_1).
+
+    The <features> element is NESTED (`<features><features><li>...`) - reaching
+    the inner one by tag lookup, not by regexing to the first `</features>`, is
+    what keeps this from handing back an unparseable fragment.
+    """
+    if save_path is None:
+        sys.path.insert(0, HERE)
+        from game_paths import SAVES  # noqa: E402
+        save_path = os.path.join(SAVES, CANONICAL_SAVE_NAME)
+    if not os.path.exists(save_path):
+        sys.exit("REFUSING: cannot validate region names against the live planet - "
+                  "the canonical save is not reachable at %s on this machine. Fix the "
+                  "path or run this where it is reachable; do not skip the check "
+                  "(BARREN_REGIONS_NAME_NOTHING_1)." % save_path)
+    root = ET.parse(save_path).getroot()
+    world = next(root.iter("world"), None)
+    outer = world.find("features") if world is not None else None
+    inner = outer.find("features") if outer is not None else None
+    if inner is None:
+        sys.exit("REFUSING: %s has no readable <world><features><features> block - "
+                  "cannot validate region names against it." % save_path)
+    names = set()
+    for li in inner.findall("li"):
+        n = li.find("name")
+        if n is not None and (n.text or "").strip():
+            names.add(n.text)
+    return names
+
+
+def validate_barren_regions(named_sets, save_path=None):
+    """🔴 The loud-failure guard BARREN_REGIONS_NAME_NOTHING_1 exists for: a
+    region-name literal that matches no live feature must REFUSE the run, not
+    silently leave that ground unprotected (the old behaviour - `ok()`'s
+    membership test just returns False for a name nothing carries).
+
+    `named_sets` is [(label, set_of_literals), ...]; every literal in every set
+    must equal a live feature name exactly.
+    """
+    live = live_feature_names(save_path)
+    problems = [(label, sorted(n for n in names if n not in live))
+                for label, names in named_sets]
+    problems = [(label, bad) for label, bad in problems if bad]
+    if problems:
+        lines = ["REFUSING: region-name literals match no live feature on the planet. "
+                  "This guard exists because that used to be SILENT - the ground was "
+                  "simply left unprotected (BARREN_REGIONS_NAME_NOTHING_1)."]
+        for label, bad in problems:
+            lines.append("  %s: %s" % (label, ", ".join(bad)))
+        sys.exit("\n".join(lines))
 
 
 def load():
@@ -267,6 +350,12 @@ def main():
                   "against rules the owner already reversed. Fix the four rules first, "
                   "or pass --i-know-its-stale once you have re-verified them by hand.")
 
+    # 🔴 BARREN_REGIONS_NAME_NOTHING_1: validate BEFORE anything is computed against
+    # these sets. A literal that matches no live feature must refuse the run, not
+    # silently leave that ground unprotected.
+    validate_barren_regions([("BARREN_REGIONS", BARREN_REGIONS),
+                              ("HELIX_BARREN_OK", HELIX_BARREN_OK)])
+
     T, nb = load()
     srows = list(csv.DictReader(open(STEM + "_settlements.csv", encoding="utf-8")))
     lrows = list(csv.DictReader(open(STEM + "_landmarks.csv", encoding="utf-8")))
@@ -329,8 +418,6 @@ def main():
                   PROPANE_WHY, pl, a.propane, False))
 
     # ── Ascendant Helix: cold, isolated, on the nightward edge ────────────────
-    HELIX_BARREN_OK = {"Rimewall", "The Cold Bloom", "Ashen Wastes", "The Grayrot",
-                       "The Shoulder", "The Last Green", "The High Rot"}
     hx = [t for t in T if ok(t, HELIX_BARREN_OK) and 98 <= T[t]["arc"] <= 128
           and T[t]["hill"] <= 4 and T[t]["biome"] not in ("Ocean", "Lake")]
     plans.append(("Ascendant Helix", "Jawa_AscendantHelix", HELIX_NAMES, HELIX_WHY,
