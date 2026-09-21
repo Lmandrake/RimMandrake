@@ -68,3 +68,12 @@ as a satisfied hard dependency plus the open design questions above.
 The giant-commensal mechanic is a filed, correctly-sequenced item with a
 real, unblocked C# foundation to build against — not an unfiled note waiting
 on infrastructure that no longer needs building.
+
+## second consumer, added 2026-09-20 (COMMISSION_LEDGER_CLEANUP_1)
+
+`DESERT_GLITTER_BIRDS_COMMENSALS_1` wants the identical shade-FOLLOW
+mechanism for the desert's own megafauna (`RSW_ShadeWhale`, landed same
+pass) rather than the extreme-desert giants this item covers. Whoever builds
+the shade-follow route here (tracked shadow-caster vs. `ShadeAt`+proximity
+heuristic) should build it as a shared mechanism with that item as the
+second consumer, not have it re-derived independently.
