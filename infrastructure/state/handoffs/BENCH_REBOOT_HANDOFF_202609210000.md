@@ -43,9 +43,14 @@ actually load. Ask *who held the wrong belief, and what do THEY read?*
 - ⚠️ **10 "contaminated" Contagion plants are parked on a plant-trait question**
   (`EXPLOSIVE_PLANT_GROWTH_1`): does burning one kill the charge, or throw spore chaff?
   The designer refused to invent it. It wants to become a plant trait.
-- ⚠️ **`MLIE_FAUNA_ABSORPTION_1` has stalled**, and it is the retirement gate for **66
-  MEASURED identical-label donor twins**. 26+ species unported, and no plan at all yet
-  for `sarg.alphaanimals`.
+- ⚠️ **`DESERT_FAMILY_PORT_EXECUTION_1` is the live retirement gate for 66 MEASURED
+  identical-label donor twins** (both the donor's def and our `RSW_` def live at once,
+  same label). RE-MEASURED 2026-09-20: its **defs are 85 of 109 done**, 11 rows remain
+  unblocked and 12 need the owner. The real gap is **ART — 3 of 84 ported rows carry our
+  own texPath; 81 still point at `swanimals/` and `AA_` donor paths.** There is still no
+  retirement plan at all for `sarg.alphaanimals`.
+  *(This line previously named `MLIE_FAUNA_ABSORPTION_1` as the stalled gate. That item is
+  **done**, closed at `0d1313d99` — corrected 2026-09-20.)*
 
 ## What is half-done, and where it stops
 
