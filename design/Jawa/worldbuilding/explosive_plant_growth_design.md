@@ -20,9 +20,21 @@ designed to recur: *"a great moment again and again."*
 
 `PLANT_GROWTH_SPEC.md` already rules the planetary baseline: every plant grows
 ×4 (trees ×2.5, terminator ×0.4) via one Harmony postfix on `Plant.GrowthRate`.
-That spec is the **ambient tier** and stands untouched. This design adds the
-**event tier on top**: a plant that gets *soaked* enters a temporary charged
-state whose multiplier stacks on the baseline. 🄸 INVENTED: the stack is
+That spec is the **ambient tier** and stands untouched everywhere except the three wet
+biomes below. This design adds the **event tier on top**: a plant that gets *soaked*
+enters a temporary charged state whose multiplier stacks on the baseline.
+
+🔴 **A THIRD TIER, ruled by the owner 2026-09-21: the wet biomes run a higher AMBIENT
+rate.** The Greentide, the Miasma and the Fever Wood grow at **×10 instead of the planetary
+×4, always, with no soak involved** — verbatim: *"It's the same always-on, but stronger:
+x10 instead of x4 growth here."* That is what carries his standing register (*"the
+uncomfortable groaning swelling of ever shifting growth"*), and 🔴 **it replaces
+soak-bursting in those biomes entirely** — *"x10 is enough"*, because standing water there
+would otherwise fire a top over and over. Those plants still Churn (§3); they never Burst.
+
+⚠️ **Two different ×10s live in this document and they are not the same number.** The
+ambient ×10 above is a biome's standing growth rate. The soak multiplier below is an event
+multiplier that stacks on ×4. Do not collapse them. 🄸 INVENTED: the stack is
 multiplicative (soaked ≈ ×10 on top of the ambient ×4 → ~×40 vanilla-relative
 — a 3-day plant finishes in under two in-game hours, which is the "watch it
 happen" speed). The spec's R-G5 exempt list (anima, Gauranlen, ambrosia,
@@ -42,7 +54,7 @@ Qualifying, per `water_taxonomy.csv`:
 | kind | route | note |
 |---|---|---|
 | `crack_flood` | the flood — the canonical soak; its row already says `soak->explosive plant growth` | the Cracked Lands bloom |
-| `river_steam` | Greentide rivers + the steam | **permanent soak — the biome's weather** (sheet §4: "this is EXPLOSIVE_PLANT_GROWTH_1's daily home") |
+| `river_steam` | Greentide rivers + the steam | ⚠️ **No longer a permanent soak.** Owner 2026-09-21 replaced permanent-soak-in-the-wet-biomes with the standing ×10 ambient rate (§0). The Greentide is this mechanic's daily home as *growth*, never as a repeating detonation. |
 | `slime_flood` | Slime floodwater | soaks on its way through |
 | `miasma_axis` | fresh side only | the surge line decides which half blooms |
 | `red_water` | Contagion rain, and the sterilized descent into dayside rivers (R-H7) | rain-fed soak at the peaks |
@@ -70,51 +82,120 @@ begins to *tremble*, and the last seconds carry a rising creak/strain sound.
 Then the top arrives — §3. The tells are the survival grammar (§5): a player
 who reads them has time to act; one who doesn't is standing next to it.
 
-## 3. The terminal moment
+## 3. The terminal moment — RESHAPED BY THE OWNER 2026-09-21
 
-### The default: the Burst — RULED 2026-09-20 (owner)
+🔴 **There are now TWO tops, not one.** Broad swelling, rare drama (owner, 2026-09-21):
+nearly every plant visibly swells when soaked, so wet green is always unnerving; only a
+designed minority actually detonates. What the majority does is the **Churn**.
 
-An overgrown plant **bursts** — a wet, violent seed-discharge: a visible pop
-with a shockwave of chaff and sap, the plant collapses to a spent husk, and a
-ring of ground around it is *sown* — sprouts erupt over the following hour.
+### The Churn — the DEFAULT top, RULED 2026-09-21 (owner)
+
+An overgrown plant **splits and dies**, drops its fruit, and **sows sprouts around itself**
+which grow and split in their turn. Owner, verbatim: *"add sprouts next to it that keep
+going to keep the churn. And the fruit. So I guess this is a reversing back to the fruit
+burst at the top, plus the plant dies and makes babies too. Endless churn. That's good."*
+
+- **SEES**: swell past natural size → strain → the plant cracks open and slumps → fruit on
+  the ground → a ring of new sprouts already rising.
+- **DROPS**: the plant's produce, and the husk.
+- **THREATENS**: nothing directly. No shockwave, no damage, no knockdown. The pressure is
+  the churn itself — the ground keeps producing plants that produce plants.
+- 🔴 **The Churn RESPECTS built ground** (owner, 2026-09-21). Sprouts take fields,
+  stockpiles and open dirt; they do not come up on floors or inside buildings. ⇒ **Only the
+  Burst violates your walls, and that is what makes the Burst the great moment.**
+- 🔑 It is meant to read *"strange and alien and almost frightening"* (his words), not
+  pretty and not rewarding-on-a-timer.
+
+### The Burst — the RARE top, RULED 2026-09-20 (owner), unchanged in content
+
+An overgrown plant **bursts** — a wet, violent seed-discharge: a visible pop with a
+shockwave of chaff and sap, the plant collapses to a spent husk, and a ring of ground
+around it is *sown* — sprouts erupt over the following hour.
 
 - **SEES**: swell → tremble → pop; chaff cloud; the husk; the ring greening.
-- **DROPS**: the plant's produce at a premium yield, scattered (fruit, seed
-  pods, plant matter — biome roster's call), plus the husk as low-grade fuel.
-- **THREATENS**: minor blunt/cut damage and knockdown in the burst radius
-  (lethality ceiling is §7.1); **the sown ring does not respect zones** —
-  sprouts come up in fields, floors, and doorways, and on this planet they
-  grow ×4 the moment they exist. The burst is never just fireworks: every
-  burst is an encroachment event.
-  🔴 **RULED by the owner 2026-09-20**, choosing this over a pop-that-sows-nothing
-  and over a zone-respecting middle: the sowing stays, and it stays indifferent to
-  what the player has built. That indifference is the mechanic — growth is pressure,
-  not scenery.
+- **DROPS**: the plant's produce at a premium yield, scattered, plus the husk as low-grade
+  fuel.
+- **THREATENS**: minor blunt/cut damage and knockdown in the burst radius (lethality
+  ceiling is §7.1); **the sown ring does not respect zones** — sprouts come up in fields, on
+  floors and in doorways, and on this planet they grow the moment they exist.
+  🔴 **RULED 2026-09-20**, chosen over a pop that sows nothing and over a zone-respecting
+  middle. That indifference is the mechanic — growth is pressure, not scenery.
 
-One burst is a startle; the recurring "great moment" is **synchrony** — every
-plant a flood soaked charges on the same clock, so a soaked landscape goes up
-like popcorn over an afternoon, a rolling wave of pops the player watches from
-whatever high ground they kept.
+The recurring "great moment" is **synchrony**: every plant a flood soaked charges on the
+same clock, so a soaked landscape goes up like popcorn over an afternoon.
 
-### Per-biome variants — where a sheet's character demands one
+### 🔴 What decides which — WATER SCARCITY (owner ruling, 2026-09-21)
 
-| biome | terminal moment | sees / drops / threatens |
+**A plant adapted to rare water bursts. A plant that lives permanently wet churns.** The
+dry-adapted plant gets one chance in years and spends everything on it; the wet-living
+plant has no reason to. ⇒ **the driest places hold the most violence**, and the wet jungles
+hold none.
+
+This is the same axis as his 2026-09-20 reframing (§8) — behaviour rides the plant's own
+identity and adaptation, never the tile it stands on. It is a RULE, not a hand-picked list,
+so a player can learn it and a builder can derive it.
+
+⛔ **The per-biome variant table that stood here is DELETED** (owner, 2026-09-09 —
+inaccurate material is removed, not bannered). It was superseded as a structure on
+2026-09-20 and is now superseded in content too. Its evidence about which plants want which
+behaviour survives in `design/RimUtinni/explosive_plant_growth_roster.md`.
+
+### The variants that survive, as plant properties
+
+| key | what the plant does at the top | ruled |
 |---|---|---|
-| **Cracked Lands — the Bloom** (§10b, half-designed there) | the flood's soak runs the default Burst at carpet scale: bloom-crop erupts from the wet mud, charges in synchrony, and seed-storms the pans — then the whole carpet dies to dust on the dry (boom-bust on the flood's clock, sheet-ruled) | SEES: mud → green carpet → chaff white-out → dust. DROPS: **the bloom harvest** — the market-drowning crop, fresh exactly as long as the mud (sheet §11). THREATENS: the carpet wakes the Spenders and pulls every flier and ambush predator in the region — harvesting the bloom means working inside a feeding frenzy on a floor the sheet says never to live on. |
-| **Greentide — the Fall and the Fruit** (permanent soak) | no burst-per-plant — here the ladder is trees: grow → crack → **FALL**. The treefall crash IS the biome's recurring terminal moment (sheet: three fellers, one fall event), and the understory's top is **fruiting overload** — the fruit that yearns to be eaten, dumped in gluts 🄸 | SEES: growth inch-by-inch over an hour (sheet §5), doors blocked, canopies toppling. DROPS: greenwood beyond counting; hardwood from fallen giants; the fruit gluts. THREATENS: falling trees crush; **plants grow into and block your doors** (sheet-ruled); the roads move. The blower doorway is the counter-tool, already ruled. |
-| **Webwork — the Churn** (drank a river; sheet §4c already rules it) | the engine in **self-consuming mode**: thicket surges close gaps and open new ones; the terminal moment is a path dying around you | SEES: the wall closing. DROPS: nothing — the Webwork's payoff is elsewhere. THREATENS: entombment; the safe path you mapped is temporary. (No new rule — this row just names the sheet's own use of this engine.) |
-| **Pyrelands — the Green Flash → the Cure** 🄸 | river-margin floods (R-H1) soak the burn scar: regrowth at watchable speed — then the terminal moment is not a burst but **the cure**: green → gold → standing tinder in hours, and R-H4's fire loop owns the rest | SEES: black scar → green sprint → gold. DROPS: the ash-fertility harvest window (R-H5), grazers following the flush. THREATENS: what you just watched grow is next week's fuel — the bloom IS the fire's supply line, and it grew around your buildings. |
-| **Fever Wood — the Nectar Flush** 🄸 (owner Q3) | the giant stillness must hold: no bursting, no surface spectacle. A soak-strike into the mud (a pool disturbance, an oil-seep event) runs the growth **inside the giants** — bark visibly swelling, boughways thickening and re-routing (the sheet's "byways slowly vary", accelerated on screen), and the thornbugs flush with nectar | SEES: the wood itself moving — quiet, creaking, wrong. DROPS: a nectar glut at the herd-groves. THREATENS: a boughway that re-routes under a standing pawn; and a flush is loud news — both raiders smell it. Never touches the pools; ban 5 (no rain, no flowing water) holds. |
+| `CHURN` | **the default** — split, die, fruit, sow sprouts that respect built ground | 2026-09-21 |
+| `BURST` | the rare violent top, sown ring ignores zones | 2026-09-20 |
+| `SLIME` | a top whose ring turns the ground to slime rather than sprouts | 2026-09-20 |
+| `TINDER` | a Burst whose debris is fuel — husk, chaff, a ring of quickgrass | 2026-09-20 |
+| `RUPTURE` | the contaminated top — see below | 2026-09-21 |
+| `FLUSH` | the Fever Wood's interior nectar flush, no surface spectacle | 2026-09-10 |
 
-**Carve-outs**: terminator/poison forest (R-G3 — never soaks, stays stunted);
-the Rot and all fungal biomes (the Sheen is not water — taxonomy); every
-saline shore. The exceptions are what make the rule readable, same argument
-as R-G3.
+⚠️ `GLUT` is **retired as a separate key**: the fruit dump is now part of the default Churn,
+so a fruit-glutting plant is simply a Churn plant with a heavy produce yield. Owner,
+2026-09-21: *"Churn, fruit glut, let it be strange and alien and almost frightening. Just
+not explosive in the wet jungles."*
+
+### 🔴 RUPTURE — the contaminated plants, RULED 2026-09-21 (owner)
+
+The question he redirected on 2026-09-20 is answered. A contaminated plant does not burst;
+it **ruptures, and turns toward the work of the bioweapon at open throttle**. Verbatim:
+
+> *"Ruptures and turns towards the work of the Bioweapon contagion overdrive. Emits red
+> slimes, occular entities, and more little sprouts around it. Red gas/fog in a cloud. Vile.
+> Extra mutation hediffs for player caught in this without 100% vac protection."*
+
+- **SEES**: a swelling that goes wrong-coloured, then a rupture rather than a pop — a
+  spreading red gas/fog cloud, not a scatter of chaff.
+- **SPAWNS**: red slimes and ocular entities, plus little sprouts around it. The plant is
+  not reproducing so much as **manufacturing** — which is what the Contagion is
+  (`the_contagion.md`: *the weapon at open throttle*; the Helix call it the Overdrive).
+- **THREATENS**: the cloud carries **extra mutation hediffs for any pawn in it without 100%
+  vacuum protection**. Sealed suits are the answer; nothing else is.
+- 🔑 This is the one top that is *vile* rather than merely dangerous, and it is the reason
+  the Contagion is somewhere you visit in a suit and leave.
+
+
+**Carve-outs**: terminator/poison forest (R-G3 — never soaks, stays stunted); the deep
+desert (`deep_desert.md` §6 HARD BAN 4 — no fast growth at all); the Rot and all fungal
+biomes (the Sheen is not water — taxonomy); every saline shore. The exceptions are what
+make the rule readable, same argument as R-G3.
+
 
 ## 4. The player verbs — trigger, harvest, survive, weaponize
 
-All 🄸 INVENTED as concrete proposals; the extract's three uses are already
-sheet-ruled (Greentide §7).
+🔴 **RULED 2026-09-21: all four verbs are IN, but two of them are deliberately hard.**
+Owner, verbatim: *"Support (2) but this would be VERY hard to weaponize and trigger
+properly. Support players who try."*
+
+⇒ **Harvest and survive are first-class.** **Trigger and weaponize are possible, expensive
+and unreliable** — they are not a toolkit and must never become a convenient button. The
+design goal is that a player who works at it can pull one off and feel clever; a player who
+expects it to work on demand is disappointed. ⛔ Do not tune trigger/weaponize toward
+reliability; do not add aiming aids, previews or guaranteed outcomes. Blowback stays.
+
+The extract's three uses are already sheet-ruled (Greentide §7); everything else below is
+🄸 INVENTED as a concrete proposal.
 
 - **TRIGGER — irrigation as a tool and a weapon.** Spending fresh water onto
   ground soaks it: a deliberate bloom on demand. **Cost: the water**, and on
@@ -253,12 +334,14 @@ per-biome variants below inherit a ruled default to diverge FROM.
 
 *"All the jungle and river and miasma tiles should have the uncomfortable
 groaning swelling of ever shifting growth."* — a STANDING ambient register,
-not soak-triggered: jungle, river and miasma biomes carry visible ever-shifting
-growth with a groaning audio bed at all times. Proposed biome mapping (BENCH):
-the_greentide (the river), the_miasma, the_rot and the_fever_wood (the
-jungles). This is atmosphere on top of the soak mechanic, and for the Fever
-Wood it sits alongside — and by the owner's later word tempers — the frozen
-sheet's "giant stillness" register: the stillness now groans and shifts.
+not soak-triggered.
+
+🔴 **Given a number and a biome list on 2026-09-21:** the register is the **×10 ambient
+growth rate** (§0), and it runs in **the Greentide, the Miasma and the Fever Wood** — the
+owner picked those three and **excluded the Rot**, because the Rot is fungal, the Sheen is
+not water, and its surge is its own sheet's mechanic. For the Fever Wood this sits
+alongside — and by his word tempers — the frozen sheet's "giant stillness": the stillness
+now groans and shifts.
 
 ## Addendum 2026-09-12 — four small proposals salvaged from a superseded duplicate draft
 
@@ -337,3 +420,35 @@ Mapping `deep_desert` → `RUT_ExtremeDesert` is by elimination: three desert sh
 (`deep_desert`, `desert`, `the_blue_desert`) against three desert BiomeDefs
 (`RUT_ExtremeDesert`, `RUT_Desert`, `RUT_BlueDesert`); the sheet names no defName
 itself.
+
+---
+
+## 9. The 2026-09-21 sitting — the owner reshaping the whole capability
+
+He opened it with a worry: *"I fear that this entire capability has become distorted, and
+I'd like to restore its original intention."* Six rulings came out of it. They are recorded
+in place above; this is the index.
+
+| # | ruling | where |
+|---|---|---|
+| 1 | **Broad growth, rare drama.** Nearly every plant swells when soaked; only a designed minority detonates | §3 |
+| 2 | **The Churn is the default top** — split, die, fruit, sow sprouts, repeat. Endless | §3 |
+| 3 | **The Churn respects built ground; only the Burst violates it** | §3 |
+| 4 | **Water scarcity decides who bursts** — dry-adapted plants burst, permanently-wet plants churn | §3 |
+| 5 | **Contaminated plants RUPTURE** — red gas, red slimes, ocular entities, sprouts, mutation hediffs without full vac protection | §3 |
+| 6 | **The wet biomes run ×10 ambient and never detonate** — Greentide, Miasma, Fever Wood | §0, §7 |
+| 7 | **All four player verbs, but trigger and weaponize stay very hard** | §4 |
+
+**What this does to the original intention.** His two founding lines were *"intimidating
+anywhere water soaks a plant"* and *"a great moment again and again"*. The design had been
+answering the first by making 95 plants burst, which was quietly killing the second. The
+Churn/Burst split answers both: wet green is always unnerving because you cannot tell which
+plant is loaded, and the detonation stays rare enough to still be an event.
+
+### 🔴 What this OWES — the roster must be rebuilt
+
+`design/RimUtinni/explosive_plant_growth_roster.md` assigns 58 plants `BURST` and 13 `GLUT`
+under the old model. Both keys are now wrong at that scale: `GLUT` is retired into the
+default, and under ruling 4 a plant only bursts if its own identity is dry-adaptation.
+⇒ **The roster is regenerated against water-scarcity, not edited.** Expect the great
+majority of the 95 to land on `CHURN`. Nothing is built from the old roster.
