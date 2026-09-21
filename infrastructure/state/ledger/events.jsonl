@@ -10581,3 +10581,5 @@
 {"seat":"BENCH","event":"needs","id":"BIOME_MOD_SPLIT_EXECUTION_1","to":"offline","reason":"All 10 owner questions in spec section 7 ruled 2026-09-21; only the Q2/Q5 name picks remain and they are drafted and waiting","ts":"2026-09-21T08:12:07Z"}
 {"seat":"BENCH","event":"needs","id":"OUR_MODS_DEPLOYED_NEVER_ACTIVATED_1","to":"deploy","reason":"Owner ruled activate both 2026-09-21; AshkarrFlora re-measured as already active, so the remaining act is mechanical - add gelatinousslime to ModsConfig when FOUNDRY frees the bridge","ts":"2026-09-21T08:15:33Z"}
 {"seat":"BENCH","event":"file","id":"SHEET_REVIEWED_FLAG_UNIFORM_1","title":"No uniform way to tell an owner-ruled sheet from an agent prefill - six different keys across 13 sheets","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T08:18:18Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"deploy the Pyrelands rename + Titanoslime build that were blocked by the running game, and activate GelatinousSlime","ts":"2026-09-21T08:20:31Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-21T08:21:55Z"}
