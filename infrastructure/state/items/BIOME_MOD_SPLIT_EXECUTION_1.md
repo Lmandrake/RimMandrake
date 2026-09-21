@@ -106,3 +106,29 @@ and its own Mod Settings, no `RUT_` biome def remains, and `run_selftests.py` is
 
 The RimMandrake layer is a set of biomes any RimWorld game could load; the Utinni layer
 is the Star Wars cast and this campaign's wiring, and nothing else.
+
+## ✅ Phase A is FILED — 23 items, all for FOUNDRY (2026-09-21)
+
+One item per MOD, not per biome, because the build is per mod:
+`STILLSAND` · `LONGSHADE` · `THEROT` · `WASTELAND` · `NIGHTSIDEICE` · `FORSAKENCRAGS` ·
+`BLUEDESERT` · `FLOODEDCANYON` · `LEANINGSCRUB` · `POISONFOREST` · `RUSTCATHEDRAL` ·
+`GREENTIDE` · `WEEPINGSTONES` · `PYRELANDS` · `CONTAGION` · `WEBWORK` ·
+`GELATINOUSSLIME` · `MIASMA` · `THEFORGE` · `FEVERWOOD` · `THESUMP` — each
+`_RM_MOD_BUILD_1` — plus `TERMINALBIOMES_RM_MOD_BUILD_1` (Scald + Propane Lake +
+Twilight Sea + Grey Sea in one mod, each independently toggleable) and
+`LANTERNDEEPS_RM_MOD_BUILD_1` (injection layer, no `RUT_` twin, skips step 3). Warscar
+was already filed as `SCARLANDS_STANDALONE_MOD_1`.
+
+**Start order:** the four twins first — Greentide, GelatinousSlime, Pyrelands,
+FloodedCanyon — because their double maintenance is being paid today. Then anything.
+
+Every item's `spec` field carries Phase A steps 1–6 in full, so a builder starts without
+re-reading the architecture doc.
+
+⚠️ **`PYRELANDS_RM_MOD_BUILD_1` carries a live trap:** the `RM_FE_Pyrelands` →
+`RM_Pyrelands` rename is committed at `84d42c63b` but **built and NOT deployed** (the game
+was running when it landed). Deploy before testing.
+
+⛔ **Phase B is not filed and must not be started** — the planet is painted ONCE, at the
+end, after every biome is its own mod (`BIOME_PAINT_ONCE_AT_THE_END_1`). No item here may
+delete a `RUT_` def or touch a tile.
