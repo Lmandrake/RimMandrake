@@ -448,16 +448,17 @@ and the reskin is the reference image.
    folder moves.
 2. **The label.** `kessrik` / `bark-warden` / `hank-rook`, or his own word. Working label is
    `kessrik` until then; folds into `ARIDSHRUBLAND_SHIPPING_NAMES_1`.
-3. 🔴 **The harvest this creature guards is not built.** `RUT_SweetlineTree` inherits
-   `TreeBase`'s `harvestedThingDef` (wood) and sets no `harvestAfterGrowth`, and
-   `PlantProperties.HarvestDestroys => harvestAfterGrowth <= 0f` (RimWorld/PlantProperties.cs
-   l.205, RimSage this pass) — so today the tree's ONLY harvest is felling it for 160 wood,
-   which destroys the landmark. There is no giant-wool ThingDef anywhere in `src/` (searched
-   `giantwool|giant.wool`, one hit: the tree's own description). The "rare hanging harvest"
-   needs a wool def and a repeat harvest on the tree (`harvestAfterGrowth` + `harvestedThingDef`
-   + a yield/regrow pace matched to the roost's 8–14-day respawn) — a small XML item,
-   prerequisite to this build being a loop rather than a sentry. Not filed by this pass (one
-   file, this one); suggested id `SWEETLINE_WOOL_HARVEST_1`.
+3. ✅ **BUILT, `SWEETLINE_WOOL_HARVEST_1` (2026-09-21).** `RUT_SweetlineTree` now ships
+   `harvestedThingDef` RUT_SweetlineWool (`RUT_SweetlineTree_Items.xml`, ParentName WoolBase)
+   and `harvestAfterGrowth` 0.05, so `HarvestDestroys` is false and both the Harvest and Cut
+   Plant jobs leave the tree standing. harvestYield dropped from TreeBase's 160 (wood) to 20.
+   ⚠️ **Pace does NOT match this spec's own suggestion.** This item's regrow pace is
+   `growDays * (harvestMinGrowth - harvestAfterGrowth)` = `240 * (0.40 - 0.05)` = **84 in-game
+   days**, picked to read as "rare" against arid_shrubland.md's own fiction directly — it was
+   NOT matched to this spec's suggested 8–14-day roost respawn (that number did not exist as a
+   ruling when the harvest was built, only as this open question). Whoever builds the guardian
+   next must reconcile the two paces — either retune `harvestAfterGrowth`/`harvestMinGrowth` on
+   the tree, or accept a guardian roost cycle that outpaces the harvest it's guarding.
 4. ⚠ **`RSW_TunnelSnake` is bodySize 2.0**, inside biome ban 4's large-band void (1.5–3.5),
    with the roster's own Terrorworm interim beside it. Found while calibrating §4; not this
    spec's to change. Either the ban has a snake carve-out he has not written down, or the
