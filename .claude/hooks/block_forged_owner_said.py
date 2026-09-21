@@ -1,6 +1,22 @@
 #!/usr/bin/env python3
-"""PreToolUse hook — a `--owner-said "..."` quote must be provable against the
-transcript, not merely shaped like an instruction.
+"""PreToolUse hook — a `--owner-said "..."` or bare `--said "..."` quote must be
+provable against the transcript, not merely shaped like an instruction.
+
+COVERS TWO FLAG NAMES, ONE TRUST BOUNDARY
+==========================================
+`--owner-said` is `rimflow`'s own flag. But `./game --said "<words>" <state>`
+(which exports `RIMFLOW_OWNER_SAID` and shells out to `rimflow ... --owner-said`
+from INSIDE `broadcast.py` — never as a new Bash tool call this hook would see
+again) and `apply_blanket_ruling.py --said "<words>"` stamp the identical
+`ownerSaid` ledger field from a different flag spelling, and were invisible to
+this hook until `OWNER_SAID_FLAG_BYPASS_1` (2026-09-20): a FOUNDRY subagent ran
+`./game --said "FOUNDRY closing the beastmechanics verification load" down` —
+its own words, not the owner's — and the ledger recorded it as `"seat":"OWNER"`
+with that quote as `ownerSaid`, unrefused, because the FLAG regex only ever
+matched the literal string `--owner-said`. Both flags are checked identically
+below; `--owner-said` never double-matches the bare-`--said` alternative
+(the substring `--said` does not appear inside `--owner-said` — the dash before
+`said` there is single, not double).
 
 WHY
 ===
@@ -70,8 +86,8 @@ import re
 import sys
 
 FLAG = re.compile(
-    r'--owner-said(?:=|\s+)'
-    r'(?:"((?:[^"\\]|\\.)*)"'      # double-quoted
+    r'--(?:owner-)?said(?:=|\s+)'  # --owner-said (rimflow) or bare --said
+    r'(?:"((?:[^"\\]|\\.)*)"'      # (./game, apply_blanket_ruling.py)
     r"|'((?:[^'\\]|\\.)*)'"        # single-quoted
     r'|(\S+))'                     # bare token (rare, still checked)
 )
@@ -126,7 +142,7 @@ def offence(payload):
     if payload.get("tool_name") != "Bash":
         return None
     command = (payload.get("tool_input") or {}).get("command") or ""
-    if "--owner-said" not in command:
+    if not FLAG.search(command):
         return None
     quotes = [q for q in extract_quotes(command) if q.strip()]
     if not quotes:
@@ -160,22 +176,27 @@ def main():
             "hookEventName": "PreToolUse",
             "permissionDecision": "deny",
             "permissionDecisionReason": (
-                "Blocked: `--owner-said %r` does not appear in anything the "
+                "Blocked: the quoted %r does not appear in anything the "
                 "owner actually typed this session.\n\n"
-                "The flag is both the authorization AND the record -- a "
-                "sentence merely SHAPED like an instruction is not the "
-                "owner's words, and the ledger would record it as his.\n\n"
+                "This applies to `--owner-said` (rimflow), `--said` "
+                "(./game, apply_blanket_ruling.py) -- same field, same "
+                "rule, whichever flag spelled it. The flag is both the "
+                "authorization AND the record -- a sentence merely SHAPED "
+                "like an instruction is not the owner's words, and the "
+                "ledger would record it as his.\n\n"
                 "If he really said this:\n"
                 "  - have him repeat it in THIS session (a quote from an "
                 "earlier session is refused on purpose -- see "
                 "block_forged_owner_said.py's NEAR-MISS note), then re-run "
                 "the command\n\n"
                 "If he did not say it:\n"
-                "  - drop --owner-said and act under your own seat, naming "
-                "whose call it is\n\n"
-                "See OWNER_SAID_PROVENANCE_GUARD_1: on 2026-09-19 an agent's "
-                "own description of its situation (\"autonomous FOUNDRY "
-                "work\") got stamped as the owner's authorization this way."
+                "  - drop the flag and act under your own seat, naming "
+                "whose call it is (./game <state> with no --said still "
+                "stamps the event as OWNER's, just unattributed)\n\n"
+                "See OWNER_SAID_PROVENANCE_GUARD_1 (an agent's own "
+                "description of its situation got stamped as the owner's "
+                "authorization via --owner-said) and OWNER_SAID_FLAG_BYPASS_1 "
+                "(the same thing via --said, which this check now also covers)."
                 % quote
             ),
         }
