@@ -64,9 +64,11 @@
     NOT PORTED (deliberately, not an oversight):
       - RUT_NightsideIce, RUT_BlueDesert (BiomeGRimond gets it below, but
         RUT_BlueDesert already owns 1,029/1,030 of its own tiles directly),
-        RUT_TwilightSea, RUT_GreySea, RUT_TheScald, RUT_Umbra: these already run
-        under their OWN RUT_ defName on (almost) all their tiles — nothing to port
-        onto, they ARE the source.
+        RUT_TwilightSea, RUT_GreySea, RUT_TheScald, RUT_FuelSnows (renamed from
+        RUT_Umbra 2026-09-21, UMBRA_IS_A_REGION_NOT_A_BIOME_1 — Umbra is now the
+        region's name, not this biome's): these already run under their OWN RUT_
+        defName on (almost) all their tiles — nothing to port onto, they ARE the
+        source.
       - RUT_Jawa_BackgroundWater: isBackgroundBiome, implemented=false, no tile ever
         carries it — nothing to port onto.
       - ZBiome_Grasslands ("the Pyrelands", donor text "stormy savanna"): CORRECTED

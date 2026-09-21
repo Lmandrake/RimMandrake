@@ -106,7 +106,7 @@ and in the deserts' case the owner named them separately in the ruling.
 
 | # | painted defs today | tiles (record) | sheet (one sheet, one system) | target mod folder | packageId | BiomeDef defNames | why one mod |
 |---|---|---:|---|---|---|---|---|
-| 24 | `RUT_PropaneLake` | 57 | the Propane Lake | `the_propane_lakes.md` (`_def_bindings_2026-09-09.md`) | `TerminalBiomes` | `mandrake.rm.terminalbiomes` | `RM_PropaneLake` | 🔴 RULED 2026-09-21 §7 Q1 — an ocean biome made of propane, its own biome, shipping in the four-biome `TerminalBiomes` mod with a Mod Settings toggle. ⛔ `RUT_Umbra` is NOT a biome (it is a REGION) and has left this list. |
+| 24 | `RUT_PropaneLake` | 57 | the Propane Lake | `the_propane_lakes.md` (`_def_bindings_2026-09-09.md`) | `TerminalBiomes` | `mandrake.rm.terminalbiomes` | `RM_PropaneLake` | 🔴 RULED 2026-09-21 §7 Q1 — an ocean biome made of propane, its own biome, shipping in the four-biome `TerminalBiomes` mod with a Mod Settings toggle. ⛔ `RUT_Umbra` is NOT a biome (it is a REGION) and has left this list. Its LAND tiles' successor biome, decided by `UMBRA_IS_A_REGION_NOT_A_BIOME_1`, is `RUT_FuelSnows` (renamed from `RUT_Umbra`, content unchanged) — still `RUT_`-tier, not yet swept into this migration; add it as its own row when this wave reaches it. |
 | 25–26 | `RUT_TwilightSea` + `RUT_GreySea` | 607 + 472 | the Twilight Sea, the Grey Sea | `terminator_sea.md` (surface), `the_twilight_deep.md` / `the_grey_deep.md` (floors) | `TerminalBiomes` | `mandrake.rm.terminalbiomes` | `RM_TwilightSea`, `RM_GreySea` | 🔴 RULED 2026-09-21 §7 Q1 — two of the four biomes in the shared `TerminalBiomes` mod, each independently toggleable. |
 
 **Totals: 27 painted defs → 25 mods (23 standalone + 2 kits).** Four of the 25 mod folders

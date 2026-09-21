@@ -120,8 +120,11 @@ FAMILIES = {
     'RSW_Plant_Chakroot_Wild': 0.3, 'RM_Venomvine': 0.25,
     'RSW_Plant_HubbaGourd_Wild': 0.2, 'RSW_VellaraBloom': 0.12,
     'RUT_Staggerseed': 0.1, 'RSW_SweetbarkTree': 0.06},
-  'RUT_Umbra': {   # 2,531 tiles · 4 plants — the_propane_lakes.json's shore flora, rekeyed
-                    # from the pre-rename defName `AB_PropaneLakes` (PROPANE_LAKES_ROSTER_STALE_1).
+  'RUT_FuelSnows': {   # 2,531 tiles (2026-09-12 export) · 4 plants — the_propane_lakes.json's
+                    # shore flora, rekeyed from the pre-rename defName `AB_PropaneLakes`
+                    # (PROPANE_LAKES_ROSTER_STALE_1), then renamed again from `RUT_Umbra`
+                    # 2026-09-21 (UMBRA_IS_A_REGION_NOT_A_BIOME_1 — Umbra now names the
+                    # region, not this biome).
                     # AB_CrystalFlower moved out (kept only at poison_forest, its "elsewhere");
                     # PoisonShrub moved in (SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20:
                     # wasteland -> here, ".8 cells, propane lakes")
@@ -173,7 +176,7 @@ FAMILIES = {
                         # darkside hydrocarbon regime, not a water-metabolism plant) and
                         # AB_ToxiGrass/PoisonPlantTallGrass (wasteland -> here, "blue desert
                         # rare", owner's own words). Family A because AB_CrystalHorn is already
-                        # owned by RUT_Umbra/RUT_PoisonForest here — a shared plant can't split
+                        # owned by RUT_FuelSnows/RUT_PoisonForest here — a shared plant can't split
                         # families. 🔴 If either toxic-grass def turns out to carry an ordinary
                         # water metabolism, that is a live conflict with the_blue_desert.md §6
                         # ban 1 ("no water-based plants") — not re-litigated by this pass, which

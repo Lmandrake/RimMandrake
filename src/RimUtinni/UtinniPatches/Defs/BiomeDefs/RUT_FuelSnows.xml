@@ -2,29 +2,68 @@
 <Defs>
 
   <!--
-    RUT_Umbra                                      UtinniPatches - authored 2026-09-09
-    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
-    the_propane_lakes.md (FROZEN). Replaces the donor `AB_PropaneLakes` (Alpha
-    Biomes) on its LAND tiles only — the lake itself is a separate, already-owned
-    worldmap water biome, `RUT_PropaneLake` (57 tiles, `LIQUID_BIOMES_MAP_1`, paint
-    DONE per that sheet's Owed). Named `RUT_Umbra` rather than a "PropaneLakes"
-    variant to avoid colliding with that existing water-biome defName — the sheet's
-    own name for the antistellar cap region IS Umbra (SS0).
+    RUT_FuelSnows                                  UtinniPatches - authored 2026-09-21
+    UMBRA_IS_A_REGION_NOT_A_BIOME_1. Successor to `RUT_Umbra` (BIOME_OWNERSHIP_WAVE_1,
+    2026-09-09), retired by this item on the owner's ruling: "Umbra is a region not a
+    biome." (BENCH question card, 2026-09-21, verbatim.) Full sheet: design/Jawa/
+    worldbuilding/biomes/the_propane_lakes.md (FROZEN) — unchanged by this rename; the
+    sheet describes the antistellar cap's regime, this def is just correctly named now
+    that "Umbra" itself names the REGION (a WorldFeature, `ashkarr_paint.py` line ~851,
+    already live on the canonical save — verified this pass, not re-authored).
 
-    MEASURED (sheet SS0): 2,531 tiles, arc 132-179 (sun 49-76 deg below horizon),
-    temp p10/median/p90 -73.0/-62.2/-47.8 C — the coldest LAND on the planet.
-    Regions Deadstone/Umbra/Ammonia Flats.
+    🔴 BIOME-MAPPING DECISION (this item's own call, spec step 2): the cap's energy
+    regime — fuel snow, ammonia flats, aurora, cold hydrocarbon/ammonia chemistry, no
+    icy dayside analog — matches NO existing owned BiomeDef. Checked `RUT_NightsideIce`
+    specifically (the only other nightside-cold biome we own): it is the opposite
+    regime by design (no precipitation, no wildlife, no weather at all, silent/dead
+    interior per nightside_ice.md §6) — the two cannot merge. So this needed a
+    genuinely new BiomeDef; since the old `RUT_Umbra` content already WAS that new
+    biome (fully authored: terrain, weather, wildAnimals, wildPlants, diseases), the
+    entire mechanics content below is carried forward UNCHANGED from `RUT_Umbra.xml` —
+    only the defName, label and this header comment change. Nothing here is new
+    "mechanics kit" work; it's the existing content correctly re-labelled.
 
-    Weather: SS4b and ban 3 rule this directly — "Aurora-clear — the common state.
-    No visibility blockage (owner): starlight and curtain-light; ranged fire works;
-    the sky is the most beautiful on the planet." Fog/Rain/RainyThunderstorm/
-    FoggyRain all zeroed (ban 3 + ban 7 no rain, R-H1); Clear made dominant.
-    SnowGentle/SnowHard kept high, reflavored per the sheet as "fuel snow" (SS4b,
-    hydrocarbon/ammonia precipitation feeding the crystal flora) — not literal
-    water snow, same reskin-in-place pattern The Rot's sheet uses for its own
-    weather. DryThunderstorm kept low ("dry lightning over a fuel field," SS4b) —
-    ban 4 requires ignition to need a hot source or spark, so this stays rare, never
-    dominant.
+    Name chosen to keep the flavour ("it snows fuel" §1; "fuel snow" is the sheet's own
+    reflavoring of SnowGentle/SnowHard, see the weather note below) while not reusing
+    "Umbra", which now names the region. Stays under `RUT_` / UtinniPatches — the wider
+    `biome_mod_architecture.md` migration wave (RUT_ -> standalone RM_ mods) has not
+    reached this biome yet and doing that split is explicitly out of this item's scope;
+    when that wave does reach it, add a row for `RUT_FuelSnows` there.
+
+    🔴 KNOWN CONSEQUENCE, recorded rather than hidden: `RUT_Umbra` is NOT a zero-tile
+    biome — BIOME_WORLD_SWITCH_WAVE_1 (2026-09-12, commit f90d660ae) already painted it
+    live onto 2,531 real world tiles on the canonical save
+    (`CANONICAL_ASHKARR_START_2026-09-12.rws` / the frozen `world/ASHKARR_WORLDMAP_
+    tiles.csv`, both as of that date — a live re-read may differ, never re-derive this
+    number from the CSV as current). Retiring `RUT_Umbra`'s defName without a live
+    repaint (explicitly out of scope for this item — "the planet is painted once, at
+    the end") leaves those tiles' stored biome shortHash unresolvable until the
+    terminal repaint absorbs the rename, per the owner's own stated policy on this
+    exact tradeoff ([[world-remake-is-the-last-step]]: "do the clean thing and let the
+    remake absorb the divergence"). This is a deliberate, recorded consequence, not an
+    oversight — flagged here and in `infrastructure/state/facts/biome_paint_list.md` so
+    the terminal repaint's author knows this defName changed since the last live paint.
+
+    Everything below this line is verbatim from `RUT_Umbra.xml` except defName/label:
+
+    Replaces the donor `AB_PropaneLakes` (Alpha Biomes) on its LAND tiles only — the
+    lake itself is a separate, already-owned worldmap water biome, `RUT_PropaneLake`
+    (57 tiles, `LIQUID_BIOMES_MAP_1`, paint DONE per that sheet's Owed).
+
+    MEASURED (sheet SS0, 2026-09-06 export): 2,531 tiles, arc 132-179 (sun 49-76 deg
+    below horizon), temp p10/median/p90 -73.0/-62.2/-47.8 C - the coldest LAND on the
+    planet. Regions Deadstone/Umbra/Ammonia Flats (region names, distinct from this
+    def's own identity now).
+
+    Weather: SS4b and ban 3 rule this directly - "Aurora-clear - the common state. No
+    visibility blockage (owner): starlight and curtain-light; ranged fire works; the
+    sky is the most beautiful on the planet." Fog/Rain/RainyThunderstorm/FoggyRain all
+    zeroed (ban 3 + ban 7 no rain, R-H1); Clear made dominant. SnowGentle/SnowHard kept
+    high, reflavored per the sheet as "fuel snow" (SS4b, hydrocarbon/ammonia
+    precipitation feeding the crystal flora) - not literal water snow, same
+    reskin-in-place pattern The Rot's sheet uses for its own weather. DryThunderstorm
+    kept low ("dry lightning over a fuel field," SS4b) - ban 4 requires ignition to
+    need a hot source or spark, so this stays rare, never dominant.
 
     animalDensity/plantDensity/diseaseMtbDays kept at the donor's own values (sheet
     SS0 "Donor inventory taken in" lists these as read-in, not disputed).
@@ -37,22 +76,22 @@
     NOT this pass's scope: `ANCIENT_WAR_LAB_1` (the sealed lab beneath the lake);
     the electrojet tap building; the crater-event map permanence; the island
     landmark (tile 5873); any world repaint (paint already DONE for the lake per
-    the sheet's Owed — this def is the land only, un-painted).
+    the sheet's Owed — this def is the land only, un-painted by THIS item).
 
   -->
 
   <BiomeDef>
-    <defName>RUT_Umbra</defName>
-    <label>Umbra</label>
+    <defName>RUT_FuelSnows</defName>
+    <label>the Fuel Snows</label>
     <description>The far end of the world: a black sea of liquid fuel under the brightest sky on the planet, ringed by frozen ammonia flats. It snows fuel. The aurora is the strongest anywhere -- the magnetosphere slamming back together after its rude shock upstream -- so the ice glows green and violet even without a moon. The fast things run in blue flame, because nothing moves fluidly here without burning; the plants are crystal, and grow overnight from what falls.</description>
     <workerClass>AlphaBiomes.BiomeWorker_PropaneLakes</workerClass>
 
     <!-- OWNER RULING 2026-09-19 (RUT_UMBRA_ROADS_RULING_1): the ban STANDS. No
-         roads in the Umbra, same as RUT_ExtremeDesert's "No roads through the deep
+         roads in the Fuel Snows, same as RUT_ExtremeDesert's "No roads through the deep
          dune". This flag was previously an unexamined default with no sheet behind
          it; it is now ruled and the sheet says so.
-         MEASURED (2026-09-07 link export): 42 Umbra tiles carry stored road links,
-         and 74 of their 78 links run Umbra-to-Umbra - only 4 leave the region. So
+         MEASURED (2026-09-07 link export): 42 tiles carry stored road links,
+         and 74 of their 78 links run internally - only 4 leave the region. So
          the ban costs almost no connectivity: it hides an internal web in the
          coldest land on the planet, not a route to anywhere.
          Nothing is destroyed by this. `potentialRoads` keeps every link in the

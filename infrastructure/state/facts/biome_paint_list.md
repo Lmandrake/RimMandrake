@@ -43,7 +43,7 @@ any biome's build work on its tile count.
 | `RUT_TheRot` | the Rot | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + plants + fauna present (215 lines) | Nightspill, Frostcaps, Sporefields, Sootreach, Hanging Wood | 2204 | PAINT |
 | `RUT_TheScald` | the Scald | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + fauna present, no plants (178 lines) — sea biome | Scald | 312 | PAINT |
 | `RUT_TwilightSea` | the Twilight Sea | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + fauna present, no plants (132 lines) — sea biome | Twilight Sea | 607 | PAINT |
-| `RUT_Umbra` | Umbra | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + plants + fauna present (136 lines) | Deadstone, Umbra, Ammonia Flats, Fuelmere, Lantern Deeps | 2531 | PAINT |
+| `RUT_FuelSnows` | the Fuel Snows | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + plants + fauna present (renamed 2026-09-21 from `RUT_Umbra`, content unchanged, `UMBRA_IS_A_REGION_NOT_A_BIOME_1` — "Umbra" now names the region, not this biome) | Deadstone, Umbra, Ammonia Flats, Fuelmere, Lantern Deeps | 2531 | PAINT — 🔴 these 2531 tiles were LIVE-PAINTED `RUT_Umbra` as of the 2026-09-12 export (`BIOME_WORLD_SWITCH_WAVE_1`, not a zero-tile biome); the rename leaves that defName unresolvable on the canonical save until the terminal repaint absorbs it (deliberate, per [[world-remake-is-the-last-step]]) |
 | `RUT_Wasteland` | the Wasteland | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + fauna present, no plants (162 lines) | Sunreach, Ashen Wastes, Scour, Salt, Blight | 1853 | PAINT |
 | `RUT_Webwork` | the Webwork | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + plants + fauna present (160 lines) | Dune Sea, Cratercrown, Hollow Verge, Dew Belt, Anvil | 161 | PAINT |
 | `RUT_WeepingStones` | the Weeping Stones | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + plants + fauna present (191 lines) | Dew Belt, Dew Horn, Dune Sea, Cratercrown, Anvil | 223 | PAINT |
@@ -65,8 +65,9 @@ Wars creatures become patches").
 
 ## Counts
 
-- **PAINT: 25** — all 23 standalone RUT_ regions not otherwise flagged, plus `RUT_Umbra`,
-  and the two ruled/uncontested survivors `RM_FE_Pyrelands` and `RM_Greentide`.
+- **PAINT: 25** — all 23 standalone RUT_ regions not otherwise flagged, plus `RUT_FuelSnows`
+  (renamed 2026-09-21 from `RUT_Umbra`), and the two ruled/uncontested survivors
+  `RM_FE_Pyrelands` and `RM_Greentide`.
 - **NO PAINT: 3** — `RUT_Jawa_BackgroundWater` and `RUT_LanternDeeps` (both never carry a
   tile by design), plus `RUT_Greentide` (its content is owed to `RM_Greentide`, ruled).
 - **UNDECIDED: 4** — `RUT_CrackedLands` / `RM_FloodedCanyon` (one open twin question),
