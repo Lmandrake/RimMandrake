@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  COMMISSION_LEDGER_CLEANUP_1 (arid_shrubland sheet slug
+  `the-huge-grazer-large-young-parental-enrage-body-donors-famb`).
+  arid_shrubland.md §4 "The giants" / "The size ladder": "Huge - the giants.
+  ... Large - giants' children only, and approach is attack: the parent
+  enrages if you even get near the young. No warning is given." Also: "They
+  are indifferent to the intelligent races. A giant will walk through your
+  wall on its grazing line, ignore your rage, and not know what it did."
+
+  The arid_shrubland roster's own `new_defs` entry names the body donor pair
+  as Fambaa/Mastmot, "bs 6, both MEASURED live" (design/Jawa/worldbuilding/
+  biomes/rosters/arid_shrubland.json). Mastmot has sounds already absorbed
+  (RSW_Pawn_Mastmot_*, SoundDefs_SWBestiary.xml) but NO ThingDef was ever
+  authored for it (checked this pass: no RSW_Mastmot.xml, no *.png under any
+  Mastmot texture path) - so this reskins the sibling that actually landed,
+  `RSW_Fambaa` (already-ported, "ours"-status, Wave C), same
+  RSW_ShadeWhale/RSW_WraidAlpha precedent: same body, same art, a retint, zero
+  new PNGs. Fambaa's own art already ships a distinct juvenile facing set
+  (`Fambaa_j_*`), which is exactly "large young" made visible for free.
+
+  Re-purposed from Fambaa's amphibian-swamp profile to this biome's actual
+  role: the water-seeking/amphibious pathfinding extension, the Water
+  terrain speed bonus and the EggLayer comp are all dropped (no standing
+  water here - arid_shrubland.md ban 1, fog only) in favour of live birth
+  (gestationPeriodDays), matching RSW_ShadeWhale's own Horax->mammal
+  conversion for the same "megafauna reads as mammal" reason.
+  `trainability None` and no `specialTrainables`/`abilities` block, matching
+  the sheet's own "indifferent to the intelligent races" law - these are not
+  animals a Jawa handler works with, the same choice already made for
+  RSW_ShadeWhale.
+
+  Herd, unlike the solitary shade whale - arid_shrubland.md's own roster
+  already carries Ronto as "indifferent giant, herd" for this same
+  huge-grazer band, and this flagship follows the same law.
+
+  NOT built this pass: the "large young + parental enrage" mechanic itself
+  (C#: an aggro trigger keyed to proximity to a juvenile-lifestage pawn of
+  this race) - arid_shrubland.md's own "Owed" section flags "parental
+  enrage on approach" as part of the biome's still-unrun engine feasibility
+  pass, same class of gap as venomvine's passability. Filed separately,
+  `SHRUBLAND_GIANT_ENRAGE_1`. This def ships as a plain (non-enraging)
+  grazer meanwhile, exactly the DESERT_SHADE_WHALE_FILTERFEED_1 precedent
+  (def lands first, behaviour comp follows in its own item).
+
+  Working name only ("the giant" - arid_shrubland.md's own Owed section
+  lists "the giants" among the names still the owner's pick). Folded into
+  `ARIDSHRUBLAND_SHIPPING_NAMES_1` alongside the fuzz and the tunnel-snake.
+-->
+<Defs>
+
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_ShrublandGiant</defName>
+    <label>the giant</label>
+    <description>A colossal grazer that keeps the shrubland's fuzz-canopy open by walking and eating it, indifferent to everything around it that isn't the fuzz underfoot. It does not fight, does not flee, and does not appear to notice the intelligent races at all - it will walk through a wall on its grazing line and never register what it did. Its young walk behind it through the one size band nothing else here occupies, and any approach to them reads to the parent as attack.</description>
+    <statBases>
+      <MoveSpeed>2.8</MoveSpeed>
+      <MarketValue>1400</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.50</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.45</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.35</ArmorRating_Heat>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Dewback</body>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>6.0</baseBodySize>
+      <baseHungerRate>1.6</baseHungerRate>
+      <baseHealthScale>8.5</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <gestationPeriodDays>22</gestationPeriodDays>
+      <petness>0.0</petness>
+      <manhunterOnTameFailChance>0.0</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <trainability>None</trainability>
+      <leatherDef>RSW_Leather_Fambaa</leatherDef>
+      <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
+      <lifeExpectancy>60</lifeExpectancy>
+      <wildBiomes>
+        <AridShrubland>0.02</AridShrubland>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>RSW_Pawn_Fambaa_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Fambaa_Death</soundDeath>
+          <soundCall>RSW_Pawn_Fambaa_Call</soundCall>
+          <soundAngry>RSW_Pawn_Fambaa_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_ShrublandGiant</defName>
+    <label>the giant</label>
+    <race>RSW_ShrublandGiant</race>
+    <combatPower>380</combatPower>
+    <ecoSystemWeight>0.12</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>giant calf</label>
+        <labelPlural>giant calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_j</texPath>
+          <color>(168, 158, 128)</color> <!-- warm dust-khaki, reskin over the shared Fambaa art - arid_shrubland.md §9 "walking hills with lit flanks", zero new PNGs -->
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_j_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa</texPath>
+          <color>(168, 158, 128)</color>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(0.7, 0.6, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa</texPath>
+          <color>(168, 158, 128)</color>
+          <drawSize>8.0</drawSize>
+          <shadowData>
+            <volume>(1, 0.8, 0.5)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_Dessicated</texPath>
+          <drawSize>8.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

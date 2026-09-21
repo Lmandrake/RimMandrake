@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Fuzz.xml                         COMMISSION_LEDGER_CLEANUP_1 (partial pass,
+                                        arid_shrubland sheet)
+
+  The arid shrubland's dominant flora. FROZEN sheet:
+  design/Jawa/worldbuilding/biomes/arid_shrubland.md §4 "The giants":
+
+    "The fuzz is graze-adapted: growth crown buried below the soil line, leaves
+    expendable. The lawn and the mowers are one equilibrium - the giants
+    maintain the very openness that makes them safe." Also §1/description:
+    "Knee-high silver-green fuzz at eerily even spacing, running unbroken to
+    every horizon, all of it leaning the same way, all of it moving - because
+    the wind never stops."
+
+  Slug (COMMISSION_LEDGER_CLEANUP_1, arid_shrubland sheet):
+  `the-fuzz-knee-high-silver-green-canopy-plant`. Re-verified currency
+  2026-09-21 against infrastructure/artpipe/{done,pending,registry.jsonl} and
+  src/ before authoring - nothing existing matched "fuzz"/"silver-green"/
+  "canopy". rosters/arid_shrubland.json's own "new_defs" entry flags this
+  slug's mechanic_load as "none blocking" (a pure flora commission, not a
+  mechanics ask) and its own "flora" list already documents
+  `Plant_ShrubLow` (vanilla low shrubs) as "the knee-high fuzz stand-in
+  UNTIL THE FUZZ DEF LANDS" at 0.9 commonality in RUT_AridShrubland.xml -
+  this def is that landing, and RUT_AridShrubland.xml's wildPlants entry is
+  swapped from Plant_ShrubLow to this def at the same 0.9 weight.
+
+  🔴 THE NAME IS NOT SETTLED. arid_shrubland.md's own "Owed" section lists
+  "the fuzz itself" among the names still the owner's pick (alongside the
+  giants, the snake-analogs, the bird-analogs, venomvine, and the Stall/Gale
+  weather names). `RUT_Fuzz` is the INTERNAL working defName and every label
+  below is provisional, same pattern as RUT_Staggerseed
+  (STAGGERSEED_SHIPPING_NAME_1) - renaming later is one def plus one
+  wildPlants line. No separate owner card filed for this one name alone;
+  folded into the arid_shrubland naming sweep this pass also opened,
+  `ARIDSHRUBLAND_SHIPPING_NAMES_1` (covers the fuzz, tunnel-snake and the
+  huge grazer flagship built this same pass).
+
+  ART: one job filed this pass, `rutfuzz_v1`
+  (infrastructure/artpipe/pending/rutfuzz_v1.json) - silver-green, wind-combed,
+  matted low fronds per arid_shrubland.md §9's palette. Art is name-free (same
+  reasoning as RUT_Staggerseed's own comment): nothing about the render
+  depends on which name the owner eventually picks.
+
+  Ban check against arid_shrubland.md §6: ban 9 ("no flammable living flora")
+  - Flammability 0 on this def directly, no reliance on
+  BiomeFloraStatAdjustments_Generated.xml since this is our own def, not a
+  donor mod's. No other ban in §6 touches a low groundcover plant.
+
+  MECHANIC: "graze-adapted crown-below-soil" is flavour text on this pass -
+  mechanic_load reads "none blocking" and nothing in the biome doc's own
+  "engine feasibility pass owed" list names this plant, unlike the giants'
+  life-stage/enrage or venomvine's passability. Represented here only as a
+  fast regrowDays and a low harvestWork (the crown surviving underneath is
+  why it comes back quickly), not as new C#.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Fuzz</defName>
+    <label>the fuzz</label>
+    <description>A dense mat of fine silver-green fronds, never taller than the knee, combed permanently in one direction by a wind that never stops. Its growth crown sits below the soil line, so grazing and cutting alike only ever take the expendable leaves above - the fuzz and the giants that mow it are one equilibrium, and it is back within days.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0.15</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- Job rutfuzz_v1, filed this pass. Pending until the daemon lands it. -->
+      <texPath>Things/Plant/RUT_Fuzz</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.35, 0.15, 0.15)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <fillPercent>0.15</fillPercent>
+    <pathCost>8</pathCost>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.25</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>6</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.55~0.85</visualSizeRange>
+      <topWindExposure>1.0</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>2</harvestYield>
+      <harvestWork>40</harvestWork>
+      <harvestAfterGrowth>0.3</harvestAfterGrowth>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>60</wildClusterWeight>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>
