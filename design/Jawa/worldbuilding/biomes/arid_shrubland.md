@@ -5,15 +5,25 @@
 > unfreeze path is an owner ruling at a sitting, recorded on the item that
 > changes it; contradiction cards from the freeze review amend under this rule.
 
+> 🔴 **AMENDMENT — owner ruling 2026-09-21, `BIOME_MOD_SPLIT_EXECUTION_1` sitting.**
+> The sheet contradicted itself: it put the whole canopy at KNEE height (§3 "The two
+> floors") while §1 and the read-against line claimed sightlines are gone and cover is
+> everywhere *for everything*. Put to the owner, he ruled **the knee-high reading stands**:
+> *"'cover everywhere' is interpreted only for smaller things than you. People stand out.
+> Except for the venomvine, that should be man-height or more."* The false sentences are
+> deleted above rather than bannered (owner, 2026-09-09). Nothing else in the sheet moves —
+> the size ladder, the two floors, the ripple and the biped's wrongness all stand and are
+> now consistent with §1.
+
 
 _Owner + BENCH, 2026-09-05, written in conversation over three passes. The last damp ground
 before the stormwall, and the planet's power country. Thematic handle: **the hush** — and its
 gesture: **everything leans toward the light.**_
 
 🔑 **Read against `desert.md`.** Desert is the shade economy; this is where the shade economy
-*ends* — the sun drops to 16% of overhead and the terrain flattens, so at the same stroke the
-land loses its long sightlines and loses the need to hide. Concealment becomes universal and
-free, and the whole ecology reorganizes around that fact.
+*ends* — the sun drops to 16% of overhead and the terrain flattens, so the land loses the need
+to hide. **Concealment becomes universal and free for anything smaller than a person**, and the
+whole ecology reorganizes around that fact. It is not free for you: see the amendment below.
 
 ## 0. The measurements everything rests on
 
@@ -45,8 +55,10 @@ it leaning the same way, all of it moving — because the wind never, ever stops
 the only water is fog carried in on the ground-wind from the stormwall, thinning with every
 sunward metre. It is mild here — the first ground on the dayside that is not trying to kill
 you — and that is the trap: the moment the environment stops being the danger, the danger
-becomes each other, and everything you cannot see. Sightlines are gone. Cover is everywhere,
-for everything, all the time.
+becomes each other, and everything you cannot see. **Cover is everywhere — for everything
+smaller than you.** You are the only thing standing up. A biped has sightlines to the horizon
+and is visible across the same distance, while the entire war of this biome is fought under a
+canopy at your knee. The one true cover here is venomvine, which stands man-height or more.
 
 Big things ignore the fuzz and ignore you. Small things live under the fuzz and are never
 seen. An intelligent biped is precisely the wrong size for this place — too large to hide in
@@ -192,6 +204,11 @@ are set by storms the biome never sees.
 Dense thickets that sometimes manage to colonize: nearly impossible to cut down, and a scratch
 carries venom with serious results. **Small creatures pass through easily; larger ones simply
 cannot.** Desert lineage — they resist fire greatly and burn only grudgingly.
+
+🔑 **It stands man-height or more** (owner ruling 2026-09-21) — the only vegetation in the
+biome that does, and therefore the only thing on this ground that breaks a person's sightline
+or hides one. That is why a thicket reads as a dungeon, why a hedge-fort is a curtain wall,
+and why the scrap nests are worth the serpent.
 
 - 🔑 **A mature thicket is a dungeon.** Sparser stands let a Jawa slowly thread them — no
   larger race can — but inside it is a dangerous, cave-like maze whose residents move through
