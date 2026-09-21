@@ -10484,3 +10484,11 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-09-21T02:03:23Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-21T02:03:23Z"}
 {"seat":"BENCH","event":"file","id":"MAPGEN_NRE_FULL_LIST_20260920_1","title":"Map generation NRE'd to death on the full 618-mod list - GenStep_Plants/WildPlantSpawner and GenStep_Settlement, then an unbounded StatRequest-for-null-def storm; same shape as the CLOSED FULL_LIST_CANNOT_LOAD_GAME_1","kind":"bug","target":"v1","needs":"game-up","for":"FOUNDRY","ts":"2026-09-21T02:03:57Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 live re-verify: RUT_Desert wildPlants + a generated desert map","ts":"2026-09-21T02:16:27Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-21T02:16:45Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-21T02:16:50Z"}
+{"seat":"FOUNDRY","event":"file","id":"SHADEWHALE_EXTENSIONS_UNBUILT_1","title":"RSW_ShadeWhale's ThingDef is discarded every load: two modExtension/comp classes are not in the deployed DLL","kind":"defect","target":"v1","needs":"deploy","caused_by":"BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1","for":"FOUNDRY","ts":"2026-09-21T02:17:29Z"}
+{"seat":"FOUNDRY","event":"file","id":"ASHKARRFLORA_NOT_IN_MODLIST_1","title":"mandrake.rut.ashkarrflora is in no stored mod list, so RUT_Staggerseed and RUT_Fuzz can never spawn in the campaign","kind":"defect","target":"v1","needs":"deploy","caused_by":"BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1","for":"FOUNDRY","ts":"2026-09-21T02:17:30Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-21T02:28:01Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T02:28:02Z"}
+{"seat":"FOUNDRY","event":"close","id":"BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1","sha":"03d963de20b87d088b95eaeba301c0dd34e78576","ts":"2026-09-21T02:30:09Z"}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T02:03:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T02:30:09Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -936,15 +936,6 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
-## BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 BiomeFlora_Ashkarr.xml's PatchOperationReplace wipes RUT_Desert's authored wildPlants, so RM_Leachmoss/RM_Venomvine/RSW_Ultracactus never spawn
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  BIOMEFLORAPATCHWIPESWILDPLANTS1 — a generated patch replaces RUTDesert's whole wildPlants list, so nothing we…
-prose:    infrastructure/state/items/BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1477,6 +1468,26 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MAPGEN_NRE_FULL_LIST_20260920_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  Find which biome roster carries the null entry. The two spawners give the search its shape:
 prose:    infrastructure/state/items/MAPGEN_NRE_FULL_LIST_20260920_1.md
+
+## SHADEWHALE_EXTENSIONS_UNBUILT_1 RSW_ShadeWhale's ThingDef is discarded every load: two modExtension/comp classes are not in the deployed DLL
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify
+summary:  SHADEWHALEEXTENSIONSUNBUILT1 — three C types are missing from the deployed CreatureBehaviors DLL, and each on…
+prose:    infrastructure/state/items/SHADEWHALE_EXTENSIONS_UNBUILT_1.md
+
+## ASHKARRFLORA_NOT_IN_MODLIST_1 mandrake.rut.ashkarrflora is in no stored mod list, so RUT_Staggerseed and RUT_Fuzz can never spawn in the campaign
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify
+summary:  ASHKARRFLORANOTINMODLIST1 — a mod we ship is in no stored mod list, so two of its plants can never spawn
+prose:    infrastructure/state/items/ASHKARRFLORA_NOT_IN_MODLIST_1.md
