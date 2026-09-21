@@ -52,7 +52,7 @@ namespace RimMandrake.StarWars.FireEcology
 
         public static void Enforce()
         {
-            BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail("RM_FE_Pyrelands");
+            BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail("RM_Pyrelands");
             if (biome == null)
             {
                 return;

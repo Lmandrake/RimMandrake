@@ -71,13 +71,13 @@
         carries it — nothing to port onto.
       - ZBiome_Grasslands ("the Pyrelands", donor text "stormy savanna"): CORRECTED
         2026-09-20 (PYRELANDS_WRONG_BIOME_DEF_1) — this line was wrong even when
-        written: the Pyrelands' own BiomeDef, `RM_FE_Pyrelands`, already existed
+        written: the Pyrelands' own BiomeDef, `RM_Pyrelands`, already existed
         by 2026-09-11 (mandrake.rm.pyrelands, Defs/BiomeDefs/Pyrelands.xml) with
         its own native `<description>`, just under the RimMandrake tier rather
         than a `RUT_` name. Still deliberately NOT ported onto ZBiome_Grasslands
         here: the owner's 2026-09-20 ruling is that Pyrelands content stays on
         the def we own, not the donor, and the world repaint (owed,
-        WORLD_REMAKE_FINAL_STEP_1) is what gives players RM_FE_Pyrelands's real
+        WORLD_REMAKE_FINAL_STEP_1) is what gives players RM_Pyrelands's real
         description — porting it onto the donor now would entrench the donor as
         the fire biome, the opposite of the ruled direction. Players still see
         the donor's "stormy savanna" text until the repaint; known, accepted.

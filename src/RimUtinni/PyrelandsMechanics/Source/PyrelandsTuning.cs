@@ -21,13 +21,13 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         // ---------------------------------------------------------------
         // Both biome defNames are READ, not guessed: ZBiome_Grasslands is the
         // campaign's Pyrelands (the_pyrelands.md's own header: "Defines
-        // ZBiome_Grasslands (More Vanilla Biomes donor)"), and RM_FE_Pyrelands is
+        // ZBiome_Grasslands (More Vanilla Biomes donor)"), and RM_Pyrelands is
         // the standalone RM-tier biome shipped by mandrake.rm.pyrelands
         // (src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml). A map on any
         // other biome is invisible to the burn-line component.
         internal static readonly string[] PyrelandsBiomeDefNames =
         {
-            "ZBiome_Grasslands", "RM_FE_Pyrelands",
+            "ZBiome_Grasslands", "RM_Pyrelands",
         };
 
         // ---------------------------------------------------------------

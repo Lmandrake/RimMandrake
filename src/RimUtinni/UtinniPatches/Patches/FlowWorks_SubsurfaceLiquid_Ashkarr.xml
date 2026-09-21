@@ -8,7 +8,7 @@
        drills, for what, and how richly is campaign wiring, and campaign wiring
        lives here, exactly like river steam.
 
-       RM_FE_Pyrelands (mandrake.rm.pyrelands) is the Pyrelands biome the frozen
+       RM_Pyrelands (mandrake.rm.pyrelands) is the Pyrelands biome the frozen
        world actually carries — 222 tiles, MEASURED live 2026-09-19. The second
        operation below is the one that does the work on the shipped world.
        ZBiome_Grasslands is zylle's More Vanilla Biomes grassland, still labelled
@@ -99,10 +99,10 @@
   </Operation>
 
 
-  <!-- 🔴 RM_FE_Pyrelands is the biome the FROZEN WORLD actually carries.
+  <!-- 🔴 RM_Pyrelands is the biome the FROZEN WORLD actually carries.
        MEASURED live 2026-09-19 (FOUNDRY bridge wave 2) on the canonical planet
        (seed "raven", coverage 1.0, jawa/world_tile_export over 21872 surface
-       tiles): 222 tiles are BiomeDef RM_FE_Pyrelands and ZERO are
+       tiles): 222 tiles are BiomeDef RM_Pyrelands and ZERO are
        ZBiome_Grasslands. The Pyrelands live in mandrake.rm.pyrelands now; the
        operation above was copied from the river-steam patch, which had the same
        stale target, so no map on the shipped world could ever roll a subsurface
@@ -113,11 +113,11 @@
       <li>RimMandrake: FlowWorks</li>
     </mods>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_Pyrelands"]</xpath>
       <match Class="PatchOperationConditional">
-        <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/modExtensions</xpath>
+        <xpath>/Defs/BiomeDef[defName="RM_Pyrelands"]/modExtensions</xpath>
         <match Class="PatchOperationAdd">
-          <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/modExtensions</xpath>
+          <xpath>/Defs/BiomeDef[defName="RM_Pyrelands"]/modExtensions</xpath>
           <value>
             <li Class="RimMandrake.FlowWorks.Drilling.RM_SubsurfaceLiquidBiomeExtension">
                 <chanceMapHasYield>0.6</chanceMapHasYield>
@@ -137,7 +137,7 @@
           </value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]</xpath>
+          <xpath>/Defs/BiomeDef[defName="RM_Pyrelands"]</xpath>
           <value>
             <modExtensions>
               <li Class="RimMandrake.FlowWorks.Drilling.RM_SubsurfaceLiquidBiomeExtension">

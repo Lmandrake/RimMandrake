@@ -4,7 +4,7 @@
   WildAnimals_Pyrelands.xml                 UtinniPatches — new file 2026-09-13
   ============================================================================
 
-  Wires the RULED fauna roster for the Pyrelands into RM_FE_Pyrelands'
+  Wires the RULED fauna roster for the Pyrelands into RM_Pyrelands'
   wildAnimals, replacing the deliberate core-only vanilla placeholder that
   src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml ships (Hare, Rat,
   Gazelle, Ostrich, Emu, Dromedary, Muffalo, Iguana, Elephant, Rhinoceros,
@@ -143,9 +143,9 @@
        impossible, but not worth risking) case that the Pyrelands mod is ever
        removed while UtinniPatches stays in. -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
+    <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
+      <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
           <RUT_FireHawk>0.15</RUT_FireHawk>
@@ -166,9 +166,9 @@
        OUR creatures out of the Pyrelands if that mod were ever removed.
        Weights are the ones authored for this biome and are unchanged. -->
   <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
+    <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
+      <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
       <value>
         <RSW_Anooba>0.35</RSW_Anooba>
         <RSW_Iriaz>0.5</RSW_Iriaz>
@@ -199,9 +199,9 @@
        donor mod being unsubscribed. Casting HERE, with the rest of the Pyrelands cast,
        rather than in BiomeCast_Ashkarr.xml — one biome, one file. -->
   <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.pyrelands">
-    <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
+    <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
+      <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
       <value>
         <RUT_Emberscythe>0.05</RUT_Emberscythe>
         <RUT_Sytheclaw>0.2</RUT_Sytheclaw>

@@ -2,7 +2,7 @@
 <Defs>
 
   <!--
-    PYRELANDS_SCORCHED_RUINS_1. Wired in ONLY via RM_FE_Pyrelands's own
+    PYRELANDS_SCORCHED_RUINS_1. Wired in ONLY via RM_Pyrelands's own
     <extraGenSteps> (Defs/BiomeDefs/Pyrelands.xml) — BiomeDef.extraGenSteps is
     concatenated into a map's genstep list only when that map's biome IS the
     one carrying the list (RimSage, Verse/MapGenerator.cs:163), so this never
