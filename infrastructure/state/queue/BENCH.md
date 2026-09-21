@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T12:00:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-21T17:12:58Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -108,15 +108,6 @@ kind:     task
 summary:  (no items/WORLDMAP_DOCS_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WORLDMAP_DOCS_PASS_1.md
 
-## ROT_SIZE_REJUDGE_APPLY_1 Apply the owner's 11 re-judged Rot sizes, measured against the TRUE numbers not the sheet's false ones
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  ROTSIZEREJUDGEAPPLY1
-prose:    infrastructure/state/items/ROT_SIZE_REJUDGE_APPLY_1.md
-
 ## TITANOSLIME_SLIME_BIOME_1 Owner ask: a Titanoslime for RUT_Slime, devour-whole + grows-as-it-eats
 state:    doing
 row:      unassigned
@@ -189,16 +180,6 @@ blocked:  Scheduled at the END of the world sweeps by its own spec; assignment v
 summary:  Full economic sweep of what is sold where and when — trader kinds, settlement
 prose:    infrastructure/state/items/ECONOMY_TRADE_SWEEP_1.md
 
-## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Offline half DONE (Law 5 + MEASURED census, 196/297 violate). Blocked on the post-restore live harvest for confirmation + plots, and the injection-layer card.
-summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
-prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
-
 ## FAUNA_LORE_DIVERSIFICATION_1 Per-beast damage diversification round AFTER size scaling: judge each beast by its art + description (scary vs harmless), diverge individuals from the 12-15x band deliberately - owner ruled 2026-09-11, rides the beast graphics/lore pass
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -221,17 +202,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-waiting:  needs `deploy`, game is UP
-summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
-prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -250,36 +221,6 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the goal (owner, 2026-09-10)
 prose:    infrastructure/state/items/CANON_DRAIN_1.md
-
-## BACTA_REVIVAL_MECHANIC_1 Bacta revival of the recently dead (owner ruling: works on dead bodies IF retrieved within a few hours): corpse-freshness window, tank accepts fresh corpse, revives minus brain/mental damage which stays unhealed; vanilla ResurrectionUtility as the base; settings toggle + window tunable
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BACTA_REVIVAL_MECHANIC_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BACTA_REVIVAL_MECHANIC_1.md
-
-## BACTA_TANK_ART_1 Bacta tank art from the ESB canon image (tall 2:1 cylinder, translucent pale-blue backlit fluid, bubbles, white clinical collar top+bottom): building sprite set, visible-pawn overlay layers per RECON findings, fluid item + patches/spray icons, droid sprite
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BACTA_TANK_ART_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BACTA_TANK_ART_1.md
-
-## BACTA_SIDE_ITEMS_1 Bacta full-kit satellites: 2-1B-style medical droid linkable facility (KR pattern), bacta patch + bacta spray consumables (field heal items), trader-tag wiring for all bacta goods
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BACTA_SIDE_ITEMS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BACTA_SIDE_ITEMS_1.md
 
 ## ARTPIPE_FACING_COHERENCE_1 Facing sets are three independent side-profiles: no view direction in north/south prompts, no cross-facing consistency chain - north shows a face, turning flips art styles (owner eyes, first walk 2026-09-14)
 state:    proposed
@@ -441,16 +382,6 @@ thin:     no ## verify, no ## criteria
 summary:  Second pass on DEEPSFAUNAMECHANICS1 (FOUNDRY's, built at 0e0fa8bef),
 prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_2.md
 
-## REBOOT_BREAKGLASS_VERIFY_1 Verify the break-glass path survives a Windows reboot: WSL Keepalive must bring tailscaled back before login, and the fleet may need a hand
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     chore
-thin:     no ## criteria
-summary:  Do this at the desk, on a day when losing the fleet for ten minutes is fine.
-prose:    infrastructure/state/items/REBOOT_BREAKGLASS_VERIFY_1.md
-
 ## VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1 Assess the 14 non-Star-Wars xenotypes (Baseliner/Dirtmole/Genie/Highmate/Hussar/Impid/Neanderthal/Pigskin/Sanguophage/Starjack/VRESaurids_Saurid/Waster/Yttakin/guy762_debugxenotype_droid) kept+reflavored in PawnFlavorPhase2_Xenotype.xml for possible removal -- owner ruling: only Star Wars xenotypes belong
 state:    proposed
 row:      unassigned
@@ -464,7 +395,7 @@ prose:    infrastructure/state/items/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md
 ## BAZAAR_STOLEN_GOODS_PROPERTY_1 Stolen goods as a trade mechanic: RimProperty integration, the scanner registry, and the transponder reader
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     design
 thin:     no ## criteria
@@ -491,56 +422,6 @@ thin:     spec, verify and criteria all present
 summary:  Unwritten on purpose — the remake procedure is authored when the gates above are
 prose:    infrastructure/state/items/WORLD_REMAKE_FINAL_STEP_1.md
 
-## BLUE_DESERT_LIFE_AUTHORING_1 Author the Blue Desert's commissioned hydrocarbon life - Swallowers, Burners, Pickers and the transparent fractal flora - 1029 tiles currently carrying ZERO fauna and ZERO flora because the owner-ratified biology was specced and never built
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  1. Design pass first — kind: design, so per AgentPolicy.md it is
-prose:    infrastructure/state/items/BLUE_DESERT_LIFE_AUTHORING_1.md
-
-## SLIME_GENE_ARCHIVE_BUILD_1 Build the Slime's campaign gene archive: the owner-ACCEPTED 33-target + 25-rider lists (frozen 2026-09-06) exist as design only - 1 of 34 GeneDefs is built and a 17-gene universal PLACEHOLDER archive ships in their place, so the biome's headline mechanic serves the wrong content while looking finished in-game
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  1. Author the GeneDefs for the accepted A-list and B-list. Read
-prose:    infrastructure/state/items/SLIME_GENE_ARCHIVE_BUILD_1.md
-
-## ROT_ROSTER_DEAD_DONOR_NAMES_1 The Rot's fauna roster still names 17 BMT_ species from Biomes! Caverns, a donor mod NOT in the 621-mod active list - they can never spawn, so the roster needs re-ruling (port to our own defs or drop), NOT wiring into the biome table
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  For each of the 14 remaining BMT names (the 17 minus the two ported and
-prose:    infrastructure/state/items/ROT_ROSTER_DEAD_DONOR_NAMES_1.md
-
-## DONOR_DEFS_PORT_TO_OURS_1 Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 262 of ~330 borrowed biome-roster entries alone
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
-prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
-
-## NONCANON_BEAST_RENAME_1 Rename every non-canon beast to a pseudo-Star-Wars equivalent - owner ruling 2026-09-20; applies to donor creatures with Earth or generic names that survive the port to our own defs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     spec, verify and criteria all present
-summary:  ⛔ Do not bulk-rename. This is kind: design — per AgentPolicy.md design
-prose:    infrastructure/state/items/NONCANON_BEAST_RENAME_1.md
-
 ## DESERT_FAMILY_PORT_EXECUTION_1 Port all 109 desert-family species to our own defs and our own art - owner ruled every row REPLACE 2026-09-20; ~99 donor + 6 vanilla to re-author, 4 already ours
 state:    proposed
 row:      unassigned
@@ -550,16 +431,6 @@ kind:     build
 thin:     no ## spec
 summary:  DESERTFAMILYPORTEXECUTION1 — port the whole desert family to our own defs and art
 prose:    infrastructure/state/items/DESERT_FAMILY_PORT_EXECUTION_1.md
-
-## LIVE_ITEM_GLOB_DRIFT_1 32 of 181 files in infrastructure/state/items/ are not live items - 24 are closed in the ledger and 8 have no ledger row at all, so the documented live-set glob is 18 percent wrong
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  LIVEITEMGLOBDRIFT1 — the live-item glob is 18% not-live
-prose:    infrastructure/state/items/LIVE_ITEM_GLOB_DRIFT_1.md
 
 ## SPECIES_TRAITS_OVER_APTITUDES_1 Species character is being expressed as plus-or-minus skill aptitudes, which cannot carry nuance - the owner asks whether purpose-built traits would do it better
 state:    proposed
@@ -640,16 +511,6 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  1. Decide whether each mod should be in the list (this is the owner's call — a mod-list
 prose:    infrastructure/state/items/OUR_MODS_DEPLOYED_NEVER_ACTIVATED_1.md
-
-## WORLD_LABEL_SIZE_HIERARCHY_1 All 71 world features sit at the maxDrawSizeInTiles floor - owner ruled size the whole planet
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Derive each feature's maxDrawSizeInTiles from its tile count — a curve, not a table,
-prose:    infrastructure/state/items/WORLD_LABEL_SIZE_HIERARCHY_1.md
 
 ## WORLDVIEW_MISLABEL_FALLOUT_1 worldview.py labelled the wrong regions on every render - re-check conclusions drawn by LOOKING
 state:    proposed

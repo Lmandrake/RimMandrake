@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T12:00:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-21T17:12:58Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## ROT_SIZE_REJUDGE_APPLY_1 Apply the owner's 11 re-judged Rot sizes, measured against the TRUE numbers not the sheet's false ones
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  ROTSIZEREJUDGEAPPLY1
+prose:    infrastructure/state/items/ROT_SIZE_REJUDGE_APPLY_1.md
 
 # IN PROGRESS
 
@@ -39,7 +48,7 @@ prose:    infrastructure/state/items/TILE_STRUCTURE_DESIGNS_1.md
 ## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     build
 summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
@@ -210,7 +219,7 @@ prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_4.md
 ## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 summary:  Design (dormant, per DROIDUNIFIEDFRAMEWORKDESIGN.md §0 card 14 / §3.4 E5) for
@@ -242,15 +251,6 @@ target:   v1
 kind:     task
 summary:  Packet B10 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
-
-## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
-prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
 ## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
 state:    doing
@@ -381,7 +381,7 @@ prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
@@ -453,7 +453,7 @@ prose:    infrastructure/state/items/UTINNI_WORLDMAP_FLIGHT_ICON_1.md
 ## FASCINATING_WORLD_JUNK_1 Reskin and re-text every map-scatter wreck (tanks, trucks, cars, ancient junk) into Star Wars scavenger wreckage: census what exists and what spawns it, mine the donor mods slated for removal (urban ruins etc.) for ideas, rule the spawning roster per region by cards, then re-graphic and re-text it — the world comes alive by being dead in the right flavor
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     design
 summary:  FASCINATINGWORLDJUNK1 — every wreck on the map is a flavour of ice cream to a Jawa
@@ -918,15 +918,6 @@ kind:     task
 summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
 prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
 
-## DESERT_STAGGERSEED_BUILD_1 Author the staggerseed cycle plant (corpse-dispersal + euphoric prepared-seed dish)
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     build
-summary:  DESERTSTAGGERSEEDBUILD1 — author the staggerseed cycle plant
-prose:    infrastructure/state/items/DESERT_STAGGERSEED_BUILD_1.md
-
 ## COMMISSION_LEDGER_CLEANUP_1 85 genuinely-owed new-art/def commissions from the 118-row ledger
 state:    doing
 row:      unassigned
@@ -953,7 +944,7 @@ prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
 ## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     build
 blocked:  faction-held class needs the owner to name which factions are tech-aligned and to what research domains (no such mapping exists in any design doc, investigation already exhaustive per the item's own file); the ship-only reveal-trigger is a separate, smaller follow-on but its exact in-fiction trigger event is also underspecified (research_normalization_principles.md only says 'the Narrator announces a remembered schematic' -- not which event maps to which of the 3 memory_core rows) -- not filed blind tonight
@@ -1063,7 +1054,7 @@ prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
 ## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 blocked:  dormant design per owner card 14 (design now, do not build); nothing closes it but the owner's read of droid_oracle_voice_design.md
@@ -1123,7 +1114,7 @@ prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     design
 blocked:  design draft, item's own criterion 1: stays a draft until the owner rules forks F1-F10 (art register, glyph tone/mappings, anti-Imperial stencil scope)
@@ -1169,6 +1160,16 @@ kind:     design
 blocked:  design brief complete and filed (design/Jawa/worldbuilding/creatures/goo_boom_commission.md, commit 477ab973) - RUT_Vhessk fully specified: mechanic grounded in real Core source (a real life-stage-index trap caught), art direction grounded in real donor palette sampling. NOT closing: the item's own title includes 'new def + new art', i.e. the actual BUILD, and the brief leaves 8 concrete open calls (v1/v2 worker, healthScale, melee numbers, market value, butchery yield, BodyDef, glow, spawn timing) that need an owner ruling before building makes sense - building now would mean silently deciding them
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
+
+## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Offline half DONE (Law 5 + MEASURED census, 196/297 violate). Blocked on the post-restore live harvest for confirmation + plots, and the injection-layer card.
+summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
+prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
 ## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
 state:    ready  (BLOCKED)
@@ -1352,7 +1353,27 @@ prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+waiting:  needs `game-up`, game is DOWN
+summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
+prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
+
+## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+waiting:  needs `deploy`, game is DOWN
+summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
+prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
 # NOT THIS TARGET
 
@@ -1361,6 +1382,106 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## BACTA_REVIVAL_MECHANIC_1 Bacta revival of the recently dead (owner ruling: works on dead bodies IF retrieved within a few hours): corpse-freshness window, tank accepts fresh corpse, revives minus brain/mental damage which stays unhealed; vanilla ResurrectionUtility as the base; settings toggle + window tunable
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BACTA_REVIVAL_MECHANIC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BACTA_REVIVAL_MECHANIC_1.md
+
+## BACTA_TANK_ART_1 Bacta tank art from the ESB canon image (tall 2:1 cylinder, translucent pale-blue backlit fluid, bubbles, white clinical collar top+bottom): building sprite set, visible-pawn overlay layers per RECON findings, fluid item + patches/spray icons, droid sprite
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BACTA_TANK_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BACTA_TANK_ART_1.md
+
+## BACTA_SIDE_ITEMS_1 Bacta full-kit satellites: 2-1B-style medical droid linkable facility (KR pattern), bacta patch + bacta spray consumables (field heal items), trader-tag wiring for all bacta goods
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BACTA_SIDE_ITEMS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BACTA_SIDE_ITEMS_1.md
+
+## REBOOT_BREAKGLASS_VERIFY_1 Verify the break-glass path survives a Windows reboot: WSL Keepalive must bring tailscaled back before login, and the fleet may need a hand
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     chore
+thin:     no ## criteria
+summary:  Do this at the desk, on a day when losing the fleet for ten minutes is fine.
+prose:    infrastructure/state/items/REBOOT_BREAKGLASS_VERIFY_1.md
+
+## BLUE_DESERT_LIFE_AUTHORING_1 Author the Blue Desert's commissioned hydrocarbon life - Swallowers, Burners, Pickers and the transparent fractal flora - 1029 tiles currently carrying ZERO fauna and ZERO flora because the owner-ratified biology was specced and never built
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  1. Design pass first — kind: design, so per AgentPolicy.md it is
+prose:    infrastructure/state/items/BLUE_DESERT_LIFE_AUTHORING_1.md
+
+## SLIME_GENE_ARCHIVE_BUILD_1 Build the Slime's campaign gene archive: the owner-ACCEPTED 33-target + 25-rider lists (frozen 2026-09-06) exist as design only - 1 of 34 GeneDefs is built and a 17-gene universal PLACEHOLDER archive ships in their place, so the biome's headline mechanic serves the wrong content while looking finished in-game
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  1. Author the GeneDefs for the accepted A-list and B-list. Read
+prose:    infrastructure/state/items/SLIME_GENE_ARCHIVE_BUILD_1.md
+
+## ROT_ROSTER_DEAD_DONOR_NAMES_1 The Rot's fauna roster still names 17 BMT_ species from Biomes! Caverns, a donor mod NOT in the 621-mod active list - they can never spawn, so the roster needs re-ruling (port to our own defs or drop), NOT wiring into the biome table
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  For each of the 14 remaining BMT names (the 17 minus the two ported and
+prose:    infrastructure/state/items/ROT_ROSTER_DEAD_DONOR_NAMES_1.md
+
+## DONOR_DEFS_PORT_TO_OURS_1 Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 262 of ~330 borrowed biome-roster entries alone
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
+prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
+
+## NONCANON_BEAST_RENAME_1 Rename every non-canon beast to a pseudo-Star-Wars equivalent - owner ruling 2026-09-20; applies to donor creatures with Earth or generic names that survive the port to our own defs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     spec, verify and criteria all present
+summary:  ⛔ Do not bulk-rename. This is kind: design — per AgentPolicy.md design
+prose:    infrastructure/state/items/NONCANON_BEAST_RENAME_1.md
+
+## LIVE_ITEM_GLOB_DRIFT_1 32 of 181 files in infrastructure/state/items/ are not live items - 24 are closed in the ledger and 8 have no ledger row at all, so the documented live-set glob is 18 percent wrong
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  LIVEITEMGLOBDRIFT1 — the live-item glob is 18% not-live
+prose:    infrastructure/state/items/LIVE_ITEM_GLOB_DRIFT_1.md
 
 ## SWBESTIARY_UNPREFIXED_DONOR_DEFS_1 SWBestiary ships un-prefixed donor defNames (SWClaws, SWTailAttackTool, Dewback, Bogwing, Reek) and ~23 now-unreferenced BodyDefs left behind by the desert port dedup
 state:    proposed
@@ -1382,15 +1503,15 @@ thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
 
-## SCARLANDS_RENAME_OURS_1 RUT_Scarlands collides with vanilla Odyssey Scarlands - owner ruled rename OURS
+## WORLD_LABEL_SIZE_HIERARCHY_1 All 71 world features sit at the maxDrawSizeInTiles floor - owner ruled size the whole planet
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## verify
-summary:  1. Take the replacement name from WORLDLABELSIZEHIERARCHY1's sibling draft file
-prose:    infrastructure/state/items/SCARLANDS_RENAME_OURS_1.md
+summary:  1. Derive each feature's maxDrawSizeInTiles from its tile count — a curve, not a table,
+prose:    infrastructure/state/items/WORLD_LABEL_SIZE_HIERARCHY_1.md
 
 ## FEATURE_DRAWCENTER_UNVERIFIED_1 Only 2 of 71 world features have a verified drawCenter, and growing labels make a wrong one worse
 state:    proposed
@@ -1401,3 +1522,243 @@ kind:     task
 thin:     no ## verify
 summary:  1. For each of the 71, check the drawCenter against the region's actual tiles.
 prose:    infrastructure/state/items/FEATURE_DRAWCENTER_UNVERIFIED_1.md
+
+## SCARLANDS_STANDALONE_MOD_1 Scarlands biome-mod split: RM_Warscar, absorb ScarlandsLadder
+state:    proposed
+row:      20
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  - New biome def: RMWarscar, label Warscar (no article — deliberate, per the
+prose:    infrastructure/state/items/SCARLANDS_STANDALONE_MOD_1.md
+
+## STILLSAND_RM_MOD_BUILD_1 Phase A: build RM_Stillsand as its own RimMandrake mod (mandrake.rm.stillsand) — the Stillsand (extreme desert; campaign label "the Dune Sea" stays a Utinni patch)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STILLSAND_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STILLSAND_RM_MOD_BUILD_1.md
+
+## LONGSHADE_RM_MOD_BUILD_1 Phase A: build RM_LongShade as its own RimMandrake mod (mandrake.rm.longshade) — the Long Shade (the livable desert)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LONGSHADE_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
+
+## THEROT_RM_MOD_BUILD_1 Phase A: build RM_TheRot as its own RimMandrake mod (mandrake.rm.therot) — the Rot - absorbs mandrake.rut.rotsporekit (151 files)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/THEROT_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/THEROT_RM_MOD_BUILD_1.md
+
+## WASTELAND_RM_MOD_BUILD_1 Phase A: build RM_Wasteland as its own RimMandrake mod (mandrake.rm.wasteland) — the Wasteland - owns the RUT_WastelandBrine terrain family
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WASTELAND_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WASTELAND_RM_MOD_BUILD_1.md
+
+## NIGHTSIDEICE_RM_MOD_BUILD_1 Phase A: build RM_NightsideIce as its own RimMandrake mod (mandrake.rm.nightsideice) — the Nightside Ice - thin by design, but a Lantern Deeps host surface
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NIGHTSIDEICE_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NIGHTSIDEICE_RM_MOD_BUILD_1.md
+
+## FORSAKENCRAGS_RM_MOD_BUILD_1 Phase A: build RM_ForsakenCrags as its own RimMandrake mod (mandrake.rm.forsakencrags) — the Forsaken Crags
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FORSAKENCRAGS_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FORSAKENCRAGS_RM_MOD_BUILD_1.md
+
+## BLUEDESERT_RM_MOD_BUILD_1 Phase A: build RM_BlueDesert as its own RimMandrake mod (mandrake.rm.bluedesert) — the Blue Desert - BLUE_DESERT_LIFE_AUTHORING_1 builds INTO this mod
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BLUEDESERT_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLUEDESERT_RM_MOD_BUILD_1.md
+
+## FLOODEDCANYON_RM_MOD_BUILD_1 Phase A: build RM_FloodedCanyon as its own RimMandrake mod (mandrake.rm.floodedcanyon) — the Cracked Lands - twin pair, mod EXISTS; RUT_CrackedLands merges in
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLOODEDCANYON_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOODEDCANYON_RM_MOD_BUILD_1.md
+
+## LEANINGSCRUB_RM_MOD_BUILD_1 Phase A: build RM_LeaningScrub as its own RimMandrake mod (mandrake.rm.leaningscrub) — the Leaning Scrub (was arid shrubland, a vanilla label)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LEANINGSCRUB_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LEANINGSCRUB_RM_MOD_BUILD_1.md
+
+## POISONFOREST_RM_MOD_BUILD_1 Phase A: build RM_PoisonForest as its own RimMandrake mod (mandrake.rm.poisonforest) — the Poison Forest
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/POISONFOREST_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/POISONFOREST_RM_MOD_BUILD_1.md
+
+## RUSTCATHEDRAL_RM_MOD_BUILD_1 Phase A: build RM_RustCathedral as its own RimMandrake mod (mandrake.rm.rustcathedral) — the Rust Cathedral - absorbs rustcathedralhum/roaches/walls
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RUSTCATHEDRAL_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RUSTCATHEDRAL_RM_MOD_BUILD_1.md
+
+## GREENTIDE_RM_MOD_BUILD_1 Phase A: build RM_Greentide as its own RimMandrake mod (mandrake.rm.greentide) — the Greentide - twin pair, mod EXISTS (123 vs 287 lines)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREENTIDE_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREENTIDE_RM_MOD_BUILD_1.md
+
+## WEEPINGSTONES_RM_MOD_BUILD_1 Phase A: build RM_WeepingStones as its own RimMandrake mod (mandrake.rm.weepingstones) — the Weeping Stones
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEEPINGSTONES_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEEPINGSTONES_RM_MOD_BUILD_1.md
+
+## PYRELANDS_RM_MOD_BUILD_1 Phase A: build RM_Pyrelands as its own RimMandrake mod (mandrake.rm.pyrelands) — the Pyrelands - twin pair, mod EXISTS; defName rename done at 84d42c63b, BUILT NOT DEPLOYED
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_RM_MOD_BUILD_1.md
+
+## CONTAGION_RM_MOD_BUILD_1 Phase A: build RM_Contagion as its own RimMandrake mod (mandrake.rm.contagion) — the Contagion
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CONTAGION_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CONTAGION_RM_MOD_BUILD_1.md
+
+## WEBWORK_RM_MOD_BUILD_1 Phase A: build RM_Webwork as its own RimMandrake mod (mandrake.rm.webwork) — the Webwork
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEBWORK_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_RM_MOD_BUILD_1.md
+
+## GELATINOUSSLIME_RM_MOD_BUILD_1 Phase A: build RM_GelatinousSlime as its own RimMandrake mod (mandrake.rm.gelatinousslime) — the Slime - twin pair, mod EXISTS; TITANOSLIME_SLIME_BIOME_1 builds here
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GELATINOUSSLIME_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GELATINOUSSLIME_RM_MOD_BUILD_1.md
+
+## MIASMA_RM_MOD_BUILD_1 Phase A: build RM_Miasma as its own RimMandrake mod (mandrake.rm.miasma) — the Miasma
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MIASMA_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MIASMA_RM_MOD_BUILD_1.md
+
+## THEFORGE_RM_MOD_BUILD_1 Phase A: build RM_TheForge as its own RimMandrake mod (mandrake.rm.theforge) — the Forge
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/THEFORGE_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/THEFORGE_RM_MOD_BUILD_1.md
+
+## FEVERWOOD_RM_MOD_BUILD_1 Phase A: build RM_FeverWood as its own RimMandrake mod (mandrake.rm.feverwood) — the Fever Wood
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FEVERWOOD_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FEVERWOOD_RM_MOD_BUILD_1.md
+
+## THESUMP_RM_MOD_BUILD_1 Phase A: build RM_TheSump as its own RimMandrake mod (mandrake.rm.thesump) — the Sump
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/THESUMP_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/THESUMP_RM_MOD_BUILD_1.md
+
+## TERMINALBIOMES_RM_MOD_BUILD_1 Phase A: build RM_TheScald/RM_PropaneLake/RM_TwilightSea/RM_GreySea as its own RimMandrake mod (mandrake.rm.terminalbiomes) — FOUR biomes in ONE mod, each independently toggleable (owner ruling 7 Q1)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TERMINALBIOMES_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TERMINALBIOMES_RM_MOD_BUILD_1.md
+
+## LANTERNDEEPS_RM_MOD_BUILD_1 Phase A: build RM_LanternDeeps as its own RimMandrake mod (mandrake.rm.lanterndeeps) — the Lantern Deeps - an INJECTION layer, no RUT_ twin; skips Phase A step 3
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LANTERNDEEPS_RM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LANTERNDEEPS_RM_MOD_BUILD_1.md
