@@ -67,7 +67,17 @@
     </graphicData>
     <selectable>true</selectable>
     <pathCost>2</pathCost>
-    <ingestible />
+    <!-- MEASURED live 2026-09-21: `Config error in RSW_LightPipeNub: Nutrition == 0 but
+         preferability is RawBad instead of NeverForNutrition`. A lens of silica-cemented
+         glass is deliberately Nutrition 0, so the inherited preferability is what is wrong.
+         ⚠️ This was a bare `<ingestible />` and reparenting to PlantBaseNonEdible did NOT
+         fix it — MEASURED on the same day, it made it worse: an empty element does not
+         suppress the field, it constructs a bare IngestibleProperties, so with no parent
+         ingestible to merge into the load then reported `undefined preferability` AND
+         `no foodType`. Name the one field that is wrong and inherit the rest. -->
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
     <plant>
       <!-- Item-specified: fertilityMin 0.05. Tiny and glassy: near-zero footprint,
            no wind exposure (it does not stand proud of the sand), no leaves to lose. -->
@@ -110,6 +120,16 @@
       <Beauty>4</Beauty>
       <BeautyOutdoors>6</BeautyOutdoors>
     </statBases>
+    <!-- MEASURED live 2026-09-21: `Config error in RSW_Ollim: Nutrition == 0 but
+         preferability is RawBad instead of NeverForNutrition`. "It is photosynthetic in
+         nothing and grows no leaf" — Nutrition 0 is deliberate. Core's TreeBase parents off
+         PlantBase, which carries `<ingestible>` with preferability RawBad, and there is no
+         non-edible tree base to switch to (unlike RSW_LightPipeNub above, which could just
+         use PlantBaseNonEdible), so the preferability is overridden here instead.
+         foodType is left inherited: only preferability is wrong. -->
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
     <plant>
       <!-- "Accretes cell by cell from the tiniest hint of moisture, over spans that
            make its growth effectively geological" (deep_desert.md SS4b): near-zero
