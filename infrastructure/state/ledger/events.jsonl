@@ -10424,3 +10424,11 @@
 {"seat":"FOUNDRY","event":"note","id":"PORTED_BEAST_MECHANICS_REBUILD_1","text":"Ledger title is WRONG; the item body corrects it. RSW_Voltmaw fires a four-shot PLASMA volley (Alpha Animals AA_Plasma), not a chemfuel ejection - only RSW_Cindermite ejects chemfuel. All six criteria PASS, verified live 2026-09-20.","ts":"2026-09-21T00:28:51Z"}
 {"seat":"FOUNDRY","event":"spawn","name":"DESERT_LEACHMOSS_LIVE_VERIFY_1","kind":"verify","needs":"bridge","spec":"design/Jawa/worldbuilding/desert_shade_plants_design.md","for":"FOUNDRY","from":"DESERT_LEACHMOSS_BUILD_1","ts":"2026-09-21T00:31:46Z"}
 {"seat":"FOUNDRY","event":"close","id":"DESERT_LEACHMOSS_BUILD_1","sha":"39a7132b128e9eb7a39e82d48c0aeda9cb0044ee","ts":"2026-09-21T00:32:54Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"shutdown window: deploy new JawaBench ability tools, then FALL_LINE_MAJOR_REGION_LABEL_1 on the canonical world","ts":"2026-09-21T00:33:50Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"I am afk. Wake bench. Go as far as you can. Don't stop.","ts":"2026-09-21T00:34:19Z"}
+{"seat":"FOUNDRY","event":"file","id":"OWNER_SAID_FLAG_BYPASS_1","title":"the --said flag (./game, apply_blanket_ruling.py) bypasses the transcript-provenance guard entirely","kind":"build","target":"v1","needs":"offline","caused_by":"OWNER_SAID_PROVENANCE_GUARD_1","for":"FOUNDRY","ts":"2026-09-21T00:34:36Z"}
+{"seat":"FOUNDRY","event":"claim","id":"OWNER_SAID_FLAG_BYPASS_1","ts":"2026-09-21T00:35:30Z"}
+{"seat":"FOUNDRY","event":"start","id":"OWNER_SAID_FLAG_BYPASS_1","ts":"2026-09-21T00:35:31Z"}
+{"seat":"BENCH","event":"claim","id":"FALL_LINE_MAJOR_REGION_LABEL_1","ts":"2026-09-21T00:37:53Z"}
+{"seat":"BENCH","event":"start","id":"FALL_LINE_MAJOR_REGION_LABEL_1","ts":"2026-09-21T00:37:56Z"}
+{"seat":"FOUNDRY","event":"close","id":"OWNER_SAID_FLAG_BYPASS_1","sha":"03a73e17df8897e2da5ba0ee84fca3b237bdec02","ts":"2026-09-21T00:39:21Z"}
