@@ -256,3 +256,29 @@ lifeStage graphic); that count is expected and is not a defect.
    "grew" on screen proves only that `drawSize` changed. And `measure count`
    before believing any spawn: a def with an unresolvable `Class=` attribute is
    discarded silently, and this one carries two of our own classes.
+
+## deploy 2026-09-21 — step 1 of the shutdown-window recipe is DONE
+
+`deploy_custom_mods.py --mod GelatinousSlime --apply` ran during the 2026-09-21T00:4x
+cold load and reported **10 files deployed, VERIFIED in sync** — 7 new defs plus the
+assembly, the BiomeDef and `Gelatid.xml`.
+
+🔑 It was safe to write while RimWorld was running because **`mandrake.rm.gelatinousslime`
+is not enabled in `ModsConfig.xml`**, so the game never loaded (and never locked) its
+assembly. A deployed-but-inactive mod is inert.
+
+⇒ The remaining shutdown-window work is **steps 2 and 3 only**:
+
+2. Build a list of minimal + `GelatinousSlime` + `TitanicCreatures` + Large Pawns +
+   **all five DLC** (a standing ruling: every test list carries all five expansions),
+   then quicktest (~90 s).
+3. Run the spec's §8 seven gates. The dev gizmos *DEV: +6/-6 absorbed mass* and
+   *DEV: release held* are already on the comp for gates 2 and 4. Spawn **ten** muffalo,
+   not one, for the burst-out gate — one pawn's result is RNG.
+
+⚠️ Assert `BodySize` **through the bridge, never from the sprite**, and run
+`measure count ThingDef` before believing any spawn.
+
+⚠️ Art is still owed: `Things/Pawn/Animal/Titanoslime/RM_Titanoslime` needs
+`_south`/`_east`/`_north` at 1024 px. Until then it renders **magenta** — that is the
+missing-texture colour, not a defect in the def.
