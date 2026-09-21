@@ -123,6 +123,19 @@ against. **Correct next step, once art exists**: a single hand-placed row in
 `cast_assignment.csv` for `RSW_Tellurox` under `HorrorWastes`, diffed to a
 temp path before touching the real file, never a full allocator re-run.
 
+🔴 **`HorrorWastes` (the donor def from Horrors (Continued)) no longer holds any
+painted world tiles** — its ~2,338 tiles were dissolved 2026-09-07 into
+`RUT_NightsideIce`/`BiomeGRimond`/`AB_PropaneLakes`
+(`design/Jawa/worldbuilding/horrorwastes_dissolve_execution.md`), whose own
+"Cast re-homing" section already ruled the cast-roster successor as
+`BiomeGRimond` (68% tile plurality + `the_blue_desert.md`'s "the Horrors' host"
+framing) — which the 2026-09-07 world-switch then repainted to `RUT_BlueDesert`.
+**UNMEASURED whether that's still the right target for THIS row**:
+`cast_assignment.csv` currently has zero `RUT_BlueDesert` rows at all, so
+hand-placing under `HorrorWastes` would silently orphan the row. Whoever
+picks up biome-cast wiring: re-derive the live successor key before adding
+the row, don't paste `HorrorWastes` in unchanged.
+
 **Left `doing`** — none of `## criteria`'s bars are met yet (spawn, live
 mechanic proof, art, biome wiring all still owed). `validate_patch.py`: 7
 errors, all texPath-only (see above) — otherwise clean (0 structural

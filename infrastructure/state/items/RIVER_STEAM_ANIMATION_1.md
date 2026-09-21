@@ -18,6 +18,15 @@ Pure ambience feature, no gameplay effect, no new art. `mandrake.rut.riversteam`
 - Gates on `map.Biome.defName == "ZBiome_Grasslands"` — the Pyrelands' actual
   BiomeDef, per `ASHKARR_WORLD_DEFINITION.md`'s biome table ("stormy savanna").
   Every other biome's rivers stay silent.
+  ⚠️ **Superseded, this original 2026-09-02 framing** — `PYRELANDS_WRONG_BIOME_DEF_1`
+  (closed 2026-09-20) found the intended Pyrelands def is `RM_FE_Pyrelands`, not
+  `ZBiome_Grasslands`, and which one carries the live tiles is UNRECONCILED
+  against `world/ASHKARR_WORLDMAP_tiles.csv`. The engine is no longer hardcoded
+  on this string: the mechanism moved to `src/RimMandrake/FlowWorks/Source/ManyWaters/RiverSteamHook.cs`
+  (a `RiverSteamBiomeExtension` DefModExtension any biome can carry), and
+  `src/RimUtinni/UtinniPatches/Patches/ManyWaters_RiverSteam_Ashkarr.xml` now
+  applies the extension to BOTH `ZBiome_Grasslands` and `RM_FE_Pyrelands` for
+  exactly this reason.
 - River cells found via `TerrainDef.IsRiver` (`HasTag("River")`) — the exact
   test `RimWorld.SeasonalFlood` already uses for the same purpose
   (`Source/RimWorld/SeasonalFlood.cs:63`), cached once at `FinalizeInit()`.
