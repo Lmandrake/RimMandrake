@@ -54,3 +54,18 @@ The restored full `ModsConfig.xml` parses with `mandrake.rut.ashkarrflora` in
 Found by `BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1` while chasing that item's "RUT_Staggerseed
 did not resolve as a ThingDef" note. The defs exist and are correct; nothing about them
 needs building.
+
+## state — CLOSED 2026-09-20 (`ad6d1fd57`)
+
+`mandrake.rut.ashkarrflora` inserted into the stored
+`infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`, right after
+`mandrake.rut.pawnflavor` (index 568) — well after `mandrake.rm.creaturebehaviors`
+(index 550), so its own `loadAfter` is satisfied. `modlist_swap.py --restore --apply`
+wrote it to the live `ModsConfig.xml` (619 active), and a real Steam-launched cold
+load on the full list confirmed by `jawa/get_defs`: `ThingDef/RUT_Staggerseed` and
+`ThingDef/RUT_Fuzz` both resolve, `modName`/`packageId` reading `mandrake.rut.ashkarrflora`.
+
+Both defs' `texPath`s still 404 (`Things/Plant/RUT_Staggerseed`,
+`Things/Plant/RUT_Fuzz` — no texture found) — pre-existing, already tracked under
+`DESERT_STAGGERSEED_BUILD_1`/`STAGGERSEED_SHIPPING_NAME_1` as owed art, out of this
+item's scope. The mod list gap this item was filed for is fixed.
