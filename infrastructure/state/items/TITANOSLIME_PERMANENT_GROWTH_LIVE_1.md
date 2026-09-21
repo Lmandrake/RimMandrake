@@ -51,3 +51,41 @@ rather than discovered after, and the load's own run sheet records it as not tes
 
 A Titanoslime that has grown does not shrink through any path with the shipped default, the
 behaviour survives a save/load round trip, and flipping the setting on restores shrinking.
+
+## RESULT — proven live, 2026-09-21
+
+Tested on a throwaway `start_debug_game_ready` scratch map (never the campaign save), one
+Titanoslime (`RM_Titanoslime58137`), bridge taken/released around the session. Values read
+as RAW SCRIBED FIELDS off `.rws` saves parsed with `xml.etree.ElementTree` (never the
+inspect string, never a bare `success: true`) — comp fields on this mod are Scribed flat
+onto the Pawn element (no `<comps>` wrapper node), confirmed by reading the raw XML.
+
+- **Baseline** (spawn roll): `absorbedMass=4`, `ageTracker.lockedLifeStageIndex=1`.
+- **Growth, real path**: fed a rat corpse, `absorbedMass` rose to `4.01200008` via the
+  ordinary `TickRecordPoll` → `AddMass(+)` path (not the dev gizmo) — confirms the positive
+  side of the mechanism before testing permanence.
+- **All three shrink paths driven simultaneously, shipped default
+  (`titanoslimeReversible=false`)**: forced `Food` need to 0 (Starving) and kept it there;
+  held off any `RM_SlimeTerrain`-tagged terrain for 70,000 ticks (`ticksOffSlime` read back
+  as `70000`, past the 60,000 dry threshold); applied 35 Blunt damage (armor-penetration
+  1.0) to cross the shed threshold — a `RM_Gelatid` visibly spawned (shed confirmed firing)
+  and `damageSinceShed` reset to 0 (confirmed in the raw save). **`absorbedMass` stayed at
+  `4.01200008` and `lockedLifeStageIndex` stayed `1` through all three** — the gelatid
+  proves the shed event ran; the unchanged mass proves `AddMass`'s negative-delta gate
+  blocked it, same for the decay paths that had been live-attempting a cut every 2500-tick
+  interval for the whole 70k-tick window.
+- **Save/load round trip**: saved, reloaded (`mapCount` went 0→1 across three polls, ~6s),
+  re-read the same pawn from a fresh save taken right after load with zero ticks stepped —
+  `absorbedMass=4.01200008`, `lockedLifeStageIndex=1`, identical. Permanence survives
+  serialization.
+- **Control — flip `titanoslimeReversible` ON** (`jawa/mod_settings_field`,
+  `RimMandrake.GelatinousSlime.SlimeSettings`, confirmed `False→True`), reapplied the same
+  35 Blunt-damage shed stimulus: **`absorbedMass` dropped `4.01200008 → 3.01200008`** (exactly
+  `-massPerShed`), a second gelatid spawned. This is the falsification control the spec asked
+  for — the SAME stimulus that was blocked under the default now succeeds once the gate is
+  open, so the permanence result is the gate working, not a broken shrink mechanism.
+- Setting restored to shipped default (`titanoslimeReversible=false`) before release; game
+  left paused; bridge released; all seven throwaway `TITANOSLIME_LIVETEST_*.rws` saves
+  deleted (pure verification snapshots, not review saves — nothing kept per repo default).
+
+**Criteria met in full.** Closed.
