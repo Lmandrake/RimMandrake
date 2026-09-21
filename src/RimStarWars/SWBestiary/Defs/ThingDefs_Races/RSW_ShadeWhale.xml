@@ -43,6 +43,15 @@
   and rate dial ("Filter-feeding from the ground", "Dung seeding at shade
   patches"). See those two blocks for the numbers and why each was chosen.
 
+  FILTH_ON_NATURAL_TERRAIN_NOOP_1 (2026-09-21): both mechanics' filth def was
+  Core's Filth_AnimalFilth, which can never place on Sand/SoftSand — its
+  placementMask is [Terrain]-only and NaturalTerrainBase's
+  filthAcceptanceMask is [Unnatural]-only, confirmed with 6 filter-feed
+  bouts and 8 dung events on live Sand producing 0 filth. Both fields now
+  point at this mod's own RSW_Filth_WhaleDung (RSW_Filth_WhaleDung.xml),
+  same look, placementMask [Unnatural] — the mask Sand/SoftSand actually
+  accept. See that def's header for the full engine finding.
+
   Working name only, same status as `staggerseed` and `glitter-birds` in
   desert.md's own Owed section — "shade whale" is descriptive, not an
   owner-given name.
@@ -137,7 +146,13 @@
         <foodPercentPerBout>0.10</foodPercentPerBout>
         <boutDurationTicks>1200</boutDurationTicks>
         <searchRadius>20</searchRadius>
-        <leavingsFilthDef>Filth_AnimalFilth</leavingsFilthDef>
+        <!-- FILTH_ON_NATURAL_TERRAIN_NOOP_1: RSW_Filth_WhaleDung, not Core's
+             Filth_AnimalFilth — Filth_AnimalFilth's placementMask is
+             [Terrain]-only, and Sand/SoftSand (NaturalTerrainBase) accept
+             only [Unnatural], so every leavings drop here was a silent
+             no-op. See RSW_Filth_WhaleDung.xml's own header for the full
+             engine finding; do not swap this back to Filth_AnimalFilth. -->
+        <leavingsFilthDef>RSW_Filth_WhaleDung</leavingsFilthDef>
         <leavingsFilthCount>1</leavingsFilthCount>
       </li>
     </modExtensions>
@@ -175,7 +190,9 @@
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_DungSeeder">
         <intervalTicksRange>15000~30000</intervalTicksRange>
         <minShadeToSeed>0.35</minShadeToSeed>
-        <dungFilthDef>Filth_AnimalFilth</dungFilthDef>
+        <!-- FILTH_ON_NATURAL_TERRAIN_NOOP_1: same swap as leavingsFilthDef
+             above, same reason — RSW_Filth_WhaleDung.xml. -->
+        <dungFilthDef>RSW_Filth_WhaleDung</dungFilthDef>
         <dungFilthCount>4</dungFilthCount>
         <seedRadius>5.9</seedRadius>
         <growthBoost>0.25</growthBoost>

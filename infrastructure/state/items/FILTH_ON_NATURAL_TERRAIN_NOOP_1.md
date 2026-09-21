@@ -69,3 +69,66 @@ after one filter-feed bout — or both comments say plainly that it cannot and w
 
 Filth appears where the design says it appears, or the claim is removed from both
 comps and from `desert.md`'s expectations. No third state.
+
+## decision, 2026-09-21 — option 2, new FilthDef
+
+Read the decompiled engine in full before choosing (`FilthMaker.cs`,
+`FilthProperties.cs`, `TerrainDef.cs`, `Filth_Various.xml`, `Terrain_Natural.xml`,
+`Alert_AnimalFilth.cs`, `Pawn_FilthTracker.cs`):
+
+- **Option 1 confirmed dead, as the item already suspected.** Passing
+  `FilthSourceFlags.Pawn` as `additionalFlags` only unlocks `CanMakeFilth`'s
+  roof/enclosed-room escape hatch. On open Sand — no roof, room touches the map
+  edge — `TerrainAcceptsFilth` still runs and still fails, because
+  `filthSourceFlags = placementMask | additionalFlags` still carries the
+  `Terrain` bit and `Unnatural & (Terrain|Pawn) != (Terrain|Pawn)`. This matches
+  vanilla's OWN animal-filth mechanic exactly: `Pawn_FilthTracker` (the system
+  behind every animal's ambient `FilthRate`) already passes `FilthSourceFlags.Pawn`
+  on every tick, and `Alert_AnimalFilth.cs` — vanilla's own alert for "animal
+  filth is piling up" — explicitly requires a roof before it even considers
+  filth a problem. Animal dung accumulating only indoors is deliberate vanilla
+  design, not a bug we'd be working around.
+- **Option 2 IS viable, and the item's own text ("Filth_Sand and Filth_Dirt are
+  also [Terrain]-only") pointed at the right family without checking the
+  default.** `RimWorld/FilthProperties.cs`'s C# default for an unset
+  `<placementMask>` is `FilthSourceFlags.Unnatural` — exactly what
+  `NaturalTerrainBase` (Sand/SoftSand included) accepts. Every Core filth that
+  omits `<placementMask>` (Filth_Blood, Filth_Vomit, Filth_Water, Filth_Ash,
+  Filth_OilSmear, Filth_CorpseBile, etc. — the ones anyone has actually seen
+  outdoors on grass/dirt) rides this default; every Core filth that explicitly
+  sets `[Terrain]` (Filth_Dirt, Filth_Sand, Filth_AnimalFilth, Filth_Trash) does
+  not. `TerrainDefGenerator_Stone.cs` and the UtinniPatches precedent
+  (`RUT_Filth_MouseTrack`, `mandrake.rut.utinnipatches`) confirm a mod-defined
+  FilthDef with a deliberately-chosen mask is an established pattern, not a new
+  idea.
+
+**Shipped:** `RSW_Filth_WhaleDung` (new FilthDef,
+`src/RimStarWars/SWBestiary/Defs/ThingDefs_Misc/RSW_Filth_WhaleDung.xml`),
+`placementMask: [Unnatural]` — accepted outright by Sand/SoftSand's
+`filthAcceptanceMask [Unnatural]`, no roof, no enclosed room, no `Pawn` flag
+needed. Same look as `Filth_AnimalFilth` (Core's `GrainyA` cluster texture,
+same dung tint) — real Core art, extracted via `extract_bundle_textures.py`
+and copied to this mod's own `Textures/Things/Filth/RSW_WhaleDung.png`, because
+`validate_patch.py` refuses a bare cross-mod reference to Core's
+`Things/Filth/Grainy` once a mod ships its own `Textures/Things/` namespace
+(same rule `RUT_Filth_MouseTrack` hit). `RSW_ShadeWhale.xml`'s `dungFilthDef`
+and `leavingsFilthDef` both repointed at it, with inline comments against
+ever swapping back to `Filth_AnimalFilth`.
+
+**Does NOT change:** Core's `Filth_AnimalFilth` def, any Core TerrainDef's
+`filthAcceptanceMask`, or `RM_CompDungSeeder`/`RM_JobDriver_FilterFeedTerrain`'s
+C# (the fix is entirely def-level, as the item predicted it should be).
+
+Offline work complete: `validate_patch.py` clean on both files (0 errors), all
+69 selftests pass, `deploy_custom_mods.py --mod SWBestiary --apply` deployed
+(the new def, the new texture, the edited whale def — verified in sync).
+
+**Live confirmation still owed.** The bridge was held by another FOUNDRY window
+the whole time I was ready to verify (`ASHKARRFLORA_NOT_IN_MODLIST_1`, live and
+non-stale — idle 15 min, well inside the 45-minute staleness gate — so per
+`one-bridge-driver-at-a-time` I did not take it). Per this item's own
+verification rule I am NOT closing on an unconfirmed live claim. Owed: spawn
+`RSW_ShadeWhale` on open Sand, force a dung event and a filter-feed bout, and
+confirm `RSW_Filth_WhaleDung` actually appears at the cell. Whoever gets the
+bridge next and can reach this should do that and close with the confirming
+observation, per the skill's own rule that whoever proves it closes it.

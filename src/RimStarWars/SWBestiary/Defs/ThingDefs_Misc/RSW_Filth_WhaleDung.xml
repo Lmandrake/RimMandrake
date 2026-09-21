@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Filth_WhaleDung.xml   SWBestiary — FILTH_ON_NATURAL_TERRAIN_NOOP_1
+
+  Fixes a shipped no-op: RSW_ShadeWhale's RM_CompDungSeeder and
+  RM_JobDriver_FilterFeedTerrain both dropped Core's Filth_AnimalFilth,
+  whose <filth><placementMask> is [Terrain]-only
+  (Data/Core/ThingDefs_Misc/Filth_Various.xml). Every terrain deriving
+  NaturalTerrainBase — Sand, SoftSand, all of it — declares
+  filthAcceptanceMask [Unnatural]-only (Data/Core/TerrainDefs/
+  Terrain_Natural.xml), and FilthMaker.TerrainAcceptsFilth requires the
+  filth's mask to be a SUBSET of the terrain's, so [Terrain] against
+  [Unnatural]-only is false unconditionally. Confirmed live 2026-09-21:
+  six filter-feed bouts and eight dung events on open Sand, 0 filth.
+
+  🔴 The forbidden fix is patching Sand/SoftSand's own filthAcceptanceMask
+  — both are Core TerrainDefs and CLAUDE.md bars touching a Core
+  TerrainDef's mask to make our own content visible.
+
+  The fix that IS available: RimWorld/FilthProperties.cs's own C# default
+  for an unset <placementMask> is FilthSourceFlags.Unnatural, not
+  [Terrain] — which is exactly what NaturalTerrainBase accepts. That is
+  why Filth_Blood/Filth_Vomit/Filth_Water/etc. (none of which declare
+  <placementMask> in Core's own Filth_Various.xml) already show up on
+  ordinary grass and dirt outdoors, while Filth_Dirt/Filth_Sand/
+  Filth_AnimalFilth/Filth_Trash — every Core filth that explicitly sets
+  [Terrain] — do not. This def follows that same precedent deliberately
+  (declared here rather than left to the default, so the intent survives
+  a reader who does not already know FilthProperties' default): a
+  whale-dung filth carrying [Unnatural] only, which Sand/SoftSand's
+  [Unnatural] acceptance mask accepts outright — no roof, no enclosed
+  room, no FilthSourceFlags.Pawn escape hatch needed (that hatch, per
+  RimWorld/FilthMaker.cs's own CanMakeFilth, only ever unlocks the
+  roofed/enclosed case, confirmed against the decompile; open desert sand
+  never qualifies).
+
+  Same visual as Filth_AnimalFilth (Core's own dung tint over the same
+  grainy-cluster look) — this def changes ONLY the placement mask, not the
+  look. RSW_ShadeWhale.xml wires this in as both dungFilthDef and
+  leavingsFilthDef in place of Filth_AnimalFilth.
+
+  texPath: this mod ships its own Textures/Things/ namespace, so
+  validate_patch.py refuses a bare cross-mod reference to Core's own
+  Things/Filth/Grainy as an unresolvable texPath (same rule that hit
+  RimUtinni's RUT_Filth_MouseTrack). Not a DEPLOY_HOLD placeholder this
+  time — the actual Core GrainyA texture (extracted via
+  extract_bundle_textures.py, cached at
+  observed/inventory/bundle_textures/ludeon.rimworld.core/GrainyA.png) is
+  copied in at Textures/Things/Filth/RSW_WhaleDung.png, so this renders
+  real Core art under this mod's own path rather than a magenta square.
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RSW_Filth_WhaleDung</defName>
+    <label>whale dung</label>
+    <description>A massive deposit left by a shade whale — the megafauna's own fertiliser, and the visible mark of where it stopped.</description>
+    <graphicData>
+      <texPath>Things/Filth/RSW_WhaleDung</texPath>
+      <color>(97,65,48,97)</color>
+    </graphicData>
+    <filth>
+      <placementMask>
+        <li>Unnatural</li>
+      </placementMask>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>45~50</disappearsInDays>
+      <cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+    </filth>
+  </ThingDef>
+
+</Defs>
