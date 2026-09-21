@@ -1021,7 +1021,14 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "Per pawn: id, name, kind, faction, hostility, position, dead/downed, stun " +
                 "ticks, race flags, and (with includeHealth) every hediff with severity plus " +
-                "all capacity levels.")]
+                "all capacity levels. " +
+                "🔴 THE HEALTH BLOCK IS NESTED: the hediff list is at row['health']['hediffs'], " +
+                "NOT row['hediffs'], and capacities are at row['health']['capacities']. Reading " +
+                "the flat key returns an empty list for EVERY pawn, so a caller gets a clean, " +
+                "confident zero and concludes the mechanism under test is inert - which is " +
+                "exactly what happened to the venomvine flyer run on 2026-09-21, against a " +
+                "stand that was working the whole time. Confirm a pawn that IS damaged reads " +
+                "as damaged before trusting any zero from this tool.")]
         public static async Task<object> ListPawns(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
