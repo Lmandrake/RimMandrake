@@ -291,6 +291,21 @@ def find_and_copy_texture(tex_path, seen, missing):
             if os.path.isfile(os.path.join(SRC_TEX, tex_path.replace("/", os.sep) + rot + ext)):
                 _copy_one(tex_path + rot + ext, SRC_TEX, TEX_ROOT)
                 copied_any = True
+        # Apparel WORN graphics carry a BODY TYPE segment before the rotation.
+        # ApparelGraphicRecordGetter builds "<wornGraphicPath>_<BodyTypeDef>" and
+        # hands that to Graphic_Multi, so what is on disk is
+        # <path>_Male_south.png .. <path>_Hulk_north.png. A ladder that stops at
+        # the rotation suffix copies only the inventory ICON, sets copied_any,
+        # reports the texture as FOUND, and silently leaves all 15 worn graphics
+        # behind -- the garment then renders MAGENTA on every pawn while this
+        # generator's own log says the art was copied. That is what happened to
+        # guy762_Robes_jawa and 122 other absorbed apparel defs.
+        for bt in ("Male", "Female", "Thin", "Fat", "Hulk"):
+            for rot in ("_south", "_north", "_east", "_west"):
+                suffix = "_" + bt + rot + ext
+                if os.path.isfile(os.path.join(SRC_TEX, tex_path.replace("/", os.sep) + suffix)):
+                    _copy_one(tex_path + suffix, SRC_TEX, TEX_ROOT)
+                    copied_any = True
     # Graphic_StackCount / Graphic_Random / Graphic_Appearances multi-frame art:
     # texPath names a DIRECTORY of _a/_b/_c-suffixed frames, not one file --
     # first pass over this pack missed this and reported 43 false "missing"
@@ -485,6 +500,11 @@ def main():
             collect_paths(el, "texPath", tex_paths)
             collect_paths(el, "iconPath", tex_paths)
             collect_paths(el, "uiIconPath", tex_paths)
+            # apparel/<wornGraphicPath> is a THIRD texture root, and it is not
+            # always the same string as graphicData/texPath -- it was never
+            # collected here, so any garment whose worn art lives apart from its
+            # icon had no art copied at all.
+            collect_paths(el, "wornGraphicPath", tex_paths)
             collect_paths(el, "clipPath", sound_paths)
             collect_paths(el, "clipFolderPath", sound_folder_paths)
             collect_rule_file_paths(el, rule_paths)
