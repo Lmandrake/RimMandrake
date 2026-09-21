@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T06:13:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T07:00:54Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -936,15 +936,6 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
-## VENOMVINE_FORTRESS_PASSABILITY_1 Venomvine fortress: size-gated passability C# for the shrubland thicket
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  VENOMVINEFORTRESSPASSABILITY1 — venomvine fortress: size-gated passability C for the shrubland thicket
-prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1411,12 +1402,12 @@ thin:     no ## spec, no ## verify
 summary:  VENOMVINEPATHCOSTANDFLYER1 — the flyer exemption, the one venomvine property still unobserved
 prose:    infrastructure/state/items/VENOMVINE_PATHCOST_AND_FLYER_1.md
 
-## VENOMVINE_FORTRESS_LIVE_VERIFY_1 quicktest the venomvine fortress body-size barrier in a live game
+## BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1 jawa/map_drop drops the map then throws on serializing its reply (self-referencing PlanetTile)
 state:    proposed
 row:      unassigned
-needs:    bridge
+needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec
-summary:  VENOMVINEFORTRESSLIVEVERIFY1 — quicktest the venomvine fortress body-size barrier in a live game
-prose:    infrastructure/state/items/VENOMVINE_FORTRESS_LIVE_VERIFY_1.md
+summary:  BRIDGEMAPDROPSERIALIZATIONLOOP1 — jawa/mapdrop drops the map and then throws on its own reply
+prose:    infrastructure/state/items/BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1.md
