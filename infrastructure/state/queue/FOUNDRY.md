@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T17:46:18Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-21T18:06:54Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -900,6 +900,24 @@ kind:     build
 summary:  1. Design pass first — kind: design, so per AgentPolicy.md it is
 prose:    infrastructure/state/items/BLUE_DESERT_LIFE_AUTHORING_1.md
 
+## SLIME_GENE_ARCHIVE_BUILD_1 Build the Slime's campaign gene archive: the owner-ACCEPTED 33-target + 25-rider lists (frozen 2026-09-06) exist as design only - 1 of 34 GeneDefs is built and a 17-gene universal PLACEHOLDER archive ships in their place, so the biome's headline mechanic serves the wrong content while looking finished in-game
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. Author the GeneDefs for the accepted A-list and B-list. Read
+prose:    infrastructure/state/items/SLIME_GENE_ARCHIVE_BUILD_1.md
+
+## LIVE_ITEM_GLOB_DRIFT_1 32 of 181 files in infrastructure/state/items/ are not live items - 24 are closed in the ledger and 8 have no ledger row at all, so the documented live-set glob is 18 percent wrong
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  LIVEITEMGLOBDRIFT1 — the live-item glob is 18% not-live
+prose:    infrastructure/state/items/LIVE_ITEM_GLOB_DRIFT_1.md
+
 ## EXTREME_DESERT_SIGNATURE_FLORA_1 Author glass-nub light-pipe and silverbole flora for RUT_ExtremeDesert
 state:    doing
 row:      unassigned
@@ -926,15 +944,6 @@ target:   v1
 kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
-
-## FLOODEDCANYON_RM_MOD_BUILD_1 Phase A: build RM_FloodedCanyon as its own RimMandrake mod (mandrake.rm.floodedcanyon) — the Cracked Lands - twin pair, mod EXISTS; RUT_CrackedLands merges in
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/FLOODEDCANYON_RM_MOD_BUILD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1432,16 +1441,6 @@ thin:     no ## criteria
 summary:  Do this at the desk, on a day when losing the fleet for ten minutes is fine.
 prose:    infrastructure/state/items/REBOOT_BREAKGLASS_VERIFY_1.md
 
-## SLIME_GENE_ARCHIVE_BUILD_1 Build the Slime's campaign gene archive: the owner-ACCEPTED 33-target + 25-rider lists (frozen 2026-09-06) exist as design only - 1 of 34 GeneDefs is built and a 17-gene universal PLACEHOLDER archive ships in their place, so the biome's headline mechanic serves the wrong content while looking finished in-game
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  1. Author the GeneDefs for the accepted A-list and B-list. Read
-prose:    infrastructure/state/items/SLIME_GENE_ARCHIVE_BUILD_1.md
-
 ## DONOR_DEFS_PORT_TO_OURS_1 Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 262 of ~330 borrowed biome-roster entries alone
 state:    proposed
 row:      unassigned
@@ -1461,16 +1460,6 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  ⛔ Do not bulk-rename. This is kind: design — per AgentPolicy.md design
 prose:    infrastructure/state/items/NONCANON_BEAST_RENAME_1.md
-
-## LIVE_ITEM_GLOB_DRIFT_1 32 of 181 files in infrastructure/state/items/ are not live items - 24 are closed in the ledger and 8 have no ledger row at all, so the documented live-set glob is 18 percent wrong
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  LIVEITEMGLOBDRIFT1 — the live-item glob is 18% not-live
-prose:    infrastructure/state/items/LIVE_ITEM_GLOB_DRIFT_1.md
 
 ## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
 state:    proposed
