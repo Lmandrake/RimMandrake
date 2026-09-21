@@ -336,9 +336,20 @@ count decides what is done first.
    that was wrong. Item per biome: `<BIOME>_RM_MOD_BUILD_1`. Append the mod and its
    `RM_X` to the paint list on `WORLD_REMAKE_FINAL_STEP_1` as each one closes.
 
-**Order within Phase A:** the four existing mods first (Greentide, Slime, Pyrelands;
-Flooded Canyon once §7 Q4 is answered), because their twins are the double-maintenance
-costing now; then the rest in whatever order the kit work is already moving. The Lantern
+**Order within Phase A:** the four existing mods first — `GREENTIDE_RM_MOD_BUILD_1`,
+`GELATINOUSSLIME_RM_MOD_BUILD_1`, `PYRELANDS_RM_MOD_BUILD_1`,
+`FLOODEDCANYON_RM_MOD_BUILD_1` (Q4 is answered, so Flooded Canyon is no longer held) —
+because their twins are the double-maintenance costing now; then the rest in whatever
+order the kit work is already moving.
+
+🔑 **The rows are FILED, one item per mod, all for FOUNDRY** (2026-09-21): 21 standalone
+`<NAME>_RM_MOD_BUILD_1` items, plus `TERMINALBIOMES_RM_MOD_BUILD_1` (four biomes, one
+mod) and `LANTERNDEEPS_RM_MOD_BUILD_1` (injection layer, skips step 3). Warscar is
+`SCARLANDS_STANDALONE_MOD_1`, filed earlier. Each item's `spec` carries steps 1–6 in
+full, so a builder does not need to re-read this section to start.
+⚠️ `PYRELANDS_RM_MOD_BUILD_1` inherits a live trap: the `RM_FE_Pyrelands` →
+`RM_Pyrelands` rename is committed at `84d42c63b` but **built and NOT deployed** — the
+game was running. Deploy before testing anything on it. The Lantern
 Deeps (§2c) is a tier move with no `RUT_` twin — it does its steps 1, 2, 4, 5, 6 and skips
 3.
 
