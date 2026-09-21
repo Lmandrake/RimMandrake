@@ -331,10 +331,185 @@ that can select/force-mental-state a non-colonist pawn, or a scripted
 provocation (colonist attacks the creature first) that this session did not
 have time to build and verify safely.
 
-**This item stays BLOCKED.** Criterion 1 (prior session) and criterion 2
-(this session, definitive) PASS. Criterion 3's core mechanism PASSES; its
-settings-toggle half is untested. Criteria 4, 5 and 6 remain open -- next
-FOUNDRY pass should either find/build a way to force combat or gizmo access
-for a non-colonist pawn, or ask the owner whether a manual (human-driven)
-in-game check of the ability gizmo is an acceptable substitute for a bridge
-one.
+Criteria 4, 5 and 6 were all closed the following session by routing around
+`rimworld/select_pawn` rather than by extending it — see the section below.
+
+---
+
+# ✅ ALL CRITERIA PASS — FOUNDRY, 2026-09-20, live
+
+15-mod `beastmechanics` tier (`modset_builder.py --tier beastmechanics`,
+all five DLC per the 2026-09-19 ruling), SWBestiary already in sync.
+**Cold load 30 s**, quicktest desert map 250×250, 332 companion tools
+registered. Every number below is a read-back, not a `success: true`.
+
+## 🔑 The bridge limitation was real — and it was the wrong door
+
+`rimworld/select_pawn` **does** genuinely refuse a colony animal. RE-MEASURED
+on an animal already moved to `PlayerColony` by `jawa/instant_recruit`
+(`before: null → after: PlayerColony`, `isAnimal: true`):
+
+```
+"Could not find player-controlled colonist id 'RSW_Voltmaw10199'."
+```
+
+It resolves `IsColonistPlayerControlled`, and no animal satisfies that. ⛔ Do
+not file a tool request for it — **`rimworld/click_cell` already selects any
+pawn**, and `Pawn_AbilityTracker.GetGizmos()` (read from the decompiled
+engine) gates on `IsColonyAnimal`, which a tamed animal *does* satisfy:
+
+```
+rimworld/jump_camera_to_cell → rimworld/click_cell {x,z,button:"left"}
+  → selectionAfter.selectedObjects == [Thing_RSW_Voltmaw10199]
+  → rimworld/list_selected_gizmos
+  → rimworld/execute_gizmo {gizmoId}  then click_cell on the target
+```
+
+Three tools the previous pass did not reach for closed all three criteria.
+
+## ✅ CRITERION 4 — PASS, both halves
+
+**Grant.** `jawa/grant_ability` reports `alreadyHad`, which makes it a
+**read** of `Pawn_AbilityTracker` as well as a write. 400 ticks after a wild
+spawn, both creatures:
+
+```
+Vozzik already had RSW_VoltmawPlasmaVolley; no-op.   alreadyHad=true  abilityCountAfter=1
+Zhakka already had RSW_CindermiteFuelSpew;  no-op.   alreadyHad=true  abilityCountAfter=1
+```
+
+**Gizmo once tamed.** `instant_recruit` → `click_cell` → `list_selected_gizmos`,
+3 gizmos each, the third being a real `RimWorld.Command_Ability`:
+
+```
+RSW_Voltmaw    1 Slaughter | 2 Release to wild | 3 Command_Ability 'Quad tesla cannon'  disabled=false
+RSW_Cindermite 1 Slaughter | 2 Release to wild | 3 Command_Ability 'Fuel spew'          disabled=false
+```
+
+The cooldown path works too — a second cast reported
+`disabled=true, "Ability on cooldown. It will be available in 1 second"`,
+and a re-issued cast `"Ability already queued."`
+
+**AI use on a hostile.** 3 × `RSW_Voltmaw` + 3 × `RSW_Cindermite` spawned
+`faction: hostile` (Insect) at (102–109, 134–139), 15–25 cells from the three
+colonists, then handed to `jawa/lord_assault_spawn`
+(`memberCount: 6, refused: []` — a real `LordJob_AssaultColony`). Stepped
+4000 ticks:
+
+| ticks | cindermite fuel cells laid | plasma bolts in flight |
+|---|---|---|
+| 500 | 0 | 0 |
+| 1000 | 24 | 0 |
+| 1500 | 51 | 0 |
+| 2000 | 65 | 0 |
+| 4000 | (decayed) | **4** |
+
+Three separate AI-chosen cones — (137–145, 143–150), (147–151, 152–160),
+(150–153, 161–165) — none of them at a cell any script named. Then
+`RSW_Projectile_PlasmaBurst` on the map at (123,134), (112,136), (109,137),
+(105,137), (124,143) — **exactly the `burstShotCount: 4`** of the volley,
+caught mid-flight in `beast_c4_plasma_inflight_1.png`. Nothing but the
+ability's own `Verb_AbilityShoot` creates that ThingDef.
+
+🔑 **What the previous pass was missing was a LORD, not a tool.** Two hostile
+pawns standing on a map have no duty; `LordJob_AssaultColony` gives them one,
+and the ability fires within ~1000 ticks of getting it.
+
+## ✅ CRITERION 5 — PASS, three independent observations, instrument validated
+
+🔴 **The fire instrument was validated before any zero was believed.**
+`jawa/list_things {defName:"Fire"}` read 0 on bare sand — then `WoodLog x50`
+spawned at (160,160) and `jawa/map_fire {action:"start", rect:"160,160,1,1"}`
+→ `firesStarted: 1` → the same call read **1 fire at (160,160)**. A `map_fire`
+on bare sand reports `firesStarted: 0` with the note *"9 cells refused —
+ChanceToStartFireIn gates on flammability"*, so a zero on sand proves nothing;
+a zero on 40-wood stacks does.
+
+1. **Player-driven cast.** Cindermite at (59,62) aimed at (69,62):
+   `Filth_Fuel` 0 → **21 cells**, spanning x 60–69 and widening z 62 → 60–64 —
+   a textbook cone (`range 10.9`, `lineWidthEnd 6`, `postExplosionSpawnChance
+   0.75`). **`Fire` 0 → 0.**
+2. **AI-driven casts.** The three assault cones above, 24/22/14 cells.
+   **`Fire` 0 at every one of 8 samples across 4000 ticks.**
+3. 🔑 **The decisive one — spew directly onto fuel.** Fresh cindermite at
+   (47,199), 45 cells of `WoodLog x40` laid across its cone, then cast:
+   **19 wood-stack cells coated in `Filth_Fuel`**, and `Fire` = `[]` at
+   +200, +400, +600 and **+1500 ticks**. Vanilla `CompAbilityEffect_FireSpew`
+   would have lit all 19. `beast_c5_fuel_on_wood_nofire.png`.
+
+## ✅ CRITERION 3 — PASS, the settings-toggle half now closed too
+
+`jawa/mod_settings_field {typeName:"RimMandrake.StarWars.SWBestiary.RSW_BeastMechanicsSettings"}`
+reaches both toggles (they are `public static`, which
+`rimworld/update_mod_settings` cannot touch at all — that is what
+`BRIDGE_STATIC_SETTINGS_FIELDS_1` built this tool for).
+
+With `metalEatingEnabled` set **False**, a fresh `RSW_Ferroclaw` at (150,30)
+given `Steel x75` on one side and `Hay x100` on the other, food set to 0.03:
+
+```
+t=400  Steel 75   Hay 100
+t=600  Steel 75   Hay  70     <-- took a normal Ingest job
+t=2000 Steel 75   Hay  70     <-- steel NEVER touched, 2000 ticks
+```
+
+Mirror-image of the toggle-ON control below. Criterion 3 is closed in both
+directions.
+
+## ✅ CRITERION 6 — PASS, both halves
+
+**Take effect without a restart.** `innateAbilitiesEnabled` False → a voltmaw
+spawned 600 ticks later has **no `Pawn_AbilityTracker` at all**
+(`"Vozzik 3 has no Pawn_AbilityTracker."`), against `alreadyHad: true,
+abilityCountAfter: 1` on the identical probe with it True. The comp does not
+merely skip the grant — it never creates the tracker.
+
+**Survive a save/load.** Both toggles set False → `rimworld/save_game
+{saveName:"BEASTMECH_C6_SETTINGS_PROBE"}` → a **new** 5,450,654-byte file
+appeared and **no existing save changed size** (the `saveName`-ignored trap
+did not fire this time; it was checked, not assumed) → `rimworld/load_game`
+→ map back at tick 13,143 →
+
+```
+POST-LOAD settings {'metalEatingEnabled': 'False', 'innateAbilitiesEnabled': 'False'}
+```
+
+and the OFF state was still *acting*: a voltmaw spawned after the load again
+had no ability tracker. Flipping both back to True in the same process, no
+restart: the next voltmaw reported `alreadyHad: true`, and a hungry ferroclaw
+took `Steel 75 → 60` between t=400 and t=600 — **a fifth of the stack**,
+re-confirming criterion 2 a second time, post-load.
+
+⚠️ **Scope, stated precisely.** This is a *savegame* save/load. Mod settings
+are process-global, written to
+`Config/Mod_<packageId>_<ModClass>.xml` only by `Mod.WriteSettings()` when the
+settings dialog closes — and **no such file exists for any of SWBestiary's
+three Mod classes**, because nobody has ever opened their settings window. A
+bridge write therefore lives in memory only and does NOT survive a game
+process restart. That is vanilla behaviour, not a defect in this assembly, and
+it is what `MOD_OPTIONS_RETROFIT_1` will exercise when it gives this mod a
+real screen.
+
+## Criterion 1 re-confirmed on this load
+
+`Player.log`: **0** `Could not find type named`, **0** exceptions naming any
+`RimMandrake.StarWars.SWBestiary` type, across a ~40-minute session that cast
+both abilities repeatedly and ran a save/load cycle.
+
+## ⚠️ Unrelated defect found in the same log — filed, not fixed here
+
+`RSW_DesertPortA_Bodies.xml` **references eight body-part defs that exist
+nowhere**: `RSW_HornAttackTool`, `RSW_TailAttackTool` (BodyPartGroupDef),
+`RSW_LeftWing`, `RSW_RightWing`, `RSW_FrontHorn`, `RSW_LeftHorn`,
+`RSW_RightHorn`, `RSW_Club` (BodyPartDef). MEASURED: zero `<defName>` for any
+of them in `src/`, in the deployed `Mods/SWBestiary/`, or anywhere under
+`workshop/content/294100/`. Consequence in the log:
+`BodyPartRecord with null def. body=Dewback` / `body=Reek`. Belongs to
+`DESERT_FAMILY_PORT_EXECUTION_1`; filed as `SWBESTIARY_MISSING_BODYPART_DEFS_1`.
+
+## Verdict
+
+**Criteria 1, 2, 3, 4, 5, 6 — ALL PASS.** Nothing in this item's `criteria`
+section is open. The `still owed` section above (sky-steel effecter, battery
+recharge, chemfuel animal product, real art for two AbilityDefs and the plasma
+projectile) is unchanged and was never part of the criteria.
