@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-21T17:05:31Z",
+  "drawsize": 9.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rmtitanoslime_v1_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: a broad low dome of glassy bright-green jelly, about 1.4x wider than tall, edges pooling forward into two or three fat rounded pseudopod lobes spread along the ground -- it must read as a HILL of jelly, not a blob monster: absolutely no face, no mouth, no eyes, no limbs with joints, nothing symmetrical. A heavier, darker green core mass sits slightly off-centre inside, with a strong specular rim highlight across the whole glassy surface. Faint, half-dissolved shapes are visible inside at low opacity -- a curved rib, a shell, the haft of a tool -- two or three barely-legible 'entries', never sharp or readable as objects up close. Amber highlights glow faintly in the thick parts of the jelly, with a soft membrane-pink glow at the very core. Viewed from directly above at a slight isometric RimWorld camera angle, centered, a short soft shadow beneath it, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "TITANOSLIME_SLIME_BIOME_1",
+  "style_notes": "RM_Titanoslime (design/RimMandrake/RM_titanoslime_spec.md \u00a77). One texture set reused at every life-stage through drawSize (Thrumbo precedent) -- do not bake in a specific size. Must be visibly distinct from the existing Oozemaw (oozemaw_v1_*, a grey-green ooze ANIMAL with visible pseudopod limbs): the titanoslime is a piece of the landscape that moves, not a monster -- brighter, cleaner, glassier green, no limbs at all. Checked infrastructure/artpipe/done/, _artsrc/, registry.jsonl and art_status.json on 2026-09-21 -- nothing exists for a titan slime."
+}
