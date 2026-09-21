@@ -3,8 +3,16 @@
   MLIE_FAUNA_ABSORPTION_1 Wave C — Sketto creature port.
   Ported from mlie.starwarsanimalcollection's `Sketto` ThingDef/PawnKindDef
   pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
-  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Uses the vanilla
-  Core `Bogwing` body — no BodyDef port needed. `leatherDef`
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. `body` points at
+  `RSW_Bogwing` (SWBESTIARY_UNPREFIXED_DONOR_DEFS_1, 2026-09-21) — donor
+  content, NOT vanilla Core (confirmed via RimSage: zero defs named
+  `Bogwing` on the machine); the earlier "vanilla Core Bogwing body — no
+  BodyDef port needed" note here was wrong the same way the FlyingAvian one
+  in RSW_MlieWaveC_Bodies.xml was. Already ported as `RSW_Bogwing`
+  (RSW_MlieWaveC_Bodies.xml, used by Dactillion/Uvak); repointed here from
+  the bare `Bogwing` duplicate in the now-deleted
+  `RSW_DesertPortA_Bodies.xml`, which was silently winning the load-order
+  collision against this same donor name. `leatherDef`
   (`Leather_Lizard`) is vanilla Core, left bare. `specificMeatDef`
   (`Reptavian_Meat`) ALREADY EXISTS as `RSW_Reptavian_Meat` (Wave B) — no new
   resource needed. Adult lifeStage sounds (`Pawn_Sketto_Call`, reused for
@@ -92,7 +100,7 @@
       </li>
     </modExtensions>
     <race>
-      <body>Bogwing</body>
+      <body>RSW_Bogwing</body>
       <predator>true</predator>
       <herdAnimal>true</herdAnimal>
       <baseBodySize>0.4</baseBodySize>
