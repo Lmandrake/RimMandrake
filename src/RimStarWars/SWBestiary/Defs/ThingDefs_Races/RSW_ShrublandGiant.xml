@@ -52,7 +52,7 @@
 <!-- ThingDef -->
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_ShrublandGiant</defName>
-    <label>the giant</label>
+    <label>thunderstep</label>
     <description>A colossal grazer that keeps the shrubland's fuzz-canopy open by walking and eating it, indifferent to everything around it that isn't the fuzz underfoot. It does not fight, does not flee, and does not appear to notice the intelligent races at all - it will walk through a wall on its grazing line and never register what it did. Its young walk behind it through the one size band nothing else here occupies, and any approach to them reads to the parent as attack.</description>
     <statBases>
       <MoveSpeed>2.8</MoveSpeed>
@@ -209,15 +209,15 @@
 <!-- PawnKindDef -->
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_ShrublandGiant</defName>
-    <label>the giant</label>
+    <label>thunderstep</label>
     <race>RSW_ShrublandGiant</race>
     <combatPower>380</combatPower>
     <ecoSystemWeight>0.12</ecoSystemWeight>
     <wildGroupSize>1~3</wildGroupSize>
     <lifeStages>
       <li>
-        <label>giant calf</label>
-        <labelPlural>giant calves</labelPlural>
+        <label>thunderstep calf</label>
+        <labelPlural>thunderstep calves</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Fambaa/Fambaa_j</texPath>
           <color>(168, 158, 128)</color> <!-- warm dust-khaki, reskin over the shared Fambaa art - arid_shrubland.md §9 "walking hills with lit flanks", zero new PNGs -->

@@ -1,5 +1,15 @@
 # DESERT_STAGGERSEED_BUILD_1 — author the staggerseed cycle plant
 
+## state (2026-09-21) — renamed and closing
+
+`STAGGERSEED_SHIPPING_NAME_1` returned: **vorrel**. Every `RUT_Staggerseed*` defName,
+label, texPath and the `RUT_Desert` wildPlants entry are renamed to `RUT_Vorrel*` (no C#
+string literals needed touching — `RM_HediffComp_ShadeStagger.cs` takes its plant defName
+from XML properties, already renamed there). The only remaining blocker this item named —
+"what is left on this item is the rename, and nothing else" — is done. Still true from
+below: art is queued (not landed) and nothing is deployed to the live Mods folder yet.
+Closing; deploy + live proof are ordinary follow-on work, not a reason to hold this open.
+
 ## state (2026-09-20) — BUILT, waiting on the name card
 
 **Both mechanisms and both ThingDefs are landed and building clean. This item

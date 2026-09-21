@@ -114,12 +114,12 @@ FAMILIES = {
                      # same commit. Five more are this planet's own built flora:
                      # RM_Leachmoss + RM_Venomvine (§4b's shade pair, DESERT_LEACHMOSS_BUILD_1
                      # / VENOMVINE_CONTACT_VENOM_BUILD_1), RSW_Ultracactus
-                     # (DESERT_SIGNATURE_FLORA_1) and RUT_Staggerseed
+                     # (DESERT_SIGNATURE_FLORA_1) and RUT_Vorrel
                      # (DESERT_STAGGERSEED_BUILD_1, working name).
     'RM_Leachmoss': 1.5, 'RSW_Ultracactus': 0.8, 'RSW_Dunegrass': 0.6,
     'RSW_Plant_Chakroot_Wild': 0.3, 'RM_Venomvine': 0.25,
     'RSW_Plant_HubbaGourd_Wild': 0.2, 'RSW_VellaraBloom': 0.12,
-    'RUT_Staggerseed': 0.1, 'RSW_SweetbarkTree': 0.06},
+    'RUT_Vorrel': 0.1, 'RSW_SweetbarkTree': 0.06},
   'RUT_FuelSnows': {   # 2,531 tiles (2026-09-12 export) · 4 plants — the_propane_lakes.json's
                     # shore flora, rekeyed from the pre-rename defName `AB_PropaneLakes`
                     # (PROPANE_LAKES_ROSTER_STALE_1), then renamed again from `RUT_Umbra`

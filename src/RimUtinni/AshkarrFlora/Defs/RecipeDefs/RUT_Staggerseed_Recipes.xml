@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Staggerseed_Recipes.xml                   DESERT_STAGGERSEED_BUILD_1
+  RUT_Vorrel_Recipes.xml                   DESERT_STAGGERSEED_BUILD_1
 
   The preparation desert.md §4b turns on: "Prepared correctly, the
   preparation lets them begin to grow and then perish before they can hurt
@@ -26,10 +26,10 @@
 <Defs>
 
   <RecipeDef>
-    <defName>RUT_Cook_StaggerseedSeedDish</defName>
-    <label>prepare staggerseed</label>
-    <description>Wake a batch of staggerseed and cook it to the exact point where the seeds will germinate in the diner and then die short of doing harm. Done wrong it is simply a fatal meal.</description>
-    <jobString>Preparing staggerseed.</jobString>
+    <defName>RUT_Cook_VorrelSeedDish</defName>
+    <label>prepare vorrel</label>
+    <description>Wake a batch of vorrel and cook it to the exact point where the seeds will germinate in the diner and then die short of doing harm. Done wrong it is simply a fatal meal.</description>
+    <jobString>Preparing vorrel.</jobString>
     <workAmount>900</workAmount>
     <workSpeedStat>CookSpeed</workSpeedStat>
     <workSkill>Cooking</workSkill>
@@ -44,7 +44,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_StaggerseedFruit</li>
+            <li>RUT_VorrelFruit</li>
           </thingDefs>
         </filter>
         <count>12</count>
@@ -52,16 +52,16 @@
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-        <li>RUT_StaggerseedFruit</li>
+        <li>RUT_VorrelFruit</li>
       </thingDefs>
     </fixedIngredientFilter>
     <defaultIngredientFilter>
       <thingDefs>
-        <li>RUT_StaggerseedFruit</li>
+        <li>RUT_VorrelFruit</li>
       </thingDefs>
     </defaultIngredientFilter>
     <products>
-      <RUT_StaggerseedSeedDish>1</RUT_StaggerseedSeedDish>
+      <RUT_VorrelSeedDish>1</RUT_VorrelSeedDish>
     </products>
     <recipeUsers>
       <li>ElectricStove</li>

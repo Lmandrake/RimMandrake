@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Staggerseed_Hediffs.xml                   DESERT_STAGGERSEED_BUILD_1
+  RUT_Vorrel_Hediffs.xml                   DESERT_STAGGERSEED_BUILD_1
 
   The two ingestible outcomes the sheet asks for, and the whole point of the
   plant: the SAME organism, raw and prepared, has to land on the eater in two
@@ -18,7 +18,7 @@
   exactly the failure mode that would make both mechanisms below vanish
   without a log line.
 
-  RUT_StaggerseedBrood is UNTENDABLE and has no immunity comp, deliberately,
+  RUT_VorrelBrood is UNTENDABLE and has no immunity comp, deliberately,
   and that is the sheet's ruling rather than a balance choice: §4b's fruit
   "kills quickly" and the plant's whole life cycle is the corpse. A tendable
   or survivable brood would make the raw fruit a nuisance instead of a
@@ -29,9 +29,9 @@
 
   <!-- ============== Raw: the brood ============== -->
   <HediffDef>
-    <defName>RUT_StaggerseedBrood</defName>
-    <label>staggerseed brood</label>
-    <description>Live staggerseed taking root in the gut wall. The seeds feed on the host and strip it from the inside while it is still walking around; there is no course of treatment, because there is nothing wrong with the host that removing an entire crop would fix. The host will feel it gripping, then feel it pulling, and then feel the pull acquire a direction.</description>
+    <defName>RUT_VorrelBrood</defName>
+    <label>vorrel brood</label>
+    <description>Live vorrel taking root in the gut wall. The seeds feed on the host and strip it from the inside while it is still walking around; there is no course of treatment, because there is nothing wrong with the host that removing an entire crop would fix. The host will feel it gripping, then feel it pulling, and then feel the pull acquire a direction.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <defaultLabelColor>(0.65, 0.75, 0.45)</defaultLabelColor>
     <initialSeverity>0.1</initialSeverity>
@@ -62,7 +62,7 @@
         <steerIntervalTicks>250</steerIntervalTicks>
         <staggerRadius>22</staggerRadius>
         <minShadeToSettle>0.6</minShadeToSettle>
-        <germinateThingDef>RUT_Staggerseed</germinateThingDef>
+        <germinateThingDef>RUT_Vorrel</germinateThingDef>
         <germinateCount>1~3</germinateCount>
         <germinateRadius>2.5</germinateRadius>
         <germinateChanceInSun>0.15</germinateChanceInSun>
@@ -131,9 +131,9 @@
 
   <!-- ============== Prepared: the near-miss ============== -->
   <HediffDef>
-    <defName>RUT_StaggerseedEuphoria</defName>
-    <label>staggerseed bloom</label>
-    <description>A crop of staggerseed germinating and dying in one body at once. Prepared correctly the seeds wake, root, spend everything they have on a growth they cannot finish, and are gone before they reach anything that matters — and the body reads the whole failed invasion as a wave of extraordinary well-being. It is not a drug. It is a thing that was going to kill you and then didn't, and the feeling is the difference.</description>
+    <defName>RUT_VorrelEuphoria</defName>
+    <label>vorrel bloom</label>
+    <description>A crop of vorrel germinating and dying in one body at once. Prepared correctly the seeds wake, root, spend everything they have on a growth they cannot finish, and are gone before they reach anything that matters — and the body reads the whole failed invasion as a wave of extraordinary well-being. It is not a drug. It is a thing that was going to kill you and then didn't, and the feeling is the difference.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <defaultLabelColor>(0.95, 0.8, 0.45)</defaultLabelColor>
     <initialSeverity>0.6</initialSeverity>
@@ -148,7 +148,7 @@
         <showHoursToRecover>true</showHoursToRecover>
       </li>
     </comps>
-    <!-- Two stages, and RUT_StaggerseedEuphoriaThought below must keep
+    <!-- Two stages, and RUT_VorrelEuphoriaThought below must keep
          exactly two to match: ThoughtWorker_Hediff indexes the THOUGHT's
          stage list by the HEDIFF's current stage index (MEASURED,
          RimWorld/ThoughtWorker_Hediff.cs), so a mismatch silently clamps

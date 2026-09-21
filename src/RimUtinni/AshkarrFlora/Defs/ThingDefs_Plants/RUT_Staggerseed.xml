@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Staggerseed.xml                           DESERT_STAGGERSEED_BUILD_1
+  RUT_Vorrel.xml                           DESERT_STAGGERSEED_BUILD_1
 
   The desert's cycle plant. FROZEN sheet:
   design/Jawa/worldbuilding/biomes/desert.md (BIOME_FREEZE_FABLE_REVIEW_1),
@@ -16,8 +16,8 @@
     perish before they can hurt you — producing euphoria."
 
   🔴 THE NAME IS NOT SETTLED. §4b marks it "(Name owner's pick. Working:
-  staggerseed.)" — the ultracactus's name already stands, this one's does
-  not. `RUT_Staggerseed` is the INTERNAL working defName and every label
+  vorrel.)" — the ultracactus's name already stands, this one's does
+  not. `RUT_Vorrel` is the INTERNAL working defName and every label
   below is provisional; the owner card is
   items/STAGGERSEED_SHIPPING_NAME_1.md and DESERT_STAGGERSEED_BUILD_1 stays
   open until it returns. Renaming is five files and one wildPlants line.
@@ -37,11 +37,11 @@
   cluster is small and rare; this is never a green mass.
 
   ART: checked infrastructure/artpipe/{done,_artsrc,registry.jsonl,
-  art_status.json} for "staggerseed"/"cycle plant" on 2026-09-20, per
+  art_status.json} for "vorrel"/"cycle plant" on 2026-09-20, per
   CLAUDE.md's "Check for existing regenerated art before queuing more" — 0
   hits, nothing already generated and nothing already ruled on in a review
-  sheet. Two jobs filed this pass: `rutstaggerseed_v1` (the bush, and the
-  harvested fruit off it) and `rutstaggerseeddish_v1` (the prepared dish).
+  sheet. Two jobs filed this pass: `rutvorrel_v1` (the bush, and the
+  harvested fruit off it) and `rutvorreldish_v1` (the prepared dish).
   The texPaths below are where those renders land, so validate_patch.py will
   flag them as missing until the daemon works through its queue — expected,
   same as RSW_Ultracactus one mod over. The art is deliberately name-free:
@@ -56,8 +56,8 @@
 
   <!-- ============== The plant ============== -->
   <ThingDef ParentName="PlantBase">
-    <defName>RUT_Staggerseed</defName>
-    <label>staggerseed</label>
+    <defName>RUT_Vorrel</defName>
+    <label>vorrel</label>
     <description>A low, dense bush of the shaded water pockets, hung with fat pale fruit that looks like the most ordinary good luck on this planet. It is not. Each fruit is packed with live seed that takes root in the gut of whatever eats it, and a body full of them has hours, not days. What the plant wants from the arrangement is the walk: a dying animal here makes for the nearest shadow by instinct, and a shadow is the one ground a seed could never have reached on its own.</description>
     <statBases>
       <MaxHitPoints>110</MaxHitPoints>
@@ -66,8 +66,8 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <!-- Job rutstaggerseed_v1, filed this pass. Pending until the daemon lands it. -->
-      <texPath>Things/Plant/RUT_Staggerseed</texPath>
+      <!-- Job rutvorrel_v1, filed this pass. Pending until the daemon lands it. -->
+      <texPath>Things/Plant/RUT_Vorrel</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.5, 0.2, 0.2)</volume>
@@ -92,7 +92,7 @@
       <preferability>RawTasty</preferability>
       <outcomeDoers>
         <li Class="IngestionOutcomeDoer_GiveHediff">
-          <hediffDef>RUT_StaggerseedBrood</hediffDef>
+          <hediffDef>RUT_VorrelBrood</hediffDef>
           <severity>0.1</severity>
         </li>
       </outcomeDoers>
@@ -107,7 +107,7 @@
       <visualSizeRange>0.5~0.8</visualSizeRange>
       <topWindExposure>0.2</topWindExposure>
       <harvestTag>Standard</harvestTag>
-      <harvestedThingDef>RUT_StaggerseedFruit</harvestedThingDef>
+      <harvestedThingDef>RUT_VorrelFruit</harvestedThingDef>
       <harvestYield>6</harvestYield>
       <harvestWork>220</harvestWork>
       <harvestAfterGrowth>0.4</harvestAfterGrowth>

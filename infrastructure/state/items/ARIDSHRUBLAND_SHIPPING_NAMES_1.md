@@ -87,3 +87,20 @@ nothing about these three defs' mechanics depends on the name.
 Each of the five names carries the owner's chosen name (or is explicitly
 ruled "keep the working name"), and `arid_shrubland.md`'s own "Owed" names
 line is updated to drop whichever are resolved.
+
+## 🔴 Owner ruling 2026-09-21 — partial (1 of 5)
+
+**#2, the giant (`RSW_ShrublandGiant`): RULED — `thunderstep`.** Owner, verbatim: "Thunderstep",
+in answer to a question scoped specifically to the flagship def (not the collective "the
+giants" class, which still covers the flagship plus the pre-existing donor megafauna and is
+unaffected by this ruling). Label changed on both the `ThingDef` and the `PawnKindDef`
+(same defName reused for both, per this item's own "Watch out"), plus the life-stage label
+`giant calf`/`giant calves` → `thunderstep calf`/`thunderstep calves`
+(`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShrublandGiant.xml`). No live-tile or
+save-compat risk — MEASURED via literal-string check against
+`CANONICAL_ASHKARR_START_2026-09-12.rws`: no placed `RSW_ShrublandGiant` instance exists on
+the canonical save.
+
+**Still open — 4 of 5, not yet asked:** the fuzz (`RUT_Fuzz`), the tunnel snake
+(`RSW_TunnelSnake`), venomvine ("working name stands?" confirmation), and the Stall/the Gale
+weather names (no `WeatherDef` built yet — fine to defer). Item stays open until those land.

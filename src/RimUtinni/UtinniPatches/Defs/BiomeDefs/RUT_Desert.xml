@@ -66,15 +66,15 @@
 
     DESERT_STAGGERSEED_BUILD_1 (2026-09-20): the cycle plant (§4b "The seed that
     uses you", §7 "the prepared cycle-seed") now has both its ThingDefs and both
-    its mechanisms — RUT_Staggerseed / RUT_StaggerseedFruit /
-    RUT_StaggerseedSeedDish in mandrake.rut.ashkarrflora, driven by
+    its mechanisms — RUT_Vorrel / RUT_VorrelFruit /
+    RUT_VorrelSeedDish in mandrake.rut.ashkarrflora, driven by
     RimMandrake.CreatureBehaviors.RM_HediffComp_ShadeStagger — and is wired into
     wildPlants below. The shade-grid MapComponent it reads
     (RM_MapComponent_ShadeGrid) also landed, under DESERT_SHADE_GRID_KEYSTONE_1;
     the older note above listing both as Owed was false and was corrected here.
     ⚠️ The plant still ships under its WORKING name — the shipping name is the
     owner's pick (§4b) and the card is items/STAGGERSEED_SHIPPING_NAME_1.md, so
-    every RUT_Staggerseed* defName in this file and in AshkarrFlora is provisional
+    every RUT_Vorrel* defName in this file and in AshkarrFlora is provisional
     until it returns.
 
     DESERT_LEACHMOSS_BUILD_1 (2026-09-20, this pass): the moss half of §4b's
@@ -277,7 +277,7 @@
     <wildPlants>
       <RM_Leachmoss MayRequire="mandrake.rm.environmentalhazards">1.5</RM_Leachmoss>  <!-- leachmoss: the fertile ground's fastest claimant, DESERT_LEACHMOSS_BUILD_1. Highest weight in this list on purpose (design §2b) — Gravel/Soil only (fertilityMin 0.5, never Sand), so it wins most rolls on ground it can take without ever competing with the ultracactus for sand. -->
       <RSW_Ultracactus MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Ultracactus>  <!-- ultracactus: the buried canopy holding the open ground, DESERT_SIGNATURE_FLORA_1 -->
-      <RUT_Staggerseed MayRequire="mandrake.rut.ashkarrflora">0.1</RUT_Staggerseed>  <!-- the cycle plant, DESERT_STAGGERSEED_BUILD_1. Lowest weight of the three desert plants on purpose: §4b puts it in "the protected water pockets" only, and its own fertilityMin 0.45 already keeps it off Sand, so this weight sets how thickly it fills the pockets it CAN take, not how far it spreads. Working name — see the header. -->
+      <RUT_Vorrel MayRequire="mandrake.rut.ashkarrflora">0.1</RUT_Vorrel>  <!-- the cycle plant, DESERT_STAGGERSEED_BUILD_1. Lowest weight of the three desert plants on purpose: §4b puts it in "the protected water pockets" only, and its own fertilityMin 0.45 already keeps it off Sand, so this weight sets how thickly it fills the pockets it CAN take, not how far it spreads. Working name — see the header. -->
       <RM_Venomvine MayRequire="mandrake.rm.environmentalhazards">0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, §4b "the shade plants, which defend" — VENOMVINE_CONTACT_VENOM_BUILD_1. fertilityMin 0.5 already keeps it off Sand (the ultracactus's ground), so this weight sets how thickly it takes the patch ground it CAN reach, not how far it spreads. -->
       <RSW_Dunegrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Dunegrass>  <!-- surra grass -->
       <RSW_Plant_Chakroot_Wild MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->

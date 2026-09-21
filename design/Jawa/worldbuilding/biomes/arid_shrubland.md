@@ -350,9 +350,12 @@ always means someone lit it.** Smoke on the horizon is a person.
   (`TILES_STAMP_VERIFY_1`).
 - **`TREE_GRAPHICS_OWNERSHIP_1`** — generate our own tree graphics at the scales we want;
   drop the multiple-tree-mods-rescaling-our-designs nonsense. The owner's ticket, filed.
-- **Names, owner's pick:** the giants, the snake-analogs, the bird-analogs, the sweetline
-  trees, the fuzz itself, venomvine (working name stands?), the Stall and the Gale as
-  player-facing weather names.
+- **Names, owner's pick:** the huge-grazer flagship is **RULED — thunderstep**
+  (`RSW_ShrublandGiant`, `ARIDSHRUBLAND_SHIPPING_NAMES_1`); "the giants" elsewhere in this
+  doc still means the collective huge-grazer class (flagship + donor megafauna) and is
+  unaffected. Still owed: the snake-analogs, the bird-analogs, the sweetline trees (likely
+  settled by use as "sweetline tree" — confirm), the fuzz itself, venomvine (working name
+  stands?), the Stall and the Gale as player-facing weather names.
 - **Engine feasibility pass** (the desert sheet got one; this biome needs its own):
   wind-driven weather events (Stall/Gale) and their AI hooks;
   canopy-concealment vs the colony visibility stat (`colony_visibility_stat.md`); venomvine

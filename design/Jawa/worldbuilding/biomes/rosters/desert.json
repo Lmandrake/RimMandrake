@@ -1128,7 +1128,7 @@
     },
     {
       "commonality": 0.1,
-      "def": "RUT_Staggerseed",
+      "def": "RUT_Vorrel",
       "law": "DESERT_STAGGERSEED_BUILD_1 (2026-09-20) — §4b \"the seed that uses you\" / §7 \"the prepared cycle-seed\". Lowest of the three built desert plants on purpose: §4b confines it to the protected water pockets. WORKING NAME (card STAGGERSEED_SHIPPING_NAME_1)."
     },
     {
@@ -1259,7 +1259,7 @@
       "from_sheet": "desert §4b",
       "kind": "plant",
       "mechanic_load": "C#: corpse-dispersal + cuisine hediff",
-      "name": "staggerseed cycle plant + prepared-seed euphoric dish"
+      "name": "vorrel cycle plant + prepared-seed euphoric dish"
     },
     {
       "from_sheet": "desert §4b",
