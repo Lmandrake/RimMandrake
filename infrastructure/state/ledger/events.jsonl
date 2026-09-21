@@ -10527,3 +10527,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"MAPGEN_NRE_FULL_LIST_20260920_1","ts":"2026-09-21T04:12:16Z"}
 {"seat":"FOUNDRY","event":"start","id":"MAPGEN_NRE_FULL_LIST_20260920_1","ts":"2026-09-21T04:12:17Z"}
 {"seat":"FOUNDRY","event":"close","id":"MAPGEN_NRE_FULL_LIST_20260920_1","sha":"fa21d88857acdeade4f2d9cea34ae0322070e50e","ts":"2026-09-21T04:22:51Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-21T04:27:25Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T04:27:27Z"}
+{"seat":"FOUNDRY","event":"close","id":"FOUNDER_ROBE_MAGENTA_1","sha":"435086e29810c269e3695ecc20db1f602ab2174a","ts":"2026-09-21T04:27:55Z"}

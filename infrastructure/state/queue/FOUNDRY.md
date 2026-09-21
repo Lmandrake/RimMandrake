@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T04:10:46Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-21T04:27:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -936,15 +936,6 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
-## FOUNDER_ROBE_MAGENTA_1 The founders' robe layer renders as flat magenta in the CANONICAL world - magenta is RimWorld's failed-texture colour; check guy762_Robes_jawa
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     investigate
-summary:  Find what guy762Robesjawa (and any sibling robe def on these pawns) sets as its
-prose:    infrastructure/state/items/FOUNDER_ROBE_MAGENTA_1.md
-
 ## SHRUBLAND_GIANT_ENRAGE_1 RSW_ShrublandGiant: large-young life-stage + parental enrage-on-approach C#
 state:    doing
 row:      unassigned
@@ -1419,16 +1410,6 @@ kind:     build
 thin:     no ## spec, no ## verify
 summary:  VENOMVINEFORTRESSPASSABILITY1 — venomvine fortress: size-gated passability C for the shrubland thicket
 prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
-
-## MAPGEN_NRE_FULL_LIST_20260920_1 Map generation NRE'd to death on the full 618-mod list - GenStep_Plants/WildPlantSpawner and GenStep_Settlement, then an unbounded StatRequest-for-null-def storm; same shape as the CLOSED FULL_LIST_CANNOT_LOAD_GAME_1
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  Find which biome roster carries the null entry. The two spawners give the search its shape:
-prose:    infrastructure/state/items/MAPGEN_NRE_FULL_LIST_20260920_1.md
 
 ## ASHKARRFLORA_NOT_IN_MODLIST_1 mandrake.rut.ashkarrflora is in no stored mod list, so RUT_Staggerseed and RUT_Fuzz can never spawn in the campaign
 state:    proposed
