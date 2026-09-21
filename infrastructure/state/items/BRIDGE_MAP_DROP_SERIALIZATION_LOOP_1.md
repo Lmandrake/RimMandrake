@@ -52,3 +52,30 @@ removed, with no exception, and `get_bridge_status` shows `mapCount` one lower.
 ## criteria
 
 The call returns rather than throws, and the returned row names the removed map.
+
+## ✅ FIXED AND VERIFIED LIVE 2026-09-21
+
+`JawaBenchRenderTools.cs` now projects the map to **primitives before the deinit** —
+`map.Tile.tileId` (an int), never the `PlanetTile` — and the reply carries `index`,
+`mapId`, `tile`, `tileLayer`, `tileValid`, `sizeX`, `sizeZ`, `biome`, `parentDef`,
+`parentLabel` and `parentFaction`.
+
+MEASURED on the `beastmechanics` tier, four separate maps:
+
+```
+{"success": true, "message": "Map 0 (Colony) removed; 1 -> 0 map(s).",
+ "removedMap": {"index": 0, "mapId": 0, "tile": 64924, "tileLayer": "Surface",
+   "tileValid": true, "sizeX": 250, "sizeZ": 250, "biome": "TemperateForest",
+   "parentDef": "Settlement", "parentLabel": "Colony",
+   "parentFaction": "PlayerColony"},
+ "mapCountBefore": 1, "mapCountAfter": 0}
+```
+
+No exception, and `mapCount` one lower. Regression step 5 of
+`src/RimMandrake/bridgetools/prove_noncolonist_ability.py` (gated behind `--drop-map`,
+because dropping the last map leaves the game Playing with zero maps and
+`rimworld/start_debug_game_ready` will not build a new one).
+
+**Sibling sweep: no other tool has this latent.** Every other reply in
+`JawaBench.BridgeTools` that touches a tile already takes `.tileId`, an `(int)` cast or
+`.ToString()`, and no reply hands the serializer a `Map`, `MapParent` or `WorldObject`.
