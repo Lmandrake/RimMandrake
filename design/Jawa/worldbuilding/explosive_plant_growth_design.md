@@ -32,6 +32,14 @@ uncomfortable groaning swelling of ever shifting growth"*), and 🔴 **it replac
 soak-bursting in those biomes entirely** — *"x10 is enough"*, because standing water there
 would otherwise fire a top over and over. Those plants still Churn (§3); they never Burst.
 
+🔴 **And that is a fact about THOSE PLANTS, not about that ground — owner, 2026-09-21:
+*"A dry plant in the greentide can burst."*** The wet biomes hold no detonations because
+everything native to them is wet-living, which is ruling 4 producing ruling 6 rather than
+two rules in tension. Put a dry-adapted plant in the Greentide — rostered, transplanted or
+player-sown — and it bursts there like it would anywhere. ⇒ **A ×10 biome is not a
+no-detonation zone**, and SOAKED can form inside one by the ordinary routes (irrigation,
+the extract); it simply has almost nothing there to set off.
+
 ⚠️ **Two different ×10s live in this document and they are not the same number.** The
 ambient ×10 above is a biome's standing growth rate. The soak multiplier below is an event
 multiplier that stacks on ×4. Do not collapse them. 🄸 INVENTED: the stack is
@@ -134,6 +142,12 @@ hold none.
 This is the same axis as his 2026-09-20 reframing (§8) — behaviour rides the plant's own
 identity and adaptation, never the tile it stands on. It is a RULE, not a hand-picked list,
 so a player can learn it and a builder can derive it.
+
+🔴 **The rule has no geographic exception** (owner, 2026-09-21, closing the one seam the
+roster found): *"A dry plant in the greentide can burst."* The wet biomes are quiet because
+of what grows there, not because the ground forbids it. ⇒ ⛔ **Never write a check of the
+form "if biome is X, suppress the top"** — that is the biome back as an input, and it is
+the exact shape he ruled against. The only test is the plant.
 
 ⛔ **The per-biome variant table that stood here is DELETED** (owner, 2026-09-09 —
 inaccurate material is removed, not bannered). It was superseded as a structure on
@@ -455,3 +469,15 @@ under the old model. Both keys are now wrong at that scale: `GLUT` is retired in
 default, and under ruling 4 a plant only bursts if its own identity is dry-adaptation.
 ⇒ **The roster is regenerated against water-scarcity, not edited.** Expect the great
 majority of the 95 to land on `CHURN`. Nothing is built from the old roster.
+
+### Ruling 8 — 2026-09-21, closing the seam
+
+| # | ruling | where |
+|---|---|---|
+| 8 | **A dry-adapted plant bursts anywhere, including inside a ×10 biome.** Ruling 6 describes what grows in the wet biomes, not a property of their ground; there is no geographic suppression and no "no-detonation zone" | §0, §3 |
+
+⇒ `Plant_HubbaGourd_Wild` **keeps `BURST` in the Greentide** — the roster's hard call 6 is
+resolved in favour of the plant axis, which is where the roster had already put it. The
+Greentide's own flora remain entirely Churn, so the biome still reads as he described it:
+tenfold growth, groaning, alien, and never explosive — right up until someone brings a
+desert plant into it.
