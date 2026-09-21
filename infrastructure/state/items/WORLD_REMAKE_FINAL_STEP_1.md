@@ -86,27 +86,34 @@ once, deliberately, at the end — with nothing half-migrated behind it.
 
 ## Watch out
 
-- 🔴 **The worldmap is NOT the single point of failure — the FOUNDERS are.**
-  Corrected 2026-09-20 after checking all three carried artifacts on disk:
+- ✅ **All three carried artifacts are now in the repo.** This section read *"the
+  worldmap is NOT the single point of failure — the FOUNDERS are"* until 2026-09-21,
+  which was true when written and is no longer:
 
   | carried artifact | where it lives | risk |
   |---|---|---|
   | **worldmap** | `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows) + landmarks/links/settlements/mutators CSVs + `world/ASHKARR_DRAFT_2026-08-24.rws` (21 MB) | ✅ in the repo, committed, plural formats |
   | **gravship** | `design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.xml` (`ShipLayoutDefV2`) | ✅ in the repo |
-  | **founders** | **ONLY inside `CANONICAL_ASHKARR_START_2026-09-12.rws`**, in the Windows Saves folder | 🔴 **not in the repo at all** |
+  | **founders** | `design/Jawa/worldbuilding/founders/` — 6 colonists + 2 named colony animals as Scribe XML fragments, plus a manifest and the 617-mod list they were taken against | ✅ **in the repo since `ee8b70911`, and the round trip is PROVEN** (2026-09-21) |
 
-  MEASURED: `CharacterEditor/` holds only `options.txt` and `pawnslots.txt` — **no
-  founder presets are exported**. The repo's `JawaColonistPawnKinds.xml` and
-  `Scenario_Utinni.xml` are pawnkind templates and scenario wiring, not the
-  hand-edited individuals.
+  MEASURED 2026-09-21, the round trip that makes the founders row real: the 8 fragments
+  were spliced into a **foreign** save (different world, different player faction, 69
+  colonists of its own) and every founder arrived — **5 of 8 identical in every field**,
+  the other 3 differing only by `ageChronologicalYears +1` (a different in-game date) and
+  one hediff the receiving game adds itself. The five-way relation clique and both animal
+  bonds resolved. 169 def-bearing references resolve against the live 618-mod set with 0
+  unresolved, and 0 dangling `Thing_*` references.
 
-  ⚠️ That save sits in a Steam-Cloud-reconciled folder outside version control, and
-  it was modified today (a `.bak-pre-founder-scrub-20260920T134157Z` sibling
-  exists, so founders were being edited on 2026-09-20). Work products belong in the
-  repo; this one is not.
+  🔴 **One residual, and it is the dangerous kind.** A bare splice **silently drops the
+  `Wimp` trait** from 5 of 6 founders, with nothing in `Player.log`: gene `loadID`s are
+  save-local, so the fragments' gene references resolve *successfully* into the
+  destination save's own, unrelated genes. A loadID collision does not error — it resolves
+  to the wrong object. The remap that fixes it is known and recorded, but it lives in prose
+  until `FOUNDERS_IMPORTER_OWED_1` ships a committed importer.
 
-  ⇒ Owed: `FOUNDERS_EXPORT_TO_REPO_1`. Verify the worldmap loads too — but it is
-  the artifact in the best shape, not the worst.
+  ⇒ **The founders are backed up. Restoring them is not yet a one-command operation**, and
+  a reader who follows the prose and misses one of the four remaps gets a clean load and a
+  quietly wrong colonist.
 - The canonical save's mod-list divergence (`CANONICAL_SAVE_MODLIST_DIVERGENCE_1`,
   `CANONICAL_SAVE_SCENARIO_MISMATCH_1`) becomes moot at the remake — check
   whether those items are still worth their remaining effort once this is in
