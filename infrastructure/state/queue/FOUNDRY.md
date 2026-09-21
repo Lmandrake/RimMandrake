@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T18:30:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T18:33:23Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -890,15 +890,6 @@ target:   v1
 kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
-
-## SLIME_GENE_ARCHIVE_BUILD_1 Build the Slime's campaign gene archive: the owner-ACCEPTED 33-target + 25-rider lists (frozen 2026-09-06) exist as design only - 1 of 34 GeneDefs is built and a 17-gene universal PLACEHOLDER archive ships in their place, so the biome's headline mechanic serves the wrong content while looking finished in-game
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. Author the GeneDefs for the accepted A-list and B-list. Read
-prose:    infrastructure/state/items/SLIME_GENE_ARCHIVE_BUILD_1.md
 
 ## EXTREME_DESERT_SIGNATURE_FLORA_1 Author glass-nub light-pipe and silverbole flora for RUT_ExtremeDesert
 state:    doing
