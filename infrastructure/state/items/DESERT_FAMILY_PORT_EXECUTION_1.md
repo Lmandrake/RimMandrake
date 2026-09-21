@@ -52,8 +52,35 @@ question here — but do not quote it as a statement about the running game.
 
 🔑 **Before filing any art job, search for art already generated AND already ruled on** —
 `infrastructure/artpipe/done/`, `_artsrc/`, `registry.jsonl`, and any
-`Transient/*.decisions.json` review sheet. Standing rule (`CLAUDE.md`); it has already
-caught three plants one step from a wasted regen.
+`Transient/*.decisions.json` review sheet. Standing rule (`CLAUDE.md`).
+
+### 🔴 the 81 are NOT 81 jobs to file — the daemon is already running them
+
+CENSUSED 2026-09-20, full table in `Transient/desert_art_census.md`:
+
+| state | rows | what to do |
+|---|---:|---|
+| **IN FLIGHT** — job already queued or rendered under *this item* | **77** | ⛔ **do not queue.** `registry.jsonl` holds 251 `target` entries with `source: DESERT_FAMILY_PORT_EXECUTION_1`, first registered **2026-09-20 09:41 PDT**. 24 already have PASS-validated renders sitting unreviewed in `_artsrc/`/`done/`; 52 are queued and not yet rendered; 1 (Kybuck) is 2 pass / 1 fail |
+| already has our own art | 4 | `RSW_Plant_Chakroot_Wild`, `RSW_Plant_HubbaGourd_Wild`, `RSW_Plant_Bloddle`, and `RSW_Mynock` (wired by `SHIP_VERMIN_MOD_1`) |
+| **owner already ruled — CONFLICT** | 1 | `RSW_MossBeetle`, see below |
+| **safe to queue** | **3** | `RSW_ImperialToad`, `RSW_Jellypot`, `JOE_Landopus` |
+
+🔴 **So the owed work is 24 renders to REVIEW BY EYE, not 81 to generate.** Filing
+`fill_queue.py` for any of the 77 duplicates work already in flight. The next art action
+on this item is a review pass over what has already landed — the Rot wave found 4 of 61
+renders bad, and only an eye caught them.
+
+⚠️ **`RSW_Ferroclaw` (`A_AA_Terramorph`) has TWO art jobs**: an earlier `aa_terramorph`
+from `ART_REGEN_WAVE5_QUEUE_1` (south/east already PASS) and today's
+`desertportb_ferroclaw`. Reconcile them; do not treat it as two needs.
+
+### 🔴 scope conflict the owner must settle — `RSW_MossBeetle`
+
+`Transient/deeps_flora_fauna_review_2026-09-18.decisions.json` (owner-approved
+**2026-09-19**) rules `RSW_MossBeetle` **CUT**. This item's blanket *"replace"* ruling
+came **2026-09-20**, one day later, and sweeps it back in. Two owner rulings one day
+apart disagree about the same creature. ⛔ Do not generate art for it and ⛔ do not
+silently drop it — it is his call which ruling governs.
 
 ### the 11 unblocked rows still to author
 
