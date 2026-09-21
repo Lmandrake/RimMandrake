@@ -171,9 +171,26 @@ diagnosed; recorded so the next reader does not have to rediscover it.
 ### also found
 
 `Config error in RM_Venomvine: Nutrition == 0 but preferability is RawBad
-instead of NeverForNutrition` — new on this load, a one-line def fix, carried
-in `BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1`'s "also found".
+instead of NeverForNutrition` — ✅ **FIXED and VERIFIED GONE** on a later load
+the same day (`03d963de2`): the def is reparented to `PlantBaseNonEdible`,
+since Core's `PlantBase` exists only to add the RawBad `<ingestible>` and this
+plant is deliberately Nutrition 0.
 
-⇒ This item **stays open** for steps 3, 4, 5, 6 and 8 and for the wild-spawn
-check once the biome-flora defect is fixed. The mechanism it was filed to
-witness has been witnessed.
+## wild spawn UNBLOCKED, and it happens — 2026-09-21, second sitting
+
+`BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1` is **closed** (`03d963de2`) and
+`RM_Venomvine` is back in `RUT_Desert`'s runtime `wildPlants` at its authored
+0.25. A fresh 250×250 `RUT_Desert` map on the same path produced **272 plants
+across 8 defs, one of them a wild `RM_Venomvine`** — so the 0.25 wiring
+survives load and `WildPlantSpawner` does place it.
+
+⚠️ **That is a spawn observation, NOT the check this item wants.** The open
+question was whether a comp on a WILD-grown vine registers its cell during map
+generation, and **that was not tested**: the map was left at `ticksGame 1`, no
+pawn was walked into the wild vine, and one plant on a 62,500-cell map is a
+poor subject anyway. Use a higher-density staging or many maps when someone
+runs it properly. `pathCost 60` in practice is likewise still unobserved.
+
+⇒ This item **stays open** for steps 3, 4, 5, 6 and 8, for the wild-stand
+registration check, and for `pathCost 60`. The mechanism it was filed to
+witness has been witnessed; the wild half has not.
