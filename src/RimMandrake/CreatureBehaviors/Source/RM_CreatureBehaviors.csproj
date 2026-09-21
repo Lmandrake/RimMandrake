@@ -102,6 +102,11 @@
     <Compile Include="RM_CompDrumLure.cs" />
     <Compile Include="RM_HediffCompProperties_ShadeStagger.cs" />
     <Compile Include="RM_HediffComp_ShadeStagger.cs" />
+    <Compile Include="RM_FilterFeedExtension.cs" />
+    <Compile Include="RM_JobGiver_FilterFeedTerrain.cs" />
+    <Compile Include="RM_JobDriver_FilterFeedTerrain.cs" />
+    <Compile Include="RM_CompProperties_DungSeeder.cs" />
+    <Compile Include="RM_CompDungSeeder.cs" />
   </ItemGroup>
 
   <ItemGroup>
