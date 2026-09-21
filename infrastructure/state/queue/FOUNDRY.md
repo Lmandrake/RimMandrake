@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T00:07:51Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-21T00:17:24Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -936,15 +936,6 @@ kind:     build
 summary:  DESERTSTAGGERSEEDBUILD1 — author the staggerseed cycle plant
 prose:    infrastructure/state/items/DESERT_STAGGERSEED_BUILD_1.md
 
-## DESERT_SHADE_PLANTS_DESIGN_1 Design pass: desert's defending shade plants (thorn/contact damage, no native CompProperties)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  DESERTSHADEPLANTSDESIGN1 — design pass on the desert's defending shade plants
-prose:    infrastructure/state/items/DESERT_SHADE_PLANTS_DESIGN_1.md
-
 ## COMMISSION_LEDGER_CLEANUP_1 85 genuinely-owed new-art/def commissions from the 118-row ledger
 state:    doing
 row:      unassigned
@@ -1399,3 +1390,43 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  A bridge call that takes a pawn id or defName and selects it, and a call that makes it
 prose:    infrastructure/state/items/BRIDGE_SELECT_NONCOLONIST_PAWN_1.md
+
+## DESERT_SHADE_WHALE_FILTERFEED_1 sand filter-feeding + dung-seeding for the desert shade whale
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  DESERTSHADEWHALEFILTERFEED1 — sand filter-feeding + dung-seeding for the shade whale
+prose:    infrastructure/state/items/DESERT_SHADE_WHALE_FILTERFEED_1.md
+
+## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec
+summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
+prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
+
+## VENOMVINE_CONTACT_VENOM_BUILD_1 Build the venomvine (desert form) and its contact-venom comp/MapComponent in EnvironmentalHazards (tier c)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  VENOMVINECONTACTVENOMBUILD1 — build the venomvine and its contact-venom comp
+prose:    infrastructure/state/items/VENOMVINE_CONTACT_VENOM_BUILD_1.md
+
+## DESERT_LEACHMOSS_BUILD_1 Author the leachmoss, the desert's fertile-ground spawn competitor (tier b, pure XML)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  DESERTLEACHMOSSBUILD1 — author the leachmoss, the desert's nutrient racer
+prose:    infrastructure/state/items/DESERT_LEACHMOSS_BUILD_1.md
