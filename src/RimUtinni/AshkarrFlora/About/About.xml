@@ -66,7 +66,7 @@ destructive wood harvest, which fells a named landmark tree. Now ships
 `RUT_SweetlineWool` (`RUT_SweetlineTree_Items.xml`, ParentName WoolBase,
 shaped on `RSW_WoolBantha`) as the tree's harvestedThingDef, with
 `harvestAfterGrowth` set (0.05, vanilla's own non-destructive-harvest
-mechanism — `PlantProperties.HarvestDestroys` is `harvestAfterGrowth <= 0f`)
+mechanism — `PlantProperties.HarvestDestroys` is `harvestAfterGrowth &lt;= 0f`)
 so the tree survives every harvest and cut-plant job alike. harvestYield
 dropped 160→20: a rare hanging harvest, not lumber. Chose ACCUMULATE over a
 flat yield — the wool is *shed* by passing giants, not grown by the tree,
