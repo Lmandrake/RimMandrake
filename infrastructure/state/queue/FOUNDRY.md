@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T00:42:33Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-21T01:07:27Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -936,15 +936,6 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
-## DESERT_SHADE_WHALE_FILTERFEED_1 sand filter-feeding + dung-seeding for the desert shade whale
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  DESERTSHADEWHALEFILTERFEED1 — sand filter-feeding + dung-seeding for the shade whale
-prose:    infrastructure/state/items/DESERT_SHADE_WHALE_FILTERFEED_1.md
-
 ## SWBESTIARY_MISSING_BODYPART_DEFS_1 Eight RSW_ body-part defs are referenced by RSW_DesertPortA_Bodies.xml and defined nowhere
 state:    doing
 row:      unassigned
@@ -1429,3 +1420,23 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  VENOMVINELIVEVERIFY1 — quicktest the venomvine's contact venom in a live game
 prose:    infrastructure/state/items/VENOMVINE_LIVE_VERIFY_1.md
+
+## SWBESTIARY_BODYPART_LIVE_VERIFY_1 Confirm the body-part repoint clears Player.log on a live load
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     verify
+thin:     no ## spec, no ## verify
+summary:  SWBESTIARYBODYPARTLIVEVERIFY1 — prove the body-part repoint actually cleared the log
+prose:    infrastructure/state/items/SWBESTIARY_BODYPART_LIVE_VERIFY_1.md
+
+## SHADE_WHALE_ECOLOGY_LIVEPROOF_1 Live-prove the shade whale filter-feeds and its dung seeds
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  SHADEWHALEECOLOGYLIVEPROOF1 — live-prove the shade whale's two ecology mechanics
+prose:    infrastructure/state/items/SHADE_WHALE_ECOLOGY_LIVEPROOF_1.md

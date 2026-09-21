@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T00:42:33Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-21T01:07:27Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -129,7 +129,7 @@ prose:    infrastructure/state/items/TITANOSLIME_SLIME_BIOME_1.md
 ## FALL_LINE_MAJOR_REGION_LABEL_1 Owner directive 2026-09-20: make the Fall Line a major world region with a beautiful clear label - all 71 Ash'karr world features sit at maxDrawSizeInTiles 10, the bottom of the engine's size curve, so no label on the planet reads as major; raise the Fall Line and LOOK
 state:    doing
 row:      unassigned
-needs:    bridge
+needs:    owner
 target:   v1
 kind:     task
 summary:  FALLLINEMAJORREGIONLABEL1 — make the Fall Line read as a major world region
@@ -221,7 +221,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -229,7 +229,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -660,3 +660,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Replace the three old names with the ruled names in all six files, in the same change,
 prose:    infrastructure/state/items/STALE_V24_NAMES_IN_FROZEN_SHEETS_1.md
+
+## ASHKARR_PAINTER_NAMES_DIVERGED_1 ashkarr_paint.py would rename 7 live regions and resurrect an overruled name: all 10 of its region literals carry a 'The ' the planet does not, and one is the pre-V24 South Crags
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     investigate
+thin:     spec, verify and criteria all present
+summary:  1. Ask him: do region names carry The ? (Live says no; the painter says yes, for all 10.)
+prose:    infrastructure/state/items/ASHKARR_PAINTER_NAMES_DIVERGED_1.md
