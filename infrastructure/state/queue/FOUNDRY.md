@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T10:29:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T10:45:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1411,16 +1411,6 @@ kind:     task
 thin:     no ## verify
 summary:  1. For each of the 71, check the drawCenter against the region's actual tiles.
 prose:    infrastructure/state/items/FEATURE_DRAWCENTER_UNVERIFIED_1.md
-
-## PATCH_FILES_UNDER_DEFS_INERT_1 Two patch files sit under Defs/ so RimWorld parses them as Defs - 7 operations inert, including a 2026-09-16 owner ruling
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Move each file from <Mod/Defs/Patches/ to <Mod/Patches/. Do not rewrite the XML.
-prose:    infrastructure/state/items/PATCH_FILES_UNDER_DEFS_INERT_1.md
 
 ## GELATINOUSSLIME_FIRST_LOAD_ERRORS_1 First load with GelatinousSlime active: wildGroupSize in the wrong element twice, plus an RM_Titanoslime def error
 state:    proposed
