@@ -4,6 +4,11 @@ _Owner + BENCH, 2026-09-05. Owner: "Pick principles that drive the local reasoni
 and then populate to them... make biomes that radiate a powerful artistic theme and
 pseudo alien biological reasoning."_
 
+🔑 **The canonical worldmap CSV is `world/ASHKARR_WORLDMAP_tiles.csv`, always.**
+Any `*_VIVIFIED_*` or `*_DRAFT_*` bundle under `world/` is a dated snapshot that
+goes stale the moment the canonical CSV changes under it — never cite one in a
+biome sheet for a region name or biome key (`STALE_VIVIFIED_WORLDMAP_CITED_1`).
+
 ## The generative rule: **energy regime × local anomaly**
 
 Two measured facts about Ash'karr drive everything (`the_one_map.md`):

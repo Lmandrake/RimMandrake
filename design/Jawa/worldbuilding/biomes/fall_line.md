@@ -17,22 +17,31 @@ Everything below is an admission test for what gets injected, not a def to autho
 
 ## 0. What is already on the map (measured, not proposed)
 
-`world/ASHKARR_VIVIFIED_2026-08-24_tiles.csv`, region `The Fall Line`:
+`world/ASHKARR_WORLDMAP_tiles.csv` (canonical), combining the two named regions
+this belt spans — `Fall Line` (155 tiles) and `The Breaks` (153 tiles). The
+belt does **not** appear as one region called `The Fall Line` on the canonical
+map; that single-region shape and the `ExtremeDesert`/`Desert`/`AridShrubland`
+biome keys below came from the superseded `ASHKARR_VIVIFIED_2026-08-24_tiles.csv`
+export, which predates both the `RUT_` naming rename and the
+`Fall Line Barrens` → `The Breaks` rename (`STALE_VIVIFIED_WORLDMAP_CITED_1`):
 
 | | |
 |---|---|
-| **Tiles** | **308** |
-| **Biomes** | `ExtremeDesert` **252** (82%) · `Desert` **44** (14%) · `AridShrubland` **12** (4%) |
+| **Tiles** | **308** (155 `Fall Line` + 153 `The Breaks`) |
+| **Biomes** | `RUT_ExtremeDesert` **290** (94%) · `RUT_AridShrubland` **12** (4%) · `RUT_Contagion` **5** (2%) · `RUT_Desert` **1** (<1%) |
 | **Arc (θ)** | 40.0° – 65.1°, median **50°** — mid-dayside, well short of the terminator |
 | **Temperature** | 28.4 – 49.3 °C, median **42.1 °C** |
 | **Rainfall** | 0 – 16 mm, median **0** — it does not rain here |
-| **Elevation** | 8 – 1505 m, median **446 m**; the *Fall Line* ridge itself is **780 m**, at (26,352) (34,357) (43,2) (52,6) (61,9) |
-| **Mutators** | 209 across the region |
-| **Roads** | 28 tiles carry road |
+| **Elevation** | 8 – 1505 m, median **448 m**; the *Fall Line* ridge itself peaks at **1505 m** (tile 16852, lat 1.33° lon 42.23°) |
+| **Mutators** | 194 mutator instances on 124 of the 308 tiles |
+| **Roads** | 20 tiles carry road |
 
-🔑 The owner's ruling and the map already agree: **82% is `ExtremeDesert`**, so
-"`ExtremeDesert` + a shade mechanic" costs no repaint. The `Desert` and
-`AridShrubland` minority are the ridge flanks and the road corridor.
+🔑 The owner's ruling and the map already agree: **94% is `RUT_ExtremeDesert`**, so
+"`RUT_ExtremeDesert` + a shade mechanic" costs no repaint. The `RUT_AridShrubland`,
+`RUT_Contagion` and `RUT_Desert` minority are the ridge flanks and the road corridor.
+
+MEASURED 2026-09-20, `csv.DictReader` over `world/ASHKARR_WORLDMAP_tiles.csv`,
+`world/ASHKARR_WORLDMAP_mutators.csv` and `world/ASHKARR_WORLDMAP_links.csv`.
 
 ## 1. What it is
 
