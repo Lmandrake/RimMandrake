@@ -115,3 +115,51 @@ pre-existing 240s timeout in this environment — expected, not a regression.
 **7. Static XML validation:** `validate_patch.py` against both edited patch files —
 0 errors, 0 warnings (no `--defs`/`--live` dump available in this environment; static
 checks only). New def file confirmed well-formed XML directly.
+
+## addendum — 2026-09-21 (FOUNDRY, live-tile verification + remediation)
+
+A later FOUNDRY subagent was sent to independently verify point 4 above (the "2,531
+tiles" claim) with a real instrument rather than trusting it, because the raw grep
+this repo's docs warn against proves nothing on a compressed world-tile array.
+
+**Measured, not trusted:** decoded `CANONICAL_ASHKARR_START_2026-09-12.rws`'s live
+`tileBiome` array offline with `src/RimMandrake/Utils/worldmap.py`'s `WorldGrid`,
+using a def-dump capture taken `2026-09-21T08:56:31Z` — the last capture taken
+**before** this item's rename deploy (which landed at `2026-09-21T12:00:10Z`/
+`a73319758`) — to resolve `RUT_Umbra`'s pre-deletion `BiomeDef` shortHash (`15270`).
+Result: **exactly 2,531 of 21,872 tiles carry shortHash 15270**, `RUT_FuelSnows`
+carries **0**. **The 2,531 figure was accurate, not stale.** (One unrelated
+unresolved hash, `58457`, also present — not investigated, not Umbra.)
+
+Separately confirmed the deployed live Mods folder (`.../RimWorld/Mods/UtinniPatches/
+Defs/BiomeDefs/`) no longer defines `RUT_Umbra` anywhere (only `RUT_FuelSnows.xml`,
+carrying a comment reference to the old name, and an unrelated `RUT_PropaneLake.xml`
+mention) — so on the canonical save's next load, 2,531 tiles' biome shortHash would
+have resolved to nothing.
+
+**Remediation applied:** restored `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
+RUT_Umbra.xml` as a full behavioural duplicate of `RUT_FuelSnows.xml` (same
+terrain/weather/fauna/flora content, defName/label reverted, header rewritten to
+explain the restoration and point future authoring at `RUT_FuelSnows`) — the lower-
+risk, reversible fix, versus a live world-tile repoint via the bridge (which would
+have required loading the canonical save into a game currently on an unrelated
+scratch world, and the "paint once at the end" doctrine does not forbid this kind of
+minimal compatibility duplicate). Deployed via `deploy_custom_mods.py --mod
+UtinniPatches --apply` — plan showed exactly one file added
+(`Defs/BiomeDefs/RUT_Umbra.xml`), confirmed present on disk in the live Mods folder
+after apply. Both `RUT_Umbra` and `RUT_FuelSnows` now resolve; no game content was
+lost or duplicated in effect (they are byte-identical bodies under two defNames,
+the same "twin" pattern already used elsewhere in this registry, e.g.
+`RUT_Greentide`/`RM_Greentide`).
+
+**Owed:** retire `RUT_Umbra.xml` again once the terminal repaint
+(`BIOME_PAINT_ONCE_AT_THE_END_1`) has moved every tile still carrying it onto
+`RUT_FuelSnows` — verify with the same `worldmap.py` decode before deleting, not by
+trusting a tile count from a doc. `biome_paint_list.md`'s `RUT_FuelSnows` row and a
+new `RUT_Umbra` row updated to match.
+
+Bridge: taken solely to check whether the game was live and on the canonical save
+(it was not — a different, non-Ash'karr scratch world, seed "corn cob", 119,904
+tiles, was loaded); no live game state was read or written for the canonical save,
+so all verification above was done offline against the `.rws` file directly.
+Released immediately after.
