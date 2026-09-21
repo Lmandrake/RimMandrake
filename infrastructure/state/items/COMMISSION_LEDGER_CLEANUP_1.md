@@ -201,3 +201,109 @@ All four resolved (2 already-built found on re-verify, 1 built this pass, 1
 re-filed as a correctly-scoped design item) — none skipped. 81 slugs across
 the other 25 sheet groups remain untouched by this slice; this item stays
 open.
+
+## 2026-09-21 (FOUNDRY, offline subagent) — arid_shrubland sheet's 6 slugs resolved
+
+Slice: all 6 arid_shrubland slugs. Re-verified currency first, per this
+item's own "watch out" — re-read `arid_shrubland.md` in full (not just the
+truncated slug names), `rosters/arid_shrubland.json`'s own `new_defs` entry
+(which carries a `mechanic_load` tag per slug — "none blocking", "C#: ...",
+or "unruled" — that drove every build-vs-file decision below), and
+`RUT_AridShrubland.xml`'s own header comment (which independently confirmed
+the same three "NOT this pass's scope" items the roster flagged). Also
+checked `infrastructure/artpipe/{done,pending,registry.jsonl}` by subject for
+all six before touching anything, and `design/Jawa/fauna/cast_assignment.csv`
+before reusing any donor species' body/art (this caught a real conflict, see
+tunnel-snake below).
+
+- **`the-fuzz-knee-high-silver-green-canopy-plant` → BUILT.** `RUT_Fuzz`
+  (`src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_Fuzz.xml`,
+  `mandrake.rut.ashkarrflora`) — the biome's dominant groundcover (0.9
+  commonality), replacing the `Plant_ShrubLow` placeholder the roster's own
+  flora list documented as "the knee-high fuzz stand-in UNTIL THE FUZZ DEF
+  LANDS." One art job filed, `rutfuzz_v1`
+  (`infrastructure/artpipe/pending/rutfuzz_v1.json`) — `mechanic_load` reads
+  "none blocking" so no companion mechanics item. Working name only, per
+  arid_shrubland.md's own "Owed" naming list; folded into
+  `ARIDSHRUBLAND_SHIPPING_NAMES_1` (filed this pass) rather than a solo card.
+  `validate_patch.py` clean against the full 618-mod load set except the
+  expected pending-texPath warning (same status as `RM_Venomvine`/
+  `RUT_Staggerseed` at filing time).
+- **`the-huge-grazer-large-young-parental-enrage-body-donors-famb` → BUILT
+  (def), C# split to a new item.** `RSW_ShrublandGiant`
+  (`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShrublandGiant.xml`)
+  — a reskin of the already-ported `RSW_Fambaa`/`RSW_Dewback` body and art
+  (retinted, zero new PNGs, same `RSW_ShadeWhale`/`RSW_WraidAlpha`
+  precedent), using Fambaa's own juvenile facing set for "large young" at no
+  extra cost. The register's named donor pair was Fambaa/Mastmot — Mastmot
+  has sounds already absorbed but no ThingDef was ever authored for it
+  (checked this pass), so Fambaa is the sibling that actually landed.
+  Converted from Fambaa's egg-laying amphibian profile to live-birth
+  herbivore (no standing water in this biome), `trainability None` matching
+  the sheet's "indifferent to the intelligent races" law. Wired into
+  `RUT_AridShrubland.xml`'s wildAnimals at 0.35, alongside (not replacing)
+  the pre-existing Ronto/Bantha/Corinathoth giants. Ships as a plain grazer
+  — the life-stage + parental-enrage mechanic itself is real C# the biome
+  doc's own "Owed" section flags as part of a still-unrun engine feasibility
+  pass, so it's deferred per the `DESERT_SHADE_WHALE_FILTERFEED_1` precedent
+  (def lands first, behaviour comp follows). Filed
+  `SHRUBLAND_GIANT_ENRAGE_1`.
+- **`tunnel-snake-analog-the-signature-corridor-predator` → BUILT.**
+  `RSW_TunnelSnake`
+  (`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_TunnelSnake.xml`) —
+  a reskin of the already-ported `RSW_Klorslug` body and art. The roster's
+  own fauna list already carries `Terrorworm` (a foreign `mlie.horrors`
+  donor) as an explicit interim at this band, `mechanic_load: "none
+  blocking"`. Almost placed `Klorslug` itself directly instead — caught
+  before doing it: `cast_assignment.csv` already assigns the *species*
+  `Klorslug` to `RUT_Greentide` ("the Gnawers", row 177, status keep), so
+  reusing it as-is here would have double-booked one species into two
+  biomes' signature niches. Reused the body/art ASSET only (retinted, new
+  defName), the same asset-reuse-without-species-reuse pattern
+  `RSW_ShadeWhale` used on `RSW_Horax`. Wired into `RUT_AridShrubland.xml`'s
+  wildAnimals at 0.5, alongside the Terrorworm interim (not removed, same
+  not-replaced precedent). No companion mechanics item — this was a pure
+  art/def commission.
+- **`venomvine-fortress-flora-passability-by-body-size` → superseded/
+  re-filed, not built.** Confirmed a mechanics ask, exactly the failure mode
+  this item's own "watch out" names — `VENOMVINE_CONTACT_VENOM_BUILD_1`
+  (built 2026-09-20, `10033074a`) shipped the desert-lineage `RM_Venomvine`
+  and its own text explicitly named this slug as future work ("Do NOT build
+  the shrubland thicket's body-size passability here... Just don't preclude
+  it"). Filed `VENOMVINE_FORTRESS_PASSABILITY_1`, scoped to reuse
+  `RM_Venomvine`'s existing plant/comp rather than inventing new terrain, and
+  noting the art job already queued for the desert build
+  (`rmvenomvine_v1`) was explicitly written to double as this biome's own
+  venomvine art ("its shrubland sibling," per the job's own `style_notes`) —
+  so no new art is owed here, only the size-gate C#.
+- **`scrap-nest-bird-analogs-glittering-treasure-nests-steal-from` →
+  superseded/re-filed, not built.** `mechanic_load: "C#: nest-theft/
+  scrap-hoard"` in the roster — a mechanics ask, and the slug's own text
+  flags the base-stealing half as an unruled "candidate" besides. Filed
+  `SHRUBLAND_SCRAPNEST_BIRDS_1`, noting the bird-donor pick is still open
+  (check `cast_assignment.csv` first, same care that caught the tunnel-snake
+  conflict) and that the base-stealing candidate needs its own ruling before
+  being built, not just the nest-theft mechanic.
+- **`tree-guardian-uniques-owner-candidate-not-yet-ruled` → superseded/
+  re-filed as an owner card, not built.** The only slug in this sheet the
+  roster itself tags `mechanic_load: "unruled"` (every other slug got
+  "none blocking" or a specific "C#: ..." tag) — its own name says exactly
+  what it is. Filed `SHRUBLAND_TREE_GUARDIAN_1` as an owner-ruling card
+  (`--needs offline`, same class as `STAGGERSEED_SHIPPING_NAME_1`) with four
+  options (per-tree unique / generic guardian species / drop / owner's own
+  idea), not as a build item — there is nothing to build until the ruling
+  lands.
+
+Also filed `ARIDSHRUBLAND_SHIPPING_NAMES_1`, an owner card covering the
+working names shipped this pass (`RUT_Fuzz`, `RSW_ShrublandGiant`,
+`RSW_TunnelSnake`) plus the biome doc's own pre-existing "Owed" naming list
+(venomvine, the Stall/Gale) — one consolidated card rather than five solo
+ones, since none of these builds is blocked on its own name landing.
+
+All six resolved (3 built as def/art commissions, 1 def-built with its C#
+split out, 2 re-filed as their own items — one mechanics, one owner-ruling
+card) — none skipped. `validate_patch.py` run against all four touched/new
+XML files plus the full 618-mod load set: 0 errors on the three built
+defs and the biome file; the one expected warning is `RUT_Fuzz`'s pending
+texPath. 75 slugs across the other 24 sheet groups remain untouched; this
+item stays open.

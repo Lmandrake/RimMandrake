@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  COMMISSION_LEDGER_CLEANUP_1 (arid_shrubland sheet slug
+  `tunnel-snake-analog-the-signature-corridor-predator`).
+  arid_shrubland.md §4 "Venomvine - the fortress flora": "The scrap nests.
+  ...Snake-analogs feed on the birds and their eggs and are replete here: the
+  treasure has its serpent, coiled in the one corridor you both fit." Also
+  the size ladder's own medium band: "the interface killers: snake-analogs in
+  the tunnels."
+
+  The arid_shrubland roster's own fauna list already carries `Terrorworm`
+  (a foreign-mod donor, `mlie.horrors`) at the medium-tunnel band as an
+  explicit INTERIM: "tunnel-shaped predator... donor (prep §3.4)". This def
+  is the dedicated flagship that interim was standing in for - Terrorworm
+  stays wired in RUT_AridShrubland.xml too, same not-removed precedent
+  RSW_ShadeWhale/RSW_ShrublandGiant used for their own interim donors.
+
+  Body/art reskinned from `RSW_Klorslug` (already-ported, "ours"-status,
+  same RSW mod) - a poisonous vermiform predator, bodySize 1.5, whose own
+  `<race><wildBiomes>` even already lists AridShrubland at 0.2 (donor
+  metadata our BiomeDef never reads, since wildAnimals fully replaces it
+  per-biome; not itself a placement). Checked BEFORE reusing anything:
+  `design/Jawa/fauna/cast_assignment.csv` already assigns the *species*
+  `Klorslug` itself to `RUT_Greentide` ("the Gnawers", row 177, status keep)
+  - so this def does NOT place Klorslug in a second biome. It only reuses
+  the body/art ASSET the same way RSW_ShadeWhale reused RSW_Horax's while
+  Horax stayed placed in the desert: a new defName, a retint, zero new PNGs,
+  no double-booked species identity.
+
+  fleshType/bloodDef/leatherDef/specificMeatDef all stay Insectile, matching
+  the reused art (an insectoid vermiform, not a reptile) - "snake-analog" is
+  the Jawa's naming convention for the ecological niche, not a claim about
+  taxonomy. CompProperties_CanBeDormant + WakeUpDormant are also kept from
+  the donor: an ambush predator that lies still in the one corridor it fits
+  is exactly this slug's own text.
+
+  mechanic_load for this slug reads "none blocking" in the roster's own
+  new_defs entry (unlike the giants' life-stage/enrage or venomvine's
+  passability) - a pure art/def commission, built whole this pass, no
+  companion mechanics item filed.
+
+  Working name only ("the tunnel snake" - arid_shrubland.md's Owed section
+  lists "the snake-analogs" among the names still the owner's pick). Folded
+  into `ARIDSHRUBLAND_SHIPPING_NAMES_1` alongside the fuzz and the giant.
+-->
+<Defs>
+
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_TunnelSnake</defName>
+    <label>the tunnel snake</label>
+    <description>A long, low predator built for a corridor - it lies dormant coiled in the one gap a venomvine thicket or a runway tunnel offers, and wakes only when something worth eating gets close enough to touch. It preys on the scrap-nest birds and their eggs, and on anything else that fits the same crossing it does. Waking it on purpose is a good way to end a treasure hunt early.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <ComfyTemperatureMin>-0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MarketValue>750</MarketValue>
+      <ArmorRating_Blunt>0.35</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>venomous tail-stinger</label>
+        <capacities>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWToxicAppendage</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftLegClawAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>8</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightLegClawAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>8</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+      <li>
+        <label>circular teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_CanBeDormant" />
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+    </comps>
+    <receivesSignals>true</receivesSignals>
+    <race>
+      <body>RSW_Klorslug</body>
+      <baseHungerRate>0.55</baseHungerRate>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>3.0</baseHealthScale>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>4.0</maxPreyBodySize>
+      <specificMeatDef>RSW_Insectile_Meat</specificMeatDef>
+      <leatherDef>RSW_Leather_Insectile</leatherDef>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.40</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.90</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>18</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.03</AridShrubland>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+          <soundWounded>RSW_Pawn_Klorslug_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Klorslug_Death</soundDeath>
+          <soundCall>RSW_Pawn_Klorslug_Call</soundCall>
+          <soundAngry>RSW_Pawn_Klorslug_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_TunnelSnake</defName>
+    <label>the tunnel snake</label>
+    <race>RSW_TunnelSnake</race>
+    <combatPower>320</combatPower>
+    <ecoSystemWeight>0.35</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <specialTrainables>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+    </specialTrainables>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug_j</texPath>
+          <color>(110, 95, 78)</color> <!-- dusty umber-grey, reskin over the shared Klorslug art - reads as lurking in venomvine's near-black shadow, zero new PNGs -->
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug</texPath>
+          <color>(110, 95, 78)</color>
+          <drawSize>1.7</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug_Dessicated</texPath>
+          <drawSize>1.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug</texPath>
+          <color>(110, 95, 78)</color>
+          <drawSize>2.7</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.6, 0.33)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug_Dessicated</texPath>
+          <drawSize>2.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

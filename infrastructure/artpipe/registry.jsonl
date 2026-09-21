@@ -3486,3 +3486,5 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rmleachmoss_v1", "notes": "", "target": "rmleachmoss", "ts": 1789950315.597879}
 {"by": "fill_queue", "event": "registered", "source": "VENOMVINE_CONTACT_VENOM_BUILD_1", "target": "rmvenomvine", "ts": 1789951010.6112096}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rmvenomvine_v1", "notes": "", "target": "rmvenomvine", "ts": 1789951010.6306198}
+{"by": "fill_queue", "event": "registered", "source": "COMMISSION_LEDGER_CLEANUP_1", "target": "rutfuzz", "ts": 1789953495.9135308}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rutfuzz_v1", "notes": "", "target": "rutfuzz", "ts": 1789953495.9290333}

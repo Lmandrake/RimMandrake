@@ -29,18 +29,29 @@
     wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
     BiomeFlora_Ashkarr.xml against rosters/arid_shrubland.json.
 
-    NOT this pass's scope: venomvine as a dungeon-thicket TerrainDef/structure; the
-    sweetline trees (owner's pick, huge/ancient, TREE_GRAPHICS_OWNERSHIP_1); the
-    giants, snake-analogs, bird-analogs (names owner's pick, SS Owed); the Stall/Gale
-    WeatherDefs and their AI hooks (SS Owed, engine feasibility pass not run); the
-    band-mend repaint (WORLDMAP_DESERT_BAND_REPAIR_1).
+    NOT this pass's scope: venomvine as a dungeon-thicket TerrainDef/structure (and
+    its size-gated passability mechanic, filed separately per
+    COMMISSION_LEDGER_CLEANUP_1); the sweetline trees (owner's pick, huge/ancient,
+    TREE_GRAPHICS_OWNERSHIP_1); the Stall/Gale WeatherDefs and their AI hooks (SS
+    Owed, engine feasibility pass not run); the band-mend repaint
+    (WORLDMAP_DESERT_BAND_REPAIR_1).
+
+    COMMISSION_LEDGER_CLEANUP_1 (2026-09-21, arid_shrubland sheet partial pass)
+    landed three of that sheet's owed slugs here: `RUT_Fuzz` (the fuzz, wildPlants,
+    replacing the Plant_ShrubLow stand-in), `RSW_ShrublandGiant` (the huge grazer
+    flagship, life-stage art only - parental enrage is new C#, filed separately)
+    and `RSW_TunnelSnake` (the signature corridor predator, alongside the existing
+    Terrorworm interim). Names for all three, and for the pre-existing giants/
+    snake-analogs/bird-analogs generically, remain the owner's pick
+    (ARIDSHRUBLAND_SHIPPING_NAMES_1) - every RUT_/RSW_ defName above added this
+    pass is a working name, same status as RUT_Staggerseed.
 
   -->
 
   <BiomeDef>
     <defName>RUT_AridShrubland</defName>
     <label>the arid shrubland</label>
-    <description>Knee-high silver-green fuzz at eerily even spacing, running unbroken to every horizon, all of it leaning the same way, all of it moving -- because the wind never stops. No rain falls here; the only water is fog carried in on the ground-wind, thinning with every sunward metre. Sightlines are gone under the fuzz-canopy and cover is everywhere, for everything, all the time: the moment the environment stops trying to kill you, the danger becomes each other.</description>
+    <description>Knee-high silver-green fuzz at eerily even spacing, running unbroken to every horizon, all of it leaning the same way, all of it moving - because the wind never stops. No rain falls here; the only water is fog carried in on the ground-wind, thinning with every sunward metre. Sightlines are gone under the fuzz-canopy and cover is everywhere, for everything, all the time: the moment the environment stops trying to kill you, the danger becomes each other.</description>
     <workerClass>RimWorld.BiomeWorker_AridShrubland</workerClass>
     <riverbankTerrain>Riverbank</riverbankTerrain>
     <allowRoads>true</allowRoads>
@@ -129,6 +140,8 @@
       <Lothcat MayRequire="mlie.starwarsanimalcollection">0.8</Lothcat>  <!-- loth-cat - small-runway, keep -->
       <Mudhorn MayRequire="mlie.starwarsanimalcollection">0.8</Mudhorn>  <!-- mudhorn - huge-predator-exception, keep -->
       <Ronto MayRequire="mlie.starwarsanimalcollection">0.8</Ronto>  <!-- ronto - huge-grazer, keep -->
+      <RSW_ShrublandGiant MayRequire="mandrake.rsw.swbestiary">0.35</RSW_ShrublandGiant>  <!-- COMMISSION_LEDGER_CLEANUP_1: the huge-grazer flagship, large-young/parental-enrage slug -->
+      <RSW_TunnelSnake MayRequire="mandrake.rsw.swbestiary">0.5</RSW_TunnelSnake>  <!-- COMMISSION_LEDGER_CLEANUP_1: the signature corridor predator, alongside the Terrorworm interim -->
       <Scurrier MayRequire="mlie.starwarsanimalcollection">0.8</Scurrier>  <!-- scurrier - small-runway, keep -->
       <Sketto MayRequire="mlie.starwarsanimalcollection">0.8</Sketto>  <!-- sketto - small-runway, keep -->
       <RSW_ImperialToad MayRequire="mandrake.rsw.swbestiary">0.7</RSW_ImperialToad>  <!-- imperial toad - small-runway, keep -->
@@ -165,7 +178,7 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <Plant_ShrubLow>0.9</Plant_ShrubLow>  <!-- low grell -->
+      <RUT_Fuzz MayRequire="mandrake.rut.ashkarrflora">0.9</RUT_Fuzz>  <!-- COMMISSION_LEDGER_CLEANUP_1: the fuzz def landed, replaces the Plant_ShrubLow stand-in -->
       <RG_Plant_AridGrass>0.5</RG_Plant_AridGrass>  <!-- grass -->
       <Plant_Brambles>0.3</Plant_Brambles>  <!-- brambles -->
       <Plant_Bush>0.3</Plant_Bush>  <!-- grellbush -->
