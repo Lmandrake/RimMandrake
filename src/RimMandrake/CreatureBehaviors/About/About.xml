@@ -83,6 +83,34 @@ Ships:
      Live-quicktest proof (per spawn-many-for-bridge-tests) is explicitly
      owed, not done this pass — see that item's own status log.
 
+  9. SHRUBLAND_GIANT_ENRAGE_1 (2026-09-20) — GIANT WITH YOUNG, a generic
+     parental-enrage mechanic: RM_ParentalEnrageExtension +
+     RM_CompProperties_ParentalEnrage/RM_CompParentalEnrage +
+     RM_MentalState_ParentalEnrage (MentalStateDef RM_ParentalEnrage). Let a
+     tool-user or humanlike walk within the extension's triggerRadius of a
+     pawn of the race that is still in a juvenile life stage, and the nearest
+     ADULT of the same race drops into a short, scoped rage aimed at that ONE
+     intruder. No warning is given; back off, and it ends.
+     The scope is real: RM_MentalState_ParentalEnrage overrides
+     ForceHostileTo(Thing) to answer true for the intruder alone and
+     ForceHostileTo(Faction) to answer false, so GenHostility never flips
+     faction hostility and JobGiver_Manhunter's target search finds exactly
+     that pawn. It is not a manhunter flip.
+     NO Harmony and NO think-tree patch: the state class derives from vanilla
+     MentalState_Manhunter, and Core's MentalStateNonCritical routes
+     manhunting through ThinkNode_ConditionalMentalStateClass, whose
+     Satisfied() is an IsInstanceOfType check rather than the def-identity
+     check its ThinkNode_ConditionalMentalState sibling does — so a subclass
+     inherits the whole chase-and-melee behaviour for free (MEASURED against
+     the decompiled 1.6 engine). That inheritance is load-bearing; flattening
+     it leaves a pawn holding a mental state with no behaviour and nothing in
+     the log. The time-box is vanilla's own
+     MentalState.forceRecoverAfterTicks.
+     Trigger cost: a bounded GenRadial scan on the CALF at CompTickRare only
+     (adult carriers are inert), with the wider guardian search paid only on
+     the rare tick where an intruder was actually found.
+     First consumer: mandrake.rsw.swbestiary's RSW_ShrublandGiant.
+
 Live-loaded 2026-09-11: standalone (no consumer active) tripped a crash in
 RimWorld.AlertsReadout's ctor because the abstract RM_Alert_VerminPopulationBase
 became a reflection "leaf" with no concrete subclass loaded — fixed by

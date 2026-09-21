@@ -34,14 +34,14 @@
   already carries Ronto as "indifferent giant, herd" for this same
   huge-grazer band, and this flagship follows the same law.
 
-  NOT built this pass: the "large young + parental enrage" mechanic itself
-  (C#: an aggro trigger keyed to proximity to a juvenile-lifestage pawn of
-  this race) - arid_shrubland.md's own "Owed" section flags "parental
-  enrage on approach" as part of the biome's still-unrun engine feasibility
-  pass, same class of gap as venomvine's passability. Filed separately,
-  `SHRUBLAND_GIANT_ENRAGE_1`. This def ships as a plain (non-enraging)
-  grazer meanwhile, exactly the DESERT_SHADE_WHALE_FILTERFEED_1 precedent
-  (def lands first, behaviour comp follows in its own item).
+  The "large young + parental enrage" mechanic IS built, in its own item
+  `SHRUBLAND_GIANT_ENRAGE_1` (2026-09-20) - the DESERT_SHADE_WHALE_FILTERFEED_1
+  precedent ran to completion here (def landed first, behaviour comp followed).
+  It is wired below as `RM_ParentalEnrageExtension` + `RM_CompProperties_
+  ParentalEnrage` from mandrake.rm.creaturebehaviors; that extension's own
+  header carries the mechanism and the engine facts it rests on. This def does
+  NOT ship as a plain grazer: walk within 5 cells of a calf and the nearest
+  adult charges you specifically, with no warning.
 
   Working name only ("the giant" - arid_shrubland.md's own Owed section
   lists "the giants" among the names still the owner's pick). Folded into
@@ -104,6 +104,58 @@
         <chanceFactor>0.2</chanceFactor>
       </li>
     </tools>
+    <modExtensions>
+      <!-- SHRUBLAND_GIANT_ENRAGE_1. arid_shrubland.md §4's size ladder,
+           owner-ratified: "Large - giants' children only, and approach is
+           attack: the parent enrages if you even get near the young. No
+           warning is given." This is that ruling, as a mechanism.
+
+           The generic kit lives in mandrake.rm.creaturebehaviors
+           (RM_ParentalEnrageExtension + RM_CompParentalEnrage +
+           RM_MentalState_ParentalEnrage) and names no species, so the next
+           "giant with young" race reuses it with two XML blocks and zero new
+           C#. Read that extension's header before changing anything here: the
+           enrage state's class derives from vanilla MentalState_Manhunter on
+           purpose, which is what routes it into JobGiver_Manhunter with no
+           think-tree patch at all.
+
+           Numbers, chosen here rather than specified by the item:
+           - triggerRadius 5 - outside this animal's own melee reach, so the
+             rage reads as "you came too near", not "you touched it". That
+             distinction IS the ruling.
+           - guardianSearchRadius 30 - this is a herdAnimal with
+             wildGroupSize 1~3, so 30 cells covers a herd's own spread. A calf
+             further than that from any adult is genuinely alone, and nothing
+             happening is the interesting case rather than a defect.
+           - enrageDurationTicks 2500 (~1 in-game hour) - long enough to run
+             someone off a calf, and a seventh of vanilla Manhunter's own
+             10000-tick floor. "The parent enrages" is not "the herd goes
+             manhunter for the rest of the day".
+           - cooldownTicks 1250 - one trespasser loitering in a nursery must
+             not re-rouse the herd every rare tick.
+           - requireLineOfSight false - "no warning is given" cuts both ways;
+             a wall does not hide you from a herd that can smell you, and a
+             calf does not need to see you to bawl.
+           - youngLifeStageMaxIndex unset (-1) - resolves to "every life stage
+             but the last", which on this def's own three-stage ladder means
+             AnimalBaby and AnimalJuvenile are guarded and AnimalAdult
+             guards. No life stage is named, so a later ladder change cannot
+             silently desync it. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_ParentalEnrageExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <enrageState>RM_ParentalEnrage</enrageState>
+        <triggerRadius>5</triggerRadius>
+        <guardianSearchRadius>30</guardianSearchRadius>
+        <enrageDurationTicks>2500</enrageDurationTicks>
+        <cooldownTicks>1250</cooldownTicks>
+        <requireLineOfSight>false</requireLineOfSight>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- The ticker for the extension above. It rides on every giant, but
+           only a calf does any work with it - an adult carrier is inert and
+           is simply the thing that gets roused. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ParentalEnrage" MayRequire="mandrake.rm.creaturebehaviors" />
+    </comps>
     <race>
       <body>RSW_Dewback</body>
       <predator>false</predator>

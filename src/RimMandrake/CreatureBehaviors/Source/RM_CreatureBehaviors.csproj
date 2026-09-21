@@ -107,6 +107,10 @@
     <Compile Include="RM_JobDriver_FilterFeedTerrain.cs" />
     <Compile Include="RM_CompProperties_DungSeeder.cs" />
     <Compile Include="RM_CompDungSeeder.cs" />
+    <Compile Include="RM_ParentalEnrageExtension.cs" />
+    <Compile Include="RM_MentalState_ParentalEnrage.cs" />
+    <Compile Include="RM_CompProperties_ParentalEnrage.cs" />
+    <Compile Include="RM_CompParentalEnrage.cs" />
   </ItemGroup>
 
   <ItemGroup>

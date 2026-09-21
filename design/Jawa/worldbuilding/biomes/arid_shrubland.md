@@ -340,9 +340,14 @@ always means someone lit it.** Smoke on the horizon is a person.
   trees, the fuzz itself, venomvine (working name stands?), the Stall and the Gale as
   player-facing weather names.
 - **Engine feasibility pass** (the desert sheet got one; this biome needs its own):
-  wind-driven weather events (Stall/Gale) and their AI hooks; parental enrage on approach;
+  wind-driven weather events (Stall/Gale) and their AI hooks;
   canopy-concealment vs the colony visibility stat (`colony_visibility_stat.md`); venomvine
   passability by body size; nest-theft behaviour; giants' wall-indifference and
   fire-stamping; vaporator desertification (V-blight) as a map effect.
+  **Parental enrage on approach came off this list 2026-09-20** — feasibility
+  answered against the decompiled engine and BUILT (`SHRUBLAND_GIANT_ENRAGE_1`):
+  `RM_ParentalEnrageExtension` + `RM_CompParentalEnrage` +
+  `RM_MentalState_ParentalEnrage` in `mandrake.rm.creaturebehaviors`, wired onto
+  `RSW_ShrublandGiant`. Needs no think-tree patch and no Harmony.
 - **Candidates not yet ruled:** unique tree-guardian animals; birds stealing from player
   bases.
