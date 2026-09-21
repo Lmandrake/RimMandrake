@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:56:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:57:20Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -541,16 +541,6 @@ thin:     spec, verify and criteria all present
 summary:  ⛔ Do not bulk-rename. This is kind: design — per AgentPolicy.md design
 prose:    infrastructure/state/items/NONCANON_BEAST_RENAME_1.md
 
-## BIOME_ROSTER_DEAD_SPECIES_REFS_1 23 species entries across 5 live biome defs name mods that are NOT in the active list - MayRequire-guarded so no crash, they simply never spawn; includes 7 droids in each desert biome and BMT_GiantLeaf at the 4th-heaviest weight in Greentide
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  1. Decide per dead reference: restore the mod, port the species, or drop the
-prose:    infrastructure/state/items/BIOME_ROSTER_DEAD_SPECIES_REFS_1.md
-
 ## DESERT_FAMILY_PORT_EXECUTION_1 Port all 109 desert-family species to our own defs and our own art - owner ruled every row REPLACE 2026-09-20; ~99 donor + 6 vanilla to re-author, 4 already ours
 state:    proposed
 row:      unassigned
@@ -667,6 +657,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FORGE_ROSTER_UNRECONCILED_BMT_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  For each of the 49 names, in the Rot's pattern: is it already owned (under any name)?
 prose:    infrastructure/state/items/FORGE_ROSTER_UNRECONCILED_BMT_1.md
