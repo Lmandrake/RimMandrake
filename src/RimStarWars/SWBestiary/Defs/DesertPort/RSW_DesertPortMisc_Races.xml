@@ -2,7 +2,12 @@
 <!--
 DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch (16 fauna + 7 flora; AB_GiantStikehr
 EXCLUDED per the item's own note: cut from the Extreme Desert the same day as
-misplaced, not part of this port). Owner ruling 2026-09-20: "All of the desert
+misplaced, not part of this port). RSW_Stoneback (AA_BoulderMit) added
+2026-09-20 to close this file's own dangling useMeatFrom reference at
+RSW_Ferroclaw and finish the item's "11 unblocked rows" list; MEASURED count of
+ThingDef ParentName="AnimalThingBase" in this file is now 16 (was 15 before
+this addition - the pre-existing "16" this header already claimed was off by
+one). Owner ruling 2026-09-20: "All of the desert
 sheet should be keep but replace with our own version of creature and art. Port.
 All of them. Now."
 
@@ -1578,6 +1583,120 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
 					<texPath>Things/Pawn/Animal/Fuelmite/Fuelmite</texPath>
 					<drawSize>2.5</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_BoulderMit -> RSW_Stoneback. Body already vanilla TurtleLike (matches sibling RSW_Ferroclaw/RSW_Cindermite/RSW_Voltmaw usage of the same body in this batch); tools/capacities (TurtleBeakAttackTool Bite, HeadAttackTool Blunt) already vanilla, no substitution needed. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic random-stone-chunk harvest, donor framework - matches this batch's standing rule of dropping AnimalProduct comps, e.g. RSW_Spinerat/RSW_Sporepaw above), VEF.AnimalBehaviours.AnimalStatExtension modExtension (info-card flavor + linked art image, donor framework). butcherProducts (plain vanilla chunk items, not a comp) kept. Donor's own custom SoundDef AA_BouldermitSound (soundWounded/soundAngry) substituted with vanilla Pawn_Megascarab_Wounded/Pawn_Megascarab_Angry, completing the vanilla Megascarab sound family already used donor-side for Death/Call. This closes the batch's own dangling useMeatFrom>RSW_Stoneback reference at RSW_Ferroclaw above. -->
+		<defName>RSW_Stoneback</defName>
+		<label>korrum</label>
+		<description>A massive genetically-engineered crab that carries a boulder for a shell. Korrums are placid to the point of indifference, ignoring nearly anything short of a direct attack, and their armor is thick enough that most predators leave them alone rather than bother. Old spacer stories tell of one grown so large it had a whole mountain for a home.</description>
+		<statBases>
+			<MoveSpeed>1.00</MoveSpeed>
+			<ComfyTemperatureMin>-65</ComfyTemperatureMin>
+			<MarketValue>350</MarketValue>
+			<ArmorRating_Blunt>0.7</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.7</ArmorRating_Sharp>
+			<LeatherAmount>0</LeatherAmount>
+			<MeatAmount>10</MeatAmount>
+			<FilthRate>12</FilthRate>
+			<Wildness>0.7</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>32</power>
+				<cooldownTime>2.1</cooldownTime>
+				<linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>12</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<body>TurtleLike</body>
+			<baseBodySize>4.00</baseBodySize>
+			<baseHungerRate>0.05</baseHungerRate>
+			<baseHealthScale>9.0</baseHealthScale>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<meatLabel>crab meat</meatLabel>
+			<manhunterOnDamageChance>0.01</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+			<trainability>None</trainability>
+			<gestationPeriodDays>30</gestationPeriodDays>
+			<litterSizeCurve>
+				<points>
+					<li>(0.99, 0)</li>
+					<li>(1, 1)</li>
+					<li>(1.01, 0)</li>
+				</points>
+			</litterSizeCurve>
+			<lifeExpectancy>650</lifeExpectancy>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.50</minAge>
+					<soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+					<soundDeath>Pawn_Megascarab_Death</soundDeath>
+					<soundCall>Pawn_Megascarab_Call</soundCall>
+					<soundAngry>Pawn_Megascarab_Angry</soundAngry>
+				</li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+		</race>
+		<butcherProducts>
+			<ChunkSandstone>2</ChunkSandstone>
+			<ChunkGranite>2</ChunkGranite>
+			<ChunkLimestone>2</ChunkLimestone>
+			<ChunkSlate>2</ChunkSlate>
+			<ChunkMarble>2</ChunkMarble>
+		</butcherProducts>
+		<tradeTags>
+			<li>AnimalExotic</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RSW_Stoneback</defName>
+		<label>korrum</label>
+		<race>RSW_Stoneback</race>
+		<combatPower>350</combatPower>
+		<canArriveManhunter>false</canArriveManhunter>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit</texPath>
+					<drawSize>2.7</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit</texPath>
+					<drawSize>3.5</drawSize>
 				</bodyGraphicData>
 			</li>
 		</lifeStages>
