@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 111.91212351400463,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 111.91212351400463,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "desert_swaca_skalder_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 49.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T20-00-15-01a0c1e8-35b2-7d71-98ae-8cb21cad0691.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 82.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T19-54-57-01a0c1e3-586e-7591-b94f-4e435a10a83e.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 82.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "desert_swaca_skalder_north",
+    "note": "Created with built-in imagegen and resized to exactly 512\u00d7512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_skalder_north\\desert_swaca_skalder_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_skalder_north/desert_swaca_skalder_north.png\n    512x512  rgba  184,829 bytes  (111s)\n"
+}

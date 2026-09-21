@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 79.29565431200899,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 79.29565431200899,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desert_swaca_womprat_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 63.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T20-14-12-01a0c1f4-fa57-71e0-b002-129578e53c08.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 85.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T20-08-37-01a0c1ef-dcee-7883-a6ee-baebdbb0346f.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 84.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desert_swaca_womprat_east",
+    "note": "Generated via built-in imagegen; resized to exactly 256x256 while preserving transparent alpha. Retried post-processing once after a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_womprat_east\\desert_swaca_womprat_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_womprat_east/desert_swaca_womprat_east.png\n    256x256  rgba  53,115 bytes  (78s)\n"
+}

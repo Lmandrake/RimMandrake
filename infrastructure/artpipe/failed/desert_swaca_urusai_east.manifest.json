@@ -1,0 +1,51 @@
+{
+  "attempt_elapsed_s": 130.45805531999213,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 130.45805531999213,
+  "height": 1254,
+  "id": "desert_swaca_urusai_east",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T20-08-37-01a0c1ef-dcee-7883-a6ee-baebdbb0346f.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 84.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T20-03-58-01a0c1eb-9bf7-7292-a906-457705f99e22.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 83.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "returned 1254x1254, job asked for 256x256 \u2014 the image tool is known to ignore requested size; never a silent ok, reference or not",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "width": 1254,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "desert_swaca_urusai_east",
+    "note": "Built-in image generation returned no image or saved output on both attempts, so no PNG could be copied into the workspace.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "size_mismatch",
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-45e8a25f-a092-4f23-acd0-709473c565c5.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_urusai_east/desert_swaca_urusai_east.png\n    1254x1254  rgba  926,193 bytes  (128s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 103.17751016099646,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 103.17751016099646,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "xeno_head_nelvaanian_v1_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 14.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T19-27-15-01a0c1c9-fe92-7e50-896f-2ea7a9214dd9.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 77.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 8.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T19-21-34-01a0c1c4-cb14-71b1-82ad-991bebfab2a7.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 76.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "xeno_head_nelvaanian_v1_east",
+    "note": "Generated via built-in imagegen and resized to exactly 512x512 while preserving transparent alpha. One local resize command failed and was corrected.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\xeno_head_nelvaanian_v1_east\\xeno_head_nelvaanian_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/xeno_head_nelvaanian_v1_east/xeno_head_nelvaanian_v1_east.png\n    512x512  rgba  188,483 bytes  (102s)\n"
+}

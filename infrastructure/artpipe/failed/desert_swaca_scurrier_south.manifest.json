@@ -1,0 +1,51 @@
+{
+  "attempt_elapsed_s": 110.6565193819988,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 110.6565193819988,
+  "height": 1254,
+  "id": "desert_swaca_scurrier_south",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 41.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T19-51-30-01a0c1e0-3239-7ff0-bd74-c668da3ba860.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 81.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789975033,
+    "primary_used_percent": 35.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T19-46-27-01a0c1db-932a-7d82-bfa0-0ac133231bc3.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 80.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "returned 1254x1254, job asked for 256x256 \u2014 the image tool is known to ignore requested size; never a silent ok, reference or not",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "width": 1254,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "desert_swaca_scurrier_south",
+    "note": "The built-in image generator returned no image or saved artifact on both attempts, so no PNG could be copied.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "size_mismatch",
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-a7f56ac5-c273-45df-a26f-98be1bacb386.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_scurrier_south/desert_swaca_scurrier_south.png\n    1254x1254  rgba  939,402 bytes  (108s)\n"
+}
