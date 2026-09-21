@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 108.40842179000174,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 108.40842179000174,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "deeps_soulchime_v2_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 79.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T18-21-57-01a0bc67-da16-7b50-baf6-b78acc002d3c.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 27.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 73.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T18-15-58-01a0bc62-5d8c-7c50-99d3-0627669c615c.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 26.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "deeps_soulchime_v2_north",
+    "note": "Generated via built-in imagegen and resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\deeps_soulchime_v2_north\\deeps_soulchime_v2_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/deeps_soulchime_v2_north/deeps_soulchime_v2_north.png\n    256x256  rgba  50,429 bytes  (107s)\n"
+}

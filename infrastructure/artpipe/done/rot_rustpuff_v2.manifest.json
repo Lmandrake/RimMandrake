@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 118.81459552999877,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 118.81459552999877,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rot_rustpuff_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 91.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T13-27-56-01a0bb5a-a91c-74c2-8e25-f6858e6e4f3b.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 14.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 86.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T13-23-36-01a0bb56-b12b-7b41-98ee-71c7acf215ac.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 13.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rot_rustpuff_v2",
+    "note": "Regenerated with four bone-white lobes, rust crown dust/spores, painterly detail, and Sheen gloss; preserved the requested filename and 256\u00d7256 canvas.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_rustpuff_v2\\rot_rustpuff_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_rustpuff_v2/rot_rustpuff_v2.png\n    256x256  rgba  61,454 bytes  (118s)\n"
+}

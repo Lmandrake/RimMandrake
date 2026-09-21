@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 99.43422483500035,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.43422483500035,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rut_firehawk_flying_4_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 76.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T00-02-12-01a0bd9f-5afd-7553-aa63-e8820a7ee74c.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 40.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 69.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T23-55-20-01a0bd99-1049-7b20-8ca4-14c56b116d57.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 39.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rut_firehawk_flying_4_north",
+    "note": "Generated with built-in imagegen using grounded and frame-1 north references; scaled to exact 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_firehawk_flying_4_north\\rut_firehawk_flying_4_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rut_firehawk_flying_4_north/rut_firehawk_flying_4_north.png\n    256x256  rgba  44,354 bytes  (98s)\n"
+}

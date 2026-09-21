@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 107.1700637949998,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 107.1700637949998,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "rot_dulcisplant_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 42.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T13-02-31-01a0bb43-66d9-7392-b974-b4e21795c02a.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 7.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 34.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T13-00-43-01a0bb41-c11f-7d62-b6d1-b8242d5e4c47.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 5.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "rot_dulcisplant_v2",
+    "note": "Generated a broad three-cell painterly cluster with milk-white, peach-lilac glossy caps; resized to the required 512x512 PNG while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_dulcisplant_v2\\rot_dulcisplant_v2.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_dulcisplant_v2/rot_dulcisplant_v2.png\n    512x512  rgba  260,475 bytes  (106s)\n"
+}

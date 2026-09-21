@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 112.95149157999913,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 112.95149157999913,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 4096,
+  "id": "rot_agariluxprime_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 17.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T12-55-24-01a0bb3c-e2a2-7911-ae27-881d7939ab0f.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 3.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 11.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T12-53-58-01a0bb3b-908f-7551-8952-84cf6921ed3a.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 2.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 4096,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 4096,
+    "id": "rot_agariluxprime_v2",
+    "note": "Generated with built-in imagegen from the normalized elder-organism prompt; preserved transparent alpha and resized to the exact requested canvas.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_agariluxprime_v2\\rot_agariluxprime_v2.png",
+    "status": "ok",
+    "width": 4096
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_agariluxprime_v2/rot_agariluxprime_v2.png\n    4096x4096  rgba  2,887,621 bytes  (112s)\n"
+}

@@ -1,0 +1,22 @@
+{
+ "background": "transparent",
+ "canvas": {
+  "height": 256,
+  "width": 256
+ },
+ "channel": "codex",
+ "created": "2026-09-16T00:00:00Z",
+ "drawsize": 1.0,
+ "facing": "north",
+ "facings": [
+  "north",
+  "south",
+  "east"
+ ],
+ "id": "pyrelands_gizka_dino_v5_north",
+ "priority": 100,
+ "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: the Star Wars Gizka from Knights of the Old Republic - a small DINOSAUR-LIKE bipedal reptile, absolutely not a frog or toad. Compact theropod build: the body is held HORIZONTAL over two strong hind legs with clawed toes, and a thick tapering tail extends straight out behind for balance - the tail is a major part of the silhouette. Tiny vestigial forelimbs are tucked against the chest, never touching the ground. An oversized head with a rounded, blunt, beak-like snout, broad fleshy cheeks, a wide downturned mouth, and a backswept crest at the rear of the skull. Two modest-sized eyes set on the sides of the head - never a single central eye, never huge bulging frog eyes. Scaly mottled hide in tan, warm orange-brown and olive patches, never a flat colour, paler at the belly. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+ "reference": null,
+ "rimflow_item_id": "PYRELANDS_CREATURE_RERENDER_1",
+ "style_notes": "Owner approved dino v5 south+east 2026-09-16 ('Yes - wire it'); this completes the facing set with the rear view. Same prompt body as south/east; the daemon supplies the north convention (rear view, no face, no eyes). After this: facing_set_audit.py, then wire into src/RimStarWars/GizkaArtOverride."
+}

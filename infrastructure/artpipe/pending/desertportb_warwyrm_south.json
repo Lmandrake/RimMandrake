@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:43:16Z",
+  "drawsize": 10.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "desertportb_warwyrm_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: the Star Wars canon war wyrm -- The war wyrm (or sometimes called the 'sith wyrm') were a truly colossal creature believed to have been created on the fourth moon of Yavin where one such creature lived in a large subterranean lair beneath a Massassi\u2026 Single creature, centered, standing pose appropriate to its anatomy, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

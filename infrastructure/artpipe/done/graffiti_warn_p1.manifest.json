@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 103.37442038900917,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 103.37442038900917,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 640,
+  "id": "graffiti_warn_p1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789938994,
+    "primary_used_percent": 43.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T09-52-18-01a0bfbb-9afe-7433-8c10-3030064f8773.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 53.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789938994,
+    "primary_used_percent": 37.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T09-47-29-01a0bfb7-339f-7e53-b108-935408248d13.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 52.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 640,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 640,
+    "id": "graffiti_warn_p1",
+    "note": "Generated variant 5 as a distinct three-bolt radial amber glyph, matched to the coarse painted reference style, then resized to exactly 640x640 with alpha preserved.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\graffiti_warn_p1\\graffiti_warn_p1.png",
+    "status": "ok",
+    "width": 640
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/graffiti_warn_p1/graffiti_warn_p1.png\n    640x640  rgba  161,315 bytes  (102s)\n"
+}

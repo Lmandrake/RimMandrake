@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-16T00:00:00Z",
+  "drawsize": 1.25,
+  "facing": "south",
+  "facings": [
+    "north",
+    "south",
+    "east"
+  ],
+  "id": "pyrelands_nuna_female_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Nuna, the Naboo swamp turkey. A squat hunched biped with a heavy domed ridged shell-like back, a wide froglike head with a broad flat mouth, bulging pink-amber eyes and floppy loose skin flaps hanging at the sides of the head. Mottled olive-to-dark-green pebbled warty skin. It stands on two thick sturdy upright bird-like legs with real scaled shanks, visible knee joints and clawed toed feet, so the silhouette reads as a stout ground bird rather than a sitting frog. Painterly rendering of the warty skin texture and the banded dome of the back. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. This is the FEMALE of the species: same build and colors, slightly slimmer silhouette, drabber/duller plumage-free hide, no crest exaggeration.",
+  "reference": null,
+  "rimflow_item_id": "NUNA_ART_REGEN_1",
+  "style_notes": "PYRELANDS_FULL_REVIEW regen under the restored painterly wave-4/5 family (ART_PAINTERLY_RESTORATION_1, owner 2026-09-14). Identity sourced from the canon reference library design/RimStarWars/canon_references/nuna/description.md (CANON_REFERENCE_LIBRARY_1) - the v1 render of this creature used the stood-down toy-figurine/leg-budget lawset and is superseded. Full regen, no reference (a reference here would reskin-validate against the wrong-style art). Same individual creature identity across all three facings; the prompt says nothing about orientation - the daemon supplies the facing convention."
+}

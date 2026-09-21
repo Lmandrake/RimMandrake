@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 97.6632014390052,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 97.6632014390052,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "desert_swaca_corinathoth_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789938994,
+    "primary_used_percent": 60.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T10-07-34-01a0bfc9-93d2-79b1-bfa7-1dd45ee3a8fc.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 55.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789938994,
+    "primary_used_percent": 55.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T10-02-58-01a0bfc5-5e63-77f3-a69a-bd1cf52bc516.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 55.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "desert_swaca_corinathoth_north",
+    "note": "Generated in built-in imagegen mode, resized to exactly 512x512, and saved with transparent alpha. One local resize command required a syntax correction.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_corinathoth_north\\desert_swaca_corinathoth_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_corinathoth_north/desert_swaca_corinathoth_north.png\n    512x512  rgba  259,040 bytes  (96s)\n"
+}

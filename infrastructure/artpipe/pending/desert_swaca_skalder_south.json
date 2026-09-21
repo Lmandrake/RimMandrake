@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:41:58Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "desert_swaca_skalder_south",
+  "priority": 100,
+  "prompt": "A skalder (Skalder), a Star Wars canon creature. The skalder were a mammalian desert species of herbivorous quadrupeds native to the plains of the planet Florrum. They were not normally ridden by sentient beings, but were surprisingly fast if such a feat was managed. They made exceptional pack animals, even in toxic environments and so were exported by pirate bands for use offworld. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's)."
+}

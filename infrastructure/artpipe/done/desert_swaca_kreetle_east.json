@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:41:56Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "desert_swaca_kreetle_east",
+  "priority": 100,
+  "prompt": "A kreetle (Kreetle), a Star Wars canon creature. Kreetle were a fast breeding arthropod native to the planet Tatooine. They were was often found in cities, homes, and other urban areas and were universally considered a pest. They gave birth to young in the form of maggot-like larvae. Kreetles thrived on dead creatures, garbage and vegetable remains (including waste). They were found on many worlds having stowed away in supplies and once escaping RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's)."
+}

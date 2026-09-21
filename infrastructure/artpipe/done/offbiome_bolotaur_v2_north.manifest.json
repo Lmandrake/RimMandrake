@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 135.49135028100136,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 135.49135028100136,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "offbiome_bolotaur_v2_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 2.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T22-52-40-01a0bd5f-b1dd-7342-92d3-78286a15f487.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 29.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 86.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T18-28-09-01a0bc6d-8484-7cc1-a608-d7285a4262f1.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 28.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "offbiome_bolotaur_v2_north",
+    "note": "Generated with built-in imagegen from the two canon references plus the east sprite; resized to exactly 512x512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\offbiome_bolotaur_v2_north\\offbiome_bolotaur_v2_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/offbiome_bolotaur_v2_north/offbiome_bolotaur_v2_north.png\n    512x512  rgba  287,815 bytes  (134s)\n"
+}

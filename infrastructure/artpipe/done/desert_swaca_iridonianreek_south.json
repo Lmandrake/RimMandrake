@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:41:58Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "desert_swaca_iridonianreek_south",
+  "priority": 100,
+  "prompt": "A iridonian reek (IridonianReek), a Star Wars canon creature. Reek could be found on the planets Iridonia, Kashyyyk, Ithor, Codian Moon, Tatooine and Saleucami (to name just a few). Various subspecies invariably sprung up as the base stock adapted to new environments. The Iridonian Reek was bred as a 'war mount' by the Iridonian Zabraks. Instead of giving them a meat diet, the Iridonian reeks were given a natural diet consisting of plant matter to keep them  RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's)."
+}

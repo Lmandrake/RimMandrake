@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:51:44Z",
+  "drawsize": 4.1,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RSW_Voltmaw_north",
+  "priority": 150,
+  "prompt": "A massive armored slug creature with a thick shell, dull metallic-sheened hide suggesting stored energy, slow and heavy, Star Wars alien creature design, desert palette, painterly game-art style.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

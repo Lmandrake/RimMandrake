@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 77.3214761220006,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 77.3214761220006,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "rot_giantagarilux_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 59.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T13-08-03-01a0bb48-749c-73e3-9323-52493d3429ac.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 9.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 55.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T13-06-14-01a0bb46-cc04-7980-aba7-ceb90a74cb2b.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 9.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "rot_giantagarilux_v2",
+    "note": "Built-in imagegen; pillar-like bone-white fibrous stalk, small glossy lilac cap, blue glowing nubs. Normalized to exact 1024\u00d71024 while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_giantagarilux_v2\\rot_giantagarilux_v2.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_giantagarilux_v2/rot_giantagarilux_v2.png\n    1024x1024  rgba  721,868 bytes  (76s)\n"
+}

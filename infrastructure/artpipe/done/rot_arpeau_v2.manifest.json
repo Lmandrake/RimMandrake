@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 101.64093562400012,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 101.64093562400012,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 2048,
+  "id": "rot_arpeau_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 28.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T12-58-42-01a0bb3f-e5b3-7191-a6d3-4d091f53892e.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 4.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 22.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T12-57-19-01a0bb3e-a19b-72c0-81be-0d665cd83fab.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 3.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 2048,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 2048,
+    "id": "rot_arpeau_v2",
+    "note": "Generated via built-in imagegen and resized to exactly 2048x2048 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_arpeau_v2\\rot_arpeau_v2.png",
+    "status": "ok",
+    "width": 2048
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_arpeau_v2/rot_arpeau_v2.png\n    2048x2048  rgba  1,968,991 bytes  (100s)\n"
+}

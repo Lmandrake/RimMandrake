@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 109.49286165000376,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 109.49286165000376,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rut_symbiont_quickflesh_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 43.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T23-31-37-01a0bd83-5b27-7520-a678-b1e0de135053.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901569,
+    "primary_used_percent": 37.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T23-26-10-01a0bd7e-5d6f-7a03-96b5-49be7a561f61.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 34.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rut_symbiont_quickflesh_v1",
+    "note": "Created with built-in imagegen from the normalized RimWorld living-tissue sprite prompt; resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_symbiont_quickflesh_v1\\rut_symbiont_quickflesh_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rut_symbiont_quickflesh_v1/rut_symbiont_quickflesh_v1.png\n    256x256  rgba  87,261 bytes  (108s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 92.06555956599914,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 92.06555956599914,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "deeps_megapleura_v2_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 62.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T18-10-52-01a0bc5d-b215-7ae1-8d17-4f7b6fa323c4.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 24.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T18-09-09-01a0bc5c-2293-7441-abf0-bc6e3745a24c.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 23.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "deeps_megapleura_v2_north",
+    "note": "Generated via built-in imagegen; resized to exactly 512x512 with transparent padding. One retry was needed because the first resize utility was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\deeps_megapleura_v2_north\\deeps_megapleura_v2_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/deeps_megapleura_v2_north/deeps_megapleura_v2_north.png\n    512x512  rgba  181,238 bytes  (91s)\n"
+}

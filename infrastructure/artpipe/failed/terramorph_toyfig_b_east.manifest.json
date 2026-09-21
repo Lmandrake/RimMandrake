@@ -1,0 +1,26 @@
+{
+  "attempt_elapsed_s": 4.043180486012716,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 8.297703478019685,
+  "id": "terramorph_toyfig_b_east",
+  "meter_after": {
+    "ok": false,
+    "reason": "rollout has no token_count/rate_limits event yet",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/14/rollout-2026-09-14T08-59-46-01a0a0a5-5b74-79b2-acc1-17a9a2e2d99d.jsonl"
+  },
+  "meter_before": {
+    "ok": false,
+    "reason": "rollout has no token_count/rate_limits event yet",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/14/rollout-2026-09-14T08-59-37-01a0a0a5-3958-7d32-a349-af9b25e67c38.jsonl"
+  },
+  "mode": "edit",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 3s (exit 1).\n--- last codex output ---\n6-09-14T15:59:46.827850Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when UnexpectedServerResponse(\"HTTP 401: {\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Encountered invalidated oauth token for user, failing request\\\",\\n    \\\"type\\\": null,\\n    \\\"code\\\": \\\"token_revoked\\\",\\n    \\\"param\\\": null\\n  },\\n  \\\"status\\\": 401\\n}\")\n2026-09-14T15:59:46.974455Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-14T15:59:46.992299Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when UnexpectedServerResponse(\"HTTP 401: {\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Encountered invalidated oauth token for user, failing request\\\",\\n    \\\"type\\\": null,\\n    \\\"code\\\": \\\"token_revoked\\\",\\n    \\\"param\\\": null\\n  },\\n  \\\"status\\\": 401\\n}\")\n2026-09-14T15:59:47.153560Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-14T15:59:47.487639Z ERROR codex_login::auth::manager: Failed to refresh token: 401 Unauthorized: {\n  \"error\": {\n    \"message\": \"Your session has ended. Please log in again.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": null,\n    \"code\": \"refresh_token_invalidated\"\n  }\n}\n2026-09-14T15:59:48.457339Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-14T15:59:48.693316Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Your access token could not be refreshed because your refresh token was revoked. Please log out and sign in again.\nERROR: Your access token could not be refreshed because your refresh token was revoked. Please log out and sign in again.\n\n",
+  "worker_stdout_tail": ""
+}

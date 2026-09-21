@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-20T14:32:38Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_greylady_v3",
+  "priority": 55,
+  "prompt": "One cell: a tall grey-white cap with a long, hanging skirt of fine net-like lace draped from the cap rim to the ground, translucent with a visible mesh pattern, the stalk seen dimly through it. Palette ash-grey and bone-white with a faint lilac cast, no glow. The hanging lace is the identity. Distinct from the mirrash veil (a flat translucent sheet on the ground, not a skirt) and from the Lantern Deeps' prenna lace (blue-lit). Owner's note: \"rename\". painterly RimWorld sprite, transparent background. VISIBLE COLOR IS REQUIRED: the 'faint lilac cast' named in this brief must actually be visible as a real hue shift in the shading, not rendered as pure neutral gray.",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": "REGEN v3, quality rejection of rot_greylady_v2 (human-eye catch): v2 rendered as a flat, purely achromatic white/gray sketch with literally zero saturation anywhere sampled \u2014 the prompt's own 'faint lilac cast' did not render at all. Same defect class as rut_agelesscap_v1 (ROT_ART_WAVE_1): technically on-brief palette description, but executed as a colorless sketch rather than a painterly render. No wave-1 fallback art exists for this def (new species); RUT_GreyLady stays on its current texPath until this lands."
+}

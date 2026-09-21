@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 100.61832044400217,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 100.61832044400217,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "deeps_grabber_v2_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T18-09-09-01a0bc5c-2293-7441-abf0-bc6e3745a24c.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 23.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T18-05-53-01a0bc59-2307-7e90-884c-b42189f700b5.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 23.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "deeps_grabber_v2_north",
+    "note": "Generated with built-in imagegen, copied to the workspace, and resized to the required 1024x1024 canvas while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\deeps_grabber_v2_north\\deeps_grabber_v2_north.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/deeps_grabber_v2_north/deeps_grabber_v2_north.png\n    1024x1024  rgba  1,949,707 bytes  (99s)\n"
+}

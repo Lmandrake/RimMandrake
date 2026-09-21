@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:50Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_skulltop_v2",
+  "priority": 40,
+  "prompt": "Under one cell: a squat, domed cap in a dead bone-white with dark hollow pits arranged so that from above it faintly suggests a skull without being one, on a thick short stalk, and a painted grey-lilac spore haze drifting from the pits. No glow, wet gloss. Distinct from the orlath cap (smooth, taut, valuable-looking) \u2014 this one should look like a warning. Owner's note: \", rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

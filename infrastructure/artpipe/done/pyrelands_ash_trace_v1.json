@@ -1,0 +1,18 @@
+{
+  "background": "#8f8a80",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-19T22:24:49Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "pyrelands_ash_trace_v1",
+  "priority": 45,
+  "prompt": "Tiling ground terrain texture: a light, patchy dusting of fine grey ash over scorched dirt, fire passed through fast and did not linger. The bare ground shows through in places -- cracked, blackened dirt and pale ash sit side by side, no single layer hides the other. Fine soot specks scattered unevenly, a few wisps of ash drifted by wind. Must tile seamlessly edge-to-edge. Painterly vanilla-RimWorld terrain art style, top-down, muted warm-grey and charcoal palette. Full-bleed opaque seamless tiling texture filling the entire canvas edge to edge -- no transparency, no isolated subject, no vignette, no border; every edge must wrap to its opposite edge.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_WEATHER_SCAR_ART_1",
+  "style_notes": "PYRELANDS_WEATHER_SCAR_ART_1: rung 1 of 4 (AshLadder.xml RM_FE_Ash_Trace). Owner verdict 2026-09-18: ash rungs read as tinted RoughHewnRock, commissioned dedicated ash-scar art. TerrainDef applies its own <color> tint on top (150,145,138,140) so keep the base texture's own value range mid-light, not pre-darkened."
+}

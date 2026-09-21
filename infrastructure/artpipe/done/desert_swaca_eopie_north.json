@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:41:57Z",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "desert_swaca_eopie_north",
+  "priority": 100,
+  "prompt": "A eopie (Eopie), a Star Wars canon creature. Eopies were a species of quadrupedal mammallian herbivores native to the planet Tatooine. These tough creatures were acclimated to their homeworld's endless deserts, and as a result were domesticated and exported offworld as pack animals. The eopie's rough skin helped to protect it against the heat while its hooves were adapted to climbing rocky cliffs. RimWorld top-down pawn sprite, desert-world creature, painterly game-art style matching the existing RimWorld/Star Wars mod roster, clean silhouette, transparent background.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": "RimWorld creature sprite, Star Wars desert bestiary, our own art (not the donor mod's)."
+}

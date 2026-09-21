@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 74.70787043599921,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 74.70787043599921,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rot_nuitae_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 80.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T13-18-37-01a0bb52-211b-7463-8880-3bf9bbc6d44d.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 13.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 75.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T13-12-27-01a0bb4c-7f0d-74c0-a109-603cb0ebf03b.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 12.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rot_nuitae_v2",
+    "note": "Generated a matte near-black mushroom with blue-lit underside and milk-white ripple; resized to exactly 256x256. One retry followed a local resize tool error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_nuitae_v2\\rot_nuitae_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_nuitae_v2/rot_nuitae_v2.png\n    256x256  rgba  39,182 bytes  (74s)\n"
+}

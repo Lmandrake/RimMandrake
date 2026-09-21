@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 124.62767457400332,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 124.62767457400332,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "deeps_glowbulb_v2_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 54.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T18-07-19-01a0bc5a-72a8-7870-931a-93edf2b11d5a.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 23.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 48.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T18-05-39-01a0bc58-ebdf-7743-b323-3352a47f952f.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 22.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "deeps_glowbulb_v2_south",
+    "note": "Built-in imagegen created the glowing, south-facing Glowbulb; resized to exactly 256\u00d7256 with transparent alpha preserved.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\deeps_glowbulb_v2_south\\deeps_glowbulb_v2_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/deeps_glowbulb_v2_south/deeps_glowbulb_v2_south.png\n    256x256  rgba  73,545 bytes  (123s)\n"
+}

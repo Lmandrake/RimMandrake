@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 4096,
+    "width": 4096
+  },
+  "channel": "codex",
+  "created": "2026-09-20T14:32:38Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_agariluxprime_v3",
+  "priority": 55,
+  "prompt": "Twenty cells across \u2014 a hill, not a mushroom. A colossal, sagging, many-lobed cap like a landslide of pale flesh, bone-white on top shading to bruised lilac and wet black in the folds, with a ring of huge slack gills underneath that read as an overhang. Around its base, a skirt of thick creeping hyphae like roots, several holding the pale remains of animals. A visible haze of grey-lilac spore mist hanging at cap height. The Sheen gloss should be heaviest here \u2014 it is the biome's oldest surface. Nothing angular; it should look like architecture that grew. Must not resemble the donor's AB_AgariluxPrime.png (a purple cluster) \u2014 this is one body, one elder. Owner's note: \"20 wide, rename\". painterly RimWorld sprite, transparent background. VISIBLE COLOR IS REQUIRED: the prompt's own 'bruised lilac' shading and 'grey-lilac spore mist' must render as an actual visible hue shift, not pure neutral gray \u2014 v2 rendered with zero saturation anywhere sampled.",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": "REGEN v3, quality rejection of rot_agariluxprime_v2 (human-eye catch): v2 rendered as a flat, purely achromatic white/gray sketch \u2014 same defect class as rut_agelesscap_v1 (ROT_ART_WAVE_1). No wave-1 fallback art exists for this def (new species, donor AB_AgariluxPrime); AB_AgariluxPrime stays on its current donor texPath until this lands."
+}

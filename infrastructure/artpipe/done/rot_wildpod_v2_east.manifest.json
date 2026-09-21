@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 120.40380783099681,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 120.40380783099681,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "rot_wildpod_v2_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T17-58-14-01a0bc52-23bc-7463-9c67-5a80b266e614.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 18.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 20.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T17-56-17-01a0bc50-5ab8-7880-991f-f59e8464b7c5.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 17.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "rot_wildpod_v2_east",
+    "note": "Generated via built-in imagegen from the supplied prompt, copied to the workspace, and resized to exactly 1024\u00d71024 while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_wildpod_v2_east\\rot_wildpod_v2_east.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_wildpod_v2_east/rot_wildpod_v2_east.png\n    1024x1024  rgba  1,643,750 bytes  (119s)\n"
+}

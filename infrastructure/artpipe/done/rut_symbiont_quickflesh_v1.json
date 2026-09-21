@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-17T00:00:00Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rut_symbiont_quickflesh_v1",
+  "priority": 60,
+  "prompt": "RimWorld item sprite, painterly vanilla-RimWorld style: A palm-sized fold of living pinkish-red tissue, warm and slightly mobile-looking, faintly veined, glistening as if freshly alive and ready to be swallowed. Single object, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ROT_LIVE_PREPARATIONS_1",
+  "style_notes": "Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses the MushroomLog_b donor texture \u2014 needs its own living-tissue-fold identity."
+}

@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-18T08:25:20Z",
+  "drawsize": 2.5,
+  "facing": "south",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_kinrath_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Kinrath, also called a Netcaster -- a large arachnoid native to the forests of Kashyyyk. Base colour is warm yellow/gold/tan-brown all over, no blue anywhere on the body. Six small black eyes in a tight cluster sit above a six-petaled orange-red flower-shaped organ on the head. A spoon-shaped body, narrower at the top and wider toward the rear, with dark horizontal banding/stripes across the abdomen. Four long, thin, multi-jointed legs ending in claws ringed by petal-shaped flaps, held in an upright standing posture. Small mandibles near the mouth. Single creature, centered, standing pose, no ground shadow, no background scenery, no web strands drawn separately from the body. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": ""
+}

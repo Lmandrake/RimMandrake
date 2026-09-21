@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 111.64711611800885,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 111.64711611800885,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "twistingthornweed_v1_r2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789759393,
+    "primary_used_percent": 12.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T07-37-10-01a0b4f3-2b75-78c0-b1d1-68d0ba9ec35d.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 63.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789759393,
+    "primary_used_percent": 7.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T07-25-16-01a0b4e8-4544-73e3-ad24-528510f9a1f5.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 62.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "twistingthornweed_v1_r2",
+    "note": "Generated with built-in imagegen and resized to the exact 256x256 canvas; transparent corner pixels verified.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\twistingthornweed_v1_r2\\twistingthornweed_v1_r2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/twistingthornweed_v1_r2/twistingthornweed_v1_r2.png\n    256x256  rgba  55,470 bytes  (111s)\n"
+}

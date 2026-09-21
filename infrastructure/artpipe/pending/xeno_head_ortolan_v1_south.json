@@ -14,7 +14,7 @@
     "south"
   ],
   "id": "xeno_head_ortolan_v1_south",
-  "priority": 100,
+  "priority": 10,
   "prompt": "RimWorld humanlike HEAD sprite only (no body) of an Ortolan. Enormous narrow tapering PENDULOUS ears hanging from high on the skull down past the jaw, drooping forward - NOT round elephant fans. Large round glossy solid BLACK eyes with no visible sclera, iris, brow or lid, set wide and high on the skull. Short-to-medium thick trunk tapering and hanging straight down, with no visible mouth from the front. Bare hairless slightly rubbery blue skin, no fur anywhere.",
   "reference": null,
   "rimflow_item_id": "XENOTYPE_CANON_CORRECTION_1",

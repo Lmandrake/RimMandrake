@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 88.24176961398916,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 88.24176961398916,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desert_swaca_longtailgorg_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 56.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T15-05-22-01a0c0da-38e1-7852-95e8-df49257649af.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 69.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 50.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T15-00-58-01a0c0d6-34cb-7d43-bdd9-e5178b74c2b0.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 68.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desert_swaca_longtailgorg_east",
+    "note": "Generated with built-in imagegen; resized to exactly 256x256 while preserving transparent alpha. One retry followed a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_longtailgorg_east\\desert_swaca_longtailgorg_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_longtailgorg_east/desert_swaca_longtailgorg_east.png\n    256x256  rgba  34,395 bytes  (87s)\n"
+}

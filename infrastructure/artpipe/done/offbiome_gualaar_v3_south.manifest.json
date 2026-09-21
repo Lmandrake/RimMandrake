@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 98.10765026899753,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 98.10765026899753,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "offbiome_gualaar_v3_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789938994,
+    "primary_used_percent": 28.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T09-40-15-01a0bfb0-91cb-7540-bec7-343556ad382e.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 50.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789938994,
+    "primary_used_percent": 23.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/20/rollout-2026-09-20T09-35-48-01a0bfac-7fa0-7130-b0ad-6002a31310e0.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 50.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "offbiome_gualaar_v3_south",
+    "note": "Generated via built-in imagegen and exported to exactly 512x512 RGBA. All four canvas corners are fully transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\offbiome_gualaar_v3_south\\offbiome_gualaar_v3_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/offbiome_gualaar_v3_south/offbiome_gualaar_v3_south.png\n    512x512  rgba  162,150 bytes  (95s)\n"
+}

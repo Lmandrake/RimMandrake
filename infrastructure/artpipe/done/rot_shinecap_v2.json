@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:50Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_shinecap_v2",
+  "priority": 40,
+  "prompt": "Four cells wide: a broad, heavy, umbrella cap with a wide flat top, bone-white, entirely veined and pooled with a bright glimmering slime \u2014 lantern-gold and glow-blue iridescence in shifting patches, like oil on milk. Thick pale stalk. The iridescent slime sheet ON TOP of the cap is the identity; the glissik slimecap's slime is clear and hangs off the rim. No painted light halo (it glimmers, it does not glow). Owner's note: \"4 wide, rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

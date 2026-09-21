@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 89.0136384159996,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 89.0136384159996,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rot_palemoss_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 82.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T13-19-53-01a0bb53-4aa6-7fe3-9a03-205071894fc4.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 13.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 77.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T13-14-38-01a0bb4e-7da1-7eb2-9ca7-e574fb71a00b.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 12.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rot_palemoss_v2",
+    "note": "Created pale white-green, dense cushion moss with tiny fronds and no grass, stalks, caps, or mushroom shapes; saved as requested.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_palemoss_v2\\rot_palemoss_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_palemoss_v2/rot_palemoss_v2.png\n    256x256  rgba  87,315 bytes  (88s)\n"
+}

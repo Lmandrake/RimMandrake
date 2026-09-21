@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 91.91308137600572,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 91.91308137600572,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rot_sagecrust_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 5.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T17-52-31-01a0bc4c-e71b-7093-a19f-13c9ade36aa1.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 15.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 87.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T13-25-38-01a0bb58-8ffa-7a73-9853-6d758c076b71.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 14.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rot_sagecrust_v2",
+    "note": "Generated via built-in imagegen and saved as an exact 256\u00d7256 transparent PNG.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_sagecrust_v2\\rot_sagecrust_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_sagecrust_v2/rot_sagecrust_v2.png\n    256x256  rgba  48,060 bytes  (91s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 105.97216110800218,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 105.97216110800218,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "deeps_shatterjaw_v2_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 73.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T18-15-58-01a0bc62-5d8c-7c50-99d3-0627669c615c.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 26.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789883556,
+    "primary_used_percent": 70.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T18-12-25-01a0bc5f-1fc6-72b2-a982-72ca97084c78.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 25.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "deeps_shatterjaw_v2_north",
+    "note": "Generated with built-in imagegen, resized to exactly 512x512, and saved as a transparent 32-bit RGBA PNG. One retry followed a PowerShell bitmap-constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\deeps_shatterjaw_v2_north\\deeps_shatterjaw_v2_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/deeps_shatterjaw_v2_north/deeps_shatterjaw_v2_north.png\n    512x512  rgba  181,051 bytes  (105s)\n"
+}

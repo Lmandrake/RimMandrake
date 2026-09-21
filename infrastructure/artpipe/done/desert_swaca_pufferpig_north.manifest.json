@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 99.45135224399564,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.45135224399564,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desert_swaca_pufferpig_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 89.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T15-37-21-01a0c0f7-80fa-76f1-aaa4-73fbc5635988.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 74.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 85.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T15-32-23-01a0c0f2-f523-7ca0-9b81-eb7480bd9760.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 73.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desert_swaca_pufferpig_north",
+    "note": "Generated via built-in imagegen and resized to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_pufferpig_north\\desert_swaca_pufferpig_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_pufferpig_north/desert_swaca_pufferpig_north.png\n    256x256  rgba  53,893 bytes  (97s)\n"
+}

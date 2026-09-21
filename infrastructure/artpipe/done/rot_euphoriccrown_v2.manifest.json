@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 116.94609491399933,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 116.94609491399933,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rot_euphoriccrown_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 47.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T13-03-58-01a0bb44-ba32-7d23-966e-243d64edb17b.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 7.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 40.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/19/rollout-2026-09-19T13-02-19-01a0bb43-378a-7bc0-bcf5-59a2f4959fd9.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 6.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rot_euphoriccrown_v2",
+    "note": "Generated original pale milk-white/lilac crown mushroom sprite with scalloped cap and short stalk; resized to exactly 256\u00d7256 while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_euphoriccrown_v2\\rot_euphoriccrown_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_euphoriccrown_v2/rot_euphoriccrown_v2.png\n    256x256  rgba  51,284 bytes  (116s)\n"
+}

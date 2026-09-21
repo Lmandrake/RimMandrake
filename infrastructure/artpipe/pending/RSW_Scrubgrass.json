@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:51:44Z",
+  "drawsize": 0.6,
+  "facing": null,
+  "facings": [],
+  "id": "RSW_Scrubgrass",
+  "priority": 150,
+  "prompt": "A small clump of hardy arid scrub grass, dusty olive-green blades, simple game-art plant icon, Star Wars desert palette, painterly style, transparent background.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

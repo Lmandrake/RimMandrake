@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 115.19606368200039,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 115.19606368200039,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rut_agelesscap_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T23-04-40-01a0bd6a-af27-7083-91f9-85e87bc75dac.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 31.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 9.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T22-59-08-01a0bd65-9ea9-7733-9379-a9610c111daf.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 30.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rut_agelesscap_v2",
+    "note": "Generated a full-color painterly ivory-and-violet mushroom sprite, resized to exactly 256\u00d7256, and preserved transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_agelesscap_v2\\rut_agelesscap_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rut_agelesscap_v2/rut_agelesscap_v2.png\n    256x256  rgba  99,114 bytes  (114s)\n"
+}

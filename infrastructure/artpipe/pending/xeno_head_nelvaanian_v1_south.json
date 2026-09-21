@@ -14,7 +14,7 @@
     "south"
   ],
   "id": "xeno_head_nelvaanian_v1_south",
-  "priority": 100,
+  "priority": 10,
   "prompt": "RimWorld humanlike HEAD sprite only (no body) of a Nelvaanian. Long, narrow canine/equine muzzle with a black nose pad and prominent sharp teeth, lower canines visible at rest. Small, dark, close-set eyes deeply recessed under a heavy overhanging brow ridge. Large upright pointed ears set high and angled outward, clearly visible past the mane. Long straight black mane springing from the crown and running down the nape. Bare slate blue-grey skin on the face with fur only as short scruff along the jaw-line.",
   "reference": null,
   "rimflow_item_id": "XENOTYPE_CANON_CORRECTION_1",

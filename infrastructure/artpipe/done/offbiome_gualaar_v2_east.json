@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-19T16:55:00Z",
+  "drawsize": 3.0,
+  "facing": "east",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "offbiome_gualaar_v2_east",
+  "priority": 60,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Gualaar -- a hardy quadruped pack/riding beast native to cold mountain regions, built like a shaggy long-necked mountain goat crossed with a llama. Cream-white and tan-brown patchy fur coat, longer shaggy fur along the neck and chest, short fur on the legs. A long tapering snout, small forward-curving horns on the head, upright pointed ears, dark eyes. Slender legs with cloven hooves, a short stubby tail. Single creature, centered, standing pose, no ground shadow, no background scenery, no pack saddle. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "OFFBIOME_SHEET_RERENDERS_1",
+  "style_notes": "Owner ruling 2026-09-16: rerender. Gualaar ships as pure donor content (Star Wars Animal Collection (Continued)) with no owned art override yet -- deploys as a new GualaarArtOverride mod (packageId mandrake.rsw.gualaarartoverride), same pattern as ZeerArtOverride/OrrayArtOverride: loose Textures/swanimals/Gualaar/Gualaar_<facing>.png, loadAfter Mlie.StarWarsAnimalCollection, no defName/Defs touched. Reference sprite for current look only (not passed to the generator): design/Jawa/fauna/sprites/Gualaar.png."
+}

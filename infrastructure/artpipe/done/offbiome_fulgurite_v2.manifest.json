@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 97.26800052600447,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 97.26800052600447,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "offbiome_fulgurite_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789901570,
+    "primary_used_percent": 7.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T22-57-29-01a0bd64-1ba6-79a3-84e3-1a5989aa7279.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 29.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789883557,
+    "primary_used_percent": 90.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/19/rollout-2026-09-19T18-33-14-01a0bc72-2e28-7bd2-b889-9f68b681eb19.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 28.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "offbiome_fulgurite_v2",
+    "note": "Generated via built-in imagegen and resized to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\offbiome_fulgurite_v2\\offbiome_fulgurite_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/offbiome_fulgurite_v2/offbiome_fulgurite_v2.png\n    256x256  rgba  68,186 bytes  (96s)\n"
+}

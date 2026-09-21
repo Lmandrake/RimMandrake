@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 120.69277412600059,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 120.69277412600059,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "rot_paletree_v3",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789919588,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T07-36-22-01a0bf3f-26ec-7c93-bb0b-c25b5d01a8a4.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 46.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789919588,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T04-04-29-01a0be7d-2ae7-7fe1-bbd4-7b5a62f5b44d.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 45.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "rot_paletree_v3",
+    "note": "Generated via built-in imagegen; resized to exact 1024\u00d71024 while preserving alpha. Warm cream/tan trunk, lilac-grey cap canopy, crown glow, and faint base moss.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_paletree_v3\\rot_paletree_v3.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_paletree_v3/rot_paletree_v3.png\n    1024x1024  rgba  1,518,569 bytes  (119s)\n"
+}

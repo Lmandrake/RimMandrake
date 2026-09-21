@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 103.2412903150107,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 103.2412903150107,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desert_swaca_igitz_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T14-28-07-01a0c0b8-1fdb-7b41-8e4e-8d15a15d7aff.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 63.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 10.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T14-23-26-01a0c0b3-d7a2-7940-ab88-3cdb086609a2.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 62.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desert_swaca_igitz_north",
+    "note": "Generated via built-in imagegen, copied into the workspace, resized to exactly 256x256, and verified as 32-bit RGBA with transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_igitz_north\\desert_swaca_igitz_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_igitz_north/desert_swaca_igitz_north.png\n    256x256  rgba  56,776 bytes  (102s)\n"
+}

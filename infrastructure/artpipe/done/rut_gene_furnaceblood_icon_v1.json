@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 128,
+    "width": 128
+  },
+  "channel": "codex",
+  "created": "2026-09-17T00:00:00Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rut_gene_furnaceblood_icon_v1",
+  "priority": 60,
+  "prompt": "RimWorld gene UI icon, simple flat vanilla-gene-icon style (NOT the painterly full-scene creature/plant/building style used elsewhere in this queue): a small ember/coal glowing inside a simplified stylized ribcage or furnace-grate silhouette, warm orange-red glow against the icon's dark line-art, reading clearly as a tiny square UI icon at ~64px. Flat, iconic, high-contrast, no painterly shading or background scenery, matching vanilla Biotech gene icon conventions (compare Gene_Furskin, Gene_Furnaceblood's current placeholder).",
+  "reference": null,
+  "rimflow_item_id": "ROT_WARM_MAT_1",
+  "style_notes": "AMBIGUOUS \u2014 flagging for the owner rather than silently applying the painterly creature/plant/building lawset: every other job in this file uses ART_PAINTERLY_RESTORATION_1's painterly-full-render style, but vanilla gene icons are small flat line-art symbols, a different visual grammar, and this daemon has no prior gene-icon job in done/ to anchor against. Filed at icon scale (128px) rather than a creature-sprite canvas. Currently reuses SW_Genes.xml's Gene_Furskin icon verbatim (shared across two unrelated mods) \u2014 confirmed placeholder, but style law for a UI icon is a judgment call, not a measured rule."
+}

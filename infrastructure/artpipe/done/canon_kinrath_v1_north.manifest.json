@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 124.62358909499744,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 124.62358909499744,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "canon_kinrath_v1_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 68.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T01-27-04-01a0b3a0-556a-7611-a354-928ce5905532.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 60.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 61.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T01-25-27-01a0b39e-dc07-7061-ae25-1c081d2f1e0e.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 59.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "canon_kinrath_v1_north",
+    "note": "Built-in imagegen; strict rear/north view with no visible face or eyes. Resized to exactly 512\u00d7512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\canon_kinrath_v1_north\\canon_kinrath_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/canon_kinrath_v1_north/canon_kinrath_v1_north.png\n    512x512  rgba  239,081 bytes  (123s)\n"
+}

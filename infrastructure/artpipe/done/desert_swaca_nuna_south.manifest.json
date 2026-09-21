@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 97.01876524400723,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 97.01876524400723,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desert_swaca_nuna_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 86.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T15-34-00-01a0c0f4-7217-75b2-95e8-e1869013c378.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 74.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 81.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/20/rollout-2026-09-20T15-28-35-01a0c0ef-7c95-7bb0-96a6-da9d8b9f1f28.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 73.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desert_swaca_nuna_south",
+    "note": "Generated an original south-facing Nuna sprite and resized it to exactly 256\u00d7256. Alpha and all four transparent corners were verified.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desert_swaca_nuna_south\\desert_swaca_nuna_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_nuna_south/desert_swaca_nuna_south.png\n    256x256  rgba  36,572 bytes  (96s)\n"
+}

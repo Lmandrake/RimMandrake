@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 97.64781555800073,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 97.64781555800073,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rot_mortalmorelplant_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 72.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T13-11-37-01a0bb4b-b903-7c91-a27e-7aaf6c2ea580.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 11.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789865547,
+    "primary_used_percent": 66.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/19/rollout-2026-09-19T13-09-39-01a0bb49-ef67-7030-9391-1ada9544bb25.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 10.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rot_mortalmorelplant_v2",
+    "note": "Generated with built-in imagegen, copied into the workspace, and resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_mortalmorelplant_v2\\rot_mortalmorelplant_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rot_mortalmorelplant_v2/rot_mortalmorelplant_v2.png\n    256x256  rgba  20,289 bytes  (97s)\n"
+}
