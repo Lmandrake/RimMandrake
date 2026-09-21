@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T11:06:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T11:43:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1411,13 +1411,3 @@ kind:     task
 thin:     no ## verify
 summary:  1. For each of the 71, check the drawCenter against the region's actual tiles.
 prose:    infrastructure/state/items/FEATURE_DRAWCENTER_UNVERIFIED_1.md
-
-## TITANOSLIME_PERMANENT_GROWTH_LIVE_1 Prove Titanoslime growth is permanent in a running game - not testable from a load, needs a scratch map
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  TITANOSLIMEPERMANENTGROWTHLIVE1 — the one ruling from 2026-09-21 still unproven
-prose:    infrastructure/state/items/TITANOSLIME_PERMANENT_GROWTH_LIVE_1.md
