@@ -137,3 +137,12 @@ generator output) and NOT via any biome's ambient `wildAnimals` commonality.
 The Fall Line delivers its named content (ship-vermin, feral droids, the two
 wreckage creatures, and the joke rat) as arrivals, matching the owner's
 2026-09-20 ruling in `fall_line.md` §8a/§8b.
+
+## 🔴 owner reinforcement, 2026-09-21 (BENCH, question card, `DESERT_FAMILY_PORT_EXECUTION_1`)
+
+Asked directly whether the 7 Droid Depot droids should be authored as biome roster rows,
+verbatim: *"They get injected by the wreckage thing. Not the random spawn of the
+biome."* Same disposition this item already carries — no new item was filed for it,
+this is the same ruling reconfirmed from a different angle. Recorded here rather than
+silently dropped so a future reader doesn't wonder why `DESERT_FAMILY_PORT_EXECUTION_1`
+mentions "the wreckage thing" and finds nothing.

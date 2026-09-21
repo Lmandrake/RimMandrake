@@ -263,3 +263,59 @@ both hand-roll a localStorage-only page predating the current
 - **All 5 vanilla/Biotech rows are REPLACED** — `Rat`, `Plant_Bush`, `Plant_HealrootWild`,
   `Plant_ShrubLow`, `Plant_Ripthorn`. Consistent with the desert cards' standing ban on
   instantly-nameable Earth organisms.
+
+## ✅ EXECUTED 2026-09-21 — the three rulings above, done
+
+**A. MossBeetle** — def was already live (`RSW_MossBeetle`/`RSW_MossBeetleLarvae`/
+`RSW_MossBeetlePupa`, `BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml`), no
+authoring needed. Searched for existing art before queuing anything (standing rule):
+`RSW_MossBeetleLarvae` already has APPROVED art — `deeps_mossbeetlelarvae_v2_{east,north,south}`
+in `infrastructure/artpipe/done/`, all PASS, regen'd 2026-09-19 to the owner's note ("pale
+blue hydrocarbon-based life") and re-approved 2026-09-20 in
+`Transient/lantern_deeps_strange_life_2026-09-20.decisions.json` — NOT requeued, since the
+def is shared across biomes. The adult (`RSW_MossBeetle`) and `RSW_MossBeetlePupa`) stages
+had no art anywhere (registry/done/pending/failed all checked) — filed via `fill_queue.py`:
+`desertportb_mossbeetle_{south,east,north}`, `desertportb_mossbeetlepupa_{south,east,north}`.
+
+**B. The 7 Droid Depot droids** — **already done**, and by a better mechanism than a fresh
+item would have built. `EXTREME_DESERT_UNRULED_VERMIN_1` (2026-09-20, same day, a few hours
+after this item's original blanket ruling) already pulled all 7
+(`RSW_DW_OuterRim_{MSE,SalvageAssist,DUM,GNK,FX7,Muckraker,Destroyer}Droid`) plus `Rat` out
+of `RUT_ExtremeDesert`/`RUT_Desert`/`RUT_AridShrubland`'s ambient `wildAnimals`, on an owner
+ruling that they are Fall-Line **arrivals** (wreckage/subregion content), not ambient biome
+fauna — MEASURED: zero droid entries remain in any desert `wildAnimals` table today.
+`FALL_LINE_ARRIVAL_MECHANISM_1` (filed to BENCH, still open) already owns building the
+wreckage/subregion delivery for exactly these 7 plus `Rat` plus 2 wreckage creatures, and
+already carries the design note that the mechanism is open (wreck incident / subregion
+landmark / generator). ⛔ **No new item filed** — a second item here would fork the same
+disposition the owner already ruled on once; the owner's fresh 2026-09-21 quote ("they get
+injected by the wreckage thing, not the random spawn of the biome") is recorded as
+reinforcement directly on `FALL_LINE_ARRIVAL_MECHANISM_1` instead.
+
+**C. The 5 vanilla/Biotech rows** — re-measured against the live biome XML (not the frozen
+`Transient/desert_family_review_2026-09-20.decisions.json` sheet, which predates the
+Fall-Line correction and still shows these as ordinary ambient rows):
+- `Plant_ShrubLow` — **already replaced** by `RUT_Fuzz` (`COMMISSION_LEDGER_CLEANUP_1`,
+  landed before this ruling). No action.
+- `Rat` — **not wired ambient anywhere** in the desert family (see B). Re-adding it as an
+  ambient roster row would directly contradict `EXTREME_DESERT_UNRULED_VERMIN_1`'s
+  same-day ruling that it is arrival-only. ⚠️ **Flagged, not resolved** — this item's
+  "replace it" instruction and the Fall-Line item's "never ambient" instruction disagree
+  about the same defName; left to `FALL_LINE_ARRIVAL_MECHANISM_1` and the owner, not
+  silently picked.
+- `Plant_Bush`, `Plant_HealrootWild`, `Plant_Ripthorn` — genuinely still live vanilla/Biotech
+  rows, only in `RUT_AridShrubland.xml`'s `wildPlants`. Authored our own defs —
+  `RUT_Grellbush`, `RUT_WildHealroot`, `RUT_Grellspine` — in
+  `src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AridShrublandVanillaReplacements.xml`,
+  stats/mechanics copied from the live def dump (MEASURED, not guessed), desert temperature
+  tolerances re-authored directly on the new defs (the existing `PlantTolerances_Ashkarr.xml`
+  patch is keyed to the donor defNames and does not follow a rename). Rewired
+  `RUT_AridShrubland.xml`'s `wildPlants` to the three new defNames at the same commonalities.
+  ⚠️ `RUT_WildHealroot` keeps the label "wild healroot" on purpose —
+  `PlantNames_Ashkarr.xml` (owner, 2026-09-05) already ruled "healroot" is an
+  already-invented word, not an Earth-name violation, and left it alone; this pass only
+  moves def OWNERSHIP off vanilla, per this item's own "not by patching vanilla's def"
+  instruction — the two rulings are about different things and both are honoured.
+  Vanilla `Plant_Bush`/`Plant_HealrootWild`/`Plant_Ripthorn` are untouched and still work
+  wherever else they're used. Art: none existed for any of the three; filed
+  `rut_grellbush`, `rut_wildhealroot`, `rut_grellspine` via `fill_queue.py`.

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-21T08:30:17Z",
+  "drawsize": 0.85,
+  "facing": null,
+  "facings": [],
+  "id": "rut_grellspine",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, top-down view, painterly vanilla-RimWorld flora art style: grellspine -- a short, toxin-adapted desert shrub, a dense tough tangle of thorny branches that slows anyone moving over it. mature size 0.85 cells. Single mature specimen, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}
