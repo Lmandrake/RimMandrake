@@ -89,7 +89,6 @@
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
       <soundEating>Reptile_Eat</soundEating>
       <trainability>None</trainability>
-      <wildGroupSize>3~7</wildGroupSize>
       <manhunterOnDamageChance>0</manhunterOnDamageChance>
       <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
       <herdAnimal>true</herdAnimal>
