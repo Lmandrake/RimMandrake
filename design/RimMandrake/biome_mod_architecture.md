@@ -466,9 +466,14 @@ should not reuse. He may have names in mind; every PROPOSED row in §2 is his to
 
 **Q3 — Rename `RM_FE_Pyrelands` → `RM_Pyrelands` (and the 21 other `RM_FE_` defs) at the
 move?** The `FE_` infix is a "FireEcology" project fossil and the worker's namespace is
-`RimMandrake.StarWars.FireEcology`, a `.StarWars.` inside a RimMandrake mod. Before the
-terminal paint the rename costs a few Utinni xpath retargets and one C# string in
-`PyrelandsMechanics`; after it, a save. *(Recommendation: rename now.)*
+`RimMandrake.StarWars.FireEcology`, a `.StarWars.` inside a RimMandrake mod. MEASURED
+(`biome_split_factcheck.md` F2): before the terminal paint the rename touches 14 files
+under `src/` (52 occurrences of `RM_FE_Pyrelands`), including three live C# string
+literals — not "one" — in `PyrelandsTuning.cs`, `WildPlantAllowlist.cs` and
+`RM_PyrelandsDensityEnforcer.cs`, plus six Utinni patch files; the live canonical save
+references `RM_FE_Pyrelands` zero times today (it currently carries `ZBiome_Grasslands`
+on those tiles instead), so the save-side cost is currently zero. *(Recommendation:
+rename now.)*
 
 **Q4 — Is `RM_FloodedCanyon` the Cracked Lands?** `FLOOD_CANYON_BIOME_1` and the mod's
 `About.xml` say it generalises the Cracked Lands' chime-then-flood; the Cracked Lands
@@ -519,8 +524,13 @@ donor-retirement stream (`DONOR_DEFS_PORT_TO_OURS_1`) removes them over time. Co
 is acceptable for a mod meant to stand alone, or rule that RimMandrake defs may carry
 only vanilla + our own creatures from day one.
 
-**Q10 — Campaign creature defs that are not Star Wars.** Three `RUT_` creatures sit in
-`<wildAnimals>` today (`RUT_FurnaceBeast`-class kinds, `RUT_Emberscythe`, and one on the
-Contagion). If one of them is neither Star Wars nor Ash'karr-specific it is a RimMandrake
-creature misfiled at the Utinni tier and belongs in its biome's mod. This spec does not
-decide per creature; it flags that the move is the moment to, one at a time.
+**Q10 — Campaign creature defs that are not Star Wars.** MEASURED
+(`biome_split_factcheck.md` F5): seven `RUT_` creatures sit in `<wildAnimals>` today, not
+three — `RUT_FurnaceBeast`, `RUT_FireHawk`, `RUT_Emberscythe`, `RUT_FireWasp`,
+`RUT_Flamefang`, `RUT_Barbslinger` (all on the Pyrelands) and `RUT_Sytheclaw` (Pyrelands,
+Greentide and the Contagion). None has an entry in the 137-item
+`design/RimStarWars/canon_references/` library; all seven are explicitly commented in
+their own files as campaign-original re-authorings of donor creatures (Alpha Animals /
+Vanilla Genetics Expanded), not Star Wars. Every one of them is a RimMandrake creature
+misfiled at the Utinni tier and belongs in its biome's mod. This spec does not decide per
+creature; it flags that the move is the moment to, one at a time.
