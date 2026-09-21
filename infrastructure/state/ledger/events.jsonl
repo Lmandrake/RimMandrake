@@ -10523,3 +10523,7 @@
 {"seat":"FOUNDRY","event":"file","id":"SCRAPNEST_BIRD_BASE_THEFT_1","title":"owner card: should scrap-nest birds steal from player bases?","kind":"decision","target":"v1","needs":"offline","for":"OWNER","ts":"2026-09-21T04:08:42Z"}
 {"seat":"FOUNDRY","event":"file","id":"SCRAPNEST_BIRD_LIVE_VERIFY_1","title":"live-verify the scrap-nest bird: spawn, nest-building, hoarding, loot","kind":"verify","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-09-21T04:09:38Z"}
 {"seat":"FOUNDRY","event":"close","id":"SHRUBLAND_SCRAPNEST_BIRDS_1","sha":"accf4da6852368ee1fad39c5495ea87003223d5c","reason":"Built whole: RSW_ScrapNestBird + RSW_ScrapNest + CompScrapHoarder/JobGiver_HoardScrap/JobDriver_HoardScrap, wired into RUT_AridShrubland. Base-stealing NOT built - owner card SCRAPNEST_BIRD_BASE_THEFT_1 filed. Offline-verified (build clean, defs validate against the live 618-mod set, 69/69 selftests, deploy in sync); live check is SCRAPNEST_BIRD_LIVE_VERIFY_1.","ts":"2026-09-21T04:10:46Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-21T04:11:57Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MAPGEN_NRE_FULL_LIST_20260920_1","ts":"2026-09-21T04:12:16Z"}
+{"seat":"FOUNDRY","event":"start","id":"MAPGEN_NRE_FULL_LIST_20260920_1","ts":"2026-09-21T04:12:17Z"}
+{"seat":"FOUNDRY","event":"close","id":"MAPGEN_NRE_FULL_LIST_20260920_1","sha":"fa21d88857acdeade4f2d9cea34ae0322070e50e","ts":"2026-09-21T04:22:51Z"}
