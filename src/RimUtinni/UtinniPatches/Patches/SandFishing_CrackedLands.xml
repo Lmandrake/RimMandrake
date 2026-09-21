@@ -78,6 +78,39 @@
 -->
 <Patch>
 
+  <!-- FLOODEDCANYON_RM_MOD_BUILD_1 (2026-09-21), §5 Phase A step 4 — a
+       SECOND, PARALLEL op mirroring RUT_CrackedLands.xml's own inline
+       fishTypes/maxFishPopulation (see that def's header for the wave-3
+       finding) onto the surviving twin, RM_FloodedCanyon, which ships no
+       fishTypes of its own. RM_FloodedCanyon has no existing fishTypes node
+       to Replace, so this is PatchOperationAdd at the BiomeDef level rather
+       than a Replace on an existing dictionary. Values copied verbatim —
+       no data decision made here, just parity with the frozen def until the
+       terminal paint. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]</xpath>
+      <value>
+        <maxFishPopulation>90</maxFishPopulation>
+        <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+          <freshwater_Common>
+            <RSW_DuneCrawler MayRequire="mandrake.rsw.swbestiary">1</RSW_DuneCrawler>
+            <RUT_Tubbik>1</RUT_Tubbik>
+            <RUT_Zhurr>0.6</RUT_Zhurr>
+          </freshwater_Common>
+          <freshwater_Uncommon>
+            <BMT_Rocktooth MayRequire="biomesteam.biomescaverns">1</BMT_Rocktooth>
+            <BMT_Boneblade MayRequire="biomesteam.biomescaverns">1</BMT_Boneblade>
+            <RUT_Hurrok>0.8</RUT_Hurrok>
+            <RUT_Vhessa>0.4</RUT_Vhessa>
+          </freshwater_Uncommon>
+          <rareCatchesSetMaker MayRequire="mandrake.rsw.swbestiary">RSW_RareSandCatches</rareCatchesSetMaker>
+        </fishTypes>
+      </value>
+    </match>
+  </Operation>
+
   <!-- FISH_BESTIARY_BUILD_1 wave 2 — §2B.rare addition: "the wall let go all
        at once." RSW_RareSandCatches is SWBestiary's own def (RimStarWars
        tier); patched rather than hand-edited, keeping ownership at the mod

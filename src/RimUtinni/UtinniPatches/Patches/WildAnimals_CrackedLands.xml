@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_CrackedLands.xml               UtinniPatches — new file 2026-09-21
+  ============================================================================
+
+  FLOODEDCANYON_RM_MOD_BUILD_1 (biome_mod_architecture.md §5 Phase A, §7 Q4 —
+  "is RM_FloodedCanyon the Cracked Lands? YES, same place"). Wires the FROZEN
+  campaign roster/weather/terrain into `RM_FloodedCanyon`, the def that now
+  survives the twin. `RUT_CrackedLands.xml` stays byte-for-byte frozen (one
+  header comment only) and carries the live world until the terminal paint;
+  this file is what makes `RM_FloodedCanyon` behave identically for anyone
+  running the Utinni campaign patches, per §5 step 4.
+
+  🔑 THE SPLIT, and why it is a REPLACE, not an ADD, unlike WildAnimals_Pyrelands.xml:
+  `the_cracked_lands.md` (FROZEN) §0 and §6 ban 3 are explicit — "the vanilla
+  roster (rat, iguana, dromedary, boomalope, boomrat, ostrich, donkey, fennec,
+  warg, the insects) is EVICTED" and "No nameable terrestrial animals — the
+  vanilla zoo evicts." `RM_FloodedCanyon_Biome.xml`'s own wildAnimals
+  (Iguana/Dromedary/Fox_Fennec/Warg/Rat/Cougar) is exactly that evicted
+  roster — correct for a non-campaign RimWorld world, banned for this one. So
+  the whole dictionary is REPLACED for the campaign, not merged into. Same
+  logic for wildPlants (ban 2, "No green outside the shade line," and §4's
+  "the vanilla flora... is REPLACED") and for baseWeatherCommonalities (ban 5,
+  "No rain in the canyons," which zeroes/repoints values RM_'s own generic
+  table already carries non-zero, so an Add would leave the banned weather
+  standing alongside the new).
+
+  ROSTER SOURCE: `RUT_CrackedLands.xml`'s own frozen `<wildAnimals>` /
+  `<wildPlants>` / `<baseWeatherCommonalities>` — copied verbatim, split into
+  two operations only so the RSW_-bestiary-gated entries can carry their own
+  MayRequire the way the item's own step 2 asks ("Every RSW_/SW_/RUT_ entry
+  ... goes to ... WildAnimals_<Biome>.xml as a PatchOperationAdd ... with
+  MayRequire=mandrake.rsw.swbestiary"):
+    - Op 1 (unconditional on any donor mod, still PatchOperationConditional-
+      guarded on the target node): PatchOperationReplace with the 7 entries
+      that are third-party donor content, NOT ours (mlie.starwarsanimal-
+      collection's Gornt/Eopie/CanCell/Convor/Woolamander, sarg.alphaanimals'
+      AA_Murkling/AA_SandSquid) — each keeps its own inline MayRequire
+      exactly as RUT_CrackedLands.xml already carries it (architecture doc
+      §7 Q9: "donor fauna inline in RimMandrake defs: ACCEPTABLE, leave them
+      inline").
+    - Op 2 (MayRequire="mandrake.rsw.swbestiary"): PatchOperationAdd for the
+      3 RSW_-prefixed entries (RSW_MutagenicNorphea, RSW_SandLeaper,
+      RSW_Creature_Mantrap) — our own bestiary, so gated on that mod rather
+      than left to ride the unconditional block.
+  wildPlants (Op 3) and baseWeatherCommonalities (Op 4) are each a single
+  unconditional PatchOperationReplace — none of that content is RSW_-gated
+  (the 3 RUT_TwistingThorn* plants are this mod's own defs, always loaded
+  with UtinniPatches; AB_HardyGrass/AB_GargantuanLithops/GRimMoss carry no
+  MayRequire in the source def either, preserved as-is, not this item's scope
+  to correct).
+
+  🔑 terrainsByFertility (Op 5): RM_FloodedCanyon_Biome.xml ships a generic
+  Sand/Soil split by fertility (soil forms naturally above 0.7 fertility) —
+  correct for a generic canyon on any world. `the_cracked_lands.md` §7 rules
+  soil is UNIQUELY the flood's product ("actual soil... in the shade... the
+  ONLY real soil on the dryland ladder," §1 "leaves behind the one thing
+  nowhere else on the dryland ladder has") — natural soil-by-fertility would
+  contradict that, so the campaign override replaces the whole table with
+  RUT_CrackedLands.xml's own pure-Sand entry (-999~999): all soil here comes
+  from FlowWorks' flood mechanic (RM_MapComponent_CanyonFlood), never from
+  the terrain generator.
+
+  FISH: RUT_CrackedLands.xml's own inline `<fishTypes>`/`<maxFishPopulation>`
+  (FISH_BESTIARY_BUILD_1 wave 3) is mirrored onto RM_FloodedCanyon as a
+  second, parallel operation in `SandFishing_CrackedLands.xml` (this folder's
+  sibling, already scoped to this biome's fish) rather than duplicated here —
+  one topic, one file.
+
+  DISEASES: the 3 RUT_-only disease entries beyond RM_'s own five
+  (Disease_MuscleParasites/FibrousMechanites/SensoryMechanites — plain
+  vanilla-Core incidents, Core/Defs/Storyteller/Incidents_Map_Disease.xml, no
+  lore attachment) are ported directly into RM_FloodedCanyon_Biome.xml's own
+  body instead of patched here — disease-appropriate for any world, not
+  campaign flavor (see that file's own comment on the addition).
+
+  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
+  returns true on no match) — validated against the live def dump and the
+  active mod set with skills/rimworld-modding/scripts/validate_patch.py.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Op 1: the non-RSW_ alien/donor fauna — always loaded with UtinniPatches,
+       gated per-entry on their own donor mod exactly as the frozen def does. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <Gornt MayRequire="mlie.starwarsanimalcollection">0.3</Gornt>  <!-- gornt - the-Patient, keep -->
+          <Eopie MayRequire="mlie.starwarsanimalcollection">0.25</Eopie>  <!-- eopie - the-Patient, keep -->
+          <CanCell MayRequire="mlie.starwarsanimalcollection">0.2</CanCell>  <!-- can-cell - flier-commuter, keep -->
+          <Convor MayRequire="mlie.starwarsanimalcollection">0.2</Convor>  <!-- convor - flier-commuter, import -->
+          <AA_Murkling MayRequire="sarg.alphaanimals">0.2</AA_Murkling>  <!-- murkling - the-Spenders, adjust-keep -->
+          <Woolamander MayRequire="mlie.starwarsanimalcollection">0.15</Woolamander>  <!-- woolamander - flier-commuter, import -->
+          <AA_SandSquid MayRequire="sarg.alphaanimals">0.1</AA_SandSquid>  <!-- sand squid - the-Sealed, adjust-keep -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Op 2: OUR OWN RSW_ bestiary entries, gated on that mod per the item's
+       own step 2 instruction. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildAnimals</xpath>
+      <value>
+        <RSW_MutagenicNorphea>0.4</RSW_MutagenicNorphea>  <!-- mutagenic norphea - the-Sealed, keep -->
+        <RSW_SandLeaper>0.2</RSW_SandLeaper>  <!-- sand leaper - the-Spenders, adjust-keep -->
+        <RSW_Creature_Mantrap>0.15</RSW_Creature_Mantrap>  <!-- mantrap - the-Patient, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Op 3: the alien flora, replacing RM_'s generic vanilla-core plant list
+       wholesale (ban 2: "No green outside the shade line"). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildPlants</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildPlants</xpath>
+      <value>
+        <wildPlants>
+          <AB_HardyGrass>1.0</AB_HardyGrass>  <!-- hardy grass -->
+          <GRimMoss>0.8</GRimMoss>  <!-- moss -->
+          <RUT_TwistingThorngrass>0.5</RUT_TwistingThorngrass>  <!-- twisting thorngrass -->
+          <RUT_TwistingThornweed>0.4</RUT_TwistingThornweed>  <!-- twisting thornweed -->
+          <RUT_TwistingThornwood>0.2</RUT_TwistingThornwood>  <!-- twisting thornwood - tree -->
+          <AB_GargantuanLithops>0.15</AB_GargantuanLithops>  <!-- gargantuan lithops -->
+        </wildPlants>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Op 4: the weather ban (ban 5 — no rain in the canyons; no basis for
+       snow either). Replaces the whole dictionary rather than adding to it,
+       since RM_'s own table already carries non-zero Rain/SnowGentle/
+       SnowHard that must read as banned, not merely supplemented. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/baseWeatherCommonalities</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/baseWeatherCommonalities</xpath>
+      <value>
+        <baseWeatherCommonalities>
+          <Clear>85</Clear>
+          <DryThunderstorm>3</DryThunderstorm>
+          <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">8</Sandstorm>
+          <Fog>0</Fog>
+          <Rain>0</Rain>
+          <RainyThunderstorm>0</RainyThunderstorm>
+          <FoggyRain>0</FoggyRain>
+          <SnowGentle>0</SnowGentle>
+          <SnowHard>0</SnowHard>
+        </baseWeatherCommonalities>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Op 5: soil is uniquely the flood's product here (§7) — no natural
+       soil-by-fertility band, pure sand until FlowWorks floods a cell. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/terrainsByFertility</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/terrainsByFertility</xpath>
+      <value>
+        <terrainsByFertility>
+          <li>
+            <terrain>Sand</terrain>
+            <min>-999</min>
+            <max>999</max>
+          </li>
+        </terrainsByFertility>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
