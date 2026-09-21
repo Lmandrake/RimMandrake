@@ -552,8 +552,15 @@ namespace JawaBench.BridgeTools
                 "nothing is). " +
                 "⚠ The Map object is DISPOSED by this call - nothing about it is readable afterward, so " +
                 "this tool captures index/tile/label BEFORE calling and reports mapCountBefore/After as " +
-                "the read-back proof, rather than touching the disposed object.",
-            ResultDescription = "success, removedMap (index, tile, parentLabel), mapCountBefore, mapCountAfter.")]
+                "the read-back proof, rather than touching the disposed object. " +
+                "🔴 Every field of removedMap is a PRIMITIVE projected out before the deinit. No engine " +
+                "object (Map, MapParent, PlanetTile) is ever handed to the serializer: PlanetTile.Tile " +
+                "returns a Tile that refers back to the PlanetTile, so serializing one throws " +
+                "'Self referencing loop detected' AFTER the map is already gone - reporting failure for " +
+                "an action that succeeded.",
+            ResultDescription =
+                "success, message, removedMap (index, mapId, tile, tileLayer, tileValid, sizeX, sizeZ, " +
+                "biome, parentDef, parentLabel, parentFaction), mapCountBefore, mapCountAfter.")]
         public static async Task<object> MapDrop(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -570,9 +577,32 @@ namespace JawaBench.BridgeTools
                 Map map = mapIndex < 0 ? Find.CurrentMap : Find.Maps.FirstOrDefault(m => m.Index == mapIndex);
                 if (map == null) return Fail(mapIndex < 0 ? "No current map." : "No map with index " + mapIndex + ".");
 
+                // Everything readable about the map is projected to PRIMITIVES here, before
+                // the deinit, for two independent reasons:
+                //   1. DeinitAndRemoveMap disposes the Map, so nothing is readable afterward.
+                //   2. BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1 - map.Tile is a PlanetTile, whose
+                //      .Tile property returns a Tile that refers back to it. Newtonsoft walked
+                //      that and threw 'Self referencing loop detected ... Path
+                //      result.removedMap.tile.Tile', so the call reported FAILURE for a map
+                //      that had already been removed. Never put an engine object in a reply.
                 var removedIndex = map.Index;
-                var removedTile = map.Tile;
-                var removedLabel = map.Parent != null ? map.Parent.Label : null;
+                var removedMapId = map.uniqueID;
+                var removedTileId = map.Tile.tileId;
+                bool removedTileValid = map.Tile.Valid;
+                string removedTileLayer = null;
+                try
+                {
+                    var layerDef = map.Tile.LayerDef;
+                    removedTileLayer = layerDef != null ? layerDef.defName : null;
+                }
+                catch { removedTileLayer = null; }   // a pocket map's tile has no resolvable layer
+                int removedSizeX = map.Size.x, removedSizeZ = map.Size.z;
+                string removedBiome = map.Biome != null ? map.Biome.defName : null;
+                var parentObj = map.Parent;
+                string removedLabel = parentObj != null ? parentObj.Label : null;
+                string removedParentDef = parentObj != null && parentObj.def != null ? parentObj.def.defName : null;
+                string removedParentFaction = parentObj != null && parentObj.Faction != null && parentObj.Faction.def != null
+                    ? parentObj.Faction.def.defName : null;
                 var countBefore = Find.Maps.Count;
 
                 try { Current.Game.DeinitAndRemoveMap(map, notifyPlayer); }
@@ -584,7 +614,20 @@ namespace JawaBench.BridgeTools
                 {
                     success = true,
                     message = "Map " + removedIndex + " (" + removedLabel + ") removed; " + countBefore + " -> " + countAfter + " map(s).",
-                    removedMap = new { index = removedIndex, tile = removedTile, parentLabel = removedLabel },
+                    removedMap = new
+                    {
+                        index = removedIndex,
+                        mapId = removedMapId,
+                        tile = removedTileId,
+                        tileLayer = removedTileLayer,
+                        tileValid = removedTileValid,
+                        sizeX = removedSizeX,
+                        sizeZ = removedSizeZ,
+                        biome = removedBiome,
+                        parentDef = removedParentDef,
+                        parentLabel = removedLabel,
+                        parentFaction = removedParentFaction
+                    },
                     mapCountBefore = countBefore,
                     mapCountAfter = countAfter,
                     ticksGame = TicksGameSafe()
