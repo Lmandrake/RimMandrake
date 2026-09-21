@@ -105,3 +105,24 @@ next cold load is a single batched one.
 `activeMods` at the correct load position, parse-verify the count went 619 → 620, and put
 it on the cold-load run sheet. ⚠️ It renders magenta until its art lands — the
 missing-texture colour, not a defect.
+
+
+## ✅ DONE 2026-09-21 — his ruling is fully discharged
+
+The bridge freed and the game went down, which is the window this needed.
+
+- **`mandrake.rm.gelatinousslime` added to `activeMods`**, immediately after
+  `mandrake.rut.ashkarrflora` (our biome content sits together there).
+- **Verified by parse, not by eye:** activeMods **619 → 620**; byte size 20825 → 20861, a
+  delta of exactly 36 = the length of the inserted `<li>` element; CRLF count unchanged.
+  ⚠️ The whole list is ONE line, so a line-based check would have reported nothing.
+- Backup written alongside the live file as `ModsConfig.xml.bak-pre-gelatinousslime-<utc>`.
+
+**Also deployed in the same window** (all reported `VERIFIED in sync`, plan-first then
+`--apply`): `Pyrelands` (3 files, incl. the renamed `FireEcologyHook.dll`),
+`PyrelandsMechanics`, `FlowWorks`, `GelatinousSlime`. Those were the builds blocked by the
+running game — the Pyrelands rename (`84d42c63b`) and the Titanoslime permanent-growth
+change (`8b9483b2e`).
+
+⏸️ **Nothing is proven until a load.** Per his sequencing ruling the next cold load is a
+single batched one — see `COLD_LOAD_RUN_SHEET_4`. This item can close on that load.
