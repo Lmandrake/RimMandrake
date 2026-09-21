@@ -71,3 +71,42 @@ reads Fuelmere / Sootreach / Frostvein.
 
 No live document presents a superseded V24 name as current, and each corrected sheet is
 re-frozen rather than left with a broken stamp.
+
+## done 2026-09-21 — `c279720b5`
+
+Five sheets corrected (`README_BIOME_GRAMMAR.md`, `wasteland.md`, `nightside_ice.md`,
+`the_blue_desert.md`, `_openers_prep.md`). `the_rot.md` needed nothing — it already read
+*"Sootreach … (the V24 consolidation's name for South Crags)"*, which is the current name
+with a correct historical note.
+
+**Freeze:** the `FROZEN — BIOME_FREEZE_FABLE_REVIEW_1` banner on three of them is **prose
+citing a closed item, not a content hash** — no hash or manifest mechanism exists for
+these sheets (unlike the north-star system, which does hash). A pure name correction with
+no count or structural change sits inside the banner's own stated exception
+(*"amendments add detail; they never change a ruling"*), so no re-stamp and no owner
+re-validation is owed.
+
+**Checked and correctly left alone:** no XML `defName` or `<label>` carries any of the
+three names.
+
+## 🔴 residual — two tools still write the OLD names onto the planet
+
+MEASURED during the fix and deliberately not changed by the doc pass:
+
+- `src/RimMandrake/Utils/ashkarr_paint.py:362` — `"The South Crags"`
+- `src/RimMandrake/Utils/ashkarr_settle.py:96` — `"The Venom Wood"`
+
+These are **region-name string literals in world-painting and settlement tooling**, not
+doc prose. ⚠️ That makes them worse than a stale doc, not better: **re-running either tool
+would write a name the owner overruled back onto the planet**, silently undoing the V24
+consolidation at the source. They are exactly the shape of the FlowWorks/`fluidcanals`
+failure — a ruling that lives in docs while the generator still emits the old value.
+
+⇒ Owed: change both literals to `Sootreach` and `Fuelmere`, and check what else in those
+two scripts names a region. ⛔ Do not run either tool before that is fixed.
+
+## residual — the canonical worldmap doc
+
+`design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md` still carries old names. It is the
+canonical worldmap document, and a worldmap-doc pass is done **with the owner**, never
+solo. Left for him.
