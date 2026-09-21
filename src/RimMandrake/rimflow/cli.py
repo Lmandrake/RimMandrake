@@ -91,6 +91,11 @@ def _bind_paths():
         model.EVENTS = led
     if its:
         model.ITEMS = its
+        # `model.CLOSED` is computed from `model.ITEMS` once, at import — rebinding
+        # ITEMS alone leaves CLOSED pointed at the REAL repo's items/closed/. Without
+        # this, a test driving `close`/`drop`/`supersede` (which now move prose via
+        # `_move_prose_to_closed`) would move its own scratch files into production.
+        model.CLOSED = os.path.join(its, "closed")
 
 
 def die(msg, code=2):
@@ -1201,6 +1206,35 @@ def cmd_file(args, seat):
     return 0
 
 
+def _move_prose_to_closed(iid):
+    """After `iid` goes terminal, move its live prose to `items/closed/` if any
+    exists there — so `items/*.md` stays the LIVE glob CHARTER.md documents
+    ("on close/drop/supersede the prose moves to items/closed/<ID>.md"), which
+    until LIVE_ITEM_GLOB_DRIFT_1 (2026-09-21) no code actually did: `close`,
+    `drop` and `supersede` only ever wrote the ledger event, so the move was a
+    manual `git mv` every closing seat had to remember and 32 of 181 files had
+    not — pure drift, not a conditional bug in one path.
+
+    Plain filesystem rename, not `git mv` — this repo's working tree is shared
+    live by several concurrent agents, and shelling out to git here would take
+    an index lock for a rename the caller is about to commit anyway. The new
+    path is left for the caller (or the caller's own commit) to `git add`
+    alongside the removed old path — both explicit, per CLAUDE.md's git rules.
+
+    -> (rel_old, rel_new) if a file was moved, else None (no prose, or it is
+    already sitting in items/closed/ — never clobber an existing file there).
+    """
+    live = os.path.join(model.ITEMS, "%s.md" % iid)
+    if not os.path.isfile(live):
+        return None
+    closed = os.path.join(model.CLOSED, "%s.md" % iid)
+    if os.path.exists(closed):
+        return None
+    os.makedirs(model.CLOSED, exist_ok=True)
+    os.rename(live, closed)
+    return (os.path.relpath(live, model.ROOT), os.path.relpath(closed, model.ROOT))
+
+
 def _simple(verb, extra=()):
     def run(args, seat):
         _, w = load()
@@ -1214,6 +1248,9 @@ def _simple(verb, extra=()):
         # it is just as stranded — more so, since a dropped blocker will never deliver.
         if verb in ("drop", "supersede"):
             _announce_unblocks(args.id)
+            moved = _move_prose_to_closed(args.id)
+            if moved:
+                print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
         return 0
     return run
 
@@ -1289,6 +1326,9 @@ def cmd_close(args, seat):
     else:
         print("%s closed at %s." % (args.id, sha))
     _announce_unblocks(args.id)
+    moved = _move_prose_to_closed(args.id)
+    if moved:
+        print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
     return 0
 
 
