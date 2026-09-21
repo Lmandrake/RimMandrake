@@ -64,7 +64,7 @@
 <!-- ThingDef -->
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_TunnelSnake</defName>
-    <label>the tunnel snake</label>
+    <label>yanker</label>
     <description>A long, low predator built for a corridor - it lies dormant coiled in the one gap a venomvine thicket or a runway tunnel offers, and wakes only when something worth eating gets close enough to touch. It preys on the scrap-nest birds and their eggs, and on anything else that fits the same crossing it does. Waking it on purpose is a good way to end a treasure hunt early.</description>
     <statBases>
       <MoveSpeed>3.2</MoveSpeed>
@@ -215,7 +215,7 @@
 <!-- PawnKindDef -->
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_TunnelSnake</defName>
-    <label>the tunnel snake</label>
+    <label>yanker</label>
     <race>RSW_TunnelSnake</race>
     <combatPower>190</combatPower> <!-- TUNNELSNAKE_VIOLATES_SIZE_LADDER_1: was 320 at bs 2.0, scaled down with baseHealthScale -->
     <ecoSystemWeight>0.35</ecoSystemWeight>

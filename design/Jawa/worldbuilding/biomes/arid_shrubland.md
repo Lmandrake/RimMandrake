@@ -367,12 +367,16 @@ always means someone lit it.** Smoke on the horizon is a person.
   (`TILES_STAMP_VERIFY_1`).
 - **`TREE_GRAPHICS_OWNERSHIP_1`** — generate our own tree graphics at the scales we want;
   drop the multiple-tree-mods-rescaling-our-designs nonsense. The owner's ticket, filed.
-- **Names, owner's pick:** the huge-grazer flagship is **RULED — thunderstep**
-  (`RSW_ShrublandGiant`, `ARIDSHRUBLAND_SHIPPING_NAMES_1`); "the giants" elsewhere in this
-  doc still means the collective huge-grazer class (flagship + donor megafauna) and is
-  unaffected. Still owed: the snake-analogs, the bird-analogs, the sweetline trees (likely
-  settled by use as "sweetline tree" — confirm), the fuzz itself, venomvine (working name
-  stands?), the Stall and the Gale as player-facing weather names.
+- **Names, owner's pick — 4 of 5 RULED 2026-09-21** (`ARIDSHRUBLAND_SHIPPING_NAMES_1`):
+  the huge-grazer flagship is **thunderstep** (`RSW_ShrublandGiant`; "the giants" elsewhere
+  in this doc still means the collective huge-grazer class, flagship + donor megafauna,
+  and is unaffected); the corridor ambush predator (the "snake-analogs") is **yanker**
+  (`RSW_TunnelSnake`); **venomvine stands**, no rename; **the Stall and the Gale stand**
+  as the player-facing weather names, locked in ahead of their WeatherDefs being built.
+  Still owed: **the fuzz** (`RUT_Fuzz`) — BENCH is shipping a work item for this one, do
+  not pick a name ahead of it. The bird-analogs and the sweetline trees (likely settled by
+  use as "sweetline tree" — confirm) were never part of this card's five and remain
+  separately owed.
 - **Engine feasibility pass** (the desert sheet got one; this biome needs its own):
   wind-driven weather events (Stall/Gale) and their AI hooks;
   canopy-concealment vs the colony visibility stat (`colony_visibility_stat.md`); venomvine
