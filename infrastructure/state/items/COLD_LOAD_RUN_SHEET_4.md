@@ -96,3 +96,43 @@ LIES    treating "no failure line in the log" as equivalent to "the patch
 ```
 
 Leaving `doing` -- three of six entries (2b, 3, 4's full form) still owed.
+
+---
+
+## 🔴 NEXT LOAD — assembled by BENCH, 2026-09-21, on the owner's sequencing ruling
+
+He ruled: **"Fix mapgen first, then one load for everything."**
+
+⚠️ **The premise of that ruling has since dissolved, and he has not been told.** It was put
+to him as *"map generation is currently BROKEN on the full list"*. It is not: the crash log
+`Transient/crash_mapgen_20260920T1900.log` records **19 mods** in its own
+`Initializing new game with mods:` line — the `desertplants` tier — and FOUNDRY had already
+diagnosed and closed `MAPGEN_NRE_FULL_LIST_20260920_1` at `fa21d88857a`. ⇒ **There is no
+mapgen fix to wait for.** The operative half of his ruling is the half that still stands:
+**ONE batched load, not several.** Do not spend a load on any single entry below.
+
+⚠️ **Deploy before loading.** Several entries are built but undeployed because the game was
+running (`deploy_custom_mods.py --mod <name>`, plan first, then `--apply`).
+
+| # | entry | what it proves | state going in |
+|---|---|---|---|
+| 1 | `PYRELANDS_DEFNAME_RENAME_1` | `RM_Pyrelands` resolves; no red errors from the 3 renamed C# string literals | built + 3 assemblies rebuilt clean at `84d42c63b`, **NOT deployed** |
+| 2 | `OUR_MODS_DEPLOYED_NEVER_ACTIVATED_1` | GelatinousSlime loads | ⛔ **not yet in `ModsConfig`** — activate it BEFORE the load, not after. AshkarrFlora is already active (re-measured: 619 active mods) |
+| 3 | `TITANOSLIME_SLIME_BIOME_1` | the spec's seven §8 gates, with growth now **PERMANENT** (his one overturned default) | deployed, 0 validation errors; the permanent-growth change is still owed in the build |
+| 4 | `FOUNDERS_IMPORTER_OWED_1` | all 6 founders carry `Wimp` | `FOUNDER_IMPORTER_LIVETEST_2026-09-21.rws` built and verified offline. **One load and it closes** |
+| 5 | `BRIDGE_SELECT_NONCOLONIST_PAWN_1` | "does not refuse on faction" | DLL deployed, all 3 tools in the live tool list. 🔑 **Does NOT need this load** — a ~90 s beastmechanics quicktest closes it, and `PORTED_BEAST_MECHANICS_REBUILD_1` 4–6 with it |
+| 6 | `WORLD_LABEL_SIZE_HIERARCHY_1` | the 71 resized labels read as a hierarchy | offline pass in flight; needs the bridge (`world_features_set` + `world_commit`) and a NEW save slot, ⛔ never the canonical save |
+
+### Order, and the trap in it
+
+1. 🔴 **Entry 5 FIRST and separately, on the cheap list** — it needs no cold load and a
+   22 s minimal-list run buys it. Spending a 15–21 minute load on it is pure waste.
+2. Activate GelatinousSlime, deploy everything owed, THEN launch once.
+3. ⚠️ **`launch_and_wait.sh` exits 0 on TIMEOUT at 280 s** and a full-list cold load has
+   measured **21 minutes**. Its exit code is not the signal — grep the log for the bridge
+   line.
+4. Harvest the whole Player.log before touching anything, and write the strings each entry
+   will be decided by BEFORE launching.
+
+⛔ **Do not add a seventh entry without deleting one.** This sheet's own history is four
+previous loads where entries 3+ were "NOT REACHED".

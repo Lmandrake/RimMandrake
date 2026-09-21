@@ -16,18 +16,33 @@ of 27 painted BiomeDefs to **26 RimMandrake mods** (23 standalone + 2 kits + the
 Deeps injection layer), the RimMandrake-vs-Utinni boundary test, the twin resolutions and
 the ordered migration.
 
-## ⛔ BLOCKED on the owner — 10 questions, §7 of the spec
+## ✅ UNBLOCKED — all 10 questions ruled 2026-09-21
 
-Do not start Phase A without answers. The three that change the most work:
+Every question in §7 of the spec is answered. **Read §7 for the rulings; do not re-derive
+them from this item.** The four that changed the plan:
 
-- **Q2 — names.** The two deserts and the shrubland have no ruled names; the spec's
-  `RM_DeepDesert` / `RM_ShadowDesert` / `RM_FogShrubland` are the designer's inventions
-  and are marked as such.
-- **Q5 — `Scarlands` collides with a vanilla 1.6 biome name.** A rename may be forced.
-- **Q3 — rename `RM_FE_Pyrelands` → `RM_Pyrelands` now?** Cheapest before the split, not
-  after.
+- **Q1 was not a yes/no — it re-scoped the mod list.** Verbatim: *"Umbra is a region not a
+  biome. The Propane Lake is an ocean-biome made of propane, definitely its own biome.
+  Propane, Grey, Twilight, and Scald biomes can all share one mod with options to
+  enable/disable each of these biomes in a spawned game."* ⇒ `RUT_Umbra` leaves the biome
+  list entirely (own item: `UMBRA_IS_A_REGION_NOT_A_BIOME_1`); Propane + Grey + Twilight +
+  **Scald** ship as ONE `TerminalBiomes` mod with a per-biome settings toggle — so the
+  Scald moves OUT of its own row. ⛔ The spec's old `propanelakes`/`terminalseas` pairing
+  is dead; §2's three affected rows are already rewritten.
+- **Q4 — Flooded Canyon IS the Cracked Lands.** One biome, one mod, campaign label
+  "the Cracked Lands". The Cracked Lands gets no row of its own.
+- **Q8 — `ashkarrflora` DISSOLVES.** Each plant moves into its biome's RimMandrake mod.
+- **Q10 — all seven misfiled creatures move**, one sweep, not a per-creature call.
 
-Q1 (two kits or 27 mods), Q4 (is FloodedCanyon the Cracked Lands), Q6–Q10 are in the spec.
+Q3 is executed already: `RM_FE_Pyrelands` → `RM_Pyrelands`, committed at `84d42c63b`
+(0 occurrences remain, 3 C# string literals included, 3 assemblies rebuilt clean).
+⚠️ That rename is **built but NOT deployed** — the game was running. Deploy before testing.
+
+## ⏸️ The one thing still owed before Phase A: two names
+
+`RM_DeepDesert` / `RM_ShadowDesert` / `RM_FogShrubland` (Q2) and the Scarlands replacement
+(Q5) await only his pick from `Transient/biome_name_drafts_2026-09-21.md` — drafted and
+waiting, not blocked on anyone here. Every row whose name is already settled can start now.
 
 ## what is already established and needs no ruling
 
