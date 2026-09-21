@@ -249,3 +249,17 @@ python3 ~/.claude/skills/review-sheets/assets/serve_sheet.py \
 ⚠️ Neither `make_verdict_sheet.py` nor `build_flora_legibility_sheet.py` was reusable —
 both hand-roll a localStorage-only page predating the current
 `sheet_template.html`/`check_sheet.py` contract.
+
+## 🔴 Owner rulings, 2026-09-21 (BENCH, question cards)
+
+- **`RSW_MossBeetle` COMES BACK.** The two rulings that disagreed are settled: the blanket
+  desert *"replace all of them"* (2026-09-20) governs over the 2026-09-19 deeps-sheet cut.
+  Port it and render it with the rest of the wave.
+- **The 7 Droid Depot droids leave this item.** Verbatim: *"They get injected by the
+  wreckage thing. Not the random spawn of the biome."* They are not biome wildlife and
+  were never a port-or-drop call — they belong to the wreckage injection system
+  (`WreckedMachines`). ⛔ Do not author them as biome roster rows and do not put them in
+  `wildAnimals`. Re-scoped out; this item's row count drops by 7.
+- **All 5 vanilla/Biotech rows are REPLACED** — `Rat`, `Plant_Bush`, `Plant_HealrootWild`,
+  `Plant_ShrubLow`, `Plant_Ripthorn`. Consistent with the desert cards' standing ban on
+  instantly-nameable Earth organisms.

@@ -10566,3 +10566,8 @@
 {"seat":"FOUNDRY","event":"close","id":"BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1","sha":"2a4442d9d9f6769330c73620207d8fd57de32370","ts":"2026-09-21T07:46:13Z"}
 {"seat":"FOUNDRY","event":"close","id":"BRIDGE_SELECT_NONCOLONIST_PAWN_1","sha":"2a4442d9d9f6769330c73620207d8fd57de32370","ts":"2026-09-21T07:46:14Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T07:46:18Z"}
+{"seat":"FOUNDRY","event":"claim","id":"VENOMVINE_PATHCOST_AND_FLYER_1","ts":"2026-09-21T07:48:05Z"}
+{"seat":"FOUNDRY","event":"start","id":"VENOMVINE_PATHCOST_AND_FLYER_1","ts":"2026-09-21T07:48:06Z"}
+{"seat":"BENCH","event":"file","id":"PYRELANDS_DEFNAME_RENAME_1","title":"RM_FE_Pyrelands -> RM_Pyrelands: owner ruled rename now, before the biome split","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T07:50:07Z"}
+{"seat":"BENCH","event":"file","id":"SCARLANDS_RENAME_OURS_1","title":"RUT_Scarlands collides with vanilla Odyssey Scarlands - owner ruled rename OURS","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T07:50:07Z"}
+{"seat":"BENCH","event":"file","id":"WORLD_LABEL_SIZE_HIERARCHY_1","title":"All 71 world features sit at the maxDrawSizeInTiles floor - owner ruled size the whole planet","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-21T07:50:08Z"}

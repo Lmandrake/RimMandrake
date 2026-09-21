@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T07:00:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T07:50:08Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -660,3 +660,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  For each of the 49 names, in the Rot's pattern: is it already owned (under any name)?
 prose:    infrastructure/state/items/FORGE_ROSTER_UNRECONCILED_BMT_1.md
+
+## WORLD_LABEL_SIZE_HIERARCHY_1 All 71 world features sit at the maxDrawSizeInTiles floor - owner ruled size the whole planet
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WORLD_LABEL_SIZE_HIERARCHY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WORLD_LABEL_SIZE_HIERARCHY_1.md

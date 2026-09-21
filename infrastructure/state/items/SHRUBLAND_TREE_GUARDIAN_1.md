@@ -70,3 +70,12 @@ warns against for mechanics-shaped slugs.
 An owner ruling lands (which of a/b/c/d, or a rewrite), and either a build
 item gets filed against it or this item closes as dropped with the ruling
 recorded.
+
+## 🔴 Owner ruling, 2026-09-21 (BENCH, question card)
+
+**(b) — a GENERIC guardian species.** One `PawnKindDef` that spawns near any sweetline
+tree and behaves as its guardian: territorial, aggressive only near the tree.
+
+⛔ Not per-tree named uniques (option a) — that depended on hand-placing the trees
+one-per-named-instance, which is itself unbuilt. ⛔ Not dropped. The card is RULED;
+this item is now a build.
