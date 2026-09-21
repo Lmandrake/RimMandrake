@@ -10540,3 +10540,7 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-21T05:12:36Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T05:12:47Z"}
 {"seat":"FOUNDRY","event":"close","id":"ASHKARRFLORA_NOT_IN_MODLIST_1","sha":"ad6d1fd579897b577c25030b3b3ef05ee3acfe2e","ts":"2026-09-21T05:13:23Z"}
+{"seat":"FOUNDRY","event":"claim","id":"VENOMVINE_FORTRESS_PASSABILITY_1","ts":"2026-09-21T05:15:08Z"}
+{"seat":"FOUNDRY","event":"start","id":"VENOMVINE_FORTRESS_PASSABILITY_1","ts":"2026-09-21T05:15:08Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"final desert/shrubland live-verify round","ts":"2026-09-21T05:15:45Z"}
+{"seat":"FOUNDRY","event":"file","id":"VENOMVINE_FORTRESS_LIVE_VERIFY_1","title":"quicktest the venomvine fortress body-size barrier in a live game","kind":"task","target":"v1","needs":"bridge","caused_by":"VENOMVINE_FORTRESS_PASSABILITY_1","for":"FOUNDRY","ts":"2026-09-21T05:41:38Z"}
