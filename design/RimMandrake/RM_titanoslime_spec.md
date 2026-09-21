@@ -448,3 +448,29 @@ sound picks, and whether GelatinousSlime is on the campaign's full mod list righ
 `WildAnimalSpawner.cs`, `PawnGenerator.GenerateRandomAge`, `Maneuvers.xml`, `Thrumbo` ThingDef +
 PawnKindDef · `infrastructure/artpipe/` (done, registry, art_status) and `Transient/*.decisions.json`
 for prior art.
+
+## 11. Questions for the owner (each with the default the spec already takes)
+
+Re-checked 2026-09-20 against the decompile: `Pawn_AgeTracker.LockCurrentLifeStageIndex` is public
+(`Source/Verse/Pawn_AgeTracker.cs:504`, used by `MetalhorrorUtility` and `CompStatue`), and
+`CompDevourer` (`Source/RimWorld/CompDevourer.cs`) hard-references `JobDefOf.DevourerDigest`,
+`AnimationDefOf.DevourerDigesting` and `AbilityDefOf.ConsumeLeap_Devourer` — Anomaly defs — so §1's
+"rewrite, don't reuse" stands. Nothing below blocks the build; each is a taste call the spec
+answered with a default. Say nothing and the default ships.
+
+1. **Is a finished digestion lethal?** Default: yes — absorbed, no corpse, gear regurgitated (§4.4).
+   Alternative: release alive at 1 HP with heavy acid burns (vanilla Devourer's shape).
+2. **Should colonists be fair prey when it is hungry?** Default: follows the player's own
+   `predatorsHuntHumanlikes` setting, like every vanilla predator (§4.1). Alternative: never hunts
+   colonists unprovoked, only swallows them in a fight.
+3. **Prey gate at half its own body size?** Default: ≤ 0.5 × own BodySize, so a fresh stage-1
+   (BodySize 6) swallows anything up to 3 (a human, a muffalo) and a colossus swallows a thrumbo —
+   "nearly any size" is earned by growing (§4.2). Alternative: a flat gate (everything ≤ 4 at any
+   stage), simpler, less of a ladder.
+4. **Growth reversible?** Default: yes — starving, dry ground and wounds all shed mass, so it is
+   never permanently huge (§2.3). Alternative: one-way growth with a hard cap at stage 5.
+5. **A resident only, or also an event?** Default: resident, spawns at stages 1–3 by roster
+   commonality, no incident letter (§6). Alternative: a "titanoslime approaches" incident once it
+   would spawn at stage 4+.
+6. **Name the stages?** Default: five stage labels on the inspect string (§3). If you want a single
+   label always ("titanoslime") say so — trivially removed.
