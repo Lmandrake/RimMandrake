@@ -10548,3 +10548,10 @@
 {"seat":"FOUNDRY","event":"close","id":"SCRAPNEST_BIRD_LIVE_VERIFY_1","sha":"37b8105facfe953d5cd5e2f83d16c7f8b828149d","ts":"2026-09-21T06:12:26Z"}
 {"seat":"FOUNDRY","event":"close","id":"FILTH_ON_NATURAL_TERRAIN_NOOP_1","sha":"37b8105facfe953d5cd5e2f83d16c7f8b828149d","ts":"2026-09-21T06:12:29Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T06:13:16Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"venomvine fortress passability live-verify","ts":"2026-09-21T06:15:43Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-21T06:18:16Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-21T06:58:14Z"}
+{"seat":"FOUNDRY","event":"file","id":"BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1","title":"jawa/map_drop drops the map then throws on serializing its reply (self-referencing PlanetTile)","kind":"task","target":"v1","needs":"offline","caused_by":"VENOMVINE_FORTRESS_LIVE_VERIFY_1","for":"FOUNDRY","ts":"2026-09-21T07:00:24Z"}
+{"seat":"FOUNDRY","event":"close","id":"VENOMVINE_FORTRESS_LIVE_VERIFY_1","sha":"6f43699c0ccf2e8a2db90552f2748ff52661cc2f","ts":"2026-09-21T07:00:49Z"}
+{"seat":"FOUNDRY","event":"close","id":"VENOMVINE_FORTRESS_PASSABILITY_1","sha":"6f43699c0ccf2e8a2db90552f2748ff52661cc2f","ts":"2026-09-21T07:00:50Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T07:00:54Z"}
