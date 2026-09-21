@@ -83,3 +83,105 @@ state is live. A selftest asserts it and is in the `run_selftests.py` N/N.
 ## criteria
 
 Globbing `infrastructure/state/items/*.md` answers "what is open" correctly.
+
+## RESOLVED 2026-09-21 (FOUNDRY)
+
+**Root cause, found in `src/RimMandrake/rimflow/cli.py`:** `cmd_close`, and the
+shared `_simple()` runner behind `drop`/`supersede`, only ever wrote the ledger
+event. Nothing in the codebase ever moved the prose file — no `git mv`, no
+`shutil.move`, no `os.rename` anywhere in `cli.py` or `model.py`. The
+2026-09-19 move of 581/730 files was a one-time manual sweep; CHARTER.md's
+"on close/drop/supersede the prose moves to items/closed/<ID>.md" describes a
+*convention* every closing seat was expected to perform by hand and routinely
+didn't. This is a real bug (a documented invariant nothing enforced), not a
+deliberate skip on some path — fixed by making the move automatic.
+
+**Fix:** `_move_prose_to_closed(iid)` (`cli.py`) now runs after every
+`close`/`drop`/`supersede`, renaming `items/<ID>.md` -> `items/closed/<ID>.md`
+on disk (plain `os.rename`, not `git mv` — this tree is shared live by several
+concurrent agents and a git subprocess here would take an index lock for a
+rename the caller is about to commit anyway). It prints
+`prose moved: <old> -> <new> — stage BOTH paths in your commit.` so the
+closing seat's own commit picks up the rename. No-op when the item never had
+prose, or when `items/closed/<ID>.md` already exists (never clobbers).
+⚠️ Also fixed a latent landmine this exposed: `_bind_paths()` rebound
+`model.ITEMS` from `RIMFLOW_ITEMS` for tests but never `model.CLOSED` (computed
+once from `ITEMS` at import) — without also rebinding `CLOSED`, `selftest_cli.py`
+driving `close`/`drop`/`supersede` would have moved its own scratch prose files
+into the REAL repo's `items/closed/`. Fixed alongside; `selftest_cli.py` 43/43
+still passes and its own `the_real_ledger_was_never_touched` case confirms
+isolation held.
+
+**Fresh measurement 2026-09-21 (the 2026-09-20 count was stale, as expected —
+several agents closed more items same-day):**
+
+- 270 files were in `items/` at measurement time (up from 181 the day before).
+- **79** were `done`/`dropped`/`superseded` with prose never moved (not 24) —
+  git-mv'd to `items/closed/` in this pass, with inbound path citations fixed
+  in the same change (11 real citations found and fixed, across
+  `infrastructure/state/items/*.md`, `design/**`, `src/RimUtinni/**`; citations
+  in `infrastructure/state/derived/queue_preview/*.md` were left alone —
+  untracked, rendered, regenerate correctly on their own — and citations
+  inside `infrastructure/state/handoffs/*.md` and `events.jsonl` were left
+  alone too: they are timestamped historical records of past state, not live
+  pointers, and the ledger is never hand-edited).
+- **8** had no ledger row. Triaged individually:
+  - `LANDMARK_NAMING_PASS_1.names` — not an item; a rename-table data file
+    cited by the still-open, still-`doing` `LANDMARK_NAMING_PASS_1.md`. Left
+    exactly where it is. The new selftest recognises this shape generically
+    (a `<live-item-id>.<suffix>.md` companion), not by hardcoding this one name.
+  - `CANON_REINTEGRATION_EXECUTION_1` — a 2026-09-04 BENCH reboot-continuity
+    note ("written at the owner's 'prepare for agent reboot'"), not an item at
+    all. Moved to `infrastructure/state/handoffs/`. No inbound citations found.
+  - `DIRTY_CODE_REVIEW_LOOP_RESTART_16` and `_17` — wave-completion notes in
+    the same numbered series as `DIRTY_CODE_REVIEW_LOOP_RESTART_2`..`15`,
+    which are ALL already filed-and-closed in `items/closed/`. These two were
+    simply never filed at the time their waves ran. Filed and closed to match
+    the sibling convention (16 superseded by 17; 17 is itself a finished
+    retrospective, the loop is separately paused until 2026-09-23 per the
+    owner).
+  - `RIMTHEMES_VBE_BACKGROUND_CONFLICT_1` — titled "RESOLVED" in its own
+    heading; a fully fixed and live-verified bug from 2026-09-05, never filed.
+    Filed and closed as `done`.
+  - `GOD_ART_LOCAL_HARDWARE_PARKED_1` — the exact same 2026-09-05 owner ruling
+    (local imagegen/rembg OOM stop) already covered by the filed-and-closed
+    `LOCAL_IMAGEGEN_TRACK_PARKED_1`, but with unique detail the other item
+    lacks (the precise per-file god-art inventory frozen mid-pipeline). Filed,
+    then `supersede`d by `LOCAL_IMAGEGEN_TRACK_PARKED_1` so the detail survives
+    in `items/closed/` rather than being duplicated as live or deleted.
+  - `WORLDMAP_REDO_RUN_SHEET_2026-09-07` — a bridge run sheet with 0 of 13
+    steps ever run in two weeks. Filed, then `drop`ped: superseded by the
+    later doctrine that the planet is repainted ONCE, at the end, after every
+    biome is its own mod, and that world remake is the last step — an
+    incremental live-bridge worldmap redo from this old freeze-rulings doc is
+    exactly the migration tax that ruling says to stop paying.
+  - `FURNACEBEAST_WORLD_MIGRATION_1` — a real, still-unbuilt spec (the
+    off-map world-scale leg of the furnace-beast thermal cycle, split from the
+    already-shipped map leg `FURNACEBEAST_THERMAL_CYCLE_1`). Filed as
+    `proposed`, kept live.
+
+**Reverse check (not measured 2026-09-20): 18 ledger rows are live
+(`proposed`/`ready`/`doing`) with no prose file in `items/` at all** —
+`BACTA_REVIVAL_MECHANIC_1`, `BACTA_SIDE_ITEMS_1`, `BACTA_TANK_ART_1`,
+`BIOME_LANDMARK_REFINEMENT_1`, `DEEPS_FAUNA_REPOPULATION_1`,
+`EVENT_TRACE_PROPS_LIBRARY_1`, `KOTOR_CRYSTAL_GENSTEP_DRIFT_1`,
+`MORNING_RULING_BATCH_1`, `MYCOID_COLOSSUS_LIVE_LOOK_1`,
+`NARRATIVE_DICTIONARY_PILOT_1`, `NORTH_STAR_ATMOSPHERIC_TBD_1`,
+`OFFBIOME_SHEET_RERENDERS_1`, `PYRELANDS_GRASS_SATURATION_1`,
+`REACTIVE_SHIP_LIGHTING_1`, `ROT_FAUNA_KIN_WIRING_1`,
+`TWILEK_TROPE_GENES_MOVE_1`, `WORLDMAP_DOCS_PASS_1`,
+`XENOTYPE_NONCOSMETIC_FIXES_1`. This is not a defect the same way the other
+direction is — an item can legitimately be filed with no prose yet (`file`
+itself warns "no ## spec ... yet" and still offers it) — but it means these
+18 are invisible to anyone reading `items/` prose rather than asking
+`rimflow`. **Out of scope for this item** (backfilling 18 items' worth of
+prose is real work, not a glob fix); flagged here for whoever picks it up
+next.
+
+**Regression guard:** `src/RimMandrake/rimflow/selftest_items_glob_live.py`,
+collected by `run_selftests.py` (glob `selftest*.py` under `src/`). Reads the
+real ledger (read-only — never writes) and the real `items/` glob, fails on
+any file whose id is terminal or has no ledger row (companion-file exception
+as above), and separately proves on a throwaway directory that it (a) catches
+a deliberately reintroduced drifted file and (b) does not false-positive on a
+live item's own prose. 3/3 passing.
