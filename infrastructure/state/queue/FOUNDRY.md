@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T08:15:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T08:18:18Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1421,3 +1421,13 @@ kind:     task
 thin:     no ## verify
 summary:  1. Resolve each of the ten against the 71 live feature names — renamed, never-authored, or
 prose:    infrastructure/state/items/BARREN_REGIONS_NAME_NOTHING_1.md
+
+## SHEET_REVIEWED_FLAG_UNIFORM_1 No uniform way to tell an owner-ruled sheet from an agent prefill - six different keys across 13 sheets
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SHEET_REVIEWED_FLAG_UNIFORM_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHEET_REVIEWED_FLAG_UNIFORM_1.md
