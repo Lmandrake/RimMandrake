@@ -138,10 +138,23 @@ mechanitor state, and every mod component's saved data for that pawn.
   means splicing these `<li>` elements back into a save's `things`/`worldPawns`
   list (or writing an importer that does the equivalent through the game's own
   object model), not double-clicking the file.
-- **The faction reference (`Faction_21`) and the map reference
-  (`<map>0</map>`) are save-local indices**, not stable identifiers — they
-  only mean what they mean inside *this* save. Splicing into a different save
-  requires remapping both.
+- **The faction reference (`Faction_21`), the ideo reference (`Ideo_20`) and
+  the map reference (`<map>0</map>`) are save-local indices**, not stable
+  identifiers — they only mean what they mean inside *this* save. Splicing into
+  a different save requires remapping all three.
+- 🔴 **Every `<loadID>` in these files is save-local too, and a collision does
+  not error — it resolves to the WRONG object.** Gene loadIDs run 329–2035,
+  hediff 286–1773, job 36107–36112. A destination save that has already issued
+  gene loadIDs in that range makes each founder's `Wimp` trait — the only trait
+  they carry with a non-null `<sourceGene>` — point at one of the destination's
+  own genes, and the trait is silently dropped with nothing in `Player.log`.
+  MEASURED 2026-09-21: 5 of 6 founders lost it; the sixth (Sekki, `Gene_2009`,
+  above the destination's `nextGeneID`) kept it. **Offset every `<loadID>` by a
+  large constant and rewrite the `Gene_<n>` references with it.**
+- **The destination's `<uniqueIDsManager>` counters must be raised past every id
+  the fragments carry** — `nextThingID`, `nextGeneID`, `nextHediffID`,
+  `nextJobID` — or the receiving game hands out ids that collide with the
+  imported pawns.
 - **Mod-set dependency.** These files were extracted from a save built against
   the exact 617-mod set in `_modlist_at_export.txt`. Every `<def>` reference
   (kindDef, hediffs, gene defs, apparel defs, trait defs, mod component types)
@@ -149,8 +162,20 @@ mechanitor state, and every mod component's saved data for that pawn.
   same defNames. No shortHash-encoded binary grids are involved here (this is
   the plain-XML pawn list, not a map terrain grid), but def *identity* is
   still mod-set-dependent per the savegame skill's general rule.
-- **Not attempted/verified: a live re-import.** Per the item's step 2 ("prove
-  the round trip... re-import into a throwaway colony"), that has **not** been
-  done in this pass — this export covers step 1 only. Splicing these pawns
-  into a fresh save and loading them in-game to confirm name/backstory/
-  traits/genes/skills/apparel all arrive intact is still owed.
+## The round trip, MEASURED 2026-09-21
+
+Proven in game. All 8 fragments were spliced into a *foreign* save — different
+world, player faction `Faction_17`, ideo `Ideo_12`, 69 colonists of its own — with
+the four remaps above applied, and loaded on the full 618-mod list. All 8 pawns
+arrived. Compared field-by-field against the same pawns read live from the
+canonical world beforehand (name, backstories, body/head/hair/beard, gender, ages,
+kindDef, apparel with hit points, equipment, hediffs, all 12 skills with passion,
+all traits, all genes, all relations): **5 of 8 identical in every field**, the
+other 3 differing only by `ageChronologicalYears` +1 (the destination sits at a
+different in-game date) or by one hediff the receiving game *adds*. The five-way
+relation clique and both animal bonds resolved by name.
+
+Without the `<loadID>` offset the load still "succeeds" and quietly costs a trait —
+see the bullet above. Evidence and method:
+`Transient/founders_roundtrip_2026-09-21.md`; item:
+`infrastructure/state/items/FOUNDERS_EXPORT_TO_REPO_1.md`.
