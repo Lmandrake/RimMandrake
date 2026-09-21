@@ -29,7 +29,7 @@ Ashwood/Blindwood/Stillwood/Capwood clusters at arc 130–142 are ice now; earli
 account for the last 10 over the old 1,406.)* Temp p10/median/p90
 **−45.8 / −33.4 / −22 °C**, summer maximum below 0 °C on every tile; **elevation median ~748 m
 (max 1,884) — the deep night's mountains, under ice.** Zero water tiles. Regions Deadstone
-663, Sunreach 263, Gray Crags 105, Nightspill 105, South Crags 78, Rimewall 64, Twilight
+663, Sunreach 263, Gray Crags 105, Nightspill 105, Sootreach 78, Rimewall 64, Twilight
 Crags 60, Cinderdark 42, The Verge 15, Quiet Ground 7 (+4: Ammonia Flats 2, Ashen Wastes 1,
 Salt 1). Present in all twelve 30° bearing sectors, unevenly — 41 to 289 tiles a sector,
 sector 4 the heaviest, sectors 9–10 the thinnest at 44 and 41 —
