@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch, flora. 7 of the batch's 8 plant
-rows ported; AB_GiantStikehr EXCLUDED per the item's own note (cut from the
-Extreme Desert the same day as misplaced, not part of this port - do not
-re-add it). Source: Alpha Biomes (1841354677, incl. its Odyssey submod for
-AB_DessertTree) and ReGrowth 2 (2260097569). Single-view (non-directional),
+DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch, flora. 8 of the batch's 9 plant
+rows ported (RSW_Thornscrub/Plant_Brambles added 2026-09-20 to finish the
+item's "11 unblocked rows" list); AB_GiantStikehr EXCLUDED per the item's own
+note (cut from the Extreme Desert the same day as misplaced, not part of this
+port - do not re-add it). Source: Alpha Biomes (1841354677, incl. its Odyssey
+submod for AB_DessertTree) and ReGrowth 2 (2260097569). Single-view (non-directional),
 matching vanilla plant convention. RG_Plant_CrimsonCushion's donor parent
 (RG_CarpetScrubsBase, a ReGrowth-internal abstract) is flattened directly onto
 PlantBase here rather than porting the abstract; AB_Aaklac's visualSizeRange
@@ -30,6 +31,13 @@ already used correctly by RSW_VellaraBloom below) as a deliberately MISMATCHED
 but non-magenta placeholder - loudly commented at each site. RSW_Scrubgrass's
 broken path was not flagged by the validator run (a validator gap, not
 evidence the path is good) but was fixed here on the same evidence.
+
+RSW_Thornscrub ports ReGrowth 2's bare-named Plant_Brambles (ParentName
+RG_BramblesBase, itself abstract - both the child and the parent's stats were
+read and merged here, since RimSage/the def dump does not carry statBases).
+Its own donor texPath (Things/Plant/RG_Brambles) does not exist as a loose
+file either - same AB_Aaklac mismatched-but-non-magenta placeholder as the
+five rows above, loudly commented at its own site.
 -->
 <Defs>
 
@@ -251,6 +259,38 @@ evidence the path is good) but was fixed here on the same evidence.
 			<smashedThingDef IsNull="True"/>
 		</plant>
 		<ingestible/>
+	</ThingDef>
+
+	<ThingDef ParentName="PlantBase">
+		<!-- ReGrowth 2 Plant_Brambles (ParentName RG_BramblesBase, abstract) -> RSW_Thornscrub. No comps/modExtensions on the donor - a plain wild plant, ported whole. -->
+		<defName>RSW_Thornscrub</defName>
+		<label>krenna bramble</label>
+		<description>Tangled, thorny woody shoots that grow in dense clusters. Krenna brambles snag cloth and slow anyone who wades through them, but the wood beneath the thorns burns well once cleared.</description>
+		<statBases>
+			<MaxHitPoints>100</MaxHitPoints>
+			<Nutrition>0.50</Nutrition>
+		</statBases>
+		<pathCost>14</pathCost>
+		<!-- TEMP PLACEHOLDER: donor texPath (ReGrowth's own "Things/Plant/RG_Brambles") does not exist as a loose file - falling back to a CONFIRMED-valid texture (Alpha Biomes' AB_Aaklac) so this does not render magenta. Mismatched art until fill_queue.py renders land. -->
+		<graphicData>
+			<texPath>Things/Plants/AB_Aaklac</texPath>
+			<graphicClass>Graphic_Random</graphicClass>
+			<drawSize>1.7</drawSize>
+		</graphicData>
+		<ingestible/>
+		<plant>
+			<fertilitySensitivity>0.7</fertilitySensitivity>
+			<growDays>3</growDays>
+			<harvestWork>60</harvestWork>
+			<maxMeshCount>4</maxMeshCount>
+			<visualSizeRange>0.7~0.85</visualSizeRange>
+			<topWindExposure>0.15</topWindExposure>
+			<wildClusterRadius>4</wildClusterRadius>
+			<wildClusterWeight>200</wildClusterWeight>
+			<wildOrder>1</wildOrder>
+			<wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+			<pollution>Any</pollution>
+		</plant>
 	</ThingDef>
 
 </Defs>
