@@ -60,7 +60,10 @@
     RSW_Ultracactus.xml) and is wired into wildPlants below — the note above that
     it was undefined is now false and was corrected in this commit. The two "shade
     plants, which defend" (§4b) still have no def — thorn/contact damage has no
-    native CompProperties equivalent — filed as DESERT_SHADE_PLANTS_DESIGN_1.
+    native CompProperties equivalent. DESERT_SHADE_PLANTS_DESIGN_1 designed them
+    and CLOSED (417c7f516, 2026-09-20): two plants, not three, and the build is
+    now owed by its two successors, VENOMVINE_CONTACT_VENOM_BUILD_1 (tier c) and
+    DESERT_LEACHMOSS_BUILD_1 (tier b). Cite those, not the closed parent.
 
     DESERT_STAGGERSEED_BUILD_1 (2026-09-20): the cycle plant (§4b "The seed that
     uses you", §7 "the prepared cycle-seed") now has both its ThingDefs and both

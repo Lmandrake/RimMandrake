@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Staggerseed_Recipes.xml                   DESERT_STAGGERSEED_BUILD_1
+
+  The preparation desert.md §4b turns on: "Prepared correctly, the
+  preparation lets them begin to grow and then perish before they can hurt
+  you — producing euphoria. A dish that is a controlled near-miss with a
+  lethal parasite. ... the margin for error is the flavour."
+
+  The margin for error is expressed the only way the vanilla bill system can
+  express it without new C#: skillRequirements. Cooking 8 is high — higher
+  than lavish meals (no requirement) and than pemmican — and a colony without
+  a cook that good simply cannot attempt the dish. That is the sheet's
+  "margin for error" as a gate on WHO may try, rather than a random chance of
+  poisoning, which would land as noise rather than as skill.
+
+  Standalone RecipeDef with no ParentName, deliberately: inheriting
+  CookMealBase would drag in its FoodRaw-wide defaultIngredientFilter and
+  ingredients list, and this recipe must take exactly one thing. Same shape
+  RotSporeKit's own live-prep recipes use one mod over.
+
+  recipeUsers are the three vanilla cooking stations by defName rather than a
+  recipeUsers-side patch, so a stove from a mod we do not have installed is
+  simply not listed instead of failing a xpath.
+-->
+<Defs>
+
+  <RecipeDef>
+    <defName>RUT_Cook_StaggerseedSeedDish</defName>
+    <label>prepare staggerseed</label>
+    <description>Wake a batch of staggerseed and cook it to the exact point where the seeds will germinate in the diner and then die short of doing harm. Done wrong it is simply a fatal meal.</description>
+    <jobString>Preparing staggerseed.</jobString>
+    <workAmount>900</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <workSkill>Cooking</workSkill>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>false</allowMixingIngredients>
+    <skillRequirements>
+      <Cooking>8</Cooking>
+    </skillRequirements>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_StaggerseedFruit</li>
+          </thingDefs>
+        </filter>
+        <count>12</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_StaggerseedFruit</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <thingDefs>
+        <li>RUT_StaggerseedFruit</li>
+      </thingDefs>
+    </defaultIngredientFilter>
+    <products>
+      <RUT_StaggerseedSeedDish>1</RUT_StaggerseedSeedDish>
+    </products>
+    <recipeUsers>
+      <li>ElectricStove</li>
+      <li>FueledStove</li>
+      <li>Campfire</li>
+    </recipeUsers>
+    <displayPriority>600</displayPriority>
+  </RecipeDef>
+
+</Defs>

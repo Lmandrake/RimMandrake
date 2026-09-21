@@ -34,7 +34,31 @@ matches nothing logs nothing).
 Live check still owed (bridge held by another window at authoring time):
 spawn `RUT_SweetlineTree`, confirm it renders at its authored
 `visualSizeRange` (5.0~6.5, i.e. a canopy roughly 5-6.5 tiles wide at full
-growth) and that no BetterTrees console/log line mentions it.</description>
+growth) and that no BetterTrees console/log line mentions it.
+
+DESERT_STAGGERSEED_BUILD_1 (2026-09-20) — the desert's cycle plant
+(`design/Jawa/worldbuilding/biomes/desert.md` §4b "The seed that uses you", §7
+"the prepared cycle-seed"). Three defs plus two hediffs, a thought and a recipe:
+`RUT_Staggerseed` (the bush, wired into `RUT_Desert`'s wildPlants at 0.1),
+`RUT_StaggerseedFruit` (raw, lethal — `RUT_StaggerseedBrood` kills in about
+seven hours and there is no tend) and `RUT_StaggerseedSeedDish` (prepared,
+euphoric — `RUT_StaggerseedEuphoria`, Cooking 8 to attempt). The
+corpse-dispersal half rides
+`RimMandrake.CreatureBehaviors.RM_HediffComp_ShadeStagger`: past severity 0.6
+the dying are steered toward the best-shaded reachable cell the shade grid
+knows of, and the plant germinates at the corpse at a chance that runs from
+0.15 in full sun to 1.0 in full shade. The brood sits on the PLANT's own
+ingestible as well as on the harvested fruit, because a grazing animal eats the
+plant and never the item — without that the whole dispersal cycle would never
+fire in a wild biome.
+
+🔴 The plant's SHIPPING NAME is the owner's and is not in yet (§4b: "Name
+owner's pick. Working: staggerseed."). Every `RUT_Staggerseed*` defName, label
+and texPath here is provisional pending
+`infrastructure/state/items/STAGGERSEED_SHIPPING_NAME_1.md`. Art is owed and was
+deliberately not queued for the same reason; the graphics point at Core
+berry-bush/berry/meal art as a stated interim so nothing renders
+magenta.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
@@ -46,5 +70,13 @@ growth) and that no BetterTrees console/log line mentions it.</description>
     <li>ChaoticEnrico.BetterTrees</li>
     <li>Qux.Comigo.BetterTreesMod</li>
     <li>Maal.BetterTreesMod</li>
+    <!-- DESERT_STAGGERSEED_BUILD_1: RUT_StaggerseedBrood names
+         RimMandrake.CreatureBehaviors.RM_HediffCompProperties_ShadeStagger as a
+         comp Class, so that ASSEMBLY must already be loaded when this mod's defs
+         are read. modDependencies would assert presence and would NOT order
+         anything — the comp entry is MayRequire-guarded instead, so the plant
+         degrades to an ordinary lethal fruit with no dispersal if the kit is
+         absent, and this loadAfter is what makes it work when it is present. -->
+    <li>mandrake.rm.creaturebehaviors</li>
   </loadAfter>
 </ModMetaData>
