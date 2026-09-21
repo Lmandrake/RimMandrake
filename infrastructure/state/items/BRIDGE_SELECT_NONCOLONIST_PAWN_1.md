@@ -177,23 +177,45 @@ RimWorld was then cold-loaded on the full 618-mod list.
 live tool list — a newly added tool missing from that list is the known silent failure."*
 **The silent failure did not occur.**
 
-## what is still owed — the functional proof
+## ✅ THE FUNCTIONAL PROOF — MEASURED LIVE 2026-09-21, 6/6
 
-⚠️ **Appearing in the tool list is not the same as not refusing on faction.** The item's
-spec requires *"neither refusing on faction"*, and that has **not** been exercised against
-a real non-colonist yet. It is UNMEASURED.
+Run on the `beastmechanics` tier (15 mods, bridge up 27 s), script
+`src/RimMandrake/bridgetools/prove_noncolonist_ability.py`, reproduced across four runs.
 
-The proof is the `PORTED_BEAST_MECHANICS_REBUILD_1` verification itself, on the
-beastmechanics minimal tier (a ~90 s quicktest, not a 21-minute cold load):
+| # | what | result |
+|---|---|---|
+| 1 | `jawa/select_things` on a wild `RSW_Voltmaw` | `selectedCount: 1`, row reads `faction: null, isPlayer: false` |
+| 1b | `jawa/grant_ability` on that tracker-less animal | `trackerCreated: true`, `abilityCountAfter: 1` |
+| 2 | `RSW_VoltmawPlasmaVolley` cast at a colonist | `lastCastTickAdvanced: true` **and** `onCooldown: true`, `cooldownTicksRemaining: 229` |
+| 3 | `RSW_CindermiteFuelSpew` at an x/z cell | `Filth_Fuel` 0 → **19** cells |
+| 4 | deliberate out-of-range `mode='verb'` cast | `refusedBy: "Verb.CanHitTarget is false … out of range, minRange, or no shootable line"` |
+| 5 | `jawa/map_drop` (`BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1`) | returns a parsed row, `mapCount` 1 → 0 |
 
-1. Select a wild `RSW_Voltmaw` with `jawa/select_things` — that single call closes this
-   item's criterion.
-2. `jawa/pawn_use_ability` `action=cast` `RSW_VoltmawPlasmaVolley` at a colonist,
-   `waitTicks=600`. 🔴 Require `readBack.lastCastTickAdvanced=true` **and**
-   `onCooldown=true` — ⛔ **not** `success: true`, which only means the call was made.
-3. Repeat with `RSW_CindermiteFuelSpew` at an `x`/`z` cell and confirm `Filth_Fuel`.
-4. One deliberate out-of-range `mode='verb'` call, to confirm it refuses for the right
-   reason.
+🔑 **Row 3 reproduces `PORTED_BEAST_MECHANICS_REBUILD_1`'s calibration cone exactly** — 19
+cells, the same figure its wood-stack measurement recorded. The tool is not wrong.
 
-⚠️ The DLL is deployed, so **no further shutdown window is needed** — only a mod-list swap
-to the beastmechanics tier and a quicktest.
+**None of the three tools has a faction or colonist check**, exercised against a genuinely
+wild, faction-less pawn. The item's criterion is met.
+
+### three traps the proof had to route around, all MEASURED
+
+- 🔴 **`waitTicks=600` reads `onCooldown: false` for a cast that DID happen.** The volley's
+  warmup ends near tick 460 and its cooldown is 240, so 600 lands after the cooldown
+  expired — `lastCastTickAdvanced: true, onCooldown: false, ticksElapsed: 604`. The window
+  where both are true is roughly **460–700 ticks; 472 works**. Asking for both at 600 was
+  a bad bar, not a failing tool.
+- 🔴 **A wild animal drops the ordered ability job.** Its think tree replaces
+  `CastAbilityOnThing` with `GotoWander` mid-warmup, leaving `jobIsThisAbility: false` and
+  `lastCastTick` unmoved. Intermittent, and it is the ANIMAL, not a refusal.
+- 🔴 **It also wanders out of range**, so a target placed at spawn time reads
+  `CanHitTarget: false` a few hundred ticks later. The proof spawns a fresh target 6 cells
+  away immediately before each attempt.
+
+### a false statement this proof found and fixed
+
+`jawa/grant_ability` **refused** a pawn with no `Pawn_AbilityTracker` while
+`jawa/pawn_use_ability`'s own refusal told the caller *"jawa/grant_ability creates it"*.
+One of the two was false and it was the tool: a wild creature's ability could not be
+granted at all until `CompInnateAbility` happened to rare-tick, which a paused game never
+does. `grant_ability` now creates the tracker the way `CompInnateAbility` does and reports
+`trackerCreated`.

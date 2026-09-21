@@ -222,8 +222,13 @@ namespace JawaBench.BridgeTools
                 "there is no revoke tool yet). GainAbility is idempotent - granting one already held " +
                 "is reported as a no-op, not an error. " +
                 "⚠ self-notifies: it calls Notify_TemporaryAbilitiesChanged(), which dirties the " +
-                "ability-gizmo cache. No letter or dialog fires.",
-            ResultDescription = "success, pawn, ability, alreadyHad, abilityCountAfter.")]
+                "ability-gizmo cache. No letter or dialog fires. " +
+                "🔑 AN ANIMAL HAS NO Pawn_AbilityTracker until something gives it one, so this " +
+                "CREATES the tracker when it is missing rather than refusing - which is what makes " +
+                "a wild creature's ability testable before its own comp has rare-ticked. " +
+                "trackerCreated says when that happened.",
+            ResultDescription =
+                "success, pawn, ability, alreadyHad, trackerCreated, abilityCountAfter.")]
         public static async Task<object> GrantAbility(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -238,8 +243,20 @@ namespace JawaBench.BridgeTools
                 string perr;
                 var p = FindPawn(pawn, out perr);
                 if (p == null) return Fail(perr ?? "No pawn.");
-                if (p.abilities == null) return Fail(p.LabelShortCap + " has no Pawn_AbilityTracker.");
                 if (string.IsNullOrEmpty(ability)) return Fail("Give an AbilityDef.");
+
+                // An animal has no Pawn_AbilityTracker unless something gives it one, and
+                // this tool used to REFUSE on that - while jawa/pawn_use_ability's own
+                // refusal told the caller "jawa/grant_ability creates it". It did not, so a
+                // wild creature's ability could not be granted at all until its
+                // CompInnateAbility happened to rare-tick, and the two messages disagreed.
+                // Create it, the same way CompInnateAbility does, and report that we did.
+                bool trackerCreated = false;
+                if (p.abilities == null)
+                {
+                    p.abilities = new Pawn_AbilityTracker(p);
+                    trackerCreated = true;
+                }
 
                 var def = DefDatabase<AbilityDef>.GetNamedSilentFail(ability);
                 if (def == null) return Fail("No AbilityDef named '" + ability + "'.", new { suggestions = DefSuggestions<AbilityDef>(ability) });
@@ -251,12 +268,14 @@ namespace JawaBench.BridgeTools
                 return new
                 {
                     success = true,
-                    message = alreadyHad
+                    message = (alreadyHad
                         ? p.LabelShortCap + " already had " + def.defName + "; no-op."
-                        : p.LabelShortCap + " gained " + def.defName + ".",
+                        : p.LabelShortCap + " gained " + def.defName + ".")
+                        + (trackerCreated ? " Pawn_AbilityTracker created (it had none)." : ""),
                     pawn = new { id = p.ThingID, name = p.LabelShortCap.ToString() },
                     ability = def.defName,
                     alreadyHad,
+                    trackerCreated,
                     abilityCountAfter = countAfter,
                     ticksGame = TicksGameSafe()
                 };
