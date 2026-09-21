@@ -56,6 +56,15 @@ A mod-list change is his call, so nothing was edited.
 - `FALL_LINE_MAJOR_REGION_LABEL_1` — APPLIED, SAVED and photographed; `needs: owner`.
   NEXT: show him `D:\Luke\dev\Rimworld\Transient\fall_line\alt420.png` and close on his
   word. ⚠️ Nothing is owed technically — it is open only because he has not looked yet.
+- 🔴 **`MAPGEN_NRE_FULL_LIST_20260920_1` — THE GAME IS DOWN and map generation is broken on
+  the full 618-mod list.** Two independent spawners (`GenStep_Plants`/`WildPlantSpawner`
+  and `WildAnimalSpawner`) both fault on a NULL def, then an unbounded
+  `StatRequest for null def` storm. Log preserved at
+  `Transient/crash_mapgen_20260920T1900.log`. NEXT: find which biome roster holds the null
+  entry — check the DEPLOYED defs, not the repo. ⚠️ Same shape as
+  `FULL_LIST_CANNOT_LOAD_GAME_1`, which is CLOSED at `9a2316798`, so check whether that
+  regressed before filing anything new. ❌ One hypothesis (AshkarrFlora deployed-but-inactive)
+  is already TESTED AND DISCONFIRMED in the item — do not re-run it.
 - `FOUNDERS_IMPORTER_OWED_1` — importer BUILT, selftest 28/28, runner 68/69; the live-test
   save `FOUNDER_IMPORTER_LIVETEST_2026-09-21.rws` is built and verified offline (all 6
   `Wimp` sourceGenes above the allocated base). NEXT: **load it and check all 6 founders
