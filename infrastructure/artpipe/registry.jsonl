@@ -3482,3 +3482,5 @@
 {"by": "artpiped", "event": "validated", "job_id": "desert_swaca_pufferpig_north", "target": "desert_swaca_pufferpig/north", "ts": 1789943938.645933, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 91.31016601099691, "event": "generated", "job_id": "desert_swaca_pufferpig_south", "target": "desert_swaca_pufferpig/south", "ts": 1789944032.5585318}
 {"by": "artpiped", "event": "validated", "job_id": "desert_swaca_pufferpig_south", "target": "desert_swaca_pufferpig/south", "ts": 1789944032.570871, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "DESERT_LEACHMOSS_BUILD_1", "target": "rmleachmoss", "ts": 1789950315.583268}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rmleachmoss_v1", "notes": "", "target": "rmleachmoss", "ts": 1789950315.597879}

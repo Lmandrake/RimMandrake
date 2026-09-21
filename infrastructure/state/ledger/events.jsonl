@@ -10422,3 +10422,4 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY closing the beastmechanics verification load","ts":"2026-09-21T00:28:10Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T00:28:22Z"}
 {"seat":"FOUNDRY","event":"note","id":"PORTED_BEAST_MECHANICS_REBUILD_1","text":"Ledger title is WRONG; the item body corrects it. RSW_Voltmaw fires a four-shot PLASMA volley (Alpha Animals AA_Plasma), not a chemfuel ejection - only RSW_Cindermite ejects chemfuel. All six criteria PASS, verified live 2026-09-20.","ts":"2026-09-21T00:28:51Z"}
+{"seat":"FOUNDRY","event":"spawn","name":"DESERT_LEACHMOSS_LIVE_VERIFY_1","kind":"verify","needs":"bridge","spec":"design/Jawa/worldbuilding/desert_shade_plants_design.md","for":"FOUNDRY","from":"DESERT_LEACHMOSS_BUILD_1","ts":"2026-09-21T00:31:46Z"}
