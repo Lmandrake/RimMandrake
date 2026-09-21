@@ -85,3 +85,59 @@ clock survives save/load.
 `RM_Venomvine` grows wild in `RUT_Desert`, scratches and envenoms exactly as the
 design specifies, behind a working settings toggle, with the comp reusable by
 any other plant via XML alone.
+
+## built — 2026-09-20, `10033074a`
+
+Everything the item asked for, at the names it asked for, all in
+`mandrake.rm.environmentalhazards`:
+
+| | |
+|---|---|
+| `Source/CompContactVenom.cs` | `CompProperties_ContactVenom` + `CompContactVenom` — all five fields at the item's defaults. Registers and deregisters its cell only; no tick. |
+| `Source/MapComponent_ContactVenom.cs` | the 15-tick sweep, the per-pawn contact clock, `ExposeData`, pruning, the lethality gate. |
+| `Source/ContactVenomImmunity.cs` | the empty race-level marker. |
+| `Defs/DamageDefs/RM_Damages_ContactVenom.xml` | `RM_VenomvineScratch`. |
+| `Defs/HediffDefs/RM_Hediffs_ContactVenom.xml` | `RM_VenomvineVenom`. |
+| `Defs/ThingDefs_Plants/RM_Venomvine.xml` | the plant, §1d verbatim. |
+| `RM_EnvironmentalHazardsMod.cs` | settings 37/38/39 — `contactVenomEnabled`, `contactVenomScratchMultiplier`, `contactVenomLethal`. |
+| `RUT_Desert.xml` | `RM_Venomvine` at 0.25, `MayRequire="mandrake.rm.environmentalhazards"`. |
+| `infrastructure/artpipe/pending/rmvenomvine_v1.json` | the art job. |
+
+MEASURED offline: assembly builds clean (0 warnings, 0 errors, user-local .NET
+SDK); all four XML files `ET.parse` and `validate_patch.py` clean against the
+full 618-mod load set (the only warning is `RM_Venomvine`'s pending texPath,
+expected until the art job lands); `run_selftests.py` 67/67.
+
+Art search re-run this pass, as the item required:
+`infrastructure/artpipe/{done,_artsrc,registry.jsonl,art_status.json}` for
+vine/thorn/venom/bramble/briar. Every hit is a donor plant regenerated for
+another roster under `ART_REGEN_FLORA_WAVE1_QUEUE_1` — `ripthorn_v1`,
+`tropicalchokevine_v1`, `firevine*`, `brambles_v1`, `twistingthorn*`,
+`crystaltipbrambles_*`. None is ours. One job filed, `rmvenomvine_v1`.
+
+### three decisions where the item was silent
+
+1. **`PawnKindDef.immuneToTraps` is honoured** alongside the
+   `ContactVenomImmunity` extension. The item named only the extension.
+   `immuneToTraps` is vanilla's exact flag for "a hazard sitting on the ground
+   does not catch this kind" (`Building_Trap.SpringChance` reads it), and this
+   is that class of hazard — without it a scripted or quest-critical kind
+   vanilla is careful never to trap could be killed by a plant.
+2. **Lethality is gated by clamping severity to `lethalSeverity × 0.99` right
+   after each scratch**, not by editing the def. `lethalSeverity` is a
+   `HediffDef` field the engine reads directly, and severity on this hediff
+   only ever RISES from a scratch (`severityPerDay` is negative), so the
+   clamp covers the only path to the threshold. Turning the option off never
+   heals a carrier already past it.
+3. **`contactVenomScratchMultiplier` multiplies with the kit-global
+   `hazardDamageMultiplier`** rather than replacing it, so the kit's own law
+   ("one dial scales every damage number the kit deals") still holds while
+   this hazard can be softened alone.
+
+### what is NOT done
+
+The `## verify` list above is live-only and was not run — this pass had no
+game. Filed as `VENOMVINE_LIVE_VERIFY_1`, which carries the design's §5 steps
+and names the one never-observed mechanism ("a MapComponent damages a pawn for
+standing on a registered cell"). The DLL also still needs deploying, and a
+companion DLL deploys only while the game is down.
