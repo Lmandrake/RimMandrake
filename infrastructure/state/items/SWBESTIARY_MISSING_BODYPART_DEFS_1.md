@@ -50,3 +50,30 @@ one-line correction.
    or body-part group.
 3. Every species whose `tools` reference those groups has a working melee
    tool — checked on a live pawn, not from the XML.
+
+## fixed, not yet live-verified — 2026-09-20/21
+
+All eight refs were repointed in `RSW_DesertPortA_Bodies.xml` to the sibling
+defs `RSW_DesertPortA_BodyParts.xml` (same folder, same batch) already
+defines under bare names: `RSW_Club`→`SW_Club`, `RSW_TailAttackTool`→
+`SWTailAttackTool`, `RSW_HornAttackTool`→`SWHornAttackTool`,
+`RSW_LeftWing`/`RSW_RightWing`→`SW_LeftWing`/`SW_RightWing`,
+`RSW_FrontHorn`/`RSW_LeftHorn`/`RSW_RightHorn`→`SW_FrontHorn`/`SW_LeftHorn`/
+`SW_RightHorn` (17 occurrences total, all 17 confirmed repointed, zero old
+refs remaining). This was a naming-mismatch bug, not a genuinely missing
+concept: `RSW_DesertPortA_BodyParts.xml` was clearly authored as this file's
+companion (identical header/batch comment) and its bare `SWTailAttackTool`/
+`SWHornAttackTool` were already resolving correctly for
+`RSW_DesertPortB_Bodies.xml`'s own references — repointing was the
+conservative choice over adding duplicate `RSW_`-prefixed defs.
+
+Verified offline: `validate_patch.py` clean (0 errors/warnings), raw
+`ET.parse` clean, `run_selftests.py` 67/67 pass. **Not verified**: criteria
+1–3 above, which need a live log/pawn check — the bridge was held by BENCH
+for the whole of this pass (`bridge who` checked, never taken). Also noted:
+the `Dewback`/`Reek` BodyDefs in this file are currently orphaned (no live
+ThingDef references them bare — `RSW_Dewback`/`RSW_IridonianReek` use
+differently-named BodyDefs from an unrelated Mlie-wave batch), which is why
+RimWorld's load-time validation still caught the broken refs despite no
+current consumer — see `SWBESTIARY_BODYPART_LIVE_VERIFY_1`, filed to close
+out the live-check debt (`needs: bridge`).
