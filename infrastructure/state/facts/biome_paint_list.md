@@ -43,7 +43,8 @@ any biome's build work on its tile count.
 | `RUT_TheRot` | the Rot | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + plants + fauna present (215 lines) | Nightspill, Frostcaps, Sporefields, Sootreach, Hanging Wood | 2204 | PAINT |
 | `RUT_TheScald` | the Scald | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + fauna present, no plants (178 lines) — sea biome | Scald | 312 | PAINT |
 | `RUT_TwilightSea` | the Twilight Sea | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + fauna present, no plants (132 lines) — sea biome | Twilight Sea | 607 | PAINT |
-| `RUT_FuelSnows` | the Fuel Snows | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + plants + fauna present (renamed 2026-09-21 from `RUT_Umbra`, content unchanged, `UMBRA_IS_A_REGION_NOT_A_BIOME_1` — "Umbra" now names the region, not this biome) | Deadstone, Umbra, Ammonia Flats, Fuelmere, Lantern Deeps | 2531 | PAINT — 🔴 these 2531 tiles were LIVE-PAINTED `RUT_Umbra` as of the 2026-09-12 export (`BIOME_WORLD_SWITCH_WAVE_1`, not a zero-tile biome); the rename leaves that defName unresolvable on the canonical save until the terminal repaint absorbs it (deliberate, per [[world-remake-is-the-last-step]]) |
+| `RUT_FuelSnows` | the Fuel Snows | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + plants + fauna present (renamed 2026-09-21 from `RUT_Umbra`, content unchanged, `UMBRA_IS_A_REGION_NOT_A_BIOME_1` — "Umbra" now names the region, not this biome) | Deadstone, Umbra, Ammonia Flats, Fuelmere, Lantern Deeps | 0 — RE-MEASURED 2026-09-21 live against the canonical save's own tile array (`worldmap.py`, not the CSV): 0 tiles carry this defName's shortHash. All 2,531 live tiles are still tagged `RUT_Umbra` (see that row) | PAINT — the forward-authored def; target for the terminal repaint |
+| `RUT_Umbra` | Umbra (compat duplicate) | `UtinniPatches` / `mandrake.rut.patches` | yes — RESTORED 2026-09-21 | full duplicate of `RUT_FuelSnows`'s content, kept alive only so this defName resolves | Deadstone, Umbra, Ammonia Flats, Fuelmere, Lantern Deeps | 2531 — RE-MEASURED 2026-09-21 (`worldmap.py` decode of `CANONICAL_ASHKARR_START_2026-09-12.rws`'s live `tileBiome` array against a pre-deletion def-dump capture, shortHash 15270): **CONFIRMED, not stale** — the 2026-09-12 export's 2531 figure still holds because nothing has repainted these tiles since. `UMBRA_IS_A_REGION_NOT_A_BIOME_1`'s rename had deleted this defName outright and left these 2531 tiles unresolvable; restored as a compat duplicate pending the terminal repaint. | NO PAINT (temporary) — retire once the terminal repaint moves these 2531 tiles onto `RUT_FuelSnows`; verify with the same live decode before deleting |
 | `RUT_Wasteland` | the Wasteland | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + fauna present, no plants (162 lines) | Sunreach, Ashen Wastes, Scour, Salt, Blight | 1853 | PAINT |
 | `RUT_Webwork` | the Webwork | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + plants + fauna present (160 lines) | Dune Sea, Cratercrown, Hollow Verge, Dew Belt, Anvil | 161 | PAINT |
 | `RUT_WeepingStones` | the Weeping Stones | `UtinniPatches` / `mandrake.rut.patches` | yes | terrain + plants + fauna present (191 lines) | Dew Belt, Dew Horn, Dune Sea, Cratercrown, Anvil | 223 | PAINT |
@@ -66,13 +67,15 @@ Wars creatures become patches").
 ## Counts
 
 - **PAINT: 25** — all 23 standalone RUT_ regions not otherwise flagged, plus `RUT_FuelSnows`
-  (renamed 2026-09-21 from `RUT_Umbra`), and the two ruled/uncontested survivors
-  `RM_FE_Pyrelands` and `RM_Greentide`.
-- **NO PAINT: 3** — `RUT_Jawa_BackgroundWater` and `RUT_LanternDeeps` (both never carry a
-  tile by design), plus `RUT_Greentide` (its content is owed to `RM_Greentide`, ruled).
+  (renamed 2026-09-21 from `RUT_Umbra`, forward target for the terminal repaint), and the
+  two ruled/uncontested survivors `RM_FE_Pyrelands` and `RM_Greentide`.
+- **NO PAINT: 4** — `RUT_Jawa_BackgroundWater` and `RUT_LanternDeeps` (both never carry a
+  tile by design), `RUT_Greentide` (its content is owed to `RM_Greentide`, ruled), and
+  `RUT_Umbra` (restored 2026-09-21 as a temporary compat duplicate of `RUT_FuelSnows` — see
+  its row; carries the live 2,531 tiles until the terminal repaint moves them, then retires).
 - **UNDECIDED: 4** — `RUT_CrackedLands` / `RM_FloodedCanyon` (one open twin question),
   `RUT_Slime` / `RM_GelatinousSlime` (one open twin question).
-- **Total rows: 32** owned BiomeDefs (25 + 3 + 4).
+- **Total rows: 33** owned BiomeDefs (25 + 4 + 4).
 
 ## Needs an owner decision
 
