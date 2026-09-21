@@ -295,3 +295,57 @@ Five of the six defaults STAND. One is overturned:
 - #3 prey gate ≤ 0.5 × its own BodySize — stands.
 - #5 resident only, no incident letter, spawns at stages 1–3 — stands.
 - #6 the five stage labels stay on the inspect string — stands.
+
+## build 2026-09-21 — growth made permanent
+
+**The mechanism (read before changing anything, as briefed):** growth is not a Harmony
+postfix and not driven by vanilla ageing. `RM_CompEngulfer.absorbedMass` (a scribed float
+on the comp) is mapped to a life-stage index by `StageFor()`, and every writer of that
+index goes through `ApplyStage()` → `Pawn_AgeTracker.LockCurrentLifeStageIndex(target)` —
+a public, scribed vanilla API. While locked, vanilla's own `AgeTickInterval` returns early,
+so ordinary ageing never contests the lock — this was already true before today's change
+and needed no fix. Every place that changes `absorbedMass` — ordinary eating, absorbing
+prey, starvation decay, dry-ground decay, mass lost per shed gelatid — routes through one
+function, `AddMass(delta)` (`Titanoslime.cs:290`), which already gated any *negative*
+delta behind one flag: `SlimeSettings.titanoslimeReversible`. That flag, not a new gate,
+is the entire growth-direction mechanism.
+
+**The change:** flipped `titanoslimeReversible`'s shipped default from `true` to `false`
+in `src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs` (the field initializer and the
+`Scribe_Values.Look` fallback both changed, so a fresh settings file and a freshly
+constructed instance agree) and reworded its comment, its `ExposeData` line and its Mod
+Settings checkbox tooltip to describe the new default. Updated a stale comment in
+`Titanoslime.cs` (`TickDecay`, line ~582) that described the old default as settled spec.
+Corrected `design/RimMandrake/RM_titanoslime_spec.md` §11 answer 4, which still said
+"Growth reversible? Default: yes" — that default no longer ships (fixed on sight per the
+correctness-outranks-seat-ownership rule; it is BENCH/Fable's doc, but the sentence was
+now false). No other file references `titanoslimeReversible` or the growth mechanism; no
+XML was touched, since the whole gate lives in `SlimeMod.cs`/`Titanoslime.cs`.
+
+**Why this is the minimal correct change:** because every shrink path (starvation,
+dry-ground, per-shed mass loss) already funnelled through the same one-line gate, no new
+gate, no new field and no logic restructuring was needed — flipping the existing switch's
+default *is* "growth is permanent." The player-facing toggle is left in place (unchecked
+by default) per the project's standing "every mod ships full settings, all-off degrades
+gracefully" rule — a player who wants the old softer behavior can still turn it back on;
+the shipped, out-of-the-box behavior is now permanent, matching the ruling.
+
+**Save/load:** `absorbedMass` is `Scribe_Values`-looked on the comp
+(`Titanoslime.cs:365`) and `lockedLifeStageIndex` is scribed by vanilla
+`Pawn_AgeTracker` itself (MEASURED, cited above) — both survive a round trip
+independent of today's change. Nothing new needed adding for persistence; the questions
+this task asked to check were already satisfied by the existing design.
+
+**What can still shrink it:** with the default now `false`, nothing — not starvation, not
+standing off slime terrain, not being wounded, not shedding gelatids. All of those still
+*compute* a mass loss (`TickDecay`, `ShedOne`) but `AddMass` silently drops any negative
+delta while `titanoslimeReversible` is off. This is consistent with the ruling ("once it
+grows it stays huge; a fed slime is a permanently escalating threat"); a player may
+re-enable reversibility via Mod Settings if they choose a softer game, which is optional
+configurability, not the shipped default.
+
+Selftests 69/69. Build: `dotnet build -c Release` via the user-local SDK
+(`C:\Users\Mandrake\.dotnet\dotnet.exe`), 0 warnings, 0 errors. No deploy attempted —
+RimWorld was running with another window holding the bridge for this whole pass, per the
+hard rule; the built DLL and changed defaults sit in the repo only, same as the rest of
+this mod, awaiting the next shutdown window's deploy step already documented above.

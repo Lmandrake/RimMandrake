@@ -52,10 +52,13 @@ namespace RimMandrake.GelatinousSlime
         // whatever stage it rolled and never moves off it.
         public static bool titanoslimeGrows = true;
 
-        // Off: mass never decreases — starving, dry ground and wounds stop
-        // taking it back. The owner's shipped default is ON (reversible):
-        // nothing is ever permanently huge.
-        public static bool titanoslimeReversible = true;
+        // On: mass can decrease again — starving, dry ground and wounds take
+        // it back, so nothing is permanently huge. OFF is the owner's shipped
+        // default (ruling, 2026-09-21, TITANOSLIME_SLIME_BIOME_1): growth is
+        // permanent, not reversible — once it grows it stays huge, a fed
+        // slime is a permanently escalating threat. Overturns the spec's
+        // original "reversible: yes" default (§11 answer 4).
+        public static bool titanoslimeReversible = false;
 
         // 1-5. Caps the ladder; at 2, absorbedMass 12 still reads as stage 2.
         public static int titanoslimeMaxStage = 5;
@@ -72,7 +75,7 @@ namespace RimMandrake.GelatinousSlime
             Scribe_Values.Look(ref titanoslimeSpawnFactor, "titanoslimeSpawnFactor", 1f, true);
             Scribe_Values.Look(ref titanoslimeEngulfs, "titanoslimeEngulfs", true, true);
             Scribe_Values.Look(ref titanoslimeGrows, "titanoslimeGrows", true, true);
-            Scribe_Values.Look(ref titanoslimeReversible, "titanoslimeReversible", true, true);
+            Scribe_Values.Look(ref titanoslimeReversible, "titanoslimeReversible", false, true);
             Scribe_Values.Look(ref titanoslimeMaxStage, "titanoslimeMaxStage", 5, true);
             Scribe_Values.Look(ref titanoslimeSheds, "titanoslimeSheds", true, true);
         }
@@ -112,9 +115,10 @@ namespace RimMandrake.GelatinousSlime
                 + "from body size 6 to 40. Off: it keeps the stage it spawned at.");
 
             list.CheckboxLabeled("Growth is reversible", ref titanoslimeReversible,
-                "On: starving, standing off slime terrain and being wounded all take "
-                + "mass back, so nothing is permanently huge. Off: the ladder only "
-                + "climbs.");
+                "Off (default): the ladder only climbs — starving, standing off slime "
+                + "terrain and being wounded never take mass back, so a fed titanoslime "
+                + "is a permanent, escalating threat. On: all three take mass back, so "
+                + "nothing is permanently huge.");
 
             list.CheckboxLabeled("Sheds gelatids when cut", ref titanoslimeSheds,
                 "On: a wounded titanoslime of stage 2 or better comes apart into wild "

@@ -467,8 +467,12 @@ answered with a default. Say nothing and the default ships.
    (BodySize 6) swallows anything up to 3 (a human, a muffalo) and a colossus swallows a thrumbo —
    "nearly any size" is earned by growing (§4.2). Alternative: a flat gate (everything ≤ 4 at any
    stage), simpler, less of a ladder.
-4. **Growth reversible?** Default: yes — starving, dry ground and wounds all shed mass, so it is
-   never permanently huge (§2.3). Alternative: one-way growth with a hard cap at stage 5.
+4. **Growth reversible?** 🔴 OVERTURNED, owner ruling 2026-09-21
+   (`TITANOSLIME_SLIME_BIOME_1`): default is now NO — growth is permanent, one-way, capped at
+   stage 5. Starving, dry ground and wounds no longer take mass back. The "reversible" toggle
+   ships OFF by default (`SlimeSettings.titanoslimeReversible = false`); a player may still turn
+   it on for a softer game. This entry originally read "Default: yes" (§2.3); that default no
+   longer ships.
 5. **A resident only, or also an event?** Default: resident, spawns at stages 1–3 by roster
    commonality, no incident letter (§6). Alternative: a "titanoslime approaches" incident once it
    would spawn at stage 4+.

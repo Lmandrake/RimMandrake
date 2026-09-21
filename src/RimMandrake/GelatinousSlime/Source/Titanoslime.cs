@@ -579,8 +579,11 @@ namespace RimMandrake.GelatinousSlime
             }
         }
 
-        // Starving and dry ground both take mass back. This is what makes the
-        // ladder run in both directions — spec §11 answer 4, growth reversible.
+        // Starving and dry ground both compute a mass loss here, but AddMass
+        // drops any negative delta unless SlimeSettings.titanoslimeReversible
+        // is on — OFF by shipped default (owner ruling, 2026-09-21,
+        // TITANOSLIME_SLIME_BIOME_1: growth is permanent, not reversible).
+        // Overturns spec §11 answer 4 ("growth reversible: yes").
         private void TickDecay(Pawn self)
         {
             ticksUntilDecay--;
