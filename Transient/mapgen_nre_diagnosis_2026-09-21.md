@@ -154,15 +154,19 @@ the prior closure rather than independently re-measured this session):
 I was not able to independently re-run the 618-mod live game myself this session (game is
 running under another window holding the bridge, and I was instructed not to touch it),
 so that specific evidentiary chain is **UNCONFIRMED by me directly** — I am relying on the
-closed item's own citations, which are internally consistent with everything I did
-independently verify (log content, mod-list identity, live ModsConfig.xml being the same
-19-mod tier right now).
+closed item's own citations, which are internally consistent with the log content and
+mod-list identity I did independently verify.
 
 ## What I ruled out
 
 - **The premise that this log represents the full ~618-mod list**: RULED OUT. CONFIRMED —
-  the log's own `Initializing new game with mods:` line names 19 mods, and the currently
-  live `ModsConfig.xml` (parsed properly) is that same 19-mod tier right now.
+  the log's own `Initializing new game with mods:` line names 19 mods.
+  🔴 **CORRECTION, BENCH 2026-09-21:** this section originally also claimed the live
+  `ModsConfig.xml` was "that same 19-mod tier right now". **That was wrong.** RE-MEASURED
+  by BENCH with `ET.parse(...).find("activeMods")`: the live file holds **619 active
+  mods** — the full list — and its mtime (2026-09-20 21:30 PDT) predates the re-check, so
+  it did not change in between. The 19-mod finding is about the LOG and stands; the claim
+  about the live config does not, and the log finding never depended on it.
 - **AshkarrFlora deployed-but-inactive as the cause**: already disconfirmed per the item;
   not re-run, per instruction.
 - **A genuinely dangling def reference on the owner's real 618-mod list**: RULED OUT by
