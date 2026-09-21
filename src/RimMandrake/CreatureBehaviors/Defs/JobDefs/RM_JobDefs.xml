@@ -28,4 +28,16 @@
     <reportString>lunging at TargetA.</reportString>
   </JobDef>
 
+  <!-- DESERT_SHADE_WHALE_FILTERFEED_1 - driven by RM_JobDriver_FilterFeedTerrain,
+       requested by RM_JobGiver_FilterFeedTerrain whenever a hungry pawn whose
+       race carries RM_FilterFeedExtension can reach terrain on its feed list.
+       The driver tops up Need_Food directly, which is what makes this route
+       independent of FoodTypeFlags (desert.md section 10: a closed enum with no
+       terrain member). -->
+  <JobDef>
+    <defName>RM_FilterFeedTerrain</defName>
+    <driverClass>RimMandrake.CreatureBehaviors.RM_JobDriver_FilterFeedTerrain</driverClass>
+    <reportString>filter-feeding.</reportString>
+  </JobDef>
+
 </Defs>

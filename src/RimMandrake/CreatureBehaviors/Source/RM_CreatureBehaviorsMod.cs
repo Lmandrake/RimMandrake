@@ -132,6 +132,22 @@ namespace RimMandrake.CreatureBehaviors
     //      the seedling count or the lethality, which stay whatever the def
     //      says); at 0 the dying still walk for the shadows and the plant
     //      simply never spreads that way.
+    //  25. filterFeedingEnabled / filterFeedNutritionMultiplier —
+    //      RM_JobGiver_FilterFeedTerrain + RM_JobDriver_FilterFeedTerrain
+    //      (DESERT_SHADE_WHALE_FILTERFEED_1). Off: a terrain filter-feeder
+    //      never strains the ground for a meal and falls straight through to
+    //      ordinary vanilla eating, which its declared foodType still governs
+    //      — so it gets hungrier and has to find real food, it never starves
+    //      for want of a mechanic. The dial scales only how much one completed
+    //      bout restores (never the bout duration, search radius or hunger
+    //      threshold, which stay whatever the race's own extension says).
+    //  26. dungSeedingEnabled / dungSeedingMultiplier — RM_CompDungSeeder
+    //      (DESERT_SHADE_WHALE_FILTERFEED_1). Off: a carrier still drops no
+    //      dung from this comp and fertilises nothing (its ordinary vanilla
+    //      FilthRate is untouched and still dirties the ground). The dial
+    //      scales the growth boost, the seedling count and the wildlife chance
+    //      together; at 0 the dung still falls and simply seeds nothing. Never
+    //      the shade gate or the radius, which stay whatever the def says.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -170,6 +186,10 @@ namespace RimMandrake.CreatureBehaviors
         public static float drumLureChanceMultiplier = 1f;
         public static bool shadeStaggerEnabled = true;
         public static float shadeStaggerGerminationMultiplier = 1f;
+        public static bool filterFeedingEnabled = true;
+        public static float filterFeedNutritionMultiplier = 1f;
+        public static bool dungSeedingEnabled = true;
+        public static float dungSeedingMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -209,6 +229,10 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref drumLureChanceMultiplier, "drumLureChanceMultiplier", 1f);
             Scribe_Values.Look(ref shadeStaggerEnabled, "shadeStaggerEnabled", true);
             Scribe_Values.Look(ref shadeStaggerGerminationMultiplier, "shadeStaggerGerminationMultiplier", 1f);
+            Scribe_Values.Look(ref filterFeedingEnabled, "filterFeedingEnabled", true);
+            Scribe_Values.Look(ref filterFeedNutritionMultiplier, "filterFeedNutritionMultiplier", 1f);
+            Scribe_Values.Look(ref dungSeedingEnabled, "dungSeedingEnabled", true);
+            Scribe_Values.Look(ref dungSeedingMultiplier, "dungSeedingMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -339,6 +363,25 @@ namespace RimMandrake.CreatureBehaviors
               + "nothing growing behind it. This never changes how deadly the fruit is.");
             list.Label("Corpse germination chance: " + shadeStaggerGerminationMultiplier.ToString("0.00") + "x");
             shadeStaggerGerminationMultiplier = list.Slider(shadeStaggerGerminationMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Filter-feeding from the ground", ref filterFeedingEnabled,
+                "On: an animal built to strain its food out of the ground (sand, silt) stops on "
+              + "terrain it can feed from and eats there, with no plant or food item involved. "
+              + "Off: it never does, and simply eats like any other animal of its diet — hungrier, "
+              + "but never stuck.");
+            list.Label("Filter-feed meal size: " + filterFeedNutritionMultiplier.ToString("0.00") + "x");
+            filterFeedNutritionMultiplier = list.Slider(filterFeedNutritionMultiplier, 0.25f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Dung seeding at shade patches", ref dungSeedingEnabled,
+                "On: a big grazer resting in shade leaves dung that fertilises the plants around "
+              + "it, sprouts young ones, and now and then brings a small creature with it — the "
+              + "way seeds and passengers travel between patches that are otherwise cut off from "
+              + "each other. Dung dropped out in the open fertilises nothing. Off: it leaves "
+              + "nothing behind and nothing grows from it.");
+            list.Label("Dung seeding strength: " + dungSeedingMultiplier.ToString("0.00") + "x");
+            dungSeedingMultiplier = list.Slider(dungSeedingMultiplier, 0f, 3f);
 
             list.End();
         }
