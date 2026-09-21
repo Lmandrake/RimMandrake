@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:24:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:26:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1467,8 +1467,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SHRUBLAND_GIANT_ENRAGE_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## verify
+summary:  SHRUBLANDGIANTENRAGE1 — RSWShrublandGiant: large-young life-stage + parental enrage-on-approach C
 prose:    infrastructure/state/items/SHRUBLAND_GIANT_ENRAGE_1.md
 
 ## VENOMVINE_FORTRESS_PASSABILITY_1 Venomvine fortress: size-gated passability C# for the shrubland thicket
@@ -1477,6 +1477,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VENOMVINE_FORTRESS_PASSABILITY_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## verify
+summary:  VENOMVINEFORTRESSPASSABILITY1 — venomvine fortress: size-gated passability C for the shrubland thicket
 prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
