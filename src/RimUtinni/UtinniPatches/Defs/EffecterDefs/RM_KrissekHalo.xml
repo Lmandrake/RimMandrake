@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BLUE_DESERT_LIFE_AUTHORING_1 (step 2-5) — the krissek's blue-fire halo,
+  design brief §4b. Shape copied from Core's own continuous-attached-effecter
+  precedent, Mech_Apocriton's ApocrionAttached/Mote_ApocritonPulse (merged def,
+  RimSage 2026-09-21): a single SubEffecter_SprayerContinuous child,
+  attachToSpawnThing true, spawnLocType OnSource — NOT Apocriton's own
+  distortion shader (MoteApocritonPulse is a bespoke psychic-distortion effect,
+  wrong look for "a coat of fire"); this uses the plain MoteGlow shader instead,
+  same idiom as Mote_SkyLanternGlow (RimSage, merged).
+
+  RM_CompEffecter_Halo (BlueDesertLife.cs) is the CompEffecter subclass named
+  by RM_Krissek's own comps block (ThingDefs_Races/RM_BlueDesertFauna.xml) —
+  it overrides ShouldShowEffecter so this only spawns while the krissek is
+  jogging/fleeing, in an aggro mental state, or has a live enemy target (§4b);
+  a grazing walk shows nothing.
+
+  A real CompGlower light is deliberately NOT added (brief §4b/§10):
+  TWINKLE_FLORA_SPIKE_1 (closed) is the standing verdict on per-thing glow
+  cost, and a pawn-attached glower is its own unmeasured spike.
+
+  Art: NONE EXISTS YET. texPath below is a placeholder for the fill_queue.py
+  job (art_lists/blue_desert_life.csv, id bluedesert_krissek_halo_mote) —
+  until it renders, this mote shows as a missing-texture placeholder. Palette:
+  biome_palette_anchors.json accent #55c0f0, owned ONLY by this halo (§8) —
+  no other Blue Desert def uses this colour.
+-->
+<Defs>
+
+  <EffecterDef>
+    <defName>RM_KrissekHalo</defName>
+    <children>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerContinuous</subEffecterClass>
+        <moteDef>Mote_RM_KrissekHalo</moteDef>
+        <burstCount>1</burstCount>
+        <rotation>-180~180</rotation>
+        <ticksBetweenMotes>6</ticksBetweenMotes>
+        <positionRadius>0.5</positionRadius>
+        <attachToSpawnThing>true</attachToSpawnThing>
+        <spawnLocType>OnSource</spawnLocType>
+      </li>
+    </children>
+  </EffecterDef>
+
+  <ThingDef ParentName="MoteBase">
+    <defName>Mote_RM_KrissekHalo</defName>
+    <thingClass>MoteAttached</thingClass>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <mote>
+      <fadeInTime>0.1</fadeInTime>
+      <solidTime>0.3</solidTime>
+      <fadeOutTime>0.25</fadeOutTime>
+    </mote>
+    <graphicData>
+      <graphicClass>Graphic_Mote</graphicClass>
+      <texPath>Things/Mote/RM_KrissekHalo</texPath>
+      <shaderType>MoteGlow</shaderType>
+      <color>(85,192,240)</color>
+      <drawSize>(1.1, 1.1)</drawSize>
+    </graphicData>
+  </ThingDef>
+
+</Defs>

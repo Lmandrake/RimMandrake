@@ -38,6 +38,13 @@
       <li>Plant_TreeAnima</li>      <!-- ritual pacing, not botany -->
       <li>Plant_TreeGauranlen</li>  <!-- the dryad economy times against it -->
       <li>Plant_Ambrosia</li>       <!-- a deliberately scarce drug source -->
+      <!-- BLUE_DESERT_LIFE_AUTHORING_1 (brief §6a): growDays below (6/9/12) already
+           assume vanilla rate — "without the polar water molecule, transport and
+           chemistry are simply less efficient" is the whole point of those numbers,
+           and x4 would erase it. -->
+      <li>RM_Palefloss</li>
+      <li>RM_Glassfern</li>
+      <li>RM_Chimeglobe</li>
     </exemptPlants>
 
   </RimMandrake.Utinni.PlantGrowth.PlantGrowthSettingsDef>

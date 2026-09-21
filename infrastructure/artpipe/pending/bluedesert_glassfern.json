@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 128,
+    "width": 128
+  },
+  "channel": "codex",
+  "created": "2026-09-21T18:02:11Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "bluedesert_glassfern",
+  "priority": 110,
+  "prompt": "RimWorld top-down game plant sprite: glassfern, a hand-high TRANSPARENT fractal frond, all edge and refraction, branching gas-exchange filaments in place of leaves. Must clearly show transparency (ice visible through the frond) and fractal branching. Faint rainbow refraction at the edges, no green pigment.",
+  "reference": null,
+  "rimflow_item_id": "BLUE_DESERT_LIFE_AUTHORING_1",
+  "style_notes": "transparency and fractal branching are mandatory; mid-height fern silhouette"
+}

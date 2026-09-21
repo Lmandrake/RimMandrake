@@ -62,6 +62,12 @@
          Named by Class= in that XML, so it has no C# caller — do not read the
          absence of one as dead code. -->
     <Compile Include="PatchOperationSettingGate.cs" />
+    <!-- BLUE_DESERT_LIFE_AUTHORING_1 (2026-09-21): dorrak/krissek/vekkit and the
+         transparent fractal flora's mechanics. Namespace is RimMandrake.BlueDesert,
+         not RimMandrake.Utinni.UtinniPatches; see the file's own header for why
+         (RimMandrake-tier content housed here only until BLUEDESERT_RM_MOD_BUILD_1
+         scaffolds mandrake.rm.bluedesert). -->
+    <Compile Include="BlueDesertLife.cs" />
   </ItemGroup>
 
   <ItemGroup>
