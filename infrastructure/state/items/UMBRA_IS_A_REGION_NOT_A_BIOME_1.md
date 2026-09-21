@@ -35,3 +35,83 @@ Sootreach, not a biome a tile can be.
 
 `RUT_Umbra` no longer exists as a `BiomeDef`, its tiles carry a real biome, and Umbra is a
 named region of the planet in the same form as the other ten.
+
+## done — 2026-09-21 (FOUNDRY)
+
+**1. Verified, not just trusted.** `design/RimMandrake/biome_mod_architecture.md` §2's
+row 24 already read "⛔ `RUT_Umbra` is NOT a biome (it is a REGION) and has left this
+list" — a sibling BENCH pass (§7 Q1) already corrected it. Confirmed by direct read.
+
+**2. Umbra as a named region: already done, verified live, not re-authored.**
+`src/RimMandrake/Utils/ashkarr_paint.py` line ~851 already reads
+`regions.append(("Umbra", "waste", ...))` — no leading article — landed by
+`ASHKARR_PAINTER_NAMES_DIVERGED_1` (commit `72b5dec81`, same session), which itself
+renamed `"The Umbra"` -> `"Umbra"`. `src/RimMandrake/Utils/ashkarr_settle.py`'s
+`BARREN_REGIONS` also already carries the bare `"Umbra"` string, and its
+`validate_barren_regions()` re-checks every literal in that set against the LIVE
+canonical save's `<world><features><features>` block every run (not the stale CSV) —
+that check is closed (`BARREN_REGIONS_NAME_NOTHING_1`), which means **"Umbra" already
+resolves against a real live WorldFeature on the canonical save**, not just a script
+literal. Nothing further to author here.
+
+**3. Biome-mapping decision (this item's own call).** The antistellar cap's regime —
+fuel snow, ammonia flats, aurora, cold hydrocarbon/ammonia chemistry, no icy dayside
+analog, crystal flora — matches no other owned BiomeDef. Checked the one plausible
+candidate, `RUT_NightsideIce` (the only other biome on the nightside cold end): it is
+the OPPOSITE regime by design (no precipitation, no wildlife, "dead and silent"
+interior per its own sheet's §6 hard bans) — cannot merge. ⇒ **Genuinely new BiomeDef
+needed.** Since `RUT_Umbra`'s existing content already WAS that biome (terrain,
+weather, wildAnimals, wildPlants, diseases all fully authored, not a stub), the fix
+was a rename, not new authoring: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
+RUT_Umbra.xml` deleted, content carried forward verbatim (only defName/label/header
+changed) into a new file, `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
+RUT_FuelSnows.xml` — defName `RUT_FuelSnows`, label "the Fuel Snows" (keeps the "it
+snows fuel" flavour without reusing "Umbra", now the region's name). Stays `RUT_`-tier
+under UtinniPatches for now — the wider `biome_mod_architecture.md` migration wave
+(RUT_ → standalone RM_ mods) hasn't reached this biome; that doc now has a pointer at
+row 24 for whoever runs that wave next.
+
+**4. 🔴 Dramatic finding worth recording: `RUT_Umbra` was NOT a zero-tile biome.**
+Unlike most still-authoring biomes this repo's "zero tiles is not a defect" doctrine
+covers, `RUT_Umbra` was already LIVE-PAINTED onto 2,531 real world tiles by
+`BIOME_WORLD_SWITCH_WAVE_1` (commit `f90d660ae`, 2026-09-12, status DONE) — a real,
+committed, executed repaint, not a pending one. Renaming the defName without also
+repainting those tiles (explicitly out of THIS item's scope — "don't repaint tiles
+now") leaves them referencing an unresolvable defName until the terminal repaint. This
+is a deliberate, recorded tradeoff, matching the owner's own stated policy on exactly
+this situation (`[[world-remake-is-the-last-step]]`: "do the clean thing and let the
+remake absorb the divergence" — not licence to break the save carelessly, but licence
+to do a clean rename rather than contort the work around save continuity). Recorded in
+`infrastructure/state/facts/biome_paint_list.md`'s `RUT_FuelSnows` row so the
+terminal-repaint author has this, rather than rediscovering it. **Not cited as
+evidence for or against anything in this item** — recorded per the correctness rule,
+not used to justify a different action.
+
+**5. Files touched, all comment/reference updates only (no functional patch-xpath
+changes — neither `BiomeDescriptions_Ashkarr.xml` nor `BiomeFlora_Ashkarr.xml` had an
+`<xpath>` targeting `RUT_Umbra`, only prose comments):**
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml` — deleted.
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FuelSnows.xml` — new, carries the
+  retired def's full content forward.
+- `src/RimUtinni/UtinniPatches/Patches/BiomeDescriptions_Ashkarr.xml`,
+  `.../BiomeFlora_Ashkarr.xml` — comment references updated to the new defName.
+- `design/Jawa/fauna/biome_name_migration.py`, `design/Jawa/mods/biome_flora.py` —
+  the live `AB_PropaneLakes`→ mapping and `FAMILIES` key updated to `RUT_FuelSnows`
+  (these are current-state lookup tables consumed by generators, not history).
+- `infrastructure/state/facts/biome_paint_list.md`, `design/RimMandrake/
+  biome_mod_architecture.md` §2 row 24 — updated per above.
+- Deliberately NOT touched: `world/biome_world_switch_apply.py` (a historical record
+  of an already-executed repaint — editing it would misstate what actually ran),
+  `infrastructure/state/facts/biome_rosters.md` (append-only dated fact log),
+  the frozen `the_propane_lakes.md` (amendments only change it at a sitting), roster
+  JSON files under `design/Jawa/worldbuilding/biomes/rosters/` (design-record data
+  other generators own; not required for def loading), and other items'/handoffs'
+  historical mentions of `RUT_Umbra` (accurate as of when they were written).
+
+**6. Selftests:** 70/71 passed. The one failure,
+`src/RimMandrake/Utils/selftest_deployed_biome_refs.py`, hit the documented
+pre-existing 240s timeout in this environment — expected, not a regression.
+
+**7. Static XML validation:** `validate_patch.py` against both edited patch files —
+0 errors, 0 warnings (no `--defs`/`--live` dump available in this environment; static
+checks only). New def file confirmed well-formed XML directly.

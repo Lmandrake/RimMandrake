@@ -45,7 +45,8 @@
        RUT_Sump  (1 plants, authored in its own def)
        RUT_TheForge  (10 plants, authored in its own def)
        RUT_TheRot  (30 plants, authored in its own def)
-       RUT_Umbra  (4 plants, authored in its own def)
+       RUT_FuelSnows  (4 plants, authored in its own def — renamed from RUT_Umbra
+         2026-09-21, UMBRA_IS_A_REGION_NOT_A_BIOME_1)
        RUT_Wasteland  (9 plants, authored in its own def)
        RUT_Webwork  (7 plants, authored in its own def)
        RUT_WeepingStones  (4 plants, authored in its own def)
@@ -75,13 +76,15 @@
 
        RUT_PropaneLake  (the_propane_lakes.json)
          A LIQUID-PROPANE SEA GROWS NOTHING. Ruled by BENCH, 2026-09-09 fix wave. This file's
-         four flora rows are the LAND crystal flora of RUT_Umbra (renamed from AB_PropaneLakes;
-         the fuel-snow shore, 2,531 tiles); def-binding handed the same four to the 57 water
+         four flora rows are the LAND crystal flora of RUT_FuelSnows (renamed from
+         AB_PropaneLakes, then from RUT_Umbra 2026-09-21 per UMBRA_IS_A_REGION_NOT_A_BIOME_1 —
+         Umbra now names the region, not this biome; the fuel-snow shore, 2,531 tiles as of the
+         2026-09-12 export); def-binding handed the same four to the 57 water
          tiles of RUT_PropaneLake, where the medium is liquid propane at ~-79 °C and no
          photosynthetic or crystal-accreting surface exists. The lake's life is the ruled
          propane-native exotics (the V-wake creature and kin) — creatures owed as new defs, never
-         wildPlants. Same split the fauna rows already make: every fauna row here binds RUT_Umbra
-         only.
+         wildPlants. Same split the fauna rows already make: every fauna row here binds
+         RUT_FuelSnows only.
   -->
 
   <!-- ============ plantDensity - the named exception list ============ -->
