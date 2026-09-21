@@ -74,13 +74,13 @@
          Swallowers/Burners/Pickers and the transparent fractal flora exist. -->
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
-    <!-- wildPlants: added 2026-09-20 (SHEET_ORPHAN_CONSUMPTION_1) purely as the anchor
-         `BiomeFlora_Ashkarr.xml`'s PatchOperationConditional/Replace needs to find — that
-         patch fails SILENTLY (matches nothing, changes nothing) against a BiomeDef with no
-         <wildPlants> element at all, which this one had until now. The owner's 2026-09-10
-         sheet moved AB_CrystalHorn/AB_ToxiGrass/PoisonPlantTallGrass here (owner review
-         2026-09-20, "propane lakes and blue desert only" / "blue desert rare"); the patch
-         fills the list, this element only opens the door for it.
+    <!-- wildPlants: the owner's 2026-09-10 sheet moved AB_CrystalHorn/AB_ToxiGrass/
+         PoisonPlantTallGrass here (SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20,
+         "propane lakes and blue desert only" / "blue desert rare"). Those three rows
+         landed in rosters/the_blue_desert.json and reached the game only through
+         `BiomeFlora_Ashkarr.xml`'s replace operation, which this element existed purely
+         as an anchor for. That operation is retired for biomes whose BiomeDef we author
+         (BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1), so the rows are written out here instead.
          🔴 UNRESOLVED TENSION, flagging rather than silently resolving: this biome's own
          header comment and the_blue_desert.md §6 ban 1 ("no water-based plants or animals")
          call its flora "explicitly still owed" as new bespoke transparent/fractal defs, not
@@ -88,6 +88,9 @@
          this list actually spawns until a separate plantDensity ruling lands. Executing the
          graded sheet's move, not re-litigating whether these three specific defs belong here. -->
     <wildPlants>
+      <AB_ToxiGrass>0.6</AB_ToxiGrass>  <!-- toxigrass -->
+      <AB_CrystalHorn>0.4</AB_CrystalHorn>  <!-- crystal horn -->
+      <PoisonPlantTallGrass>0.4</PoisonPlantTallGrass>  <!-- poison tall grass -->
     </wildPlants>
     <hasVirtualPlants>false</hasVirtualPlants>
     <forageability>0</forageability>

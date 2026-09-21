@@ -126,9 +126,15 @@
     <coastalWildAnimals />
     <wildPlants>
       <AB_CrystalHorn>1.0</AB_CrystalHorn>  <!-- crystal horn -->
-      <AB_CrystalFlower>0.8</AB_CrystalFlower>  <!-- crystal flower -->
       <AB_FrostLeaf>0.6</AB_FrostLeaf>  <!-- frost leaf -->
       <AB_RimeNodules>0.4</AB_RimeNodules>  <!-- rime nodules -->
+      <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20: AB_CrystalFlower moved OUT
+           (kept only at poison_forest, its "elsewhere") and PoisonShrub moved IN from
+           wasteland (".8 cells, propane lakes"). Both rulings landed in
+           rosters/the_propane_lakes.json and reached the game only through
+           BiomeFlora_Ashkarr.xml's now-retired replace operation; transplanted here by
+           BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
+      <PoisonShrub>0.35</PoisonShrub>  <!-- poison shrub -->
     </wildPlants>
     <wildPlantRegrowDays>1</wildPlantRegrowDays>
   </BiomeDef>

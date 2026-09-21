@@ -247,6 +247,11 @@
       <AB_MangroveTree>25</AB_MangroveTree>  <!-- mangrove tree - tree -->
       <AB_ParasiticMangrove>8</AB_ParasiticMangrove>  <!-- parasitic mangrove -->
       <AB_MangrovePalm>6</AB_MangrovePalm>  <!-- mangrove palm - tree -->
+      <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20 ("miasma"): RUT_Nogtyl moved
+           here from the_rot. The ruling landed in rosters/the_miasma.json and reached the
+           game only through BiomeFlora_Ashkarr.xml's now-retired replace operation;
+           transplanted here by BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
+      <RUT_Nogtyl MayRequire="mandrake.rut.rotsporekit">0.4</RUT_Nogtyl>  <!-- nogtyl -->
     </wildPlants>
     <wildPlantRegrowDays>13</wildPlantRegrowDays>
   </BiomeDef>

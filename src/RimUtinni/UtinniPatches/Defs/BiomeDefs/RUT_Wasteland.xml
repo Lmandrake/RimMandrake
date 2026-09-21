@@ -147,15 +147,33 @@
       <AA_AcanthamoebaGiganteaSmall MayRequire="sarg.alphaanimals">0.1</AA_AcanthamoebaGiganteaSmall>  <!-- acanthamoeba gigantea, small - wretched-small, import -->
     </wildAnimals>
     <coastalWildAnimals />
-    <!-- wildPlants intentionally left empty here: the roster
-         (design/Jawa/worldbuilding/biomes/rosters/wasteland.json "flora", 25 rows)
-         was never transplanted onto this def - a stray duplicate of the
-         plantDensity field (see above) sat in this dictionary instead, which
-         would fail to resolve as a ThingDef and error at load. Removed rather
-         than guessed: populating the real 25-species list needs the same
-         MayRequire verification pass the sibling BiomeDefs in this folder
-         already did, not invented here. Flagged as owed, not silently fixed. -->
-    <wildPlants />
+    <!-- wildPlants: transplanted from rosters/wasteland.json "flora" by
+         BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. This element was empty until now and the
+         roster reached the game only through `BiomeFlora_Ashkarr.xml`'s replace
+         operation, which is retired for biomes whose BiomeDef we author — so without
+         this block the biome would have lost its flora outright.
+         The roster is NINE rows, not the 25 the earlier note here claimed: eleven
+         Polluted-Lands filler rows were cut 2026-09-18 (POLLUTED_LANDS_FLORA_PORT_1),
+         and AB_ToxiGrass/PoisonPlantTallGrass went to the_blue_desert, PoisonShrub to
+         the_propane_lakes, AB_GiantToxicFlower to poison_forest, PoisonPlantBush purged
+         outright (all SHEET_ORPHAN_CONSUMPTION_1, owner ruling 2026-09-20).
+         No MayRequire on any row. Eight are donor plants, and this folder's convention
+         (and biome_flora.py's own documented reason) is that donor plants go unguarded
+         because the def dump's packageId names the mod that last RETEXTURED a def, not
+         the one that defines it. The ninth, RUT_ScorchedStars, is THIS mod's own def
+         (Defs/ThingDefs_Plants/RUT_PollutedFlora.xml) and so needs no guard either —
+         same as its unguarded row in RUT_Scarlands.xml. -->
+    <wildPlants>
+      <RG_Plant_ToxiGrass>1.2</RG_Plant_ToxiGrass>  <!-- toxigrass -->
+      <RG_Plant_TallToxiGrass>0.8</RG_Plant_TallToxiGrass>  <!-- tall toxigrass -->
+      <Plant_GrayGrass>0.35</Plant_GrayGrass>  <!-- gray grass -->
+      <RUT_ScorchedStars>0.3</RUT_ScorchedStars>  <!-- scorched stars -->
+      <AB_WeepingToxberry>0.2</AB_WeepingToxberry>  <!-- weeping toxberry - tree -->
+      <Plant_Toxipotato>0.2</Plant_Toxipotato>  <!-- toxipotato -->
+      <AB_ToxiBulb>0.1</AB_ToxiBulb>  <!-- toxibulb -->
+      <Plant_TreePolux>0.1</Plant_TreePolux>  <!-- polux tree - tree -->
+      <VRE_PoluxBush>0.08</VRE_PoluxBush>  <!-- polux bush -->
+    </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>
 

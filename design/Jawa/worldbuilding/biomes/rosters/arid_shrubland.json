@@ -1246,8 +1246,8 @@
   "flora": [
     {
       "commonality": 0.9,
-      "def": "Plant_ShrubLow",
-      "law": "the knee-high fuzz stand-in until the fuzz def lands (§1); spaced, low, generic — not Earth-nameable",
+      "def": "RUT_Fuzz",
+      "law": "the fuzz — COMMISSION_LEDGER_CLEANUP_1 (2026-09-20) landed this sheet's own owed def and it replaces the Plant_ShrubLow stand-in at the same weight.",
       "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
     },
     {

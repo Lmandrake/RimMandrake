@@ -15,6 +15,31 @@ BIOME_FAUNA_ASSIGNMENT_SITTING_1 landed on the owner's cards. A plant is in a bi
 that biome's sheet law admitted it; the roster row carries the argument. ⛔ Edit the ROSTER
 and re-derive, never this dict — `--check` fails the build if the two disagree.
 
+🔴 **AND THE EMITTER STOPPED AT THE BIOMES WE OWN, 2026-09-21** (`BIOMEFLORA_PATCH_WIPES_
+WILDPLANTS_1`). A BiomeDef we author ourselves under `src/RimUtinni/UtinniPatches/Defs/
+BiomeDefs/` gets **no `wildPlants` operation at all**. Its own `<wildPlants>` block is the
+shipping truth; the roster is the design record that `--check` holds it to. Three reasons,
+each measured rather than argued:
+
+  1. **The patch and the def are in the SAME mod** (`mandrake.rut.patches`), and patches run
+     after every def loads — so a `PatchOperationReplace` here silently overwrote our own
+     authored list. MEASURED 2026-09-21 on a live `RUT_Desert` map: 9 authored plants
+     replaced by 4 stale ones, **0 plants of any kind spawned**, against 322 on a vanilla
+     `Desert` control tile on the identical generation path.
+  2. **This generator structurally cannot emit `MayRequire`** — see the `⛔ NO MayRequire`
+     note in `main()`, which is correct and is not going away. The def files carry 68 guarded
+     cross-mod refs; `96c1d9b81` ("dropping MayRequire was wrong") is a ruled correction on
+     exactly this field. An emitter that must strip those guards cannot own the field.
+  3. **`check()` requires every plant to be in the def DUMP**, which is a capture of a PAST
+     load — so a plant built today can never pass it until a cold load regenerates the dump.
+     A source of truth that refuses new content is not a source of truth.
+
+  ⇒ The emitter now runs for **donor** biomes only (today: `ZBiome_Grasslands`), where a
+  patch is the only route. `check()` gained `owned_flora()`, which parses the authored def
+  files and **fails the build** if any owned biome's `<wildPlants>` disagrees with its
+  roster — so this drift can never be invisible again. It was invisible for twelve days
+  across thirteen biomes.
+
 🔑 **The rule that shapes every list below: no plant appears in two FAMILIES.** Inside one
 family a shared plant is deliberate kinship; across two it is the zoo effect the owner
 objected to, and `--check` fails the build. The families are therefore no longer narrative
@@ -67,6 +92,9 @@ TILES = os.path.join(ROOT, 'world', 'ASHKARR_WORLDMAP_tiles.csv')
 PATCH = os.path.join(ROOT, 'src', 'RimUtinni', 'UtinniPatches', 'Patches',
                      'BiomeFlora_Ashkarr.xml')
 ROSTERS = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'biomes', 'rosters')
+# The BiomeDefs we AUTHOR. A biome with a file here owns its own wildPlants and gets no
+# operation emitted for it — see the emitter ruling in the module docstring.
+BIOMEDEFS = os.path.join(ROOT, 'src', 'RimUtinni', 'UtinniPatches', 'Defs', 'BiomeDefs')
 POOL = os.path.join(HERE, 'plant_pool.csv')
 DOC = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'biome_flora_rosters.md')
 
@@ -77,10 +105,21 @@ DOC = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'biome_flora_rosters
 #   0.2-0.5  punctuation                       <0.2     trees and set pieces
 FAMILIES = {
  'A. dayside desert, badlands and the river jungles': {
-  'RUT_Desert': {   # 2,390 tiles · 4 plants — AB_DessertTree purged (SHEET_ORPHAN_
-                     # CONSUMPTION_1, owner ruling 2026-09-20, no successor authored)
-    'AB_HardyGrass': 0.6, 'Plant_Chakroot_Wild': 0.3, 'Plant_HubbaGourd_Wild': 0.2,
-    'AB_Aaklac': 0.12},
+  'RUT_Desert': {   # 2,390 tiles · 9 plants — OWNED def, no operation emitted.
+                     # Four donor rows were rewired to our own RSW_ ports at `fda35ff14`
+                     # (DESERT_FAMILY_PORT_EXECUTION_1): AB_HardyGrass->RSW_Dunegrass,
+                     # Plant_Chakroot_Wild->RSW_Plant_Chakroot_Wild, Plant_HubbaGourd_Wild->
+                     # RSW_Plant_HubbaGourd_Wild, AB_Aaklac->RSW_VellaraBloom, each at its
+                     # old weight; AB_DessertTree's successor RSW_SweetbarkTree landed in the
+                     # same commit. Five more are this planet's own built flora:
+                     # RM_Leachmoss + RM_Venomvine (§4b's shade pair, DESERT_LEACHMOSS_BUILD_1
+                     # / VENOMVINE_CONTACT_VENOM_BUILD_1), RSW_Ultracactus
+                     # (DESERT_SIGNATURE_FLORA_1) and RUT_Staggerseed
+                     # (DESERT_STAGGERSEED_BUILD_1, working name).
+    'RM_Leachmoss': 1.5, 'RSW_Ultracactus': 0.8, 'RSW_Dunegrass': 0.6,
+    'RSW_Plant_Chakroot_Wild': 0.3, 'RM_Venomvine': 0.25,
+    'RSW_Plant_HubbaGourd_Wild': 0.2, 'RSW_VellaraBloom': 0.12,
+    'RUT_Staggerseed': 0.1, 'RSW_SweetbarkTree': 0.06},
   'RUT_Umbra': {   # 2,531 tiles · 4 plants — the_propane_lakes.json's shore flora, rekeyed
                     # from the pre-rename defName `AB_PropaneLakes` (PROPANE_LAKES_ROSTER_STALE_1).
                     # AB_CrystalFlower moved out (kept only at poison_forest, its "elsewhere");
@@ -144,9 +183,16 @@ FAMILIES = {
  },
 
  'B. the mycoid and fire massif': {
-  'RUT_ExtremeDesert': {   # 3,969 tiles · 2 plants
-    'Plant_Bloddle': 0.05, 'AB_GiantStikehr': 0.04},
-  'RUT_TheRot': {   # 2,204 tiles · 32 plants — was AB_MycoticJungle. 18 of the fungi
+  'RUT_ExtremeDesert': {   # 3,969 tiles · 3 plants — OWNED def, no operation emitted.
+                            # Plant_Bloddle rewired to our own RSW_Plant_Bloddle at
+                            # `fda35ff14`; RSW_LightPipeNub and RSW_Ollim are this biome's
+                            # named signature flora (EXTREME_DESERT_SIGNATURE_FLORA_1,
+                            # dune_sea.md SS4 / deep_desert.md SS4b), deliberately sparse.
+                            # AB_GiantStikehr removed 2026-09-20 on the owner's eye ("The
+                            # giant mushroom seems misplaced") — it is a Forsaken Crags
+                            # organism by Alpha Biomes' own description and is carried there.
+    'RSW_LightPipeNub': 0.1, 'RSW_Plant_Bloddle': 0.05, 'RSW_Ollim': 0.01},
+  'RUT_TheRot': {   # 2,204 tiles · 30 plants — was AB_MycoticJungle. 18 of the fungi
                      # below were BMT_ (Biomes! Caverns donor) until Caverns retired;
                      # renamed to their RUT_ ports 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1,
                      # e.g. BMT_Dewshrooms -> RUT_Dewshrooms), same renames CAVERNS_PARITY_
@@ -165,6 +211,7 @@ FAMILIES = {
     'RUT_CrimsonCap': 0.2, 'RUT_GreyLady': 0.2, 'RUT_Shinecap': 0.2,
     'RUT_VioletWimple': 0.2, 'RUT_MortalMorelPlant': 0.15, 'AB_AgaricusDomeCap': 0.1,
     'AB_DribblingCap': 0.1, 'RUT_Skulltop': 0.1,
+    'RUT_BlastpodShroom': 0.05,   # our own RUT_ port; wild-only per owner ruling 2026-09-06
     'AB_AgariluxPrime': 0.01},
   'RUT_ForsakenCrags': {   # 1,135 tiles · 8 plants — AG_Gamma/AG_Septimum moved in
                            # (SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11 "to
@@ -225,8 +272,10 @@ FAMILIES = {
  },
 
  'D. the shrub belt': {
-  'RUT_AridShrubland': {   # 628 tiles · 10 plants
-    'Plant_ShrubLow': 0.9, 'RG_Plant_AridGrass': 0.5, 'Plant_Brambles': 0.3,
+  'RUT_AridShrubland': {   # 628 tiles · 10 plants — RUT_Fuzz replaced the Plant_ShrubLow
+                            # stand-in at the same weight when this sheet's own owed def
+                            # landed (COMMISSION_LEDGER_CLEANUP_1, 2026-09-20)
+    'RUT_Fuzz': 0.9, 'RG_Plant_AridGrass': 0.5, 'Plant_Brambles': 0.3,
     'Plant_Bush': 0.3, 'Plant_Ripthorn': 0.3, 'Plant_HealrootWild': 0.25,
     'Plant_Nysyllin_Wild': 0.22, 'RG_Plant_CreepStern': 0.2, 'RG_Plant_CrimsonCushion': 0.2,
     'RG_Plant_Dervish': 0.2},
@@ -290,7 +339,7 @@ PLANTLESS = {'RUT_NightsideIce', 'RUT_RustCathedral',
 DENSITY = {
   # biome: (new, shipped, why)
   'RUT_Wasteland': (0.12, 0.0099,
-     "1,721 tiles of CONTAMINATION-class ground carrying an eight-plant toxic roster - "
+     "1,721 tiles of CONTAMINATION-class ground carrying a nine-plant toxic roster - "
      "toxigrass, gutter plantain, twisted dandelion, scorched stars - that exists to say "
      "THIS GROUND IS POISONED. At 0.0099 it says nothing. Poisoned ground reads more "
      "strongly with sick plants on it than with nothing. 12x up, still visibly barren."),
@@ -400,6 +449,30 @@ def roster_flora():
     return out
 
 
+def owned_flora():
+    """biome -> {plant defName: commonality} for every BiomeDef WE author.
+
+    🔴 These are the biomes the emitter must NOT touch. Their `<wildPlants>` block is the
+    shipping truth (it is the only place `MayRequire` can be written); the roster is the
+    design record, and `check()` holds the two to each other.
+
+    A biome whose authored def has NO `<wildPlants>` element is absent from this map, not
+    present-and-empty: nothing to disagree with, and the emitter would have nothing to
+    replace anyway (`PatchOperationConditional` simply fails its xpath and does nothing —
+    which is how RUT_BlueDesert quietly grew flora and never showed any).
+    """
+    import xml.etree.ElementTree as ET
+    out = {}
+    for fp in sorted(glob.glob(os.path.join(BIOMEDEFS, '*.xml'))):
+        for b in ET.parse(fp).getroot().iter('BiomeDef'):
+            wp = b.find('wildPlants')
+            if wp is None:
+                continue
+            out[b.findtext('defName')] = {
+                c.tag: float(c.text) for c in wp if c.tag is not ET.Comment}
+    return out
+
+
 def flora_exclusions():
     """[(biomeDef, sheet, reason), ...] — defs a shared roster deliberately does NOT plant."""
     out = []
@@ -431,6 +504,24 @@ def check(plants, biomes, tiles):
             print(f"🔴 FAMILIES DISAGREES WITH THE ROSTERS for {b}: "
                   f"roster-only/differs {only_r}, dict-only/differs {only_f}")
             bad += 1
+    # ── an OWNED def's own wildPlants must still say what its roster says ─────────
+    # 🔴 This is the check whose absence cost BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1: for
+    # twelve days, thirteen owned biomes drifted from their rosters in BOTH directions
+    # (build items wiring new plants into the def, owner sheet rulings landing only in the
+    # roster) and the patch silently decided which half the game saw.
+    ours = owned_flora()
+    for b in sorted(set(want) & set(ours)):
+        if want[b] != ours[b]:
+            only_r = {p: w for p, w in want[b].items() if ours[b].get(p) != w}
+            only_d = {p: w for p, w in ours[b].items() if want[b].get(p) != w}
+            print(f"🔴 AUTHORED DEF DISAGREES WITH ITS ROSTER for {b}: "
+                  f"roster-only/differs {only_r}, def-only/differs {only_d}")
+            bad += 1
+    for b in sorted(set(ours) - set(want) - PLANTLESS):
+        if ours[b]:
+            print(f"🔴 AUTHORED DEF HAS wildPlants BUT NO ROSTER: {b} ({len(ours[b])} plants)")
+            bad += 1
+
     for fam, bs in FAMILIES.items():
         for b, roster in bs.items():
             if b not in biomes:
@@ -439,7 +530,16 @@ def check(plants, biomes, tiles):
                 print(f"🔴 BIOME NOT ON THE MAP: {b}"); bad += 1
             for p in roster:
                 if p not in plants:
-                    print(f"🔴 PLANT NOT IN DEFS: {p}  (biome {b})"); bad += 1
+                    # 🔑 The dump is a capture of a PAST load, so our own freshly-built
+                    # plants are legitimately absent from it. For a biome we AUTHOR the
+                    # def file is what ships and nothing is emitted, so this cannot cause
+                    # a silent no-op patch — report it and carry on. For a DONOR biome the
+                    # generator is the only route and an unresolvable name is fatal.
+                    if b in ours:
+                        print(f"⚠️  plant not in the def dump: {p}  (biome {b}) — the dump "
+                              f"is capture-dated; verify against the mod XML")
+                    else:
+                        print(f"🔴 PLANT NOT IN DEFS: {p}  (biome {b})"); bad += 1
                 prev = owner.get(p)
                 if prev and prev != fam:
                     print(f"🔴 CROSS-FAMILY REUSE: {p}  in '{prev}' and '{fam}'"); bad += 1
@@ -526,7 +626,12 @@ def doc(plants, biomes, tiles):
                       f'now **{len(roster)}** assigned*', '',
                   '| commonality | plant | | mod |', '|---:|---|---|---|']
             for p, w in sorted(roster.items(), key=lambda kv: -kv[1]):
-                d = plants[p]
+                # A plant we built after the dump's capture date is legitimately missing
+                # from it — say so in the row rather than crashing the doc.
+                d = plants.get(p)
+                if d is None:
+                    o.append(f'| {w:g} | **{p}** | | `{p}` · newer than the def dump |')
+                    continue
                 tree = '🌳' if (d['fields']['plant'].get('treeCategory') or 'None') != 'None' else ''
                 o.append(f'| {w:g} | **{d["fields"].get("label") or p}** | {tree} | '
                          f'`{p}` · {d.get("modName") or "?"} |')
@@ -583,9 +688,39 @@ def main() -> int:
            '       🔴 wildPlants is a LoadDataFromXmlCustom field: the node NAME is the plant',
            '       defName and its VALUE is the commonality. An <li> here discards the whole',
            '       BiomeDef, silently. -->', '']
+    ours = owned_flora()
+    if ours:
+        out.append('  <!-- ============ biomes this file deliberately does NOT patch ============')
+        out.append('')
+        out.append('       BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1, 2026-09-21. Each BiomeDef below is')
+        out.append('       one WE author, under src/RimUtinni/UtinniPatches/Defs/BiomeDefs/, in')
+        out.append('       THIS SAME MOD. A PatchOperationReplace here runs after that def loads')
+        out.append('       and silently discards whatever it says - which is exactly what happened')
+        out.append('       to RUT_Desert: nine authored plants replaced by four stale ones, and a')
+        out.append('       live RUT_Desert map generated 0 plants of any kind against 322 on a')
+        out.append('       vanilla Desert control tile.')
+        out.append('')
+        out.append('       So the authored def owns its own wildPlants and this file leaves it')
+        # ⚠️ No "- -" anywhere in this comment body: a double hyphen is a hard XML parse
+        # error and takes the WHOLE file with it, so the flag is named in prose.
+        out.append("       alone. The rosters remain the design record; biome_flora.py's own")
+        out.append('       check pass FAILS if an authored def and its roster disagree. The')
+        out.append('       generator also')
+        out.append('       cannot write MayRequire (see the note further down), and those defs')
+        out.append('       carry 68 guarded cross-mod refs - another reason the emitter is the')
+        out.append('       wrong owner for this field.')
+        out.append('')
+        for b in sorted(ours):
+            out.append(f'       {b}  ({len(ours[b])} plants, authored in its own def)')
+        out.append('  -->')
+        out.append('')
     for fam, bs in FAMILIES.items():
+        if all(b in ours for b in bs):
+            continue
         out.append(f'  <!-- ============ {fam} ============ -->')
         for b, roster in sorted(bs.items(), key=lambda kv: -tiles.get(kv[0], 0)):
+            if b in ours:
+                continue
             # ⛔ NO MayRequire. The dump's packageId names the mod that last RETEXTURED a
             # def, not the one that defines it: Core's `Desert` reports GRiNDTerra, so a
             # MayRequire built from it would skip Core biomes whenever that mod is absent.
@@ -625,6 +760,19 @@ def main() -> int:
         out.append('')
     out.append('  <!-- ============ plantDensity - the named exception list ============ -->')
     for b, (new_d, old_d, why) in DENSITY.items():
+        if b in ours:
+            # Same rule as wildPlants above: we author this def, so the ruling belongs in
+            # it, not in a patch that would silently outrank whatever it says. MEASURED
+            # 2026-09-21: RUT_Wasteland's own def already carries <plantDensity>0.12</>,
+            # this ruling's exact value - the operation was pure redundancy waiting to
+            # become a silent override.
+            out.append(f'  <!-- {b}: {old_d} -> {new_d} is carried by the AUTHORED def')
+            out.append('       (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/), not patched here.')
+            for line in textwrap.wrap(why, 92):
+                out.append(f'       {line}')
+            out.append('  -->')
+            out.append('')
+            continue
         out.append(f'  <!-- {b}: {old_d} -> {new_d}.')
         for line in textwrap.wrap(why, 92):
             out.append(f'       {line}')
@@ -640,7 +788,10 @@ def main() -> int:
     out.append('</Patch>')
     os.makedirs(os.path.dirname(PATCH), exist_ok=True)
     open(PATCH, 'w', encoding='utf-8').write('\n'.join(out) + '\n')
-    print(f"\nwrote {PATCH}  ({nb} roster + {len(DENSITY)} density operations)")
+    emitted = [b for bs in FAMILIES.values() for b in bs if b not in ours]
+    print(f"\nwrote {PATCH}  ({len(emitted)} roster + "
+          f"{len([b for b in DENSITY if b not in ours])} density operations; "
+          f"{len(ours)} biomes left to their own authored defs)")
     return 0
 
 

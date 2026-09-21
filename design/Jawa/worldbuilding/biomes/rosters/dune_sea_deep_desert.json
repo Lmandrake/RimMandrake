@@ -683,15 +683,19 @@
   },
   "flora": [
     {
-      "commonality": 0.04,
-      "def": "AB_GiantStikehr",
-      "law": "alien spike form, not Earth-nameable; dry standing form at trace density (dune sea §5: density absurdly low)"
+      "commonality": 0.1,
+      "def": "RSW_LightPipeNub",
+      "law": "EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20) — dune_sea.md SS4: the dune sea's whole visible flora."
     },
     {
       "commonality": 0.05,
-      "def": "Plant_Bloddle",
-      "law": "SW donor plant, alien name; trace density",
-      "note": "appearance eye test done (BLODDLE_DUNE_SEA_EYE_TEST_1, 2026-09-20): MEASURED green-dominant pixel fraction 0.0000 across all three variants, warm brown/tan body — passes dune_sea.md §6 no-green/no-leaves ban; see confidence"
+      "def": "RSW_Plant_Bloddle",
+      "law": "bloddle plant. Our own RSW_ port of Plant_Bloddle (DESERT_FAMILY_PORT_EXECUTION_1, fda35ff14)."
+    },
+    {
+      "commonality": 0.01,
+      "def": "RSW_Ollim",
+      "law": "EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20) — deep_desert.md SS4b's shade tree, sparse per the sheets' own \"if the roster looks healthy, it is wrong\" ruling."
     }
   ],
   "flora_purged": [
@@ -734,6 +738,10 @@
     {
       "def": "AB_DeadBowerTree",
       "reason": "deep desert §8 no-fuel law: dead standing wood is imported treasure, never scenery"
+    },
+    {
+      "def": "AB_GiantStikehr",
+      "reason": "REMOVED 2026-09-20 on the owner's eye (\"The giant mushroom seems misplaced\"). Alpha Biomes' own description makes it a Forsaken Crags organism; it is correctly carried there at 0.3."
     }
   ],
   "law_sources": [
