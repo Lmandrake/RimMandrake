@@ -282,3 +282,16 @@ assembly. A deployed-but-inactive mod is inert.
 ⚠️ Art is still owed: `Things/Pawn/Animal/Titanoslime/RM_Titanoslime` needs
 `_south`/`_east`/`_north` at 1024 px. Until then it renders **magenta** — that is the
 missing-texture colour, not a defect in the def.
+
+## 🔴 Owner rulings, 2026-09-21 (BENCH, question card)
+
+Five of the six defaults STAND. One is overturned:
+
+- 🔴 **#4 OVERTURNED — growth is PERMANENT, not reversible.** Once it grows it stays
+  huge; a fed slime is a permanently escalating threat. This is a behaviour change owed
+  in the build.
+- #1 finished digestion is lethal — stands.
+- #2 colonists are fair prey when it is hungry — stands.
+- #3 prey gate ≤ 0.5 × its own BodySize — stands.
+- #5 resident only, no incident letter, spawns at stages 1–3 — stands.
+- #6 the five stage labels stay on the inspect string — stands.

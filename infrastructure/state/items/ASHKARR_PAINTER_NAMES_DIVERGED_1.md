@@ -73,3 +73,12 @@ Every region-name literal in `ashkarr_paint.py` and `ashkarr_settle.py` appears 
 ## criteria
 
 Re-running either script would not rename, resurrect or orphan a single region.
+
+## 🔴 Owner ruling, 2026-09-21 (BENCH, question card)
+
+**No leading "The ". The live planet is right; the painter is wrong.**
+
+Strip the article from all 10 region literals in `ashkarr_paint.py` (and
+`ashkarr_settle.py` if it carries them) so the scripts match the planet. ⛔ Do NOT rename
+any live region — the planet is not edited by this ruling. The `Sootreach` ruling stands
+and `The South Crags` must not be resurrected.

@@ -64,3 +64,13 @@ No mod we authored is sitting deployed and switched off without a recorded reaso
 `ModsConfig.xml` was **not edited**. It is the live mod list, the other window was
 mid-verification on the running game, and `ModsConfig` describes the NEXT load — so a
 change now would silently alter their next one.
+
+## 🔴 Owner ruling, 2026-09-21 (BENCH, question card)
+
+**Activate BOTH** — `AshkarrFlora` and `GelatinousSlime` go into `ModsConfig.xml` at the
+correct load position. `RUT_Fuzz` (0.9, the heaviest AridShrubland row) starts spawning.
+
+⚠️ `GelatinousSlime` renders magenta until its art lands — that is the missing-texture
+colour, not a defect, and is not a reason to hold the activation.
+⚠️ A cold load is the cost of proving this. Sequence it with whatever else is waiting on a
+load rather than spending one on it alone.
