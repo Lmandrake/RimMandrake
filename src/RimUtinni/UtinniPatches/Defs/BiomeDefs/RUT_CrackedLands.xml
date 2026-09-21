@@ -3,6 +3,11 @@
 
   <!--
     RUT_CrackedLands                               UtinniPatches - authored 2026-09-09
+
+    🔴 FLOODEDCANYON_RM_MOD_BUILD_1 (2026-09-21): carrying the world until the
+    terminal paint; content lives in `mandrake.rm.floodedcanyon`; do not edit
+    here.
+
     BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
     the_cracked_lands.md (FROZEN). Replaces the donor `ZBiome_Badlands` (More
     Vanilla Biomes, Zylleon — a deliberately thin donor whose only real
