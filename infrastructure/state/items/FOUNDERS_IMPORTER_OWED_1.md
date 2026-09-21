@@ -118,3 +118,48 @@ strong (byte-identical detector agreement with the V2 save that WAS loaded live 
 Keeper md5s re-verified unchanged: `CANONICAL_ASHKARR_START_2026-09-12.rws`
 `75be9ecd4764a397e9802d997bb9e0b9`, `ASHKARR_FALLLINE_LABEL26_2026-09-21.rws`
 `31c981515d9e90dcacdb1f2110068527`.
+
+## live-test artifact is READY — one load closes this item
+
+Produced 2026-09-21 by BENCH, offline, from the shipped importer:
+
+```
+python3 design/Jawa/worldbuilding/founders/import_founders.py \
+  "<Saves>/XENOTYPE_SKIN_REVIEW_2026-09-20.rws" \
+  --out "<Saves>/FOUNDER_IMPORTER_LIVETEST_2026-09-21.rws"
+```
+
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\FOUNDER_IMPORTER_LIVETEST_2026-09-21.rws`
+(11,003,021 bytes)
+
+**VERIFIED OFFLINE by BENCH, against the produced file itself — not the importer's report:**
+
+- Destination's issued gene max **1633**; the importer allocated base **1634** and moved
+  every founder's genes above it (Nekko 329..368 → 1634..1673, … Sekki 1996..2035 →
+  1834..1873).
+- 🔴 **All 6 `Wimp` traits carry a `sourceGene` in 1647 / 1687 / 1727 / 1767 / 1807 /
+  1847 — every one ≥ 1634.** The collision that silently lost this trait from 5 of 6
+  founders is provably absent. That is the regression this item exists for.
+- Line endings consistent: 336,865 CR and 336,865 LF, so no lone LF — the binary-mode
+  requirement held and the file is not CRLF-corrupted.
+- The destination `XENOTYPE_SKIN_REVIEW_2026-09-20.rws` is **untouched** (10,723,960 bytes,
+  Sep 20 14:47) — `--out` was used.
+- Keepers re-verified unchanged: `CANONICAL_ASHKARR_START_2026-09-12.rws` md5
+  `75be9ecd4764a397e9802d997bb9e0b9`, `ASHKARR_FALLLINE_LABEL26_2026-09-21.rws` md5
+  `31c981515d9e90dcacdb1f2110068527`.
+- `selftest_import_founders.py` **28/28**, runner 67/68 → **68/69** (the one failure is the
+  pre-existing, unrelated `selftest_deployed_biome_refs.py` timeout).
+
+### the only thing left
+
+⚠️ **The importer's own output has never been through a game.** Offline evidence is strong
+but it is not a load.
+
+⇒ Load `FOUNDER_IMPORTER_LIVETEST_2026-09-21` and confirm via the bridge that all 6
+founders are present and **all 6 carry `Wimp`** (`jawa/pawn_traits`), plus their relation
+clique. That is the whole remaining step.
+
+🔴 It was NOT done in this sitting because the bridge was held by the other window for an
+unrelated live-verify batch, and ⛔ taking it would have ended their session. The game was
+already up on the full 618-mod list — so whoever gets the next bridge window should spend
+it here first; the artifact is built and waiting.
