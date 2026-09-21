@@ -137,3 +137,67 @@ All 85 slugs resolved to one of: built, queued, dropped, or superseded — with 
 ruling recorded per-slug, not as a bulk claim. This item does not close until that
 accounting exists; a partial pass may close a sub-batch instead if that fits the
 project's item-granularity practice better at build time.
+
+## 2026-09-20/21 (FOUNDRY, offline subagent) — desert sheet's 4 remaining slugs resolved
+
+Slice: the desert sheet's 4 slugs not already claimed by
+`DESERT_STAGGERSEED_BUILD_1`/`DESERT_SHADE_PLANTS_DESIGN_1` (another agent, in
+flight) or already built (`ultracactus`). Re-verified currency first, per this
+item's own "watch out" — and found the re-verify caught real drift: two of the
+four had ALREADY BEEN BUILT AND CLOSED by other work since this item's own
+2026-09-20 audit (same day), which is exactly the "time will pass before anyone
+builds against it" warning firing for real within hours, not days.
+
+- **`burst-predator-flagship-bursts-grabs-retreats-to-cool` → BUILT, already
+  closed.** `DESERT_BURST_PREDATOR_FLAGSHIP_1` shipped `RSW_WraidAlpha`
+  (`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_WraidAlpha.xml`,
+  commit `1d9360a71`) before this slice started. No action needed; recorded
+  here only so this slug is never re-queued.
+- **`shade-grid-mapcomponent-shadeat-the-keystone` → BUILT, already closed.**
+  This was the one slug this item's own "watch out" flagged as likely a
+  mechanics ask in disguise (`kind: "C#"` in `rosters/desert.json`, not
+  creature/plant) — correctly so, and it's done:
+  `DESERT_SHADE_GRID_KEYSTONE_1` landed `RM_MapComponent_ShadeGrid.ShadeAt`
+  plus two consumers (`RimMandrake.CreatureBehaviors`, commit `50c022770`)
+  before this slice started. No action needed.
+- **`filter-feeding-shade-whale-megafauna-body-donor-gr-paraceram` → BUILT
+  (def), C# behavior split to a new item.** No prior work existed for this
+  one (re-verified against `artpipe/done/`, `pending/`, `src/`, open items —
+  clean). Authored `RSW_ShadeWhale`
+  (`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShadeWhale.xml`): a
+  reskin of the already-ported `RSW_Horax` (body + art reused, retinted —
+  same zero-new-PNGs precedent as `RSW_WraidAlpha`/`RSW_Wraid`), re-purposed
+  herbivore/solitary per desert.md §4c, wired into `RUT_Desert.xml`'s
+  `wildAnimals` alongside (not replacing) the `RSW_Horax` placeholder it
+  supersedes as the biome's actual megafauna flagship. Carries
+  `RM_ShadeSeekingWanderExtension` — existing, previously-unused C#
+  infrastructure from `DESERT_SHADE_GRID_KEYSTONE_1` — so real shade-seeking
+  behaviour ships day one. The register's own donor note ("body donor:
+  GR_Paraceramuffalo, RESKIN SOURCE ONLY, GR_ defs never placed as-is") was
+  followed as a scale reference (bs 16 target), not a literal art source —
+  GR_Paraceramuffalo is a "dormant"-status cross-mod donor
+  (`design/Jawa/fauna/animal_census.csv`, Vanilla Genetics Expanded), and
+  reusing its texPath would have added a live external-mod art dependency
+  the register's own rule reads as exactly what it was warning against.
+  Filter-feeding and dung-seeding (desert.md §4c/§10 — no native
+  `FoodTypeFlags` route) are real C# work, deferred per
+  `rosters/desert.json`'s own "def can land first" note for this slug: filed
+  as `DESERT_SHADE_WHALE_FILTERFEED_1`.
+- **`glitter-birds-megafauna-shadow-commensals` → superseded/re-filed, not
+  built.** This is a mechanics ask, not a pure art/def commission: desert.md
+  §4c's "tiny glittering bird-like creatures that live their entire lives in
+  one animal's shadow" needs a shade-FOLLOW behaviour (track a specific
+  moving shadow, harder than the static `ShadeAt` query), and — caught only
+  by reading past this slug's own text — `EXTREME_DESERT_GIANT_COMMENSALS_1`
+  (open, unrelated dune_sea/deep_desert sheet) is already mid-design on the
+  IDENTICAL mechanism for a different host. Filing a fresh design pass here
+  would have duplicated that open item's own unresolved question. Filed
+  `DESERT_GLITTER_BIRDS_COMMENSALS_1` instead, scoped to depend on
+  `EXTREME_DESERT_GIANT_COMMENSALS_1`'s eventual shade-follow route rather
+  than re-deriving it, and cross-referenced back onto that item so its own
+  future builder knows there are two consumers now.
+
+All four resolved (2 already-built found on re-verify, 1 built this pass, 1
+re-filed as a correctly-scoped design item) — none skipped. 81 slugs across
+the other 25 sheet groups remain untouched by this slice; this item stays
+open.

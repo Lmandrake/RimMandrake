@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  COMMISSION_LEDGER_CLEANUP_1 (desert sheet slug
+  `filter-feeding-shade-whale-megafauna-body-donor-gr-paraceram`).
+  desert.md §4c/§10's whale-metaphor megafauna: "they filter-feed through the
+  sand, straining the buried canopy and the small life grazing it... a
+  megafauna IS a mobile shade patch — the only one that exists." The desert
+  roster (`rosters/desert.json` "new_defs") names the body donor as
+  `GR_Paraceramuffalo` (Vanilla Genetics Expanded, bodySize 16) but flags it
+  "RESKIN SOURCE ONLY, GR_ defs never placed as-is" — VGE is a "dormant"
+  donor in this campaign's fauna census
+  (`design/Jawa/fauna/animal_census.csv`), not a live dependency, so its
+  texPath is not reused here.
+
+  Reskinned instead from `RSW_Horax` (already-ported, "ours"-status donor,
+  same RSW mod, baseBodySize 15 — close enough to the sheet's bs16 target to
+  reuse body/art verbatim, exactly the RSW_WraidAlpha/RSW_Wraid precedent
+  from DESERT_BURST_PREDATOR_FLAGSHIP_1: same body, same texPath, a tint to
+  differentiate, zero new PNGs). `desert.json`'s fauna roster already carries
+  `Horax` as the desert's own placeholder for this megafauna band ("interim
+  ... positional megafauna until the shade-whale def lands") — RSW_Horax
+  stays wired in RUT_Desert.xml as its own entry (not removed, same
+  precedent), this def is the flagship it was standing in for.
+
+  Re-purposed from Horax's predator profile to the sheet's actual megafauna
+  role: herbivore/filter-feeder (not carnivore), solitary (not territorial
+  predator), calm (low manhunter chances) — "a mobile shade patch", not a
+  monster. Live birth instead of Horax's egg-laying: "whale-metaphor" reads
+  as mammal, and it drops the need for new egg art.
+
+  Shade-seeking wander is wired for real via `RM_ShadeSeekingWanderExtension`
+  (DESERT_SHADE_GRID_KEYSTONE_1, RM_CreatureBehaviors) — existing C#
+  infrastructure, zero new code, and per that extension's own source comment
+  the intended first consumer. This covers "they absorb enormous heat on the
+  crossing and radiate it fiercely once shade is reached" as an actual
+  in-game behaviour, not just prose.
+
+  NOT built here, and left as an explicit gap (filed as
+  DESERT_SHADE_WHALE_FILTERFEED_1): the sand filter-feeding mechanic itself
+  (desert.md §10: "C# — FoodTypeFlags is a closed enum with no terrain
+  member") and the dung-seeding "circulatory system" role (§4c: "they leave
+  massive dung at shade patches, and that dung immediately seeds young
+  plants"). `desert.json`'s own mechanic_load note for this slug says
+  explicitly "def can land first" — this file is that def landing; the
+  filter-feeding behaviour is deliberately deferred, not silently dropped.
+
+  Working name only, same status as `staggerseed` and `glitter-birds` in
+  desert.md's own Owed section — "shade whale" is descriptive, not an
+  owner-given name.
+-->
+<Defs>
+
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_ShadeWhale</defName>
+    <label>shade whale</label>
+    <description>A colossal, slow-moving grazer that crosses the open dayside in a single committed march, absorbing a furnace's worth of heat along the way. It filter-feeds through the sand as it goes, straining the buried canopy and the small life sheltering in it, and radiates the crossing's heat fiercely once it reaches shade — which is also the only moving shadow most of this desert ever sees. Nothing this large has a predator. Everything that can reach it rides in its shadow instead.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <MarketValue>6000</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>95</ComfyTemperatureMax>
+      <FilthRate>24</FilthRate>
+      <ArmorRating_Sharp>0.55</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.60</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.70</ArmorRating_Heat>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftHoof</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightHoof</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>spiked club-tail</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <modExtensions>
+      <!-- DESERT_SHADE_GRID_KEYSTONE_1's shade-seeking wander insert — steers
+           idle wandering toward RM_MapComponent_ShadeGrid.ShadeAt cells
+           instead of a uniform-random destination. Existing infrastructure,
+           first real consumer. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadeSeekingWanderExtension">
+        <minShadeToPrefer>0.5</minShadeToPrefer>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Horax</body>
+      <predator>false</predator>
+      <herdAnimal>false</herdAnimal> <!-- solitary — "a megafauna IS a mobile shade patch, the only one that exists" (desert.md §4c) -->
+      <baseBodySize>16.0</baseBodySize>
+      <baseHealthScale>12.0</baseHealthScale>
+      <baseHungerRate>2.2</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <gestationPeriodDays>25</gestationPeriodDays>
+      <leatherDef>RSW_Leather_Horax</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <trainability>None</trainability>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.10</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>90</lifeExpectancy>
+      <wildBiomes>
+        <Desert>0.015</Desert>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>RSW_Pawn_Horax_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Horax_Death</soundDeath>
+          <soundCall>RSW_Pawn_Horax_Call</soundCall>
+          <soundAngry>RSW_Pawn_Horax_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_ShadeWhale</defName>
+    <label>shade whale</label>
+    <race>RSW_ShadeWhale</race>
+    <combatPower>650</combatPower>
+    <ecoSystemWeight>0.08</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Horax/Horax</texPath>
+          <color>(178, 148, 104)</color> <!-- pale sun-baked ochre/tan, reskin over the shared Horax art — desert.md §9 palette, zero new PNGs -->
+          <drawSize>2.2</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Horax/Horax_Dessicated</texPath>
+          <drawSize>2.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Horax/Horax</texPath>
+          <color>(178, 148, 104)</color>
+          <drawSize>6.4</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Horax/Horax_Dessicated</texPath>
+          <drawSize>6.4</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Horax/Horax</texPath>
+          <color>(178, 148, 104)</color>
+          <drawSize>8.8</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Horax/Horax_Dessicated</texPath>
+          <drawSize>8.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
