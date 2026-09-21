@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:47:14Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-21T01:53:47Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -936,15 +936,6 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
-## SWBESTIARY_MISSING_BODYPART_DEFS_1 Eight RSW_ body-part defs are referenced by RSW_DesertPortA_Bodies.xml and defined nowhere
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  what is wrong
-prose:    infrastructure/state/items/SWBESTIARY_MISSING_BODYPART_DEFS_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1421,16 +1412,6 @@ thin:     no ## spec, no ## verify
 summary:  VENOMVINELIVEVERIFY1 — quicktest the venomvine's contact venom in a live game
 prose:    infrastructure/state/items/VENOMVINE_LIVE_VERIFY_1.md
 
-## SWBESTIARY_BODYPART_LIVE_VERIFY_1 Confirm the body-part repoint clears Player.log on a live load
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     verify
-thin:     no ## spec, no ## verify
-summary:  SWBESTIARYBODYPARTLIVEVERIFY1 — prove the body-part repoint actually cleared the log
-prose:    infrastructure/state/items/SWBESTIARY_BODYPART_LIVE_VERIFY_1.md
-
 ## SHADE_WHALE_ECOLOGY_LIVEPROOF_1 Live-prove the shade whale filter-feeds and its dung seeds
 state:    proposed
 row:      unassigned
@@ -1480,3 +1461,13 @@ kind:     build
 thin:     no ## spec, no ## verify
 summary:  VENOMVINEFORTRESSPASSABILITY1 — venomvine fortress: size-gated passability C for the shrubland thicket
 prose:    infrastructure/state/items/VENOMVINE_FORTRESS_PASSABILITY_1.md
+
+## BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 BiomeFlora_Ashkarr.xml's PatchOperationReplace wipes RUT_Desert's authored wildPlants, so RM_Leachmoss/RM_Venomvine/RSW_Ultracactus never spawn
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify
+summary:  BIOMEFLORAPATCHWIPESWILDPLANTS1 — a generated patch replaces RUTDesert's whole wildPlants list, so nothing we…
+prose:    infrastructure/state/items/BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1.md
