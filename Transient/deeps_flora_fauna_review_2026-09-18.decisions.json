@@ -1,111 +1,117 @@
 {
- "decidedCount": 16,
- "decisions": {
-  "RSW_AaroxisDendoria": {
-   "at": "2026-09-19T06:01:49.878Z",
-   "decision": "cut",
-   "note": "",
-   "prefill": "keep"
+  "decidedCount": 16,
+  "decisions": {
+    "RSW_AaroxisDendoria": {
+      "at": "2026-09-19T06:01:49.878Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_AaroxisDendoriaLarvae": {
+      "at": "2026-09-19T06:01:55.719Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_BloodropLarvae": {
+      "at": "2026-09-19T06:03:11.789Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_BloodropMoth": {
+      "at": "2026-09-19T05:54:10.809Z",
+      "decision": "regen",
+      "note": "give it sacks that it uses to store drained body fluids. Strangely, if it drains any day-side races with normal warm iron blood, it becomes poisoned and rapidly dies. Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Call it a Drinker.",
+      "prefill": "keep"
+    },
+    "RSW_BovineBeetle": {
+      "at": "2026-09-19T05:56:02.393Z",
+      "decision": "regen",
+      "note": "Horrible, total remake. This should be huge, bodysize 4. A small room-sized blob of pale yellow substance with a glass-like carapace, many small legs, and one large pincer-ending arm. Truly alien. Call it a Grabber. Give it great strength to Hold someone with its pincer and slowly crush them each round.",
+      "prefill": "keep"
+    },
+    "RSW_BovineBeetleLarvae": {
+      "at": "2026-09-19T06:01:56.303Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_FacetMoth": {
+      "at": "2026-09-19T06:03:55.080Z",
+      "decision": "cut",
+      "note": "Please propose more truly alien hydrocarbon-based life forms that are utterly different than anything on the dayside... we need to repopulate this biome's fauna significantly with surprising life forms.",
+      "prefill": "keep"
+    },
+    "RSW_FacetMothLarvae": {
+      "at": "2026-09-19T06:03:05.178Z",
+      "decision": "regen",
+      "note": "A stubby larva-like creature that builds armor out of crystal shards it collects along the ground. Emits a powerful psychic stun on anyone that gets too close and alarms it. Taming one produces a soothing effect on those around it. Call it a Soulchime.",
+      "prefill": "keep"
+    },
+    "RSW_Gembug": {
+      "at": "2026-09-19T05:57:07.016Z",
+      "decision": "regen",
+      "note": "Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Strangely beautiful rounded-jewel-like body with carb-like legs and eye-like spots around its body like a starfish.",
+      "prefill": "keep"
+    },
+    "RSW_GlowSlug": {
+      "at": "2026-09-19T05:54:35.271Z",
+      "decision": "regen",
+      "note": "Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Call it a Glowbulb. Make it actually glow.",
+      "prefill": "keep"
+    },
+    "RSW_Megapleura": {
+      "at": "2026-09-19T05:57:23.171Z",
+      "decision": "regen",
+      "note": "Same body plan, but Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life",
+      "prefill": "keep"
+    },
+    "RSW_MossBeetle": {
+      "at": "2026-09-19T06:01:01.840Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_MossBeetleLarvae": {
+      "at": "2026-09-19T06:01:39.300Z",
+      "decision": "regen",
+      "note": "Slender, maggot-like bodyplan, pale yellow liquids and pale blue exterior, oozing and curling along the tunnels.",
+      "prefill": "keep"
+    },
+    "RSW_PodWorm": {
+      "at": "2026-09-19T06:03:22.485Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_RoyalRhino": {
+      "at": "2026-09-19T06:03:19.609Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_ShatterjawBeetle": {
+      "at": "2026-09-19T06:00:27.207Z",
+      "decision": "regen",
+      "note": "A shiny black beetle, strangely conventional and out of place in this alien tunnel system. Enormous, thick, strong mandibles.",
+      "prefill": "keep"
+    }
   },
-  "RSW_AaroxisDendoriaLarvae": {
-   "at": "2026-09-19T06:01:55.719Z",
-   "decision": "cut",
-   "note": "",
-   "prefill": "keep"
+  "frozen": true,
+  "frozen_at": "2026-09-18",
+  "frozen_meaning": "Owner verdicts on the Lantern Deeps fauna: 7 cut, 8 regen with briefs, 1 keep; flora all keep. The sidecar refuses writes; build_species_sheet.py must not regenerate this file.",
+  "owner_said": "Accept Lantern Deeps ruling and follow its regeneration request.",
+  "posture": "blacklist",
+  "reviewStatus": {
+    "at": "2026-09-18",
+    "by": "OWNER",
+    "evidence": "reviewed_by=\"OWNER\", owner_said=\"Accept Lantern Deeps ruling and follow its regeneration request.\", frozen=true with a detailed frozen_meaning breakdown",
+    "state": "ruled"
   },
-  "RSW_BloodropLarvae": {
-   "at": "2026-09-19T06:03:11.789Z",
-   "decision": "cut",
-   "note": "",
-   "prefill": "keep"
-  },
-  "RSW_BloodropMoth": {
-   "at": "2026-09-19T05:54:10.809Z",
-   "decision": "regen",
-   "note": "give it sacks that it uses to store drained body fluids. Strangely, if it drains any day-side races with normal warm iron blood, it becomes poisoned and rapidly dies. Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Call it a Drinker.",
-   "prefill": "keep"
-  },
-  "RSW_BovineBeetle": {
-   "at": "2026-09-19T05:56:02.393Z",
-   "decision": "regen",
-   "note": "Horrible, total remake. This should be huge, bodysize 4. A small room-sized blob of pale yellow substance with a glass-like carapace, many small legs, and one large pincer-ending arm. Truly alien. Call it a Grabber. Give it great strength to Hold someone with its pincer and slowly crush them each round.",
-   "prefill": "keep"
-  },
-  "RSW_BovineBeetleLarvae": {
-   "at": "2026-09-19T06:01:56.303Z",
-   "decision": "cut",
-   "note": "",
-   "prefill": "keep"
-  },
-  "RSW_FacetMoth": {
-   "at": "2026-09-19T06:03:55.080Z",
-   "decision": "cut",
-   "note": "Please propose more truly alien hydrocarbon-based life forms that are utterly different than anything on the dayside... we need to repopulate this biome's fauna significantly with surprising life forms.",
-   "prefill": "keep"
-  },
-  "RSW_FacetMothLarvae": {
-   "at": "2026-09-19T06:03:05.178Z",
-   "decision": "regen",
-   "note": "A stubby larva-like creature that builds armor out of crystal shards it collects along the ground. Emits a powerful psychic stun on anyone that gets too close and alarms it. Taming one produces a soothing effect on those around it. Call it a Soulchime.",
-   "prefill": "keep"
-  },
-  "RSW_Gembug": {
-   "at": "2026-09-19T05:57:07.016Z",
-   "decision": "regen",
-   "note": "Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Strangely beautiful rounded-jewel-like body with carb-like legs and eye-like spots around its body like a starfish.",
-   "prefill": "keep"
-  },
-  "RSW_GlowSlug": {
-   "at": "2026-09-19T05:54:35.271Z",
-   "decision": "regen",
-   "note": "Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Call it a Glowbulb. Make it actually glow.",
-   "prefill": "keep"
-  },
-  "RSW_Megapleura": {
-   "at": "2026-09-19T05:57:23.171Z",
-   "decision": "regen",
-   "note": "Same body plan, but Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life",
-   "prefill": "keep"
-  },
-  "RSW_MossBeetle": {
-   "at": "2026-09-19T06:01:01.840Z",
-   "decision": "cut",
-   "note": "",
-   "prefill": "keep"
-  },
-  "RSW_MossBeetleLarvae": {
-   "at": "2026-09-19T06:01:39.300Z",
-   "decision": "regen",
-   "note": "Slender, maggot-like bodyplan, pale yellow liquids and pale blue exterior, oozing and curling along the tunnels.",
-   "prefill": "keep"
-  },
-  "RSW_PodWorm": {
-   "at": "2026-09-19T06:03:22.485Z",
-   "decision": "cut",
-   "note": "",
-   "prefill": "keep"
-  },
-  "RSW_RoyalRhino": {
-   "at": "2026-09-19T06:03:19.609Z",
-   "decision": "cut",
-   "note": "",
-   "prefill": "keep"
-  },
-  "RSW_ShatterjawBeetle": {
-   "at": "2026-09-19T06:00:27.207Z",
-   "decision": "regen",
-   "note": "A shiny black beetle, strangely conventional and out of place in this alien tunnel system. Enormous, thick, strong mandibles.",
-   "prefill": "keep"
-  }
- },
- "frozen": true,
- "posture": "blacklist",
- "savedAt": "2026-09-18T23:03:55-0700",
- "savedBy": "review-sheet-sidecar",
- "sheetId": "deeps_flora_fauna_review_2026-09-18",
- "writeCount": 93,
- "frozen_at": "2026-09-18",
- "reviewed_by": "OWNER",
- "owner_said": "Accept Lantern Deeps ruling and follow its regeneration request.",
- "frozen_meaning": "Owner verdicts on the Lantern Deeps fauna: 7 cut, 8 regen with briefs, 1 keep; flora all keep. The sidecar refuses writes; build_species_sheet.py must not regenerate this file."
+  "reviewed_by": "OWNER",
+  "savedAt": "2026-09-18T23:03:55-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "deeps_flora_fauna_review_2026-09-18",
+  "writeCount": 93
 }

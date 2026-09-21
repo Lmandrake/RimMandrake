@@ -39,6 +39,12 @@
     }
   },
   "posture": "review",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "only savedBy=\"review-sheet-sidecar\"/writeCount=16/savedAt present — proves the sidecar received real writes but names no human and carries no owner quote, so who ruled (if anyone) is not recorded",
+    "state": "unknown"
+  },
   "savedAt": "2026-09-06T08:10:29-0700",
   "savedBy": "review-sheet-sidecar",
   "writeCount": 16

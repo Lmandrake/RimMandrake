@@ -1,563 +1,569 @@
 {
-  "sheetId": "desert_family_review_2026-09-20",
-  "posture": {
-    "mode": "blacklist",
-    "explain": "Default is KEEP. Owner ruled every row REPLACE: nothing is cut, everything is re-authored as ours."
-  },
-  "frozen": true,
-  "writeCount": 0,
+  "approvalRoute": "BLANKET ruling in conversation 2026-09-20, applied by BENCH to all 109 rows uniformly. NOT row-by-row in the sheet - the sheet was never clicked. Every row therefore carries the SAME decision and the same note; no row carries an individual owner judgement, and the uniformity is his instruction, not a default. Execution: DESERT_FAMILY_PORT_EXECUTION_1.",
+  "approvedAt": "2026-09-20T09:27:00-07:00",
+  "approvedBy": "owner",
+  "approvedSaid": "Yes. All of the desert sheet should be keep but replace with our own version of creature and art. Port. All of them. Now.",
+  "decisionRowCount": 109,
   "decisions": {
-    "A_Kreetle": {
+    "A_AA_BoulderMit": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_FrilledGorg": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Gorg": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Iriaz": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_LongtailGorg": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Scavrat": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Bantha": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Eopie": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Lothcat": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Mudhorn": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Ronto": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Scurrier": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Sketto": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Igitz": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_RSW_ImperialToad": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_RSW_Jellypot": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Terrorworm": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Urusai": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_WompRat": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Kybuck": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Massiff": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Shyrack": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_JOE_Landopus": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Pufferpig": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_AA_DesertAve": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Anooba": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Corinathoth": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Gizka": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Gutkurr": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Jamel": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Nuna": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Worrt": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Wraid": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_AA_Needleroll": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Hrumph": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_IridonianReek": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Jimvu": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Kwi": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Mynock": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_RSW_MossBeetle": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Skalder": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Uvak": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_VFEI2_Fuelmite": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Varactyl": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Zeer": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
     "A_AA_Cactipine": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "A_Falumpaset": {
+    "A_AA_DesertAve": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Grank": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Jakobeast": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Nerf": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Qormot": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Rat": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Shaak": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Strill": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_TeeMuss": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_WarWyrm": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Cannok": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
     "A_AA_Eyeling": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_KraytDragon": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Whisperbird": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_AA_Needlepost": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_AA_Wildpawn": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Bolotaur": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Clodhopper": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_FeralGrazer": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_GraniteSlug": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Krykna": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_OuterRim_MSEDroid": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_OuterRim_SalvageAssistDroid": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Pikobis": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Runyip": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Convor": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_OuterRim_DUMDroid": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_OuterRim_GNKDroid": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Vulptex": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
     "A_AA_Gigantelope": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_AA_SandProwler": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_OuterRim_FX7Droid": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_OuterRim_MuckrakerDroid": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Voorpak": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_FeralNerf": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_Porg": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_AA_Terramorph": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_AA_BoulderMit": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_AA_SandSquid": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_AA_Wildpod": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "A_OuterRim_DestroyerDroid": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
     "A_AA_MammothWorm": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "A_Horax": {
+    "A_AA_Needlepost": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "A_KowakianMonkeyLizard": {
+    "A_AA_Needleroll": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "A_GreaterKraytDragon": {
+    "A_AA_SandProwler": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_AA_SandSquid": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_AA_Terramorph": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
     "A_AA_TetraSlug": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_Plant_ShrubLow": {
+    "A_AA_Wildpawn": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_AB_HardyGrass": {
+    "A_AA_Wildpod": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_RG_Plant_AridGrass": {
+    "A_Anooba": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_Plant_Brambles": {
+    "A_Bantha": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_Plant_Bush": {
+    "A_Bolotaur": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_Plant_Chakroot_Wild": {
+    "A_Cannok": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_Plant_Ripthorn": {
+    "A_Clodhopper": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_Plant_HealrootWild": {
+    "A_Convor": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_Plant_Nysyllin_Wild": {
+    "A_Corinathoth": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_Plant_HubbaGourd_Wild": {
+    "A_Eopie": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_RG_Plant_CreepStern": {
+    "A_Falumpaset": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_RG_Plant_CrimsonCushion": {
+    "A_FeralGrazer": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
-    "P_RG_Plant_Dervish": {
+    "A_FeralNerf": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_FrilledGorg": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Gizka": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Gorg": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_GraniteSlug": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Grank": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_GreaterKraytDragon": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Gutkurr": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Horax": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Hrumph": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Igitz": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Iriaz": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_IridonianReek": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_JOE_Landopus": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Jakobeast": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Jamel": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Jimvu": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_KowakianMonkeyLizard": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_KraytDragon": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Kreetle": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Krykna": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Kwi": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Kybuck": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_LongtailGorg": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Lothcat": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Massiff": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Mudhorn": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Mynock": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Nerf": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Nuna": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_OuterRim_DUMDroid": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_OuterRim_DestroyerDroid": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_OuterRim_FX7Droid": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_OuterRim_GNKDroid": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_OuterRim_MSEDroid": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_OuterRim_MuckrakerDroid": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_OuterRim_SalvageAssistDroid": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Pikobis": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Porg": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Pufferpig": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Qormot": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_RSW_ImperialToad": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_RSW_Jellypot": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_RSW_MossBeetle": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Rat": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Ronto": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Runyip": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Scavrat": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Scurrier": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Shaak": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Shyrack": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Skalder": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Sketto": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Strill": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_TeeMuss": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Terrorworm": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Urusai": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Uvak": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_VFEI2_Fuelmite": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Varactyl": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Voorpak": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Vulptex": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_WarWyrm": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Whisperbird": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_WompRat": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Worrt": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Wraid": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "A_Zeer": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
     "P_AB_Aaklac": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
     "P_AB_DessertTree": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
-    },
-    "P_Plant_Bloddle": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     },
     "P_AB_GiantStikehr": {
+      "at": "2026-09-20T09:27:00-07:00",
       "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.",
-      "at": "2026-09-20T09:27:00-07:00"
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_AB_HardyGrass": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_Plant_Bloddle": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_Plant_Brambles": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_Plant_Bush": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_Plant_Chakroot_Wild": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_Plant_HealrootWild": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_Plant_HubbaGourd_Wild": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_Plant_Nysyllin_Wild": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_Plant_Ripthorn": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_Plant_ShrubLow": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_RG_Plant_AridGrass": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_RG_Plant_CreepStern": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_RG_Plant_CrimsonCushion": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
+    },
+    "P_RG_Plant_Dervish": {
+      "at": "2026-09-20T09:27:00-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art."
     }
   },
-  "savedBy": "owner-verbal-ruling",
-  "approvedBy": "owner",
-  "approvedAt": "2026-09-20T09:27:00-07:00",
-  "approvedSaid": "Yes. All of the desert sheet should be keep but replace with our own version of creature and art. Port. All of them. Now.",
-  "approvalRoute": "BLANKET ruling in conversation 2026-09-20, applied by BENCH to all 109 rows uniformly. NOT row-by-row in the sheet - the sheet was never clicked. Every row therefore carries the SAME decision and the same note; no row carries an individual owner judgement, and the uniformity is his instruction, not a default. Execution: DESERT_FAMILY_PORT_EXECUTION_1.",
+  "frozen": true,
   "frozenMeaning": "Owner ruled the whole desert family REPLACE on 2026-09-20. Reopen only on his word.",
-  "decisionRowCount": 109
+  "posture": {
+    "explain": "Default is KEEP. Owner ruled every row REPLACE: nothing is cut, everything is re-authored as ours.",
+    "mode": "blacklist"
+  },
+  "reviewStatus": {
+    "at": "2026-09-20T09:27:00-07:00",
+    "by": "owner",
+    "evidence": "approvedBy=\"owner\", approvedSaid=\"Yes. All of the desert sheet should be keep but replace with our own version of creature and art. Port. All of them. Now.\" — a blanket ruling (approvalRoute says the sheet itself was never clicked; every row carries the same decision by instruction)",
+    "state": "ruled"
+  },
+  "savedBy": "owner-verbal-ruling",
+  "sheetId": "desert_family_review_2026-09-20",
+  "writeCount": 0
 }

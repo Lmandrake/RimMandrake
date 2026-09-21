@@ -1,8 +1,4 @@
 {
-  "sheetId": "deeps_art_review_2026-09-18",
-  "posture": "whitelist",
-  "frozen": false,
-  "writeCount": 1,
   "decisions": {
     "arpeau_a_v1": {
       "decision": "keep",
@@ -197,7 +193,17 @@
       "note": "owner: approve all (2026-09-18)"
     }
   },
-  "reviewed_by": "OWNER",
+  "frozen": false,
+  "owner_said": "We approve all of the art review of Lantern deeps!",
+  "posture": "whitelist",
+  "reviewStatus": {
+    "at": "2026-09-18",
+    "by": "OWNER",
+    "evidence": "reviewed_by=\"OWNER\", reviewed_at=\"2026-09-18\", owner_said=\"We approve all of the art review of Lantern deeps!\"",
+    "state": "ruled"
+  },
   "reviewed_at": "2026-09-18",
-  "owner_said": "We approve all of the art review of Lantern deeps!"
+  "reviewed_by": "OWNER",
+  "sheetId": "deeps_art_review_2026-09-18",
+  "writeCount": 1
 }
