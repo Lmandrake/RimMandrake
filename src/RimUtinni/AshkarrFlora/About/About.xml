@@ -58,7 +58,25 @@ and texPath here is provisional pending
 `infrastructure/state/items/STAGGERSEED_SHIPPING_NAME_1.md`. Art is owed and was
 deliberately not queued for the same reason; the graphics point at Core
 berry-bush/berry/meal art as a stated interim so nothing renders
-magenta.</description>
+magenta.
+
+SWEETLINE_WOOL_HARVEST_1 (2026-09-21) — the harvest arid_shrubland.md §4
+promised and never shipped: `RUT_SweetlineTree` inherited TreeBase's
+destructive wood harvest, which fells a named landmark tree. Now ships
+`RUT_SweetlineWool` (`RUT_SweetlineTree_Items.xml`, ParentName WoolBase,
+shaped on `RSW_WoolBantha`) as the tree's harvestedThingDef, with
+`harvestAfterGrowth` set (0.05, vanilla's own non-destructive-harvest
+mechanism — `PlantProperties.HarvestDestroys` is `harvestAfterGrowth <= 0f`)
+so the tree survives every harvest and cut-plant job alike. harvestYield
+dropped 160→20: a rare hanging harvest, not lumber. Chose ACCUMULATE over a
+flat yield — the wool is *shed* by passing giants, not grown by the tree,
+and it is the cheaper build besides (one existing PlantProperties field,
+already used twice elsewhere in this mod). Unblocks
+`SHRUBLAND_TREE_GUARDIAN_1`. Naming is provisional off "sweetline"/"giant-
+wool", never off a giant species name — the giants are still unnamed
+(`ARIDSHRUBLAND_SHIPPING_NAMES_1`). Art owed, not queued (Codex quota-blocked
+until ~2026-09-26); texPath points at the future render location per this
+mod's own established convention.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>

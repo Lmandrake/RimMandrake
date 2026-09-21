@@ -11,8 +11,16 @@ THE MECHANISM (TREE_GRAPHICS_OWNERSHIP_1, per the mod's own About.xml and
 `design/Jawa/worldbuilding/biomes/arid_shrubland.md` §4): ships
 `RUT_SweetlineTree` (`ParentName="TreeBase"`, NOT `DeciduousTreeBase` -- this
 is a fixed-sun tidally-locked world with no season cycle, arid_shrubland.md
-§6 rule 3) at `plant.visualSizeRange` 5.0~6.5, well above vanilla's biggest
-common tree, matching the owner's "huge, ancient, never small" ruling.
+§6 rule 3) at `plant.visualSizeRange` 7.7~10.0 (raised from an earlier
+5.0~6.5 cap per the owner's "ten cells wide" ruling, ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1),
+well above vanilla's biggest common tree, matching the owner's "huge,
+ancient, never small" ruling.
+
+SWEETLINE_WOOL_HARVEST_1 (2026-09-21): the harvest changed from TreeBase's
+inherited destructive wood harvest to a non-destructive giant-wool harvest
+(`harvestedThingDef` RUT_SweetlineWool, `harvestAfterGrowth` 0.05 instead of
+TreeBase's implicit 0 -- see RUT_AshkarrFlora_Plants.xml's own header for the
+full mechanism). EXPECT_FIELDS below reflects the new values.
 `Flammability` is dropped to 0.1 (from `TreeBase`'s 0.8) per
 arid_shrubland.md §6 rule 9's hard "no flammable living flora" ban -- not a
 balance judgment. Three subscribed "better trees" mods
@@ -83,10 +91,14 @@ EXPECT_FIELDS = {
     "statBases.Flammability": "0.1",
     "statBases.Mass": "900",
     "statBases.BeautyOutdoors": "10",
-    "plant.visualSizeRange": "5.0~6.5",
+    "plant.visualSizeRange": "7.7~10.0",
     "plant.growDays": "240",
     "plant.harvestWork": "4200",
-    "plant.harvestYield": "160",
+    "plant.harvestedThingDef": "RUT_SweetlineWool",   # SWEETLINE_WOOL_HARVEST_1: was WoodLog (inherited)
+    "plant.harvestYield": "20",                        # SWEETLINE_WOOL_HARVEST_1: was 160 (wood)
+    "plant.harvestTag": "Standard",                     # SWEETLINE_WOOL_HARVEST_1: was inherited "Wood"
+    "plant.harvestAfterGrowth": "0.05",                 # SWEETLINE_WOOL_HARVEST_1: makes HarvestDestroys false
+    "plant.forceIsTree": "True",                        # SWEETLINE_WOOL_HARVEST_1: harvestTag != "Wood" now
     "plant.wildClusterRadius": "0",
     "plant.wildClusterWeight": "0.05",
     "plant.wildOrder": "4",

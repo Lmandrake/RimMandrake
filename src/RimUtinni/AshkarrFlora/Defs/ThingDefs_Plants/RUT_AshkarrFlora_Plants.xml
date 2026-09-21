@@ -55,6 +55,47 @@
     "ancient" and "huge" respectively; not a balance pass. mustBeWildToSow
     stays true (inherited) — the tree can never be planted by a colonist,
     matching "each grows only on the optimum."
+
+    SWEETLINE_WOOL_HARVEST_1 (2026-09-21): the harvest itself. TreeBase's
+    inherited wood harvest (harvestedThingDef WoodLog, harvestYield 160,
+    HarvestDestroys — TreeBase never sets harvestAfterGrowth, so it defaults
+    to 0 and PlantProperties.HarvestDestroys, `harvestAfterGrowth <= 0f`,
+    reads true) is replaced outright with a non-destructive wool harvest —
+    this landmark tree cannot ship with a mechanism that fells it.
+    harvestedThingDef -> RUT_SweetlineWool (RUT_SweetlineTree_Items.xml);
+    harvestYield dropped from 160 to 20 — "a rare hanging harvest", not a
+    lumber yield. harvestTag changed off the inherited "Wood" to "Standard"
+    (matching RUT_Fuzz/RUT_Staggerseed elsewhere in this file), which would
+    silently flip PlantProperties.IsTree false (`harvestTag == "Wood"` is
+    its only test with forceIsTree unset) — forceIsTree added explicitly so
+    every other tree-only system here (wind-block, roof interference, the
+    stump/fell code path this harvest no longer even reaches) still reads
+    this as a tree.
+
+    Accumulate-vs-flat, decided per the item's step 4: ACCUMULATE, using
+    vanilla's own regrowth mechanic (harvestAfterGrowth > 0), the same
+    mechanism RUT_Fuzz and RUT_Staggerseed already use in this file. Verified
+    against the decompiled engine (RimSage, RimWorld/Plant.cs
+    PlantCollected): when HarvestDestroys is false the harvest/cut job never
+    reaches Destroy() or TrySpawnStump() at all — it only resets
+    `growthInt = def.plant.harvestAfterGrowth` — so BOTH the Harvest and Cut
+    Plant designations become non-destructive together, which is exactly
+    "the tree must survive being harvested," not just "survives the harvest
+    button." harvestAfterGrowth set low (0.05, well under harvestMinGrowth's
+    inherited 0.40) so a stripped tree needs growDays*(0.40-0.05) = 240*0.35
+    = 84 in-game days (~1.4 years) before it can be harvested again — giants
+    take a long time to snag another coat's worth, matching "rare." Chose
+    accumulate over a flat plant yield because it is the literal fiction
+    ("shed" over time by passing giants, not grown by the tree) AND because
+    it is the cheaper build here specifically: harvestAfterGrowth is a
+    single existing PlantProperties field with two precedents already in
+    this file, not new code. Confirmed the visual-size risk is a non-issue:
+    RUT_SweetlineTree's own visualSizeRange (7.7~10.0) already has a floor
+    high enough — Plant.cs LerpThroughRange interpolates size across the
+    WHOLE 0..1 growth range, not just harvestMinGrowth..1 — that even a
+    freshly-stripped tree at growth 0.05 renders at ~7.8 of 10.0 tiles, not
+    a sapling; the "never small trees" ruling holds through every harvest
+    cycle by construction, not by luck.
   -->
   <ThingDef ParentName="TreeBase">
     <defName>RUT_SweetlineTree</defName>
@@ -78,7 +119,11 @@
       <visualSizeRange>7.7~10.0</visualSizeRange>
       <growDays>240</growDays>
       <harvestWork>4200</harvestWork>
-      <harvestYield>160</harvestYield>
+      <harvestedThingDef>RUT_SweetlineWool</harvestedThingDef>
+      <harvestYield>20</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.05</harvestAfterGrowth>
+      <forceIsTree>true</forceIsTree>
       <wildClusterRadius>0</wildClusterRadius>
       <wildClusterWeight>0.05</wildClusterWeight>
       <wildOrder>4</wildOrder>
