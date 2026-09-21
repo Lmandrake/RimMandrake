@@ -137,3 +137,41 @@ running produce will need its own deploy before the load.
 
 ⛔ **Do not add a seventh entry without deleting one.** This sheet's own history is four
 previous loads where entries 3+ were "NOT REACHED".
+
+
+## ✅ THE LOAD RAN — BENCH, 2026-09-21, results
+
+Full list, **620 active mods**. Launched 08:42Z, **bridge up at 1005 s (16.7 min)**.
+⚠️ `launch_and_wait.sh` printed `TIMEOUT after 273s` exactly as this sheet warned — its exit
+code was meaningless; the bridge line was the signal. Log preserved:
+`Transient/Player.log.coldload_2026-09-21` (905,939 bytes, 13,069 lines).
+MEASURED **245 distinct errors** (329 occurrences) via `measure count-errors` — ⛔ not a
+`grep -c`, which counts lines and inflates a 30-line stack trace into 30 errors.
+
+| # | entry | verdict |
+|---|---|---|
+| 1 | Pyrelands rename | ✅ **PASS.** `RM_FE_Pyrelands` absent entirely; `RM_PyrelandsDensityStartup` present; zero errors naming Pyrelands. The three C# string literals resolve. |
+| 2 | GelatinousSlime | ⚠️ **LOADS, with three faults** — `GELATINOUSSLIME_FIRST_LOAD_ERRORS_1`. Not regressions: the mod had never been active, so these were invisible until now. |
+| 3 | Titanoslime permanent growth | ⏸️ **NOT TESTED — not testable from a load.** Said so before launching. Needs a bridge test. |
+| 4 | Founders importer | ⏸️ **NOT REACHED.** Needs the live-test save loaded, a separate act. |
+| 5 | Bridge non-colonist pawn | ⏸️ not attempted — it never needed this load. |
+| 6 | World label hierarchy | ⏸️ not attempted — needs the owner's look first. |
+
+### What the load found that nobody was looking for
+
+- 🔴 **`PATCH_FILES_UNDER_DEFS_INERT_1`** — 2 patch files sit under `Defs/`, so RimWorld
+  parses them as Defs and 7 operations are inert. One of them is an **owner ruling of
+  2026-09-16** (*"remove the VFE factory, not the manual one"*) that has never taken effect.
+- 🔴 A **dead mod**: `JumppackForMeleeAI` throws in its static constructor. Third-party, not
+  ours, not caused by this load — but a dead mod is the highest-priority finding in any log.
+- ⚠️ Several standing checks read above baseline (16 cross-refs, 105 Scribe, 165
+  ConfigErrors vs baseline 17, 8 texture, 8 patch-fail). **UNTRIAGED.** Some are plainly
+  EnvironmentalHazards fallout — it was activated recently and references `RUT_TibannaGas`,
+  `RUT_DeadCreep`, `RUT_ScaldVent`, `RUT_FoundrySalvageCache`, `RUT_FoundryTowerEntrance`,
+  none of which exist. ⛔ Do not assume the rest are; the baselines in `harvest_log.py` were
+  set against a different mod list and may not be comparable at 620.
+- ✅ `JawaBench ready 0 MISSING` is **expected, not a fault** — its init line is lazy and
+  fires on the first `jawa/` tool CALL, not at assembly load.
+
+⚠️ **The game is UP and the bridge is held by BENCH** as of this writing. Entries 3 and 4
+are now cheap — they need the running game, not another load.

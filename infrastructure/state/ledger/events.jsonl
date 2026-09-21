@@ -10594,3 +10594,9 @@
 {"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_DEFNAME_RENAME_1","ts":"2026-09-21T08:46:28Z"}
 {"seat":"FOUNDRY","event":"start","id":"PYRELANDS_DEFNAME_RENAME_1","ts":"2026-09-21T08:46:29Z"}
 {"seat":"FOUNDRY","event":"close","id":"PYRELANDS_DEFNAME_RENAME_1","sha":"bf43fce41cd50ae1f7dbc5d17c8cbd29aecd772f","ts":"2026-09-21T08:58:11Z"}
+{"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-21T08:59:45Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BARREN_REGIONS_NAME_NOTHING_1","ts":"2026-09-21T09:00:01Z"}
+{"seat":"FOUNDRY","event":"start","id":"BARREN_REGIONS_NAME_NOTHING_1","ts":"2026-09-21T09:00:02Z"}
+{"seat":"BENCH","event":"file","id":"PATCH_FILES_UNDER_DEFS_INERT_1","title":"Two patch files sit under Defs/ so RimWorld parses them as Defs - 7 operations inert, including a 2026-09-16 owner ruling","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T09:04:17Z"}
+{"seat":"BENCH","event":"file","id":"GELATINOUSSLIME_FIRST_LOAD_ERRORS_1","title":"First load with GelatinousSlime active: wildGroupSize in the wrong element twice, plus an RM_Titanoslime def error","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T09:04:18Z"}
+{"seat":"BENCH","event":"note","id":"PYRELANDS_DEFNAME_RENAME_1","text":"Independently confirmed live by BENCH on the full-list cold load 2026-09-21 (620 mods, bridge up 1005s): RM_FE_Pyrelands absent from Player.log entirely, RM_PyrelandsDensityStartup present, zero errors naming Pyrelands - the three renamed C# string literals resolve","ts":"2026-09-21T09:05:00Z"}
