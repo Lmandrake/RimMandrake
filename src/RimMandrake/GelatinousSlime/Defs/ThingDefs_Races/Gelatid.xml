@@ -47,11 +47,12 @@
       <baseHungerRate>0.18</baseHungerRate>
       <baseHealthScale>0.7</baseHealthScale>
       <foodType>VegetarianRoughAnimal</foodType>
-      <!-- meatDef/leatherDef deliberately left to the generator. Pointing
-           meatDef at RM_RawSlime would read better (butcher a gelatid, get
-           the body back) but no vanilla animal sets meatDef to a
-           hand-authored def, so it is an unverified route and a tuning call,
-           not something to guess into a shipped def. -->
+      <!-- meatDef/leatherDef deliberately left to the generator: a tuning
+           call nobody has made, not a blocked one. The route itself is
+           verified vanilla shape — Core's Devourer sets
+           <specificMeatDef>Meat_Twisted</specificMeatDef>, a hand-authored
+           def (MEASURED 2026-09-20), and RM_Titanoslime uses the same route
+           to yield RM_RawSlime. -->
       <lifeExpectancy>8</lifeExpectancy>
       <!-- Spawning is declared ONCE, in the BiomeDef's wildAnimals. A
            race-side `wildBiomes` entry here would be a second source for the

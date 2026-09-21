@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_Titanoslime — design/RimMandrake/RM_titanoslime_spec.md, item
+    TITANOSLIME_SLIME_BIOME_1. Owner ask, 2026-09-20: "a titanic green slime
+    ... It should have the devoured ability to swallow pawns whole of nearly
+    any size ... is it possible to have a creature that gets larger as it eats?"
+
+    🔴 NO ANOMALY DEPENDENCY, AND THAT IS THE WHOLE REASON THIS IS HAND-BUILT.
+    Vanilla CompDevourer is in the core assembly but every def it touches
+    (JobDefOf.DevourerDigest, AnimationDefOf.DevourerDigesting,
+    AbilityDefOf.ConsumeLeap_Devourer) is Defs/Anomaly/ content — MEASURED from
+    the decompile. RM_CompEngulfer re-implements the hold shape with zero DLC
+    defs, and the swallow is an ordinary melee maneuver rather than an ability,
+    so the vanilla animal think tree reaches it with no custom think tree.
+
+    🔑 GROWTH IS THE LIFE-STAGE LADDER, LOCKED. See Defs/LifeStageDefs/
+    Titanoslime.xml. lifeStageAges below MUST stay five entries in the same
+    order as the PawnKindDef's five lifeStages: CurLifeStageIndex indexes both.
+    The minAges are 0/100/200/300/400 with lifeExpectancy 1000 purely as a
+    belt-and-braces guard — while the stage index is locked, AgeTickInterval
+    returns early and no birthday ever fires (MEASURED, Pawn_AgeTracker).
+
+    ART IS OWED (spec §7): one 1024px three-facing set at the texPath below,
+    a glassy bright-green HILL of jelly with faint half-dissolved "entries"
+    inside. Never eyes, never a mouth, never limbs. Until it lands the sprite
+    renders magenta, which is deliberate and honest — the texPath is what binds
+    the art, so the PNGs drop in later without touching this file.
+  -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Titanoslime</defName>
+    <label>titanoslime</label>
+    <description>A hill of green jelly that has learned to go and fetch. Titanoslimes are lobes of the body itself, glassy and slow, and they read the way the body reads: by taking a thing in whole. Shapes drift inside them — a shell, a jawbone, a tool haft — entries not yet filed. What a titanoslime finishes reading it returns to the flow, and there is nothing left to bury.\n\nCut one and it leaks gelatids. Starve one, or lead it off the body onto dry ground, and it shrinks. Let one eat, and it does not stop growing.</description>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <MarketValue>0</MarketValue>
+      <!-- Cold-soft on purpose: nights in the Slime push it under comfort, so
+           the biome itself is the leash on a colossus. -->
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Flammability>0.15</Flammability>
+      <!-- Blades slide through jelly; clubs work. -->
+      <ArmorRating_Sharp>0.45</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <Wildness>1.0</Wildness>
+      <!-- Scaled by BodySize through StatPart_BodySize, so a colossus yields
+           far more than this. -->
+      <MeatAmount>300</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <Mass>360</Mass>
+      <FilthRate>6</FilthRate>
+    </statBases>
+    <tradeability>None</tradeability>
+    <uiIconScale>2.0</uiIconScale>
+    <modExtensions>
+      <!-- Resistant by identity, exactly like the gelatid: the body does not
+           read what is already made of itself. -->
+      <li Class="RimMandrake.GelatinousSlime.SlimeResistantExtension" />
+    </modExtensions>
+    <comps>
+      <li Class="RimMandrake.GelatinousSlime.RM_CompProperties_Engulfer" />
+    </comps>
+    <race>
+      <body>RM_AmorphousBody</body>
+      <baseBodySize>6</baseBodySize>
+      <baseHealthScale>6</baseHealthScale>
+      <!-- A big eater; thrumbo is 1.75. Hunger is what drives the hunt. -->
+      <baseHungerRate>2.0</baseHungerRate>
+      <!-- MEASURED flag arithmetic (RimWorld/FoodTypeFlags.cs):
+           OmnivoreAnimal = 0x1F1B carries Corpse (0x8) but NOT Plant (0x40).
+           Spec §3.2's prose requires grazing slime-grass between hunts, so the
+           correct constant is OmnivoreRoughAnimal = 0x1F5B — the same set plus
+           Plant. Spec §3.1 named OmnivoreAnimal and flagged the corpse bit
+           VERIFY AT BUILD; the corpse bit is there, the plant bit was the one
+           actually missing. -->
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>true</predator>
+      <!-- The static vanilla prey filter (FoodUtility.IsAcceptablePreyFor).
+           The LIVE gate is RM_CompEngulfer.CanEngulf: prey <= 0.5x own
+           BodySize, so "nearly any size" is earned by growing. -->
+      <maxPreyBodySize>20</maxPreyBodySize>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <!-- Hurt it and it comes for you. Also the route by which colonists
+           become prey on difficulties where predatorsHuntHumanlikes is off. -->
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <!-- It buds; it does not breed. No genders, no gestation, no litter. -->
+      <hasGenders>false</hasGenders>
+      <herdAnimal>false</herdAnimal>
+      <wildGroupSize>1~1</wildGroupSize>
+      <bloodDef>RM_Filth_SlimeSmear</bloodDef>
+      <bloodSmearDef>RM_Filth_SlimeSmear</bloodSmearDef>
+      <!-- Butcher a titanoslime, get the body back. MEASURED precedent:
+           vanilla Devourer sets specificMeatDef to Meat_Twisted, a
+           hand-authored def, so this route is verified vanilla shape. -->
+      <specificMeatDef>RM_RawSlime</specificMeatDef>
+      <meatLabel>raw slime</meatLabel>
+      <lifeExpectancy>1000</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>RM_TitanoslimeStage1</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+        </li>
+        <li>
+          <def>RM_TitanoslimeStage2</def>
+          <minAge>100</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+        </li>
+        <li>
+          <def>RM_TitanoslimeStage3</def>
+          <minAge>200</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+        </li>
+        <li>
+          <def>RM_TitanoslimeStage4</def>
+          <minAge>300</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+        </li>
+        <li>
+          <def>RM_TitanoslimeStage5</def>
+          <minAge>400</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tools>
+      <li>
+        <label>engulfing mass</label>
+        <capacities>
+          <li>RM_Engulf</li>
+        </capacities>
+        <!-- The fallback slam, dealt when the size gate fails or the engulf
+             setting is off. RM_Verb_MeleeEngulf swallows instead when it can. -->
+        <power>12</power>
+        <cooldownTime>3.0</cooldownTime>
+        <armorPenetration>0.1</armorPenetration>
+        <linkedBodyPartsGroup>RM_Maw</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>1.0</chanceFactor>
+      </li>
+      <li>
+        <label>left pseudopod</label>
+        <labelNoLocation>pseudopod</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <armorPenetration>0.15</armorPenetration>
+        <linkedBodyPartsGroup>RM_Pseudopods</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>right pseudopod</label>
+        <labelNoLocation>pseudopod</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <armorPenetration>0.15</armorPenetration>
+        <linkedBodyPartsGroup>RM_Pseudopods</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+    </tools>
+  </ThingDef>
+
+  <!--
+    ⚠️ FIVE lifeStages, matching the race's five lifeStageAges index for index.
+    Every stage points at the SAME texture set and differs only in drawSize —
+    the Thrumbo precedent (one texPath, several drawSizes). drawSizes are the
+    honest render for each mass by creature_size_model.md's vanilla law
+    (1.995 * bodySize^0.375), rounded up a little because a slime is wider than
+    it is tall.
+  -->
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Titanoslime</defName>
+    <label>titanoslime</label>
+    <race>RM_Titanoslime</race>
+    <combatPower>900</combatPower>
+    <!-- WildAnimalSpawner sums ecoSystemWeight against the map's density
+         budget (MEASURED), so one titanoslime costs what six gelatids would
+         and the spawner stops adding animals while it lives. -->
+    <ecoSystemWeight>6</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Titanoslime/RM_Titanoslime</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(1.4, 0.5, 1.0)</volume>
+            <offset>(0, 0, -0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Titanoslime/RM_Titanoslime</texPath>
+          <drawSize>4.0</drawSize>
+          <color>(150, 160, 130)</color>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Titanoslime/RM_Titanoslime</texPath>
+          <drawSize>5.0</drawSize>
+          <shadowData>
+            <volume>(1.8, 0.6, 1.3)</volume>
+            <offset>(0, 0, -0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Titanoslime/RM_Titanoslime</texPath>
+          <drawSize>5.0</drawSize>
+          <color>(150, 160, 130)</color>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Titanoslime/RM_Titanoslime</texPath>
+          <drawSize>6.0</drawSize>
+          <shadowData>
+            <volume>(2.2, 0.7, 1.6)</volume>
+            <offset>(0, 0, -0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Titanoslime/RM_Titanoslime</texPath>
+          <drawSize>6.0</drawSize>
+          <color>(150, 160, 130)</color>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Titanoslime/RM_Titanoslime</texPath>
+          <drawSize>7.5</drawSize>
+          <shadowData>
+            <volume>(2.8, 0.8, 2.0)</volume>
+            <offset>(0, 0, -0.35)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Titanoslime/RM_Titanoslime</texPath>
+          <drawSize>7.5</drawSize>
+          <color>(150, 160, 130)</color>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Titanoslime/RM_Titanoslime</texPath>
+          <drawSize>9.0</drawSize>
+          <shadowData>
+            <volume>(3.4, 0.9, 2.4)</volume>
+            <offset>(0, 0, -0.4)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Titanoslime/RM_Titanoslime</texPath>
+          <drawSize>9.0</drawSize>
+          <color>(150, 160, 130)</color>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

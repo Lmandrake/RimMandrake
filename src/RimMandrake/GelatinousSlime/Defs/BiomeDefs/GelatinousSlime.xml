@@ -185,6 +185,12 @@
     -->
     <wildAnimals>
       <RM_Gelatid>3.0</RM_Gelatid>
+      <!-- TITANOSLIME_SLIME_BIOME_1. Rare on purpose: the kind's
+           ecoSystemWeight of 6 means one titanoslime costs the map's animal
+           budget what six gelatids would, so the spawner stops adding animals
+           while it lives. Commonality is multiplied at load by the Mod
+           Settings rarity slider (TitanoslimeSpawnTuning). -->
+      <RM_Titanoslime>0.12</RM_Titanoslime>
     </wildAnimals>
 
   </BiomeDef>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    TITANOSLIME_SLIME_BIOME_1 — the three parts of RM_AmorphousBody (spec §3.2).
+
+    🔑 MovingLimbCore SITS ON THE CORE MASS, NOT ON THE PSEUDOPODS, and that is
+    deliberate. MEASURED: PawnCapacityWorker_Moving.CanHaveCapacity returns
+    body.HasPartWithTag(MovingLimbCore), and CalculateLimbEfficiency returns 0
+    (permanently downed) when fewer than half the MovingLimbCore parts are
+    functional. Vanilla's Snake solves this the same way — SnakeBody itself
+    carries MovingLimbCore — so a legless body moves at full speed and losing a
+    pseudopod costs melee output, never mobility. Spec §3.2: "MoveSpeed is
+    unaffected by part loss."
+
+    ⛔ NO SightSource AND NO EYE PART, EVER. The biome's art law is "never eyes";
+    a body that declared a sight source would make every blindness hediff, every
+    "kick material in eyes" maneuver and every tooltip talk about eyes it does
+    not have.
+  -->
+
+  <BodyPartDef>
+    <defName>RM_SlimeMass</defName>
+    <label>slime mass</label>
+    <hitPoints>80</hitPoints>
+    <skinCovered>false</skinCovered>
+    <permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
+    <executionPartPriority>500</executionPartPriority>
+    <tags>
+      <li>MovingLimbCore</li>
+    </tags>
+  </BodyPartDef>
+
+  <!-- The one vital. Destroying it zeroes Consciousness (lethal) and
+       BloodPumping (lethal) at once — MEASURED shape: vanilla Brain carries
+       ConsciousnessSource, vanilla Heart carries BloodPumpingSource. -->
+  <BodyPartDef>
+    <defName>RM_Nucleus</defName>
+    <label>nucleus</label>
+    <hitPoints>40</hitPoints>
+    <skinCovered>false</skinCovered>
+    <permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
+    <canSuggestAmputation>false</canSuggestAmputation>
+    <tags>
+      <li>ConsciousnessSource</li>
+      <li>BloodPumpingSource</li>
+    </tags>
+  </BodyPartDef>
+
+  <BodyPartDef>
+    <defName>RM_Pseudopod</defName>
+    <label>pseudopod</label>
+    <hitPoints>40</hitPoints>
+    <skinCovered>false</skinCovered>
+    <permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
+    <frostbiteVulnerability>0.1</frostbiteVulnerability>
+  </BodyPartDef>
+
+</Defs>
