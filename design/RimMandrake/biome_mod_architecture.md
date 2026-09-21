@@ -488,37 +488,24 @@ own signature plants. The campaign flora pack does not survive the split.
 `VFEI2_`, `GR_` and other donor entries stay in the `RM_` defs with their `MayRequire`;
 `DONOR_DEFS_PORT_TO_OURS_1` removes them over time. No extra work at the split.
 
-### Still open — Q6, Q7 and Q10
+**Q6 — the Lantern Deeps' def and tier: MOVE IT UP.** The whole mod becomes
+`mandrake.rm.lanterndeeps` with the def renamed `RM_LanternDeeps`; only the Kotor stygium
+gate patch carves back out to Utinni. (Q6b — allowlist vs temperature test — was already
+settled by a closed item and was never his to answer.)
 
+**Q7 — the two-def window: ADD A WARN HOOK.** For the duration between the split and the
+final paint, a hook WARNs on any edit under `UtinniPatches/Defs/BiomeDefs/`. Not a hard
+block — an emergency correction to a frozen def must stay possible. ⚠️ Note for whoever
+builds it: a WARN hook's output goes to the OWNER's screen, not to an agent's — an agent
+never sees it fire, so the hook is a guard for him, not a check an agent can rely on.
 
-**Q6 — The Lantern Deeps' def and tier.** MEASURED: the injection layer already owns its
-biome def, `RUT_LanternDeeps`, since `CAVERNS_PARITY_BUILD_1` (2026-09-19); the donor
-`BMT_CrystalCaverns` is UNMEASURED in the current dump and not referenced by the pocket
-map's C#. So the question is not "which donor def" but: (a) does the whole
-`mandrake.rut.lanterndeeps` mod move to `mandrake.rm.lanterndeeps` with the def renamed
-`RM_LanternDeeps`, carving only the Kotor stygium gate patch back out to Utinni
-(*recommendation: yes*); and (b) the FROZEN sheet says the host test is temperature, while
-the shipped code carries a biome allowlist (`RUT_NightsideIce`, `RUT_PropaneLake`,
-`BiomeGRimond`) — at the move, does the allowlist become the temperature test the sheet
-rules, or is the allowlist an amendment he made and the sheet is what needs the detail?
+**Q10 — the seven misfiled creatures: ALL SEVEN MOVE TO RIMMANDRAKE.** `RUT_FurnaceBeast`,
+`RUT_FireHawk`, `RUT_Emberscythe`, `RUT_FireWasp`, `RUT_Flamefang`, `RUT_Barbslinger` and
+`RUT_Sytheclaw` each move into their biome's RimMandrake mod, renamed `RM_`. One sweep, not
+a per-creature call. None has a canon-library entry and each is a campaign-original
+re-authoring, so none of them is Star Wars content.
 
-**Q7 — Confirmed: one paint, at the end.** His 2026-09-20 ruling (*"we will do the
-painting once and for all"*) is written into §5 as Phase B. The one consequence to
-confirm: until that paint, every migrated biome exists as TWO defs — the frozen `RUT_X`
-the world carries and the `RM_X` the content lives in — with the `RUT_` copy read-only
-under a header comment. That window is as long as Phase A takes. Is a lint hook that WARNs
-on edits under `UtinniPatches/Defs/BiomeDefs/` wanted for the duration, or is the header
-comment enough?
+### Nothing is open
 
-
-
-**Q10 — Campaign creature defs that are not Star Wars.** MEASURED
-(`biome_split_factcheck.md` F5): seven `RUT_` creatures sit in `<wildAnimals>` today, not
-three — `RUT_FurnaceBeast`, `RUT_FireHawk`, `RUT_Emberscythe`, `RUT_FireWasp`,
-`RUT_Flamefang`, `RUT_Barbslinger` (all on the Pyrelands) and `RUT_Sytheclaw` (Pyrelands,
-Greentide and the Contagion). None has an entry in the 137-item
-`design/RimStarWars/canon_references/` library; all seven are explicitly commented in
-their own files as campaign-original re-authorings of donor creatures (Alpha Animals /
-Vanilla Genetics Expanded), not Star Wars. Every one of them is a RimMandrake creature
-misfiled at the Utinni tier and belongs in its biome's mod. This spec does not decide per
-creature; it flags that the move is the moment to, one at a time.
+🔴 **All ten questions in this section are RULED as of 2026-09-21.** Q2 and Q5 await only
+his pick from `Transient/biome_name_drafts_2026-09-21.md`; every other row can start.
