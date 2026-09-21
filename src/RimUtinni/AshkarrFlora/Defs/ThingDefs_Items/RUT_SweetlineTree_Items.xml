@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SweetlineTree_Items.xml                    SWEETLINE_WOOL_HARVEST_1
+
+  The harvest arid_shrubland.md §4 "The sweetline trees" promised and never
+  shipped: "Giants rub against them, so the bark snags shed giant-wool — a
+  rare hanging harvest for whoever dares the traffic." RUT_SweetlineTree
+  (RUT_AshkarrFlora_Plants.xml) previously only offered TreeBase's inherited
+  wood harvest, which fells the tree — wrong for a named, ancient, unique
+  landmark that roads follow. See items/SWEETLINE_WOOL_HARVEST_1.md for the
+  full account.
+
+  Shape follows the existing wool precedent on disk, RSW_WoolBantha
+  (src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_Bantha_Items.xml):
+  ParentName="WoolBase", override only texPath/color/statBases/stuffProps,
+  everything else (comps, thingCategories, stackLimit) inherited unchanged.
+
+  Naming: 🔑 provisional. The giants themselves are unnamed
+  (ARIDSHRUBLAND_SHIPPING_NAMES_1, awaiting the owner's pick from
+  Transient/shrubland_name_drafts_2026-09-21.md) — this defName/label is
+  built off "sweetline" (the tree's own already-shipped name) and the
+  generic fiction term "giant-wool", never off a giant species name that
+  does not exist yet, so it needs no rename once the giants are named.
+
+  Art: none exists (checked infrastructure/artpipe/done/, _artsrc/,
+  registry.jsonl and art_status.json by subject — no "wool"/"giant-wool"/
+  "sweetline wool" hits; the only "giant*" art on disk is unrelated giant-
+  fungus/flower plant renders). The Codex channel is quota-blocked until
+  ~2026-09-26 — per SWEETLINE_WOOL_HARVEST_1's brief this pass does NOT file
+  an artpipe job (pending/active/registry files are out of scope for this
+  item) and does NOT touch the daemon. texPath below points at where the
+  render will land, same convention already used twice in this mod
+  (RUT_Fuzz, RUT_StaggerseedFruit) for art that is owed rather than in
+  hand — it will read as missing until a job is filed and the daemon lands
+  it after the reset.
+-->
+<Defs>
+
+  <ThingDef ParentName="WoolBase">
+    <defName>RUT_SweetlineWool</defName>
+    <label>giant-wool</label>
+    <description>Long, silver-grey hanks of wool, snagged and shed where the biome's giants have rubbed their flanks raw against a sweetline tree for longer than any settlement nearby has stood. Thick and oily with the animal that grew it — warmer than any sheared fleece, and taken only by whoever is willing to work in the giants' shadow.</description>
+    <graphicData>
+      <!-- Job not yet filed (Codex quota-blocked until ~2026-09-26) — see header. -->
+      <texPath>Things/Item/Resource/RUT_SweetlineWool</texPath>
+      <color>(196,193,186)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>5.5</MarketValue>
+      <StuffPower_Armor_Sharp>0.42</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Heat>1.3</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>36</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>14</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(196,193,186)</color>
+      <commonality>0.04</commonality>
+    </stuffProps>
+  </ThingDef>
+
+</Defs>
