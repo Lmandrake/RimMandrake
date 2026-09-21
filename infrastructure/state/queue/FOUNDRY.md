@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T23:52:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-21T00:07:51Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -901,7 +901,7 @@ summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you ha
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
 ## PORTED_BEAST_MECHANICS_REBUILD_1 Rebuild the three dropped donor mechanics (steel-eating, chemfuel ejection x2) in our own C#
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -926,6 +926,33 @@ target:   v1
 kind:     task
 summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
 prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
+
+## DESERT_STAGGERSEED_BUILD_1 Author the staggerseed cycle plant (corpse-dispersal + euphoric prepared-seed dish)
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+summary:  DESERTSTAGGERSEEDBUILD1 — author the staggerseed cycle plant
+prose:    infrastructure/state/items/DESERT_STAGGERSEED_BUILD_1.md
+
+## DESERT_SHADE_PLANTS_DESIGN_1 Design pass: desert's defending shade plants (thorn/contact damage, no native CompProperties)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  DESERTSHADEPLANTSDESIGN1 — design pass on the desert's defending shade plants
+prose:    infrastructure/state/items/DESERT_SHADE_PLANTS_DESIGN_1.md
+
+## COMMISSION_LEDGER_CLEANUP_1 85 genuinely-owed new-art/def commissions from the 118-row ledger
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
+prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1341,16 +1368,6 @@ blocked:  Owner ruled 2026-09-18: no race def is patched until BMT_FAUNA_ABSORPT
 summary:  (no items/ROT_FAUNA_KIN_WIRING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
-## PORTED_BEAST_MECHANICS_REBUILD_1 Rebuild the three dropped donor mechanics (steel-eating, chemfuel ejection x2) in our own C#
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-blocked:  Criterion 2 (ferroclaw eats steel, 75->60 exactly 1/5) and criterion 3's core mechanism now DEFINITIVELY confirmed live. Criteria 4-6 (ability gizmo/AI-use, cindermite cone, settings persistence) still blocked: rimworld/select_pawn and ToolMapForPawns both refuse a non-colonist pawn, so a hostile predator's ranged ability could not be forced to fire this session. Next pass needs a bridge route to select/force-mental-state a non-colonist pawn, or a scripted colonist-attacks-first provocation.
-summary:  PORTEDBEASTMECHANICSREBUILD1 — rebuild the three dropped donor mechanics in our own C
-prose:    infrastructure/state/items/PORTED_BEAST_MECHANICS_REBUILD_1.md
-
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1373,42 +1390,12 @@ thin:     no ## spec
 summary:  SWBESTIARYUNPREFIXEDDONORDEFS1 — donor names and dead bodies left in a shipping mod
 prose:    infrastructure/state/items/SWBESTIARY_UNPREFIXED_DONOR_DEFS_1.md
 
-## DESERT_STAGGERSEED_BUILD_1 Author the staggerseed cycle plant (corpse-dispersal + euphoric prepared-seed dish)
+## BRIDGE_SELECT_NONCOLONIST_PAWN_1 rimworld/select_pawn and ToolMapForPawns both REFUSE a non-colonist pawn, so no wild or hostile creature's ability can be fired on demand - the sole blocker on PORTED_BEAST_MECHANICS_REBUILD_1 criteria 4-6, whose criteria 2 and 3 are already confirmed live
 state:    proposed
 row:      unassigned
-needs:    owner
+needs:    deploy
 target:   v1
 kind:     build
-thin:     no ## spec
-summary:  DESERTSTAGGERSEEDBUILD1 — author the staggerseed cycle plant
-prose:    infrastructure/state/items/DESERT_STAGGERSEED_BUILD_1.md
-
-## DESERT_SHADE_PLANTS_DESIGN_1 Design pass: desert's defending shade plants (thorn/contact damage, no native CompProperties)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec
-summary:  DESERTSHADEPLANTSDESIGN1 — design pass on the desert's defending shade plants
-prose:    infrastructure/state/items/DESERT_SHADE_PLANTS_DESIGN_1.md
-
-## CREATURE_REGISTER_GEN_CORPSE_MISMATCH_1 gen_creature_register.py refuses: CORPSE CROSS-CHECK FAILED 1242 vs 1265
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec
-summary:  CREATUREREGISTERGENCORPSEMISMATCH1 — the register generator refuses on its own self-check
-prose:    infrastructure/state/items/CREATURE_REGISTER_GEN_CORPSE_MISMATCH_1.md
-
-## COMMISSION_LEDGER_CLEANUP_1 85 genuinely-owed new-art/def commissions from the 118-row ledger
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec
-summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
-prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
+thin:     spec, verify and criteria all present
+summary:  A bridge call that takes a pawn id or defName and selects it, and a call that makes it
+prose:    infrastructure/state/items/BRIDGE_SELECT_NONCOLONIST_PAWN_1.md

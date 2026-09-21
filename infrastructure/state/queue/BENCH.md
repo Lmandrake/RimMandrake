@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T23:52:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-21T00:07:51Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -117,15 +117,6 @@ kind:     build
 summary:  ROTSIZEREJUDGEAPPLY1
 prose:    infrastructure/state/items/ROT_SIZE_REJUDGE_APPLY_1.md
 
-## PYRELANDS_WRONG_BIOME_DEF_1 The Pyrelands content is wired to RM_FE_Pyrelands, which has ZERO tiles on the frozen world - the biome the player actually visits is ZBiome_Grasslands and it is missing the fauna roster, the ash weather and the fuel bed while keeping the donor's ordinary rain and snow
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  PYRELANDSWRONGBIOMEDEF1 — the Pyrelands was built onto a def nobody can reach
-prose:    infrastructure/state/items/PYRELANDS_WRONG_BIOME_DEF_1.md
-
 ## TITANOSLIME_SLIME_BIOME_1 Owner ask: a Titanoslime for RUT_Slime, devour-whole + grows-as-it-eats
 state:    doing
 row:      unassigned
@@ -221,7 +212,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -229,7 +220,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -670,3 +661,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FALL_LINE_MAJOR_REGION_LABEL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FALL_LINE_MAJOR_REGION_LABEL_1.md
+
+## BIOME_PAINT_ONCE_AT_THE_END_1 Owner ruling 2026-09-20: the worldmap is painted ONCE, after every biome is its own RimMandrake mod - no per-biome repaint, no work gated on a tile count, and stop reading the exported tiles CSV as the state of the planet
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  BIOMEPAINTONCEATTHEEND1 — the worldmap gets painted once, after every biome is a mod
+prose:    infrastructure/state/items/BIOME_PAINT_ONCE_AT_THE_END_1.md
+
+## BIOME_MOD_SPLIT_EXECUTION_1 Execute the biome mod split: 27 painted BiomeDefs into 26 RimMandrake mods per design/RimMandrake/biome_mod_architecture.md - BLOCKED on 10 owner questions in its section 7, above all the desert names and whether Scarlands must be renamed off a vanilla 1.6 collision
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Execute the phases in biomemodarchitecture.md §5, in order, once §7 is ruled.
+prose:    infrastructure/state/items/BIOME_MOD_SPLIT_EXECUTION_1.md
