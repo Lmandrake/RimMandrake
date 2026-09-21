@@ -42,6 +42,22 @@
   Working name only ("the tunnel snake" - arid_shrubland.md's Owed section
   lists "the snake-analogs" among the names still the owner's pick). Folded
   into `ARIDSHRUBLAND_SHIPPING_NAMES_1` alongside the fuzz and the giant.
+
+  TUNNELSNAKE_VIOLATES_SIZE_LADDER_1 (2026-09-21): shipped at baseBodySize 2.0,
+  inside arid_shrubland.md's ratified LARGE-band void (1.5-3.5, numeric table
+  now in that doc's "size ladder" section). Note this is NOT the donor
+  Klorslug's own bodySize 1.5 noted above - that line describes Klorslug
+  (whose home biome is RUT_Greentide, a different ladder), not this def.
+  Brought into MEDIUM at baseBodySize 1.2 - comfortably under the 1.5 ceiling,
+  not gaming the boundary, and in line with this biome's other medium
+  interface-killers (Anooba 0.95, Massiff 0.85, Grank/Cannok 0.85, up to
+  Eopie's 1.4 ceiling). baseHealthScale, baseHungerRate, maxPreyBodySize,
+  combatPower and MarketValue rescaled with it (see inline comments below) -
+  melee tool `power` values were NOT touched: at 15-18 they already sit
+  in-line with this biome's existing medium predators (Anooba/Massiff bite
+  16) rather than being a bodySize-derived number, and meleeRange/carry
+  capacity/food need fall out of the engine's own bodySize math once the
+  field itself is corrected.
 -->
 <Defs>
 
@@ -54,7 +70,7 @@
       <MoveSpeed>3.2</MoveSpeed>
       <ComfyTemperatureMin>-0</ComfyTemperatureMin>
       <ComfyTemperatureMax>60</ComfyTemperatureMax>
-      <MarketValue>750</MarketValue>
+      <MarketValue>450</MarketValue> <!-- TUNNELSNAKE_VIOLATES_SIZE_LADDER_1: was 750 at bs 2.0, scaled down with bodySize/combatPower -->
       <ArmorRating_Blunt>0.35</ArmorRating_Blunt>
       <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
       <ToxicResistance>1</ToxicResistance>
@@ -147,12 +163,12 @@
     <receivesSignals>true</receivesSignals>
     <race>
       <body>RSW_Klorslug</body>
-      <baseHungerRate>0.55</baseHungerRate>
-      <baseBodySize>2.0</baseBodySize>
-      <baseHealthScale>3.0</baseHealthScale>
+      <baseHungerRate>0.45</baseHungerRate> <!-- TUNNELSNAKE_VIOLATES_SIZE_LADDER_1: was 0.55 at bs 2.0 -->
+      <baseBodySize>1.2</baseBodySize> <!-- TUNNELSNAKE_VIOLATES_SIZE_LADDER_1: was 2.0, inside the biome's banned LARGE band (1.5-3.5) - brought into MEDIUM, see file header -->
+      <baseHealthScale>1.8</baseHealthScale> <!-- TUNNELSNAKE_VIOLATES_SIZE_LADDER_1: was 3.0 at bs 2.0 -->
       <herdAnimal>false</herdAnimal>
       <predator>true</predator>
-      <maxPreyBodySize>4.0</maxPreyBodySize>
+      <maxPreyBodySize>2.4</maxPreyBodySize> <!-- TUNNELSNAKE_VIOLATES_SIZE_LADDER_1: was 4.0 at bs 2.0, kept at 2x own bodySize -->
       <specificMeatDef>RSW_Insectile_Meat</specificMeatDef>
       <leatherDef>RSW_Leather_Insectile</leatherDef>
       <fleshType>Insectoid</fleshType>
@@ -201,7 +217,7 @@
     <defName>RSW_TunnelSnake</defName>
     <label>the tunnel snake</label>
     <race>RSW_TunnelSnake</race>
-    <combatPower>320</combatPower>
+    <combatPower>190</combatPower> <!-- TUNNELSNAKE_VIOLATES_SIZE_LADDER_1: was 320 at bs 2.0, scaled down with baseHealthScale -->
     <ecoSystemWeight>0.35</ecoSystemWeight>
     <wildGroupSize>1</wildGroupSize>
     <specialTrainables>

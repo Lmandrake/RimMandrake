@@ -136,6 +136,19 @@ Prairie-style adaptations, alien key.
 exactly one thing: **the young of the huge**, walking the valley of death behind their
 parents. Being a predator here is difficult by design; nothing resident occupies large.
 
+🔑 **Numeric bands (amendment, adds detail only — `TUNNELSNAKE_VIOLATES_SIZE_LADDER_1`,
+2026-09-21), in `baseBodySize` units, derived from the roster's own MEASURED census
+(`rosters/arid_shrubland.json`) and `sweetline_guardian_spec.md` §"Band constraint first"
+(*"no resident creature in the LARGE band, 1.5–3.5 bodySize... therefore MEDIUM, capped at
+1.4"*):**
+
+| band | `baseBodySize` | evidence |
+|---|---|---|
+| small | up to ~0.7 | Iriaz 0.7 is the roster's own "top small resident" |
+| **medium** | **< 1.5** | ceiling proven by the guardian spec's 1.4 cap; occupied range in this biome's live roster is ~0.6–1.4 |
+| **large — VOID, no residents** | **1.5 – 3.5** | ban 4; the roster's eviction list alone carries ~60 creatures excluded on exactly this range, up to and including bs 3.5 |
+| huge | > 3.5 | Mudhorn/Corinathoth/AA_Wildpod/Ronto/Bantha/Skalder all sit at 4.0+, `RSW_ShrublandGiant` at 6.0 |
+
 - **Small** — the runway nations: fuzz-grazers, comb-lickers, thornhold nesters. They forbid
   rather than flee or fight: venom-armed, lashing from hidden places.
 - **Medium** — the interface killers: snake-analogs in the tunnels, edge-pouncers at the
@@ -248,8 +261,9 @@ always means someone lit it.** Smoke on the horizon is a person.
    incident that starts without an agent is a violation: **fire implies folly.**
 3. 🔴 **No day/night cycle, and no content depending on one** (as the desert; the clock here
    is the wind, not the sun).
-4. 🔴 **No resident creature in the LARGE band.** Large is legal only as the juvenile stage of
-   a huge species — a standalone large creature def in this biome is a violation.
+4. 🔴 **No resident creature in the LARGE band** (`baseBodySize` 1.5–3.5, see the numeric band
+   table above). Large is legal only as the juvenile stage of a huge species — a standalone
+   large creature def in this biome is a violation.
 5. 🔴 **No still-air baseline.** Weather defs for this biome carry wind; calm exists only as
    the Stall event. A windless ordinary day is a violation.
 6. 🔴 **No dense flora except venomvine.** No thickets, no forests, no clustered vegetation
