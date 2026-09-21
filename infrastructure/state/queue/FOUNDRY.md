@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T03:35:30Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-21T03:53:02Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -936,6 +936,33 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
+## FOUNDER_ROBE_MAGENTA_1 The founders' robe layer renders as flat magenta in the CANONICAL world - magenta is RimWorld's failed-texture colour; check guy762_Robes_jawa
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     investigate
+summary:  Find what guy762Robesjawa (and any sibling robe def on these pawns) sets as its
+prose:    infrastructure/state/items/FOUNDER_ROBE_MAGENTA_1.md
+
+## SHRUBLAND_SCRAPNEST_BIRDS_1 Scrap-nest bird-analogs: nest-theft C# + base-stealing candidate
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  SHRUBLANDSCRAPNESTBIRDS1 — scrap-nest bird-analogs: nest-theft C + base-stealing candidate
+prose:    infrastructure/state/items/SHRUBLAND_SCRAPNEST_BIRDS_1.md
+
+## SHRUBLAND_GIANT_ENRAGE_1 RSW_ShrublandGiant: large-young life-stage + parental enrage-on-approach C#
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+summary:  SHRUBLANDGIANTENRAGE1 — RSWShrublandGiant: large-young life-stage + parental enrage-on-approach C
+prose:    infrastructure/state/items/SHRUBLAND_GIANT_ENRAGE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1391,36 +1418,6 @@ kind:     design
 thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
-
-## FOUNDER_ROBE_MAGENTA_1 The founders' robe layer renders as flat magenta in the CANONICAL world - magenta is RimWorld's failed-texture colour; check guy762_Robes_jawa
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     investigate
-thin:     spec, verify and criteria all present
-summary:  Find what guy762Robesjawa (and any sibling robe def on these pawns) sets as its
-prose:    infrastructure/state/items/FOUNDER_ROBE_MAGENTA_1.md
-
-## SHRUBLAND_SCRAPNEST_BIRDS_1 Scrap-nest bird-analogs: nest-theft C# + base-stealing candidate
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify
-summary:  SHRUBLANDSCRAPNESTBIRDS1 — scrap-nest bird-analogs: nest-theft C + base-stealing candidate
-prose:    infrastructure/state/items/SHRUBLAND_SCRAPNEST_BIRDS_1.md
-
-## SHRUBLAND_GIANT_ENRAGE_1 RSW_ShrublandGiant: large-young life-stage + parental enrage-on-approach C#
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify
-summary:  SHRUBLANDGIANTENRAGE1 — RSWShrublandGiant: large-young life-stage + parental enrage-on-approach C
-prose:    infrastructure/state/items/SHRUBLAND_GIANT_ENRAGE_1.md
 
 ## VENOMVINE_FORTRESS_PASSABILITY_1 Venomvine fortress: size-gated passability C# for the shrubland thicket
 state:    proposed
