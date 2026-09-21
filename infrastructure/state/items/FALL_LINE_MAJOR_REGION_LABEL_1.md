@@ -70,3 +70,58 @@ result unattributable. Second iteration only, judged by looking.
 ## state
 
 Blocked only on the bridge. Offline work complete.
+
+## APPLIED 2026-09-21 — live, photographed, and waiting on his eye
+
+Executed on the canonical world (`CANONICAL_ASHKARR_START_2026-09-12`, loaded on the
+full 618-mod list; cold load 17:31→17:52, ~21 min).
+
+| | before | after |
+|---|---|---|
+| `maxDrawSizeInTiles` | 10.0 | **26.0** |
+| `effectiveDrawSize` | 15.0 | **42.0** |
+
+MEASURED by reading the **raw field back** after `jawa/world_commit`, not from the
+setter's `success: true`. Feature is `uniqueID 73`, 155 tiles — matching the spec's
+offline geometry exactly. Histogram after the edit: `{10.0: 70, 26.0: 1}`. `The Breaks`
+(uniqueID 63, 153 tiles) is deliberately untouched.
+
+✅ **The spec's headline claim is now confirmed LIVE, independently of the savegame
+parse:** the pre-edit histogram was `{10.0: 71}` — every one of the 71 world features sat
+at the bottom of the engine's size curve.
+
+### the pictures
+
+| | |
+|---|---|
+| `D:\Luke\dev\Rimworld\Transient\fall_line\alt420.png` | **the one to look at** — Fall Line beside The Breaks, Grey Sea, The Abandoned Mines, Ashfall Range, Notch |
+| `D:\Luke\dev\Rimworld\Transient\fall_line\alt650.png` | whole-planet context; at this altitude Fall Line is the only label that survives |
+
+Full-resolution originals (1810×1198) are in RimWorld's own Screenshots folder:
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\fall_line_alt420.png`
+
+**It works.** At 420 the label is unmistakably larger than every neighbour; the planet now
+has a visual hierarchy where it had none.
+
+⚠️ The colony marker sits over the middle of the label at some altitudes, splitting
+"Fall" and "Line". Incidental to this change — but if it bothers him, `drawCenter` is the
+lever, and it is a second iteration.
+
+### 🔴 the change is LIVE BUT NOT SAVED — deliberately
+
+Nothing was written to `CANONICAL_ASHKARR_START_2026-09-12.rws`. Two reasons:
+
+1. The item's own rule is *"one change, then LOOK"* — the size is his to judge before
+   anything is baked in.
+2. ⚠️ `rimworld/save_game` has previously written the **current slot** instead of the
+   named one. The canonical save is one of only three artifacts ruled to survive the world
+   remake; it is not worth risking for a value he has not seen yet.
+
+⇒ Re-applying after his ruling is **one bridge call** on a loaded world. The expensive
+part is the load, which any further iteration needs anyway.
+
+## what is still open, and is HIS
+
+🔑 **70 features are still at the curve's floor.** Whether the rest of the planet gets a
+size hierarchy — and which regions count as major — is a separate decision and it is his,
+not this item's.
