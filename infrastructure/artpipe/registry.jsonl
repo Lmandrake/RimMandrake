@@ -3484,3 +3484,5 @@
 {"by": "artpiped", "event": "validated", "job_id": "desert_swaca_pufferpig_south", "target": "desert_swaca_pufferpig/south", "ts": 1789944032.570871, "verdict": "pass"}
 {"by": "fill_queue", "event": "registered", "source": "DESERT_LEACHMOSS_BUILD_1", "target": "rmleachmoss", "ts": 1789950315.583268}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rmleachmoss_v1", "notes": "", "target": "rmleachmoss", "ts": 1789950315.597879}
+{"by": "fill_queue", "event": "registered", "source": "VENOMVINE_CONTACT_VENOM_BUILD_1", "target": "rmvenomvine", "ts": 1789951010.6112096}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rmvenomvine_v1", "notes": "", "target": "rmvenomvine", "ts": 1789951010.6306198}

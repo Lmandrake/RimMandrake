@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Venomvine.xml                           VENOMVINE_CONTACT_VENOM_BUILD_1
+
+  The desert form of the venomvine — the first of desert.md SS4b's two "shade
+  plants, which defend", the one that "holds territory by injury". Design and
+  every number below: design/Jawa/worldbuilding/desert_shade_plants_design.md
+  SS1d. Frozen sheets behind it: biomes/desert.md SS4b/SS6/SS9 and
+  biomes/arid_shrubland.md SSVenomvine ("Desert lineage", "a scratch carries
+  venom with serious results", "nearly impossible to cut down", "resist fire
+  greatly").
+
+  It lives in mandrake.rm.environmentalhazards, not beside RSW_Ultracactus in
+  SWBestiary, because the defName has to carry the tier prefix of the mod it
+  ships in (NAMING_SCHEME_PLAN.md SS6, checked by naming_lint.py) and nothing
+  about this plant is Star Wars content. RUT_Desert wires it in with
+  MayRequire, the same pattern that file already uses for every SWBestiary
+  plant.
+
+  The mechanism is CompProperties_ContactVenom on this def and nothing else:
+  the comp registers this cell with MapComponent_ContactVenom, which sweeps
+  for pawns standing in registered cells every 15 ticks. Nothing here ticks —
+  PlantBase is tickerType Long (every 2000 ticks) and a pawn crosses a cell
+  in 10-20, so a comp watching its own cell would miss essentially every
+  crossing.
+
+  Deliberately NOT built here (do not "fix" either):
+    - Cutting from an adjacent cell is SAFE. JobDriver_PlantWork paths with
+      PathEndMode.Touch (MEASURED), so a colonist ordered to cut a vine
+      stands next to it. A cutter is only scratched when the vine's every
+      neighbour is also vine — clear a stand from the edge inward. That is
+      the intended player verb.
+    - The shrubland thicket's "small creatures pass through easily; larger
+      ones simply cannot" is body-size passability, a separate owed slug
+      (venomvine-fortress-flora-passability-by-body-size, tracked by
+      COMMISSION_LEDGER_CLEANUP_1). Nothing here precludes it.
+
+  PLANT_GROWTH_SPEC.md's planetary x4 growth postfix applies on top of
+  growDays 8 — the 8 is authored against that, not instead of it.
+
+  Art: searched infrastructure/artpipe/{done,_artsrc,registry.jsonl,
+  art_status.json} for vine/thorn/venom/bramble/briar on 2026-09-20 (re-run
+  this pass, per CLAUDE.md "Check for existing regenerated art before queuing
+  more"). Every hit is a DONOR plant regenerated for another biome's roster
+  under ART_REGEN_FLORA_WAVE1_QUEUE_1 — ripthorn_v1, tropicalchokevine_v1,
+  firevine*, brambles_v1, twistingthorn*, crystaltipbrambles_* — and none of
+  them is ours or this plant. Job rmvenomvine_v1 filed this pass; the texPath
+  below is where that render lands and validate_patch.py flagging it as
+  pending is expected until the artpipe daemon finishes it.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Venomvine</defName>
+    <label>venomvine</label>
+    <description>A low, matted tangle of rust-dark runners that grows nowhere except the ground worth having. It does not compete for the shade so much as hold it: every runner carries short recurved thorns along its underside, angled to catch an ankle, and the sap they carry does not kill quickly enough to be a defence against anything but staying. Walk through a stand and you pay once. Lie down in one and you keep paying.</description>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <!-- arid_shrubland.md: "resist fire greatly and burn only grudgingly";
+           desert.md SS6.5 bans a local fire ecology outright. -->
+      <Flammability>0.1</Flammability>
+      <!-- Nothing grazes it. -->
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <!-- Dark rust-umber, thorn tips lighter. NO GREEN: desert.md SS9 gives
+           the biome only two greens, the pale ultracactus and the dew-line
+           halo, and this is neither. -->
+      <color>(112, 68, 48)</color>
+    </graphicData>
+    <selectable>true</selectable>
+    <!-- A tree is 42. At 60 the pathfinder threads the gaps in a sparse
+         stand and detours a band whenever the way round is cheaper, so
+         "strange vines around some areas" stays route-avoidable and only a
+         stand that actually walls a patch charges a scratch. -->
+    <pathCost>60</pathCost>
+    <plant>
+      <!-- Patch ground only. MEASURED (Terrain_Natural.xml): Sand is 0.10 and
+           SoftSand 0, Gravel 0.7, Soil 1.0 — so at 0.5 this can never reach
+           the sand the ultracactus holds, which is desert.md SS4b's partition
+           between the two of them, in engine terms. -->
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>8</growDays>
+      <!-- 0 = no age limit. A stand is permanent until something cuts it. -->
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <!-- Stands, not lawn. -->
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>6</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.8~1.2</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <!-- "Nearly impossible to cut down" — harvestWork is the work a cut
+           costs as well as a harvest (JobDriver_PlantWork reads it for
+           both). No harvestedThingDef: the desert form yields nothing.
+           Dead-venomvine as a fuel industry is the SHRUBLAND sheet's own
+           later work, not this. -->
+      <harvestWork>900</harvestWork>
+      <!-- A stand is a hazard the player clears on purpose, never something
+           a growing-zone auto-cut sweep walks a colonist into. -->
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <!-- One in-game hour: one scratch on first contact, then one per
+             hour for as long as the pawn stays in the stand. -->
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <!-- Thorns take the legs. -->
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

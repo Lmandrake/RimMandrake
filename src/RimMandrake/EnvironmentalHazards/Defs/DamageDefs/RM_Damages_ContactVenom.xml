@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Damages_ContactVenom.xml                VENOMVINE_CONTACT_VENOM_BUILD_1
+
+  The scratch a contact-venom plant deals, and nothing else. Design:
+  design/Jawa/worldbuilding/desert_shade_plants_design.md SS1b "damage shape".
+
+  Shape copied from Core's own ScratchToxic (MEASURED 2026-09-20,
+  Data/Core/Defs/DamageDefs/Damages_MeleeWeapon.xml): ParentName="Scratch"
+  plus additionalHediffs is all it takes to make a scratch carry a hediff —
+  no C# is involved in the venom at all, and MapComponent_ContactVenom never
+  names a HediffDef.
+
+  Deliberately NOT ToxicBuildup, which ScratchToxic uses. ToxicBuildup is
+  shared planetary-toxin accounting that Biotech tox-resistance genes and gas
+  masks already zero, and it is lethal at the same 1.0 as toxic fallout
+  exposure — which would make one thorn scratch and a fallout day the same
+  disease. The arid shrubland sheet says "a scratch carries venom with
+  serious results" from A SCRATCH, so the venom is its own hediff with its
+  own decay and its own lethal threshold.
+
+  No victimSeverityScaling stat on purpose: ARMOUR is the counter here, not a
+  gas mask. The scratch is a Sharp-category injury (inherited from Scratch),
+  so Sharp leg armour reduces it, and a scratch reduced to 0 damage delivers
+  0 x severityPerDamageDealt = no venom at all. That is the whole avoidance
+  mechanic and it needs no new stat.
+-->
+<Defs>
+
+  <DamageDef ParentName="Scratch">
+    <defName>RM_VenomvineScratch</defName>
+    <label>venom scratch</label>
+    <deathMessage>{0} has been killed by venomous thorns.</deathMessage>
+    <additionalHediffs>
+      <li>
+        <hediff>RM_VenomvineVenom</hediff>
+        <!-- One full 3-damage scratch = 0.12 venom. Lingering nets +0.10/h
+             against the hediff's own -0.5/day decay, so: serious stage at
+             ~3 h in the vines, lethal at ~9 h. A pawn that merely crosses a
+             stand carries minor-stage pain for about six hours and nothing
+             else. -->
+        <severityPerDamageDealt>0.04</severityPerDamageDealt>
+        <!-- A Jawa takes a serious dose from the same thorn a bantha
+             shrugs off. -->
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+
+</Defs>

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-21T00:36:50Z",
+  "drawsize": 1.2,
+  "facing": null,
+  "facings": [],
+  "id": "rmvenomvine_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a low, matted tangle of thick woody runners sprawling flat across the ground, the whole plant in dark rust-umber and dried-blood brown with no green anywhere. Short recurved thorns line the undersides of the runners in a paler bone-tan, catching the light so the hooks read clearly. A few runners lift slightly off the ground into low arches, but nothing stands tall -- the silhouette is wide and snarled, an ankle-high thicket rather than a bush. It should read as hostile and territorial at a glance. Single plant, viewed from directly above at a slight isometric RimWorld camera angle, centered, a short soft shadow beneath it, pale sand and gravel ground implied only by the shadow, no other background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "VENOMVINE_CONTACT_VENOM_BUILD_1",
+  "style_notes": "RM_Venomvine (VENOMVINE_CONTACT_VENOM_BUILD_1, mandrake.rm.environmentalhazards). desert.md 4b 'the shade plants, which defend': the vine that holds territory by injury -- 'strange vines and thorny venom writhing around some areas'. arid_shrubland.md Venomvine, its shrubland sibling: 'nearly impossible to cut down', 'resist fire greatly'. HARD COLOUR CONSTRAINT: no green at all -- desert.md 9 gives this biome only two greens (the pale ultracactus and the dew-line halo) and this plant is neither. Dark rust-umber body, lighter thorn tips. Graphic_Random, so several distinct tangles of the same plant are wanted, not one repeated shape. It is a ground-hugging mat, never a standing shrub or a climbing vine on anything."
+}

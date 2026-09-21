@@ -164,6 +164,9 @@
     <Compile Include="RM_Patch_LivePrepViability.cs" />
     <Compile Include="RM_WorkGiver_WorkLottery.cs" />
     <Compile Include="RM_JobDriver_WorkLottery.cs" />
+    <Compile Include="ContactVenomImmunity.cs" />
+    <Compile Include="CompContactVenom.cs" />
+    <Compile Include="MapComponent_ContactVenom.cs" />
   </ItemGroup>
 
   <ItemGroup>
