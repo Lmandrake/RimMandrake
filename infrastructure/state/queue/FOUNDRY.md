@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:21:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:23:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1447,6 +1447,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     investigate
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FOUNDER_ROBE_MAGENTA_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Find what guy762Robesjawa (and any sibling robe def on these pawns) sets as its
 prose:    infrastructure/state/items/FOUNDER_ROBE_MAGENTA_1.md

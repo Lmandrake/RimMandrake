@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:21:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:23:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -591,16 +591,6 @@ thin:     no ## spec
 summary:  SPECIESTRAITSOVERAPTITUDES1 — skill bonuses are the wrong instrument for species character
 prose:    infrastructure/state/items/SPECIES_TRAITS_OVER_APTITUDES_1.md
 
-## FOUNDERS_EXPORT_TO_REPO_1 The founders exist only inside a savegame in the Steam-Cloud Saves folder - one of the three artifacts that must survive the world remake is not in the repo
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  FOUNDERSEXPORTTOREPO1 — the founders are not in the repo
-prose:    infrastructure/state/items/FOUNDERS_EXPORT_TO_REPO_1.md
-
 ## DEAD_BIOME_DEFS_IN_PROSE_1 Pre-repaint donor biome defNames are still embedded in item and design prose - three found by accident today, each carrying a number or a plot fact that reasoning depends on
 state:    proposed
 row:      unassigned
@@ -677,6 +667,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FOUNDERS_IMPORTER_OWED_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. importfounders.py <destination.rws: splice the 8 fragments into the destination's
 prose:    infrastructure/state/items/FOUNDERS_IMPORTER_OWED_1.md
