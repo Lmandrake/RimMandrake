@@ -195,12 +195,18 @@ def find_and_copy_texture(tex_path, src_tex_root, seen, missing):
     missing.add(tex_path)
 
 
+# apparel/<wornGraphicPath> is a THIRD texture root and is not always the same
+# string as graphicData/texPath -- uncollected, a garment whose worn art lives
+# apart from its icon gets no art copied at all.
+_TEXPATH_TAGS = ("texPath", "iconPath", "uiIconPath", "wornGraphicPath")
+
+
 def collect_texpaths(el, out):
-    for tag in ("texPath", "iconPath", "uiIconPath"):
+    for tag in _TEXPATH_TAGS:
         v = el.attrib.get(tag)
         if v:
             out.add(v)
-    if el.tag in ("texPath", "iconPath", "uiIconPath") and el.text and el.text.strip():
+    if el.tag in _TEXPATH_TAGS and el.text and el.text.strip():
         out.add(el.text.strip())
     for c in el:
         collect_texpaths(c, out)

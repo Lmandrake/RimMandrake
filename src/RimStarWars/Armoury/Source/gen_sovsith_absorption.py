@@ -189,6 +189,19 @@ def find_and_copy_texture(tex_path, seen, missing):
             if os.path.isfile(os.path.join(SRC_TEX, tex_path.replace("/", os.sep) + rot + ext)):
                 _copy_one(tex_path + rot + ext, SRC_TEX, TEX_ROOT)
                 copied_any = True
+        # Apparel WORN graphics carry a BODY TYPE segment before the rotation:
+        # ApparelGraphicRecordGetter builds "<wornGraphicPath>_<BodyTypeDef>"
+        # and hands that to Graphic_Multi, so what is on disk is
+        # <path>_Male_south.png .. <path>_Hulk_north.png. A ladder that stops
+        # at the rotation suffix copies only the inventory ICON, reports the
+        # texture as FOUND, and leaves every worn graphic behind -- the
+        # garment then renders MAGENTA in game.
+        for bt in ("Male", "Female", "Thin", "Fat", "Hulk"):
+            for rot in ("_south", "_north", "_east", "_west"):
+                suffix = "_" + bt + rot + ext
+                if os.path.isfile(os.path.join(SRC_TEX, tex_path.replace("/", os.sep) + suffix)):
+                    _copy_one(tex_path + suffix, SRC_TEX, TEX_ROOT)
+                    copied_any = True
     if copied_any:
         seen.add(tex_path)
         return
@@ -282,6 +295,10 @@ def main():
             collect_paths(el, "texPath", tex_paths)
             collect_paths(el, "texPathFemale", tex_paths)
             collect_paths(el, "iconPath", tex_paths)
+            # apparel/<wornGraphicPath> is a THIRD texture root and is not always
+            # the same string as graphicData/texPath -- uncollected, a garment
+            # whose worn art lives apart from its icon gets no art copied at all.
+            collect_paths(el, "wornGraphicPath", tex_paths)
             collect_paths(el, "graphicPath", tex_paths)
             collect_rule_file_paths(el, lang_paths)
 
