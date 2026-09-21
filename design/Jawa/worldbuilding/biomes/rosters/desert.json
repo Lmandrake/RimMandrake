@@ -1092,24 +1092,49 @@
   },
   "flora": [
     {
+      "commonality": 1.5,
+      "def": "RM_Leachmoss",
+      "law": "DESERT_LEACHMOSS_BUILD_1 (2026-09-20) — the moss half of §4b's \"shade plants, which defend\". Highest weight in the roster by design (desert_shade_plants_design.md §2b): fertilityMin 0.5 keeps it to Gravel/Soil, so it never competes with the ultracactus for sand."
+    },
+    {
+      "commonality": 0.8,
+      "def": "RSW_Ultracactus",
+      "law": "DESERT_SIGNATURE_FLORA_1 (2026-09-20) — §4b/§7's signature plant, the buried canopy holding the open ground."
+    },
+    {
       "commonality": 0.6,
-      "def": "AB_HardyGrass",
-      "law": "meagre alien grass, trimmed 2.2→0.6 — ban 8: vegetation meagre, never green in quantity"
+      "def": "RSW_Dunegrass",
+      "law": "meagre alien grass — ban 8: vegetation meagre, never green in quantity. Our own RSW_ def; replaced the AB_HardyGrass stand-in at this same weight (DESERT_FAMILY_PORT_EXECUTION_1, fda35ff14)."
     },
     {
       "commonality": 0.3,
-      "def": "Plant_Chakroot_Wild",
-      "law": "SW donor plant (chak-root), alien-named, arid"
+      "def": "RSW_Plant_Chakroot_Wild",
+      "law": "SW donor plant (chak-root), alien-named, arid. Our own RSW_ port of Plant_Chakroot_Wild (DESERT_FAMILY_PORT_EXECUTION_1, fda35ff14)."
+    },
+    {
+      "commonality": 0.25,
+      "def": "RM_Venomvine",
+      "law": "VENOMVINE_CONTACT_VENOM_BUILD_1 (2026-09-20) — the vine half of §4b's shade pair, the one that holds territory by injury. fertilityMin 0.5 keeps it off Sand."
     },
     {
       "commonality": 0.2,
-      "def": "Plant_HubbaGourd_Wild",
-      "law": "SW icon desert gourd (Tatooine), wild variant only"
+      "def": "RSW_Plant_HubbaGourd_Wild",
+      "law": "SW icon desert gourd (Tatooine), wild variant only. Our own RSW_ port of Plant_HubbaGourd_Wild (DESERT_FAMILY_PORT_EXECUTION_1, fda35ff14); its harvested item is this biome's foragedFood."
     },
     {
       "commonality": 0.12,
-      "def": "AB_Aaklac",
-      "law": "Alpha Biomes alien arid form"
+      "def": "RSW_VellaraBloom",
+      "law": "Alpha Biomes alien arid form, ported. Our own RSW_ def; replaced the AB_Aaklac stand-in at this same weight (DESERT_FAMILY_PORT_EXECUTION_1, fda35ff14)."
+    },
+    {
+      "commonality": 0.1,
+      "def": "RUT_Staggerseed",
+      "law": "DESERT_STAGGERSEED_BUILD_1 (2026-09-20) — §4b \"the seed that uses you\" / §7 \"the prepared cycle-seed\". Lowest of the three built desert plants on purpose: §4b confines it to the protected water pockets. WORKING NAME (card STAGGERSEED_SHIPPING_NAME_1)."
+    },
+    {
+      "commonality": 0.06,
+      "def": "RSW_SweetbarkTree",
+      "law": "dommo tree — the one tree. Our own RSW_ port of the donor AB_DessertTree (DESERT_FAMILY_PORT_EXECUTION_1, fda35ff14)."
     }
   ],
   "flora_purged": [

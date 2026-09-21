@@ -133,11 +133,16 @@
       <AB_CrystalFlower>0.5</AB_CrystalFlower>  <!-- crystal flower -->
       <RUT_TreeMartyr>0.5</RUT_TreeMartyr>  <!-- martyr tree - tree -->
       <AB_BloodBouquet>0.4</AB_BloodBouquet>  <!-- blood bouquet -->
-      <AB_CrystalHorn>0.4</AB_CrystalHorn>  <!-- crystal horn -->
       <AB_RavenNettle>0.4</AB_RavenNettle>  <!-- raven nettle -->
       <AB_GiantAgariTox>0.3</AB_GiantAgariTox>  <!-- agaritox - tree -->
       <AB_RedBugloss>0.3</AB_RedBugloss>  <!-- red bugloss -->
       <AB_KeeningCordax>0.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
+      <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20: AB_CrystalHorn moved OUT
+           ("propane lakes and blue desert only") and AB_GiantToxicFlower moved IN from
+           wasteland ("poison forest"). Both rulings landed in rosters/poison_forest.json
+           and reached the game only through BiomeFlora_Ashkarr.xml's now-retired replace
+           operation; transplanted here by BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
+      <AB_GiantToxicFlower>0.08</AB_GiantToxicFlower>  <!-- giant toxic flower -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>

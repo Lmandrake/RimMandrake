@@ -159,11 +159,14 @@
       <RUT_Nuitae MayRequire="mandrake.rut.rotsporekit">0.5</RUT_Nuitae>  <!-- nuitae - RUT_ (raided) -->
       <RUT_Wrinklecap MayRequire="mandrake.rut.rotsporekit">0.5</RUT_Wrinklecap>  <!-- wrinklecap - RUT_ (raided) -->
       <RUT_Arpeau MayRequire="mandrake.rut.rotsporekit">0.4</RUT_Arpeau>  <!-- arpeau - tree - RUT_ (raided) -->
-      <RUT_Nogtyl MayRequire="mandrake.rut.rotsporekit">0.4</RUT_Nogtyl>  <!-- nogtyl - tree - RUT_ (raided) -->
+      <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20: RUT_Nogtyl moved OUT to
+           the_miasma and RUT_RustPuff moved OUT to the_contagion. Both rulings landed in
+           rosters/the_rot.json and reached the game only through BiomeFlora_Ashkarr.xml's
+           now-retired replace operation; transplanted here by
+           BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
       <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia>  <!-- recurved stropharia -->
       <RUT_FlakespireFungus MayRequire="mandrake.rut.rotsporekit">0.3</RUT_FlakespireFungus>  <!-- flakespire fungus - tree - RUT_ (raided) -->
       <RUT_Pusmelon MayRequire="mandrake.rut.rotsporekit">0.3</RUT_Pusmelon>  <!-- pusmelon - RUT_ (raided) -->
-      <RUT_RustPuff MayRequire="mandrake.rut.rotsporekit">0.3</RUT_RustPuff>  <!-- rustpuff - RUT_ (raided) -->
       <RUT_Sagecrust MayRequire="mandrake.rut.rotsporekit">0.3</RUT_Sagecrust>  <!-- sagecrust - RUT_ (raided) -->
       <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza>  <!-- arbuscular mycorrhiza -->
       <AB_SlimyPholiota>0.2</AB_SlimyPholiota>  <!-- slimy pholiota -->

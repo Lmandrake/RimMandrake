@@ -132,7 +132,16 @@
       <AB_ToxicGamma>0.6</AB_ToxicGamma>  <!-- toxic gamma - tree -->
       <AB_GiantGamma>0.5</AB_GiantGamma>  <!-- giant gamma -->
       <AB_WildRadagast>0.5</AB_WildRadagast>  <!-- wild ragadast -->
+      <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11 ("to crags" / "elsewhere,
+           not heat resistant"): AG_Gamma and AG_Septimum moved here from the_forge, whose
+           42-56 C floor is above their optimal band (opt max 42 C, MEASURED plant_pool.csv)
+           and where AB_GiantGamma above was already their resident kin. The ruling landed
+           in rosters/forsaken_crags.json and reached the game only through
+           BiomeFlora_Ashkarr.xml's now-retired replace operation; transplanted here by
+           BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 so this def carries it itself. -->
+      <AG_Gamma>0.5</AG_Gamma>  <!-- gamma -->
       <AB_GiantStikehr>0.3</AB_GiantStikehr>  <!-- giant stikehr -->
+      <AG_Septimum>0.25</AG_Septimum>  <!-- septimum -->
       <AB_GiantSeptimum>0.2</AB_GiantSeptimum>  <!-- giant septimum - tree -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>

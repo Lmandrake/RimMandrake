@@ -159,13 +159,17 @@
       <Plant_Fireweed>0.9</Plant_Fireweed>  <!-- fireweed -->
       <Plant_MagmaCactus>0.7</Plant_MagmaCactus>  <!-- magma cactus -->
       <RUT_FireLavender>0.6</RUT_FireLavender>  <!-- fire lavender -->
-      <AG_Gamma>0.5</AG_Gamma>  <!-- gamma -->
       <RUT_Sagecrust>0.4</RUT_Sagecrust>  <!-- sagecrust -->
       <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
-      <AB_GiantGamma>0.3</AB_GiantGamma>  <!-- giant gamma -->
+      <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11: AG_Gamma, AG_Septimum and
+           AB_GiantGamma all moved OUT of here to forsaken_crags ("to crags" / "elsewhere,
+           not heat resistant") — this biome's 42-56 C floor is above their optimal band
+           (opt max 42 C, MEASURED plant_pool.csv) and AB_GiantGamma was already resident
+           at the crags. The ruling landed in rosters/the_forge.json and reached the game
+           only through BiomeFlora_Ashkarr.xml's now-retired replace operation;
+           transplanted here by BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
       <AB_TinkleGrass>0.3</AB_TinkleGrass>  <!-- tinkle grass -->
       <IronScruff_PrimordialTallGrass>0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
-      <AG_Septimum>0.25</AG_Septimum>  <!-- septimum -->
       <IronScruff_Bindweed>0.25</IronScruff_Bindweed>  <!-- bindweed -->
       <AB_FirevineTree>0.2</AB_FirevineTree>  <!-- firevine tree - tree -->
       <RUT_HeatsinkFungus>0.2</RUT_HeatsinkFungus>  <!-- heatsink fungus - tree -->

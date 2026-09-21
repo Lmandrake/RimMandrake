@@ -10,110 +10,48 @@
        defName and its VALUE is the commonality. An <li> here discards the whole
        BiomeDef, silently. -->
 
+  <!-- ============ biomes this file deliberately does NOT patch ============
+
+       BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1, 2026-09-21. Each BiomeDef below is
+       one WE author, under src/RimUtinni/UtinniPatches/Defs/BiomeDefs/, in
+       THIS SAME MOD. A PatchOperationReplace here runs after that def loads
+       and silently discards whatever it says - which is exactly what happened
+       to RUT_Desert: nine authored plants replaced by four stale ones, and a
+       live RUT_Desert map generated 0 plants of any kind against 322 on a
+       vanilla Desert control tile.
+
+       So the authored def owns its own wildPlants and this file leaves it
+       alone. The rosters remain the design record; biome_flora.py's own
+       check pass FAILS if an authored def and its roster disagree. The
+       generator also
+       cannot write MayRequire (see the note further down), and those defs
+       carry 68 guarded cross-mod refs - another reason the emitter is the
+       wrong owner for this field.
+
+       RUT_AridShrubland  (10 plants, authored in its own def)
+       RUT_BlueDesert  (3 plants, authored in its own def)
+       RUT_Contagion  (10 plants, authored in its own def)
+       RUT_CrackedLands  (6 plants, authored in its own def)
+       RUT_Desert  (9 plants, authored in its own def)
+       RUT_ExtremeDesert  (3 plants, authored in its own def)
+       RUT_FeverWood  (7 plants, authored in its own def)
+       RUT_ForsakenCrags  (8 plants, authored in its own def)
+       RUT_Greentide  (11 plants, authored in its own def)
+       RUT_Miasma  (4 plants, authored in its own def)
+       RUT_PoisonForest  (9 plants, authored in its own def)
+       RUT_RustCathedral  (0 plants, authored in its own def)
+       RUT_Scarlands  (1 plants, authored in its own def)
+       RUT_Slime  (5 plants, authored in its own def)
+       RUT_Sump  (1 plants, authored in its own def)
+       RUT_TheForge  (10 plants, authored in its own def)
+       RUT_TheRot  (30 plants, authored in its own def)
+       RUT_Umbra  (4 plants, authored in its own def)
+       RUT_Wasteland  (9 plants, authored in its own def)
+       RUT_Webwork  (7 plants, authored in its own def)
+       RUT_WeepingStones  (4 plants, authored in its own def)
+  -->
+
   <!-- ============ A. dayside desert, badlands and the river jungles ============ -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Umbra"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Umbra"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_CrystalHorn>1.0</AB_CrystalHorn> <!-- crystal horn -->
-          <AB_FrostLeaf>0.6</AB_FrostLeaf> <!-- frost leaf -->
-          <AB_RimeNodules>0.4</AB_RimeNodules> <!-- rime nodules -->
-          <PoisonShrub>0.35</PoisonShrub> <!-- poison shrub -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Desert"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Desert"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_HardyGrass>0.6</AB_HardyGrass> <!-- hardy grass -->
-          <Plant_Chakroot_Wild>0.3</Plant_Chakroot_Wild> <!-- wild chak-root plant -->
-          <Plant_HubbaGourd_Wild>0.2</Plant_HubbaGourd_Wild> <!-- wild hubba gourd plant -->
-          <AB_Aaklac>0.12</AB_Aaklac> <!-- aaklac -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_BlueDesert"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_BlueDesert"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_ToxiGrass>0.6</AB_ToxiGrass> <!-- toxi grass -->
-          <AB_CrystalHorn>0.4</AB_CrystalHorn> <!-- crystal horn -->
-          <PoisonPlantTallGrass>0.4</PoisonPlantTallGrass> <!-- tall grass -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_CrackedLands"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_CrackedLands"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_HardyGrass>1.0</AB_HardyGrass> <!-- hardy grass -->
-          <GRimMoss>0.8</GRimMoss> <!-- moss -->
-          <RUT_TwistingThorngrass>0.5</RUT_TwistingThorngrass> <!-- twisting thorngrass -->
-          <RUT_TwistingThornweed>0.4</RUT_TwistingThornweed> <!-- twisting thornweed -->
-          <RUT_TwistingThornwood>0.2</RUT_TwistingThornwood> <!-- twisting thornwood - tree -->
-          <AB_GargantuanLithops>0.15</AB_GargantuanLithops> <!-- gargantuan lithops -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <RUT_TwistingThornwood>0.6</RUT_TwistingThornwood> <!-- twisting thornwood - tree -->
-          <RUT_TreeMartyr>0.5</RUT_TreeMartyr> <!-- martyr tree - tree -->
-          <AB_CrystalFlower>0.5</AB_CrystalFlower> <!-- crystal flower -->
-          <AB_BloodBouquet>0.4</AB_BloodBouquet> <!-- blood bouquet -->
-          <AB_RavenNettle>0.4</AB_RavenNettle> <!-- raven nettle -->
-          <AB_RedBugloss>0.3</AB_RedBugloss> <!-- red bugloss -->
-          <AB_GiantAgariTox>0.3</AB_GiantAgariTox> <!-- agaritox - tree -->
-          <AB_KeeningCordax>0.2</AB_KeeningCordax> <!-- keening cordax - tree -->
-          <AB_GiantToxicFlower>0.08</AB_GiantToxicFlower> <!-- giant toxic flower - tree -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_JungleTree>3.0</AB_JungleTree> <!-- deep jungle tree - tree -->
-          <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild> <!-- wild hydenock tree - tree -->
-          <Plant_JoganTree_Wild>1.2</Plant_JoganTree_Wild> <!-- wild jogan tree - tree -->
-          <Plant_MujaFruit_Wild>1.0</Plant_MujaFruit_Wild> <!-- wild muja fruit bush -->
-          <RUT_GiantLeaf>1.0</RUT_GiantLeaf> <!-- giant leaf -->
-          <Plant_HubbaGourd_Wild>0.8</Plant_HubbaGourd_Wild> <!-- wild hubba gourd plant -->
-          <Plant_FelucianGlowspore_Wild>0.6</Plant_FelucianGlowspore_Wild> <!-- wild felucian glowspore - tree -->
-          <AB_SugarFamewort>0.6</AB_SugarFamewort> <!-- sugar famewort -->
-          <Plant_TookeTrap_Wild>0.5</Plant_TookeTrap_Wild> <!-- wild tooke-trap plant -->
-          <Plant_Bubblespore_Wild>0.5</Plant_Bubblespore_Wild> <!-- wild bubble spore plant -->
-          <Plant_Chakroot_Wild>0.5</Plant_Chakroot_Wild> <!-- wild chak-root plant -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
@@ -121,271 +59,6 @@
       <value>
         <wildPlants>
           <RM_FE_Plant_Quickgrass>4.0</RM_FE_Plant_Quickgrass> <!-- quickgrass -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Contagion"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Contagion"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_AlienTree>1.0</AB_AlienTree> <!-- ocular tree - tree -->
-          <AB_AlienGrass>1.0</AB_AlienGrass> <!-- ocular grass -->
-          <AB_RedLeaves>0.6</AB_RedLeaves> <!-- ocular plant -->
-          <AB_RedPlantsTall>0.5</AB_RedPlantsTall> <!-- ocular plant -->
-          <AB_HalfAlienTree>0.5</AB_HalfAlienTree> <!-- half transformed ocular tree - tree -->
-          <AB_TentacularPlant>0.4</AB_TentacularPlant> <!-- tentacular aberration -->
-          <AB_GlobularPlant>0.4</AB_GlobularPlant> <!-- globular aberration -->
-          <AB_BloodBouquet>0.3</AB_BloodBouquet> <!-- blood bouquet -->
-          <RUT_RustPuff>0.3</RUT_RustPuff> <!-- rustpuff -->
-          <AB_AlienTree_Polluted>0.15</AB_AlienTree_Polluted> <!-- mutated ocular tree - tree -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Webwork"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Webwork"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_JungleTree>1.1</AB_JungleTree> <!-- deep jungle tree - tree -->
-          <RG_Plant_TropicalChokevine>1.0</RG_Plant_TropicalChokevine> <!-- chokevine -->
-          <AB_TangleTea>0.4</AB_TangleTea> <!-- tangle tea -->
-          <Plant_TookeTrap_Wild>0.3</Plant_TookeTrap_Wild> <!-- wild tooke-trap plant -->
-          <AB_Gomphoeria>0.15</AB_Gomphoeria> <!-- gomphoeria -->
-          <AB_RedBugloss>0.07</AB_RedBugloss> <!-- red bugloss -->
-          <AB_Aaklac>0.05</AB_Aaklac> <!-- aaklac -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_FeverWood"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_FeverWood"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild> <!-- wild hydenock tree - tree -->
-          <AB_KeeningCordax>1.2</AB_KeeningCordax> <!-- keening cordax - tree -->
-          <RUT_GiantLeaf>0.8</RUT_GiantLeaf> <!-- giant leaf -->
-          <Plant_JoganTree_Wild>0.6</Plant_JoganTree_Wild> <!-- wild jogan tree - tree -->
-          <AB_Iashiphus>0.5</AB_Iashiphus> <!-- iashiphus -->
-          <AB_Gomphoeria>0.4</AB_Gomphoeria> <!-- gomphoeria -->
-          <Plant_Chakroot_Wild>0.4</Plant_Chakroot_Wild> <!-- wild chak-root plant -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- ============ B. the mycoid and fire massif ============ -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_ExtremeDesert"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_ExtremeDesert"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <Plant_Bloddle>0.05</Plant_Bloddle> <!-- bloddle plant -->
-          <AB_GiantStikehr>0.04</AB_GiantStikehr> <!-- giant stikehr -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_TheRot"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_TheRot"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_Bryolux>10</AB_Bryolux> <!-- hessuk moss -->
-          <AB_Glowstool>3</AB_Glowstool> <!-- nubbik stool -->
-          <AB_Agarilux>2</AB_Agarilux> <!-- tolluk cap -->
-          <AB_GiantAgarilux>2</AB_GiantAgarilux> <!-- vokkun pillar -->
-          <AB_GlowingAgarilux>1</AB_GlowingAgarilux> <!-- ithra glowcap -->
-          <AB_LilacBeacon>0.5</AB_LilacBeacon> <!-- quessa spire -->
-          <AB_WitchesOyster>0.5</AB_WitchesOyster> <!-- turrok shelf -->
-          <RUT_Dewshrooms>0.5</RUT_Dewshrooms> <!-- sikkra lure -->
-          <RUT_FruitingBodies>0.5</RUT_FruitingBodies> <!-- pimmik mold -->
-          <RUT_Nuitae>0.5</RUT_Nuitae> <!-- nissik gill -->
-          <RUT_Wrinklecap>0.5</RUT_Wrinklecap> <!-- rukka cap -->
-          <RUT_Arpeau>0.4</RUT_Arpeau> <!-- churrun mast - tree -->
-          <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia> <!-- orrusk crook -->
-          <RUT_FlakespireFungus>0.3</RUT_FlakespireFungus> <!-- tarrusk spire - tree -->
-          <RUT_Pusmelon>0.3</RUT_Pusmelon> <!-- gubbra gourd -->
-          <RUT_Sagecrust>0.3</RUT_Sagecrust> <!-- tavvik crust -->
-          <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza> <!-- bollusk trunk -->
-          <AB_SlimyPholiota>0.2</AB_SlimyPholiota> <!-- glissik slimecap -->
-          <RUT_BleedingTooth>0.2</RUT_BleedingTooth> <!-- rhukk tooth -->
-          <RUT_Brightbell>0.2</RUT_Brightbell> <!-- tinnik bell -->
-          <RUT_CrimsonCap>0.2</RUT_CrimsonCap> <!-- rhessa cap -->
-          <RUT_GreyLady>0.2</RUT_GreyLady> <!-- sylla lace -->
-          <RUT_Shinecap>0.2</RUT_Shinecap> <!-- dremmik cap - tree -->
-          <RUT_VioletWimple>0.2</RUT_VioletWimple> <!-- pursk hood -->
-          <RUT_MortalMorelPlant>0.15</RUT_MortalMorelPlant> <!-- vennik salve -->
-          <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap> <!-- skarrow dome -->
-          <AB_DribblingCap>0.1</AB_DribblingCap> <!-- ruvvak weeper -->
-          <RUT_Skulltop>0.1</RUT_Skulltop> <!-- vekkra choker - tree -->
-          <AB_AgariluxPrime>0.01</AB_AgariluxPrime> <!-- grath elder -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_ForsakenCrags"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_ForsakenCrags"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_GlowingGrass>1.0</AB_GlowingGrass> <!-- grass -->
-          <AB_ToxicGamma>0.6</AB_ToxicGamma> <!-- toxic gamma - tree -->
-          <AB_GiantGamma>0.5</AB_GiantGamma> <!-- giant gamma -->
-          <AB_WildRadagast>0.5</AB_WildRadagast> <!-- wild ragadast -->
-          <AG_Gamma>0.5</AG_Gamma> <!-- gamma -->
-          <AB_GiantStikehr>0.3</AB_GiantStikehr> <!-- giant stikehr -->
-          <AG_Septimum>0.25</AG_Septimum> <!-- septimum -->
-          <AB_GiantSeptimum>0.2</AB_GiantSeptimum> <!-- giant septimum - tree -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_WeepingStones"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_WeepingStones"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <Plant_Reeds>1.0</Plant_Reeds> <!-- sarnreed -->
-          <AB_GreenRockFern>0.4</AB_GreenRockFern> <!-- green rock fern -->
-          <RUT_Dewshrooms>0.4</RUT_Dewshrooms> <!-- sikkra lure -->
-          <Plant_Ambrosia>0.12</Plant_Ambrosia> <!-- ambrosia bush -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Slime"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Slime"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_TallSlimyGrass>1.0</AB_TallSlimyGrass> <!-- tall slimy grass -->
-          <AB_SlimyFern>0.5</AB_SlimyFern> <!-- slimy fern -->
-          <AB_SlimyTree>0.5</AB_SlimyTree> <!-- slimy tree -->
-          <AB_Slimecasia>0.4</AB_Slimecasia> <!-- slimecasia -->
-          <AB_LargeSlimyTree>0.3</AB_LargeSlimyTree> <!-- large slimy tree -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <Plant_Fireweed>0.9</Plant_Fireweed> <!-- fireweed -->
-          <Plant_MagmaCactus>0.7</Plant_MagmaCactus> <!-- magma cactus -->
-          <RUT_FireLavender>0.6</RUT_FireLavender> <!-- fire lavender -->
-          <RUT_Sagecrust>0.4</RUT_Sagecrust> <!-- tavvik crust -->
-          <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass> <!-- primordial grass -->
-          <AB_TinkleGrass>0.3</AB_TinkleGrass> <!-- tinkle grass -->
-          <IronScruff_PrimordialTallGrass>0.3</IronScruff_PrimordialTallGrass> <!-- primordial tall grass -->
-          <IronScruff_Bindweed>0.25</IronScruff_Bindweed> <!-- bindweed -->
-          <AB_FirevineTree>0.2</AB_FirevineTree> <!-- firevine tree - tree -->
-          <RUT_HeatsinkFungus>0.2</RUT_HeatsinkFungus> <!-- heatsink fungus - tree -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- ============ C. contamination ============ -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <RG_Plant_ToxiGrass>1.2</RG_Plant_ToxiGrass> <!-- toxigrass -->
-          <RG_Plant_TallToxiGrass>0.8</RG_Plant_TallToxiGrass> <!-- tall toxigrass -->
-          <Plant_GrayGrass>0.35</Plant_GrayGrass> <!-- ashskal -->
-          <RUT_ScorchedStars>0.3</RUT_ScorchedStars> <!-- scorched stars -->
-          <AB_WeepingToxberry>0.2</AB_WeepingToxberry> <!-- weeping toxberry -->
-          <Plant_Toxipotato>0.2</Plant_Toxipotato> <!-- toxipotato plant -->
-          <AB_ToxiBulb>0.1</AB_ToxiBulb> <!-- toxibulb - tree -->
-          <Plant_TreePolux>0.1</Plant_TreePolux> <!-- polux tree - tree -->
-          <VRE_PoluxBush>0.08</VRE_PoluxBush> <!-- polux bush - tree -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Miasma"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Miasma"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_MangroveTree>25</AB_MangroveTree> <!-- mangrove tree - tree -->
-          <AB_ParasiticMangrove>8</AB_ParasiticMangrove> <!-- parasitic mangrove -->
-          <AB_MangrovePalm>6</AB_MangrovePalm> <!-- mangrove palm - tree -->
-          <RUT_Nogtyl>0.4</RUT_Nogtyl> <!-- brommok timber - tree -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Scarlands"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Scarlands"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <RUT_ScorchedStars>0.25</RUT_ScorchedStars> <!-- scorched stars -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- ============ D. the shrub belt ============ -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_AridShrubland"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_AridShrubland"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <Plant_ShrubLow>0.9</Plant_ShrubLow> <!-- low grell -->
-          <RG_Plant_AridGrass>0.5</RG_Plant_AridGrass> <!-- grass -->
-          <Plant_Brambles>0.3</Plant_Brambles> <!-- brambles -->
-          <Plant_Bush>0.3</Plant_Bush> <!-- grellbush -->
-          <Plant_Ripthorn>0.3</Plant_Ripthorn> <!-- ripthorn -->
-          <Plant_HealrootWild>0.25</Plant_HealrootWild> <!-- wild healroot -->
-          <Plant_Nysyllin_Wild>0.22</Plant_Nysyllin_Wild> <!-- wild nysyllin plant -->
-          <RG_Plant_CreepStern>0.2</RG_Plant_CreepStern> <!-- creep stern -->
-          <RG_Plant_CrimsonCushion>0.2</RG_Plant_CrimsonCushion> <!-- crimson cushion -->
-          <RG_Plant_Dervish>0.2</RG_Plant_Dervish> <!-- dervish -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- ============ E. the tar ============ -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Sump"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Sump"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_TarPuddle>0.6</AB_TarPuddle> <!-- tar puddle -->
         </wildPlants>
       </value>
     </match>
@@ -412,18 +85,12 @@
   -->
 
   <!-- ============ plantDensity - the named exception list ============ -->
-  <!-- RUT_Wasteland: 0.0099 -> 0.12.
-       1,721 tiles of CONTAMINATION-class ground carrying an eight-plant toxic roster - toxigrass,
+  <!-- RUT_Wasteland: 0.0099 -> 0.12 is carried by the AUTHORED def
+       (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/), not patched here.
+       1,721 tiles of CONTAMINATION-class ground carrying a nine-plant toxic roster - toxigrass,
        gutter plantain, twisted dandelion, scorched stars - that exists to say THIS GROUND IS
        POISONED. At 0.0099 it says nothing. Poisoned ground reads more strongly with sick plants on
        it than with nothing. 12x up, still visibly barren.
   -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]/plantDensity</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]/plantDensity</xpath>
-      <value><plantDensity>0.12</plantDensity></value>
-    </match>
-  </Operation>
 
 </Patch>

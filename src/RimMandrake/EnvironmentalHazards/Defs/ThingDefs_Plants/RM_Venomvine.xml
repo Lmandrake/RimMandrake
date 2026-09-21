@@ -50,7 +50,16 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="PlantBase">
+  <!-- ParentName is PlantBaseNonEdible, not PlantBase. MEASURED live 2026-09-21:
+       `Config error in RM_Venomvine: Nutrition == 0 but preferability is RawBad instead
+       of NeverForNutrition`. Core's PlantBase exists ONLY to add
+       `<ingestible><foodType>Plant</foodType><preferability>RawBad</preferability>` on top
+       of PlantBaseNonEdible (Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml lines 37-42,
+       read 2026-09-21 — it adds nothing else), and this plant is deliberately Nutrition 0
+       ("Nothing grazes it", below). Vanilla's own idiom for a plant nothing eats is to
+       parent off PlantBaseNonEdible, so that is what this does rather than overriding the
+       inherited preferability back down. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Venomvine</defName>
     <label>venomvine</label>
     <description>A low, matted tangle of rust-dark runners that grows nowhere except the ground worth having. It does not compete for the shade so much as hold it: every runner carries short recurved thorns along its underside, angled to catch an ankle, and the sap they carry does not kill quickly enough to be a defence against anything but staying. Walk through a stand and you pay once. Lie down in one and you keep paying.</description>

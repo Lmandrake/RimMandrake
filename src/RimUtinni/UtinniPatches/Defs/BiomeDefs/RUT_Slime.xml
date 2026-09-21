@@ -97,7 +97,11 @@
       <AB_SlimyFern>0.5</AB_SlimyFern>  <!-- slimy fern -->
       <AB_SlimyTree>0.5</AB_SlimyTree>  <!-- slimy tree -->
       <AB_Slimecasia>0.4</AB_Slimecasia>  <!-- slimecasia -->
-      <AB_SlimyPholiota>0.4</AB_SlimyPholiota>  <!-- slimy pholiota -->
+      <!-- SHEET_ORPHAN_CONSUMPTION_1, owner ruling 2026-09-20: AB_SlimyPholiota removed as
+           a duplicate listing, kept only at the_rot (its "elsewhere"). The ruling landed in
+           rosters/the_slime.json and reached the game only through BiomeFlora_Ashkarr.xml's
+           now-retired replace operation; transplanted here by
+           BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
       <AB_LargeSlimyTree>0.3</AB_LargeSlimyTree>  <!-- large slimy tree -->
     </wildPlants>
     <wildPlantRegrowDays>13</wildPlantRegrowDays>

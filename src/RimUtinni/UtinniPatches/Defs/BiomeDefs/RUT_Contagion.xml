@@ -135,13 +135,19 @@
     <wildPlants>
       <AB_AlienGrass>1.0</AB_AlienGrass>  <!-- ocular grass -->
       <AB_AlienTree>1.0</AB_AlienTree>  <!-- ocular tree - tree -->
-      <AB_EyeGrass>0.6</AB_EyeGrass>  <!-- flowering ocular grass -->
       <AB_RedLeaves>0.6</AB_RedLeaves>  <!-- ocular plant -->
       <AB_HalfAlienTree>0.5</AB_HalfAlienTree>  <!-- half transformed ocular tree - tree -->
       <AB_RedPlantsTall>0.5</AB_RedPlantsTall>  <!-- ocular plant -->
       <AB_GlobularPlant>0.4</AB_GlobularPlant>  <!-- globular aberration -->
       <AB_TentacularPlant>0.4</AB_TentacularPlant>  <!-- tentacular aberration -->
       <AB_BloodBouquet>0.3</AB_BloodBouquet>  <!-- blood bouquet -->
+      <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20: AB_EyeGrass purged outright
+           (no successor authored), RUT_RustPuff moved in from the_rot ("The Contagion...
+           and hatches occular creature when damaged"). Both rulings landed in
+           rosters/the_contagion.json on that date and reached the game only through
+           BiomeFlora_Ashkarr.xml's now-retired replace operation; transplanted here by
+           BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 so this def carries them itself. -->
+      <RUT_RustPuff MayRequire="mandrake.rut.rotsporekit">0.3</RUT_RustPuff>  <!-- rust puff -->
       <AB_AlienTree_Polluted>0.15</AB_AlienTree_Polluted>  <!-- mutated ocular tree - tree -->
     </wildPlants>
     <wildPlantRegrowDays>25</wildPlantRegrowDays>
