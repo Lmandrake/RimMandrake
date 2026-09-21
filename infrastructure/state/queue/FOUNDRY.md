@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T07:00:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T07:46:18Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1372,16 +1372,6 @@ thin:     no ## spec
 summary:  SWBESTIARYUNPREFIXEDDONORDEFS1 — donor names and dead bodies left in a shipping mod
 prose:    infrastructure/state/items/SWBESTIARY_UNPREFIXED_DONOR_DEFS_1.md
 
-## BRIDGE_SELECT_NONCOLONIST_PAWN_1 rimworld/select_pawn and ToolMapForPawns both REFUSE a non-colonist pawn, so no wild or hostile creature's ability can be fired on demand - the sole blocker on PORTED_BEAST_MECHANICS_REBUILD_1 criteria 4-6, whose criteria 2 and 3 are already confirmed live
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  A bridge call that takes a pawn id or defName and selects it, and a call that makes it
-prose:    infrastructure/state/items/BRIDGE_SELECT_NONCOLONIST_PAWN_1.md
-
 ## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
 state:    proposed
 row:      unassigned
@@ -1401,13 +1391,3 @@ kind:     verify
 thin:     no ## spec, no ## verify
 summary:  VENOMVINEPATHCOSTANDFLYER1 — the flyer exemption, the one venomvine property still unobserved
 prose:    infrastructure/state/items/VENOMVINE_PATHCOST_AND_FLYER_1.md
-
-## BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1 jawa/map_drop drops the map then throws on serializing its reply (self-referencing PlanetTile)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  BRIDGEMAPDROPSERIALIZATIONLOOP1 — jawa/mapdrop drops the map and then throws on its own reply
-prose:    infrastructure/state/items/BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1.md
