@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:07:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:21:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1440,3 +1440,13 @@ kind:     task
 thin:     no ## spec
 summary:  SHADEWHALEECOLOGYLIVEPROOF1 — live-prove the shade whale's two ecology mechanics
 prose:    infrastructure/state/items/SHADE_WHALE_ECOLOGY_LIVEPROOF_1.md
+
+## FOUNDER_ROBE_MAGENTA_1 The founders' robe layer renders as flat magenta in the CANONICAL world - magenta is RimWorld's failed-texture colour; check guy762_Robes_jawa
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     investigate
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FOUNDER_ROBE_MAGENTA_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FOUNDER_ROBE_MAGENTA_1.md

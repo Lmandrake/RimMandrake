@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:07:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:21:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -670,3 +670,13 @@ kind:     investigate
 thin:     spec, verify and criteria all present
 summary:  1. Ask him: do region names carry The ? (Live says no; the painter says yes, for all 10.)
 prose:    infrastructure/state/items/ASHKARR_PAINTER_NAMES_DIVERGED_1.md
+
+## FOUNDERS_IMPORTER_OWED_1 The founders round trip needs a committed importer, not prose: a gene loadID collision silently drops the Wimp trait from 5 of 6 founders with nothing in the log
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FOUNDERS_IMPORTER_OWED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FOUNDERS_IMPORTER_OWED_1.md
