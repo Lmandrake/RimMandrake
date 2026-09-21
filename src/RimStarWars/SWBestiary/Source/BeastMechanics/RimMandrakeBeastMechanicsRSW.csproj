@@ -59,6 +59,9 @@
     <Compile Include="JobGiver_EatMetal.cs" />
     <Compile Include="JobDriver_EatMetal.cs" />
     <Compile Include="Patch_JobGiver_GetFood.cs" />
+    <Compile Include="CompScrapHoarder.cs" />
+    <Compile Include="JobGiver_HoardScrap.cs" />
+    <Compile Include="JobDriver_HoardScrap.cs" />
     <Compile Include="CompInnateAbility.cs" />
     <Compile Include="CompAbilityEffect_FuelSpew.cs" />
     <Compile Include="RSW_BeastMechanicsDefOf.cs" />

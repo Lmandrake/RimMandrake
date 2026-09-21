@@ -62,6 +62,64 @@ the fiction on its own description — this item is the other half.
   commensalism, not nest-theft/scrap-hoarding. Don't conflate the two just
   because both are "small birds owed a mechanic."
 
+## what shipped (2026-09-20)
+
+**Built whole, not re-scoped.** The engine survey the item asked for changed
+only the SPLIT, not the ambition:
+
+- 🔴 **`JobGiver_ScarabsToObelisk` does not exist** — 0 hits in the decompiled
+  1.6 source — and no vanilla animal hoards anything. The closest vanilla gets
+  to "an animal made a lootable structure" is `Hive`, which does not haul: it
+  SPAWNS insect jelly in place (`CompProperties_Spawner`) and pays out
+  `killedLeavings` when smashed.
+- ⇒ the nest and its restock are therefore **pure vanilla defs, no C# at all**
+  (the Hive pattern, retuned), and only the HAULING is C# — assembled out of
+  vanilla's own `Toils_Haul` toils rather than a bespoke carry.
+
+| what | where |
+|---|---|
+| `RSW_ScrapNestBird` ThingDef/PawnKindDef + 2 eggs | `src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ScrapNestBird.xml` |
+| `RSW_ScrapNest` building, `RSW_HoardScrap` JobDef, `RSW_ScrapHoarderInsert` think-tree insert | `src/RimStarWars/SWBestiary/Defs/ScrapNest/RSW_ScrapNest.xml` |
+| `CompScrapHoarder` / `JobGiver_HoardScrap` / `JobDriver_HoardScrap` | `src/RimStarWars/SWBestiary/Source/BeastMechanics/` |
+| placeholder nest art (3 PNGs) + its generator | `src/RimStarWars/SWBestiary/art/ScrapNest/gen_scrapnest_placeholder.py` |
+| wired into the biome at commonality 0.45 | `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_AridShrubland.xml` |
+| Mod Setting `scrapHoardingEnabled` | `RSW_BeastMechanicsSettings.cs` |
+
+**Donor, and the double-booking check that came first:** body/art/flight frames
+reskinned from `RSW_Whisperbird` (ours, same mod, complete 4-frame directional
+flip-book) under a new defName and an oil-dark retint —
+`design/Jawa/fauna/cast_assignment.csv` assigns the *species* `Whisperbird` to
+four biomes, so this places no fifth whisperbird; it reuses the ASSET the way
+`RSW_TunnelSnake` reused `RSW_Klorslug`'s. Zero new creature PNGs. Currency
+re-verified before building: `infrastructure/artpipe/{done,pending}`,
+`registry.jsonl` and `src/` hold nothing for "scrap nest", "glitter bird" or
+"nest theft" except `RSW_TunnelSnake`'s own description.
+
+**The base-stealing candidate was NOT built**, per the item's own caution: the
+job giver refuses anything in a player home area or in any storage, and no Mod
+Setting relaxes that. Filed for the owner as `SCRAPNEST_BIRD_BASE_THEFT_1`
+(decision, offline) with four shaped options.
+
+**Verification: offline, and that is the whole bar this item set.** Assembly
+builds clean (0 warnings, 0 errors, all three new sources confirmed in the
+Csc invocation); all three def files validate clean against the live 618-mod
+load set (ParentNames resolve, texPaths resolve, the only remaining notes are
+the expected "this mod ships its own Assemblies/" Class infos); 69/69
+selftests pass; `deploy_custom_mods.py` reports SWBestiary and UtinniPatches
+**in sync** with the game folder. Not observed in a running game — the bridge
+was taken by the other window mid-task. Successor:
+`SCRAPNEST_BIRD_LIVE_VERIFY_1`.
+
+⚠️ **Deploy trap worth keeping:** `deploy_custom_mods.py` FAILED to write
+`Assemblies/RimMandrakeBeastMechanicsRSW.dll` with `[Errno 22] Invalid
+argument` while RimWorld was running, and reported the mod as not deployed —
+but the file is not exclusively locked. A truncating copy (`shutil.copy2`, or
+`open(dst,"wb")`) fails; an in-place `open(dst,"r+b")` write followed by
+`os.truncate` SUCCEEDS and lands the assembly byte-identical. Without that,
+the XML deploys and the DLL does not, which discards `RSW_ScrapNestBird`
+whole on the next load (unresolvable comp `Class`) and leaves the biome
+pointing at a dead reference.
+
 ## criteria
 
 A bird-analog with a real nest-theft/scrap-hoard mechanism ships, OR the

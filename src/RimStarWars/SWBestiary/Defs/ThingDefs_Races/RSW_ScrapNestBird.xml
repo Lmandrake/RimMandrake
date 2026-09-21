@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SHRUBLAND_SCRAPNEST_BIRDS_1 — the scrap-nest bird.
+
+  design/Jawa/worldbuilding/biomes/arid_shrubland.md §4 "Venomvine - the
+  fortress flora":
+
+    "The scrap nests. The bird-analogs are scavengers too: they line their
+     nests in the vine with glittering scrap - wire, lens-glass, chips of hull
+     - beautiful creations, and a treasure worth seeking for a Jawa.
+     Snake-analogs feed on the birds and their eggs and are replete here: the
+     treasure has its serpent, coiled in the one corridor you both fit."
+
+  `RSW_TunnelSnake` (built the same pass) already carries the serpent half of
+  that sentence on its own description; this def and `RSW_ScrapNest`
+  (Defs/ScrapNest/RSW_ScrapNest.xml) are the other half.
+
+  BODY/ART DONOR, and the double-booking check that came first.
+  Reskinned from `RSW_Whisperbird` - an already-ported, "ours"-status flier in
+  this same RSW mod, with a complete 4-frame directional flying flip-book
+  (`swanimals/Whisperbird/Whisperbird_Flying_*`) and the shared
+  `RSW_FlyingAvian` BodyDef. Checked BEFORE reusing anything:
+  `design/Jawa/fauna/cast_assignment.csv` assigns the *species* `Whisperbird`
+  to RUT_AridShrubland (row 34), RUT_FeverWood (149), RUT_Greentide (171) and
+  RUT_Miasma (209), all status keep - so this def does NOT place a whisperbird
+  a fifth time. It reuses the body/art ASSET the way RSW_TunnelSnake reused
+  RSW_Klorslug's and RSW_ShadeWhale reused RSW_Horax's: a new defName, a
+  retint, zero new PNGs, no double-booked species identity. The four other
+  flier-interface birds the sheet already places (Whisperbird, Convor, Porg,
+  Nuna) all stay wired in RUT_AridShrubland.xml unchanged.
+
+  ⚠️ validate_patch.py reports `swanimals/Whisperbird/Whisperbird` as missing,
+  and that is a KNOWN FALSE POSITIVE it also reports against RSW_Whisperbird
+  itself: those three facings deliberately live in the separate
+  `mandrake.rsw.whisperbirdartoverride` mod (owner-approved art at the same
+  relative path), which the validator does not scan because it only reads the
+  mod's own Textures/ root. The `_Dessicated` and `_Flying_*` PNGs this def
+  also uses ARE in this mod. Verified 2026-09-20 against
+  src/RimStarWars/WhisperbirdArtOverride/Textures/swanimals/Whisperbird/ and
+  the deployed copy in the game's Mods folder.
+
+  🔑 `flyingAnimationInheritColors` is TRUE here where the donor had it false.
+  With it false the retint would apply to the grounded sprite only and the
+  bird would flash back to whisperbird colours the moment it took off.
+
+  FLIGHT: per the standing rule "if it flies in the fiction, it flies in the
+  game", and because the donor already carries it - `MaxFlightTime` is the
+  switch (a STAT, not a bool) and the flip-book frames already exist, so this
+  costs nothing.
+
+  Working name only ("the scrap-nest bird"). arid_shrubland.md's Owed section
+  lists "the bird-analogs" among the names still the owner's pick; folded into
+  `ARIDSHRUBLAND_SHIPPING_NAMES_1` alongside the fuzz, the giant and the
+  tunnel snake.
+-->
+<Defs>
+
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_ScrapNestBird</defName>
+    <label>scrap-nest bird</label>
+    <description>A shrubland scavenger with an oil-dark gloss to it and an eye for anything that catches the light. It nests deep in venomvine, where nothing large can follow, and lines the nest with what it has stolen from the open ground - wire, lens-glass, chips of hull, a bead of gold. The nests are genuinely beautiful and genuinely valuable, which is why every Jawa knows what one looks like and why so few of them are ever robbed: the vine bites, and the thing coiled in the corridor bites harder.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <MarketValue>110</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>4</FilthRate>
+      <ToxicResistance>0.4</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.75</Wildness>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>7</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggScrapNestBirdUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggScrapNestBirdFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>6</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>2~3</eggCountRange>
+      </li>
+      <!--
+        The hoarding mechanic. Every field is read off Props by
+        JobGiver_HoardScrap / JobDriver_HoardScrap; see CompScrapHoarder.cs.
+        A defName no loaded mod defines is skipped silently.
+      -->
+      <li Class="RimMandrake.StarWars.SWBestiary.CompProperties_ScrapHoarder">
+        <nestDef>RSW_ScrapNest</nestDef>
+        <hoardableDefs>
+          <li>ComponentIndustrial</li>
+          <li>ComponentSpacer</li>
+          <li>Gold</li>
+          <li>Silver</li>
+          <li>Plasteel</li>
+          <li>Uranium</li>
+          <li>Steel</li>
+        </hoardableDefs>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_FlyingAvian</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.45</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.85</baseHealthScale>
+      <!-- A scavenger: it eats carrion as readily as seed. -->
+      <foodType>OmnivoreAnimal, CarnivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Bird</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <petness>0.1</petness>
+      <roamMtbDays>8</roamMtbDays>
+      <trainability>None</trainability>
+      <lifeExpectancy>14</lifeExpectancy>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nuzzleMtbHours>-1</nuzzleMtbHours>
+      <flightStartChanceOnJobStart>0.08</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <!--
+        Donor metadata only. RUT_AridShrubland.xml's own <wildAnimals> fully
+        replaces this per-biome, so a number here is not a placement.
+      -->
+      <wildBiomes>
+        <AridShrubland>0.04</AridShrubland>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Chick_Call</soundWounded>
+          <soundDeath>Pawn_Chick_Call</soundDeath>
+          <soundCall>Pawn_Chick_Call</soundCall>
+          <soundAngry>Pawn_Chick_Call</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Whisperbird_Wounded</soundWounded>
+          <soundDeath>Pawn_Whisperbird_Death</soundDeath>
+          <soundCall>Pawn_Whisperbird_Call</soundCall>
+          <soundAngry>Pawn_Whisperbird_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_ScrapNestBird</defName>
+    <label>scrap-nest bird</label>
+    <labelPlural>scrap-nest birds</labelPlural>
+    <race>RSW_ScrapNestBird</race>
+    <combatPower>60</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>2~5</wildGroupSize>
+    <flyingAnimationFramePathPrefix>swanimals/Whisperbird/Whisperbird_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>9</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <!-- TRUE, unlike the donor: otherwise the retint below is dropped in flight. -->
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <label>scrap-nest chick</label>
+        <labelPlural>scrap-nest chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <!-- oil-dark slate: a glossy scavenger against pale shrubland, reskin over the shared Whisperbird art, zero new PNGs -->
+          <color>(72, 78, 96)</color>
+          <drawSize>0.50</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird_Dessicated</texPath>
+          <drawSize>0.50</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <color>(72, 78, 96)</color>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.2, 0.2, 0.2)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <color>(72, 78, 96)</color>
+          <drawSize>1.15</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird_Dessicated</texPath>
+          <drawSize>1.15</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+<!--
+  Eggs. The snake's own description promises "the birds and their eggs", so
+  they exist. Copied field-for-field from RSW_EggWhisperbird* in
+  Defs/ThingDefs_Items/RSW_MlieWaveC_Resources.xml (same already-extracted
+  `swresource/EggSpeckled` texture, no new PNG); separate defs rather than a
+  reuse of the whisperbird's so the label does not read "whisperbird egg".
+-->
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggScrapNestBirdFertilized</defName>
+    <label>scrap-nest bird egg (fert.)</label>
+    <description>A fertilized scrap-nest bird egg. If all goes well, it should hatch into a chick. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSpeckled</texPath>
+      <drawSize>0.5</drawSize>
+      <color>(150,160,190)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>20</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>6</hatcherDaystoHatch>
+        <hatcherPawn>RSW_ScrapNestBird</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggScrapNestBirdUnFertilized</defName>
+    <label>scrap-nest bird egg (unfert.)</label>
+    <description>An unfertilized scrap-nest bird egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpeckled</texPath>
+      <drawSize>0.5</drawSize>
+      <color>(150,160,190)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>20</MarketValue>
+    </statBases>
+  </ThingDef>
+
+</Defs>
