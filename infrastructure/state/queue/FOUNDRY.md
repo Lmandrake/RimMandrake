@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T17:42:27Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-21T17:46:18Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1471,16 +1471,6 @@ kind:     task
 thin:     no ## spec
 summary:  LIVEITEMGLOBDRIFT1 — the live-item glob is 18% not-live
 prose:    infrastructure/state/items/LIVE_ITEM_GLOB_DRIFT_1.md
-
-## SWBESTIARY_UNPREFIXED_DONOR_DEFS_1 SWBestiary ships un-prefixed donor defNames (SWClaws, SWTailAttackTool, Dewback, Bogwing, Reek) and ~23 now-unreferenced BodyDefs left behind by the desert port dedup
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  SWBESTIARYUNPREFIXEDDONORDEFS1 — donor names and dead bodies left in a shipping mod
-prose:    infrastructure/state/items/SWBESTIARY_UNPREFIXED_DONOR_DEFS_1.md
 
 ## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
 state:    proposed

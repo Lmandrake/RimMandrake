@@ -10700,3 +10700,7 @@
 {"seat":"FOUNDRY","event":"start","id":"FLOODEDCANYON_RM_MOD_BUILD_1","ts":"2026-09-21T17:31:49Z"}
 {"seat":"FOUNDRY","event":"file","id":"MIASMA_FEVERWOOD_GREENTIDE_BMT_1","title":"Miasma/FeverWood/Greentide rosters carry live BMT_ (Biomes! Caverns) fauna rows, same defect as the Rot/Forge","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T17:33:14Z"}
 {"seat":"FOUNDRY","event":"close","id":"ROT_ROSTER_DEAD_DONOR_NAMES_1","sha":"87073b902","reason":"All 14 dead BMT_ names resolved (10 already ported+wired, 2 dropped as stale, 1 wired as-is); last open call (MA_Sporemole) DROPped this pass; zero BMT_ names remain live in roster or XML; follow-on MIASMA_FEVERWOOD_GREENTIDE_BMT_1 filed for the 3 sibling biomes confirmed to share the defect","ts":"2026-09-21T17:42:27Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SWBESTIARY_UNPREFIXED_DONOR_DEFS_1","ts":"2026-09-21T17:43:37Z"}
+{"seat":"FOUNDRY","event":"start","id":"SWBESTIARY_UNPREFIXED_DONOR_DEFS_1","ts":"2026-09-21T17:43:39Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FLOODEDCANYON_RM_MOD_BUILD_1 quicktest proof","ts":"2026-09-21T17:44:12Z"}
+{"seat":"FOUNDRY","event":"close","id":"SWBESTIARY_UNPREFIXED_DONOR_DEFS_1","sha":"3cbf9cff0","reason":"Deduped donor body/body-part defs into pre-existing RSW_-prefixed ones; deleted 3 fully-orphaned files; fixed the one live Bogwing collision (RSW_Sketto repointed)","ts":"2026-09-21T17:46:18Z"}
