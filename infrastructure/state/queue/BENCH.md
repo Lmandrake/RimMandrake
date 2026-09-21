@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T08:10:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T08:12:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -594,7 +594,7 @@ prose:    infrastructure/state/items/BIOME_PAINT_ONCE_AT_THE_END_1.md
 ## BIOME_MOD_SPLIT_EXECUTION_1 Execute the biome mod split: 27 painted BiomeDefs into 26 RimMandrake mods per design/RimMandrake/biome_mod_architecture.md - BLOCKED on 10 owner questions in its section 7, above all the desert names and whether Scarlands must be renamed off a vanilla 1.6 collision
 state:    proposed
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     build
 thin:     spec, verify and criteria all present
