@@ -1,0 +1,131 @@
+{
+  "decisions": {
+    "RSW_Anooba": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Bantha": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Corinathoth": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Eopie": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Ferroclaw": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_FrilledGorg": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Gizka": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Gorg": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Gutkurr": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Hrumph": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Igitz": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Iriaz": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_IridonianReek": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Jamel": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Jimvu": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Kreetle": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Kwi": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Kybuck": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_LongtailGorg": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Lothcat": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Massiff": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Mudhorn": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Mynock": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Nuna": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Pufferpig": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
+  },
+  "posture": "verdict",
+  "criterion": "None that a metric can rank \u2014 art quality is eye judgment only (the Rot wave found 4 of 61 bad renders and only a human eye caught them). Rows are pre-filled KEEP only because every one PASSED the automated facts checker (alpha/canvas/facing sanity) \u2014 that is an administrative pass, not a look. Overrule freely; that is the entire point of this sheet."
+}
