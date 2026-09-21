@@ -86,7 +86,7 @@ and in the deserts' case the owner named them separately in the ruling.
 | 6 | `RUT_ForsakenCrags` | 1135 | the Forsaken Crags | `forsaken_crags.md` | `ForsakenCrags` | `mandrake.rm.forsakencrags` | `RM_ForsakenCrags` | PROPOSED |
 | 7 | `RUT_BlueDesert` | 1029 | the Blue Desert | `the_blue_desert.md` | `BlueDesert` | `mandrake.rm.bluedesert` | `RM_BlueDesert` | PROPOSED; `BLUE_DESERT_LIFE_AUTHORING_1` builds INTO this mod, not into UtinniPatches |
 | 8 | `RUT_CrackedLands` | 970 | the Cracked Lands | `the_cracked_lands.md` | `FloodedCanyon` (EXISTS) | `mandrake.rm.floodedcanyon` | `RM_FloodedCanyon` | twin pair, §4; §7 Q4 |
-| 9 | `RUT_AridShrubland` | 628 | the arid shrubland | `arid_shrubland.md` | `FogShrubland` | `mandrake.rm.fogshrubland` | `RM_FogShrubland` | PROPOSED — "arid shrubland" is a vanilla biome label; the sheet's identity is the fog-fed fuzz |
+| 9 | `RUT_AridShrubland` | 628 | the Leaning Scrub (RULED 2026-09-21 — §7 Q2) | `arid_shrubland.md` | `LeaningScrub` | `mandrake.rm.leaningscrub` | `RM_LeaningScrub` | PROPOSED — "arid shrubland" is a vanilla biome label; the name is the sheet's own gesture, everything leaning sunward in a wind that never stops |
 | 10 | `RUT_PoisonForest` | 546 | the Poison Forest | `poison_forest.md` | `PoisonForest` | `mandrake.rm.poisonforest` | `RM_PoisonForest` | PROPOSED |
 | 11 | `RUT_TheScald` | 312 | the Scald | `the_scald.md`, `kits/scald_kit_spec.md` | `TerminalBiomes` | `mandrake.rm.terminalbiomes` | `RM_TheScald` | 🔴 RULED 2026-09-21 §7 Q1 — moves OUT of its own mod into the four-biome `TerminalBiomes` mod, independently toggleable. A sea biome (impassable) with a kit. |
 | 12 | `RUT_RustCathedral` | 236 | the Rust Cathedral | `the_rust_cathedral.md`, `kits/rust_cathedral_kit_spec.md` | `RustCathedral` | `mandrake.rm.rustcathedral` | `RM_RustCathedral` | PROPOSED; absorbs `mandrake.rut.rustcathedralhum` / `...roaches` / `...walls` |
@@ -472,13 +472,13 @@ Drafts: `Transient/biome_name_drafts_2026-09-21.md`.
   owner picked draft row 1 over the recommended row 0. Rows 1 and 20 can start.
 - `RUT_Desert` → **the Long Shade** (`RM_LongShade`, `mandrake.rm.longshade`) — owner
   picked the recommended row.
-- `RUT_AridShrubland` → **HELD.** Not a name problem: the owner's reading of the biome
-  ("the periodic scrub bushes grow big as a man and everywhere else is the low fuzz")
-  is not what `arid_shrubland.md` says, and the sheet contradicts itself on the point —
-  §1 says "sightlines are gone, cover is everywhere, for everything" while §1's next
-  paragraph and §3's two-floors section put the whole canopy at KNEE height, where a
-  biped is "too large to hide in it, too small to be safe over it". The vegetation
-  structure is ruled before the name, because the name follows it. Row 9 does not start.
+- `RUT_AridShrubland` → **the Leaning Scrub** (`RM_LeaningScrub`,
+  `mandrake.rm.leaningscrub`). Ruled second, after the vegetation question underneath it:
+  the owner read the biome as man-high scrub over low fuzz, the sheet said knee-high
+  everywhere while also claiming "sightlines are gone, cover is everywhere, for
+  everything", and he ruled the knee-high canopy STANDS — cover is for things smaller
+  than a person, people stand out, and venomvine alone is man-height or more. The false
+  sentences are deleted from `arid_shrubland.md`, which carries the amendment.
 
 **Q3 — rename `RM_FE_Pyrelands` → `RM_Pyrelands`: YES, NOW.** Ruled. Item:
 `PYRELANDS_DEFNAME_RENAME_1`.
@@ -525,7 +525,6 @@ re-authoring, so none of them is Star Wars content.
 
 ### Nothing is open
 
-🔴 **All ten questions in this section are RULED as of 2026-09-21.** Q5 landed
-(`Warscar`) and Q2 landed for both deserts (`the Stillsand`, `the Long Shade`). The ONLY
-thing still held is row 9's name, and it is held behind a vegetation-structure question,
-not behind a naming pick — see Q2. Every other row can start.
+🔴 **All ten questions in this section are RULED as of 2026-09-21, and every name is
+picked.** Q5 landed (`Warscar`); Q2 landed in full — `the Stillsand`, `the Long Shade`,
+`the Leaning Scrub`. **Nothing in this spec is waiting on the owner. Every row can start.**

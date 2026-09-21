@@ -38,7 +38,7 @@ Q3 is executed already: `RM_FE_Pyrelands` → `RM_Pyrelands`, committed at `84d4
 (0 occurrences remain, 3 C# string literals included, 3 assemblies rebuilt clean).
 ⚠️ That rename is **built but NOT deployed** — the game was running. Deploy before testing.
 
-## 🔴 Names ruled 2026-09-21 — three of four landed, row 9 held
+## ✅ Names ruled 2026-09-21 — ALL FOUR LANDED. Nothing is waiting on the owner.
 
 - **Row 1, `RUT_ExtremeDesert` → `RM_Stillsand`, "the Stillsand"** (`mandrake.rm.stillsand`).
   Owner picked draft row 1 over the recommendation. The campaign label "the Dune Sea" stays
@@ -48,7 +48,13 @@ Q3 is executed already: `RM_FE_Pyrelands` → `RM_Pyrelands`, committed at `84d4
   ruled and the label shipped on FOUNDRY (`SCARLANDS_RENAME_OURS_1`, closed); the defName
   move is row 20's own migration, `SCARLANDS_STANDALONE_MOD_1`.
 
-⏸️ **Row 9, `RUT_AridShrubland`, is HELD — and not on a name.** Put to the owner, he
+- **Row 9, `RUT_AridShrubland` → `RM_LeaningScrub`, "the Leaning Scrub"**
+  (`mandrake.rm.leaningscrub`) — the sheet's own gesture, everything leaning sunward in a
+  wind that never stops.
+
+### Row 9 took a vegetation ruling first, and it is worth keeping
+
+Put the name to the owner, he
 answered with the biome rather than the name: *"I had thought the periodic scrub bushes
 would grow big as a man and everywhere else is the low fuzz. No? Please check sheet."*
 Checked: `arid_shrubland.md` does NOT say that — it puts the entire canopy at knee height
@@ -56,8 +62,12 @@ Checked: `arid_shrubland.md` does NOT say that — it puts the entire canopy at 
 the biome's whole point ("too large to hide in it, too small to be safe over it"). But §1
 opens with *"Sightlines are gone. Cover is everywhere, for everything, all the time"*,
 which is only true of a canopy at least shoulder-high. **The sheet contradicts itself, the
-owner's instinct found it, and the sheet is frozen** — so the vegetation structure is his
-card, and the name follows it. Do not pick row 9's name first.
+owner's instinct found it, and the sheet is frozen** — so it went to him as a card.
+🔴 **He ruled the knee-high canopy STANDS**, verbatim: *"'cover everywhere' is interpreted
+only for smaller things than you. People stand out. Except for the venomvine, that should
+be man-height or more."* The false sentences are DELETED from `arid_shrubland.md` (not
+bannered) and the sheet carries the amendment block at `f04723b58`. Nothing else in that
+sheet moved.
 
 Every other row can start now.
 
