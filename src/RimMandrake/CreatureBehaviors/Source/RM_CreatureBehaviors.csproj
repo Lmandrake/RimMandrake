@@ -100,6 +100,8 @@
     <Compile Include="RM_CompHeatBurstPredator.cs" />
     <Compile Include="RM_CompProperties_DrumLure.cs" />
     <Compile Include="RM_CompDrumLure.cs" />
+    <Compile Include="RM_HediffCompProperties_ShadeStagger.cs" />
+    <Compile Include="RM_HediffComp_ShadeStagger.cs" />
   </ItemGroup>
 
   <ItemGroup>

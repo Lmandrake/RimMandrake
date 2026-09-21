@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Staggerseed_Thoughts.xml                  DESERT_STAGGERSEED_BUILD_1
+
+  The euphoria half of desert.md §4b, as mood. Situational
+  (ThoughtWorker_Hediff), not a memory: §4b's euphoria IS the hediff running
+  its course, so the mood has to track the hediff's severity down rather than
+  sit at full strength for a fixed day after the feeling has gone. That is
+  also the vanilla drug-high pattern (Core's Ambrosia, GoJuice, Smokeleaf
+  thoughts are all ThoughtWorker_Hediff over their own high hediff).
+
+  🔴 STAGE COUNT IS LOAD-BEARING. ThoughtWorker_Hediff picks this def's stage
+  by the HEDIFF's current stage index (MEASURED from the decompiled engine,
+  RimWorld/ThoughtWorker_Hediff.cs: ActiveAtStage(min(hediff stage, hediff
+  stages-1, thought stages-1))). RUT_StaggerseedEuphoria has two stages, so
+  this has two, in the same order — "fading" first, "full" second. Add a
+  stage to one and you must add it to the other, or every dose silently
+  clamps to the last stage here.
+
+  +26 at full is INVENTED-BUILD and deliberately above vanilla ambrosia: the
+  ingredient kills anyone who eats it wrong, grows only in the water pockets,
+  and takes a skilled cook — a mood payoff at ambrosia's level would not pay
+  for the trip.
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RUT_StaggerseedEuphoriaThought</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RUT_StaggerseedEuphoria</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>staggerseed afterglow</label>
+        <description>It is wearing off, and I can feel exactly where the edge of it was. I am not sure I want to know how close that was.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+      <li>
+        <label>staggerseed bloom</label>
+        <description>Something tried to grow inside me and did not make it. I have never felt better in my life and I am aware of how that sounds.</description>
+        <baseMoodEffect>26</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

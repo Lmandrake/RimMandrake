@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Staggerseed_Hediffs.xml                   DESERT_STAGGERSEED_BUILD_1
+
+  The two ingestible outcomes the sheet asks for, and the whole point of the
+  plant: the SAME organism, raw and prepared, has to land on the eater in two
+  completely different ways. desert.md §4b —
+
+    raw:      "hatches its seeds inside your belly. It kills quickly"
+    prepared: "the preparation lets them begin to grow and then perish before
+               they can hurt you — producing euphoria"
+
+  So: two HediffDefs, one per ThingDef, never one hediff with a flag.
+
+  hediffClass is stated explicitly on both. HediffDef.hediffClass defaults to
+  Verse.Hediff, which carries NO comps at all — a comps block on a def that
+  never set HediffWithComps loads clean and silently does nothing, which is
+  exactly the failure mode that would make both mechanisms below vanish
+  without a log line.
+
+  RUT_StaggerseedBrood is UNTENDABLE and has no immunity comp, deliberately,
+  and that is the sheet's ruling rather than a balance choice: §4b's fruit
+  "kills quickly" and the plant's whole life cycle is the corpse. A tendable
+  or survivable brood would make the raw fruit a nuisance instead of a
+  lesson, and would leave the prepared dish with nothing to be a near-miss
+  OF. The cure is not eating it raw; the skill is the preparation.
+-->
+<Defs>
+
+  <!-- ============== Raw: the brood ============== -->
+  <HediffDef>
+    <defName>RUT_StaggerseedBrood</defName>
+    <label>staggerseed brood</label>
+    <description>Live staggerseed taking root in the gut wall. The seeds feed on the host and strip it from the inside while it is still walking around; there is no course of treatment, because there is nothing wrong with the host that removing an entire crop would fix. The host will feel it gripping, then feel it pulling, and then feel the pull acquire a direction.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.65, 0.75, 0.45)</defaultLabelColor>
+    <initialSeverity>0.1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <lethalSeverity>1</lethalSeverity>
+    <isBad>true</isBad>
+    <makesSickThought>true</makesSickThought>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <!-- ~7 game hours from the 0.1 the fruit applies to the lethal 1.0.
+           "Kills quickly" (§4b) with enough of a window that the stagger is
+           something the player watches happen, not a death message. -->
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>3.0</severityPerDay>
+        <showHoursToRecover>false</showHoursToRecover>
+      </li>
+      <!-- Both halves of the dispersal, in this assembly's own comp:
+           RimMandrake.CreatureBehaviors.RM_HediffComp_ShadeStagger. It reads
+           RM_MapComponent_ShadeGrid (DESERT_SHADE_GRID_KEYSTONE_1) — the
+           sheet's shade is a grid we compute, never a vanilla engine query.
+           minSeverityToStagger 0.6 lines up with the "staggering" stage
+           below on purpose, so the visible label and the forced walk start
+           in the same moment. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_ShadeStagger" MayRequire="mandrake.rm.creaturebehaviors">
+        <minSeverityToStagger>0.6</minSeverityToStagger>
+        <steerIntervalTicks>250</steerIntervalTicks>
+        <staggerRadius>22</staggerRadius>
+        <minShadeToSettle>0.6</minShadeToSettle>
+        <germinateThingDef>RUT_Staggerseed</germinateThingDef>
+        <germinateCount>1~3</germinateCount>
+        <germinateRadius>2.5</germinateRadius>
+        <germinateChanceInSun>0.15</germinateChanceInSun>
+        <germinateChanceInShade>1.0</germinateChanceInShade>
+        <germinateGrowth>0.05</germinateGrowth>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>settling</label>
+        <painOffset>0.05</painOffset>
+        <capMods>
+          <li>
+            <capacity>Eating</capacity>
+            <postFactor>0.85</postFactor>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>rooting</label>
+        <minSeverity>0.35</minSeverity>
+        <vomitMtbDays>0.3</vomitMtbDays>
+        <painOffset>0.25</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.1</offset>
+          </li>
+          <li>
+            <capacity>Eating</capacity>
+            <postFactor>0.5</postFactor>
+          </li>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <postFactor>0.8</postFactor>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>staggering</label>
+        <minSeverity>0.6</minSeverity>
+        <lifeThreatening>true</lifeThreatening>
+        <vomitMtbDays>0.15</vomitMtbDays>
+        <painOffset>0.45</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.25</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.7</postFactor>
+          </li>
+          <li>
+            <capacity>Eating</capacity>
+            <postFactor>0.2</postFactor>
+          </li>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <postFactor>0.5</postFactor>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- ============== Prepared: the near-miss ============== -->
+  <HediffDef>
+    <defName>RUT_StaggerseedEuphoria</defName>
+    <label>staggerseed bloom</label>
+    <description>A crop of staggerseed germinating and dying in one body at once. Prepared correctly the seeds wake, root, spend everything they have on a growth they cannot finish, and are gone before they reach anything that matters — and the body reads the whole failed invasion as a wave of extraordinary well-being. It is not a drug. It is a thing that was going to kill you and then didn't, and the feeling is the difference.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.95, 0.8, 0.45)</defaultLabelColor>
+    <initialSeverity>0.6</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <isBad>false</isBad>
+    <makesAlert>false</makesAlert>
+    <scenarioCanAdd>true</scenarioCanAdd>
+    <comps>
+      <!-- ~12 game hours from a full 1.0 dose. -->
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-1.2</severityPerDay>
+        <showHoursToRecover>true</showHoursToRecover>
+      </li>
+    </comps>
+    <!-- Two stages, and RUT_StaggerseedEuphoriaThought below must keep
+         exactly two to match: ThoughtWorker_Hediff indexes the THOUGHT's
+         stage list by the HEDIFF's current stage index (MEASURED,
+         RimWorld/ThoughtWorker_Hediff.cs), so a mismatch silently clamps
+         every dose to the last thought stage. -->
+    <stages>
+      <li>
+        <label>fading</label>
+        <painFactor>0.6</painFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>full</label>
+        <minSeverity>0.5</minSeverity>
+        <painFactor>0.25</painFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.1</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.9</postFactor>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

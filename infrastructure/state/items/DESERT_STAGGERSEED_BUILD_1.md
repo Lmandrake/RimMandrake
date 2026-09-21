@@ -1,5 +1,51 @@
 # DESERT_STAGGERSEED_BUILD_1 — author the staggerseed cycle plant
 
+## state (2026-09-20) — BUILT, waiting on the name card
+
+**Both mechanisms and both ThingDefs are landed and building clean. This item
+stays OPEN**, per its own `## verify`: the plant may not ship under the working
+name, and the owner card `STAGGERSEED_SHIPPING_NAME_1` is still `proposed`.
+What is left on this item is the rename, and nothing else.
+
+Landed:
+
+- `src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_Staggerseed.xml` — the
+  bush. `fertilityMin` 0.45 confines it to the "protected water pockets", the
+  tightest of the three desert plants' niches (ultracactus 0.05, surra grass
+  0.30). Its **own** `ingestible.outcomeDoers` carries the brood as well as the
+  harvested fruit's, because `Verse/Thing.cs Ingested` runs the outcome doers of
+  whatever is eaten and a grazing animal eats the PLANT, never the item — on the
+  fruit alone the whole dispersal cycle would never once fire in a wild biome.
+- `.../Defs/ThingDefs_Items/RUT_Staggerseed_Items.xml` — `RUT_StaggerseedFruit`
+  (raw, lethal) and `RUT_StaggerseedSeedDish` (prepared, euphoric).
+- `.../Defs/HediffDefs/RUT_Staggerseed_Hediffs.xml` — `RUT_StaggerseedBrood`
+  (untendable, `lethalSeverity` 1, ~7 h from the dose) and
+  `RUT_StaggerseedEuphoria`.
+- `.../Defs/ThoughtDefs/` and `.../Defs/RecipeDefs/` — the situational mood
+  thought and the Cooking-8 preparation.
+- `src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_ShadeStagger.cs` (+ its
+  properties class) — both halves of the dispersal. Past severity 0.6 it forces a
+  Goto toward the nearest strictly-better-shaded reachable cell that
+  `RM_MapComponent_ShadeGrid` knows of, and on `Notify_PawnDied` it germinates the
+  plant at the corpse, at a chance running 0.15 in full sun to 1.0 in full shade —
+  the "it aims at shade" ruling expressed as the asymmetry itself, not as flavour
+  text over a flat chance. Mod Settings entry 24 in `RM_CreatureBehaviorsMod.cs`.
+- `RUT_Desert.xml` wildPlants at 0.1; `AshkarrFlora/About/About.xml` gains
+  `loadAfter mandrake.rm.creaturebehaviors`.
+
+Checked and clean: assembly builds 0 warnings / 0 errors; every new XML parses;
+`run_selftests.py` 67/67.
+
+⚠️ **Art is queued, not landed** — jobs `rutstaggerseed_v1` and
+`rutstaggerseeddish_v1` in `infrastructure/artpipe/pending/`, filed after
+searching `done/`, `_artsrc/`, `registry.jsonl` and `art_status.json` for
+"staggerseed"/"cycle plant" and finding nothing. Until the daemon reaches them
+`validate_patch.py` reports the three texPaths as missing; that is expected, and
+is the same state `RSW_Ultracactus` shipped in.
+
+⚠️ **Not deployed.** Nothing has been copied to the game's `Mods` folder and no
+live check has been run — the whole pass is offline.
+
 ## what is wrong
 
 desert.md §4b/§7 names the desert's third signature plant — the cycle plant,

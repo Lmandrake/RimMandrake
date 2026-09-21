@@ -122,6 +122,16 @@ namespace RimMandrake.CreatureBehaviors
     //      pawn hunts like a normal vanilla predator from then on. The dial
     //      scales only the per-scan appraisal chance (never the radius or
     //      ambush range, which stay whatever the race's own comp says).
+    //  24. shadeStaggerEnabled / shadeStaggerGerminationMultiplier —
+    //      RM_HediffComp_ShadeStagger (DESERT_STAGGERSEED_BUILD_1). Off: a
+    //      creature carrying a corpse-dispersal brood still sickens and still
+    //      dies on exactly the same schedule — this switch never touches the
+    //      hediff's severity — it simply stops being steered toward shade on
+    //      the way down, and nothing germinates at its corpse. The dial scales
+    //      only the germination CHANCE (never the stagger, the search radius,
+    //      the seedling count or the lethality, which stay whatever the def
+    //      says); at 0 the dying still walk for the shadows and the plant
+    //      simply never spreads that way.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -158,6 +168,8 @@ namespace RimMandrake.CreatureBehaviors
         public static float heatDrivenBurstDecayMultiplier = 1f;
         public static bool drumLureEnabled = true;
         public static float drumLureChanceMultiplier = 1f;
+        public static bool shadeStaggerEnabled = true;
+        public static float shadeStaggerGerminationMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -195,6 +207,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref heatDrivenBurstDecayMultiplier, "heatDrivenBurstDecayMultiplier", 1f);
             Scribe_Values.Look(ref drumLureEnabled, "drumLureEnabled", true);
             Scribe_Values.Look(ref drumLureChanceMultiplier, "drumLureChanceMultiplier", 1f);
+            Scribe_Values.Look(ref shadeStaggerEnabled, "shadeStaggerEnabled", true);
+            Scribe_Values.Look(ref shadeStaggerGerminationMultiplier, "shadeStaggerGerminationMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -316,6 +330,15 @@ namespace RimMandrake.CreatureBehaviors
               + "from then on.");
             list.Label("Drum-lure appraisal chance: " + drumLureChanceMultiplier.ToString("0.00") + "x");
             drumLureChanceMultiplier = list.Slider(drumLureChanceMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Corpse-dispersal seeding (stagger for shade)", ref shadeStaggerEnabled,
+                "On: a creature dying of a seed-brood walks for the nearest shadow while it still "
+              + "can, and the plant grows from wherever the body falls. Off: it dies exactly as fast "
+              + "and exactly as surely, it just dies where it happens to be standing and leaves "
+              + "nothing growing behind it. This never changes how deadly the fruit is.");
+            list.Label("Corpse germination chance: " + shadeStaggerGerminationMultiplier.ToString("0.00") + "x");
+            shadeStaggerGerminationMultiplier = list.Slider(shadeStaggerGerminationMultiplier, 0f, 3f);
 
             list.End();
         }
