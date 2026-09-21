@@ -181,7 +181,7 @@ relation clique and both animal bonds resolved by name.
 Without the `<loadID>` offset the load still "succeeds" and quietly costs a trait —
 see the bullet above. Evidence and method:
 `Transient/founders_roundtrip_2026-09-21.md`; item:
-`infrastructure/state/items/FOUNDERS_EXPORT_TO_REPO_1.md`.
+`infrastructure/state/items/closed/FOUNDERS_EXPORT_TO_REPO_1.md`.
 
 ## The importer — `import_founders.py`
 

@@ -114,7 +114,7 @@ migration-name join as this file did, but because its xpath targets the animal's
 `ThingDef/statBases` rather than a biome defName, its failure mode is NOT a harmless
 no-op — regenerating it today would silently emit **zero** operations and delete a
 live, hard-spawn-gate temperature safety net. See
-`infrastructure/state/items/ANIMAL_TOLERANCES_JOIN_BROKEN_1.md`. Not fixed here —
+`infrastructure/state/items/closed/ANIMAL_TOLERANCES_JOIN_BROKEN_1.md`. Not fixed here —
 out of this item's scope and needs its own pass.
 
 ## Not the cause of the live BMT_ plant crossref errors

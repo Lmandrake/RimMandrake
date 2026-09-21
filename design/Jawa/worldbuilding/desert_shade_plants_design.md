@@ -2,7 +2,7 @@
 
 _Fable design pass, 2026-09-20. DECIDED — a build pass executes this without
 re-deriving the trigger, damage-shape or tier questions. Nothing here is built.
-Sources: `infrastructure/state/items/DESERT_SHADE_PLANTS_DESIGN_1.md`;
+Sources: `infrastructure/state/items/closed/DESERT_SHADE_PLANTS_DESIGN_1.md`;
 `biomes/desert.md` §4b/§6/§9/§10 (FROZEN); `biomes/arid_shrubland.md` §Venomvine
 (FROZEN); `PLANT_GROWTH_SPEC.md`; the round-2 flora review
 (`review/round2/flora_decisions_propagated.json`, owner ruled

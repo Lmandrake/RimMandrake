@@ -135,7 +135,7 @@ column repointed to `RimMandrake: SW — Bestiary`, reason field annotated).
    but because its xpath targets the animal's own def rather than a biome
    defName, regenerating it would silently **delete** a live hard-spawn-gate
    temperature safety net rather than no-op. Not fixed, not touched — flagged
-   separately at `infrastructure/state/items/ANIMAL_TOLERANCES_JOIN_BROKEN_1.md`.
+   separately at `infrastructure/state/items/closed/ANIMAL_TOLERANCES_JOIN_BROKEN_1.md`.
 2. **7 defNames are live and marked "keep"/"import" in hand-authored biome
    files but are NOT in the ruled 68** — `BMT_ChemSnail` (kept at BOTH
    `the_cracked_lands` AND `the_rot`, contradicting this item's own read of

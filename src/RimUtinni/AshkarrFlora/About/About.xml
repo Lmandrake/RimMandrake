@@ -55,7 +55,7 @@ fire in a wild biome.
 🔴 The plant's SHIPPING NAME is the owner's and is not in yet (§4b: "Name
 owner's pick. Working: vorrel."). Every `RUT_Vorrel*` defName, label
 and texPath here is provisional pending
-`infrastructure/state/items/STAGGERSEED_SHIPPING_NAME_1.md`. Art is owed and was
+`infrastructure/state/items/closed/STAGGERSEED_SHIPPING_NAME_1.md`. Art is owed and was
 deliberately not queued for the same reason; the graphics point at Core
 berry-bush/berry/meal art as a stated interim so nothing renders
 magenta.

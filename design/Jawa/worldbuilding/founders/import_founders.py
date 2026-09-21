@@ -52,7 +52,7 @@ size delta is checked and printed.
 `ASHKARR_FALLLINE_*` are two of the three artifacts ruled to survive the world
 remake. This script will not write to them under any flag.
 
-Provenance: infrastructure/state/items/FOUNDERS_IMPORTER_OWED_1.md,
+Provenance: infrastructure/state/items/closed/FOUNDERS_IMPORTER_OWED_1.md,
 Transient/founders_roundtrip_2026-09-21.md, and README.md beside this file.
 Regression guard: src/RimMandrake/Utils/selftest_import_founders.py.
 """
