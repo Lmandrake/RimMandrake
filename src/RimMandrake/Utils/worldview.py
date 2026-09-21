@@ -193,6 +193,14 @@ class PlanetView(object):
         self.settlements = self.objs.settlements()
         self.landmarks = self.objs.landmarks()
         self.features = self.objs.features()
+        # 🔴 `tileFeature` stores the feature's uniqueID, NOT its position in the
+        # features list. On the canonical Ash'karr save the uniqueIDs run 21..92, so
+        # matching a raw value against a list index labels the wrong region (and
+        # reports 0 tiles for the first 21). Remap into list-position space once,
+        # here, so every consumer below is joining on the same key.
+        _uid2pos = {f.get("uid", f["index"]): f["index"] for f in self.features}
+        self.feature_idx = np.array(
+            [_uid2pos.get(int(v), 0xFFFF) for v in self.feature_idx], np.uint16)
         self.factions = self._factions()
         self.info = self._info()
         self.other_objects = Counter(
@@ -809,6 +817,32 @@ FACTION_MARKS = [
 ]
 
 
+# RimWorld/Planet/WorldFeature.cs - EffectiveDrawSizeCurve, MEASURED from the engine.
+DRAW_SIZE_CURVE = ((10.0, 15.0), (25.0, 40.0), (50.0, 90.0),
+                   (100.0, 150.0), (200.0, 200.0))
+
+
+def effective_draw_size(max_draw_size_in_tiles):
+    """WorldFeature.EffectiveDrawSize - what the label's width on the globe is
+    actually set from. A SimpleCurve, so it clamps flat outside its end points."""
+    x = float(max_draw_size_in_tiles)
+    if x <= DRAW_SIZE_CURVE[0][0]:
+        return DRAW_SIZE_CURVE[0][1]
+    if x >= DRAW_SIZE_CURVE[-1][0]:
+        return DRAW_SIZE_CURVE[-1][1]
+    for (x0, y0), (x1, y1) in zip(DRAW_SIZE_CURVE, DRAW_SIZE_CURVE[1:]):
+        if x0 <= x <= x1:
+            return y0 + (y1 - y0) * (x - x0) / (x1 - x0)
+    return DRAW_SIZE_CURVE[-1][1]
+
+
+def _asfloat(v, default):
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return default
+
+
 def marker(shape, x, y, r, fill, stroke="#000000", sw=3.6, extra="", title=None):
     """One faction icon. Every shape is drawn to the same visual weight.
 
@@ -1156,7 +1190,15 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
             xy, vis = proj.project(v[None, :], ref=v)
             if not vis:
                 continue
-            size = max(11.0, min(28.0, 5.6 * math.sqrt(len(idx)))) * sc
+            sizes = getattr(pv, "feature_sizes", None)
+            if sizes is None:
+                size = max(11.0, min(28.0, 5.6 * math.sqrt(len(idx)))) * sc
+            else:
+                # The engine sets a label's on-globe width to EffectiveDrawSize
+                # TILES (WorldFeatures.cs: texts[i].Size = EffectiveDrawSize *
+                # averageTileSize), so a faithful preview scales linearly with it.
+                mds = sizes.get(f["name"], _asfloat(f.get("size"), 10.0))
+                size = max(9.0, min(96.0, 11.0 * effective_draw_size(mds) / 15.0)) * sc
             name = f["name"] or f["def"]
             # DejaVu Sans Oblique averages ~0.52 em per character over mixed case.
             half_w = 0.26 * size * len(name) + 3.0 * sc
@@ -1346,6 +1388,11 @@ def main():
                              "swampiness", "hilliness", "pollution"])
     ap.add_argument("--projection", default="equirect", choices=["equirect", "ortho", "mollweide"])
     ap.add_argument("--no-sheet", action="store_true", help="one map only, no Mollweide panel")
+    ap.add_argument("--feature-sizes", default=None,
+                    help="JSON {region name: maxDrawSizeInTiles} - draw every region "
+                         "label at the size that value gives off the engine's "
+                         "EffectiveDrawSizeCurve, instead of the renderer's own "
+                         "tile-count heuristic. For previewing a label-size pass.")
     ap.add_argument("--no-relief", action="store_true", help="flat fills, no hillshade")
     ap.add_argument("--center", default="0,0", help="lat,lon for --projection ortho")
     ap.add_argument("--width", type=int, default=2400)
@@ -1368,6 +1415,13 @@ def main():
         pv = PlanetView(a.save, a.dump, a.water_biome, a.not_water_biome)
     else:
         pv = BundlePlanet(a.save, a.water_biome, a.not_water_biome)
+    if a.feature_sizes:
+        with open(a.feature_sizes, encoding="utf-8") as fh:
+            pv.feature_sizes = {k: float(v) for k, v in json.load(fh).items()}
+        missing = sorted({f["name"] for f in pv.features} - set(pv.feature_sizes))
+        if missing:
+            print("⚠️  --feature-sizes covers %d of %d regions; these keep their saved "
+                  "size: %s" % (len(pv.feature_sizes), len(pv.features), missing))
     rep = characterise(pv)
     if not a.quiet:
         print_report(rep)
