@@ -104,3 +104,73 @@ Config error in RSW_ShadeWhale: no race
 `jawa/get_defs BiomeDef/RUT_Desert fields=wildPlants` reports the full authored
 list, and a freshly generated `RUT_Desert` map carries `RM_Leachmoss` on its
 Gravel/Soil and none on its Sand.
+
+## FIXED and VERIFIED LIVE, 2026-09-21 (FOUNDRY, bridge, `--tier desertplants`, all five DLC)
+
+**The decision, made rather than defaulted to: a BiomeDef we AUTHOR owns its own
+`wildPlants`, and `biome_flora.py` emits no operation for it.** Three measured reasons,
+all recorded in that file's docstring:
+
+1. The patch and the def are in the **same mod**, so the replace silently outranked our
+   own authored list — the defect itself.
+2. The generator **structurally cannot emit `MayRequire`** (its own documented reason: the
+   dump's packageId names the mod that last RETEXTURED a def). The def files carry 68
+   guarded cross-mod refs, and `96c1d9b81` — *"dropping MayRequire was wrong"* — is a ruled
+   correction on exactly this field. An emitter that must strip those cannot own it.
+3. `check()` requires every plant to be in the **def dump**, a capture of a PAST load, so a
+   plant built today can never pass. A source of truth that refuses new content is not one.
+
+The emitter now runs for **donor** biomes only — today that is one operation,
+`ZBiome_Grasslands`. `check()` gained `owned_flora()`, which parses the authored defs and
+**fails the build** if any owned biome disagrees with its roster.
+
+**The sweep found 13 biomes drifted, in BOTH directions**, which is why "just drop the
+operations" would have been wrong on its own: the owner's 2026-09-20
+`SHEET_ORPHAN_CONSUMPTION_1` sheet moves were live ONLY through the patch, and dropping it
+would have silently reverted them. Both sides were reconciled first — the sheet rulings
+transplanted into the def files (`RUT_BlueDesert` +3, `RUT_Contagion` -AB_EyeGrass
++RUT_RustPuff, `RUT_ForsakenCrags` +AG_Gamma +AG_Septimum, `RUT_Miasma` +RUT_Nogtyl,
+`RUT_PoisonForest` -AB_CrystalHorn +AB_GiantToxicFlower, `RUT_Slime` -AB_SlimyPholiota,
+`RUT_TheForge` -3, `RUT_TheRot` -2, `RUT_Umbra` -AB_CrystalFlower +PoisonShrub,
+`RUT_Wasteland` +9 into an empty block), and the build items' new plants entered the
+rosters (`desert` all 9, `arid_shrubland` RUT_Fuzz, `dune_sea_deep_desert` the three RSW_
+signature/port rows, `the_rot` RUT_BlastpodShroom). No commonality disagreed on any plant
+held in common — every divergence was membership.
+
+```
+jawa/get_defs BiomeDef/RUT_Desert  fields=wildPlants
+  -> wildPlants: [BiomePlantRecord x9]        # was 4
+jawa/world_tile_set 83745 RUT_Desert Flat 25.5 C 120 mm -> world_commit
+jawa/world_tile_map_generate 250x250  -> 10,932 things   # was 0 plants
+jawa/list_things group=Plant  -> countMatched 272        # was 0
+     RSW_Ultracactus 246 · RSW_Dunegrass 12 · RM_Leachmoss 7 · RUT_Staggerseed 2
+     RSW_VellaraBloom 2 · RSW_SweetbarkTree 1 · RSW_Plant_Chakroot_Wild 1 · RM_Venomvine 1
+jawa/get_terrain_batch on all 7 RM_Leachmoss cells
+  -> Soil x3, Gravel x4, Sand x0             # the criterion, exactly
+```
+
+8 of the 9 authored defs spawned. The ninth, `RSW_Plant_HubbaGourd_Wild` at commonality
+0.2, simply did not come up in 272 draws — it is present in the live list and is not a
+defect.
+
+⚠️ The plantless-biome rule still applies: nothing here says anything about which TILES
+carry these biomes, and nothing in this work touched the planet.
+
+## the three "also found" issues
+
+| finding | outcome |
+|---|---|
+| `RUT_Staggerseed` does not resolve | **FIXED.** Not a missing def — a DEPLOY GAP. `AshkarrFlora/Defs/ThingDefs_Plants/` held only `RUT_AshkarrFlora_Plants.xml` in the game folder; `RUT_Staggerseed.xml`, `RUT_Fuzz.xml` and four more existed only in the repo. Deployed (7 files); `selftest_deployed_biome_refs.py` went FAIL (2 dangling) -> PASS, and the def resolves live. ⚠️ A SECOND half is filed, not fixed: `mandrake.rut.ashkarrflora` is in **no stored mod list** — `ASHKARRFLORA_NOT_IN_MODLIST_1`. |
+| `Config error in RM_Venomvine` | **FIXED and VERIFIED GONE.** Reparented `PlantBase` -> `PlantBaseNonEdible`; Core's `PlantBase` exists only to add the RawBad `<ingestible>`, and this plant is deliberately Nutrition 0. |
+| `Config error in RSW_ShadeWhale: no race` | **DIAGNOSED, filed as `SHADEWHALE_EXTENSIONS_UNBUILT_1`.** Not a def defect: the deployed `RimMandrake.CreatureBehaviors.dll` is missing `RM_FilterFeedExtension`, `RM_CompProperties_DungSeeder` and `RM_HediffCompProperties_ShadeStagger` (MEASURED against the assembly bytes, and the load's own exception names them). The C# was written and never rebuilt. Needs a build plus a game-down window, so it is its own unit of work. |
+
+Two MORE config errors of the Venomvine class were found on the verification load and
+fixed in the same sitting: `RSW_LightPipeNub` and `RSW_Ollim`, both Nutrition 0 under a
+RawBad parent.
+
+🔴 **A trap worth keeping: `<ingestible />` does not suppress the field.** Reparenting
+`RSW_LightPipeNub` (which carried a bare `<ingestible />`) to `PlantBaseNonEdible` made it
+WORSE — with no parent ingestible to merge into, the empty element constructs a bare
+`IngestibleProperties` and the load reported `undefined preferability` AND `no foodType`
+where there had been one error. Caught only because the fix was re-verified on a second
+load rather than assumed. Name the one field that is wrong and inherit the rest.
