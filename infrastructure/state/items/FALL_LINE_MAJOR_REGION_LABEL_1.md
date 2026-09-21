@@ -107,18 +107,25 @@ has a visual hierarchy where it had none.
 "Fall" and "Line". Incidental to this change — but if it bothers him, `drawCenter` is the
 lever, and it is a second iteration.
 
-### 🔴 the change is LIVE BUT NOT SAVED — deliberately
+### ✅ persisted as its own savegame — the canonical save was NOT touched
 
-Nothing was written to `CANONICAL_ASHKARR_START_2026-09-12.rws`. Two reasons:
+`ASHKARR_FALLLINE_LABEL26_2026-09-21.rws` (17,512,677 bytes, written 18:01).
 
-1. The item's own rule is *"one change, then LOOK"* — the size is his to judge before
-   anything is baked in.
-2. ⚠️ `rimworld/save_game` has previously written the **current slot** instead of the
-   named one. The canonical save is one of only three artifacts ruled to survive the world
-   remake; it is not worth risking for a value he has not seen yet.
+Following his standing rule that **anything he must LOOK at ships as a savegame** — a
+screenshot shows one angle; a save lets him walk it, zoom it and read the tooltips.
 
-⇒ Re-applying after his ruling is **one bridge call** on a loaded world. The expensive
-part is the load, which any further iteration needs anyway.
+**VERIFIED ON DISK**, by parsing the `.rws` itself rather than trusting the save call:
+71 world features, histogram `{10: 70, 26: 1}`, and the single non-10 is `Fall Line` at
+**26**. The change is durable.
+
+🔴 **The canonical save is provably untouched** — `CANONICAL_ASHKARR_START_2026-09-12.rws`
+is still 17,500,721 bytes at Sep 20 07:28, identical to before. It was backed up first
+(`.bak-pre-fallline-*`) because `rimworld/save_game` has previously written the **current
+slot** instead of the named one. ✅ That failure did **not** occur this time: the save went
+to the named slot. Worth knowing the bug is not universal — but the backup-then-stat
+procedure is what made that a measurement rather than a hope.
+
+⛔ Per his ruling, review saves stay until he says delete.
 
 ## what is still open, and is HIS
 
