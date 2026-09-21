@@ -1,5 +1,15 @@
 # Explosive plant growth — per-plant roster
 
+> 🔴 **SUPERSEDED IN ASSIGNMENT, 2026-09-21 — do not build from this file.**
+> The owner reshaped the mechanic (`explosive_plant_growth_design.md` §9). Two of this
+> file's keys are now wrong at scale: `GLUT` is **retired** into the new default, and a
+> plant bursts **only if its own identity is adaptation to scarce water** — so the 58
+> `BURST` rows are an assignment made under a rule that no longer holds. The new default
+> is `CHURN` (split, die, fruit, sow sprouts that respect built ground), and `RUPTURE` is
+> new for the contaminated.
+> ✅ **The plant LIST and the evidence in each row are still good** — it is the variant
+> column that must be re-derived. Regenerate, do not hand-edit.
+
 Item: `EXPLOSIVE_PLANT_GROWTH_1`. Design only; no def, mod or C# edited.
 
 ## The ruling this roster obeys
