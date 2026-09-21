@@ -144,6 +144,27 @@
            fits a fungal rot swamp directly) are both small. -->
       <AA_AngelMoth MayRequire="sarg.alphaanimals">0.5</AA_AngelMoth>  <!-- angel moth - small, ruled -->
       <Snoruuk MayRequire="mlie.starwarsanimalcollection">0.5</Snoruuk>  <!-- snoruuk - mobile mushroom, small, ruled -->
+      <!-- ROT_ROSTER_DEAD_DONOR_NAMES_1 (this pass): the roster's remaining `BMT_`
+           names were never a coverage gap — they are the owner's own 2026-09-10
+           sitting ruling ("move" to the Rot, decisions_propagated.json) for species
+           already ported into our own tier by BMT_FAUNA_ABSORPTION_1
+           (RSW_BiomesTeamPort_Races.xml) or, for AA_AnimaColossus, already an active
+           donor def (sarg.alphaanimals) that was simply never wired. Wiring under the
+           OWNED name, not the dead `BMT_`/donor name. RSW_PustuleHornetQueen/
+           RSW_ColonyPustuleHornetQueen/RSW_PustuleHornetSpawned are moved IN from
+           RUT_Wasteland.xml (removed there in this same pass) per that same ruling —
+           wasteland.json no longer admits them, so leaving them wired in both biomes
+           would have doubled a species the owner moved. -->
+      <RSW_PustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.3</RSW_PustuleHornetQueen>  <!-- pustule queen - wretched-small, moved in from Wasteland -->
+      <RSW_ColonyPustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.2</RSW_ColonyPustuleHornetQueen>  <!-- colony pustule queen - wretched-small, moved in from Wasteland -->
+      <RSW_PustuleHornetSpawned MayRequire="mandrake.rsw.swbestiary">0.2</RSW_PustuleHornetSpawned>  <!-- pustule hornet - wretched-small, moved in from Wasteland -->
+      <RSW_ColonyPustuleHornet MayRequire="mandrake.rsw.swbestiary">0.5</RSW_ColonyPustuleHornet>  <!-- colony pustule hornet - import -->
+      <RSW_PustuleHornet MayRequire="mandrake.rsw.swbestiary">0.5</RSW_PustuleHornet>  <!-- pustule hornet - import -->
+      <RSW_SmogMoth MayRequire="mandrake.rsw.swbestiary">0.5</RSW_SmogMoth>  <!-- smog moth - flier, import -->
+      <RSW_Thrumbungus MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Thrumbungus>  <!-- thrumbungus - titan, import -->
+      <RSW_Yooka MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Yooka>  <!-- yooka - import -->
+      <RSW_ShiroTrap MayRequire="mandrake.rsw.swbestiary">0.5</RSW_ShiroTrap>  <!-- shiro trap - floor-ambush, moved in from the Greentide's roster ruling -->
+      <AA_AnimaColossus MayRequire="sarg.alphaanimals">0.5</AA_AnimaColossus>  <!-- anima colossus - titan, already-active donor def, never wired -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

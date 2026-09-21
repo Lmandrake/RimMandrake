@@ -37,6 +37,16 @@
   ],
   "evictions": [
     {
+      "def": "BMT_GlowBat",
+      "disposition": "cut-for-real",
+      "reason": "ROT_ROSTER_DEAD_DONOR_NAMES_1: owner ruling 2026-09-10 sitting — CUT, all flying bats (\"the violescent/bioluminescent bat\"), decisions_propagated.json fauna:the_rot:BMT_GlowBat decision=out. Never wired in RUT_TheRot.xml; removed from the fauna list 2026-09-21."
+    },
+    {
+      "def": "BMT_BovineBeetle",
+      "disposition": "moved",
+      "reason": "ROT_ROSTER_DEAD_DONOR_NAMES_1: ROT_FLORA_FAUNA_VERDICTS_1 TASK 2 (2026-09-19) moved this species to the Lantern Deeps as its Grabber (RSW_BovineBeetle, RUT_LanternDeeps.xml) and removed it from RUT_TheRot.xml's wildAnimals. This roster row was stale (still listed here under the dead donor name after the move); removed 2026-09-21."
+    },
+    {
       "def": "BMT_Megakrill",
       "disposition": "homeless-reserve",
       "reason": "ban 2: pure animal, no fungal nature; Earth-nameable-adjacent (krill)"
@@ -389,57 +399,43 @@
       "action": "import",
       "band": "ingest-strange",
       "commonality": 0.4,
-      "def": "BMT_GlowBat",
-      "law": "§7b keep the strange — glow bats; §5 all useful light is biological; R29 the FungalForest's creatures follow its tiles"
-    },
-    {
-      "action": "import",
-      "band": "ingest-strange",
-      "commonality": 0.4,
-      "def": "BMT_FungalWeevil",
-      "law": "§7b keep the strange — fungal weevil (evicted from the Fever Wood's ban 5 into its true home)"
+      "def": "RSW_FungalWeevil",
+      "law": "§7b keep the strange — fungal weevil (evicted from the Fever Wood's ban 5 into its true home); ROT_ROSTER_DEAD_DONOR_NAMES_1: renamed from BMT_FungalWeevil to the already-ported, already-wired RSW_ name"
     },
     {
       "action": "import",
       "band": "guardian",
       "commonality": 0.15,
-      "def": "BMT_FungalMantis",
-      "law": "§7b fungal mantis; §4 guardianship law — an armed defender near the prizes; dormant-ambush special (MEASURED)"
-    },
-    {
-      "action": "import",
-      "band": "ingest-producer",
-      "commonality": 0.2,
-      "def": "BMT_BovineBeetle",
-      "law": "§7b the bovine beetle's milk economy; producer special (MEASURED: animal thing spawner)"
+      "def": "RSW_FungalMantis",
+      "law": "§7b fungal mantis; §4 guardianship law — an armed defender near the prizes; dormant-ambush special (MEASURED); ROT_ROSTER_DEAD_DONOR_NAMES_1: renamed from BMT_FungalMantis to the already-ported, already-wired RSW_ name"
     },
     {
       "action": "import",
       "band": "floor-ambush",
       "commonality": 0.5,
-      "def": "ShiroTrap",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot"
+      "def": "RSW_ShiroTrap",
+      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from ShiroTrap to the ported RSW_ShiroTrap (MLIE_FAUNA_ABSORPTION_1 Wave C), now wired"
     },
     {
       "action": "import",
       "band": "wretched-small",
       "commonality": 0.2,
-      "def": "BMT_ColonyPustuleHornetQueen",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot"
+      "def": "RSW_ColonyPustuleHornetQueen",
+      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_ColonyPustuleHornetQueen to the ported RSW_ name, moved in from RUT_Wasteland.xml, now wired"
     },
     {
       "action": "import",
       "band": "wretched-small",
       "commonality": 0.3,
-      "def": "BMT_PustuleHornetQueen",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot"
+      "def": "RSW_PustuleHornetQueen",
+      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_PustuleHornetQueen to the ported RSW_ name, moved in from RUT_Wasteland.xml, now wired"
     },
     {
       "action": "import",
       "band": "wretched-small",
       "commonality": 0.2,
-      "def": "BMT_PustuleHornetSpawned",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot"
+      "def": "RSW_PustuleHornetSpawned",
+      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_PustuleHornetSpawned to the ported RSW_ name, moved in from RUT_Wasteland.xml, now wired"
     },
     {
       "action": "import",
@@ -451,43 +447,43 @@
       "action": "import",
       "commonality": 0.5,
       "def": "AA_AnimaColossus",
-      "law": "owner review 2026-09 (round2 move mapping): Rot"
+      "law": "owner review 2026-09 (round2 move mapping): Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1: already an active donor def (sarg.alphaanimals), no port needed, now wired"
     },
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_ColonyPustuleHornet",
-      "law": "owner review 2026-09 (round2 move mapping): the Rot"
+      "def": "RSW_ColonyPustuleHornet",
+      "law": "owner review 2026-09 (round2 move mapping): the Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_ColonyPustuleHornet to the ported RSW_ name, now wired"
     },
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_PustuleHornet",
-      "law": "owner review 2026-09 (round2 move mapping): the Rot"
+      "def": "RSW_PustuleHornet",
+      "law": "owner review 2026-09 (round2 move mapping): the Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_PustuleHornet to the ported RSW_ name, now wired"
     },
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_SmogMoth",
-      "law": "owner review 2026-09 (round2 move mapping): Neat flier in the Rot"
+      "def": "RSW_SmogMoth",
+      "law": "owner review 2026-09 (round2 move mapping): Neat flier in the Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_SmogMoth to the ported RSW_ name, now wired"
     },
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_Thrumbungus",
-      "law": "owner review 2026-09 (round2 move mapping): Make multi-hued and with a surface that's partially digesting itself, move it into the Rot"
+      "def": "RSW_Thrumbungus",
+      "law": "owner review 2026-09 (round2 move mapping): Make multi-hued and with a surface that's partially digesting itself, move it into the Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_Thrumbungus to the ported RSW_ name, now wired"
     },
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_Yooka",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot"
+      "def": "RSW_Yooka",
+      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_Yooka to the ported RSW_ name, now wired"
     },
     {
-      "action": "import",
+      "action": "pending-owner-decision",
       "commonality": 0.5,
       "def": "MA_Sporemole",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot"
+      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1/FORGE_ROSTER_UNRECONCILED_BMT_1 2026-09-21: genuine port-or-drop call, unresolved. Donor mod veterano.mythicages.megafaunabestiary (Mythic Ages: Megafauna Bestiary) is NOT in the active mod list and no RSW_/RUT_ port exists anywhere in src/ — cannot wire. Left un-renamed and unwired pending the owner's port-or-drop ruling."
     },
     {
       "action": "import",

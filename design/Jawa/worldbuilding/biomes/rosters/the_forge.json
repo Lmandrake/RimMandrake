@@ -37,6 +37,11 @@
   ],
   "evictions": [
     {
+      "def": "AA_Cinderlisk",
+      "disposition": "cut-for-real",
+      "reason": "FORGE_ROSTER_UNRECONCILED_BMT_1: WYYYSCHOKK_FERALISK_MERGE_1 (2026-09-10) Cherry-Picker-cut the whole Alpha Animals '-lisk' clade and removed AA_Cinderlisk from RUT_TheForge.xml's wildAnimals; the defName does not load. This roster row was stale (still listed as \"import\" here after the cut); removed 2026-09-21."
+    },
+    {
       "def": "AB_GiantGamma",
       "disposition": "move:forsaken_crags",
       "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move); to crags. Was a duplicate listing — already resident at forsaken_crags — so this is the eviction half only, no roster add needed"
@@ -472,13 +477,6 @@
     },
     {
       "action": "import",
-      "band": "ground-predator",
-      "commonality": 0.2,
-      "def": "AA_Cinderlisk",
-      "law": "§4 heat-adapted-and-few; register desc names it volcanic, 'burning bite' special (MEASURED); bs 2.5 — was a Wasteland ban-3 evictee (prep §4.3), re-homed where heat is the point"
-    },
-    {
-      "action": "import",
       "band": "ground-slow",
       "commonality": 0.35,
       "def": "LavaSnail",
@@ -489,8 +487,8 @@
       "action": "import",
       "band": "ground-slow",
       "commonality": 0.15,
-      "def": "BMT_Maguana",
-      "law": "§4 heat-adapted-and-few; MEASURED desc: magma-patterned camouflage lizard, spd 0.6; moved from the Pyrelands cast where it had no story"
+      "def": "RSW_Maguana",
+      "law": "§4 heat-adapted-and-few; MEASURED desc: magma-patterned camouflage lizard, spd 0.6; moved from the Pyrelands cast where it had no story. FORGE_ROSTER_UNRECONCILED_BMT_1: renamed from BMT_Maguana — already ported and wired as RSW_Maguana (CAVERNS_PARITY_BUILD_1 r5); the donor's own BMT_Maguana stays Cherry-Picked and must not be re-wired. NOTE: this row's commonality (0.15) does not match the live wired value in RUT_TheForge.xml (0.5) — a pre-existing tuning drift, not touched this pass; flagged for whoever owns fauna density tuning."
     },
     {
       "action": "import",
