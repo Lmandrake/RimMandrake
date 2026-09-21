@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SHRUBLAND_GIANT_ENRAGE_1. The scoped, time-boxed rage a "giant with young"
+  race drops into when something walks up to its young.
+
+  design/Jawa/worldbuilding/biomes/arid_shrubland.md §4, the owner-ratified
+  size ladder: "Large - giants' children only, and approach is attack: the
+  parent enrages if you even get near the young. No warning is given."
+
+  RM tier: names no species. Any race carrying
+  RimMandrake.CreatureBehaviors.RM_ParentalEnrageExtension points its
+  enrageState at this def; nothing here knows what a giant is.
+
+  === Why there is no think-tree patch anywhere in this build ===
+
+  stateClass derives from vanilla MentalState_Manhunter, and Core's own
+  ThinkTreeDef MentalStateNonCritical routes manhunting with
+  ThinkNode_ConditionalMentalStateClass, whose Satisfied() is
+  `stateClass.IsInstanceOfType(mentalState)` : an INSTANCE check, not the
+  def-identity check its sibling ThinkNode_ConditionalMentalState performs.
+  So a subclass inherits JobGiver_Manhunter's whole chase-and-melee behaviour
+  for free and no vanilla def is patched at all. MEASURED against the
+  decompiled 1.6 engine, 2026-09-20 (Verse/AI/
+  ThinkNode_ConditionalMentalStateClass.cs l.19, and MentalStateNonCritical's
+  own manhunter node). Losing that inheritance would leave a pawn holding a
+  mental state with no behaviour attached, which is silent, so the subclass
+  relationship is load-bearing and must not be flattened.
+
+  === No ParentName on purpose ===
+
+  Vanilla's Manhunter inherits BaseMentalState, which supplies exactly
+  minTicksBeforeRecovery and recoveryMtbDays, both of which this def has to
+  override anyway to be SHORT. Declaring them here instead of inheriting them
+  removes an outward-pointing name and the whole load-order failure class that
+  comes with it.
+
+  === Deliberately no beginLetter ===
+
+  "No warning is given" is the ruling. The charge IS the notification. A
+  begin-letter would be precisely the warning the biome sheet says the player
+  does not get, so the absence of one here is content, not an omission.
+
+  Timing: minTicksBeforeRecovery 600 (~15 in-game minutes) is the floor, and
+  the recoveryMtbDays roll can end it any time after that; on top of both,
+  RM_CompParentalEnrage sets MentalState.forceRecoverAfterTicks from the
+  race's own extension (2500 ticks on the shrubland giant), and
+  RM_MentalState_ParentalEnrage ends it the moment the intruder backs off,
+  dies, goes down or leaves. Vanilla Manhunter's own floor is 10000 ticks;
+  being far under that is the "time-boxed, not a manhunter flip" half of the
+  item.
+-->
+<Defs>
+
+  <MentalStateDef>
+    <defName>RM_ParentalEnrage</defName>
+    <label>defending young</label>
+    <stateClass>RimMandrake.CreatureBehaviors.RM_MentalState_ParentalEnrage</stateClass>
+    <!-- Aggro is what puts the pawn into AttackTargetsCache's
+         pawnsInAggroMentalState set and makes Pawn.InAggroMentalState true,
+         so the game treats it as a live threat while it lasts. -->
+    <category>Aggro</category>
+    <baseInspectLine>Enraged: defending young</baseInspectLine>
+    <recoveryMessage>{0} has stopped defending its young.</recoveryMessage>
+    <nameColor>(0.9,0.2,0.5)</nameColor>
+    <minTicksBeforeRecovery>600</minTicksBeforeRecovery>
+    <recoveryMtbDays>0.05</recoveryMtbDays>
+    <stopsJobs>true</stopsJobs>
+    <recoverFromDowned>true</recoverFromDowned>
+    <!-- A grazing herd sleeps; a sleeping guardian that woke for this must
+         not instantly drop the state again on the next tick. -->
+    <recoverFromSleep>false</recoverFromSleep>
+    <inCaravanCanDo>false</inCaravanCanDo>
+  </MentalStateDef>
+
+</Defs>

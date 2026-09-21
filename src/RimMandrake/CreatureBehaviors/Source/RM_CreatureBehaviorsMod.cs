@@ -148,6 +148,14 @@ namespace RimMandrake.CreatureBehaviors
     //      scales the growth boost, the seedling count and the wildlife chance
     //      together; at 0 the dung still falls and simply seeds nothing. Never
     //      the shade gate or the radius, which stay whatever the def says.
+    //  27. parentalEnrageEnabled — RM_CompParentalEnrage +
+    //      RM_MentalState_ParentalEnrage (SHRUBLAND_GIANT_ENRAGE_1). Off: the
+    //      young of a "giant with young" race stop being guarded — walking up
+    //      to a calf rouses nothing, and the herd is exactly as dangerous as
+    //      its stats say and no more. Never touches the adults' own stats,
+    //      tools or manhunterOnDamageChance, which still answer for hurting
+    //      one. A rage already running ends on its own timer; this switch
+    //      only stops new ones starting.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -190,6 +198,7 @@ namespace RimMandrake.CreatureBehaviors
         public static float filterFeedNutritionMultiplier = 1f;
         public static bool dungSeedingEnabled = true;
         public static float dungSeedingMultiplier = 1f;
+        public static bool parentalEnrageEnabled = true;
 
         public override void ExposeData()
         {
@@ -233,6 +242,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref filterFeedNutritionMultiplier, "filterFeedNutritionMultiplier", 1f);
             Scribe_Values.Look(ref dungSeedingEnabled, "dungSeedingEnabled", true);
             Scribe_Values.Look(ref dungSeedingMultiplier, "dungSeedingMultiplier", 1f);
+            Scribe_Values.Look(ref parentalEnrageEnabled, "parentalEnrageEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -382,6 +392,13 @@ namespace RimMandrake.CreatureBehaviors
               + "nothing behind and nothing grows from it.");
             list.Label("Dung seeding strength: " + dungSeedingMultiplier.ToString("0.00") + "x");
             dungSeedingMultiplier = list.Slider(dungSeedingMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Giants defend their young", ref parentalEnrageEnabled,
+                "On: getting close to the calf of a giant-with-young animal makes the nearest "
+              + "adult charge you, with no warning at all. It goes after whoever came close and "
+              + "nobody else, and it calms down again once you back off. Off: their young are "
+              + "not guarded, and you can walk right up to one.");
 
             list.End();
         }
