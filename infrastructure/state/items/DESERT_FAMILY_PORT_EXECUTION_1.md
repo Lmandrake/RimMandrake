@@ -12,22 +12,65 @@ his instruction, not a default.
 This satisfies `DONOR_DEFS_PORT_TO_OURS_1`'s "keep/cut pass first" precondition
 **for the desert family only**. The other ~190 species still need their own pass.
 
-## the work, MEASURED from the sheet's own rows
+## the work, RE-MEASURED 2026-09-20 — the defs are 78% DONE, the ART is not
 
-| origin | rows | port work |
+🔴 **The original version of this section said "~105 species to author". That was
+wrong and would have sent a wave of agents to re-author 85 creatures that already
+exist.** Corrected here against the live def dump
+(`defs.sqlite`, mods=618/a48bc71544df1a7e, captured 2026-09-20T20:14:27Z) and the
+SWBestiary authoring source, row by row across all 109 decision rows.
+
+### defs — MEASURED 85 of 109 already ported and live
+
+| state | rows | what it means |
 |---|---:|---|
-| Star Wars Animal Collection (mlie) | 68 | port |
-| Alpha Animals (sarg) | 14 | port |
-| Outer Rim — Droid Depot | 7 | port ⚠️ **mod is INACTIVE**, see below |
-| Vanilla Core | 5 | re-author as ours |
-| Alpha Biomes (sarg) | 4 | port |
-| ReGrowth 2 (BOTR) | 4 | port |
-| Horrors (mlie) | 1 | port |
-| VFE Insectoids 2 | 1 | port |
-| Vanilla Biotech DLC | 1 | re-author as ours |
-| **OURS already** (3 SWBestiary, 1 UtinniPatches) | **4** | **no work** |
+| **LIVE as `RSW_`** | **68** | canon-named rows; `RSW_<name>` ThingDef present in the dump |
+| **Alpha Animals, ported under drafted names** | **13** | `AA_Cactipine`→`RSW_Spinerat`, `AA_SandSquid`→`RSW_Sandmaw`, `AA_Terramorph`→`RSW_Ferroclaw`, … all 13 verified live. ⚠️ A `RSW_<donorName>` prefix test **cannot find these** — they were deliberately renamed per `NONCANON_BEAST_RENAME_1`. The mapping is in the `<!-- Alpha Animals AA_X -> RSW_Y -->` comments in `src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml` |
+| **already ours** | **4** | 3 SWBestiary (`RSW_ImperialToad`, `RSW_Jellypot`, `RSW_MossBeetle`) + `JOE_Landopus`, which MEASURED as already living in RimUtinni Patches |
+| **DONE** | **85** | |
+| unblocked, still to author | **11** | see below |
+| **needs the owner before authoring** | **12** | 7 Droid Depot + 5 vanilla/Biotech, see below |
+| out of scope | **1** | `AB_GiantStikehr` — cut from the Extreme Desert as misplaced the same day. ⛔ Do not re-add |
 
-**~105 species to author.** By kind: ~92 fauna, ~17 flora.
+### 🔴 art — MEASURED 3 of 84, and this is the actual remaining wave
+
+Parsed `<texPath>` out of every ported row's `ThingDef` **and `PawnKindDef`** in the
+SWBestiary source (animal art hangs off `PawnKindDef.lifeStages`, not the ThingDef —
+a ThingDef-only scan reports "no texPath" for 79 of 84 and is the wrong instrument):
+
+- **3** rows carry our own art (`RSW_Plant_Chakroot_Wild`, `RSW_Plant_HubbaGourd_Wild`, `RSW_Plant_Bloddle`)
+- **81** still point at donor texture paths — `swanimals/Bantha/BanthaW_j`, `Things/Pawn/Animal/AA_Cactipine/AA_Cactipine`, `swplants/Nysillin`, …
+
+⇒ The owner ruled *"replace with our own version of creature **and art**"*. The **def**
+half is 78% done; the **art** half is ~4% done. **81 renders is what this item actually
+owes**, and the def port is nearly finished.
+
+⚠️ **UNMEASURED from the def dump:** the dump does not carry `texPath` for these records
+(79 of 84 came back empty), so the art figure above is measured from the **authoring
+source**, not the loaded game. It is evidence about what we wrote, which is the right
+question here — but do not quote it as a statement about the running game.
+
+🔑 **Before filing any art job, search for art already generated AND already ruled on** —
+`infrastructure/artpipe/done/`, `_artsrc/`, `registry.jsonl`, and any
+`Transient/*.decisions.json` review sheet. Standing rule (`CLAUDE.md`); it has already
+caught three plants one step from a wasted regen.
+
+### the 11 unblocked rows still to author
+
+`AA_BoulderMit` (Alpha Animals) · `Terrorworm` (Horrors) · `VFEI2_Fuelmite` (VFE
+Insectoids 2) · `AB_Aaklac`, `AB_DessertTree`, `AB_HardyGrass` (Alpha Biomes) ·
+`Plant_Brambles`, `RG_Plant_AridGrass`, `RG_Plant_CreepStern`, `RG_Plant_CrimsonCushion`,
+`RG_Plant_Dervish` (ReGrowth 2)
+
+### the 12 rows that need him first
+
+- **7 Droid Depot droids** (`OuterRim_DUMDroid`, `DestroyerDroid`, `FX7Droid`, `GNKDroid`,
+  `MSEDroid`, `MuckrakerDroid`, `SalvageAssistDroid`) — `neronix17.outerrim.droiddepot` is
+  **NOT in the active mod list**, so they cannot be read from a live game. Port from the
+  donor's files on disk, or do they not come back at all?
+- **5 vanilla/Biotech rows** (`Rat`, `Plant_Bush`, `Plant_HealrootWild`, `Plant_ShrubLow`
+  from Core; `Plant_Ripthorn` from Biotech) — replacing vanilla is a bigger departure than
+  porting a donor.
 
 ## 🔑 the precedent — copy it, do not invent one
 
