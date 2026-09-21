@@ -7,7 +7,7 @@
   rare hanging harvest for whoever dares the traffic." RUT_SweetlineTree
   (RUT_AshkarrFlora_Plants.xml) previously only offered TreeBase's inherited
   wood harvest, which fells the tree — wrong for a named, ancient, unique
-  landmark that roads follow. See items/SWEETLINE_WOOL_HARVEST_1.md for the
+  landmark that roads follow. See items/closed/SWEETLINE_WOOL_HARVEST_1.md for the
   full account.
 
   Shape follows the existing wool precedent on disk, RSW_WoolBantha

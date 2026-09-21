@@ -73,7 +73,7 @@
     (RM_MapComponent_ShadeGrid) also landed, under DESERT_SHADE_GRID_KEYSTONE_1;
     the older note above listing both as Owed was false and was corrected here.
     ⚠️ The plant still ships under its WORKING name — the shipping name is the
-    owner's pick (§4b) and the card is items/STAGGERSEED_SHIPPING_NAME_1.md, so
+    owner's pick (§4b) and the card is items/closed/STAGGERSEED_SHIPPING_NAME_1.md, so
     every RUT_Vorrel* defName in this file and in AshkarrFlora is provisional
     until it returns.
 

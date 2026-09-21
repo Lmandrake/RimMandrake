@@ -30,7 +30,7 @@ list**, per the owner's dinosaur/mod-retirement ruling
 (`design/Jawa/worldbuilding/creature_recognizability_rule.md` §6, ruled 2026-09-05):
 
 - `mlie.jurassicrimworlddinosaursonly` — deactivated 2026-09-13, executing that ruling
-  (`infrastructure/state/items/MODLIST_RULED_CUTS_1.md`; 5 survivors already absorbed
+  (`infrastructure/state/items/closed/MODLIST_RULED_CUTS_1.md`; 5 survivors already absorbed
   into `mandrake.rsw.swbestiary` as `RSW_Absorbed_*`).
 - Megafauna — likewise ruled retired 2026-09-05 ("retire, cleanup only" —
   `creature_recognizability_rule.md` §6 correction table).
