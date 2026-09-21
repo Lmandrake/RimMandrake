@@ -10577,3 +10577,4 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-21T08:07:32Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T08:07:36Z"}
 {"seat":"BENCH","event":"file","id":"BARREN_REGIONS_NAME_NOTHING_1","title":"10 of 22 BARREN_REGIONS entries name regions that do not exist - the keep-empty test fails open","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T08:08:37Z"}
+{"seat":"FOUNDRY","event":"close","id":"VENOMVINE_PATHCOST_AND_FLYER_1","sha":"f707e69f1792c609ca9de301a1e4d571bc007d5e","reason":"Flyer exemption OBSERVED live: Goose 0/15 and Hare-forced-airborne 0/15 envenomed, grounded controls 15/15 on all three species, flyingLowWater 15/15 both flight windows. New jawa/pawn_flight tool made it measurable.","ts":"2026-09-21T08:10:07Z"}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T08:08:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T08:10:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -936,15 +936,6 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
-## VENOMVINE_PATHCOST_AND_FLYER_1 Venomvine: pathCost 60 avoidance in practice, and the flyer exemption
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     verify
-summary:  VENOMVINEPATHCOSTANDFLYER1 — both venomvine properties, MEASURED
-prose:    infrastructure/state/items/VENOMVINE_PATHCOST_AND_FLYER_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1427,6 +1418,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BARREN_REGIONS_NAME_NOTHING_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Resolve each of the ten against the 71 live feature names — renamed, never-authored, or
 prose:    infrastructure/state/items/BARREN_REGIONS_NAME_NOTHING_1.md
