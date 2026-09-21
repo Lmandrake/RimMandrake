@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T02:30:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T02:36:11Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1471,16 +1471,6 @@ kind:     bug
 thin:     no ## criteria
 summary:  Find which biome roster carries the null entry. The two spawners give the search its shape:
 prose:    infrastructure/state/items/MAPGEN_NRE_FULL_LIST_20260920_1.md
-
-## SHADEWHALE_EXTENSIONS_UNBUILT_1 RSW_ShadeWhale's ThingDef is discarded every load: two modExtension/comp classes are not in the deployed DLL
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify
-summary:  SHADEWHALEEXTENSIONSUNBUILT1 — three C types are missing from the deployed CreatureBehaviors DLL, and each on…
-prose:    infrastructure/state/items/SHADEWHALE_EXTENSIONS_UNBUILT_1.md
 
 ## ASHKARRFLORA_NOT_IN_MODLIST_1 mandrake.rut.ashkarrflora is in no stored mod list, so RUT_Staggerseed and RUT_Fuzz can never spawn in the campaign
 state:    proposed
