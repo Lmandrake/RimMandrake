@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:23:43Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-21T01:24:37Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -611,16 +611,6 @@ thin:     no ## spec
 summary:  FALLLINEARRIVALMECHANISM1 — build the Fall Line arrival delivery for the 15 species pulled from ambient wildA…
 prose:    infrastructure/state/items/FALL_LINE_ARRIVAL_MECHANISM_1.md
 
-## STALE_VIVIFIED_WORLDMAP_CITED_1 design/Jawa/worldbuilding/biomes/fall_line.md and other biome docs cite ASHKARR_VIVIFIED_2026-08-24_tiles.csv, which is a pre-rename artifact: it disagrees with the canonical ASHKARR_WORLDMAP_tiles.csv on the biome key of 21,660 of 21,872 tiles and on the region name of 1,136 - anything built against its names matches nothing
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  1. Establish, in one line in the repo, which worldmap CSV is canonical and say so
-prose:    infrastructure/state/items/STALE_VIVIFIED_WORLDMAP_CITED_1.md
-
 ## BIOME_PAINT_ONCE_AT_THE_END_1 Owner ruling 2026-09-20: the worldmap is painted ONCE, after every biome is its own RimMandrake mod - no per-biome repaint, no work gated on a tile count, and stop reading the exported tiles CSV as the state of the planet
 state:    proposed
 row:      unassigned
@@ -641,16 +631,6 @@ thin:     spec, verify and criteria all present
 summary:  Execute the phases in biomemodarchitecture.md §5, in order, once §7 is ruled.
 prose:    infrastructure/state/items/BIOME_MOD_SPLIT_EXECUTION_1.md
 
-## STALE_V24_NAMES_IN_FROZEN_SHEETS_1 V24 name consolidation never propagated: Venom Wood/South Crags/Thornend still used as current in 5 frozen biome sheets 12 days after the owner-approved rename to Fuelmere/Sootreach/Frostvein
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Replace the three old names with the ruled names in all six files, in the same change,
-prose:    infrastructure/state/items/STALE_V24_NAMES_IN_FROZEN_SHEETS_1.md
-
 ## ASHKARR_PAINTER_NAMES_DIVERGED_1 ashkarr_paint.py would rename 7 live regions and resurrect an overruled name: all 10 of its region literals carry a 'The ' the planet does not, and one is the pre-V24 South Crags
 state:    proposed
 row:      unassigned
@@ -670,3 +650,23 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  1. importfounders.py <destination.rws: splice the 8 fragments into the destination's
 prose:    infrastructure/state/items/FOUNDERS_IMPORTER_OWED_1.md
+
+## SHRUBLAND_TREE_GUARDIAN_1 Tree-guardian uniques: owner card (candidate, not yet ruled)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SHRUBLAND_TREE_GUARDIAN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHRUBLAND_TREE_GUARDIAN_1.md
+
+## ARIDSHRUBLAND_SHIPPING_NAMES_1 Owner card: arid_shrubland working names (fuzz, giant, tunnel-snake, venomvine, Stall/Gale)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARIDSHRUBLAND_SHIPPING_NAMES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARIDSHRUBLAND_SHIPPING_NAMES_1.md
