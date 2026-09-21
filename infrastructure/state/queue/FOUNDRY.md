@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T08:58:11Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-21T09:05:00Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -936,6 +936,15 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
+## BARREN_REGIONS_NAME_NOTHING_1 10 of 22 BARREN_REGIONS entries name regions that do not exist - the keep-empty test fails open
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Resolve each of the ten against the 71 live feature names — renamed, never-authored, or
+prose:    infrastructure/state/items/BARREN_REGIONS_NAME_NOTHING_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1402,16 +1411,6 @@ thin:     no ## verify
 summary:  1. Umbra leaves the biome row list (§2 of the architecture spec is already corrected).
 prose:    infrastructure/state/items/UMBRA_IS_A_REGION_NOT_A_BIOME_1.md
 
-## BARREN_REGIONS_NAME_NOTHING_1 10 of 22 BARREN_REGIONS entries name regions that do not exist - the keep-empty test fails open
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Resolve each of the ten against the 71 live feature names — renamed, never-authored, or
-prose:    infrastructure/state/items/BARREN_REGIONS_NAME_NOTHING_1.md
-
 ## SHEET_REVIEWED_FLAG_UNIFORM_1 No uniform way to tell an owner-ruled sheet from an agent prefill - six different keys across 13 sheets
 state:    proposed
 row:      unassigned
@@ -1451,3 +1450,23 @@ kind:     task
 thin:     no ## verify
 summary:  1. Establish what the band thresholds actually are. The doc gives names, not numbers; the
 prose:    infrastructure/state/items/TUNNELSNAKE_VIOLATES_SIZE_LADDER_1.md
+
+## PATCH_FILES_UNDER_DEFS_INERT_1 Two patch files sit under Defs/ so RimWorld parses them as Defs - 7 operations inert, including a 2026-09-16 owner ruling
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Move each file from <Mod/Defs/Patches/ to <Mod/Patches/. Do not rewrite the XML.
+prose:    infrastructure/state/items/PATCH_FILES_UNDER_DEFS_INERT_1.md
+
+## GELATINOUSSLIME_FIRST_LOAD_ERRORS_1 First load with GelatinousSlime active: wildGroupSize in the wrong element twice, plus an RM_Titanoslime def error
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  GELATINOUSSLIMEFIRSTLOADERRORS1 — the first load with the mod active found three faults
+prose:    infrastructure/state/items/GELATINOUSSLIME_FIRST_LOAD_ERRORS_1.md
