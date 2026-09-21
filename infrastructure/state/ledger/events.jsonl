@@ -10500,3 +10500,12 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-21T02:35:44Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T02:35:45Z"}
 {"seat":"FOUNDRY","event":"close","id":"SHADEWHALE_EXTENSIONS_UNBUILT_1","sha":"37fefdc0ee34e0e7164fa4be509920614a8b2294","reason":"Build+deploy+live-verify: DLL rebuilt (three missing types confirmed present by byte search), deployed and md5-verified, live load shows zero Config error/no-race/missing-type lines and jawa/get_defs resolves ThingDef/RSW_ShadeWhale, PawnKindDef/RSW_ShadeWhale, HediffDef/RUT_StaggerseedBrood","ts":"2026-09-21T02:36:11Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"finish desert plant/creature live-verify","ts":"2026-09-21T02:37:32Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-21T02:41:31Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-21T03:30:40Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-21T03:30:45Z"}
+{"seat":"FOUNDRY","event":"file","id":"FILTH_ON_NATURAL_TERRAIN_NOOP_1","title":"Filth_AnimalFilth cannot be placed on natural ground - dung and churned-ground are no-ops outdoors","kind":"defect","target":"v1","needs":"offline","caused_by":"SHADE_WHALE_ECOLOGY_LIVEPROOF_1","for":"FOUNDRY","ts":"2026-09-21T03:34:12Z"}
+{"seat":"FOUNDRY","event":"file","id":"VENOMVINE_PATHCOST_AND_FLYER_1","title":"Venomvine: pathCost 60 avoidance in practice, and the flyer exemption","kind":"verify","target":"v1","needs":"bridge","caused_by":"VENOMVINE_LIVE_VERIFY_1","for":"FOUNDRY","ts":"2026-09-21T03:34:13Z"}
+{"seat":"FOUNDRY","event":"close","id":"DESERT_LEACHMOSS_LIVE_VERIFY_1","sha":"d07d993f6fa5b7a977fbf2518e77997e256a695b","ts":"2026-09-21T03:35:29Z"}
+{"seat":"FOUNDRY","event":"close","id":"VENOMVINE_LIVE_VERIFY_1","sha":"d07d993f6fa5b7a977fbf2518e77997e256a695b","ts":"2026-09-21T03:35:30Z"}
+{"seat":"FOUNDRY","event":"close","id":"SHADE_WHALE_ECOLOGY_LIVEPROOF_1","sha":"d07d993f6fa5b7a977fbf2518e77997e256a695b","ts":"2026-09-21T03:35:30Z"}

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T02:36:11Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-21T03:35:30Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1392,36 +1392,6 @@ thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
 
-## DESERT_LEACHMOSS_LIVE_VERIFY_1 DESERT_LEACHMOSS_LIVE_VERIFY_1
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     verify
-thin:     no ## spec
-summary:  DESERTLEACHMOSSLIVEVERIFY1 — prove the leachmoss actually races on a live desert map
-prose:    infrastructure/state/items/DESERT_LEACHMOSS_LIVE_VERIFY_1.md
-
-## VENOMVINE_LIVE_VERIFY_1 Quicktest the venomvine's contact venom in a live game
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  VENOMVINELIVEVERIFY1 — quicktest the venomvine's contact venom in a live game
-prose:    infrastructure/state/items/VENOMVINE_LIVE_VERIFY_1.md
-
-## SHADE_WHALE_ECOLOGY_LIVEPROOF_1 Live-prove the shade whale filter-feeds and its dung seeds
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  SHADEWHALEECOLOGYLIVEPROOF1 — live-prove the shade whale's two ecology mechanics
-prose:    infrastructure/state/items/SHADE_WHALE_ECOLOGY_LIVEPROOF_1.md
-
 ## FOUNDER_ROBE_MAGENTA_1 The founders' robe layer renders as flat magenta in the CANONICAL world - magenta is RimWorld's failed-texture colour; check guy762_Robes_jawa
 state:    proposed
 row:      unassigned
@@ -1481,3 +1451,23 @@ kind:     defect
 thin:     no ## spec, no ## verify
 summary:  ASHKARRFLORANOTINMODLIST1 — a mod we ship is in no stored mod list, so two of its plants can never spawn
 prose:    infrastructure/state/items/ASHKARRFLORA_NOT_IN_MODLIST_1.md
+
+## FILTH_ON_NATURAL_TERRAIN_NOOP_1 Filth_AnimalFilth cannot be placed on natural ground - dung and churned-ground are no-ops outdoors
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec
+summary:  FILTHONNATURALTERRAINNOOP1 — FilthAnimalFilth cannot be placed on natural ground
+prose:    infrastructure/state/items/FILTH_ON_NATURAL_TERRAIN_NOOP_1.md
+
+## VENOMVINE_PATHCOST_AND_FLYER_1 Venomvine: pathCost 60 avoidance in practice, and the flyer exemption
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     verify
+thin:     no ## spec
+summary:  VENOMVINEPATHCOSTANDFLYER1 — the two venomvine properties still unobserved
+prose:    infrastructure/state/items/VENOMVINE_PATHCOST_AND_FLYER_1.md
