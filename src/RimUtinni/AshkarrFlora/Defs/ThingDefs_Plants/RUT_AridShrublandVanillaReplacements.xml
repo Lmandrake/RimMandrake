@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_AridShrublandVanillaReplacements.xml   DESERT_FAMILY_PORT_EXECUTION_1,
+                                              owner ruling 2026-09-21
+
+  Owner, 2026-09-21: "All 5 vanilla/Biotech rows are REPLACED: Rat, Plant_Bush,
+  Plant_HealrootWild, Plant_ShrubLow, Plant_Ripthorn. Consistent with the
+  desert cards' standing ban on instantly-nameable Earth organisms." And per
+  the item's own "Watch out": "Replacing vanilla is a bigger departure than
+  porting a donor — do it by our own def taking the biome-roster slot, NOT by
+  patching or deleting vanilla's def. Vanilla content must still work
+  elsewhere."
+
+  Of the 5, only 3 were still actually live vanilla rows at authoring time
+  (RUT_AridShrubland.xml's wildPlants, the only desert biome file that had
+  any of them wired):
+
+    Plant_ShrubLow  — ALREADY replaced by RUT_Fuzz (COMMISSION_LEDGER_CLEANUP_1,
+                       2026-09-19/20). No action here.
+    Rat             — NOT wired ambient anywhere in the desert family. Pulled
+                       deliberately by EXTREME_DESERT_UNRULED_VERMIN_1
+                       (2026-09-20, fall_line.md §8a): Rat is scoped as a
+                       Fall-Line ARRIVAL only ("a joke rat falling from a
+                       ship"), never ambient wildAnimals, and its delivery is
+                       FALL_LINE_ARRIVAL_MECHANISM_1's job, not this item's.
+                       Re-adding it here as an ambient row would directly
+                       contradict that ruling — flagged, not done. See the
+                       DESERT_FAMILY_PORT_EXECUTION_1 item and this pass's
+                       progress note for the conflict.
+    Plant_Bush      — replaced here: RUT_Grellbush.
+    Plant_HealrootWild — replaced here: RUT_WildHealroot. ⚠️ Label kept as
+                       "wild healroot" on purpose: PlantNames_Ashkarr.xml
+                       (owner, 2026-09-05) explicitly left "healroot" alone as
+                       an already-invented, non-Earth-sounding word ("would
+                       churn without gain and break player recognition").
+                       That ruling was about the WORD; this one is about DEF
+                       OWNERSHIP (a biome roster slot must not point at
+                       vanilla's ThingDef). Both stand: new defName, same
+                       label.
+    Plant_Ripthorn  — replaced here: RUT_Grellspine (Biotech-locked donor,
+                       "-grell" scrub/thorn morpheme per PlantNames_Ashkarr.xml's
+                       own clade convention).
+
+  Stats and plant mechanics copied from the live def dump (defs.sqlite,
+  mods=618/a48bc71544df1a7e, captured 2026-09-21T00:49:09Z) — MEASURED, not
+  guessed — so removing the donor mods changes nothing about how these plants
+  behave. Vanilla Plant_Bush/Plant_HealrootWild/Plant_Ripthorn are UNTOUCHED;
+  they still work wherever else the game uses them.
+
+  ART: none yet. 3 jobs filed this pass (rimflow_item_id
+  DESERT_FAMILY_PORT_EXECUTION_1): `rut_grellbush`, `rut_wildhealroot`,
+  `rut_grellspine`. texPaths below are placeholders pointing at where that
+  art will land; they render as the engine's missing-texture fallback until
+  the daemon delivers.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Grellbush</defName>
+    <label>grellbush</label>
+    <description>A short, tough scrub shrub adapted to thin desert soil. Not much use for anything but it holds ground other plants can't.</description>
+    <statBases>
+      <Flammability>0</Flammability>
+      <BeautyOutdoors>1</BeautyOutdoors>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RUT_Grellbush</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <fillPercent>0.2</fillPercent>
+    <pathCost>10</pathCost>
+    <ingestible>
+      <foodType>Plant</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.7</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <!-- desert-tolerant range (PlantTolerances_Ashkarr.xml's patched values for donor
+           Plant_Bush, "628 tiles, home demands -22.4…61.8°C") — a patch keyed to a
+           donor defName never matches our own defName, so it is authored directly here. -->
+      <minGrowthTemperature>-22.4</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-13.7</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>38.6</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>61.8</maxGrowthTemperature>
+      <growMinGlow>0.51</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.4~0.8</visualSizeRange>
+      <topWindExposure>0.2</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>0</harvestYield>
+      <harvestWork>200</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <allowAutoCut>true</allowAutoCut>
+      <sowWork>170</sowWork>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>5</wildClusterWeight>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_WildHealroot</defName>
+    <label>wild healroot</label>
+    <description>A slow-growing plant which yields herbal medicine when harvested.\n\nThis wild breed of healroot is hardier than domesticated healroot, but too difficult to cultivate. It is prized by tribespeople in colder climates.</description>
+    <statBases>
+      <Flammability>0</Flammability>
+      <BeautyOutdoors>1</BeautyOutdoors>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RUT_WildHealroot</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <fillPercent>0.15</fillPercent>
+    <pathCost>8</pathCost>
+    <ingestible>
+      <foodType>Plant</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.7</fertilityMin>
+      <fertilitySensitivity>1</fertilitySensitivity>
+      <growDays>10</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <!-- desert-tolerant range (PlantTolerances_Ashkarr.xml's patched values for donor
+           Plant_HealrootWild, "628 tiles, home demands -22.4…61.8°C") — a patch keyed to
+           a donor defName never matches our own defName, so it is authored directly here. -->
+      <minGrowthTemperature>-22.4</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-13.7</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>38.6</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>61.8</maxGrowthTemperature>
+      <growMinGlow>0.51</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.3~0.8</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>MedicineHerbal</harvestedThingDef>
+      <harvestYield>1</harvestYield>
+      <harvestWork>400</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <allowAutoCut>false</allowAutoCut>
+      <sowWork>170</sowWork>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>80</wildClusterWeight>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Grellspine</defName>
+    <label>grellspine</label>
+    <description>A short toxin-adapted shrub, a dense tough tangle of thorny branches. Difficult to move through, it slows down anyone moving over it. It can only grow in polluted ground.</description>
+    <statBases>
+      <Flammability>0</Flammability>
+      <BeautyOutdoors>1</BeautyOutdoors>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RUT_Grellspine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <fillPercent>0.3</fillPercent>
+    <pathCost>14</pathCost>
+    <ingestible>
+      <foodType>Plant</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <!-- desert-tolerant range (PlantTolerances_Ashkarr.xml's patched values for donor
+           Plant_Ripthorn, "628 tiles, home demands -22.4…61.8°C") — a patch keyed to a
+           donor defName never matches our own defName, so it is authored directly here. -->
+      <minGrowthTemperature>-22.4</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-13.7</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>38.6</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>61.8</maxGrowthTemperature>
+      <growMinGlow>0.51</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.7~0.85</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>0</harvestYield>
+      <harvestWork>60</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <allowAutoCut>true</allowAutoCut>
+      <sowWork>170</sowWork>
+      <pollution MayRequire="Ludeon.RimWorld.Biotech">PollutedOnly</pollution>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>

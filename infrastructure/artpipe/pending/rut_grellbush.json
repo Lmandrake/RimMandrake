@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-21T08:30:17Z",
+  "drawsize": 0.8,
+  "facing": null,
+  "facings": [],
+  "id": "rut_grellbush",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, top-down view, painterly vanilla-RimWorld flora art style: grellbush -- a short, tough desert scrub shrub adapted to thin soil, holding ground where other plants can't. mature size 0.8 cells. Single mature specimen, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

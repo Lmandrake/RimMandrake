@@ -3594,3 +3594,21 @@
 {"by": "artpiped", "event": "validated", "job_id": "desertportb_convor_east", "target": "desertportb_convor/east", "ts": 1789975386.1721158, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 90.03737465501763, "event": "generated", "job_id": "desertportb_convor_north", "target": "desertportb_convor/north", "ts": 1789975481.4930947}
 {"by": "artpiped", "event": "validated", "job_id": "desertportb_convor_north", "target": "desertportb_convor/north", "ts": 1789975481.5096698, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "DESERT_FAMILY_PORT_EXECUTION_1", "target": "desertportb_mossbeetle/south", "ts": 1789978723.982393}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "desertportb_mossbeetle_south", "notes": "", "target": "desertportb_mossbeetle/south", "ts": 1789978723.9952965}
+{"by": "fill_queue", "event": "registered", "source": "DESERT_FAMILY_PORT_EXECUTION_1", "target": "desertportb_mossbeetle/east", "ts": 1789978724.004684}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "desertportb_mossbeetle_east", "notes": "", "target": "desertportb_mossbeetle/east", "ts": 1789978724.020824}
+{"by": "fill_queue", "event": "registered", "source": "DESERT_FAMILY_PORT_EXECUTION_1", "target": "desertportb_mossbeetle/north", "ts": 1789978724.0316358}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "desertportb_mossbeetle_north", "notes": "", "target": "desertportb_mossbeetle/north", "ts": 1789978724.0448282}
+{"by": "fill_queue", "event": "registered", "source": "DESERT_FAMILY_PORT_EXECUTION_1", "target": "desertportb_mossbeetlepupa/south", "ts": 1789978724.0544853}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "desertportb_mossbeetlepupa_south", "notes": "", "target": "desertportb_mossbeetlepupa/south", "ts": 1789978724.0661502}
+{"by": "fill_queue", "event": "registered", "source": "DESERT_FAMILY_PORT_EXECUTION_1", "target": "desertportb_mossbeetlepupa/east", "ts": 1789978724.0754805}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "desertportb_mossbeetlepupa_east", "notes": "", "target": "desertportb_mossbeetlepupa/east", "ts": 1789978724.0878563}
+{"by": "fill_queue", "event": "registered", "source": "DESERT_FAMILY_PORT_EXECUTION_1", "target": "desertportb_mossbeetlepupa/north", "ts": 1789978724.097027}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "desertportb_mossbeetlepupa_north", "notes": "", "target": "desertportb_mossbeetlepupa/north", "ts": 1789978724.1086676}
+{"by": "fill_queue", "event": "registered", "source": "DESERT_FAMILY_PORT_EXECUTION_1", "target": "rut_grellbush", "ts": 1789979417.085351}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rut_grellbush", "notes": "", "target": "rut_grellbush", "ts": 1789979417.0998647}
+{"by": "fill_queue", "event": "registered", "source": "DESERT_FAMILY_PORT_EXECUTION_1", "target": "rut_wildhealroot", "ts": 1789979417.106926}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rut_wildhealroot", "notes": "", "target": "rut_wildhealroot", "ts": 1789979417.1176262}
+{"by": "fill_queue", "event": "registered", "source": "DESERT_FAMILY_PORT_EXECUTION_1", "target": "rut_grellspine", "ts": 1789979417.123018}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rut_grellspine", "notes": "", "target": "rut_grellspine", "ts": 1789979417.133693}
