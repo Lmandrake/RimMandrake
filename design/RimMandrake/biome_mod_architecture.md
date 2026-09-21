@@ -88,7 +88,7 @@ and in the deserts' case the owner named them separately in the ruling.
 | 8 | `RUT_CrackedLands` | 970 | the Cracked Lands | `the_cracked_lands.md` | `FloodedCanyon` (EXISTS) | `mandrake.rm.floodedcanyon` | `RM_FloodedCanyon` | twin pair, §4; §7 Q4 |
 | 9 | `RUT_AridShrubland` | 628 | the arid shrubland | `arid_shrubland.md` | `FogShrubland` | `mandrake.rm.fogshrubland` | `RM_FogShrubland` | PROPOSED — "arid shrubland" is a vanilla biome label; the sheet's identity is the fog-fed fuzz |
 | 10 | `RUT_PoisonForest` | 546 | the Poison Forest | `poison_forest.md` | `PoisonForest` | `mandrake.rm.poisonforest` | `RM_PoisonForest` | PROPOSED |
-| 11 | `RUT_TheScald` | 312 | the Scald | `the_scald.md`, `kits/scald_kit_spec.md` | `TheScald` | `mandrake.rm.thescald` | `RM_TheScald` | PROPOSED; a sea biome (impassable) with a kit |
+| 11 | `RUT_TheScald` | 312 | the Scald | `the_scald.md`, `kits/scald_kit_spec.md` | `TerminalBiomes` | `mandrake.rm.terminalbiomes` | `RM_TheScald` | 🔴 RULED 2026-09-21 §7 Q1 — moves OUT of its own mod into the four-biome `TerminalBiomes` mod, independently toggleable. A sea biome (impassable) with a kit. |
 | 12 | `RUT_RustCathedral` | 236 | the Rust Cathedral | `the_rust_cathedral.md`, `kits/rust_cathedral_kit_spec.md` | `RustCathedral` | `mandrake.rm.rustcathedral` | `RM_RustCathedral` | PROPOSED; absorbs `mandrake.rut.rustcathedralhum` / `...roaches` / `...walls` |
 | 13 | `RUT_Greentide` | 235 | the Greentide | `the_greentide.md`, `kits/greentide_kit_spec.md` | `Greentide` (EXISTS) | `mandrake.rm.greentide` | `RM_Greentide` | twin pair, §4 |
 | 14 | `RUT_WeepingStones` | 223 | the Weeping Stones | `weeping_stones.md` | `WeepingStones` | `mandrake.rm.weepingstones` | `RM_WeepingStones` | PROPOSED |
@@ -106,8 +106,8 @@ and in the deserts' case the owner named them separately in the ruling.
 
 | # | painted defs today | tiles (record) | sheet (one sheet, one system) | target mod folder | packageId | BiomeDef defNames | why one mod |
 |---|---|---:|---|---|---|---|---|
-| 24–25 | `RUT_Umbra` + `RUT_PropaneLake` | 2531 + 57 | `the_propane_lakes.md` — "the antistellar cap the sheet names Umbra" and "the lake proper" (`_def_bindings_2026-09-09.md`) | `PropaneLakes` | `mandrake.rm.propanelakes` | `RM_Umbra`, `RM_PropaneLake` | The lake sits inside the cap; the sheet defines both from one energy regime (fuel snow, ammonia flats, aurora). Splitting them would put one weather table and one terrain family in two mods. PROPOSED |
-| 26–27 | `RUT_TwilightSea` + `RUT_GreySea` | 607 + 472 | `terminator_sea.md` (surface), with `the_twilight_deep.md` / `the_grey_deep.md` for the two floors | `TerminalSeas` | `mandrake.rm.terminalseas` | `RM_TwilightSea`, `RM_GreySea` | Two hypersaline terminal seas on the terminator, each def's description calls the other "its sister sea"; both impassable, both one-mat-organism biomes. PROPOSED |
+| 24 | `RUT_PropaneLake` | 57 | the Propane Lake | `the_propane_lakes.md` (`_def_bindings_2026-09-09.md`) | `TerminalBiomes` | `mandrake.rm.terminalbiomes` | `RM_PropaneLake` | 🔴 RULED 2026-09-21 §7 Q1 — an ocean biome made of propane, its own biome, shipping in the four-biome `TerminalBiomes` mod with a Mod Settings toggle. ⛔ `RUT_Umbra` is NOT a biome (it is a REGION) and has left this list. |
+| 25–26 | `RUT_TwilightSea` + `RUT_GreySea` | 607 + 472 | the Twilight Sea, the Grey Sea | `terminator_sea.md` (surface), `the_twilight_deep.md` / `the_grey_deep.md` (floors) | `TerminalBiomes` | `mandrake.rm.terminalbiomes` | `RM_TwilightSea`, `RM_GreySea` | 🔴 RULED 2026-09-21 §7 Q1 — two of the four biomes in the shared `TerminalBiomes` mod, each independently toggleable. |
 
 **Totals: 27 painted defs → 25 mods (23 standalone + 2 kits).** Four of the 25 mod folders
 already exist; 21 are new.
@@ -445,51 +445,51 @@ remove behaviour, not defs. This is the bar `MOD_OPTIONS_RETROFIT_1`'s verify li
 ("toggling a feature off provably disables it live or at next map-gen, say which"), and
 each biome mod's `validation.py` states which of the two it is per toggle.
 
-## 7. Open questions for the owner
+## 7. Owner rulings, and what is still open
 
-Each of these is a decision this spec could not make without him. Where a recommendation
-is given it is marked as one; none of these has been answered, and nothing in §5 runs on a
-row that depends on an unanswered one.
+🔴 **Ruled 2026-09-21 (BENCH question cards). These are decisions, not recommendations.**
 
-**Q1 — The two kits.** §2b groups Umbra + the Propane Lake into `mandrake.rm.propanelakes`
-and the Twilight Sea + Grey Sea into `mandrake.rm.terminalseas`, because each pair shares
-one frozen sheet. The ruling says "each … is its own mod". Is a shared sheet enough reason
-to share a mod, or does he want 27 mods, one per painted def? *(Recommendation: the two
-kits — one weather table, one terrain family, one mod.)*
+**Q1 — the two kits: RE-SCOPED by his answer, verbatim.**
 
-**Q2 — Names for the two deserts, and for the shrubland.** `RM_DeepDesert` /
-`mandrake.rm.deepdesert` for today's `RUT_ExtremeDesert` and `RM_ShadowDesert` /
-`mandrake.rm.shadowdesert` for today's `RUT_Desert` are this spec's inventions; so is
-`RM_FogShrubland` for `RUT_AridShrubland`. "Dune Sea" is Tatooine and stays a Utinni
-label; "extreme desert", "desert" and "arid shrubland" are vanilla labels a RimMandrake mod
-should not reuse. He may have names in mind; every PROPOSED row in §2 is his to rename.
+> *"Umbra is a region not a biome. The Propane Lake is an ocean-biome made of propane,
+> definitely its own biome. Propane, Grey, Twilight, and Scald biomes can all share one
+> mod with options to enable/disable each of these biomes in a spawned game... or Utinni
+> scenario simply uses a painted world."*
 
-**Q3 — Rename `RM_FE_Pyrelands` → `RM_Pyrelands` (and the 21 other `RM_FE_` defs) at the
-move?** The `FE_` infix is a "FireEcology" project fossil and the worker's namespace is
-`RimMandrake.StarWars.FireEcology`, a `.StarWars.` inside a RimMandrake mod. MEASURED
-(`biome_split_factcheck.md` F2): before the terminal paint the rename touches 14 files
-under `src/` (52 occurrences of `RM_FE_Pyrelands`), including three live C# string
-literals — not "one" — in `PyrelandsTuning.cs`, `WildPlantAllowlist.cs` and
-`RM_PyrelandsDensityEnforcer.cs`, plus six Utinni patch files; the live canonical save
-references `RM_FE_Pyrelands` zero times today (it currently carries `ZBiome_Grasslands`
-on those tiles instead), so the save-side cost is currently zero. *(Recommendation:
-rename now.)*
+⇒ **Umbra is NOT a biome** and leaves the biome row list entirely — it is a region, and
+belongs with the planet's named regions. ⇒ The **Propane Lake is its own biome**, an ocean
+biome made of propane. ⇒ **Propane + Grey + Twilight + Scald ship as ONE mod carrying four
+biomes**, each with a Mod Settings toggle to enable or disable it in a generated game
+(per the standing "every mod ships superb Mod Settings" ruling). The Utinni scenario is
+unaffected either way because it uses the painted world.
+⛔ The spec's original `mandrake.rm.propanelakes` / `mandrake.rm.terminalseas` pairing is
+dead — do not build it.
 
-**Q4 — Is `RM_FloodedCanyon` the Cracked Lands?** `FLOOD_CANYON_BIOME_1` and the mod's
-`About.xml` say it generalises the Cracked Lands' chime-then-flood; the Cracked Lands
-sheet describes canyon country that floods without warning. §4d treats them as one place
-and merges `RUT_CrackedLands` into the RimMandrake mod under the campaign label "the
-Cracked Lands". If instead Flooded Canyon is a *different* RimMandrake biome that Ash'karr
-simply does not use, then the Cracked Lands needs its own row (`mandrake.rm.crackedlands`,
-`RM_CrackedLands`) and Flooded Canyon is not an orphan, just unpainted. Nothing in §5 runs
-for either until he says.
+**Q2 — names for the two deserts and the shrubland: DRAFTS OWED HIM.** He ruled *"bring me
+a drafted list"*; the drafts are at `Transient/biome_name_drafts_2026-09-21.md` awaiting
+his pick. Nothing depending on a name starts until he picks.
 
-**Q5 — "Scarlands" collides with vanilla.** `RUT_Scarlands`'s worker is
-`RimWorld.BiomeWorker_Scarlands` — vanilla 1.6 ships a biome of that name. A
-`mandrake.rm.scarlands` mod with an `RM_Scarlands` def labelled "scarlands" would sit
-beside it in every biome list. Keep the name (the sheet's identity is its own — crater
-fields on megastructure floors) or pick another? The sheet folder also holds
-`wreck_fields.md`, whose relationship to the Scarlands is UNMEASURED here.
+**Q3 — rename `RM_FE_Pyrelands` → `RM_Pyrelands`: YES, NOW.** Ruled. Item:
+`PYRELANDS_DEFNAME_RENAME_1`.
+
+**Q4 — is `RM_FloodedCanyon` the Cracked Lands? YES, same place.** `RUT_CrackedLands`
+merges into the RimMandrake mod under the campaign label "the Cracked Lands". One biome,
+one mod. The Cracked Lands does NOT get its own row.
+
+**Q5 — "Scarlands" collides with vanilla: RENAME OURS.** Not the DLC's label, not keeping
+the name. Item: `SCARLANDS_RENAME_OURS_1`; replacement drafts are in
+`Transient/biome_name_drafts_2026-09-21.md` awaiting his pick.
+
+**Q8 — `mandrake.rut.ashkarrflora`: DISSOLVE IT.** Each plant moves into the RimMandrake
+mod of the biome whose `wildPlants` lists it, renamed `RM_`. Every biome mod ships with its
+own signature plants. The campaign flora pack does not survive the split.
+
+**Q9 — donor fauna inline in RimMandrake defs: ACCEPTABLE, leave them inline.** The `AA_`,
+`VFEI2_`, `GR_` and other donor entries stay in the `RM_` defs with their `MayRequire`;
+`DONOR_DEFS_PORT_TO_OURS_1` removes them over time. No extra work at the split.
+
+### Still open — Q6, Q7 and Q10
+
 
 **Q6 — The Lantern Deeps' def and tier.** MEASURED: the injection layer already owns its
 biome def, `RUT_LanternDeeps`, since `CAVERNS_PARITY_BUILD_1` (2026-09-19); the donor
@@ -510,19 +510,7 @@ under a header comment. That window is as long as Phase A takes. Is a lint hook 
 on edits under `UtinniPatches/Defs/BiomeDefs/` wanted for the duration, or is the header
 comment enough?
 
-**Q8 — `mandrake.rut.ashkarrflora`.** 35 files of per-biome plants named for the planet.
-Plants are what a biome is, so the recommendation is that each plant moves into the
-RimMandrake mod of the biome whose `wildPlants` lists it, renamed `RM_`. The alternative —
-keep it as one campaign flora pack that patches `wildPlants` in from Utinni — would mean
-the RimMandrake biomes ship without their signature plants. Which?
 
-**Q9 — Donor fauna inside RimMandrake defs.** The ruling says only Star Wars creatures
-become patches, so the 90 `AA_` (Alpha Animals), 6 `VFEI2_`, 8 `GR_` and other donor
-entries stay inline in the `RM_` defs with their `MayRequire`. That is what this spec
-does. It means a RimMandrake biome mod carries optional references to donor mods; the
-donor-retirement stream (`DONOR_DEFS_PORT_TO_OURS_1`) removes them over time. Confirm this
-is acceptable for a mod meant to stand alone, or rule that RimMandrake defs may carry
-only vanilla + our own creatures from day one.
 
 **Q10 — Campaign creature defs that are not Star Wars.** MEASURED
 (`biome_split_factcheck.md` F5): seven `RUT_` creatures sit in `<wildAnimals>` today, not
