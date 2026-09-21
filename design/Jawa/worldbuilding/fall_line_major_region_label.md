@@ -54,11 +54,14 @@ From `world/ASHKARR_WORLDMAP_tiles.csv` (canonical), region `Fall Line`:
 | tiles | **155** |
 | lat range | −4.01 … 12.87 (**12.3 tiles**) |
 | lon range | 40.11 … 64.94 (**18.1 tiles**) |
-| max span | 27.84° = **20.3 tiles** (tile 710 ↔ tile 11585) |
+| max span | 27.84° = **18.7 tiles** (tile 710 ↔ tile 11585) |
 | centroid, projected to the sphere | `(60.7127, 8.3209, −79.0236)` |
 | current saved `drawCenter` | `(74.0402, 15.3778, −65.4173)` |
 
-Planet radius is 100 and mean tile spacing is **1.373°** (21,872 tiles).
+Planet radius is 100 and mean tile spacing is **1.4924°** — MEASURED 2026-09-21 as the
+median edge length over all 65,610 edges of the engine's own neighbour dump
+(`world/world_neighbors_sub7b.csv`), mean 1.4759°, and matching the closed form for a
+hexagonal packing, `sqrt((4π/21872) / (√3/2))` = 1.4757°.
 
 ⚠️ The coordinate convention was calibrated, not assumed:
 `x = R·cos(lat)·cos(lon), y = R·sin(lat), z = −R·cos(lat)·sin(lon)` reproduces the saved
@@ -84,7 +87,7 @@ One `world_features_set` on the `Fall Line` feature, then `jawa/world_commit`
 
 | field | from | to | why |
 |---|---|---|---|
-| `maxDrawSizeInTiles` | 10 | **26** | effective draw size 15 → ~41. The label then spans a little beyond the region's own 20-tile width, which is how a major region reads, and sits clearly above the 15 every other label uses |
+| `maxDrawSizeInTiles` | 10 | **26** | effective draw size 15 → 42. The label then spans well beyond the region's own 18.7-tile width, which is how a major region reads, and sits clearly above the 15 every other label uses. 🔑 It is a deliberate PROMOTION, not a computed size: the Fall Line is 155 tiles, 38th of 71 by area, and the planet-wide curve in `WORLD_LABEL_SIZE_HIERARCHY_1` gives it 16.0 (effective 25) |
 | `drawAngle` | 0 | **0 for the first look** | the angle's sign and zero-point are **UNMEASURED** — vanilla never writes this field, so there is no example to calibrate against. Set it only as a second iteration, judged by looking |
 | `drawCenter` | `(74.0402, 15.3778, −65.4173)` | unchanged for the first look | it is inside the region and near its deepest interior; moving it and resizing it at the same time makes the result unattributable |
 

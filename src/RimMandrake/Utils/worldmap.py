@@ -401,7 +401,10 @@ class WorldObjects(object):
     #     <maxDrawSizeInTiles>2.4</maxDrawSizeInTiles> label size
     #     <layer>PlanetLayer_0</layer></li>
     # Which TILES belong to a feature is the separate `tileFeature` array in
-    # WorldGrid (2 bytes/tile, index into this list, 0xFFFF = none).
+    # WorldGrid (2 bytes/tile, 0xFFFF = none). 🔴 Its value is the feature's
+    # `uniqueID`, NOT its position in this list - on the canonical Ash'karr save
+    # the 71 features carry uniqueIDs 21..92, so indexing this list by the raw
+    # value silently returns a DIFFERENT region. Join on "uid".
     def _features_span(self):
         a = self.text.find("<features>")
         return a, self.text.find("</features>", a)
@@ -412,8 +415,10 @@ class WorldObjects(object):
         for i, m in enumerate(re.finditer(r"<li>(.*?)</li>", self.text[lo:hi], re.S)):
             blk = m.group(1)
             g = lambda tag: (re.search(r"<%s>(.*?)</%s>" % (tag, tag), blk, re.S) or [None, None])[1]
+            uid = g("uniqueID")
             out.append({
-                "index": i, "def": g("def"), "name": g("name"),
+                "index": i, "uid": int(uid) if uid else i,
+                "def": g("def"), "name": g("name"),
                 "drawCenter": g("drawCenter"), "size": g("maxDrawSizeInTiles"),
                 "span": (lo + m.start(1), lo + m.end(1)),
             })
