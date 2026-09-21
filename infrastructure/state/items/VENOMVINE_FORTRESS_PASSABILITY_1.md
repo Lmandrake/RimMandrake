@@ -229,4 +229,35 @@ could not be RUN this pass — it needs a `defs.sqlite` capture that does not
 exist on this machine right now — so the agreement is asserted from the three
 files, not measured.
 
-⇒ This item **stays open** until `VENOMVINE_FORTRESS_LIVE_VERIFY_1` returns.
+## DEPLOYED AND VERIFIED LIVE, 2026-09-21
+
+`VENOMVINE_FORTRESS_LIVE_VERIFY_1` ran on a 19-mod `shrublandfauna` quicktest and
+returned **9 of 10 steps observed, the mechanism works**. Read that item for the
+numbers; the load-bearing ones:
+
+- In a sealed 1-wide corridor with no detour to prefer, a muffalo (2.4) reached
+  x=55 and stopped one cell short of the band with the barrier ON, and crossed all
+  ten band cells with it OFF — same pawn, same order, toggled live.
+- Three distinct bands MEASURED: hare (0.2) ~127 ticks/cell (the plant's own
+  `pathCost` 90, no override), colonist (1.0) **315–336 ticks/cell**
+  (`threadMoveCost` 300), muffalo (2.4) never entered.
+- The start-cell carve-out works: 3 of 3 muffalo spawned onto thicket cells walked
+  out. The worst outcome this build could produce did not occur.
+- 0 of 436 samples over 101,230 ticks put an undrafted muffalo on a thicket cell.
+- Save/load restores the grids from `PostSpawnSetup`: 324 ticks/cell after reload.
+- Map removal with an allocated `NativeArray` disposed clean — 0 native-collection
+  diagnostics anywhere in `Player.log`, no crash.
+- The desert form is untouched: swapping ONLY the band def to `RM_Venomvine` let
+  the same muffalo cross at ~73 ticks/cell with the barrier still ON.
+
+⛔ **Still UNSEEN: whether `wildClusterRadius 8` / `wildClusterWeight 25` produce
+stands on a naturally generated map.** Not a defect — the only generation route
+available (`jawa/world_tile_map_generate`) produced maps carrying 0–231 wild
+plants against 17,904 on a normally generated map, and none of the biome's SEVEN
+declared wildPlants appeared on any of them, so the instrument cannot answer it.
+
+⚠️ And MEASURED while staging: `RM_VenomvineThicket` is refused by a lot of
+ground — `jawa/set_plants` rejected 52 of 100 cells on untouched shrubland terrain
+("terrain or conditions cannot support"), and 6 of 100 on plain `Soil`.
+
+⇒ **CLOSED.**
