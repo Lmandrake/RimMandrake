@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 128,
+    "width": 128
+  },
+  "channel": "codex",
+  "created": "2026-09-21T18:02:11Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "bluedesert_krissek_halo_mote",
+  "priority": 130,
+  "prompt": "RimWorld particle/mote texture: a soft blue-white flame halo ring, additive glow, for a creature that 'blazes with a halo of blue fire' when running or fighting. Circular/radial flame-wisp shape, transparent background, colour close to #55c0f0, meant to be layered under/around a pawn sprite.",
+  "reference": null,
+  "rimflow_item_id": "BLUE_DESERT_LIFE_AUTHORING_1",
+  "style_notes": "additive glow mote, biome accent colour #55c0f0, soft radial flame-wisp"
+}

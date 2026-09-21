@@ -50,30 +50,40 @@
     live-world edit needing the bridge and an owner-reviewed worldview.py
     render first, same two-step shape as HORRORWASTES_BIOME_DISSOLVE_1 —
     filed separately as BLUE_DESERT_WORLD_SWITCH_1); the lobe-mosaic anti-
-    bullseye repaint (§0); Swallowers/Burners/Pickers fauna and the transparent
-    fractal flora (art + defs); The Haze/ice-sand-drift/ice-fog WeatherDefs;
+    bullseye repaint (§0); The Haze/ice-sand-drift/ice-fog WeatherDefs;
     blue ice as a mineable resource (WATER_KINDS_TAXONOMY_1's distilled-purity
     row); the quarry injection templates and crysalis trigger mechanism
     (HORRORS_RAIDING_FACTION_1); §6.5's ruling that Bluefire Mountains
     (BiomeGRimphire) is never used — a painting-pass constraint, not a field
     here.
+
+    BLUE_DESERT_LIFE_AUTHORING_1 (2026-09-21): the dorrak (Swallower), krissek
+    (Burner), vekkit (Picker) and the transparent fractal flora (palefloss/
+    glassfern/chimeglobe) are now built (ThingDefs_Races/RM_BlueDesertFauna.xml,
+    ThingDefs_Plants/RM_BlueDesertFlora.xml) and wired below, with the sheet's
+    own donor-read densities (0.5/0.33) restored in the same change — this def
+    is no longer sterile-by-design. See that item and the design brief
+    (design/Jawa/worldbuilding/creatures/blue_desert_hydrocarbon_life.md) for
+    the mechanics.
   -->
 
   <BiomeDef>
     <defName>RUT_BlueDesert</defName>
     <label>the Blue Desert</label>
-    <description>From orbit the bluest thing on the planet; underfoot, colorless. A plateau of the oldest ice on Ash'karr, its "sand" ice grain, its "snow" that same sand blowing, scoured bare by cold wind draining off higher ground. Nothing here runs on water: what lives is a fuel charge stable only in the cold, and warmth is detonation. It is usually clear, silent, and almost empty -- then the ablation line gives something up.</description>
+    <description>From orbit the bluest thing on the planet; underfoot, colorless. A plateau of the oldest ice on Ash'karr, its "sand" ice grain, its "snow" that same sand blowing, scoured bare by cold wind draining off higher ground. Nothing here runs on water: what lives is a fuel charge stable only in the cold, and warmth is detonation. It is usually clear, silent, and almost empty — then the ablation line gives something up.</description>
     <workerClass>BiomeWorker_IceSheet</workerClass>
-    <settleWarning>The Blue Desert is a hydrocarbon-ice plateau with no water-based life and no soil. Everything native here is a cold-stable fuel charge that detonates on warming -- mining and heating are both a hazard, not just a convenience.</settleWarning>
+    <settleWarning>The Blue Desert is a hydrocarbon-ice plateau with no water-based life and no soil. Everything native here is a cold-stable fuel charge that detonates on warming — mining and heating are both a hazard, not just a convenience.</settleWarning>
     <!-- allowRoads true per the standing owner ruling (RUT_NightsideIce's own comment, 2026-09-07): "All of our biomes should allow roads." -->
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <allowFarmingCamps>false</allowFarmingCamps>
     <isExtremeBiome>true</isExtremeBiome>
-    <!-- Zeroed, not the sheet's donor-read 0.5/0.33: nothing to scale until
-         Swallowers/Burners/Pickers and the transparent fractal flora exist. -->
-    <animalDensity>0</animalDensity>
-    <plantDensity>0</plantDensity>
+    <!-- BLUE_DESERT_LIFE_AUTHORING_1 (2026-09-21): restored to the sheet's own
+         donor-read numbers now that the cast exists (RM_Dorrak/RM_Krissek/
+         RM_Vekkit below, and completelyIgnoreFertility flora that actually
+         makes plantDensity mean something on Ice — §1a of the design brief). -->
+    <animalDensity>0.5</animalDensity>
+    <plantDensity>0.33</plantDensity>
     <!-- wildPlants: the owner's 2026-09-10 sheet moved AB_CrystalHorn/AB_ToxiGrass/
          PoisonPlantTallGrass here (SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20,
          "propane lakes and blue desert only" / "blue desert rare"). Those three rows
@@ -81,16 +91,19 @@
          `BiomeFlora_Ashkarr.xml`'s replace operation, which this element existed purely
          as an anchor for. That operation is retired for biomes whose BiomeDef we author
          (BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1), so the rows are written out here instead.
-         🔴 UNRESOLVED TENSION, flagging rather than silently resolving: this biome's own
-         header comment and the_blue_desert.md §6 ban 1 ("no water-based plants or animals")
-         call its flora "explicitly still owed" as new bespoke transparent/fractal defs, not
-         donor toxic-grass defs — and `plantDensity` stays 0 here regardless, so nothing in
-         this list actually spawns until a separate plantDensity ruling lands. Executing the
-         graded sheet's move, not re-litigating whether these three specific defs belong here. -->
+         Left as-is per BLUE_DESERT_LIFE_AUTHORING_1's own §10 (item's default: "leave
+         them as they are; plantDensity restore makes them live too once our plants set
+         the map's completelyIgnoreFertility flag" — not a ruling on whether a
+         water-metabolism donor plant belongs in a ban-1 biome, which stays open for the
+         owner). RM_Palefloss/RM_Glassfern/RM_Chimeglobe are the biome's own ratified
+         flora (design brief §6) added alongside them, not a replacement for them. -->
     <wildPlants>
       <AB_ToxiGrass>0.6</AB_ToxiGrass>  <!-- toxigrass -->
       <AB_CrystalHorn>0.4</AB_CrystalHorn>  <!-- crystal horn -->
       <PoisonPlantTallGrass>0.4</PoisonPlantTallGrass>  <!-- poison tall grass -->
+      <RM_Palefloss>1.0</RM_Palefloss>
+      <RM_Glassfern>0.5</RM_Glassfern>
+      <RM_Chimeglobe>0.25</RM_Chimeglobe>
     </wildPlants>
     <hasVirtualPlants>false</hasVirtualPlants>
     <forageability>0</forageability>
@@ -130,12 +143,19 @@
       <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
       <Blizzard MayRequire="Ludeon.RimWorld.Odyssey">0</Blizzard>
     </baseWeatherCommonalities>
-    <!-- WILD ANIMALS: STAYS EMPTY, ruled 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1.
-         design/Jawa/worldbuilding/biomes/rosters/the_blue_desert.json lands ZERO fauna
-         rows on this def (and on BiomeGRimond, which it still shares while the world
-         paint is switched over): its only content is nine evictions. The Burners and
-         the rest of the Blue Desert's intended life are new defs, not pool creatures. -->
-    <wildAnimals />
+    <!-- BLUE_DESERT_LIFE_AUTHORING_1 (2026-09-21): the three resident fauna the sheet
+         ratifies (§3-§5 of the design brief) — superseding the prior "STAYS EMPTY"
+         ruling from BIOME_FAUNA_ASSIGNMENT_SITTING_1, which was correct only until
+         these defs existed. Commonalities per brief §6c: vekkit most common (herd
+         scavenger), dorrak mid (slow, armoured), krissek least common (a hazard, not
+         a background animal). The roster's two owner-ruled Star Wars rows (Vapaad,
+         AA_Thunderbeast) ride the Utinni patch layer, not this element (§0c/§6c of the
+         brief) — not added here, that is a separate wire-up. -->
+    <wildAnimals>
+      <RM_Vekkit>0.8</RM_Vekkit>
+      <RM_Dorrak>0.5</RM_Dorrak>
+      <RM_Krissek>0.35</RM_Krissek>
+    </wildAnimals>
     <coastalWildAnimals />
     <allowedPackAnimals />
   </BiomeDef>

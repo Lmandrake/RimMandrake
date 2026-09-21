@@ -21,12 +21,24 @@ namespace RimMandrake.Utinni.UtinniPatches
     // spike that ships compiled but is not wired into any live biome or
     // shipped plant def — nothing in a real game ever runs it, so it gets no
     // settings entry.
+    // BLUE_DESERT_LIFE_AUTHORING_1 (2026-09-21, BlueDesertLife.cs, namespace
+    // RimMandrake.BlueDesert) adds six toggles/one slider per the standing Mod
+    // Settings rule (MOD_OPTIONS_RETROFIT_1) and the design brief's own §9 table.
+    // None of these are worldgen-affecting -- they gate runtime behaviour only.
     public class UtinniPatchesSettings : ModSettings
     {
         public static bool ambientShrineDoctrineEnabled = true;
         public static bool geothermalDensityFieldEnabled = true;
         public static float geothermalMountainFalloffDeg = 20f;
         public static bool utinniWorldIconEnabled = true;
+
+        // BLUE_DESERT_LIFE_AUTHORING_1 (brief §9)
+        public static bool nativeDetonationsEnabled = true;
+        public static bool floraChainReactionsEnabled = true;
+        public static bool coldWaxWarmReactiveEnabled = true;
+        public static bool butaneGutEnabled = true;
+        public static bool burnerHaloEnabled = true;
+        public static float warmDetonationThresholdC = 5f;
 
         public override void ExposeData()
         {
@@ -35,6 +47,12 @@ namespace RimMandrake.Utinni.UtinniPatches
             Scribe_Values.Look(ref geothermalDensityFieldEnabled, "geothermalDensityFieldEnabled", true);
             Scribe_Values.Look(ref geothermalMountainFalloffDeg, "geothermalMountainFalloffDeg", 20f);
             Scribe_Values.Look(ref utinniWorldIconEnabled, "utinniWorldIconEnabled", true);
+            Scribe_Values.Look(ref nativeDetonationsEnabled, "nativeDetonationsEnabled", true);
+            Scribe_Values.Look(ref floraChainReactionsEnabled, "floraChainReactionsEnabled", true);
+            Scribe_Values.Look(ref coldWaxWarmReactiveEnabled, "coldWaxWarmReactiveEnabled", true);
+            Scribe_Values.Look(ref butaneGutEnabled, "butaneGutEnabled", true);
+            Scribe_Values.Look(ref burnerHaloEnabled, "burnerHaloEnabled", true);
+            Scribe_Values.Look(ref warmDetonationThresholdC, "warmDetonationThresholdC", 5f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -62,6 +80,33 @@ namespace RimMandrake.Utinni.UtinniPatches
                 "Draws the Utinni's own ring hull on the planet map while the gravship is in "
               + "flight, at both zoom levels, instead of vanilla's generic grav-engine glyph. "
               + "Off: the vanilla gravship sprite is used. Takes effect on the next game start.");
+            list.GapLine();
+
+            list.Label("Blue Desert hydrocarbon life (dorrak, krissek, vekkit, the fractal flora):");
+
+            list.CheckboxLabeled("Native detonations", ref nativeDetonationsEnabled,
+                "Dorrak (destroyed gut) and krissek (killed) explode on death. "
+              + "Off: these natives die like ordinary animals.");
+
+            list.CheckboxLabeled("Flora chain reactions", ref floraChainReactionsEnabled,
+                "Palefloss/glassfern/chimeglobe detonate when killed or when a warm room "
+              + "sustains around them. Off: they die like ordinary plants and warm rooms do "
+              + "nothing to them.");
+
+            list.CheckboxLabeled("Warm-reactive cold wax", ref coldWaxWarmReactiveEnabled,
+                "RM_ColdWax ruined by warm storage detonates. Off: it behaves as an inert "
+              + "chemfuel precursor regardless of temperature.");
+
+            list.CheckboxLabeled("Butane gut for foreign grazers", ref butaneGutEnabled,
+                "A water-based grazer (e.g. a colonist's muffalo) that eats the flora takes a "
+              + "building hydrocarbon toxin. Off: eating the flora is harmless to foreign animals.");
+
+            list.CheckboxLabeled("Burner halo VFX", ref burnerHaloEnabled,
+                "The krissek's blue-fire halo shows while it runs fast, hunts, or fights. "
+              + "Purely cosmetic -- off if you want it for GPU cost, not balance.");
+
+            list.Label("Warm-detonation threshold: " + warmDetonationThresholdC.ToString("0") + " °C");
+            warmDetonationThresholdC = list.Slider(warmDetonationThresholdC, -1f, 15f);
 
             list.End();
         }

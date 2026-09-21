@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BLUE_DESERT_LIFE_AUTHORING_1 — "the charge" (design brief §2a/§2f). One
+  HediffDef per native, all `HediffWithComps` carrying
+  `HediffCompProperties_ExplodeOnDeath` (Core, zero C#) so that death by ANY
+  cause — combat, heatstroke (§1f), a neighbour's blast — detonates. Given by
+  each PawnKindDef's `startingHediffs` (§1d), not `HediffGiverSetDef`, because
+  a giver rolls a CHANCE and this must always be present.
+
+  🔴 Do not "simplify" to one shared HediffDef with an XML-configurable radius:
+  HediffCompProperties_ExplodeOnDeath's `explosionRadius` is a straight field
+  with no per-instance override path, so three species with three different
+  radii need three defs (brief §2a: "One def, three radii — or three defs...
+  either is zero C#" — three defs chosen here for readability).
+
+  RM_DorrakCharge additionally carries HediffCompProperties_ExplodeOnPartDestroyed
+  (BlueDesertLife.cs) — the sheet's "wound one in the wrong place": destroying
+  the Hump (10% coverage, QuadrupedAnimalWithHoovesAndHump) kills the dorrak
+  outright, which then runs the ExplodeOnDeath comp below it on the same hediff.
+
+  destroyBody false on every one of these three (§2e): the corpse must exist to
+  butcher (RM_ColdWax, §7). Corpse warm-reactivity is a known, named gap — see
+  BlueDesertLife.cs's file header.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_DorrakCharge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>hydrocarbon charge (gut)</label>
+    <description>A sealed anaerobic gut, swollen with digested fuel and its own blood. Wounding it is a risk; destroying it is the last thing that happens.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>3.9</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>false</destroyBody>
+      </li>
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_ExplodeOnPartDestroyed">
+        <partDefName>Hump</partDefName>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_KrissekCharge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>hydrocarbon charge</label>
+    <description>A body run so hot on refined fuel that dying of anything, including the heat itself, ends it in fire.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>2.9</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>false</destroyBody>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_VekkitCharge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>hydrocarbon charge</label>
+    <description>A small charge of stored fuel — enough to be a hazard when a pack is butchered warm, not enough to be a weapon.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>1.1</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>false</destroyBody>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <!-- §2f: given to a foreign (water-based) grazer that eats the flora, by
+       RM_IngestionOutcomeDoer_ButaneGut. ToxicBuildup-shaped: severity per
+       meal, lethal at 1, slow natural decay — so occasional grazing is
+       survivable but a foreign animal that keeps eating a field dies of it and
+       takes whatever room it is in with it (radius 1.9, §2f). -->
+  <HediffDef>
+    <defName>RM_ButaneGut</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>butane gut</label>
+    <description>A build-up of unmetabolized hydrocarbon from grazing on Blue Desert flora. A water-based digestive system cannot process it; it is stable until warmed, and lethal in enough quantity either way.</description>
+    <defaultLabelColor>(0.6, 0.7, 1)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <lethalSeverity>1.0</lethalSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.15</severityPerDay>
+      </li>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>1.9</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>true</destroyBody>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>mild</label>
+        <painOffset>0.02</painOffset>
+      </li>
+      <li>
+        <minSeverity>0.5</minSeverity>
+        <label>severe</label>
+        <painOffset>0.1</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>
