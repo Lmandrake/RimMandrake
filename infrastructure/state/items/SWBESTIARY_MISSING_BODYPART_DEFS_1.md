@@ -77,3 +77,17 @@ differently-named BodyDefs from an unrelated Mlie-wave batch), which is why
 RimWorld's load-time validation still caught the broken refs despite no
 current consumer — see `SWBESTIARY_BODYPART_LIVE_VERIFY_1`, filed to close
 out the live-check debt (`needs: bridge`).
+
+## live-verified — 2026-09-21
+
+Criteria 1 and 2 MEASURED on a live load: `BodyPartRecord with null def` went
+**11 → 0** and `Could not resolve cross-reference` lines naming any of the
+eight `RSW_` body-part names went **17 → 0**, against a baseline taken from
+the game that was up on the owner's FULL 618-mod list with the un-deployed
+(broken) copy. The five BodyDefs this file defines all resolve live out of
+`RSW_DesertPortA_Bodies.xml`, so the zero is a fix rather than a file that
+failed to load. Criterion 3 has no live subject yet (no ThingDef consumes
+`Dewback`/`Reek`, and `RSW_Sketto`'s `Bogwing` body links vanilla tool
+groups), so it is deferred, not failed; the wing repoint itself was proven on
+a live Sketto. Full evidence and method:
+`SWBESTIARY_BODYPART_LIVE_VERIFY_1`.
