@@ -170,3 +170,95 @@ line reads **`Enraged: defending young: <calf label>`** and it takes an
 - The calf is spawned as an adult: `jawa` spawn tools substitute silently, so
   verify the juvenile's life stage (its label should be **"giant calf"**)
   before believing anything.
+
+## LIVE-VERIFIED 2026-09-21 — the mechanism was observed running, on all four pairs
+
+Run environment: new `shrublandfauna` tier in `modset_builder.py` (19 mods, all
+five DLC — the union of `beastmechanics` and `desertplants`, which is what this
+item plus three others needed in one load). `deploy_custom_mods.py --mod
+CreatureBehaviors --apply` landed the owed three files (the new MentalStateDef,
+About.xml, `RimMandrake.CreatureBehaviors.dll`) and reported VERIFIED in sync;
+SWBestiary and EnvironmentalHazards were already in sync, and the deployed
+`RimMandrakeBeastMechanicsRSW.dll` was left alone (it is another item's work and
+was already byte-current). Load was clean for this mod: `jawa/get_defs` resolved
+`ThingDef/RSW_ShrublandGiant`, `PawnKindDef/RSW_ShrublandGiant` and
+`MentalStateDef/RM_ParentalEnrage` 3 of 3, and `Player.log` carried no
+`Could not find type named RimMandrake.CreatureBehaviors.*` line.
+
+### The staging, built against this item's own four false-pass traps
+
+Four independent clusters at X = 40 / 80 / 120 / 160 on one quicktest map:
+
+| role | cell | distance to calf | distance to adult |
+|---|---|---|---|
+| calf | (X, 60) | — | 15 |
+| adult | (X, 75) | 15 | — |
+| intruder colonist | (X, 64) | **4** (inside `triggerRadius` 5) | **11** |
+| control colonist | (X+9, 75) | 17.5 (outside 5) | 9, in plain sight |
+
+- **Calf life stage verified before believing anything**, exactly as the trap
+  says: `jawa/set_pawn_age biologicalYears=0.25 allowBackwards=true`, and
+  `jawa/list_things includePawns=true` then read the label back as
+  **`Giant calf`** for all four calves and **`The giant`** for all four adults.
+  ⚠️ Worth knowing for the next run: 0.25 y is life-stage index 0 (`AnimalBaby`)
+  and that is the ONLY stage the PawnKindDef gives a label to. An 0.7 y juvenile
+  is index 1, is equally "young" to the comp, and still reads `The giant` — so
+  the label check only works on a baby-aged calf.
+- **The adult was kept 11 cells from the intruder** (trap asks for ≥ 8), so the
+  only thing approached was the calf.
+- **Nobody hit a giant.** Every colonist was stripped with
+  `jawa/pawn_gear action=clear clearWhat=equipment` before the run, and three of
+  the four adults finished the run with **zero hediffs**.
+
+### What was observed (the positive reading this item named)
+
+`rimworld/get_selection_semantics` on the guarding adult, verbatim:
+
+```
+inspectString : "Female, age 4 (29)\r\nEnraged: defending young: giant calf"
+mentalState   : "RM_ParentalEnrage"
+job           : "AttackMelee"
+```
+
+Enrage windows, sampled every 100 ticks (`ticksGame`):
+
+| adult | entered | left | what ended it |
+|---|---|---|---|
+| `…39139` (X=120) | ≤ 5516 | 6316 | intruder went down |
+| `…39137` (X=80) | 5716 | 6116 | intruder went down |
+| `…39141` (X=160) | 5716 | ≤ 7316 | **timed out with the intruder still standing 4 cells from the calf, unhurt** — then re-triggered at 7416, consistent with the calf's own 1250-tick cooldown |
+| `…39135` (X=40) | 6716 | 7516 | intruder went down |
+
+**All four adults enraged**, so this is not one pawn's RNG.
+
+### The four false-pass checks, each answered
+
+1. **"The adult charges because the colonist walked near the ADULT too."** No —
+   the intruder never came closer than 11 cells to the adult, and the adult was
+   the thing that closed the distance: `…39139` walked (120,75) → (120,74) →
+   (120,71) → (119,67) → (119,64), straight at the intruder at (119,63) and
+   directly **away from** its own control colonist at (129,75).
+2. **"The adult attacks because something damaged it"
+   (`manhunterOnDamageChance` 0.02).** Excluded twice over: adults `…39137`,
+   `…39139` and `…39141` ended the run with **0 hediffs**, and `…39139` was
+   already in the state at (120,74) — 11 cells from the nearest pawn, before any
+   contact. And that route produces vanilla `Manhunter`, not this def.
+3. **"It reads as working but is plain vanilla Manhunter."** The state def read
+   back is `RM_ParentalEnrage` and the inspect line is
+   `Enraged: defending young: giant calf`, never `Maddened: Manhunter`.
+4. **"A second, untouched colonist in plain sight is NOT attacked"** — the check
+   the item says would be skipped. All four controls were alive, never downed,
+   and still on their exact spawn cells after ~3,000 ticks. Final hediffs:
+   ctrl0 **0**, ctrl2 **0**, ctrl1 `{Gunshot}`, ctrl3 `{BadBack, Frail, Gunshot}`
+   — all pawn-generation hediffs, and **not one Bite / Scratch / Bruise**, which
+   is what all three downed intruders carry. `ForceHostileTo(Thing)` scoping
+   holds.
+
+Time-box confirmed independently of the intruder going down: the `…39141` window
+ran ~1,500–1,600 ticks and ended on its own while its intruder was still parked
+4 cells from the calf with **zero hediffs** — short of the 2500-tick
+`forceRecoverAfterTicks` ceiling, which is `recoveryMtbDays 0.05` rolling after
+the 600-tick floor, as the def intends. Not a permanent manhunter flip.
+
+Screenshot:
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\SHRUBLAND_GIANT_ENRAGE_live.png`

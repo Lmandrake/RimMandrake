@@ -250,6 +250,37 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rut.patches", "mandrake.rm.divinginteraction"],
         "dlc": True,
     },
+    "shrublandfauna": {
+        "why": "The union of `beastmechanics` and `desertplants`: one load that can "
+               "answer SHRUBLAND_GIANT_ENRAGE_1 (RSW_ShrublandGiant + "
+               "RM_CompParentalEnrage), SCRAPNEST_BIRD_LIVE_VERIFY_1 "
+               "(RSW_ScrapNestBird's JobGiver_HoardScrap, in "
+               "RimMandrakeBeastMechanicsRSW.dll), FILTH_ON_NATURAL_TERRAIN_NOOP_1 "
+               "(RSW_ShadeWhale's RM_CompDungSeeder / RM_FilterFeedExtension and the "
+               "new RSW_Filth_WhaleDung) and VENOMVINE_PATHCOST_AND_FLYER_1 "
+               "(RM_Venomvine, mandrake.rm.environmentalhazards). "
+               "🔑 mandrake.rm.creaturebehaviors, sarg.alphaanimals, "
+               "mlie.starwarsanimalcollection, oskarpotocki.vfe.insectoid2 and "
+               "mandrake.rm.proximityhatch are named EXPLICITLY for the reasons "
+               "spelled out on the `beastmechanics` tier -- SWBestiary carries them "
+               "under <loadAfter> or not at all, closure walks only "
+               "<modDependencies>, and a missing comp TYPE discards the whole def "
+               "silently. Dropping any of them makes a working mechanic read as a "
+               "clean negative.",
+        "want": [
+            BRIDGE,
+            "mandrake.rsw.swbestiary",
+            "mandrake.rm.creaturebehaviors",
+            "mandrake.rm.environmentalhazards",
+            "mandrake.rm.proximityhatch",
+            "mandrake.rut.patches",
+            "mandrake.rut.ashkarrflora",
+            "sarg.alphaanimals",
+            "mlie.starwarsanimalcollection",
+            "oskarpotocki.vfe.insectoid2",
+        ],
+        "dlc": True,
+    },
 }
 
 
