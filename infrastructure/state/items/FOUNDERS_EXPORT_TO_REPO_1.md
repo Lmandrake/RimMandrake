@@ -80,3 +80,53 @@ version control.
 ## criteria
 
 Losing the Saves folder would cost time, not the campaign.
+
+## round trip 2026-09-21
+
+**Step 2 is discharged: the round trip WORKS, observed in game — but the export as
+it stands is not yet a backup, because re-importing it correctly needs one remap
+the README does not name.** Full evidence:
+`Transient/founders_roundtrip_2026-09-21.md`.
+
+Done on the live full-mod-list game (618 active, the mod set the fragments were
+exported against). No cold load spent. `rimworld/save_game` was never called and
+every keeper save is byte-unchanged — `CANONICAL_ASHKARR_START_2026-09-12.rws` is
+still md5 `75be9ecd4764a397e9802d997bb9e0b9`.
+
+**What passed.**
+
+- **Def resolution: 0 unresolved.** All 169 def-bearing references across the 8
+  fragments (134 of them `<def>`) resolve against the current mod set, checked
+  with a negative control.
+- **Reference closure: 0 dangling.** 62 `Thing_*` references, all 62 inside the 22
+  ids the fragments themselves declare. Nothing else from the source save has to
+  travel with them.
+- **Live fidelity.** Spliced into a *foreign* save (different world, player faction
+  `Faction_17`, ideo `Ideo_12`, 69 colonists of its own) and loaded: all 8 pawns
+  arrived. Compared against a pre-switch snapshot of the same pawns in the
+  canonical world over name, backstories, body/head/hair/beard, gender, ages,
+  kindDef, apparel with hit points, equipment, hediffs, all 12 skills with passion,
+  all traits, all genes and all relations — **5 of 8 identical in every field**, and
+  the other 3 differ only by `ageChronologicalYears` +1 (different in-game date) or
+  one hediff the receiving game *adds*. The five-way relation clique and both
+  animal bonds resolved by name.
+
+**🔴 What failed first, and must be written down.** The first attempt — doing only
+the remaps the README names — **silently lost the `Wimp` trait from 5 of the 6
+founders, with nothing in Player.log.** `Wimp` is the only trait carried with a
+non-null `<sourceGene>`, and gene `loadID`s are save-local exactly like
+`Faction_21`. The destination had already issued gene loadIDs 0–1633, so
+`Gene_342/382/422/462/814` resolved *successfully* into the destination's own
+genes. The one founder whose gene id was above that range (Sekki, `Gene_2009`) kept
+the trait — 6 of 6 agree, including the negative case. Offsetting every `<loadID>`
+in the fragments by +1,000,000, rewriting the `Gene_<n>` references with them, and
+bumping `uniqueIDsManager` fixed it completely.
+
+**Owed, so the next person does not rediscover it.** `founders/README.md` must gain
+(a) `Ideo_20` beside `Faction_21` in the remap list, (b) the `uniqueIDsManager`
+bump (`nextThingID`/`nextGeneID`/`nextHediffID`/`nextJobID`), and (c) the
+`<loadID>` offset rule with its reason. Stronger still, and the thing that would
+actually close "an export nobody has re-imported is not a backup": a committed
+`import_founders.py` beside the fragments that performs all four remaps against a
+named destination save. A script is a backup; a prose caveat is a note. Left as a
+judgement for the item's owner rather than done in this pass.
