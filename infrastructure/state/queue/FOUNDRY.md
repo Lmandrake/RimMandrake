@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T08:18:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T08:25:31Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1428,6 +1428,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SHEET_REVIEWED_FLAG_UNIFORM_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. One required key on every sidecar, written by the generator: an explicit reviewed
 prose:    infrastructure/state/items/SHEET_REVIEWED_FLAG_UNIFORM_1.md
+
+## FEATURE_DRAWCENTER_UNVERIFIED_1 Only 2 of 71 world features have a verified drawCenter, and growing labels make a wrong one worse
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FEATURE_DRAWCENTER_UNVERIFIED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FEATURE_DRAWCENTER_UNVERIFIED_1.md
