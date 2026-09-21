@@ -319,3 +319,39 @@ Fall-Line correction and still shows these as ordinary ambient rows):
   Vanilla `Plant_Bush`/`Plant_HealrootWild`/`Plant_Ripthorn` are untouched and still work
   wherever else they're used. Art: none existed for any of the three; filed
   `rut_grellbush`, `rut_wildhealroot`, `rut_grellspine` via `fill_queue.py`.
+
+
+## 🔴 The counts those rulings were put to him on were STALE — corrected 2026-09-21
+
+RE-MEASURED after his answers landed, independently confirmed by BENCH with a direct grep
+of `src/`:
+
+| put to him as | actually |
+|---|---|
+| "7 Droid Depot droids need a port-or-drop call" | **0.** All 7 were already out of every desert biome's `wildAnimals`, removed same-day 2026-09-20 by `EXTREME_DESERT_UNRULED_VERMIN_1`, and `FALL_LINE_ARRIVAL_MECHANISM_1` **already existed** naming these exact 7 and owning their wreckage disposition. |
+| "5 vanilla/Biotech rows to replace" | **3.** `Plant_ShrubLow` was already replaced by `RUT_Fuzz`; `Rat` was never wired ambient anywhere. |
+
+⇒ **His answers still hold and no wrong work resulted** — "they get injected by the wreckage
+thing" matches what `FALL_LINE_ARRIVAL_MECHANISM_1` already says, and the 3 live vanilla rows
+were replaced as ruled (`RUT_Grellbush`, `RUT_WildHealroot`, `RUT_Grellspine`, stats taken
+from the live def dump). ⛔ No duplicate droid item was filed; his fresh verbatim quote was
+added to the existing one instead.
+
+🔑 **The lesson is about the question, not the answer.** Both stale figures came from this
+item's own prose and were relayed to him in `Transient/WHAT_NEEDS_THE_OWNER_2026-09-21.md`
+as if measured. **Re-measure a count immediately before putting it in front of him**, not
+when the item was written — this queue moves same-day.
+
+## ⏸️ One genuine conflict, left for him deliberately
+
+He ruled **"replace all 5"**, which includes `Rat`. But `Rat` is **not wired ambient
+anywhere**, so there is nothing to replace — and re-adding a rat purely to replace it would
+contradict the Fall-Line arrivals ruling. ⛔ Not resolved either way: the agent flagged it
+rather than picking, which is correct. **It needs one word from him.**
+
+## Art
+
+`RSW_MossBeetleLarvae` already had owner-approved art (regenerated for "pale blue
+hydrocarbon life", approved 2026-09-20) — **reused, not requeued**. Adult and pupa had none
+anywhere; 6 jobs filed. Three replacement plants also queued. ✅ The
+check-before-queuing rule did its job here.

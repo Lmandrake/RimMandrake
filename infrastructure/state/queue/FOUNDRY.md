@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T08:31:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T08:35:58Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1448,8 +1448,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SWEETLINE_WOOL_HARVEST_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. A giant-wool item def. Precedent on disk: RSWWoolBantha
 prose:    infrastructure/state/items/SWEETLINE_WOOL_HARVEST_1.md
 
 ## TUNNELSNAKE_VIOLATES_SIZE_LADDER_1 RSW_TunnelSnake ships at baseBodySize 2.0, inside the large band a ratified ruling declares empty
@@ -1458,6 +1458,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TUNNELSNAKE_VIOLATES_SIZE_LADDER_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Establish what the band thresholds actually are. The doc gives names, not numbers; the
 prose:    infrastructure/state/items/TUNNELSNAKE_VIOLATES_SIZE_LADDER_1.md
