@@ -1,0 +1,39 @@
+=== VENOMVINE_PATHCOST_AND_FLYER_1 :: flyer exemption ===
+programState: Playing
+destroy_bulk factionlessAnimals -> [{'thingId': 'Clodhopper39087', 'def': 'Clodhopper', 'label': 'Clodhopper'}, {'thingId': 'Clodhopper39088', 'def': 'Clodhopper', 'label': 'Clodhopper'}, {'thingId': 'Clodhopper39089', 'def': 'Clodhopper', 'label': 'Clodhopper'}, {'thingId': 'Clodhopper39090', 'def': 'Clodhopper', 'label': 'Clodhopper'}, {'thingId': 'Clodhopper39091', 'def': 'Clodhopper', 'label': 'Clodhopper'}, {'thingId': 'Clodhopper39092', 'def': 'Clodhopper', 'label': 'Clodhopper'}, {'thingId': 'Clodhopper39093', 'def': 'Clodhopper', 'label': 'Clodhopper'}, {'thingId': 'Clodhopper39094', 'def': 'Clodhopper', 'label': 'Clodhopper'}, {'thingId': 'Squirrel39095', 'def': 'Squirrel', 'label': 'Squirrel'}, {'thingId': 'RSW_Hrumph39096', 'def': 'RSW_Hrumph', 'label': 'Hrumph'}, {'thingId': 'RSW_Hrumph39097', 'def': 'RSW_Hrumph', 'label': 'Hrumph'}, {'thingId': 'RSW_Hrumph39098', 'def': 'RSW_Hrumph', 'label': 'Hrumph'}, {'thingId': 'RSW_Hrumph39099', 'def': 'RSW_Hrumph', 'label': 'Hrumph'}, {'thingId': 'RSW_Hrumph39100', 'def': 'RSW_Hrumph', 'label': 'Hrumph'}, {'thingId': 'RSW_Hrumph39101', 'def': 'RSW_Hrumph', 'label': 'Hrumph'}, {'thingId': 'Lothcat39102', 'def': 'Lothcat', 'label': 'Loth-cat'}, {'thingId': 'Fanback39103', 'def': 'Fanback', 'label': 'Fanback'}, {'thingId': 'Runyip39104', 'def': 'Runyip', 'label': 'Runyip'}, {'thingId': 'Runyip39105', 'def': 'Runyip', 'label': 'Runyip'}, {'thingId': 'Runyip39106', 'def': 'Runyip', 'label': 'Runyip'}]
+clear_area 30,110,30,30 -> destroyed 582 things
+spawn_batch RM_Venomvine -> spawned=900 failed=0
+spawn_pawn Goose   x15 -> success=True
+spawn_pawn Turkey  x15 -> success=True
+baseline pawns in arena: 30
+
+window 1 setup: hold Goose -> count=15 flyingAtEnd=15
+   Goose changed=True Grounded->Flying refused=None
+   Goose changed=True Grounded->Flying refused=None
+   Goose changed=True Grounded->Flying refused=None
+   (turkey canEverFly readings: [False])
+window 1 ran: ticksElapsed=202 polls=53 reasserts=0 flyingLowWater=15/15 flyingAtEnd=15 timedOut=False speedRestored=True
+window 1 result (geese FLYING, turkeys GROUNDED, same vines, same ticks):
+  Goose  [FLYING]                     0/15 pawns newly envenomed   (in arena 15/15, dead 0)
+  Turkey [grounded control]          15/15 pawns newly envenomed   (in arena 15/15, dead 0)
+
+window 2 setup: land Goose -> flyingAtEnd=0
+window 2 result (the SAME geese, now GROUNDED, same cells):
+  Goose  [grounded]                  15/15 pawns newly envenomed   (in arena 15/15, dead 0)
+
+spawn_pawn Hare x15 -> success=True
+hare flight capability: canEverFly=[False] maxFlightTimeStat=[0.0]
+hare via the ENGINE API (StartFlying): CanEverFly is false. It ends in GetStatValue(MaxFlightTime) > 0, measured here at 0s - this species cannot be launched through the engine API. Use action='hold' if you want it airborne as a control.
+window 3 ran: ticksElapsed=200 flyingLowWater=15/15 flyingAtEnd=15
+window 3 result (hares FORCED airborne despite MaxFlightTime 0):
+  Hare   [FLYING, forced]             0/15 pawns newly envenomed   (in arena 15/15, dead 0)
+window 4 result (the SAME hares, now GROUNDED):
+  Hare   [grounded]                  15/15 pawns newly envenomed   (in arena 15/15, dead 0)
+
+=== VERDICT ===
+  flyers envenomed   : Goose 0/15, Hare 0/15
+  grounded envenomed : Goose 15/15, Turkey 15/15, Hare 15/15
+  windows clean (every flyer airborne at every poll): True
+  EXEMPTION OBSERVED: True
+
+raw after1={"Goose40082": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 38, "z": 119, "hediffDefs": []}, "Goose40083": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 41, "z": 119, "hediffDefs": []}, "Goose40084": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 39, "z": 121, "hediffDefs": []}, "Goose40085": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 41, "z": 126, "hediffDefs": []}, "Goose40086": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 41, "z": 118, "hediffDefs": []}, "Goose40087": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 33, "z": 122, "hediffDefs": ["Gunshot"]}, "Goose40088": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 38, "z": 123, "hediffDefs": []}, "Goose40089": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 42, "z": 125, "hediffDefs": []}, "Goose40090": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 35, "z": 120, "hediffDefs": []}, "Goose40091": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 42, "z": 115, "hediffDefs": []}, "Goose40092": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 33, "z": 124, "hediffDefs": []}, "Goose40093": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 41, "z": 123, "hediffDefs": []}, "Goose40094": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 43, "z": 121, "hediffDefs": []}, "Goose40095": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 31, "z": 124, "hediffDefs": []}, "Goose40096": {"kind": "Goose", "injuries": 0, "venom": 0.0, "dead": false, "x": 42, "z": 117, "hediffDefs": []}, "Turkey40097": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 45, "z": 123, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40098": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 49, "z": 120, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40099": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 44, "z": 119, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40100": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 49, "z": 127, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40101": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 42, "z": 117, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40102": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 49, "z": 122, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40103": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 48, "z": 127, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch", "Stab"]}, "Turkey40104": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 46, "z": 118, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40105": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 49, "z": 119, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40106": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 45, "z": 117, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40107": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 43, "z": 125, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40108": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 47, "z": 121, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40109": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 49, "z": 125, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch"]}, "Turkey40110": {"kind": "Turkey", "injuries": 2, "venom": 0.2663, "dead": false, "x": 47, "z": 126, "hediffDefs": ["BloodLoss", "RM_VenomvineVenom", "Scratch", "Stab"
