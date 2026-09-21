@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T09:10:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T09:12:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -935,15 +935,6 @@ target:   v1
 kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
-
-## BARREN_REGIONS_NAME_NOTHING_1 10 of 22 BARREN_REGIONS entries name regions that do not exist - the keep-empty test fails open
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Resolve each of the ten against the 71 live feature names — renamed, never-authored, or
-prose:    infrastructure/state/items/BARREN_REGIONS_NAME_NOTHING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
