@@ -138,3 +138,102 @@ them:
   Gravel/Soil, so the ultracactus has five times the ground to draw on. The honest
   comparison is leachmoss against the other fertility-gated plants on ITS ground, and that
   needs the per-cell terrain read that PROVE 4 also wants.
+
+## CLOSED — PROVE 3, PROVE 4 and step 6 all run, 2026-09-21 third sitting
+
+Run by FOUNDRY on the bridge, `modset_builder.py --tier desertplants` (19 mods, all
+five DLC). Same path as the two sittings above: tile 83745 set to `RUT_Desert`
+(Flat / 25.5 C / 120 mm / 150 m), fresh 250×250 map through
+`jawa/world_tile_map_generate`.
+
+🔑 **The generation is DETERMINISTIC for this tile+size.** Generated three times this
+sitting (mapIds 1, 2 and 3) and every one produced **8,823 things / 432 plants** with
+an identical per-def breakdown and identical plant cells. Every number below is
+therefore comparable across the maps, and a later reader can reproduce the scene
+exactly rather than a similar one.
+
+### the denominator, MEASURED — all 62,500 cells, `jawa/get_terrain_batch`
+
+```
+Sand 46,452 · Soil 6,407 · Gravel 3,912 · Marble_Rough 2,731 · Sandstone_Rough 1,846
+Limestone_Rough 890 · AncientConcrete 262            fertile (Soil+Gravel) = 10,319
+```
+
+Plant density is the same on both grounds — 354 of 46,452 Sand cells (0.76 %) and 77
+of 10,319 fertile cells (0.75 %) — so a *composition* comparison on fertile ground is
+the right instrument and a raw count comparison against the ultracactus is not.
+
+### PROVE 4 — PASSES. `RSW_Ultracactus` is still confined to Sand
+
+Every ultracactus cell was read. **354 of 354 on Sand at map-gen, and 354 of 354 on
+Sand again after the full regrow below — 0 on Soil, 0 on Gravel in both sets.** One
+map-gen cell failed to parse out of 432 and is the only unread cell in the sitting.
+The moss did not crowd it off the ground it owns; it never contests that ground at all.
+
+### PROVE 2 re-confirmed on an independent map
+
+`RM_Leachmoss` 34 plants: **Soil 18 · Gravel 16 · Sand 0**.
+
+### PROVE 3 — PASSES. Cleared map, regrown, and the regrowth on patch ground IS moss
+
+All 432 plants cleared (`jawa/set_plants CLEAR:0,0,250,250` → `cleared 432`, census 0),
+then `Settings\Fast Ecology Regrow Rate Only` switched on — `WildPlantSpawner.Tick`
+runs its internal tick **2,000×** under that flag (RimWorld/WildPlantSpawner.cs:271-284),
+so ~1,000 game ticks is ≈ 2,000,000 spawner ticks, far past `wildPlantRegrowDays`.
+
+The population refilled and **plateaued at 439 plants**, identical at t=3351, 3601,
+3851 and 4101 — a steady state, not one snapshot. Flag switched back off afterwards.
+
+| | map-gen (ticksGame 1) | regrown (play mode) |
+|---|---|---|
+| RSW_Ultracactus | 355 | 354 |
+| **RM_Leachmoss** | **34** | **45** |
+| RSW_Dunegrass | 33 | 27 |
+| RM_Venomvine | 4 | 9 |
+| RSW_VellaraBloom | 4 | 3 |
+| RUT_Staggerseed | 0 | 1 |
+| RSW_SweetbarkTree | 1 | 0 |
+| RSW_Plant_HubbaGourd_Wild | 1 | 0 |
+
+Terrain read for **439 of 439** regrown cells: Sand 354 · Soil 61 · Gravel 24.
+`RM_Leachmoss` Soil 35 · Gravel 10 · **Sand 0**.
+
+**Composition of the cover standing on patch ground (Soil+Gravel):**
+
+```
+map-gen  n=77   Leachmoss 44.2%  Dunegrass 42.9%  VellaraBloom 5.2%  Venomvine 5.2%  Sweetbark 1.3%  HubbaGourd 1.3%
+regrown  n=85   Leachmoss 52.9%  Dunegrass 31.8%  Venomvine 10.6%    VellaraBloom 3.5%  Staggerseed 1.2%
+```
+
+⇒ **After a clear, the regrowth on fertile ground is leachmoss more often than not —
+a strict majority, 52.9 %.** That is the design's own bar ("more often than not", not
+"always") met on a 85-plant sample, with the ultracactus still holding every sand cell.
+
+### step 6 — JUDGED. The weight 1.5 stands; do not retune it
+
+The two figures above differ for a reason that is in the engine, not in noise.
+`WildPlantSpawner.PlantChoiceWeight` (RimWorld/WildPlantSpawner.cs:469-516, read from
+the decompiled 1.6 source) applies
+
+```csharp
+if (Current.ProgramState == ProgramState.Playing)
+    num *= plantDef.plant.plantRespawningCommonalityFactor;
+```
+
+— so `RM_Leachmoss`'s `plantRespawningCommonalityFactor 2.0` is applied **during play
+and not during map generation**. 44.2 % → 52.9 % is that field, measured. The plant is
+authored to be the fastest *re*-claimant of cleared patch ground, and that is exactly
+what it is.
+
+⚠️ **Why raising 1.5 would be the wrong lever**, for whoever is tempted next. The same
+method multiplies a clustering plant's weight by a cluster-distance term, and
+`RM_Leachmoss` declares `wildClusterRadius 5` / `wildClusterWeight 10` while
+`RSW_Dunegrass` declares no cluster fields at all (`GrowsInClusters` false, no term).
+DERIVED from that method with this biome's own weights (commonality 1.5 of a 3.93 sum,
+so commonality pct 0.382): away from an existing leachmoss the multiplier is ≈0.235,
+and within `wildClusterRadius * 0.9` it is ×10. The 1.5 is not what is holding the moss
+back on isolated cells — its own clustering is, on purpose, and that is what makes it
+read as *stands* rather than a wash. Nothing here needs changing.
+
+⇒ **PROVE 2, PROVE 3 and PROVE 4 all pass and step 6 is judged. Item CLOSED.**
+`DESERT_LEACHMOSS_BUILD_1`'s live-proof debt is discharged.

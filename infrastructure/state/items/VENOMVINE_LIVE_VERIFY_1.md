@@ -194,3 +194,131 @@ runs it properly. `pathCost 60` in practice is likewise still unobserved.
 ⇒ This item **stays open** for steps 3, 4, 5, 6 and 8, for the wild-stand
 registration check, and for `pathCost 60`. The mechanism it was filed to
 witness has been witnessed; the wild half has not.
+
+## CLOSED — steps 3, 5, 6 and 8 observed, wild map-gen registration observed, 2026-09-21 third sitting
+
+Run by FOUNDRY on the bridge, `--tier desertplants` (19 mods, all five DLC).
+
+🔑 **Method that made every reading attributable:** each subject was placed on a named
+cell and then `jawa/pawn_force_incapacitate action=downed allowBleedingWounds=false`.
+A downed pawn does not move, so "which cell was this pawn standing on for the whole
+window" stops being a guess — which is what the Ash anomaly recorded above could not
+answer. `MapComponent_ContactVenom.Sample` reads `pawn.Position` only and skips nothing
+for `Downed`, so the mechanism under test is untouched by this.
+⚠️ Every subject carries 1–2 `Scratch` injuries from `HealthUtility.DamageUntilDowned`
+BEFORE the test starts. They carry no `RM_VenomvineVenom`; a T0 reading was taken in
+every run so the downing damage can never be miscounted as a contact.
+
+### the arena
+
+All-Soil 15×15 at (150,62); a solid 11×11 `RM_Venomvine` stand at (152,64),
+**106 of 121 cells planted** (15 cells refused the plant). 3,500 ticks, t=46500→50000.
+
+### step 5 (`ContactVenomImmunity`) — PASSES, with a like-for-like control
+
+The item predicted this was unstageable because no def carries the extension. It was
+staged with a throwaway mod written straight into the game folder — `ZZZ_VenomImmunityTest`,
+one `PatchOperationAdd` putting
+`<li Class="RimMandrake.EnvironmentalHazards.ContactVenomImmunity" />` on Core's `Hare`
+and nothing else. **The mod was deleted and the full 618-mod list restored at the end of
+the sitting**; nothing of it survives in the repo or the game folder.
+
+| subject | on a vine cell | scratches in 3,500 ticks | `RM_VenomvineVenom` |
+|---|---|---|---|
+| Hare ×4 (extension) | yes | **0** | **none** |
+| Snowhare ×3 (no extension) | yes | 2 each | 0.7907 · 0.7923 · 0.7907 |
+
+`PawnKindDef.immuneToTraps` was read live and is **false on both kinds**, so the second
+branch of `IsImmune` is not what produced this — the race-level `DefModExtension` is.
+All three snowhares subsequently **died of the venom**, which is `lethalSeverity` plus
+`victimSeverityScalingByInvBodySize` on a 0.4-bodySize animal doing what they say.
+
+### step 3 (cutting from an adjacent cell is safe) — PASSES
+
+The claim under test is cell occupancy, since `JobDriver_PlantWork` paths with
+`PathEndMode.Touch`. Four independent negatives, all for the full 3,500 ticks:
+
+- 2 colonists on non-vine cells **orthogonally adjacent to the stand edge** — 0 / 0
+- 1 colonist 7 cells clear of the stand — 0 / 0
+- 2 subjects that landed on **non-vine cells INSIDE the stand** (a human at (158,72),
+  a snowhare at (159,71) — those cells refused the plant) — 0 / 0, while their
+  neighbours two cells away took 2 and 4 scratches
+
+The last pair is the sharpest form of it: same stand, same window, one cell apart, and
+the cell with no vine on it is inert.
+
+### step 6 (Sharp armour reduced to 0 ⇒ no venom at all) — PASSES
+
+2 colonists in **Legendary `Apparel_PowerArmor` + `Apparel_PowerArmorHelmet`**, standing
+on vine cells for 3,500 ticks: **0 scratches, 0 venom.** Their naked peers on vine cells
+in the same window took 2 scratches, then 4. Every contact deflected — the half the
+earlier sitting could only infer from Crink's 2.01 → 0.67.
+
+### step 8 (save/load mid-contact) — PASSES, with the clock's own schedule
+
+Staged on the **player-home map** rather than the bridge-generated desert map, for the
+reason in the defect note below. Two naked colonists downed on a 9×9 vine stand at
+(40,200):
+
+```
+first contact      between t=52574 and t=52674   (2 scratches each)
+SAVE               t=53551    2 scratches · venom 0.1766 / 0.1541
+LOAD               t=53552    2 scratches · venom 0.1766 / 0.1541      <- identical, no double scratch
+t=53752 .. 54952   2 scratches throughout, venom decaying -0.0017 per 200 ticks
+                                           (severityPerDay -0.5 predicts -0.001667)
+next event         between t=54952 and t=55152
+```
+
+🔑 **The next scratch landed ~2,500 ticks after the PRE-SAVE contact, not ~2,500 after
+the load.** A clock that had been lost would have put the pawn back through the
+`index < 0` branch and scratched it within 15 ticks of the first post-load tick; it did
+not, for 1,600 ticks. `ExposeData` on the four parallel lists holds.
+
+### wild-stand registration under MAP GENERATION — PASSES (the item's own open question)
+
+A fresh 250×250 `RUT_Desert` map carries **4 `RM_Venomvine` placed by `WildPlantSpawner`
+during generation**, at (35,245) (113,128) (78,201) (78,94) — the same four cells every
+time the tile is generated. A naked colonist was downed on each, and a control downed
+3 cells away from each on the same terrain:
+
+```
+on a wild map-gen vine   4 of 4 carried RM_VenomvineVenom 0.1575 · 0.1575 · 0.1575 · 0.1591 within 300 ticks
+control, 3 cells away    4 of 4 carried none
+```
+
+⇒ `CompContactVenom.PostSpawnSetup` arms a cell for a vine the map generator planted,
+not only for one `jawa/set_plants` put down. The previous sitting's "a spawn observation,
+NOT the check this item wants" is now the check this item wants.
+
+### what is still NOT observed, and is now a successor item
+
+- **step 4 (a flyer crosses)** — still **NOT-RUN**, and the reason is now MEASURED
+  rather than asserted: the debug surface was enumerated (`Settings`, 181 children;
+  `Actions`, 360 children) and **zero** nodes match fly/flight, and no `jawa/` or
+  `rimworld/` tool writes `Pawn.Flying`. 1.6 flight is a stat-driven state a bird
+  enters on its own and nothing here can force it on demand. The code path is one
+  `if (pawn.Flying) continue;` copied from `Building_Trap.Tick`.
+- **`pathCost 60` in practice** — still unobserved.
+
+Both carried to `VENOMVINE_PATHCOST_AND_FLYER_1`.
+
+### 🔴 DEFECT found in a neighbouring mechanism — filth on natural terrain
+
+Not this item's, but found by this item's instruments and filed:
+`FILTH_ON_NATURAL_TERRAIN_NOOP_1`. `Filth_AnimalFilth` cannot be placed on Sand, Soil
+or Gravel at all, so `RM_CompDungSeeder`'s dung and `RM_JobDriver_FilterFeedTerrain`'s
+churned ground are permanent no-ops outdoors. Details and the engine-source proof are
+in that item and in `SHADE_WHALE_ECOLOGY_LIVEPROOF_1`.
+
+### ⚠️ harness defect, recorded so the next reader does not lose a scene to it
+
+**A bridge-generated map on a factionless `Settlement` world object is written to the
+save but is NOT restored on load.** `rimworld/save_game` produced a 31 MB `.rws`
+containing `<uniqueID>2</uniqueID>`, 261 `RM_Venomvine` and 111 `RSW_ShadeWhale`
+strings; after `rimworld/load_game` the game reported `mapCount 1` holding only the
+original player map, and `jawa/set_current_map mapId 2` answered *"No loaded map has
+uniqueID 2."* Three living player colonists were standing on that map when it was
+saved and that did not save it. **Anything that must survive a save/load has to be
+staged on the player's own map.** That is why step 8 above moved there.
+
+⇒ Criteria met (every step observed, or recorded not-run with its reason). Item CLOSED.
