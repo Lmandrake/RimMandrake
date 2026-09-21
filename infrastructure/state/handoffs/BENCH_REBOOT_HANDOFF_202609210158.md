@@ -56,15 +56,22 @@ A mod-list change is his call, so nothing was edited.
 - `FALL_LINE_MAJOR_REGION_LABEL_1` — APPLIED, SAVED and photographed; `needs: owner`.
   NEXT: show him `D:\Luke\dev\Rimworld\Transient\fall_line\alt420.png` and close on his
   word. ⚠️ Nothing is owed technically — it is open only because he has not looked yet.
-- 🔴 **`MAPGEN_NRE_FULL_LIST_20260920_1` — THE GAME IS DOWN and map generation is broken on
-  the full 618-mod list.** Two independent spawners (`GenStep_Plants`/`WildPlantSpawner`
-  and `WildAnimalSpawner`) both fault on a NULL def, then an unbounded
-  `StatRequest for null def` storm. Log preserved at
-  `Transient/crash_mapgen_20260920T1900.log`. NEXT: find which biome roster holds the null
-  entry — check the DEPLOYED defs, not the repo. ⚠️ Same shape as
-  `FULL_LIST_CANNOT_LOAD_GAME_1`, which is CLOSED at `9a2316798`, so check whether that
-  regressed before filing anything new. ❌ One hypothesis (AshkarrFlora deployed-but-inactive)
-  is already TESTED AND DISCONFIRMED in the item — do not re-run it.
+- ❌ **`MAPGEN_NRE_FULL_LIST_20260920_1` — THIS ENTRY WAS WRONG AND IS CORRECTED.**
+  It claimed the game was down and map generation was broken **on the full 618-mod list**.
+  🔴 **Neither half was true.** CONFIRMED 2026-09-21 by re-reading the log independently:
+  `crash_mapgen_20260920T1900.log` line 1338's own `Initializing new game with mods:`
+  record lists **19 mods**, not ~618 — it is `modset_builder.py`'s `desertplants` tier. The
+  `WildPlantSpawner`/`WildAnimalSpawner` NREs are `BiomePlantRecord`/`BiomeAnimalRecord`
+  cross-refs to donor plants (`AB_Gomphoeria`, `RUT_Dewshrooms`, `RG_Plant_Dervish`) whose
+  owning mods were simply not in that 19-mod set; an unresolved cross-ref leaves a
+  null-bearing record rather than dropping it. The item was already filed, diagnosed and
+  CLOSED by FOUNDRY at `fa21d88857a` hours before this handoff's successor read it.
+  🔑 **The lesson: a crash log's mod count comes from the log's own
+  `Initializing new game with mods:` line, never from which list you believe was active.**
+  Full account: `Transient/mapgen_nre_diagnosis_2026-09-21.md`.
+  ⚠️ Still UNCONFIRMED by anyone this session: that the owner's real ~618-mod list is
+  clean. That rests on a prior `selftest_deployed_biome_refs.py` run and an older
+  Player.log, neither re-executed.
 - `FOUNDERS_IMPORTER_OWED_1` — importer BUILT, selftest 28/28, runner 68/69; the live-test
   save `FOUNDER_IMPORTER_LIVETEST_2026-09-21.rws` is built and verified offline (all 6
   `Wimp` sourceGenes above the allocated base). NEXT: **load it and check all 6 founders
