@@ -10544,3 +10544,6 @@
 {"seat":"FOUNDRY","event":"start","id":"VENOMVINE_FORTRESS_PASSABILITY_1","ts":"2026-09-21T05:15:08Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"final desert/shrubland live-verify round","ts":"2026-09-21T05:15:45Z"}
 {"seat":"FOUNDRY","event":"file","id":"VENOMVINE_FORTRESS_LIVE_VERIFY_1","title":"quicktest the venomvine fortress body-size barrier in a live game","kind":"task","target":"v1","needs":"bridge","caused_by":"VENOMVINE_FORTRESS_PASSABILITY_1","for":"FOUNDRY","ts":"2026-09-21T05:41:38Z"}
+{"seat":"FOUNDRY","event":"close","id":"SHRUBLAND_GIANT_ENRAGE_1","sha":"37b8105facfe953d5cd5e2f83d16c7f8b828149d","ts":"2026-09-21T06:12:25Z"}
+{"seat":"FOUNDRY","event":"close","id":"SCRAPNEST_BIRD_LIVE_VERIFY_1","sha":"37b8105facfe953d5cd5e2f83d16c7f8b828149d","ts":"2026-09-21T06:12:26Z"}
+{"seat":"FOUNDRY","event":"close","id":"FILTH_ON_NATURAL_TERRAIN_NOOP_1","sha":"37b8105facfe953d5cd5e2f83d16c7f8b828149d","ts":"2026-09-21T06:12:29Z"}
