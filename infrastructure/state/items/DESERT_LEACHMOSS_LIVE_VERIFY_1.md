@@ -91,13 +91,50 @@ which is `fertilityMin 0.5` doing exactly its job). So the def is right, the
 terrain is right, the generator ran, and the biome list it ran against had
 nothing of ours in it.
 
-⇒ PROVE 2/3/4 remain **unproven**, step 6 (retune the 1.5 commonality) cannot
-be judged because the weight is never read, and this item **stays open**,
-blocked on `BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1`. Nothing here contradicts the
-design's bet; nothing here tests it either.
+⇒ PROVE 2/3/4 were unproven at that point and step 6 could not be judged,
+because the weight was never read.
 
 🔑 The `## LIES` clause is worth restating with what was actually seen: the
 missing art did NOT mislead this pass, because the failure was a hard zero
 rather than an unreadable stand. A softer version of this defect — a list that
 kept two of nine entries — would have produced a thin, plausible-looking desert
 that nobody would have questioned.
+
+## UNBLOCKED, and PROVE 2 now passes — 2026-09-21, second sitting
+
+`BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1` is **closed** (`03d963de2`): the generator no
+longer patches a BiomeDef we author, so `RUT_Desert` ships its own nine plants. Re-run on
+the same path — `--tier desertplants`, all five DLC, tile 83745, fresh 250×250 map:
+
+```
+jawa/get_defs BiomeDef/RUT_Desert fields=wildPlants  -> 9 BiomePlantRecords   (was 4)
+jawa/world_tile_map_generate                         -> 10,932 things         (was 0)
+jawa/list_things group=Plant                         -> countMatched 272      (was 0)
+     RSW_Ultracactus 246 · RSW_Dunegrass 12 · RM_Leachmoss 7 · RUT_Staggerseed 2
+     RSW_VellaraBloom 2 · RSW_SweetbarkTree 1 · RSW_Plant_Chakroot_Wild 1 · RM_Venomvine 1
+```
+
+✅ **PROVE 2 PASSES.** All **7** wild-spawned `RM_Leachmoss` were located by
+`jawa/list_things` and their cells read with `jawa/get_terrain_batch`:
+
+```
+Soil:96,77  Soil:122,83  Soil:129,91  Gravel:173,128  Gravel:135,154  Gravel:87,192  Gravel:131,237
+```
+
+Soil ×3, Gravel ×4, **Sand ×0**. `fertilityMin 0.5` holds on wild spawn, not just on the
+hand-placement already recorded above.
+
+⏳ **STILL OPEN — PROVE 3, PROVE 4 and step 6 were NOT run**, and this item stays open for
+them:
+
+- **PROVE 3 (re-take)** needs a stand cleared and the map ticked past
+  `wildPlantRegrowDays` — no ticking was done at all; the census above is at `ticksGame 1`.
+- **PROVE 4** is only half-answered: `RSW_Ultracactus` is plainly present (246), but its
+  cells were **not** read, so "still confined to Sand" is UNMEASURED.
+- **Step 6 (retune 1.5)** is now judgeable for the first time and has not been judged.
+  ⚠️ Read the raw counts with care before touching the number: 246 ultracactus to 7
+  leachmoss is **not** evidence the 1.5 weight is too low. The two plants do not compete —
+  `RM_Leachmoss` needs fertility 0.5 and this map is 47,119 Sand cells to ~9,000
+  Gravel/Soil, so the ultracactus has five times the ground to draw on. The honest
+  comparison is leachmoss against the other fertility-gated plants on ITS ground, and that
+  needs the per-cell terrain read that PROVE 4 also wants.
