@@ -416,6 +416,12 @@
   },
   "note": "Pre-fill only. Every 'right' here is the generator's null hypothesis, not a human judgement. The keys the sheet's own plumbing stamps when a human writes are deliberately absent from this file, so a consumer can tell these suggestions from his decisions.",
   "posture": "blacklist",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "self-contradictory: note field says \"the keys the sheet's own plumbing stamps when a human writes are deliberately absent from this file\", but savedBy/savedAt/writeCount=6 ARE present — the note is stale relative to the plumbing stamps, so neither can be trusted alone and no name/quote exists",
+    "state": "unknown"
+  },
   "savedAt": "2026-09-19T10:31:14-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "bulk_art_misroute_2026-09-19",

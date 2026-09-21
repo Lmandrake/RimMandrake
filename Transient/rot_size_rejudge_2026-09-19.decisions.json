@@ -1,192 +1,198 @@
 {
- "decidedCount": 28,
- "decisions": {
-  "AA_Agaripawn": {
-   "decision": "ok",
-   "note": "the current number (7 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
+  "decidedCount": 28,
+  "decisions": {
+    "AA_Agaripawn": {
+      "decision": "ok",
+      "note": "the current number (7 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "AA_MycoidColossus": {
+      "at": "2026-09-19T16:41:21.752Z",
+      "decision": "resize",
+      "note": "What IS this graphic? Is this wired correctly? It's more like something we should keep for the Droidworks. Mycoid colossus is supposed to be a huge multi-legged purplish entity with glowing mushrooms sprouting from its back. Size 12.",
+      "prefill": "ok"
+    },
+    "AA_Swarmling": {
+      "decision": "ok",
+      "note": "the current number (0.5 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "AA_Wildpawn": {
+      "decision": "ok",
+      "note": "the current number (6 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "AA_Wildpod": {
+      "decision": "ok",
+      "note": "the current number (5 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "AB_AgaricusDomeCap": {
+      "at": "2026-09-19T16:38:17.494Z",
+      "decision": "resize",
+      "note": "2",
+      "prefill": null
+    },
+    "AB_Agarilux": {
+      "decision": "",
+      "note": "you judged this against a false number, so this one genuinely needs your eye.",
+      "prefill": null
+    },
+    "AB_AgariluxPrime": {
+      "decision": "ok",
+      "note": "the current number (20 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "AB_ArbuscularMycorrhiza": {
+      "at": "2026-09-19T16:38:04.219Z",
+      "decision": "resize",
+      "note": "8",
+      "prefill": null
+    },
+    "AB_DribblingCap": {
+      "at": "2026-09-19T16:37:38.539Z",
+      "decision": "resize",
+      "note": "9",
+      "prefill": null
+    },
+    "AB_GiantAgarilux": {
+      "at": "2026-09-19T16:38:47.839Z",
+      "decision": "resize",
+      "note": "6 still, but make sure to keep the sparkling luminous violet spots",
+      "prefill": null
+    },
+    "AB_GlowingAgarilux": {
+      "decision": "",
+      "note": "you judged this against a false number, so this one genuinely needs your eye.",
+      "prefill": null
+    },
+    "AB_Glowstool": {
+      "decision": "",
+      "note": "you judged this against a false number, so this one genuinely needs your eye.",
+      "prefill": null
+    },
+    "AB_LilacBeacon": {
+      "decision": "",
+      "note": "you judged this against a false number, so this one genuinely needs your eye.",
+      "prefill": null
+    },
+    "AB_RecurvedStropharia": {
+      "at": "2026-09-19T16:39:09.285Z",
+      "decision": "ok",
+      "note": "you judged this against a false number, so this one genuinely needs your eye.",
+      "prefill": null
+    },
+    "AB_SlimyPholiota": {
+      "decision": "",
+      "note": "you judged this against a false number, so this one genuinely needs your eye.",
+      "prefill": null
+    },
+    "AB_WitchesOyster": {
+      "at": "2026-09-19T16:39:01.228Z",
+      "decision": "resize",
+      "note": "3",
+      "prefill": null
+    },
+    "RSW_FungalWeevil": {
+      "decision": "ok",
+      "note": "the current number (4 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "RUT_Arpeau": {
+      "decision": "ok",
+      "note": "the current number (10 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "RUT_BleedingTooth": {
+      "at": "2026-09-19T16:42:40.628Z",
+      "decision": "resize",
+      "note": "1.5",
+      "prefill": "ok"
+    },
+    "RUT_Brightbell": {
+      "decision": "ok",
+      "note": "the current number (1.5 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "RUT_CrimsonCap": {
+      "at": "2026-09-19T16:42:25.353Z",
+      "decision": "resize",
+      "note": ".9",
+      "prefill": "ok"
+    },
+    "RUT_DulcisPlant": {
+      "decision": "ok",
+      "note": "the current number (3 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "RUT_FlakespireFungus": {
+      "at": "2026-09-19T16:42:59.775Z",
+      "decision": "resize",
+      "note": "2",
+      "prefill": "ok"
+    },
+    "RUT_FurnaceCap": {
+      "decision": "ok",
+      "note": "the current number (2 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "RUT_MortalMorelPlant": {
+      "decision": "ok",
+      "note": "the current number (0.8 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "RUT_Nogtyl": {
+      "decision": "ok",
+      "note": "the current number (12 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "RUT_Nuitae": {
+      "decision": "ok",
+      "note": "the current number (1 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "RUT_PaleTree": {
+      "decision": "ok",
+      "note": "the current number (6 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "RUT_Pusmelon": {
+      "decision": "ok",
+      "note": "the current number (1 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    },
+    "RUT_Shinecap": {
+      "at": "2026-09-19T16:42:51.320Z",
+      "decision": "resize",
+      "note": "3",
+      "prefill": "ok"
+    },
+    "RUT_VioletWimple": {
+      "at": "2026-09-19T16:42:03.821Z",
+      "decision": "resize",
+      "note": "1",
+      "prefill": "ok"
+    },
+    "RUT_Wrinklecap": {
+      "decision": "ok",
+      "note": "the current number (0.9 cells) IS your own ruling from df261b2bc, just restated at its true value.",
+      "prefill": "ok"
+    }
   },
-  "AA_MycoidColossus": {
-   "at": "2026-09-19T16:41:21.752Z",
-   "decision": "resize",
-   "note": "What IS this graphic? Is this wired correctly? It's more like something we should keep for the Droidworks. Mycoid colossus is supposed to be a huge multi-legged purplish entity with glowing mushrooms sprouting from its back. Size 12.",
-   "prefill": "ok"
+  "frozen": true,
+  "frozen_at": "2026-09-19",
+  "frozen_meaning": "Owner re-judged Rot sizes against CORRECTED numbers (the original sheet understated 11 AlphaBiomes flora by up to 6x). 11 resize rulings with the new cell count in the note, 17 confirmed, 5 left undecided ON PURPOSE (posture is blacklist, so undecided = size unchanged): AB_Agarilux, AB_GlowingAgarilux, AB_Glowstool, AB_LilacBeacon, AB_SlimyPholiota. AA_MycoidColossus carries a separate art defect, not a size ruling. Sidecar refuses writes; no generator may rewrite this file.",
+  "owner_said": "Finished the re-judge sizes of the Rot. Also the Colussus art didnt wire up, see comments.",
+  "posture": "blacklist",
+  "reviewStatus": {
+    "at": "2026-09-19",
+    "by": "OWNER",
+    "evidence": "reviewed_by=\"OWNER\", owner_said=\"Finished the re-judge sizes of the Rot. Also the Colussus art didnt wire up, see comments.\", frozen=true with frozen_meaning naming 5 rows left undecided ON PURPOSE (decidedCount=28 of 33 rows, consistent with 11 resize + 17 confirmed + 5 deliberately open)",
+    "state": "ruled"
   },
-  "AA_Swarmling": {
-   "decision": "ok",
-   "note": "the current number (0.5 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "AA_Wildpawn": {
-   "decision": "ok",
-   "note": "the current number (6 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "AA_Wildpod": {
-   "decision": "ok",
-   "note": "the current number (5 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "AB_AgaricusDomeCap": {
-   "at": "2026-09-19T16:38:17.494Z",
-   "decision": "resize",
-   "note": "2",
-   "prefill": null
-  },
-  "AB_Agarilux": {
-   "decision": "",
-   "note": "you judged this against a false number, so this one genuinely needs your eye.",
-   "prefill": null
-  },
-  "AB_AgariluxPrime": {
-   "decision": "ok",
-   "note": "the current number (20 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "AB_ArbuscularMycorrhiza": {
-   "at": "2026-09-19T16:38:04.219Z",
-   "decision": "resize",
-   "note": "8",
-   "prefill": null
-  },
-  "AB_DribblingCap": {
-   "at": "2026-09-19T16:37:38.539Z",
-   "decision": "resize",
-   "note": "9",
-   "prefill": null
-  },
-  "AB_GiantAgarilux": {
-   "at": "2026-09-19T16:38:47.839Z",
-   "decision": "resize",
-   "note": "6 still, but make sure to keep the sparkling luminous violet spots",
-   "prefill": null
-  },
-  "AB_GlowingAgarilux": {
-   "decision": "",
-   "note": "you judged this against a false number, so this one genuinely needs your eye.",
-   "prefill": null
-  },
-  "AB_Glowstool": {
-   "decision": "",
-   "note": "you judged this against a false number, so this one genuinely needs your eye.",
-   "prefill": null
-  },
-  "AB_LilacBeacon": {
-   "decision": "",
-   "note": "you judged this against a false number, so this one genuinely needs your eye.",
-   "prefill": null
-  },
-  "AB_RecurvedStropharia": {
-   "at": "2026-09-19T16:39:09.285Z",
-   "decision": "ok",
-   "note": "you judged this against a false number, so this one genuinely needs your eye.",
-   "prefill": null
-  },
-  "AB_SlimyPholiota": {
-   "decision": "",
-   "note": "you judged this against a false number, so this one genuinely needs your eye.",
-   "prefill": null
-  },
-  "AB_WitchesOyster": {
-   "at": "2026-09-19T16:39:01.228Z",
-   "decision": "resize",
-   "note": "3",
-   "prefill": null
-  },
-  "RSW_FungalWeevil": {
-   "decision": "ok",
-   "note": "the current number (4 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "RUT_Arpeau": {
-   "decision": "ok",
-   "note": "the current number (10 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "RUT_BleedingTooth": {
-   "at": "2026-09-19T16:42:40.628Z",
-   "decision": "resize",
-   "note": "1.5",
-   "prefill": "ok"
-  },
-  "RUT_Brightbell": {
-   "decision": "ok",
-   "note": "the current number (1.5 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "RUT_CrimsonCap": {
-   "at": "2026-09-19T16:42:25.353Z",
-   "decision": "resize",
-   "note": ".9",
-   "prefill": "ok"
-  },
-  "RUT_DulcisPlant": {
-   "decision": "ok",
-   "note": "the current number (3 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "RUT_FlakespireFungus": {
-   "at": "2026-09-19T16:42:59.775Z",
-   "decision": "resize",
-   "note": "2",
-   "prefill": "ok"
-  },
-  "RUT_FurnaceCap": {
-   "decision": "ok",
-   "note": "the current number (2 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "RUT_MortalMorelPlant": {
-   "decision": "ok",
-   "note": "the current number (0.8 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "RUT_Nogtyl": {
-   "decision": "ok",
-   "note": "the current number (12 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "RUT_Nuitae": {
-   "decision": "ok",
-   "note": "the current number (1 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "RUT_PaleTree": {
-   "decision": "ok",
-   "note": "the current number (6 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "RUT_Pusmelon": {
-   "decision": "ok",
-   "note": "the current number (1 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  },
-  "RUT_Shinecap": {
-   "at": "2026-09-19T16:42:51.320Z",
-   "decision": "resize",
-   "note": "3",
-   "prefill": "ok"
-  },
-  "RUT_VioletWimple": {
-   "at": "2026-09-19T16:42:03.821Z",
-   "decision": "resize",
-   "note": "1",
-   "prefill": "ok"
-  },
-  "RUT_Wrinklecap": {
-   "decision": "ok",
-   "note": "the current number (0.9 cells) IS your own ruling from df261b2bc, just restated at its true value.",
-   "prefill": "ok"
-  }
- },
- "frozen": true,
- "frozen_at": "2026-09-19",
- "frozen_meaning": "Owner re-judged Rot sizes against CORRECTED numbers (the original sheet understated 11 AlphaBiomes flora by up to 6x). 11 resize rulings with the new cell count in the note, 17 confirmed, 5 left undecided ON PURPOSE (posture is blacklist, so undecided = size unchanged): AB_Agarilux, AB_GlowingAgarilux, AB_Glowstool, AB_LilacBeacon, AB_SlimyPholiota. AA_MycoidColossus carries a separate art defect, not a size ruling. Sidecar refuses writes; no generator may rewrite this file.",
- "owner_said": "Finished the re-judge sizes of the Rot. Also the Colussus art didnt wire up, see comments.",
- "posture": "blacklist",
- "reviewed_by": "OWNER",
- "savedAt": "2026-09-19T09:43:00-0700",
- "savedBy": "review-sheet-sidecar",
- "sheetId": "rot_size_rejudge_2026-09-19",
- "writeCount": 36
+  "reviewed_by": "OWNER",
+  "savedAt": "2026-09-19T09:43:00-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "rot_size_rejudge_2026-09-19",
+  "writeCount": 36
 }

@@ -1,194 +1,200 @@
 {
-  "posture": "blacklist",
-  "criterion": "Rows are sorted by total commonality summed across every biome it appears in (the 'footprint' number in each row's meta chip). That ranks how often a species would actually spawn if left alone — it is a proxy for FREQUENCY, not for whether the species is worth having. A rare, gorgeous, canon-important creature (low footprint) can rank near the bottom on this metric and still deserve 'replace'; the canon flag and the picture are there so the ranking doesn't stand in for the decision.",
-  "generatedBy": "build_sheet.py (agent pre-fill, not the owner's decisions yet)",
-  "decisions": {
-    "Plant_HydenockTree_Wild": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Plant_JoganTree_Wild": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Ollopom": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Plant_MujaFruit_Wild": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Shiro": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Neebray": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Yobshrimp": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Borcatu": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Gelagrub": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Plant_FelucianGlowspore_Wild": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Fanback": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Plant_Bubblespore_Wild": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "ShiroTrap": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Snoruuk": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Dewback": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Klorslug": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Mott": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Wyyyschokk": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Gornt": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Kinrath": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Fambaa": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "LavaFlea": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "CanCell": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "PekoPeko": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Dalgo": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Hawkbat": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Hssiss": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Boma": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Dactillion": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Dianoga": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Vornskyr": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Woolamander": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Dragonsnake": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Beldon": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Lylek": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    },
-    "Zakkeg": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:34:52-07:00"
-    }
-  },
-  "decisionRowCount": 36,
-  "savedBy": "owner-blanket-ruling",
+  "approvalRoute": "BLANKET ruling in conversation, applied uniformly to all 36 rows. The sheet was NOT clicked: every row carries the SAME decision and the same note, and no row carries an individual owner judgement. The uniformity is his instruction, not a default and not an agent's pre-fill — any pre-fill that was here has been replaced. Execution: DONOR_DEFS_PORT_TO_OURS_1.",
   "approvedAt": "2026-09-20T09:34:52-07:00",
   "approvedSaid": "Yes replace everything.",
-  "approvalRoute": "BLANKET ruling in conversation, applied uniformly to all 36 rows. The sheet was NOT clicked: every row carries the SAME decision and the same note, and no row carries an individual owner judgement. The uniformity is his instruction, not a default and not an agent's pre-fill — any pre-fill that was here has been replaced. Execution: DONOR_DEFS_PORT_TO_OURS_1.",
+  "criterion": "Rows are sorted by total commonality summed across every biome it appears in (the 'footprint' number in each row's meta chip). That ranks how often a species would actually spawn if left alone — it is a proxy for FREQUENCY, not for whether the species is worth having. A rare, gorgeous, canon-important creature (low footprint) can rank near the bottom on this metric and still deserve 'replace'; the canon flag and the picture are there so the ranking doesn't stand in for the decision.",
+  "decisionRowCount": 36,
+  "decisions": {
+    "Beldon": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Boma": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Borcatu": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "CanCell": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Dactillion": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Dalgo": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Dewback": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Dianoga": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Dragonsnake": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Fambaa": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Fanback": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Gelagrub": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Gornt": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Hawkbat": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Hssiss": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Kinrath": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Klorslug": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "LavaFlea": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Lylek": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Mott": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Neebray": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Ollopom": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "PekoPeko": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Plant_Bubblespore_Wild": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Plant_FelucianGlowspore_Wild": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Plant_HydenockTree_Wild": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Plant_JoganTree_Wild": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Plant_MujaFruit_Wild": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Shiro": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "ShiroTrap": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Snoruuk": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Vornskyr": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Woolamander": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Wyyyschokk": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Yobshrimp": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Zakkeg": {
+      "at": "2026-09-20T09:34:52-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    }
+  },
   "frozen": true,
-  "frozenMeaning": "Owner ruled every row 'replace' on 2026-09-20. Reopen only on his word."
+  "frozenMeaning": "Owner ruled every row 'replace' on 2026-09-20. Reopen only on his word.",
+  "generatedBy": "build_sheet.py (agent pre-fill, not the owner's decisions yet)",
+  "posture": "blacklist",
+  "reviewStatus": {
+    "at": "2026-09-20T09:34:52-07:00",
+    "by": "owner",
+    "evidence": "started as generatedBy=\"build_sheet.py (agent pre-fill, not the owner's decisions yet)\" but was then superseded by savedBy=\"owner-blanket-ruling\", approvedSaid=\"Yes replace everything.\" (same timestamp as port_alphaanimals — ruled in the same conversation)",
+    "state": "ruled"
+  },
+  "savedBy": "owner-blanket-ruling"
 }

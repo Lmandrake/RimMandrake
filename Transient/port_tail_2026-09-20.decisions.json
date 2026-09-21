@@ -1,489 +1,495 @@
 {
-  "posture": "blacklist",
-  "decisions": {
-    "AB_MangroveTree": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_Bryolux": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_ParasiticMangrove": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_MangrovePalm": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_Glowstool": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_JungleTree": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_Agarilux": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_GiantAgarilux": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_KeeningCordax": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_AlienGrass": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_AlienTree": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_CrystalHorn": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_GlowingAgarilux": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_GlowingGrass": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_TallSlimyGrass": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_CrystalFlower": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_SugarFamewort": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_EyeGrass": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_FrostLeaf": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_RedLeaves": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_TarPuddle": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_ToxicGamma": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_Iashiphus": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_GiantGamma": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_HalfAlienTree": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_LilacBeacon": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_RedPlantsTall": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_SlimyFern": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_SlimyTree": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_WildRadagast": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_WitchesOyster": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_BloodBouquet": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_GlobularPlant": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_Gomphoeria": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_GreenRockFern": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_RavenNettle": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_RimeNodules": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_Slimecasia": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_SlimyPholiota": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_TangleTea": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_TentacularPlant": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "LavaSnail": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_GiantAgariTox": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_LargeSlimyTree": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_RecurvedStropharia": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_RedBugloss": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_TinkleGrass": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_ArbuscularMycorrhiza": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_FirevineTree": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_GiantSeptimum": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_AlienTree_Polluted": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_GargantuanLithops": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_AgaricusDomeCap": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_DribblingCap": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AB_AgariluxPrime": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "GR_Beetlefleet": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "GR_ParagonRat": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "GR_Mecharat": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "GR_Molebear": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "GR_Spidercat": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "GR_Chickenrabbit": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "GR_Manbear": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AM_Dryad_Corruptor": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AM_Dryad_Ocular": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AM_Dryad_Tumorous": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "SW_Electrictick": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "SW_Electricgryllotalpa": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "SW_Juggernautbeetles": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "IronScruff_PrimordialGrass": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "IronScruff_PrimordialTallGrass": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "IronScruff_Bindweed": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AG_Gamma": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "AG_Septimum": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "RG_Plant_TropicalChokevine": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "RG_Rimclaw": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "VFEI2_Swarmling": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "VFEI2_Megathrips": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "GRimMoss": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "Visceral": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "Ling_Cockroach": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "Plant_TookeTrap_Wild": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_Plant_TreeTanglerootMangrove": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_GiantLeaf": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_Plant_SewerReed": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_FireLavender": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_Plant_TreeTwistingThornwood": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_RainbowTongue": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_Plant_Snaketails": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_Plant_TreeMartyr": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_Plant_TwistingThorngrass": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_Dewshrooms": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_Plant_TwistingThornweed": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_Sagecrust": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_Plant_ScorchedStars": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    },
-    "BMT_HeatsinkFungus": {
-      "decision": "replace",
-      "note": "Owner blanket ruling 2026-09-20: replace applied to every row.",
-      "at": "2026-09-20T09:39:36-07:00"
-    }
-  },
-  "generatedBy": "agent-prefill",
-  "generatedAt": "2026-09-20T16:37:25Z",
-  "decisionRowCount": 95,
-  "savedBy": "owner-blanket-ruling",
+  "approvalRoute": "BLANKET ruling in conversation, applied uniformly to all 95 rows. The sheet was NOT clicked: every row carries the SAME decision and the same note, and no row carries an individual owner judgement. The uniformity is his instruction, not a default and not an agent's pre-fill — any pre-fill that was here has been replaced. Execution: DONOR_DEFS_PORT_TO_OURS_1.",
   "approvedAt": "2026-09-20T09:39:36-07:00",
   "approvedSaid": "Yes replace everything.",
-  "approvalRoute": "BLANKET ruling in conversation, applied uniformly to all 95 rows. The sheet was NOT clicked: every row carries the SAME decision and the same note, and no row carries an individual owner judgement. The uniformity is his instruction, not a default and not an agent's pre-fill — any pre-fill that was here has been replaced. Execution: DONOR_DEFS_PORT_TO_OURS_1.",
+  "decisionRowCount": 95,
+  "decisions": {
+    "AB_AgaricusDomeCap": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_Agarilux": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_AgariluxPrime": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_AlienGrass": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_AlienTree": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_AlienTree_Polluted": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_ArbuscularMycorrhiza": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_BloodBouquet": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_Bryolux": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_CrystalFlower": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_CrystalHorn": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_DribblingCap": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_EyeGrass": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_FirevineTree": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_FrostLeaf": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_GargantuanLithops": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_GiantAgariTox": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_GiantAgarilux": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_GiantGamma": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_GiantSeptimum": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_GlobularPlant": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_GlowingAgarilux": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_GlowingGrass": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_Glowstool": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_Gomphoeria": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_GreenRockFern": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_HalfAlienTree": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_Iashiphus": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_JungleTree": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_KeeningCordax": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_LargeSlimyTree": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_LilacBeacon": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_MangrovePalm": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_MangroveTree": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_ParasiticMangrove": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_RavenNettle": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_RecurvedStropharia": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_RedBugloss": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_RedLeaves": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_RedPlantsTall": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_RimeNodules": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_Slimecasia": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_SlimyFern": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_SlimyPholiota": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_SlimyTree": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_SugarFamewort": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_TallSlimyGrass": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_TangleTea": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_TarPuddle": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_TentacularPlant": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_TinkleGrass": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_ToxicGamma": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_WildRadagast": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AB_WitchesOyster": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AG_Gamma": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AG_Septimum": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AM_Dryad_Corruptor": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AM_Dryad_Ocular": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "AM_Dryad_Tumorous": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_Dewshrooms": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_FireLavender": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_GiantLeaf": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_HeatsinkFungus": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_Plant_ScorchedStars": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_Plant_SewerReed": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_Plant_Snaketails": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_Plant_TreeMartyr": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_Plant_TreeTanglerootMangrove": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_Plant_TreeTwistingThornwood": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_Plant_TwistingThorngrass": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_Plant_TwistingThornweed": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_RainbowTongue": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "BMT_Sagecrust": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "GR_Beetlefleet": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "GR_Chickenrabbit": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "GR_Manbear": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "GR_Mecharat": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "GR_Molebear": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "GR_ParagonRat": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "GR_Spidercat": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "GRimMoss": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "IronScruff_Bindweed": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "IronScruff_PrimordialGrass": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "IronScruff_PrimordialTallGrass": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "LavaSnail": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Ling_Cockroach": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Plant_TookeTrap_Wild": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "RG_Plant_TropicalChokevine": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "RG_Rimclaw": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "SW_Electricgryllotalpa": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "SW_Electrictick": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "SW_Juggernautbeetles": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "VFEI2_Megathrips": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "VFEI2_Swarmling": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    },
+    "Visceral": {
+      "at": "2026-09-20T09:39:36-07:00",
+      "decision": "replace",
+      "note": "Owner blanket ruling 2026-09-20: replace applied to every row."
+    }
+  },
   "frozen": true,
-  "frozenMeaning": "Owner ruled every row 'replace' on 2026-09-20. Reopen only on his word."
+  "frozenMeaning": "Owner ruled every row 'replace' on 2026-09-20. Reopen only on his word.",
+  "generatedAt": "2026-09-20T16:37:25Z",
+  "generatedBy": "agent-prefill",
+  "posture": "blacklist",
+  "reviewStatus": {
+    "at": "2026-09-20T09:39:36-07:00",
+    "by": "owner",
+    "evidence": "generatedBy=\"agent-prefill\" at 2026-09-20T16:37:25Z, then savedBy=\"owner-blanket-ruling\", approvedSaid=\"Yes replace everything.\" about 2 minutes later — same blanket ruling as port_alphaanimals/port_swac",
+    "state": "ruled"
+  },
+  "savedBy": "owner-blanket-ruling"
 }

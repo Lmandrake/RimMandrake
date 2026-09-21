@@ -1,112 +1,118 @@
 {
-  "posture": "worklist, default DEFER",
   "criterion": "Grouped by build state as PROVEN from disk — def existence, texPath wiring, and each artpipe render's own rimflow_item_id/style_notes — never from an item's prose summary. It ranks what's real vs. owed vs. mislabeled. It cannot rank which owed cast member the owner most wants built first — the file_next/defer split below is my guess at priority, not a measurement, and is exactly the kind of call worth overruling.",
-  "generatedBy": "build_sheet.py (agent pre-fill, 2026-09-20)",
   "decisions": {
-    "lanternstone_geology": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "thrakk_cap": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "ossk_bramble": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "fauna_drinker": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "fauna_grabber": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "fauna_soulchime": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "fauna_gembug": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "fauna_glowbulb": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "fauna_megapleura": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "fauna_mossbeetlelarvae": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "fauna_shatterjaw": {
-      "decision": "approve",
-      "prefill": "approve",
-      "note": ""
-    },
-    "cast_lantern": {
-      "decision": "file_next",
-      "prefill": "file_next",
-      "note": ""
-    },
-    "cast_creep": {
-      "decision": "file_next",
-      "prefill": "file_next",
-      "note": ""
+    "cast_chorus": {
+      "decision": "defer",
+      "note": "",
+      "prefill": "defer"
     },
     "cast_cleavers": {
       "decision": "file_next",
-      "prefill": "file_next",
-      "note": ""
+      "note": "",
+      "prefill": "file_next"
     },
-    "cast_chorus": {
-      "decision": "defer",
-      "prefill": "defer",
-      "note": ""
-    },
-    "cast_shardminds": {
+    "cast_creep": {
       "decision": "file_next",
-      "prefill": "file_next",
-      "note": ""
-    },
-    "cast_mindstone": {
-      "decision": "file_next",
-      "prefill": "file_next",
-      "note": ""
+      "note": "",
+      "prefill": "file_next"
     },
     "cast_kindled": {
       "decision": "file_next",
-      "prefill": "file_next",
-      "note": ""
+      "note": "",
+      "prefill": "file_next"
+    },
+    "cast_lantern": {
+      "decision": "file_next",
+      "note": "",
+      "prefill": "file_next"
+    },
+    "cast_mindstone": {
+      "decision": "file_next",
+      "note": "",
+      "prefill": "file_next"
+    },
+    "cast_shardminds": {
+      "decision": "file_next",
+      "note": "",
+      "prefill": "file_next"
+    },
+    "fauna_drinker": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "fauna_gembug": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "fauna_glowbulb": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "fauna_grabber": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "fauna_megapleura": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "fauna_mossbeetlelarvae": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "fauna_shatterjaw": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "fauna_soulchime": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "lanternstone_geology": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
     },
     "notdeeps_creepstern": {
       "decision": "not_deeps",
-      "prefill": "not_deeps",
-      "note": ""
+      "note": "",
+      "prefill": "not_deeps"
     },
     "notdeeps_crystalflower": {
       "decision": "not_deeps",
-      "prefill": "not_deeps",
-      "note": ""
+      "note": "",
+      "prefill": "not_deeps"
     },
     "notdeeps_crystalhorn": {
       "decision": "not_deeps",
-      "prefill": "not_deeps",
-      "note": ""
+      "note": "",
+      "prefill": "not_deeps"
+    },
+    "ossk_bramble": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "thrakk_cap": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
     }
+  },
+  "generatedBy": "build_sheet.py (agent pre-fill, 2026-09-20)",
+  "posture": "worklist, default DEFER",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generatedBy=\"build_sheet.py (agent pre-fill, 2026-09-20)\" — one of the item's three named 100%-prefill-identical sheets",
+    "state": "prefill"
   }
 }
