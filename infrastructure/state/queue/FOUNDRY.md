@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T09:12:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T09:35:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1401,16 +1401,6 @@ kind:     task
 thin:     no ## verify
 summary:  1. Umbra leaves the biome row list (§2 of the architecture spec is already corrected).
 prose:    infrastructure/state/items/UMBRA_IS_A_REGION_NOT_A_BIOME_1.md
-
-## SHEET_REVIEWED_FLAG_UNIFORM_1 No uniform way to tell an owner-ruled sheet from an agent prefill - six different keys across 13 sheets
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. One required key on every sidecar, written by the generator: an explicit reviewed
-prose:    infrastructure/state/items/SHEET_REVIEWED_FLAG_UNIFORM_1.md
 
 ## FEATURE_DRAWCENTER_UNVERIFIED_1 Only 2 of 71 world features have a verified drawCenter, and growing labels make a wrong one worse
 state:    proposed
