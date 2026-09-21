@@ -10628,3 +10628,6 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"live-prove Titanoslime permanent growth (TITANOSLIME_PERMANENT_GROWTH_LIVE_1)","ts":"2026-09-21T11:08:30Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-21T11:42:23Z"}
 {"seat":"FOUNDRY","event":"close","id":"TITANOSLIME_PERMANENT_GROWTH_LIVE_1","sha":"501aeeade","ts":"2026-09-21T11:43:09Z"}
+{"seat":"FOUNDRY","event":"claim","id":"UMBRA_IS_A_REGION_NOT_A_BIOME_1","ts":"2026-09-21T11:45:03Z"}
+{"seat":"FOUNDRY","event":"start","id":"UMBRA_IS_A_REGION_NOT_A_BIOME_1","ts":"2026-09-21T11:45:10Z"}
+{"seat":"FOUNDRY","event":"close","id":"UMBRA_IS_A_REGION_NOT_A_BIOME_1","sha":"a7331975865612c754e43c35f841eeac4f7d80e5","ts":"2026-09-21T12:00:19Z"}
