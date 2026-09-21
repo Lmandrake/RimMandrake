@@ -39,10 +39,10 @@ growth) and that no BetterTrees console/log line mentions it.
 DESERT_STAGGERSEED_BUILD_1 (2026-09-20) — the desert's cycle plant
 (`design/Jawa/worldbuilding/biomes/desert.md` §4b "The seed that uses you", §7
 "the prepared cycle-seed"). Three defs plus two hediffs, a thought and a recipe:
-`RUT_Staggerseed` (the bush, wired into `RUT_Desert`'s wildPlants at 0.1),
-`RUT_StaggerseedFruit` (raw, lethal — `RUT_StaggerseedBrood` kills in about
-seven hours and there is no tend) and `RUT_StaggerseedSeedDish` (prepared,
-euphoric — `RUT_StaggerseedEuphoria`, Cooking 8 to attempt). The
+`RUT_Vorrel` (the bush, wired into `RUT_Desert`'s wildPlants at 0.1),
+`RUT_VorrelFruit` (raw, lethal — `RUT_VorrelBrood` kills in about
+seven hours and there is no tend) and `RUT_VorrelSeedDish` (prepared,
+euphoric — `RUT_VorrelEuphoria`, Cooking 8 to attempt). The
 corpse-dispersal half rides
 `RimMandrake.CreatureBehaviors.RM_HediffComp_ShadeStagger`: past severity 0.6
 the dying are steered toward the best-shaded reachable cell the shade grid
@@ -53,7 +53,7 @@ plant and never the item — without that the whole dispersal cycle would never
 fire in a wild biome.
 
 🔴 The plant's SHIPPING NAME is the owner's and is not in yet (§4b: "Name
-owner's pick. Working: staggerseed."). Every `RUT_Staggerseed*` defName, label
+owner's pick. Working: vorrel."). Every `RUT_Vorrel*` defName, label
 and texPath here is provisional pending
 `infrastructure/state/items/STAGGERSEED_SHIPPING_NAME_1.md`. Art is owed and was
 deliberately not queued for the same reason; the graphics point at Core
@@ -88,7 +88,7 @@ mod's own established convention.</description>
     <li>ChaoticEnrico.BetterTrees</li>
     <li>Qux.Comigo.BetterTreesMod</li>
     <li>Maal.BetterTreesMod</li>
-    <!-- DESERT_STAGGERSEED_BUILD_1: RUT_StaggerseedBrood names
+    <!-- DESERT_STAGGERSEED_BUILD_1: RUT_VorrelBrood names
          RimMandrake.CreatureBehaviors.RM_HediffCompProperties_ShadeStagger as a
          comp Class, so that ASSEMBLY must already be loaded when this mod's defs
          are read. modDependencies would assert presence and would NOT order

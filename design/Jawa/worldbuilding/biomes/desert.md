@@ -203,7 +203,8 @@ Inside the patches, competition is fierce and physical.
 
 ### 🔴 The seed that uses you — the cycle plant
 
-_(Name owner's pick. Working: **staggerseed**.)_
+_(RULED 2026-09-21, `STAGGERSEED_SHIPPING_NAME_1`: **vorrel**. "vorrel fruit" / "prepared
+vorrel", `RUT_Vorrel`/`RUT_VorrelFruit`/`RUT_VorrelSeedDish`.)_
 
 An **edible-looking plant of the protected water pockets** whose fruit, eaten raw, **hatches
 its seeds inside your belly**. It kills quickly, and the dying animal does what every dying
@@ -370,8 +371,8 @@ cheap to decide now, expensive to retrofit.
 
 ## Owed
 
-- Names, owner's pick: the cycle plant (**staggerseed**?), the prepared seed dish, and the
-  glitter-birds. **Ultracactus is the owner's own and stands.**
+- Names: the cycle plant and its prepared dish are **RULED — vorrel** (`STAGGERSEED_SHIPPING_NAME_1`).
+  Still owed: the glitter-birds. **Ultracactus is the owner's own and stands.**
 - ⚠️ **`WORLDMAP_DESERT_BAND_REPAIR_1`** — only ~51% of the `Desert` def sits in arc 60–88.
   19.5% is at arc <60 and 41 °C (deep desert mislabelled); 29.6% is at arc >88 where the sun
   is at or below the horizon.

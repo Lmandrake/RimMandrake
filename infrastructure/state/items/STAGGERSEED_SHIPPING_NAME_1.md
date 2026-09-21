@@ -62,3 +62,20 @@ line is replaced with the ruled name.
 ## criteria
 
 The cycle plant ships under a name the owner chose, not a working name.
+
+## 🔴 Owner ruling 2026-09-21, and closed on it
+
+**(e) vorrel.** Owner picked it directly from the card's options.
+
+Renamed across every touching file: `RUT_Staggerseed`→`RUT_Vorrel`,
+`RUT_StaggerseedFruit`→`RUT_VorrelFruit`, `RUT_StaggerseedSeedDish`→`RUT_VorrelSeedDish`,
+`RUT_StaggerseedBrood`→`RUT_VorrelBrood`, `RUT_StaggerseedEuphoria`→`RUT_VorrelEuphoria`,
+`RUT_StaggerseedEuphoriaThought`→`RUT_VorrelEuphoriaThought`, all three texPaths, the
+`RUT_Desert` wildPlants entry, and every label/description/comment using the lowercase
+working name — 14 files under `src/RimUtinni/AshkarrFlora/`,
+`src/RimUtinni/UtinniPatches/`, `design/Jawa/`, plus `desert.md` §4b/Owed and the two
+pending artpipe job notes (`rutstaggerseed_v1`, `rutstaggerseeddish_v1` — art itself is
+name-free per those jobs' own notes, no rework owed). No live-save risk — MEASURED via
+literal-string check against `CANONICAL_ASHKARR_START_2026-09-12.rws`: no placed
+`RUT_Staggerseed` instance exists on the canonical save. `DESERT_STAGGERSEED_BUILD_1` can
+now close on its own `## verify`.

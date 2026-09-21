@@ -30,7 +30,7 @@
   an artpipe job (pending/active/registry files are out of scope for this
   item) and does NOT touch the daemon. texPath below points at where the
   render will land, same convention already used twice in this mod
-  (RUT_Fuzz, RUT_StaggerseedFruit) for art that is owed rather than in
+  (RUT_Fuzz, RUT_VorrelFruit) for art that is owed rather than in
   hand — it will read as missing until a job is filed and the daemon lands
   it after the reset.
 -->

@@ -79,6 +79,52 @@ got for the sweetline-tree guardians.
   can all be staged on one map through the bridge and saved
   (`rimworld-live-review`), so a ruling need not be made from prose alone.
 
+## 🔴 Owner ruling 2026-09-21
+
+**Yes, and combining two of the card's options plus a new requirement, verbatim:** "Yes,
+stored items. And flocks come as events. And game alerts you when theft occurs."
+
+- **Stockpiles too, not just loose items** — option (c)'s scope: both `JobGiver_HoardScrap
+  .IsTakeable`'s home-area guard AND its storage guard relax, not just the storage half.
+  A tidy colony is not automatically safe.
+- **Delivered as a periodic event-flock incident, not constant ambient stealing** —
+  option (d)'s delivery shape: ordinary wild scrap-nest birds still behave exactly as
+  shipped (treasure only, hands-off the colony); a periodic incident sends a raiding flock
+  that steals once and leaves, same as (d) described.
+- **New requirement beyond every option on the card: the player must be ALERTED when a
+  theft occurs** — a letter/alert firing when the incident's flock actually takes
+  something, not a silent loss discovered later. Not on any option as drafted; build it.
+- **On/off default: not yet specified.** The card asked this explicitly and the owner's
+  answer didn't address it — ask again before shipping, or default to ON to match "the
+  birds also steal" reading as the intended default experience (the card's existing
+  `scrapHoardingEnabled` setting already ships on-by-default), and record that assumption
+  if made without a second ask.
+
+## the build, mechanically
+
+- Relax `JobGiver_HoardScrap.IsTakeable`'s `IsInAnyStorage()` guard specifically for the
+  event-flock's job instances (not for ordinary wild birds) — likely a flag/param
+  distinguishing an incident-spawned flock from the ambient population, per this item's own
+  "Watch out": "relax the right one... neither should let a nest appear inside the colony"
+  — the home-area nest-siting guard (`TryFindNestCell`) stays in place regardless; the
+  flock steals FROM the colony but does not NEST in it.
+- New IncidentDef (or reuse `IncidentWorker` pattern already in this mod) that spawns a
+  temporary flock near the player's base, runs a bounded theft window, then despawns/flies
+  off with whatever it grabbed to a findable nest (per this item's own "the nest is where
+  the evidence goes" — the stolen goods must stay recoverable).
+- A Letter/alert on first successful theft in the incident (`Find.LetterStack.ReceiveLetter`
+  or equivalent), naming what was taken if cheap to do.
+- Mod Settings: `RSW_BeastMechanicsSettings` gets a new toggle beside
+  `scrapHoardingEnabled` for this theft behavior, default per the open on/off question above.
+
+## verify
+
+Live-proof on a quicktest map, same method as `SCRAPNEST_BIRD_LIVE_VERIFY_1`: place stored
+(shelved/stockpiled) and unstored items inside a painted home area, trigger the incident,
+confirm the flock takes the STORED item (not just loose ones — this is the whole point of
+the ruling), confirm a letter fires, confirm no nest sites inside the home area, confirm
+ordinary ambient birds (no incident running) still leave the colony alone entirely.
+
 ## The guard as it stands today is MEASURED live, 2026-09-21
 
 So a ruling here is a choice about a mechanic that demonstrably works, not a

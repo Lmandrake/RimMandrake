@@ -54,7 +54,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.25 | **RM_Venomvine** | | `RM_Venomvine` · newer than the def dump |
 | 0.2 | **wild hubba gourd plant** |  | `RSW_Plant_HubbaGourd_Wild` · RimMandrake: SW — Bestiary |
 | 0.12 | **vellara bloom** |  | `RSW_VellaraBloom` · RimMandrake: SW — Bestiary |
-| 0.1 | **RUT_Staggerseed** | | `RUT_Staggerseed` · newer than the def dump |
+| 0.1 | **RUT_Vorrel** | | `RUT_Vorrel` · newer than the def dump |
 | 0.06 | **dommo tree** | 🌳 | `RSW_SweetbarkTree` · RimMandrake: SW — Bestiary |
 
 ### `RUT_BlueDesert` — 1,029 tiles · -58 … -19 °C (median -43) · plantDensity 0  🔴 **`plantDensity` is near zero — this roster will almost never be seen**

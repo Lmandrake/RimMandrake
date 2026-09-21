@@ -65,7 +65,7 @@
     harvestedThingDef -> RUT_SweetlineWool (RUT_SweetlineTree_Items.xml);
     harvestYield dropped from 160 to 20 — "a rare hanging harvest", not a
     lumber yield. harvestTag changed off the inherited "Wood" to "Standard"
-    (matching RUT_Fuzz/RUT_Staggerseed elsewhere in this file), which would
+    (matching RUT_Fuzz/RUT_Vorrel elsewhere in this file), which would
     silently flip PlantProperties.IsTree false (`harvestTag == "Wood"` is
     its only test with forceIsTree unset) — forceIsTree added explicitly so
     every other tree-only system here (wind-block, roof interference, the
@@ -74,7 +74,7 @@
 
     Accumulate-vs-flat, decided per the item's step 4: ACCUMULATE, using
     vanilla's own regrowth mechanic (harvestAfterGrowth > 0), the same
-    mechanism RUT_Fuzz and RUT_Staggerseed already use in this file. Verified
+    mechanism RUT_Fuzz and RUT_Vorrel already use in this file. Verified
     against the decompiled engine (RimSage, RimWorld/Plant.cs
     PlantCollected): when HarvestDestroys is false the harvest/cut job never
     reaches Destroy() or TrySpawnStump() at all — it only resets

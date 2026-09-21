@@ -237,7 +237,7 @@ TIERS = {
                "def' / RSW_ body-part cross-reference lines). All three subjects "
                "meet in RUT_Desert's wildPlants, which names RM_Leachmoss and "
                "RM_Venomvine (mandrake.rm.environmentalhazards), RSW_Ultracactus "
-               "and four more SWBestiary plants, and RUT_Staggerseed "
+               "and four more SWBestiary plants, and RUT_Vorrel "
                "(mandrake.rut.ashkarrflora) -- a MayRequire that does not resolve "
                "drops the entry SILENTLY, so every one of those mods must be "
                "present or the biome reads as misconfigured rather than absent. "
