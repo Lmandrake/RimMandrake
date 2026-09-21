@@ -156,3 +156,103 @@ closes when all seven pass on the quicktest list with all five DLC loaded.
 
 The owner's ask ("a titanic green slime, in the slime biome, that swallows
 pawns whole and can grow as it eats") has a concrete, buildable spec.
+
+## build progress 2026-09-20
+
+**BUILT AND COMMITTED, NOTHING DEPLOYED.** RimWorld was running and another
+window held the bridge for the whole pass, so the DLL could not be written into
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\`. Everything below
+is in the repo only; the deploy is the first item of the next shutdown window.
+
+Commits: `cadfd8a83` (the mod), `016a7b45e` (campaign roster). Selftests 67/67.
+
+### what exists now
+
+All inside `src/RimMandrake/GelatinousSlime/` (packageId
+`mandrake.rm.gelatinousslime`, namespace `RimMandrake.GelatinousSlime`), plus one
+line in the campaign biome.
+
+| piece | file | state |
+|---|---|---|
+| race + kind (5 lifeStages) | `Defs/ThingDefs_Races/Titanoslime.xml` | written, validates 0 errors against the full 618-mod load set |
+| growth ladder | `Defs/LifeStageDefs/Titanoslime.xml` | 5 LifeStageDefs, bodySize 6/10/16/24/40 |
+| body | `Defs/BodyDefs/AmorphousBody.xml`, `Defs/BodyPartDefs/AmorphousParts.xml`, `Defs/BodyPartGroupDefs/AmorphousGroups.xml` | 3 parts, one vital nucleus |
+| the swallow | `Defs/Maneuvers/Engulf.xml`, `Defs/ToolCapacityDefs/Engulf.xml` | ManeuverDef → `RM_Verb_MeleeEngulf` |
+| C# | `Source/Titanoslime.cs`, `Source/TitanoslimeVerb.cs` | **COMPILES** (`dotnet build -c Release`, 0 warnings 0 errors) |
+| Mod Settings (5 knobs + rarity) | `Source/SlimeMod.cs` | engulf on/off · grows on/off · reversible on/off · max stage 1–5 · sheds on/off · rarity 0–3× |
+| campaign wiring | `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml` + `design/Jawa/worldbuilding/biomes/rosters/the_slime.json` | one `wildAnimals` line, commonality 0.12, `MayRequire` guarded |
+
+Owner defaults from spec §11 all shipped as written: digestion is lethal (no
+corpse, gear regurgitated), colonists follow the player's own
+`predatorsHuntHumanlikes`, prey gate ≤ 0.5 × own BodySize, growth reversible,
+resident only (spawn stages 1–3, no incident), five stage labels on the inspect
+string.
+
+### two spec seams resolved by measurement this pass
+
+- **`LifeStageDef.statFactors` DOES reach `MoveSpeed`** (spec §2.1 flagged this
+  VERIFY AT BUILD). `StatWorker.GetValueUnfinalized` applies
+  `pawn.ageTracker.CurLifeStage.statFactors.GetStatFactorFromList(stat)` to every
+  stat on a pawn — `RimWorld/StatWorker.cs:297`. So the per-stage slowdown is XML
+  and needs no hediff.
+- **`FoodTypeFlags.OmnivoreAnimal` = `0x1F1B` carries `Corpse` (0x8) but NOT
+  `Plant` (0x40)** — `RimWorld/FoodTypeFlags.cs`. Spec §3.1 flagged the corpse
+  bit; the bit actually missing was the plant one, and the spec's own prose
+  requires grazing slime-grass. Shipped as `OmnivoreRoughAnimal` (`0x1F5B`).
+
+### two build calls that differ from the spec's letter
+
+- **The rarity slider edits the loaded def by reflection, not by a pretty public
+  API.** `BiomeDef.wildAnimals` is a *private* `List<BiomeAnimalRecord>` and its
+  commonality lookup is memoised in a private `[Unsaved]` dictionary (MEASURED).
+  `TitanoslimeSpawnTuning` reads both by `GetField(..., NonPublic)`, remembers the
+  shipped commonality on first touch so repeated writes cannot compound, and
+  fails soft with one `Log.WarningOnce` if the field is ever renamed. No Harmony.
+- **The engulf maneuver reuses vanilla's `Maneuver_Bite_*` RulePackDefs** rather
+  than hand-authored ones, exactly as spec §3.3 permits. The combat log says
+  "bites"; the wording is not load-bearing and a malformed RulePackDef reference
+  would silently disarm the creature.
+
+### art — OWED, nothing generated
+
+texPath is `Things/Pawn/Animal/Titanoslime/RM_Titanoslime`, needing
+`RM_Titanoslime_south/east/north.png` at 1024 px (west mirrors east). Until they
+land the creature renders magenta, which is deliberate: the texture binds by
+texPath, so the PNGs drop in later without touching any def. Brief is spec §7 —
+a glassy bright-green *hill* of jelly, faint half-dissolved "entries" inside,
+never eyes, never a mouth, never limbs; must read visibly distinct from Oozemaw.
+`validate_patch.py` reports the missing path as a WARN, 10 times (once per
+lifeStage graphic); that count is expected and is not a defect.
+
+### the shutdown window: exact steps
+
+1. `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod GelatinousSlime`
+   (read the plan), then `--apply`. The DLL cannot be written while the game
+   runs, so this must happen with RimWorld closed.
+2. Build the test list: minimal + `GelatinousSlime` + `TitanicCreatures` +
+   Large Pawns + **all five DLC** (`modset_builder.py`; DLC is mandatory on every
+   tier by the 2026-09-19 ruling). A quicktest map is ~90 s.
+3. Run spec §8's seven gates in order. The dev gizmos needed by gates 2 and 4 are
+   already on the comp: *DEV: +6 absorbed mass*, *DEV: -6 absorbed mass*,
+   *DEV: release held* (dev mode only).
+   1. `measure count ThingDef` shows `RM_Titanoslime`; `jawa/spawn_pawn` places
+      one; `jawa/list_things` reports BodySize 6.
+   2. +6 mass twice → BodySize 16, drawSize 6, Titanic tier T2, Large Pawns 3×3
+      (wait 60 ticks for its cache); save, reload, all four unchanged.
+   3. One stage-1 + 4 drafted colonists in melee: a colonist is swallowed within
+      60 s; the inspect string shows the countdown; downing the slime drops them
+      stunned, acid-burned, `RM_Slimification` +0.15; letting the timer run
+      absorbs — no corpse, gear on the ground, `absorbedMass` +1, food full.
+   4. Spawn ten muffalo, not one (one burst-out is pure RNG): most should burst
+      out of a stage-1 within ~1 min. Cut a stage-2 to 50 % → ≥ 3 gelatids shed
+      and it drops to stage 1.
+   5. Each of the five settings toggles observed live; `titanoslimeMaxStage 2`
+      refuses stage 3 at `absorbedMass` 12.
+   6. Kill a dev-grown stage-4 → `RM_TitanicCorpseSite` building, and anything
+      held is on the map *before* the conversion.
+   7. Art, once it exists: judged at display size at stages 1 and 5, all three
+      facings.
+4. 🔴 **Assert `BodySize` through the bridge, never the sprite.** A stage that
+   "grew" on screen proves only that `drawSize` changed. And `measure count`
+   before believing any spawn: a def with an unresolvable `Class=` attribute is
+   discarded silently, and this one carries two of our own classes.
