@@ -81,6 +81,34 @@ there reads as a missing translation, not as flavour. One pseudo-SW row is given
 | 3 | `RUT_Still` / `RUT_Whip` | the Still / the Whip | Canopy still vs canopy whipped; shortest pair. Note "the Hush" is NOT offered — that is the biome's baseline handle, and the Stall is the one thing that breaks it. |
 | 4 | `RUT_Stall` / `RUT_Gale` | ossh / karrun | The pseudo-SW option, for completeness. |
 
+## 6. The sweetline tree guardian — NEW, added after you ruled on it
+
+You ruled on 2026-09-21 that the sweetline trees get **a generic guardian species**
+(option b, not per-tree uniques). It is designed but unnamed, so it belongs on this sheet.
+Full spec: `design/Jawa/worldbuilding/biomes/sweetline_guardian_spec.md`.
+
+**What it is, one line:** a territorial animal that dens at a sweetline tree and attacks
+anything human-sized that comes within ~9 cells of it, breaking off once you are ~18 cells
+away. It is what makes the giant-wool harvest *"dare the traffic"* rather than free loot.
+
+⚠️ **A tier question rides along with the name.** The designer picked `RSW_` by the
+precedent of the giant and the tunnel snake, but this creature has no Star Wars content in
+it at all — the mechanism is RimMandrake and only the binding is campaign. `RM_` is
+arguably correct. One word settles it.
+
+| # | defName | player label | why it fits |
+|---|---|---|---|
+| **0** | **`RSW_TreeWarden`** | **kessrik** | **(ships if you strike nothing). The designer's pick. "Warden" states the job; kessrik is in register with nysyllin/dervish.** |
+| 1 | `RM_TreeWarden` | kessrik | Same name, corrected tier — no Star Wars content in the creature. |
+| 2 | `RM_Barkwarden` | bark-warden | Plain-English label, matching how our shipped flora reads (sweetline tree, staggerseed). |
+| 3 | `RM_Hankrook` | hank-rook | Leans furthest into coined pseudo-SW; "rook" carries both the bird and the fortification. |
+
+🔴 **It has a prerequisite that does not exist yet, whatever you call it.** There is no
+giant-wool def anywhere in the source, and `RUT_SweetlineTree` currently inherits the
+vanilla wood harvest with `HarvestDestroys` true — so today the only way to get anything off
+a named landmark tree is to **fell it**. Filed as `SWEETLINE_WOOL_HARVEST_1`. The guardian
+guards nothing until that lands; no build has started.
+
 ## How to answer
 
 Strike rows, or write your own — yours beats every option here. Partial answers work: any
