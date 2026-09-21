@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T01:33:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T01:47:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -460,16 +460,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask (owner, 2026-09-19)
 prose:    infrastructure/state/items/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md
-
-## GRASSLANDS_TILES_CSV_STALE_1 ASHKARR_WORLDMAP_tiles.csv disagrees with GRASSLANDS_CAST_DEAD_BIOME_1's live measurement on Grasslands vs Pyrelands tile count
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## criteria
-summary:  GRASSLANDSTILESCSVSTALE1 — world/ASHKARRWORLDMAPtiles.csv may be stale vs. the live game for Grasslands/Pyrel…
-prose:    infrastructure/state/items/GRASSLANDS_TILES_CSV_STALE_1.md
 
 ## BAZAAR_STOLEN_GOODS_PROPERTY_1 Stolen goods as a trade mechanic: RimProperty integration, the scanner registry, and the transponder reader
 state:    proposed
