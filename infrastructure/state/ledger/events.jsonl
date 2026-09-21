@@ -10687,3 +10687,16 @@
 {"seat":"BENCH","event":"needs","id":"DROID_ORACLE_VOICE_DESIGN_1","to":"owner","ts":"2026-09-21T17:12:56Z"}
 {"seat":"BENCH","event":"needs","id":"BAZAAR_STOLEN_GOODS_PROPERTY_1","to":"owner","ts":"2026-09-21T17:12:57Z"}
 {"seat":"BENCH","event":"needs","id":"TECHPRINT_FACTION_GATING_1","to":"owner","ts":"2026-09-21T17:12:58Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-21T17:17:12Z"}
+{"seat":"OWNER","event":"note","id":"ARIDSHRUBLAND_SHIPPING_NAMES_1","text":"Tunnel snake -> yanker, venomvine stands, Stall/Gale stand. The fuzz stays open - BENCH shipping a work item for it, owner said wait.","ownerSaid":"Yanker","ts":"2026-09-21T17:18:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ROT_SIZE_REJUDGE_APPLY_1","ts":"2026-09-21T17:20:11Z"}
+{"seat":"FOUNDRY","event":"start","id":"ROT_SIZE_REJUDGE_APPLY_1","ts":"2026-09-21T17:20:11Z"}
+{"seat":"FOUNDRY","event":"close","id":"ROT_SIZE_REJUDGE_APPLY_1","sha":"32fd86e7d","reason":"already applied at dab0bba2b, verified via deploy-sync + live label check, never closed in ledger","ts":"2026-09-21T17:26:17Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BLUE_DESERT_LIFE_AUTHORING_1","ts":"2026-09-21T17:27:05Z"}
+{"seat":"FOUNDRY","event":"start","id":"BLUE_DESERT_LIFE_AUTHORING_1","ts":"2026-09-21T17:27:05Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ROT_ROSTER_DEAD_DONOR_NAMES_1","ts":"2026-09-21T17:28:21Z"}
+{"seat":"FOUNDRY","event":"start","id":"ROT_ROSTER_DEAD_DONOR_NAMES_1","ts":"2026-09-21T17:28:22Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FLOODEDCANYON_RM_MOD_BUILD_1","ts":"2026-09-21T17:31:48Z"}
+{"seat":"FOUNDRY","event":"start","id":"FLOODEDCANYON_RM_MOD_BUILD_1","ts":"2026-09-21T17:31:49Z"}
+{"seat":"FOUNDRY","event":"file","id":"MIASMA_FEVERWOOD_GREENTIDE_BMT_1","title":"Miasma/FeverWood/Greentide rosters carry live BMT_ (Biomes! Caverns) fauna rows, same defect as the Rot/Forge","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-21T17:33:14Z"}
+{"seat":"FOUNDRY","event":"close","id":"ROT_ROSTER_DEAD_DONOR_NAMES_1","sha":"87073b902","reason":"All 14 dead BMT_ names resolved (10 already ported+wired, 2 dropped as stale, 1 wired as-is); last open call (MA_Sporemole) DROPped this pass; zero BMT_ names remain live in roster or XML; follow-on MIASMA_FEVERWOOD_GREENTIDE_BMT_1 filed for the 3 sibling biomes confirmed to share the defect","ts":"2026-09-21T17:42:27Z"}
