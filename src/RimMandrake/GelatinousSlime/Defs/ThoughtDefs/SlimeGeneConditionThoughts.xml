@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    SLIME_GENE_ARCHIVE_BUILD_1 — mood side of the forced conditions in
+    Defs/HediffDefs/SlimeGeneConditions.xml. workerClass ThoughtWorker_Hediff
+    is the vanilla mechanism for "a permanent condition carries a permanent
+    mood offset" (Source/RimWorld/ThoughtWorker_Hediff.cs: reads
+    def.hediff, stages index off the hediff's CurStageIndex). Every hediff
+    below is a single stage, so every thought below is too.
+  -->
+
+  <ThoughtDef>
+    <defName>RM_Thought_A1_MoistSkin</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RM_Cond_A1_MoistSkin</hediff>
+    <stages>
+      <li>
+        <label>skin drying out</label>
+        <description>My skin needs to stay wet. This dry air is wearing on me.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_Thought_A9_CleanAirCraving</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RM_Cond_A9_CleanAirCraving</hediff>
+    <stages>
+      <li>
+        <label>the air is too clean</label>
+        <description>My lungs were built for foul air. This clean air tastes wrong.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_Thought_A14_OpenSkyAche</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RM_Cond_A14_OpenSkyAche</hediff>
+    <stages>
+      <li>
+        <label>open sky</label>
+        <description>Open sky gnaws at me. I should be underground.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_Thought_A17_RisingExpectations</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RM_Cond_A17_RisingExpectations</hediff>
+    <stages>
+      <li>
+        <label>that had value</label>
+        <description>I know exactly what things are worth now, and I cannot stop noticing when something is lost or given away for less.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_Thought_A20_MachineryAche</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RM_Cond_A20_MachineryAche</hediff>
+    <stages>
+      <li>
+        <label>the noise</label>
+        <description>My ears catch everything, including every hammer strike and every gunshot. The noise is agony.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_Thought_A24_SleeplessMind</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RM_Cond_A24_SleeplessMind</hediff>
+    <stages>
+      <li>
+        <label>never fully rests</label>
+        <description>I am awake all the time now. Awake is not the same thing as well.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_Thought_A26_ScourCraving</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RM_Cond_A26_ScourCraving</hediff>
+    <stages>
+      <li>
+        <label>skin needs the scour</label>
+        <description>My skin wants sand under it. This soft floor itches.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_Thought_A32_RadCraving</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RM_Cond_A32_RadCraving</hediff>
+    <stages>
+      <li>
+        <label>the wasteland calls back</label>
+        <description>It has been too long since I felt the glow. My body wants it back.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

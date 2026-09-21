@@ -1,6 +1,89 @@
 # SLIME_GENE_ARCHIVE_BUILD_1 — the gene machine serves placeholder content
 
-## the gap, MEASURED 2026-09-20
+## ✅ BUILT AND LIVE-VERIFIED, 2026-09-21
+
+Built the full content the sheet specifies and shipped it as the campaign
+archive. **The FROZEN sheet has 33 target genes, not 22** — the task briefing
+that started this build undercounted by omitting the "local denizens" table
+(A24-A34); the sheet itself (visitors A1-A22 + denizens A24-A34, A23 struck)
+is authoritative and that is what got built. Per this repo's "a number you
+brief a subagent with comes back to you" lesson, re-measured rather than
+trusted.
+
+- **32 new A-list GeneDefs** (A1-A22, A24-A33) in
+  `src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes_AList.xml`. A34
+  "Slime-resistant" reuses the mod's pre-existing `RM_Gene_SlimeResistance`
+  rather than duplicating it, per the sheet's own framing of that entry.
+- **25 new B-list rider GeneDefs** (B1-B25) in `SlimeGenes_BList.xml`,
+  including B25 "The Reek" — a real animated stink cloud via
+  `Gene_TheReek` (new C#, `Source/GeneConditions.cs`), which reuses vanilla's
+  own `GasType.RotStink` (the same gas a rotting corpse emits,
+  `CompRottable.cs`) rather than inventing a visual system.
+- **Every gene moves a real, RimSage-verified field** — `statOffsets`/
+  `statFactors` on real StatDefs, `capMods`, `aptitudes` (skill nudges),
+  `disabledWorkTags`, the various `*ChanceFactor` fields, or (for the
+  hunger-rate/rest-rate/social-opinion costs GeneDef has no field for) a new
+  small generic mechanism, `Gene_ForcesHediff` + `RM_ForcedConditionExtension`
+  (`Source/GeneConditions.cs`), that adds/removes a small permanent
+  `HediffDef` alongside the gene — the same shape vanilla's own
+  `Gene_ChemicalDependency`/`Gene_Bloodfeeder`/`Gene_Clotting` use. 17 such
+  conditions in `Defs/HediffDefs/SlimeGeneConditions.xml`, 8 of them also
+  carrying a mood via `ThoughtWorker_Hediff` in
+  `Defs/ThoughtDefs/SlimeGeneConditionThoughts.xml`. A3 reuses vanilla's own
+  `Gene_Healing` (periodic permanent-wound healing) folded into the same
+  mechanism via an `alsoHealsPermanentWounds` flag, since `geneClass` is
+  exclusive; A25 reuses vanilla's `Gene_Clotting` directly (no detour needed,
+  its cost is native fields only). A handful of sheet costs describe
+  something no GeneDef/HediffStage field can express at all (a per-hour
+  distraction window, "near a corpse", a scheduled monthly binge) and are
+  narrowed to the closest always-on real stat — each flagged `[SIMPLIFIED]`
+  inline in the XML rather than silently invented.
+- **B-list hiding is two existing mechanisms, no new UI code**:
+  `Dialog_GeneArchive` only ever reads `archive.targetGenes`, and every
+  rider sets `canGenerateInGeneSet=false` (the real vanilla field that keeps
+  a GeneDef out of any randomly-generated GeneSet/genepack).
+- **P7's two named exceptions are real**: `CompTargetEffect_InjectSlimeGenes`
+  (`Source/GeneSeeker.cs`) now doubles the Slime-marked increment when the
+  rider is B25 "The Reek", and halves it (to zero) when the patient already
+  carries A16 "Pheromone charm" — both per the sheet's own curation
+  principles text, not invented.
+- **Campaign archive**: `RUT_SlimeGeneArchive`
+  (`src/RimUtinni/UtinniPatches/Defs/GeneArchiveDefs/RUT_SlimeGeneArchive.xml`),
+  `priority=100` against the universal mod's `priority=0`. `DefaultArchive.xml`
+  is untouched.
+- **Priority mechanism verified before authoring, then live-verified after**:
+  read `GeneArchiveDef.Active` and `Dialog_GeneArchive` (`Source/GeneArchive.cs`)
+  — it really does pick the highest-priority archive with a non-empty
+  `targetGenes`, exactly as the placeholder's header claims. Confirmed live in
+  a quicktest (11-mod `modset_builder.py --tier slime`, new tier added):
+  spawned an `RM_GeneSeeker`, fired its "Ask the archive" gizmo over the real
+  bridge (`rimworld/execute_gizmo`), and screenshotted the actual
+  `Dialog_GeneArchive` window showing "Amphibious lungs", "Kolto glands",
+  "Limb regrowth", "Great frame"... — the campaign's list, not vanilla's 17
+  placeholders.
+- **Mod Settings**: `SlimeSettings.preferHigherPriorityArchive` (default
+  `true` = shipped behaviour), consulted by `GeneArchiveDef.Active` and
+  invalidated on `WriteSettings()` so the toggle takes effect without a
+  restart.
+- **Fixed along the way, live-caught**: `RimWorld.Aptitude` has a CUSTOM XML
+  loader (`LoadDataFromXmlCustom`) that is NOT the `<li><skill>X</skill>
+  <level>Y</level></li>` shape every other list field uses — the list item
+  itself must be renamed to the SkillDef's defName
+  (`<aptitudes><Crafting>-1</Crafting></aptitudes>`, no `<li>` wrapper at
+  all). Got this wrong twice before a live load surfaced the actual
+  `Could not resolve cross-reference` failures; 8 GeneDefs were silently
+  discarded from the DefDatabase each time. Also found and fixed:
+  `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` was stale by one
+  mod (missing `mandrake.rm.gelatinousslime`, which was live) — recaptured
+  it from the actual pre-swap live list rather than leave the doctrinal full
+  list wrong for the next restore.
+- **Verify**: `validate_patch.py` 0 errors on every touched file; the
+  `RM_GelatinousSlime.csproj` build (`dotnet build`, Windows-native) is 0
+  warnings/0 errors; `run_selftests.py` 72/72 passed; live load on the new
+  `slime` modset_builder tier clean (no config errors, no cross-ref failures,
+  no exceptions naming anything in this build) after the Aptitude fix.
+
+## the gap, MEASURED 2026-09-20 (superseded above, kept for history)
 
 The Slime's headline mechanic is the gene machine. The owner **ACCEPTED** its
 content lists on **2026-09-06** and they were frozen the next day

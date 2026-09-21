@@ -530,17 +530,39 @@ namespace RimMandrake.GelatinousSlime
                     }
                 }
 
-                // P7 — the Slime-marked penalty, one point per entry taken.
+                // P7 — the Slime-marked penalty. One point per entry taken,
+                // with the two exceptions the sheet's own curation
+                // principles name (the_slime_gene_lists.md, P7): "A16's
+                // pheromones fight the mark to a draw" (a carrier who
+                // already has the pheromone-charm target takes no further
+                // mark from this injection) and "B25's Reek doubles it".
                 if (SlimeDefs.SlimeMarked != null)
                 {
-                    Hediff marked = patient.health.hediffSet.GetFirstHediffOfDef(SlimeDefs.SlimeMarked);
-                    if (marked == null)
+                    float markIncrement = 1f;
+                    if (comp.RiderGene == SlimeDefs.TheReek)
                     {
-                        patient.health.AddHediff(SlimeDefs.SlimeMarked);
+                        markIncrement = 2f;
                     }
-                    else
+                    if (SlimeDefs.PheromoneCharm != null && patient.genes != null
+                        && patient.genes.HasActiveGene(SlimeDefs.PheromoneCharm))
                     {
-                        marked.Severity += 1f;
+                        markIncrement = Mathf.Max(0f, markIncrement - 1f);
+                    }
+                    if (markIncrement > 0f)
+                    {
+                        Hediff marked = patient.health.hediffSet.GetFirstHediffOfDef(SlimeDefs.SlimeMarked);
+                        if (marked == null)
+                        {
+                            Hediff added = patient.health.AddHediff(SlimeDefs.SlimeMarked);
+                            if (added != null)
+                            {
+                                added.Severity = markIncrement;
+                            }
+                        }
+                        else
+                        {
+                            marked.Severity += markIncrement;
+                        }
                     }
                 }
 

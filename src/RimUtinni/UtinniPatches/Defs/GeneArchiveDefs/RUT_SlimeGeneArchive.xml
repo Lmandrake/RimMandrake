@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    SLIME_GENE_ARCHIVE_BUILD_1 — the campaign gene archive.
+
+    This is the swap the universal mod's own header describes
+    (src/RimMandrake/GelatinousSlime/Defs/GeneArchiveDefs/DefaultArchive.xml):
+    "the RUT layer swaps the campaign's frozen SW gene lists in by shipping
+    its own GeneArchiveDef with a HIGHER priority; Dialog_GeneArchive reads
+    whichever archive wins." Verified against the actual mechanism before
+    authoring this (GeneArchiveDef.Active in
+    src/RimMandrake/GelatinousSlime/Source/GeneArchive.cs): it iterates
+    every loaded GeneArchiveDef with a non-empty targetGenes and keeps
+    whichever has the highest `priority` — this def's priority of 100
+    against the default's 0 is a clean, unambiguous win, gated only by the
+    "prefer higher-priority archive" mod setting (on by default) added to
+    SlimeMod alongside this build.
+
+    Source is design/Jawa/worldbuilding/biomes/the_slime_gene_lists.md,
+    FROZEN 2026-09-07, owner-ACCEPTED 2026-09-06. 33 targets (A1-A22,
+    A24-A34; A23 battle premonition is STRUCK, owner ruling, and is
+    genuinely absent below — not an oversight) and all 25 riders (B1-B25,
+    including the owner-commissioned B25 "The Reek"). Every GeneDef named
+    below (bar A34) is authored in
+    src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes_AList.xml and
+    SlimeGenes_BList.xml — read those files' headers for how each gift/cost
+    is priced and where a sheet entry was narrowed to the nearest real
+    field. A34 reuses the mod's own pre-existing RM_Gene_SlimeResistance
+    (SlimeGenes.xml) rather than a duplicate, per the sheet's own framing
+    of it as "the ironic entry".
+
+    ⛔ Never edit DefaultArchive.xml to make this visible sooner or to
+    "clean it up" — it is the universal-mod fallback for every OTHER
+    campaign and mod that loads GelatinousSlime, and it is meant to lose
+    here on priority, not be removed.
+  -->
+
+  <RimMandrake.GelatinousSlime.GeneArchiveDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Biotech">
+    <defName>RUT_SlimeGeneArchive</defName>
+    <label>the Ash'karr archive</label>
+    <description>Everything that has ever touched the body on this world — every visitor the currents carried in, every local thing that grew to answer it. Still in circulation.</description>
+    <priority>100</priority>
+
+    <!-- A1-A22: from the visitors. A23 (battle premonition) STRUCK. -->
+    <targetGenes>
+      <li>RM_Gene_A1_AmphibiousLungs</li>
+      <li>RM_Gene_A2_KoltoGlands</li>
+      <li>RM_Gene_A3_LimbRegrowth</li>
+      <li>RM_Gene_A4_GreatFrame</li>
+      <li>RM_Gene_A5_LowLightEyes</li>
+      <li>RM_Gene_A6_HeatPitSenses</li>
+      <li>RM_Gene_A7_ToxinProofGut</li>
+      <li>RM_Gene_A8_LeatherHide</li>
+      <li>RM_Gene_A9_AmmoniaLungs</li>
+      <li>RM_Gene_A10_ThickBlubber</li>
+      <li>RM_Gene_A11_SpringLegs</li>
+      <li>RM_Gene_A12_NaturalClaws</li>
+      <li>RM_Gene_A13_MirrorReflexes</li>
+      <li>RM_Gene_A14_TunnelSense</li>
+      <li>RM_Gene_A15_ForgeHands</li>
+      <li>RM_Gene_A16_PheromoneCharm</li>
+      <li>RM_Gene_A17_TradersHead</li>
+      <li>RM_Gene_A18_PrehensileTail</li>
+      <li>RM_Gene_A19_SonicBellow</li>
+      <li>RM_Gene_A20_AcuteEars</li>
+      <li>RM_Gene_A21_WaterDiscipline</li>
+      <li>RM_Gene_A22_ScavengerNose</li>
+      <!-- A23 battle premonition: STRUCK, owner ruling 2026-09-06. Do not add. -->
+
+      <!-- A24-A34: from the local denizens. -->
+      <li>RM_Gene_A24_Sleepless</li>
+      <li>RM_Gene_A25_ClottingFlesh</li>
+      <li>RM_Gene_A26_SandSwimmer</li>
+      <li>RM_Gene_A27_AntifreezeBlood</li>
+      <li>RM_Gene_A28_Thermogene</li>
+      <li>RM_Gene_A29_SheenAdaptedLungs</li>
+      <li>RM_Gene_A30_IronStomach</li>
+      <li>RM_Gene_A31_CamelFlesh</li>
+      <li>RM_Gene_A32_RadEater</li>
+      <li>RM_Gene_A33_BuoyantStep</li>
+      <li>RM_Gene_SlimeResistance</li> <!-- A34 "Slime-resistant" — the mod's own pre-existing gene, not a duplicate. -->
+    </targetGenes>
+
+    <!-- B1-B25: the hidden rider list. Never surfaced to the player — see
+         SlimeGenes_BList.xml's header for exactly how each stays hidden. -->
+    <riderGenes>
+      <li>RM_Gene_B1_VividSkin</li>
+      <li>RM_Gene_B2_VestigialLekku</li>
+      <li>RM_Gene_B3_NictitatingMembrane</li>
+      <li>RM_Gene_B4_BanthaSnore</li>
+      <li>RM_Gene_B5_GlowFreckles</li>
+      <li>RM_Gene_B6_PetrichorGland</li>
+      <li>RM_Gene_B7_PhoticSneeze</li>
+      <li>RM_Gene_B8_SeasonalMolt</li>
+      <li>RM_Gene_B9_ContentedPurr</li>
+      <li>RM_Gene_B10_MismatchedEyes</li>
+      <li>RM_Gene_B11_SlimeCraving</li>
+      <li>RM_Gene_B12_StartleJawaese</li>
+      <li>RM_Gene_B13_WebbedToes</li>
+      <li>RM_Gene_B14_GreenBlood</li>
+      <li>RM_Gene_B15_EarTufts</li>
+      <li>RM_Gene_B16_AudibleDigestion</li>
+      <li>RM_Gene_B17_ColdNose</li>
+      <li>RM_Gene_B18_DullMusk</li>
+      <li>RM_Gene_B19_VestigialGills</li>
+      <li>RM_Gene_B20_SunShyPigment</li>
+      <li>RM_Gene_B21_PocketInstinct</li>
+      <li>RM_Gene_B22_ScentMemory</li>
+      <li>RM_Gene_B23_SomnambulantHoming</li>
+      <li>RM_Gene_B24_HiccupBubbles</li>
+      <li>RM_Gene_B25_TheReek</li>
+    </riderGenes>
+  </RimMandrake.GelatinousSlime.GeneArchiveDef>
+
+</Defs>

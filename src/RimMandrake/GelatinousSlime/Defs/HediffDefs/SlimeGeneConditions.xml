@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    SLIME_GENE_ARCHIVE_BUILD_1 — forced standing conditions.
+
+    GeneDef has no native hunger-rate or rest-fall-rate field (those live
+    only on HediffStage: hungerRateFactor/Offset, restFallFactor/Offset,
+    opinionOfOthersFactor). The genes below that need one of those effects
+    carry a <RM_ForcedConditionExtension> modExtension naming one of these
+    HediffDefs and use <geneClass>RimMandrake.GelatinousSlime.
+    Gene_ForcesHediff</geneClass> (Source/GeneConditions.cs) to add/remove it
+    permanently alongside the gene itself — the same shape as vanilla's own
+    Gene_ChemicalDependency/Gene_Bloodfeeder/Gene_Clotting.
+
+    Every one of these is a single, non-progressing stage (minSeverity 0):
+    the pawn either carries the gene, and so the condition, or does not.
+    Never tendable, never scenario-addable, never curable by item — matching
+    RM_SlimeMarked's own precedent in Slimification.xml. Where a condition
+    also carries a mood cost, its paired ThoughtDef lives in
+    Defs/ThoughtDefs/SlimeGeneConditionThoughts.xml under the same name with
+    an "Ache"/"Distrust"/etc. suffix -> "Thought".
+  -->
+
+  <HediffDef>
+    <defName>RM_Cond_A1_MoistSkin</defName>
+    <label>must stay moist</label>
+    <description>Amphibious lungs keep the skin's surface chemistry running on borrowed water. On dry ground the carrier burns through food keeping it wet.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <hungerRateFactorOffset>0.25</hungerRateFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A2_GlandDrain</defName>
+    <label>glands never stop</label>
+    <description>Kolto glands run whether or not there is a wound to tend. The upkeep shows up at the dinner table.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <hungerRateFactorOffset>0.10</hungerRateFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A3_RegrowthDrain</defName>
+    <label>regrowing</label>
+    <description>Whole-limb regrowth is metabolically enormous. While it runs, the carrier eats for two.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <hungerRateFactorOffset>0.5</hungerRateFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A4_GreatFrameDrain</defName>
+    <label>a great frame to feed</label>
+    <description>Wookiee-grade muscle and bone mass does not run for free.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <hungerRateFactorOffset>0.35</hungerRateFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A9_CleanAirCraving</defName>
+    <label>craves polluted air</label>
+    <description>Ammonia lungs were bred for foul air. Clean air tastes wrong and sits badly, and rest never quite lands right in it.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <restFallFactorOffset>0.10</restFallFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A11_SpringLegsDrain</defName>
+    <label>burns fuel fast</label>
+    <description>Spring legs move fast on borrowed calories.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <hungerRateFactorOffset>0.20</hungerRateFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A14_OpenSkyAche</defName>
+    <label>open sky gnaws</label>
+    <description>Tunnel sense reads as safety underground and dread under open sky.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A16_Distrust</defName>
+    <label>too smooth to trust</label>
+    <description>Pheromone charm cannot be switched off, and the people who notice it never quite relax around the one carrying it.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <opinionOfOthersFactor>0.9</opinionOfOthersFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A17_RisingExpectations</defName>
+    <label>expectations risen</label>
+    <description>A trader's head sets a new floor for what things are worth, permanently. Falling short of it stings more than it used to.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A20_MachineryAche</defName>
+    <label>the workshop is agony</label>
+    <description>Acute ears that catch a raid a mile off also catch every hammer strike and gunshot up close.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A21_DisciplineEase</defName>
+    <label>water discipline</label>
+    <description>Tusken-kin water discipline: the body simply asks for less.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <hungerRateFactorOffset>-0.40</hungerRateFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A24_SleeplessMind</defName>
+    <label>never fully rests</label>
+    <description>Sleepless cells do not dream. Awake all the time is not the same thing as well all the time.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <restFallFactor>0.3</restFallFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A26_ScourCraving</defName>
+    <label>skin needs the scour</label>
+    <description>Sand-swimmer skin wants sand underfoot. Soft floors and days off it itch.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <restFallFactorOffset>0.05</restFallFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A28_ThermogeneDrain</defName>
+    <label>radiates heat</label>
+    <description>Thermogene cells run warm around the clock, and that warmth is not free.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <hungerRateFactorOffset>0.30</hungerRateFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A31_ReserveEase</defName>
+    <label>carries a reserve</label>
+    <description>Desert-megafauna metabolism: a real reserve, banked against a skipped meal.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <hungerRateFactorOffset>-0.30</hungerRateFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_A32_RadCraving</defName>
+    <label>the wasteland calls back</label>
+    <description>Rad-eater metabolism was bred on a diet of background radiation. It never fully forgets the glow.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Cond_B23_RestlessWandering</defName>
+    <label>somnambulant homing</label>
+    <description>Rarely, this one sleepwalks toward the nearest slime terrain and wakes far from bed, exhausted. Even the nights it does not happen, rest never quite settles.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <restFallFactorOffset>0.15</restFallFactorOffset>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

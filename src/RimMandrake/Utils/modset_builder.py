@@ -96,6 +96,15 @@ TIERS = {
         "want": [BRIDGE],
         "dlc": True,
     },
+    "slime": {
+        "why": "Prove the Gelatinous Slime gene machine (SLIME_GENE_ARCHIVE_BUILD_1): "
+               "the campaign's RUT_SlimeGeneArchive (priority 100) must win over "
+               "GelatinousSlime's own universal RM_Archive_Default (priority 0), so "
+               "Dialog_GeneArchive offers the frozen A-list, not the 17 vanilla "
+               "placeholders. Needs Biotech for GeneDef at all.",
+        "want": [BRIDGE, "mandrake.rm.gelatinousslime", "mandrake.rut.patches"],
+        "dlc": True,
+    },
     "pits": {
         "why": "Prove the pit framework inside FlowWorks (dig stages, mass-sum "
                "cover trigger, struggle escape) with nothing else on the map "
