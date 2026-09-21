@@ -11,7 +11,14 @@ status-hint: three-tier restoration ladder for a wrecked VFE-Factory automated s
 - REPAIRED: `costList Steel 260 + ComponentIndustrial 7`, `constructionSkillPrerequisite 6`, `MaxHitPoints 450`, `basePowerConsumption 300`, `canOverclock true`, all SIX processes present (mechanically identical to the donor except texPath/defName/label/description), `researchPrerequisites: RM_WM_AutomatedSmelterRestoration` — NOT `VFE_BasicFactories` (the donor's own untouched gate).
 - `ResearchProjectDef RM_WM_AutomatedSmelterRestoration` exists: `baseCost 2000`, `techLevel Industrial`, `tags: ShipRelated`, ships with NO techprint gate (deliberately — `TECHPRINT_FACTION_GATING_1` is blocked) (`WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml`).
 - `SpecialResearchOpportunityDef RM_WM_AnalyseWreckedSmelter` (`ParentName="SpecialResearchOpportunityBase" MayRequire="petetimessix.researchreinvented"`) points `project` at `RM_WM_AutomatedSmelterRestoration` and `things` at `RM_WM_AutomatedSmelter_Wrecked`, `opportunityType Analyse` (`WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml`) — resolves only when Research Reinvented is present; absent it, the def is simply skipped (MayRequire), not an error.
-- Both this mod's buildings AND the donor's own `VFEFactory_AutomatedSmelter` remain buildable side by side — a KNOWN, accepted v1 cost (About.xml/DESIGN.md), not a defect.
+- The donor's own `VFEFactory_AutomatedSmelter` is hidden from the build menu via
+  `Patches/WreckedMachines_HideDonorSmelter.xml` (`PatchOperationFindMod`-guarded, clears
+  its `designationCategory`) — owner ruling 2026-09-16, verbatim *"remove the VFE factory,
+  not the manual one"* (`WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1`). This patch shipped inert
+  from 2026-09-17 to 2026-09-21 because it sat under `Defs/Patches/` instead of the mod's
+  top-level `Patches/`, where RimWorld's def loader silently discarded it; relocated by
+  `PATCH_FILES_UNDER_DEFS_INERT_1`. It is no longer "a known, accepted v1 cost" — the
+  coexistence was never intended and About.xml/DESIGN.md called it a testing arrangement.
 
 ## the walk
 1. [L] Player.log after load contains no "Config error in mandrake.rm.wreckedmachines" and no XML error naming any WreckedMachines Def   # load-time; with Research Reinvented ABSENT, also confirm no error about the MayRequire-guarded `SpecialResearchOpportunityDef` — it should just not exist, not fail
