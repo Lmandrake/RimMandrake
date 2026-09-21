@@ -23,7 +23,9 @@ first; this file only routes).
   portals — its 2026-08-31 measurements stand; its struck premises are
   bannered at top).
 - Bridge leg: relocate the live `sw_Sarlacc` landmark off tile 2920 (now
-  `RUT_WeepingStones` — MEASURED live, `world/ASHKARR_WORLDMAP_tiles.csv`;
+  `RUT_WeepingStones` **as of the 2026-09-12 export** of
+  `world/ASHKARR_WORLDMAP_tiles.csv` — ⚠️ that CSV is a RECORD exported from the savegame,
+  **not the live planet**, so this is evidence about the export date and not about today;
   donor `ZBiome_DesertOasis` at filing time — collision) into Glare / Long Sand /
   Dry Marches; place 2-4 cisterns total; per worldmap freeze discipline
   (backup save, re-verify, re-stamp CSV if the landmark column exists there).
