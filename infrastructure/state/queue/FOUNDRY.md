@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-21T00:40:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-21T00:42:33Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -945,15 +945,6 @@ kind:     build
 summary:  DESERTSHADEWHALEFILTERFEED1 — sand filter-feeding + dung-seeding for the shade whale
 prose:    infrastructure/state/items/DESERT_SHADE_WHALE_FILTERFEED_1.md
 
-## VENOMVINE_CONTACT_VENOM_BUILD_1 Build the venomvine (desert form) and its contact-venom comp/MapComponent in EnvironmentalHazards (tier c)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  VENOMVINECONTACTVENOMBUILD1 — build the venomvine and its contact-venom comp
-prose:    infrastructure/state/items/VENOMVINE_CONTACT_VENOM_BUILD_1.md
-
 ## SWBESTIARY_MISSING_BODYPART_DEFS_1 Eight RSW_ body-part defs are referenced by RSW_DesertPortA_Bodies.xml and defined nowhere
 state:    doing
 row:      unassigned
@@ -1428,3 +1419,13 @@ kind:     verify
 thin:     no ## spec
 summary:  DESERTLEACHMOSSLIVEVERIFY1 — prove the leachmoss actually races on a live desert map
 prose:    infrastructure/state/items/DESERT_LEACHMOSS_LIVE_VERIFY_1.md
+
+## VENOMVINE_LIVE_VERIFY_1 Quicktest the venomvine's contact venom in a live game
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  VENOMVINELIVEVERIFY1 — quicktest the venomvine's contact venom in a live game
+prose:    infrastructure/state/items/VENOMVINE_LIVE_VERIFY_1.md
