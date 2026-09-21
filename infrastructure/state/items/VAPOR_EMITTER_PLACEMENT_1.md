@@ -26,7 +26,8 @@ same treatment: an inventory, then a placement rule per type.
 ## Known couplings
 
 - **Weeping Stones hot aberrant oases** (ruled same sitting): the ~35
-  ZBiome_DesertOasis tiles on the Scald Spine/Anvil (up to 63 °C) are
+  `RUT_WeepingStones` tiles (donor `ZBiome_DesertOasis` at filing time, repainted
+  2026-09-07) on the Scald Spine/Anvil (up to 63 °C) are
   vent-steam / relic-condenser fed, not dew-fed. Their oasis water source IS a
   vapor emitter — this review decides what feeds them.
 - The Contagion owns rain-receiving highs (`CONTAGION_BIOME_PLACEMENT_1`);
@@ -50,7 +51,9 @@ local maps). Findings that matter:
   needs a new gate to obey any rule.
 - AB_MagmaVents: 5/10 instances on biomes outside its engine whitelist —
   likely orphaned by a biome repaint.
-- Weeping Stones vent-feed PROPOSED via ZBiome_DesertOasis geyserCountFactor
+- Weeping Stones vent-feed PROPOSED via `RUT_WeepingStones`'s geyserCountFactor
+  (donor `ZBiome_DesertOasis` at filing time, repainted to `RUT_WeepingStones`
+  2026-09-07)
   (SteamGeysers_Increased is engine-blacklisted there).
 Remaining: owner rules the PROPOSED per-type rules (cards can ride
 MECHANICS_CARDS_SITTING_1); then part 4 bridge fix-up per type (FOUNDRY).

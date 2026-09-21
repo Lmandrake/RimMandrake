@@ -23,7 +23,8 @@ first; this file only routes).
   portals — its 2026-08-31 measurements stand; its struck premises are
   bannered at top).
 - Bridge leg: relocate the live `sw_Sarlacc` landmark off tile 2920 (now
-  ZBiome_DesertOasis/Weeping Stones — collision) into Glare / Long Sand /
+  `RUT_WeepingStones` — MEASURED live, `world/ASHKARR_WORLDMAP_tiles.csv`;
+  donor `ZBiome_DesertOasis` at filing time — collision) into Glare / Long Sand /
   Dry Marches; place 2-4 cisterns total; per worldmap freeze discipline
   (backup save, re-verify, re-stamp CSV if the landmark column exists there).
 - At build: amend `water_doctrine.md`'s no-water-layer line (DBH thirst is in
