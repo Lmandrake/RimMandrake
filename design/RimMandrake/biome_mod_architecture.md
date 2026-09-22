@@ -1,6 +1,6 @@
 # Biome mod architecture — one RimMandrake mod per converted biome
 
-_Design spec, 2026-09-20. Implements the owner ruling of the same day. Status: DRAFT for owner review; builds nothing._
+_Design spec, 2026-09-20. Implements the owner ruling of the same day. **Status: RULED 2026-09-21 — all ten §7 questions answered, every name picked; Phase A executing.** 23 per-biome `<NAME>_RM_MOD_BUILD_1` items are filed off this spec under `BIOME_MOD_SPLIT_EXECUTION_1`, and one (`FLOODEDCANYON_RM_MOD_BUILD_1`) is built, live-proven and closed. Build from it. ⛔ Phase B — the terminal repaint, and any `RUT_` deletion — is still not filed and must not be started (`BIOME_PAINT_ONCE_AT_THE_END_1`)._
 
 ## 1. The ruling and the amendment
 
@@ -221,10 +221,13 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
 
 ### 4b. Slime — `RM_GelatinousSlime` (192 lines + 30 defs of kit) vs `RUT_Slime` (105 lines)
 
-- **Survivor:** `mandrake.rm.gelatinousslime`, `RM_GelatinousSlime`. This one is the
-  opposite shape to Greentide: the RimMandrake mod is the richer article (slime terrain
+- **Survivor: `mandrake.rm.gelatinousslime`, `RM_GelatinousSlime` — RULED 2026-09-21**
+  (owner decision, taken by question card rather than in prose, so there is no verbatim
+  quote to cite; item `SLIME_STANDALONE_MOD_1`). This one
+  is the opposite shape to Greentide: the RimMandrake mod is the richer article (slime terrain
   ladder, compressor, gene archive, antidote, four plants, `SlimeMod.cs` settings) and the
-  `RUT_` twin is thin.
+  `RUT_` twin is thin. As of 2026-09-21 it also carries the full 33-target A/B-list gene
+  system (`SLIME_GENE_ARCHIVE_BUILD_1`, live-verified), widening the gap further.
 - **Merged in:** anything `RUT_Slime.xml` carries that the RimMandrake def lacks — compare
   the terrain-by-fertility and weather tables at the move; its 9 fauna entries (7 `AA_`,
   2 `GR_`) stay inline, none is Star Wars.
