@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T15:24:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T17:25:53Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -538,6 +538,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SEA_FLOOR_AND_CATCH_PASS_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
