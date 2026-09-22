@@ -61,7 +61,44 @@ transcripts: `promptSource` is `"typed"` ONLY for a line the owner actually
 typed at the prompt (paired with `origin: {"kind": "human"}` on every sample
 checked); every tool-result / caveat / scheduled line reads `promptSource:
 None`, and no other harness-observed value ("system", "queued", "sdk") ever
-carried a human sentence. So `promptSource == "typed"` is the discriminator.
+carried a human sentence. So `promptSource == "typed"` is the discriminator
+for a CHAT turn.
+
+SECOND SOURCE: TEXT HE TYPED INTO A QUESTION CARD (owner, 2026-09-22)
+=====================================================================
+Owner ruling, verbatim: *"Please include user text through a question card as a
+valid owner-said line in the process definitions. That is the intention."*
+
+An `AskUserQuestion` answer comes back as a `tool_result` in the "user" role
+with `promptSource: None`, so the chat-turn rule above excluded it and a real
+ruling he typed into a card was refused. MEASURED shape, this project's
+transcript 2026-09-22:
+
+    {"type":"tool_result","tool_use_id":"toolu_...",
+     "content":"User has answered your questions: \"<Q>\"=\"<A>\"
+                user notes: <NOTES>"}
+
+🔴 THE HAZARD, AND WHY THIS IS SUBTRACTIVE RATHER THAN ADDITIVE. That single
+string is only PARTLY his. The question text, every option label and every
+option description inside it were authored by the ASSISTANT that called the
+tool, and `<A>` is usually a verbatim copy of one of those labels. Accepting
+the string whole would mean an agent could write any sentence into an option
+label, have the owner click it, and then quote it back through
+`--owner-said` as his words -- reintroducing the exact laundering this file
+exists to prevent, and the one CLAUDE.md already records ("a question-card
+LABEL is not his words").
+
+So: for each card result we look up the paired `tool_use` block by
+`tool_use_id`, collect every string the assistant authored in it (questions,
+headers, labels, descriptions, previews), and SUBTRACT those - plus the
+harness boilerplate - from the result string. What survives is text only he
+could have put there: the `user notes:` body, and a free-text "Other" answer
+(which by construction matches no label we wrote). Fragmenting the haystack by
+subtraction can only make this check STRICTER, never looser, which is the safe
+direction for a guard.
+
+A card whose labels an agent crafted therefore still authorizes nothing, while
+a sentence he actually typed into the notes box now does.
 
 This closes the laundering vector the spec named: "a subagent's transcript
 contains its own PROMPT as a user turn" -- an Agent-tool call's brief is
@@ -108,15 +145,82 @@ def extract_quotes(command):
     return out
 
 
-def typed_user_texts(transcript_path):
-    """-> list of every string the OWNER actually typed this session, or None
-    if the transcript could not be read/parsed at all (caller fails open)."""
+ASK_TOOL = "AskUserQuestion"
+
+# Harness scaffolding inside a card-result string. Subtracted alongside the
+# assistant's own strings so that only the owner's typing survives.
+CARD_BOILERPLATE = (
+    "User has answered your questions:",
+    "User has answered your question:",
+    "You can now continue with the user's answers in mind.",
+    "user notes:",
+)
+
+
+def _authored_strings(tool_input):
+    """-> every string in an AskUserQuestion call the ASSISTANT wrote.
+
+    These can never authorize anything: an agent picks its own labels, so a
+    label the owner merely CLICKED is not a sentence he said."""
+    out = []
+    for q in (tool_input or {}).get("questions") or []:
+        if not isinstance(q, dict):
+            continue
+        out.append(q.get("question") or "")
+        out.append(q.get("header") or "")
+        for opt in q.get("options") or []:
+            if isinstance(opt, dict):
+                out.append(opt.get("label") or "")
+                out.append(opt.get("description") or "")
+                out.append(opt.get("preview") or "")
+    return [s for s in out if isinstance(s, str) and s.strip()]
+
+
+def _result_body(block):
+    """Card results carry `content` as a str, or as text blocks in some harness
+    versions. Anything else yields '' (that source simply contributes nothing,
+    which fails CLOSED for it -- the safe direction)."""
+    body = block.get("content")
+    if isinstance(body, str):
+        return body
+    if isinstance(body, list):
+        return "\n".join(
+            b.get("text") or ""
+            for b in body
+            if isinstance(b, dict) and b.get("type") == "text"
+        )
+    return ""
+
+
+def _strip_authored(body, authored):
+    """Remove assistant-authored text and harness boilerplate from a card
+    result, leaving only what the owner typed.
+
+    Longest-first so a label that contains a shorter label is removed whole.
+    Replacement is a NEWLINE, never '': splicing two surviving fragments
+    together could otherwise manufacture a sentence nobody ever typed."""
+    out = body
+    for s in sorted(authored, key=len, reverse=True):
+        out = out.replace(s, "\n")
+    for s in CARD_BOILERPLATE:
+        out = out.replace(s, "\n")
+    return out
+
+
+def owner_texts(transcript_path):
+    """-> list of every string the OWNER actually typed this session -- chat
+    turns plus what he typed into question cards -- or None if the transcript
+    could not be read/parsed at all (caller fails open).
+
+    One forward pass: a tool_use always precedes its tool_result in the file,
+    so AskUserQuestion calls are known by the time their answers arrive."""
     try:
         with open(transcript_path, encoding="utf-8", errors="replace") as fh:
             lines = fh.readlines()
     except Exception:
         return None
     texts = []
+    authored_by_id = {}
     for line in lines:
         line = line.strip()
         if not line:
@@ -125,15 +229,45 @@ def typed_user_texts(transcript_path):
             ev = json.loads(line)
         except Exception:
             continue
-        if ev.get("type") != "user" or ev.get("promptSource") != "typed":
-            continue
+        typ = ev.get("type")
         content = (ev.get("message") or {}).get("content")
-        if isinstance(content, str):
-            texts.append(content)
-        elif isinstance(content, list):
+
+        if typ == "assistant":
+            if isinstance(content, list):
+                for block in content:
+                    if (
+                        isinstance(block, dict)
+                        and block.get("type") == "tool_use"
+                        and block.get("name") == ASK_TOOL
+                    ):
+                        authored_by_id[block.get("id")] = _authored_strings(
+                            block.get("input")
+                        )
+            continue
+
+        if typ != "user":
+            continue
+
+        if ev.get("promptSource") == "typed":
+            # A real chat turn: every word of it is his.
+            if isinstance(content, str):
+                texts.append(content)
+            elif isinstance(content, list):
+                for block in content:
+                    if isinstance(block, dict) and block.get("type") == "text":
+                        texts.append(block.get("text") or "")
+            continue
+
+        # Not a typed chat turn. The only other admissible source is the answer
+        # to a card WE called -- and only the part of it he typed.
+        if isinstance(content, list):
             for block in content:
-                if isinstance(block, dict) and block.get("type") == "text":
-                    texts.append(block.get("text") or "")
+                if not (isinstance(block, dict) and block.get("type") == "tool_result"):
+                    continue
+                authored = authored_by_id.get(block.get("tool_use_id"))
+                if authored is None:
+                    continue          # not a card result -- ordinary tool output
+                texts.append(_strip_authored(_result_body(block), authored))
     return texts
 
 
@@ -150,7 +284,7 @@ def offence(payload):
     transcript_path = payload.get("transcript_path") or ""
     if not transcript_path:
         return None                      # nothing to check against -- fail open
-    texts = typed_user_texts(transcript_path)
+    texts = owner_texts(transcript_path)
     if texts is None:
         return None                      # unreadable transcript -- fail open
     haystack = _norm("\n".join(texts))
@@ -177,7 +311,13 @@ def main():
             "permissionDecision": "deny",
             "permissionDecisionReason": (
                 "Blocked: the quoted %r does not appear in anything the "
-                "owner actually typed this session.\n\n"
+                "owner actually typed this session -- neither a chat turn nor "
+                "text he typed into a question card.\n\n"
+                "NOTE on cards: what he TYPED into one (the notes box, or a "
+                "free-text 'Other') counts and is accepted. An option LABEL "
+                "he merely clicked does NOT -- we wrote it, so it is our "
+                "sentence, not his. Record a click as \"decision taken by "
+                "question card\".\n\n"
                 "This applies to `--owner-said` (rimflow), `--said` "
                 "(./game, apply_blanket_ruling.py) -- same field, same "
                 "rule, whichever flag spelled it. The flag is both the "
