@@ -1,81 +1,81 @@
 {
- "generatedAt": "2026-09-20T08:22:00Z",
+ "generatedAt": "2026-09-22T06:08:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 700565,
-  "sha256_12": "5085cc73e5e7"
+  "bytes": 734196,
+  "sha256_12": "3452d9585b6c"
  },
- "head": "74535d4dd",
+ "head": "255ecbd77",
  "counts": {
-  "red": 29,
-  "blue": 845,
-  "green": 1828,
-  "grey": 445,
+  "red": 15,
+  "blue": 863,
+  "green": 1803,
+  "grey": 602,
   "unmeasured": 0,
-  "total": 3147
+  "total": 3283
  },
  "loc": {
-  "red": 10388,
-  "blue": 339455,
-  "green": 587279,
-  "grey": 107659,
+  "red": 4445,
+  "blue": 340075,
+  "green": 572371,
+  "grey": 157322,
   "unmeasured": 0,
-  "total": 1044781
+  "total": 1074213
  },
- "reviewEntries": 2924,
+ "reviewEntries": 2932,
  "recidivists": [
   {
-   "path": "src/RimMandrake/rimflow/selftest_model.py",
-   "loc": 1214,
+   "path": "src/RimUtinni/UtinniPatches/About/About.xml",
+   "loc": 124,
+   "cycles": 7
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml",
+   "loc": 160,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimStarWars/SWBestiary/About/About.xml",
+   "loc": 93,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+   "loc": 534,
    "cycles": 3
   },
   {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORLightRepeater.xml",
-   "loc": 605,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBowcaster.xml",
-   "loc": 538,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORHeavyRepeater.xml",
-   "loc": 520,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimMandrake/Utils/selftest_research_validator.py",
-   "loc": 244,
+   "path": "src/RimMandrake/Utils/modcheck/cli.py",
+   "loc": 323,
    "cycles": 3
   },
   {
    "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml",
+   "loc": 156,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml",
    "loc": 150,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/CreatureBehaviors/About/About.xml",
+   "loc": 120,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml",
+   "loc": 6770,
    "cycles": 2
   },
   {
-   "path": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGroupTools.cs",
-   "loc": 1078,
-   "cycles": 1
-  },
-  {
-   "path": "design/Jawa/worldbuilding/review/gen_creature_art_register.py",
-   "loc": 641,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs",
-   "loc": 424,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimUtinni/StructureInjectionsRUT/Source/DarkTower/gen_dark_tower_layout.py",
-   "loc": 343,
-   "cycles": 1
+   "path": "src/RimStarWars/StarWarsRaces/Defs/PawnKindDefs/RimMandrakePawnKinds.xml",
+   "loc": 1082,
+   "cycles": 2
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 3147 files (1828 clean, 445 dirty, 0 unmeasured)."
+ "headline": "OK: measured 3283 files (1803 clean, 602 dirty, 0 unmeasured)."
 }
