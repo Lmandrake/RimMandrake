@@ -37,9 +37,16 @@ def _is_loaded(path):
     """Does RimWorld actually load defs from this path?
 
     Only the mod root's `Defs/` (and version folders) are loaded. A `Source/` tree
-    holds C# and, in one mod here, a byte-identical stale copy of the def tree —
-    which is dead weight rather than a live collision. Counting it would make this
-    test fail on 30 defs the game never sees, and would train people to ignore it.
+    holds C#, so a def file there is dead weight rather than a live collision, and
+    failing on it would train people to ignore this test.
+
+    StructureInjectionsRUT did carry exactly that — a stale copy of its vault def
+    tree, 30 phantom duplicates that made defName measurements over-report. Deleted
+    2026-09-22 on the owner's ruling; 3 of its 4 files were byte-identical and the
+    fourth was stale AND wrong (it still had the `rootSelectionWeight 1.0` that
+    VAULT_THAW_FIXED_TILES_UNFIREABLE_1 had fixed to 0 in the live copy). The
+    exemption stays because it states correctly what the game loads, not because
+    anything currently relies on it.
     """
     parts = path.split(os.sep)
     return "Source" not in parts
@@ -99,7 +106,8 @@ def main():
     if unloaded:
         print(f"note  skipped {len(unloaded)} def file(s) under a Source/ tree — RimWorld does "
               f"not load those, so a duplicate there is dead weight, not a live collision. "
-              f"Worth deleting anyway (it makes defName measurements over-report): "
+              f"Worth deleting anyway (dead def files make defName measurements over-report, "
+              f"and a stale one can hold a bug already fixed in the live copy): "
               f"{sorted(set(os.path.dirname(u) for u in unloaded))}")
 
     if failures:
