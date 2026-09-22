@@ -675,6 +675,13 @@
       "commonality": 0.5,
       "def": "JOE_Cephalope",
       "law": "owner review 2026-09 (round2 move mapping): sand burrower & swimmer, absorb & retire mod, anywhere there is deep hot sand"
+    },
+    {
+      "action": "import",
+      "band": "arid-burrower",
+      "commonality": 0.1,
+      "def": "RSW_Stoneback",
+      "law": "STONEBACK_DEFNAME_COLLISION_1: added 2026-09-22. This roster had no stoneback row at all while RUT_ExtremeDesert wired one — and that wiring was the KORRUM (now RSW_Korrum, kept at 0.025). owner 2026-09-22 (identity sheet + sitting): the bokka \"goes into any arid biome where it's needed (desert, extreme desert, or other hot arid day-side)\" names the extreme desert explicitly, so the bokka is wired here at 0.1 (bodySize 0.4, small, helps the pyramid)"
     }
   ],
   "fish": {

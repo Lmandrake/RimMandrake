@@ -140,7 +140,8 @@
       <RSW_Stareling MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Stareling>  <!-- ikee - grain-scale, adjust-keep -->
       <RSW_GraniteSlug MayRequire="mandrake.rsw.swbestiary">0.1</RSW_GraniteSlug>  <!-- granite slug - grain-scale, keep -->
       <RSW_Scurrier MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Scurrier>  <!-- scurrier - grain-scale, adjust-keep -->
-      <RSW_Stoneback MayRequire="mandrake.rsw.swbestiary">0.025</RSW_Stoneback>  <!-- bouldermit - giant, keep -->
+      <RSW_Korrum MayRequire="mandrake.rsw.swbestiary">0.025</RSW_Korrum>  <!-- korrum - boulder-shelled giant crab, keep; renamed from RSW_Stoneback 2026-09-22 (STONEBACK_DEFNAME_COLLISION_1) - this row always meant AA_BoulderMit, which its old "bouldermit" comment said -->
+      <RSW_Stoneback MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Stoneback>  <!-- bokka - small arid burrower (bodySize 0.4), import; owner 2026-09-22: the bokka "goes into any arid biome where it's needed (desert, extreme desert, or other hot arid day-side)" -->
       <RSW_Gizka MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Gizka>  <!-- gizka - grain-scale, keep -->
       <RSW_GreaterKraytDragon MayRequire="mandrake.rsw.swbestiary">0.001</RSW_GreaterKraytDragon>  <!-- greater krayt dragon - giant, keep -->
       <RSW_Voltmaw MayRequire="mandrake.rsw.swbestiary">0.0005</RSW_Voltmaw>  <!-- tetra slug - giant, keep -->
