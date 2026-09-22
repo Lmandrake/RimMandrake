@@ -157,6 +157,29 @@ MEASURED about the live world — the live system is the only instrument for "ri
   defects fixed 2026-09-02 and closed at `747b0025`, and an open item was still telling
   FOUNDRY to re-fix them. Check the code and the ledger before believing any doc's
   "engine status" — and check whether an open item is asking for work already done.
+- 🔑 **An animal belongs to ONE biome unless there is an IN-GAME reason** — owner ruling
+  2026-09-21, verbatim: *"Animals sound be biome-specific unless there is an in-game reason
+  (e.g. flyers that migrate, young versions that grow in the miasma then migrigate to the sea
+  later, etc.) So stonebacks hould have one home. We have plenty of creatures left to fill
+  rosters if there are holes."* ⇒ 🔑 **A hole in a roster is filled with a NEW creature, never
+  by re-using a neighbour's** — we have surplus cast. MEASURED 2026-09-21: **52** species are
+  wired into more than one of our BiomeDefs (of 299 wired; 58 raw minus 6 vanilla-Core filler
+  in the `RM_` twins' deliberate generic bodies). ⛔ Not a sweep — the carve-out is real, and
+  fliers (`Convor`, `Whisperbird`, `Mynock`) and the juvenile/nursery lines (`RSW_*Juv`) are
+  exactly what it protects. Per-species adjudication: `BIOME_SPECIFIC_FAUNA_LAW_1`.
+- 🔑 **A sea biome describes BOTH its floor and its catch** — owner ruling 2026-09-21:
+  *"The biomes should be describing the sea floors (what you encounter as an animal there) as
+  well as what you can FISH out of the oceans on the shore. There should be defs made for each
+  fish as something swimming around the floor area as well as something you can pull out as a
+  fish."* ⇒ each sea species owes **two** defs: a floor resident in `<wildAnimals>` and a
+  catchable entry in `<fishTypes>`. `RUT_TheScald` is the worked precedent (a real `fishTypes`
+  block `MayRequire="Ludeon.RimWorld.Odyssey"` plus 4 floor animals); `RUT_GreySea`,
+  `RUT_TwilightSea` and `RUT_PropaneLake` carry **no `fishTypes` at all** and 2 animals each,
+  so that is owed work inside `TERMINALBIOMES_RM_MOD_BUILD_1`. The floor is reachable via the
+  generic `RM_DiveEligible` terrain mechanism in `mandrake.rm.divinginteraction`. ⚠️ All four
+  seas are `impassable=true`, and whether `<wildAnimals>` actually spawn on an impassable water
+  biome is an ENGINE question — UNMEASURABLE on the Mac; the Scald's 4 entries are somebody's
+  bet, not proof. Test it on the Desktop before authoring the other three.
 - 🔑 **A review sheet's `cut` is scoped to THAT SHEET'S BIOME, never the planet** — owner
   ruling 2026-09-21. The Lantern Deeps sheet cut `RSW_AaroxisDendoria`, `RSW_PodWorm` and
   `RSW_MossBeetle`; all three legitimately remain admitted elsewhere (the first two in the
