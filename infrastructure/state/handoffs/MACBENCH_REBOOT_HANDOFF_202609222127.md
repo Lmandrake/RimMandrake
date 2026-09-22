@@ -92,6 +92,13 @@ per-biome sittings now, not a work queue. The item says so explicitly.
    session's own wake reported "nothing to wake from" against a corpus of 40+ files. Config added
    this session (`handoff_dir`, `lessons_file`, `seat_env`); invoke with `AGENT_SEAT=MACBENCH_REBOOT`
    to match the existing `<SEAT>_REBOOT_HANDOFF_*` convention (see: `.handoff.json`).
+5. ⚠️ **`~/dev/Lodestar/bin/handoff.py` has an UNCOMMITTED fix in it, and it is not mine** — mtime
+   13:14 today, before this session opened. It stops the `<<< WHOSE? >>>` marker appearing in the
+   instruction sentence itself, because `todo_scan` counts that marker across the whole file and its
+   presence there made `--check` unpassable on any dirty tree however carefully each line was
+   attributed. My `--check` passed *because that fix is live locally*. ⇒ On a machine without it,
+   expect `--check` to refuse on a dirty tree; and whoever owns that change should commit it. I left
+   it untouched (explicit pathspec on my Lodestar commit, so it was not swept in).
 
 ## Commits
 
