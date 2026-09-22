@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T14:06:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T14:19:28Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -528,6 +528,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOME_SPECIFIC_FAUNA_LAW_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Bucket the 52 first, cheaply: flier / juvenile-line / twin-or-alias artifact / desert-pair
 prose:    infrastructure/state/items/BIOME_SPECIFIC_FAUNA_LAW_1.md
+
+## STONEBACK_DEFNAME_COLLISION_1 RSW_Stoneback is TWO different creatures on one defName (bokka bs 0.4 vs korrum bs 4.00) in two loaded Defs folders
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STONEBACK_DEFNAME_COLLISION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STONEBACK_DEFNAME_COLLISION_1.md
