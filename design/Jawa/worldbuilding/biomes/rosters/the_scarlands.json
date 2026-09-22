@@ -349,8 +349,8 @@
       "action": "keep",
       "band": "plated-grazer",
       "commonality": 0.18,
-      "def": "BMT_FoundryBeetle",
-      "law": "§4: crust/wreck-lichen browser — non-predator plated insectoid (bs 2.4 MEASURED), industrial read; dormant special fits pre-sprung dressing (§8)"
+      "def": "RSW_FoundryBeetle",
+      "law": "§4: crust/wreck-lichen browser — non-predator plated insectoid (bs 2.4 MEASURED), industrial read; dormant special fits pre-sprung dressing (§8); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_FoundryBeetle to the already-ported, already-wired RSW_ name (RUT_Scarlands)"
     },
     {
       "action": "adjust-keep",

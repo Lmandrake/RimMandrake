@@ -293,22 +293,22 @@
       "action": "keep",
       "band": "wretched-small",
       "commonality": 0.7,
-      "def": "BMT_FleeceSpider",
-      "law": "prep §4.2; bs 0.32 (MEASURED)"
+      "def": "RSW_FleeceSpider",
+      "law": "prep §4.2; bs 0.32 (MEASURED); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_FleeceSpider to the already-ported, already-wired RSW_ name (RUT_Wasteland)"
     },
     {
       "action": "keep",
       "band": "wretched-small",
       "commonality": 0.7,
-      "def": "BMT_BloodletterPetrel",
-      "law": "Polluted Lands — the mod's register is contamination-shaped (prep §4.2)"
+      "def": "RSW_BloodletterPetrel",
+      "law": "Polluted Lands — the mod's register is contamination-shaped (prep §4.2); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_BloodletterPetrel to the already-ported, already-wired RSW_ name (RUT_Wasteland)"
     },
     {
       "action": "keep",
       "band": "wretched-herd",
       "commonality": 0.4,
-      "def": "BMT_Maligoat",
-      "law": "\"maligoat\" is the wretched-herd read exactly (prep §4.2)"
+      "def": "RSW_Maligoat",
+      "law": "\"maligoat\" is the wretched-herd read exactly (prep §4.2); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Maligoat to the already-ported, already-wired RSW_ name (RUT_Wasteland)"
     },
     {
       "action": "keep",
@@ -328,8 +328,8 @@
       "action": "import",
       "band": "wretched-pack",
       "commonality": 0.4,
-      "def": "BMT_Screecher",
-      "law": "Polluted Lands register import (prep §4.4); pack vermin, bs 1.0 < 1.5 (ban 3 pass, MEASURED)"
+      "def": "RSW_Screecher",
+      "law": "Polluted Lands register import (prep §4.4); pack vermin, bs 1.0 < 1.5 (ban 3 pass, MEASURED); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Screecher to the already-ported, already-wired RSW_ name (RUT_Wasteland)"
     },
     {
       "action": "import",

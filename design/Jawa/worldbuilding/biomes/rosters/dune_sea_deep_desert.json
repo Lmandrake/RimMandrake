@@ -667,8 +667,8 @@
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_TruffleMole",
-      "law": "owner review 2026-09 (round2 move mapping): sand burrower, desert & extreme desert, 0.4 cells"
+      "def": "RSW_TruffleMole",
+      "law": "owner review 2026-09 (round2 move mapping): sand burrower, desert & extreme desert, 0.4 cells; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_TruffleMole to the already-ported, already-wired RSW_ name (RUT_ExtremeDesert)"
     },
     {
       "action": "import",

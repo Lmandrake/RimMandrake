@@ -989,8 +989,8 @@
       "action": "keep",
       "band": "small-runway",
       "commonality": 0.7,
-      "def": "BMT_ImperialToad",
-      "law": "bs 0.3 (MEASURED); prep §3.2"
+      "def": "RSW_ImperialToad",
+      "law": "bs 0.3 (MEASURED); prep §3.2; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_ImperialToad to the already-ported, already-wired RSW_ name (RUT_AridShrubland)"
     },
     {
       "action": "keep",
@@ -1104,8 +1104,8 @@
       "action": "keep",
       "band": "small-runway",
       "commonality": 0.3,
-      "def": "BMT_MossBeetle",
-      "law": "bs 0.45 non-predator (MEASURED); soil-floor texture (first true soil, §4)"
+      "def": "RSW_MossBeetle",
+      "law": "bs 0.45 non-predator (MEASURED); soil-floor texture (first true soil, §4); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_MossBeetle to the already-ported, already-wired RSW_ name (RUT_AridShrubland). Cut by the Lantern Deeps sheet 2026-09-19, which under the owner's 2026-09-21 ruling is scoped to that sheet's biome only — it stays admitted here"
     },
     {
       "action": "keep",
