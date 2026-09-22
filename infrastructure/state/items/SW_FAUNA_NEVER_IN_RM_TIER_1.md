@@ -45,6 +45,17 @@ Star Wars rows in `wildAnimals` or `wildPlants`:
 arrives via `src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml`, a
 `PatchOperationAdd` onto the `RM_` def. Copy that, per biome.
 
+✅ **Greentide's animal half is DONE, 2026-09-22** — `WildAnimals_Greentide.xml`, 27 rows,
+sum 9.318, verified row-for-row against the frozen `RUT_` def, casting our own `RSW_` ports
+rather than Mlie's bare names per the owner's 2026-09-19 donor ruling. It is the second
+worked example and the one to copy for the rest, because unlike the Pyrelands it also shows
+what to do when a port does NOT exist (leave the row out and name the owed port — never
+reach for the donor defName). 🔴 UNVERIFIED against a load; see step 5.
+
+🔴 **A `wildAnimals` key resolves to a `PawnKindDef`, not a `ThingDef`, and a `ThingDef` name
+there fails SILENTLY.** Check both def types exist for every port before casting it — all 24
+of Greentide's did, but that was measured, not assumed.
+
 The work is in the **12 `RUT_` defs still to split**, carrying **97** `mlie.*` rows between
 them (plus their own `RSW_` rows, which this ruling also routes out):
 

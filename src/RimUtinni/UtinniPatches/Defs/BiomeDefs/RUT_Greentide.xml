@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  🔴 FROZEN 2026-09-22 — carrying the world until the terminal paint; content lives in
+  `mandrake.rm.greentide`; do not edit here.
+
+  Phase A step 3 of design/RimMandrake/biome_mod_architecture.md (item
+  GREENTIDE_RM_MOD_BUILD_1). This def is what the player's saved world actually carries
+  until Phase B repaints the planet onto `RM_Greentide`; deleting it before then destroys
+  the save, so it stays as it is. From this moment every CONTENT fix for the Greentide
+  lands in `mandrake.rm.greentide` only, never here.
+
+  ⛔ Do NOT "merge" this body into RM_Greentide. §4a used to call that def a 123-line
+  placeholder; it is not — it is the finished generic twin, authored campaign-free on
+  purpose, and copying this file into it would (a) put 22 Mlie Star Wars rows and 8 Star
+  Wars plants inside a RimMandrake-tier def, which §7 Q11 forbids outright, (b) swap
+  vanilla Soil/SoilRich for the DONOR terrain `CypreJungleSoil` and the vanilla world
+  texture for the donor's `Biome_CypreJungle`, and (c) delete the
+  `RM_GreentideBiomeRanges` modExtension that `RM_BiomeWorker_Greentide.cs:44` reads,
+  silently falling the worker back to defaults. The Star Wars cast reaches `RM_Greentide`
+  through UtinniPatches/Patches/WildAnimals_Greentide.xml, the way the Pyrelands already
+  does it.
+-->
 <Defs>
 
   <!--

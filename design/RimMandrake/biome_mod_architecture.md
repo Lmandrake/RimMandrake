@@ -208,28 +208,67 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
 
 - **Survivor:** `mandrake.rm.greentide`, defName `RM_Greentide`, its C# kit
   (`RM_GreentideMod.cs`, churnmud, mired, dig-out, sealant) and its settings screen.
-- **Merged in:** the body of `RUT_Greentide.xml` — the sheet-derived terrain ladder,
-  plant list, weather table and its **three** `modExtensions` — replaces the 123-line
-  placeholder body of `Defs/BiomeDefs/RM_Greentide_Biome.xml`.
-  🔴 **The 27 `wildAnimals` contain ZERO vanilla entries** — MEASURED 2026-09-22 by
+- 🔴 **NOTHING IS MERGED IN. This split was already done, and the merge this section used
+  to specify would BREAK it** — corrected 2026-09-22 after reading both files.
+  `RM_Greentide_Biome.xml` is **not** a "123-line placeholder": it is the finished generic
+  twin, authored campaign-free on purpose, and its own header says so — *"rebuilt with zero
+  campaign-specific content so it can generate on any player's own world"* — with a second
+  comment over `wildAnimals` reading *"Vanilla-core roster only — no third-party or
+  franchise-specific fauna, no MayRequire on a third-party bestiary."* It already carries a
+  7-animal vanilla roster, a 6-plant vanilla list, vanilla `Soil`/`SoilRich`, the vanilla
+  `TropicalRainforest` world texture, `mudTerrain` `RM_GreentideChurnmud`, and its own
+  `RM_GreentideBiomeRanges` extension. **It is Q11-compliant already.**
+  ⛔ Copying `RUT_Greentide.xml`'s body over it would (a) put 22 Mlie Star Wars animals and
+  8 Star Wars plants inside a RimMandrake-tier def, which §7 Q11 forbids, (b) replace
+  vanilla `Soil`/`SoilRich` with the **donor** terrain `CypreJungleSoil` (MEASURED: not in
+  our source) and the vanilla texture with the donor's `Biome_CypreJungle`, (c) delete the
+  `RM_GreentideBiomeRanges` modExtension that `RM_BiomeWorker_Greentide.cs:44` reads,
+  silently falling the worker back to `FallbackRanges` and changing where the biome
+  generates, and (d) import the `Fog 0` / `Overcast 0` weather zeroes, which exist only
+  because the campaign's Roil lock force-forces weather on Ash'karr — meaningless, and
+  wrong, on a generic world.
+  ⇒ **So Greentide's Phase A is steps 3, 4 and 6 only.** Step 3 is DONE (2026-09-22): the
+  `RUT_` def is frozen with its header. Optional cherry-picks that are genuinely generic and
+  still unapplied: `Disease_OrganDecay` as a 7th disease, `allowFarmingCamps`, and a
+  vanilla-only `fishTypes`/`maxFishPopulation` pair.
+  🔑 **For the OTHER biomes, the fauna partition below still applies** — and the 27
+  `wildAnimals` here are the worked example. MEASURED 2026-09-22 by
   `MayRequire` attribute: **22 `mlie.starwarsanimalcollection`**, 2 `sarg.alphaanimals`,
   1 `oskarpotocki.vfe.insectoid2`, 1 `mandrake.rsw.swbestiary` (`RSW_Diggerpede`), and 1
   with no `MayRequire` — `RUT_Sytheclaw`, which is **ours**, not vanilla. An earlier
   revision of this section read those 22 as "vanilla"; they are Mlie's Star Wars animal
   collection.
-  ⇒ **The split, RULED 2026-09-22 (§7 Q11 — "RimMandrake should not name star wars ever"):**
-  all **23** Star Wars rows — the 22 `mlie.starwarsanimalcollection` plus `RSW_Diggerpede` —
-  go to `WildAnimals_Greentide.xml` in Utinni. The 2 `sarg.alphaanimals` and 1
-  `oskarpotocki.vfe.insectoid2` rows stay inline, which is Q9's real scope. `RUT_Sytheclaw`
-  becomes an inline `RM_Sytheclaw` row per §7 Q10 — a campaign original, not Star Wars.
-  ⚠️ **Consequence to price in:** `RM_Greentide` then carries **4** animals standalone
-  (2 `AA_`, 1 `VFEI2_`, `RM_Sytheclaw`). That is thin for a shipped biome mod and is owed
-  work — its own non-Star-Wars fauna — not a reason to keep Star Wars rows inline.
+  ⇒ **The partition, RULED 2026-09-22 (§7 Q11 — "RimMandrake should not name star wars
+  ever"):** all **23** Star Wars rows — the 22 `mlie.starwarsanimalcollection` plus
+  `RSW_Diggerpede` — belong in Utinni. The 2 `sarg.alphaanimals` and 1
+  `oskarpotocki.vfe.insectoid2` rows are inline-eligible, which is Q9's real scope.
+  `RUT_Sytheclaw` is a campaign original per §7 Q10, not Star Wars.
+  ✅ **The Utinni PATCH half of step 2 — the ANIMALS — is BUILT** (2026-09-22):
+  `UtinniPatches/Patches/WildAnimals_Greentide.xml`, all 27 rows, sum 9.318, verified
+  row-for-row and weight-for-weight against the frozen `RUT_` def. Per the owner's
+  2026-09-19 donor ruling it casts **our own `RSW_` ports**, not Mlie's bare defNames — all
+  22 exist, each confirmed present as both a `PawnKindDef` and a `ThingDef` (the key resolves
+  to a `PawnKindDef`; a `ThingDef` name there fails silently). The 2 `AA_` and 1 `VFEI2_` rows
+  are cast there too rather than inline, to keep `RM_Greentide`'s own Core-only promise.
+  ⚠️ **Still owed on that patch:** the **8** Star Wars `wildPlants` rows — only 2 have our
+  ports, the other 6 need `DONOR_DEFS_PORT_TO_OURS_1` first, and casting donor names is
+  forbidden — plus the whole `fishTypes` block, which is all ours already but is an
+  Odyssey-gated nested structure no `WildAnimals_*.xml` has routed before. Neither may sit on
+  the `RM_` def. 🔴 And the patch is **UNVERIFIED against a load**: authored on the Mac, where
+  `validate_patch.py` cannot execute an xpath and an unmatched `PatchOperationAdd` is silent.
+  ✅ **No thin-roster problem here:** `RM_Greentide` standalone already carries 7 vanilla
+  animals and 6 vanilla plants of its own. (An earlier revision of this section predicted 4
+  animals; that was derived from the mistaken premise that the `RM_` def would inherit the
+  `RUT_` roster.)
 - **Deleted:** `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml`, at Phase B step 4.
 - Why this way round and not the other: `GREENTIDE_STANDALONE_MOD_1` (closed) already
   ruled the mod RimMandrake-tier on the owner's card; the `RUT_` twin was authored by
   `BIOME_OWNERSHIP_WAVE_1` two days earlier to get the tiles off the donor and never
-  reconciled. The content is the `RUT_` file's; the home is the `RM_` mod's.
+  reconciled. ⛔ The old summary of that — *"the content is the `RUT_` file's; the home is
+  the `RM_` mod's"* — is what produced the wrong merge instruction above, and it is false
+  for this pair: the `RM_` mod authored its OWN generic content rather than waiting for a
+  transplant. What the `RUT_` file uniquely holds is the **campaign** layer, and that
+  belongs in Utinni, not in the `RM_` def.
 
 ### 4b. Slime — `RM_GelatinousSlime` (192 lines + 30 defs of kit) vs `RUT_Slime` (105 lines)
 
