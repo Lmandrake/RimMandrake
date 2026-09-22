@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T05:52:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T05:53:04Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -125,15 +125,6 @@ target:   v1
 kind:     task
 summary:  FALLLINEMAJORREGIONLABEL1 — make the Fall Line read as a major world region
 prose:    infrastructure/state/items/FALL_LINE_MAJOR_REGION_LABEL_1.md
-
-## SLIME_STANDALONE_MOD_1 Slime twin ruled: RM_GelatinousSlime survives, RUT_Slime merges in and is frozen
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  Record the ruling where the decision is read, then close. No build work belongs here.
-prose:    infrastructure/state/items/SLIME_STANDALONE_MOD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
