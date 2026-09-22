@@ -266,7 +266,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<!-- Alpha Animals AA_Needleroll -> RSW_Spineroller. Body AA_SentientPlant substituted with the vanilla QuadrupedAnimalWithPawsAndTail body already used for Cactipine/SandProwler in this batch (confirmed to carry Teeth + HeadAttackTool groups); bite tool's linkedBodyPartsGroup remapped AA_Mouth -> Teeth. ToolCapacityDef AA_ToxicSting substituted with vanilla Scratch (donor poison-sting DamageDef/HediffDef chain dropped, mechanic simplification). Dropped: VEF.AnimalBehaviours.CompProperties_LightSustenance (sun-feeding, donor framework - eats normally per foodType instead), CompProperties_InitialAbility (venom-barb ranged ability, donor framework). -->
 		<defName>RSW_Spineroller</defName>
 		<label>kudda</label>
-		<description>A cactus-form creature that has evolved to roll and creep across the most arid ground on the Rim. Kuddas need almost no water, drawing what little they use from morning condensation, and depend on long unbroken sunlight to live - a sustained eclipse can kill a herd outright.</description>
+		<description>A cactus-form creature that has evolved to roll and creep across the most arid ground on the Rim. Kuddas need almost no water, drawing what little they use from morning condensation, and depend on long unbroken sunlight to live - sustained shade kills a herd.</description>
 		<statBases>
 			<MoveSpeed>2.50</MoveSpeed>
 			<ComfyTemperatureMin>0</ComfyTemperatureMin>
