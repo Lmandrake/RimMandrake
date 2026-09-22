@@ -1,5 +1,23 @@
 # BIOME_SPECIFIC_FAUNA_LAW_1 — one animal, one biome, unless the game says otherwise
 
+## 🔴🔴 DO NOT STRIP AN APPROVED, NEAR-DEPLOYMENT ROSTER (owner, 2026-09-22)
+
+**Verbatim, interrupting the work mid-edit:**
+
+> *"DO NOT RIP ANINALS OUT OF APPROVED BIOME ROSTERS that we've already advanced to
+> near-deployment mod status!"*
+>
+> *"Just don't apply these broad sweeping rules to overturn human requests."*
+
+🔴 **It had already started.** Two evictions were made — `RUT_Sytheclaw` out of `RUT_Greentide`
+and out of `RUT_Contagion` — before he stopped it. Both reverted byte-clean, and **nothing with an
+eviction was ever committed** (`git diff` empty on both defs). The Greentide twin had been frozen
+and cast *that same day* (`c5fe45fcc`).
+
+⛔ **A rule from this item never overturns a placement a human already approved.** The rulings in
+this item stand and are to be obeyed; what is forbidden is reaching into finished, approved work
+to enforce them.
+
 ## the law
 
 **Owner, 2026-09-21, verbatim:**
