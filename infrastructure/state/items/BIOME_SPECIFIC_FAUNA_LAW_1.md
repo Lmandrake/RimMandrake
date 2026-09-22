@@ -34,6 +34,38 @@ other candidate biomes' admissions **withdrawn into `evictions`**, not kept as s
 filled with a **new** creature. *"We have plenty of creatures left to fill rosters if there
 are holes."*
 
+## 🔑 The tie-break is ruled, and it forks on CANON (owner, 2026-09-22)
+
+Decision taken by question card; the words below are his own, typed into the card:
+
+> *"As a reminder, there are some animals we WANTED to be in multiple biomes: fliers that
+> migrate from wetter regions into hot places to lay their eggs, young sea creatures dwelling
+> in the miasma, etc. As long as you know this, and are asking about animals that don't have
+> any such relationship, then I will answer your question in that context. If the beast is
+> canon (1). If not, (2) and we regenerate the description to match. Likely should confirm
+> with the user when you're moving animals in this way, to make sure nothing is getting
+> messed up."*
+
+Where (1) and (2) were the card's tie-break options. So the algorithm is:
+
+1. **Exclude the deliberate carve-out set FIRST.** He named two mechanisms and widened one:
+   a flier that **migrates from a wetter region into a hot one to lay eggs**, and **young sea
+   creatures dwelling in the miasma** before moving on. A species in that set keeps its several
+   homes and the reason gets RECORDED on its rosters — it is not a violation.
+2. **Canon beast → its own description decides its one home.** The description is evidence and
+   is not to be rewritten to suit a placement.
+3. **Non-canon beast → the thinner roster keeps it, and we REGENERATE the description** to
+   match where it landed. This is the asymmetry that makes the rule cheap: canon constrains us,
+   our own cast adapts.
+4. ⛔ **Confirm the moves with him before applying them** — *"to make sure nothing is getting
+   messed up."* A move list is served for confirmation; it is not applied on this ruling alone.
+
+⚠️ **Library membership is not a canon test.** `design/RimStarWars/canon_references/` holds 137
+entries *by design* (45 creatures), so a beast absent from it may still be canon — `Mynock`,
+`Worrt`, `Gelagrub`, `Urusai`, `LongtailGorg`, `Woolamander` and `Gornt` are canon Star Wars
+creatures with no entry. Deciding step 2 vs 3 from `ls` on that directory would misroute all
+seven into "regenerate the description", destroying canon text. Establish canon per species.
+
 ## what it applies to — MEASURED 2026-09-21
 
 Parsed every `<wildAnimals>` block under `src/` (`ElementTree`, not grep). **299** species are
@@ -56,6 +88,39 @@ measurement artifacts and must not be counted:
 | 4 | `Convor`, `Whisperbird` |
 | 3 | `AA_Aerofleet`, `AA_BloodShrimp`, `AA_DecayDrake`, `AA_Slurrypede`, `AA_Terramorph`, `AA_Wildpod`, `Eopie`, `Kreetle`, `Nuna`, `VFEI2_Swarmling` |
 | 2 | `AA_Eyeling`, `AA_InfectedAerofleet`, `AA_Murkling`, `AA_Needlepost`, `AA_OcularJelly`, `AA_Plasmorph`, `AA_RedGoo`, `AA_Swarmling`, `AA_Wildpawn`, `Anooba`, `Bantha`, `Beldon`, `Fambaa`, `Fox_Fennec`, `GR_Beetlefleet`, `Gelagrub`, `Gizka`, `Grank`, `Iguana`, `JOE_Cephalope`, `LongtailGorg`, `Mynock`, `RM_Titanoslime`, `RSW_Gembug`, `RSW_Gizka`, `RSW_GlowSlug`, `RSW_JewelBeetle`, `RSW_Kreetle`, `RSW_Screecher`, `RSW_Spineroller`, `RSW_Stoneback`, `RSW_TruffleMole`, `RUT_Sytheclaw`, `SW_Electrictick`, `Shiro`, `Urusai`, `VFEI2_BlackSwarmling`, `Worrt` |
+
+## RE-MEASURED 2026-09-22 — same total, different membership, and the root cause
+
+Re-parsed independently (`ElementTree` over all 1500 XML files under `src/`, both `<wildAnimals>`
+on a BiomeDef and patched-in tables, aliases collapsed). **52 again** — but the agreement is
+partly coincidence and the reconciliation the `Watch out` note demands is this:
+
+- `RSW_Stoneback` has correctly **left** the set (reduced to one home at `4b068ea5d`).
+- The generic `RM_` twin exclusion is **9, not 6** — `Cougar`, `Fox_Fennec` and `Iguana` are also
+  vanilla-Core filler in the twins' deliberate generic bodies, on the same reasoning as the
+  original six.
+- Newly visible: `AA_SandSquid`, `CanCell`, `Gornt`, `Woolamander`.
+
+🔑 **Root cause — nobody was careless.** `design/Jawa/fauna/cast_assignment.csv` carries one row
+per (biome, species); **73** species hold rows in more than one biome, and **60 of those 73 carry
+a DIFFERENT habitat token per row** (`the_miasma` / `poison_forest` / `the_slime`), each with its
+own stated reason. So the casting pass ran biome-by-biome and no pass could see an animal already
+admitted elsewhere. Only 9 rows show a combined token (`dune_sea + deep_desert`, the cephalope's
+shape). ⇒ This is a constraint the CSV was never built to satisfy, not a batch of mistakes — and
+the fix belongs partly upstream in how a casting pass is run.
+
+🔴 **The columns that would settle it are empty.** That CSV has `belong` and `standout` columns —
+per-biome fit scores, exactly the mechanical tie-break — and they are **blank in all 419 rows**
+(`promoted` is `0` in all 419 too). There is no recorded basis for ranking a species' fit between
+two biomes, which is why the tie-break had to be ruled rather than computed.
+
+⚠️ **The flier carve-out is UNMEASURABLE on the Mac laptop.** 41 of the 52 are donor-owned defs
+(`AA_*`, `VFEI2_*`, `GR_*`, `JOE_*`, and bare Star Wars names) whose ThingDefs are not under
+`src/`, so `MaxFlightTime` cannot be read here and flight cannot be confirmed the one correct way
+(CLAUDE.md: the switch is the stat, never a `canFly` field). Of the 11 whose defs we do hold,
+exactly one flies: **`RSW_Screecher`, `MaxFlightTime=35.0`** (`RUT_PoisonForest` + `RUT_Wasteland`)
+— carve-out applies, pending only the migration reason being written onto its rosters. Settling
+the other 40 needs the Desktop.
 
 ## 🔴 This is an adjudication, not a sweep
 
