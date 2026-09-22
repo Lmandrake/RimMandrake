@@ -52,7 +52,7 @@ any biome's build work on its tile count.
 | `RM_FE_Pyrelands` | the Pyrelands | `src/RimMandrake/Pyrelands` / `mandrake.rm.pyrelands` | yes | terrain + plants + fauna present, 322 lines — the richest def in the whole registry | Pyrelands (per the region column) | 0 under this defName in the 2026-09-12 export — that day the 63 "Pyrelands"-region tiles were recorded under the **donor** `ZBiome_Grasslands`, not this def. A committed comment from a LIVE bridge read on 2026-09-19 asserts the reverse. Which def the tiles carry **right now** is UNMEASURED by this pass — deliberately, per `BIOME_PAINT_ONCE_AT_THE_END_1`: the terminal paint pass reads the live world once and settles it, this file does not. | PAINT — this is the only Ash'karr-owned def for the Pyrelands; `ZBiome_Grasslands` is a *More Vanilla Biomes* donor def, not ours, and is out of scope for this registry |
 | `RM_Greentide` | the Greentide | `src/RimMandrake/Greentide` / `mandrake.rm.greentide` | yes | terrain + plants + fauna present, but only 123 lines — a thinner placeholder body than its twin `RUT_Greentide`; the DRAFT plan (§4a) merges the twin's richer content in before the terminal paint | Dune Sea, Cratercrown, Dew Belt, Anvil, Hollow Verge (from its twin's 2026-09-12 tiles) | 0 under this defName in the 2026-09-12 export — all 235 tiles that day were recorded under the twin `RUT_Greentide` | PAINT — ruled survivor of the twin pair, closed item `GREENTIDE_STANDALONE_MOD_1` |
 | `RM_FloodedCanyon` | flooded canyon | `src/RimMandrake/FloodedCanyon` / `mandrake.rm.floodedcanyon` | **NOT active** in the campaign's full modlist — a def carrying 0 tiles by design is the expected mid-migration state (`BIOME_PAINT_ONCE_AT_THE_END_1`), not a defect | terrain + plants + fauna present, own generic vanilla-Core body plus 3 ported disease entries (`FLOODEDCANYON_RM_MOD_BUILD_1`); the Star Wars fauna/flora, the campaign weather ban and the "soil only from the flood" terrain override ride `src/RimUtinni/UtinniPatches/Patches/WildAnimals_CrackedLands.xml` as PatchOperationReplace/Add onto this def, not this def's own body — RM_'s generic roster stays intact for a non-campaign world | Cracked Lands | 0 — mod not enabled in the full campaign modlist yet; carries 0 tiles by design until Phase B | PAINT — ruled survivor of the twin pair (Q4, 2026-09-21, "same place"); RUT_CrackedLands merges in and is frozen |
-| `RM_GelatinousSlime` | the gelatinous slime | `src/RimMandrake/GelatinousSlime` / `mandrake.rm.gelatinousslime` | **NOT active** — absent from the live `ModsConfig.xml` | terrain + plants + fauna present, 198 lines, richest of the Slime twin pair, ships a ~30-def gene/kit system | Slime (proposed pairing, per its twin's tiles) | 0 — the mod is inactive, so this def is absent from both the 618-mod def dump and the 2026-09-12 export | **UNDECIDED** — twin pair with `RUT_Slime`; no closed item found ruling which survives, only the DRAFT doc's proposal (§4b). Also inactive, so it cannot carry tiles until the owner enables the mod regardless of the twin call. |
+| `RM_GelatinousSlime` | the gelatinous slime | `src/RimMandrake/GelatinousSlime` / `mandrake.rm.gelatinousslime` | **ACTIVE — CORRECTED 2026-09-21.** Confirmed present in `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (620 active mods, parsed via `xml.etree.ElementTree`, not grep). The "NOT active" claim below was true against the 2026-09-20T20:14:27Z capture (618 mods) but is stale as of `SLIME_GENE_ARCHIVE_BUILD_1`'s close (`f8304235e`), whose own prose recorded the mod as live during its quicktest and the doctrinal full list as having been missing it before recapture. | terrain + plants + fauna present, 198 lines, richest of the Slime twin pair; as of today also ships the full 33-target A/B-list gene/kit system (`SLIME_GENE_ARCHIVE_BUILD_1`, live-verified) | Slime (proposed pairing, per its twin's tiles) | 0 under this defName in the 2026-09-12 export (mod was inactive then) — tile count is UNMEASURED now that the mod is active; not remeasured here per `BIOME_PAINT_ONCE_AT_THE_END_1` | **UNDECIDED** — twin pair with `RUT_Slime`; no closed item found ruling which survives, only the DRAFT doc's proposal (§4b). The mod being active removes the previous blocker on that decision. |
 
 Donor def out of scope, noted for context only: `ZBiome_Grasslands` (*More Vanilla
 Biomes*) is not `RM_*`/`RUT_*`/`RSW_*` and is not ours — it does not get a row, but it
@@ -84,10 +84,12 @@ Wars creatures become patches").
    answered, neither def's paint verdict can be finalized, and `mandrake.rm.floodedcanyon`
    is also not in the active mod list.
 2. **Slime twin** (`RUT_Slime` vs `RM_GelatinousSlime`) — the DRAFT doc proposes
-   `RM_GelatinousSlime` as the survivor (richer article, existing gene/kit system) but,
-   unlike Greentide, no closed item was found actually ruling it. Needs an explicit owner
-   call, and `mandrake.rm.gelatinousslime` needs activating in the mod list before it can
-   carry tiles either way.
+   `RM_GelatinousSlime` as the survivor (richer article, existing gene/kit system, now also
+   the full A/B-list built 2026-09-21) but, unlike Greentide, no closed item was found
+   actually ruling it. Needs an explicit owner call. **CORRECTED 2026-09-21:
+   `mandrake.rm.gelatinousslime` is already active** (confirmed in
+   `ModsConfig.FULL.LATEST.xml`) — the mod-activation blocker no longer applies, only the
+   ruling itself is outstanding.
 3. **Whole architecture doc is DRAFT.** `design/RimMandrake/biome_mod_architecture.md` is
    marked "DRAFT for owner review; builds nothing" with its own §7 list of open questions
    (naming, the Scarlands worker collision, the Pyrelands rename, flora ownership, etc.).
@@ -98,8 +100,9 @@ Wars creatures become patches").
 
 ## Unmeasured
 
-- Whether `RM_FloodedCanyon` and `RM_GelatinousSlime`'s mod **folders** exist in the live
-  Steam Mods directory (only their absence from `ModsConfig.xml` was checked here).
+- Whether `RM_FloodedCanyon`'s mod **folder** exists in the live Steam Mods directory (only
+  its absence from `ModsConfig.xml` was checked here). `RM_GelatinousSlime`'s is confirmed
+  active as of 2026-09-21 — see its row above — so this no longer applies to it.
 - The **live**, right-now BiomeDef under the Pyrelands tiles (deliberately not measured by
   this pass — see the `RM_FE_Pyrelands` row and `BIOME_PAINT_ONCE_AT_THE_END_1`).
 - Full completeness (hediffs, game conditions, mod-settings gating) per biome beyond
