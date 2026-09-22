@@ -66,40 +66,43 @@ entries *by design* (45 creatures), so a beast absent from it may still be canon
 creatures with no entry. Deciding step 2 vs 3 from `ls` on that directory would misroute all
 seven into "regenerate the description", destroying canon text. Establish canon per species.
 
-## what it applies to — MEASURED 2026-09-21
+## what it applies to — MEASURED 2026-09-22, and the count is 55
 
-Parsed every `<wildAnimals>` block under `src/` (`ElementTree`, not grep). **299** species are
-wired into one of our BiomeDefs. **58** appear in more than one — but two of those are
-measurement artifacts and must not be counted:
+🔴 **The figure is 55, not 52.** Two earlier passes (2026-09-21, and a re-measure earlier on
+2026-09-22 that wrongly reported "52 again") both used an instrument that could not read a
+patched-in roster. Both wrong numbers are deleted rather than kept beside this one; `git log` on
+this file carries them. **The two instrument bugs, because either will recur:**
 
-- `RUT_Umbra` is a **compat duplicate** of `RUT_FuelSnows` (same biome, two defNames pending
-  the terminal repaint), so a species in both has ONE home, not two. Aliased before counting.
-- The `RM_` twins (`RM_FloodedCanyon`, `RM_Pyrelands`, `RM_Greentide`) carry a **deliberate
-  generic vanilla-Core body** so a non-campaign RimWorld game gets ordinary wildlife — that is
-  the pattern `FLOODEDCANYON_RM_MOD_BUILD_1` established. `Rat`/`Warg`/`Muffalo`/`Elephant`/
-  `Hare`/`Dromedary` living in several of them is correct and out of scope. **6 excluded.**
+1. **A patched-in `<wildAnimals>` was attributed by hunting for a nearby `<xpath>` element.**
+   That mis-assigns silently. It put `RUT_Sytheclaw` in `RM_Greentide` (whose roster is pure
+   vanilla filler and does not contain it) and **missed `RM_Pyrelands` entirely** — the biome
+   whose fire is the sytheclaw's whole description. Resolve a patch's target from the
+   PatchOperation's **own** `xpath`, and read species from its `<value>`.
+2. **The `RM_FloodedCanyon` / `RUT_CrackedLands` twin was not collapsed**, inflating the set with
+   four species that have one home: `AA_SandSquid`, `CanCell`, `Gornt`, `Woolamander`.
 
-⇒ **52 genuine multi-homed species.** Distribution: 1 in five biomes, 2 in four, 10 in three,
-39 in two.
+🔑 **The RM_ twin mechanism is why this matters.** An `RM_` twin's BiomeDef carries only the
+deliberate generic vanilla-Core body (`RM_Greentide` = Warg/Muffalo/Elephant/Cobra/Megaspider/
+Rat/Hare); the campaign cast is added **on top by a patch** (`UtinniPatches/Patches/
+WildAnimals_<Biome>.xml`, `MayRequire` the twin's mod). So reading BiomeDefs alone sees a twin's
+generic half and none of its real roster. Twins collapsed here: Greentide, Pyrelands,
+CrackedLands, Slime, FuelSnows(`RUT_Umbra`).
 
-| homes | species |
-|---|---|
-| 5 | `AA_Helixien` (Contagion, Miasma, PoisonForest, Scarlands, Slime) |
-| 4 | `Convor`, `Whisperbird` |
-| 3 | `AA_Aerofleet`, `AA_BloodShrimp`, `AA_DecayDrake`, `AA_Slurrypede`, `AA_Terramorph`, `AA_Wildpod`, `Eopie`, `Kreetle`, `Nuna`, `VFEI2_Swarmling` |
-| 2 | `AA_Eyeling`, `AA_InfectedAerofleet`, `AA_Murkling`, `AA_Needlepost`, `AA_OcularJelly`, `AA_Plasmorph`, `AA_RedGoo`, `AA_Swarmling`, `AA_Wildpawn`, `Anooba`, `Bantha`, `Beldon`, `Fambaa`, `Fox_Fennec`, `GR_Beetlefleet`, `Gelagrub`, `Gizka`, `Grank`, `Iguana`, `JOE_Cephalope`, `LongtailGorg`, `Mynock`, `RM_Titanoslime`, `RSW_Gembug`, `RSW_Gizka`, `RSW_GlowSlug`, `RSW_JewelBeetle`, `RSW_Kreetle`, `RSW_Screecher`, `RSW_Spineroller`, `RSW_Stoneback`, `RSW_TruffleMole`, `RUT_Sytheclaw`, `SW_Electrictick`, `Shiro`, `Urusai`, `VFEI2_BlackSwarmling`, `Worrt` |
+⇒ **55 genuine multi-homed species** after twin collapse and after excluding vanilla-Core filler
+(`Rat`, `Warg`, `Muffalo`, `Elephant`, `Hare`, `Dromedary`, `Cougar`, `Fox_Fennec`, `Iguana`,
+`Cobra`, `Megaspider`). Instrument: `/tmp/homes2.py` shape, documented above — rebuild it, do not
+trust a scan.
 
-## RE-MEASURED 2026-09-22 — same total, different membership, and the root cause
+**Species the broken instrument had never surfaced** — all of them patch-cast into an `RM_` twin,
+so all of them were invisible: `RSW_Clodhopper`, `RSW_Dalgo`, `RSW_Falumpaset`, `RSW_Iriaz`,
+`RSW_Nuna`, `RSW_ShiroTrap`, `RSW_Worrt`, `RSW_Zeer`. And two counts were badly understated:
+`RSW_Gizka` is in **4** places (Greentide, Pyrelands, Desert, Extreme Desert) and `RUT_Sytheclaw`
+in **3** (Greentide, Pyrelands, Contagion).
 
-Re-parsed independently (`ElementTree` over all 1500 XML files under `src/`, both `<wildAnimals>`
-on a BiomeDef and patched-in tables, aliases collapsed). **52 again** — but the agreement is
-partly coincidence and the reconciliation the `Watch out` note demands is this:
+`RSW_Stoneback` has correctly **left** the set (reduced to one home at `4b068ea5d`).
+`RM_Titanoslime` has left it too — `RM_GelatinousSlime` + `RUT_Slime` is the Slime twin, one home.
 
-- `RSW_Stoneback` has correctly **left** the set (reduced to one home at `4b068ea5d`).
-- The generic `RM_` twin exclusion is **9, not 6** — `Cougar`, `Fox_Fennec` and `Iguana` are also
-  vanilla-Core filler in the twins' deliberate generic bodies, on the same reasoning as the
-  original six.
-- Newly visible: `AA_SandSquid`, `CanCell`, `Gornt`, `Woolamander`.
+## The root cause of the multi-homing
 
 🔑 **Root cause — nobody was careless.** `design/Jawa/fauna/cast_assignment.csv` carries one row
 per (biome, species); **73** species hold rows in more than one biome, and **60 of those 73 carry
@@ -114,13 +117,13 @@ per-biome fit scores, exactly the mechanical tie-break — and they are **blank 
 (`promoted` is `0` in all 419 too). There is no recorded basis for ranking a species' fit between
 two biomes, which is why the tie-break had to be ruled rather than computed.
 
-⚠️ **The flier carve-out is UNMEASURABLE on the Mac laptop.** 41 of the 52 are donor-owned defs
-(`AA_*`, `VFEI2_*`, `GR_*`, `JOE_*`, and bare Star Wars names) whose ThingDefs are not under
-`src/`, so `MaxFlightTime` cannot be read here and flight cannot be confirmed the one correct way
-(CLAUDE.md: the switch is the stat, never a `canFly` field). Of the 11 whose defs we do hold,
-exactly one flies: **`RSW_Screecher`, `MaxFlightTime=35.0`** (`RUT_PoisonForest` + `RUT_Wasteland`)
-— carve-out applies, pending only the migration reason being written onto its rosters. Settling
-the other 40 needs the Desktop.
+⚠️ **The flier carve-out is UNMEASURABLE on the Mac laptop.** **38 of the 55** are donor-owned
+defs (`AA_*`, `VFEI2_*`, `GR_*`, `JOE_*`, `SW_*`, and bare Star Wars names) whose ThingDefs are
+not under `src/`, so `MaxFlightTime` cannot be read here and flight cannot be confirmed the one
+correct way (CLAUDE.md: the switch is the stat, never a `canFly` field). Of the **17** whose defs
+we hold, exactly one flies: **`RSW_Screecher`, `MaxFlightTime=35.0`** (`RUT_PoisonForest` +
+`RUT_Wasteland`) — carve-out approved by the owner 2026-09-22, pending only the migration reason
+being written onto both rosters. Settling the other 37 needs the Desktop.
 
 ## 🔴 This is an adjudication, not a sweep
 
