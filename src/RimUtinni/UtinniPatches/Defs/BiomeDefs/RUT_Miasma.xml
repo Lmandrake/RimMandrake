@@ -215,6 +215,7 @@
       <Yobshrimp MayRequire="mlie.starwarsanimalcollection">0.8</Yobshrimp>  <!-- yobshrimp - arthropod-floor, import -->
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin, keep -->
       <RSW_Gembug MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Gembug>  <!-- gembug - arthropod-floor, keep -->
+      <RSW_PodWorm MayRequire="mandrake.rsw.swbestiary">0.5</RSW_PodWorm>  <!-- pod worm - large grazer (bodySize 4, not a predator), import; MIASMA_FEVERWOOD_GREENTIDE_BMT_1 -->
       <Runyip MayRequire="mlie.starwarsanimalcollection">0.5</Runyip>  <!-- runyip - muck-forager, adjust-keep -->
       <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin, keep -->
       <RSW_CrestedDragon MayRequire="mandrake.rsw.swbestiary">0.4</RSW_CrestedDragon>  <!-- crested dragon - channel-predator, keep -->

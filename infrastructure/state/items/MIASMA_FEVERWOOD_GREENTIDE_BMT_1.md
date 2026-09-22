@@ -48,3 +48,76 @@ every species each roster still admits resolves against the active mod list.
 ## criteria
 
 Each of the three rosters names only species that can exist in the shipped game.
+
+## ✅ The BMT_ half is DONE — BENCH, 2026-09-21, at the owner's direction
+
+Done from the Mac laptop (no bridge, no game) in a BENCH session he asked for it in, so
+⛔ **FOUNDRY should not redo this half.** All seven names resolved; none was case (c).
+
+**MEASURED first, judgment second.** Every one of the 7 species is already ported as an
+`RSW_` def in `src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml`
+(74 defs, parsed with `ElementTree`), and **five of the seven were already wired** in their
+biome's `<wildAnimals>` under the ported name — so the "defect" was a stale JSON row, not
+missing content:
+
+| dead name | owned as | wiring found | fix |
+|---|---|---|---|
+| `BMT_CrestedDragon` | `RSW_CrestedDragon` | `RUT_Miasma` 0.4 | rename row only |
+| `BMT_GlowSlug` | `RSW_GlowSlug` | `RUT_FeverWood` 0.5 (+ `RUT_LanternDeeps` 0.2) | rename row only |
+| `BMT_JewelBeetle` | `RSW_JewelBeetle` | `RUT_FeverWood` 0.2 (+ `RUT_Webwork` 0.3) | rename row only |
+| `BMT_AcidSlug` | `RSW_AcidSlug` | `RUT_FeverWood` 0.05 | rename row only |
+| `BMT_Diggerpede` | `RSW_Diggerpede` | `RUT_Greentide` 0.4 | rename row only |
+| `BMT_AaroxisDendoria` | `RSW_AaroxisDendoria` | `RUT_Miasma` 0.3 | rename row; **needed the ruling below** |
+| `BMT_PodWorm` | `RSW_PodWorm` | **nowhere** | rename row **and wire** `RUT_Miasma` 0.5 |
+
+### 🔑 The ruling this pass needed, and it generalises
+
+The last two collided with the **Lantern Deeps sheet** (`deeps_flora_fauna_review_2026-09-18`,
+frozen, his words on accepting it: *"Accept Lantern Deeps ruling and follow its regeneration
+request."*), which marked `RSW_AaroxisDendoria` and `RSW_PodWorm` **cut** among its 7 cuts.
+Renaming them silently would have asserted they are still admitted.
+
+**Owner ruled 2026-09-21 (question card): a review sheet's `cut` is scoped to THAT SHEET'S
+BIOME, not the planet.** So both stay admitted in the Miasma. This settles every future
+sheet, not just these two.
+
+⚠️ The ruling also retro-justifies an existing case that looked like a leak: `RSW_MossBeetle`
+was cut by the same Deeps sheet and is still wired in `RUT_AridShrubland` at 0.3. Under this
+ruling that is CORRECT and must not be "fixed".
+
+`RSW_PodWorm` was wired at the roster's own 0.5 (from the 2026-09 round2 move mapping).
+Checked against `ECOSYSTEM_PYRAMID_LAW_1` before wiring, because it is `bodySize 4`
+(MEASURED off our port, not the donor comment): the Miasma is 76.1% small-weighted
+commonality today, total commonality ~9.0, so one large at 0.5 takes it to ~72% — still
+clear of that item's proposed 60% threshold. Not a pyramid violation.
+
+### Verified
+
+Zero `BMT_` names remain in `the_miasma.json`, `the_fever_wood.json`, `the_greentide.json`
+or in the three `<wildAnimals>` blocks (parsed, not grepped). `validate_patch.py` on the
+edited `RUT_Miasma.xml`: 0 errors, 0 warnings.
+
+### 🔴 NOT verified from here — the second verify clause is UNMEASURABLE on the laptop
+
+"every species each roster still admits resolves against the active mod list" was **not**
+checked: `measure` is not executable on this machine (`permission denied`), and there is no
+local def dump. A Desktop session must run it. What a resolution check should look at —
+**11 admitted-but-unwired species**, all non-`BMT_`, found while verifying:
+
+- `RUT_Miasma` (7): `Blarth`, `Blixus`, `Bogwing`, `Dianoga`, `JRWBeelzebufo`, `MarshHaunt`,
+  `RSW_SandoAquaMonster`
+- `RUT_FeverWood` (1): `AA_SmallButterfly`
+- `RUT_Greentide` (3): `AA_SmallButterfly`, `AA_Wildpawn`, `GiantAnt_Race`
+
+⚠️ Admitted-but-unwired is **not** by itself a defect — some are deliberate off-map raiders
+or fish, exactly as `the_fever_wood.json`'s own confidence block says of `GiantAnt_Race`
+("it wires as an off-map raider (ban 3), never a `wildAnimals` resident"). Do not bulk-wire
+them; that is the trap this item's own spec warns about.
+
+### Noted, deliberately NOT filed as a defect
+
+94 distinct `BMT_` defNames are still targeted by xpath across 12 of our patch files (42 in
+`Doctrine/Patches/MegafaunaYield.xml` alone) while `biomesteam.biomescaverns` is inactive —
+**but those files wrap their ops in `PatchOperationConditional`** (931 in MegafaunaYield), so
+they are inert by design, not silently broken. Cleanup at most, and only when something else
+is already open in those files.

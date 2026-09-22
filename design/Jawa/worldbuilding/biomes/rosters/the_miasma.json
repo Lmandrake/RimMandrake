@@ -271,8 +271,8 @@
       "action": "keep",
       "band": "strange",
       "commonality": 0.3,
-      "def": "BMT_AaroxisDendoria",
-      "law": "§1 on the verge of something — slow alien oddity (spd 2.0 MEASURED)"
+      "def": "RSW_AaroxisDendoria",
+      "law": "§1 on the verge of something — slow alien oddity (spd 2.0 MEASURED); MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_AaroxisDendoria to the already-ported, already-wired RSW_ name (RUT_Miasma at 0.3). The Lantern Deeps sheet (2026-09-19) ruled this species CUT there; owner ruled 2026-09-21 that a sheet's cut is scoped to that sheet's biome only, so it stays admitted here"
     },
     {
       "action": "import",
@@ -410,8 +410,8 @@
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_PodWorm",
-      "law": "owner review 2026-09 (round2 move mapping): Maisma"
+      "def": "RSW_PodWorm",
+      "law": "owner review 2026-09 (round2 move mapping): Maisma; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_PodWorm to the ported RSW_ name and WIRED into RUT_Miasma at 0.5 (was admitted by the round2 mapping but never wired anywhere). CUT by the Lantern Deeps sheet 2026-09-19, which under the owner's 2026-09-21 ruling is scoped to the Deeps only. bodySize 4 (MEASURED); the biome still passes ECOSYSTEM_PYRAMID_LAW_1 at ~72% small-weighted commonality, down from 76.1%"
     },
     {
       "action": "import",
