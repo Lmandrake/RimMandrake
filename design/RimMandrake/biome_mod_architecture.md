@@ -536,9 +536,9 @@ originally written this rule said "donor fauna", which would have admitted
 `mlie.starwarsanimalcollection` rows into `RM_` defs. It never meant that.
 
 **Q11 — may a RimMandrake-tier def name a Star Wars creature at all? NO, NEVER.** Owner,
-2026-09-22. ⚠️ Provenance: he typed this in a **question-card note**, not a chat turn, so
-`--owner-said` refuses it (`block_forged_owner_said.py` only sees transcript user turns) —
-cite it as a card ruling, do not try to stamp a ledger event with it:
+2026-09-22, typed into a **question-card note** — valid owner-said provenance as of that same
+day, when he ruled card text counts and `block_forged_owner_said.py` was widened to accept it
+(an option label he merely clicked still does not count):
 
 > *"RimMandrake should not name star wars ever. RimMandrake.StarWars purely centers around
 > this. Utinni is all about this particular scenario."*

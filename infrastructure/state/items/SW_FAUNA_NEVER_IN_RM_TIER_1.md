@@ -2,8 +2,9 @@
 
 ## the ruling
 
-Owner, 2026-09-22, in a question-card note (⚠️ **not** a chat turn, so `--owner-said` refuses
-these words — cite it as a card ruling):
+Owner, 2026-09-22, typed into a question-card note — which **is** valid owner-said provenance
+as of the same day (he ruled it so, and `block_forged_owner_said.py` now accepts card notes;
+an option label he merely *clicked* still does not count):
 
 > *"RimMandrake should not name star wars ever. RimMandrake.StarWars purely centers around
 > this. Utinni is all about this particular scenario."*
@@ -114,9 +115,9 @@ same biome inside the Utinni scenario is unchanged from today.
   cannot sit on a `RM_` def either — the Odyssey `fishTypes` block needs the same Utinni-patch
   treatment, and no existing `WildAnimals_*.xml` does that yet. **This is the one part of the
   routing with no precedent to copy.**
-- ⚠️ **Do not use `--owner-said` with the quote at the top of this file.** It came through a
-  question-card note rather than a chat turn, so `block_forged_owner_said.py` refuses it and
-  the refusal looks like a forgery accusation. Cite it as a card ruling.
+- ✅ **The quote at the top IS usable as owner-said provenance** — card notes were made valid
+  2026-09-22 on his ruling. ⛔ But an option **label** still is not: the guard subtracts every
+  string the assistant authored, so quoting a label he clicked is refused by design.
 - 🔑 The `MayRequire` attribute is the only reliable tier signal, and **the defName is not** —
   Mlie's Star Wars rows carry bare names (`Gizka`, `Bantha`, `Convor`, `Nuna`) with no prefix
   at all, which is exactly how 22 of them got read as "vanilla" in the first place. Bucket by
