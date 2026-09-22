@@ -18,6 +18,31 @@ and cast *that same day* (`c5fe45fcc`).
 this item stand and are to be obeyed; what is forbidden is reaching into finished, approved work
 to enforce them.
 
+## 🔴🔴 EVICTIONS ARE STOPPED. THIS IS PER-BIOME WORK NOW (owner, 2026-09-22)
+
+> *"Let's stop evictions right now, because I think it's much better to carefully handle biome by
+> biome rather than sweeping changes between unfinished biomes and nearly finished biomes."*
+
+⛔ **No evictions under this item. None.** Not gated on a protected-roster list, not deferred —
+stopped. The mechanism is **per-biome review**, one biome at a time, in its own sitting.
+
+🔑 **The reason is the one thing a sweep structurally cannot do:** the biomes are at very different
+stages — some barely cast, some frozen and near deployment — and a planet-wide pass applies one
+judgement across all of them at once. A per-biome pass sees the stage of the biome it is working
+on. That is why this is a review process and not a rule.
+
+⇒ **What this item is FOR, from here on:** it holds the measurement, the defects found, and the
+owner's rulings **as input to per-biome sittings**. It is not a work queue of moves.
+
+- ✅ Still valid, and all landed: the kudda's description (`1340f5977`), gembug + glowbulb as
+  hydrocarbon lifeforms (`cdce2e252`), the screecher's migration recorded as approved
+  (`29ccede91`). None of these evicted anything.
+- ⛔ Dead as planned work: the cephalope / truffle mole / jewel beetle / sytheclaw moves, and the
+  description rewrites that depended on them. They are **not** owed work. If those species come up
+  again it is inside their biome's own review, judged there.
+- ⛔ **Do not re-derive a tie-break algorithm from the rulings recorded below.** They were given in
+  the course of one, and building another is the mistake this ruling ends.
+
 ## the law
 
 **Owner, 2026-09-21, verbatim:**
@@ -199,23 +224,30 @@ authoring work, not a deletion.
 
 ## spec
 
-1. **Bucket the 52 first, cheaply**: flier / juvenile-line / twin-or-alias artifact / desert-pair
-   / genuinely duplicated. Only the last bucket needs a real call. Publish the buckets before
-   changing anything.
-2. For each genuinely duplicated species, **pick its one home** on the sheets' evidence (which
-   biome's law actually calls for it), and record the choice in the losing roster's `evictions`
-   with the reason.
-3. **Count the holes** each eviction opens, per biome, and file the fill as its own work — new
-   creatures, per his second half. Do not leave a roster thinner than it was without saying so.
-4. Re-check `ECOSYSTEM_PYRAMID_LAW_1` per touched biome afterwards: removing a small animal can
-   invert a pyramid that was passing.
+⛔ The old spec here instructed a planet-wide pass that picked each species' one home and wrote
+evictions into losing rosters. That is **deleted, not deferred** — the owner stopped evictions on
+2026-09-22 and moved this to per-biome review. What replaces it:
+
+1. **Nothing sweeps.** No pass under this item edits a roster.
+2. **When a biome comes up for its own review sitting**, bring that biome's multi-homed species in
+   as rows on its sheet, with the measurement below as the evidence: which other biomes hold the
+   same species, and at what weight. The human judges them there, in that biome's context and at
+   that biome's stage of completion.
+3. **A species whose multi-homing is deliberate is annotated in place, never cut** — the screecher
+   is the worked precedent (`29ccede91`): both rosters keep it and both say why, plus an explicit
+   instruction not to "fix" it.
+4. **Keep the measurement honest and re-runnable.** The instrument is described under
+   *what it applies to* below; ⛔ do not trust a scan, and do not read BiomeDefs alone (an `RM_`
+   twin's real cast is patch-added).
+5. `DUPLICATE_CANON_DEFNAME_PAIRS_1` is a genuine defect found here and is **separate live work** —
+   four canon animals shipping under two defNames each. It is not blocked by this stop, because
+   merging two defNames for one animal is not an eviction.
 
 ## verify
 
-Every species wired in more than one of our BiomeDefs either has a stated in-game reason
-recorded on its rosters (flier/migration/life-stage) or has been reduced to one home with an
-eviction record naming the losing biome. No biome newly fails the pyramid law. No roster is
-left with an unfiled hole.
+There is no sweep to verify. Per biome: every multi-homed species in that biome's roster has been
+looked at in that biome's review, and any that keeps several homes says on the roster why. The
+measurement below re-runs and reports the same set.
 
 ## criteria
 
