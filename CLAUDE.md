@@ -157,6 +157,13 @@ MEASURED about the live world — the live system is the only instrument for "ri
   defects fixed 2026-09-02 and closed at `747b0025`, and an open item was still telling
   FOUNDRY to re-fix them. Check the code and the ledger before believing any doc's
   "engine status" — and check whether an open item is asking for work already done.
+- 🔑 **A review sheet's `cut` is scoped to THAT SHEET'S BIOME, never the planet** — owner
+  ruling 2026-09-21. The Lantern Deeps sheet cut `RSW_AaroxisDendoria`, `RSW_PodWorm` and
+  `RSW_MossBeetle`; all three legitimately remain admitted elsewhere (the first two in the
+  Miasma, the third in the Arid Shrubland at 0.3). ⛔ So a species cut in one sheet and
+  alive in another biome is **correct, not a leak** — do not "fix" it, and do not read one
+  sheet's verdict as a planet-wide sweep. A cut with an empty note says nothing about
+  anywhere else.
 - 🔴 **A gate cited by NAME outlives the item it names — check the item's state.**
   `NAMING_SCHEME_EXECUTION_1` closed **2026-08-31** at `54a8e28d` on the owner's word,
   yet ~20 live docs still said "do not rename ahead of it" 16 days later, which is why
