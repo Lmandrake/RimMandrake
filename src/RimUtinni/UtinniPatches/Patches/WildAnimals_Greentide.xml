@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_Greentide.xml                 UtinniPatches — new file 2026-09-22
+  ============================================================================
+
+  Puts the campaign's Greentide fauna roster onto RM_Greentide, replacing the
+  deliberate Core-only roster that src/RimMandrake/Greentide/Defs/BiomeDefs/
+  RM_Greentide_Biome.xml ships (Warg, Muffalo, Elephant, Cobra, Megaspider,
+  Rat, Hare — kept there so the Greentide mod is self-contained and works with
+  nothing else loaded). The campaign wiring lives HERE, never in the Greentide
+  mod itself.
+
+  WHY THIS FILE HAS TO EXIST. §7 Q11 (owner, 2026-09-22): "RimMandrake should
+  not name star wars ever." So RM_Greentide may not carry this cast, and at
+  Phase B of design/RimMandrake/biome_mod_architecture.md the RUT_Greentide def
+  that currently carries it dies and RM_Greentide takes the tiles. Without this
+  patch in place by then, the Greentide would lose its entire cast on the live
+  world. WildAnimals_Pyrelands.xml is the shape this copies.
+
+  🔑 SOURCE OF TRUTH: every weight below is copied verbatim from
+  Defs/BiomeDefs/RUT_Greentide.xml's own wildAnimals block (frozen 2026-09-22),
+  which is the roster the world runs on today. Nothing is rescaled, added or
+  dropped — 27 rows there, 27 rows here, summing to 9.318 either way.
+
+  🔴 OUR DEFS, NOT THE DONOR'S. Owner ruling 2026-09-19, verbatim: "They should
+  be using OUR creatures, not the donor references. The donor references, if
+  any, should never be used again." RUT_Greentide still names 22 rows as
+  mlie.starwarsanimalcollection's bare defNames (Gizka, Convor, Nuna...). All
+  22 exist as our own RSW_ ports — MEASURED 2026-09-22, each confirmed present
+  as BOTH a PawnKindDef and a ThingDef, which matters because a wildAnimals key
+  resolves to a PawnKindDef and a ThingDef name there fails silently. This file
+  casts the ports:
+
+    Gizka        -> RSW_Gizka         Clodhopper   -> RSW_Clodhopper
+    Whisperbird  -> RSW_Whisperbird   Worrt        -> RSW_Worrt
+    Shiro        -> RSW_Shiro         ShiroTrap    -> RSW_ShiroTrap
+    Klorslug     -> RSW_Klorslug      Mott         -> RSW_Mott
+    Nuna         -> RSW_Nuna          Convor       -> RSW_Convor
+    Falumpaset   -> RSW_Falumpaset    Gelagrub     -> RSW_Gelagrub
+    Kinrath      -> RSW_Kinrath       Fambaa       -> RSW_Fambaa
+    PekoPeko     -> RSW_PekoPeko      Dalgo        -> RSW_Dalgo
+    Hawkbat      -> RSW_Hawkbat       Hssiss       -> RSW_Hssiss
+    Dianoga      -> RSW_Dianoga       Dragonsnake  -> RSW_Dragonsnake
+    Lylek        -> RSW_Lylek         Beldon       -> RSW_Beldon
+
+  RSW_Diggerpede was already ours in the source def. The two AA_ rows and the
+  one VFEI2_ row are non-Star-Wars donors, so §7 Q9 would allow them inline on
+  RM_Greentide — but that mod's own header commits it to a Core-only roster
+  ("no third-party or franchise-specific fauna, no MayRequire on a third-party
+  bestiary"), so they are cast here too and RM_Greentide stays pure Core.
+
+  ============================================================================
+  DELIBERATELY NOT IN THIS FILE YET — see SW_FAUNA_NEVER_IN_RM_TIER_1
+  ============================================================================
+
+  1. THE 8 STAR WARS wildPlants. RUT_Greentide's plant list carries
+     Plant_HydenockTree_Wild 1.5, Plant_JoganTree_Wild 1.2, Plant_MujaFruit_Wild
+     1.0, Plant_HubbaGourd_Wild 0.8, Plant_FelucianGlowspore_Wild 0.6,
+     Plant_Bubblespore_Wild 0.5, Plant_Chakroot_Wild 0.5, Plant_TookeTrap_Wild
+     0.5 — all mlie.starwarsanimalcollection. MEASURED 2026-09-22: only TWO have
+     our ports (RSW_Plant_HubbaGourd_Wild, RSW_Plant_Chakroot_Wild); the other
+     SIX do not exist as ours. Casting the donor names is forbidden by the
+     2026-09-19 ruling above, and casting only two would leave the campaign
+     Greentide nearly flowerless at Phase B — so the whole plant block waits on
+     DONOR_DEFS_PORT_TO_OURS_1 porting those six. ⛔ Do not "fix" this by
+     reaching for the donor defNames.
+
+  2. THE fishTypes BLOCK. Every entry in RUT_Greentide's is ours already
+     (RSW_MeeCatch/FaaCatch/LaaCatch plus RUT_Zeev/Uvva/Karrun/Dubbol/Lozh/
+     Saava/Tuun and RUT_RareGreentideCatches), so it needs no porting — but it
+     is an Odyssey-gated nested structure rather than a flat shorthand
+     dictionary, no existing WildAnimals_*.xml routes one, and it wants a load
+     to confirm the nesting survives the patch. It moves with the plant pass.
+
+  ⚠️ RUT_Sytheclaw is cast under its current live defName. §7 Q10 renames it to
+  RM_Sytheclaw as part of its own seven-creature sweep; this file follows that
+  rename when it happens, it does not front-run it. Note also that the sytheclaw
+  is wired to BOTH the Greentide (0.2 here) and the Pyrelands (0.2, in
+  WildAnimals_Pyrelands.xml), which BIOME_SPECIFIC_FAUNA_LAW_1 has yet to
+  adjudicate — that is one of its 52 multi-homed species, not a defect of this
+  file.
+
+  ============================================================================
+  STRUCTURE AND VERIFICATION
+  ============================================================================
+
+  Shorthand-dictionary form throughout (`<RSW_Gizka>1.0</RSW_Gizka>`) — the only
+  form BiomeAnimalRecord.LoadDataFromXmlCustom reads, same as the Pyrelands file.
+  Op 1 REPLACES the node (dropping the Core-only roster) with the one def this
+  mod itself always ships; ops 2-4 then Add onto the now-existing node behind the
+  gate for each cast's home mod. Every op is wrapped in a
+  PatchOperationConditional on the target node, so the whole file is a silent
+  no-op if mandrake.rm.greentide is ever not loaded.
+
+  ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional
+  returns true on no match, and an unmatched PatchOperationAdd is silent. A clean
+  validate_patch.py run is NOT proof a row landed. 🔴 UNVERIFIED AGAINST A LOAD:
+  authored on the Mac laptop, where there is no def dump and no game
+  (GREENTIDE_RM_MOD_BUILD_1 step 5 is owed). Confirm all 27 rows from a
+  post-load def dump on the Desktop before believing this file works.
+-->
+<Patch>
+
+  <!-- Drop RM_Greentide's Core-only roster and seat this mod's own def. Guarded
+       on the target node rather than on a donor: RUT_Sytheclaw ships with
+       UtinniPatches itself (Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml),
+       so it is always loaded whenever this file is. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <RUT_Sytheclaw>0.2</RUT_Sytheclaw>
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- The Star Wars cast, all 23 as OUR OWN RSW_ defs (never the donor's bare
+       names — owner 2026-09-19). Weights verbatim from RUT_Greentide.xml. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
+      <value>
+        <RSW_Gizka>1.0</RSW_Gizka>
+        <RSW_Clodhopper>0.7</RSW_Clodhopper>
+        <RSW_Whisperbird>0.7</RSW_Whisperbird>
+        <RSW_Worrt>0.7</RSW_Worrt>
+        <RSW_Shiro>0.5</RSW_Shiro>
+        <RSW_ShiroTrap>0.5</RSW_ShiroTrap>
+        <RSW_Diggerpede>0.4</RSW_Diggerpede>
+        <RSW_Klorslug>0.4</RSW_Klorslug>
+        <RSW_Mott>0.4</RSW_Mott>
+        <RSW_Nuna>0.4</RSW_Nuna>
+        <RSW_Convor>0.3</RSW_Convor>
+        <RSW_Falumpaset>0.3</RSW_Falumpaset>
+        <RSW_Gelagrub>0.3</RSW_Gelagrub>
+        <RSW_Kinrath>0.3</RSW_Kinrath>
+        <RSW_Fambaa>0.25</RSW_Fambaa>
+        <RSW_PekoPeko>0.2</RSW_PekoPeko>
+        <RSW_Dalgo>0.18</RSW_Dalgo>
+        <RSW_Hawkbat>0.18</RSW_Hawkbat>
+        <RSW_Hssiss>0.18</RSW_Hssiss>
+        <RSW_Dianoga>0.15</RSW_Dianoga>
+        <RSW_Dragonsnake>0.12</RSW_Dragonsnake>
+        <RSW_Lylek>0.05</RSW_Lylek>
+        <RSW_Beldon>0.008</RSW_Beldon>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Alpha Animals: the floor-vermin needlepost and the margin-predator blood
+       shrimp. Non-Star-Wars donors, so Q9 would permit these inline on
+       RM_Greentide — cast here instead to keep that mod's Core-only promise. -->
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphaanimals">
+    <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
+      <value>
+        <AA_Needlepost>0.3</AA_Needlepost>
+        <AA_BloodShrimp>0.2</AA_BloodShrimp>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- VFE Insectoids 2: the swarmlings. Same reasoning as the Alpha Animals
+       block above. -->
+  <Operation Class="PatchOperationConditional" MayRequire="oskarpotocki.vfe.insectoid2">
+    <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
+      <value>
+        <VFEI2_Swarmling>0.4</VFEI2_Swarmling>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
