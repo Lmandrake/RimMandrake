@@ -122,8 +122,8 @@
       "action": "import",
       "band": "visitor",
       "commonality": 0.03,
-      "def": "BMT_CaveLemming",
-      "law": "owner review 2026-09 (round2 move mapping): ice sheet, rename | NATIVE: thermal-only sensing line owed in the refashion/rename (owner ruling 2026-09-10: nightside visitor law)"
+      "def": "RSW_CaveLemming",
+      "law": "owner review 2026-09 (round2 move mapping): ice sheet, rename | NATIVE: thermal-only sensing line owed in the refashion/rename (owner ruling 2026-09-10: nightside visitor law); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_CaveLemming to the ported RSW_ name and WIRED into RUT_NightsideIce at 0.03 on the owner's ruling 2026-09-21. He was shown the cost first: bodySize 1.0 = LARGE, so this takes the biome from ~69% to ~42% small-weighted commonality and BREAKS ECOSYSTEM_PYRAMID_LAW_1 deliberately — not a defect, do not lower or remove it. The rename + thermal-only sensing refashion is still owed on the creature"
     },
     {
       "action": "import",
