@@ -408,9 +408,9 @@
     },
     {
       "action": "import",
-      "commonality": 0.5,
-      "def": "BMT_Stoneback",
-      "law": "owner review 2026-09 (round2 move mapping): Anywhere on the dayside where it might be needed. 1.2 cells"
+      "commonality": 0.05,
+      "def": "RSW_Korrum",
+      "law": "owner review 2026-09 (round2 move mapping): Anywhere on the dayside where it might be needed. 1.2 cells; STONEBACK_DEFNAME_COLLISION_1: this row is the KORRUM, not the bokka — RSW_Stoneback was two animals and the giant was renamed RSW_Korrum 2026-09-22. owner 2026-09-22 (identity sheet): the boulder-shelled crab \"equally belongs in canyons, arid, but is also excellent for scarlands\" / sheet note \"This is good for Scarlands. Regenerate art.\". Wired RUT_Scarlands at 0.05 rather than the round2 placeholder 0.5: bodySize 4.00 into the thinnest roster we have (8 species) would take it from 53.0% to ~40% small and break ECOSYSTEM_PYRAMID_LAW_1"
     },
     {
       "action": "import",

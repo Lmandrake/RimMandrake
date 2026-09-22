@@ -2,7 +2,7 @@
 <!--
 DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch (16 fauna + 7 flora; AB_GiantStikehr
 EXCLUDED per the item's own note: cut from the Extreme Desert the same day as
-misplaced, not part of this port). RSW_Stoneback (AA_BoulderMit) added
+misplaced, not part of this port). RSW_Korrum (AA_BoulderMit) added
 2026-09-20 to close this file's own dangling useMeatFrom reference at
 RSW_Ferroclaw and finish the item's "11 unblocked rows" list; MEASURED count of
 ThingDef ParentName="AnimalThingBase" in this file is now 16 (was 15 before
@@ -1001,7 +1001,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_Terramorph -> RSW_Ferroclaw. useMeatFrom AA_BoulderMit repointed to this batch's own RSW_Stoneback (sibling port, no dangling ref). The steel diet is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_MetalEater below replaces VEF.AnimalBehaviours.CompProperties_EatWeirdFood, same nutrition/stack-bite/auto-dig numbers, measured from the donor's source. Still dropped: CompProperties_NearbyEffecter, the slow conversion of nearby steel into AA_SkySteel - that needs a sky-steel item this batch never ported, so it is owed work, not a decision. -->
+		<!-- Alpha Animals AA_Terramorph -> RSW_Ferroclaw. useMeatFrom AA_BoulderMit repointed to this batch's own port of it, RSW_Korrum (renamed from RSW_Stoneback 2026-09-22, STONEBACK_DEFNAME_COLLISION_1 — that defName belongs to the BiomesTeam bokka). The steel diet is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_MetalEater below replaces VEF.AnimalBehaviours.CompProperties_EatWeirdFood, same nutrition/stack-bite/auto-dig numbers, measured from the donor's source. Still dropped: CompProperties_NearbyEffecter, the slow conversion of nearby steel into AA_SkySteel - that needs a sky-steel item this batch never ported, so it is owed work, not a decision. -->
 		<defName>RSW_Ferroclaw</defName>
 		<label>khorrak</label>
 		<description>A strange crustacean bred for one purpose: mineral processing. The khorrak feeds on iron compounds, chemically working them into a hardened alloy otherwise found only in asteroids. The transmutation is slow, so a khorrak needs long stretches parked among mined steel to do its work.</description>
@@ -1062,7 +1062,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 			<baseHealthScale>1</baseHealthScale>
 			<baseHungerRate>0.1</baseHungerRate>
 			<foodType>VegetarianRoughAnimal</foodType>
-			<useMeatFrom>RSW_Stoneback</useMeatFrom>
+			<useMeatFrom>RSW_Korrum</useMeatFrom>
 			<trainability>None</trainability>
 			<lifeExpectancy>15</lifeExpectancy>
 			<lifeStageAges>
@@ -1406,7 +1406,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_TetraSlug -> RSW_Voltmaw. Body AA_ArmouredSlug substituted with vanilla TurtleLike (HeadAttackTool confirmed present, matching sibling RSW_Stoneback/RSW_Ferroclaw usage of the same body in this batch). useMeatFrom AA_Helixien (not ported, dangling - Helixien is not in this batch) substituted with Megaspider, matching the insectoid/exotic theme already used for RSW_Tuskcoil. The ranged attack is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility below replaces VEF.AnimalBehaviours.CompProperties_InitialAbility, granting RSW_VoltmawPlasmaVolley - our own copy of the donor's AA_Plasma, four ionized bolts at range 20. MEASURED from Alpha Animals' own def: this creature's ability was a plasma/tesla volley, never a chemfuel ejection. Still dropped: CompProperties_Electrified, the slow recharging of nearby batteries - donor framework, and owed work rather than a decision. -->
+		<!-- Alpha Animals AA_TetraSlug -> RSW_Voltmaw. Body AA_ArmouredSlug substituted with vanilla TurtleLike (HeadAttackTool confirmed present, matching sibling RSW_Korrum/RSW_Ferroclaw usage of the same body in this batch). useMeatFrom AA_Helixien (not ported, dangling - Helixien is not in this batch) substituted with Megaspider, matching the insectoid/exotic theme already used for RSW_Tuskcoil. The ranged attack is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility below replaces VEF.AnimalBehaviours.CompProperties_InitialAbility, granting RSW_VoltmawPlasmaVolley - our own copy of the donor's AA_Plasma, four ionized bolts at range 20. MEASURED from Alpha Animals' own def: this creature's ability was a plasma/tesla volley, never a chemfuel ejection. Still dropped: CompProperties_Electrified, the slow recharging of nearby batteries - donor framework, and owed work rather than a decision. -->
 		<defName>RSW_Voltmaw</defName>
 		<label>vozzik</label>
 		<description>A massive slug, common on glitterworlds as a glorified mobile power plant. Off the grid it is deployed by research stations as a self-contained energy source; in the wild it simply grazes, slow and armored, across open ground.</description>
@@ -1589,8 +1589,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_BoulderMit -> RSW_Stoneback. Body already vanilla TurtleLike (matches sibling RSW_Ferroclaw/RSW_Cindermite/RSW_Voltmaw usage of the same body in this batch); tools/capacities (TurtleBeakAttackTool Bite, HeadAttackTool Blunt) already vanilla, no substitution needed. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic random-stone-chunk harvest, donor framework - matches this batch's standing rule of dropping AnimalProduct comps, e.g. RSW_Spinerat/RSW_Sporepaw above), VEF.AnimalBehaviours.AnimalStatExtension modExtension (info-card flavor + linked art image, donor framework). butcherProducts (plain vanilla chunk items, not a comp) kept. Donor's own custom SoundDef AA_BouldermitSound (soundWounded/soundAngry) substituted with vanilla Pawn_Megascarab_Wounded/Pawn_Megascarab_Angry, completing the vanilla Megascarab sound family already used donor-side for Death/Call. This closes the batch's own dangling useMeatFrom>RSW_Stoneback reference at RSW_Ferroclaw above. -->
-		<defName>RSW_Stoneback</defName>
+		<!-- Alpha Animals AA_BoulderMit -> RSW_Korrum (was RSW_Stoneback until 2026-09-22; see the header). Body already vanilla TurtleLike (matches sibling RSW_Ferroclaw/RSW_Cindermite/RSW_Voltmaw usage of the same body in this batch); tools/capacities (TurtleBeakAttackTool Bite, HeadAttackTool Blunt) already vanilla, no substitution needed. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic random-stone-chunk harvest, donor framework - matches this batch's standing rule of dropping AnimalProduct comps, e.g. RSW_Spinerat/RSW_Sporepaw above), VEF.AnimalBehaviours.AnimalStatExtension modExtension (info-card flavor + linked art image, donor framework). butcherProducts (plain vanilla chunk items, not a comp) kept. Donor's own custom SoundDef AA_BouldermitSound (soundWounded/soundAngry) substituted with vanilla Pawn_Megascarab_Wounded/Pawn_Megascarab_Angry, completing the vanilla Megascarab sound family already used donor-side for Death/Call. This closes the batch's own dangling useMeatFrom reference at RSW_Ferroclaw above (now useMeatFrom>RSW_Korrum). -->
+		<defName>RSW_Korrum</defName>
 		<label>korrum</label>
 		<description>A massive genetically-engineered crab that carries a boulder for a shell. Korrums are placid to the point of indifference, ignoring nearly anything short of a direct attack, and their armor is thick enough that most predators leave them alone rather than bother. Old spacer stories tell of one grown so large it had a whole mountain for a home.</description>
 		<statBases>
@@ -1671,9 +1671,9 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		</tradeTags>
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RSW_Stoneback</defName>
+		<defName>RSW_Korrum</defName>
 		<label>korrum</label>
-		<race>RSW_Stoneback</race>
+		<race>RSW_Korrum</race>
 		<combatPower>350</combatPower>
 		<canArriveManhunter>false</canArriveManhunter>
 		<ecoSystemWeight>0.2</ecoSystemWeight>

@@ -165,6 +165,7 @@
       <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.3</SW_Electrictick>  <!-- Electrictick - weapon-descendant, keep -->
       <RSW_FoundryBeetle MayRequire="mandrake.rsw.swbestiary">0.18</RSW_FoundryBeetle>  <!-- foundry beetle - plated-grazer, keep -->
       <AA_SpinedGow MayRequire="sarg.alphaanimals">0.15</AA_SpinedGow>  <!-- spined gow - plated-grazer, keep -->
+      <RSW_Korrum MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Korrum>  <!-- korrum - boulder-shelled giant crab (bodySize 4.00), import; owner 2026-09-22 on the identity sheet: "This is good for Scarlands". ⚠️ Wired at 0.05, NOT the roster's 0.5: this roster is the thinnest we have (8 species, total commonality 1.51) and the weakest pyramid (53.0% small, ECOSYSTEM_PYRAMID_LAW_1), so 0.5 would make a mountain-sized crab a quarter of all sightings and drop the biome to ~40% small. 0.05 leaves the ratio where it was. The roster's 0.5 was a round2-mapping placeholder, not an ecology call. -->
       <SW_Electricgryllotalpa MayRequire="who.vfee.isopodageneline">0.15</SW_Electricgryllotalpa>  <!-- Electricgryllotalpa - weapon-descendant, keep -->
       <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>  <!-- rimclaw - weapon-descendant, keep -->
       <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>  <!-- helixien - mortuary-guild, adjust-keep -->

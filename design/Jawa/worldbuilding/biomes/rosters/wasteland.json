@@ -373,8 +373,8 @@
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_Stoneback",
-      "law": "owner review 2026-09 (round2 move mapping): Anywhere on the dayside where it might be needed. 1.2 cells"
+      "def": "RSW_Stoneback",
+      "law": "owner review 2026-09 (round2 move mapping): Anywhere on the dayside where it might be needed. 1.2 cells; STONEBACK_DEFNAME_COLLISION_1: renamed to the bokka's (surviving) RSW_ name — reading the Wasteland as hot arid dayside. owner 2026-09-22 (identity sheet + sitting): the bokka \"goes into any arid biome where it's needed (desert, extreme desert, or other hot arid day-side)\". ⚠️ BENCH's call, easily overruled: the korrum was also given \"canyons, arid\", so this biome could take the giant instead; the small bokka was chosen because the Wasteland needs small fauna more than another giant. NOT wired pending that confirmation"
     },
     {
       "action": "import",
