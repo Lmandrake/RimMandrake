@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T15:24:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T17:25:53Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1743,13 +1743,3 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Look at it against the newer creature art in the same mod, and against the bar the
 prose:    infrastructure/state/items/STONEBACK_BOKKA_ART_STANDARD_1.md
-
-## STILLSAND_KORRUM_HOLE_1 The deep desert lost its only giant when the korrum moved to the Scarlands: fill as needed (one of the five mostly-finished biomes)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Check for existing cast first — the standing rule, and BIOMESPECIFICFAUNALAW1's
-prose:    infrastructure/state/items/STILLSAND_KORRUM_HOLE_1.md

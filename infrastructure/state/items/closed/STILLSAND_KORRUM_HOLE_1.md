@@ -1,11 +1,30 @@
-# STILLSAND_KORRUM_HOLE_1 — the deep desert lost its only giant
+# STILLSAND_KORRUM_HOLE_1 — DROPPED: there was never a hole
 
-## why this exists at all
+🔴 **This item was filed on a false premise and dropped 2026-09-22 without being built**
+(decision taken by question card). Its original title claimed the deep desert "lost its only
+giant". That was false when written, and the rest of this file is kept only as the record of
+what was believed — ⛔ do not act on it.
+
+**MEASURED 2026-09-22** from our own source (`race/baseBodySize`): `RUT_ExtremeDesert`'s 14
+wired rows carry **seven** animals of bodySize ≥ 1.0, including `RSW_WarWyrm` at **15.0**
+(commonality 0.2) and `RSW_KraytDragon` at **12.0** (0.15). The departed `RSW_Korrum` was
+bodySize **4.00 at commonality 0.025** — the roster's *fourth* largest animal and under 1% of
+sightings, against a war wyrm nearly 4× its size at 8× its commonality. Nothing was lost that
+needed replacing. The contradiction was already inside this file: spec §3 below cites
+`KraytDragon` 0.15 as a scale reference *in this very roster*, and the verify condition
+("at least one large animal again") was never unsatisfied.
+
+⇒ 🔑 **The generalisable error: "an animal left this biome" was allowed to imply "this biome
+now lacks that KIND of animal" without the roster being read.** One measurement of the
+remaining rows would have refused the filing.
+
+## why this exists at all — SUPERSEDED, the reasoning below is the false part
 
 `BIOME_SPECIFIC_FAUNA_LAW_1` gave each animal one home, so `RSW_Korrum` (the boulder-shelled
 giant crab, bodySize 4.00) moved to the Scarlands — *"excellent for scarlands"*, owner
 2026-09-22 — and its `RUT_ExtremeDesert` wiring at **0.025 was removed**. That was a real,
-wired row, not a withdrawn admission, so the deep desert is genuinely one animal thinner.
+wired row, not a withdrawn admission. ⛔ The inference drawn from it — that the deep desert
+was therefore short a giant — does not follow and is refuted above.
 
 This is filed because the deep desert is one of the five biomes he named for filling:
 
