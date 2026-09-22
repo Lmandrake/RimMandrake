@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T17:25:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T18:57:58Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1743,3 +1743,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Look at it against the newer creature art in the same mod, and against the bar the
 prose:    infrastructure/state/items/STONEBACK_BOKKA_ART_STANDARD_1.md
+
+## SW_FAUNA_NEVER_IN_RM_TIER_1 Route every Star Wars fauna row out of RM_-tier biome defs into the Utinni patch layer (97 rows, 12 biomes) — owner ruling Q11, taken by question card
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SW_FAUNA_NEVER_IN_RM_TIER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SW_FAUNA_NEVER_IN_RM_TIER_1.md

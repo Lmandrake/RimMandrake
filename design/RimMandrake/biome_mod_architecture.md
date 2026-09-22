@@ -217,12 +217,14 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
   with no `MayRequire` — `RUT_Sytheclaw`, which is **ours**, not vanilla. An earlier
   revision of this section read those 22 as "vanilla"; they are Mlie's Star Wars animal
   collection.
-  ⚠️ **That makes the split an open boundary question, not a mechanical step.** §7 Q9 says
-  donor fauna stays inline in `RM_` defs; §3a routes Star Wars content to Utinni. These 22
-  rows are *both* donor and Star Wars, so the two rules point opposite ways and this biome
-  cannot be split until that is ruled. `RUT_Sytheclaw` is separately governed by §7 Q10,
-  which moves the creature itself into RimMandrake as `RM_Sytheclaw` — so it becomes an
-  inline `RM_` row here, **not** a Utinni patch row.
+  ⇒ **The split, RULED 2026-09-22 (§7 Q11 — "RimMandrake should not name star wars ever"):**
+  all **23** Star Wars rows — the 22 `mlie.starwarsanimalcollection` plus `RSW_Diggerpede` —
+  go to `WildAnimals_Greentide.xml` in Utinni. The 2 `sarg.alphaanimals` and 1
+  `oskarpotocki.vfe.insectoid2` rows stay inline, which is Q9's real scope. `RUT_Sytheclaw`
+  becomes an inline `RM_Sytheclaw` row per §7 Q10 — a campaign original, not Star Wars.
+  ⚠️ **Consequence to price in:** `RM_Greentide` then carries **4** animals standalone
+  (2 `AA_`, 1 `VFEI2_`, `RM_Sytheclaw`). That is thin for a shipped biome mod and is owed
+  work — its own non-Star-Wars fauna — not a reason to keep Star Wars rows inline.
 - **Deleted:** `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml`, at Phase B step 4.
 - Why this way round and not the other: `GREENTIDE_STANDALONE_MOD_1` (closed) already
   ruled the mod RimMandrake-tier on the owner's card; the `RUT_` twin was authored by
@@ -526,9 +528,36 @@ Pyrelands/GelatinousSlime got, not folded into the naming pick. Item:
 mod of the biome whose `wildPlants` lists it, renamed `RM_`. Every biome mod ships with its
 own signature plants. The campaign flora pack does not survive the split.
 
-**Q9 — donor fauna inline in RimMandrake defs: ACCEPTABLE, leave them inline.** The `AA_`,
-`VFEI2_`, `GR_` and other donor entries stay in the `RM_` defs with their `MayRequire`;
-`DONOR_DEFS_PORT_TO_OURS_1` removes them over time. No extra work at the split.
+**Q9 — NON-STAR-WARS donor fauna inline in RimMandrake defs: ACCEPTABLE, leave them inline.**
+The `AA_`, `VFEI2_`, `GR_` and similar donor entries stay in the `RM_` defs with their
+`MayRequire`; `DONOR_DEFS_PORT_TO_OURS_1` removes them over time. No extra work at the split.
+🔴 **Q9 does NOT extend to Star Wars donors — narrowed by Q11 below, 2026-09-22.** As
+originally written this rule said "donor fauna", which would have admitted
+`mlie.starwarsanimalcollection` rows into `RM_` defs. It never meant that.
+
+**Q11 — may a RimMandrake-tier def name a Star Wars creature at all? NO, NEVER.** Owner,
+2026-09-22. ⚠️ Provenance: he typed this in a **question-card note**, not a chat turn, so
+`--owner-said` refuses it (`block_forged_owner_said.py` only sees transcript user turns) —
+cite it as a card ruling, do not try to stamp a ledger event with it:
+
+> *"RimMandrake should not name star wars ever. RimMandrake.StarWars purely centers around
+> this. Utinni is all about this particular scenario."*
+
+⇒ A `RM_` def may not reference a Star Wars creature **by any route** — not ours (`RSW_`), not
+a donor's (`mlie.starwarsanimalcollection`), inline or otherwise. The tier is the line, and a
+`MayRequire` does not launder it. Star Wars fauna reaches a `RM_` biome only through the
+Utinni patch layer (`UtinniPatches/Patches/WildAnimals_<Biome>.xml`), which is scenario
+content by definition. `WildAnimals_Pyrelands.xml` is the existing correct shape.
+
+MEASURED the day of the ruling: all four existing `RM_`-tier BiomeDefs (`RM_Greentide`,
+`RM_Pyrelands`, `RM_GelatinousSlime`, `RM_FloodedCanyon`) name **zero** Star Wars rows, so
+nothing shipped is in violation — but **97 rows across 12 `RUT_` defs** must route to the
+Utinni layer as each biome splits, not inline. Item: `SW_FAUNA_NEVER_IN_RM_TIER_1`.
+
+⇒ And on the donor dependency itself, same ruling: *"if it's a canon reference, we make our
+own version and it's NOT a conflict with the IP in MLIE."* So porting Mlie's Star Wars animals
+to our own `RSW_` defs is both preferred and IP-clean — that is `DONOR_DEFS_PORT_TO_OURS_1`,
+and it is the long-term answer for all 97 rows.
 
 **Q6 — the Lantern Deeps' def and tier: MOVE IT UP.** The whole mod becomes
 `mandrake.rm.lanterndeeps` with the def renamed `RM_LanternDeeps`; only the Kotor stygium
@@ -549,6 +578,8 @@ re-authoring, so none of them is Star Wars content.
 
 ### Nothing is open
 
-🔴 **All ten questions in this section are RULED as of 2026-09-21, and every name is
-picked.** Q5 landed (`Warscar`); Q2 landed in full — `the Stillsand`, `the Long Shade`,
-`the Leaning Scrub`. **Nothing in this spec is waiting on the owner. Every row can start.**
+🔴 **All eleven questions in this section are RULED — Q1–Q10 as of 2026-09-21, Q11 as of
+2026-09-22 — and every name is picked.** Q5 landed (`Warscar`); Q2 landed in full — `the
+Stillsand`, `the Long Shade`, `the Leaning Scrub`; Q11 narrowed Q9 and put every Star Wars
+fauna row in the Utinni layer. **Nothing in this spec is waiting on the owner. Every row can
+start.**
