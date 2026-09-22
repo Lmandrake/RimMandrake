@@ -779,8 +779,8 @@
       "action": "keep",
       "band": "ambush-small",
       "commonality": 0.7,
-      "def": "BMT_Jellypot",
-      "law": "sits-and-waits — \"own a shadow\" predator in one def (prep §2.2); spd 1.65 (MEASURED)"
+      "def": "RSW_Jellypot",
+      "law": "sits-and-waits — \"own a shadow\" predator in one def (prep §2.2); spd 1.65 (MEASURED); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Jellypot to the already-ported, already-wired RSW_ name (RUT_Desert)"
     },
     {
       "action": "keep",
@@ -1064,14 +1064,14 @@
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_Stoneback",
-      "law": "owner review 2026-09 (round2 move mapping): Anywhere on the dayside where it might be needed. 1.2 cells"
+      "def": "RSW_Stoneback",
+      "law": "owner review 2026-09 (round2 move mapping): Anywhere on the dayside where it might be needed. 1.2 cells; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Stoneback to the already-ported, already-wired RSW_ name (RUT_Desert)"
     },
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_TruffleMole",
-      "law": "owner review 2026-09 (round2 move mapping): sand burrower, desert & extreme desert, 0.4 cells"
+      "def": "RSW_TruffleMole",
+      "law": "owner review 2026-09 (round2 move mapping): sand burrower, desert & extreme desert, 0.4 cells; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_TruffleMole to the already-ported, already-wired RSW_ name (RUT_Desert)"
     },
     {
       "action": "import",

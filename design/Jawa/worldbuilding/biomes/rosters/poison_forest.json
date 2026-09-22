@@ -279,8 +279,8 @@
       "action": "keep",
       "band": "medium-pred",
       "commonality": 0.35,
-      "def": "BMT_Screecher",
-      "law": "spd 3.0 (MEASURED); pack ambusher, contamination-authored (prep §5.2)",
+      "def": "RSW_Screecher",
+      "law": "spd 3.0 (MEASURED); pack ambusher, contamination-authored (prep §5.2); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Screecher to the already-ported, already-wired RSW_ name (RUT_PoisonForest)",
       "note": "toxic-prized-meat carrier"
     },
     {

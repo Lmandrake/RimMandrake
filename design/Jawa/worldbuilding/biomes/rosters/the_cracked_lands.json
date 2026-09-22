@@ -508,8 +508,8 @@
       "action": "keep",
       "band": "the-Sealed",
       "commonality": 0.4,
-      "def": "BMT_MutagenicNorphea",
-      "law": "§10 Sealed: lies-dormant-until-woken special (MEASURED) — the donor mechanic for creatures that sleep through the dry years (prep §1.4's 107-dormant-rows family); wake trigger re-pointed at water rides the flora/mechanics item"
+      "def": "RSW_MutagenicNorphea",
+      "law": "§10 Sealed: lies-dormant-until-woken special (MEASURED) — the donor mechanic for creatures that sleep through the dry years (prep §1.4's 107-dormant-rows family); wake trigger re-pointed at water rides the flora/mechanics item; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_MutagenicNorphea to the already-ported, already-wired RSW_ name (RUT_CrackedLands)"
     },
     {
       "action": "adjust-keep",
@@ -529,8 +529,8 @@
       "action": "adjust-keep",
       "band": "the-Spenders",
       "commonality": 0.2,
-      "def": "BMT_SandLeaper",
-      "law": "§10 Spenders: small frantic flood-week life; comm trimmed 1.0→0.2 — 'you see nothing all day' bars a standing high-comm small"
+      "def": "RSW_SandLeaper",
+      "law": "§10 Spenders: small frantic flood-week life; comm trimmed 1.0→0.2 — 'you see nothing all day' bars a standing high-comm small; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_SandLeaper to the already-ported, already-wired RSW_ name (RUT_CrackedLands)"
     },
     {
       "action": "keep",
@@ -550,8 +550,8 @@
       "action": "import",
       "band": "the-Patient",
       "commonality": 0.15,
-      "def": "BMT_Creature_Mantrap",
-      "law": "§10/R6: sit-and-wait lure predator (lure-prey special, spd 0.15 MEASURED) — the no-truce kill at the hidden water, embodied; imported from Scarlands",
+      "def": "RSW_Creature_Mantrap",
+      "law": "§10/R6: sit-and-wait lure predator (lure-prey special, spd 0.15 MEASURED) — the no-truce kill at the hidden water, embodied; imported from Scarlands; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Creature_Mantrap to the already-ported, already-wired RSW_ name (RUT_CrackedLands)",
       "note": "zeroed only in TropicalRainforest (MEASURED) — no Cherry Picker conflict here"
     },
     {

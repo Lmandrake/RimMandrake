@@ -335,8 +335,8 @@
       "action": "import",
       "band": "anchor-beetle",
       "commonality": 0.3,
-      "def": "BMT_JewelBeetle",
-      "law": "§4b the anchor-beetles — neutral, unbothered, slow (non-predator, spd 3.1 MEASURED); interim body, chew-behaviour C# rides WEBWORK_MECHANICS_1"
+      "def": "RSW_JewelBeetle",
+      "law": "§4b the anchor-beetles — neutral, unbothered, slow (non-predator, spd 3.1 MEASURED); interim body, chew-behaviour C# rides WEBWORK_MECHANICS_1; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_JewelBeetle to the already-ported, already-wired RSW_ name (RUT_Webwork)"
     },
     {
       "action": "adjust-keep",
