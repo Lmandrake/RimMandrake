@@ -243,8 +243,8 @@
       "action": "keep",
       "band": "channel-predator",
       "commonality": 0.4,
-      "def": "BMT_CrestedDragon",
-      "law": "§2 lifeboat crowding — no chase ban here; alien wet lizard"
+      "def": "RSW_CrestedDragon",
+      "law": "§2 lifeboat crowding — no chase ban here; alien wet lizard; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_CrestedDragon to the already-ported, already-wired RSW_ name (RUT_Miasma at 0.4)"
     },
     {
       "action": "adjust-keep",

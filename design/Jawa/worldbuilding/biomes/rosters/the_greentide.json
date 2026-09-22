@@ -185,8 +185,8 @@
       "action": "keep",
       "band": "floor-predator",
       "commonality": 0.4,
-      "def": "BMT_Diggerpede",
-      "law": "§4 no pursuit ban here; root-tangle predator"
+      "def": "RSW_Diggerpede",
+      "law": "§4 no pursuit ban here; root-tangle predator; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_Diggerpede to the already-ported, already-wired RSW_ name (RUT_Greentide at 0.4)"
     },
     {
       "action": "adjust-keep",
