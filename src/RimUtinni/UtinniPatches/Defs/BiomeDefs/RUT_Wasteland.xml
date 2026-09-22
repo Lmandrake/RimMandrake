@@ -136,7 +136,11 @@
       <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.5</SW_Electrictick>  <!-- Electrictick - extremophile-odd, adjust-keep -->
       <Toxalope MayRequire="Ludeon.RimWorld.Biotech">0.4</Toxalope>  <!-- toxalope - wretched-herd, import; vanilla Biotech animal, not mlie.advancedbiomes (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave: MayRequire pointed at an unrelated mod that happens to be active today but does not own this defName) -->
       <RSW_Maligoat MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Maligoat>  <!-- maligoat - wretched-herd, keep -->
-      <RSW_Screecher MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import -->
+      <!-- MULTI-HOMED ON PURPOSE - owner approved 2026-09-22 (BIOME_SPECIFIC_FAUNA_LAW_1):
+           the screecher is a real flier (MaxFlightTime 35.0) that MIGRATES in from the wetter
+           RUT_PoisonForest to lay in the heat. It is the law's own carve-out, not a violation.
+           ⛔ Do not "fix" it by cutting either home. -->
+      <RSW_Screecher MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import; hot end of the migration -->
       <GR_Molebear MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Molebear>  <!-- molebear - wretched-medium, keep -->
       <GR_Spidercat MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Spidercat>  <!-- spidercat - wretched-medium, keep -->
       <!-- ROT_ROSTER_DEAD_DONOR_NAMES_1 (this pass): RSW_PustuleHornetQueen/
