@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T18:57:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T21:09:32Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -541,3 +541,13 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
+
+## DUPLICATE_CANON_DEFNAME_PAIRS_1 Four canon animals ship under TWO defNames each (donor + our RSW_ port), both wired into different biomes - gizka/kreetle/nuna/worrt, so one animal occupies up to five biomes and the one-home law is unenforceable per-defName
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DUPLICATE_CANON_DEFNAME_PAIRS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DUPLICATE_CANON_DEFNAME_PAIRS_1.md
