@@ -79,3 +79,66 @@ byte-identical copy of the vault def tree sits under
 worth deleting, because they make every future defName measurement over-report by 30 — this
 one did, before the def **type** was taken into account. Only `RSW_Stoneback` (its ThingDef
 and its PawnKindDef) is real.
+
+## ✅ RESOLVED 2026-09-22 — `4b068ea5d`, both animals kept
+
+Owner ruled on the served identity sheet (`touchedBySheet=true`, `writeCount=6`, 2 notes,
+0 overrides) plus his words in the same sitting.
+
+- **bokka keeps `RSW_Stoneback`** and, his words, *"goes into any arid biome where it's needed
+  (desert, extreme desert, or other hot arid day-side)"*. Sheet note: *"Arid biome approved,
+  make sure our art is up to modern standards."*
+- **The crab is `RSW_Korrum`** — *"equally belongs in canyons, arid, but is also excellent for
+  scarlands"*. Sheet note: *"This is good for Scarlands. Regenerate art."*
+- **Neither name was canon**, so nothing canon was renamed: 0 hits for bokka/korrum/stoneback
+  in the 137-entry library, and the donors are a Biomes! cave reptile and an Alpha Animals
+  rock crab. Both labels are ours, per `NONCANON_BEAST_RENAME_1`.
+
+**SWBestiary now has 0 duplicate `(defType, defName)` pairs across 1,641 defs** (re-measured
+by parsing every file).
+
+### 🔑 The root cause was a guard that did not exist, not a careless port
+
+Measured from git, and this is the part worth carrying:
+
+| when | what |
+|---|---|
+| 2026-09-20 **10:50** PDT | `DESERT_PORT_DUPLICATE_DEFS_1` closed *"0 duplicates"*, deleting **366** duplicate DesertPort copies (`59ad6aa7d`). |
+| 2026-09-20 **17:35** PDT | `DESERT_FAMILY_PORT_EXECUTION_1` added the `AA_BoulderMit` port under the already-taken `RSW_Stoneback` (`1ab7b6f09`) — **6 h 45 m later**. |
+| 2026-09-22 | Found by hand, and only because a *label* mismatch made two biome comments disagree. |
+
+That sweep's claim was TRUE when it was made. Nothing stopped the next commit from undoing
+it invisibly, and the 349-duplicate sweep's own prose had even **named `RSW_Stoneback`** as a
+known collision. ⇒ Built the missing guard:
+`src/RimMandrake/Utils/selftest_no_duplicate_defs.py`, in the suite, **verified by
+re-introducing the original bug and watching it fail (exit 1) then pass again**. It scopes
+itself to paths RimWorld actually loads and reports the rest.
+
+### the reference that would have failed silently
+
+`RSW_Ferroclaw`'s `<useMeatFrom>`. Its comment records the donor pointing at `AA_BoulderMit`
+and the port *"repointed to this batch's own RSW_Stoneback"* — i.e. it always meant the crab.
+Left alone, Ferroclaw would quietly have yielded *bokka* meat. Now `RSW_Korrum`.
+⚠️ The egg in `RSW_BiomesTeamPort_Items.xml` (`hatcherPawn`) **correctly stays** on
+`RSW_Stoneback` — that is the bokka's own egg, not a missed rename.
+
+`RUT_ExtremeDesert`'s 0.025 row was always the crab: its comment said *"bouldermit - giant"*
+while the def it named was bodySize 0.4. That contradiction is what exposed the whole thing.
+
+### two numbers are BENCH's, flagged in the files for overrule
+
+- `RSW_Korrum` into `RUT_Scarlands` at **0.05, not the roster's 0.5**. That roster is the
+  thinnest (8 species, total commonality 1.51) and the weakest pyramid (53.0% small); 0.5
+  makes a mountain-sized crab a quarter of all sightings and drops it to ~40%. The 0.5 was a
+  round2-mapping placeholder, not an ecology call.
+- The **Wasteland** row read as the bokka, not the crab — *"canyons, arid"* could also claim
+  it, and that biome needs small fauna more than another giant. Left admitted-but-unwired.
+
+### still owed, from his two sheet notes
+
+- `STONEBACK_BOKKA_ART_STANDARD_1` — the bokka's art is from the 2026-09-11 Biomes! port;
+  he asked that it be brought *"up to modern standards"*. Judge it before regenerating.
+- `KORRUM_ART_REGEN_1` — the crab has **no art of ours at all**: its `texPath` still points at
+  `Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit`, the donor's own texture, which violates
+  that port batch's own ruling. Its 3 jobs were **re-keyed `RSW_Stoneback_* → RSW_Korrum_*`**;
+  they unblock ~2026-09-26 and would otherwise have overwritten the bokka's art.
