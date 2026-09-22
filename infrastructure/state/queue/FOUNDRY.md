@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T18:57:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T21:09:32Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1750,6 +1750,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SW_FAUNA_NEVER_IN_RM_TIER_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. This is not a standalone sweep — it is a rule each <BIOMERMMODBUILD1 obeys at its
 prose:    infrastructure/state/items/SW_FAUNA_NEVER_IN_RM_TIER_1.md
