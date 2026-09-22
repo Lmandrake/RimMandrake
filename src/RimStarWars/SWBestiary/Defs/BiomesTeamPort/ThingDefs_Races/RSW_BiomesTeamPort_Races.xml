@@ -2455,7 +2455,18 @@ copied verbatim from the donor mods' own Textures trees.
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_Gembug</defName>
     <label>gembug</label>
-    <description>Commonly found in crystal caverns, the gembug is a smaller relative of the pillbug known for its gem-like exoskeleton.</description>
+    <!-- BIOME_SPECIFIC_FAUNA_LAW_1, owner ruling 2026-09-22: "Gembug must become hydrocarbon
+         lifeform if it moves into lantern deeps." The Lantern Deeps keeps it, so its chemistry
+         changes with its home - description re-authored off the donor's pillbug framing, and
+         RM_HydrocarbonBloodExtension attached so RM_CompFluidSacs can drain it safely
+         (DEEPS_FAUNA_MECHANICS_1's Drinker is poisoned by warm iron blood). This is the first
+         def to carry that extension; it was built attached to nothing, awaiting this pass.
+         Safe to name the Type here: SWBestiary hard-depends on mandrake.rm.creaturebehaviors
+         and loads after it, so the assembly is present and the def is not discarded. -->
+    <description>A plated crawler of the lanternstone voids, running on hydrocarbon rather than blood - what fills it is a cold waxy oil that will not freeze however deep the cave goes. Its shell grows in facets out of the same slow crystallisation that grew the caverns, so a gembug reads as a chip of the wall until it moves. Cut one and it weeps thin paraffin, not red.</description>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_HydrocarbonBloodExtension" />
+    </modExtensions>
     <statBases>
       <MoveSpeed>2.75</MoveSpeed>
       <ArmorRating_Blunt>0.30</ArmorRating_Blunt>
@@ -8873,7 +8884,14 @@ copied verbatim from the donor mods' own Textures trees.
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_GlowSlug</defName>
     <label>glowbulb</label>
-    <description>A glowing pale-blue slug with pale yellow liquids beneath its skin, easily spotted in any dark environment by its own steady bioluminescence — and by whatever else is hunting in the dark.</description>
+    <!-- BIOME_SPECIFIC_FAUNA_LAW_1, owner ruling 2026-09-22: "Glowbulb same" - hydrocarbon
+         lifeform, on the same ruling as RSW_Gembug above. The donor text already had "pale
+         yellow liquids beneath its skin", so the chemistry was half-stated; this names it.
+         Blue reads as lanternstone, the Deeps' own light-carrying crystal. -->
+    <description>A pale-blue slug of the deep voids, lit from within by the slow burn of its own hydrocarbon sap - the yellow fluid under its skin is a light oil, not blood, and it will not freeze however far the cave runs down. Easily spotted in any dark environment by that steady glow, and by whatever else is hunting in the dark.</description>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_HydrocarbonBloodExtension" />
+    </modExtensions>
     <statBases>
       <MoveSpeed>0.8</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
