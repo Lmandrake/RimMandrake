@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T06:14:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T14:06:15Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -521,3 +521,13 @@ kind:     task
 thin:     no ## verify
 summary:  1. Find every artifact produced by worldview.py/worldmap.py that carries region LABELS
 prose:    infrastructure/state/items/WORLDVIEW_MISLABEL_FALLOUT_1.md
+
+## BIOME_SPECIFIC_FAUNA_LAW_1 52 species are wired into more than one biome: adjudicate each against the biome-specific law's in-game-reason carve-out
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BIOME_SPECIFIC_FAUNA_LAW_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_SPECIFIC_FAUNA_LAW_1.md
