@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T14:55:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T15:16:20Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1730,8 +1730,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/KORRUM_ART_REGEN_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. When the daemon clears, confirm infrastructure/artpipe/done/ (and registry.jsonl)
 prose:    infrastructure/state/items/KORRUM_ART_REGEN_1.md
 
 ## STONEBACK_BOKKA_ART_STANDARD_1 Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)
@@ -1740,6 +1740,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/STONEBACK_BOKKA_ART_STANDARD_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Look at it against the newer creature art in the same mod, and against the bar the
 prose:    infrastructure/state/items/STONEBACK_BOKKA_ART_STANDARD_1.md
+
+## STILLSAND_KORRUM_HOLE_1 The deep desert lost its only giant when the korrum moved to the Scarlands: fill as needed (one of the five mostly-finished biomes)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STILLSAND_KORRUM_HOLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STILLSAND_KORRUM_HOLE_1.md

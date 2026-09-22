@@ -111,3 +111,20 @@ per-biome build items is closed. That is the expected mid-migration state.
   terrain/plants/fauna presence — this pass checked structural presence of those three
   blocks only, via `grep` on each biome's own small source XML file (not a large-artifact
   scan; the def dump and disk source agree on which files exist).
+
+## Roster hole-filling policy — owner, 2026-09-22
+
+When `BIOME_SPECIFIC_FAUNA_LAW_1` (one animal, one biome) withdraws a species from a roster,
+it leaves a hole, and his law's other half says holes are filled with **new** creatures. He
+scoped when that happens:
+
+> *"We will fill rosters as per-biome work continues. Only fill the mostly finished biomes as
+> needed: deep desert, desert, rot, pyrelands, lantern deeps. Others we will work
+> individually."*
+
+- ✅ **Fill now, as needed — the mostly-finished five:** the deep desert (`RUT_ExtremeDesert` /
+  `RM_Stillsand`), the desert (`RUT_Desert` / `RM_LongShade`), the Rot, the Pyrelands, the
+  Lantern Deeps.
+- ⛔ **Do NOT file fill work for any other biome** on the strength of a hole alone — those are
+  worked individually as their own per-biome pass reaches them. A withdrawn *admission* that
+  was never wired changes nothing in game and is not a hole worth chasing.
