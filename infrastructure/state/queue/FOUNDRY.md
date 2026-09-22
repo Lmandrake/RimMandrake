@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T06:08:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T06:14:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1713,3 +1713,13 @@ kind:     build
 thin:     no ## spec, no ## criteria
 summary:  FURNACEBEASTWORLDMIGRATION1
 prose:    infrastructure/state/items/FURNACEBEAST_WORLD_MIGRATION_1.md
+
+## ROSTER_DEAD_BMT_NAMES_SWEEP_1 14 ported-but-unwired BMT_ roster rows across 8 rosters: per-species wire-or-drop, never bulk-wire
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROSTER_DEAD_BMT_NAMES_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROSTER_DEAD_BMT_NAMES_SWEEP_1.md
