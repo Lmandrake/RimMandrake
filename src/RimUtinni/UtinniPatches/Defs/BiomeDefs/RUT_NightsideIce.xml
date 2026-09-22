@@ -163,8 +163,20 @@
            "visitor", commonality 0.03) that was never wired — not invented. AA_ShockGoat
            is bodySize 0.65, small. The roster's other three unwired visitors (Tauntaun
            bodySize 1.0, Wampa bodySize 6, both LARGE) are left out on purpose: adding
-           them would move the ratio the wrong way. -->
+           them would move the ratio the wrong way.
+
+           🔴 AMENDED 2026-09-21 — the cave lemming below BREAKS that ratio ON PURPOSE, on
+           the owner's explicit ruling, and he was shown the cost before choosing.
+           RSW_CaveLemming is bodySize 1.0 (LARGE; its own description says "this big,
+           solitary herbivore", so the size is intended, not a porting error) — the same
+           size as the Tauntaun this comment excludes. At the roster's stated 0.03 it takes
+           this biome from ~69% to ~42% small-weighted commonality, below both the 50% and
+           the proposed 60% floor. He picked 0.03 over a compensating 0.003.
+           ⛔ So this is NOT a pyramid defect to fix: do not lower it, and do not remove it
+           to make ECOSYSTEM_PYRAMID_LAW_1 pass. The remedy runs the other way — this biome
+           has no small natives of its own, only giant imports, and owes some. -->
       <AA_ShockGoat MayRequire="sarg.alphaanimals">0.03</AA_ShockGoat>  <!-- shock goat - small native visitor, ruled -->
+      <RSW_CaveLemming MayRequire="mandrake.rsw.swbestiary">0.03</RSW_CaveLemming>  <!-- cave lemming - big hopper, LARGE, owner-ruled 2026-09-21; rename + thermal-only sensing refashion still owed on it -->
     </wildAnimals>
     <coastalWildAnimals />
     <allowedPackAnimals />
