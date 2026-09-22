@@ -162,18 +162,47 @@ MEASURED about the live world — the live system is the only instrument for "ri
   (e.g. flyers that migrate, young versions that grow in the miasma then migrigate to the sea
   later, etc.) So stonebacks hould have one home. We have plenty of creatures left to fill
   rosters if there are holes."* ⇒ 🔑 **A hole in a roster is filled with a NEW creature, never
-  by re-using a neighbour's** — we have surplus cast. MEASURED 2026-09-21: **52** species are
-  wired into more than one of our BiomeDefs (of 299 wired; 58 raw minus 6 vanilla-Core filler
-  in the `RM_` twins' deliberate generic bodies). ⛔ Not a sweep — the carve-out is real, and
-  fliers (`Convor`, `Whisperbird`, `Mynock`) and the juvenile/nursery lines (`RSW_*Juv`) are
-  exactly what it protects. Per-species adjudication: `BIOME_SPECIFIC_FAUNA_LAW_1`.
-  🔴 **The carve-out is NARROW, and habitat is not part of it** — owner, 2026-09-22, correcting
-  exactly this misreading: *"you are not understanding. I meant pick one arid home."* ⇒ **when
-  he names several biomes for a creature, that is the CANDIDATE set, not an assignment**, and
-  "they're both arid / both nightside / both sea" is **not** an in-game reason. Only his two
-  mechanism cases are: a flier that migrates, or a life stage that moves. Worked precedent —
-  the bokka got the Long Shade, the korrum the Scarlands, and every other candidate biome's
-  admission was withdrawn into `evictions` rather than kept as a second home.
+  by re-using a neighbour's** — we have surplus cast. MEASURED 2026-09-22: **55** species are
+  wired into more than one of our biomes. (⛔ Not 52 — that figure was published twice, on two
+  different membership sets, by an instrument that cannot read a patched-in roster. See the twin
+  trap two bullets down.)
+  🔴 **The carve-out is NARROW, and habitat is not part of it** — owner, 2026-09-22: *"you are not
+  understanding. I meant pick one arid home."* ⇒ **when he names several biomes for a creature,
+  that is the CANDIDATE set, not an assignment**, and "they're both arid / both nightside / both
+  sea" is **not** an in-game reason. Only his two mechanism cases are: a flier that migrates (he
+  widened it: *from a wetter region into a hot one to lay eggs*), or a life stage that moves.
+  🔴🔴 **EVICTIONS ARE STOPPED, AND THIS IS NOT A RULE SYSTEM** — owner, 2026-09-22: *"Let's stop
+  evictions right now, because I think it's much better to carefully handle biome by biome rather
+  than sweeping changes between unfinished biomes and nearly finished biomes."* ⇒ **No pass edits a
+  roster to enforce this law.** A biome's multi-homed species become rows on **that biome's own
+  review sheet** when it comes up for its sitting, judged at that biome's stage of completion.
+  Deliberate multi-homing is **annotated in place, never cut** (worked precedent: the screecher,
+  `29ccede91` — both rosters keep it, both say why, both say do not "fix" it).
+  🔴 **The failure this ruling ends, because it cost a whole session:** "which biome does this
+  creature live in" was escalated into a tie-break algorithm, and three owner cards each *added a
+  clause* to it (a canon fork, a provenance override, a scope exception) until it deleted a species
+  out of the Greentide roster that had been frozen and cast **the same day**. His diagnosis: *"I
+  don't think we should be having rules here. This is a human review process issue."* and *"Just
+  don't apply these broad sweeping rules to overturn human requests."* ⇒ 🔑 **If consecutive
+  questions to him each add a clause to a procedure rather than resolving a concrete case, STOP** —
+  it is review work, and review sheets are the existing machinery. ⛔ **Do not re-derive the
+  algorithm from the rulings recorded in `BIOME_SPECIFIC_FAUNA_LAW_1`**; that item is now input to
+  per-biome sittings, not a work queue. ⛔ And a rule derived in-session never overturns a placement
+  a human already approved.
+- 🔴 **An `RM_` twin's BiomeDef carries ONLY generic vanilla filler — its real campaign cast is
+  PATCH-ADDED**, from `UtinniPatches/Patches/WildAnimals_<Biome>.xml` targeting
+  `Defs/BiomeDef[defName="RM_<Biome>"]/wildAnimals`. So **reading BiomeDefs alone sees the wrong
+  half of a twin**: `RM_Greentide`'s own roster is Warg/Muffalo/Elephant/Cobra/Megaspider/Rat/Hare
+  and contains none of the campaign cast. This is why two fauna censuses published **52** and both
+  were wrong — eight species were invisible, `RSW_Gizka` read as 2 homes against a real 4, and
+  `RUT_Sytheclaw` hid the **Pyrelands**, the one biome it was actually authored for. ⇒ Resolve a
+  patch's target from the **PatchOperation's own `xpath`** and read species from its `<value>`;
+  never by hunting for a nearby `<xpath>` element, which mis-assigns silently. 🔑 And two passes
+  agreeing on a round number is **not** corroboration when both share an instrument.
+- ⚠️ **`ls` on `design/RimStarWars/canon_references/` is not a canon test.** It holds 137 entries
+  **by design**, so absence proves nothing — `Mynock`, `Worrt`, `Gelagrub`, `Urusai`,
+  `LongtailGorg`, `Woolamander` and `Gornt` are canon Star Wars creatures with no entry. Routing a
+  canon-vs-ours decision off that directory listing would have rewritten canon text for all seven.
 - 🔑 **A sea biome describes BOTH its floor and its catch** — owner ruling 2026-09-21:
   *"The biomes should be describing the sea floors (what you encounter as an animal there) as
   well as what you can FISH out of the oceans on the shore. There should be defs made for each
