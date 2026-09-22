@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T06:14:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-22T14:55:15Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1720,6 +1720,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROSTER_DEAD_BMT_NAMES_SWEEP_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Work species-by-species, in this order, because the first two shrink the list without any
 prose:    infrastructure/state/items/ROSTER_DEAD_BMT_NAMES_SWEEP_1.md
+
+## KORRUM_ART_REGEN_1 The korrum has no art of ours: texPath still points at Alpha Animals' own texture; 3 jobs re-keyed and quota-blocked to ~2026-09-26
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/KORRUM_ART_REGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/KORRUM_ART_REGEN_1.md
+
+## STONEBACK_BOKKA_ART_STANDARD_1 Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STONEBACK_BOKKA_ART_STANDARD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STONEBACK_BOKKA_ART_STANDARD_1.md

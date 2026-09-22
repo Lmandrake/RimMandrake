@@ -10742,3 +10742,5 @@
 {"seat":"BENCH","event":"claim","id":"STONEBACK_DEFNAME_COLLISION_1","ts":"2026-09-22T14:52:02Z"}
 {"seat":"BENCH","event":"start","id":"STONEBACK_DEFNAME_COLLISION_1","ts":"2026-09-22T14:52:02Z"}
 {"seat":"BENCH","event":"close","id":"STONEBACK_DEFNAME_COLLISION_1","sha":"4b068ea5d","ts":"2026-09-22T14:52:03Z"}
+{"seat":"BENCH","event":"file","id":"KORRUM_ART_REGEN_1","title":"The korrum has no art of ours: texPath still points at Alpha Animals' own texture; 3 jobs re-keyed and quota-blocked to ~2026-09-26","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-22T14:55:14Z"}
+{"seat":"BENCH","event":"file","id":"STONEBACK_BOKKA_ART_STANDARD_1","title":"Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-22T14:55:15Z"}
