@@ -63,20 +63,40 @@ that item five waves of deferral to establish.
    `QUICKTEST_RIVER_WATER_MISSING_1`. ⇒ **Live verification of any fishing or floor work is
    blocked until that is understood.** Author against the defs; do not claim a live proof.
 
-## the question this pass must answer before building anything
+## ✅ The pairing rule — RULED 2026-09-22, and it needs no new mechanism
 
-**A literal reading of "defs for each fish" breaks at both ends**, so the pairing needs a
-bound:
+A literal "def for each fish" breaks at both ends: the Scald's `RUT_Eesh` is a *finger-long,
+finless sliver* that moves in clouds, absurd as a single spawnable animal, while
+`RSW_SandoAquaMonster` is a leviathan nobody nets. Owner ruled the middle:
 
-- The Scald's `RUT_Eesh` is a *finger-long, finless sliver* that moves in clouds. As a
-  spawnable individual animal it is absurd; as a shoal it may want a different mechanism.
-- `RSW_SandoAquaMonster` and `RSW_ElderSando` are leviathans. There is no netting them, so a
-  catch item for them is equally absurd.
+- **Every catch species gets a floor animal.**
+- **A shoal species gets ONE swarm creature** standing in for the whole cloud, so a diver sees
+  something rather than empty water — not skipped.
+- **Existing megafauna stay floor-only**, with no catch item.
 
-⇒ Propose (owner call, carded separately): **every fish species in the catch tables gets a
-floor animal EXCEPT those whose own description makes them a shoal rather than an individual;
-existing megafauna stay floor-only with no catch.** The shoal cases either get one
-"cloud"/swarm animal standing in for the species, or stay catch-only with that stated.
+🔑 **This is already our established pattern — do not invent a swarm mechanism.** MEASURED
+2026-09-22:
+
+- `src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Swarm.xml` already
+  exists and holds three of them (`RSW_Yobshrimp`, `RSW_SiltLamprey`, `RSW_RustNipper`).
+- `RSW_Mee` (bs 0.15, *"a silver-blue **schooling** scalefish"*) and `RSW_Faa` are **already
+  wired as individual floor animals in the Scald at 0.5 each** — a shoal represented by one
+  spawnable creature, exactly the shape he just ruled, shipped and live.
+
+### 🔴 And the scalefish are the MIRROR gap — an unmet ruling already on the books
+
+Everywhere else the catch item exists and the floor animal is missing. The scalefish are the
+reverse: `RSW_Mee`, `RSW_Faa` and `RSW_Laa` exist as animals (`SeaBeasts_Scalefish.xml`), but
+**`RUT_MeeCatch` / `RUT_FaaCatch` / `RUT_LaaCatch` do not exist at all** — and
+`FISH_BESTIARY_BUILD_1`'s own `## verify` requires them in as many words:
+
+> *"`RUT_MeeCatch`/`FaaCatch`/`LaaCatch` exist as our own items with our own art (not Mlie's
+> `swfish_Faa`/`swfish_Laa`) — the ruling was OURS, not a MayRequire fallback pairing."*
+
+So that item cannot pass its own verify today, and none of the three is wired into any
+`fishTypes` band either. ⇒ **Build these three first.** They are the cheapest possible proof of
+the whole pairing rule: the animal half is already done and live, the ruling already exists,
+and it closes an open item's outstanding clause rather than adding scope.
 
 ## spec
 
@@ -91,14 +111,17 @@ Work per sea, in this order — cheapest and most decisive first.
    `mandrake.rm.divinginteraction`. ⚠️ The Scald's boiling SURFACE stays no-swim (ban 4 in
    `the_scald.md`, superseded only as far as the DEEP interaction) — copy that shape, do not
    widen it.
-3. **Author the floor residents** for the two seas that already have catch tables (Scald,
-   Twilight Sea), pairing to their existing catch species per the ruling above. Reuse
-   `RSW_`/`RUT_` defs where the species exists; new defs where it does not.
-4. **The Grey Sea and Propane Lake need both halves.** They have no catch table at all. The
+3. **Build `RUT_MeeCatch`/`FaaCatch`/`LaaCatch`** (see above) and wire them — smallest step,
+   closes another item's unmet verify clause, and proves the pairing end to end.
+4. **Author the remaining floor residents** for the two seas that already have catch tables
+   (Scald, Twilight Sea), one animal per catch species, one swarm creature per shoal species,
+   per the ruling above. Reuse `RSW_`/`RUT_` defs where the species exists; new defs where it
+   does not. `SeaBeasts_Swarm.xml` is the file to grow, not a new one.
+5. **The Grey Sea and Propane Lake need both halves.** They have no catch table at all. The
    commission doc's register system is the template — do not invent a parallel one. ⚠️ The
    Propane Lake is *propane, not water*: whether "fishing" is even the right verb there is a
    design question, not a default. Ask rather than assume.
-5. Only then: `TERMINALBIOMES_RM_MOD_BUILD_1` carries all four into one mod with a per-biome
+6. Only then: `TERMINALBIOMES_RM_MOD_BUILD_1` carries all four into one mod with a per-biome
    settings toggle, so land this before or with that build, not after.
 
 ## verify
