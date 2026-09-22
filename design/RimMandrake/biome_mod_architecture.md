@@ -209,10 +209,20 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
 - **Survivor:** `mandrake.rm.greentide`, defName `RM_Greentide`, its C# kit
   (`RM_GreentideMod.cs`, churnmud, mired, dig-out, sealant) and its settings screen.
 - **Merged in:** the body of `RUT_Greentide.xml` — the sheet-derived terrain ladder,
-  plant list, weather table and the two `modExtensions` — replaces the 123-line placeholder
-  body of `Defs/BiomeDefs/RM_Greentide_Biome.xml`. Its 27 `wildAnimals` split: 22 vanilla
-  + 2 `AA_` + 1 `VFEI2_` stay inline; the 1 `RSW_` and 1 `RUT_` entry go to
-  `WildAnimals_Greentide.xml` in Utinni.
+  plant list, weather table and its **three** `modExtensions` — replaces the 123-line
+  placeholder body of `Defs/BiomeDefs/RM_Greentide_Biome.xml`.
+  🔴 **The 27 `wildAnimals` contain ZERO vanilla entries** — MEASURED 2026-09-22 by
+  `MayRequire` attribute: **22 `mlie.starwarsanimalcollection`**, 2 `sarg.alphaanimals`,
+  1 `oskarpotocki.vfe.insectoid2`, 1 `mandrake.rsw.swbestiary` (`RSW_Diggerpede`), and 1
+  with no `MayRequire` — `RUT_Sytheclaw`, which is **ours**, not vanilla. An earlier
+  revision of this section read those 22 as "vanilla"; they are Mlie's Star Wars animal
+  collection.
+  ⚠️ **That makes the split an open boundary question, not a mechanical step.** §7 Q9 says
+  donor fauna stays inline in `RM_` defs; §3a routes Star Wars content to Utinni. These 22
+  rows are *both* donor and Star Wars, so the two rules point opposite ways and this biome
+  cannot be split until that is ruled. `RUT_Sytheclaw` is separately governed by §7 Q10,
+  which moves the creature itself into RimMandrake as `RM_Sytheclaw` — so it becomes an
+  inline `RM_` row here, **not** a Utinni patch row.
 - **Deleted:** `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml`, at Phase B step 4.
 - Why this way round and not the other: `GREENTIDE_STANDALONE_MOD_1` (closed) already
   ruled the mod RimMandrake-tier on the owner's card; the `RUT_` twin was authored by
@@ -273,8 +283,8 @@ warning, the water comes down"*. Same place, two defs.
 - **Label:** "the Cracked Lands" is the campaign's name and lives in
   `BiomeNames_Ashkarr.xml`; the RimMandrake label is "flooded canyon".
 - **Deleted:** `RUT_CrackedLands.xml` at Phase B step 4.
-- This is the one pairing where the owner has not yet said the two are the same thing.
-  §7 Q4 asks; until he answers, nothing in §5 runs for this biome.
+- §7 **Q4 is RULED** (2026-09-21): the two are the same place, and `RUT_CrackedLands` merges
+  in under the campaign label "the Cracked Lands". Nothing about this biome is held.
 
 ### 4e. Not a twin — the Lantern Deeps
 

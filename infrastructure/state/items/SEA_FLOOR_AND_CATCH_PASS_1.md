@@ -83,20 +83,34 @@ finless sliver* that moves in clouds, absurd as a single spawnable animal, while
   wired as individual floor animals in the Scald at 0.5 each** — a shoal represented by one
   spawnable creature, exactly the shape he just ruled, shipped and live.
 
-### 🔴 And the scalefish are the MIRROR gap — an unmet ruling already on the books
+### ✅ The scalefish are NOT a gap — the three catch items are built and wired
 
-Everywhere else the catch item exists and the floor animal is missing. The scalefish are the
-reverse: `RSW_Mee`, `RSW_Faa` and `RSW_Laa` exist as animals (`SeaBeasts_Scalefish.xml`), but
-**`RUT_MeeCatch` / `RUT_FaaCatch` / `RUT_LaaCatch` do not exist at all** — and
-`FISH_BESTIARY_BUILD_1`'s own `## verify` requires them in as many words:
+**MEASURED 2026-09-22.** `RSW_Mee`, `RSW_Faa` and `RSW_Laa` exist as animals
+(`SeaBeasts_Scalefish.xml`) **and their three catch items exist as ours**, in
+`src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_ScalefishCatch_Items.xml` —
+`RSW_MeeCatch`, `RSW_FaaCatch`, `RSW_LaaCatch`, each `ParentName="FishBase"`
+`MayRequire="Ludeon.RimWorld.Odyssey"`, with our own descriptions and `RSW_LaaCatch` carrying
+the deliberate `MarketValue 9` override. Built by `GREENTIDE_FISH_ITEMS_FIX_1`, which also
+recorded on disk that the donor ships `swfish_Faa`/`swfish_Laa` but **no** `swfish_Mee`, so
+falling back to Mlie was never an option for all three.
 
-> *"`RUT_MeeCatch`/`FaaCatch`/`LaaCatch` exist as our own items with our own art (not Mlie's
-> `swfish_Faa`/`swfish_Laa`) — the ruling was OURS, not a MayRequire fallback pairing."*
+They are **already wired**, at exactly the weights the commission proposed: `RUT_Greentide`'s
+`fishTypes` carries `RSW_MeeCatch` 0.4 in `freshwater_Common` and `RSW_FaaCatch` 0.3 /
+`RSW_LaaCatch` 0.3 in `freshwater_Uncommon`.
 
-So that item cannot pass its own verify today, and none of the three is wired into any
-`fishTypes` band either. ⇒ **Build these three first.** They are the cheapest possible proof of
-the whole pairing rule: the animal half is already done and live, the ruling already exists,
-and it closes an open item's outstanding clause rather than adding scope.
+⇒ 🔑 **`FISH_BESTIARY_BUILD_1`'s verify clause is satisfied in substance.** It names the three
+with a `RUT_` prefix; they shipped as `RSW_`, which is the CORRECT tier for Star Wars scalefish
+under `design/NAMING_SCHEME_PLAN.md` (RimStarWars = any Star Wars scenario). The clause's real
+requirement — *ours, our own art, not a MayRequire fallback to Mlie* — is met. ⛔ **Do not
+"build" them again under a `RUT_` prefix: that would ship three duplicate defs in the wrong
+tier.** Fix the prefix in that item's verify clause instead.
+
+⚠️ **The one thing genuinely owed is item-scale ART.** Each catch currently reuses its species'
+south-facing pawn body sprite as the stack icon (`Things/Pawn/Animal/SeaBeasts/<X>/<X>_south`),
+which the def file itself flags as a placeholder — `Graphic_StackCount` renders it fine, so this
+is a look problem, not a mechanism problem. ✅ Before commissioning any, apply the standing
+check-for-existing-art rule in CLAUDE.md: search `infrastructure/artpipe/done/` and `_artsrc/`
+for these three subjects first.
 
 ## spec
 
@@ -111,8 +125,10 @@ Work per sea, in this order — cheapest and most decisive first.
    `mandrake.rm.divinginteraction`. ⚠️ The Scald's boiling SURFACE stays no-swim (ban 4 in
    `the_scald.md`, superseded only as far as the DEEP interaction) — copy that shape, do not
    widen it.
-3. **Build `RUT_MeeCatch`/`FaaCatch`/`LaaCatch`** (see above) and wire them — smallest step,
-   closes another item's unmet verify clause, and proves the pairing end to end.
+3. ✅ **DONE, do not redo** — the three scalefish catches are built as `RSW_MeeCatch`/
+   `RSW_FaaCatch`/`RSW_LaaCatch` and wired into `RUT_Greentide`'s freshwater bands (see above).
+   The residue is item-scale icon art, and correcting the `RUT_` prefix inside
+   `FISH_BESTIARY_BUILD_1`'s verify clause so it names what shipped.
 4. **Author the remaining floor residents** for the two seas that already have catch tables
    (Scald, Twilight Sea), one animal per catch species, one swarm creature per shoal species,
    per the ruling above. Reuse `RSW_`/`RUT_` defs where the species exists; new defs where it
