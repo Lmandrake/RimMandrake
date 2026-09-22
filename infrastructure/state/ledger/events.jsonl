@@ -10739,3 +10739,6 @@
 {"seat":"BENCH","event":"file","id":"ROSTER_DEAD_BMT_NAMES_SWEEP_1","title":"14 ported-but-unwired BMT_ roster rows across 8 rosters: per-species wire-or-drop, never bulk-wire","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-22T06:14:57Z"}
 {"seat":"BENCH","event":"file","id":"BIOME_SPECIFIC_FAUNA_LAW_1","title":"52 species are wired into more than one biome: adjudicate each against the biome-specific law's in-game-reason carve-out","kind":"design","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-22T14:06:15Z"}
 {"seat":"BENCH","event":"file","id":"STONEBACK_DEFNAME_COLLISION_1","title":"RSW_Stoneback is TWO different creatures on one defName (bokka bs 0.4 vs korrum bs 4.00) in two loaded Defs folders","kind":"bug","target":"v1","needs":"owner","for":"BENCH","ts":"2026-09-22T14:19:28Z"}
+{"seat":"BENCH","event":"claim","id":"STONEBACK_DEFNAME_COLLISION_1","ts":"2026-09-22T14:52:02Z"}
+{"seat":"BENCH","event":"start","id":"STONEBACK_DEFNAME_COLLISION_1","ts":"2026-09-22T14:52:02Z"}
+{"seat":"BENCH","event":"close","id":"STONEBACK_DEFNAME_COLLISION_1","sha":"4b068ea5d","ts":"2026-09-22T14:52:03Z"}
