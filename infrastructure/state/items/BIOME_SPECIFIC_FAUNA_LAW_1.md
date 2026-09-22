@@ -46,19 +46,52 @@ Decision taken by question card; the words below are his own, typed into the car
 > with the user when you're moving animals in this way, to make sure nothing is getting
 > messed up."*
 
-Where (1) and (2) were the card's tie-break options. So the algorithm is:
+Where (1) and (2) were the card's tie-break options. **Amended the same day by a second card
+ruling — "Where it was created wins"** — after the first version was found to evict the sytheclaw
+from the Pyrelands, the biome it was purpose-built for. The algorithm in final form:
 
 1. **Exclude the deliberate carve-out set FIRST.** He named two mechanisms and widened one:
    a flier that **migrates from a wetter region into a hot one to lay eggs**, and **young sea
    creatures dwelling in the miasma** before moving on. A species in that set keeps its several
    homes and the reason gets RECORDED on its rosters — it is not a violation.
-2. **Canon beast → its own description decides its one home.** The description is evidence and
+2. 🔑 **PROVENANCE FIRST — the biome a creature was authored or ported FOR keeps it**, whatever
+   the roster sizes say, and its description is left alone. This outranks both branches below.
+   Provenance is a fact on disk, not a taste call: the port item names the biome (e.g.
+   `PYRELANDS_DONOR_PORT_4` — *"our own re-authors of the four Pyrelands creatures"* — which is
+   what settles `RUT_Sytheclaw` for the Pyrelands over two thinner rosters).
+   ⚠️ For a donor animal we never authored there is no provenance to find, so this step is
+   **silent on 38 of the 55** and the branches below decide those.
+3. **Canon beast → its own description decides its one home.** The description is evidence and
    is not to be rewritten to suit a placement.
-3. **Non-canon beast → the thinner roster keeps it, and we REGENERATE the description** to
+4. **Non-canon beast → the thinner roster keeps it, and we REGENERATE the description** to
    match where it landed. This is the asymmetry that makes the rule cheap: canon constrains us,
-   our own cast adapts.
-4. ⛔ **Confirm the moves with him before applying them** — *"to make sure nothing is getting
+   our own cast adapts. ⚠️ Roster "thinness" is only trustworthy where
+   `DUPLICATE_CANON_DEFNAME_PAIRS_1` has not inflated the count — `RUT_AridShrubland` carries
+   four double-cast animals.
+5. ⛔ **Confirm the moves with him before applying them** — *"to make sure nothing is getting
    messed up."* A move list is served for confirmation; it is not applied on this ruling alone.
+   Earned its keep immediately: of the eleven moves confirmed on 2026-09-22, **two were confirmed
+   against a wrong home count** and had to be withdrawn and re-served.
+
+### Rulings taken on the eleven owned species, 2026-09-22
+
+| species | outcome | state |
+|---|---|---|
+| `RSW_Screecher` | flier migration **approved**, keeps Poison Forest + Wasteland | reason owed on both rosters |
+| `RM_Titanoslime` | not a violation — the Slime twin, one home under two defNames | nothing to do |
+| `RSW_Gizka` | 🔴 **WITHDRAWN** — confirmed on a 2-home picture; really in 4, and double-cast | blocked on `DUPLICATE_CANON_DEFNAME_PAIRS_1` |
+| `RSW_Kreetle` | 🔴 **blocked for the same reason** — the animal kreetle is in 5 places under 2 defNames | blocked on `DUPLICATE_CANON_DEFNAME_PAIRS_1` |
+| `RUT_Sytheclaw` | **Pyrelands** keeps it on provenance; evict from Greentide + Contagion; **fire text kept** | approved, ready |
+| `RSW_Spineroller` (kudda) | **Extreme Desert**; description corrected — no eclipses, *"sustained shade kills a herd"* | description done at `1340f5977` |
+| `JOE_Cephalope` | **Extreme Desert**; regenerate description | approved, ready |
+| `RSW_TruffleMole` | **Extreme Desert**; regenerate description | approved, ready |
+| `RSW_JewelBeetle` | **Webwork**; regenerate description (its "desert shallows" fits neither) | approved, ready |
+| `RSW_Gembug` | **Lantern Deeps**; ⛔ must become a **hydrocarbon lifeform** to live there | approved, conversion owed |
+| `RSW_GlowSlug` | **Lantern Deeps**; ⛔ same hydrocarbon conversion | approved, conversion owed |
+
+🔑 The hydrocarbon requirement is his, verbatim: *"Gembug must become hydrocarbon lifeform if it
+moves into lantern deeps. Glowbulb same."* That is a def change, not a prose change — check the
+Deeps' established hydrocarbon design language (`DEEPS_FAUNA_REPOPULATION_1`) before writing it.
 
 ⚠️ **Library membership is not a canon test.** `design/RimStarWars/canon_references/` holds 137
 entries *by design* (45 creatures), so a beast absent from it may still be canon — `Mynock`,
