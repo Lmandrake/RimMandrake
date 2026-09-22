@@ -167,6 +167,13 @@ MEASURED about the live world — the live system is the only instrument for "ri
   in the `RM_` twins' deliberate generic bodies). ⛔ Not a sweep — the carve-out is real, and
   fliers (`Convor`, `Whisperbird`, `Mynock`) and the juvenile/nursery lines (`RSW_*Juv`) are
   exactly what it protects. Per-species adjudication: `BIOME_SPECIFIC_FAUNA_LAW_1`.
+  🔴 **The carve-out is NARROW, and habitat is not part of it** — owner, 2026-09-22, correcting
+  exactly this misreading: *"you are not understanding. I meant pick one arid home."* ⇒ **when
+  he names several biomes for a creature, that is the CANDIDATE set, not an assignment**, and
+  "they're both arid / both nightside / both sea" is **not** an in-game reason. Only his two
+  mechanism cases are: a flier that migrates, or a life stage that moves. Worked precedent —
+  the bokka got the Long Shade, the korrum the Scarlands, and every other candidate biome's
+  admission was withdrawn into `evictions` rather than kept as a second home.
 - 🔑 **A sea biome describes BOTH its floor and its catch** — owner ruling 2026-09-21:
   *"The biomes should be describing the sea floors (what you encounter as an animal there) as
   well as what you can FISH out of the oceans on the shore. There should be defs made for each

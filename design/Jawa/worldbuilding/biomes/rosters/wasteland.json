@@ -265,6 +265,11 @@
       "def": "PoisonShrub",
       "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_propane_lakes; .8 cells, propane lakes",
       "disposition": "move:the_propane_lakes"
+    },
+    {
+      "def": "RSW_Stoneback",
+      "disposition": "one-home-elsewhere",
+      "reason": "owner 2026-09-22, correcting BENCH: \"I meant pick one arid home.\" The arid biomes he listed were the CANDIDATE set, not an assignment — a shared habitat class is NOT an in-game reason to multi-home an animal (BIOME_SPECIFIC_FAUNA_LAW_1). The bokka's single home is the Long Shade (RUT_Desert 0.5, its pre-existing wiring). It was never wired here — only admitted — so nothing changes in game; the admission is withdrawn so the roster stops implying a second home. 🔑 If this biome needs a small arid animal, the law's other half applies: fill the hole with a NEW creature, not by borrowing this one."
     }
   ],
   "fauna": [
@@ -369,12 +374,6 @@
       "def": "GR_Spidercat",
       "law": "§4.2 VGE-hybrid mutant read — protected mechanics lane (bs 0.85 passes §4.3's predator bar, MEASURED)",
       "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "RSW_Stoneback",
-      "law": "owner review 2026-09 (round2 move mapping): Anywhere on the dayside where it might be needed. 1.2 cells; STONEBACK_DEFNAME_COLLISION_1: renamed to the bokka's (surviving) RSW_ name — reading the Wasteland as hot arid dayside. owner 2026-09-22 (identity sheet + sitting): the bokka \"goes into any arid biome where it's needed (desert, extreme desert, or other hot arid day-side)\". ⚠️ BENCH's call, easily overruled: the korrum was also given \"canyons, arid\", so this biome could take the giant instead; the small bokka was chosen because the Wasteland needs small fauna more than another giant. NOT wired pending that confirmation"
     },
     {
       "action": "import",
