@@ -1,0 +1,5 @@
+{
+  "handoff_dir": "infrastructure/state/handoffs",
+  "lessons_file": "infrastructure/state/LESSONS_INBOX.md",
+  "seat_env": ["AGENT_SEAT", "HANDOFF_SEAT", "RIMFLOW_SEAT"]
+}
