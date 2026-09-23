@@ -98,8 +98,8 @@
     },
     {
       "def": "Dianoga",
-      "disposition": "move:AB_MiasmicMangrove",
-      "reason": "owner review 2026-09 (round2 move mapping): 6 cells, would be awesome if we could add tentacle pulling capabilities like the lasso power or future sarlacc mod, put it in the maiasma"
+      "disposition": "move:the_fever_wood",
+      "reason": "owner ruling 2026-09-23: \"It's a mistake to have dianoga in the GreenTime. It belongs only in tank prisons and the Fever Wood. Create something new and terrifying for the Green Tide.\" SUPERSEDES the earlier round2 disposition move:AB_MiasmicMangrove (its reason: 6 cells, tentacle pulling like the lasso power, put it in the miasma) - that intent is now delivered by the Fever Wood's snare limb, which grabs and drags, so the wish is satisfied rather than abandoned. Executed 2026-09-23: row removed from RUT_Greentide.xml (the live world's roster) and WildAnimals_Greentide.xml, and the Miasma import row removed. The vacated Greentide slot is reserved for a NEW creature, never a neighbour's species - see GREENTIDE_TERROR_REPLACEMENT_1."
     },
     {
       "def": "Hssiss",

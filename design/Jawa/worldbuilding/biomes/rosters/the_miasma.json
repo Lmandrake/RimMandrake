@@ -395,13 +395,6 @@
     },
     {
       "action": "import",
-      "band": "lunger",
-      "commonality": 0.15,
-      "def": "Dianoga",
-      "law": "owner review 2026-09 (round2 move mapping): 6 cells, would be awesome if we could add tentacle pulling capabilities like the lasso power or future sarlacc mod, put it in the maiasma"
-    },
-    {
-      "action": "import",
       "band": "bottom-walker adult — the submerged herds",
       "commonality": 0.03,
       "def": "RSW_SandoAquaMonster",

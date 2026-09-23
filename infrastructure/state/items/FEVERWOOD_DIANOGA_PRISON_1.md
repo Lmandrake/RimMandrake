@@ -99,21 +99,80 @@ with its own BodyDef and four SoundDefs. ⛔ Do not author a dianoga for this.
 rendered* (bestiary item: only tentacles are ever drawn). ⇒ The dianoga art is only ever seen **in
 the tank**. That is a clean split and it is why one def can serve both roles.
 
-### 🔴 three things this mapping exposes, none of them ruled
+### 🔴 all three questions RULED — owner, 2026-09-23
 
-1. 🔴 **`RSW_Dianoga` is ALREADY AMBIENT — in the Greentide, not the Fever Wood.** Patch-wired live
-   at `src/RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml`, with a tolerance entry in
-   `AnimalTolerances_Ashkarr.xml`. So with the campaign layer on, one species would be a Greentide
-   wild animal **and** the Fever Wood's unkillable elder being **and** the tank's captive. ⛔ **Not
-   mine to resolve and evictions are stopped** — this is a row for the **Fever Wood's own review
-   sitting**, judged at that biome's stage of completion, never a sweep.
-2. ⚠️ **Swap or add?** Whether the campaign layer **re-skins the one Sekkulaath def** (patch
-   label/graphic/sounds) or **spawns `RSW_Dianoga` as a second creature** is unset. 🔑 §1 says *"two
-   layers, one creature"*, and two rival elder beings in one biome is incoherent — so a **swap** is
-   the reading the design supports, but it is not ruled.
-3. 🔴 **`trainability: Advanced` contradicts "it is a PRISONER, not livestock."** As shipped, a
-   player could tame and train it, which is exactly the husbandry framing §6m forbids. ⇒ Either the
-   tank path bypasses taming entirely, or the campaign mapping patches trainability down. Unset.
+#### 1. The dianoga lives in ONLY two places
+
+**Owner, verbatim:** *"It's a mistake to have dianoga in the GreenTime. It belongs only in tank
+prisons and the Fever Wood. Create something new and terrifying for the Green Tide."*
+
+⇒ **Two homes, total: the tank, and the Fever Wood.** ✅ This is not a new position — an earlier
+owner review had *already* ordered it out of the Greentide: `rosters/the_greentide.json` carries
+`"disposition": "move:AB_MiasmicMangrove"` on that row. **The move was decided and never executed
+in the defs**, because `WildAnimals_Greentide.xml` was built by copying `RUT_Greentide.xml`'s
+roster *verbatim* ("nothing rescaled, added or dropped"), which carried the row along with it.
+
+⚠️ **The Miasma placement was HIS OWN earlier decision and this ruling retires it.** Its recorded
+reason: *"would be awesome if we could add tentacle pulling capabilities like the lasso power or
+future sarlacc mod, put it in the maiasma."* 🔑 **That intent is now delivered where he wants the
+creature instead** — `FEVERWOOD_TENTACLE_BESTIARY_1`'s **snare** limb *grabs and drags*, which is
+exactly the tentacle-pulling he was reaching for. So the wish is satisfied by the Fever Wood, not
+abandoned. Flagged for his veto rather than quietly dropped.
+
+⇒ **The Greentide keeps the hole until a NEW creature fills it** — never a neighbour's species
+(CLAUDE.md fauna law). Tracked as its own item.
+
+#### 2. SWAP, not add — and gated on the StarWars tier
+
+**Owner, verbatim:** *"Swa[p]s the Dianoga in, replacing the Sekkulaath, when RimMandrake.StarWars
+is present."*
+
+⇒ 🔴 **One creature, one def-slot. The dianoga REPLACES the Sekkulaath** — the two never coexist,
+which is what §1's *"two layers, one creature"* always meant. ⛔ Do not spawn both.
+
+🔑 **Note the gate he named: the StarWars tier, not the campaign layer.** Earlier prose said "when
+Utinni is active"; his words are *"when RimMandrake.StarWars is present."* That is the **more
+correct** gate, because `RSW_Dianoga` lives in the StarWars tier
+(`src/RimStarWars/SWBestiary/`, packageId **`mandrake.rsw.swbestiary`** — MEASURED, not guessed).
+⇒ The swap is `MayRequire="mandrake.rsw.swbestiary"`, and it must NOT be gated on a `RimUtinni`
+packageId. ⚠️ Whether the swap is a def-replace patch or a runtime substitution is still an
+implementation choice; the **gate** is settled.
+
+#### 3. Advanced training stays — but the tank is not where it happens
+
+**Owner, verbatim:** *"It should have advanced training, but you would have to train it by
+releasing it from the tanks, letting it calm down, and then trying to train it normally. If there
+are still pools, it plops down into them and installs itself as a new tentacled horror (small one),
+so it's no longer trainable. But if it gets out on a map without such pools, it will escape and
+simply wander wild. Advanced training is fine, but it should have large wildness, be very
+challenging to tame, and have a high chance of attacking if you fail. It remembers the tank..."*
+
+⇒ 🔴 **`trainability: Advanced` is CORRECT and stays.** The contradiction with
+"prisoner-not-livestock" dissolves because **you cannot train it in the cell** — taming requires
+*releasing* it first, and release is the dangerous act.
+
+**The release has exactly two outcomes, decided by the map, not by a roll:**
+
+| map state | what happens |
+|---|---|
+| ⭐ **pools present** | it **plops into a pool and installs itself as a new tentacled horror — a SMALL one** → 🔴 **no longer trainable, ever.** The taming attempt has instead *created a threat* |
+| **no pools** | it **escapes and wanders wild** — a tameable wild animal on the map, which is the only path to actually training one |
+
+🔑 **This is the same event as §6m's escape, read from the other side.** Stage 2 ("if it reaches a
+pool it establishes") and this release are one mechanism; the player's *intent* differs, the
+outcome does not. ⇒ ⛔ Do not build two systems. And 🔑 **it re-prices "build the prison away from
+the pools"**: that placement rule is no longer only about surviving a disaster, it is the
+precondition for ever taming one.
+
+**Stat direction ruled, numbers unset:** **large `wildness`**, very challenging to tame, and a
+**high chance of attacking on a failed taming attempt**. ⚠️ ⛔ Do not guess the three numbers.
+
+🔴 **"It remembers the tank…"** — ruled in spirit, mechanism deliberately unset. It means a
+released dianoga's hostility is **not neutral**: captivity leaves a mark that makes the animal that
+was imprisoned harder or more dangerous to win over than one that never was. ⚠️ Whether that is a
+hediff, a per-pawn flag lowering tame chance, a manhunter bias on failure, or a memory of the
+*specific* colony is **open** — see `open`. ⛔ Do not implement a generic wildness bump and call
+this delivered; the flavour he is naming is *grudge*, not difficulty.
 
 ⚠️ Two rosters cite the dianoga as bare **`Dianoga`** (`the_greentide.json`, `the_miasma.json`)
 against the shipped `RSW_Dianoga` — two more instances of the bare-name class noted on
@@ -152,6 +211,15 @@ intended home for the rest of that design's build ladder.
   franchise-free content**, now that the creature is `RM_Sekkulaath`. `RM_TenantTruceExtension`
   is already correct. Renaming shipped C# is real work and FOUNDRY's; flagged here rather than
   done, and ⛔ not a reason to delay the creature.
+- 🔴 **What "it remembers the tank" actually IS.** Ruled in spirit (see ruling 3), mechanism unset:
+  hediff, per-pawn tame-chance penalty, manhunter bias on failed taming, or memory of the specific
+  colony that held it. ⛔ A plain wildness increase does not deliver it — the flavour is *grudge*.
+- **The three taming numbers** — `wildness`, tame difficulty, and the attack-on-failure chance.
+  Direction ruled (large / very challenging / high), values unset. ⛔ Do not guess them.
+- **Whether the small pool-installed horror can mature** into the real thing, as §6m stage 3 says
+  an escapee can. If yes, a failed taming attempt is on a timer to become the biome's worst threat.
+- **How the swap is implemented** — a def-replace patch on the Sekkulaath vs a runtime
+  substitution. The *gate* is settled (`MayRequire="mandrake.rsw.swbestiary"`); the mechanism is not.
 - **How long stage 3 takes**, and whether it is interruptible once begun.
 - Feed rates, product rates, tank materials, and what damage level triggers a release.
 - **What the generic abstraction actually is** — one comp parameterised by occupant and product, or
