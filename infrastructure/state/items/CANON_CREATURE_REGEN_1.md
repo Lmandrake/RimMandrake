@@ -242,3 +242,86 @@ Files: `infrastructure/artpipe/done/canon_{dianoga,eopie,fanback,jerba,vulptex}_
 decisions.json, serve.log).
 
 Left `doing` — wave 2 of many, not a close.
+
+## 2026-09-23 wave 3 (FOUNDRY, belt mode, subagent)
+
+**Checked the artpipe done-queue before generating anything, per this item's
+own gate and the CLAUDE.md standing rule "Check for existing regenerated art
+before queuing more".** All 9 renders for the three wave-2-named "wave 3
+candidates" (Hawkbat, Kinrath, Kreetle — each already ships a pre-library
+`ArtOverride` mod, per wave 2's note) were found **already generated and
+sitting unused**: `infrastructure/artpipe/done/canon_{hawkbat,kinrath,kreetle}_v1_{east,north,south}.json`
++ `.manifest.json`, every one `status: ok`, `rimflow_item_id:
+CANON_CREATURE_REGEN_1`, prompts authored directly from each creature's
+library ruling (same painterly style shape as waves 1/2, e.g. Hawkbat's
+prompt states "the Legends field-guide design, NOT the Star Wars Rebels
+loth-bat and NOT a generic fanged dragon-bat... Wing membrane violet-purple
+on the dorsal side fading to cream/pale-gold on the ventral side" verbatim
+from that entry's ruling). PNGs live at
+`infrastructure/artpipe/_artsrc/canon_{name}_v1_{facing}/canon_{name}_v1_{facing}.png`.
+Job/manifest timestamps are **2026-09-18T08:25–08:30Z / worker rollouts
+01:25–01:30 that same morning** — the same day as waves 1/2, evidently filed
+and completed by a separate pass that ran despite wave 2's own note saying
+these three were "left uncovered for a future wave" — but never surfaced on
+a sheet or graded. **Nothing was regenerated this wave**; this pass only
+found, verified and surfaced existing work, per the standing rule.
+
+**Verified each render against its library ruling before building the
+sheet** (`preview_alpha.py` on all 9 facings, read at display size): Hawkbat
+matches the ruled `wookieepedia_legends_infobox.jpg` reference closely
+(violet-to-cream wing gradient, forehead horn, hooked beak, long tail,
+clawed wingtips); Kinrath matches the current-canon "netcaster" design line
+the ruling points at (six-eye cluster, six-petal flower organ, golden-tan
+banded spoon body, no blue anywhere); Kreetle matches the ruled
+`wookieepedia_infobox.jpg` (domed ribbed maroon shell, mottled tan/spotted
+head, dark mandibles, yellow eyes). All three read correctly per facing too
+(east strict side profile, north rear-view with no face visible, south
+face-on) — the daemon-authored facing wording was reconstructed by hand from
+`src/RimMandrake/Utils/artpipe/artpiped.py`'s `facing_direction` dict since
+this pass did not use the daemon (below), confirming the *existing* renders
+already got it right when they were generated in-daemon on 2026-09-18.
+
+**Canvas note, not resolved here**: Hawkbat and Kreetle rendered at 256x256
+(drawsize 2.0 / 1.0 x 128, floor 256) and Kinrath at 512x512 (drawsize 2.5 x
+128); the shipped `ArtOverride` textures for all three are 512x512. The
+donor mod (`mlie.starwarsanimalcollection`) is not vendored, so no local
+ThingDef exists to re-derive drawsize independently — flagged on the sheet
+for whoever wires this in, not fixed here.
+
+**Did not touch `infrastructure/artpipe/pending/`** — that queue is being
+actively driven by a concurrent process this session (visible in this
+session's own `git status`, dozens of `pending/*.json` deletions for
+unrelated subjects mid-processing). No new job was filed.
+
+**Fidelity sheet**: `Transient/canon_regen_wave3_2026-09-23/sheet.html`
+(served via `review-sheets`' `serve_sheet.py`, decisions at
+`Transient/canon_regen_wave3_2026-09-23/decisions.json`) — one row per
+creature, each showing a composite (`<slug>_fidelity.png`, built fresh this
+pass from the owner-ruled reference image beside the three already-existing
+east/north/south renders). `check_sheet.py` reports exactly one FAIL (`rows
+are pre-filled`, 0/3), same intentional gap as waves 1/2: fidelity grading
+is the owner's call, not this agent's. **Not yet graded — the owner has not
+looked.** `serve_sheet.py --status` confirms `reviewStatus.state: prefill`,
+`decided: 0`. No art was deployed to any `ArtOverride` mod this wave; owed
+only after his grade (and, for Hawkbat/Kreetle, after the canvas-mismatch
+question above is resolved).
+
+**Remaining candidates**, same bucket, still uncovered: Boma, Dewback,
+Insectomorph, Shiro, Vornskyr, Whisperbird, Zakkeg (named in wave 1's own
+note as hit by pre-library art waves, not the canon-reference library).
+Checked the done-queue for these too before stopping — **none have a
+`canon_*` job in `infrastructure/artpipe/done/` or `pending/`**, so unlike
+Hawkbat/Kinrath/Kreetle these are genuinely ungenerated, not just
+unsurfaced. Left for a future wave — this wave's scope was the three
+explicitly-named wave-3 candidates plus the done-queue check the brief
+required before generating anything, and finding all three already done
+closed that scope without spending any Codex budget.
+
+Files: `infrastructure/artpipe/_artsrc/canon_{hawkbat,kinrath,kreetle}_v1_{east,north,south}/*.png`
+(pre-existing, dated 2026-09-18, first surfaced this wave),
+`infrastructure/artpipe/done/canon_{hawkbat,kinrath,kreetle}_v1_*.json(+.manifest.json)`
+(pre-existing),
+`Transient/canon_regen_wave3_2026-09-23/` (composites, sheet.html,
+decisions.json, serve.log, build_composites.py).
+
+Left `doing` — wave 3 of many, not a close.
