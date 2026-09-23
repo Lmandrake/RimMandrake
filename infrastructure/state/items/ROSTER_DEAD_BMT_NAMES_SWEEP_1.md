@@ -1,4 +1,85 @@
-# ROSTER_DEAD_BMT_NAMES_SWEEP_1 — the 14 dead BMT_ rows nobody can rename safely
+# ROSTER_DEAD_BMT_NAMES_SWEEP_1 — the dead BMT_ rows nobody can rename safely
+
+## ✅ DONE 2026-09-23 — zero `BMT_` rows remain in any roster's `fauna` array
+
+**MEASURED after the pass: 0 of 31 rosters carry a `BMT_` name in `fauna`** (parsed, not grepped).
+The verify criterion below is met for the rename/eviction half. Two verifications remain open and
+both need the Desktop — they are named in *what is still owed*.
+
+🔴 **The table further down was STALE when this pass started, and its count was wrong.** It lists
+14 rows; **only 10 existed.** The four it was wrong about were resolved on 2026-09-22, *after* this
+item was filed on 2026-09-21 — so the item was asking for work already done, exactly the failure
+`CLAUDE.md` warns of:
+
+| the table's claim | what was actually true |
+|---|---|
+| `BMT_Stoneback` × 3 in `arid_shrubland`, `the_scarlands`, `wasteland` **fauna** | ⛔ **Never existed as fauna rows.** Settled by `576abc14c` (2026-09-22, *"One arid home each"*) — the owner's one-arid-home ruling. The only live Stoneback rows are **evictions** in `desert.json` and `weeping_stones.json` |
+| `BMT_CaveLemming` in `nightside_ice` **fauna**, blocked on an owed refashion | ✅ **Wired already** — `28ef99344` (2026-09-22, *"breaking the pyramid on purpose"*). MEASURED: `RSW_CaveLemming` = 0.03 in `RUT_NightsideIce.xml`. Its only live row is an eviction in `poison_forest.json` |
+
+⇒ 🔑 **So step 3 and step 5 of the spec were already complete before this pass began.** Do not
+re-derive them.
+
+### what this pass did, row by row
+
+| row | roster | outcome |
+|---|---|---|
+| `BMT_Megakrill` | `the_twilight_sea` | → **evictions**, `fishTypes-only`. Its own law: *"still a FISHING RESULT, never a wildAnimals spawn"*. ⚠️ **Not a cut from the biome** — it belongs in `<fishTypes>`, which MEASURED **does not exist** on either sea def. Owed inside `TERMINALBIOMES_RM_MOD_BUILD_1` |
+| `BMT_CrystalCrab` | `the_lantern_deeps` | → **evictions**, cited to the Deeps' **hard ban 3**. The row was the stale thing, not the wiring |
+| `BMT_Polluwog` | `the_grey_sea` | renamed `RSW_Polluwog`. **Not wired** — see the sea ruling below |
+| `BMT_MutatingTumorfish{Adult,Fry,Spawn}` | `the_twilight_sea` | renamed to `RSW_`. **Not wired** — same reason |
+| `BMT_SandPillar` | `the_cracked_lands` | ✅ renamed + **wired 0.5** onto **`RM_FloodedCanyon`** via `WildAnimals_CrackedLands.xml` op 2 — ⛔ never the frozen `RUT_CrackedLands` |
+| `BMT_MegaphoridLarva` | `the_scarlands` | ✅ renamed + **wired 0.5** into `RUT_Scarlands.xml` |
+| `BMT_CrystalFairyMole` | `the_scarlands` | ✅ renamed + **wired 0.5** into `RUT_Scarlands.xml` |
+| `BMT_Sacapillar` | `wasteland` | ✅ renamed + **wired 0.5** into `RUT_Wasteland.xml` |
+
+### 🔴 the sea question is SETTLED — and it is a fact, not a judgement
+
+**There is no separate floor BiomeDef.** MEASURED: `the_twilight_deep.md` and `the_grey_deep.md`
+exist as design **sheets**, but no `RUT_TwilightDeep`/`RUT_GreyDeep` def and no deep roster exist
+anywhere in `src/`. ⇒ A sea's **floor and its catch both live on the one sea def** — floor residents
+in `<wildAnimals>`, the catch in `<fishTypes>`. So *"retarget to the deep"* means **that same def's
+`wildAnimals`**. One answer, four rows.
+
+⛔ **But the four were deliberately NOT wired.** Both seas are `impassable=true` (MEASURED), and
+whether `<wildAnimals>` spawn at all on an impassable biome is an **engine** question, UNMEASURABLE
+on the Mac. The two entries already sitting there (`AA_Aerofleet`, `RSW_Lanternwhale`/`RSW_Reefback`)
+are somebody's bet, not proof. Renaming asserts only the admission that was *already* ruled; wiring
+would assert an engine behaviour nobody has tested.
+
+### 🔑 the commonality principle this pass established
+
+`RSW_Korrum` was wired into the Scarlands at **0.05** against its roster's 0.5, on the reasoning
+that *"the roster's 0.5 was a round2-mapping placeholder, not an ecology call."* That precedent was
+**followed for the reasoning and not for the number**, because the reasoning is about *risk to the
+pyramid*, and that risk has a direction:
+
+- ⇒ **A SMALL animal can never break `ECOSYSTEM_PYRAMID_LAW_1`** — raising its commonality raises
+  the small share. So `SandPillar` (0.80), `MegaphoridLarva` (0.32) and `CrystalFairyMole` (0.86)
+  needed **no measurement at all**, only the observation that they are small. 🔑 A monotonic law
+  makes a whole class of checks unnecessary; notice that before computing anything.
+- ⚠️ **Only `Sacapillar` (bodySize 2.40) could move it the wrong way.** Wired at the ruled 0.5
+  rather than trimmed, because the Korrum trim answered a *measured* thin roster (total 1.51) while
+  the Wasteland is rich (17 rows, total 8.28), making 0.5 about 6% of spawns. ⛔ **Recorded as a
+  BOUND, not a number:** at the 2026-09-20 sweep the Wasteland was 73.3% small and adding 0.5 large
+  gives 66.1%, far above the 50% floor; the floor would only be at risk if current `largeC` had
+  grown to ~3.9+. The roster HAS drifted since (sweep total 9.28 vs 8.28 now) and the current
+  small/large **split is UNMEASURABLE here** — no `defs.sqlite`, so donor and vanilla bodySizes
+  cannot be resolved.
+
+## 🔴 what is still owed — both need the Desktop
+
+1. **Test whether `<wildAnimals>` spawn on an `impassable=true` biome**, then wire `RSW_Polluwog`
+   and the three `RSW_MutatingTumorfish*` into their sea def, inside `TERMINALBIOMES_RM_MOD_BUILD_1`.
+   Those four rows are renamed and admitted but unwired until this is known.
+2. **Re-run the ecosystem pyramid sweep** to confirm `RUT_Wasteland` still clears the 50% floor with
+   `RSW_Sacapillar` at 0.5, and to refresh numbers that are now three days stale.
+3. Confirm every newly wired name resolves against the **live** mod list (the caveat at the bottom of
+   this file, unchanged): existence was verified by parsing `src/` — all four resolve as **both** a
+   `PawnKindDef` and a `ThingDef`, which is what a `wildAnimals` key needs, but that is not the same
+   as resolving in a loaded game.
+
+⚠️ `validate_patch.py` is clean on `WildAnimals_CrackedLands.xml` (static checks only — no `--defs`
+available here, and it warns that this is exactly how an xpath matching nothing stays silent).
 
 ## where this came from
 
