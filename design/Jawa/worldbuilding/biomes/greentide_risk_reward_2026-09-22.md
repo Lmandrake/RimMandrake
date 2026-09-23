@@ -286,7 +286,118 @@ player's should be steep. That is a real design choice and it is §5 Q4.
 
 ## 4. New reward categories
 
-*(in progress)*
+**The invention frame.** His three named rewards are treated as the floor. The question driving
+everything below is not *"what else grows here"* — that is the roster's job and it is done — but
+**what would a desert scavenger clan find priceless in a place that is violently, excessively
+alive?** The answer that generates new categories rather than new items is: on a dead planet, the
+scarce things are not materials. They are **living processes**. Water can be hauled. A metabolism
+cannot. The Greentide is the only place on Ashkarr where biology is running fast enough to be
+*used as machinery*, and every category below is a different way of renting that machinery.
+
+🔑 **The organising test, applied to every candidate:** does it change what the colony can **do**,
+or only what it has in store? A category that only adds stock is a resource, and the biome already
+has enough of those. Eight of the ten below change a capability; the two that are stock
+(R2 medicines, R3 cuisine) are his own named asks and are shaped so that they cannot be stockpiled.
+
+⚠️ **All names below are placeholders for the concept, not proposals.** Nothing here names any
+franchise; the invented words are there so a category can be discussed, and the naming pass owns
+them. Nothing here is a def, and no vanilla defName appears that was not already read off a file
+in §1–2.
+
+### R1 — Immunological capital: the fevers make *qualified people*
+
+**What it is.** Surviving a Greentide fever leaves a permanent, visible, *valuable* mark: a pawn who
+has had the jungle's signature sickness and lived carries lifelong resistance to it, and that
+resistance is a **job qualification**. Only a marked pawn can safely lead a deep expedition, hold a
+forward camp through a wet season, or work a live-preparation vessel without dosing themselves.
+Unmarked pawns can still go — they just get sick, and the marked ones don't.
+
+**What it costs.** The fever itself: real downtime, real deaths, and a nursing burden on the colony
+that is *worse* than the expedition it enables. You cannot buy the mark, you cannot rush it, and a
+pawn who dies of it takes the investment with them. Deliberately, the first three or four Greentide
+trips are net-negative in labour for exactly this reason.
+
+**Why only here.** The desert's hazards are physical — heat, thirst, sand, raiders. None of them
+leave an adaptation behind, because you do not adapt to dehydration; you just fail at it. A fever
+is the only hazard on the planet that *teaches the body something*, and the Greentide is the only
+place with one. ⇒ This is the category that turns §1c's seven diseases from a tax into the biome's
+single best reward, without authoring one new hazard.
+
+🔑 **This is why it is R1 and why it is cheapest.** The hazard is already shipped — seven disease
+rows are live on the biome today. What is missing is the *other half of the transaction*, and that
+half is one hediff and one qualification check. §3a's Phase 2 beat ("the exchange first feels like a
+bargain") is this and nothing else.
+
+⚠️ Whether a vanilla disease's recovery already leaves a durable immunity record a mod can read, and
+whether a work-capability gate of this shape exists, are both **UNMEASURED — confirm on the Windows
+machine.** See §6.
+
+### R2 — A pharmacopoeia priced in *hours*, not silver
+
+**What it is.** His "unique medicines", built on the one axis nothing in the desert can compete on:
+**potency that decays.** Greentide preparations are the best medicine on the planet for the first
+few hours after they are made and worthless by the next day. Three distinct grades, not one item:
+
+1. **Field preparations** — made *inside* the biome from a plant harvested minutes earlier, used on
+   the spot. Better than anything in the colony's stores. Cannot be carried home at all.
+2. **Sealed preparations** — the same material stabilised with the shipped toxin sealant route
+   (`RM_ToxinSealant` already exists), surviving a crawler ride at a real potency loss. This is the
+   tradeable grade and the only one a buyer ever sees.
+3. **Live cultures** — a maintained, feeding thing rather than an item: it keeps producing while it
+   is fed, and dies the moment the colony stops. Capability, not stock.
+
+**What it costs.** A dedicated vessel that cannot be substituted, several ingredient units per single
+output, and a clock. The precedent is already shipped and already reviewed — §2c's Rot live-prep
+recipes, whose own header explains why there is deliberately no bulk variant. Every reward in this
+section inherits that shape.
+
+**Why only here.** A pharmacopoeia requires an arms race, and an arms race requires crowding. Nine
+of the roster's 21 plants are dangerous *to each other* as much as to you; the desert's flora is
+sparse enough that nothing there needs a chemical weapon. ⇒ The medicine is good **because** the
+place is hostile — the same molecules are the hazard and the cure, which §1a already notes is
+literally true of six roster rows.
+
+### R3 — Cuisine as a combinatorial SYSTEM, never a recipe list
+
+🔴 **"Seemingly endless" must come from few ingredients recombining. A long list of hand-authored
+dishes is filler and would fail his ask while appearing to satisfy it.** The design below produces
+an unbounded dish space from a small fixed vocabulary, and the authoring cost does not grow with
+the number of dishes.
+
+**The system in four parts.**
+
+1. **Every Greentide edible carries one value on each of three small axes** — a *savour* (roughly
+   six values: bitter-green, resin-smoke, sour-acid, sweet-sap, fat-flesh, mineral-brine), a
+   *texture* (three: pulp, crisp, gel), and a *volatility* (three: stable, fades, turns hostile when
+   stale). Every roster plant, every catch row and every meat already in the biome gets tagged.
+   That is the whole authoring burden: a few dozen tags, no new dishes.
+2. **A dish is a slot pattern, not a recipe.** One small family of cook jobs — say a three-slot and
+   a five-slot — accepts *any* legal combination. The dish's identity, name and thought are
+   **derived at cook time** from the multiset of savours and textures present. Six savours in three
+   slots is already 56 distinct dishes from one authored recipe; adding one ingredient adds dishes
+   for free.
+3. **The colony has a palate memory, and it is the engine.** A savour combination eaten recently is
+   worth less; a genuinely new one is worth much more. ⇒ **The demand for novelty is what keeps
+   sending the player back into the jungle after food stopped being a problem** — the reward is not
+   the calories, it is the *variety*, and variety is the one thing a warehouse cannot hold.
+4. **Volatility is the brake.** The best savours are on the volatile ingredients, so the best dishes
+   can only be cooked near where the ingredients grew. A colony cooking from storage eats
+   competently and never eats well.
+
+**What it costs.** Cooks, a kitchen near the frontier rather than at home, and trips whose whole
+purpose is an ingredient you have not tasted yet. Nothing about it is stockpilable, by construction.
+
+**Why only here.** A palate needs contrast, and contrast needs a biome with more than four edible
+things in it. The desert supplies roughly one savour. ⇒ This is the category that most directly
+delivers the *feel* he asked for — a cuisine culture that seems bottomless — and it does it with
+about thirty tags and two recipes.
+
+⚠️ Whether a cooked meal can carry its ingredient set forward at all (so a dish's identity can be
+derived from what went in) is the single mechanism this rests on, and it is **UNMEASURED — confirm
+on the Windows machine.** If it cannot, the fallback is a fixed set of derived *dish classes* chosen
+at cook time, which loses the free-scaling property and should be priced as a much weaker version.
+
+*(R4–R10 follow.)*
 
 ## 5. Card-ready questions for the owner
 
