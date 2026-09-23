@@ -4,6 +4,16 @@ _Owner + BENCH, 2026-09-05. Owner: "Pick principles that drive the local reasoni
 and then populate to them... make biomes that radiate a powerful artistic theme and
 pseudo alien biological reasoning."_
 
+🔴 **A biome's definition sheet is `design/Jawa/worldbuilding/biomes/<biome_name>.md` — that
+one file, and it is what "the per-biome spec sheet" means** (owner, 2026-09-23, confirming the
+convention this README had never written down). It carries the biome's definition, measurements,
+planetary position, driving forces, terrain, temperature, its adapted biology and its hard bans —
+the nine fields below. ⛔ Do not go looking for a separate per-biome specification document: there
+isn't one, and hunting for it has cost a session. Its companion `rosters/<biome_name>.json` is the
+machine-readable species roster **derived from** the sheet (see *The sheet drives the roster*),
+never a rival to it. Dated files like `fever_wood_deep_and_mud_2026-09-23.md` are **sitting
+records** — the transcript of one design session, authority for what it ruled, not the sheet.
+
 🔑 **The canonical worldmap CSV is `world/ASHKARR_WORLDMAP_tiles.csv`, always.**
 Any `*_VIVIFIED_*` or `*_DRAFT_*` bundle under `world/` is a dated snapshot that
 goes stale the moment the canonical CSV changes under it — never cite one in a
