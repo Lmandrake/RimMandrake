@@ -43,7 +43,8 @@ whole creature.
 ⇒ **Two layers, one creature.**
 
 - The franchise-free tier gets **our own invented giant tentacled pool-dweller** — the
-  biome's centrepiece, so the free mod is whole without Star Wars.
+  biome's centrepiece, so the free mod is whole without Star Wars. 🔑 **It is named the
+  SEKKULAATH** — see §1a, ruled later the same day.
 - When the campaign layer is active it **maps to the dianoga**. Canon reference:
   `design/RimStarWars/canon_references/dianoga/description.md`, expanded with deep
   research this same day.
@@ -64,6 +65,35 @@ dread, because the dread was never "what is it."
 
 🔑 **It never enters the screen.** It is not a pawn you fight. The body is off-map /
 under-map forever; only tentacles are ever rendered. **Never killable — only driven off.**
+
+### 1a. 🔴 The free-tier creature is named: the SEKKULAATH
+
+**Owner, verbatim, 2026-09-23:**
+
+> *"we need more generic eldritch tentacled horror creatures put in the tank in the vanilla
+> game, similarly related to the big version down in the ground. Let's call it a Sekkulaath."*
+
+⇒ **`RM_Sekkulaath` is the species name for the invented horror of §1** — one species at two
+scales, mirroring the dianoga's own relation: **the prison tank holds a juvenile; the adult is
+the thing below the Fever Wood.** It is not a second creature invented for the tank.
+
+✅ **The design already demanded this.** §6m stage 3 says an escapee *"left alone in water can
+mature into the real thing"* — coherent only if captive and deep thing are one species. This
+naming states what that mechanic already assumed, and it closes a real gap: the `RM_` creature
+was **unnamed** in `FEVERWOOD_TENTACLE_BESTIARY_1`, so the next agent to build it would have
+invented a name of their own.
+
+🔑 **An invented exotic name is NOT IP** — `biome_mod_architecture.md` §7 Q11a. So Sekkulaath
+lives in the franchise-free `RM_` tier and is cast inline; ⛔ it does not route through the Utinni
+patch layer, and ⛔ it gets no `canon_references/` entry, because there is no canon to reference.
+⛔ **Nor is the free tier a thin fallback** — the Sekkulaath is the centrepiece the free mod
+ships, with the dianoga mapped *over* it when the campaign layer is active.
+
+⚠️ **One reading left open, deliberately.** *"more generic … creatures"* (plural) reads as
+"more-generic ones, i.e. non-IP", matching the singular *"a Sekkulaath"* — that is the reading
+recorded. The alternative — a **cast** of several distinct tentacled horrors for the tank class in
+the free tier — is neither ruled in nor out here. ⛔ Do not invent a second species on the strength
+of the plural alone. Tracked in `FEVERWOOD_DIANOGA_PRISON_1` → `open`.
 
 ### Canon that does mechanical work (all sourced, see the canon entry)
 
