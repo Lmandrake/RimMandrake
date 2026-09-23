@@ -1,4 +1,4 @@
-# Greentide flora roster — 14 invented trees + 7 invented understory plants, 2026-09-22
+# Greentide flora roster — 15 invented trees + 7 invented understory plants, 2026-09-22
 
 **Status: DESIGN PROPOSAL. Nothing authored.** No ThingDef written, no art commissioned, no def
 edited. This document exists to be ruled on; a build seat implements whatever survives.
@@ -46,12 +46,15 @@ this roster, not a nicety.
 
 ## At a glance
 
-**No new signature giant.** Ruled this session: the signature huge tree is the one **already
-built** — `RUT_GreatboleCore`, a structure def you mine into, which cannot be felled. §4. Every
-canopy row below is an ordinary (if large) fellable tree, and they are what finally give the
-existing tree-felling machinery real content instead of a placeholder.
+**Two giants, differing by LIFE STAGE.** Ruled 2026-09-22: the *signature* giant is the one
+**already built** — `RUT_GreatboleCore`, a structure you mine into, which cannot be felled — **and a
+separate fellable giant also exists**, because choosing a non-fellable landmark had silently deleted
+the rung premium hardwood came from. They are the same species at different ages: the fellable one is
+a mature tree, the landmark is what one becomes after centuries. §4.
 
-**Fourteen trees, three strata:**
+**Fifteen trees in four strata.** The fourteen below sit in three; the giant is the fourth, above them
+all — which is where the hugeness comes from. His ruling was *keep the range and add above it*, so no
+mid-storey row was inflated:
 
 | canopy — the fall is a map event | mid-storey — the working forest | understory — under the Roil |
 |---|---|---|
@@ -62,14 +65,20 @@ existing tree-felling machinery real content instead of a placeholder.
 | | **mirrelbole** — splits and bleeds the fuel sap | |
 | | **zhorrel** — the strangler curtain | |
 
+**Above all of them: `RM_Greatbole`, the fellable giant — 16 cells.** Row 22, §3a0.
+
 **Seven understory plants:** **brakkel** (fruit), **tumbel** (gourds), **sarquin** (sugar),
 **phorrik** (spores), **wollick** (tuber), **maddrick** (the trap), **illurin** (the only light).
+**All seven are now sight-blocking**, per his ruling that the ground cover must be tall and broad
+enough that a colonist cannot see over or past it — §3d.
 
 **Names:** all 21 coined here and **verified unused** — Wookieepedia search returned zero hits on
-every one, and zero matches in our own `src/`. §3g records the check.
+every one, and zero matches in our own `src/`. Row 22's `greatbole` is deliberately **not** new: it is
+our own existing word for the species, and it was canon-checked too (no hits). §3g records both.
 
-**Art:** 4 existing subjects transfer; **17 rows owe art**. All four transferring subjects are
-**256×256 and under-resolved** against the canvas law — see §3f.
+**Art:** 4 existing subjects transfer; **18 rows owe art**, the greatbole among them at the largest
+canvas on the page. All four transferring subjects are **256×256 and under-resolved** against the
+canvas law — see §3f.
 
 ## 1. The rulings being served
 
@@ -140,6 +149,39 @@ Constraints taken as given, not re-litigated:
 idiom `RUT_SweetlineTree` and `RUT_GreatboleCore` already established here. ⚠️ Every field beyond
 that is **UNMEASURED** from this machine; §8.
 
+### 3a0. The fellable giant — one tree, above the whole ladder
+
+Ruled in **after** the 21 rows below were proposed, which is why it is numbered 22 and not 1 —
+⛔ the other rows are cited by number in §3f and §6 and must not be renumbered.
+
+| # | defName | label | silhouette FORM | what it looks like | cells · falls | job | art |
+|---|---|---|---|---|---|---|---|
+| 22 | `RM_Greatbole` | greatbole | **colossal fluted column under a raft of leaves** | A single grey-brown column so broad at the base that its fluting reads as separate trunks fused together, rising far past every other crown before opening into one horizontal raft of paddle leaves — the same leaf as `RUT_GreatboleCore`'s, at the same proportions, on a tree a third its age. Bark in long vertical plates that shed. Nothing grows in its shadow, so it stands in a clearing of its own making. | **16** · yes — and the fall is the largest event on the map | 🔑 **The hardwood jackpot.** `the_greentide.md:214`'s ladder — *normal trees (fall) → giants (crack, fall, hardwood jackpot)* — ends here, and this is the only tree that pays true hardwood by being felled. Also what `RM_FellableTreeExtension` / `CompProperties_CrackFall` were built for. | **OWED** — and it is the largest canvas on the page |
+
+**Why 16.** Veluthar is 10 and is the largest *ordinary* tree. A giant one rung up reads as a big
+canopy tree, not as a different class of object, so 16 puts it 60% above the canopy — far enough that
+it is unmistakable at a glance, which is what *"well past 10"* asked for. ⚠️ **The cost, stated:** at
+the project's `128 px/cell` canvas law that is a **2048²** sprite, twice veluthar's 1280² in each
+dimension. That is a real art-pipeline constraint and it is flagged rather than assumed — if 2048² is
+not renderable, the number moves, not the ruling.
+
+🔑 **Same species, different life stage — and that must be legible without text.** His ruling makes the
+landmark what a greatbole becomes after centuries. ⇒ **They share a visual family by construction:
+same leaf, same bark plating, same fluting, different scale.** ⛔ Do not design them as two species
+that happen to be big.
+
+⚠️ **The stated cost he accepted:** the game will not simulate that growth, so an attentive player may
+wonder why none of their greatboles ever becomes a landmark. ⛔ Do not build a growth path to fix it —
+the relationship is fiction, and the description carrying it *is* the implementation.
+
+🔴 **A tier problem this creates, flagged not decided.** `RM_Greatbole` is franchise-free tier, but the
+ancient form it grows into is `RUT_GreatboleCore` — **campaign tier only**. ⇒ A player of the free mod
+gets the mature giant and can never encounter the landmark, so the life-stage fiction has no payoff
+for them. That contradicts the 2026-09-22 tier ruling that the free mod *"will look precisely the same
+as the star wars enhanced one save for any star wars beasts"* — and "greatbole" is an invented name, so
+nothing about the landmark is IP that requires it to stay in the campaign layer. ⇒ Owed: either the
+landmark moves to `RM_` tier or the free mod gets its own. Neither is mine to choose.
+
 ### 3a. Canopy / emergent — four trees. The fall is a map event.
 
 | # | defName | label | silhouette FORM | what it looks like | cells · falls | job | art |
@@ -165,7 +207,7 @@ that is **UNMEASURED** from this machine; §8.
 | # | defName | label | silhouette FORM | what it looks like | cells · falls | job | art |
 |---|---|---|---|---|---|---|---|
 | 11 | `RM_Quathis` | quathis | **single flat fan** | One flat vertical fan of gigantic leaves, all in a single plane from a short thick base — so it reads as a **wide bright blade from one side and a line from the other**, the only row on the page whose silhouette changes with facing. Bright lime, translucent at the edges. | 4 · no, it is cut not felled | Its leaves are single-piece roofing and thatch panels — the biome's cheapest building material. Safe. The colour relief in a dark understory. | **OWED** |
-| 12 | `RM_Thalquith` | thalquith | **flat interlocking lattice** | **Aquamarine — the only non-green thing growing here.** Smooth trunk with no bark texture at all, and branches that meet overhead in a flat interlocking lattice rather than a crown. Saplings are literal inverted cones. The lattice **hums** in moving air. | 4 · yes, and the lattice shatters | **The strange one, and a warning system.** Its hum is constant; the hum *stopping* is the tell, which is how it meets §9's *"its scariest signal is silence."* Fragile: hard to keep alive near work. See Q2 — whether the grove behaviour is real or flavour is his call. | **OWED** |
+| 12 | `RM_Thalquith` | thalquith | **flat interlocking lattice** | **Aquamarine — the only non-green thing growing here.** Smooth trunk with no bark texture at all, and branches that meet overhead in a flat interlocking lattice rather than a crown. Saplings are literal inverted cones. The lattice **hums** in moving air. | 4 · yes, and the lattice shatters | **The strange one, and a warning system.** Its hum is constant; the hum *stopping* is the tell, which is how it meets §9's *"its scariest signal is silence."* Fragile: hard to keep alive near work. The grove behaviour is real and lives on `GREENTIDE_HUMMING_GROVE_1`, settled as a generic camera-relative hum. | **OWED** |
 | 13 | `RM_Cundral` | cundral | **skirt of runners under a squat bole** | A squat woody base almost buried under a skirt of tentacle-thick ground runners, with translucent pods hanging among them like fruit you must not pick — you can see the acid moving inside them. | 2 · no | 🔑 **Reward and hazard are the same object, most explicitly on the page.** Left undisturbed it lets you dig its root, a real food staple. Damaged, the pods go. | **OWED** |
 | 14 | `RM_Gorbeleth` | gorbeleth | **barrel with an upward throat** | A low mottled purple-brown barrel of a trunk with one upward-facing muscular throat at the top, ringed with tooth-like bracts. It twitches toward movement. Nothing else about it suggests a plant. | 3 · no | The understory's ranged hazard. Its toxin is worth extracting, which means going close. Pairs naturally with the jungle rancor content already in `src/`. | **OWED** |
 
@@ -176,15 +218,34 @@ replacements for everything right now. No reason to wait!"*). Same treatment: in
 ⚠️ These are `Plant` defs, **not** trees and **not** `HOSTILE_MOBILE_PLANTS_1` creatures — even
 `maddrick`, which is a static trap, never a mobile one.
 
-| # | defName | label | replaces the role of | silhouette FORM | what it looks like | job |
-|---|---|---|---|---|---|---|
-| 15 | `RM_Brakkel` | brakkel | a fruit bush | **low overlapping mound** | A knee-high mound of enormous overlapping paddle leaves with the fruit clustered *underneath* — you have to lift the leaves to see whether there is anything there, and to see what else is under there. | The forageable staple. Candidate to replace the biome's `foragedFood` `RawBerries`, which is a vanilla row (`GREENTIDE_BIOME_DENSITY_1` flags it). |
-| 16 | `RM_Tumbel` | tumbel | a gourd plant | **sprawling ground runner** | A long flat runner creeping over the mud with heavy hollow vessels resting on it at intervals, each the size of a crate, dull and leathery-skinned. No vertical presence at all — it is a **texture on the floor**, which is why it belongs here. | Food plus containers: the hollow shells are cut into vessels. A waypoint-marker plant — you can see one from a distance. |
-| 17 | `RM_Sarquin` | sarquin | a sugar-producing plant | **whorl with hanging drip-tentacles** | A thick fleshy central whorl with long hanging tentacle-leaves that drip clear sweet sap continuously, each drip-point glazed and crusted. The mud beneath is sugared and crawling. | The sugar source. 🔑 Reward and hazard together: the drip is why insects are there, and the insects are why something bigger is. |
-| 18 | `RM_Phorrik` | phorrik | a spore plant | **cluster of taut bladders** | A tight cluster of taut translucent bladders on short stalks, each visibly over-full. They burst when trodden on. | Hazard-with-payoff: the spores are medicinal, and walking through a patch fills the air. Interacts directly with movement cost — a patch you go around. |
-| 19 | `RM_Wollick` | wollick | a root plant | **flat ground rosette** | A flat rosette of huge ground-hugging leaves pressed to the mud over a deep starchy tuber. Visually almost pure floor coverage — it *is* the "no square uncovered" ruling in plant form. | Bulk carbohydrate. Digging it slumps the churnmud around it, which is a small honest cost rather than a hazard. |
-| 20 | `RM_Maddrick` | maddrick | a trap plant | **inward-curling blade ring** | A ring of inward-curling leaf blades, waxy and wet, around a shallow throat of standing fluid. It closes on what steps in. Completely static — it does not move toward anything. | Pure hazard, with a use: a patch of maddrick is a free perimeter. Something for the player to build *around* rather than clear. |
-| 21 | `RM_Illurin` | illurin | a glowing understory plant | **broad low glowing cap** | A broad low fleshy cap on a short thick stem, glowing cyan-green from its underside down onto the mud — lighting the ground and nothing above it. | **The only light under the canopy.** Suppresses nothing, reveals everything within its small radius. Without it the understory is unreadable. **Art EXISTS — `artpipe/done/felucianglowspore_v1.json`** (*"7 wide"*, glowing) 🔴 256², §3f. |
+🔴 **All seven block sight — owner ruling, 2026-09-22.** The bar he set is functional, not a number:
+**tall and broad enough that a colonist cannot see over or past them.** ⇒ That is the mechanism behind
+the whole biome — a hidden floor is what lets `HOSTILE_MOBILE_PLANTS_1`'s rooted ambushers genuinely
+hide, and what makes *"choked with foliage"* real at ground level instead of decorative.
+
+⚠️ **Four of these rows were originally written as deliberately LOW** — brakkel *"knee-high"*, tumbel
+*"no vertical presence at all"*, wollick *"pressed to the mud"*, illurin *"a broad low cap"*. Those
+descriptions predate the ruling and contradict it, so **they are rewritten below rather than left to be
+read as still current.** Every row's *job* is unchanged; only its height is. ⇒ Two side effects worth
+seeing: tumbel is no longer a floor texture (it still reads from a distance — better, in fact), and
+wollick is no longer the literal illustration of *"no square uncovered"*, a role the mass of all seven
+now carries between them.
+
+| # | defName | label | replaces the role of | silhouette FORM | what it looks like | cells | job |
+|---|---|---|---|---|---|---|---|
+| 15 | `RM_Brakkel` | brakkel | a fruit bush | **overlapping leaf mound, over head height** | A mound of enormous overlapping paddle leaves standing taller than a pawn, with the fruit clustered *underneath* in the dark — you have to push into it to see whether there is anything there, and to see what else is in there with you. | 4 | The forageable staple. Replaces the biome's `foragedFood` `RawBerries`, ruled 2026-09-22 — ⚠️ so its nutrition and value now matter where a stock berry's did not; set them deliberately. |
+| 16 | `RM_Tumbel` | tumbel | a gourd plant | **arching runner on standing props** | A thick runner arching up on woody props well above pawn height, carrying heavy hollow vessels slung along its length, each the size of a crate, dull and leathery-skinned. You walk *under* it and cannot see out through the vessels. | 5 | Food plus containers: the hollow shells are cut into vessels. Still the waypoint-marker plant — a raised one is visible from further away than a flat one was. |
+| 17 | `RM_Sarquin` | sarquin | a sugar-producing plant | **whorl with hanging drip-tentacles** | A thick fleshy central whorl at chest height with long hanging tentacle-leaves falling from above it, dripping clear sweet sap continuously, each drip-point glazed and crusted. The curtain of strands is what blocks the view; the mud beneath is sugared and crawling. | 4 | The sugar source. 🔑 Reward and hazard together: the drip is why insects are there, and the insects are why something bigger is. |
+| 18 | `RM_Phorrik` | phorrik | a spore plant | **thicket of taut bladders on stalks** | A dense thicket of taut translucent bladders held at head height on springy stalks, each visibly over-full. You cannot see through the mass of them, and pushing through bursts them. | 3 | Hazard-with-payoff: the spores are medicinal, and walking through a patch fills the air. Interacts directly with movement cost — a patch you go around. |
+| 19 | `RM_Wollick` | wollick | a root plant | **upright rosette of blade leaves** | A rosette of huge leaves standing upright rather than lying flat, each a blade taller than a pawn, fanning out over a deep starchy tuber. From inside a patch you can see nothing but leaf. | 4 | Bulk carbohydrate. Digging it slumps the churnmud around it, which is a small honest cost rather than a hazard. |
+| 20 | `RM_Maddrick` | maddrick | a trap plant | **inward-curling blade ring** | A ring of inward-curling leaf blades standing shoulder-high, waxy and wet, around a throat of standing fluid you cannot see into until you are at its lip. It closes on what steps in. Completely static — it does not move toward anything. | 3 | Pure hazard, with a use: a patch of maddrick is a free perimeter. Something for the player to build *around* rather than clear. |
+| 21 | `RM_Illurin` | illurin | a glowing understory plant | **broad glowing cap on a tall stem** | A broad fleshy cap held above pawn height on a thick stem, glowing cyan-green from its underside down onto the mud — so it lights the ground beneath it and blocks the view across. | 7 | **The only light under the canopy.** Suppresses nothing, reveals everything within its small radius. Without it the understory is unreadable. **Art EXISTS — `artpipe/done/felucianglowspore_v1.json`** (*"7 wide"* — which is why this row is 7 and not smaller) 🔴 256², §3f. |
+
+🔴 **How a plant blocks sight in this engine is UNMEASURED and must not be guessed.** Plant cover and
+line-of-sight involve `fillPercent` and cover mechanics; ⛔ do not name a field or a value from
+reasoning. ⚠️ And the **side effects are owed testing before these seven ship**: sight-blocking growth
+interacts with shooting, with pathing, and with the player's ability to see their own colonists. A
+biome the player cannot read is a different failure from a biome that is dangerous.
 
 **Art on the other six:** all **OWED**. Nothing in `artpipe/done/` keys to a non-tree Greentide
 flora row (§3f is the full measurement).
@@ -193,10 +254,11 @@ flora row (§3f is the full measurement).
 
 🔑 **This is the section to judge the roster by.** Because virtually no square is uncovered, a
 player parses the Greentide by **form first and colour second** — so no two rows may share both.
-Twenty-one rows, twenty-one forms:
+Twenty-two rows, twenty-two forms:
 
 | form | rows | reads as |
 |---|---|---|
+| colossal fluted column under a leaf raft | greatbole | a building that is alive |
 | broad-leaf umbrella | veluthar | a ceiling on a pole |
 | weeping curtain to the ground | mourvel | a walled room |
 | buttress arcade | kaddrath | architecture |
@@ -211,13 +273,13 @@ Twenty-one rows, twenty-one forms:
 | flat interlocking lattice | thalquith | a ceiling grid |
 | skirt of runners | cundral | a heap |
 | barrel with an upward throat | gorbeleth | a mouth |
-| low overlapping mound | brakkel | a pile of leaves |
-| sprawling ground runner | tumbel | a line of crates on the floor |
+| overlapping leaf mound, over head height | brakkel | a thicket you push into |
+| arching runner on standing props | tumbel | a loaded rack you walk under |
 | whorl with hanging drip-tentacles | sarquin | a chandelier |
-| cluster of taut bladders | phorrik | eggs |
-| flat ground rosette | wollick | floor covering |
+| thicket of taut bladders on stalks | phorrik | eggs at head height |
+| upright rosette of blade leaves | wollick | a stand of blades |
 | inward-curling blade ring | maddrick | a trap, and it looks like one |
-| broad low glowing cap | illurin | a lamp |
+| broad glowing cap on a tall stem | illurin | a lamp on a post |
 
 **Colour is the second axis, and it is spent deliberately** — only three rows are not green, so each
 one carries weight instead of cancelling the others out:
@@ -229,7 +291,9 @@ one carries weight instead of cancelling the others out:
   undersides) rather than hue. Hue restraint is what keeps three exceptions readable.
 
 ⚠️ **This cannot be signed off from a table.** Per the standing rule, density-and-legibility is a
-LOOK-AT-IT judgement: build one map with all 21 rows on it, save the game, and give him a grid key.
+LOOK-AT-IT judgement: build one map with all 22 rows on it, save the game, and give him a grid key.
+🔴 **And the seven sight-blockers make that review mandatory rather than advisable** — a map where the
+ground cover blocks line of sight is exactly the map a table cannot predict.
 `GREENTIDE_BIOME_DENSITY_1`'s own Watch-out says the same thing.
 
 ### 3f. Art — MEASURED 2026-09-22, and the transfer is honest but small
@@ -270,9 +334,13 @@ serve it; if the render turns out to be an ordinary round crown, the honest answ
 veluthar and ghemmel's art and re-render, not to rewrite veluthar's silhouette. Decide by looking at
 the PNG on the Desktop.
 
-**⛔ Nothing is commissioned here.** 17 of 21 rows owe art. Per the standing check-before-queuing
-rule, `artpipe/done/`, `_artsrc/` and `registry.jsonl` were all searched for every one of the other
-17 subjects before saying so — and the answer came back negative, so there is no already-ruled art
+**⛔ Nothing is commissioned here.** 18 of 22 rows owe art — the 17 measured this session, plus
+`RM_Greatbole`, which was ruled in afterwards and is the **largest canvas on the page** (2048² at
+16 cells, §3a0). ⚠️ The greatbole's art has a constraint none of the others has: it must share leaf,
+bark and fluting with `RUT_GreatboleCore` so the life-stage claim reads without text, so it should be
+generated **against that existing landmark's art as reference**, not from the brief alone. Per the
+standing check-before-queuing rule, `artpipe/done/`, `_artsrc/` and `registry.jsonl` were all searched
+for every one of the other 17 subjects before saying so — and the answer came back negative, so there is no already-ruled art
 being thrown away. ~14 other tree/fern subjects in `done/` belong to **other biomes** (the
 Contagion, Miasma, Slime, Forge, Rot, Webwork, Lantern Deeps, Cracked Lands, Weeping Stones) and are
 **not free**; the full table of who owns what is in Appendix B.
@@ -298,6 +366,19 @@ rather than a clean pass. Read the **`search` array's emptiness**, not the hit c
 vurmeloth, mirrelbole, zhorrel, quathis, thalquith, cundral, gorbeleth, brakkel, tumbel, sarquin,
 phorrik, wollick, maddrick, illurin.
 
+**Row 22, `RM_Greatbole`, is different and its provenance is stated separately.** It is **not** newly
+coined — "greatbole" is existing project vocabulary, MEASURED in **20 files** under `src/` including
+`RUT_GreatboleCore.xml` and `RUT_GreatboleHeartwood.xml`, which is the point: the fellable giant and
+the landmark are the same species and must share the word. The exact defName `RM_Greatbole` returned
+**zero matches** in `src/`, so it is free to take.
+
+🔑 **It needed the canon check anyway, for a reason specific to it:** the name was previously
+campaign-tier only, and putting it in `RM_` tier makes its IP status matter where it did not before.
+**MEASURED 2026-09-23 by the method above: `greatbole` → NO HITS.** (The bare word `bole` returns hits,
+but only unrelated pages — `Bolle bol`, Shyriiwook — matching on substring, which is the fuzzy-hit
+behaviour this section already documents. `bole` is an ordinary English word for a tree trunk, not a
+plant name, so §6's Earth-name ban does not reach it.)
+
 **Two candidates were rejected and replaced** on fuzzy hits, which is the check doing its job:
 `haddrel` → matched *Halidrell Setsyn* (replaced by **ghemmel**); `drennok` → matched *Dranok*
 (replaced by **wollick**). Also cleared but unused, available if a row is added or renamed:
@@ -306,12 +387,10 @@ phorrik, wollick, maddrick, illurin.
 **And no collision with our own content:** a case-insensitive grep for all 21 names across `src/`
 returned **zero matches**.
 
-## 4. There is no new signature giant — and that is a ruling, not an omission
+## 4. Two giants, and they differ by life stage
 
-🔴 **Owner ruled this session that the signature huge tree is the one ALREADY BUILT.** It is a
-structure def, not a plant, and it cannot be felled.
-
-MEASURED 2026-09-22 from our own files:
+🔴 **The SIGNATURE giant is the one ALREADY BUILT** — a structure def, not a plant, which cannot be
+felled. MEASURED 2026-09-22 from our own files:
 
 - `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_GreatboleCore.xml` —
   `ParentName="BuildingBase"`, label `greatbole core`, `size (1,1)`, `passability Impassable`,
@@ -319,9 +398,15 @@ MEASURED 2026-09-22 from our own files:
   `RUT_Greentide_LivingBolesGenStep`, with `RUT_GreatboleHeartwood` and `RUT_ToxinSealant` around it.
   It is in no `wildPlants` list and it does not fall.
 
-⇒ **Nothing on this page designs a giant, and no question about which rung is the signature tree
-remains open** — the Greatbole is it, and the item's previous blocking question is closed. ⛔ Do not
-file a new giant; ⛔ do not add a tree row above veluthar.
+🔴 **And a FELLABLE giant exists too — `RM_Greatbole`, row 22, §3a0.** Choosing a non-fellable
+landmark had silently removed the rung premium hardwood came from: `the_greentide.md:199` says *"True
+hardwood — only from the heart of fallen giants"* and `:214` runs the ladder *normal trees (fall) →
+giants (crack, fall, hardwood jackpot)*. Put to him as a card, he ruled **keep a fellable giant too**
+— the landmark stays the thing you mine, and a separate huge tree also comes down.
+
+⛔ **Their roles must stay visibly distinct** — one is a landmark you mine into, one is a tree that
+falls — or they read as redundant. The thing that makes them one species rather than two is scale and
+shared art, not overlapping function.
 
 ### 4a. What that changes for the roster — it gets *more* important, not less
 
@@ -335,12 +420,13 @@ that mechanism real content.**
 Recommended assignment of the extension, carrying the placeholder's values forward as a **starting
 point, not a tuned baseline** (its own header calls them INVENTED):
 
+- **`RM_Greatbole`** takes the giant-fall extension (`fellLength` ~16, `hardwoodDef`) — the largest
+  fall on the map and the **only** source of true hardwood by felling. ✅ This is what closes Q1.
 - **veluthar** takes the big-fall extension (`fellLength` ~10, `greenwoodDef`) — the largest
-  ordinary fall on the map.
-- **brunnock** takes the hardwood extension (`hardwoodDef`) — the only tree hardwood source, since
-  the Greatbole cannot be felled at all. 🔑 **This is a real design consequence of the giant ruling:**
-  §7's *"true hardwood only from the heart of fallen giants"* now has no felled giant to come from,
-  so either brunnock becomes the hardwood route or hardwood becomes Greatbole-mining only. Q1.
+  *ordinary* fall.
+- **brunnock** stays the slow, scarce, hard mid-storey row, but it is **no longer the hardwood
+  route** — it pays bulk greenwood at the highest hit points on the page. ⛔ Do not give it
+  `hardwoodDef`; that was a workaround for a gap the fellable giant has since filled.
 - **mirrelbole** takes `CompProperties_CrackFall` at the highest rate on the page.
 - **Everything else takes nothing.** The `Default` extension covers them (§2.4). ⛔ Do not author
   fourteen extension blocks.
@@ -365,7 +451,7 @@ def.
 **Owner, 2026-09-22, verbatim:** *"Fire will harm and burn things, but no they do not catch fire
 themselves, just take damage."*
 
-⇒ **Roster-wide property, all 21 rows:** fire **damages** these plants and can destroy them; they
+⇒ **Roster-wide property, all 22 rows:** fire **damages** these plants and can destroy them; they
 are **not ignition sources**, they do not sustain a burn, and they do not propagate fire to
 neighbours. A dropped incendiary in the Greentide leaves a scorched hole, not a burning jungle.
 
@@ -389,7 +475,7 @@ take a number from this page. Specifically:
 - Datapoints from our own files only: the placeholder giant carries **0.5**; `RUT_SweetlineTree` was
   cut to **0.1** under the arid shrubland's analogous ban.
 
-⇒ **Q2 asks him nothing about fire** — he already ruled it. The open work is a measurement on the
+⇒ **Nothing here asks him anything about fire** — he already ruled it. The open work is a measurement on the
 Desktop, not a question for him.
 
 ## 6. Wiring, and the commonalities
@@ -399,7 +485,7 @@ Desktop, not a question for him.
 **The generic biome takes it directly.** MEASURED: `RM_Greentide_Biome.xml` has no GENERATED header
 and `biome_flora.py` never names `RM_Greentide`. Today its `wildPlants` is six vanilla temperate
 rows (`Plant_TreeOak` 2.0, `Plant_TreePoplar` 1.2, `Plant_Bush` 1.5, `Plant_Grass` 2.0,
-`Plant_TallGrass` 1.0, `Plant_Berry` 0.6) — the list the owner rejected. The 21 rows replace the two
+`Plant_TallGrass` 1.0, `Plant_Berry` 0.6) — the list the owner rejected. The 22 rows replace the two
 trees and the bush outright; whether the three grass rows survive as ground filler is a small
 decision for the build seat, not a card.
 
@@ -451,53 +537,27 @@ Flavour, not a balance pass — the same posture `TREE_GRAPHICS_OWNERSHIP_1` rec
   predators), sarquin (sweet drip that feeds the food chain), gorbeleth (valuable toxin, you must go
   close), phorrik (medicinal spores that you release by treading on them).
 
-⚠️ **One flagged consequence, not assumed:** `RM_Greentide`'s `foragedFood` is currently
-`RawBerries`, a vanilla row. If most of this roster is useful, the foraged yield probably should not
-stay a vanilla berry — **brakkel** is the natural candidate. `GREENTIDE_BIOME_DENSITY_1` raises this
-and declines to assume it; so does this page. Q3.
+✅ **And the foraged yield is ruled** (2026-09-22): `RM_Greentide`'s `foragedFood` moves off the vanilla
+`RawBerries` row to **brakkel**. ⚠️ A stock berry's nutrition and value were inherited and invisible;
+brakkel's are a deliberate choice and are owed one.
 
-## 7. Open questions for the owner
+## 7. Nothing on this page is waiting on the owner
 
-Three. Everything else was settled from files on disk or from a ruling already made. None blocks
-designing; Q1 blocks *authoring* the wood economy.
+The three questions this section used to carry are all answered, so they are removed rather than left
+standing with a note. Where each went:
 
-### Q1 🔴 With no fellable giant, where does true hardwood come from?
+1. **Where true hardwood comes from** — answered by the fellable giant. `RM_Greatbole` (row 22) is the
+   only tree that pays true hardwood by falling; brunnock is bulk greenwood. §3a0 and §4a.
+2. **Whether thalquith's grove is a real mechanic or flavour** — real, and it moved to its own item,
+   `GREENTIDE_HUMMING_GROVE_1`, where the mechanism is settled as a **generic** camera-relative hum
+   rather than anything biome-local. ⛔ Do not re-decide it here.
+3. **Whether foraged food stops being a vanilla berry** — ruled 2026-09-22: **brakkel replaces
+   `RawBerries`.** ⚠️ Its nutrition and value now matter where a stock berry's did not, so set them
+   deliberately rather than inheriting.
 
-Your ruling that the signature huge tree is the already-built Greatbole removes the thing §7's wood
-economy pointed at: *"True hardwood — only from the heart of fallen giants."* The Greatbole
-cannot be felled (`deconstructible false`, MEASURED), so nothing falls that has a giant's heart in it.
-
-- **(a) brunnock becomes the hardwood tree.** The roster already has a deliberately scarce,
-  slow-growing, near-black armoured hardwood; making it the source keeps hardwood a *felling*
-  reward. *Cost: hardwood is no longer tied to giants, so the ladder's top rung stops paying.*
-- **(b) Hardwood comes only from mining a Greatbole.** Keeps hardwood tied to the giants exactly as
-  written, and gives the Greatbole a reason to be approached. *Cost: hardwood becomes a mining
-  product, not a forestry one, and brunnock needs another job.*
-- **(c) Both** — brunnock gives a lesser hardwood, the Greatbole's heart gives the real thing.
-  *Cost: a third wood grade to keep legible on top of greenwood and hardwood.*
-- **(d) Something else** — say it and I will reshape §4a.
-
-### Q2 thalquith's grove — a real mechanic, or flavour?
-
-thalquith is the roster's strange one: aquamarine, barkless, an overhead lattice, and it **hums**.
-The hum *stopping* would tie straight into §9's *"its scariest signal is silence"*, and
-`RM_MapComponent_SilenceCue.cs` already exists in the Greentide mod.
-
-- **(a) Flavour only** — the description says it hums; nothing checks anything. Ships with the
-  roster, costs nothing.
-- **(b) Real** — a grove of several does something (warns when a predator or raider enters, goes
-  silent before an ambush). *Cost: new C# and its own item; would not ship with this roster.*
-- **(c) Drop thalquith** — it is the strangest thing on the page and the only non-green one, so
-  dropping it costs the roster its landmark.
-
-I deliberately did **not** design the mechanic. Inventing one unasked is how a roster question
-becomes a rule system.
-
-### Q3 Should the biome's foraged food stop being a vanilla berry?
-
-`RM_Greentide`'s `foragedFood` is `RawBerries` today. **brakkel** is the obvious replacement and the
-change is one line — but foraged food is a real balance lever and a player-facing item, so it is
-yours. **(a)** brakkel · **(b)** keep `RawBerries` · **(c)** something else.
+⇒ 🔴 **What remains is not a question but a measurement**: the fire ruling may not be expressible as a
+single `Flammability` value at all (§5, §8.2), and that must be settled against the engine before 21
+rows are authored on top of it. It needs the Desktop, not a decision.
 
 ## 8. UNMEASURED — needs the Windows machine
 
@@ -527,7 +587,7 @@ here — so the following are genuinely unknown, not merely unchecked.
    only a re-render — and look at `jungletree_v1` to settle §3f's colour caveat.
 6. **Whether `wildPlants` on `RM_Greentide` accepts these defs at all.** A post-load def dump is the
    only proof a row landed.
-7. **Whether 21 rows is too many for one map to read.** §3e is a paper argument. This is a
+7. **Whether 22 rows is too many for one map to read.** §3e is a paper argument. This is a
    look-at-it judgement and should ship as a savegame on one map with a grid key.
 8. **How much of the movement penalty is mud versus plants.** `RM_GreentideChurnmud` already ships a
    high-`pathCost` mire with an escalating `RM_Mired` hediff. That is *terrain* difficulty; *"hack
@@ -558,7 +618,7 @@ lore encumbers the mod for no gain.
 | **jogan** — a fruit tree whose produce is the point | oversized low-hanging fruit as free calories with a tax | **nemmer** |
 | **greel** — *"the crimson timber … in great demand as a luxury item"*, *"fastidious"* | a premium export timber in small pure stands | **vurmeloth** |
 | **vesuvague** (Ithor) — carnivorous, *"vines and roots … to seize, strangle, and crush"* | a crownless hanging curtain whose leaves are not still | **zhorrel** |
-| **bafforr** — *"aquamarine in color"*, *"branches formed a sharp, interlocking web"*, *"the smooth bark hummed under his touch"*, a grove of seven being a mind | the one non-green plant; an overhead lattice instead of a crown; the hum | **thalquith** (the grove-mind is Q2, and was **not** designed) |
+| **bafforr** — *"aquamarine in color"*, *"branches formed a sharp, interlocking web"*, *"the smooth bark hummed under his touch"*, a grove of seven being a mind | the one non-green plant; an overhead lattice instead of a crown; the hum | **thalquith** (the grove-mind is its own item, `GREENTIDE_HUMMING_GROVE_1`, and was **not** designed here) |
 | **orga** (Kashyyyk) — *"sharp vines, acid-filled pods, or strong tentacles … when treated with respect they allowed their roots to be foraged"* | forage-if-undisturbed, acid-if-damaged — reward and hazard in one object | **cundral** |
 | **yerdua poison-spitter** — *"a vicious animal-plant hybrid"* | a static plant with a ranged attack | **gorbeleth** |
 | **felucian glowspore** | a low glowing cap as the understory's only light | **illurin**. 🔴 Note: this name was **never canon** — a 2026-09-22 search returned no hits for either `glowspore` or `felucian glowspore`. It was a donor mod author's invention presented as canon, and it is precisely why §3g verifies every coined name. |
