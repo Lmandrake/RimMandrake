@@ -394,6 +394,18 @@ the real Defs on disk and reports how many nodes it hits**. Zero hits means the
 patch would silently do nothing. More hits than you expected means a
 `Remove` is about to take out more than you think.
 
+🔴 **Pass `--defs` at the Mods folder too, alongside Data and Workshop.**
+First-party `mandrake.*` mods live in the game's own `Mods` folder, not in
+Workshop content — omitting it makes a real, working cross-mod `ParentName`
+inheritance report as "resolves to no def", a false failure that cost a full
+validation cycle before it was caught:
+
+```bash
+--defs "C:/Program Files (x86)/Steam/steamapps/common/RimWorld/Data" \
+--defs "C:/Program Files (x86)/Steam/steamapps/workshop/content/294100" \
+--defs "C:/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
+```
+
 ### Two things it cannot see
 
 **It reads the defs as they sit on disk, unpatched.** Other mods' patches have

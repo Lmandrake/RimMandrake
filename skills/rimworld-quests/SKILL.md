@@ -240,6 +240,12 @@ concurrent quests using the same name can never collide.
 - 🔴 **`.Killed` has no XML precedent — vanilla uses `.Destroyed` for "the quest
   pawn died".** About 40 of the 75 suffixes are wired only from C# and appear in no
   shipped def: legal, but nothing to copy.
+- 🔴 **`QuestNode_SendSignals` has NO settable `<inSignal>` XML field.** It only
+  has `outSignals`/`outSignalsFormat`/`outSignalsFormattedCount` and reads the
+  AMBIENT slate `inSignal` var, never a per-node one. An `<inSignal>` written on
+  this node parses clean and is silently discarded — the node fires on whatever
+  the ambient slate signal happens to be, not what you intended. Wrap it in
+  `QuestNode_SignalActivable` instead. (2026-09-18, `VAULT_THAW_FIXED_TILES_UNFIREABLE_1`)
 - 🔴 **There is no `Quest.Accepted` signal.** Acceptance is expressed structurally
   with `<signalListenMode>`: `NotYetAcceptedOnly`, `OngoingOnly`,
   `OngoingOrNotYetAccepted`, `Always`.
@@ -292,6 +298,12 @@ Most "my quest never appears" reports are a def that took none of these.
    false. No `IncidentDef` of your own needed.
 2. **A dedicated incident** — `IncidentDef` with `<category>GiveQuest</category>`,
    `<workerClass>IncidentWorker_GiveQuest</workerClass>`, `<questScriptDef>Yours</questScriptDef>`.
+   🔴 **An `IncidentDef` with `questScriptDef` set AND `rootSelectionWeight != 0`
+   is a hard vanilla `ConfigError`** (`IncidentDef.cs:235`), not a style nit — the
+   quest could fire from BOTH the incident and the random root-quest pool, and
+   RimWorld refuses the combination outright. An incident-only `QuestScriptDef`
+   needs `isRootSpecial=true` / `rootSelectionWeight=0`. (2026-09-18,
+   `VAULT_THAW_FIXED_TILES_UNFIREABLE_1`)
 3. **A quest giver** (1.6/Odyssey) — `<givenBy><li>Traders</li></givenBy>` plus
    `<randomlySelectable>false</randomlySelectable>`.
 4. **A framework scheduler** — e.g. VEF's `QuestChainExtension`. ⚠️ **Copying a
