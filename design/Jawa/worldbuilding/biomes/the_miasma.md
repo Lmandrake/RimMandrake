@@ -222,7 +222,7 @@ tables are the roster/mechanics item's to tune.)
 
 ## Owed
 
-- `MIASMA_MECHANICS_1` (to file) — the surge/salt-line system (map axis,
+- `MIASMA_MECHANICS_1` (filed 2026-09-07, `doing`; all six mechanics have a build pass landed) — the surge/salt-line system (map axis,
   storm-driven movement, stranding pools), the fever-forged boon tables, the
   miasma weather (exposure + the mangals' visible thriving), warden-mother
   set-piece placement.

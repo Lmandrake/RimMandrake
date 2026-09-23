@@ -42,8 +42,9 @@ Slime's); warden mothers are **placed set-pieces, never random spawns**.
       (closed). **Steps 2-3 (M4 weather+light+exposure, M1 gradient axis)
       landed 2026-09-13** — see "## M4/M1 build pass" below for the full
       detail, honest gaps included. **Steps 4-7 (M2 surge, M3 stranding
-      pools, M6 warden placement, M5 fever-forged) remain undone** — later,
-      separate FOUNDRY work, not blocked by anything found in either pass.
+      pools, M6 warden placement, M5 fever-forged) have since landed build passes
+      too** — see "All six of MIASMA_MECHANICS_1's mechanics have now landed a build
+      pass" near the end of this file; what remains is live verification.
 - [ ] A quicktest map in the biome shows: forced miasma weather with no rain
       reachable; the salt line drawn and moving during a surge; a pool with a
       stranded spawn after a recede; a placed warden that never leaves its

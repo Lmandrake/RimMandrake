@@ -7,8 +7,8 @@
 
   MEASURED, not guessed:
   1. Two copies of the KOTOR_CrystalFormation GenStepDef exist: guy762.mm.kotorcore's
-     own LIVE def (1.6/Defs/ThingDefs_Resources/CrystalMapGenerator.xml, still active in
-     ModsConfig) and our dormant absorbed copy (Absorbed_KotorCore_CrystalMapGenerator.xml,
+     own def (1.6/Defs/ThingDefs_Resources/CrystalMapGenerator.xml; guy762.mm.kotorcore is
+     ABSENT from the live ModsConfig as of 2026-09-23, so this op matches nothing today) and our dormant absorbed copy (Absorbed_KotorCore_CrystalMapGenerator.xml,
      NOT deployed === its own header says so, and it is confirmed absent from the deployed
      Mods/Armoury/Defs/ tree). The live def dump attributes KOTOR_CrystalFormation to
      "Star Wars KotOR Resources and Materials" (guy762.mm.kotorcore) === our copy is inert.

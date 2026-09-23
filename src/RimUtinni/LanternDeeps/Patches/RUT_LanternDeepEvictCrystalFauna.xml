@@ -27,8 +27,8 @@
 -->
 <Patch>
 
-  <!-- Guarded: BMT_CrystalCaverns is owned by Biomes! Caverns. This mod already
-       declares that mod a hard modDependency (About.xml), but PatchOperationRemove
+  <!-- Guarded: BMT_CrystalCaverns is owned by Biomes! Caverns. This mod does NOT
+       declare it a dependency (About.xml lists only Harmony), and PatchOperationRemove
        against a missing xpath logs a RED error (not the silent no-match case
        CLAUDE.md warns about for Conditional/FindMod), so wrap it anyway. -->
   <Operation Class="PatchOperationFindMod">

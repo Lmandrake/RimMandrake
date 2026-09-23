@@ -126,7 +126,7 @@ the donor is not in the current load and this spec asserts nothing about it.
 
 | today | target mod folder | packageId | defName | shape |
 |---|---|---|---|---|
-| `mandrake.rut.lanterndeeps` (`RUT_LanternDeeps`, 117 files) | `LanternDeeps` | `mandrake.rm.lanterndeeps` | `RM_LanternDeeps` | An **injection layer**, not a painted biome: entrance buildings, the pocket-map generator, the layer's own BiomeDef, flora, darkness mechanic, settings. Its host test is TEMPERATURE, not a biome list — that is what makes it RimMandrake-tier. The one Star Wars piece inside it, `Patches/RUT_LanternDeepGateKotorStygium.xml`, stays in Utinni. PROPOSED; §7 Q6 |
+| `mandrake.rut.lanterndeeps` (`RUT_LanternDeeps`, 117 files) | `LanternDeeps` | `mandrake.rm.lanterndeeps` | `RM_LanternDeeps` | An **injection layer**, not a painted biome: entrance buildings, the pocket-map generator, the layer's own BiomeDef, flora, darkness mechanic, settings. Its host test is a biome-defName ALLOWLIST in Mod Settings (`LanternDeepsMod.cs:76-92`, `HashSet<string>.Contains(biome.defName)`), whose DEFAULT list was derived from the ≤ −40 °C rule — user-editable, not a hard biome dependency, which is what keeps it RimMandrake-tier. The one Star Wars piece inside it, `Patches/RUT_LanternDeepGateKotorStygium.xml`, stays in Utinni. PROPOSED; §7 Q6 |
 
 **Total with the Deeps: 26 RimMandrake biome mods.**
 
