@@ -69,6 +69,35 @@ planting a greatbole is their own sacrament performed by an outsider, and it is 
 ⚠️ Accepted cost: goodwill is farmable if seeds are plentiful. ⇒ Cap it, or tie it to the planted tree
 **surviving** — which usefully makes a plant-then-fell player look exactly as cynical as they are.
 
+## ✅ A third card round, 2026-09-23 — six additions, and two of them changed the design's shape
+
+1. 🔑 **Fruitfall** — a random event dropping one or two fruits and a few grubs. **This is the piece that
+   completes the economy:** without it the only route to fruit is wounding the tree, so any player who
+   wanted Royal Rind had to commit sacrilege. Now the fruit has two routes with opposite costs —
+   **patience or sacrilege.** ⛔ Neither may be strictly better.
+2. 🔑 **Pilgrims come for the SONG.** *"They go from one to another to learn the wisdom each teaches in
+   its song."* ⇒ The hum stops being a warning system and becomes the thing another faction crosses a
+   planet to hear. **And their reaction is read off the tree's body, not off a counter:** sap-sealed rooms
+   don't count against the player, open regrowing cuts are **wounds** (furious, or enraged), and
+   **witnessing a Great Shaking makes them attack outright.** ⇒ Sealing is morally as well as practically
+   correct, a fully regrown cut is genuine atonement, and the worst thing a player can do is be *seen*
+   mid-harvest. 🔴 Generic pilgrims without the Utinni scenario, so `RM_` tier with a campaign skin.
+3. **The song, specified**: ultra-deep bass that slowly drifts, **pitch rises with every cut** (physically
+   right — a hollower body rings higher), two disharmonious sounds overlapping near a threshold, the
+   harmonious blend returning only as the tree heals, and a genuinely unpleasant **beat frequency** near
+   breaking. ⇒ This gives the invisible 40% threshold the perceptible warning the owner had accepted doing
+   without. ⚠️ The beat specifically may not be achievable from two live sustainers (phase randomisation);
+   fallback is baking it into one authored file.
+4. **Thermal sanctuary**: chambers hold **deep-ground temperature**, because *"all the water coursing
+   through the tree's flesh upwards"* is a permanent thermal blanket. 🔑 Same fact explains why a **seed
+   needs adjacent water** — both ends of the species' life run on one sap column.
+5. **The fruit is hauled one at a time**, and **purple grubs read like purple fruit**. Taken together
+   deliberately: a slow hauler approaching a pile that might not be only fruit *is* the ambush.
+6. ⛔ **Fire cannot excavate it** — the heartwood is too dense to burn out. A cheap slow burn route would
+   have deleted the explosives-only consequence, which is the best emergent detail in the design.
+7. **The root causeways survive the tree** — dead roots are still roads. Zero work, and the catastrophe's
+   permanent alteration stays the crater, the fallen trunk field and the standing husk.
+
 ## spec
 
 Follow the spec document. Order, because it front-loads what can fail:
