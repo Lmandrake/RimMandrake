@@ -308,6 +308,39 @@ you would build the version he rejected. Door family is its own item,
 `FLOWWORKS_DOOR_FAMILY_1`: **two** stuffable defs, never the three he described and
 then talked himself out of.
 
+## 🔑 "Star Wars style" naming is NOT Star Wars IP — owner, 2026-09-22 (Q11a)
+
+*"The fact that we will use "star wars style" naming doesn't mean they have to live in the star
+wars layer. The top mod without star wars will look precisely the same as the star wars enhanced
+one save for any star wars beasts we populate it with."*
+
+**The tier line is IP, not flavour.** An **invented** exotic name is free to live in the
+franchise-free `RM_` tier and be cast inline; only a **genuine canon** name (hydenock, jogan, muja,
+chak-root, tooke-trap …) is IP and must route through the Utinni patch layer as Q11 requires.
+Authority: `design/RimMandrake/biome_mod_architecture.md` §7 **Q11a**, beside Q11.
+
+- ⇒ 🔴 **A `RM_` biome does NOT get a thin dependency-free "fallback" roster.** The free mod must look
+  *the same* as the campaign one, with canon content added on top — never substituting for an
+  impoverished base. "Rich enough to stand alone" is a requirement on every `RM_` roster.
+- 🔴 **BENCH got this exactly backwards for an hour of his session**: read *"bizarre Starwars names"*
+  as canon IP and routed a whole **invented** tree roster into the Star Wars layer. ⛔ Don't repeat it.
+- 🔑 **The bigger lesson, and it recurred within 24 hours of the same failure in another domain:** he
+  then removed canon from the roster altogether (*"we're making our own"*), which made **four** queued
+  questions **moot rather than deferred**. ⇒ **When a tier or provenance question starts generating
+  sub-questions, ask whether the CATEGORY is needed at all before adjudicating inside it.**
+  Adjudicating first and having the category deleted is the same shape as the multi-homing tie-break
+  algorithm he stopped (`BIOME_SPECIFIC_FAUNA_LAW_1`).
+- ⚠️ **A canon claim whose evidence is a donor mod's defName is not sourced at all.** A roster row read
+  *"Canon. Felucian glowspore is canon Felucia flora; the donor row `Plant_FelucianGlowspore_Wild` is
+  the wild form"* — circular, and false: `glowspore` returns **zero** Wookieepedia hits. Verify via the
+  search API (`action=query&list=search&srsearch=`), never a guessed exact title — a title miss returns
+  `MISSING` and proves nothing. Absence from `canon_references/` proves nothing either (137 entries by
+  design), which is exactly why the donor def is often the only evidence available and must still not
+  count.
+- ⚠️ **`<wildPlants>` uses the shorthand `<DefName>commonality</DefName>` form**, not `<li><plant>`
+  children — a parser written for the `<li>` form reads every row as empty and reports a roster of
+  `None`. It produced two flatly contradictory measurements of one file in a single session.
+
 ## Shipping names are three-tier — owner, 2026-08-30
 
 Every NEW packageId, defName, C# namespace and mod folder uses the tier
