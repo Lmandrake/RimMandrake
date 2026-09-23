@@ -8,15 +8,36 @@
 > frequencies, producing a soundscape that changes as you walk through the grove? that's pretty
 > magical..."*
 
-⚠️ **This is a QUESTION, not yet a ruling.** He is asking whether the engine can do it. ⛔ Do not
-design the mechanic until it is answered — and do not answer it from reasoning.
+## ✅ ANSWERED AND UNBLOCKED — owner ruling 2026-09-22
 
-## ⛔ It is UNMEASURABLE on the Mac laptop — this item needs `game-up`
+Told that the shipped hum system is **camera-attached rather than world-positional**, and that this
+was the gap between it and his idea, he ruled:
 
-No RimSage, no def dump, no running game there, so engine audio internals cannot be read. 🔴 The
-project has already paid for guessing an animation mechanism once: the fire hawk shipped a wing
-render-tree that the owner's own live test found broken, because the approach was assumed rather than
-measured. **Audio is the same class of risk.** Answer it on the Desktop.
+> *"It's ok if it were attached to the camera."*
+
+🔑 **That collapses the hard part of this item.** The unknown was whether a `Sustainer` can hang off a
+spawned `Plant` and behave positionally — an engine question, unmeasurable on the Mac, and the exact
+shape of risk that cost the fire hawk a live test. **Camera attachment is already shipped, proven and
+readable in this repo**, so the mechanism no longer needs an engine measurement at all.
+
+⇒ **`needs` moved from `game-up` to `offline`.** This is now designable and buildable without the game
+— what remains is content and tuning, not a capability question.
+
+### The mechanism, now that camera attachment is allowed
+
+Copy `RM_MapComponent_BiomeAttitude`'s proven shape: a plain `MapComponent` that each tick decides
+**how many hum layers play and which**, each layer a `SoundDef` spawned via
+`TrySpawnSustainer(SoundInfo.OnCamera(MaintenanceType.PerTick))`. In the Cathedral a mood band drives
+the layer count; here the driver is instead **what is near the camera** — how many humming trees are
+in view, and of what kind. Walking into a dense grove adds layers; walking out sheds them. *"Different
+frequencies"* becomes several authored `SoundDef`s at different pitches rather than runtime pitch
+manipulation, which sidesteps per-instance pitch entirely.
+
+⚠️ **The one caveat that survives** — and it is now a tuning problem, not a blocker: the recorded
+finding below says sustainers expose no partial volume ramp, so layers may **pop in and out** rather
+than fade. Mitigations that need no engine work: hysteresis on the layer count (the Cathedral already
+implements de-escalation-only hysteresis, so copy it), and layer changes gated to a minimum interval.
+⇒ Judge it by ear, then tune. ⛔ Do not report it as smooth until he has heard it.
 
 ## ✅ What IS established, from our own shipped code and a prior Desktop verification
 
@@ -70,24 +91,39 @@ reuse "the hum stops means a predator" — that meaning is taken, and the Greent
 silence cue (`RM_MapComponent_SilenceCue`, which hushes biome ambience when a predator hunts near
 home) that would directly contradict it.
 
-## what to measure on the Desktop — the specific checks
+## ⛔ SUPERSEDED — the five engine questions this item was filed to answer
 
-1. Can a `Sustainer` be attached to a spawned `Plant` and play **positionally** (with distance
-   falloff relative to the camera)? Name the `SoundInfo` overload that does it.
-2. Does a per-Thing sustainer support **per-instance pitch**, and is it set on the `SoundDef`, on the
-   sustainer, or by a mapped parameter?
-3. Is there any **volume ramp** available to a per-Thing sustainer, or does the no-partial-ramp
-   finding apply there too? ⇒ If not, does natural distance falloff supply the blend instead?
-4. What is the **cost** of N simultaneous positional sustainers? A grove is many trees, and this
-   biome is ruled *"choked with foliage"* — the count could be large.
-5. Does it survive save/load and camera jumps without stuck or duplicated sustainers?
+Camera attachment being acceptable removes all five. They are deleted rather than left standing, so
+nobody spends a Desktop session on them: they asked whether a `Sustainer` can attach to a `Plant`
+positionally, whether a per-Thing sustainer supports per-instance pitch, whether it has its own volume
+ramp, what N simultaneous positional sustainers cost, and whether they survive save/load. **None is
+needed now** — the camera-attached route answers the capability question by already working.
+
+⚠️ The one thing still worth confirming is cheap and is a *tuning* check, not a gate: how audible the
+layer pop is in practice. That is settled by listening, not by reading the engine.
+
+## spec
+
+1. **Copy `RM_MapComponent_BiomeAttitude`'s shape** — plain `MapComponent`, per-tick layer decision,
+   `TrySpawnSustainer(SoundInfo.OnCamera(MaintenanceType.PerTick))`, de-escalation-only hysteresis.
+   ⛔ Do not invent a new audio system; that file is the working reference.
+2. **Drive the layer count from what is near the camera**, not from a mood state — that is what makes
+   this about *place* rather than threat, and what keeps it distinct from the Cathedral.
+3. **Author several hum `SoundDef`s at different pitches** as the "different frequencies", rather than
+   manipulating pitch at runtime.
+4. **Put it in the shared behaviours assembly if it is generic**, or in the biome's own mod if it is
+   specific to this tree — decide deliberately, and note that the Cathedral's version lives in its own
+   biome mod.
+5. **Mod Settings toggle**, per the standing every-mod-ships-settings rule. An ambient audio effect is
+   exactly the kind of thing a player may want off.
 
 ## verify
 
-A recorded answer to each of the five questions above, each naming what was read or run. Then, only
-if it is possible: an owner ruling on whether to build it, and a distinction from the Cathedral's hum
-written down. ⛔ No claim that it works until he has heard it in play — this is an experiential effect
-and his ear is the authority.
+The grove's hum changes as the camera moves through it, the layer count changes without an obtrusive
+pop, and it is distinguishable from the Rust Cathedral's hum in both mechanism and meaning. ⛔ **No
+claim that it works until he has heard it in play** — this is an experiential effect and his ear is the
+authority. ⚠️ Ship it as a savegame he can walk, per the standing rule for anything he must judge by
+experiencing it; a description of a soundscape proves nothing.
 
 ## criteria
 

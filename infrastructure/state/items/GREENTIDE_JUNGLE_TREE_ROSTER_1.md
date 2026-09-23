@@ -39,12 +39,26 @@ walk. ⛔ Unmeasurable on the Mac, and **do not infer it works from the Rust Cat
 that is map-wide and camera-attached, not positional. There is also a recorded obstacle (no partial
 volume ramp on sustainers) and a signature collision with the Cathedral. All of it is on that item.
 
-### 🔴 And one thing that needs the Desktop before the roster can be authored
+### 4. ✅ Flammability: VERY LOW, and stop analysing it — owner ruling 2026-09-22
 
-The fire ruling — *"Fire will harm and burn things, but no they do not catch fire themselves, just
-take damage"* — **may not be expressible as a single `Flammability` value at all.** A value low enough
-to prevent ignition may also prevent fire damage, which would break the first half of the ruling.
-UNMEASURABLE here. Settle it against the engine before authoring 21 rows that all depend on it.
+I raised that his fire ruling (*"Fire will harm and burn things, but no they do not catch fire
+themselves, just take damage"*) might not be expressible as one `Flammability` number, because a value
+low enough to prevent ignition could also prevent fire damage. He ruled:
+
+> *"we should just put the flammability as very low, don't stress about it."*
+
+⇒ **Set a very low `Flammability` on every row and move on.** ⛔ This is CLOSED, not deferred — do not
+file a Desktop measurement for it, do not model the ignition-versus-damage distinction, and do not
+re-raise it. The concern was stated once and answered.
+
+🔑 **Why he is right, in his own cost terms:** a wrong flammability number is **bounded and
+recoverable** — he meets it in play, says so, and one number changes. Blocking 21 rows on an engine
+investigation is an unbounded cost paid up front for a distinction a player may never notice. ⇒ Pick a
+very low value, note it as chosen-not-measured, and let play correct it.
+
+⚠️ One thing that is still true and is content, not analysis: the biome has a standing hard ban on
+flammable living flora, and the precedent value on the analogous signature tree is `0.1`. Use that
+neighbourhood rather than inventing a scale.
 
 ## the ruling
 

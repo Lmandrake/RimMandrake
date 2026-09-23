@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T03:48:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T03:53:55Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1797,11 +1797,11 @@ prose:    infrastructure/state/items/GREENTIDE_BIOME_DENSITY_1.md
 ## GREENTIDE_HUMMING_GROVE_1 A grove that hums at differing pitches as you walk through it
 state:    proposed
 row:      unassigned
-needs:    game-up
+needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec
-summary:  GREENTIDEHUMMINGGROVE1 — a grove that hums at differing pitches as you walk
+thin:     spec, verify and criteria all present
+summary:  1. Copy RMMapComponentBiomeAttitude's shape — plain MapComponent, per-tick layer decision,
 prose:    infrastructure/state/items/GREENTIDE_HUMMING_GROVE_1.md
 
 ## GREENTIDE_RISK_REWARD_EXCHANGE_1 The jungle is terrifying, and pays accordingly
@@ -1810,6 +1810,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREENTIDE_RISK_REWARD_EXCHANGE_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Audit both sides first, against the items above, and say what each axis already has. ⛔ Do not
 prose:    infrastructure/state/items/GREENTIDE_RISK_REWARD_EXCHANGE_1.md
