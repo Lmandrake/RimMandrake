@@ -533,3 +533,121 @@ here — so the following are genuinely unknown, not merely unchecked.
    high-`pathCost` mire with an escalating `RM_Mired` hediff. That is *terrain* difficulty; *"hack
    through"* is *vegetation* difficulty. `GREENTIDE_BIOME_DENSITY_1` warns the two stack and the
    biome can become impassable by accident. Nothing on this page sets a path cost.
+
+---
+
+# Appendix A — canon inspiration notes
+
+⛔ **Nothing in this appendix ships, and nothing in it is a claim about anything that does.** No
+defName, label, or description on this page derives its authority from a canon source. This appendix
+exists for one reason: an earlier pass sourced real Star Wars trees live from Wookieepedia, and the
+**silhouettes and economic roles** it surfaced were good enough that the owner said *"You may get
+inspired by the star wars versions you found."* This records what inspired what, so the reasoning
+behind a row is traceable and nobody re-does the research.
+
+⚠️ **Do not reintroduce any name from this appendix as a row.** The ruling is that Star Wars plant
+lore encumbers the mod for no gain.
+
+| canon tree (inspiration only) | the idea taken | invented row it became |
+|---|---|---|
+| **wroshyr** (Kashyyyk) — tropical giant, sap used *"to produce fuel, oils, and chemicals"*, settlements built *inside* the tree | tapping a tree for the fuel economy; living inside a tree | the sap economy went to **mirrelbole**; living-inside stays with the already-built Greatbole, which is not a plant |
+| **massassi** (Yavin 4) — *"purple-barked giant trees … habitat of various animal species"* | a non-green trunk as the canopy's visual anchor; canopy as animal habitat | **mourvel**'s violet-black bark; the canopy-as-road job went to **veluthar** |
+| **brylark** — *"wood as strong as metal"* | one scarce tree that is the hardwood, worth a project to fell | **brunnock** |
+| **gnarltree** (Dagobah) — *"large, twisted roots"*, things *"hid amongst the gnarltree roots"* | roots as architecture and as cover, not decoration | **kaddrath** |
+| **hydenock** — *"a strong red dye could be obtained by crushing and boiling its bark"* | the common tree whose value is in its bleeding bark | **ghemmel** |
+| **jogan** — a fruit tree whose produce is the point | oversized low-hanging fruit as free calories with a tax | **nemmer** |
+| **greel** — *"the crimson timber … in great demand as a luxury item"*, *"fastidious"* | a premium export timber in small pure stands | **vurmeloth** |
+| **vesuvague** (Ithor) — carnivorous, *"vines and roots … to seize, strangle, and crush"* | a crownless hanging curtain whose leaves are not still | **zhorrel** |
+| **bafforr** — *"aquamarine in color"*, *"branches formed a sharp, interlocking web"*, *"the smooth bark hummed under his touch"*, a grove of seven being a mind | the one non-green plant; an overhead lattice instead of a crown; the hum | **thalquith** (the grove-mind is Q2, and was **not** designed) |
+| **orga** (Kashyyyk) — *"sharp vines, acid-filled pods, or strong tentacles … when treated with respect they allowed their roots to be foraged"* | forage-if-undisturbed, acid-if-damaged — reward and hazard in one object | **cundral** |
+| **yerdua poison-spitter** — *"a vicious animal-plant hybrid"* | a static plant with a ranged attack | **gorbeleth** |
+| **felucian glowspore** | a low glowing cap as the understory's only light | **illurin**. 🔴 Note: this name was **never canon** — a 2026-09-22 search returned no hits for either `glowspore` or `felucian glowspore`. It was a donor mod author's invention presented as canon, and it is precisely why §3g verifies every coined name. |
+| **uneti** — *"incredibly rare … mildly Force-sensitive"* | nothing. Its whole meaning is Jedi, which has no place in a Jawa scavenger jungle. Moot now in any case. | — |
+| **syren plant**, **blba tree**, **nysillin** | nothing usable — the first is one sentence with no appearance, the second has no description at all, the third is a herb | — |
+
+**Two invented rows in this roster owe nothing to canon at all** and came straight from the biome
+sheet: **sarnstilt** (§4's Lungers waiting in the water's shade) and **quathis** (a building material
+the biome needed). A third, **mirrelbole**, dramatises `the_greentide.md` §4's *"Trees grow until they
+crack and fall"* more than it does the wroshyr.
+
+⚠️ **The old canon-tier bookkeeping is gone, not archived.** Which rows were current canon versus
+Legends, and the two canon-admission edge questions, were all questions about whether something
+could *ship* as canon. Nothing ships as canon, so they are moot rather than deferred.
+
+# Appendix B — the other art subjects, and why they are not free
+
+MEASURED 2026-09-22 by reading each subject's own `done/<id>.json` `style_notes`, which names its
+`Source row: flora:<biome_sheet>:<donorDefName>`. This is the evidence for §3f's *"17 rows owe
+art"* — it is a negative result, and it is why nobody should plan on reuse.
+
+| subject(s) | source row | biome | canvas | verdict |
+|---|---|---|---|---|
+| `alientree_v1/v2`, `alientreepolluted_v1`, `halfalientree_v1` | `AB_AlienTree` family | the Contagion | v2 = 1024² | **not free** — and `v2` is the worked precedent for §3f's re-render |
+| `mangrovetree_v1`, `mangrovepalm_v1`, `tanglerootmangrove_v1` | `AB_MangroveTree` / `AB_MangrovePalm` / `BMT_Plant_TreeTanglerootMangrove` | the Miasma | 256² | **not free** |
+| `firevinetree_v1` | `AB_FirevineTree` | the Forge | 256² | **not free** |
+| `largeslimytree_v1`, `slimytree_v1`, `slimyfern_v1` | `AB_LargeSlimyTree` / `AB_SlimyTree` / `AB_SlimyFern` | the Slime | 256² | **not free** |
+| `twistingthornwood_v1` | `BMT_Plant_TreeTwistingThornwood` | the Cracked Lands | 256² | **not free** — `RUT_TwistingThornwood` is already our port |
+| `tropicalchokevine_v1` | `RG_Plant_TropicalChokevine` | the Webwork | 256² | **not free** |
+| `greenrockfern_v1` | `AB_GreenRockFern` | Weeping Stones | 256² | **not free** |
+| `rut_paletree_v1`, `rot_paletree_v2/v3` | `RUT_PaleTree` | the Rot | — | **not free** |
+| `fungusfern_a..d_v1` | `Fungusfern` | the Lantern Deeps | 128² | **not free** |
+| `rswollimwood_v1` | `RSW_OllimWood` — a harvested-resource *icon*, not a tree | Deep Desert | 256² | **not free** |
+
+⚠️ **`registry.jsonl` contains zero entries for any Greentide tree subject id** (checked), so
+`done/` is the only record of them.
+
+# Appendix C — the donor rows were already ruled, and this is not a re-ask
+
+The item asked a design pass to *"decide the donor rows' fate."* **He decided it on 2026-09-20.**
+MEASURED 2026-09-22 from the frozen decision files: `Transient/port_tail_2026-09-20.decisions.json`
+and `Transient/port_swac_2026-09-20.decisions.json` are both `"frozen": true`, both carry
+`"approvedSaid": "Yes replace everything."`, and both record
+`"frozenMeaning": "Owner ruled every row 'replace' on 2026-09-20. Reopen only on his word."` The
+sheet's own key defines `replace` as *"Replace with owned."*
+
+| donor row | commonality today | ruled | succeeded by |
+|---|---:|---|---|
+| `AB_JungleTree` | 3.0 | `replace` | **`RM_Veluthar`** (row 1) — and it is that row's art |
+| `Plant_HydenockTree_Wild` | 1.5 | `replace` | **`RM_Ghemmel`** (row 6) — and it is that row's art |
+| `Plant_JoganTree_Wild` | 1.2 | `replace` | **`RM_Nemmer`** (row 7) — and it is that row's art |
+| `Plant_FelucianGlowspore_Wild` | 0.6 | `replace` | **`RM_Illurin`** (row 21) — and it is that row's art |
+| `Plant_MujaFruit_Wild` | 1.0 | in scope per *"replacements for everything"* | **`RM_Brakkel`** (row 15) |
+| `Plant_HubbaGourd_Wild` | 0.8 | ″ | **`RM_Tumbel`** (row 16) |
+| `AB_SugarFamewort` | 0.6 | ″ | **`RM_Sarquin`** (row 17) |
+| `Plant_Bubblespore_Wild` | 0.5 | ″ | **`RM_Phorrik`** (row 18) |
+| `Plant_Chakroot_Wild` | 0.5 | ″ | **`RM_Wollick`** (row 19) |
+| `Plant_TookeTrap_Wild` | 0.5 | ″ | **`RM_Maddrick`** (row 20) |
+
+⇒ **Nothing is cut.** Every borrowed row is succeeded by a def of ours carrying the concept forward,
+and `RUT_GiantLeaf` at 1.0 is already ours and stays. The only true loss is donor-specific behaviour
+unreadable from this machine — §8.4.
+
+⚠️ **Two of the non-tree rows already have ports** — `RSW_Plant_HubbaGourd_Wild` and
+`RSW_Plant_Chakroot_Wild` in `src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortB_Plants.xml`.
+They are `RSW_`-tier ports of canon names, so they are **not** superseded by rows 16 and 19 and must
+not be deleted for them: `tumbel` and `wollick` are the franchise-free biome's own plants, and the
+canon gourd and chak-root remain available to the campaign tier. ⛔ Read
+`DONOR_DEFS_PORT_TO_OURS_1` before touching either — and do not duplicate a port that exists.
+
+---
+
+## Provenance
+
+- **Invented names:** coined here, all 21 verified against
+  `https://starwars.fandom.com/api.php?action=query&list=search` — zero hits each (§3g), plus a
+  case-insensitive grep across `src/` returning zero matches. Two candidates were rejected on hits
+  and replaced.
+- **Canon text in Appendix A:** sourced by an earlier pass this same day via
+  `https://starwars.fandom.com/api.php?action=parse&page=<Page>&format=json&prop=wikitext`, the route
+  `design/RimStarWars/canon_references/AGENT_BRIEF.md` prescribes. Retained as inspiration only.
+- **Repo facts, read this session:** `src/RimMandrake/Greentide/Defs/BiomeDefs/RM_Greentide_Biome.xml`,
+  `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_Placeholder_GreentideGiantTree.xml`,
+  `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_GreatboleCore.xml`,
+  `src/RimMandrake/EnvironmentalHazards/Source/`, `src/RimStarWars/SWBestiary/Defs/DesertPort/`,
+  `design/Jawa/mods/biome_flora.py`, `infrastructure/artpipe/done/`,
+  `infrastructure/artpipe/registry.jsonl`, `Transient/port_*.decisions.json`.
+- **Design authority:** `infrastructure/state/items/GREENTIDE_JUNGLE_TREE_ROSTER_1.md`,
+  `GREENTIDE_BIOME_DENSITY_1.md`, `HOSTILE_MOBILE_PLANTS_1.md`, `TREE_GRAPHICS_OWNERSHIP_1.md`,
+  `design/Jawa/worldbuilding/biomes/the_greentide.md`.
+- ⛔ **No claim on this page is live-proven.** There is no game, no def dump and no decompiler on this
+  machine. Everything engine-side is marked UNMEASURED in §8.
