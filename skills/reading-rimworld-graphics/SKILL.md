@@ -81,6 +81,15 @@ single file to find. **On the loose filesystem, list the folder** and show one
 variant, marked as one of N. Some defs are only reachable this way — 54 weapon
 cells in one real audit.
 
+⚠️ **Writing a `Graphic_Random` texPath as a file STEM is a hard error, and
+`validate_patch.py` catches it — but it also has a false positive.** A stem
+form (`Things/.../ScrapNest/ScrapNest` instead of the folder
+`Things/.../ScrapNest`, with `ScrapNest_a/b/c.png` inside) is correctly flagged
+ERROR. But once a mod ships its own `Textures/Things/` root, the same checker
+starts treating `things/` as *that mod's* namespace and escalates a CORRECT
+vanilla texPath to ERROR too. Read the checker's namespace assumption before
+trusting an ERROR on a texPath that points at vanilla art (2026-09-20).
+
 🔴 **Inside a bundle there is no folder to list.** The variants are flattened to
 siblings with a LETTER suffix, and the bare name does not exist at all:
 

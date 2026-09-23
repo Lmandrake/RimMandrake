@@ -14,7 +14,7 @@ So the rule that governs everything here: **no sprite reaches the Mods folder
 until the validator passes offline.** The load is for learning things that
 cannot be computed. Canvas size and alpha can be computed.
 
-Builds on `generating-images` (engine, chroma key) and `editing-images`
+Builds on `generating-images` (engine, transparency) and `editing-images`
 (invariants, drift detection). Read
 `../generating-images/references/codex-contract.md` for the verified CLI facts.
 
@@ -93,6 +93,14 @@ Typical RimWorld sprites fail both ends:
 *aspect*, then downscale with `pnglib.resize_rgba`, which premultiplies alpha
 and so avoids the dark halo that plain averaging produces on a cutout.
 
+⚠️ **For a repad/recenter-in-place fix on EXISTING game art, prefer BOX
+(area-averaging) over LANCZOS.** LANCZOS resampling on a sprite carrying
+sub-visible alpha dust (near-zero but nonzero alpha reaching past the visible
+silhouette) amplifies it via ringing — measured 1055→3452px of such pixels on
+one facing, trading a boundary-clip finding for a worse `transparency_real`
+finding. Of LANCZOS/BICUBIC/BILINEAR/BOX, only BOX left the file no worse than
+it found it (`ZEER_EAST_TOP_CLIP_1`, 2026-09-19).
+
 ## First ask whether this is a COLOUR job — those need no pixels at all
 
 Separate the ask into **colour** (free, and scale-proof, because it is the mean)
@@ -126,11 +134,10 @@ Copy this checklist and work down it:
 
 ```
 - [ ] 1. Measure the reference (canvas, alpha, coverage, palette)
-- [ ] 2. Generate or edit on a chroma key at a LEGAL size
-- [ ] 3. Cut the key to alpha
-- [ ] 4. Conform to the reference canvas
-- [ ] 5. Validate against the reference
-- [ ] 6. Look at it composited, at true display size
+- [ ] 2. Generate or edit at a LEGAL size, asking for a transparent background in the prompt
+- [ ] 3. Conform to the reference canvas
+- [ ] 4. Validate against the reference
+- [ ] 5. Look at it composited, at true display size
 ```
 
 ### 1. Measure the reference
@@ -149,24 +156,24 @@ validator that checks one canvas for all four facings will pass broken art.
 Match the reference's *aspect*, not its size. For a `512x640` reference
 (4:5), generate `1024x1280` — both multiples of 16, 1,310,720 px, in range.
 
-Always pass `--chroma-key`; RimWorld textures need alpha and there is no other
-route to it on this install.
+**Ask for a transparent background directly in the prompt.** There is no
+`--chroma-key` flag on `generate`/`edit` any more (removed 2026-09-06) — the
+built-in tool emits real alpha when asked for it. See
+`../generating-images/SKILL.md`. `chroma_key.py` is now only a standalone
+post-process script for the rare case that already has a flat key to cut.
 
-### 3–4. Cut and conform
+### 3. Conform
 
 ```bash
-python skills/generating-images/scripts/chroma_key.py \
-  --input raw.png --out cut.png
-
 python skills/generating-rimworld-sprites/scripts/conform_sprite.py \
-  --reference original_south.png --input cut.png --out final_south.png
+  --reference original_south.png --input raw.png --out final_south.png
 ```
 
 `conform_sprite.py` trims, scales and **registers the subject against the
 reference by mask overlap** rather than by bounding-box centre — damaged art is
 missing chunks, so its bounding box centre is not where the machine sits.
 
-### 5. Validate
+### 4. Validate
 
 ```bash
 python skills/generating-rimworld-sprites/scripts/validate_sprite.py \
@@ -198,6 +205,16 @@ point.** A wreck legitimately *loses area* — material is removed — so the ar
 tolerance has to stay loose. But it must still *span* its footprint. Checking
 only area is what let a sprite ship 20% undersized while every check passed.
 
+🔴 **This reference-vs-candidate REJECT is the WRONG check for a `Graphic_Random`
+sibling variant** — multiple interchangeable art files for one graphic slot
+(e.g. a plant's leafless-state alternates). Those are *meant* to differ from a
+reference in span/aspect/origin, so this validator REJECTs correct art: even
+our own shipped, working art (`EmberGrassA/B/C`, the donor
+`Sovereign_Tuskens/Wraps.png`) fails it 6-for-6. Use the reference-INDEPENDENT
+checks instead for this art class — canvas, real alpha, clean corners, fringe
+%, duplicate pixel-hash — never the reference-vs-candidate family
+(`EMBERGRASS_LEAFLESS_ALTS_1`, `DESERT_WRAPS_ART_COMMISSION_1`, 2026-09-19).
+
 ### The validator is itself tested
 
 ```bash
@@ -217,7 +234,13 @@ catch, so it would never have fired. And it found the identity check hashing
 `validate_sprite.py` carries the observation that set it. If you change one,
 re-run the self-test and update the note.
 
-### 6. Look at it
+⚠️ **A "must NOT flag" pin, added to prove a fix stuck, can pass VACUOUSLY if the
+pinned file is later deleted or renamed** — it never re-asserts the file is
+present, only that IF checked, it's clean. Prove any such pin is live by
+pointing it at a nonexistent filename first and confirming that FAILS, before
+trusting it passes on the real file (`ZEER_EAST_TOP_CLIP_1`, 2026-09-19).
+
+### 5. Look at it
 
 ```bash
 python skills/generating-images/scripts/preview_alpha.py \
@@ -337,6 +360,12 @@ itself is internally consistent is still owed from the Windows box.
 - **Yield, measured**: 94 generations produced 65 sprites (1.45 attempts each);
   25 of 65 targets needed more than one attempt, some three. Getting the facing
   right in the prompt is the cheapest credit you will ever save.
+- ⚠️ **East/west drifts top-down too, not just north/south.** East and west
+  facings drift toward an overhead camera even when the prompt explicitly says
+  "strict side profile" — the daemon's facing hook must forbid the overhead
+  camera explicitly, not just word the facing correctly (owner ruling
+  2026-09-16, gizka east). A canon entry's own hedge ("reads almost one-eyed")
+  can become a literal cyclops in the render if you don't.
 
 ### What can be checked without a model, and what cannot
 
@@ -347,6 +376,31 @@ and it agrees with the owner's eye on Orray, Iriaz and Anooba-south.
 ⚠️ **Symmetry cannot catch a FACE in the north** — a frontal face is symmetric.
 Anooba's north scores 0.84 while showing teeth to camera. That one needs something
 that looks at the image.
+
+⚠️ **And it cannot catch a PROFILE passed off as a north either, for the opposite
+reason: a blobby silhouette is symmetric by accident.** `Gizka_north.png` scores
+0.845 mirror-symmetry — comfortably past the 0.80 north/south floor — while being
+an unmistakable side profile facing right; the check's own docstring concedes it
+cannot catch this. A visual judge caught it in 17.8s. Keep this as the
+counterexample whenever someone argues a numeric gate makes looking at the image
+unnecessary (BENCH 2026-09-15).
+
+### Cross-facing size and height, not just symmetry
+
+- 🔴 **Run a cross-facing size audit at WIRING time, for every creature facing
+  set** — major-axis bbox spread across facings, flag anything over 15%. The
+  sprite validator's structural gates check each facing against its own
+  reference; they do not check facings against EACH OTHER, and that gap is
+  exactly the anooba-looks-huge defect class (2026-09-16 audit: all 12 sets
+  passing at the time; `nuna-female` at 14.3% and `sytheclaw` at 10.6% were the
+  borderliners).
+- **Facing HEIGHT is measurable and predicts an owner rejection before he
+  looks**: height cannot legitimately change with viewing angle, so measuring
+  it across a set caught the one row he flagged, at 1.85x. Pre-filling a review
+  sheet on provenance alone (did the current wave touch it) mispredicted 6 of
+  his first 9 verdicts — he judges whether it LOOKS painterly, canon anatomy,
+  and cross-facing scale, and only the last of those is something you can
+  measure before asking him to look (2026-09-15).
 
 ### No facing may BE another facing — and what that test does and does not find
 
@@ -603,6 +657,21 @@ is approved; it is the anchor, and it costs one 80-second call per facing.
 so a batch of four is 52 wasted minutes. If you try the two-image form again,
 give it a **120 s** timeout, not 780.
 
+## Small animated appendages: `PawnRenderNodeProperties_Spastic`
+
+Vanilla creatures are static by default — a waving arm or twitching tail is
+not free. `jawa/set_pawn_rotation dir:south lockRotation:true` faces a pawn at
+the camera for an art shot, but the only thing that animates an appendage on a
+still-standing pawn is a `PawnRenderNodeProperties_Spastic` node (the
+Toughspike template) idle-jiggling a texture (BENCH 2026-09-17). AA_GreenGoo's
+waving little arms read as alive against our art — study how Alpha Animals
+builds that wiggle (graphic comp, multi-frame, or shader) before assuming a
+creature needs a full flip-book (below) just to look animate; a small Spastic
+appendage may be the cheaper, correct answer (owner, first art walk,
+2026-09-14). ⚠️ Note the reversed flight ruling below: Spastic is fine for a
+small IDLE jiggle on one static texture, and was specifically wrong for
+expressing a per-facing flying pose.
+
 ## 🔴 Flying creatures need a DIFFERENT asset shape — not a wing layer
 
 **A flier's animation is a whole-body directional flip-book, never a separate
@@ -659,11 +728,41 @@ lie"), and verify the grounded graphic returns cleanly on landing. A screenshot
 of the animal standing still proves nothing about whether it flies; step ticks
 until it actually takes off and look then.
 
+## Before filing a job through the artpipe queue
+
+- 🔴 **`reference=` on an artpipe job triggers reskin-validate** (pixel-fidelity
+  against the OLD sprite). A deliberate RESTYLE will always fail it — 21
+  Pyrelands jobs REJECTed on canvas/subject-size mismatch vs the donor this
+  way. For a restyle, file **reference-less** (prompt + library images for
+  inspiration only), gated by the legibility gate, not reskin-validate
+  (BENCH 2026-09-13).
+- ⚠️ **A brief can cite reference art that does not exist.** "Match `X`'s art"
+  is only checked when `X`'s path is passed as the job's `reference` field —
+  prose in `style_notes` is unchecked. A def having a name and a `drawSize`
+  does not mean it has a texture; resolve the cited def's `texPath` and
+  confirm a real PNG before writing "match the existing X" (2026-09-23).
+- **Search before queuing.** `infrastructure/artpipe/done/`, `_artsrc/`,
+  `registry.jsonl` and any `.decisions.json` review sheet can already hold
+  finished, ruled-on art for the subject — the daemon runs continuously and
+  its output regularly sits unused. Grep `registry.jsonl` for `source:
+  "<ITEM_ID>"` before filing: one wave's "81 owed renders" was actually 77
+  already in flight and 24 finished renders waiting on review, not 81 to
+  generate (BENCH 2026-09-21). Full rule: `CLAUDE.md > Check for existing
+  regenerated art before queuing more`.
+
 ## Before it ships
 
 Deploying is a separate claim from writing. The game reads the Steam Mods
 folder, never this repo — run `python src/RimMandrake/Utils/deploy_custom_mods.py` for a plan,
 read it, then `--apply`. Per `infrastructure/agents/POLICY.md`, only deploy your own files.
+
+🔴 **A species with its own `<Name>ArtOverride` mod can be silently regressed by
+a later-loading donor mod shipping art at the same texPath** — no error, no
+log entry, the custom art just quietly reverts. Before extracting or shipping
+art for a species, check whether `src/RimStarWars/<Name>ArtOverride/About/About.xml`
+exists and read exactly which facings it claims (the exempted set varies per
+species); never ship a competing copy at a path an override mod already owns
+(FOUNDRY 2026-09-12, `RSW_Anooba`/`RSW_Dragonsnake`).
 
 ## Validation plan — what you owe whoever holds the game
 

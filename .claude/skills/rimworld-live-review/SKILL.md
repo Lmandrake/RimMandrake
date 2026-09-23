@@ -34,6 +34,20 @@ binds Windows loopback). Screenshots land in
 `.../RimWorld by Ludeon Studios/Screenshots/`; copy to `Transient/` and view them
 — **a screenshot is a cache, not an observation** until you have actually looked.
 
+## This vs a review sheet — and why neither verdict is final
+
+A quick SMALL-modlist game load staged with this skill is a standing review
+tier, not a fallback: it beats a sheet for zoom-level/at-scale questions
+(pattern: trimmed list = MINIMAL + content mods + overrides, quicktest map,
+spawn batches, walk). Sheets stay for side-by-side comparison and
+canon-fidelity checks (owner ruling, first art walk, 2026-09-14).
+
+⚠️ **Neither verdict is durable on its own.** The owner's in-game "call those
+done" verdicts have been reversed to rerender once the same creatures were seen
+on a sheet — Bolotaur and Gualaar both went that way in one sitting
+(2026-09-15). A shot that reads fine in the moment is not a closed review;
+serve the sheet too before calling a wave finished.
+
 ## 🔴 Python is fast and cheap; you are slow and expensive — push work into the script
 
 The bridge answers Python in milliseconds; every call *you* issue as the model is
@@ -149,6 +163,18 @@ then refuses with "No loaded map has uniqueID N". The fix (owner, 2026-09-17):
 makes it a player home map that is never auto-culled. Then you can step and pause
 freely. (This is also recorded in memory as `generated-map-culled-unless-home`.)
 
+🔴 **Three ways a bridge-generated settlement map bites in one sitting, beyond the cull
+itself:** its defenders include **turrets**, so sweep `BuildingArtificial` by faction, not
+just pawns, before calling hostiles cleared; **downed or dead colonists un-home the map**
+just like an empty one, so stepping time culls it anyway even with "colonists" on it —
+only LIVING colonists keep it current; and pausing except while deliberately stepping is
+what actually keeps it alive between your calls (2026-09-18).
+
+⚠️ **If a map was already culled/orphaned before you noticed**, re-faction the
+Settlement object itself via `jawa/world_objects_set` (`ids=`, `defName: PlayerColony`)
+**before** stepping time again, or fall back to a save+load cycle — reloading is the
+reliable way to make an orphaned map current again (2026-09-14).
+
 - `jawa/set_current_map {mapId}` switches `Find.CurrentMap` AND hides the world
   layer, so screenshots and current-map tools (spawn, list_pawns, take_screenshot)
   act on the right map. It refuses an unknown id and prints the loaded maps —
@@ -156,6 +182,23 @@ freely. (This is also recorded in memory as `generated-map-culled-unless-home`.)
 - Spawn **subjects** wild: `faction:"none"` (no combat, no fleeing). `faction:""`
   errors; the default is a hostile faction, which gets your subjects killed near
   a colony.
+
+🔴 **A freshly-generated map renders stale, and that alone can invalidate a
+verdict.** `jawa/world_tile_map_generate` leaves `RegionAndRoomUpdater` off and
+meshes never invalidate — so any visual verdict on a generated map is suspect
+until you call `jawa/map_commit` (2026-09-18, `BRIDGE_MAPGEN_STALE_FINALIZE_1`).
+
+🔴 **And some generated maps render PURE BLACK, with no known bridge fix.**
+Falsified so far: `jawa/refresh_rect` over the whole map + `map_commit`, and the
+vanilla debug action `Actions\Regen All Map Mesh Sections`. It is not fog, not
+night — the control that proves it: switch to a map you entered normally
+(`jawa/set_current_map`) on the same connection and it renders fine seconds
+later. `jawa/colony_found` does **not** generate a map (its own response says
+so), so there is currently no bridge route that enters a tile-generated map the
+way a player does. Any review whose bar is "see it on screen" for a bridge-
+authored tile is **blocked** until a companion tool takes that entry path —
+say so rather than shipping a black screenshot as a negative result
+(2026-09-19).
 
 ## 4. Placement — verify every cell is open and the right terrain
 
@@ -199,6 +242,11 @@ pass (ashfall, blackrain, cinderfall…) shows the mood that defines the biome.
 - **Frame:** `rimworld/frame_cell_rect {x,z,width,height,paddingCells}` zooms to
   fit a rect. It has been seen not to move the camera on its own, so the helper
   jumps to the rect centre first, then frames, then reads `get_camera_state` back.
+- **Don't over-zoom.** `jump_camera_to_cell` + `rootSize: 11` (the "Closest"
+  zoom) renders any forbidden-item icon at full-screen size instead of showing
+  the animal you meant to look at — item icons and their red forbidden-X
+  overlay fill the frame at that zoom. Back off to `rootSize` ~14–18 before
+  screenshotting a specific pawn (2026-09-19).
 - **Avoid structures in a biome/art frame:** a colony or ruin in shot pulls the
   eye and changes the read. Frame a patch away from built areas; that is why the
   helper spawns the roster in open ground you chose, not where the colony landed.
@@ -289,6 +337,15 @@ one wasted a staging pass.
 🔑 **`rimbridge_client`'s unknown-parameter guard caught all four**, which is the whole
 reason it exists — the bridge would otherwise have DISCARDED the bad keys, run on
 defaults and returned `success: true`. ⛔ Never pass `check=False` to silence it.
+
+Two more from the same family, 2026-09-18: `rimworld/take_screenshot` silently
+**ignores** `x`/`z`/`zoom` — they are recorded, not refused, so three shots
+requested at different framings can come out identical; frame with a camera
+tool (`frame_cell_rect`) first, never trust the screenshot call's own framing
+args. And `jawa/clear_log` empties the debug log but does **not** close the
+window — `jawa/window_list_close typeName=EditWindow_Log` does. Look at the
+PNG before sending it; a "cleared" log window can still be sitting over your
+frame.
 ⚠️ But the guard RAISES, so a helper that wraps calls in try/except turns the raise
 into a quiet per-call failure: make the wrapper print the reason, or a whole staging
 step fails invisibly.
@@ -319,7 +376,10 @@ believing it is the species.
 ## 9. When a shot still comes out wrong — the checklist
 
 Before concluding the subject looks bad, rule out the frame:
-- camera on the **right map**? (`get_camera_state` mapId; `map_info` mapBiome)
+- camera on the **right map**? (`get_camera_state` mapId; `map_info` mapBiome) — and check
+  it isn't the **world** view: `jump_camera_to_cell` can report success with the WORLD
+  view still up, so the "shot" is the planet, not the map. `jawa/world_view {show:false}` +
+  `get_camera_state.mapId` first (2026-09-18).
 - frame on the **subject**, not the colony? (jump to rect centre first)
 - **unfogged**? **UI cleared**? **paused** so nothing moved?
 - **daylight**, or is it just dark?
