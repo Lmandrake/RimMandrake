@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:39Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_tumbel_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a thick alien runner plant arching up on woody props well above head height, carrying heavy hollow leathery vessels slung along its length, each the size of a crate, dull-skinned. You would walk under it and not see out through the vessels. Reads as a loaded rack. No conifer forms. Single plant, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and all major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 16 tumbel, ground cover, 5 cells. MUST BLOCK SIGHT - owner ruling 2026-09-22. This brief CHANGED on 2026-09-23: it was previously a flat floor-texture runner with no vertical presence. Food plus containers; still readable from a distance as a waypoint plant."
+}

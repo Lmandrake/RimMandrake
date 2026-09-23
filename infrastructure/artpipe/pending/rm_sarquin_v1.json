@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:39Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_sarquin_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a thick fleshy central whorl at chest height with long hanging tentacle-leaves falling from above it, dripping clear sweet sap continuously, every drip-point glazed and crusted. The curtain of strands is dense enough to block the view. Reads as a chandelier. No conifer forms. Single plant, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and all major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 17 sarquin, ground cover, 4 cells. MUST BLOCK SIGHT - owner ruling 2026-09-22. The sugar source, and the primary host for the RM_Skerrel wasp galls - leave room in the drip-tentacles for a gall to be drawn later as its own Thing."
+}

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:39Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_zhorrel_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: an alien strangler plant with no crown at all - a low crossbeam of red-barked branches carrying a hanging curtain of slack finger-thick tentacle-leaves, drawn mid-motion so the tentacles read as moving rather than hanging still. Reads as a bead curtain that moves. No conifer forms. Single plant, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and all major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 10 zhorrel, mid-storey, 5 cells. Form: hanging tentacle curtain, no crown. The tell is that the tentacles move against the wind, so the pose must not read as static."
+}

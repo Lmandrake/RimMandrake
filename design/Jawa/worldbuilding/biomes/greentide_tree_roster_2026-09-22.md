@@ -336,9 +336,13 @@ the PNG on the Desktop.
 
 **⛔ Nothing is commissioned here.** 18 of 22 rows owe art — the 17 measured this session, plus
 `RM_Greatbole`, which was ruled in afterwards and is the **largest canvas on the page** (2048² at
-16 cells, §3a0). ⚠️ The greatbole's art has a constraint none of the others has: it must share leaf,
-bark and fluting with `RUT_GreatboleCore` so the life-stage claim reads without text, so it should be
-generated **against that existing landmark's art as reference**, not from the brief alone. Per the
+16 cells, §3a0). 🔴 **And the life-stage visual family has to run BACKWARDS, because the landmark has no art.**
+MEASURED 2026-09-23: `RUT_GreatboleCore.xml:36` uses vanilla `Things/Building/Misc/DeepDrillPowered`
+retinted `(74,58,36)` at `drawSize (7,7)` — there is no greatbole texture to reference. (The only
+greatbole PNG on disk is `RUT_GreatboleHeartwood.png`, the harvested item, which is a material swatch
+and not a silhouette.) ⇒ **The greatbole tree's art becomes the family, and the LANDMARK then owes art
+matching it** — a retinted deep drill cannot read as an ancient tree, so today the life-stage claim is
+invisible in-game no matter how the tree is drawn. Per the
 standing check-before-queuing rule, `artpipe/done/`, `_artsrc/` and `registry.jsonl` were all searched
 for every one of the other 17 subjects before saying so — and the answer came back negative, so there is no already-ruled art
 being thrown away. ~14 other tree/fern subjects in `done/` belong to **other biomes** (the

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:39Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_mourvel_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: an alien weeping jungle tree - a low wide dome whose entire outer surface is hanging cord-like leaf strands falling all the way to the ground, so the tree reads as a room with walls and nothing is visible through it. Bark violet-black, leaf strands blue-green. No conifer forms. Single plant, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and all major internal linework, thick enough to read at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 2 mourvel, canopy, 8 cells. Form: weeping curtain to the ground - must read as a walled room, not as a willow. Silhouette must not duplicate any other roster row."
+}
