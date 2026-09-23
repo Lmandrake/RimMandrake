@@ -100,7 +100,6 @@ loads under the same name; only its location moved.
 | `deciding-and-superseding` | Issuing a ruling that survives contact with other agents — recording a decision so it is executable, propagating it into every… |
 | `editing-images` | Modifies an existing image with a text prompt by attaching it to Codex's built-in $imagegen tool, then verifies what actually… |
 | `efficient-subagents` | Decide whether to spawn a subagent, and how to scope, feed and bound it so it returns 1-2k tokens instead of flooding the parent |
-| `using-rimflow` | The ledger CLI's verbs and traps — `close --sha`, `--owner-said` provenance (typed vs clicked), `--seat` on the laptop, committing `events.jsonl` by explicit path, file-order projection, the bridge lock |
 | `frozen-artifacts` | Protect a file that holds a human's decisions from the generator that would silently regenerate over it — and, more often, decide… |
 | `generating-images` | Generates raster images from a text prompt by driving the Codex CLI's built-in $imagegen tool, then retrieves, inspects and… |
 | `generating-rimworld-sprites` | Produces RimWorld-ready sprite art that matches an existing reference asset — correct canvas, real alpha, silhouette inside the… |
@@ -113,8 +112,8 @@ loads under the same name; only its location moved.
 | `rimworld-debug-testing` | Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the… |
 | `rimworld-deploy` | Writing a file is not deploying it — RimWorld loads C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>, never… |
 | `rimworld-ideoligion` | Design, author, validate and judge RimWorld ideoligions |
-| `rimworld-live-review` | >- |
 | `rimworld-layout-layers` | Assess a RimWorld structure on its INDEPENDENT LAYERS - power circuits, mod pipe networks (Helixien gas, chemfuel, deepchem… |
+| `rimworld-live-review` | Stage a live RimWorld scene through the bridge so a human can LOOK at it and judge it — a biome's plant density and colour, a… |
 | `rimworld-load-round` | How to spend a RimWorld cold load — and how to stop needing one |
 | `rimworld-modding` | Author, patch, validate and debug RimWorld mods — XML PatchOperations, custom Defs, C#/Harmony assemblies, def inheritance that… |
 | `rimworld-quests` | Design, author, validate and debug RimWorld quests |
@@ -124,6 +123,7 @@ loads under the same name; only its location moved.
 | `rimworld-start-prep` | Getting the mod list and load order into the state you actually intend BEFORE RimWorld launches — the three uncoordinated writers… |
 | `rimworld-world-editing` | Author RimWorld's PLANET from the bridge - tiles, biomes, elevation, rivers, roads, mutators, landmarks, named regions and… |
 | `rimworld-xenotypes` | Authoring, moving, spawning and debugging RimWorld xenotypes and the genes that give them a face |
+| `using-rimflow` | Use before ANY rimflow / src/RimMandrake/rimflow/cli.py call — file, claim, start, close, drop, supersede, note, next, seat… |
 | `verify-before-you-escalate` | Run the one command that settles a written claim before acting on it, escalating it, or raising an alarm about it |
 <!-- doc_roster:END -->
 

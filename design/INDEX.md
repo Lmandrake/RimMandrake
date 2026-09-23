@@ -6,7 +6,7 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
-⚠️ **247 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+⚠️ **414 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
 
 ### `design/`
 
@@ -17,10 +17,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `FABLE_WINDOW_PROPOSITION.md` | What to spend Fable on while we have it | ? proposition for the owner — bench, 2026-08-31, answering his high-priority ask |
 | `MOD_CONSOLIDATION_PLAN.md` | Mod Consolidation Plan — domain × tier cells, one big-bang merge | ? draft v3 — expansions adopted, pending owner sign-off |
 | `MOVING_DUNES_DESIGN.md` | MOVING_DUNES_DESIGN — real aeolian transport for RimWorld maps | — |
-| `NAMING_SCHEME_PLAN.md` | The Three-Tier Naming Scheme — RimMandrake / RimStarWars / RimUtinni | ? live — the three-tier naming scheme plan. ruled in principle by the owner 2026-08-30 |
+| `NAMING_SCHEME_PLAN.md` | The Three-Tier Naming Scheme — RimMandrake / RimStarWars / RimUtinni | ? live as the grammar |
 | `RIMPROPERTY_ANIMAL_THEFT_SPEC.md` | RimProperty animal theft — RIMPROPERTY_ANIMAL_THEFT_1 | — |
 | `RM_GRAFFITI_SCOPE_WIDENING.md` | RM Graffiti — widening the base mod: punk-urban marks and ideoligion sigils | ? draft — fable design pass for owner ruling, 2026-09-09. item |
 | `V2_DREAMS.md` | V2 — dreams and hopes | ☁ aspirational |
+| `mondayreviewitems.md` | mondayreviewitems — design questions waiting on the owner | — |
 
 ### `design/Jawa/`
 
@@ -292,7 +293,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      here and is not this document's job to rule on. |
 | `Livestock_Trade_Utility_Pets_v1.md` | The Livestock Trade — Utility, Pet & Companion Creatures | ☁ aspirational |
 | `PLANT_GROWTH_SPEC.md` | PLANT_GROWTH_SPEC.md — freakish plant growth, specified for build |  |
-| `PRE_WORLDGEN_GATE.md` | Before the owner generates the world — what is actually owed |  |
+| `PRE_WORLDGEN_GATE.md` | Before the owner generates the world — what is actually owed | ? historical record |
 | `REGIONS_THAT_LIE.md` | Regions that lie about themselves — audit, 2026-08-23 |  |
 | `RETIREMENT_CHECKLIST.md` | Retirement checklist — four mods, 2026-09-05 | — |
 | `SCENARIO_SETTINGS_SPEC.md` | SCENARIO_SETTINGS_SPEC.md — every setting the campaign start needs, and WHEN it is fixed |  |
@@ -321,6 +322,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      executes |
 | `depths_concept.md` | The Depths — underwater as space, dark for a whole new reason | ? draft — bench concept for owner ruling, 2026-08-31. tier |
 | `desert_ecology_feasibility.md` | Desert ecology — engine feasibility | — |
+| `desert_shade_plants_design.md` | DESERT_SHADE_PLANTS_DESIGN_1 — the two plants that defend the desert's shade | — |
 | `desert_world_design.md` | desert_world_design.md — Consequential-Landing Design (risk/reward per terrain) |  |
 | `droid_chassis_coverage.md` | Droid chassis — what we have, what one subscribe buys, what needs art |  |
 | `droid_taxonomy.md` | The three droid families, and what each is FOR |  |
@@ -334,6 +336,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `faction_roster_v2.md` | RimWorld 1.6 Desert-World Faction Roster — v2 |  |
 | `faction_stage3_buildable_spec.md` | Faction Stage 3 — the buildable spec | → superseded `FACTION_SPEC.md` |
 | `faction_world_spec.md` | The world we want — faction specification |  |
+| `fall_line_major_region_label.md` | The Fall Line as a major world region — the label pass | — |
 | `fauna_placement.md` | fauna_placement.md — where each creature belongs |  |
 | `fauna_tolerance_violations_2026-09-11.md` | Fauna tolerance census — Law 5 violations (offline, 2026-09-11) | — |
 | `fish_bestiary_commission_2026-09-10.md` | The Ash'karr fish bestiary — FISH_BESTIARY_COMMISSION_1, the proposal | — |
@@ -403,7 +406,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `vapor_emitter_inventory.md` | vapor_emitter_inventory.md — every vapor/smoke/gas emitter on Ash'karr, and the decay law per type |  |
 | `vapor_emitter_review_2026-09-12.md` | Vapor/Smoke/Gas Emitter Review — Ash'karr (offline legs, parts 1-3) | — |
 | `vault_siting_prep.md` | Vault siting prep — for the VAULT_DUNGEON_CONCEPT_1 owner sitting |  |
-| `vault_thaw_quest_family.md` | The vault thaw quest family — what makes the six Forsaken vaults play | ? built-offline + wake/loot sender built 2026-09-12, live quicktest still owed |
+| `vault_thaw_quest_family.md` | The vault thaw quest family — what makes the six Forsaken vaults play | ? built-offline + wake/loot sender built 2026-09-12 |
 | `water_doctrine.md` | Water doctrine — the master resource, finally decided |  |
 | `water_taxonomy.md` | The waters of Ash'karr — taxonomy wrapper | — |
 | `what_the_machines_are.md` | What the machines are |  |
@@ -422,14 +425,20 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `_openers_prep.md` | Biome opener prep — measured tables for the remaining sheets | — |
 | `arid_shrubland.md` | The Arid Shrubland — definition sheet | — |
 | `assailant_weapon_remnants.md` | The Assailant weapon remnants — the triptych's third panel (not a biome) | — |
+| `caverns_replacement_scoping.md` | Caverns replacement scoping — CAVERNS_REPLACEMENT_SCOPING_1 | — |
 | `deep_desert.md` | The Deep Desert — definition sheet | — |
 | `desert.md` | The Desert — definition sheet | — |
 | `dune_sea.md` | The Dune Sea — biome definition sheet | — |
 | `edible_genepack_native_mechanism.md` | The edible-genepack loop — reverse-engineered, verified, ready to implement natively | — |
 | `fall_line.md` | The Fall Line — definition sheet | — |
 | `forsaken_crags.md` | The Forsaken Crags — definition sheet | — |
+| `greentide_risk_reward_2026-09-22.md` | The Greentide as an exchange — audit, progression, and new reward categories | — |
+| `greentide_tree_roster_2026-09-22.md` | Greentide flora roster — 15 invented trees + 7 invented understory plants, 2026-09-22 | — |
+| `lantern_deeps_flora_names.md` | Lantern Deeps — flora names (second proposal) | — |
 | `nightside_ice.md` | The Nightside Ice — biome definition sheet | — |
 | `poison_forest.md` | The Poison Forest — biome definition sheet | — |
+| `rot_flora_fauna_names.md` | The Rot — flora and fauna names and regen briefs | — |
+| `sweetline_guardian_spec.md` | Sweetline guardian — generic guardian species spec | — |
 | `terminator_sea.md` | The Terminator Sea — biome definition sheet | — |
 | `the_blue_desert.md` | The Blue Desert — definition sheet | — |
 | `the_contagion.md` | The Contagion — definition sheet | — |
@@ -462,11 +471,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `fever_wood_kit_spec.md` | FEVER_WOOD_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
 | `forge_kit_spec.md` | FORGE_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
+| `greatbole_harvest_spec.md` | The greatbole harvest — spec | — |
 | `greentide_kit_spec.md` | GREENTIDE_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
 | `miasma_kit_spec.md` | MIASMA_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
+| `rot_kit_spec.md` | The Rot — mechanics kit spec | — |
 | `rust_cathedral_kit_spec.md` | RUST_CATHEDRAL_MECHANICS_1 — C# mechanics kit spec (DRAFT) | — |
 | `scald_kit_spec.md` | SCALD_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
-| `scarlands_kit_spec.md` | SCARLANDS_MECHANICS_1 — C# mechanics kit spec (DRAFT) | — |
+| `scarlands_kit_spec.md` | Scarlands C# mechanics kit spec | — |
 | `shokkweave_sole_source_spec.md` | SHOKKWEAVE_SOLE_SOURCE_1 — economy spec (DRAFT for build) | — |
 | `sump_kit_spec.md` | SUMP_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
 | `webwork_kit_spec.md` | WEBWORK_MECHANICS_1 — C# mechanics kit spec (DRAFT for owner review) | — |
@@ -477,6 +488,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `_SCHEMA.md` | rosters/ — the landed fauna/flora assignment, as data | — |
 | `_fish_assignment_proposal.md` | FISH_BY_BIOME_1 — merged fishTypes proposal, every water, one ruling each | — |
+| `lantern_deeps_repopulation_proposals.md` | Lantern Deeps — fauna repopulation proposals | — |
 
 ### `design/Jawa/worldbuilding/creatures/`
 
@@ -487,6 +499,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      same day (mindstone_arc_legends.md). propagated to both frozen sheets. |
 | `RUT_ruled_commissions_wave2.md` | The ruled commissions, wave 2 — seven creatures from the 2026-09-10 sitting | ? design brief — nothing here is built except where a row says so |
 | `RUT_slime_transformation_system.md` | MOVED → `design/RimMandrake/RM_gelatinous_slime_mod.md` | — |
+| `blue_desert_hydrocarbon_life.md` | The Blue Desert's life — BLUE_DESERT_LIFE_AUTHORING_1, step 1 (design brief) | ? design brief — nothing here is built |
 | `goo_boom_commission.md` | The vhessk — GOO_BOOM_COMMISSION_1, the one boom creature that replaces the family | ? design brief — nothing here is built |
 
 ### `design/Jawa/worldbuilding/data/`
@@ -596,10 +609,22 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Custom_World.md` | Custom_World.md — How to Build a Crafted RimWorld (living playbook) |  |
 | `RM_gelatinous_slime_mod.md` | The Gelatinous Slime Biome — GELATINOUS_SLIME_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built |
 | `RM_liquid_types_mod.md` | One Liquid System, Many Liquids — LIQUID_TYPES_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built |
+| `RM_titanoslime_spec.md` | The Titanoslime — `RM_Titanoslime`, the Slime's own mouth | ? design spec — nothing here is built. item |
+| `ancient_machines_design.md` | ANCIENT MACHINES — the grade ladder, and the two layers above it | ? design, filed 2026-09-15 from the bench session recorded in
+     infrastructure/state/items/rakatan_archotech_machines_1.md, and reconciled
+     against that item's later rulings the same day (revised ratios, the 1.0
+     donor rung, the withdrawal of "exceeds modern", the layer-1 assembly, the
+     ninefold impulse api). that item is the authority on what the owner said
+     and ruled |
 | `art_regen_registry_design.md` | Art Regeneration Registry + Dashboard Hub — design (ruled 2026-09-11) | — |
+| `art_review_facts_spec.md` | Art review FACTS — the automatic sprite review ruleset | — |
+| `atmospheric_base_hook_ecosystem.md` | AtmosphericBase — the hook ecosystem | — |
+| `atmospheric_base_mod_definition.md` | AtmosphericBase — mod definition | — |
+| `atmospheric_base_scheme_catalog.md` | AtmosphericBase — scheme catalog, DRAFT | — |
 | `balance_paradigm.md` | balance_paradigm.md — why we would change any number in this game |  |
 | `bazaar_trade_window_design.md` | The Bazaar — the scavenger trade window | — |
 | `beautiful_tilemap.md` | Beautiful_Tilemap — concept spec | ☁ aspirational |
+| `biome_mod_architecture.md` | Biome mod architecture — one RimMandrake mod per converted biome | — |
 | `bridge_library_design.md` | rimdrive — the reusable Python bridge library (design) | — |
 | `coastal_mesa_rationale.md` | Coastal Mesa — LLM-authored map improvement |  |
 | `codex_receiving_agent_design.md` | A receiving agent inside Codex — accelerating graphics generation | — |
@@ -607,6 +632,8 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      review. ruled into existence by droid_unified_framework_design.md §0 card 14 ("droid voice
      via the oracle |
 | `faction_authoring_mechanism.md` | faction_authoring_mechanism.md — How we make rich, differentiated factions |  |
+| `flowworks_mod_definition.md` | FlowWorks — mod definition | — |
+| `flowworks_program1_validation_checklist.md` | FlowWorks program 1 — grouped validation checklist (excavation+liquids merge) | — |
 | `liquids_framework_design.md` | Liquids Framework — one substance, many faces | — |
 | `llm_ingame_wiring_spec.md` | The Oracle — in-game LLM wiring | ? spec — llm_ingame_wiring_1, bench 2026-08-31, green-lit by the owner, verbatim |
 | `llm_stack_assessment.md` | llm_stack_assessment.md — how far the live LLM stack gets us |  |
@@ -617,12 +644,17 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `map_generator_round4_options.md` | Map generator round 4 — the chooser, as OPTIONS (Fable design pass, not ruled) | — |
 | `mod_validation_runner_spec.md` | modcheck — scripted mod-functionality validation (pre-playtest) | — |
 | `music_protocol.md` | music_protocol.md — adding our own music to the gravship campaign |  |
+| `narrative_dictionary_design.md` | Narrative Dictionary — design spec | ? approved-design, pilot not built |
+| `narrative_dictionary_pilot_plan.md` | Narrative Dictionary Pilot (Batch 1) — Implementation Plan | — |
 | `nine_voices_cast_bible.md` | The Nine Voices — cast bible for the thing in the walls | ? cast bible — nine_voices_cast_bible_1, bench 2026-08-31, green-lit by the owner.
      supersedes llm_voice_preauthoring.md part a (the single cradle-mind persona), which r-w6
      invalidated. part b (dynamic jawaese) of that doc is untouched and still live.
      sources |
 | `nine_voices_v1_lines.md` | The Nine Voices — v1 line corpus (BLESSED by the owner, 2026-09-11) | — |
+| `north_star_validation_spec.md` | North stars — binding a mod's intended EXPERIENCE to its validation run | — |
 | `ollama.md` | ollama.md — installing Ollama on Windows |  |
+| `pit_superdeep_collapse_spec.md` | Pit → Superdeep collapse — design spec | — |
+| `reaction_mechanism_spec.md` | One reaction mechanism, four scales — spec | — |
 | `rimbridge.md` | rimbridge.md — living context on RimBridgeServer (live game modification) |  |
 | `rimtalk_analysis.md` | rimtalk_analysis.md — RimTalk adoption analysis | → superseded `llm_stack_assessment.md` |
 | `rimworld_file_lore.md` | rimworld_file_lore.md — technical manual for editing RimWorld save / scenario / def files |  |
@@ -632,17 +664,864 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `aquatic_water_breathing_design.md` | Water-breathing for the aquatic xenotypes — design brief | — |
 | `brain_worm_spec.md` | Geonosian brain worms — research + def plan (design spec) | — |
 | `gizka_ship_pest_draft.md` | Gizka ship-pest — design draft (parts 3–6) | — |
 | `star_wars_canon_names.md` | Star Wars canon name reference |  |
+
+### `design/RimStarWars/canon_references/`
+
+| doc | title | status |
+|---|---|---|
+| `AGENT_BRIEF.md` | Agent brief — writing a species canon reference entry | — |
+| `DROIDS_INDEX.md` | Star Wars droids — canon INDEX | — |
+| `RACES_TODO.md` | Races in this campaign — canon-reference roster | ? roster of record for the canon-reference library. derived 2026-09-15 from the four
+     repo sources named in "provenance" below. each row's ✅/⬜ is the on-disk state of
+     design/rimstarwars/canon_references/<slug>/description.md at the time of the last edit. |
+
+### `design/RimStarWars/canon_references/abednedo/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Abednedo | — |
+
+### `design/RimStarWars/canon_references/acklay/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Acklay | — |
+
+### `design/RimStarWars/canon_references/anooba/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Anooba | — |
+
+### `design/RimStarWars/canon_references/anzati/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Anzati | — |
+
+### `design/RimStarWars/canon_references/aqualish/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Aqualish | — |
+
+### `design/RimStarWars/canon_references/arkanian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Arkanian | — |
+
+### `design/RimStarWars/canon_references/bantha/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Bantha | — |
+
+### `design/RimStarWars/canon_references/beldon/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Beldon | — |
+
+### `design/RimStarWars/canon_references/bith/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Bith | — |
+
+### `design/RimStarWars/canon_references/bolotaur/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Bolotaur | — |
+
+### `design/RimStarWars/canon_references/boma/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Boma | — |
+
+### `design/RimStarWars/canon_references/borcatu/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Borcatu | — |
+
+### `design/RimStarWars/canon_references/bothan/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Bothan | — |
+
+### `design/RimStarWars/canon_references/cancell/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Can-cell | — |
+
+### `design/RimStarWars/canon_references/cannok/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Cannok | — |
+
+### `design/RimStarWars/canon_references/cathar/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Cathar | — |
+
+### `design/RimStarWars/canon_references/cerean/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Cerean | — |
+
+### `design/RimStarWars/canon_references/chadra_fan/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Chadra-Fan | — |
+
+### `design/RimStarWars/canon_references/chagrian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Chagrian | — |
+
+### `design/RimStarWars/canon_references/chiss/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Chiss | — |
+
+### `design/RimStarWars/canon_references/clodhopper/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Clodhopper | — |
+
+### `design/RimStarWars/canon_references/convor/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Convor | — |
+
+### `design/RimStarWars/canon_references/corinathoth/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Corinathoth | — |
+
+### `design/RimStarWars/canon_references/dactillion/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Dactillion | — |
+
+### `design/RimStarWars/canon_references/dalgo/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Dalgo | — |
+
+### `design/RimStarWars/canon_references/dathomirian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Dathomirian | — |
+
+### `design/RimStarWars/canon_references/defel/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Defel | — |
+
+### `design/RimStarWars/canon_references/devaronian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Devaronian | — |
+
+### `design/RimStarWars/canon_references/dewback/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Dewback | — |
+
+### `design/RimStarWars/canon_references/dianoga/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Dianoga | — |
+
+### `design/RimStarWars/canon_references/dragonsnake/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Dragonsnake | — |
+
+### `design/RimStarWars/canon_references/droid_aq/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | AQ-series battle droid / aqua droid (repo chassis: AQ battle droid, JDS) | — |
+
+### `design/RimStarWars/canon_references/droid_b1/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | B1-series battle droid (repo chassis: B1, JDS + OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_b1a/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | B1-A air battle droid (repo chassis: B1A, OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_b2/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | B2-series super battle droid (repo chassis: B2, JDS + OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_bx_commando/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | BX-series droid commando (repo chassis: BX commando, JDS + OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_droideka/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Droideka / destroyer droid (repo chassis: Droideka + Sharpshooter, JDS + OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_dsd1/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | DSD1 dwarf spider droid (repo chassis: DSD1 dwarf spider, JDS) | — |
+
+### `design/RimStarWars/canon_references/droid_dum_pit/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | DUM-series pit droid (repo chassis: DUM pit droid, OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_fx7/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | FX-series / FX-7 medical assistant droid (repo chassis: FX-7, OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_g0t0/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | G0-T0 (KotOR) | — |
+
+### `design/RimStarWars/canon_references/droid_ge3/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | GE3 (KotOR) | — |
+
+### `design/RimStarWars/canon_references/droid_gnk/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | GNK gonk power droid (repo chassis: GNK gonk, KotOR + OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_hk_series/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | HK-series (KotOR + OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_kx12_probe/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | K-X12 probe droid (repo chassis: K-X12 probe, KotOR) | — |
+
+### `design/RimStarWars/canon_references/droid_kx_series/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | KX-series security droid (repo chassis: KX-series, OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_lr57/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | LR-57 combat droid / Retail Caucus droid (repo chassis: LR-57, JDS) | — |
+
+### `design/RimStarWars/canon_references/droid_magnaguard/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | IG-100 MagnaGuard (repo chassis: MagnaGuard, JDS + OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_mse/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | MSE series / MSE-6 mouse droid (repo chassis: MSE mouse, OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_pistoeka/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Pistoeka sabotage droid / buzz droid (repo chassis: Pistoeka, JDS) | — |
+
+### `design/RimStarWars/canon_references/droid_r8_009/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | R-8009 utility droid (repo chassis: R8-009, KotOR) | — |
+
+### `design/RimStarWars/canon_references/droid_super_tactical/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | ST-series super tactical droid (repo chassis: ST super tactical — JDS **and** OuterRim) | — |
+
+### `design/RimStarWars/canon_references/droid_t1_tactical/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | T1 tactical (JDS) — 🔴 **the index has this chassis mapped to the WRONG canon droid** | — |
+
+### `design/RimStarWars/canon_references/droid_t3/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | T3 (KotOR) | — |
+
+### `design/RimStarWars/canon_references/duros/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Duros | — |
+
+### `design/RimStarWars/canon_references/echani/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Echani | — |
+
+### `design/RimStarWars/canon_references/eopie/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Eopie | — |
+
+### `design/RimStarWars/canon_references/ewok/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Ewok | — |
+
+### `design/RimStarWars/canon_references/falleen/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Falleen | — |
+
+### `design/RimStarWars/canon_references/fambaa/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Fambaa | — |
+
+### `design/RimStarWars/canon_references/fanback/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Fanback | — |
+
+### `design/RimStarWars/canon_references/feeorin/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Feeorin | — |
+
+### `design/RimStarWars/canon_references/gamorrean/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gamorrean | — |
+
+### `design/RimStarWars/canon_references/gand/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gand | — |
+
+### `design/RimStarWars/canon_references/geonosian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Geonosian | — |
+
+### `design/RimStarWars/canon_references/gizka/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gizka | — |
+
+### `design/RimStarWars/canon_references/grank/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Grank | — |
+
+### `design/RimStarWars/canon_references/greaterkraytdragon/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Greater Krayt Dragon | — |
+
+### `design/RimStarWars/canon_references/gungan/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gungan | — |
+
+### `design/RimStarWars/canon_references/hawkbat/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Hawkbat | — |
+
+### `design/RimStarWars/canon_references/herglic/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Herglic | — |
+
+### `design/RimStarWars/canon_references/horax/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Horax | — |
+
+### `design/RimStarWars/canon_references/hutt/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Hutt | — |
+
+### `design/RimStarWars/canon_references/iktotchi/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Iktotchi | — |
+
+### `design/RimStarWars/canon_references/insectomorph/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Insectomorph | — |
+
+### `design/RimStarWars/canon_references/iriaz/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Iriaz | — |
+
+### `design/RimStarWars/canon_references/ithorian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Ithorian | — |
+
+### `design/RimStarWars/canon_references/jawa/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Jawa | — |
+
+### `design/RimStarWars/canon_references/jerba/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Jerba | — |
+
+### `design/RimStarWars/canon_references/kaleesh/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kaleesh | — |
+
+### `design/RimStarWars/canon_references/kaminoan/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kaminoan | — |
+
+### `design/RimStarWars/canon_references/kel_dor/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kel Dor | — |
+
+### `design/RimStarWars/canon_references/kinrath/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kinrath | — |
+
+### `design/RimStarWars/canon_references/klatooinian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Klatooinian | — |
+
+### `design/RimStarWars/canon_references/kreetle/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kreetle | — |
+
+### `design/RimStarWars/canon_references/kubaz/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kubaz | — |
+
+### `design/RimStarWars/canon_references/lasat/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Lasat | — |
+
+### `design/RimStarWars/canon_references/massassi/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Sith Massassi (Pureblood) | — |
+
+### `design/RimStarWars/canon_references/mimbanese/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Mimbanese | — |
+
+### `design/RimStarWars/canon_references/mirialan/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Mirialan | — |
+
+### `design/RimStarWars/canon_references/mon_calamari/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Mon Calamari | — |
+
+### `design/RimStarWars/canon_references/mudhorn/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Mudhorn | — |
+
+### `design/RimStarWars/canon_references/muun/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Muun | — |
+
+### `design/RimStarWars/canon_references/nagai/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Nagai | — |
+
+### `design/RimStarWars/canon_references/nautolan/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Nautolan | — |
+
+### `design/RimStarWars/canon_references/neimoidian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Neimoidian | — |
+
+### `design/RimStarWars/canon_references/nelvaanian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Nelvaanian | — |
+
+### `design/RimStarWars/canon_references/nikto/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Nikto | — |
+
+### `design/RimStarWars/canon_references/nuna/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Nuna | — |
+
+### `design/RimStarWars/canon_references/ollopom/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Ollopom | — |
+
+### `design/RimStarWars/canon_references/orray/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Orray | — |
+
+### `design/RimStarWars/canon_references/ortolan/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Ortolan | — |
+
+### `design/RimStarWars/canon_references/pantoran/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Pantoran | — |
+
+### `design/RimStarWars/canon_references/pekopeko/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | PekoPeko | — |
+
+### `design/RimStarWars/canon_references/porg/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Porg | — |
+
+### `design/RimStarWars/canon_references/pyke/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Pyke | — |
+
+### `design/RimStarWars/canon_references/quarren/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Quarren | — |
+
+### `design/RimStarWars/canon_references/rakata/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Rakata | — |
+
+### `design/RimStarWars/canon_references/rodian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Rodian | — |
+
+### `design/RimStarWars/canon_references/ronto/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Ronto | — |
+
+### `design/RimStarWars/canon_references/selkath/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Selkath | — |
+
+### `design/RimStarWars/canon_references/shiro/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Shiro | — |
+
+### `design/RimStarWars/canon_references/sith_pureblood/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Sith Kissai (Red Sith) | — |
+
+### `design/RimStarWars/canon_references/sith_species/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Sith Zuguruk (Pureblood) — and the shared anatomy of the Sith species | — |
+
+### `design/RimStarWars/canon_references/snivvian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Snivvian | — |
+
+### `design/RimStarWars/canon_references/sullustan/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Sullustan | — |
+
+### `design/RimStarWars/canon_references/taung/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Taung | — |
+
+### `design/RimStarWars/canon_references/togorian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Togorian | — |
+
+### `design/RimStarWars/canon_references/togruta/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Togruta | — |
+
+### `design/RimStarWars/canon_references/trandoshan/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Trandoshan | — |
+
+### `design/RimStarWars/canon_references/tusken_raider/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Tusken Raider | — |
+
+### `design/RimStarWars/canon_references/twilek/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Twi'lek | — |
+
+### `design/RimStarWars/canon_references/ugnaught/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Ugnaught | — |
+
+### `design/RimStarWars/canon_references/umbaran/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Umbaran | — |
+
+### `design/RimStarWars/canon_references/vornskyr/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Vornskyr | — |
+
+### `design/RimStarWars/canon_references/vulptex/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Vulptex | — |
+
+### `design/RimStarWars/canon_references/wampa/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Wampa | — |
+
+### `design/RimStarWars/canon_references/weequay/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Weequay | — |
+
+### `design/RimStarWars/canon_references/whisperbird/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Whisperbird | — |
+
+### `design/RimStarWars/canon_references/wookiee/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Wookiee | — |
+
+### `design/RimStarWars/canon_references/wyyyschokk/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Wyyyschokk | — |
+
+### `design/RimStarWars/canon_references/yoda_species/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Yoda's species ("Yoder") | — |
+
+### `design/RimStarWars/canon_references/zabrak/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Zabrak (Iridonian) | — |
+
+### `design/RimStarWars/canon_references/zakkeg/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Zakkeg | — |
+
+### `design/RimStarWars/canon_references/zeer/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Zeer | — |
+
+### `design/RimStarWars/canon_references/zeltron/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Zeltron | — |
+
+### `design/RimStarWars/canon_references/zygerrian/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Zygerrian | — |
+
+### `design/RimUtinni/`
+
+| doc | title | status |
+|---|---|---|
+| `explosive_plant_growth_roster.md` | Explosive plant growth — per-plant roster | — |
+| `fall_line_arrival_mechanism_spec.md` | Fall Line arrival mechanism — design spec | — |
+
+### `design/validation_walks/`
+
+| doc | title | status |
+|---|---|---|
+| `_read_line_registry.md` | Shared read-line registry | — |
 
 ### `design/validation_walks/RimMandrake/`
 
 | doc | title | status |
 |---|---|---|
 | `Aftermath.md` | RimMandrake: Aftermath — validation walk | — |
+| `AtmosphericBase.md` | RimMandrake: AtmosphericBase — validation walk | — |
 | `DesertVehicleReskin.md` | Desert Vehicle Reskin — Alpha Vehicles Neolithic — validation walk | — |
-| `FlowWorks.md` | RimMandrake: FlowWorks — validation walk | — |
+| `FlowWorks.md` | RimMandrake FlowWorks — validation walk | — |
 | `Graffiti.md` | RimMandrake: Graffiti Framework — validation walk | — |
 | `GravshipAstronautFix.md` | Missing North Facings — Vanilla Gravship Expanded — validation walk | — |
 | `Inhabited.md` | Inhabited (local) — validation walk | — |
@@ -654,6 +1533,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Pits.md` | RimMandrake Pits — validation walk | — |
 | `PlanetPresetPrime.md` | Planet Preset Prime (local) — validation walk | — |
 | `Property.md` | Property — validation walk | — |
+| `Pyrelands.md` | Pyrelands — validation walk | — |
 | `RaidRedesigner.md` | RaidRedesigner — validation walk | — |
 | `ResearchKitEastFix.md` | ResearchKitEastFix — validation walk | — |
 | `RimDefDump.md` | RimDefDump — validation walk | — |

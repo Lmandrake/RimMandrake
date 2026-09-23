@@ -47,6 +47,8 @@ def frontmatter(md: pathlib.Path) -> dict:
         m = re.match(r"^(\w[\w-]*):\s*(.*)$", line)
         if m:
             key, val = m.group(1), m.group(2).strip()
+            if val in (">", ">-", "|", "|-"):   # YAML block scalar: the text is on the lines below
+                val = ""
             out[key] = val.strip('"').strip("'")
         elif key and line.strip():
             out[key] = (out[key] + " " + line.strip()).strip()
