@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T21:32:17Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-23T21:58:00Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -125,6 +125,15 @@ target:   v1
 kind:     task
 summary:  FALLLINEMAJORREGIONLABEL1 — make the Fall Line read as a major world region
 prose:    infrastructure/state/items/FALL_LINE_MAJOR_REGION_LABEL_1.md
+
+## BIOME_MOD_SPLIT_EXECUTION_1 Execute the biome mod split: 27 painted BiomeDefs into 26 RimMandrake mods per design/RimMandrake/biome_mod_architecture.md - BLOCKED on 10 owner questions in its section 7, above all the desert names and whether Scarlands must be renamed off a vanilla 1.6 collision
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Execute the phases in biomemodarchitecture.md §5, in order, once §7 is ruled.
+prose:    infrastructure/state/items/BIOME_MOD_SPLIT_EXECUTION_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -461,16 +470,6 @@ kind:     task
 thin:     no ## spec
 summary:  BIOMEPAINTONCEATTHEEND1 — the worldmap gets painted once, after every biome is a mod
 prose:    infrastructure/state/items/BIOME_PAINT_ONCE_AT_THE_END_1.md
-
-## BIOME_MOD_SPLIT_EXECUTION_1 Execute the biome mod split: 27 painted BiomeDefs into 26 RimMandrake mods per design/RimMandrake/biome_mod_architecture.md - BLOCKED on 10 owner questions in its section 7, above all the desert names and whether Scarlands must be renamed off a vanilla 1.6 collision
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Execute the phases in biomemodarchitecture.md §5, in order, once §7 is ruled.
-prose:    infrastructure/state/items/BIOME_MOD_SPLIT_EXECUTION_1.md
 
 ## ASHKARR_PAINTER_NAMES_DIVERGED_1 ashkarr_paint.py would rename 7 live regions and resurrect an overruled name: all 10 of its region literals carry a 'The ' the planet does not, and one is the pre-V24 South Crags
 state:    proposed
