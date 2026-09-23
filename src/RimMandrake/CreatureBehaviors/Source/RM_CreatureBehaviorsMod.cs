@@ -37,6 +37,9 @@ namespace RimMandrake.CreatureBehaviors
     //      place, never removed — a content mod's own stages decide what a
     //      frozen severity means). The dial scales both the climb and the
     //      decay rate together.
+    //   9. proximitySoundscapeEnabled — RM_MapComponent_ProximitySoundscape.
+    //      Off: a tagged def stops contributing hum layers as the camera
+    //      moves near it, and any playing layers end.
     //   8. senseWebEnabled — RM_MapComponent_SenseWeb. Off: registered web
     //      nodes still track (cheap bookkeeping), but the map stops scanning
     //      for and marking intruding pawns.
@@ -169,6 +172,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool sunScaldEnabled = true;
         public static float sunScaldSeverityMultiplier = 1f;
         public static bool senseWebEnabled = true;
+        public static bool proximitySoundscapeEnabled = true;
         public static bool chewAnchorsBehaviorEnabled = true;
         public static bool frontCreepEnabled = true;
         public static float frontCreepRateMultiplier = 1f;
@@ -213,6 +217,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sunScaldEnabled, "sunScaldEnabled", true);
             Scribe_Values.Look(ref sunScaldSeverityMultiplier, "sunScaldSeverityMultiplier", 1f);
             Scribe_Values.Look(ref senseWebEnabled, "senseWebEnabled", true);
+            Scribe_Values.Look(ref proximitySoundscapeEnabled, "proximitySoundscapeEnabled", true);
             Scribe_Values.Look(ref chewAnchorsBehaviorEnabled, "chewAnchorsBehaviorEnabled", true);
             Scribe_Values.Look(ref frontCreepEnabled, "frontCreepEnabled", true);
             Scribe_Values.Look(ref frontCreepRateMultiplier, "frontCreepRateMultiplier", 1f);
@@ -270,6 +275,9 @@ namespace RimMandrake.CreatureBehaviors
                 "A tagged animal stops walking toward terrain it's built to seek out.");
             list.CheckboxLabeled("Predator-hunt silence cue", ref silenceCueEnabled,
                 "A tagged predator's hunt near a colonist stops hushing the map's ambient sound.");
+            list.CheckboxLabeled("Proximity soundscapes", ref proximitySoundscapeEnabled,
+                "A tagged plant or building stops adding its hum layer as the view moves near it "
+              + "(the grove falls silent; nothing else changes).");
             list.GapLine();
 
             list.CheckboxLabeled("Sun-scald buildup", ref sunScaldEnabled,
