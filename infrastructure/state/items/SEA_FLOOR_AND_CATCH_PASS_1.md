@@ -36,6 +36,68 @@ is one of its fish species**. The Scald has 5 catches and 4 floor animals with *
 overlap** — its eesh, muddal, karrash, saal and bladderboil exist only as items you pull out,
 never as something swimming. That is exactly the gap he is naming.
 
+## 🛑 STOPPED ON THE MAC — owner's call 2026-09-22, needs `game-up`
+
+**He stopped this item mid-sitting.** It moves to the Windows Desktop, and the thing to do
+there FIRST is *look up how a SHORE map depicts ocean water* — i.e. which terrains a coastal
+LAND map actually generates at its sea edge. His reason: until that is known we should not
+continue trying to rule these biomes, because every remaining decision depends on it.
+
+🔑 **Why that one lookup gates everything.** Step 1 below assumes a sea is fished from a map
+generated ON the sea tile. If instead the catch is consumed from an adjacent coastal land map —
+where shallow ocean water already generates — then the "no shore" blocker is measuring a map no
+player ever sees, and the shore work in step 1/2 is partly or wholly unnecessary. ⛔ Do not
+author shallow terrain, dive tagging or catch tables for the three unbuilt seas until that is
+settled either way.
+
+### ✅ Shore audit — step 1's deliverable, MEASURED on the Mac 2026-09-22 (parsed, not grepped)
+
+**All four seas are structurally identical and generate 100% deep water.** Each carries exactly
+ONE `terrainsByFertility` band spanning `min -999 max 999`, and **none has any
+`terrainPatchMakers`** — so `MapGenUtility.TerrainFrom()` has one possible answer everywhere:
+
+| sea | its single terrain band | patch makers |
+|---|---|---|
+| `RUT_TheScald` | `RUT_ScaldWaterOceanDeep` −999..999 | none |
+| `RUT_GreySea` | `WaterOceanDeep` −999..999 | none |
+| `RUT_TwilightSea` | `WaterOceanDeep` −999..999 | none |
+| `RUT_PropaneLake` | `AB_PropaneLake` −999..999 | none |
+
+⚠️ **The Scald's 100%-deep result is LIVE-PROVEN** (the 100/100 fishing-zone refusal already
+recorded above). The other three are a **structural inference from identical construction, NOT
+a live measurement** — do not upgrade that wording without a run.
+
+For scale: of **32** own BiomeDefs parsed, only `RM_GelatinousSlime` and `RM_Pyrelands` use
+`terrainPatchMakers` at all, so two working in-repo templates exist if scattering ever is the
+answer.
+
+### ✅ Also measured: the Scald is far ahead of the other three, and they lack the mechanism
+
+- The Scald already ships **three** Standable water terrains — `RUT_ScaldWaterShallow`,
+  `RUT_ScaldWaterMovingShallow`, `RUT_ScaldWaterMovingChestDeep` — **all three already tagged
+  `RM_DiveEligible`** by `src/RimMandrake/DivingInteraction/Patches/RM_ScaldDiveEligibleTerrain.xml`.
+  Plus `RUT_ScaldMargin` (a real `WaterShallowBase` TerrainDef, `burn 0`, the biome's sole
+  `dbh_water` source).
+- 🔴 **`RUT_GreySea`, `RUT_TwilightSea` and `RUT_PropaneLake` have NO shallow terrain def of any
+  kind and NO `RM_DiveEligible` tagging anywhere.** `RM_DiveEligible` appears in exactly four
+  files, all inside `DivingInteraction`, and its only wiring patch names Scald terrains only.
+  ⇒ Their floor is unreachable by the shipped diving mechanism even if animals do spawn. That
+  gap is **larger than step 2 describes** — it is new terrain defs, not just a tag.
+
+### ⛔ And one thing step 1 must not do: scatter the margin procedurally
+
+`RUT_ScaldMargin.xml`'s own header rules it out, and the reason generalises to any lethal water:
+`PawnUtility.KnownDangerAt` is **edifice-only** and reads neither `burnDamage` nor `avoidWander`,
+so nothing in vanilla stops a swim path crossing open boil cells to reach a cool strip. The
+margin must be a cove geometrically sealed off by land — **hand-placed via the bridge**, which is
+why the def deliberately does not place itself. A `terrainPatchMakers` block on the Scald would
+actively create the hazard that file was written to avoid. (The Grey and Twilight Seas are not
+lethal, so this constraint is not obviously theirs.)
+
+**NEXT (Desktop):** open a coastal land map beside an ocean and record which terrain defs
+generate at the water's edge, then answer on this item whether a sea's catch is consumed from
+the land map or from the sea tile. Only then resume step 1.
+
 ⚠️ All four are `impassable=true`. The floor is reached by **diving**, which already exists
 generically: `mandrake.rm.divinginteraction` makes any `RM_DiveEligible`+Standable terrain a
 place a colonist can be sent ("Dive to hunt" / "Dive to commune"), built for the Scald under
