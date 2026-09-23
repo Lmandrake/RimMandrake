@@ -53,11 +53,33 @@ product half has a home.
 ⚠️ **"Dianoga cheese" is UNCONFIRMED** — named by the owner, but no page was pulled for it.
 **Colour is purple** (deep purple skin, purple-staining tea) — owner-confirmed 2026-09-23.
 
-## tier
+## tier — and the free-tier occupant is the SEKKULAATH
 
 🔴 Ours in the `RM_` tier, mapped to the dianoga when the campaign layer is active (owner: *"map
 it to the Dianoga when Utinni is active"*). ⇒ The free mod needs its own invented captive, so
 this building must not name a canon creature in the franchise-free tier.
+
+🔑 **Owner, 2026-09-23 — that captive is now named.** Verbatim: *"we need more generic eldritch
+tentacled horror creatures put in the tank in the vanilla game, similarly related to the big
+version down in the ground. Let's call it a Sekkulaath."*
+
+⇒ **`RM_Sekkulaath` is the species name for our invented eldritch tentacled horror** — one
+species at two scales, exactly the dianoga's own relation: **the tank holds a juvenile, and the
+adult is the thing below the Fever Wood.** It is not a second creature invented for the tank.
+
+✅ **This closes a gap rather than opening one.** §6m stage 3 already says an escapee *"left alone
+in water can mature into the real thing"* — which only coheres if the captive and the thing below
+are one species. The naming makes that explicit. And `FEVERWOOD_TENTACLE_BESTIARY_1` carried the
+`RM_` creature **unnamed**, so the next agent to build it would have invented a name; fixed there
+in the same change.
+
+🔑 **An invented exotic name is not IP** (CLAUDE.md Q11a), so Sekkulaath lives in the
+franchise-free `RM_` tier and is cast inline. ⛔ It does **not** route through the Utinni patch
+layer, and ⛔ it gets no `canon_references/` entry — there is no canon to reference.
+
+⛔ **The free tier is not a thin fallback.** The Sekkulaath is the centrepiece the free mod
+actually ships, with the dianoga *mapped over it* when the campaign layer is active — never an
+impoverished substitute for it.
 
 ## 🔴 build it GENERIC — it is the model for a whole class
 
@@ -81,6 +103,17 @@ intended home for the rest of that design's build ladder.
 
 ## open
 
+- ⚠️ **Whether *"more generic … creatures"* (plural) means a CAST** of several distinct tentacled
+  horrors for the tank class in the free tier, or simply "more-generic, i.e. non-IP" — the reading
+  recorded, and the one the singular *"a Sekkulaath"* supports. ⛔ Do not invent a second species on
+  the strength of the plural alone. 🔑 Note the bestiary may already satisfy the plural instinct:
+  its **six limb-types deliberately read as separate pseudo-species** while belonging to one
+  animal, which is variety without a second creature.
+- ⚠️ **Tier grammar of the shipped code.** The deep thing's built types are
+  `RUT_MapComponent_TheTenant` and `RUT_TenantEmergenceSpawner` — **campaign prefix on
+  franchise-free content**, now that the creature is `RM_Sekkulaath`. `RM_TenantTruceExtension`
+  is already correct. Renaming shipped C# is real work and FOUNDRY's; flagged here rather than
+  done, and ⛔ not a reason to delay the creature.
 - **How long stage 3 takes**, and whether it is interruptible once begun.
 - Feed rates, product rates, tank materials, and what damage level triggers a release.
 - **What the generic abstraction actually is** — one comp parameterised by occupant and product, or

@@ -17,6 +17,17 @@ Tier: **ours in the `RM_` tier, mapped to the dianoga when the campaign layer is
 map it to the Dianoga when Utinni is active."*). Canon target for the campaign mapping:
 `design/RimStarWars/canon_references/dianoga/description.md`, expanded 2026-09-23.
 
+🔑 **The species is NAMED: `RM_Sekkulaath`** — owner, 2026-09-23. The thing below is an adult
+Sekkulaath; the juvenile is what the prison tank holds. ⛔ Do not invent another name for it, and
+⛔ do not treat the tank's occupant as a different creature — §6m stage 3 (an escapee maturing
+*"into the real thing"*) requires them to be one species. Ruling and its consequences:
+`FEVERWOOD_DIANOGA_PRISON_1` → *tier — and the free-tier occupant is the SEKKULAATH*.
+
+⚠️ **The built code's working name is "the Tenant", and two of its types carry the CAMPAIGN tier
+prefix for what is franchise-free content** — `RUT_MapComponent_TheTenant` and
+`RUT_TenantEmergenceSpawner` (F1/F4, shipped) against `RM_TenantTruceExtension`. Flagged, not
+fixed; it is that item's `open`.
+
 ## the six limbs
 
 feeler (thin, searches after noise) · snare (grabs and drags) · lash (barbed, ranged) ·
