@@ -69,6 +69,8 @@ MEASURED about the live world — the live system is the only instrument for "ri
 
 ## Facts you cannot guess
 
+### Engine and game facts
+
 - **The game reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`,
   never this repo.** Writing a file is not deploying it.
 - **A cold load is ~15 minutes on the full list; a quicktest map is ~90 s.** Never
@@ -95,12 +97,9 @@ MEASURED about the live world — the live system is the only instrument for "ri
   not a decompiler** — `About.xml`'s "vanilla ignition already works on any flammable
   terrain", and `Flood.noPossibleCell` being private with no accessor. Do not launder
   those into measurements.
-- 🔴 **A backgrounded `Agent` dies at 600 s of silence and leaves NOTHING on disk.** Three died
-  that way 2026-09-17, all mid-read before their first write, all leaving a clean tree — so each
-  cost a whole run rather than being truncated; the two that survived streamed output at 385 s
-  and 575 s. **Brief every writing subagent to create its output file as a skeleton FIRST and
-  fill it section by section** — a file write emits progress and persists partial work. A long
-  read-then-write brief is the shape that trips it.
+
+### Instruments that return a confident wrong number
+
 - 🔴 **`northstar.parse()` returns a DICT.** `getattr(w, "must_show")` yields `None` → `len()` 0,
   so all four VALIDATED walks read as "0 bars" — an alarming wrong number that looks like a
   catastrophic finding. Use `w["must_show"]`. 🔑 A count that is conveniently *or* alarmingly
@@ -111,6 +110,68 @@ MEASURED about the live world — the live system is the only instrument for "ri
   **182** jobs when a count of `artpipe/queue/` reported 0, and that figure was stated to the owner. ⇒ Prove
   the path (glob `*.json`, which errors loudly) before repeating any count of zero. ⚠️ **And the artpipe
   daemon does not run on the Mac**, so queueing work here generates nothing until the Desktop runs it.
+- 🔴 **Never scan `ModsConfig.xml`.** `grep -c '<li>'` returns **48** where the real active count
+  is **631** — it counts lines containing the tag, and that file puts many elements on one line.
+  Parse it (`ET.parse(p).find("activeMods")`). Snapshots are in
+  `infrastructure/state/modlists/`; the live file is a Windows path **unreachable from the Mac**,
+  so a laptop claim about the LIVE list is UNMEASURABLE and must say so (2026-09-17).
+- 🔴 **An existence test is not an identity test, and a fixed line number is not a field.**
+  `[ -e src/RimMandrake/Pits ]` passes while that folder holds only `__pycache__` — the mod
+  merged into FlowWorks at `cade628c1`, yet its checklist is **VALIDATED with 12 binding bars**
+  against nothing. Test `$dir/About/About.xml`. Likewise a sweep reading `subject:` from **line
+  2** reported zero failures across 78 walks while missing the only file still broken, because
+  `AtmosphericBase.md` carries it on line 3. Read the first matching line, never an index. Both
+  checkers returned a confident clean bill of health (2026-09-17).
+- 🔴 **A texture glob on `*south*` reads the MASK as often as the art.** `X_southm.png` is the
+  colour mask, saturated across ~99% of its pixels by convention (MEASURED 259,344 of 262,144),
+  so `glob(...)[0]` in filesystem order decides whether a head appears to carry baked colour —
+  it inverted 4 of 7 decisions in one pass, and the tell was male vs female Cathar reading 253
+  vs 0 on structurally identical files. **Measure `_south.png` alone** (2026-09-17).
+- 🔴 **An `RM_` twin's BiomeDef carries ONLY generic vanilla filler — its real campaign cast is
+  PATCH-ADDED**, from `UtinniPatches/Patches/WildAnimals_<Biome>.xml` targeting
+  `Defs/BiomeDef[defName="RM_<Biome>"]/wildAnimals`. So **reading BiomeDefs alone sees the wrong
+  half of a twin**: `RM_Greentide`'s own roster is Warg/Muffalo/Elephant/Cobra/Megaspider/Rat/Hare
+  and contains none of the campaign cast. This is why two fauna censuses published **52** and both
+  were wrong — eight species were invisible, `RSW_Gizka` read as 2 homes against a real 4, and
+  `RUT_Sytheclaw` hid the **Pyrelands**, the one biome it was actually authored for. ⇒ Resolve a
+  patch's target from the **PatchOperation's own `xpath`** and read species from its `<value>`;
+  never by hunting for a nearby `<xpath>` element, which mis-assigns silently. 🔑 And two passes
+  agreeing on a round number is **not** corroboration when both share an instrument.
+- ⚠️ **`ls` on `design/RimStarWars/canon_references/` is not a canon test.** It holds 137 entries
+  **by design**, so absence proves nothing — `Mynock`, `Worrt`, `Gelagrub`, `Urusai`,
+  `LongtailGorg`, `Woolamander` and `Gornt` are canon Star Wars creatures with no entry. Routing a
+  canon-vs-ours decision off that directory listing would have rewritten canon text for all seven.
+- **A number you brief a subagent with will come back to you.** A census reported "2 of
+  137 canon entries ruled"; the real figure is **25**. Two later agents measured 25 and
+  both explicitly refused to adjust to the briefed figure — the correct behaviour. When
+  two subagents disagree on a number, measure it yourself before it becomes a fact.
+
+### Tools with surprising side effects
+
+- 🔴 **A backgrounded `Agent` dies at 600 s of silence and leaves NOTHING on disk.** Three died
+  that way 2026-09-17, all mid-read before their first write, all leaving a clean tree — so each
+  cost a whole run rather than being truncated; the two that survived streamed output at 385 s
+  and 575 s. **Brief every writing subagent to create its output file as a skeleton FIRST and
+  fill it section by section** — a file write emits progress and persists partial work. A long
+  read-then-write brief is the shape that trips it.
+- 🔴 **A question-card option LABEL the owner clicks is OUR sentence, not his.** `block_forged_owner_said.py`
+  refuses it and is right to: only text he **types** (a notes box, a free-text Other) is his. Record a click
+  as **"decision taken by question card"** with no quote flag. ⚠️ The guard also reads **commit message
+  bodies**, and being `PreToolUse` it refuses the **whole compound command** — so a chained write-then-commit
+  loses the write too.
+- ⚠️ **`RM_CreatureBehaviors.csproj` sets `EnableDefaultCompileItems false` and lists every file.** A new
+  `.cs` in `Source/` without a `<Compile Include>` line **compiles into nothing, with no error**. Adding a
+  file to that assembly is always a two-file change.
+- 🔴 **`handoff.py` cannot tell two BENCH windows apart.** It REFUSES on "BRIDGE still held by
+  BENCH" even when the hold belongs to the *other* window's live session, because both sign as
+  `BENCH`. ⛔ Do not release it to satisfy the gate — that breaks a live game. `--force` records
+  it as open, which is the correct exit, and the handoff must name whose hold it was.
+- 🔴 **`modcheck run <Mod>` REWRITES the live `ModsConfig.xml`** — it calls `modlist_swap` and
+  swaps to MINIMAL. It reads like a query verb and is a Charter expensive-list action. On the
+  Mac it dies on the Windows path; on the Desktop it swaps his list unasked (2026-09-17).
+
+### Design process and biome/roster rulings
+
 - 🔑 **Before designing anything, read the source and the roster — this project keeps having already built
   it.** MEASURED 2026-09-23 in one session: the owner proposed a "special oil to seal part of the greatbole
   so it cannot regrow" and it ships as `RM_ToxinSealant` (item + terrain) with
@@ -126,65 +187,6 @@ MEASURED about the live world — the live system is the only instrument for "ri
   marker** whose `drawSize (7,7)` renders a retinted vanilla `DeepDrillPowered` across the middle of the
   wood — a real visible defect in shipped content (`GREATBOLE_BARK_EDGE_ART_1`). Confusing them produced two
   false statements to the owner in one session, in opposite directions.
-- 🔴 **A question-card option LABEL the owner clicks is OUR sentence, not his.** `block_forged_owner_said.py`
-  refuses it and is right to: only text he **types** (a notes box, a free-text Other) is his. Record a click
-  as **"decision taken by question card"** with no quote flag. ⚠️ The guard also reads **commit message
-  bodies**, and being `PreToolUse` it refuses the **whole compound command** — so a chained write-then-commit
-  loses the write too.
-- ⚠️ **`RM_CreatureBehaviors.csproj` sets `EnableDefaultCompileItems false` and lists every file.** A new
-  `.cs` in `Source/` without a `<Compile Include>` line **compiles into nothing, with no error**. Adding a
-  file to that assembly is always a two-file change.
-- 🔴 **Never scan `ModsConfig.xml`.** `grep -c '<li>'` returns **48** where the real active count
-  is **631** — it counts lines containing the tag, and that file puts many elements on one line.
-  Parse it (`ET.parse(p).find("activeMods")`). Snapshots are in
-  `infrastructure/state/modlists/`; the live file is a Windows path **unreachable from the Mac**,
-  so a laptop claim about the LIVE list is UNMEASURABLE and must say so (2026-09-17).
-- 🔴 **`handoff.py` cannot tell two BENCH windows apart.** It REFUSES on "BRIDGE still held by
-  BENCH" even when the hold belongs to the *other* window's live session, because both sign as
-  `BENCH`. ⛔ Do not release it to satisfy the gate — that breaks a live game. `--force` records
-  it as open, which is the correct exit, and the handoff must name whose hold it was.
-- 🔴 **An existence test is not an identity test, and a fixed line number is not a field.**
-  `[ -e src/RimMandrake/Pits ]` passes while that folder holds only `__pycache__` — the mod
-  merged into FlowWorks at `cade628c1`, yet its checklist is **VALIDATED with 12 binding bars**
-  against nothing. Test `$dir/About/About.xml`. Likewise a sweep reading `subject:` from **line
-  2** reported zero failures across 78 walks while missing the only file still broken, because
-  `AtmosphericBase.md` carries it on line 3. Read the first matching line, never an index. Both
-  checkers returned a confident clean bill of health (2026-09-17).
-- 🔴 **`modcheck run <Mod>` REWRITES the live `ModsConfig.xml`** — it calls `modlist_swap` and
-  swaps to MINIMAL. It reads like a query verb and is a Charter expensive-list action. On the
-  Mac it dies on the Windows path; on the Desktop it swaps his list unasked (2026-09-17).
-- 🔴 **A texture glob on `*south*` reads the MASK as often as the art.** `X_southm.png` is the
-  colour mask, saturated across ~99% of its pixels by convention (MEASURED 259,344 of 262,144),
-  so `glob(...)[0]` in filesystem order decides whether a head appears to carry baked colour —
-  it inverted 4 of 7 decisions in one pass, and the tell was male vs female Cathar reading 253
-  vs 0 on structurally identical files. **Measure `_south.png` alone** (2026-09-17).
-- 🔴 **The north-star system cannot GREEN anything: `shows=` appears in 0 of 54 mod
-  `validation.py` files** (RE-MEASURED 2026-09-17), so every VALIDATED mod's must-show bars are
-  bound-and-uncovered and a `modcheck run` against one returns REFUSED before the game is
-  consulted. Authoring more bars adds refusals, not coverage; `NORTH_STAR_PIT_PILOT_1` is the
-  falsification test and has never run. 🔴 **And the 81 walk findings are NOT rot:**
-  `doctor` derives a walk's mod from the walk's BASENAME, never from its `subject:` line, so its
-  24 ORPHAN_WALKs and 10 SUBJECT_COLLISIONs are ONE phenomenon — **34 of 78 walks are deliberate
-  per-feature walks sharing a live mod's subject** (MEASURED 2026-09-18). Of the 33 failing
-  walks, 25 have a fully live subject and the defect is a stale id inside a STEP, and **0 are
-  genuinely orphaned**. ⛔ Never "fix" a walk on an ORPHAN_WALK finding alone, and ⛔ do not
-  rebuild the 43-row decision sheet: the owner ruled it was never his to adjudicate
-  (*"this doesnt feel like a sheet I should be asked"*) and its data was wrong besides — a walk's
-  subject packageId is backticked in 28 walks, BARE in 34 and absent in 16, so a backtick-only
-  regex reads None for 50 of 78. `DETERMINISM_ASSESSMENT.md` §11a is the account; the walk-model
-  ruling landed 2026-09-18 (owner card): **per-feature walks are first-class via a `feature:`
-  key** — implementation is `WALK_FEATURE_KEY_1`. ✅ **The "modcheck status reads a stored field" bug is
-  FIXED** (`fa27e1cab`, `status.check_or_orphaned` + `doctor.py`, same day as the claim above was
-  first written) — live-checked 2026-09-17: `modcheck status` now correctly prints `FlowWorks
-  STALE   [stored: GREEN]` and `Pits ORPHANED (no such mod folder)   [stored: GREEN]`, re-deriving
-  every row rather than trusting the stored field. The dead `FluidCanals` key is gone too
-  (`b110a7a2d`, `rename-key`/`forget-key`). Don't re-open this as a live defect without
-  re-measuring; the stored field only ever appears now as a `[stored: ...]` drift annotation.
-- **A doc can describe defects that were fixed before the doc was written.**
-  `liquids_framework_design.md` (2026-09-13) blocked all engine work on three flood
-  defects fixed 2026-09-02 and closed at `747b0025`, and an open item was still telling
-  FOUNDRY to re-fix them. Check the code and the ledger before believing any doc's
-  "engine status" — and check whether an open item is asking for work already done.
 - 🔑 **An animal belongs to ONE biome unless there is an IN-GAME reason** — owner ruling
   2026-09-21, verbatim: *"Animals sound be biome-specific unless there is an in-game reason
   (e.g. flyers that migrate, young versions that grow in the miasma then migrigate to the sea
@@ -217,20 +219,6 @@ MEASURED about the live world — the live system is the only instrument for "ri
   algorithm from the rulings recorded in `BIOME_SPECIFIC_FAUNA_LAW_1`**; that item is now input to
   per-biome sittings, not a work queue. ⛔ And a rule derived in-session never overturns a placement
   a human already approved.
-- 🔴 **An `RM_` twin's BiomeDef carries ONLY generic vanilla filler — its real campaign cast is
-  PATCH-ADDED**, from `UtinniPatches/Patches/WildAnimals_<Biome>.xml` targeting
-  `Defs/BiomeDef[defName="RM_<Biome>"]/wildAnimals`. So **reading BiomeDefs alone sees the wrong
-  half of a twin**: `RM_Greentide`'s own roster is Warg/Muffalo/Elephant/Cobra/Megaspider/Rat/Hare
-  and contains none of the campaign cast. This is why two fauna censuses published **52** and both
-  were wrong — eight species were invisible, `RSW_Gizka` read as 2 homes against a real 4, and
-  `RUT_Sytheclaw` hid the **Pyrelands**, the one biome it was actually authored for. ⇒ Resolve a
-  patch's target from the **PatchOperation's own `xpath`** and read species from its `<value>`;
-  never by hunting for a nearby `<xpath>` element, which mis-assigns silently. 🔑 And two passes
-  agreeing on a round number is **not** corroboration when both share an instrument.
-- ⚠️ **`ls` on `design/RimStarWars/canon_references/` is not a canon test.** It holds 137 entries
-  **by design**, so absence proves nothing — `Mynock`, `Worrt`, `Gelagrub`, `Urusai`,
-  `LongtailGorg`, `Woolamander` and `Gornt` are canon Star Wars creatures with no entry. Routing a
-  canon-vs-ours decision off that directory listing would have rewritten canon text for all seven.
 - 🔑 **A sea biome describes BOTH its floor and its catch** — owner ruling 2026-09-21:
   *"The biomes should be describing the sea floors (what you encounter as an animal there) as
   well as what you can FISH out of the oceans on the shore. There should be defs made for each
@@ -251,6 +239,14 @@ MEASURED about the live world — the live system is the only instrument for "ri
   alive in another biome is **correct, not a leak** — do not "fix" it, and do not read one
   sheet's verdict as a planet-wide sweep. A cut with an empty note says nothing about
   anywhere else.
+
+### Doc rot and stale gates
+
+- **A doc can describe defects that were fixed before the doc was written.**
+  `liquids_framework_design.md` (2026-09-13) blocked all engine work on three flood
+  defects fixed 2026-09-02 and closed at `747b0025`, and an open item was still telling
+  FOUNDRY to re-fix them. Check the code and the ledger before believing any doc's
+  "engine status" — and check whether an open item is asking for work already done.
 - 🔴 **A gate cited by NAME outlives the item it names — check the item's state.**
   `NAMING_SCHEME_EXECUTION_1` closed **2026-08-31** at `54a8e28d` on the owner's word,
   yet ~20 live docs still said "do not rename ahead of it" 16 days later, which is why
@@ -258,6 +254,31 @@ MEASURED about the live world — the live system is the only instrument for "ri
   `mandrake.rm.flowworks` (RE-VERIFIED 2026-09-19 against `About.xml` and the live
   Mods folder). Owner: *"That file may be VERY old… do not accept stale info."*
   Sweep: `STALE_RENAME_GATE_SWEEP_1`.
+
+### North-star validation state
+
+- 🔴 **The north-star system cannot GREEN anything: `shows=` appears in 0 of 54 mod
+  `validation.py` files** (RE-MEASURED 2026-09-17), so every VALIDATED mod's must-show bars are
+  bound-and-uncovered and a `modcheck run` against one returns REFUSED before the game is
+  consulted. Authoring more bars adds refusals, not coverage; `NORTH_STAR_PIT_PILOT_1` is the
+  falsification test and has never run. 🔴 **And the 81 walk findings are NOT rot:**
+  `doctor` derives a walk's mod from the walk's BASENAME, never from its `subject:` line, so its
+  24 ORPHAN_WALKs and 10 SUBJECT_COLLISIONs are ONE phenomenon — **34 of 78 walks are deliberate
+  per-feature walks sharing a live mod's subject** (MEASURED 2026-09-18). Of the 33 failing
+  walks, 25 have a fully live subject and the defect is a stale id inside a STEP, and **0 are
+  genuinely orphaned**. ⛔ Never "fix" a walk on an ORPHAN_WALK finding alone, and ⛔ do not
+  rebuild the 43-row decision sheet: the owner ruled it was never his to adjudicate
+  (*"this doesnt feel like a sheet I should be asked"*) and its data was wrong besides — a walk's
+  subject packageId is backticked in 28 walks, BARE in 34 and absent in 16, so a backtick-only
+  regex reads None for 50 of 78. `DETERMINISM_ASSESSMENT.md` §11a is the account; the walk-model
+  ruling landed 2026-09-18 (owner card): **per-feature walks are first-class via a `feature:`
+  key** — implementation is `WALK_FEATURE_KEY_1`. ✅ **The "modcheck status reads a stored field" bug is
+  FIXED** (`fa27e1cab`, `status.check_or_orphaned` + `doctor.py`, same day as the claim above was
+  first written) — live-checked 2026-09-17: `modcheck status` now correctly prints `FlowWorks
+  STALE   [stored: GREEN]` and `Pits ORPHANED (no such mod folder)   [stored: GREEN]`, re-deriving
+  every row rather than trusting the stored field. The dead `FluidCanals` key is gone too
+  (`b110a7a2d`, `rename-key`/`forget-key`). Don't re-open this as a live defect without
+  re-measuring; the stored field only ever appears now as a `[stored: ...]` drift annotation.
 - **North stars: `FlowWorks`, `Graffiti` and `Pits` are VALIDATED; `WreckedMachines`
   REVERTED TO DRAFT** — RE-MEASURED 2026-09-20 (`modcheck floor --all`, new this session):
   `WreckedMachines.md`'s `### cannot show` prose was corrected at `6cdf52b39` (2026-09-17,
@@ -280,16 +301,14 @@ MEASURED about the live world — the live system is the only instrument for "ri
   (blank is fine), and since 2026-09-17 refuses a section parsing to **zero bars** — a
   misformatted section used to record VALIDATED against an empty checklist, binding
   nothing; omit `--owner-said` for a dry run that writes nothing.
-- **A number you brief a subagent with will come back to you.** A census reported "2 of
-  137 canon entries ruled"; the real figure is **25**. Two later agents measured 25 and
-  both explicitly refused to adjust to the briefed figure — the correct behaviour. When
-  two subagents disagree on a number, measure it yourself before it becomes a fact.
+
+### Patch and def behaviour
+
 - **A patch that matches nothing logs nothing.** `PatchOperationConditional` and
   `PatchOperationFindMod` both return true on no match.
 - **Dumps and harvests decay** (owner, 2026-08-27): trust one only after its
   fingerprint matches the live mod set; the frozen `official` dump is the sole
   design target (`GAME_STATE_WORKFLOW.md`).
-
 ## In-game LLM access is the Claude Code CLI, never a hosted API key — owner, 2026-09-05
 
 Every mod that calls out to an LLM (the Oracle, the raid-redesigner, any future
