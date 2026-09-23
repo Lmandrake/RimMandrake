@@ -10760,3 +10760,4 @@
 {"seat":"BENCH","event":"file","id":"GREENTIDE_GRENADE_WEAPONS_1","title":"Jungle grenades: stench, seeding and toxin","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-23T05:30:07Z"}
 {"seat":"BENCH","event":"file","id":"GREENTIDE_FRENZY_DISEASE_1","title":"The Frenzy - a disease you infect yourself with on purpose","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-23T05:30:07Z"}
 {"seat":"BENCH","event":"file","id":"CONTAGION_GENOME_ORGAN_GROWING_1","title":"Grow a colonist's organs inside a Contagion amoeba","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-23T05:30:08Z"}
+{"seat":"BENCH","event":"file","id":"FEVERWOOD_ANT_HIVE_DUNGEON_1","title":"Ant hives are reactive procedural dungeons","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-23T05:35:33Z"}
