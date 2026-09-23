@@ -604,6 +604,106 @@ constraint, not a mechanism change.
 
 ---
 
+## 6l. The lure is always a LIVING creature — three sources, and no device
+
+**Owner, 2026-09-23: "1+2+3"** — three of four, and ⛔ **the crafted decoy was DECLINED.**
+
+⇒ **There is no bloodless option.** A lure is a living creature, staked down and **wounded**
+(his earlier ruling, §5: *"Both enemies like helpless prey chained down and wounded"*). Any of:
+
+| source | what it costs you |
+|---|---|
+| **one of your own tamed animals** | felt immediately and personally |
+| **a prisoner** | a grim new use for captives, with the mood and ideology weight that carries |
+| **a nectar-beast from your herd** | ⭐ the most lore-exact: it is the thing **both** raiders already want (the ants steal them alive, sheet §4), so you are spending renewable income to buy safety |
+
+🔑 **The declined option is the ruling's point.** A reusable device would have made the gamble
+routine and free; three living options keep it cruel and costly every single time. ⛔ Do not
+add a decoy, a scent flask, or any bloodless substitute later "for accessibility" — that was
+offered and refused.
+
+⚠️ **Consequence to design around, not away:** a colony may breed cheap animals as ammunition.
+That is the cheapest of the three routes and it will be found. Either the lure must care about
+the *quality* of the prey, or the cheap route needs its own cost.
+
+---
+
+## 6m. 🔴 The tank is a PRISON, not a farm — and the escapee is TOUGH
+
+**Owner, verbatim:** *"1+2+3 and it is TOUGH. That's why they're not farmed, they're
+imprisoned."*
+
+⇒ 🔑 **This reframes the whole building.** It is a **cell**, not a pen; the occupant is a
+**prisoner**, not livestock. Everything harvested from it (§6j's meat, spleen chemicals,
+cream) is taken from something held against its will and strong enough to be a real threat.
+⛔ Do not write it, name it, or art it as animal husbandry.
+
+**And the escape escalates through all three stages offered:**
+
+| stage | what happens |
+|---|---|
+| 1 | it gets out and it is **TOUGH** — water-bound and drying, it makes for the nearest water and hurts whatever is between it and there |
+| 2 | **if it reaches a pool it establishes** — your map permanently gains a new occupied pool |
+| 3 | ⭐ **left alone in water it can mature into the real thing** — you will have created the biome's worst threat yourself |
+
+🔑 **Stage 2 is the elegant one:** it hands the escape off to a system already built (the pool
+registry, `RUT_MapComponent_TheTenant`'s terrain scan, and `RUT_GenStep_ScatterPools`), so the
+consequence is permanent without needing a bespoke penalty.
+
+⚠️ **The tension this creates, and it is now sharper than when §6j was written.** §6j flagged
+that the escape must be *survivable* or nobody builds the tank. This ruling says the escapee
+is **TOUGH**. Those pull against each other, and the resolution is not a difficulty number —
+it is that **containment is the player's job**: canon water dependency means an escapee is
+*racing* for water, so the defence is blocking or distance, not out-fighting it. ⇒ **Build the
+prison away from the pools.** That is the real decision the feature is about, and it should be
+the thing a player learns.
+
+⚠️ Still unset: how long stage 3 takes, and whether it is interruptible once begun.
+
+---
+
+## 6n. All four sap-suckers are herdable — and taming does NOT disarm them
+
+**Owner, 2026-09-23: "1+3"** — the full ranching layer **and** retained defences. ⛔ Option 2
+(only the nectar-beast herdable) was declined.
+
+- **All four can be tamed and worked**, each yielding its own product — so the guild is a real
+  ranching layer, not a set of obstacles.
+- ⭐ **A tamed one still triggers its refusal when frightened or mishandled.** Your own
+  **screamer** will call the crown's predators onto your colony; your own **sap-sealer** will
+  armour itself shut; your own **swellbody** will inflate rather than be handled.
+
+🔑 **This is what makes the ranch interesting rather than a farm.** Taming buys access, never
+obedience — and it rhymes exactly with the thornbug's existing contract (hard ban 6: *never
+yields under fear*), which was already "the animal cooperates only while calm." ⇒ **The whole
+guild works on consent, and fear is the universal failure mode.** That is one rule, four
+expressions.
+
+⚠️ Balance risk named at the card and accepted: players may find self-sabotaging livestock
+frustrating rather than characterful. ⇒ The trigger conditions must be **legible and
+avoidable** — a rancher who keeps things calm should never be punished at random.
+
+---
+
+## 6o. Naming: same family as the jungle, wetter branch
+
+Decision taken by question card: **same word-shape as the Greentide's roster, biased wetter
+and slower** for this biome. One planet, one language.
+
+✅ **The 18 plant names already authored in `fever_wood_flora_roster_2026-09-23.md` stand** —
+they were written in that register deliberately and checked for collisions against the
+Greentide's 22.
+
+⚠️ Accepted cost: the two wetlands may blur in memory, since they share a register. The
+distinguishing work therefore falls on the **silhouettes**, not the names — which is what the
+flora roster's legibility matrix already exists to enforce.
+
+⛔ The alternative of letting the inhabitant cultures name things was offered and declined —
+their language conventions are unwritten, so it would have blocked naming on worldbuilding
+that does not exist.
+
+---
+
 ## 7. What this sitting did NOT settle
 
 - **The flora roster.** The Fever Wood still carries **7 donor plant rows** (5 Alpha
@@ -618,8 +718,11 @@ constraint, not a mechanism change.
   other content** (§6f) — the treasure trickle and `RM_Corvath`.
 - **How many birds there are**, and their individual calls. §6k settles that the chorus is
   emergent from per-animal sounds; it does not say how many animals or what each sounds like.
-- **Whether the escaped juvenile is survivable, and its behaviour** (§6j) — canon water
-  dependency is the natural containment, but nothing is specified.
+- **How long stage 3 of an escape takes, and whether it is interruptible** (§6m).
+- **Whether the lure cares about the quality of the staked prey** (§6l) — without it, cheap
+  bred animals become the default ammunition.
+- **The trigger conditions for a tamed sap-sucker's defence** (§6n) — they must be legible and
+  avoidable or the ranching layer reads as random punishment.
 - **Bough-soil's fertility value and which cells the genstep paints it on** (§6b).
 
 ---
