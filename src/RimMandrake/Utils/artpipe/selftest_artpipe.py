@@ -760,27 +760,32 @@ def test_detector_meter_thresholds():
     test_meters_flow_end_to_end for the real rollout-format proof; this is
     the pure threshold-logic check."""
     d = artpiped.Detector()
-    d.note_meters({"ok": True, "secondary_used_percent": 82.0, "primary_used_percent": 10.0})
-    ok("detector: 82% weekly warns but does not block", not d.admission_blocked())
+    just_above_warn = artpiped.WEEKLY_WARN + 1.0
+    d.note_meters({"ok": True, "secondary_used_percent": just_above_warn, "primary_used_percent": 10.0})
+    ok("detector: just above WEEKLY_WARN warns but does not block", not d.admission_blocked())
     ok("detector: warn is logged once", d.warn_logged)
 
     d2 = artpiped.Detector()
-    d2.note_meters({"ok": True, "secondary_used_percent": 91.0, "primary_used_percent": 10.0})
-    ok("detector: 91% weekly refuses new claims", d2.admission_blocked() and d2.refuse_new)
+    just_above_refuse = artpiped.WEEKLY_REFUSE + 0.5
+    d2.note_meters({"ok": True, "secondary_used_percent": just_above_refuse, "primary_used_percent": 10.0})
+    ok("detector: just above WEEKLY_REFUSE refuses new claims", d2.admission_blocked() and d2.refuse_new)
 
     d3 = artpiped.Detector()
-    d3.note_meters({"ok": True, "secondary_used_percent": 98.0, "primary_used_percent": 10.0})
-    ok("detector: 98% weekly is a full stop", d3.admission_blocked() and d3.stop_all)
+    just_above_stop = artpiped.WEEKLY_STOP + 0.1
+    d3.note_meters({"ok": True, "secondary_used_percent": just_above_stop, "primary_used_percent": 10.0})
+    ok("detector: just above WEEKLY_STOP is a full stop", d3.admission_blocked() and d3.stop_all)
 
     d4 = artpiped.Detector()
-    d4.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 72.0})
-    ok("detector: 72% five-hour drops concurrency to 1", d4.current_n(3) == 1)
+    just_above_drop_n1 = artpiped.FIVE_H_DROP_N1 + 1.0
+    d4.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": just_above_drop_n1})
+    ok("detector: just above FIVE_H_DROP_N1 drops concurrency to 1", d4.current_n(3) == 1)
 
     d5 = artpiped.Detector()
     reset_at = time.time() + 9999
+    just_above_sleep = artpiped.FIVE_H_SLEEP + 0.5
     d5.note_meters({"ok": True, "secondary_used_percent": 5.0,
-                     "primary_used_percent": 91.0, "primary_resets_at": reset_at})
-    ok("detector: 91% five-hour sleeps until resets_at",
+                     "primary_used_percent": just_above_sleep, "primary_resets_at": reset_at})
+    ok("detector: just above FIVE_H_SLEEP sleeps until resets_at",
        d5.admission_blocked() and d5.sleep_until == reset_at)
 
     d6 = artpiped.Detector()
@@ -804,11 +809,13 @@ def test_meters_flow_end_to_end_through_codex_grumpiness():
     with tempfile.TemporaryDirectory() as td:
         q = Queue(Path(td))
         make_job(q.pending, "meterjob", q.reference)
-        # Override into the 80-90% WARN band specifically, so the print is
-        # unambiguous evidence the real value was read, not just any bucket.
-        proc = q.run({"meterjob": {"behavior": "ok", "weekly": 85.0}}, "--once", "--workers", "1")
+        # Override into the WEEKLY_WARN..WEEKLY_REFUSE band specifically, so
+        # the print is unambiguous evidence the real value was read, not
+        # just any bucket.
+        warn_band_value = (artpiped.WEEKLY_WARN + artpiped.WEEKLY_REFUSE) / 2.0
+        proc = q.run({"meterjob": {"behavior": "ok", "weekly": warn_band_value}}, "--once", "--workers", "1")
         ok("meters e2e: daemon exits 0", proc.returncode == 0, proc.stderr)
-        ok("meters e2e: job succeeds (an 85% weekly warn doesn't fail the job)",
+        ok("meters e2e: job succeeds (a mid-WARN-band weekly warn doesn't fail the job)",
            (q.done / "meterjob.json").is_file())
 
         manifest = q.done / "meterjob.manifest.json"
@@ -817,9 +824,9 @@ def test_meters_flow_end_to_end_through_codex_grumpiness():
             after = m.get("meter_after") or {}
             ok("meters e2e: meter_after was actually read (ok:True) through codex_grumpiness",
                after.get("ok") is True, str(after))
-            ok("meters e2e: secondary_used_percent reflects the mock's override (85)",
-               after.get("secondary_used_percent") == 85.0, str(after))
-        ok("meters e2e: row 2's warn message fired for the 80-90% band",
+            ok("meters e2e: secondary_used_percent reflects the mock's override",
+               after.get("secondary_used_percent") == warn_band_value, str(after))
+        ok("meters e2e: row 2's warn message fired for the WARN..REFUSE band",
            "WARNING weekly Codex usage" in proc.stderr, proc.stderr)
 
 
@@ -1090,31 +1097,35 @@ def test_worker_self_report_folded_into_manifest_and_detects_row1():
 
 
 def test_detector_deescalates_after_fresh_healthy_reading():
-    """Finding: one 93% weekly reading used to wedge refuse_new/n_override
-    FOREVER, even after the window resets. Every threshold must be
-    RECOMPUTED from the current reading — only row 1's hard_stop stays
-    latched."""
+    """Finding: one refuse-band weekly reading used to wedge
+    refuse_new/n_override FOREVER, even after the window resets. Every
+    threshold must be RECOMPUTED from the current reading — only row 1's
+    hard_stop stays latched."""
     d = artpiped.Detector()
-    # WEEKLY_STOP is 97.0 — 98% is the stop_all band, not 93% (that's the
-    # 90-97 refuse_new band, a different assertion below covers it).
-    d.note_meters({"ok": True, "secondary_used_percent": 98.0, "primary_used_percent": 10.0})
-    ok("deescalate: 98% weekly sets stop_all", d.stop_all and d.admission_blocked())
+    # A reading just above WEEKLY_STOP is the stop_all band, distinct from
+    # the WEEKLY_REFUSE..WEEKLY_STOP refuse_new band a different assertion
+    # below covers.
+    just_above_stop = artpiped.WEEKLY_STOP + 0.1
+    d.note_meters({"ok": True, "secondary_used_percent": just_above_stop, "primary_used_percent": 10.0})
+    ok("deescalate: just above WEEKLY_STOP sets stop_all", d.stop_all and d.admission_blocked())
 
     d.note_meters({"ok": True, "secondary_used_percent": 1.0, "primary_used_percent": 1.0})
     ok("deescalate: a fresh 1% reading clears stop_all/refuse_new",
        not d.stop_all and not d.refuse_new and not d.admission_blocked())
 
     d1b = artpiped.Detector()
-    d1b.note_meters({"ok": True, "secondary_used_percent": 93.0, "primary_used_percent": 10.0})
-    ok("deescalate: 93% weekly (the 90-97 band) sets refuse_new, not stop_all",
+    refuse_band_value = (artpiped.WEEKLY_REFUSE + artpiped.WEEKLY_STOP) / 2.0
+    d1b.note_meters({"ok": True, "secondary_used_percent": refuse_band_value, "primary_used_percent": 10.0})
+    ok("deescalate: mid REFUSE..STOP band sets refuse_new, not stop_all",
        d1b.refuse_new and not d1b.stop_all and d1b.admission_blocked())
     d1b.note_meters({"ok": True, "secondary_used_percent": 1.0, "primary_used_percent": 1.0})
     ok("deescalate: a fresh 1% reading clears refuse_new too",
        not d1b.refuse_new and not d1b.admission_blocked())
 
     d2 = artpiped.Detector()
-    d2.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 75.0})
-    ok("deescalate: 75% five-hour drops to N=1", d2.current_n(4) == 1)
+    just_above_drop_n1 = artpiped.FIVE_H_DROP_N1 + 1.0
+    d2.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": just_above_drop_n1})
+    ok("deescalate: just above FIVE_H_DROP_N1 drops to N=1", d2.current_n(4) == 1)
     d2.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 5.0})
     ok("deescalate: a fresh low five-hour reading restores full N",
        d2.current_n(4) == 4 and d2.n_override is None and d2.sleep_until is None)
@@ -1133,8 +1144,13 @@ def test_detector_resets_at_coercion_never_crashes():
     silently no-op the sleep forever. Anything not a plain numeric epoch is
     treated as unknown — logged, falls back to the milder N=1 action,
     never crashes."""
+    # Must be >= FIVE_H_SLEEP so note_meters() actually enters the
+    # resets_at-coercion branch under test — below it, the elif
+    # FIVE_H_DROP_N1 branch would set n_override=1 unconditionally and the
+    # assertions below would pass without ever exercising coercion at all.
+    just_above_sleep = artpiped.FIVE_H_SLEEP + 0.5
     d = artpiped.Detector()
-    d.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 95.0,
+    d.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": just_above_sleep,
                    "primary_resets_at": "2026-09-10T00:00:00Z"})
     ok("resets_at: an ISO string does not crash the detector — reaching this line IS the proof",
        True)
@@ -1142,20 +1158,20 @@ def test_detector_resets_at_coercion_never_crashes():
        d.sleep_until is None and d.n_override == 1)
 
     d2 = artpiped.Detector()
-    d2.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 95.0,
+    d2.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": just_above_sleep,
                     "primary_resets_at": None})
     ok("resets_at: a missing resets_at falls back to N=1, never crashes",
        d2.sleep_until is None and d2.n_override == 1)
 
     d3 = artpiped.Detector()
-    d3.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 95.0,
+    d3.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": just_above_sleep,
                     "primary_resets_at": {"weird": "object"}})
     ok("resets_at: non-scalar garbage does not crash the detector, falls back",
        d3.sleep_until is None and d3.n_override == 1)
 
     d4 = artpiped.Detector()
     good_epoch = time.time() + 500
-    d4.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 95.0,
+    d4.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": just_above_sleep,
                     "primary_resets_at": good_epoch})
     ok("resets_at: a genuine numeric epoch IS trusted and used directly",
        d4.sleep_until == good_epoch and d4.n_override is None)
@@ -2136,7 +2152,8 @@ def test_detector_unwedges_via_direct_meter_reread_without_a_new_job():
     with tempfile.TemporaryDirectory() as td:
         home = Path(td) / "codex_home"
         d = artpiped.Detector()
-        d.note_meters({"ok": True, "secondary_used_percent": 98.0, "primary_used_percent": 5.0})
+        just_above_stop = artpiped.WEEKLY_STOP + 0.1
+        d.note_meters({"ok": True, "secondary_used_percent": just_above_stop, "primary_used_percent": 5.0})
         ok("unwedge: stop_all is set", d.stop_all and d.admission_blocked())
 
         day_dir = home / "sessions" / "2026" / "01" / "01"
@@ -2164,7 +2181,7 @@ def test_daemon_unwedges_codex_channel_without_restart_end_to_end():
         make_job(q.pending, "wedgejob2", q.reference, priority=2)
         control_path = q.root / "control.json"
         control_path.write_text(json.dumps({
-            "wedgejob1": {"behavior": "ok", "weekly": 98.0},
+            "wedgejob1": {"behavior": "ok", "weekly": artpiped.WEEKLY_STOP + 0.1},
             "wedgejob2": "ok",
         }))
         env = dict(os.environ)
