@@ -3660,3 +3660,69 @@
 {"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "RSW_Stoneback_east", "notes": "", "target": "RSW_Stoneback/east", "ts": 1790197123.380235}
 {"by": "fill_queue", "event": "registered", "source": "STONEBACK_BOKKA_ART_STANDARD_1", "target": "RSW_Stoneback/north", "ts": 1790197123.3817348}
 {"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "RSW_Stoneback_north", "notes": "", "target": "RSW_Stoneback/north", "ts": 1790197123.389241}
+{"by": "artpiped", "elapsed_s": 143.64004039700376, "event": "generated", "job_id": "RSW_Cindermite_east", "target": "RSW_Cindermite/east", "ts": 1790198699.7331505}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Cindermite_east", "target": "RSW_Cindermite/east", "ts": 1790198699.7681773, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 121.44317682797555, "event": "generated", "job_id": "RSW_Cindermite_north", "target": "RSW_Cindermite/north", "ts": 1790198823.0908585}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Cindermite_north", "target": "RSW_Cindermite/north", "ts": 1790198823.107827, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 134.32201310503297, "event": "generated", "job_id": "RSW_Cindermite_south", "target": "RSW_Cindermite/south", "ts": 1790198959.5026896}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Cindermite_south", "target": "RSW_Cindermite/south", "ts": 1790198959.5212138, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 109.09994094300782, "event": "generated", "job_id": "RSW_Dunegrass", "target": "RSW_Dunegrass", "ts": 1790199070.7026873}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Dunegrass", "target": "RSW_Dunegrass", "ts": 1790199070.7904942, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 109.65721327095525, "event": "generated", "job_id": "RSW_Dunestalker_east", "target": "RSW_Dunestalker/east", "ts": 1790199182.4956608}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Dunestalker_east", "target": "RSW_Dunestalker/east", "ts": 1790199182.507487, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 123.23360559000866, "event": "generated", "job_id": "RSW_Dunestalker_north", "target": "RSW_Dunestalker/north", "ts": 1790199307.4550517}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Dunestalker_north", "target": "RSW_Dunestalker/north", "ts": 1790199307.4666762, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 145.2407067779568, "event": "generated", "job_id": "RSW_Dunestalker_south", "target": "RSW_Dunestalker/south", "ts": 1790199454.7709212}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Dunestalker_south", "target": "RSW_Dunestalker/south", "ts": 1790199454.7817078, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 119.09480669995537, "event": "generated", "job_id": "RSW_Ferroclaw_east", "target": "RSW_Ferroclaw/east", "ts": 1790199575.7975338}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Ferroclaw_east", "target": "RSW_Ferroclaw/east", "ts": 1790199575.81008, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 110.45865773101104, "event": "generated", "job_id": "RSW_Ferroclaw_north", "target": "RSW_Ferroclaw/north", "ts": 1790199688.2419302}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Ferroclaw_north", "target": "RSW_Ferroclaw/north", "ts": 1790199688.2558367, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 145.13703683996573, "event": "generated", "job_id": "RSW_Ferroclaw_south", "target": "RSW_Ferroclaw/south", "ts": 1790199836.1322398}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Ferroclaw_south", "target": "RSW_Ferroclaw/south", "ts": 1790199836.1447024, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_boma/east", "ts": 1790199869.936524}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_boma_v1_east", "notes": "", "target": "canon_boma/east", "ts": 1790199869.9502027}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_boma/north", "ts": 1790199869.9573503}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_boma_v1_north", "notes": "", "target": "canon_boma/north", "ts": 1790199869.9698937}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_boma/south", "ts": 1790199869.976665}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_boma_v1_south", "notes": "", "target": "canon_boma/south", "ts": 1790199869.9895217}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_dewback/east", "ts": 1790199869.9960186}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_dewback_v1_east", "notes": "", "target": "canon_dewback/east", "ts": 1790199870.0088856}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_dewback/north", "ts": 1790199870.0167842}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_dewback_v1_north", "notes": "", "target": "canon_dewback/north", "ts": 1790199870.0299342}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_dewback/south", "ts": 1790199870.03807}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_dewback_v1_south", "notes": "", "target": "canon_dewback/south", "ts": 1790199870.0509918}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_insectomorph/east", "ts": 1790199870.0587137}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_insectomorph_v1_east", "notes": "", "target": "canon_insectomorph/east", "ts": 1790199870.0709178}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_insectomorph/north", "ts": 1790199870.0781834}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_insectomorph_v1_north", "notes": "", "target": "canon_insectomorph/north", "ts": 1790199870.0905807}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_insectomorph/south", "ts": 1790199870.097188}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_insectomorph_v1_south", "notes": "", "target": "canon_insectomorph/south", "ts": 1790199870.1106548}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_shiro/east", "ts": 1790199870.1187055}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_shiro_v1_east", "notes": "", "target": "canon_shiro/east", "ts": 1790199870.1305528}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_shiro/north", "ts": 1790199870.1370902}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_shiro_v1_north", "notes": "", "target": "canon_shiro/north", "ts": 1790199870.1491551}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_shiro/south", "ts": 1790199870.156674}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_shiro_v1_south", "notes": "", "target": "canon_shiro/south", "ts": 1790199870.1695833}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_vornskyr/east", "ts": 1790199870.176571}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_vornskyr_v1_east", "notes": "", "target": "canon_vornskyr/east", "ts": 1790199870.1875165}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_vornskyr/north", "ts": 1790199870.1949303}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_vornskyr_v1_north", "notes": "", "target": "canon_vornskyr/north", "ts": 1790199870.207292}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_vornskyr/south", "ts": 1790199870.2148929}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_vornskyr_v1_south", "notes": "", "target": "canon_vornskyr/south", "ts": 1790199870.226438}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_whisperbird/east", "ts": 1790199870.2338517}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_whisperbird_v1_east", "notes": "", "target": "canon_whisperbird/east", "ts": 1790199870.2457378}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_whisperbird/north", "ts": 1790199870.252558}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_whisperbird_v1_north", "notes": "", "target": "canon_whisperbird/north", "ts": 1790199870.2641344}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_whisperbird/south", "ts": 1790199870.2703998}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_whisperbird_v1_south", "notes": "", "target": "canon_whisperbird/south", "ts": 1790199870.283283}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_zakkeg/east", "ts": 1790199870.2909076}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_zakkeg_v1_east", "notes": "", "target": "canon_zakkeg/east", "ts": 1790199870.3025696}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_zakkeg/north", "ts": 1790199870.3100245}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_zakkeg_v1_north", "notes": "", "target": "canon_zakkeg/north", "ts": 1790199870.3212612}
+{"by": "fill_queue", "event": "registered", "source": "CANON_CREATURE_REGEN_1", "target": "canon_zakkeg/south", "ts": 1790199870.328061}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "canon_zakkeg_v1_south", "notes": "", "target": "canon_zakkeg/south", "ts": 1790199870.3391032}
+{"by": "artpiped", "elapsed_s": 128.3663892489858, "event": "generated", "job_id": "RSW_Sandhorn_east", "target": "RSW_Sandhorn/east", "ts": 1790199966.5119185}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Sandhorn_east", "target": "RSW_Sandhorn/east", "ts": 1790199966.5244396, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 136.2696003089659, "event": "generated", "job_id": "RSW_Sandhorn_north", "target": "RSW_Sandhorn/north", "ts": 1790200104.794913}
+{"by": "artpiped", "event": "validated", "job_id": "RSW_Sandhorn_north", "target": "RSW_Sandhorn/north", "ts": 1790200104.8090944, "verdict": "pass"}
