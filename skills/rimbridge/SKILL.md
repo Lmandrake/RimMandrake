@@ -333,6 +333,27 @@ rb.call("rimworld/execute_debug_action", {"path": SET_QUALITY_LEGENDARY,"thingId
 # verified: "Plasteel plate armor (legendary)", stuffDefName Plasteel, hitPoints 810
 ```
 
+### Spawning pawns — `jawa/spawn_pawn` works; the `GenSpawn` routes NPE
+
+🔴 **MEASURED live on a VEF-loaded game, same map/session/defName: `rimworld/spawn_thing`
+and `jawa/spawn_batch` NPE on a Pawn defName; `jawa/spawn_pawn` succeeds** (65 pawns spawned
+one session, zero failures). Non-pawn Things spawn fine through all three. Cause: the two
+failing routes hand a `ThingMaker`-made Thing straight to `GenSpawn.Spawn`, so the Pawn never
+ran `PawnGenerator` and its sub-trackers are null when a mod's own `SpawnSetup` postfix (e.g.
+VEF) reads one — the consumer mod is the victim, not the cause. **Call `jawa/spawn_pawn` for a
+live pawn-spawn quicktest.** `jawa/spawn_batch`'s `ops` param is a STRING
+(`'Def:x,z[,count]'` split on `;`), not a list (2026-09-20, `BRIDGE_PAWN_SPAWN_CRASHES_VEF_1`).
+
+⚠️ **`jawa/list_things` returns the faction key as `faction`, not `factionName`** — reading
+the wrong key once diagnosed a healthy player-owned ship as factionless for an hour
+(2026-09-09).
+
+⚠️ **A raw hediff-severity write via `jawa/pawn_health` (`remove`+`add`+set `Severity`) never
+triggers vanilla's needs recompute.** `HediffSet.DirtyCache` only refreshes the disabled-needs
+cache; `AddOrRemoveNeedsAsAppropriate()` fires only from `HediffSet.AddDirect`, once, at
+whatever stage the hediff was at when first added. Test a stage-dependent mechanic through the
+real player path (a bench recipe / bill), not a raw severity poke (2026-09-09).
+
 ---
 
 ## 4. Debug actions are the real surface
@@ -369,6 +390,12 @@ it is not a reliable diagnostic. Compare against a known-good sibling instead.
 thing id X"* for a thing that visibly exists via `jawa/list_things`. `x`/`z` cell
 targeting works where `thingId` does not, for these specific tools — do not assume every
 `ToolMap` action accepts both forms just because most do (2026-09-10).
+
+🔴 **`Actions\T: Destroy` targeted by `x`/`z` destroys EVERY thing in that cell, not
+just the one you meant.** It collateral-destroyed a healthy conduit and a decorative
+sign alongside the damaged pipes actually being targeted. Read `solidThingDefs` in
+that cell before AND after a cell-targeted destroy, and rebuild anything that was not
+the intended target (2026-09-10).
 
 ⚠️ **NEVER call `search_debug_actions` against the full mod stack — with or
 without a `limit`.** It livelocked and killed a 568-mod game on 2026-08-12.
@@ -415,6 +442,10 @@ wrong; only the combination was.
   read a screenshot.
 * **Verify the pause like any mutation:** read `ticksGame` twice, seconds apart.
   `success: true` on `set_time_speed` is not evidence that time stopped.
+* ⚠️ **This applies to friendly pawns too, not just hostiles.** Unpaused
+  colonists treat bridge-printed furniture as theirs to optimize — a 90k-tick
+  blind run saw two gravship fuel tanks MINIFIED and hauled off to a corner
+  stockpile by the colony's own haulers (2026-09-09).
 
 ---
 
@@ -428,6 +459,12 @@ four of the things in it are one-way doors:
 
 * **god mode** — an Architect designator queues work for a colonist, so on a map
   with nobody home it returns `success: true` and builds nothing.
+* **the inhabited leave/re-enter harness silently no-ops on PLAYER settlements**
+  (it needs a `WorldObject_InhabitedSettlement`) — `success: true` plus a
+  warning only in the log. The real player-map regen route is the vanilla debug
+  action `Actions\Regenerate Current Map`: it wipes colonists (Game Over
+  letter) and honours the tile's CURRENT biome fresh, no restart needed
+  (2026-09-14).
 * **foundation → terrain → things** — `SetFoundation` is refused, silently at the
   write, on any cell that already carries a floor. There is no retrofit and no
   inspection afterwards can see it.

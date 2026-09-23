@@ -62,6 +62,44 @@ rimflow bridge {take,release,who,give} [to] [--for PURPOSE] [--force]
 rimflow sweep [--transient]    lists stale TRANSIENT_* files. LISTS ONLY, no ledger write.
 ```
 
+## Item hygiene
+
+🔴 **An item filed alongside a finished analysis must cite the report path.**
+Two items carried specs but no pointer to the prior window's `Transient/`
+report, so the next window re-ran both analyses blind.
+
+⚠️ **An item's "NEXT:" note can be DISCHARGED by a later item** — acting on a
+note without checking cost a whole redundant review sheet once, when a later
+item filed the same day recorded that the noted work had already been served
+and ruled. Before acting on any note, list items filed AFTER it that name the
+same subject: `ls -t infrastructure/state/items/` is enough.
+
+🔴 **`infrastructure/state/MODE` has no CLI setter — it is a plain file
+`cli.py` only reads, and it can go stale.** A FOUNDRY window once read `afk`
+from a prior session while the owner was live saying "go go go"; `rimflow why`
+silently suppressed a fully-specified `needs=owner` item under that stale
+mode with no warning that mode gating was the reason. If the owner is
+actively present but items keep reading "needs owner, afk suppressed", check
+this file before assuming the item is genuinely blocked.
+
+🔴 **`rimflow unblock` refuses another seat's in-flight item, and names the
+right move itself:** correct the false prose in their item file, commit by
+explicit path, and use `note` to nudge. Do not force the state.
+
+⚠️ **A gate citing an item by name should be treated as suspect the moment
+that item's own state changes, not just after weeks.** `rimflow lint
+--citations`' STALE_GATE sweep has found items describing another item as
+"still open/blocked" that closed the SAME calendar day, one within the same
+session that closed it — a doc can go stale within hours, not just weeks.
+
+⚠️ **`.claude/hooks/block_forged_owner_said.py` can false-positive on prose
+that merely MENTIONS the flag** — its regex takes a bare token after
+`--owner-said`/`--said`, so a commit message or test harness discussing the
+flag by name gets refused with a forgery message. Assemble the flag from
+pieces in test code, and avoid the literal spelling followed by a word in
+commit messages. Erring toward refusal is the safe direction here, so treat
+this as friction, not a defect to work around by weakening the hook.
+
 ## `close --sha` rules
 
 `--sha` defaults to `git HEAD` but does **not validate** what you pass it —
@@ -146,6 +184,14 @@ each close or at least once per work wave — not only at session end. Prefer
 a dedicated "ledger sync" commit over folding it silently into a code
 commit's file list; it keeps the code commit's message focused and makes the
 ledger's own commit history legible.
+
+🔴 **A torn/invalid line in `events.jsonl` breaks `rimflow`/`./game` entirely
+for every seat** — a torn line has no admin-event fix, because rimflow can't
+finish reading the file to append one. This has happened from a botched `git
+stash pop` landing unresolved conflict markers straight into the file.
+`src/RimMandrake/Utils/repair_torn_ledger.py` is the fix: dry-run by default,
+`--apply --owner-said "…"` to write; it removes only lines that fail to
+parse, backs up to `Transient/` first, and sanity-caps at 25 bad lines.
 
 ## Reading projections
 

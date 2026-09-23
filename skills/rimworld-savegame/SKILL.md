@@ -101,6 +101,20 @@ is `(x, 0, z)` with **origin bottom-left** — flip z for image rows.
 corrupt or hard-fail a load. Never guess one; confirm it against the installed mod
 files or the live dump.
 
+### 3a. Two parsing traps that produce a save that "has no data"
+
+🔴 **The canonical save's `<features>` element is NESTED**
+(`<features><features><li>…`). A non-greedy regex hunting the FIRST `</features>`
+close tag yields an unparseable fragment — take the LAST close tag, or better,
+parse with a real XML parser instead of a regex at all.
+
+🔴 **`ET.iterparse` with `el.clear()` on every element destroys a node's
+children before its own `end` event fires.** Clearing eagerly returned 71
+features with all-None names and sizes — reading as "the save has no data" —
+because the children carrying the name/size text had already been cleared by
+the time the parent's own handler ran. Clear only the element you just finished
+reading, never a parent while its children are still in flight.
+
 ## 4. Map grids: base64 + raw DEFLATE arrays of 2-byte shortHashes
 
 ```

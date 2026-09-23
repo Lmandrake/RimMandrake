@@ -79,6 +79,10 @@ over an assembly.
 parent and child lists, which RimWorld does not always do. Settle inheritance
 arguments against the def dump, not against `get_def_details`.
 
+⚠️ **`DefDump/dump_request.txt`'s CONTENT is the capture mode** (`all` |
+`animals`), not a flag to toggle — write `1` and you get an animals-only
+capture with no `defs/` at all, wasting the whole dump. Write `all`.
+
 📎 Full study: `research\RimMandrake\reference\rimsage_rimcp_source_index_mcp.md`.
 The decompiled C# it indexes is at `D:\Luke\dev\reference\rimworld-decompiled`
 (provenance: `research\RimMandrake\reference\rimworld_decompiled_source.md`).
@@ -228,6 +232,35 @@ outright, which has no existing node to diff against. When a def vanishes
 silently, diff it against a sibling in the same folder that survived. (Why:
 `references/patch-operations.md`.)
 
+**A mis-CASED enum value discards the whole target def, exactly like the `<li>`
+mistake above.** `Verse.ParseHelper.FromString` calls `Enum.Parse`
+case-SENSITIVELY, so `<viscosityClass>water</viscosityClass>` (lowercase) where
+the enum member is `Water` silently deletes the ENTIRE target def — not just the
+field. One generated compat patch wrote a lowercase value onto nine vanilla/DLC
+TerrainDefs and thereby deleted them outright, so every biome's water-terrain
+reference read null and NO map generated visible water. A generator that emits
+enum values must normalise them and REFUSE an unknown/wrongly-cased member
+rather than write it.
+
+**`Graphic_Random`'s `texPath` names a FOLDER, not a file stem.** The path is
+`Things/.../ScrapNest` with `ScrapNest_a/b/c.png` inside it — never
+`.../ScrapNest/ScrapNest`. `validate_patch.py` catches the stem form as a hard
+ERROR, but it can also over-escalate: a CORRECT vanilla `texPath` gets flagged
+as ERROR too once the mod ships its own `Textures/Things/` root, because the
+validator then treats `things/` (lowercase, vanilla's own convention) as
+colliding with the mod's own namespace. Read the actual FAIL reason before
+trusting the ERROR label on this one.
+
+**A `PatchOperationReplace` against a def YOUR OWN MOD declares wins silently —
+patches run after every def loads, same mod or not.** A generator-written
+compat/flora patch overwrote 21 of our own BiomeDefs' `wildPlants` for weeks
+because it ran later in load order than the hand-authored defs it was
+replacing; the biome shipped 4 stale donor plant names over 9 authored ones and
+generated 0 plants on a live map. Nothing in the normal workflow looks for "a
+generator patches a def we author" — check for that explicitly whenever a
+generated `Patches/` file and a hand-authored `Defs/` file touch the same
+defName.
+
 **Match the def's XML ELEMENT NAME, not `ThingDef`.** The loader reads the element
 name as the C# type, so `/Defs/ThingDef[…]` misses all 51 of VFE Pirates'
 `<VFEPirates.WarcasketDef>` pieces — write `/Defs/VFEPirates.WarcasketDef[…]`.
@@ -282,6 +315,26 @@ bug class, not a hypothetical; it is why unresolved cross-references show up in
 stacks where every named mod is present. When you *depend* on a def existing,
 guard with `PatchOperationConditional` on the def itself, which tests reality
 rather than intent.
+
+🔴 **`MayRequire` on a bare `<Operation>` element inside a Patch file does
+NOTHING — MEASURED against `LoadedModManager.ApplyPatches()`/`PatchOperation`
+source.** Every operation runs unconditionally; `PatchOperation` itself has no
+field for it, and the `MayRequire` check only applies to top-level DEF nodes in
+the unified XML. Shipping an incident/comp-injection "gated" this way discards
+the target's WHOLE def file when the referenced type is absent (a dangling
+PawnKindDef this way once NRE'd a downstream mod's own loader and tripped
+RimWorld's corrupted-mods reset). **The only real gate on an `<Operation>` is
+`PatchOperationFindMod`.** Sweep any bare `MayRequire` on an `<Operation>` you
+find; it is silently unguarded (`MAYREQUIRE_OPERATION_INERT_SWEEP_1`).
+
+🔴 **`MayRequire` on the def's OWNING mod is not proof the def loads.**
+`LoadFolders.xml <li IfModActive="...">` can ship a def only when a THIRD mod is
+active — invisible to dump `packageId` attribution, since the dump just says
+which mod owns it, not which condition gated its folder. A biome `wildAnimals`
+reference to such a def null-crashes `CommonalityOfAnimal` the moment the
+gating mod is absent even though the owning mod is present. Fix: chain the
+gating mod's packageId into your own `MayRequire` too, not just the owning
+mod's (`GIDDYUP_NULLKEY_CRASH_1`).
 
 The reason this is so common is that **a mod can ship different defs depending on
 what else is loaded**, via `LoadFolders.xml` — so the def set is a function of the
@@ -374,6 +427,63 @@ assertion snippet, and why the community rules database must not be hand-edited.
 Open it when an inheritance error appears, when writing the assertion, or before
 touching a sorter's rules database.
 
+🔴 **`ParentName` resolution keys on the `Name=` attribute in a FLAT NAMESPACE NOT
+SCOPED BY DEF TYPE.** Giving a `ThingDef` and its paired `PawnKindDef` the SAME
+`Name=` (never `defName`, which is fine) is a live landmine even when both live
+in the same mod, same file even — it stays dormant until something actually
+inherits via `ParentName` against that shared name, and the merge then silently
+pulls the wrong type's fields in (a `ThingDef`'s `<thingClass>`/`<statBases>`/etc.
+landing inside what should be a `PawnKindDef`), leaving fields like
+`PawnKindDef.race` null. This crashed a mod's own `GeneDefGenerator` at load with
+no error pointing at the real cause. Fix: give paired defs DISTINCT `Name=`
+attributes (suffix the `PawnKindDef`'s with `_Kind`); `defName` can still match.
+`validate_patch.py` without `--defs` does not catch this at all.
+
+🔴 **A same-mod `Patches/` load-order fix that sorts "after the one file I know
+adds the duplicate" is not enough if a THIRD file in the same folder also
+touches it** — it can sort after your fix's rename and silently re-break it on
+the very next restart. The only actually-safe filename sorts after EVERY
+current file in that `Patches/` folder: a `ZZZ_` prefix, confirmed against a
+fresh post-restart capture rather than "after the file(s) I have in mind."
+
+🔴 **`DefDatabase<T>.Add` does not override a repeated `<defName>` — it logs a
+red error and RANDOMIZES the new def's name every load** (`Source/Verse/
+DefDatabase.cs`). A batch of new defs whose `<defName>` accidentally duplicated
+the vanilla/donor def they were meant to replace would have been completely
+inert — spamming load errors while never actually taking ownership — because
+the "replacement" never got a stable identity. Always grep every new def
+batch's ACTUAL `<defName>` against its filename before staging; never trust the
+filename to match the content.
+
+⚠️ **`AllLeafSubclasses()` means "nothing currently loaded subclasses this",
+not "concrete."** `RimWorld.AlertsReadout`'s constructor does
+`foreach (Type t in typeof(Alert).AllLeafSubclasses())
+Activator.CreateInstance(t)` with NO abstract check and NO try/catch. With no
+consumer mod loaded, an ABSTRACT base class of your own (meant to be
+subclassed by a future/optional consumer) becomes the "leaf" itself,
+`Activator.CreateInstance` throws `MissingMethodException` (abstract types have
+no ctor), and the uncaught exception crashes `AlertsReadout()` → `UIRoot_Play()`
+→ `Find.MapUI` stays null forever → every later `Update()`/`OnGUI()`/tick NREs
+on it, on every map, independent of which content mod (if any) is active. Fix:
+ship a sealed, always-inactive concrete leaf subclass alongside any such base
+class, so it is never the leaf regardless of which consumer mods are loaded.
+Same landmine applies to anything else using `AllLeafSubclasses` rather than
+`AllSubclassesNonAbstract`.
+
+⚠️ **A self-referencing `ResearchProjectDef` prerequisite causes unconditional
+infinite recursion in vanilla `ResearchManager.FinishProject`** — there is no
+cycle/visited-set guard there at all. The result is an uncatchable
+`StackOverflowException`: silent, immediate process death, NO managed
+exception and NO crash-handler log line, hit right when that project's
+dependency chain gets walked. Symptom signature: several research completions
+log fine, then abrupt silence, process gone. An XML patch removing the
+self-reference is not sufficient on its own if a donor mod's OWN patch
+operation re-injects it at a different point in load order — a durable fix is
+a Harmony prefix on `ResearchManager.FinishProject` stripping any
+self-referencing prerequisite before the loop runs. Verify a "prerequisite
+fix" by reading the LIVE resolved def back after a fresh cold restart, not by
+trusting the patch file exists.
+
 ### Teach the mod manager, or it will keep undoing you
 
 Fixing a scattered order by hand treats the symptom — the manager will re-sort over
@@ -384,6 +494,16 @@ edge you want.**
 vs `loadBottom`, Refresh-reads/Save-writes, and why a rule keyed by `packageId` is
 orphaned by a rename. 🔴 And you never block on it: `ModsConfig.xml`, load order and
 user rules are writable game up or down (owner, 2026-08-15). Only **assemblies** wait.
+
+🔴 **`<loadAfter>` is an ordering hint and is INVISIBLE to dependency closure.** If a
+mod SUPPLIES a class or texture another mod references, that reference belongs in
+`<modDependencies>`, not `<loadAfter>` with a comment explaining the intent — a
+reduced-mod-list builder that walks `<modDependencies>` will silently drop a
+`<loadAfter>`-only dependency, the referenced comp types fail to resolve, and **a
+missing comp type discards the whole def carrying it**, with no error naming
+which def vanished. The same applies to art: a mod supplying the only texture at
+a given path needs to be a declared dependency too, or a reduced list renders that
+def as a magenta X with no log line pointing at the missing mod.
 
 ---
 
@@ -447,6 +567,29 @@ constructor rules cause a disproportionate share of "mod does nothing" reports:
   silently never exists — worse than a crash, because the feature appears to
   work and simply has no consequences.
 - A `Mod` subclass needs `(ModContentPack content)`.
+
+🔴 **Every mod we ship carries a real Mod Settings screen** (owner ruling,
+2026-09-12, `MOD_OPTIONS_RETROFIT_1`): on/off per major feature or mechanic,
+tuning where a number is the experience, defaults equal to shipped behaviour,
+all-off degrading gracefully, and any worldgen-affecting toggle labelled as
+such. Biome-kit mechanics get feature-gated so they can be enabled in a
+different biome without the whole kit. This is standard `Mod` +
+`ModSettings` — a settings class holding the fields, a `Mod` subclass
+exposing `DoSettingsWindowContents` and calling `settings.Write()`, and every
+gated feature reading its own field rather than a hardcoded constant.
+Applies to every mod going forward, not just a retrofit pass.
+
+⚠️ **`FilthMaker` refuses `Filth_AnimalFilth` on ALL natural terrain**
+(`placementMask [Terrain]` vs `filthAcceptanceMask [Unnatural]`) — a comp's
+filth drop is a silent no-op outdoors, and "the comp ticked with no filth
+appearing" is not evidence the comp is broken.
+
+⚠️ **A subprocess wrapper that only reads `stderr` on a nonzero exit can miss
+the real error entirely if the process writes it to `stdout` instead.** A C#
+wrapper around an external CLI produced an empty, useless diagnostic on a real
+auth failure because that failure printed to stdout, not stderr. Capture and
+surface BOTH streams on any subprocess failure; never assume the error
+channel.
 
 ---
 

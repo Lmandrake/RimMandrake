@@ -23,6 +23,20 @@ invisible in game because the deployed copy was untouched. **And never edit in
 place under `Mods/`** — that copy is disposable, overwritten by the next `--apply`,
 and not in version control.
 
+🔴 **A subagent's clean `dotnet build`/`validate_patch.py` pass, plus a real
+commit+push, is NOT proof the fix was deployed.** Twice in one wave a
+genuinely-fixed patch/DLL sat undeployed in the repo while a live re-test still
+showed the old failure. Deploying static def/XML output needs no running game —
+always run `deploy_custom_mods.py --mod <X>` (plan-only first) before trusting a
+live re-check of anything a prior pass claims fixed.
+
+🔑 **"Deployed" and "active" are separate states with nothing reconciling
+them.** `deploy_custom_mods.py` writes files and (correctly) never touches the
+mod list — it even PRINTS "not enabled in ModsConfig" where nobody reads it. A
+mod can be deployed and inert (present on disk, absent from `ModsConfig.xml`,
+so it silently never spawns anything) for a long time before anyone notices;
+check both states independently, never infer one from the other.
+
 ## 2. Plan first. Always read the plan.
 
 ```bash
@@ -79,6 +93,12 @@ counts. `validate_patch.py <file> --live <dump>` prints `OK - 0 errors` having
 evaluated **zero xpaths**, and says so above: `no --defs given; static checks only`.
 **If only `--live` ran, nothing was validated.**
 
+🔴 **`measure` is not executable on the Mac laptop** (`permission denied`) and
+there is no local def dump there either — "does this def resolve against the
+live mod list" is UNMEASURABLE from the laptop. Say so and hand the check to a
+session on the Windows Desktop rather than closing the item on an assumption
+(2026-09-22).
+
 ⚠️ **`--defs` inherits the LIVE `ModsConfig.xml`**, which another seat may have cut
 to a spike. Pass the **newest** backup, never a pinned filename, and never a small
 spike config — every xpath then legitimately matches nothing and the wall of false
@@ -134,6 +154,10 @@ while looking like housekeeping. **It is PER-FILE, not per-mod** — a live mod 
 have two held files while the rest of it keeps deploying, and inferring the hold
 from `ModsConfig.xml` only proves a mod is INERT, never that it is INTENDED.
 
+🔑 **"Not in the Workshop folder" is not "not available."** Donor mod sources
+are vendored at `vendor/mod_sources/` — check there before concluding a donor
+mod's own XML/source is unreachable.
+
 ## 6. Not every folder is deployable
 
 **A mod with no `About/About.xml`, or no `packageId` in it, is not a mod.**
@@ -166,6 +190,17 @@ A DLL the game has loaded **cannot be written while RimWorld runs** — memory-m
 and Windows refuses with `WinError 1224`. The copy is impossible, not merely
 ineffective. Deploy in the gap after the game closes and before it launches, and
 tell CHECK before any shutdown: `skills/rimworld-load-round/SKILL.md` §6.
+
+🔴 **`deploy_custom_mods.py --mod <X>` deploys only that one mod, not the mods it
+depends on.** A new mod referencing a class from a SIBLING mod's assembly (a
+`<li Class="RimMandrake.SomeNamespace.SomeExtension">` pointing at another mod's
+compiled comp) got enabled and deployed while the DEPENDENCY mod's own rebuilt
+DLL had never actually been redeployed — confirmed by comparing deployed-vs-repo
+DLL mtimes (the deployed copy was hours stale). A stale dependency DLL missing a
+referenced type can crash mod-loading badly enough to trip RimWorld's own
+corrupted-mods safety net (§ below), resetting `ModsConfig.xml` — not just log a
+quiet config error. **When enabling a mod that leans on another mod's C# (a
+shared "engine" assembly), deploy BOTH mods explicitly before the next launch.**
 
 ⚠️ **But `WinError 1224` is not the only lock failure, and the other one is
 silent.** `deploy_custom_mods.py --apply` has printed the DLL's `~` plan line

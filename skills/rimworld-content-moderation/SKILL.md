@@ -201,6 +201,22 @@ looked like it might make Core's camel shearable — a real functional change to
 vanilla. It turned out to belong to the mod's own camel. Verify; do not assume
 either way.
 
+🔴 **A one-hop reference census is not enough — walk donor-of-donor chains too.**
+A retirement census that only checked direct references to the mod being retired
+missed that a THIRD mod gated its own content on that mod's presence and our own
+code consumed that gated content ungated. The retirement's cold load found 4 new
+cross-reference errors a direct-reference grep could never see (2026-09-08).
+
+⚠️ **A dead donor reference does not mean the content is gone.** Check whether we
+already absorbed it under our own prefix before treating a broken cross-reference
+as lost content — one pass found 21 "missing" droids were already ours.
+
+⚠️ **A `RSW_<donorName>`-prefix test cannot find a ported species, because the
+port RENAMES it.** Counting by prefix produced three wrong counts of the same
+wave in one sitting (105 → 11 → 2 actually owed). The donor→ours mapping lives
+in `<!-- X -> RSW_Y -->` header comments at the top of the port's own def files
+— read those, never count by prefix (2026-09-21).
+
 ## 🔴 Biome-cast and ecosystem patches cannot ride a reduced mod list
 
 Self-contained content — a weapon, a creature, a building, a weather event —
@@ -231,6 +247,25 @@ GeneticRim, …): local mapgen — settlement and quicktest maps, which generate
 even under a frozen world — breaks unless biome-cast refs to the retired
 creatures are scrubbed FIRST. "All its animals are cut" (below) is not the same
 audit as "nothing still cross-references it from a biome cast".
+
+⚠️ **"An animal left this biome" does not imply "this biome now lacks that KIND
+of animal."** A hole was nearly filed and built on exactly that inference while
+the roster it described still held other animals of the same kind at 6-8x the
+departed animal's commonality. Read the REMAINING rows of a fauna roster before
+filing a gap, not just the row that changed (2026-09-22).
+
+🔴 **Cutting ANY animal with Cherry Picker is not complete until you sweep its
+`wildAnimals` cross-refs, not just its own def.** A bare
+`<CreatureName>value</CreatureName>` dictionary entry naming the cut def throws
+the same `ArgumentNullException` above on next mapgen — this has been hit and
+"fixed" more than once because the sweep missed dangling refs across multiple
+files. The safe pattern looks almost identical and is easy to confuse with the
+unsafe one: a `race/wildBiomes` eviction xpath that names the same defName
+inside a `[defName="..."]` predicate is harmless, because
+`PatchOperationRemove` on a missing ThingDef just matches nothing. The unsafe
+pattern is the bare dictionary `<li>`/`<CreatureName>` entry, which the engine
+resolves eagerly and NREs on. After any animal cut, grep every biome/ecosystem
+file for the cut defName, not just the one file you edited.
 
 ## Traps that make a cut do nothing, or break the game
 

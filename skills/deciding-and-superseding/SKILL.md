@@ -98,6 +98,13 @@ bullet: one genuinely met, one now void. Separating them beats grading the pair.
 Note who is objecting and to what. An agent that raises a principle and then
 recommends violating it is telling you the honest answer is not on their list.
 
+🔑 **Reading a drafted checklist to the owner line by line is itself a method
+for finding a wrong menu, not just for ratifying a right one.** One sitting
+produced three rulings that DELETED art already on a list, including a piece a
+doc had called the hardest, most precedent-less asset in it. **A line he
+cannot accept is usually a design claim nobody tested against his intent** —
+the checklist author assumed agreement instead of asking.
+
 ## Propagate, or you have not decided
 
 **This is the actual work and it is where rulings die.** A decision recorded in one
@@ -168,6 +175,23 @@ Be careful to unblock honestly. If an item is now unblocked *in principle* but s
 missing a spec that you owe, say exactly that rather than flipping it to ready — an
 item that cannot be executed without guessing will bounce, and a bounced item costs
 more than a blocked one.
+
+### A stale belief hides in a comment or a table cell, not just a doc
+
+⚠️ **A prior agent's search result, written into a CODE COMMENT, ages into a
+false fact that blocks work.** A comment asserting "no audio pipeline exists
+anywhere in this repo (confirmed by search)" was measured FALSE — over a
+thousand custom audio files existed by the time anyone re-checked. Treat a
+comment's factual claim the same as a doc's: it decays, and nobody re-verifies
+it just because it's in code.
+
+⚠️ **A doc's "state" column decays FASTEST in the direction that causes
+rebuilding, not the direction that avoids it.** A mechanics table said UNBUILT
+for several rows whose code had actually landed within a day of the table
+being written — because "still needs doing" is the default nobody rushes back
+to correct once it turns out to be wrong. Reading a checklist line back to the
+owner is what surfaces this; walking a checklist audits the design doc, not
+just the checklist.
 
 ## Parking a deferral so it survives
 

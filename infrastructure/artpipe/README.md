@@ -129,3 +129,83 @@ where canon-vs-invented naming isn't obvious.
 refuses the channel). Queue no `"channel": "gemini"` jobs; a job that carries
 it will sit refused. Re-funding requires the owner's word and an explicit
 `--gemini-budget-usd`.
+
+## Operating the daemon — traps
+
+- 🔴 **`pgrep -af artpipe` for a SECOND daemon before trusting a run of
+  `worker_error`/`failed` entries as a content problem.** Nothing stops a second
+  `artpiped.py -N 3` from starting; two processes compete for the same default
+  `w0/w1/w2` codex-worker slots under one `CODEX_HOME` and both produce "no
+  rollout file found under this CODEX_HOME" errors that look like a codex-side
+  bug but are daemon-count contention. Kill the extra one by PID, never `pkill
+  -f` — it matches your own shell too (2026-09-13).
+- ⛔ **Never create a per-run/throwaway codex home.** Calibration's per-run homes
+  each queued a Windows UAC prompt despite the durable `.codex_sandbox_seed`
+  template existing — ~30 prompts waited on the owner. Reuse the durable
+  worker pool; root-cause any template bypass before an unattended run rather
+  than working around it with a fresh home (`CODEX_UAC_STORM_1`, 2026-09-09).
+- **A long-running daemon does not reload its own source on edit.** Python
+  never re-imports a running module — an edit-timeout bump and a
+  stdout/stderr-capture fix both silently never took effect until the process
+  was restarted. A session can spend an hour "confirming" a fix that was never
+  loaded; re-run the same test before and after a restart to prove it landed
+  (`CODEX_WORKER_SANDBOX_WRITE_1`, 2026-09-10).
+- **`pgrep` healthy and sleeping is not evidence the pipeline is producing.**
+  All pending jobs can be sitting misfiled to a banned channel (`gemini`,
+  see above) or simply have nothing claimable, and the daemon sits correctly
+  idle for hours with zero symptoms besides a stale `done/` timestamp. Cross-
+  check the newest file's mtime in `done/` (or `throughput.jsonl`) against the
+  wall clock before trusting "the process is running" as "the pipeline is
+  working" (2026-09-20).
+- **The daemon's own gemini budget is cumulative from `throughput.jsonl`, not
+  per-run** — and never pipe a live daemon's output through `head`; SIGPIPE
+  kills it mid-billing.
+- **drvfs can serve STALE worker-script bytes to some concurrent spawns and
+  fresh bytes to others in the same batch.** The cure is to read the source
+  once and feed it to spawned workers via stdin rather than re-reading the
+  path per spawn (`artpiped.py`, 2026-09-10).
+- **Concurrent codex imagegen workers can collide on a shared harvest
+  directory** — one worker has harvested another's render as its own.
+  Serialize generation, or isolate `CODEX_HOME` and the harvest dir per
+  worker (2026-09-14).
+- 🔴 **The quota block is measurable, not guessable.** `throughput.jsonl`'s
+  trailing entries carry `meter_after.secondary_resets_at` (a Unix timestamp)
+  with both meters near 90%+ used right before generation stops. The daemon's
+  PID staying alive is not the signal that it's still working; `done/`'s and
+  `throughput.jsonl`'s own mtime freshness against current time is
+  (2026-09-21).
+- ⚠️ **The meter fields lie about WHY a job failed for quota.**
+  `meter_before.grumpy` / `secondary_used_percent` read `False`/`None` on jobs
+  Codex had in fact refused for quota ("You've hit your usage limit... try
+  again at..."). Read `worker_stderr_tail`, which carries the refusal
+  verbatim, instead of trusting the meter fields (2026-09-19).
+- ⚠️ **OpenAI strict structured-output (`codex --output-schema`) rejects any
+  schema whose `required[]` omits a property, or that uses
+  `minimum`/`maximum`/`maxLength`** — HTTP 400 before generation even starts,
+  worker exit 1, which looks like a dead channel rather than a schema bug.
+- **Before filing a fresh art job, grep `registry.jsonl` for
+  `source: "<ITEM_ID>"` first.** The daemon may already have jobs in flight
+  for the exact wave being assessed — the owed work can turn out to be
+  finished renders to REVIEW, not new renders to generate (2026-09-21).
+- **`registry.jsonl` hygiene**: a `git add` with explicit paths does not stage
+  a deletion you forgot to list — a rename-by-recreate can leave HEAD with
+  more job records than disk actually has, so a fresh clone would regenerate
+  the same art twice under the wrong defName. Diff HEAD against disk after
+  any rename-by-recreate (`STONEBACK_DEFNAME_COLLISION_1`, 2026-09-22). And a
+  malformed line (not valid JSON) is silently ignored by
+  `selftest_frozen_dumps.py` with only a warning that a frozen dump may read
+  STALE — check for one before trusting the registry's own completeness
+  (2026-09-22).
+- ⚠️ **A job's `reference` field triggers reskin-validate (pixel-fidelity
+  against the OLD sprite) — a deliberate RESTYLE will ALWAYS fail it.** All 21
+  jobs in one restyle wave REJECTed on canvas/subject-size mismatch vs. the
+  donor before this was caught. For a restyle, file the job reference-LESS
+  (prompt + library images for inspiration only), gated by the legibility
+  check instead of reskin-validate (2026-09-13).
+- ⚠️ **A `fill_queue.py` job's `reference` field is checked for existence;
+  prose in `style_notes` is not.** Writing "match `<X>`'s art as reference" in
+  free text does not verify `<X>` actually has a texture — a def can carry a
+  name and a `drawSize` with no art behind it at all (e.g. a vanilla-retint
+  building with no dedicated texPath). Before writing "match the existing X",
+  resolve X's `texPath` and confirm a PNG exists; pass it as the `reference`
+  field, which is checked, rather than leaving it in prose (2026-09-23).

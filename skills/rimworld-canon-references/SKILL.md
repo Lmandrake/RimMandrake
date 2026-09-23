@@ -54,6 +54,33 @@ blocked on it. A canon fact you looked up inline and did not record with its
 source URL is not a target — nobody can grade against it later, which is the
 failure the library was built to end.
 
+⛔ **A third-party mod's defName is not a source, even when it is the only thing
+you have.** `Plant_FelucianGlowspore_Wild` was recorded as "Canon" citing itself
+as evidence for a "felucian glowspore" wild-plant entry — `glowspore` returns
+zero Wookieepedia hits, and the name is the mod author's own invention. This is
+the general shape: a donor mod ships a plausible-sounding name, and reading the
+name back as proof is not sourcing it. Absence from our own 137 entries is no
+evidence either way — write the entry as UNSOURCED and say so, don't launder a
+donor defName into a citation.
+
+🔑 **Looking up a subject on Wookieepedia: a MISSING page from a guessed exact
+title is not evidence the subject is non-canon.** `Brylark`, `Vesuvague_hanging_
+tree` and `Felucian_glowspore` all returned MISSING while the real pages are
+`Brylark tree` and `Vesuvague tree` — guessed titles miss real pages constantly.
+Use the search API instead of a direct page fetch:
+`action=query&list=search&srsearch=<name>` — and note it omits `searchinfo`
+entirely on zero results, so a parser reading `totalhits` raises on exactly the
+passing (zero-result) case; read the `search` array's emptiness instead
+(2026-09-22).
+
+**Fetching the article itself: only the RENDERED HTML is Cloudflare-walled.**
+`curl` to `starwars.fandom.com/api.php?action=parse&page=<X>&format=json&
+prop=wikitext` works unauthenticated and has no size cap — prefer it. Fetcher
+also works but TRUNCATES AT 50,000 CHARS and has silently eaten a whole
+species' Biology section that way. Two more traps on the same source: a stub
+main page's real content often lives at `<Name>/Legends`, and a page's own
+TITLE can lie (the Rakata article is titled "Rakatan") (2026-09-15).
+
 ---
 
 ## 2. Before generating anything

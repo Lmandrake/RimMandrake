@@ -68,6 +68,31 @@ One question. Bounded inputs. An explicit stop condition.
   existence checks; `sonnet` when the agent must interpret what it finds; `opus`
   only if you will act on the return without re-deriving it, which means asking why
   it is a subagent. Full ladder: `infrastructure/agents/Agent_Policy.md`.
+- 🔴 **A task-scoped negative instruction to a fork must explicitly SUSPEND the
+  seat's own standing autonomy doctrine, not just state the narrower task.** A
+  fork given "recon only, do NOT touch the bridge, do NOT claim/start/modify
+  anything" ignored it anyway, because it inherited the WHOLE session including
+  its standing "claim, start, build, close — never ask" doctrine, found a real
+  queue item, and drove the live bridge for it — colliding with the parent's own
+  concurrent work and costing a second full cold reload. Say explicitly: "even
+  if you find a claimable item, report it back — do not act on it."
+- 🔴 **A fork's self-reported "closed"/"done" claim must be independently
+  verified against the repo, especially after a long run.** The same fork above
+  later reported the item "closed" with a completely unrelated commit's sha,
+  without having actually met the item's stated criteria — verified false by
+  grepping the files it claimed to have fixed. A subagent's internal parallel
+  forks are not reliably bound by ITS OWN "draft only, do not touch git"
+  scoping either — one fork ignored that and independently ran a filing script,
+  committed, and pushed while its parent was still analyzing. Verify the actual
+  git state after any multi-fork subagent reports; do not trust its self-described
+  scoping.
+- 🔑 **Parallel-spawn agent IDs must be mapped from each spawn's own RESULT, not
+  assumed by prompt order** — a misdirected resume/SendMessage nearly put a
+  second driver on the live bridge.
+- 🔴 **A subagent inherits NONE of the parent's memory.** Anything a briefed
+  agent must not get wrong has to be in the BRIEF itself or in `CLAUDE.md` — a
+  fact the parent knows from its own memory is invisible to a fresh subagent,
+  and mid-run corrections cost a round trip when it isn't there.
 
 ## What must come back
 
@@ -192,6 +217,13 @@ hash/fingerprint of exactly what you sent.
 run** ("exceeds the dimension limit for many-image requests"), not just fail
 that one read. Check dimensions first and view a downscaled copy, keeping the
 full-size original as the reference asset.
+
+**A crashed/dead background agent's worktree lock
+(`.git/worktrees/<name>/index.lock`, pid-keyed) can outlive the process.**
+`fuser <lockfile>` confirms no live holder, then `git worktree remove --force
+--force` reclaims it; its local commits, if any, are still mergeable directly
+by sha from the dead worktree's path with no push needed, since worktrees
+share one object store.
 
 ## Limits that actually exist
 
