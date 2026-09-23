@@ -291,6 +291,55 @@ an existing, already-authored hazard. The only new content is the
 ThingDef/RecipeDef layer sitting on top, which is exactly the "only the
 inputs and the names change" promise `V2_DREAMS.md` made for this whole mod.
 
+### ⭐ 4a. The dianoga tank — a high-prize item, and the MODEL for living-ingredient captivity
+
+🔴 **Owner note, 2026-09-23** (recorded at the Fever Wood design sitting): **the dianoga tank is
+a high-prize item with many uses, and it will serve as the model for other similar
+storage/prison systems for living ingredients.**
+
+⇒ **Two things, and the second is the bigger one.**
+
+**1. The tank itself is a prize.** A captive dianoga is a standing, renewable source of the canon
+product family — **meat** for dianoga pie, **spleen chemicals** for dianogan tea (a narcotic;
+Wookieepedia files it under *Drugs and medicine*), and **dianoga cream** for the cream-filled
+donut line. All sourced; see `design/RimStarWars/canon_references/dianoga/description.md`. Canon
+precedent for the vessel is real too — *"Toothy,"* a juvenile kept in a display tank, and dianoga
+living in the SoroSuub refinery's **water tanks** on Sullust.
+
+🔴 **It is a PRISON, not a pen** (owner, verbatim, same sitting): *"That's why they're not farmed,
+they're imprisoned."* ⛔ Do not write, name or art any of this as animal husbandry. The occupant is
+held against its will and is strong enough to be a real threat — and a neglected or damaged tank
+**releases it**.
+
+**2. ⭐ It is the pattern.** This generalises into a whole class this design does not yet have:
+**living-ingredient captivity** — a creature too dangerous, too slow-growing or too strange to
+farm is instead *contained*, fed, and harvested from repeatedly while alive.
+
+| the pattern's parts | what each contributes |
+|---|---|
+| **a vessel that is a cell** | built, costly, and thematically a prison rather than a stall |
+| **upkeep that is feeding** | it consumes something real (corpses, meat) — an ongoing cost, not a one-off build |
+| **repeat harvest from a live animal** | the ingredient is renewable *because* the creature is alive, which is the whole reason not to just kill it |
+| ⭐ **failure = escape** | neglect or damage releases the occupant. This is what keeps the mechanic tense instead of turning a monster into livestock |
+| **a placement decision** | where you build it matters, because the escape's consequences depend on it |
+
+🔑 **Why this is worth generalising rather than building one-off:** it converts §4's hazard-pantry
+logic from *travel* into *residence*. The four exemplars above are all "go somewhere dangerous and
+come back"; captivity is "bring the dangerous thing home and live with it." That is a second,
+complementary answer to the same design question — and it compounds with the ingredient sweep ruled
+immediately below, because **a venomous creature you keep is a venom supply, not a single harvest.**
+
+⇒ **Candidates for the same pattern** (not yet ruled): venom from a kept venomous creature, eggs
+from a captive layer, blood from something that must stay alive to give it, and sap-drinkers kept
+for nectar — that last already has its own ruling that **taming buys access, never obedience**, so
+a tamed one still triggers its defence when mishandled
+(`design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md` §6n).
+
+⚠️ **Build note:** the tank's own mechanics live on `FEVERWOOD_DIANOGA_PRISON_1`, not here. This
+section records that cuisine is a **consumer** of it, and that the pattern is meant to be reused —
+so whoever builds the first one should build it **generically enough to be the model he asked
+for**, rather than hard-coding one creature.
+
 ### 🔴 Ingredient sweep — owner, 2026-09-15 (verbatim)
 
 > *"Search for ALL venomous creatures, all eggs, some exotic hides, some exotic

@@ -59,7 +59,29 @@ product half has a home.
 it to the Dianoga when Utinni is active"*). ⇒ The free mod needs its own invented captive, so
 this building must not name a canon creature in the franchise-free tier.
 
+## 🔴 build it GENERIC — it is the model for a whole class
+
+**Owner note, 2026-09-23:** the tank is **a high-prize item with many uses**, and it **will serve
+as the model for other similar storage/prison systems for living ingredients.**
+
+⇒ ⛔ **Do not hard-code this to one creature.** The first implementation is the pattern every later
+one copies: a vessel that is a **cell**, upkeep that is **feeding**, **repeat harvest from a live
+animal**, **escape as the failure mode**, and a **placement decision** that matters because escape
+consequences depend on it.
+
+⇒ Candidates already named for the same pattern (unruled): venom from a kept venomous creature,
+eggs from a captive layer, blood from something that must stay alive, and sap-drinkers kept for
+nectar. 🔑 That last one already interacts — `FEVERWOOD_SAP_SUCKER_GUILD_1` rules that **taming buys
+access, never obedience**, so a tamed occupant still triggers its defence when mishandled.
+
+Cuisine is the consuming system and records the pattern at
+`design/Jawa/proposals/high_cuisine_deep_design.md` §4a. The mod that receives the food half is
+`mandrake.rsw.cuisine` (`src/RimStarWars/Cuisine/`), which its own `About.xml` already names as the
+intended home for the rest of that design's build ladder.
+
 ## open
 
 - **How long stage 3 takes**, and whether it is interruptible once begun.
 - Feed rates, product rates, tank materials, and what damage level triggers a release.
+- **What the generic abstraction actually is** — one comp parameterised by occupant and product, or
+  a base ThingDef others inherit. Unset, and it is the first real decision of the build.
