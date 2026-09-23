@@ -25,6 +25,19 @@ saves: `Config/Mod_*.xml` plus `Xenotypes/`, `Ideos/`, `Scenarios/`,
 presets, one line per dead gene, forever. **Saves are exempt from the startup
 pass** — they are read only on load.
 
+🔴 **A whole-active-mod-list dependency check is NECESSARY BUT NOT SUFFICIENT before
+retiring a mod.** The campaign SAVE can hold direct Scribe references no mod-to-mod XML
+check will ever see — a `Class="Donor.SomeComp"` block on a live pawn/need, or a bare
+`<meta><modIds>` entry the engine's `missing_mods` gate checks unconditionally. Two
+separate incidents each passed a thorough dependency census and still broke the save
+load. **Check the save directly** before calling any retirement safe (2026-09-09/10).
+
+🔴 **Mod-generated Scribe state can self-schedule into the save and outlive the mod
+looking "inert."** VEF's quest-chain framework writes its own future firings into
+`VEF.Storyteller.GameComponent_QuestChains.futureQuests` — check that path in a `.rws`
+before assuming a quest mod with no visible activity is doing nothing, and scrub those
+entries at resave if retiring it (2026-09-10).
+
 ## 2. Grep a save with `<def>NAME</def>`, never the bare defName
 
 `grep -c OuterRim_RebelAlliance <save>.rws` returns **1 on a world that does not
@@ -49,6 +62,12 @@ and why.
 **Use named controls**: check defs you know are present *and* absent in the same
 run, or an empty result is a claim about your query rather than about the world.
 
+🔴 **Even scoped to `<def>NAME</def>`, a substring match can false-positive against a
+LONGER defName that contains it.** `guy762_ResearchKotOR_workbench` matched 9 times in a
+resave that had genuinely purged it — all 9 were the substring inside
+`Techprint_guy762_ResearchKotOR_workbench`, a different and still-valid ThingDef.
+**Always check what matched, not just whether it did** (2026-09-14).
+
 ## 3. Anatomy — what is safe to edit, and what is not
 
 | region | edit? |
@@ -59,6 +78,21 @@ run, or an empty result is a claim about your query rather than about the world.
 | faction rosters and `goodwill` relations | ⚠️ ID-linked — keep the ID map consistent |
 | the **thing-ID reference graph** and raw map cell/region data | 🔴 fragile — prefer an engine route (dev-mode spawn, RimBridge, Map Designer, quest generators) |
 | `<meta>` — `<modIds>`/`<modSteamIds>`/`<modNames>` | a save degrades when loaded against a different mod set; keep it in sync |
+
+🔴 **Gene `loadID`s are save-local, exactly like `Faction_N`, and a collision resolves
+SILENTLY to the wrong object instead of erroring.** Splicing a pawn into another save
+makes its gene refs resolve *successfully* into the destination's own unrelated genes —
+5 of 6 founders lost their `Wimp` trait this way in one splice, because the trait's
+`<sourceGene>` pointed at a `loadID` the destination save had reused for something else,
+and nothing in `Player.log` said so (2026-09-21).
+
+🔑 **Before taking the bridge on any save, check its loadability first — it is a 2-line
+`ElementTree` diff, not a bridge call.** Compare `<meta><modIds>` against the live
+`ModsConfig.xml`'s `activeMods`; this answers "can this item be verified at all" for
+free. 🔴 And **the CURRENTLY LOADED mod set is the newest autosave's `<meta><modIds>`,
+NOT `ModsConfig.xml`** — a pre-reboot session can be running on 26 mods while
+`ModsConfig.xml` reads 621, so "the mod is in the live list" proves nothing about what
+the running game actually has loaded (2026-09-19).
 
 A **Thing** is any element with BOTH a `<def>` and an `<id>` direct child; `<pos>`
 is `(x, 0, z)` with **origin bottom-left** — flip z for image rows.
@@ -150,6 +184,14 @@ where it varies first.
 **Timestamped backup → edit → parse-validate the XML → reload-test in game.** No
 exceptions. A corrupted save costs a campaign *and* a ~23–30 minute reload.
 `SaveMap.write()` enforces the last part: it raises rather than overwrite its source.
+
+🔴 **Never open a `.rws` in Python TEXT mode (`"r"`/`"w"`) for a raw edit — it silently
+collapses every CRLF to LF across the WHOLE file.** A 50-byte intended string replace on
+a 21 MB save came out ~500 KB smaller. It still parses and still loads (XML/Scribe don't
+care about line endings), so the only tell is a size delta wildly disproportionate to the
+edit. **Always open a savegame `"rb"`/`"wb"` and use `bytes.replace()`**, and assert the
+output size against what the string-length arithmetic predicts before trusting it
+(2026-09-20).
 
 ## 8. The save is the real undo for a bridge experiment
 

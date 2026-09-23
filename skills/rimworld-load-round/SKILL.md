@@ -300,6 +300,18 @@ Exit code 1 means something is above baseline. Triage by consequence, not by
 position or volume: dead mods first, then discarded defs, then unresolved
 cross-references, then stale Scribe references, then patch no-ops.
 
+🔴 **`Reached max messages limit. Stopping logging to avoid spam.` makes `Player.log`
+stop dead mid-session.** The log then looks frozen (stale mtime, no new lines) and every
+later diagnosis is blind without a restart. It is itself a FINDING, not just a nuisance —
+something is spamming. One instance was thousands of `Tried to set terrain at (x, 0, z)
+to null.` lines in contiguous horizontal bands, which turned out to be the river channel
+itself, drawn with a null terrain. **Read the spam, do not just notice the cap.**
+
+⚠️ **A crash log's mod count comes from its own `Initializing new game with mods:` line,
+never from which list you BELIEVE was active.** A "full-list mapgen crash" turned out to
+be a 19-mod tier, and the wrong premise reached the owner as a question. Read the line,
+don't assume it (2026-09-21).
+
 **Whoever needs the restart calls it, harvests the log, and writes up for
 everyone** — not just its own concerns. Findings go to the per-seat queues;
 anything surprising to the matching `traps-*.md`.

@@ -377,3 +377,114 @@ logic regardless of whether the wall-clock speed reads Paused; "paused" describe
 the UI speed control, not a freeze on everything with a `Tick()`. Spawn anything
 with autonomous movement well clear of anything precious, and re-check its
 position before assuming it is still where you left it.
+
+## 🔴 `jawa/step_game_ticks` silently truncates well below the ticks you asked for
+
+Measured twice, two different numbers: **~2,800 ticks per ~10 s call** on one session
+(2026-09-12) and **~600 ticks per call** on another (2026-09-21) — the cap is not a fixed
+constant, it degrades with mod-list size and load. Either way the call returns
+`success:false, status:"timedout"` **inside the payload** while the outer envelope still
+reads `Status:2, Success:true`, and it reports `"Advanced N game tick(s)"` for whatever N
+it actually managed — which reads exactly like success if you don't check `status`. A
+prior session's "advanced 263,701 ticks, zero spawns" finding was almost certainly this
+trap: the real engine clock never reached that count.
+
+⇒ **Never issue one large tick-advance request.** Loop it, re-reading the real
+`ticksGame` after every call until the target is reached — never trust your own running
+counter, and never trust the reported N as proof that many ticks actually passed.
+
+## 🔴 `jawa/spawn_batch` NREs on a pawn-race `ThingDef` — use `jawa/spawn_pawn` instead
+
+`jawa/spawn_batch` throws an unhandled `NullReferenceException` (not a clean refusal)
+when given a pawn-race `ThingDef` — it routes non-filth items through `GenSpawn`, which
+cannot construct a `Pawn` from a bare `ThingDef` the way `ThingMaker.MakeThing` expects.
+**`jawa/spawn_pawn`, addressed by `PawnKindDef`, is the correct tool for any
+creature/pawn spawn** (2026-09-12).
+
+## `jawa/list_things` — `faction`, not `factionName`
+
+Reading the wrong key diagnosed a healthy player-owned ship as factionless for a full
+hour (2026-09-09).
+
+## `rimworld/click_cell` dispatches a real click but may select NOTHING
+
+Selection can come back unchanged or stale. `rimworld/clear_selection` works reliably;
+verify what actually got selected with `get_selection_semantics`, never with the gizmo
+list alone (2026-09-09).
+
+## A raw hediff-severity write via `jawa/pawn_health` never triggers vanilla's needs recompute
+
+`remove` + `add` + set `Severity` directly does not fire `AddOrRemoveNeedsAsAppropriate()`
+— that only runs once, from `HediffSet.AddDirect`, at whatever stage the hediff had when
+first added. `HediffSet.DirtyCache` only refreshes the disabled-needs cache, not the
+need-gating logic. A whole "need-gating FAILS" finding was this artefact, not a real
+defect. **Test a stage-dependent mechanic via the real player path** (a bench recipe /
+bill), not a raw severity poke (2026-09-09).
+
+## `jawa/transporter_launch` — `dryRun` only guards ONE branch
+
+`dryRun` short-circuits the "spawn a new pod" branch, but calling it with an existing
+`transporterId` and `dryRun=true` falls through to a real `TryLaunch` — a documented
+dry-run request can trigger a genuine launch. Standing check for any NEW bridge tool
+with a dryRun/preview/simulate parameter: **the flag must be checked on EVERY mutating
+branch**, not just the first one written (2026-09-13).
+
+## 🔴 NO `jawa/*` tool can force a `DoBill` job — there is no bridge route to a recipe
+
+`jawa/ordered_job` and `jawa/prioritized_work` both CONSTRUCT the Job from `jobDef` +
+targets (their own doc-comments say so) and never call `WorkGiver_DoBill.JobOnThing`, so
+`Job.bill` is null and `JobDriver_DoBill` reverts to Wait. There is no vanilla escape
+hatch either — zero `[DebugAction]` in 1.6 source mentions bill/surgery/recipe, and
+`jawa/debug_actions` states it EXECUTES NOTHING. This cost three live passes before
+anyone read the tool source. **Read the bridge tool's source before briefing a session
+to "force it via the bridge"** (2026-09-19, `BRIDGE_DOBILL_FORCE_TOOL_1`).
+
+## 🔴 `jawa/map_drop` CRASHES the whole game — and any reply field that carries a `PlanetTile` does too
+
+`jawa/map_drop` on a 622-mod game ended in a Mono stacktrace inside
+`JsonConvert.SerializeObject` in `TcpConnection.SendMessageAsync` — the bridge died
+serialising the RESPONSE after the Map was already destroyed, taking the process with
+it. The drop itself may have succeeded; nothing survived to say so. **Treat `map_drop`
+as a one-way call that ends the session**, never as mid-wave cleanup. It also declares
+`mapIndex`, not `mapId`, while the neighbouring `jawa/set_current_map` declares `mapId`
+not `mapIndex` — the two disagree and only the client's param guard catches it.
+
+The root cause generalises: `Map.Tile` is a `PlanetTile` struct in 1.6, and
+`PlanetTile.Tile` returns a `Tile` that points back at it, so putting one in a bridge
+reply throws `Self referencing loop detected … Path result.X.tile.Tile` — **after** the
+action already succeeded. **Every reply field must be a primitive**: `map.Tile.tileId`,
+never `map.Tile` (2026-09-19/21).
+
+## `rimworld/get_mod_settings` — `topLevelSettingCount: 0` for a settings class with STATIC fields
+
+It reflects INSTANCE fields only. A `ModSettings` class whose fields are `static` reads
+as empty even while `hasSettingsWindow: true` — "the settings screen exists" and "I
+exercised the toggle" are different claims and only the first is measurable this way
+(2026-09-19).
+
+## `rimworld/select_pawn` refuses colony ANIMALS — `rimworld/click_cell` does not
+
+`Pawn_AbilityTracker.GetGizmos()` gates on `IsColonyAnimal`, not
+`IsColonistPlayerControlled`, so a tamed animal's ability gizmo is reachable via
+`click_cell` → `selectionAfter.selectedObjects` → `list_selected_gizmos`/`execute_gizmo`,
+even though `select_pawn` itself refuses the same animal outright. A whole item was once
+blocked on the wrong door (2026-09-20).
+
+## Hostile pawns standing on a map have no duty and will not attack
+
+A spawned hostile does nothing until it is given a real `LordJob` — `jawa/lord_assault_spawn`
+gives it `LordJob_AssaultColony`, and only then does the AI use its abilities, within
+~1000 ticks. "They never engaged over 1260 ticks" was a missing Lord, not a broken
+mechanic (2026-09-20).
+
+## `jawa/grant_ability`'s `alreadyHad` field is a READ, not a boolean flag
+
+It reads `Pawn_AbilityTracker` to probe whether a grant-on-tick comp fired. When the
+comp is switched off it answers `"has no Pawn_AbilityTracker"` — a stronger negative than
+`alreadyHad:false`, and worth distinguishing before concluding the grant failed
+(2026-09-20).
+
+## `jawa/list_pawns` nests health under `health.hediffs`, never a top-level `hediffs`
+
+`row['hediffs']` returns `[]` for every pawn and reads as a working mechanism being
+inert. Read `row['health']['hediffs']` (2026-09-21).

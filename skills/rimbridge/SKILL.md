@@ -70,6 +70,29 @@ cross-session messaging to ask another window for the bridge — that channel
 is off entirely (`no-agent-to-agent-messaging`); `rimflow`'s own take/release
 state is the only handshake that exists now.
 
+🔴 **`rimflow bridge`'s 45-minute staleness rule measures EVENT SILENCE, not game
+activity.** Driving the bridge does not by itself refresh the lock — only a `rimflow`
+ledger event does — so a seat that drives for 1.5h emitting no events reads as stale to
+anyone checking, even though the game is genuinely live. Emit a periodic note while
+driving a long session. Before restarting or swapping the mod list on a "stale" hold,
+cross-check `rimworld/get_game_info` and `Player.log`'s own mtime against wall-clock —
+a session can be genuinely live despite a long-idle ledger (2026-09-08).
+
+⚠️ **And the reverse check matters too: `Player.log`'s mtime can read HOURS stale
+relative to a just-recorded `bridge take` event**, if a restart hasn't produced a load
+yet or crashed before Unity opened the file. Always `stat` the log's mtime and check
+`tasklist.exe` before trusting log content as "this session" — a fresh `bridge take`
+event is not proof a fresh process exists yet (2026-09-18).
+
+🔴 **A subagent dispatched to start or wait on a cold load must be told, up front, to
+block in a foreground loop — never to end its own turn "to wait for the monitor's
+notification."** A subagent has no channel a background-task notification can reach;
+only the PARENT session does. Three separate incidents (2026-09-08, 2026-09-12 ×2) had
+a bridge-driving or load-waiting agent park itself this way and then sit idle until the
+parent noticed and resent the same correction. State it explicitly in the dispatch
+prompt, every time — the agent will otherwise reach for it under a genuinely long wait
+(a 15–25 min cold load) even when the prompt never asked for anything async.
+
 ### What two drivers actually does — measured 2026-08-15 (pre-redesign, still true)
 
 Two seats (then named CHECK and BUILD) called the bridge at the same time and it **went unresponsive**.
@@ -142,6 +165,16 @@ sits in the socket buffer and the next request reads it as its own reply
 than absent. Drop the socket, open a fresh `RimBridge`, and **poll the
 post-condition** — never retry on the same connection, and never re-issue a call
 whose idempotence you have not established.
+
+🔴 **`python.exe` cannot open a script under `/tmp/...` or the session scratchpad** — those
+paths are WSL-only and invisible to Windows Python. Write bridge test scripts into
+`Transient/` and run them with a repo-relative or `D:\...` path (2026-09-08).
+
+⚠️ **`python.exe` can spawn `python3` with exit code 0 — but it is a WINDOWS `python3`**,
+which dies on `fcntl`/Unix imports. An orchestration script that shells out to `python3`
+from inside a `python.exe` process is not reaching WSL. Split responsibilities instead:
+`python.exe` drives the bridge only; WSL `python3` owns swap/rimflow/anything Unix-only.
+Grade the answer (which interpreter actually ran), never the exit code (2026-09-13).
 
 🔑 **Never type a namespace prefix you did not just read.** `jawa/` records
 **which assembly registered the tool**, not what it does — `jawa/spawn_batch` and
@@ -331,6 +364,12 @@ give it `x`/`z`: `Actions\Explosion...\EMP` works on anything, anywhere.
 ⚠️ **`get_debug_action` returns `actionType: null` for some working leaves**, so
 it is not a reliable diagnostic. Compare against a known-good sibling instead.
 
+⚠️ **Some `ToolMap` leaves refuse a `thingId` param outright despite the table above** —
+`Actions\T: Resurrect` and `Actions\T: Destroy` both answer *"Could not find current-map
+thing id X"* for a thing that visibly exists via `jawa/list_things`. `x`/`z` cell
+targeting works where `thingId` does not, for these specific tools — do not assume every
+`ToolMap` action accepts both forms just because most do (2026-09-10).
+
 ⚠️ **NEVER call `search_debug_actions` against the full mod stack — with or
 without a `limit`.** It livelocked and killed a 568-mod game on 2026-08-12.
 `limit` truncates the returned rows; it does not bound the search, because
@@ -412,6 +451,13 @@ dressed, restyled or re-xenotyped for a shot · you are about to take a screensh
 | `src/RimMandrake/Utils/rimbench/crater.py` | radial crater: zones, dithered edges, ellipse squash, ejecta rays |
 | `src/RimMandrake/Utils/modset_builder.py` | dependency-complete minimal mod lists (`--tier bridge` = 3 mods) |
 
+⚠️ **`modset_builder.py --restore` restores the PREVIOUS TIER, not the owner's full list,
+once you chain tiers.** Each `--apply` backs up whatever was live at that moment, so
+chaining e.g. xenotypes(16 mods) → beastmechanics writes a backup containing only 16 mods
+— `--restore` at that point hands back the test tier while reporting success. Before
+`--restore`, parse the backup file and count `activeMods` (never grep `<li>`) and pick the
+backup whose count matches the full list you actually want back (2026-09-20).
+
 **Prove new bridge work on the 3-mod tier.** Three suspects instead of five
 hundred, and the load is seconds rather than half an hour.
 
@@ -453,7 +499,11 @@ Two standing rules, both learned painfully:
 ## 8. Speed
 
 **Cost tracks CALL COUNT, not cell count.** That one sentence is the whole
-performance model. Batch anything you do per-cell, or design around ~20
+performance model. And the mechanical stack itself is cheap — measured 2026-09-12:
+≤0.1 s/action (python.exe spawn 38 ms, `hello` 0.8 ms, main-thread call ~16.6 ms median
+@593 mods). **The slowness of a bridge session is LLM turns, not the bridge** —
+`bridge_latency_bench.py` re-measures. This is why §5's "compose the sequence into a
+script and run it once" matters more than any per-call optimisation. Batch anything you do per-cell, or design around ~20
 unbatched calls per second — `jawa/set_terrain_batch` did in **1** call and
 14.0 ms what 421 per-cell calls took 7.0 s to do.
 
