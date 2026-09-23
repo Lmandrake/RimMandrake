@@ -38,7 +38,7 @@
   XmlInheritance resolves ParentName only against another def's `Name=` attribute
   (registered in nodesByName), never against defName as a fallback — the same
   engine-verified trap already documented in
-  `src/RimStarWars/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml`. So every
+  `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml`. So every
   field below was silently uninherited: null thingClass (hence the config error),
   no WaterExt modExtension (no thirst-seeking behaviour at all), no ingestible
   block, no stats. Fixed by inheriting from `ResourceBasedMom` instead (it DOES

@@ -41,7 +41,7 @@ sheet defNames are noted separately where present.
 | 2 | LongShade | desert.md | YES (desert.md:3) | YES (rosters/desert.json: 9 defs) | YES (rosters/desert.json: 53 defs) | YES (desert.md:23-24 arc/hilliness/temp table; :302 dew line) | 0 | WIRING-READY | — |
 | 3 | TheRot | the_rot.md + kits/rot_kit_spec.md | YES (the_rot.md:3; + `Transient/rot_flora_fauna_review_2026-09-18.decisions.json` + `Transient/rot_size_rejudge_2026-09-19.decisions.json`, both frozen/ruled) | YES (rosters/the_rot.json: 30 defs) | YES (rosters/the_rot.json: 20 defs) | YES (the_rot.md:18-19,26,29,82 temp p10/median/p90, dew-point arc) | 0 (the_rot.md:0, rot_kit_spec.md:0) | WIRING-READY | — |
 | 4 | Wasteland | wasteland.md | YES (wasteland.md:3) | YES (rosters/wasteland.json: 9 defs) | YES (rosters/wasteland.json: 15 defs) | YES (wasteland.md:33-35 three-band arc/temp/elevation table) | 0 | WIRING-READY | — |
-| 5 | NightsideIce | nightside_ice.md | YES (nightside_ice.md:3) | **NO** (rosters/nightside_ice.json: flora=0) | YES (rosters/nightside_ice.json: 10 defs) | YES (nightside_ice.md:27,30,58 temp p10/median/p90, elevation) | 0 | DESIGN-PASS-OWED | flora roster empty — 0 plant defs in rosters/nightside_ice.json |
+| 5 | NightsideIce | nightside_ice.md | YES (nightside_ice.md:3) | YES-by-law (rosters/nightside_ice.json `flora_purged`: "flora list ships empty by law: §6 — no photosynthesis"; sheet §6 bans all plant life) | YES (rosters/nightside_ice.json: 10 defs) | YES (nightside_ice.md:27,30,58 temp p10/median/p90, elevation) | 0 | WIRING-READY | flora zero is a RULING, not a gap (corrected 2026-09-23) |
 | 6 | ForsakenCrags | forsaken_crags.md | YES (forsaken_crags.md:3) | YES (rosters/forsaken_crags.json: 8 defs) | YES (rosters/forsaken_crags.json: 16 defs) | YES (forsaken_crags.md:24,79,96 temp p10/median/p90, ambient band) | 0 | WIRING-READY | — |
 | 7 | BlueDesert | the_blue_desert.md | YES (the_blue_desert.md:3) | YES (rosters/the_blue_desert.json: 3 defs) | YES-thin (rosters/the_blue_desert.json: 2 defs — AA_Thunderbeast, Vapaad) | YES (the_blue_desert.md:25 temp median; :92-94 hydrocarbon phase points) | 0 | WIRING-READY | fauna roster is only 2 defs — see UNCERTAIN |
 | 8 | FloodedCanyon | the_cracked_lands.md | YES (the_cracked_lands.md:3) | YES (rosters/the_cracked_lands.json: 6 defs) | YES (rosters/the_cracked_lands.json: 12 defs) | YES (the_cracked_lands.md:25 temp p10/median/p90) | 0 | WIRING-READY | — |
@@ -84,15 +84,15 @@ sheet defNames are noted separately where present.
 22. FeverWood
 23. TheSump
 
-19 of 24.
+20 of 24 (NightsideIce re-graded 2026-09-23).
 
 ## DESIGN-PASS-OWED (missing criterion each)
 
-5. NightsideIce — flora: roster (`rosters/nightside_ice.json`) has 0 plant defs
+5. ~~NightsideIce~~ — RE-GRADED WIRING-READY 2026-09-23: the empty flora roster is the sheet's §6 law (no photosynthetic life), recorded in the roster's `flora_purged`, not a gap
 11. TerminalBiomes — flora: 3 of 4 sub-biome rosters (scald/grey-sea/twilight-sea) carry 0 plant defs
 12. RustCathedral — flora: roster (`rosters/the_rust_cathedral.json`) has 0 plant defs
 19. Miasma — open: literal count is 3, but all three are `diseaseMtbDays` field-name hits, not real gaps (see UNCERTAIN)
 24. LanternDeeps — flora: roster (`rosters/the_lantern_deeps.json`) has 0 plant defs; species mix beyond 3 imported fauna still Owed
 
-5 of 24.
+4 of 24 (after the NightsideIce re-grade).
 
