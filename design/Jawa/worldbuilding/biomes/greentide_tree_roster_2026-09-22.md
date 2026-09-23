@@ -5,6 +5,43 @@ edited. This document exists to be ruled on; a build seat implements whatever su
 
 Item: `GREENTIDE_JUNGLE_TREE_ROSTER_1`. Ownership precedent: `TREE_GRAPHICS_OWNERSHIP_1`.
 
+---
+
+## 🔴 READ FIRST — the canon half of this document is SUPERSEDED. Owner ruling, 2026-09-22.
+
+After reading the verified tree list below, the owner removed canon from this roster entirely:
+
+> *"I don't think it's important to use actual Star Wars trees. They're not a primary part of the
+> universe. Let's just make our own tree and thus the mod isn't encumbered with Star Wars plant lore
+> that no one even remembers, easier for the non-star-wars version anyway. You may get inspired by
+> the star wars versions you found, but we're making our own. There should be no conniferous plants
+> here, but rather large-leafed lush plants, plants with hanging tentacle-like leaves, willow-like
+> canopies... get wild with them."*
+
+⇒ **No row below ships under its canon name.** Every tree becomes ours and invented, `RM_`-tier, in
+`RM_Greentide`'s own `wildPlants` — there is no Star Wars plant patch layer for trees at all.
+
+**How to read this document now:**
+
+- ✅ **The `canon basis` column is INSPIRATION, not provenance.** It records where a silhouette or an
+  economic role came from. It is no longer a claim that anything ships as canon, and no row needs
+  verifying against canon any more.
+- ✅ **The strata design, the economic roles and the silhouette descriptions remain valid and
+  valuable** — that is the part worth keeping, and it is why the canon research was not wasted.
+- ⛔ **Every `RSW_` defName below is wrong now.** They become `RM_`-prefixed invented names.
+- ⛔ **The canon-tier question is moot.** Four rows were flagged as older pre-2014 material; that
+  distinction no longer matters because no row is canon. The same applies to the two canon-admission
+  edge questions (whether orga counts as a tree, whether a Force-sensitive tree belongs here) and to
+  the `felucian glowspore` row, whose canon claim was corrected to NOT CANON earlier the same day.
+
+**The new silhouette brief, which overrides any look described below:** ⛔ no coniferous forms;
+✅ large-leafed and lush, ✅ hanging tentacle-like leaves, ✅ willow-like canopies, and *"get wild
+with them."* Silhouette variety matters more than usual here because
+`GREENTIDE_BIOME_DENSITY_1` rules that virtually no square is uncovered — distinct forms are what
+keep that legible instead of a green smear.
+
+---
+
 ## At a glance
 
 **The signature giant:** **wroshyr** (`RSW_WroshyrTree`) — canon Kashyyyk giant, canonically

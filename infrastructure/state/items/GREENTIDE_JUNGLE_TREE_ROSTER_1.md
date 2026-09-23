@@ -96,6 +96,59 @@ the biome's visual centre.
 carry `decision: replace`. Today's *"draft the replacements for everything right now"* confirms a
 standing ruling rather than making a new one.
 
+## 🔴 SUPERSEDING RULING — NO CANON TREES AT ALL. Owner, 2026-09-22, latest.
+
+Shown the verified canon tree list, he removed canon from this item entirely:
+
+> *"I don't think it's important to use actual Star Wars trees. They're not a primary part of the
+> universe. Let's just make our own tree and thus the mod isn't encumbered with Star Wars plant lore
+> that no one even remembers, easier for the non-star-wars version anyway. You may get inspired by
+> the star wars versions you found, but we're making our own. There should be no conniferous plants
+> here, but rather large-leafed lush plants, plants with hanging tentacle-like leaves, willow-like
+> canopies... get wild with them."*
+
+⇒ **Every tree in this roster is OURS and INVENTED.** Canon research is now *inspiration only* — a
+canon tree may suggest a silhouette or an economic role, but no row carries a canon name, and no row
+needs a canon citation.
+
+### What this collapses — several open questions are now MOOT, not deferred
+
+- ✅ **The tier tension is GONE.** No invented name is Star Wars IP, so **the whole roster is `RM_`
+  tier and sits in `RM_Greentide`'s own `wildPlants`.** There is no Star Wars plant patch layer for
+  trees, and the franchise-free mod is automatically as rich as the campaign one — which is exactly
+  what the 2026-09-22 Q11a ruling required and what this item could not previously deliver.
+- ✅ **The Legends-versus-current-canon question is moot for trees.** He had ruled *"allow, label, and
+  have the user verify it's really canon"* — that still governs canon content elsewhere, but no tree
+  row is canon any more, so there is nothing to label or verify here.
+- ✅ **The "orga is a plant, not a tree" and "is a Force-sensitive tree appropriate" questions are
+  moot** — both were canon-admission questions.
+- ✅ **The false-canon row is moot too.** `felucian glowspore` was corrected from "Canon" to NOT
+  canon earlier the same day (it cited the donor mod as its own evidence); under this ruling it is
+  simply one more invented row, like every other.
+- ⇒ The canon-verification labour this roster spent is **not wasted**: it produced a set of proven
+  silhouettes and economic roles to be inspired by. Keep the research as inspiration notes, drop the
+  canon claims.
+
+### 🔑 The silhouette direction — his words are the brief
+
+- ⛔ **No coniferous plants.** A hard ban, biome-wide. (Note the current generic list's `Plant_TreeOak`
+  and `Plant_TreePoplar` are not conifers but *are* temperate-forest trees, and they are what this
+  whole item replaces.)
+- ✅ **Large-leafed and lush** — leaf mass, not needles.
+- ✅ **Hanging tentacle-like leaves.**
+- ✅ **Willow-like canopies.**
+- ✅ *"Get wild with them."*
+
+🔑 These are **silhouette** instructions, and silhouette is what makes a dense canopy legible rather
+than a green smear — which matters doubly under `GREENTIDE_BIOME_DENSITY_1`'s ruling that virtually
+no square is uncovered. A roster of large-leaf / hanging-tentacle / willow forms reads as distinct
+species at a glance in a way a roster of generic round crowns cannot.
+
+## ⛔ SUPERSEDED — the tier split by name provenance (kept only to explain why the roster is RM_)
+
+The section below was correct when written and is now moot for trees, because no tree carries a canon
+name. It still governs any **canon** content elsewhere in this biome, so the reasoning is retained.
+
 ## 🔑 The tier split — by NAME PROVENANCE, not by aesthetic. Owner ruling 2026-09-22.
 
 **Owner, verbatim**, asked what the jungle looks like for a player with no Star Wars content:
