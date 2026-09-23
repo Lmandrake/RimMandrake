@@ -188,3 +188,348 @@ replacements for everything right now. No reason to wait!"*). Same treatment: in
 
 **Art on the other six:** all **OWED**. Nothing in `artpipe/done/` keys to a non-tree Greentide
 flora row (§3f is the full measurement).
+
+### 3e. The legibility matrix — the acceptance test for this roster
+
+🔑 **This is the section to judge the roster by.** Because virtually no square is uncovered, a
+player parses the Greentide by **form first and colour second** — so no two rows may share both.
+Twenty-one rows, twenty-one forms:
+
+| form | rows | reads as |
+|---|---|---|
+| broad-leaf umbrella | veluthar | a ceiling on a pole |
+| weeping curtain to the ground | mourvel | a walled room |
+| buttress arcade | kaddrath | architecture |
+| stilt tripod over water | sarnstilt | a bridge pier |
+| squat heavy dome | brunnock | armour |
+| gnarled rounded crown | ghemmel | an ordinary tree — the baseline the others read against |
+| sparse drooping fronds | nemmer | almost bare, deliberately light |
+| tidy narrow ovoid | vurmeloth | cultivated, out of place |
+| split bleeding column | mirrelbole | a wound |
+| hanging tentacle curtain, no crown | zhorrel | a bead curtain that moves |
+| single flat fan | quathis | a blade — and a line edge-on |
+| flat interlocking lattice | thalquith | a ceiling grid |
+| skirt of runners | cundral | a heap |
+| barrel with an upward throat | gorbeleth | a mouth |
+| low overlapping mound | brakkel | a pile of leaves |
+| sprawling ground runner | tumbel | a line of crates on the floor |
+| whorl with hanging drip-tentacles | sarquin | a chandelier |
+| cluster of taut bladders | phorrik | eggs |
+| flat ground rosette | wollick | floor covering |
+| inward-curling blade ring | maddrick | a trap, and it looks like one |
+| broad low glowing cap | illurin | a lamp |
+
+**Colour is the second axis, and it is spent deliberately** — only three rows are not green, so each
+one carries weight instead of cancelling the others out:
+
+- **thalquith — aquamarine.** The only genuinely non-green growing thing. It is the landmark.
+- **mourvel — violet-black bark** under blue-green strands. A dark mass in a bright biome.
+- **quathis — bright lime, translucent.** The one light-emitting-looking leaf that is not illurin.
+- Everything else is green, differing in *value* (near-black brunnock → pale wet veluthar
+  undersides) rather than hue. Hue restraint is what keeps three exceptions readable.
+
+⚠️ **This cannot be signed off from a table.** Per the standing rule, density-and-legibility is a
+LOOK-AT-IT judgement: build one map with all 21 rows on it, save the game, and give him a grid key.
+`GREENTIDE_BIOME_DENSITY_1`'s own Watch-out says the same thing.
+
+### 3f. Art — MEASURED 2026-09-22, and the transfer is honest but small
+
+**Four subjects key to this biome (or to the Fever Wood, a sibling jungle) and transfer.** Each was
+read from its own `infrastructure/artpipe/done/<id>.json` this session. 🔑 **The transfer is sound
+for a reason worth stating:** every one of the four carries `style_notes` beginning *"Non-SW name,
+general kind … fixed, flavor free"* — they were deliberately generated as **generic, non-Star-Wars
+jungle forms**, so serving an invented def is what they were built for, not a repurposing.
+
+| subject | its own source row | declared size | canvas on disk | assigned to | why it fits |
+|---|---|---|---|---|---|
+| `jungletree_v1` | `flora:the_greentide:AB_JungleTree` | large, *"10 cells wide"* | **256²** | **row 1, veluthar** | Largest declared tree subject; matches veluthar's 10 cells. ⚠️ colour caveat below. |
+| `hydenocktree_v1` | `flora:the_fever_wood:Plant_HydenockTree_Wild` | medium, *"6 cells wide"* | **256²** | **row 6, ghemmel** | Exact cell match, and ghemmel is deliberately the *ordinary* crown — what a generic jungle tree renders as. |
+| `jogantree_v1` | `flora:the_fever_wood:Plant_JoganTree_Wild` | medium, *"5 cells wide"* | **256²** | **row 7, nemmer** | Exact cell match, and its notes say *"distinguished … by a lighter/sparser silhouette"* — which **is** nemmer's brief. |
+| `felucianglowspore_v1` | `flora:the_greentide:Plant_FelucianGlowspore_Wild` | large, *"7 wide"* | **256²** | **row 21, illurin** | The only glowing subject; glowing low cap is illurin's whole job. |
+
+🔴 **All four are UNDER-RESOLVED, and this is a carried-forward known defect.** The project's canvas
+law is `128 px/cell × cells`; all four rendered at **256×256**. `alientree_v2.json` is the worked
+precedent for exactly this correction — it records that `alientree_v1` *"shipped at 256×256 because
+drawsize_backfill.json's 'alientree' stem was wrongly resolved"* and was re-rendered at **1024²**
+for a 5-cell tree under `FLORA_LEGIBILITY_BAR_1`. **That fix was never applied to these four.** Owed
+re-renders, cheap because the concept is already approved:
+
+| row | subject | owed canvas |
+|---|---|---|
+| veluthar | `jungletree_v2` | **1280²** (10 cells) |
+| illurin | `felucianglowspore_v2` | **896²** (7 cells) |
+| ghemmel | `hydenocktree_v2` | **768²** (6 cells) |
+| nemmer | `jogantree_v2` | **640²** (5 cells) |
+
+⚠️ **One colour caveat, stated rather than hidden.** `jungletree_v1` is a generic large jungle tree
+and no PNG for it was located from this machine (`_artsrc/` holds none of the four, and
+`registry.jsonl` has zero entries for these ids). So **whether the render actually resembles
+veluthar's bare-column-plus-flat-umbrella form is UNVERIFIED** — the assignment is made on declared
+size and kind only. veluthar was written green-and-neutral precisely so a generic jungle tree can
+serve it; if the render turns out to be an ordinary round crown, the honest answer is to swap
+veluthar and ghemmel's art and re-render, not to rewrite veluthar's silhouette. Decide by looking at
+the PNG on the Desktop.
+
+**⛔ Nothing is commissioned here.** 17 of 21 rows owe art. Per the standing check-before-queuing
+rule, `artpipe/done/`, `_artsrc/` and `registry.jsonl` were all searched for every one of the other
+17 subjects before saying so — and the answer came back negative, so there is no already-ruled art
+being thrown away. ~14 other tree/fern subjects in `done/` belong to **other biomes** (the
+Contagion, Miasma, Slime, Forge, Rot, Webwork, Lantern Deeps, Cracked Lands, Weeping Stones) and are
+**not free**; the full table of who owns what is in Appendix B.
+
+### 3g. The names — verified unused, 2026-09-22
+
+🔴 **Every one of the 21 coined names was checked**, because the previous pass shipped a row
+claiming canon (`felucian glowspore`) that turned out to be a donor mod author's invention. Method:
+the Wookieepedia search API, per row —
+
+```
+curl -s -m 20 -G "https://starwars.fandom.com/api.php" --data-urlencode "action=query" \
+  --data-urlencode "list=search" --data-urlencode "srsearch=<name>" \
+  --data-urlencode "srlimit=3" --data-urlencode "format=json"
+```
+
+⚠️ **A gotcha for whoever repeats this:** on zero results the API returns
+`{"query":{"search":[]}}` with **no `searchinfo` key at all**, so a parser that reads
+`searchinfo.totalhits` raises on exactly the case you care about and can be misread as an error
+rather than a clean pass. Read the **`search` array's emptiness**, not the hit count.
+
+**Result: NO HITS on all 21** — veluthar, mourvel, kaddrath, sarnstilt, brunnock, ghemmel, nemmer,
+vurmeloth, mirrelbole, zhorrel, quathis, thalquith, cundral, gorbeleth, brakkel, tumbel, sarquin,
+phorrik, wollick, maddrick, illurin.
+
+**Two candidates were rejected and replaced** on fuzzy hits, which is the check doing its job:
+`haddrel` → matched *Halidrell Setsyn* (replaced by **ghemmel**); `drennok` → matched *Dranok*
+(replaced by **wollick**). Also cleared but unused, available if a row is added or renamed:
+`tarrowan`, `calloch`, `bhorrun`, `vessquith`.
+
+**And no collision with our own content:** a case-insensitive grep for all 21 names across `src/`
+returned **zero matches**.
+
+## 4. There is no new signature giant — and that is a ruling, not an omission
+
+🔴 **Owner ruled this session that the signature huge tree is the one ALREADY BUILT.** It is a
+structure def, not a plant, and it cannot be felled.
+
+MEASURED 2026-09-22 from our own files:
+
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_GreatboleCore.xml` —
+  `ParentName="BuildingBase"`, label `greatbole core`, `size (1,1)`, `passability Impassable`,
+  `fillPercent 1.0`, `deconstructible false`. Placed by
+  `RUT_Greentide_LivingBolesGenStep`, with `RUT_GreatboleHeartwood` and `RUT_ToxinSealant` around it.
+  It is in no `wildPlants` list and it does not fall.
+
+⇒ **The previous revision's whole §4 is deleted, not superseded.** It proposed a canon giant
+(`RSW_WroshyrTree`) as a new top rung, and its blocking question Q1 (*"which rung is the signature
+giant?"*) is **answered and closed**. Nothing on this page designs a giant.
+
+### 4a. What that changes for the roster — it gets *more* important, not less
+
+The canopy rows are now **ordinary fellable trees**, and they are the point: MEASURED 2026-09-22,
+the tree-felling machinery is currently proven against **a placeholder only**.
+`RUT_Placeholder_GreentideGiantTree.xml` is a `ParentName="TreeBase"` stub whose own header says it
+exists *"only so `RM_TreeFallUtility` / `RM_CompCrackFall` / `RM_FellableTreeExtension` are provably
+wired"* and that it is *"NOT the real roster giant."* ⇒ **these canopy rows are what finally give
+that mechanism real content.**
+
+Recommended assignment of the extension, carrying the placeholder's values forward as a **starting
+point, not a tuned baseline** (its own header calls them INVENTED):
+
+- **veluthar** takes the big-fall extension (`fellLength` ~10, `greenwoodDef`) — the largest
+  ordinary fall on the map.
+- **brunnock** takes the hardwood extension (`hardwoodDef`) — the only tree hardwood source, since
+  the Greatbole cannot be felled at all. 🔑 **This is a real design consequence of the giant ruling:**
+  §7's *"true hardwood only from the heart of fallen giants"* now has no felled giant to come from,
+  so either brunnock becomes the hardwood route or hardwood becomes Greatbole-mining only. Q1.
+- **mirrelbole** takes `CompProperties_CrackFall` at the highest rate on the page.
+- **Everything else takes nothing.** The `Default` extension covers them (§2.4). ⛔ Do not author
+  fourteen extension blocks.
+
+### 4b. Two defects in the placeholder to fix when it is retired, not inherit
+
+1. 🔴 **`MayRequire="mandrake.rm.environmentalhazards"` sits on the whole `ThingDef`** (line 48,
+   MEASURED). A real roster tree gated that way **vanishes from the biome** for a player without
+   that mod. Gate only the `modExtensions`/`comps` entries, as `RUT_GreatboleCore` already does with
+   `<li MayRequire=...>`.
+2. ⚠️ **`<Flammability>0.5</Flammability>`** (line 59, MEASURED). See §5 — under the new fire ruling
+   this number is the wrong shape of answer entirely, not merely too high.
+
+**Retiring it** is small: MEASURED 2026-09-22 it appears in exactly three places — its own file and
+two C# doc comments (`RM_FellableTreeExtension.cs`, `RM_CompCrackFall.cs`). It is in no BiomeDef's
+`wildPlants`. So: put the extensions on veluthar/brunnock/mirrelbole, **delete the placeholder file
+outright** per the repo's delete-don't-supersede law, and update the two doc comments to name a real
+def.
+
+## 5. Fire — the roster-wide property, and what still needs measuring
+
+**Owner, 2026-09-22, verbatim:** *"Fire will harm and burn things, but no they do not catch fire
+themselves, just take damage."*
+
+⇒ **Roster-wide property, all 21 rows:** fire **damages** these plants and can destroy them; they
+are **not ignition sources**, they do not sustain a burn, and they do not propagate fire to
+neighbours. A dropped incendiary in the Greentide leaves a scorched hole, not a burning jungle.
+
+This is the biome's existing design, tightened. `the_greentide.md` §6 hard ban 3 reads *"No
+high-Flammability native flora — saturated growth does not burn; a flammable Greentide plant def is
+a violation"*, and §4b makes it load-bearing: *"Fire is not the tool"*, precisely so the dry-air
+blower stays the answer. His ruling supplies the number-free version of that ban and extends it from
+"not very flammable" to **"not flammable at all, but still destructible by fire."**
+
+🔴 **The exact field and value are UNMEASURED and must be confirmed on the Windows machine.** Do not
+take a number from this page. Specifically:
+
+- **Whether a single `Flammability` value can express this at all is genuinely unknown from here.**
+  In RimWorld `Flammability` governs *ignition*, and the two halves of his ruling may not both hang
+  off it: a value low enough to prevent ignition may also prevent fire from damaging the plant,
+  which would break the first half of the sentence. If so this needs a comp or a patch, not a stat
+  edit — ⛔ and shipping `Flammability 0` on the assumption it means "takes damage, does not ignite"
+  is the silent-wrong-answer failure mode.
+- **`TreeBase`'s default `Flammability`** — UNMEASURED. There is no def dump, no vanilla def and no
+  decompiler on this machine.
+- Datapoints from our own files only: the placeholder giant carries **0.5**; `RUT_SweetlineTree` was
+  cut to **0.1** under the arid shrubland's analogous ban.
+
+⇒ **Q2 asks him nothing about fire** — he already ruled it. The open work is a measurement on the
+Desktop, not a question for him.
+
+## 6. Wiring, and the commonalities
+
+### 6a. Where the roster lands
+
+**The generic biome takes it directly.** MEASURED: `RM_Greentide_Biome.xml` has no GENERATED header
+and `biome_flora.py` never names `RM_Greentide`. Today its `wildPlants` is six vanilla temperate
+rows (`Plant_TreeOak` 2.0, `Plant_TreePoplar` 1.2, `Plant_Bush` 1.5, `Plant_Grass` 2.0,
+`Plant_TallGrass` 1.0, `Plant_Berry` 0.6) — the list the owner rejected. The 21 rows replace the two
+trees and the bush outright; whether the three grass rows survive as ground filler is a small
+decision for the build seat, not a card.
+
+🔴 **The campaign twin is generator-owned and must NOT be hand-edited.** `biome_flora.py` carries a
+`RUT_Greentide` entry (line 144) and writes into `src/RimUtinni/UtinniPatches/`;
+`BiomeFlora_Ashkarr.xml`'s own header says *"GENERATED … do not hand-edit."* ⇒ rows reaching the
+campaign biome go through that generator's pool, or through a separate hand-owned patch file the
+generator does not own. `TREE_GRAPHICS_OWNERSHIP_1` already hit this once.
+
+Notes that apply to any patch route, from `WildAnimals_Greentide.xml`'s own header:
+
+- **Shorthand form only** — `<DefName>commonality</DefName>`. `<li><plant>` children read as empty;
+  the item records this costing a contradictory measurement.
+- **Ours carry no `MayRequire`.** A `MayRequire` on our own def silently loses the row for a player
+  without that mod.
+- **A patch that matches nothing logs nothing.** A clean `validate_patch.py` is not proof a row landed.
+- ⚠️ A `<li>` in the wrong place discards the **whole def**, silently.
+
+### 6b. Proposed commonalities — relative weights, not a density figure
+
+⛔ **Density is not expressed here.** `GREENTIDE_BIOME_DENSITY_1` rules it explicitly: *"Do not
+express density by inflating `wildPlants` commonalities. Those are relative weights; raising them
+all changes nothing about total coverage."* The *"virtually no squares uncovered"* ruling is a
+separate mechanism on that item, and the field governing it is UNMEASURED.
+
+```
+canopy      RM_Veluthar   1.60   RM_Kaddrath  1.00   RM_Mourvel   0.80   RM_Sarnstilt 0.70 (river margin)
+mid-storey  RM_Ghemmel    1.50   RM_Nemmer    1.20   RM_Mirrelbole 0.90  RM_Zhorrel   0.50
+            RM_Brunnock   0.20 (the hardwood — deliberately scarce)      RM_Vurmeloth 0.12 (pure stands)
+understory  RM_Quathis    1.30   RM_Illurin   0.90   RM_Cundral   0.50   RM_Thalquith 0.45
+            RM_Gorbeleth  0.30
+plants      RM_Wollick    1.60   RM_Brakkel   1.20   RM_Phorrik   0.90   RM_Sarquin   0.70
+            RM_Tumbel     0.60   RM_Maddrick  0.40
+```
+
+Flavour, not a balance pass — the same posture `TREE_GRAPHICS_OWNERSHIP_1` recorded for
+`RUT_SweetlineTree`'s stats. Tuning is a live job on the Desktop.
+
+### 6c. The economy ruling, checked against the roster
+
+*"Most are useful, many are dangerous"*, with reward and hazard *"frequently the same object."*
+
+- **Useful: 19 of 21.** Only zhorrel and maddrick exist primarily to hurt you — and both yield
+  something (cordage; a free perimeter).
+- **Dangerous: 9 of 21** — sarnstilt, mirrelbole, zhorrel, cundral, gorbeleth, sarquin, phorrik,
+  maddrick, nemmer.
+- **Reward and hazard are literally the same object in 6 rows** — mirrelbole (tap the tree most
+  likely to fall on you), cundral (dig the root past the acid pods), nemmer (free fruit that baits
+  predators), sarquin (sweet drip that feeds the food chain), gorbeleth (valuable toxin, you must go
+  close), phorrik (medicinal spores that you release by treading on them).
+
+⚠️ **One flagged consequence, not assumed:** `RM_Greentide`'s `foragedFood` is currently
+`RawBerries`, a vanilla row. If most of this roster is useful, the foraged yield probably should not
+stay a vanilla berry — **brakkel** is the natural candidate. `GREENTIDE_BIOME_DENSITY_1` raises this
+and declines to assume it; so does this page. Q3.
+
+## 7. Open questions for the owner
+
+Three. Everything else was settled from files on disk or from a ruling already made. None blocks
+designing; Q1 blocks *authoring* the wood economy.
+
+### Q1 🔴 With no fellable giant, where does true hardwood come from?
+
+Your ruling that the signature huge tree is the already-built Greatbole removes the thing §7's wood
+economy pointed at: *"True hardwood — only from the heart of fallen giants."* The Greatbole
+cannot be felled (`deconstructible false`, MEASURED), so nothing falls that has a giant's heart in it.
+
+- **(a) brunnock becomes the hardwood tree.** The roster already has a deliberately scarce,
+  slow-growing, near-black armoured hardwood; making it the source keeps hardwood a *felling*
+  reward. *Cost: hardwood is no longer tied to giants, so the ladder's top rung stops paying.*
+- **(b) Hardwood comes only from mining a Greatbole.** Keeps hardwood tied to the giants exactly as
+  written, and gives the Greatbole a reason to be approached. *Cost: hardwood becomes a mining
+  product, not a forestry one, and brunnock needs another job.*
+- **(c) Both** — brunnock gives a lesser hardwood, the Greatbole's heart gives the real thing.
+  *Cost: a third wood grade to keep legible on top of greenwood and hardwood.*
+- **(d) Something else** — say it and I will reshape §4a.
+
+### Q2 thalquith's grove — a real mechanic, or flavour?
+
+thalquith is the roster's strange one: aquamarine, barkless, an overhead lattice, and it **hums**.
+The hum *stopping* would tie straight into §9's *"its scariest signal is silence"*, and
+`RM_MapComponent_SilenceCue.cs` already exists in the Greentide mod.
+
+- **(a) Flavour only** — the description says it hums; nothing checks anything. Ships with the
+  roster, costs nothing.
+- **(b) Real** — a grove of several does something (warns when a predator or raider enters, goes
+  silent before an ambush). *Cost: new C# and its own item; would not ship with this roster.*
+- **(c) Drop thalquith** — it is the strangest thing on the page and the only non-green one, so
+  dropping it costs the roster its landmark.
+
+I deliberately did **not** design the mechanic. Inventing one unasked is how a roster question
+becomes a rule system.
+
+### Q3 Should the biome's foraged food stop being a vanilla berry?
+
+`RM_Greentide`'s `foragedFood` is `RawBerries` today. **brakkel** is the obvious replacement and the
+change is one line — but foraged food is a real balance lever and a player-facing item, so it is
+yours. **(a)** brakkel · **(b)** keep `RawBerries` · **(c)** something else.
+
+## 8. UNMEASURED — needs the Windows machine
+
+Authored on the Mac laptop. No game, no def dump, no `measure`, and RimSage has never connected
+here — so the following are genuinely unknown, not merely unchecked.
+
+1. **Every vanilla and donor defName.** ⛔ **This page names none it did not read from our own files.**
+   `TreeBase`, `RUT_Greenwood`, `RUT_Hardwood`, `RUT_ToxinSealant`, `RUT_GreatboleHeartwood`,
+   `RM_FellableTreeExtension`, `CompProperties_CrackFall`, `RUT_GreatboleCore`,
+   `RUT_Greentide_LivingBolesGenStep`, `Plant_TreeOak`/`TreePoplar`/`Bush`/`Grass`/`TallGrass`/`Berry`,
+   `RawBerries` and the donor names in Appendix B were all **read from `src/` XML/C# this session**.
+   Every other field a real `Plant` ThingDef needs — `harvestedThingDef`, `immatureGraphicPath`,
+   `sowTags`, `shadowData`, `visualSizeRange`, `growDays`, `MaxHitPoints` — is **UNMEASURED**. Copy
+   them from a live sibling; ⛔ do not take them from this document.
+2. **How to express the fire ruling.** §5. The most consequential unknown on the page: whether
+   "takes fire damage but never ignites" is one stat, two stats, or a comp.
+3. **The field that governs total plant coverage**, and whether *"virtually no squares uncovered"* is
+   reachable through density alone. `GREENTIDE_BIOME_DENSITY_1` records that **no `plantDensity`-style
+   field is set on `RM_Greentide`** (MEASURED absent) and that naming one from here would be a guess.
+4. **What the four donor tree defs actually do.** Their yields, `growDays`, harvest products,
+   `visualSizeRange`, comps — all UNMEASURED. 🔴 **This is the only real risk in replacing them:** a
+   donor tree with a comp nobody noticed is lost silently. **Dump all four before authoring
+   replacements.**
+5. **Whether the four reusable art PNGs exist on disk, and at what real resolution.** `done/*.json`
+   records a *requested* 256×256; `_artsrc/` holds none of the four and `registry.jsonl` has zero
+   entries for these ids. Confirm with `validate_sprite.py --describe` before assuming §3f's work is
+   only a re-render — and look at `jungletree_v1` to settle §3f's colour caveat.
+6. **Whether `wildPlants` on `RM_Greentide` accepts these defs at all.** A post-load def dump is the
+   only proof a row landed.
+7. **Whether 21 rows is too many for one map to read.** §3e is a paper argument. This is a
+   look-at-it judgement and should ship as a savegame on one map with a grid key.
+8. **How much of the movement penalty is mud versus plants.** `RM_GreentideChurnmud` already ships a
+   high-`pathCost` mire with an escalating `RM_Mired` hediff. That is *terrain* difficulty; *"hack
+   through"* is *vegetation* difficulty. `GREENTIDE_BIOME_DENSITY_1` warns the two stack and the
+   biome can become impassable by accident. Nothing on this page sets a path cost.
