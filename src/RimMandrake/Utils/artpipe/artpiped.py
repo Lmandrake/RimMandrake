@@ -104,8 +104,14 @@ WALL_CLOCK_STREAK = 3
 def _baseline_for_mode(mode: str) -> float:
     return EDIT_BASELINE_WALL_CLOCK_S if mode == "edit" else BASELINE_WALL_CLOCK_S
 
-WEEKLY_WARN, WEEKLY_REFUSE, WEEKLY_STOP = 80.0, 90.0, 97.0
-FIVE_H_DROP_N1, FIVE_H_SLEEP = 70.0, 90.0
+# Owner ruling, 2026-09-23: this is the LAST weekly reset on the current
+# plan — he wants the account spent to the ceiling, not held at a
+# conservative margin. Raised from the original 80/90/97 (and 70/90 for the
+# 5h window); row 1 (hard_stop, a real TooManyRequests) is the actual
+# backstop and is unchanged — these are only how close the daemon gets
+# before the real limit would ever answer.
+WEEKLY_WARN, WEEKLY_REFUSE, WEEKLY_STOP = 95.0, 99.0, 99.8
+FIVE_H_DROP_N1, FIVE_H_SLEEP = 90.0, 98.0
 
 DEFAULT_TIMEOUT_GENERATE_S = 300  # measured 2026-09-10: solo edit runs 119-130s; 3-way concurrency blew the old 150/220 ceilings
 DEFAULT_TIMEOUT_EDIT_S = 420  # measured 2026-09-10: both codexcal attempts died at ~240s under -N 3; solo is ~130s

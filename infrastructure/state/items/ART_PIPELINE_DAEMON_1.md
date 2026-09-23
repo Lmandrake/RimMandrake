@@ -49,12 +49,18 @@ premise to the full reskin backlog, which supersedes that verdict.
 2. `artpiped.py` — the daemon: claims jobs, runs ≤N workers (start N=3, each
    with its own `--codex-home`, the existing seeding machinery), enforces the
    grumpiness detector exactly as specced in the design addendum (6 rows:
-   TooManyRequests hard-stop; weekly 80 warn/90 refuse/97 stop; 5h 70→N=1,
-   90→sleep-to-reset; 2× wall-clock median → halve N; exit-0-no-manifest = fail
-   the request not the account; 🔴 a timeout is NEVER throttle evidence —
-   harvest generated_images/ first). Logs per-request: wall clock, meter
-   deltas, validator verdict → `throughput.jsonl` (the projection's raw data).
-   Runs detached (nohup/systemd-user), NOT inside a seat cgroup.
+   TooManyRequests hard-stop; weekly warn/refuse/stop; 5h N=1/sleep-to-reset;
+   2× wall-clock median → halve N; exit-0-no-manifest = fail the request not
+   the account; 🔴 a timeout is NEVER throttle evidence — harvest
+   generated_images/ first). 🔴 **Weekly/5h soft thresholds raised 2026-09-23
+   (owner ruling: this is the last reset on the current plan, spend it to
+   the ceiling) from 80/90/97 weekly and 70/90 five-hour to 95/99/99.8 weekly
+   and 90/98 five-hour** — row 1 (hard_stop, a real TooManyRequests) is
+   unchanged and remains the actual backstop; only how close the daemon
+   gets before that real limit would ever answer moved. Logs per-request:
+   wall clock, meter deltas, validator verdict → `throughput.jsonl` (the
+   projection's raw data). Runs detached (nohup/systemd-user), NOT inside a
+   seat cgroup.
 3. `AGENTS.md` + `manifest.schema.json` — the worker contract.
 4. `fill_queue.py` — translates an art-list CSV/JSON (from verdict sheets) into
    job files.
