@@ -2,17 +2,24 @@
 
 ## the ruling
 
-**Owner's direction, 2026-09-22.** ⚠️ **Provenance note:** his message arrived mid-tool-call, so the
-`block_forged_owner_said.py` transcript check could not see it and **this is recorded under BENCH's
-seat, not stamped as his authorization.** The wording below is his, relayed:
+**Owner's ruling — BINDING, confirmed 2026-09-22.** His wording:
 
 > *"The jungle should be filled with really intimidating dangers in terms of plants, beasts, diseases,
 > and insects. That should in turn be countered with tremendous food abundance, unique medicines, a
 > seemingly endless possibility for Star Wars cuisine ingredients, and... (get creative! come up with
 > more rewards for braving this terrible place!)"*
 
-⇒ Confirm on his next turn if this needs to bind as an owner-said ruling rather than a relayed
-direction.
+⚠️ **Provenance, precisely:** the message above arrived mid-tool-call, so the transcript guard could
+not see it and it was originally recorded under BENCH's seat as a relayed direction. Put to him again
+on 2026-09-22 with the alternative of binding only the checkable half, he **chose to bind all of it —
+danger axes and reward side both.** ⇒ **That confirmation is an owner decision taken by question card,
+not an owner-said quote** (the words on the card were ours; only what he types counts as his). The
+ruling binds; the authorization is a card decision.
+
+⇒ 🔴 **Both sides are now requirements, not aspirations.** All four danger axes must be present, and
+the reward side must be real. ⚠️ **He accepted the cost that the reward wording is not mechanically
+verifiable** — so a `verify` against this item can only ever report the axes as met and must say
+plainly that the reward half is judged by playing, never scored.
 
 ## what it establishes
 
