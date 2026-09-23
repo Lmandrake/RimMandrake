@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T03:53:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T05:30:08Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1813,3 +1813,33 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Audit both sides first, against the items above, and say what each axis already has. ⛔ Do not
 prose:    infrastructure/state/items/GREENTIDE_RISK_REWARD_EXCHANGE_1.md
+
+## GREENTIDE_FRENZY_DISEASE_1 The Frenzy - a disease you infect yourself with on purpose
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREENTIDE_FRENZY_DISEASE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREENTIDE_FRENZY_DISEASE_1.md
+
+## GREENTIDE_GRENADE_WEAPONS_1 Jungle grenades: stench, seeding and toxin
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREENTIDE_GRENADE_WEAPONS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREENTIDE_GRENADE_WEAPONS_1.md
+
+## CONTAGION_GENOME_ORGAN_GROWING_1 Grow a colonist's organs inside a Contagion amoeba
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CONTAGION_GENOME_ORGAN_GROWING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CONTAGION_GENOME_ORGAN_GROWING_1.md
