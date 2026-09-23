@@ -83,6 +83,99 @@ none known
   in a tank, mottled olive-green coloring, consistent with the species'
   color-changing camouflage ability
 
+## Expansion pass — 2026-09-23 (deep research, owner-requested)
+
+Requested by the owner at the Fever Wood design sitting: *"Consult the canon for the
+beast for more info and do some deep research to expand that canon."* Every fact below
+was pulled as **wikitext via the `action=parse` API** — not from search snippets —
+across 13 dianoga-related pages. URLs at the end of this section.
+
+### Anatomy and size — canon has TWO registers
+
+- **Ordinary dianoga:** seven **suckered** tentacles, one eyestalk, a mouth of sharp
+  teeth, **several hearts**, **blue-tinted blood**, **7–10 m** long. The explicit canon
+  ability list is *"Seven suckered tentacles, several hearts, blue blood, **ability to
+  change color**, **ability to regenerate limbs**."*
+- **Legends adds:** up to 10 m but **most specimens only 5–6 m**; the seven tentacles
+  **surround a fanged maw containing a sharp serrated probe**; a tentacle is
+  **membraned** (one wrapped around Luke Skywalker's head).
+- 🔑 **The giant dianoga is a SEPARATE canon subject, not a size variant of this
+  entry.** *"Many times larger than an average dianoga and easily dwarfing a Human,"*
+  with **barbed** tentacles rather than suckered, **red** skin and **red** eye, and a
+  **giant red eyestalk about equal in length to its tentacles**. Its maw is *"a gaping
+  maw lined with sharp teeth, **not unlike that of a sarlacc**"* — canon draws the
+  sarlacc comparison itself, which `the_fever_wood.md` §4 independently arrived at.
+  ⚠️ **Only ONE specimen was recorded in galactic history** (Coruscant sewers, c. 4 ABY),
+  appearing solely in the *Shadows of the Empire* video game — whose article flags that
+  the game contradicted its source material, so that individual is of doubtful Legends
+  canonicity while *"that doesn't necessarily discount the canonical status of the
+  species itself."* ⇒ Treat the giant form as **sourced but vanishingly rare**, which is
+  precisely why an unusually large one reads as shocking even to people who know the
+  species.
+- 🔴 **Canon weak point: the eyestalk.** The giant dianoga was beaten *"by firing at its
+  prominent eyestalk."* This is the only canon-attested way anyone has defeated one.
+- **Omi**, the named Death Star specimen: purple skin *"that could change color to match
+  her surroundings"*, **a green eye with red sclera**, and a single eyestalk protruding
+  from the **centre** of her body.
+
+### Colour — purple is canon; lavender is NOT
+
+Mature skin is **deep purple**, actively changeable to **black, gray, or even
+transparent** for camouflage. Dianogan tea **stains lips purple and teeth black**, and
+one drinker's teeth went *"a garish purple."*
+
+⚠️ **The owner described "a lavender association with its body parts" at the 2026-09-23
+sitting. MEASURED: the word "lavender" appears ZERO times across all 13 dianoga pages
+pulled.** Recorded here as his flavour note and deliberately **not** as canon — purple
+is what the sources say. Do not cite lavender as sourced.
+
+### Culture, the hum, and reproduction
+
+- *"Dianoga had a primitive tribal culture. When they were not feeding, they often spoke
+  a deep, complex humming language. **Because its reverberations carried so completely in
+  the water, that language scared away all nearby prey.**"* They **venerate water**.
+- Hermaphroditic; **reproduction involved partners exchanging eggs with one another**, and
+  the **life cycle begins with an egg** (a crate labelled "Dianoga eggs" is attested in
+  *The Old Republic*).
+- **Entirely water-dependent** — survives only brief stretches in open air before drying
+  out. Combined with the **excellent hearing** already in this entry's original sourced
+  text, the canon creature is a listener that cannot leave its water.
+
+### Canon products — a real trade line, all sourced
+
+Dianoga are **edible by humans** and support a named product family. ⭐ The owner's
+2026-09-14 ruling below already assigned this material to the **Star Wars Cuisine mod**.
+
+| product | canon detail |
+|---|---|
+| **Dianoga pie** | *"the most popular of the dishes made of dianoga meat"* — a **savory pie with a beige crust** and a seasoned filling. The **Houk** species are especially fond of it. House special at the **Meltdown Café** on Nar Shaddaa, served with **krayt milk**. An Imperial officers' field guide notes chefs *"could use dianogas to make a tasty pie, although troops were unlikely to come back for second servings."* |
+| **Dianoga omelette** | Served at a canteen aboard the **first Death Star**; edible by humans. |
+| **Dianogan tea** | Steeped from **chemicals found in the dianoga's spleen**, normally **served hot**. A **delicacy among Muuns**. **Temporarily stains lips purple and teeth black**, with a **mild narcotic effect**. Wookieepedia categorises it under **Drugs and medicine**. Favoured by Admiral Pors Tonith. |
+| **Dianoga cream**, **Dianoga cream-filled donut** | Each attested as its own canon subject. |
+| **Dianoga cheese** | Named by the owner; ⚠️ **UNCONFIRMED** — no page was pulled for it this pass. Do not cite as sourced until one is. |
+
+### A canon flora neighbour
+
+**"Dianoga's Kiss"** — a canon species of **brown tentacled plant** on the planet Balnab,
+growing **alongside umbrella trees**. Named in *Star Wars: The Visual Encyclopedia*
+(2017); first appeared in *The Clone Wars* S3E6 "Nomad Droids." Noted here because it is
+a ready canon tentacled-plant injection for a swamp flora roster.
+
+### Expansion-pass source URLs
+
+- https://starwars.fandom.com/wiki/Dianoga
+- https://starwars.fandom.com/wiki/Dianoga/Legends
+- https://starwars.fandom.com/wiki/Giant_dianoga
+- https://starwars.fandom.com/wiki/Omi
+- https://starwars.fandom.com/wiki/Unidentified_Dianoga
+- https://starwars.fandom.com/wiki/Dianoga_pie
+- https://starwars.fandom.com/wiki/Dianoga_omelette
+- https://starwars.fandom.com/wiki/Dianogan_tea
+- https://starwars.fandom.com/wiki/Dianogan_tea/Legends
+- https://starwars.fandom.com/wiki/Dianoga_cream
+- https://starwars.fandom.com/wiki/Dianoga_cream-filled_donut
+- https://starwars.fandom.com/wiki/Dianoga%27s_Kiss
+
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.png`
 
