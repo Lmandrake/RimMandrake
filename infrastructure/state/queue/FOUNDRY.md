@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T21:58:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T22:04:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -377,15 +377,6 @@ target:   v1
 kind:     task
 summary:  Source
 prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
-
-## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  🔴 Ruled 2026-09-13 (owner, liquids-framework bench sitting): ManyWaters
-prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing  (BLOCKED)
@@ -1100,16 +1091,6 @@ kind:     task
 blocked:  Fully resolved offline: rename tool (jawa/world_landmark_rename) is fixed, deployed, and proven live per 2026-09-10 history. Nothing left is offline-actionable -- the 18 hand-named renames need (1) owner skim of names.md (not yet done) and (2) a live bridge session batched with OASIS_LANDMARK_PLACEMENT_1, which is itself needs=bridge/ready. BENCH holds the bridge this wave for the owner's Pyrelands session; no FOUNDRY bridge slot exists tonight. (on COLD_LOAD_RUN_SHEET_4)
 summary:  Source
 prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
-
-## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-blocked:  thingClass fix verified correct and already committed (cade628c1); color-variant defs already authored. Remaining work is the live re-verify (deploy, re-enable mandrake.rm.manywaters, confirm zero 'has null thingClass' lines, game actually constructs) which needs a full cold-load restart -- do not touch ModsConfig.xml or the bridge for this from offline. (on COLD_LOAD_RUN_SHEET_4)
-summary:  🔴 Ruled 2026-09-13 (owner, liquids-framework bench sitting): ManyWaters
-prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing  (BLOCKED)
