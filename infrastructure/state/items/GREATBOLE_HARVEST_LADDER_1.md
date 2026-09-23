@@ -98,6 +98,29 @@ planting a greatbole is their own sacrament performed by an outsider, and it is 
 7. **The root causeways survive the tree** — dead roots are still roads. Zero work, and the catastrophe's
    permanent alteration stays the crater, the fallen trunk field and the standing husk.
 
+## ✅ Two OPT-IN crossovers, ruled 2026-09-23 — anima focus and arboreal servants
+
+**Yes to either, or even both — as Mod Settings toggles, DEFAULT OFF.** Utinni ships with both off, so
+⛔ **no campaign mechanic, quest or balance assumption may depend on either.** Spec §8b.
+
+- **Anima:** the greatbole grows the grass and is a meditation focus. 🔑 It marries the song and the moral
+  ledger — grass only on uncut ground, and (if achievable) **focus quality tracking the tree's harmony**,
+  so the dissonance a player hears at a threshold is the dissonance that ruins their psycasting.
+  ⚠️ **Ship the fixed-strength focus first**; runtime-variable strength is unmeasured, and being
+  default-off means the simple version blocks nothing.
+- **Servants:** arboreal helpers a connected colonist directs. ⚠️ I objected that they compete with the
+  hostile grubs, which are this feature's only balance brake — the objection holds when the *design*
+  chooses and dissolves when the *player* does.
+- **Both on:** no mechanical conflict. 🔑 Servants and grubs **will fight**, and that is expected
+  behaviour to document rather than suppress. ⛔ The grubs stay hostile in every configuration; they
+  belong to the fruit, not the tree.
+
+🔴 **A process note worth keeping, because it recurred twice in one session.** He asked *"could we wire it
+as an anima tree… or alternatively the servants?"* and I built a four-way pick-one card. He had meant
+**both, as options**. Same shape as the tier question earlier the same night: a request framed loosely got
+adjudicated into a decision that did not need making. ⇒ **When he asks "could we also do X or Y", check
+whether he means "as options" before designing a choice between them.**
+
 ## spec
 
 Follow the spec document. Order, because it front-loads what can fail:
