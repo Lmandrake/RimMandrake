@@ -153,7 +153,12 @@ wrong one look right:**
 3. **`SurfaceTile.Roads`/`Rivers` are biome-FILTERED views.** A biome with
    `allowRivers=false` hides links without deleting them — 20+ such tiles on an untouched
    world. And `BiomeDef.allowRivers`/`allowRoads` are **absent from the offline def dump**,
-   so this cannot be checked offline at all.
+   so this cannot be checked offline at all. 🔑 **`allowRoads` is a claim about OUR def
+   vs. the DONOR def, and the donor answers it in one query.** A handoff once flagged a
+   roads ruling as resting on a false premise; the live dump showed both donors (`ExtremeDesert`,
+   `AB_PropaneLakes`) actually carry `allowRoads=True`, and the ban arrived with OUR OWN
+   defs — the ruling was right and the doubt was the error. Check the donor before
+   retracting a ruling about what we changed (2026-09-19).
 4. **`AddLandmark` does not enforce `IsValidTile`.** It will happily stack a landmark on a
    settlement and say nothing. Ordering is ours to police.
 5. **The same raw-vs-filtered split applies to mutators, and it can report something the
@@ -254,6 +259,20 @@ for every tile on the planet, one bad biome kills the whole worldgen pass, not j
 tiles that would use it. **Set `generatesNaturally=false` on any hand-placed,
 frozen-world biome that has no worker** (2026-09-17).
 
+🔑 **And even WITH a `workerClass`, it is inert on the frozen world.**
+`BiomeDef.Worker.GetScore` is called only from `WorldGenStep_Terrain` (MEASURED,
+RimSage), and this campaign runs no worldgen — the planet is authored, not
+generated (see CLAUDE.md's "world remake is the last step" ruling). A
+self-placing BiomeDef can never actually paint itself here; that is not a
+defect in the def, it is the standing fact about how this world gets painted
+(2026-09-20).
+
+## 5b. Sparse is correct — a landmark-density pass is not owed to every biome
+
+Deserts, wasteland and seas SHOULD read barren on the worldmap; blanket-landmarking
+everything is the defect, not the fix. Only dense/dramatic biomes want a
+landmark-density pass (2026-09-08).
+
 ## 6. Repainting biomes — measured 2026-09-07, closing out two vanilla survivors
 
 Ash'karr had been "fully repainted" for weeks and still carried 262 vanilla `SeaIce`
@@ -297,6 +316,24 @@ source:
 **Visible ice requires a variant BiomeDef whose `terrainsByFertility` maps to `Ice`** —
 there is no other lever.
 
+### Plant density — the formula, and how to census it fast
+
+`WildPlantSpawner`'s desired cover per cell is `min(plantDensity * fertility^2, 1)` —
+fertility multiplies TWICE, so `plantDensity` above 1 is the real coverage knob, and
+`wildPlantsCareAboutLocalFertility=false` makes the budget whole-map/uniform instead of
+per-cell (2026-09-18). To census a biome's regrow behaviour without burning real time,
+the debug setting `Settings\Fast Ecology Regrow Rate Only` runs `WildPlantSpawner` 2000x
+per game tick — a full regrow census costs ~1000 ticks instead of a million (2026-09-21).
+
+### Measure the planet before normalising anything against it
+
+Before stripping or reformatting names in bulk — leading articles, spelling, plurals —
+check what the live data actually does first. 68 of Ash'karr's 71 features carry no
+leading article, but three genuinely do (`The Abandoned Mines`, `The Breaks`, `The
+Verge`); two other painter divergences turned out to be a SPELLING difference
+(Gray/Grey Sea) and a plural (Ashen Waste/Wastes), not articles at all. A blanket strip
+rule would have written three new wrong names (2026-09-21).
+
 ### ⭐ Only ten fields are real. Everything else in your authoring CSV is bookkeeping.
 
 `jawa/world_tile_export` returns exactly:
@@ -307,6 +344,13 @@ engine's water test is `elevation <= 0` and nothing else. Ash'karr's `water` col
 silently disagreed with `elev_m` on 153 tiles; invisible to the game, but a live landmine
 for the next `(region, water)` selector. **Reconcile a derived column against the field
 the engine actually reads, or delete the column.**
+
+### ⚠️ Sibling CSVs exported "together" are not the same vintage
+
+Check each file's own export date before joining two CSVs that live side by side.
+`ASHKARR_WORLDMAP_tiles.csv` carries the 2026-09-12 frozen marker while
+`ASHKARR_WORLDMAP_landmarks.csv` beside it is dated 2026-08-23 — a different
+lineage whose def mix shares almost nothing with the live one (2026-09-19).
 
 ### ⚠️ Two encodings that make a correct diff look like total failure
 

@@ -203,6 +203,15 @@ on each, and confirm the result is consistent across the batch** before
 reporting a mechanism as proven or broken; cross-check `jawa/list_pawns` for
 any unrelated pawn near the test site first.
 
+🔴 **A state assertion and the screen can both be right, and still disagree.**
+A pit mod's `expect_pawn_despawned` PASSED — the pawn really left the map —
+while the building drew its first occupant via a custom render hook over a
+vanilla placeholder texture, so the player actually saw someone standing in a
+box labelled Pit. Any suite that asserts only state will certify a mod whose
+state is correct and whose in-game EXPERIENCE is absent or wrong. A
+mechanism-correctness pass (this skill) is not a substitute for a look
+(`rimworld-live-review`) — run both before calling a feature done.
+
 ## 4a. 🔴 LOOK AT IT. `take_screenshot` and then READ the image.
 
 **Owner's instruction, 2026-08-13, and it is the most under-used capability we
@@ -318,6 +327,14 @@ Ask in this order and stop at the first yes.
 
 **Before you put anything on the cold-load run-sheet item, run this list.** An item that a
 quicktest could have closed does not deserve a 25-minute slot.
+
+⚠️ **A quicktest map's biome-purity census can read as contamination when it is
+just Odyssey blending its NEIGHBOUR biomes into the map's edge zones.** A
+biome-purity census on a lone re-tiled scratch tile read as 78% foreign
+plants, when the map was simply bleeding its (correct) neighbours at the
+edges. Census biome content only on a tile whose neighbours share the biome,
+or use the spatial split (quadrant shares by def family) as the cheap
+discriminator between edge bleed and a genuine global injection defect.
 
 ⚠️ **"Just needs a quicktest" is only true if the thing under test is already deployed AND
 in `ModsConfig`.** A design's "pre-build quicktest gate" can quietly be a

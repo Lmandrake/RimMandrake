@@ -252,6 +252,18 @@ pass (ashfall, blackrain, cinderfall…) shows the mood that defines the biome.
   helper spawns the roster in open ground you chose, not where the colony landed.
 - **take_screenshot appends `.png` itself** — pass a bare name or you get
   `x.png.png`.
+- ⚠️ **`rimworld/take_screenshot` silently ignores `x`/`z`/`zoom`** — those
+  args are recorded but not refused, so three shots asked for at different
+  framings can come out identical. Frame with a camera tool (`frame_cell_rect`
+  / `jump_camera_to_cell`) FIRST, then screenshot; look at the resulting PNG
+  before sending it, not just the tool's "success" (2026-09-18).
+- ⚠️ **`rimworld/clear_log` empties the debug log but does NOT close the
+  window** — `jawa/window_list_close typeName=EditWindow_Log` does, if it is
+  what's sitting in the frame.
+- **`jawa/set_pawn_rotation dir:south lockRotation:true` faces a pawn at the
+  camera for a clean art shot.** Most vanilla animals are static when idle;
+  only a creature carrying `PawnRenderNodeProperties_Spastic` (the Toughspike
+  template) idle-jiggles an appendage on its own (2026-09-17).
 
 ## 5a. When a colonist must DO a job for the test
 

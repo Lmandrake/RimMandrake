@@ -255,6 +255,12 @@ symptom is a stable `Created WorkshopItem for <id> but there is no folder for it
 launch. It is an *account* state problem, not a game state problem — unsubscribe is the
 only fix, and no amount of verifying local files will touch it.
 
+🔴 **Steam's own "Game already running" lock can get stuck after RimWorld dies
+silently** (no clean process exit) — `tasklist.exe` shows no `RimWorldWin64`
+process, yet Steam still refuses to relaunch it. The fix is to fully shut down
+and relaunch the STEAM CLIENT itself (`steam.exe -shutdown`, wait, relaunch
+`steam.exe`), not the game; retrying the game launch alone does nothing.
+
 ### Comparing the list against disk: two traps that manufacture false "missing" hits
 
 Both bite any script that walks the mod roots, reads each `About/About.xml` and

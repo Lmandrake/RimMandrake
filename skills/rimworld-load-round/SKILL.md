@@ -323,6 +323,17 @@ item unattributable (§3) · `refresh.py` run (§5) · anything needing the shut
 window handled and CHECK told (§6) · the old `Player.log` copied out (§6) ·
 everything **deployed**, not merely written (`skills/rimworld-deploy/SKILL.md`).
 
+⭐ **A pre-flight census, offline, would catch a whole class of crash in seconds
+before you spend the restart:** extract every our-namespace type token from the
+ACTIVE deployed mods' XML and test each against the bytes of all deployed DLLs,
+plus byte-diff repo `Assemblies/*.dll` against the deployed copies (one pass
+found 6 of 65 differed). Worth running before every cold load.
+
+🔴 **The load-abort string is not only `"Recovered from incompatible or
+corrupted mods errors"`.** `"Caught exception while loading play data"` is also
+a dead load — a watcher grepping just the first string reports a genuinely
+aborted load as "still loading" (2026-09-08).
+
 ## 10. 🔴 Launch through Steam, never the bare `.exe` — bypassing it intermittently corrupts assembly loading
 
 Measured 2026-08-30. A cold load launched normally (through Steam) worked cleanly

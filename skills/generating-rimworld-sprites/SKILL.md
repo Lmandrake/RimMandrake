@@ -385,6 +385,15 @@ cannot catch this. A visual judge caught it in 17.8s. Keep this as the
 counterexample whenever someone argues a numeric gate makes looking at the image
 unnecessary (BENCH 2026-09-15).
 
+🔑 **The general rule this points at: when a visual property resists every
+numeric proxy tried, the ruled LLM judge IS the instrument, not a fallback
+for when the real check is unavailable.** A facing-camera-elevation audit
+(south camera height vs. a true top-down angle) found no pixel statistic that
+separated the two, so `claude -p` judging the rendered frame became the
+measurement itself — and an UNMEASURED verdict from that judge must be
+flagged as UNMEASURED, never passed through silently as though a numeric
+check had run (BENCH 2026-09-17).
+
 ### Cross-facing size and height, not just symmetry
 
 - 🔴 **Run a cross-facing size audit at WIRING time, for every creature facing
@@ -452,6 +461,14 @@ at **`alpha > 16` on the original**, never the thumbnail.
 
 That halo is itself a pipeline defect worth fixing at the export step rather than
 by re-rendering 13 sprites.
+
+🔴 **LANCZOS resampling on a sprite carrying sub-visible alpha dust (near-zero
+but nonzero alpha reaching past the visible silhouette) amplifies it via
+ringing** — measured 1055→3452px of such pixels on one facing, trading a
+boundary-clip finding for a worse `transparency_real` finding. Of 4
+resamplers tested (LANCZOS/BICUBIC/BILINEAR/BOX), only **BOX** (area-averaging)
+left the file no worse than it found it. Prefer BOX for any repad/recenter-
+in-place fix on existing game art.
 
 ### Two more traps from the same sitting
 
@@ -834,6 +851,18 @@ Five earned ones — full cases as per the trap file:
   and a `HairDef`/apparel override is only drawn when that style is **selected**
   — a pawnkind spawn rolls its own style, so the look passes or fails at random.
   Pair the spawn with the selection.
+- **The reference-vs-candidate REJECT check is the wrong check for a
+  `Graphic_Random` sibling variant** — multiple interchangeable art files for
+  one graphic slot (e.g. a plant's leafless-state alternates). Those are
+  MEANT to differ from a reference in span/aspect/origin, so this check
+  REJECTs correct art; even shipped, working game art fails it 6-for-6 when
+  run this way. Use the reference-INDEPENDENT checks (canvas, real alpha,
+  clean corners, fringe %, duplicate pixel-hash) for this art class instead.
+- **A "must NOT flag" regression pin can pass VACUOUSLY if the pinned file is
+  later deleted or renamed** — it never re-asserts the file is present, only
+  that IF checked, it's clean. Prove any such pin is actually live by
+  pointing it at a nonexistent filename first and confirming THAT fails,
+  before trusting that it passes on the real file.
 
 ### Worked example
 
