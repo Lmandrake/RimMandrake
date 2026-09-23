@@ -129,9 +129,18 @@ flow, and bank the depth as mud.
 
 ## 6. Never true — 🔴 HARD BANS (linter-checkable)
 
-1. 🔴 **The deep thing is never resolved in ordinary play** — no ambient
-   spawn, no codex entry, no name in player-facing text; it is built, and it
-   emerges ONLY as the plotted event.
+1. 🔴 **SUPERSEDED 2026-09-23 — owner ruling at a sitting** (the unfreeze path this
+   sheet's own header names). Record:
+   `fever_wood_deep_and_mud_2026-09-23.md` §0. **The thing below is ambient and it is
+   NAMED.** It strikes with tentacles in ordinary play, scatters loot it strips from
+   victims at the pool margins, and a captive specimen is kept on display in town
+   precisely so the player *"learn[s] the lore at last"* (owner). It maps to the
+   **dianoga** when the campaign layer is active, and **the horror is its SCALE, not
+   its mystery** — *"shocking even to those who know them"* (owner). ✅ Still true:
+   the **full emergence** — the whole animal rising — remains plot-reserved and is
+   never ambient. ⛔ Do not restore the old ban, and do not cite F4's
+   "referenced by nothing" construction as evidence the ban still holds; that
+   rationale is void.
 2. 🔴 **The Ants are never an existing faction** — no Geonosian tie, no
    faction allegiance; a wild swarm, full stop.
 3. 🔴 **No native chase predators** — the crown's natives wait or graze; only
