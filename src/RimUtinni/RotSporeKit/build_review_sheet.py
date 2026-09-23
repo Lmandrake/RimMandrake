@@ -322,7 +322,7 @@ FAUNA = [
      "SWBestiary (mandrake.rsw.swbestiary)",
      "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis_south.png",
      "none (solitary predator)", "no", "no", "YES", "the false-fruit trap now has teeth — the mantis you never saw answers"),
-    ("RUT_Emberscythe", "emberscythe mantis", None, "NOT in RUT_TheRot — a Pyrelands fire-follower shipped in this same kit", 1.3,
+    ("RUT_Emberscythe", "emberscythe mantis", None, "NOT in RUT_TheRot — a Pyrelands fire-follower; its def lives in UtinniPatches/Defs/ThingDefs_Races/RUT_Emberscythe.xml, not in this kit", 1.3,
      "RotSporeKit (mandrake.rut.rotsporekit) — art is a vanilla Megascarab recolor placeholder, per its own header comment",
      str(RAW_VANILLA / "RUT_Emberscythe_vanilla_south.png"),
      "none", "no", "no (already has a solo InjuryHealingFactor 1.6)", "no", "keep Rot kin-mechanics out of fire country — wrong biome, already self-sufficient"),
