@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T06:33:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T06:38:18Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1577,7 +1577,7 @@ prose:    infrastructure/state/items/RUSTCATHEDRAL_RM_MOD_BUILD_1.md
 ## GREENTIDE_RM_MOD_BUILD_1 Phase A: build RM_Greentide as its own RimMandrake mod (mandrake.rm.greentide) — the Greentide - twin pair, mod EXISTS (123 vs 287 lines)
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    game-up
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
@@ -1870,6 +1870,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/REACTION_MECHANISM_GENERALISE_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Build the event object, the shared budget and the spawn response under the wasps
 prose:    infrastructure/state/items/REACTION_MECHANISM_GENERALISE_1.md
