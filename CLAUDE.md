@@ -106,6 +106,34 @@ MEASURED about the live world — the live system is the only instrument for "ri
   catastrophic finding. Use `w["must_show"]`. 🔑 A count that is conveniently *or* alarmingly
   round is a query bug until proven otherwise, and the alarming direction is the one you will
   believe without checking.
+- 🔴 **`ls <dir> | wc -l` answers 0 for a directory that does not exist**, so a "queue is empty" claim can be
+  a wrong-path claim wearing a number. The artpipe queue is `infrastructure/artpipe/pending/` — it held
+  **182** jobs when a count of `artpipe/queue/` reported 0, and that figure was stated to the owner. ⇒ Prove
+  the path (glob `*.json`, which errors loudly) before repeating any count of zero. ⚠️ **And the artpipe
+  daemon does not run on the Mac**, so queueing work here generates nothing until the Desktop runs it.
+- 🔑 **Before designing anything, read the source and the roster — this project keeps having already built
+  it.** MEASURED 2026-09-23 in one session: the owner proposed a "special oil to seal part of the greatbole
+  so it cannot regrow" and it ships as `RM_ToxinSealant` (item + terrain) with
+  `RM_MapComponent_LivingRegrowth` **already gating regrowth on that terrain**; the grubs' two behaviours are
+  `RM_EatCleanableExtension` and `RM_ParentalEnrageExtension` with one axis widened each; their breeding is
+  `RM_CompVerminBreeder` + `RM_MapComponent_VerminPopulation` + its alert; and the mining thresholds need no
+  new tracking because `BoleRecord.footprint`/`timers` are already Scribed. **Four of six mechanisms already
+  built.** ⇒ Same for CONTENT: the flora roster had already named the wasps' hosts, the ant hive's farmed
+  species and the sealant's toxic plant. ⛔ A design pass that invents before it reads will re-invent.
+- 🔴 **Say which greatbole you mean, every time — the species is THREE defs.** `RM_Greatbole` is the mature
+  fellable giant (roster row 22); `RUT_GreatboleHeartwood` is the mineable `RockBase` blob a player actually
+  sees and digs, carrying its own flat-colour placeholder; `RUT_GreatboleCore` is a **1×1 bookkeeping
+  marker** whose `drawSize (7,7)` renders a retinted vanilla `DeepDrillPowered` across the middle of the
+  wood — a real visible defect in shipped content (`GREATBOLE_BARK_EDGE_ART_1`). Confusing them produced two
+  false statements to the owner in one session, in opposite directions.
+- 🔴 **A question-card option LABEL the owner clicks is OUR sentence, not his.** `block_forged_owner_said.py`
+  refuses it and is right to: only text he **types** (a notes box, a free-text Other) is his. Record a click
+  as **"decision taken by question card"** with no quote flag. ⚠️ The guard also reads **commit message
+  bodies**, and being `PreToolUse` it refuses the **whole compound command** — so a chained write-then-commit
+  loses the write too.
+- ⚠️ **`RM_CreatureBehaviors.csproj` sets `EnableDefaultCompileItems false` and lists every file.** A new
+  `.cs` in `Source/` without a `<Compile Include>` line **compiles into nothing, with no error**. Adding a
+  file to that assembly is always a two-file change.
 - 🔴 **Never scan `ModsConfig.xml`.** `grep -c '<li>'` returns **48** where the real active count
   is **631** — it counts lines containing the tag, and that file puts many elements on one line.
   Parse it (`ET.parse(p).find("activeMods")`). Snapshots are in
