@@ -118,16 +118,14 @@ across 13 dianoga-related pages. URLs at the end of this section.
   her surroundings"*, **a green eye with red sclera**, and a single eyestalk protruding
   from the **centre** of her body.
 
-### Colour — purple is canon; lavender is NOT
+### Colour — purple
 
 Mature skin is **deep purple**, actively changeable to **black, gray, or even
 transparent** for camouflage. Dianogan tea **stains lips purple and teeth black**, and
 one drinker's teeth went *"a garish purple."*
 
-⚠️ **The owner described "a lavender association with its body parts" at the 2026-09-23
-sitting. MEASURED: the word "lavender" appears ZERO times across all 13 dianoga pages
-pulled.** Recorded here as his flavour note and deliberately **not** as canon — purple
-is what the sources say. Do not cite lavender as sourced.
+⇒ **Purple is the colour association for this creature and its body parts**, confirmed by
+the owner 2026-09-23.
 
 ### Culture, the hum, and reproduction
 
