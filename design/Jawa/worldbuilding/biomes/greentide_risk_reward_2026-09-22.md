@@ -601,8 +601,267 @@ section — and R6 is the sanctioned release valve for that pressure.
 
 ## 5. Card-ready questions for the owner
 
-*(in progress)*
+**How to read these.** Seven cards, each with exactly three options, each option saying what it buys
+**and** what it costs. No internal names or identifiers appear below — they are written to be read
+cold. **Q1 is the widest and is his explicit ask.** ⇒ And per how he prefers to work: any of these
+can be answered by *refining* an option rather than picking one, and "none of these — here is a
+fourth" is a valid answer on every card.
+
+### Q1 — Which new payoff do we build first? *(the widest card)*
+
+*Why you are being asked:* the jungle now has ten distinct kinds of reward designed, which is far
+more than can be built at once. They are not variations — each one changes a different thing about
+the colony, and whichever comes first sets what the jungle *means* for a long time. All three of
+your named rewards are covered in every option; this is about what goes in beside them.
+
+- **A. The sickness pays you back — survivors become your specialists.**
+  A colonist who catches one of the jungle's fevers and lives is permanently marked by it, and that
+  mark is a qualification: only marked people can lead a deep trip, hold a forward camp through the
+  wet, or handle the fresh medicines without dosing themselves. Nobody else can be made into one, and
+  it cannot be bought.
+  *Buys:* the jungle's illnesses stop being pure punishment and become the thing that builds your
+  expedition crew — and it costs almost nothing to build, because the illnesses are already in the
+  game today. It is also the moment the whole place starts feeling like a bargain instead of a toll.
+  *Costs:* the payoff is invisible for the first several trips, and it is paid for in dead
+  colonists. Some players will read early deaths as the biome being unfair rather than as tuition.
+
+- **B. The jungle can give a body part back.**
+  Someone who lost a hand, an eye, a lung or a leg is put through a days-long procedure that only
+  works inside the jungle, in a chamber cut into a living tree — and grows the real part back. Not a
+  prosthetic. It can fail, and when it fails it fails by growing *too much*.
+  *Buys:* the most memorable thing in the whole biome, and the sharpest possible statement of the
+  setting — on a planet where nothing grows, there is exactly one place your people can be made
+  whole, and it is the place that kills them. This is the option players tell each other about.
+  *Costs:* the most expensive of the three to build and the one most likely to hit a wall in the
+  game's own limits. It also risks turning the jungle into a hospital run, which is a much smaller
+  idea than the one above.
+
+- **C. The jungle teaches you not to be found.**
+  Harvest the biology of the things that ambush you: scent-maskers that stop a predator or an enraged
+  animal committing to you, resins that quiet a working camp, coatings that read as vegetation.
+  Consumed per person, per trip.
+  *Buys:* the only option that changes **fighting and hunting**, which nothing else in the biome
+  touches — so it broadens what the jungle is for rather than deepening what it already is. It also
+  directly rewards a player for learning the local bestiary.
+  *Costs:* the least emotional of the three, and it makes the player stronger *everywhere*, not just
+  here — which slightly dilutes the jungle's identity as a place with its own rules.
+
+### Q2 — Do we write our own jungle diseases, or take some away?
+
+*Why you are being asked:* the jungle currently carries **seven** illnesses and all seven are the base
+game's. Two of them appear on more than twenty of our other regions, so they say nothing about this
+place. Writing one of our own would be the first disease this project has ever authored, which is a
+bigger job than it sounds. And more illness is not the same as more fear — a place that just keeps
+making people sick becomes tedious rather than frightening.
+
+- **A. Replace, don't add. Cut the two generic fevers, write one jungle disease of ours.**
+  *Buys:* the count stays at six, so the tedium does not rise, but the jungle gains one illness that
+  is unmistakably *its* — a name and a progression a player will come to dread specifically. The two
+  removed are the two that could have come from anywhere.
+  *Costs:* one genuinely new piece of engineering, done for the first time, with the risk that comes
+  with a first. And removing anything from the region the saved world already runs on is delicate.
+
+- **B. Keep all seven as they are, and spend the effort on the payoff instead.**
+  *Buys:* zero risk, zero new work on the danger side, and everything saved goes into Q1's reward —
+  which is where the biome is actually empty. Seven illnesses already deliver the attrition you
+  wanted.
+  *Costs:* the jungle's sickness never becomes *characterful*. It will always be the same fevers the
+  player has met in six other places, just more often.
+
+- **C. Keep seven, but give two of them a jungle-specific twist rather than replacing them.**
+  *Buys:* a middle path — the same illnesses behave differently here (faster onset, a different
+  progression, a different cure route) so the place feels distinct without a new disease being
+  written or anything being taken out of the live world.
+  *Costs:* the least legible option. A player may never notice that a familiar illness is behaving
+  differently, in which case the work bought nothing.
+
+### Q3 — Are the insects their own kind of threat, or just more animals?
+
+*Why you are being asked:* of the four dangers you named, insects turned out to be the genuinely
+empty one — and empty in a lucky way. The machinery for a huge insect that chews trees down is
+**already built and working**; it just has nothing to drive, because the creature itself is a
+placeholder squirrel standing in until someone makes it. So the cheap option here is unusually cheap.
+
+- **A. Yes — insects are their own layer, and they work on the *forest*, not on you.**
+  They chew the tree bases, they bring giants down, they are why the canopy is dangerous overhead.
+  They are not primarily out to eat your people.
+  *Buys:* the cheapest real danger available, because the falling-tree machinery is already shipped
+  and tested. It also gives the jungle a genuinely different *kind* of fear — the ground is safe and
+  the sky is not — which nothing else in the biome does.
+  *Costs:* needs one new creature and its art before any of it is visible. Until that exists, this
+  option shows the player nothing.
+
+- **B. No — fold them into the animal cast and move on.**
+  The jungle already has twenty-seven animals, several of them insect-fleshed, venomous and prone to
+  turning on you.
+  *Buys:* nothing new to build, and the danger is arguably already sufficient. Effort goes to the
+  reward side instead.
+  *Costs:* one of your four named dangers stays a label rather than a thing, and a piece of working
+  machinery stays unused.
+
+- **C. Yes, and go further — a nest you can find, rob, and regret disturbing.**
+  Insects become a *place* on the map as well as a creature: a structure with something worth taking
+  inside it.
+  *Buys:* the strongest version — a danger that is also one of the rewards, which is the pattern the
+  rest of the biome already follows.
+  *Costs:* by far the most work of the three, and the nest-and-swarm idea is the sort of thing that
+  either lands hard or becomes an annoyance that ends colonies without a story.
+
+### Q4 — Does the jungle get harder as the player gets better?
+
+*Why you are being asked:* this decides whether learning the jungle is a real reward or a treadmill,
+and it has to be decided before the payoffs are tuned, because it changes what they are compensating
+for.
+
+- **A. No. The danger stays flat; the player gets better.** *(recommended)*
+  The jungle is exactly as lethal on trip fifty as on trip one — what changes is that the player
+  now knows where to walk, what to wear, and when to leave.
+  *Buys:* competence is the reward, and it is permanent. A player who learned this place *keeps* what
+  they learned, which is the strongest possible reason to come back. It is also the honest version of
+  the arc you already have.
+  *Costs:* a very good player will eventually find the jungle routine. The fear fades even though the
+  place hasn't changed.
+
+- **B. Yes — the jungle answers back as you get stronger.**
+  *Buys:* the place never stops being frightening, at any point in a long game.
+  *Costs:* it erases the only thing the player earned by learning, and it is the same shape as the
+  runaway-growth problem you have deliberately stamped out elsewhere. Most players read it as the
+  game cheating.
+
+- **C. Flat danger, but the *stakes* rise on their own.**
+  Nothing about the hazards changes — but a player with a built-out camp simply has more standing in
+  the path of a falling tree than a trespasser with a backpack did.
+  *Buys:* the fear comes back late in the game without the game ever cheating, because it is the
+  player's own investment that is at risk. This already happens naturally with the falling trees.
+  *Costs:* punishes the players who committed most to the place, which can read as a penalty for
+  playing along.
+
+### Q5 — Where does the "endless cuisine" feeling actually come from?
+
+*Why you are being asked:* "seemingly endless" cannot be built by writing endless dishes — that way
+lies hundreds of near-identical recipes, which is a lot of work that reads as padding. It has to come
+out of a small number of ingredients combining. The question is what the player is combining *for*.
+
+- **A. Novelty. The colony remembers what it has eaten, and rewards you for surprising it.**
+  A handful of ingredients, each carrying a flavour; a dish is any legal combination and gets its name
+  and its effect from what went in. A combination eaten recently is worth less; a new one is worth
+  much more.
+  *Buys:* genuinely bottomless from about thirty pieces of authoring, and — the real prize — it keeps
+  sending the player into the jungle *after food has stopped being a problem*. The reward is variety,
+  and variety is the one thing a warehouse cannot hold.
+  *Costs:* asks the player to keep notes, and a player who does not engage just eats the same thing
+  and sees a mild penalty they may not understand.
+
+- **B. Discovery. Certain combinations are secretly special, and finding them is the game.**
+  Most combinations are ordinary; a hidden few are extraordinary, and a cook learns them.
+  *Buys:* the strongest feeling of *cuisine* specifically — a clan with recipes, traditions, a
+  culinary reputation. Very satisfying when a player finds one.
+  *Costs:* finite by definition. Once the good combinations are known — and they will be shared
+  within a week of release — the space stops being endless and becomes a checklist.
+
+- **C. Freshness. What you can cook depends on how recently it was picked.**
+  The best flavours only exist on ingredients that are still fresh, so the best dishes can only be
+  cooked near where they grew.
+  *Buys:* the tightest fit with the rest of the biome, and it does the most to stop the jungle
+  becoming somewhere to live — a kitchen at home can never cook well.
+  *Costs:* the most logistically fussy of the three, and the option most likely to feel like an
+  errand rather than a cuisine.
+
+*(These three are not exclusive — A is the engine, C is the brake, and B can be layered on later.
+That combination is the recommendation if you want one.)*
+
+### Q6 — How hard is the clock on the valuable things?
+
+*Why you are being asked:* everything good the jungle produces is currently designed to spoil, which
+is the main thing stopping the place becoming a factory. How hard that clock bites is a taste
+question, and it is the difference between "a tense delivery run" and "an annoying timer".
+
+- **A. Hard. The best grade cannot leave the jungle at all.**
+  *Buys:* the strongest guarantee that nothing here becomes an industry, and it makes the forward camp
+  matter enormously. The good stuff is used where it is made.
+  *Costs:* players who like trading and stockpiling get nothing from the biome's best content, and
+  some will find it simply withholding.
+
+- **B. Medium. The best grade travels for a couple of days and loses potency as it goes.**
+  *Buys:* a real delivery game — a reason to build routes, fast transport and a sealing workshop —
+  while still forbidding a warehouse.
+  *Costs:* more moving parts, and the loss-over-time rule needs to be visible or it feels arbitrary.
+
+- **C. Soft. It spoils, but slowly, and a good workshop can preserve most of it.**
+  *Buys:* the friendliest option, and the one that most rewards infrastructure. The jungle's payoff
+  becomes something a player can plan a whole colony around.
+  *Costs:* the weakest brake by a wide margin, and the most likely to end with the jungle as the best
+  place to live — which is the failure this whole design is guarding against.
+
+### Q7 — How far does the regrowth go? *(only if Q1 lands on B, or later)*
+
+*Why you are being asked:* growing a limb back is the strongest idea in the pass and the easiest to
+spoil by making it too clean. How far it goes is a tone question about your setting, not a mechanical
+one.
+
+- **A. Repair only. Lost parts come back as they were.**
+  *Buys:* a clean, humane, extremely desirable payoff that needs no explanation.
+  *Costs:* the least distinctive, and it quietly competes with prosthetics rather than saying
+  something new.
+
+- **B. Repair, imperfectly. What grows back works, and is visibly not quite the same.**
+  *Buys:* the setting's voice — a clan of scavengers whose bodies are patched with jungle. Much more
+  memorable than A, and the imperfection is what makes it feel like a bargain rather than a cure.
+  *Costs:* needs art and description work to land, and some players will resent a permanent blemish
+  on a rescued colonist.
+
+- **C. Repair, and sometimes more than you asked for.**
+  The failure mode is overgrowth — something keeps growing and has to be cut back.
+  *Buys:* the most frightening and most thematically exact version: the jungle's defining property is
+  growth that will not stop, and this is that property applied to a person.
+  *Costs:* body horror, which is a deliberate tonal choice and yours alone to make. It also risks
+  players never using the procedure at all, which wastes the best idea in the biome.
 
 ## 6. UNMEASURED / needs the Windows machine
 
-*(in progress)*
+**Nothing below was established on this machine, and nothing below should be treated as a finding.**
+There is no running game, no def dump and no decompiler here, so every mechanism question the design
+above rests on is listed rather than answered. ⛔ No vanilla or third-party defName appears that was
+not read off a file in this repo.
+
+### 6a. Mechanism questions the ranked build order depends on
+
+| # | question | which reward it gates | why it matters |
+|---|---|---|---|
+| U1 | When a pawn recovers from a vanilla disease, is there any durable, mod-readable record that they had it — and is there a hook at recovery a mod can attach a permanent immunity to? | **R1, ranked #1** | If there is no recovery hook, R1 needs its own disease to hang off, which merges it with Q2 option A and changes its cost from *low* to *medium* |
+| U2 | Is there a mechanism that gates a job, a work type or a caravan role on a pawn carrying a given condition? | **R1** | R1's "qualification" half. A mood/efficiency penalty on unmarked pawns is the fallback if a hard gate does not exist |
+| U3 | Can a cooked meal carry its ingredient set forward in a form readable when it is eaten? | **R3, ranked #2** | The entire free-scaling property of the cuisine system. If not, the fallback in §4 R3 applies and R3 drops several places |
+| U4 | Does the base game already track recently-eaten food variety, and if so can it be extended rather than duplicated? | **R3** | The palate memory should ride an existing system if one exists — Q5 option A is much cheaper if it does |
+| U5 | Can a region's foraged yield be more than one item — a table, or a weighted set? | R3, and his "food abundance" | The biome's forage is a single berry row today (§2b). If the field takes only one def, "tremendous abundance" has to be delivered by plants and the catch, not by forage |
+| U6 | Can a mod restore a **missing body part** to a living pawn, and what is the route? | **R4, the marquee** | R4 does not exist if this is impossible. This is the single highest-value measurement in the list |
+| U7 | What is the actual shape of a disease incident plus its condition — read off a real working example? | Q2 option A | §1c established this project has never authored one. It must be read, not inferred |
+| U8 | Can a research project be made to progress only while a pawn is working in a given region? | R7 | The field-station idea. A conventional bench with a region-gated *unlock* is the fallback |
+| U9 | Is predator and enraged-animal target selection reachable by a mod? | R8 | R8's scent-masking. If not, R8 degrades to a stealth/mood effect and loses most of its point |
+| U10 | Can a wall-like building regrow or self-repair on a timer? | R9 | R9's living walls. The chamber precedent suggests yes but the chamber is terrain, not a building |
+| U11 | Can faction attitude respond to a colony being the sole supplier of something? | R10 | R10's whole payoff is social rather than monetary |
+| U12 | Can a plant be made cultivable only after a research unlock, with a different yield than its wild form? | R6 | The cultivar programme, and §4c's release valve |
+
+### 6b. Live-state facts this pass could not check
+
+- 🔴 **Which of the two Greentide region definitions the live saved world is actually running today**,
+  and whether the movement-cost contradiction recorded in §1 still stands in the live file. §1 read
+  both files on disk; it did not read the game.
+- **Whether the seventh illness (organ decay) is present on the generic twin yet.** §1c read it as
+  present on the live twin only, from the files. That is a disk read, not a live read.
+- **Whether the biome's farming-camp permission behaves as §4c assumes** — that a camp can feed itself
+  without becoming an export base. The seven defences in §4c are a design stance; none of them has
+  been observed in play.
+- **Whether the twenty-seven-row animal roster actually spawns at the stated weights** on the live
+  map, which bears on R5's premise that this region holds the planet's gene pool.
+
+### 6c. Explicitly out of scope here, and where it belongs
+
+- **Tile counts and where this biome appears on the planet.** Not touched, by standing ruling — the
+  planet is painted once, at the end, after every biome is its own mod.
+- **The movement-cost contradiction.** Noted in §1, belongs to the density item, and is not fixed
+  here.
+- **Mod Settings.** Per the standing rule, every category in §4 needs its own toggle and the extreme
+  tunings need sliders. That is spec work for whichever item builds each category, not a measurement,
+  and it is recorded here so it is not forgotten: **ten categories means ten feature gates.**
+- **Names.** Every invented word in §4 is a placeholder for a concept. The naming pass owns them, and
+  nothing in §4 names any franchise.
