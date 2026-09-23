@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T23:45:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T23:55:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1925,3 +1925,33 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md
+
+## MIASMA_FAUNA_FLOOR_ROSTER_1 The Miasma arthropod floor, the fever-swarm, and the stranded as a condition
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Four scuttler defs — RMKarravel (the flat disc that carpets the mud film),
+prose:    infrastructure/state/items/MIASMA_FAUNA_FLOOR_ROSTER_1.md
+
+## MIASMA_FLORA_ROSTER_1 19 invented Miasma plants: the rainbow blooms, our own mangals, and a carnivorous clade
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. 19 RM-tier plant defs per the roster's four sections: four mangals (§3), six rainbow
+prose:    infrastructure/state/items/MIASMA_FLORA_ROSTER_1.md
+
+## MLIE_ABSORPTION_BIOME_WIRING_1 98 live biome rows still name the bare donor for 73 creatures we already ported
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. For each of the 98 rows, decide and apply one of two outcomes — this is not a blanket
+prose:    infrastructure/state/items/MLIE_ABSORPTION_BIOME_WIRING_1.md
