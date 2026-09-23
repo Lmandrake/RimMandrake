@@ -39,10 +39,75 @@ namesake, `KORRUM_ART_REGEN_1`.
    swapping it in silently (cosmetic changes need his permission — they can break animated
    faces).
 
+## 🔴 VERDICT — 2026-09-23: it FAILS, and on identity before quality
+
+**Judged by looking at the PNGs**, not by measuring them. Verdict: *regenerate* — but the reason is
+not the expected one.
+
+### 1. 🔴 The art depicts the WRONG ANIMAL — the real defect
+
+The three `Stoneback_*.png` show a **legless brown mound with a single dot eye**: south a rounded
+cone, east a low rock-like hump. No limbs, no tail, no claws.
+
+⇒ **Our def is a clawed, tailed quadruped.** MEASURED from the def:
+
+| field | value | what the art shows |
+|---|---|---|
+| `body` | `QuadrupedAnimalWithClawsTailAndJowl` | no legs, no tail |
+| `tools` | **left claw**, **right claw** | no claws |
+| `description` | *"longer back legs"*, lives underground | no legs at all |
+| `baseBodySize` | 0.4 | — |
+
+🔑 **This is donor art never re-authored at the port.** It is Biomes! Caverns' `BMT_Stoneback`, a
+**stone-mimic** — which is precisely what the pictures show. The def was ported and relabelled
+**bokka**; the art still depicts the donor's creature. ⇒ The `texPath` being correctly ours
+(`swanimals/…`) is what hid it: the *path* is ours, the *pixels* are the donor's idea.
+
+### 2. Style — flat cartoon against painterly rendered volume
+
+Uniform heavy black outline, radial-gradient fill, dot eye — against current art in the same folder
+tree (`ShatterjawBeetle/ShatterJaw_south.png`): segmented carapace, specular highlights,
+articulated serrated limbs, real volume.
+
+### 3. ⛔ Resolution is NOT a defect — an earlier reading of this was WRONG
+
+🔴 **Do not regenerate this for resolution.** The tempting claim was *"5 of the 8 newest sprites are
+512, so 256 is sub-standard"* — a real observation and a false inference. **MEASURED across the
+mod's 363 `_south.png`:** canvas does not track recency (512's median drawSize is 1.7 against
+256's 1.5, both spanning the range), and **for drawSize-1 creatures it is 16 files at 256 against
+2 at 512**. The bokka is drawSize 1, so 256 is the convention, agreeing with the `drawSize × 128`
+ceiling `fill_queue.py` itself warns on. 🔑 Caught only because the queue emitted that advisory —
+the wrong number had already been written down as evidence.
+
+## ✅ queued — 2026-09-23
+
+Three jobs at **256×256**, drawsize 1, priority 120:
+`infrastructure/artpipe/pending/RSW_Stoneback_{south,east,north}.json`, from
+`infrastructure/artpipe/art_lists/bokka_art_standard_regen.csv`. The prompt leads on **legs, claws
+and tail** and explicitly rules out a rock or boulder silhouette.
+
+⚠️ **The artpipe daemon does not run on the Mac**, so nothing generates until the Desktop runs it.
+⛔ **Do not swap the result in silently** — cosmetic changes need his permission, so the new art
+goes in front of him beside the old.
+
+### 🔴 the search trap this sat behind
+
+Searching `registry.jsonl` for the bokka finds **six rows keyed `RSW_Stoneback`**, which reads as
+"art already queued". ⛔ **They are the KORRUM's jobs under a recycled defName** — all stamped
+`2026-09-20T16:51:43Z` and sourced to `DESERT_FAMILY_PORT_EXECUTION_1`, the korrum's port batch.
+`STONEBACK_DEFNAME_COLLISION_1` re-keyed the *files* to `RSW_Korrum_*` **without writing a registry
+event**, so the registry still names a creature that no longer owns that defName. ⇒ The standing
+"check for existing art first" rule returns a **false positive** here; only the rows' timestamp and
+source disambiguate. 🔑 A recycled defName makes art provenance unsearchable by name alone.
+
 ## verify
 
 A stated verdict with the reason — kept, or regenerated with the old and new side by side.
 ⛔ Not "regenerated because the note said make sure": that is not what he asked.
+
+- [x] Verdict stated with the reason, reached by looking at the art.
+- [ ] New art put in front of him beside the old, once the Desktop daemon has run.
+- [ ] Only then swapped in, with his permission.
 
 ## criteria
 

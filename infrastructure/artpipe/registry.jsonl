@@ -3654,3 +3654,9 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_maddrick_v1", "notes": "", "target": "rm_maddrick", "ts": 1790160040.0142012}
 {"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_greatbole", "ts": 1790160040.015421}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_greatbole_v1", "notes": "", "target": "rm_greatbole", "ts": 1790160040.0218592}
+{"by": "fill_queue", "event": "registered", "source": "STONEBACK_BOKKA_ART_STANDARD_1", "target": "RSW_Stoneback/south", "ts": 1790197123.363128}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "RSW_Stoneback_south", "notes": "", "target": "RSW_Stoneback/south", "ts": 1790197123.371466}
+{"by": "fill_queue", "event": "registered", "source": "STONEBACK_BOKKA_ART_STANDARD_1", "target": "RSW_Stoneback/east", "ts": 1790197123.37302}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "RSW_Stoneback_east", "notes": "", "target": "RSW_Stoneback/east", "ts": 1790197123.380235}
+{"by": "fill_queue", "event": "registered", "source": "STONEBACK_BOKKA_ART_STANDARD_1", "target": "RSW_Stoneback/north", "ts": 1790197123.3817348}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "RSW_Stoneback_north", "notes": "", "target": "RSW_Stoneback/north", "ts": 1790197123.389241}
