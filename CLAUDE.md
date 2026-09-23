@@ -97,6 +97,14 @@ MEASURED about the live world — the live system is the only instrument for "ri
   not a decompiler** — `About.xml`'s "vanilla ignition already works on any flammable
   terrain", and `Flood.noPossibleCell` being private with no accessor. Do not launder
   those into measurements.
+- ✅ **CANON research DOES work from the Mac, and directly.** Wookieepedia's
+  `action=parse&page=<X>&format=json&prop=wikitext` API answers unauthenticated over plain
+  `curl` with **no size cap** (MEASURED 2026-09-23: 13 dianoga pages pulled clean). ⇒ Prefer it
+  over Fetcher, which **silently TRUNCATES AT 50,000 chars** and has eaten a species' whole
+  Biology section. Resolve titles with `action=query&list=search&srsearch=<name>` — a guessed
+  exact page title returns MISSING for real subjects constantly, which is not evidence a subject
+  is non-canon. ⚠️ `timeout` does not exist on macOS and its failure **resets the shell's cwd**;
+  use `curl --max-time`.
 
 ### Instruments that return a confident wrong number
 
@@ -155,6 +163,15 @@ MEASURED about the live world — the live system is the only instrument for "ri
   and 575 s. **Brief every writing subagent to create its output file as a skeleton FIRST and
   fill it section by section** — a file write emits progress and persists partial work. A long
   read-then-write brief is the shape that trips it.
+  🔴 **It happened AGAIN 2026-09-23** on a mechanical creature census, and the cheaper lesson is:
+  for a **mechanical** census (glob, parse, count, tabulate), writing the script inline costs less
+  than briefing an agent to survive the watchdog. Reserve subagents for work that needs judgement.
+- ⚠️ **Two `PreToolUse` gates refuse tool calls outright and are easy to trip:**
+  the `Agent` tool **refuses without an explicit `model`** (omitting it silently inherits this
+  seat's tier, which is how past censuses ran on Opus; named agent types and `fork` are exempt) —
+  ladder in `infrastructure/agents/Agent_Policy.md`. And `AskUserQuestion` is validated by
+  `validate-question-card.py`: a `header` longer than **12 characters**, or a question not ending
+  in `?`, refuses the **whole card**. Count the header before calling.
 - 🔴 **A question-card option LABEL the owner clicks is OUR sentence, not his.** `block_forged_owner_said.py`
   refuses it and is right to: only text he **types** (a notes box, a free-text Other) is his. Record a click
   as **"decision taken by question card"** with no quote flag. ⚠️ The guard also reads **commit message
