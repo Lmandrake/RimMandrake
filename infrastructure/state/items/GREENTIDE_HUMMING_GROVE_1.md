@@ -111,9 +111,20 @@ layer pop is in practice. That is settled by listening, not by reading the engin
    this about *place* rather than threat, and what keeps it distinct from the Cathedral.
 3. **Author several hum `SoundDef`s at different pitches** as the "different frequencies", rather than
    manipulating pitch at runtime.
-4. **Put it in the shared behaviours assembly if it is generic**, or in the biome's own mod if it is
-   specific to this tree — decide deliberately, and note that the Cathedral's version lives in its own
-   biome mod.
+4. ✅ **BUILD IT GENERIC — owner ruling 2026-09-22.** Asked whether to build it for this one tree or as
+   something any future biome can use, he ruled **reusable by any biome**: a plant or biome gets a
+   proximity-driven soundscape by tagging its content, with no new C# per biome.
+   🔑 **His reasoning is the one I put to him and he took:** this is the *second* time the idea has
+   come up in this project — `RustCathedralHum` is the first — and a second occurrence is the signal to
+   generalise rather than to copy. ⚠️ Accepted cost: the configuration has to be designed rather than
+   hardcoded, which is more work now for a benefit that may never be claimed.
+   ⇒ So it belongs in the **shared behaviours assembly** (`mandrake.rm.creaturebehaviors` is where
+   generic cross-content behaviour lives — `RM_JobGiver_SeekShade`, `RM_MapComponent_SilenceCue` and
+   `RM_CompPlantAlarm` are all there), configured by a `DefModExtension` on the content, exactly the
+   comp-plus-extension pattern `RM_CompPlantAlarm` and `RM_CompWoundLink` already set.
+   ⛔ Do **not** follow `RustCathedralHum`'s precedent of living in its own biome mod — that is the
+   thing this ruling changes. ⚠️ Whether the Cathedral's existing hum should later be migrated onto
+   the generic version is **not ruled**; do not refactor it uninvited.
 5. **Mod Settings toggle**, per the standing every-mod-ships-settings rule. An ambient audio effect is
    exactly the kind of thing a player may want off.
 
