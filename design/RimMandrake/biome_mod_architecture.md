@@ -92,7 +92,7 @@ and in the deserts' case the owner named them separately in the ruling.
 | 12 | `RUT_RustCathedral` | 236 | the Rust Cathedral | `the_rust_cathedral.md`, `kits/rust_cathedral_kit_spec.md` | `RustCathedral` | `mandrake.rm.rustcathedral` | `RM_RustCathedral` | PROPOSED; absorbs `mandrake.rut.rustcathedralhum` / `...roaches` / `...walls` |
 | 13 | `RUT_Greentide` | 235 | the Greentide | `the_greentide.md`, `kits/greentide_kit_spec.md` | `Greentide` (EXISTS) | `mandrake.rm.greentide` | `RM_Greentide` | twin pair, §4 |
 | 14 | `RUT_WeepingStones` | 223 | the Weeping Stones | `weeping_stones.md` | `WeepingStones` | `mandrake.rm.weepingstones` | `RM_WeepingStones` | PROPOSED |
-| 15 | `ZBiome_Grasslands` (DONOR, More Vanilla Biomes) | 222 | the Pyrelands | `the_pyrelands.md` | `Pyrelands` (EXISTS) | `mandrake.rm.pyrelands` | `RM_FE_Pyrelands` today; §7 Q3 asks for `RM_Pyrelands` | twin pair, §4; absorbs `mandrake.rut.pyrelandsmechanics` |
+| 15 | `ZBiome_Grasslands` (DONOR, More Vanilla Biomes) | 222 | the Pyrelands | `the_pyrelands.md` | `Pyrelands` (EXISTS) | `mandrake.rm.pyrelands` | `RM_Pyrelands` (renamed from `RM_FE_Pyrelands` at `84d42c63b`, §7 Q3) | twin pair, §4; absorbs `mandrake.rut.pyrelandsmechanics` |
 | 16 | `RUT_Contagion` | 179 | the Contagion | `the_contagion.md` | `Contagion` | `mandrake.rm.contagion` | `RM_Contagion` | PROPOSED |
 | 17 | `RUT_Webwork` | 161 | the Webwork | `the_webwork.md`, `kits/webwork_kit_spec.md` | `Webwork` | `mandrake.rm.webwork` | `RM_Webwork` | PROPOSED |
 | 18 | `RUT_Slime` | 96 | the Slime | `the_slime.md`, `the_slime_gene_lists.md` | `GelatinousSlime` (EXISTS) | `mandrake.rm.gelatinousslime` | `RM_GelatinousSlime` | twin pair, §4; `TITANOSLIME_SLIME_BIOME_1` builds here |
@@ -287,12 +287,12 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
   not Star Wars, so it is a RimMandrake creature and it is built inside this mod.
   `SLIME_GENE_ARCHIVE_BUILD_1` and `SLIME_STREAM_ROWS_1` likewise land here.
 
-### 4c. Pyrelands — `RM_FE_Pyrelands` (322 lines) vs `ZBiome_Grasslands` (donor def)
+### 4c. Pyrelands — `RM_Pyrelands` (322 lines; `RM_FE_Pyrelands` until `84d42c63b`) vs `ZBiome_Grasslands` (donor def)
 
 - **Survivor:** `mandrake.rm.pyrelands`. The loser is not ours: `ZBiome_Grasslands` is a
   More Vanilla Biomes def and is not deleted, it is simply no longer painted.
 - **Deleted from Utinni** the moment the repaint lands: every op targeting
-  `ZBiome_Grasslands` — the one op in `WildAnimals_Pyrelands.xml`, all of
+  `ZBiome_Grasslands` — none remain in `WildAnimals_Pyrelands.xml` (its three ops target `RM_Pyrelands` since `84d42c63b`); all of
   `AshStorms_Pyrelands.xml` (a cosmetic storm bolted onto a donor's intact weather table),
   the `AncientDangerGenSteps_AmbientDoctrine.xml` and `AnimalBiomeDuplicates_*.xml` ops on
   it. They were only ever compensating for the wrong def being on the tiles.
@@ -302,8 +302,9 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
   `Defs/BiomeDefs/Pyrelands.xml`: the worker is
   `RimMandrake.StarWars.FireEcology.BiomeWorker_Pyrelands` — a `.StarWars.` namespace
   inside a RimMandrake mod — and the `RM_FE_` infix ("FireEcology") on all 22 of its defs
-  is a project-name fossil. Renaming to `RM_Pyrelands` before the terminal paint costs a handful of Utinni
-  xpath retargets; after it, a save. §7 Q3.
+  is a project-name fossil. The BiomeDef half landed at `84d42c63b` (§7 Q3, `PYRELANDS_DEFNAME_RENAME_1`); the
+  worker is still `RimMandrake.StarWars.FireEcology.BiomeWorker_Pyrelands` and the `RM_FE_` infix still sits on the other defs (`RM_FE_Plant_Quickgrass`
+  exists) — both owed at the absorb step, recorded in `PYRELANDS_RM_MOD_BUILD_1`.
 - Which def the live Pyrelands tiles carry today is UNMEASURED here
   (`PYRELANDS_WORLD_SWITCH_1` is closed; `GRASSLANDS_TILES_CSV_STALE_1` is open on exactly
   that row) and it does not matter: Phase B step 1 reads it live and paints the
