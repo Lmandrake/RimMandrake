@@ -41,9 +41,12 @@
       §7 Q9: "donor fauna inline in RimMandrake defs: ACCEPTABLE, leave them
       inline").
     - Op 2 (MayRequire="mandrake.rsw.swbestiary"): PatchOperationAdd for the
-      3 RSW_-prefixed entries (RSW_MutagenicNorphea, RSW_SandLeaper,
-      RSW_Creature_Mantrap) — our own bestiary, so gated on that mod rather
-      than left to ride the unconditional block.
+      4 RSW_-prefixed entries (RSW_SandPillar, RSW_MutagenicNorphea,
+      RSW_SandLeaper, RSW_Creature_Mantrap) — our own bestiary, so gated on
+      that mod rather than left to ride the unconditional block.
+      RSW_SandPillar was added 2026-09-23 (ROSTER_DEAD_BMT_NAMES_SWEEP_1
+      step 4); it had an owner placement ruling from the round2 move mapping
+      that nothing had ever executed.
   wildPlants (Op 3) and baseWeatherCommonalities (Op 4) are each a single
   unconditional PatchOperationReplace — none of that content is RSW_-gated
   (the 3 RUT_TwistingThorn* plants are this mod's own defs, always loaded
@@ -109,6 +112,7 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildAnimals</xpath>
       <value>
+        <RSW_SandPillar>0.5</RSW_SandPillar>  <!-- sand pillar (bodySize 0.80) - placed by the round2 move mapping ("cracked land") and never wired until ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 4, 2026-09-23. ⛔ Deliberately wired HERE and not on RUT_CrackedLands: that twin is frozen (FLOODEDCANYON_RM_MOD_BUILD_1) and campaign fauna rides this Utinni patch onto the RM_ def. Small animal, so the roster's 0.5 raises the small share and cannot break ECOSYSTEM_PYRAMID_LAW_1. -->
         <RSW_MutagenicNorphea>0.4</RSW_MutagenicNorphea>  <!-- mutagenic norphea - the-Sealed, keep -->
         <RSW_SandLeaper>0.2</RSW_SandLeaper>  <!-- sand leaper - the-Spenders, adjust-keep -->
         <RSW_Creature_Mantrap>0.15</RSW_Creature_Mantrap>  <!-- mantrap - the-Patient, import -->

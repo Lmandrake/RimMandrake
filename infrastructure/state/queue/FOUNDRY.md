@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T21:48:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-23T21:32:17Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
-prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
 ## CANON_CREATURE_REGEN_1 Regenerate every SW-canon creature from library guidance (gated on CANON_REFERENCE_LIBRARY_1 + pilot sheet grades); wyyyschokk blue-grey/yellow-cross is the exemplar
 state:    ready
@@ -1353,7 +1344,17 @@ prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+waiting:  needs `game-up`, game is LOADING
+summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
+prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -1361,7 +1362,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -1962,13 +1963,3 @@ kind:     task
 thin:     no ## verify, no ## criteria
 summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6j, §6m.
 prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_PRISON_1.md
-
-## DEBUG_GAME_READY_WORLDUI_CRASH_1 start_debug_game_ready leaves the game in a broken world/map-UI NullReferenceException loop at 623 mods, distinct from the closed NINEFOLD_DEBUG_GAME_READY_CRASH_1 repro
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md

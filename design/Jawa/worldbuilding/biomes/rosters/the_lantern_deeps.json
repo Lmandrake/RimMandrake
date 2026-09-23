@@ -1,48 +1,5 @@
 {
-  "sheet": "the_lantern_deeps",
-  "defNames": [
-    "RUT_NightsideIce",
-    "RUT_BlueDesert",
-    "RUT_Umbra"
-  ],
-  "tiles": 57,
   "authored": "2026-09-11",
-  "injection_layer": true,
-  "note": "NOT a BiomeDef (ban 1, the_lantern_deeps.md's own opener: owner \"that was a mistake\"). An injected underground cave-map layer (Biomes! Caverns' BMT_CrystalCaverns) beneath any host map at bio-temperature <= -40C; entries are ADDITIONS over the host roster, never replacements. tiles=57 is the MEASURED former-surface 'Lantern Deeps' region tile count (the_lantern_deeps.md §0); the layer's true footprint is however much of the three hosts' <=-40C tiles carry the injected cave map, not separately censused.",
-  "law_sources": [
-    "the_lantern_deeps.md §0 (host list + injection rule), §9 (art)",
-    "_SCHEMA.md (injection-layer convention: fall_line, wreck_fields, the_lantern_deeps)",
-    "ROSTER_MOVE_APPLY_1 (file created to land 3 owner-ruled moves that had no target roster: BMT_Gembug, BMT_CrystalCrab, BMT_FacetMothLarvae)"
-  ],
-  "fauna": [
-    {
-      "def": "RSW_Gembug",
-      "commonality": 0.5,
-      "action": "import",
-      "law": "owner review (round2 move mapping, 2026-09-11): note 'Crystal caverns' — Biomes! Caverns native, the crystal-cavern nickname this file is named for; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Gembug to the already-ported, already-wired RSW_ name (RUT_LanternDeeps)"
-    },
-    {
-      "def": "BMT_CrystalCrab",
-      "commonality": 0.5,
-      "action": "import",
-      "law": "owner review (round2 move mapping, 2026-09-11): note 'crystal caverns'"
-    },
-    {
-      "def": "RSW_FacetMothLarvae",
-      "commonality": 0.5,
-      "action": "import",
-      "law": "owner review (round2 move mapping, 2026-09-11): note 'crystal caverns'; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_FacetMothLarvae to the already-ported, already-wired RSW_ name (RUT_LanternDeeps)"
-    }
-  ],
-  "evictions": [],
-  "stat_adjustments": [],
-  "flora": [],
-  "flora_purged": [],
-  "fish": {
-    "ruling": "no fish — enclosed cave map, no standing water in the caverns donor (the_lantern_deeps.md §6: Calm weather, seep-down solutions only)",
-    "list": []
-  },
-  "new_defs": [],
   "confidence": [
     {
       "claim": "RUT_BlueDesert is the correct defName for the Blue Desert host (not BiomeGRimond)",
@@ -54,5 +11,48 @@
       "status": "UNMEASURED",
       "why": "placeholder — the_lantern_deeps.md's own fauna density/species mix (beyond BMT_Gembug/CrystalCrab/FacetMothLarvae) is still Owed (LANTERN_DEEPS_INJECTION_1); these three are only the ROSTER_MOVE_APPLY_1 rows that had nowhere else to land"
     }
-  ]
+  ],
+  "defNames": [
+    "RUT_NightsideIce",
+    "RUT_BlueDesert",
+    "RUT_Umbra"
+  ],
+  "evictions": [
+    {
+      "def": "RSW_CrystalCrab",
+      "disposition": "cut:lantern deeps hard ban 3",
+      "reason": "Evicted by its own sheet. RUT_LanternDeeps.xml's header records the Deeps sheet's hard ban 3 evicting the six crystal-studded residents BY NAME, crystal crab among them. The roster row was the stale thing, not the wiring. Moved out of fauna 2026-09-23 per ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 1 - bookkeeping, not a new decision. Scope: this cut is THIS sheet's only (owner ruling 2026-09-21), so it says nothing about other biomes - cf. BMT_CrystalFairyMole, also named in ban 3, which legitimately stays in the Scarlands. Carried commonality was 0.5."
+    }
+  ],
+  "fauna": [
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "RSW_Gembug",
+      "law": "owner review (round2 move mapping, 2026-09-11): note 'Crystal caverns' — Biomes! Caverns native, the crystal-cavern nickname this file is named for; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Gembug to the already-ported, already-wired RSW_ name (RUT_LanternDeeps)"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "RSW_FacetMothLarvae",
+      "law": "owner review (round2 move mapping, 2026-09-11): note 'crystal caverns'; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_FacetMothLarvae to the already-ported, already-wired RSW_ name (RUT_LanternDeeps)"
+    }
+  ],
+  "fish": {
+    "list": [],
+    "ruling": "no fish — enclosed cave map, no standing water in the caverns donor (the_lantern_deeps.md §6: Calm weather, seep-down solutions only)"
+  },
+  "flora": [],
+  "flora_purged": [],
+  "injection_layer": true,
+  "law_sources": [
+    "the_lantern_deeps.md §0 (host list + injection rule), §9 (art)",
+    "_SCHEMA.md (injection-layer convention: fall_line, wreck_fields, the_lantern_deeps)",
+    "ROSTER_MOVE_APPLY_1 (file created to land 3 owner-ruled moves that had no target roster: BMT_Gembug, BMT_CrystalCrab, BMT_FacetMothLarvae)"
+  ],
+  "new_defs": [],
+  "note": "NOT a BiomeDef (ban 1, the_lantern_deeps.md's own opener: owner \"that was a mistake\"). An injected underground cave-map layer (Biomes! Caverns' BMT_CrystalCaverns) beneath any host map at bio-temperature <= -40C; entries are ADDITIONS over the host roster, never replacements. tiles=57 is the MEASURED former-surface 'Lantern Deeps' region tile count (the_lantern_deeps.md §0); the layer's true footprint is however much of the three hosts' <=-40C tiles carry the injected cave map, not separately censused.",
+  "sheet": "the_lantern_deeps",
+  "stat_adjustments": [],
+  "tiles": 57
 }
