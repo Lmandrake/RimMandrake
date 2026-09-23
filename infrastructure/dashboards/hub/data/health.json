@@ -1,26 +1,26 @@
 {
- "generatedAt": "2026-09-23T12:08:00Z",
+ "generatedAt": "2026-09-23T18:57:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 734165,
-  "sha256_12": "44f146f1052c"
+  "bytes": 734362,
+  "sha256_12": "0de06e5b6a8a"
  },
- "head": "655401067",
+ "head": "855541669",
  "counts": {
   "red": 15,
   "blue": 866,
-  "green": 1796,
-  "grey": 606,
+  "green": 1794,
+  "grey": 608,
   "unmeasured": 0,
   "total": 3283
  },
  "loc": {
   "red": 4445,
-  "blue": 340359,
-  "green": 570920,
-  "grey": 158288,
+  "blue": 340380,
+  "green": 567764,
+  "grey": 161464,
   "unmeasured": 0,
-  "total": 1074012
+  "total": 1074053
  },
  "reviewEntries": 2932,
  "recidivists": [
@@ -28,6 +28,11 @@
    "path": "src/RimUtinni/UtinniPatches/About/About.xml",
    "loc": 124,
    "cycles": 7
+  },
+  {
+   "path": "src/RimMandrake/Utils/artpipe/selftest_artpipe.py",
+   "loc": 2959,
+   "cycles": 5
   },
   {
    "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml",
@@ -68,14 +73,9 @@
    "path": "src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml",
    "loc": 6770,
    "cycles": 2
-  },
-  {
-   "path": "src/RimStarWars/StarWarsRaces/Defs/PawnKindDefs/RimMandrakePawnKinds.xml",
-   "loc": 1082,
-   "cycles": 2
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 3283 files (1796 clean, 606 dirty, 0 unmeasured)."
+ "headline": "OK: measured 3283 files (1794 clean, 608 dirty, 0 unmeasured)."
 }
