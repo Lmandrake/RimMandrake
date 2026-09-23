@@ -598,6 +598,30 @@ own version and it's NOT a conflict with the IP in MLIE."* So porting Mlie's Sta
 to our own `RSW_` defs is both preferred and IP-clean — that is `DONOR_DEFS_PORT_TO_OURS_1`,
 and it is the long-term answer for all 97 rows.
 
+**Q11a — does Q11 forbid a name that merely SOUNDS like Star Wars? NO. The line is IP, not
+flavour.** Owner, 2026-09-22, typed into a question-card note, asked what a biome looks like for
+a player with none of the Star Wars content installed:
+
+> *"The fact that we will use "star wars style" naming doesn't mean they have to live in the star
+> wars layer. The top mod without star wars will look precisely the same as the star wars enhanced
+> one save for any star wars beasts we populate it with: we will provide enough diversity here that
+> there will be plenty of beasts from non canon sources to make it rich."*
+
+⇒ **The tier split is by NAME PROVENANCE, not by aesthetic.** An **invented** exotic name is not
+Star Wars IP, so an `RM_` def may carry it and a `RM_` biome may cast it inline. Only a **genuine
+canon** name (hydenock, jogan, muja, hubba gourd, felucian glowspore, chak-root, tooke-trap …)
+is IP, and those keep routing through the Utinni patch layer exactly as Q11 requires.
+
+⇒ 🔴 **Therefore a `RM_` biome does NOT get a thin dependency-free "fallback" roster, and the
+question of one is closed.** The franchise-free mod must look *the same* as the campaign-enhanced
+one, with canon beasts added on top rather than substituting for an impoverished base. That makes
+"rich enough to stand alone" a design requirement on every `RM_` roster, not an aspiration.
+
+⚠️ This REFINES Q11; it does not weaken it. Q11's own words are *"RimMandrake should not name star
+wars ever"* — about naming Star Wars **content**. A previous BENCH reading treated "bizarre Star
+Wars names" as automatically IP and routed a whole invented tree roster into the Star Wars tier;
+that reading was wrong and was corrected on `GREENTIDE_JUNGLE_TREE_ROSTER_1` the same day.
+
 **Q6 — the Lantern Deeps' def and tier: MOVE IT UP.** The whole mod becomes
 `mandrake.rm.lanterndeeps` with the def renamed `RM_LanternDeeps`; only the Kotor stygium
 gate patch carves back out to Utinni. (Q6b — allowlist vs temperature test — was already
