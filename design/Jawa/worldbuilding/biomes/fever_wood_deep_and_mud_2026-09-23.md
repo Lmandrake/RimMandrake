@@ -109,9 +109,81 @@ And on the origin of the idea:
    rendering the animal. Canon supports the variety directly — ordinary dianoga tentacles
    are **suckered** and **membraned**, the giant form's are **barbed**.
 
+### The six limb-types — proposed this sitting, the porter ruled
+
+Presented to the owner and worked from in the rulings below. Only the **porter** carries an
+explicit ruling on its appearance; the other five are this pass's proposal, not his word.
+
+| limb | reads as | job | silhouette source |
+|---|---|---|---|
+| **feeler** | thin, slow, blind | the one you see most — searches the shore after any noise, and teaches the reach | canon **membraned** |
+| **snare** | thick, fast, gripping | **the killer** — grabs and drags toward the water; F1's rescue window takes over here | canon **suckered** |
+| **lash** | long, barbed | strikes and wounds at maximum reach without grabbing; punishes loitering at the margin | canon **barbed** (giant form) |
+| **porter** | 🔴 **more slender and delicate than the others** (owner) | rises and **places** an item — the treasure trickle made visible | — |
+| **sentinel** | motionless, raised | does nothing; while it is up the chorus is silent and the animal is *aware* | canon **excellent hearing** |
+| **bloom** | vast, opening, exposes the eye | the near-glimpse, and §2b's set-piece — still not the plotted emergence | canon **maw "not unlike that of a sarlacc"** |
+
 ⚠️ **The margin already had three economic draws** before this ruling — bog-timber,
 potter's clay, and the seep-oils (`the_fever_wood.md` §7). The bait is a **fourth** layered
 on those, not the only reason to approach.
+
+### 2a. The porter is a distinct silhouette, and attacking it costs you the pool
+
+**Owner, verbatim:**
+
+> *"It gets angry and no longer provides loot at that pool. This should be a special-looking
+> tentacle, more slender and delicate than the others."*
+
+⇒ **Both consequences, not one:** the pool's behaviour worsens **and** that pool stops
+producing treasure. Attacking the porter is the one wholly self-defeating act available at
+a mirror.
+
+🔑 **It must be recognisable before you shoot it** — *more slender and delicate* than every
+other limb. The lesson is only fair if the player can tell which tentacle is the one
+bringing gifts, so this is an art requirement, not flavour.
+
+---
+
+## 2b. 🔴 Driving it off — the full ladder
+
+**Owner, verbatim, in one pass:**
+
+> *"When one or two tentacles emerge from a pool, damaging them causes a retreat and reset
+> mere hours later. Severe damage before they can retreat can sever them, providing a
+> severed tentacle body to harvest and a full day of respit. Rarely, there is a massive
+> attack in a large pool with many tentacles and the eye itself. Then attacking the eye is
+> the strategic goal: moderate damage drives off all tentacles on the map for a day. Severe
+> damage before it can retreat will kill it permanently on the map. Fouling the water with
+> specific poisons or radioactive material will cause it to be supressed for several days as
+> the material diffuses away."*
+
+| the encounter | what you do | what you get |
+|---|---|---|
+| **ordinary** — one or two limbs emerge | damage them | they retreat; **reset within hours** |
+| **ordinary, done hard** — before they can withdraw | **severe** damage | the limb is **SEVERED** → ⭐ **a severed tentacle body to harvest**, plus **a full day** of respite |
+| ⭐ **rare set-piece** — a **large** pool, **many** tentacles, **and the eye itself** | attack the **eye** — this is the strategic goal | — |
+| the eye, moderately damaged | | **every tentacle on the map** driven off for **a day** |
+| the eye, severely damaged before it retreats | | 🔴 **it is KILLED PERMANENTLY on the map** |
+| **no fight at all** | foul the water with **specific poisons or radioactive material** | **suppressed for several days**, as the material diffuses away |
+
+Three consequences worth stating plainly, because they are not obvious from the ladder:
+
+1. ⭐ 🔑 **A severed tentacle is how the dianoga food economy exists without killing the
+   animal.** The canon product line — pie from the meat, **tea brewed from spleen
+   chemicals**, cream — needs dianoga *body*, and this is the only renewable source of it.
+   The trade good and the hazard are the same creature, which is this biome's register
+   exactly.
+2. 🔑 **"Permanently on the map" is per-map, not per-world.** A colony can genuinely *win* —
+   clear its own pools forever — while the species remains on the planet. That is a real
+   victory condition for a biome whose centrepiece was previously unkillable by definition,
+   and it is a much better reward than a loot drop.
+3. **The rare set-piece has to actually arrive**, or the permanent kill is unreachable and
+   players never learn the eye is the answer. Its frequency is the single most important
+   tuning number in this whole design. ⚠️ Unset — nobody has chosen it.
+
+⚠️ **The poison/radioactive route needs a real reagent list.** "Specific poisons or
+radioactive material" is the ruling; *which* items qualify is unspecified and must not be
+guessed. The seep-oils are the obvious local candidate but were not named by the owner.
 
 ---
 
@@ -229,19 +301,30 @@ flee*; they differ only in **how they refuse to be bothered**. The thornbug
 (`the_fever_wood.md` §4) is the existing member and its refusal is the nectar contract —
 hard ban 6, *never yields under fear*.
 
-Proposed siblings, each a different way the nectar economy can break — **not yet ruled**:
+### 🔴 RULED — three sap-suckers, three defences
 
-| refusal | the creature |
-|---|---|
-| camouflage + spines | the thornbug: looks like a thorn, yields only while calm |
-| armour it makes itself | seals into hardened sap; must be cracked; drops a real material |
-| defence by proxy | a **screamer** — sets the whole chorus off, pulling the crown's predators toward the disturbance |
-| ⭐ defence by suicide | **releases its grip and drops into the pool** rather than be taken — which answers *why anything lives down there* |
-| defence by inflation | swells so it cannot be pulled off; burst it for a one-time payout that kills a renewable source |
-| chemical | sprays an irritant that sours the whole herd's yield for days |
+**Owner, verbatim:** *"There should be three kinds of these sap-suckers, each with a
+different kind of defense above"* — selecting exactly these three:
+
+| # | the refusal | what it means | what it yields |
+|---|---|---|---|
+| 1 | **seals itself in hardened sap** | armours itself in its own secretion; must be cracked open to reach | a usable **lacquer** material — the reason to bother with a defended one |
+| 2 | **screams for help** | defence by proxy: sets the chorus off and pulls the crown's predators toward whatever is bothering it | nothing directly — its value is that it makes the crown fight for it |
+| 3 | **swells so it cannot be pulled off** | inflates until it cannot be detached | burst it for a **large one-time payout** that destroys a renewable source |
+
+⛔ **"Drops into the pool" was offered and NOT chosen** — it is declined, not deferred. It
+was the idea that would have explained *why anything lives down there*; that question is
+therefore still open, and must not be answered by quietly reviving this mechanism.
+
+⚠️ **A fourth member already exists and keeps its own refusal.** The **thornbug**
+(`the_fever_wood.md` §4) is the nectar-contract species — it yields only while it feels
+safe, protected by hard ban 6 (*never yields under fear*). Reading taken: the guild is the
+**thornbug plus these three**, since the three defences he chose are all different from the
+thornbug's contract. ⚠️ Flag if he meant three *including* the thornbug.
 
 🔑 **The ants steal them ALIVE** (§4, theft not slaughter), so a well-defended species is one
-the ants *cannot take*. ⇒ Species placement becomes a real perimeter decision.
+the ants *cannot take*. ⇒ Species placement becomes a real perimeter decision — and defence
+#2 is the one that turns a theft raid into a fight the biome joins on your side.
 
 ---
 
@@ -257,9 +340,19 @@ the ants *cannot take*. ⇒ Species placement becomes a real perimeter decision.
   growing, fellable tree** — no equivalent of `RM_Greatbole`. The towers are currently a
   single-tile donor shrub.
 - **The full fauna roster** beyond the guild and the birds.
-- **Free-tier naming** for our own eldritch horror, its tentacle types, and the guild.
-- 🔑 **Which tentacle types exist**, and how each behaves. §2's ruling establishes that they
-  are a pseudo-bestiary; it does not enumerate them.
+- **Free-tier naming** for our own eldritch horror, its tentacle types, the three
+  sap-suckers, and the birds.
+- 🔴 **How often the rare set-piece arrives** (the large pool, many tentacles, the eye). This
+  is the single most important tuning number in the design: too rare and the permanent kill
+  is unreachable, so players never learn the eye is the answer.
+- 🔴 **Which poisons and radioactive materials suppress it.** The ruling names the category,
+  never the items. The seep-oils are the obvious local candidate and were **not** named by
+  the owner — do not assume them.
+- 🔑 **Why anything lives down there at all.** The mechanism that would have answered this —
+  a sap-sucker that drops into the pool rather than be taken — was offered and declined
+  (§6). The question is open and needs a different answer.
+- **How the birds' registers divide**, and how many there are.
+- **Whether the guild is three members or four** (§6's flagged reading).
 
 ---
 
