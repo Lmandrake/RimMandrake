@@ -79,14 +79,67 @@ tentacle-pulling he was reaching for. So the wish is satisfied by the Fever Wood
 abandoned. ⇒ Recorded openly for his veto; the removal was executed on the strength of *"it belongs
 only in tank prisons and the Fever Wood"*, which covers the Miasma explicitly.
 
+## 🔴 RULED — TWO creatures, not one. Owner, 2026-09-23, by question card
+
+A four-option card was offered. ⭐ **He took two of them**, and typed the second one's design into
+the notes box. **Owner, verbatim (typed):**
+
+> *"I select Vurrak and Illisk... Illisk should be a shoal of toothy fish (pirahnna essentially)
+> that are crazy fast and nearly unkillable except with explosives."*
+
+⇒ 🔴 **The Greentide gains TWO new creatures.** One vacated row becomes two — ⛔ do not treat this
+as "pick one and the other is a fallback", and ⛔ do not preserve the old `0.15` as a fixed budget
+to be split. Rosters are not fixed-sum.
+
+### 1. ILLISK — a shoal of toothy fish (fully specified by him)
+
+| property | ruled | note |
+|---|---|---|
+| form | **a shoal of toothy fish** — *"pirahnna essentially"* | 🔑 see the ban-2 note below |
+| speed | **crazy fast** | direction ruled, number unset |
+| durability | 🔴 **nearly unkillable EXCEPT with explosives** | the defining mechanic |
+
+🔑 **This is the "changes the map, not a fight" option working as intended.** You cannot shoot a
+shoal off a crossing — so a reach of water stops being a risk you accept and becomes terrain you
+route around, until you spend explosives on it.
+
+✅ **BAN 2 IS SATISFIED, and this needs saying because it looks like a violation.** §6 ban 2 reads
+*"No vanilla-Earth fauna or flora … **terrestrial-analog shapes allowed, names are not**."* ⇒ A
+piranha **shape** is explicitly permitted; only an Earth **name** is banned. "Illisk" is invented,
+so the ban holds. ⛔ Do not "fix" this creature on a ban-2 reading, and ⛔ never let the word
+*piranha* reach a def, label or description — it is his shorthand for the silhouette, not a name.
+
+⚠️ **"Nearly unkillable except with explosives" is a direction, not an implementation.** The obvious
+route is damage-type armour (high `ArmorRating_Sharp`/`ArmorRating_Blunt`, low or absent bomb
+resistance), but whether that reads as *nearly unkillable* in play — and whether a shoal is **many
+small pawns or one pawn** — is unset. 🔑 The two choices interact: explosives are the counter
+precisely *because* they hit an area, which only matters if the shoal is genuinely many bodies.
+
+### 2. VURRAK — the false bank (selected, not yet elaborated)
+
+Selected as offered: **a silted ambusher that is indistinguishable from bank until weight lands on
+it**, so the map's shoreline cannot be trusted. ⭐ It extends §6 ban 6 (*no safe standing water*)
+onto the **shore**, which no other roster member does.
+
+⚠️ **He added no detail beyond the selection**, so its silhouette, size and the disguise mechanism
+are still open — and the card's own recorded risk stands: it must read as a **creature**, not as a
+trap. ⛔ Do not build it as a terrain-trap ThingDef and call the creature delivered.
+
+🔑 **The two chosen options compose rather than overlap**, which is why taking both works: the
+Vurrak makes the **edge** of the water lethal, the Illisk makes the **body** of it impassable.
+Together they close the water off from both directions without either being a boss silhouette that
+competes with the Fever Wood's horror.
+
 ## open
 
-- 🔴 **The creature itself** — concept, name, silhouette, and what makes it terrifying in a
-  saturated-growth jungle without being fire-themed, Earth-nameable, or a second tentacled horror.
-  ⛔ Not to be invented unilaterally; the owner refines options rather than receiving one.
+- **Commonality for each of the two rows**, and whether both sit in the `lunger` band or the Illisk
+  wants its own (a shoal is not a lunger in the §4 sense — it does not ambush, it denies).
+- 🔴 **Is a shoal many pawns or one?** See above — the explosives counter depends on the answer.
+- **How "nearly unkillable" is expressed** without making it feel unfair or bugged.
+- **The Vurrak's silhouette and disguise mechanism**, and how it reads as animal rather than trap.
+- ⚠️ **Impassable-water interaction with Odyssey**, flagged as a risk on the card and unresolved —
+  Odyssey ships water content, and an effectively-walled river may fight it.
 - **Tier**, per the Core-only tension above.
-- Whether it inherits the vacated `0.15` weight exactly, or the band wants rebalancing once the
-  concept exists.
 
 ## verify
 
