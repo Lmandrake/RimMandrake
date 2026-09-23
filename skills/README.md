@@ -113,6 +113,7 @@ loads under the same name; only its location moved.
 | `rimworld-debug-testing` | Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the… |
 | `rimworld-deploy` | Writing a file is not deploying it — RimWorld loads C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>, never… |
 | `rimworld-ideoligion` | Design, author, validate and judge RimWorld ideoligions |
+| `rimworld-live-review` | >- |
 | `rimworld-layout-layers` | Assess a RimWorld structure on its INDEPENDENT LAYERS - power circuits, mod pipe networks (Helixien gas, chemfuel, deepchem… |
 | `rimworld-load-round` | How to spend a RimWorld cold load — and how to stop needing one |
 | `rimworld-modding` | Author, patch, validate and debug RimWorld mods — XML PatchOperations, custom Defs, C#/Harmony assemblies, def inheritance that… |
