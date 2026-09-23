@@ -41,3 +41,34 @@ running "next restart" queue between loads is what makes this cheap: changes
 accumulate in a list, and each load clears the list and refills the evidence.
 
 *(Triage order once you have the log: `references/player-log-triage.md`.)*
+
+---
+
+## Why hot-reload is retired — the full incident (SKILL.md §2)
+
+**Why it was retired — measured, on the full 589-mod list, 2026-09-03:**
+
+* The call **ran** (the first time it was ever observed to complete through the
+  bridge — the earlier full-list trial was killed at 4–5 min). It hung the bridge
+  for **~5 minutes**, then answered normally.
+* Afterwards **no pawn of any kind could be generated.** `jawa/spawn_pawn` returned
+  `NullReferenceException` for Muffalo, Hare, Colonist, Tribesperson and Villager
+  alike — animals included, faction or none. Vanilla's own
+  `Actions\Spawn Pawn...\Colonist` gave the real message the bridge swallows:
+  **`The given key 'RimWorld.HairDef' was not present in the dictionary`.**
+* 🔴 **It is not the def database and nothing reports the damage.**
+  `HairDef/Shaved`, `BodyTypeDef/Male`, `ThingDef/Human` all still resolved; a
+  Type-keyed index the pawn generator walks did not. The game reads healthy
+  (`programState: Playing`, `playable: true`, `mapDataReady: true`) right up until
+  something tries to make a pawn. Full evidence:
+  `infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
+* ⚠️ **The 2026-09-02 minimal-list PASS was real** (Core `Campfire` description
+  edited, reloaded in 0.04 s, read back live, reverted clean) — and it is exactly
+  why this is retired rather than merely gated. A capability that passes cleanly on
+  19 mods and silently destroys pawn generation on 589 cannot be trusted by the
+  seat that has to decide which situation it is in.
+* Independent corroboration is **weak, and that changes nothing** — the owner
+  retired it on our own measurement. What the web has: community unease about
+  patch/load-order fidelity across a reload, third-party mods existing to replace
+  the built-in button, and a Steam thread titled *"Don't push that botton called
+  'Hot Reload Defs'"* with no developer reply. Nobody has published this defect.

@@ -22,13 +22,7 @@ Before writing a line of a patch, open the def you are patching and the def you
 are patching *around* — the actual XML in the actual mod folder that is loaded
 right now, not the wiki's version and not what a project doc said last month.
 
-```bash
-# where the defs live
-RW="C:/Program Files (x86)/Steam/steamapps/common/RimWorld"
-WS="C:/Program Files (x86)/Steam/steamapps/workshop/content/294100"
-
-grep -rl 'defName>Armadillo<' "$RW/Data" "$WS" --include=*.xml
-```
+→ the grep command: `references/traps-xml-and-defs.md`.
 
 This costs thirty seconds. Three specific reasons it matters more here than
 elsewhere:
@@ -44,11 +38,7 @@ elsewhere:
   type X` as a **version-drift** report, not a typo: the mod predates the game,
   the value is dropped, the def loads anyway, and the instance count is the
   severity (eight of them = eight races quietly wrong). Wikis lag by a version.
-  ⚠️ That "loads anyway" is not universal: `<wildness>`/`<leatherLabel>` inside
-  `<race>` parse-fail as warnings but leave the `RaceProperties` malformed enough
-  to NRE downstream during corpse-gen `PreResolve` — which crashes the **whole
-  mod load**, not just that one def. `references/traps-xml-and-defs.md` has the
-  mechanism.
+⚠️ Full caveat (the `wildness`/`leatherLabel` corpse-gen crash) moved: `references/traps-xml-and-defs.md`.
 
 When you find the ground truth, **quote its file path and the exact snippet in a
 comment at the top of the patch**, with a date. Future-you re-reads that comment
@@ -111,30 +101,7 @@ there is barely a load to save.
 
 **Why it was retired — measured, on the full 589-mod list, 2026-09-03:**
 
-* The call **ran** (the first time it was ever observed to complete through the
-  bridge — the earlier full-list trial was killed at 4–5 min). It hung the bridge
-  for **~5 minutes**, then answered normally.
-* Afterwards **no pawn of any kind could be generated.** `jawa/spawn_pawn` returned
-  `NullReferenceException` for Muffalo, Hare, Colonist, Tribesperson and Villager
-  alike — animals included, faction or none. Vanilla's own
-  `Actions\Spawn Pawn...\Colonist` gave the real message the bridge swallows:
-  **`The given key 'RimWorld.HairDef' was not present in the dictionary`.**
-* 🔴 **It is not the def database and nothing reports the damage.**
-  `HairDef/Shaved`, `BodyTypeDef/Male`, `ThingDef/Human` all still resolved; a
-  Type-keyed index the pawn generator walks did not. The game reads healthy
-  (`programState: Playing`, `playable: true`, `mapDataReady: true`) right up until
-  something tries to make a pawn. Full evidence:
-  `infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
-* ⚠️ **The 2026-09-02 minimal-list PASS was real** (Core `Campfire` description
-  edited, reloaded in 0.04 s, read back live, reverted clean) — and it is exactly
-  why this is retired rather than merely gated. A capability that passes cleanly on
-  19 mods and silently destroys pawn generation on 589 cannot be trusted by the
-  seat that has to decide which situation it is in.
-* Independent corroboration is **weak, and that changes nothing** — the owner
-  retired it on our own measurement. What the web has: community unease about
-  patch/load-order fidelity across a reload, third-party mods existing to replace
-  the built-in button, and a Steam thread titled *"Don't push that botton called
-  'Hot Reload Defs'"* with no developer reply. Nobody has published this defect.
+→ full measured incident (the four bullets behind that verdict): `references/spending-a-load.md`.
 
 **What this ruling does NOT change:**
 
@@ -156,7 +123,6 @@ ambiguity, naming the log strings in advance, and harvesting the log. Read it be
 calling or queueing any load.
 
 ---
-
 ## 3. Pick the implementation tier before you pick the code
 
 Most "how do I do X in RimWorld" questions are really "at which layer does X
@@ -196,15 +162,7 @@ exact node you are about to touch. This is not ceremony — it is what makes a
 patch safe when a mod is absent, when the user updates it, or when the author
 fixes the bug upstream. An unconditional patch against a missing node prints a
 red error at every launch and trains the user to ignore red errors.
-
-```xml
-<Operation Class="PatchOperationConditional">
-  <xpath>/Defs/ThingDef[defName="Armadillo"]/race/wildBiomes/Desert</xpath>
-  <match Class="PatchOperationRemove">
-    <xpath>/Defs/ThingDef[defName="Armadillo"]/race/wildBiomes/Desert</xpath>
-  </match>
-</Operation>
-```
+→ the same conditional-wrapped example, worked in full: `references/patch-operations.md`.
 
 Keep the test xpath and the inner xpath **identical** unless you have a stated
 reason: differing ones test for one thing and modify another.
@@ -212,137 +170,39 @@ reason: differing ones test for one thing and modify another.
 ### The things that bite everyone
 
 **Take a field's SHAPE from a shipped def, never from a spec or a sample** — a
-spec names FIELDS, a def defines SHAPES. RimWorld has two child shapes and they
-are not interchangeable: plain lists use `<li>`; dictionary-keyed fields use the
-*def name as the element name* — `<wildBiomes><Desert>0.3</Desert>`,
-`<statBases><MoveSpeed>4.6</MoveSpeed>`,
-`<baseWeatherCommonalities><Clear>18</Clear>`,
-`<xenotypeChances><BTD_Nikto MayRequire="btd.xenotyperemix.starwars">0.3</BTD_Nikto>`
-— never `<li><xenotype>`. `MayRequire` rides the keyed element unchanged. Which
-shape a field uses is a property of its C# type, so it is identical in every mod.
 
 Getting this backwards is the most destructive mistake in this document: an `<li>`
-in a dictionary-keyed field makes the engine **discard the entire parent def** — one
-that was working before you touched it — and **no log line names the def.** The
-tell is the quiet `Could not resolve cross-reference: No Verse.WeatherDef named
-li found`, one per patched node, buried under ~950 downstream cross-reference
-errors. `validate_patch.py` diffs a `<value>`'s children against the live node, so
-it catches this in `Patches/` — it **cannot** catch it in a `Defs/` file you author
-outright, which has no existing node to diff against. When a def vanishes
-silently, diff it against a sibling in the same folder that survived. (Why:
-`references/patch-operations.md`.)
 
 **A mis-CASED enum value discards the whole target def, exactly like the `<li>`
-mistake above.** `Verse.ParseHelper.FromString` calls `Enum.Parse`
-case-SENSITIVELY, so `<viscosityClass>water</viscosityClass>` (lowercase) where
-the enum member is `Water` silently deletes the ENTIRE target def — not just the
-field. One generated compat patch wrote a lowercase value onto nine vanilla/DLC
-TerrainDefs and thereby deleted them outright, so every biome's water-terrain
-reference read null and NO map generated visible water. A generator that emits
-enum values must normalise them and REFUSE an unknown/wrongly-cased member
-rather than write it.
 
 **`Graphic_Random`'s `texPath` names a FOLDER, not a file stem.** The path is
-`Things/.../ScrapNest` with `ScrapNest_a/b/c.png` inside it — never
-`.../ScrapNest/ScrapNest`. `validate_patch.py` catches the stem form as a hard
-ERROR, but it can also over-escalate: a CORRECT vanilla `texPath` gets flagged
-as ERROR too once the mod ships its own `Textures/Things/` root, because the
-validator then treats `things/` (lowercase, vanilla's own convention) as
-colliding with the mod's own namespace. Read the actual FAIL reason before
-trusting the ERROR label on this one.
 
 **A `PatchOperationReplace` against a def YOUR OWN MOD declares wins silently —
-patches run after every def loads, same mod or not.** A generator-written
-compat/flora patch overwrote 21 of our own BiomeDefs' `wildPlants` for weeks
-because it ran later in load order than the hand-authored defs it was
-replacing; the biome shipped 4 stale donor plant names over 9 authored ones and
-generated 0 plants on a live map. Nothing in the normal workflow looks for "a
-generator patches a def we author" — check for that explicitly whenever a
-generated `Patches/` file and a hand-authored `Defs/` file touch the same
-defName.
 
 **Match the def's XML ELEMENT NAME, not `ThingDef`.** The loader reads the element
-name as the C# type, so `/Defs/ThingDef[…]` misses all 51 of VFE Pirates'
-`<VFEPirates.WarcasketDef>` pieces — write `/Defs/VFEPirates.WarcasketDef[…]`.
-Such a def still lives in `DefDatabase<ThingDef>` and dumps to `ThingDef.json`, so
-**only the mod's XML tells you the element name; the def dump never will.**
-`/Defs/*[defName="X"]` hits *every* class with that name — `ReduceWill` is both an
-`InteractionDef` and a `PrisonerInteractionModeDef` — so use it only when the
-class is what varies.
 
 **Patches run BEFORE `ParentName` inheritance resolves**, so a patch sees raw XML:
-`DA_Taraal`'s `<statBases>`, which it only inherits from `DA_BaseTaraal`, is
-simply absent and an `Add` into it fails. Guard on the container, not the leaf — a
-`Conditional` on `…/statBases` whose `<nomatch>` adds the whole element. And
-because `Sequence` aborts at its first failure, every op after that one is
-*untested*, not fine: in one 32-op block, positions 26–32 never ran and the log
-said nothing about them.
 
 **`PatchOperationRemove` deletes every match, not the first one.** There is no
-"remove one". If a def lists `<TropicalSwamp>` twice and you write the bare
-xpath, both disappear and the animal stops spawning there entirely. Use a
-positional predicate — `.../TropicalSwamp[2]` — and put the same predicate in the
-conditional test so the op self-disables once upstream fixes their file.
 
 **XML comments cannot contain a double hyphen.** `--` anywhere inside `<!-- -->`
-is a hard parse error, and it takes the whole file with it, not just the
-comment. Separator lines made of dashes and arrows written as `->` are the usual
-culprits. Use `===` for rules and `→` or `to` for arrows. Never do a
-find-and-replace of `->` across the file either: it corrupts every `-->`
-terminator into `-=>`.
 
 **Migrate by NODE, never by string.** defNames are unique within a def *type*, not
-across types: `OuterRim_Geonosian` is both a `XenotypeDef` and a `PawnKindDef`, and
-a file-wide rename of the xenotype also rewrote three `pawnGroupMakers` entries —
-an unresolvable `kind` there is **discarded at load with nothing in the log.** Name
-the xpath or parent element you are changing, then count references before and
-after: a xenotype swap touches one or two nodes, not eleven.
 
 The same blind find-and-replace also hits `<texPath>` values that happen to equal
-the old defName — a string match cannot tell "this is the identifier" from "this is
-a coincidentally-identical path." A defName rename turned `Thermal_Detonator_Thowable`
-and `ECD_Grenade_Thowable` into `RSW_*` in their own `texPath`, while the PNGs on disk
-kept the old names; both are `Graphic_Single`, so both would have rendered magenta.
-The def-level checks all passed — `texPath` is a free-text field, not a
-cross-reference, so nothing resolves it at patch time. **After any bulk rename,
-resolve every `texPath` against the files actually on disk**, not just against the
-renamed defs.
 
 **`MayRequire` and `PatchOperationFindMod` check the mod, not the def.**
-`MayRequire="VanillaExpanded.VWE"` passes as long as VWE is installed — even if
-VWE deleted the def you reference in its latest version. That is a live upstream
-bug class, not a hypothetical; it is why unresolved cross-references show up in
-stacks where every named mod is present. When you *depend* on a def existing,
-guard with `PatchOperationConditional` on the def itself, which tests reality
-rather than intent.
 
 🔴 **`MayRequire` on a bare `<Operation>` element inside a Patch file does
-NOTHING — MEASURED against `LoadedModManager.ApplyPatches()`/`PatchOperation`
-source.** Every operation runs unconditionally; `PatchOperation` itself has no
-field for it, and the `MayRequire` check only applies to top-level DEF nodes in
-the unified XML. Shipping an incident/comp-injection "gated" this way discards
-the target's WHOLE def file when the referenced type is absent (a dangling
-PawnKindDef this way once NRE'd a downstream mod's own loader and tripped
-RimWorld's corrupted-mods reset). **The only real gate on an `<Operation>` is
-`PatchOperationFindMod`.** Sweep any bare `MayRequire` on an `<Operation>` you
-find; it is silently unguarded (`MAYREQUIRE_OPERATION_INERT_SWEEP_1`).
 
 🔴 **`MayRequire` on the def's OWNING mod is not proof the def loads.**
-`LoadFolders.xml <li IfModActive="...">` can ship a def only when a THIRD mod is
-active — invisible to dump `packageId` attribution, since the dump just says
-which mod owns it, not which condition gated its folder. A biome `wildAnimals`
-reference to such a def null-crashes `CommonalityOfAnimal` the moment the
-gating mod is absent even though the owning mod is present. Fix: chain the
-gating mod's packageId into your own `MayRequire` too, not just the owning
-mod's (`GIDDYUP_NULLKEY_CRASH_1`).
 
 The reason this is so common is that **a mod can ship different defs depending on
 what else is loaded**, via `LoadFolders.xml` — so the def set is a function of the
-whole mod list, and "the mod is installed" tells you nothing about which of its
-defs exist. **When a reference goes missing while its owning mod is plainly
-present, read that mod's `LoadFolders.xml` before concluding anything**; the
-syntax and the real Vanilla-Animals-Expanded/Odyssey case are in
-`references/patch-operations.md`.
+
+→ full paragraph: `references/patch-operations.md`.
+
+→ full paragraphs and the incidents behind every rule above: `references/patch-operations.md` and `references/traps-xml-and-defs.md`.
 
 ### Which operation
 
@@ -397,30 +257,12 @@ shipped a renamed field.
 If your mod patches other mods' defs, it must load after every one of them.
 
 **`ParentName` resolves only against `Abstract="True"` defs declared with a
-`Name=` attribute — never against a `defName`.** Core's EMP damage def uses
-`ParentName="StunBase"` (`<DamageDef Name="StunBase" Abstract="True">`), not
-`ParentName="EMP"`; naming a concrete def gives `XML error: Could not find parent
-node named "EMP"` and the def is **discarded** whole. So resolve every
-outward-pointing name against the live load set before shipping a `Defs/` file:
-`ParentName` against `Name=` attributes, and `Class=`/`workerClass`/`thingClass`/
-`graphicClass` against loaded assemblies. `validate_patch.py` does both since
-2026-08-13; it still checks no field names, types or value ranges.
 
 **`ParentName` inheritance is load-order dependent.** A def whose `ParentName`
-names an abstract def in a mod that loads *later* does not inherit — at all.
-Everything the parent supplied is simply missing, and you get
-`XML error: Could not find parent node named "X"` plus a cascade of config
-errors about fields you never wrote. Do not assume the engine resolves
-inheritance across the whole combined document; it does not.
 
 **The damage escapes your mod**, and none of the stack traces name it. A failed
-inheritance breaks *vanilla* code that enumerates all defs of that type — worldgen
-included. If worldgen starts throwing, grep the log for `Could not find parent
-node` and `Config error in <YourDefPrefix>` before believing it is a vanilla bug.
 
 **Assert the order in code before every launch.** Not by eye, not by trusting the
-manager: resolve the load set, compare the index of your mod against each mod it
-patches, and fail loudly. One check per mod you reach into.
 
 **`references/load-order.md` holds the three NRE sites that proved it, the
 assertion snippet, and why the community rules database must not be hand-edited.**
@@ -428,61 +270,16 @@ Open it when an inheritance error appears, when writing the assertion, or before
 touching a sorter's rules database.
 
 🔴 **`ParentName` resolution keys on the `Name=` attribute in a FLAT NAMESPACE NOT
-SCOPED BY DEF TYPE.** Giving a `ThingDef` and its paired `PawnKindDef` the SAME
-`Name=` (never `defName`, which is fine) is a live landmine even when both live
-in the same mod, same file even — it stays dormant until something actually
-inherits via `ParentName` against that shared name, and the merge then silently
-pulls the wrong type's fields in (a `ThingDef`'s `<thingClass>`/`<statBases>`/etc.
-landing inside what should be a `PawnKindDef`), leaving fields like
-`PawnKindDef.race` null. This crashed a mod's own `GeneDefGenerator` at load with
-no error pointing at the real cause. Fix: give paired defs DISTINCT `Name=`
-attributes (suffix the `PawnKindDef`'s with `_Kind`); `defName` can still match.
-`validate_patch.py` without `--defs` does not catch this at all.
 
 🔴 **A same-mod `Patches/` load-order fix that sorts "after the one file I know
-adds the duplicate" is not enough if a THIRD file in the same folder also
-touches it** — it can sort after your fix's rename and silently re-break it on
-the very next restart. The only actually-safe filename sorts after EVERY
-current file in that `Patches/` folder: a `ZZZ_` prefix, confirmed against a
-fresh post-restart capture rather than "after the file(s) I have in mind."
 
 🔴 **`DefDatabase<T>.Add` does not override a repeated `<defName>` — it logs a
-red error and RANDOMIZES the new def's name every load** (`Source/Verse/
-DefDatabase.cs`). A batch of new defs whose `<defName>` accidentally duplicated
-the vanilla/donor def they were meant to replace would have been completely
-inert — spamming load errors while never actually taking ownership — because
-the "replacement" never got a stable identity. Always grep every new def
-batch's ACTUAL `<defName>` against its filename before staging; never trust the
-filename to match the content.
 
 ⚠️ **`AllLeafSubclasses()` means "nothing currently loaded subclasses this",
-not "concrete."** `RimWorld.AlertsReadout`'s constructor does
-`foreach (Type t in typeof(Alert).AllLeafSubclasses())
-Activator.CreateInstance(t)` with NO abstract check and NO try/catch. With no
-consumer mod loaded, an ABSTRACT base class of your own (meant to be
-subclassed by a future/optional consumer) becomes the "leaf" itself,
-`Activator.CreateInstance` throws `MissingMethodException` (abstract types have
-no ctor), and the uncaught exception crashes `AlertsReadout()` → `UIRoot_Play()`
-→ `Find.MapUI` stays null forever → every later `Update()`/`OnGUI()`/tick NREs
-on it, on every map, independent of which content mod (if any) is active. Fix:
-ship a sealed, always-inactive concrete leaf subclass alongside any such base
-class, so it is never the leaf regardless of which consumer mods are loaded.
-Same landmine applies to anything else using `AllLeafSubclasses` rather than
-`AllSubclassesNonAbstract`.
 
 ⚠️ **A self-referencing `ResearchProjectDef` prerequisite causes unconditional
-infinite recursion in vanilla `ResearchManager.FinishProject`** — there is no
-cycle/visited-set guard there at all. The result is an uncatchable
-`StackOverflowException`: silent, immediate process death, NO managed
-exception and NO crash-handler log line, hit right when that project's
-dependency chain gets walked. Symptom signature: several research completions
-log fine, then abrupt silence, process gone. An XML patch removing the
-self-reference is not sufficient on its own if a donor mod's OWN patch
-operation re-injects it at a different point in load order — a durable fix is
-a Harmony prefix on `ResearchManager.FinishProject` stripping any
-self-referencing prerequisite before the loop runs. Verify a "prerequisite
-fix" by reading the LIVE resolved def back after a fresh cold restart, not by
-trusting the patch file exists.
+
+→ full paragraphs and the incidents behind every rule above: `references/load-order.md`.
 
 ### Teach the mod manager, or it will keep undoing you
 
@@ -496,14 +293,8 @@ orphaned by a rename. 🔴 And you never block on it: `ModsConfig.xml`, load ord
 user rules are writable game up or down (owner, 2026-08-15). Only **assemblies** wait.
 
 🔴 **`<loadAfter>` is an ordering hint and is INVISIBLE to dependency closure.** If a
-mod SUPPLIES a class or texture another mod references, that reference belongs in
-`<modDependencies>`, not `<loadAfter>` with a comment explaining the intent — a
-reduced-mod-list builder that walks `<modDependencies>` will silently drop a
-`<loadAfter>`-only dependency, the referenced comp types fail to resolve, and **a
-missing comp type discards the whole def carrying it**, with no error naming
-which def vanished. The same applies to art: a mod supplying the only texture at
-a given path needs to be a declared dependency too, or a reduced list renders that
-def as a magenta X with no log line pointing at the missing mod.
+
+→ mechanism and the incident behind this: `references/load-order.md`.
 
 ---
 
@@ -657,3 +448,4 @@ External, when the references above don't cover it:
 [RimWorld Modding Resources hub](https://spdskatr.github.io/RWModdingResources/) ·
 [PatchOperations wiki](https://rimworldwiki.com/wiki/Modding_Tutorials/PatchOperations) ·
 [Zhentar's xpath guide](https://gist.github.com/Zhentar/4a1b71cea45b9337f70b30a21d868782)
+

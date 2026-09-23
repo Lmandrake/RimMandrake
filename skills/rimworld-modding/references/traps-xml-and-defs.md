@@ -406,3 +406,84 @@ one another on `Armoury/About.xml` before anyone found it
 prose comment into an XML file not to use `--` inside `<!-- -->`, and have it
 run `xml.etree.ElementTree.parse()` on the file afterward — ElementTree
 correctly rejects this; it is not a lenient parser here.
+
+---
+
+## Full paragraphs behind `SKILL.md` §4's compressed rules
+
+Each heading below matches one compressed rule in `SKILL.md` §4. The first line repeats the kept lead; the rest is what moved.
+
+### Mis-cased enum value discards the whole target def
+
+**A mis-CASED enum value discards the whole target def, exactly like the `<li>`
+mistake above.** `Verse.ParseHelper.FromString` calls `Enum.Parse`
+case-SENSITIVELY, so `<viscosityClass>water</viscosityClass>` (lowercase) where
+the enum member is `Water` silently deletes the ENTIRE target def — not just the
+field. One generated compat patch wrote a lowercase value onto nine vanilla/DLC
+TerrainDefs and thereby deleted them outright, so every biome's water-terrain
+reference read null and NO map generated visible water. A generator that emits
+enum values must normalise them and REFUSE an unknown/wrongly-cased member
+rather than write it.
+
+### `Graphic_Random` texPath names a folder, not a file stem
+
+**`Graphic_Random`'s `texPath` names a FOLDER, not a file stem.** The path is
+`Things/.../ScrapNest` with `ScrapNest_a/b/c.png` inside it — never
+`.../ScrapNest/ScrapNest`. `validate_patch.py` catches the stem form as a hard
+ERROR, but it can also over-escalate: a CORRECT vanilla `texPath` gets flagged
+as ERROR too once the mod ships its own `Textures/Things/` root, because the
+validator then treats `things/` (lowercase, vanilla's own convention) as
+colliding with the mod's own namespace. Read the actual FAIL reason before
+trusting the ERROR label on this one.
+
+### XML comments cannot contain a double hyphen
+
+**XML comments cannot contain a double hyphen.** `--` anywhere inside `<!-- -->`
+is a hard parse error, and it takes the whole file with it, not just the
+comment. Separator lines made of dashes and arrows written as `->` are the usual
+culprits. Use `===` for rules and `→` or `to` for arrows. Never do a
+find-and-replace of `->` across the file either: it corrupts every `-->`
+terminator into `-=>`.
+
+### Migrate by NODE, never by string
+
+**Migrate by NODE, never by string.** defNames are unique within a def *type*, not
+across types: `OuterRim_Geonosian` is both a `XenotypeDef` and a `PawnKindDef`, and
+a file-wide rename of the xenotype also rewrote three `pawnGroupMakers` entries —
+an unresolvable `kind` there is **discarded at load with nothing in the log.** Name
+the xpath or parent element you are changing, then count references before and
+after: a xenotype swap touches one or two nodes, not eleven.
+
+### Blind find-and-replace also hits `<texPath>` values
+
+The same blind find-and-replace also hits `<texPath>` values that happen to equal
+the old defName — a string match cannot tell "this is the identifier" from "this is
+a coincidentally-identical path." A defName rename turned `Thermal_Detonator_Thowable`
+and `ECD_Grenade_Thowable` into `RSW_*` in their own `texPath`, while the PNGs on disk
+kept the old names; both are `Graphic_Single`, so both would have rendered magenta.
+The def-level checks all passed — `texPath` is a free-text field, not a
+cross-reference, so nothing resolves it at patch time. **After any bulk rename,
+resolve every `texPath` against the files actually on disk**, not just against the
+renamed defs.
+
+### SKILL.md §1 — the grep-for-ground-truth example
+
+```bash
+# where the defs live
+RW="C:/Program Files (x86)/Steam/steamapps/common/RimWorld"
+WS="C:/Program Files (x86)/Steam/steamapps/workshop/content/294100"
+
+grep -rl 'defName>Armadillo<' "$RW/Data" "$WS" --include=*.xml
+```
+
+### SKILL.md §1 — the wildness/leatherLabel version-drift caveat, verbatim
+
+  ⚠️ That "loads anyway" is not universal: `<wildness>`/`<leatherLabel>` inside
+  `<race>` parse-fail as warnings but leave the `RaceProperties` malformed enough
+  to NRE downstream during corpse-gen `PreResolve` — which crashes the **whole
+  mod load**, not just that one def. `references/traps-xml-and-defs.md` has the
+  mechanism.
+
+### SKILL.md §4 — mis-cased enum, continued line
+
+mistake above.** `Verse.ParseHelper.FromString` calls `Enum.Parse`
