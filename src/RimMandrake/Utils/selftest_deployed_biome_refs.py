@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 720   # walks every deployed mod on the drvfs mount; 367 s measured 2026-09-23
 """
 selftest_deployed_biome_refs.py
 
