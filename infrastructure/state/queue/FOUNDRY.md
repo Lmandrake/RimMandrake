@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T21:08:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T21:12:35Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## CANON_CREATURE_REGEN_1 Regenerate every SW-canon creature from library guidance (gated on CANON_REFERENCE_LIBRARY_1 + pilot sheet grades); wyyyschokk blue-grey/yellow-cross is the exemplar
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Every SW-canon creature in the stack (the library's roster), re-rendered:
+prose:    infrastructure/state/items/CANON_CREATURE_REGEN_1.md
 
 # IN PROGRESS
 
@@ -674,15 +683,6 @@ target:   v1
 kind:     task
 summary:  1. A flora-specific grading sheet: our flora backlog (129 files exempted at
 prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md
-
-## CANON_CREATURE_REGEN_1 Regenerate every SW-canon creature from library guidance (gated on CANON_REFERENCE_LIBRARY_1 + pilot sheet grades); wyyyschokk blue-grey/yellow-cross is the exemplar
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Every SW-canon creature in the stack (the library's roster), re-rendered:
-prose:    infrastructure/state/items/CANON_CREATURE_REGEN_1.md
 
 ## WYYYSCHOKK_FANG_PENDANT_1 Wyyyschokk fang pendant: hunt trophy apparel, bravery social thoughts with Wildsteam/Blackstar/Deep Tribe (defNames VERIFY), trade good everywhere
 state:    doing
