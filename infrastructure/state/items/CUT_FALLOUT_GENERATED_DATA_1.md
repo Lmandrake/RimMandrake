@@ -169,3 +169,49 @@ pre-existing staleness, not touched here.
 5. (b) is now fully DONE — see item 3 above. Nothing left in this subtask.
 6. (c): a one-time hand clean of the live `Mod_3532608331_DeepStorageMod.xml` settings
    file, done at the keyboard.
+
+## (a) — DONE 2026-09-23 (FOUNDRY): `cast_assignment.csv` regenerated, 0 `BMT_` defNames left
+Re-verified fresh rather than trusting the 2026-09-19/20 numbers: `BIOME_CAST_PATCH_DEAD_NAMES_1`
+(closed 2026-09-20) already found `BiomeCast_Ashkarr.xml` fully dead and deleted it, so the
+precondition item §4 named is moot — that consumer no longer exists. `ANIMAL_TOLERANCES_JOIN_BROKEN_1`
+(closed 2026-09-20) already made `animal_tolerances.py`'s regen merge-safe (`pin_orphans()`), so
+that consumer was never actually at risk from a stale `cast_assignment.csv`. `ROSTERS_TO_CAST_
+BIOMECAST_DEFS_STALE_1` (closed 2026-09-20) already rebuilt `rosters_to_cast.py`'s biome-name join
+and regenerated the CSV once from clean rosters. **What was actually still open**: the file on disk
+had drifted stale again since that 2026-09-20 regenerate — `ROSTER_DEAD_BMT_NAMES_SWEEP_1` (still
+`proposed`, BENCH/MACBENCH, committed `949635655` earlier TODAY) renamed every live `BMT_` roster
+row to its `RSW_` port or moved it to `evictions`, and `fall_line.json`'s injection layer was
+deleted outright per an owner ruling (`fall_line.md §8a`, 2026-09-20) — neither had been synced
+into the derived CSV yet.
+
+Ran the sole sanctioned generator, `python3 design/Jawa/fauna/rosters_to_cast.py` (no `--out`, so
+it wrote the real file directly — its own docstring forbids hand-editing the CSV). Verified the 41
+BMT_→RSW_ renames and 7 drops (`BMT_ChemSnail`×2, `BMT_GlowBat`, `BMT_Pillbug`, `BMT_GiantSlug`,
+`BMT_GiantSnail`, `BMT_CaveSpider` — all six confirmed `disposition: cut-for-real` in the roster's
+own `evictions` array, citing the owner's 2026-09-20 "Yes cut the 6 fauna" ruling, not a call made
+here) are exactly what the already-clean rosters justify — not a decision, a sync. Result: **0 of
+353 rows carry a `BMT_` defName** (was 58 rows / 47 unique names). The ~66-row net drop beyond the
+BMT_ count (419→353) is `fall_line.json`'s already-ruled, already-committed injection-layer
+deletion (Mynock/OuterRim droids/Rat/Scavrat/etc. out of Desert/AridShrubland/ExtremeDesert) showing
+up in the same regenerate — confirmed via `git log`/roster diff before writing, not assumed.
+Commit: pending in this session.
+
+Not run this pass, deliberately: `animal_tolerances.py` regen/redeploy (its `pin_orphans()` guard
+already protects the live deployed patch from narrowing even with this CSV change — no urgency, and
+`deploy_custom_mods.py --apply` is expensive-list ceremony this pass avoided to not collide with the
+concurrent cold-load pass another window is running on the bridge today).
+
+## Flora blocker (item 3 above) — RE-VERIFIED CLEARED, `--write` still blocked by unrelated content
+`measure build` was stale (last capture 2026-09-21, current capture 2026-09-23T21-58-37Z) — rebuilt
+fresh (78,489 defs, 0 gaps). `biome_flora.py --check` no longer reports the TheForge 3-plant
+problem at all — confirms item 3's 2026-09-20 fix (RUT_FireLavender/RUT_HeatsinkFungus authored,
+RUT_Sagecrust confirmed pre-existing) is holding. **`--write` still refuses**, but on 7 entirely
+different problems (`RUT_FuelSnows`/`RUT_Umbra` FAMILIES-vs-roster mismatches, `RUT_AridShrubland`/
+`RUT_BlueDesert` authored-def-vs-roster drift) — none BMT_/cut-fallout shaped. All 7 trace to biomes
+already owned by other live, separately-tracked items (`BIOME_MOD_SPLIT_EXECUTION_1`,
+`TERMINALBIOMES_RM_MOD_BUILD_1`, `DESERT_FAMILY_PORT_EXECUTION_1`, `NIGHTSIDEICE_RM_MOD_BUILD_1`,
+`STILLSAND_RM_MOD_BUILD_1`, `LEANINGSCRUB_RM_MOD_BUILD_1`) — the ongoing biome-mod-split migration,
+mid-flight per CLAUDE.md's standing biome-painting ruling. Not this item's content to fix; left
+untouched rather than guessed at. `--write`/`--doc` and `FULL_LOAD_RESIDUE_TRIAGE_1`(5)'s live
+crossref re-confirmation both stay owed, gated on those other items landing and a cold load — out
+of scope for this offline pass.
