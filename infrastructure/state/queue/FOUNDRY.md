@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T18:57:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T19:22:14Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1950,8 +1950,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FEVERWOOD_TWO_FRONT_LURE_1.md yet — write one when you have something to say)
+thin:     no ## verify, no ## criteria
+summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §5, §6l.
 prose:    infrastructure/state/items/FEVERWOOD_TWO_FRONT_LURE_1.md
 
 ## FEVERWOOD_DIANOGA_PRISON_1 A prison tank, not a pen: it teaches, it produces, and it can get out
@@ -1960,6 +1960,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FEVERWOOD_DIANOGA_PRISON_1.md yet — write one when you have something to say)
+thin:     no ## verify, no ## criteria
+summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6j, §6m.
 prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_PRISON_1.md
