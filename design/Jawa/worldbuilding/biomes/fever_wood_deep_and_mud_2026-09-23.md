@@ -328,6 +328,90 @@ the ants *cannot take*. ⇒ Species placement becomes a real perimeter decision 
 
 ---
 
+## 6a. 🔴 The trunks are destructible but CANNOT FALL — and the existing build is right
+
+**Owner, verbatim:**
+
+> *"You can destroy them, but they are so interconnected above you that they can no longer
+> fall. So you can just mine right through one."*
+
+⇒ **There is no fall event in this biome, at all.** The crown is interlocked, so a destroyed
+tower is held up by its neighbours. You **mine through** a trunk the way you mine through
+rock.
+
+🔑 **This is the sharpest possible contrast with the Greentide**, where the fall of a giant
+is the largest event on the map (`greentide_tree_roster_2026-09-22.md`, row 22). One wetland
+drops its giants; this one cannot.
+
+✅ **CORRECTION to an earlier finding in this session.** I reported to the owner that the
+Fever Wood had a gap — *"no living, fellable giant tree def; no equivalent of
+`RM_Greatbole`"*. **That was wrong, and this ruling shows why:** `RUT_FeverTrunkHeartwood`
+is a mineable `ParentName="RockBase"` blob, which is *exactly* "destructible, never falls,
+mine right through." The already-shipped build was correct and the supposed gap did not
+exist. ⛔ Do not file work to add a fellable Fever Wood giant.
+
+⚠️ Still genuinely owed: the trunks are **mineable rock that reads as living wood**, and
+`GREATBOLE_BARK_EDGE_ART_1` is the sibling item for that same problem on the Greentide's
+blob (`graphicClass` is `Graphic_Single`, so there is no edge-vs-interior distinction).
+The Fever Wood inherits that defect and `RUT_FeverTrunkCore` additionally draws a retinted
+vanilla mining-drill sprite at 7×7 across the wood.
+
+---
+
+## 6b. Crown flora grows on a fertile bough-soil terrain
+
+Decision taken by question card: **a bespoke high-fertility terrain painted along the
+boughways and trunk tops**, so ordinary plant defs can root in the crown.
+
+🔴 **This exists because of a real engine finding, MEASURED this sitting:**
+`src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_Boughway.xml` ships **`fertility 0`** and
+an empty `<affordances>` block. ⇒ **As built, nothing can grow in the crown** — in a biome
+whose entire premise is that *the crown is where the life is*.
+
+⇒ Owed: a second terrain (working name *bough-soil*) with real fertility, painted by the
+same `RM_GenStep_RootCauseways` machinery that already paints the boughways — it gained a
+multi-pass `additionalPasses` field during the F6 build, so a second profile is the
+existing shape, not new code.
+
+⚠️ **Accepted cost of this choice:** crown plants are terrain-dependent, so they exist only
+where the boughway network reaches. Trunk tops away from a lane will be bare unless the
+genstep paints them too.
+
+---
+
+## 6c. The birds — alien, four roles, and one gated on our own mod
+
+Decisions taken by question card: **tameable companions, plumage worth money, AND nests
+worth raiding** — all three, not a choice between them.
+
+**Owner, verbatim:**
+
+> *"Some birds here steal items if you have Property mod. And these should be alien birds,
+> not just parrots. Very strange. Membranous, hairy, or weirdly shaped feathers."*
+
+| role | note |
+|---|---|
+| **tameable** | a private chorus you cultivate near the base |
+| **plumage** | a real trade good ⇒ 🔑 the temptation is set directly against the alarm, since selling feathers means shooting your own early-warning system |
+| **nests** | eggs/nest material in the crown, guarded by the adults — a reason to climb |
+| ⭐ **thieves** | some birds **steal items**, gated on the Property mod |
+
+✅ **"Property mod" is OURS, verified on disk this sitting:** packageId
+`mandrake.rm.property`, at `src/RimMandrake/RimProperty/` with its own `Assemblies/`. So the
+stealing behaviour is a clean `MayRequire="mandrake.rm.property"` on content we control —
+**not** a third-party dependency.
+
+🔴 **Art direction, and it is a hard requirement rather than flavour:** *alien birds, not
+parrots.* **Membranous, hairy, or weirdly-shaped feathers.** ⛔ A brightly-coloured
+Earth-parrot silhouette fails this brief even if the palette is exotic.
+
+⇒ Injection candidates already built and homeless, all fliers:  `RSW_CanCell`,
+`RSW_Neebray`, `RSW_Porg`, `RSW_Sacapillar`, `RSW_Mynock`. ⚠️ Each must be checked against
+the *membranous/hairy/strange* brief before use — `RSW_Porg` in particular is canonically
+bird-cute and may fail it.
+
+---
+
 ## 7. What this sitting did NOT settle
 
 - **The flora roster.** The Fever Wood still carries **7 donor plant rows** (5 Alpha
@@ -335,10 +419,6 @@ the ants *cannot take*. ⇒ Species placement becomes a real perimeter decision 
   for the tower-trunks."* The owner's standing instruction is to invent our own complete
   roster first and inject Star Wars opportunistically — so these 7 are placeholders to
   replace, not a base to extend.
-- ⚠️ **There is no living giant tree def at all.** `RUT_FeverTrunkHeartwood` and
-  `RUT_FeverTrunkCore` exist as the mineable blob and its bookkeeping marker, but **no
-  growing, fellable tree** — no equivalent of `RM_Greatbole`. The towers are currently a
-  single-tile donor shrub.
 - **The full fauna roster** beyond the guild and the birds.
 - **Free-tier naming** for our own eldritch horror, its tentacle types, the three
   sap-suckers, and the birds.
@@ -351,7 +431,9 @@ the ants *cannot take*. ⇒ Species placement becomes a real perimeter decision 
 - 🔑 **Why anything lives down there at all.** The mechanism that would have answered this —
   a sap-sucker that drops into the pool rather than be taken — was offered and declined
   (§6). The question is open and needs a different answer.
-- **How the birds' registers divide**, and how many there are.
+- **How the birds' call registers divide** (swoop / shrill / warble) and how many there are.
+  §6c settles what they are *to the player*, not how the chorus is voiced.
+- **Bough-soil's fertility value and which cells the genstep paints it on** (§6b).
 - **Whether the guild is three members or four** (§6's flagged reading).
 
 ---
