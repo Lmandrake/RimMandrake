@@ -77,11 +77,28 @@ planning to reuse it.
 
 ## the "gross symbiotic relationships"
 
-He asked for them, and chose the reacting hive over them as the *primary* depth mechanism — ⚠️ but he
-did not rule them out, and they were in his original wording. ⇒ Treat them as **content inside the
-reactive hive**, not as an alternative to it: other species farmed, milked, parasitised or kept in the
-chambers you pass through. Each is a creature plus a behaviour, so scope deliberately and propose a
-small number that read clearly rather than many that read as set dressing.
+✅ **RULED — owner, 2026-09-22: one of each, three chamber types.** Offered a single farmed-livestock
+relationship, a parasite, a kept guard, or all three, he took **all three**, each its own chamber the
+player passes through:
+
+1. **A farm** — creatures kept alive, herded, milked, fattened. 🔑 Already implied by his own earlier
+   ruling that ant raids haul thornbugs away **alive**: the hive is already a farm and nobody had drawn
+   it. ⇒ Start here, and make the farmed species the thornbug unless that biome's doc says otherwise.
+2. **A parasite the ants tolerate or cannot see** — something feeding on the hive itself. ⇒ This is the
+   horror chamber, and it is also the one that can be an *ally*: whatever eats ants is not your enemy.
+3. **A kept guard at the chokepoints** — a larger creature fed and housed by the hive, stationed where
+   corridors narrow. ⇒ This converts layout into difficulty: depth becomes gated rather than merely long.
+
+🔴 **This overrules the previous scope caution in this item, which warned that many relationships read
+as set dressing. He chose the largest build on this list deliberately** — descent is a tour of
+escalating relationships, and that IS the dungeon's content. ⛔ Do not trim it back to one later on
+scope grounds; bring him the cut if the build genuinely cannot carry three.
+
+⚠️ **Sequencing, because three creatures plus three behaviours is not one pass:** the guard is the
+riskiest — it is a boss fight, a different design problem from a hive that reacts, and it can overshadow
+the reaction mechanism he chose as the primary depth. ⇒ Build the farm first (cheapest, already implied),
+the parasite second (the horror payload), the guard last, and judge whether the guard is still needed
+once a reacting hive has been played.
 
 ## spec
 
@@ -90,7 +107,8 @@ small number that read clearly rather than many that read as set dressing.
 2. **Read the dungeon spec** and report what it actually provides for layout generation.
 3. **Design the reaction as one mechanism with the plant swarm**, in the shared behaviours assembly,
    extending `RM_CompPlantAlarm`'s pattern rather than duplicating it. State the propagation bound.
-4. Card him on the symbiotic relationships — how many, and which.
+4. Build the three chambers in the order given above — farm, parasite, guard — each as a creature plus
+   a behaviour, not as scenery. The relationships are ruled; ⛔ nothing left to card here.
 5. Mod Settings toggles per the standing rule.
 
 ## verify

@@ -27,11 +27,14 @@ three.** The seeding grenade and both toxin routes stay designed-but-unbuilt in 
 🔑 It is also the least mechanically risky of the three, so the category gets proven before the two
 features whose mechanisms may not be expressible at all are attempted.
 
-⚠️ **New question this creates, and it is not mine to decide:** the jungle's insect danger is now
-tiny swarming wasps (`GREENTIDE_WASP_SWARM_1`). His wording here is *"beasts"* — if the stench also
-repels wasps, the jungle's first grenade is also its insect counter, which is either elegant or
-defuses the new hazard entirely. Flagged there too; needs his call before the smoke's target set is
-written.
+✅ **And its target set is ruled too — owner, 2026-09-22: it repels the wasps as well.** Asked whether
+the jungle's new insect (`GREENTIDE_WASP_SWARM_1`) counts as a beast, he chose *"one tool, all the
+biome's animals."* ⇒ **The stench answers every animal threat in the biome, vertebrate or not.**
+
+🔑 That makes this grenade the jungle's key item rather than a situational one, which raises the bar on
+it: ⛔ **its cost is now load-bearing.** If smoke is cheap and stackable, it defuses both the predators
+and the wasps permanently, and two danger axes quietly close. Price it like the answer to a biome, not
+like a utility.
 
 ## the three he named
 

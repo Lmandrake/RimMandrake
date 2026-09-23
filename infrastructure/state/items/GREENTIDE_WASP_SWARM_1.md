@@ -85,10 +85,13 @@ You kill the first six without thinking, and then you look at the screen.
 - ⚠️ **A swarm you cannot escape is not tension, it is a death notice.** The wasps must lose
   interest, be outrunnable, or be stoppable by something the player can carry — otherwise the
   correct play is never to enter the jungle, which deletes the biome.
-- ⚠️ **`GREENTIDE_GRENADE_WEAPONS_1`'s stench smoke repels *beasts*.** Whether it repels wasps is
-  unruled and it is a genuine question — the answer decides whether the jungle's first grenade is
-  also the jungle's insect counter, which would be elegant or would defuse this feature
-  entirely. ⇒ Flag it to him; do not decide it.
+- 🔴 **The stench smoke DOES repel wasps — owner, 2026-09-22: one tool, all the biome's animals.**
+  ⇒ **A player carrying smoke has a full answer to this hazard**, so the wasps' threat window is
+  narrow by design: early, unprepared, out of smoke, or surprised too deep to throw. ⛔ Do not
+  compensate by making the swarm nastier — the ruling means smoke is the jungle's key tool and the
+  wasps are what teaches you to carry it. ⚠️ **The real risk this creates is the opposite one:** if
+  smoke is cheap and stacks, the wasps become a non-event after the first encounter. Bound the smoke's
+  cost, not the wasps' damage.
 - ⛔ **Do not let the hives become a farmable resource** (honey, chitin, venom for the toxin
   grenade) without a bound. A hazard you harvest on purpose is fine — that is the Frenzy's whole
   design — but it must cost something each time.
