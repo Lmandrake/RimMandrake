@@ -397,7 +397,207 @@ derived from what went in) is the single mechanism this rests on, and it is **UN
 on the Windows machine.** If it cannot, the fallback is a fixed set of derived *dish classes* chosen
 at cook time, which loses the free-scaling property and should be priced as a much weaker version.
 
-*(R4–R10 follow.)*
+### R4 — Regrowth: the only place a lost limb comes back
+
+**What it is.** The biome's defining property is growth that cannot be stopped — it is already
+shipped as a hazard in the Greatbole's regrowth crush-and-eject and the encroachment that heals a
+chamber shut. **Turn that same property on a body.** A pawn who has lost a hand, an eye, a lung or
+a leg is put through a procedure that can only be performed inside the biome, in a living chamber,
+over days — and grows the part back. Not a prosthetic. The original tissue.
+
+**What it costs.** Time in the worst place on the planet: the patient is immobile, in a chamber that
+is actively trying to close on them, needing continuous upkeep and a guard, for days. The procedure
+is unreliable and its failure mode is *more* growth, not less — an overgrowth condition that has to
+be cut back and leaves the pawn worse than the amputation did. And it consumes the perishable top
+grade of R2, so it competes directly with treating anyone else.
+
+**Why only here.** Nothing in the desert grows. That is the entire setting premise, and this is its
+strongest possible inversion: the clan's scarred, patched, mechanically-repaired people learn there
+is one place they can be made whole, and it is the place that will kill them. ⇒ **This is the
+category with the most emotional weight of anything in this document,** and it is the one a player
+tells someone else about.
+
+⛔ **Do not let it become the colony's prosthetics industry.** It is per-pawn, in-place, and the
+product is never an item — there is nothing to stockpile, ship or sell, and no bulk route can exist
+because the patient is the vessel. That property is what makes it safe to make this good.
+
+⚠️ Whether a mod can add a body part back to a living pawn, and what it takes, is **UNMEASURED —
+confirm on the Windows machine.**
+
+### R5 — Live bloodstock: genetic capital for a world with no animals
+
+**What it is.** Not meat, not leather — a **living, breeding animal brought out alive.** The biome
+carries 27 roster rows against a planet whose other regions carry a handful; this is the only place
+with a gene pool. What you take home is a herd: draft power, pack capacity, milk, wool-analogues,
+guard animals, and — the real prize — the ability to *breed more* without coming back.
+
+**What it costs.** Capture, containment and transit of something that fought you, through churnmud
+and a wet-bulb condition, without killing it. A crawler carrying a live cage carries little else.
+And most of the cast cannot survive the desert at all, so the first generations die at home, which
+is the price of finding the two or three lineages that can.
+
+**Why only here.** A desert scavenger clan's animals are inherited, not acquired; a clan that can
+found a *new* line has changed its own future. ⇒ Note this category is half-shipped already and
+unremarked: `RSW_Gelagrub` in the live roster is a docile neutroamine producer (§1d), i.e. an
+insect that pays rent. That is the proof of concept for the whole category.
+
+### R6 — Domestication: carrying the jungle home as a desert cultivar
+
+**What it is.** A long, failure-prone programme that takes a Greentide plant and produces a strain
+that will grow **at the home base**, in sand, under the desert sun. The output is not a crop — it is
+a *cultivar*, a permanent unlock, and it is deliberately a shadow of the original: a sixth of the
+yield, none of the volatile savours, none of the medicinal fraction.
+
+**What it costs.** Years of in-fiction time, repeated expeditions for fresh stock because each
+attempt consumes it, and a research burden. And the yield is bad on purpose.
+
+**Why only here.** There is nothing else on the planet worth domesticating.
+
+🔑 **This category exists for a structural reason, not a flavour one: it is the anti-relocation
+valve.** See §4c — the way you stop a player moving into the jungle is to let the jungle's value
+move to them instead, badly. A player who can grow a weak jungle staple in the desert has a reason
+to *stay* in the desert, and still has every reason to visit.
+
+### R7 — The living laboratory: research that exists nowhere else on the planet
+
+**What it is.** A **field station**, not a bench: research that can only be progressed by pawns
+physically inside the biome, working on things that are alive and uncooperative. The unlocks it
+gates are the ones that make everything else in this section usable — the vessels of R2, the
+procedure of R4, the containment of R5, the cultivar programme of R6 — plus a tier of biology and
+chemistry the desert simply has no specimens for.
+
+**What it costs.** Your best researcher, in the worst place, for a long time, at risk. A field
+station is a permanent upkeep line (§3a Phase 2's shipped negative feedback applies directly) and it
+does not progress while nobody is standing in it.
+
+**Why only here.** Knowledge is the purest "changes what you can do rather than what you have," and
+a dead planet is a place with nothing left to learn. ⇒ **R7 is the spine the other categories hang
+off**, which is an argument for building it early and an argument against building it first: it is
+worthless until there is something on the far side of it.
+
+### R8 — Concealment biology: the jungle teaches you not to be found
+
+**What it is.** The place is full of things that survive by not being seen, and two of them are
+already shipped as hazards — the aquatic ambusher that is invisible on deep water, and the silence
+cue. **Harvest that.** Scent-masking preparations that stop a predator or a manhunting animal
+committing to you; a resin that kills the noise a working colony makes; dyes and coatings that read
+as vegetation.
+
+**What it costs.** These are made from the hazards themselves, so obtaining them means engaging the
+things you are trying to hide from, and they are worn or applied — consumed, on a clock, per pawn
+per trip.
+
+**Why only here.** Desert survival is about endurance and water; *nothing hides in an open desert*,
+so no desert biology has ever needed to. ⇒ This is the category that changes **combat and hunting**,
+a domain none of the others touch, and it is the one that most directly rewards the player for
+understanding the biome's own bestiary.
+
+### R9 — Grown construction: a structure you plant instead of haul
+
+**What it is.** The Greatbole chamber (shipped) proves the idea — you mine a home into a living tree
+and paint it so it cannot heal shut. **Generalise it.** Living walls that thicken over days and
+repair themselves; root causeways the player can *extend* rather than merely find at mapgen (the
+gen-step is already shipped); a canopy that roofs an area by growing over it.
+
+**What it costs.** Time instead of materials, and maintenance forever. A grown structure is never
+finished: it keeps growing, and an untended one closes your own doorway — which is `EXPLOSIVE_PLANT_
+GROWTH_1`'s hazard reused verbatim as this category's cost. It works only where the biome's growth
+rate applies, so it cannot be exported (unlike R6, deliberately).
+
+**Why only here.** A scavenger clan's buildings are salvage, bolted together. Something *grown* is
+the strongest visual statement the biome can make about what it is.
+
+### R10 — Reputation: becoming the only source of things that cannot be shipped far
+
+**What it is.** A trade identity rather than a trade good. Because the top grades of R2 and R3 die
+in hours, **nobody who is not local can supply them** — so a clan holding the Greentide holds a
+monopoly that distance itself enforces. The payoff is social: buyers who come to you, standing
+orders, a faction attitude that improves because you are the only supplier, and visitors of kinds
+the desert never sees.
+
+**What it costs.** Being findable. Everything that makes you a destination makes you a target, and a
+known route is a route a raid can use.
+
+**Why only here.** ⇒ This is the category that converts the perishability constraint — the main
+*brake* on every other reward — into a reward in its own right, which is the most elegant move
+available and costs almost nothing to build once R2 and R3 exist.
+
+### 4b. Ranking, and what I would build first
+
+Ranked by **(owner's stated intent) × (payoff per unit of build) ÷ (mechanism risk)**, with the
+audit's own finding that the hazard half of several of these is *already shipped* weighing heavily.
+
+| # | category | build cost | rests on a mechanism we have | verdict |
+|---|---|---|---|---|
+| **1** | **R1 immunological capital** | **low** | hazard already live (7 disease rows) | **build first** |
+| **2** | **R3 cuisine system** | low–medium | needs one ingredient-memory mechanism | **build second** |
+| **3** | **R2 pharmacopoeia** | medium | ✅ live-prep template + sealant shipped | build third |
+| 4 | R10 reputation | low | free once R2/R3 exist | ride along with R2 |
+| 5 | R4 regrowth | high | regrowth hazard shipped; surgery side unknown | the marquee, build later |
+| 6 | R7 living laboratory | medium | none | needed before 5, 6, 8 go deep |
+| 7 | R5 live bloodstock | medium | roster + a live producer already exist | good, not urgent |
+| 8 | R8 concealment | medium | ambusher + silence cue shipped | strongest combat-side option |
+| 9 | R6 domestication | high | none | structurally important, slow payoff |
+| 10 | R9 grown construction | high | chamber + causeways shipped | best spectacle, worst cost |
+
+🔑 **Build R1 first, and it is not close.** Three reasons, all from §1:
+
+1. **The hazard is already paid for.** Seven disease rows are live on the biome today and currently
+   deliver nothing but attrition. R1 is the only category on this list that adds a *reward* by
+   completing a transaction that already exists, rather than by authoring a new hazard and a new
+   reward together.
+2. **It fixes the emptiest axis without touching it.** §2b found the "unique medicines" axis at
+   literally zero and the disease axis at seven-borrowed-rows. R1 converts the second into the
+   payoff for the first, and §1c's warning stands: authoring a disease of ours would be this
+   project's first ever and is a much bigger step than it looks.
+3. **It is the moment §3a's Phase 2 turns.** Without R1, Phase 2 is upkeep with no compensating
+   gain, and the progression in §3 does not actually have a hinge.
+
+**Then R3**, because it is the ask most at risk of being answered badly — a hundred meal defs would
+look like a lot of work and deliver none of what he asked for — and because its whole cost is tags.
+
+**R4 is the one to protect.** It is the best idea in this document and the easiest to spoil by
+building it early, small, and safe. It should arrive as an event the player has heard rumours of,
+not as a research tab entry.
+
+### 4c. Why this does not make the jungle the best place to live
+
+🔴 **The named risk: `allowFarmingCamps` is `true` on the live def (§1), `forageability` is 1.0, and
+the roster is full of staples. Abundance + farming + rich forage is exactly the recipe for the
+hazard biome becoming the optimal home base** — which would destroy both the desert premise and
+every reward above, since all of them are priced as expedition goods. Seven defences, five of which
+are already shipped:
+
+1. **The value is capability, and capability lands at home.** R1 marks a *pawn*, R6 produces a
+   *cultivar*, R7 unlocks *research*, R4 repairs a *body*. All four are carried out in the colonist
+   and spent at the base. ⇒ Moving in gains the player nothing they do not already get by visiting.
+2. **Everything else has a clock.** R2 and R3's top grades die in hours by construction, so a
+   settlement here cannot accumulate — it can only consume, exactly as a camp does.
+3. **No bulk route, on anything.** §2c's shipped precedent, verbatim in its own header: no
+   `bulkRecipeCount`, one dedicated vessel, no stockpilable half-product. Applied to every category
+   above without exception.
+4. **Upkeep is superlinear in presence, and this is already built.** Blower fuel, the decaying
+   dryness grant, chamber sealant, regrowth timers (§3a). A permanent settlement pays all of them
+   every day, forever, at a scale a three-day camp never does. 🔑 This is the single strongest lever
+   and it needed no new work.
+5. **Flatten market value on the top categories, on purpose.** Precedent: this project already
+   flattened a creature's market value to stop a money printer. Apply it here — the medicine and the
+   cuisine should be worth **using** and barely worth selling. R10 supplies the *social* payoff that
+   would otherwise have to be silver.
+6. **The abundance is calories and nothing else.** It is starch, fruit, sap and fish. It carries no
+   metal, no components, no stone worth the haul, no cloth-analogue at scale, and it cannot hold a
+   stable temperature. ⇒ **A colony that lives here eats magnificently and cannot build anything.**
+   That is the correct shape for "tremendous food abundance" that does not invert the game.
+7. **Farming here is worse than farming at home, and the reason is already an open item.**
+   Encroachment out-grows a tended plot (`EXPLOSIVE_PLANT_GROWTH_1`), and the fertility favours
+   jungle plants over anything the clan knows how to sow. ⇒ A farming camp should feed *itself* and
+   never export. That is a tuning stance, not new code, and it makes the live `allowFarmingCamps`
+   flag safe rather than dangerous.
+
+🔑 **And the framing that makes all seven coherent, already stated in §3a Phase 3: the Greentide is a
+destination, not a home.** Every defence above is a way of saying that in mechanics. ⛔ If a future
+pass finds itself adding a storable, sellable, bulk-producible Greentide good, it is undoing this
+section — and R6 is the sanctioned release valve for that pressure.
 
 ## 5. Card-ready questions for the owner
 
