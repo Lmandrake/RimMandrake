@@ -61,6 +61,17 @@ is merely late. This has already cost real time, so it is the first thing here:
 ⚠️ **It needs `rimworld/go_to_main_menu` first** if a game is already loaded —
 from inside a running colony it will not start a fresh one.
 
+🔴 **Never call it on the owner's FULL mod list — it has crashed the process outright, and
+also failed short of a crash, in different ways on different nights.** On one full ~599-mod
+run, `Player.log` stopped growing mid-worldgen for 5+ minutes and the process was simply
+gone, no crash dialog (2026-09-08). On another full ~590-mod run it never crashed but never
+produced a game either — real, reproducible `WorldGenStep`/pawn-generation exceptions (a
+MonoMod IL collision between two content mods), looping forever at `Entry`,
+`hasCurrentGame:false`, with nothing surfaced to the bridge caller — only `Player.log` shows
+it (2026-09-12). Either failure mode costs the load. **Build a `modset_builder.py` tier
+first** and quicktest on that; a normal boot-to-menu or a real save load on the full list is
+fine, only quicktest worldgen on that stack is dangerous.
+
 🔴 **And it DISCARDS the current map without further warning** — that is how it
 gets you a clean one. Anything another seat left on the old map is gone.
 **Announce before calling it, and check nobody is mid-audit.**
@@ -83,6 +94,11 @@ Nothing was stuck. **From the keyboard, an agent-driven worldgen and a hang are
 the same event** — there is no *"an agent is doing this"* indicator anywhere on
 RimWorld's loading screen.
 
+🔴 **A shared RimWorld process crashing during ANY quicktest map-gen attempt takes down
+the WHOLE process — including an already-loaded, stable campaign running in the same
+session.** "Just testing a quicktest" is not isolated from a live campaign; two separate
+agents hit this crashing the same stable, freshly-recovered campaign load (2026-09-09/10).
+
 **Announce anything that occupies the game's own UI to the OWNER before it
 starts, and report when it ends.** Announcing to peer seats does not count — they
 cannot see it and do not care, while the owner can see it and has no way to
@@ -101,6 +117,15 @@ calls.
 | does this art read correctly at game scale | **faction relations that took game-time to form** |
 | does this terrain/map-gen override appear — **a quicktest map IS a newly generated map** | **anything requiring the real 580-mod load order to differ from what is loaded now** |
 | does a silent failure actually fire (§4) | a claim about **save-file** contents |
+
+⚠️ **A trimmed tier list's own GenStep NREs and `StatRequest for null def` spam are its
+NORMAL behaviour, not a defect.** An unresolved `BiomePlantRecord`/`BiomeAnimalRecord`
+cross-reference leaves a record with a null `plant`/`animal` field IN the list (only
+`MayRequire` removes the entry outright), and code like
+`WildPlantSpawner.EnoughLowerOrderPlantsNearby` dereferences it unguarded. A BiomeDef
+naming 480 species across mods the tier doesn't load makes hundreds of these nulls the
+expected tier state — do not read that count as a defect, and do not let it stand in for
+anything about the full mod list (2026-09-20).
 
 **The rule of thumb:** a quicktest answers *"does this work?"* It never answers
 *"is this true of our campaign?"*
@@ -134,6 +159,19 @@ returns — it is forgotten, and rediscovered by losing a colony.
 ⚙️ **Saying which map a result came from still stands** — that is evidence
 hygiene, not preservation. A quicktest finding and a campaign finding are
 different claims regardless of how disposable both maps are.
+
+## 3a. 🔴 One crash signature that looks like several: a missing `thingClass` blocks EVERY route to a `Game`
+
+A null `thingClass` on ANY ThingDef — even something as unrelated as a colored
+water-bottle item — crashes `ReadingPolicyDatabase.GenerateStartingPolicies()` inside
+`Game..ctor()` with no null guard on the engine's side. That kills campaign load, new
+colony, AND quicktest identically, because all three construct a `Game`. It looks like
+"a crash loop across several different doors" and is actually one bug with one cause —
+hit twice independently (2026-09-09/10, then again 2026-09-12 on four newly-authored
+defs that silently blocked a full night of loads before being found). A `has null
+thingClass` config-error line is a game-breaking finding, not def-quality noise: check
+every new ThingDef has an explicit `thingClass` before the first live load, not after
+several failed loads get blamed on something else.
 
 ## 4. A clean log is not evidence
 
@@ -200,6 +238,10 @@ v1 gate ever asked for:
 `skills/rimbridge/references/traps.md`. That file is the home; this is the
 pointer.** They matter here because §4a tells you to trust an image:
 
+0. **`take_screenshot` names files by SECOND — two shots in the same second silently
+   return the same file.** md5sum any batch you take in quick succession and reshoot
+   with ~1.5 s sleeps between calls, or the second "result" is just the first file read
+   twice (2026-09-08).
 1. **Screenshots overwrite by FILENAME, so a stale image reads as a failed
    action.** Measured: eight Jawas spawned, `success: true` on all eight, and the
    screenshot showed **empty ground** — because the call reused a `fileName` from
@@ -255,6 +297,7 @@ single most expensive confusion in this project and it has three distinct shapes
 | the dump is STALE — captured under a different mod set | dump `modCount` != `<activeMods>` children. Compare the SET, never a timestamp |
 | the def loaded and was then DELETED at runtime by a dedup mod | present in the dump, absent in game, no log line |
 | the field is present and current but a **C# comp computes the real value** | the mod's assembly declares a member named after the field (`AdjustedArmorPenetration`, `get_ArmorPenetrationInt`). Read it out of the metadata with `ilprobe` — ⛔ not `strings`, which the blind-scan hook refuses and which sees a minority of names anyway. `references/disk-vs-runtime.md` has the command |
+| a **runtime enforcer silently rewrites a value your XML never claimed** | a startup mod capped `BiomeDef.plantDensity` at 1.0 and rescaled `wildPlantRegrowDays` for every biome, ours included — culprit identified only by diffing a raw `jawa/get_defs` read-back against the authored XML. The fix was a `LongEventHandler`+`GameComponent` enforcer that re-asserts our values after the offending mod runs, not an XML edit (2026-09-17) |
 
 The third is the newest and the nastiest, because nothing about the dump looks wrong. The
 in-game info card is the arbiter, and reading one costs no map, no spawn and no bridge
@@ -275,6 +318,13 @@ Ask in this order and stop at the first yes.
 
 **Before you put anything on the cold-load run-sheet item, run this list.** An item that a
 quicktest could have closed does not deserve a 25-minute slot.
+
+⚠️ **"Just needs a quicktest" is only true if the thing under test is already deployed AND
+in `ModsConfig`.** A design's "pre-build quicktest gate" can quietly be a
+deploy-+-mod-list-write-+-restart in disguise if the mod under test isn't loaded yet — in
+one case the right move was to implement both branches behind one def field rather than
+restart the owner's live 599-mod session to settle a one-field decision. Check that the
+subject is actually live before calling a check "just a quicktest" (2026-09-09).
 
 ## 7. 🔴 The validation plan — what this skill produces
 

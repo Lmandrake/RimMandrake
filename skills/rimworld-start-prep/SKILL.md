@@ -311,6 +311,15 @@ load — no error, no red text.
 packageId**, not just the live file, after any rename. Measured 2026-08-31,
 FOUNDRY, `RENAME_VERIFY_WINDOW_1`.
 
+### A list-merge dedupe must keep the DESTINATION's own slot for a shared id
+
+Any tool that merges two mod lists and drops duplicate ids must keep the
+**destination** list's own entry, not simply the first occurrence it walks. A
+first-occurrence dedupe run during a consolidation sprint dropped the load-last patch
+catch-alls to mid-order (582 → 188 in position) and aborted the whole 590-mod load
+(2026-09-08, `MOD_CONSOLIDATION_SPRINT_1`). Position in a merged list is load order, not
+bookkeeping — a naive set-union silently reorders it.
+
 ---
 
 ## 5. The safe ordering

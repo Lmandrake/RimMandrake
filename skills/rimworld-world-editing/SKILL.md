@@ -40,7 +40,7 @@ broken world. **Do not use it as your are-we-alive probe**; use `get_ui_state`.
 |---|---|---|
 | planet-wide stats, **per-biome tile counts** | `jawa/world_stats` | ✅ 295,732 tiles, 16.67% water, full biome histogram |
 | the generated faction roster | `jawa/list_factions` | ✅ 43 factions, defName + name + hostility |
-| what lives in a biome | `jawa/biome_probe` | ✅ |
+| what lives in a biome | `jawa/biome_probe` | ⚠️ NREs on ANY biome while Alpha Animals is loaded (its `CommonalityOfAnimal` postfix) — it walks `AllWildAnimals` regardless, even with `animals:false` (2026-09-21) |
 | run a debug action | `rimworld/execute_debug_action` | ✅ `Outputs\All Factions` returned real data |
 | resolve a debug path without running it | `rimworld/get_debug_action` | ✅ |
 | walk the debug tree | `rimworld/list_debug_action_children` | ✅ **except the `Actions` root** — see §2 |
@@ -156,6 +156,13 @@ wrong one look right:**
    so this cannot be checked offline at all.
 4. **`AddLandmark` does not enforce `IsValidTile`.** It will happily stack a landmark on a
    settlement and say nothing. Ordering is ours to police.
+5. **The same raw-vs-filtered split applies to mutators, and it can report something the
+   engine will never run.** `jawa/world_mutators_get` reads the RAW `mutatorsNullable`
+   field, while the engine's gensteps iterate the `Tile.Mutators` PROPERTY — Geological
+   Landforms Harmony-postfixes that property to filter out its own
+   `Odyssey_DisabledTileMutators`. So the bridge can report a mutator (e.g. `River`) the
+   engine has actually disabled. Check the raw-vs-filtered pair before blaming either side
+   for a missing effect (2026-09-18).
 
 ### 🔴 Five more, measured 2026-08-26 across ~11,000 mutator and 150 landmark writes
 
@@ -176,6 +183,11 @@ Full evidence in `references/mutators-and-objects.md`; these are the ones that c
 5. **`elevation <= 0` is water and generates NO ROCK** (`GenStep_RocksFromGrid` returns on
    `WaterCovered`), and a land tile's elevation is clamped to >= 1 m on save. A chasm's
    depth is the MAP elevation grid, not the world tile — you deepen it with hilliness.
+6. **A mutator's own biome whitelist can silently block a LANDMARK's auto-rolled
+   companion mutator, even on a biome the whitelist patch already covers.** `Tile.AddMutator`
+   (the direct API call a landmark placement uses) bypasses the gate that the normal roll
+   enforces. Also: a spec's own tile-count header can be stale — one claimed 236 tiles of a
+   biome where a fresh `world_tile_export` measured 223 (2026-09-18).
 
 Full element census and every signature:
 `design/Jawa/worldbuilding/WORLDMAP_BRIDGE_SURFACE.md`. Live facts: `LIVE.md`.
@@ -199,6 +211,12 @@ This is the same family as the map-screen trap where a modal froze and
 false-coloured the frame (`skills/rimbridge/references/traps.md`). **Rule: close
 every dialog before you photograph anything, and never diagnose a visual defect
 from a frame taken with one open.**
+
+⚠️ **The world view can wedge open under bridge driving, and every UI-reset call refuses
+to close it.** After a generated-map cull plus a run of world edits, `jawa/world_view
+{show:false}` can refuse (`wantedMode` reasserts `Planet`, `worldSelected` stays `true`),
+and `clear_selection`/`select_pawn`/`jump_camera_to_cell`/any main-tab call all fail the
+same way. **Save and reload is the reset that actually works** (2026-09-18).
 
 🔑 `jawa/clear_ui` does not close these — it reports `closedCount: 0` and lists the
 window under `remaining`. Use `close_window` with the exact type.
@@ -227,6 +245,14 @@ faction exist in the world", **not** "how many bases does it hold".
 not editing. Audit early.
 
 ---
+
+## 5a. A BiomeDef with no `workerClass` crashes ALL worldgen, not just its own tiles
+
+A `BiomeDef` that is `implemented` + `generatesNaturally` but ships no `workerClass`
+throws per-tile inside `WorldGenStep_Terrain.BiomeFrom` — and because that genstep runs
+for every tile on the planet, one bad biome kills the whole worldgen pass, not just the
+tiles that would use it. **Set `generatesNaturally=false` on any hand-placed,
+frozen-world biome that has no worker** (2026-09-17).
 
 ## 6. Repainting biomes — measured 2026-09-07, closing out two vanilla survivors
 
@@ -303,11 +329,15 @@ depression rather than a bump.
 ⚠️ **Exclude water biomes from any neighbour-majority vote**, or a fill paints the sea onto
 dry land — nearly done here twice.
 
-### 📌 Two signatures that are not what you would guess
+### 📌 Signatures that are not what you would guess
 
 * `jawa/world_view` takes **`centerTile`**, `altitude`, `northUp`, `show` — **not** lat/lon.
 * `jawa/world_neighbors` takes **`path`** and writes the whole adjacency CSV; it does not
   answer a single tile. Dump it once, then read it offline.
+* `jawa/world_landmarks_get` takes **`limit`**, not `range`.
+* `world_features` objects key the id as **`uniqueID`**, not `featureId` — and
+  `world_features_set` assign/update/delete needs that `uniqueID`. A wrong name returns
+  `None` silently, same as any other unknown-param drop (2026-09-08).
 
 Both were caught by `rimbridge_client`'s param guard, which refuses an undeclared name
 rather than letting the bridge discard it and report success. Drive the bridge through that

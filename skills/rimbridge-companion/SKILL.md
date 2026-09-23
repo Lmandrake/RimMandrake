@@ -66,6 +66,22 @@ python.exe   D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\prove_<thing>.py
 * On the 13-mod minimal list a cold load is **22 s** and a quicktest world **5 s** — both
   measured. The build and prove steps are not separately timed, so **"about a minute" is
   practice, not a benchmark.** See the `rimworld-load-round` skill for the swap.
+* ⚠️ **`launch_and_wait.sh`'s EXIT CODE is not the ready signal, and it can be flatly
+  wrong.** It once printed `TIMEOUT after 273s` on a cold load that went on to succeed at
+  1005 s. Poll `Player.log` yourself for this run's actual bridge-ready line after
+  confirming the log truncated (§ its own wait logic) — do not treat a non-zero exit as
+  proof the load failed (2026-09-21).
+
+🔴 **A background fork sharing this session's OS processes can register a `[Tool]` name
+that collides with one the foreground just committed** — there is only one
+`RimWorld.exe` and one deployed `BridgeTools` DLL on the machine. A fork independently
+adding `jawa/visibility_report` while the foreground had just committed a tool of the
+same name produced *"Capability alias 'jawa/visibility_report' is already registered"*,
+which killed the WHOLE `jawa-bench` tool provider — every tool, not just the duplicate —
+until the next restart. Before dispatching any fork/subagent that might touch
+`src/RimMandrake/bridgetools/`, deploy, or `taskkill.exe`/relaunch RimWorld, either keep
+it scoped away from bridge-companion work or grep the tool name against the current tree
+first, in both processes (2026-09-19).
 
 ---
 
@@ -159,6 +175,13 @@ gate `fire_incident` and `send_letter` use.
 |---|---|
 | `CANNOT DEPLOY WHILE RIMWORLD IS RUNNING` | the OS holds the DLL. Kill the game |
 | `THIS DEPLOY WOULD REMOVE TOOLS` | you forgot `--gm`, **or** a docstring made a phantom name |
+
+⚠️ **Without `--gm` this can print ~40 lines, far more than the doc comment implies.**
+`build.py`'s own comment says only `jawa/fire_incident`/`jawa/send_letter` are
+`JawaGmTools`-gated, but in practice many more tools (weather/incident/lord/social/
+mech-cluster) sit behind the same flag. This reads like missing source or a broken
+checkout — it is just the flag. Re-run with `--gm` before concluding anything is
+actually missing (2026-09-19).
 | `*** DRIFT *** same commit, DIFFERENT BYTES` | uncommitted source. Expected mid-session |
 | `built from a DIFFERENT COMMIT` | normal after any commit |
 
