@@ -48,7 +48,7 @@ sheet defNames are noted separately where present.
 | 9 | LeaningScrub | arid_shrubland.md | YES (arid_shrubland.md:3) | YES (rosters/arid_shrubland.json: 11 defs) | YES (rosters/arid_shrubland.json: 41 defs) | YES (arid_shrubland.md:32-33,37 insolation/hilliness/temp table) | 0 | WIRING-READY | — |
 | 10 | PoisonForest | poison_forest.md | YES (poison_forest.md:3) | YES (rosters/poison_forest.json: 9 defs) | YES (rosters/poison_forest.json: 24 defs) | YES (poison_forest.md:33-35 temp median/p10/p90) | 0 | WIRING-READY | — |
 | 11 | TerminalBiomes | the_scald.md, kits/scald_kit_spec.md, the_propane_lakes.md, terminator_sea.md, the_twilight_deep.md, the_grey_deep.md | YES (the_scald.md:3 + 4 siblings, all FROZEN) | **NO** (rosters/the_scald.json flora=0, the_grey_sea.json flora=0, the_twilight_sea.json flora=0; only rosters/the_propane_lakes.json has 4 — 3 of 4 sub-biome rosters are empty) | YES (the_scald.json 8, the_propane_lakes.json 6, the_grey_sea.json 8, the_twilight_sea.json 15 defs) | YES (the_scald.md:29; the_propane_lakes.md:19,28,36; terminator_sea.md:70,91,226) | 1 (scald_kit_spec.md:166 `?? false` — C# null-coalescing snippet, not a design gap; all 5 sheets otherwise 0) | DESIGN-PASS-OWED | flora near-empty: scald/grey-sea/twilight-sea rosters carry 0 plant defs |
-| 12 | RustCathedral | the_rust_cathedral.md, kits/rust_cathedral_kit_spec.md | YES (the_rust_cathedral.md:3) | **NO** (rosters/the_rust_cathedral.json: flora=0) | YES-thin (rosters/the_rust_cathedral.json: 3 defs) | YES (the_rust_cathedral.md:35 temp median 62.5°C, rain~zero) | 0 | DESIGN-PASS-OWED | flora roster empty — rosters/the_rust_cathedral.json carries 0 plant defs |
+| 12 | RustCathedral | the_rust_cathedral.md, kits/rust_cathedral_kit_spec.md | YES (the_rust_cathedral.md:3) | YES-by-law (rosters/the_rust_cathedral.json `flora_purged: ALL`; sheet hard-bans plant life, `biome_flora.py` marks it PLANTLESS) | YES-thin (rosters/the_rust_cathedral.json: 3 defs) | YES (the_rust_cathedral.md:35 temp median 62.5°C, rain~zero) | 0 | WIRING-READY | flora zero is a RULING, not a gap (corrected 2026-09-23) |
 | 13 | Greentide | the_greentide.md, kits/greentide_kit_spec.md | YES (the_greentide.md:3) | YES (rosters/the_greentide.json: 11 defs) | YES (rosters/the_greentide.json: 22 defs) | YES (the_greentide.md:26,30,37,126 tile share, temp median, wet-bulb) | 1 (the_greentide.md:43 `diseaseMtbDays 50` — field-name false positive on "TBD", not a real gap) | WIRING-READY | — |
 | 14 | WeepingStones | weeping_stones.md | YES (weeping_stones.md:3) | YES (rosters/weeping_stones.json: 4 defs) | YES (rosters/weeping_stones.json: 10 defs) | YES (weeping_stones.md:35,53,74 temp p10/p90, elevation) | 0 | WIRING-READY | — |
 | 15 | Pyrelands | the_pyrelands.md | YES (the_pyrelands.md:3) | YES-thin (rosters/the_pyrelands.json: 1 def — RM_FE_Plant_Quickgrass) | YES (rosters/the_pyrelands.json: 14 defs) | YES (the_pyrelands.md:30 sun/temp median) | 0 | WIRING-READY | flora roster is only 1 def — see UNCERTAIN |
@@ -84,15 +84,15 @@ sheet defNames are noted separately where present.
 22. FeverWood
 23. TheSump
 
-20 of 24 (NightsideIce re-graded 2026-09-23).
+21 of 24 (NightsideIce and RustCathedral re-graded 2026-09-23).
 
 ## DESIGN-PASS-OWED (missing criterion each)
 
 5. ~~NightsideIce~~ — RE-GRADED WIRING-READY 2026-09-23: the empty flora roster is the sheet's §6 law (no photosynthetic life), recorded in the roster's `flora_purged`, not a gap
 11. TerminalBiomes — flora: 3 of 4 sub-biome rosters (scald/grey-sea/twilight-sea) carry 0 plant defs
-12. RustCathedral — flora: roster (`rosters/the_rust_cathedral.json`) has 0 plant defs
+12. ~~RustCathedral~~ — RE-GRADED WIRING-READY 2026-09-23: the empty flora roster is the frozen sheet's hard ban, recorded as `flora_purged: ALL`, not a gap
 19. Miasma — open: literal count is 3, but all three are `diseaseMtbDays` field-name hits, not real gaps (see UNCERTAIN)
 24. LanternDeeps — flora: roster (`rosters/the_lantern_deeps.json`) has 0 plant defs; species mix beyond 3 imported fauna still Owed
 
-4 of 24 (after the NightsideIce re-grade).
+3 of 24 (after the NightsideIce and RustCathedral re-grades). ⚠️ The "flora=0 ⇒ owed" test is wrong for any sheet that RULES plantlessness — check the roster's `flora_purged` before grading the seas the same way.
 
