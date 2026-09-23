@@ -26,8 +26,10 @@ python skills/generating-images/scripts/codex_image.py edit \
 
 `--image` may repeat for multi-image edits. **Order is meaningful** — refer to
 them by index in the prompt ("use image 1 as the subject and image 2 for
-style"). Add `--chroma-key '#00ff00'` if the result needs alpha, then cut it
-out with `chroma_key.py` exactly as in `generating-images`.
+style"). If the result needs alpha, ask for a transparent background directly
+in the prompt — there is no `--chroma-key` flag on `edit` any more (removed
+2026-09-06; see `../generating-images/SKILL.md`). `chroma_key.py` is now a
+standalone post-process script, not something `edit` wires in for you.
 
 ## State invariants, every single time
 

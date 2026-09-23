@@ -133,6 +133,14 @@ Where a ruling **does** exist:
   often carries verbatim instructions ("Follow #3 closely", "Make it Olive
   colored"). Use the file it names, not your own pick from the directory.
 
+⚠️ **Reading a drafted checklist to the owner line by line is how you find out
+which items were never his intent.** One sitting reading a `## Must show`-style
+checklist produced three rulings that DELETED art, including one that
+dissolved a doc's own self-described hardest, precedent-less asset into an
+asset already on the list. A line he cannot accept is usually a design claim
+somebody invented and never actually tested against his intent — not a
+sourcing error.
+
 ---
 
 ## 5. ⛔ Cosmetic changes need the owner's permission FIRST

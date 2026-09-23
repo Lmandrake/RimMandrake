@@ -1,6 +1,6 @@
 ---
 name: generating-images
-description: Generates raster images from a text prompt by driving the Codex CLI's built-in $imagegen tool, then retrieves, inspects and validates the result locally. Use when asked to create, generate, draw, render or make an image, texture, sprite, icon, concept art or mockup, and when an image with a transparent background is needed. Covers the chroma-key workflow that is the only route to alpha on a ChatGPT-auth Codex install. For modifying an image that already exists, use editing-images instead.
+description: Generates raster images from a text prompt by driving the Codex CLI's built-in $imagegen tool, then retrieves, inspects and validates the result locally. Use when asked to create, generate, draw, render or make an image, texture, sprite, icon, concept art or mockup, and when an image with a transparent background is needed. Covers asking the built-in tool for real alpha directly — the only route to transparency on a ChatGPT-auth Codex install. For modifying an image that already exists, use editing-images instead.
 ---
 
 # Generating images through Codex
@@ -30,43 +30,35 @@ python skills/generating-images/scripts/codex_image.py generate \
   --out src/Jawa/art_bench/smelter.png
 ```
 
-For anything needing transparency, add `--chroma-key '#00ff00'` and then cut it
-out — see below. Add `--dry-run` to see the resolved command and final prompt
-without spending a generation.
+For anything needing transparency, ask for it directly in the prompt (see
+below). Add `--dry-run` to see the resolved command and final prompt without
+spending a generation.
 
-## ⚠️ Transparency is a two-step process, and there is no shortcut
+## ⚠️ Transparency comes from the prompt now, not a chroma key
 
-The built-in `image_gen` tool **cannot produce a transparent background.** True
-model-native transparency needs `gpt-image-1.5 --background transparent`, which
-runs through the CLI fallback and requires an `OPENAI_API_KEY`. This machine
-authenticates as `auth_mode: chatgpt`, which does **not** provide one.
-
-So the only route to alpha is: generate on a flat key, remove it locally.
+**Changed 2026-09-06 — there is no `--chroma-key` flag on `generate`/`edit` any
+more.** The built-in `image_gen` tool on this `chatgpt`-auth install emits a
+**real alpha channel directly** when the prompt asks for one — MEASURED:
+1448x1086 RGBA, 55.7% alpha-0, all four corners `(0,0,0,0)`, 0.28% mid-alpha, no
+rim or halo — cleaner than a keyed cut ever was. Ask for transparency in the
+prompt itself; do not generate onto a flat key colour expecting to cut it out.
 
 ```bash
-# 1. generate on a flat key background
 python skills/generating-images/scripts/codex_image.py generate \
-  --prompt "a brass astrolabe, top-down, centred" \
-  --chroma-key '#00ff00' \
-  --out src/Jawa/art_bench/astrolabe_raw.png
-
-# 2. convert the key to alpha
-python skills/generating-images/scripts/chroma_key.py \
-  --input src/Jawa/art_bench/astrolabe_raw.png \
+  --prompt "a brass astrolabe, top-down, centred, on a fully transparent background" \
   --out src/Jawa/art_bench/astrolabe.png
 ```
 
-`chroma_key.py` auto-detects the key from the border, applies a soft matte so
-edges stay antialiased, despills the key hue from the rim, and **validates its
-own output** — it warns and exits non-zero if the subject vanished, if nothing
-was removed, or if any corner is still opaque.
+`chroma_key.py` still exists as a **standalone post-process script** for the
+rare case that genuinely needs to key out a flat background it already has
+(e.g. `build_sea_facings.py` calls it directly) — it is no longer wired into
+`codex_image.py generate`/`edit`, and reaching for its `--chroma-key` flag on
+either subcommand will fail: the flag was removed with the generation path,
+not merely deprecated.
 
-**Choosing a key colour.** Default `#00ff00`. Use `#ff00ff` if the subject is
-green. Avoid `#0000ff` for blue subjects. The rule is simply that the key must
-not appear in the subject; when it does, the subject gets holes punched in it
-and coverage drops, which the validator will tell you about.
-
-If a thin coloured fringe survives, re-run with `--edge-contract`.
+`gpt-image-1.5 --background transparent` (the deterministic CLI fallback) still
+requires an `OPENAI_API_KEY`, which this machine's `auth_mode: chatgpt` does not
+provide — irrelevant now that the built-in tool gives real alpha for free.
 
 ## Always look at what you got
 
@@ -146,10 +138,18 @@ both fitted the evidence to hand, and both were wrong because the sample was sma
 and confounded. ⇒ **Before blaming a component, run the simplest possible version of
 the call by hand.** That took 77 seconds and settled it.
 
+⚠️ **Concurrent workers collide on the shared harvest dir.** Two codex `image_gen`
+workers running at once can both land in the same `CODEX_HOME`'s generated-output
+folder, and one worker's harvest picks up the OTHER worker's render as its own —
+an unrelated subject silently reported as a success (BENCH 2026-09-14). Serialize
+generation, or give each worker its own `--codex-home` (and therefore its own
+harvest dir) rather than sharing the default.
+
 ## Validation plan — what you owe whoever checks this
 
-`chroma_key.py` validates its own output, and that is a claim about the file,
-not about the picture. Whoever asked for the image is the one who decides it is
+Whoever asked for the image is the one who decides it is right, and their look
+costs more than yours — so hand the image over with the plan for checking it,
+not just the file. Whoever asked for the image is the one who decides it is
 right, and their look costs more than yours — so hand the image over with the
 plan for checking it, including the prediction you made before you looked.
 
