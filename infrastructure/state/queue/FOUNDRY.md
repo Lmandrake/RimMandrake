@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T06:02:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T06:33:14Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1821,7 +1821,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
-summary:  1. Settle the delivery route first (question 5 above) — it changes whether this is an item, a
+summary:  1. Name the source plant in the 21-row roster (GREENTIDEJUNGLETREEROSTER1) the dose is
 prose:    infrastructure/state/items/GREENTIDE_FRENZY_DISEASE_1.md
 
 ## GREENTIDE_GRENADE_WEAPONS_1 Jungle grenades: stench, seeding and toxin
@@ -1831,7 +1831,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
-summary:  1. Card him on scope first — three grenades is a lot; which of the three is the one to prove the
+summary:  1. Build the stench smoke only (ruled above). ⛔ Do not open the seeding grenade or either toxin
 prose:    infrastructure/state/items/GREENTIDE_GRENADE_WEAPONS_1.md
 
 ## CONTAGION_GENOME_ORGAN_GROWING_1 Grow a colonist's organs inside a Contagion amoeba
@@ -1860,6 +1860,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREENTIDE_WASP_SWARM_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Design this as the shared reaction mechanism's first proof, in mandrake.rm.creaturebehaviors,
 prose:    infrastructure/state/items/GREENTIDE_WASP_SWARM_1.md
+
+## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/REACTION_MECHANISM_GENERALISE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/REACTION_MECHANISM_GENERALISE_1.md
