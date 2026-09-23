@@ -1,5 +1,51 @@
 # GREENTIDE_JUNGLE_TREE_ROSTER_1 — ten-plus jungle trees of our own, plus the signature giant
 
+## ✅ Three further rulings, 2026-09-22 — after the 21-row roster was proposed
+
+### 1. 🔴 A FELLABLE GIANT STILL EXISTS. The landmark is not the only giant.
+
+He earlier answered *"which tree is the signature huge tree?"* with **the one already built** —
+`RUT_GreatboleCore`. The design pass then found that this **breaks the wood economy**, and the
+finding is MEASURED and correct:
+
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_GreatboleCore.xml:49` — `deconstructible
+  false`. It cannot be felled.
+- `design/Jawa/worldbuilding/biomes/the_greentide.md:199` — *"True hardwood — only from the heart of
+  fallen giants."*
+- `the_greentide.md:214` — *"The tree ladder runs: normal trees (fall) → giants (crack, fall, hardwood
+  jackpot)."*
+
+⇒ Choosing a non-fellable landmark removed the rung the premium wood came from. Put to him as a card,
+he ruled: **keep a fellable giant too.** The landmark stays the built structure; a separate huge
+fellable tree also exists — *not* the signature, simply the largest thing that falls.
+
+🔑 **So the roster owes a fellable giant row after all**, and it is what finally gives
+`RM_FellableTreeExtension` / `CompProperties_CrackFall` real content instead of a placeholder.
+⛔ Their roles must stay visibly distinct — one is a landmark you mine, one is a tree that comes down
+— or they read as redundant.
+⚠️ The earlier instruction in this item and in the roster document to design **no** new giant is
+superseded by this.
+
+### 2. Foraging yields the new fruit plant, not a vanilla berry
+
+`RM_Greentide` currently has `foragedFood` `RawBerries` (MEASURED). He ruled the roster's own fruit
+plant replaces it. ⚠️ Its nutrition and value now matter where a stock berry's did not — set them
+deliberately rather than inheriting.
+
+### 3. The humming grove is a QUESTION, not a mechanic — `GREENTIDE_HUMMING_GROVE_1`
+
+He asked whether trees could hum at differing frequencies to make a soundscape that shifts as you
+walk. ⛔ Unmeasurable on the Mac, and **do not infer it works from the Rust Cathedral's shipped hum** —
+that is map-wide and camera-attached, not positional. There is also a recorded obstacle (no partial
+volume ramp on sustainers) and a signature collision with the Cathedral. All of it is on that item.
+
+### 🔴 And one thing that needs the Desktop before the roster can be authored
+
+The fire ruling — *"Fire will harm and burn things, but no they do not catch fire themselves, just
+take damage"* — **may not be expressible as a single `Flammability` value at all.** A value low enough
+to prevent ignition may also prevent fire damage, which would break the first half of the ruling.
+UNMEASURABLE here. Settle it against the engine before authoring 21 rows that all depend on it.
+
 ## the ruling
 
 **Owner, 2026-09-22**, verbatim, answering a card that asked whether the generic Greentide's
