@@ -30,7 +30,13 @@
   "defNames": [
     "RUT_TwilightSea"
   ],
-  "evictions": [],
+  "evictions": [
+    {
+      "def": "RSW_Megakrill",
+      "disposition": "fishTypes-only",
+      "reason": "NOT a wildAnimals spawn. Its own law: \"still a FISHING RESULT, never a wildAnimals spawn\" (owner ruling 2026-09-10). Moved out of fauna 2026-09-23 per ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 1 - bookkeeping, not a new decision. NOTE this is NOT a cut from the biome: the species belongs in RUT_TwilightSea's <fishTypes> block, which does not exist yet (MEASURED 2026-09-23: fishTypes ABSENT on both RUT_TwilightSea and RUT_GreySea). Owed inside TERMINALBIOMES_RM_MOD_BUILD_1. Carried commonality was 0.5."
+    }
+  ],
   "fauna": [
     {
       "action": "import",
@@ -76,26 +82,20 @@
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_Megakrill",
-      "law": "owner review 2026-09 (round2 move mapping): Fishing result, the Grey Sea | RETARGET: the_twilight_deep — still a FISHING RESULT, never a wildAnimals spawn (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea)"
+      "def": "RSW_MutatingTumorfishAdult",
+      "law": "owner review 2026-09 (round2 move mapping): Grey Sea | RETARGET: the_twilight_deep (schooling/multiples) (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea) | SURFACE-VS-FLOOR SETTLED 2026-09-23 (ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 2): there is NO separate floor BiomeDef. MEASURED - the_twilight_deep.md and the_grey_deep.md exist as design SHEETS, but no RUT_TwilightDeep/RUT_GreyDeep def and no deep roster exist anywhere in src/. So the sea's floor and its catch both live on the ONE sea def: floor residents in <wildAnimals>, the catch in <fishTypes>. A 'retarget to the deep' therefore means this same def's wildAnimals. Renamed to our own RSW_ port 2026-09-23; admission was already ruled, so the rename asserts nothing new. NOT YET WIRED, and deliberately: whether <wildAnimals> spawn at all on an impassable=true biome is an ENGINE question, UNMEASURABLE on the Mac, and both seas are impassable=true (MEASURED). The two entries already there (AA_Aerofleet, RSW_Lanternwhale/RSW_Reefback) are somebody's bet, not proof. NEXT: test impassable-water spawning on the Desktop, then wire inside TERMINALBIOMES_RM_MOD_BUILD_1."
     },
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_MutatingTumorfishAdult",
-      "law": "owner review 2026-09 (round2 move mapping): Grey Sea | RETARGET: the_twilight_deep (schooling/multiples) (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea)"
+      "def": "RSW_MutatingTumorfishFry",
+      "law": "owner review 2026-09 (round2 move mapping): Grey Sea | RETARGET: the_twilight_deep (schooling/multiples) (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea) | SURFACE-VS-FLOOR SETTLED 2026-09-23 (ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 2): there is NO separate floor BiomeDef. MEASURED - the_twilight_deep.md and the_grey_deep.md exist as design SHEETS, but no RUT_TwilightDeep/RUT_GreyDeep def and no deep roster exist anywhere in src/. So the sea's floor and its catch both live on the ONE sea def: floor residents in <wildAnimals>, the catch in <fishTypes>. A 'retarget to the deep' therefore means this same def's wildAnimals. Renamed to our own RSW_ port 2026-09-23; admission was already ruled, so the rename asserts nothing new. NOT YET WIRED, and deliberately: whether <wildAnimals> spawn at all on an impassable=true biome is an ENGINE question, UNMEASURABLE on the Mac, and both seas are impassable=true (MEASURED). The two entries already there (AA_Aerofleet, RSW_Lanternwhale/RSW_Reefback) are somebody's bet, not proof. NEXT: test impassable-water spawning on the Desktop, then wire inside TERMINALBIOMES_RM_MOD_BUILD_1."
     },
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_MutatingTumorfishFry",
-      "law": "owner review 2026-09 (round2 move mapping): Grey Sea | RETARGET: the_twilight_deep (schooling/multiples) (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea)"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "BMT_MutatingTumorfishSpawn",
-      "law": "owner review 2026-09 (round2 move mapping): Grey Sea | RETARGET: the_twilight_deep (schooling/multiples) (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea)"
+      "def": "RSW_MutatingTumorfishSpawn",
+      "law": "owner review 2026-09 (round2 move mapping): Grey Sea | RETARGET: the_twilight_deep (schooling/multiples) (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea) | SURFACE-VS-FLOOR SETTLED 2026-09-23 (ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 2): there is NO separate floor BiomeDef. MEASURED - the_twilight_deep.md and the_grey_deep.md exist as design SHEETS, but no RUT_TwilightDeep/RUT_GreyDeep def and no deep roster exist anywhere in src/. So the sea's floor and its catch both live on the ONE sea def: floor residents in <wildAnimals>, the catch in <fishTypes>. A 'retarget to the deep' therefore means this same def's wildAnimals. Renamed to our own RSW_ port 2026-09-23; admission was already ruled, so the rename asserts nothing new. NOT YET WIRED, and deliberately: whether <wildAnimals> spawn at all on an impassable=true biome is an ENGINE question, UNMEASURABLE on the Mac, and both seas are impassable=true (MEASURED). The two entries already there (AA_Aerofleet, RSW_Lanternwhale/RSW_Reefback) are somebody's bet, not proof. NEXT: test impassable-water spawning on the Desktop, then wire inside TERMINALBIOMES_RM_MOD_BUILD_1."
     },
     {
       "action": "import",

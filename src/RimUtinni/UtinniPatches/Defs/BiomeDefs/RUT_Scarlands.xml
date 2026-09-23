@@ -162,6 +162,8 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <Mynock MayRequire="mlie.starwarsanimalcollection">0.5</Mynock>  <!-- mynock - wiring-eater, import -->
+      <RSW_CrystalFairyMole MayRequire="mandrake.rsw.swbestiary">0.5</RSW_CrystalFairyMole>  <!-- crystal fairy mole (bodySize 0.86) - placed here by the round2 move mapping ("Scarlands, oddly. 1 cell"), never wired until ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 4, 2026-09-23. It is ALSO one of the six names in the Lantern Deeps' hard ban 3, but under the owner's 2026-09-21 cut-scope ruling that cut is scoped to THAT sheet and does not reach the Scarlands - so it legitimately lives here and this is not a ban violation. Wired at the roster's 0.5, unlike RSW_Korrum below: this is a SMALL animal, so a high commonality RAISES the small share, which is what ECOSYSTEM_PYRAMID_LAW_1 wants of the weakest pyramid we have. -->
+      <RSW_MegaphoridLarva MayRequire="mandrake.rsw.swbestiary">0.5</RSW_MegaphoridLarva>  <!-- megaphorid larva (bodySize 0.32) - placed by the round2 move mapping ("scarlands"), never wired until 2026-09-23. Same reasoning as the fairy mole above: small, so 0.5 helps the pyramid rather than hurting it. -->
       <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.3</SW_Electrictick>  <!-- Electrictick - weapon-descendant, keep -->
       <RSW_FoundryBeetle MayRequire="mandrake.rsw.swbestiary">0.18</RSW_FoundryBeetle>  <!-- foundry beetle - plated-grazer, keep -->
       <AA_SpinedGow MayRequire="sarg.alphaanimals">0.15</AA_SpinedGow>  <!-- spined gow - plated-grazer, keep -->
