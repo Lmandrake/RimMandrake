@@ -79,35 +79,14 @@ plan that is not mostly about `mlie.starwarsanimalcollection` and
 8 third-party) — that is what a finished verdict pass looks like, and it is the
 before/after benchmark for every biome below it.
 
-### `RUT_BlueDesert` is empty because its life was never AUTHORED
+### `RUT_BlueDesert` carries its commissioned hydrocarbon life (re-read 2026-09-23)
 
-`<animalDensity>0</animalDensity>`, `<plantDensity>0</plantDensity>`, an EMPTY
-`<wildAnimals />`, and no `<wildPlants>` element at all.
-
-🔴 **This is a GAP, not design intent** — owner's correction, 2026-09-20. The
-def's own comment says so plainly, two lines below the density fields:
-
-> *"Zeroed, not the sheet's donor-read 0.5/0.33: nothing to scale until
-> Swallowers/Burners/Pickers and the transparent fractal flora exist."*
-> *"The Burners and the rest of the Blue Desert's intended life are new defs,
-> not pool creatures."*
-
-`design/Jawa/worldbuilding/biomes/the_blue_desert.md` carries a full
-**owner-ratified "Hydrocarbon biology"** section — no water-based life, methane
-metabolism, butane/pentane power storage, warm-reactive detonation — and names
-the cast: **Swallowers** (sealed armoured herbivores that swallow plants
-whole-rooted), **Burners** (fast oxidizers haloed in blue fire, exploding when
-badly wounded), **Pickers** (scavengers on the ablation line), and transparent
-fractal ferns/dandelions/fuzzballs, each a charge of liquid butane. The sheet's
-own Owed list carries "Fauna and flora authoring" for exactly these. The donor
-read it inherited was animalDensity **0.5** / plantDensity **0.33**, not zero.
-
-⚠️ **How this was got wrong, so it is not got wrong again:** this window read the
-zeroed densities plus the word FROZEN on the sheet and concluded "sterile by
-design" — publishing that to the owner and to a running subagent before he
-corrected it. The refuting sentence was inside the same file, a few lines down.
-🔑 An empty table is a question, not an answer: the nearest comment usually says
-which. Tracked at `BLUE_DESERT_LIFE_AUTHORING_1`.
+`BLUE_DESERT_LIFE_AUTHORING_1` (FOUNDRY, done 2026-09-21) authored the Swallowers/Burners/Pickers
+cast and the transparent fractal flora into `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml`
+(163 lines): `animalDensity` 0.5, `plantDensity` 0.33, 3 `wildAnimals` rows, 6 `wildPlants` rows — MEASURED
+with `xml.etree`. The sheet is `design/Jawa/worldbuilding/biomes/the_blue_desert.md`; the roster JSON
+`rosters/the_blue_desert.json` still lists only 2 fauna (`Vapaad`, `AA_Thunderbeast`), both unwired — owed
+as `WildAnimals_BlueDesert.xml` at `BLUEDESERT_RM_MOD_BUILD_1` step 2, per that ticket's STATE section.
 
 ### Unguarded entries — no `MayRequire`, not one of our defs
 

@@ -25,7 +25,7 @@ ground**; the tile column sums to 21,872.
 | `RUT_Wasteland` | 1853 | `wasteland.md` | no (§10 = "Campaign hooks") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml` |
 | `RUT_NightsideIce` | 1506 | `nightside_ice.md` | no (§10 = "The door — occupied") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml` |
 | `RUT_ForsakenCrags` | 1135 | `forsaken_crags.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml` |
-| `RUT_BlueDesert` | 1029 | `the_blue_desert.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml` — 🔴 `<wildAnimals />` is EMPTY |
+| `RUT_BlueDesert` | 1029 | `the_blue_desert.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml` — 3 `wildAnimals` + 6 `wildPlants` rows since `BLUE_DESERT_LIFE_AUTHORING_1` (done 2026-09-21; re-read 2026-09-23) |
 | `RUT_CrackedLands` | 970 | `the_cracked_lands.md` | **YES** — §10 "The bestiary sorts — a fauna divided by TIME, not space" | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml` |
 | `RUT_AridShrubland` | 628 | `arid_shrubland.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_AridShrubland.xml` |
 | `RUT_TwilightSea` | 607 | `terminator_sea.md` (surface); `the_twilight_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml` |
@@ -41,7 +41,7 @@ ground**; the tile column sums to 21,872.
 | `RUT_Slime` | 96 | `the_slime.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml` |
 | `RUT_Miasma` | 93 | `the_miasma.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml` |
 | `RUT_Scarlands` | 90 | `the_scarlands.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml` |
-| `RUT_PropaneLake` | 57 | `the_propane_lakes.md` (the lake proper; `RUT_Umbra` is the cap it sits under) | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml` — 🔴 `<wildAnimals />` is EMPTY |
+| `RUT_PropaneLake` | 57 | `the_propane_lakes.md` (the lake proper; `RUT_Umbra` is the cap it sits under) | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml` — 3 `wildAnimals` + 6 `wildPlants` rows since `BLUE_DESERT_LIFE_AUTHORING_1` (done 2026-09-21; re-read 2026-09-23) |
 | `RUT_TheForge` | 44 | `the_forge.md` — one sheet, one massif | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml` |
 | `RUT_FeverWood` | 43 | `the_fever_wood.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml` |
 | `RUT_Sump` | 41 | `the_sump.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml` |
