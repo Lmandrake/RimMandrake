@@ -3,7 +3,7 @@
 **Spec: `design/Jawa/worldbuilding/biomes/kits/greatbole_harvest_spec.md`** — read it first; this item
 is the ledger entry, not the design.
 
-Ruled by the owner across two card rounds, 2026-09-23. ⛔ Nothing built.
+Ruled by the owner across four card rounds, 2026-09-23. ⛔ Nothing built.
 
 ## the shape in one table
 
@@ -39,7 +39,7 @@ proposed as new:
   its own framing is *"nuisance unless there are many."* ⛔ It does **not** gate on food; that is the gap.
 
 ⇒ The genuinely new work is the threshold ladder, two widened extensions, the fruit and its three
-products, Royal Rind's protections, the seed's water rule, and the Wildsteam hooks. The spec's §6 lists
+products, Royal Rind's protections, the seed's water rule, and the Wildsteam hooks. The spec's §9 lists
 it.
 
 ## 🔴 Where the balance actually lives, because it is not where it usually is
