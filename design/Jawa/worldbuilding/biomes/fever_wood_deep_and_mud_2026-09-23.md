@@ -412,6 +412,86 @@ bird-cute and may fail it.
 
 ---
 
+## 6d. 🔴 The set-piece has FOUR triggers, and they compose into one pressure model
+
+**Owner, 2026-09-23: "1+2+3+4"** — every option offered, which is a refinement rather than a
+pick. The four are not rivals; they are **inputs to one number**:
+
+| input | role in the model |
+|---|---|
+| **a base roll, weighted by pool size** | the floor — a big pool can always eventually do this, so the permanent kill is never unreachable |
+| **player provocation** | taking treasure, severing limbs, fighting loudly at the margin — raises pressure |
+| **accumulating pressure per pool** | every ordinary encounter at a pool is a deposit toward its big one, so working a pool hard brings it sooner |
+| **a deliberate summon** | a large enough offering, or noise on purpose — the colony can choose the moment and mount a raid *against the biome* |
+
+🔑 **Read together this fixes the failure each option had alone.** The base roll guarantees
+the reward is reachable for a passive colony; provocation and pressure make a greedy one
+bring it on itself; and the deliberate summon means a prepared colony can pick its moment
+without the ambush ever being removed, because the other three can still fire first.
+
+⚠️ **Tuning risk this creates, and it is real:** an unlucky early colony can face the
+set-piece before it can survive it. Either the pressure model needs a floor on colony
+maturity, or the set-piece needs a survivable failure state (driven off with losses, rather
+than wiped). **Unset — nobody has ruled it.**
+
+---
+
+## 6e. 🔴 Why anything lives down there — also all four, and they stack into an ecology
+
+**Owner, 2026-09-23: "1+2+3+4".** This was the question left open when the pool-drop
+sap-sucker was declined (§6). All four answers compose:
+
+| answer | what it explains |
+|---|---|
+| ⭐ **the pools are windows, not homes** | the mirrors open onto **one vast water table beneath the whole biome**. The animal is not *in* a pool — it is under all of them, and a pool is where it can reach through. ⇒ This is why there is **one elder being with many limbs** (§2), and why the permanent kill clears **a whole map** rather than one pool (§2b) |
+| **the mud is the food** | the deep mud is a nutrient bank of slow decay — already the sheet's own reason the towers grow so large (§3). It is the **base nutrition**, which is what lets something this size exist at all |
+| **it eats the terribly lost** | big animals wander in, drink, and are subtracted — the sheet's existing ambient tragedy (§4). **Opportunistic bonus**, not the staple |
+| ⭐ **it farms, deliberately** | the scattered treasure is **bait it places on purpose**. It is fishing for whatever comes to look |
+
+🔑 **The stack answers the scale problem that any single one had.** The mud feeds the bulk,
+so the animal does not *need* you — and that is exactly what makes the farming chilling: it
+baits you because it can, not because it is hungry. And the water-table reading is what makes
+the whole biome one antagonist instead of a set of hazards.
+
+⚠️ **This makes it a thinking antagonist**, which is a bigger character than an eldritch
+appetite. That is the owner's call and it is made — but it raises a question the frozen
+sheet's register did not: something that *farms* has intent, and the sheet's ban on resolving
+it in ordinary play is already superseded (§0). ⇒ Keep it wordless. **Intent without
+communication** is the register to hold.
+
+---
+
+## 6f. Suppression is radioactive — with a free-tier Uranium route
+
+**Owner, verbatim:** *"(3) but outside the Utinni scenario it can be crafted from Uranium"*
+
+⇒ **Campaign layer:** nothing ordinary works. It takes **genuinely dangerous radioactive
+salvage**, so suppression stays rare and expensive and the beast stays formidable.
+
+⇒ ⭐ **Free tier (outside the campaign):** it can be **crafted from vanilla Uranium.** This
+keeps the franchise-free mod self-sufficient, per the standing rule that the free mod must be
+rich on its own rather than an impoverished base.
+
+⛔ **The seep-oils are NOT the answer** — they were offered and not chosen. ⛔ And the
+Greentide's existing `RM_ToxinSealant` / `RUT_ToxinSealant` (verified shipping this sitting in
+`src/RimMandrake/Greentide/`) was offered and **not chosen** either; do not reach for it here.
+
+⚠️ Unset: how much, for how long, and whether it harms the pool's other content
+(§2's treasure trickle, `RM_Corvath`).
+
+---
+
+## 6g. The guild is FOUR, and the thornbug keeps its own deal
+
+Decision taken by question card: **a fourth, keeping its own deal.** ⇒ The thornbug remains
+the nectar-contract species protected by hard ban 6 (*never yields under fear*), and the
+three ruled defences (§6) belong to **three new creatures**.
+
+✅ This resolves the reading flagged in §6 — the guild is **four species**, and no existing
+ruling is rewritten.
+
+---
+
 ## 7. What this sitting did NOT settle
 
 - **The flora roster.** The Fever Wood still carries **7 donor plant rows** (5 Alpha
@@ -422,19 +502,15 @@ bird-cute and may fail it.
 - **The full fauna roster** beyond the guild and the birds.
 - **Free-tier naming** for our own eldritch horror, its tentacle types, the three
   sap-suckers, and the birds.
-- 🔴 **How often the rare set-piece arrives** (the large pool, many tentacles, the eye). This
-  is the single most important tuning number in the design: too rare and the permanent kill
-  is unreachable, so players never learn the eye is the answer.
-- 🔴 **Which poisons and radioactive materials suppress it.** The ruling names the category,
-  never the items. The seep-oils are the obvious local candidate and were **not** named by
-  the owner — do not assume them.
-- 🔑 **Why anything lives down there at all.** The mechanism that would have answered this —
-  a sap-sucker that drops into the pool rather than be taken — was offered and declined
-  (§6). The question is open and needs a different answer.
+- 🔴 **Whether an early colony can survive the set-piece.** §6d's four-input pressure model
+  can fire before a young colony can win, so it needs either a maturity floor or a survivable
+  failure state (driven off with losses rather than wiped). ⇒ The tuning question this
+  sitting *created*.
+- **How much radioactive material, for how long, and whether suppression harms the pool's
+  other content** (§6f) — the treasure trickle and `RM_Corvath`.
 - **How the birds' call registers divide** (swoop / shrill / warble) and how many there are.
   §6c settles what they are *to the player*, not how the chorus is voiced.
 - **Bough-soil's fertility value and which cells the genstep paints it on** (§6b).
-- **Whether the guild is three members or four** (§6's flagged reading).
 
 ---
 
