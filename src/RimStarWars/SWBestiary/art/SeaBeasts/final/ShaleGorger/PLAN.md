@@ -43,10 +43,10 @@ Measured on the committed PNGs:
 | north | 512x512 | 276x435 | 26.3% | 0.05% | 0.33% |
 | west | 512x512 | 435x229 | 25.5% | 0.07% | 0.39% |
 
-## 2. In game — owed, blocked on the def
+## 2. In game — owed
 
-No `RSW_ShaleGorger` ThingDef exists yet; the def spec is written but no XML is authored,
-so there is nothing to spawn. When it is:
+`RSW_ShaleGorger` is authored in `src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Opee.xml`
+(re-checked 2026-09-23), so the def is no longer the gate. To stage it:
 
 ```
 PROVE    spawn RSW_ShaleGorger on a quicktest map, select it, and rotate it through

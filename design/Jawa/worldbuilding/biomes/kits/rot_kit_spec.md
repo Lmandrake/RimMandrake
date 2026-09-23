@@ -75,11 +75,10 @@ generous, warm, and always, patiently, digesting you.
   RUT_SporesBuildup/RUT_SporeFlesh/RUT_HediffSkulltopSpores hediffs, the
   thrumbungus + mantis-scythe weapons), fungal materials/terrain/bridges,
   buildings (fungiponics, glow torches), research, drugs, 19 flora + Skulltop,
-  with real donor art. **One known hole**: `RUT_SporeCloud`'s
-  `conditionClass` still points at the donor's compiled
-  `BiomesCaverns.GameCondition_SporeCloud` (MayRequire'd) — the C# port is
-  explicitly owed and is gate 3 of `BMT_FAUNA_ABSORPTION_1`'s donor
-  retirement. That port is M9 / ticket ROT_SPORECLOUD_PORT_1.
+  with real donor art. `RUT_SporeCloud`'s `conditionClass` points at our own
+  `RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather` since
+  `ROT_SPORECLOUD_PORT_1` (done; the donor class survives only in the def file's header
+  comment). Gate 3 of `BMT_FAUNA_ABSORPTION_1`'s donor retirement is discharged.
 - **Fauna is NOT this kit's business.** The roster rides
   `BIOME_FAUNA_ASSIGNMENT_SITTING_1`; the owner's 2026-09-11 ruling on
   `BMT_FAUNA_ABSORPTION_1` CUT the 7 BMT_ stragglers still sitting in
@@ -447,9 +446,9 @@ on a patch `<Operation>` (INERT, measured 2026-09-17).
 region-blanketing suffocation cloud (the ported `RUT_SporeCloud` incident).
 What changes is whose code runs it.
 
-**Engine route.** `RUT_SporeCloud`'s `conditionClass` still points at
-`BiomesCaverns.GameCondition_SporeCloud` (MayRequire'd), which is gate 3
-blocking `BMT_FAUNA_ABSORPTION_1`'s donor retirement. The donor behavior —
+**Engine route.** `RUT_SporeCloud`'s `conditionClass` was ported off
+`BiomesCaverns.GameCondition_SporeCloud` at `ROT_SPORECLOUD_PORT_1` (done); this section
+records the route that was taken. The donor behavior —
 "any living thing not under a roof will be slowly suffocating" — is exactly
 **RC4's shape**: `GameCondition_EnvironmentalWeather` damages/afflicts
 unroofed pawns on an interval (the AcidRain donor pattern it was built from).
