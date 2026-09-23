@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 768,
+    "width": 768
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:39Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_brunnock_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a visibly heavy alien jungle tree - a trunk far too thick for its height under a tight low dome of black-green leathery leaves the size of shields, overlapping like armour plate. Short internodes, cracked near-black bark, tight grain. Nothing about it looks fast. No conifer forms. Single plant, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and all major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 5 brunnock, mid-storey, 6 cells. Form: squat heavy dome, reads as armour. Deliberately scarce, slowest growth, highest hit points on the page."
+}

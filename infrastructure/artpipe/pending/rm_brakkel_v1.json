@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:39Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_brakkel_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a mound of enormous overlapping paddle leaves standing taller than a person, dense enough to see nothing through, with fruit clustered underneath in the dark so it is hidden until the leaves are pushed apart. Reads as a thicket you push into. No conifer forms. Single plant, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and all major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 15 brakkel, ground cover, 4 cells. MUST BLOCK SIGHT - owner ruling 2026-09-22, tall and broad enough that a colonist cannot see over or past it. This brief CHANGED on 2026-09-23: it was previously a knee-high mound. The forageable staple, replacing the biome's vanilla berry."
+}

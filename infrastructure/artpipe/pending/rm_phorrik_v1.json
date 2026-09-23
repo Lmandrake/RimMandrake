@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 384,
+    "width": 384
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:39Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_phorrik_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a dense thicket of taut translucent bladders held at head height on springy stalks, each bladder visibly over-full and ready to burst. The mass is too dense to see through. Reads as eggs at head height. No conifer forms. Single plant, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and all major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 18 phorrik, ground cover, 3 cells. MUST BLOCK SIGHT - owner ruling 2026-09-22. Hazard with payoff: the spores are medicinal and are released by treading through, so the bladders must look pressurised."
+}

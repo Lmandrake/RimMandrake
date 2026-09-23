@@ -16,9 +16,13 @@ shared-visual-family requirement the life-stage ruling created. ⇒ **Art may be
 ⚠️ **Three things the art queue must carry**, none of them optional:
 1. **The greatbole is 2048²** at the `128 px/cell` canvas law — the largest job on the page. If that is
    not renderable, the cell count moves, not the ruling.
-2. **It must be generated against `RUT_GreatboleCore`'s existing art as reference**, not from the brief
-   alone — same leaf, same bark plating, same fluting. That shared family *is* the implementation of
-   the life-stage claim, and a greatbole that looks unrelated to the landmark silently deletes it.
+2. 🔴 **There is NO landmark art to reference, so the family runs backwards.** MEASURED 2026-09-23:
+   `RUT_GreatboleCore.xml:36` uses vanilla `Things/Building/Misc/DeepDrillPowered` retinted
+   `(74,58,36)` at `drawSize (7,7)`. ⇒ Generate the tree on its own brief, and **the landmark then owes
+   art matching the tree.** ⚠️ Until that exists the life-stage fiction is invisible in-game whatever the
+   tree looks like, because a retinted deep drill cannot read as an ancient tree — worth his awareness,
+   since he accepted the cost of the growth never being simulated but not the cost of the ancient form
+   having no art at all.
 3. **Four rows' art briefs CHANGED** when the ground cover became sight-blocking — brakkel, tumbel,
    wollick and illurin were written low and are now tall. ⛔ Do not generate them from a pre-2026-09-23
    copy of the roster.

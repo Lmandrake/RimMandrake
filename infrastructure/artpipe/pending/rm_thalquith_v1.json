@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:39Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_thalquith_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: an aquamarine alien plant - the only non-green growing thing in its biome. Smooth trunk with no bark texture at all, and branches that meet overhead in a flat interlocking lattice rather than a crown, reading as a ceiling grid. No conifer forms. Single plant, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and all major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 12 thalquith, understory, 4 cells. Form: flat interlocking lattice. Aquamarine is load-bearing - it is one of only three non-green rows and it is the biome's visual landmark. The lattice hums in moving air."
+}

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 896,
+    "width": 896
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:39Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_sarnstilt_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: an alien jungle tree standing in water on a tripod of prop roots, trunk starting clear of the surface, crown leaning hard out to one side and shedding huge single leaves. Bark salt-crusted pale. Reads as a bridge pier. No conifer forms. Single plant, centered, no ground shadow, no background scenery, no water drawn. Heavy clean black outline around the whole silhouette and all major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 4 sarnstilt, canopy, 7 cells. Form: stilt tripod over water. Asymmetric lean is deliberate - it falls across a channel."
+}

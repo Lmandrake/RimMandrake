@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 2048,
+    "width": 2048
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:40Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_greatbole_v1",
+  "priority": 50,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a colossal alien jungle tree - a single grey-brown column so broad at the base that its deep fluting reads as several trunks fused together, rising far above every other crown before opening into one horizontal raft of enormous paddle leaves. Bark in long vertical shedding plates. Reads as a building that is alive. No conifer forms. Single tree, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and all major internal linework, thick enough to read at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 22 greatbole, the fellable giant, 16 cells - the LARGEST canvas in this batch and the top of the roster's size ladder. It is the same species as the RUT_GreatboleCore landmark at a younger life stage; the landmark currently has NO art of its own (a retinted vanilla deep drill), so THIS art becomes the species' visual family and the landmark will later owe art matching it. Fluting, bark plating and leaf shape should therefore be distinctive and reusable."
+}

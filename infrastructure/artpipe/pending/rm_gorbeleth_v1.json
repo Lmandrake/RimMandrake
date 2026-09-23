@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 384,
+    "width": 384
+  },
+  "channel": "codex",
+  "created": "2026-09-23T10:40:39Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_gorbeleth_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a low mottled purple-brown barrel of a trunk with one upward-facing muscular throat at the top, ringed with tooth-like bracts. Reads as a mouth, and nothing about it suggests a plant. No conifer forms. Single plant, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and all major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_JUNGLE_TREE_ROSTER_1",
+  "style_notes": "Row 14 gorbeleth, understory, 3 cells. Form: barrel with an upward throat. The understory's ranged hazard - it twitches toward movement, and its toxin is worth extracting."
+}

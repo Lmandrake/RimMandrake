@@ -3618,3 +3618,39 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rmtitanoslime_v1_east", "notes": "", "target": "rmtitanoslime/east", "ts": 1790010331.321167}
 {"by": "fill_queue", "event": "registered", "source": "TITANOSLIME_SLIME_BIOME_1", "target": "rmtitanoslime/north", "ts": 1790010331.327538}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rmtitanoslime_v1_north", "notes": "", "target": "rmtitanoslime/north", "ts": 1790010331.3409436}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_mourvel", "ts": 1790160039.8855639}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_mourvel_v1", "notes": "", "target": "rm_mourvel", "ts": 1790160039.893567}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_kaddrath", "ts": 1790160039.894758}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_kaddrath_v1", "notes": "", "target": "rm_kaddrath", "ts": 1790160039.9011478}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_sarnstilt", "ts": 1790160039.902435}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_sarnstilt_v1", "notes": "", "target": "rm_sarnstilt", "ts": 1790160039.9087849}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_brunnock", "ts": 1790160039.909996}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_brunnock_v1", "notes": "", "target": "rm_brunnock", "ts": 1790160039.9160562}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_vurmeloth", "ts": 1790160039.917536}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_vurmeloth_v1", "notes": "", "target": "rm_vurmeloth", "ts": 1790160039.923567}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_mirrelbole", "ts": 1790160039.9247732}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_mirrelbole_v1", "notes": "", "target": "rm_mirrelbole", "ts": 1790160039.9309251}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_zhorrel", "ts": 1790160039.93212}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_zhorrel_v1", "notes": "", "target": "rm_zhorrel", "ts": 1790160039.9385018}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_quathis", "ts": 1790160039.939691}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_quathis_v1", "notes": "", "target": "rm_quathis", "ts": 1790160039.945906}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_thalquith", "ts": 1790160039.9469812}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_thalquith_v1", "notes": "", "target": "rm_thalquith", "ts": 1790160039.953071}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_cundral", "ts": 1790160039.9544058}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_cundral_v1", "notes": "", "target": "rm_cundral", "ts": 1790160039.960626}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_gorbeleth", "ts": 1790160039.961814}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_gorbeleth_v1", "notes": "", "target": "rm_gorbeleth", "ts": 1790160039.968179}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_brakkel", "ts": 1790160039.9694772}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_brakkel_v1", "notes": "", "target": "rm_brakkel", "ts": 1790160039.975793}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_tumbel", "ts": 1790160039.977123}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_tumbel_v1", "notes": "", "target": "rm_tumbel", "ts": 1790160039.983279}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_sarquin", "ts": 1790160039.984465}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_sarquin_v1", "notes": "", "target": "rm_sarquin", "ts": 1790160039.9907699}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_phorrik", "ts": 1790160039.991976}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_phorrik_v1", "notes": "", "target": "rm_phorrik", "ts": 1790160039.998355}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_wollick", "ts": 1790160040.0004458}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_wollick_v1", "notes": "", "target": "rm_wollick", "ts": 1790160040.006727}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_maddrick", "ts": 1790160040.007877}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_maddrick_v1", "notes": "", "target": "rm_maddrick", "ts": 1790160040.0142012}
+{"by": "fill_queue", "event": "registered", "source": "GREENTIDE_JUNGLE_TREE_ROSTER_1", "target": "rm_greatbole", "ts": 1790160040.015421}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "rm_greatbole_v1", "notes": "", "target": "rm_greatbole", "ts": 1790160040.0218592}
