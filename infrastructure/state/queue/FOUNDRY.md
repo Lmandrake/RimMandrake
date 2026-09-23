@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T21:12:35Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-23T21:14:48Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1344,7 +1344,7 @@ prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
 state:    ready
@@ -1352,7 +1352,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-waiting:  needs `game-up`, game is DOWN
+waiting:  needs `game-up`, game is LOADING
 summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
 prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
@@ -1362,7 +1362,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is LOADING
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
