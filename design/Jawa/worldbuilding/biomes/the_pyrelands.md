@@ -16,8 +16,8 @@ some believe, though in truth little is known — and a people walking the
 flame-line collecting a debt.**_
 
 🔑 **This sheet is an assembly on ruled fire canon** — `hydrology_and_fire_ecology.md`
-R-H3/R-H4/R-H9 (2026-08-15) and the **FireEcology mod already built** at
-`src/RimStarWars/FireEcology/` (scorch-fruit, BlackRain, ash terrains, fulgurite,
+R-H3/R-H4/R-H9 (2026-08-15) and the **fire-ecology mod already built** at
+`src/RimMandrake/Pyrelands/` (`mandrake.rm.pyrelands`; the FireEcology name survives only in `FireEcologyHook.dll`) (scorch-fruit, BlackRain, ash terrains, fulgurite,
 firefoam). What this sitting added: the water answer, the Rakatan crop, the four
 igniters, the three families, the Tribes' flame harvest and fire raids, and the
 Sun-Debt reconciliation.
