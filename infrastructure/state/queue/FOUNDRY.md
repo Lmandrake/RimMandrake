@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T22:05:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T22:06:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -125,15 +125,6 @@ target:   v1
 kind:     task
 summary:  the loop
 prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md
-
-## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     bug
-summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
-prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
 
 ## INHABITED_AUGMENTATION_BUILD_1 Build the tile-augmentation content: rimplace templates + Inhabited wiring for the biome/faction/latitude augmentation dream
 state:    doing
@@ -952,16 +943,6 @@ kind:     build
 blocked:  Wiring FIXED and proven (RM_FE_Pyrelands now carries RiverSteamBiomeExtension live; map has 1301 river-terrain cells). The remaining bar is visual only and is blocked on the render-void: a map from jawa/world_tile_map_generate draws pure black while a normally-entered map on the same connection draws fine (control shot kept). refresh_rect+map_commit and the vanilla 'Regen All Map Mesh Sections' action BOTH fail to fix it, and jawa/colony_found cannot enter a map (AddNewHome generates none). Cheapest close is now the owner looking at a Pyrelands river tile in the real campaign.
 summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.riversteam
 prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
-
-## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     bug
-blocked:  Four offline sessions (2026-09-05/06/09/10/12) exhausted static tracing: wire protocol, tool dispatch, main-thread queue, vanilla map generation, and the closed-source GABP SDK (decompiled directly) are all clean -- no cache/pooling/shared-state path found anywhere in the deterministic call graph. Diagnostic logging landed and is committed (36521df01, JawaBenchSocietyTools.WorldTileMapGenerate, tag [TILEGEN_SILENT_REUSE_1]) but not deployed -- companion DLL can't be overwritten while the game runs. Nothing further is offline-actionable; next step is a game-down deploy + live two-distinct-tile repro (confirming WorldObject occupancy via jawa/world_objects_get, not just world_tile_get) grepping Player.log for the tagged lines. (on COLD_LOAD_RUN_SHEET_4)
-summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
-prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
 
 ## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
 state:    ready  (BLOCKED)
