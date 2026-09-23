@@ -457,3 +457,130 @@ log evidence is one cross-reference error naming `"li"`, followed much later by
 hundreds of unrelated-looking failures from everything that referenced the def
 you just destroyed. `validate_patch.py` compares your `<value>` against the live
 node's existing children for exactly this reason.
+
+---
+
+## 12. Full paragraphs behind `SKILL.md` §4's compressed rules
+
+Each heading below matches one compressed rule in `SKILL.md` §4. The first line repeats the kept lead; the rest is what moved.
+
+### Field shape: `<li>` vs keyed element — full paragraph
+
+**Take a field's SHAPE from a shipped def, never from a spec or a sample** — a
+spec names FIELDS, a def defines SHAPES. RimWorld has two child shapes and they
+are not interchangeable: plain lists use `<li>`; dictionary-keyed fields use the
+*def name as the element name* — `<wildBiomes><Desert>0.3</Desert>`,
+`<statBases><MoveSpeed>4.6</MoveSpeed>`,
+`<baseWeatherCommonalities><Clear>18</Clear>`,
+`<xenotypeChances><BTD_Nikto MayRequire="btd.xenotyperemix.starwars">0.3</BTD_Nikto>`
+— never `<li><xenotype>`. `MayRequire` rides the keyed element unchanged. Which
+shape a field uses is a property of its C# type, so it is identical in every mod.
+
+### Why `<li>` in a keyed field discards the parent def — mechanism and log signature
+
+Getting this backwards is the most destructive mistake in this document: an `<li>`
+in a dictionary-keyed field makes the engine **discard the entire parent def** — one
+that was working before you touched it — and **no log line names the def.** The
+tell is the quiet `Could not resolve cross-reference: No Verse.WeatherDef named
+li found`, one per patched node, buried under ~950 downstream cross-reference
+errors. `validate_patch.py` diffs a `<value>`'s children against the live node, so
+it catches this in `Patches/` — it **cannot** catch it in a `Defs/` file you author
+outright, which has no existing node to diff against. When a def vanishes
+silently, diff it against a sibling in the same folder that survived. (Why:
+`references/patch-operations.md`.)
+
+### `PatchOperationReplace` against your own mod's def wins silently
+
+**A `PatchOperationReplace` against a def YOUR OWN MOD declares wins silently —
+patches run after every def loads, same mod or not.** A generator-written
+compat/flora patch overwrote 21 of our own BiomeDefs' `wildPlants` for weeks
+because it ran later in load order than the hand-authored defs it was
+replacing; the biome shipped 4 stale donor plant names over 9 authored ones and
+generated 0 plants on a live map. Nothing in the normal workflow looks for "a
+generator patches a def we author" — check for that explicitly whenever a
+generated `Patches/` file and a hand-authored `Defs/` file touch the same
+defName.
+
+### Match the def's XML element name, not `ThingDef`
+
+**Match the def's XML ELEMENT NAME, not `ThingDef`.** The loader reads the element
+name as the C# type, so `/Defs/ThingDef[…]` misses all 51 of VFE Pirates'
+`<VFEPirates.WarcasketDef>` pieces — write `/Defs/VFEPirates.WarcasketDef[…]`.
+Such a def still lives in `DefDatabase<ThingDef>` and dumps to `ThingDef.json`, so
+**only the mod's XML tells you the element name; the def dump never will.**
+`/Defs/*[defName="X"]` hits *every* class with that name — `ReduceWill` is both an
+`InteractionDef` and a `PrisonerInteractionModeDef` — so use it only when the
+class is what varies.
+
+### Patches run before `ParentName` inheritance resolves
+
+**Patches run BEFORE `ParentName` inheritance resolves**, so a patch sees raw XML:
+`DA_Taraal`'s `<statBases>`, which it only inherits from `DA_BaseTaraal`, is
+simply absent and an `Add` into it fails. Guard on the container, not the leaf — a
+`Conditional` on `…/statBases` whose `<nomatch>` adds the whole element. And
+because `Sequence` aborts at its first failure, every op after that one is
+*untested*, not fine: in one 32-op block, positions 26–32 never ran and the log
+said nothing about them.
+
+### `PatchOperationRemove` deletes every match, not the first one
+
+**`PatchOperationRemove` deletes every match, not the first one.** There is no
+"remove one". If a def lists `<TropicalSwamp>` twice and you write the bare
+xpath, both disappear and the animal stops spawning there entirely. Use a
+positional predicate — `.../TropicalSwamp[2]` — and put the same predicate in the
+conditional test so the op self-disables once upstream fixes their file.
+
+### `MayRequire` and `PatchOperationFindMod` check the mod, not the def
+
+**`MayRequire` and `PatchOperationFindMod` check the mod, not the def.**
+`MayRequire="VanillaExpanded.VWE"` passes as long as VWE is installed — even if
+VWE deleted the def you reference in its latest version. That is a live upstream
+bug class, not a hypothetical; it is why unresolved cross-references show up in
+stacks where every named mod is present. When you *depend* on a def existing,
+guard with `PatchOperationConditional` on the def itself, which tests reality
+rather than intent.
+
+### `MayRequire` on a bare `<Operation>` does nothing
+
+🔴 **`MayRequire` on a bare `<Operation>` element inside a Patch file does
+NOTHING — MEASURED against `LoadedModManager.ApplyPatches()`/`PatchOperation`
+source.** Every operation runs unconditionally; `PatchOperation` itself has no
+field for it, and the `MayRequire` check only applies to top-level DEF nodes in
+the unified XML. Shipping an incident/comp-injection "gated" this way discards
+the target's WHOLE def file when the referenced type is absent (a dangling
+PawnKindDef this way once NRE'd a downstream mod's own loader and tripped
+RimWorld's corrupted-mods reset). **The only real gate on an `<Operation>` is
+`PatchOperationFindMod`.** Sweep any bare `MayRequire` on an `<Operation>` you
+find; it is silently unguarded (`MAYREQUIRE_OPERATION_INERT_SWEEP_1`).
+
+### `MayRequire` on the def's owning mod is not proof the def loads
+
+🔴 **`MayRequire` on the def's OWNING mod is not proof the def loads.**
+`LoadFolders.xml <li IfModActive="...">` can ship a def only when a THIRD mod is
+active — invisible to dump `packageId` attribution, since the dump just says
+which mod owns it, not which condition gated its folder. A biome `wildAnimals`
+reference to such a def null-crashes `CommonalityOfAnimal` the moment the
+gating mod is absent even though the owning mod is present. Fix: chain the
+gating mod's packageId into your own `MayRequire` too, not just the owning
+mod's (`GIDDYUP_NULLKEY_CRASH_1`).
+
+### SKILL.md §4 — the default conditional-wrapped patch shape
+
+```xml
+<Operation Class="PatchOperationConditional">
+  <xpath>/Defs/ThingDef[defName="Armadillo"]/race/wildBiomes/Desert</xpath>
+  <match Class="PatchOperationRemove">
+    <xpath>/Defs/ThingDef[defName="Armadillo"]/race/wildBiomes/Desert</xpath>
+  </match>
+</Operation>
+```
+
+### SKILL.md §4 — why the def-set trap is so common (full paragraph)
+
+The reason this is so common is that **a mod can ship different defs depending on
+what else is loaded**, via `LoadFolders.xml` — so the def set is a function of the
+whole mod list, and "the mod is installed" tells you nothing about which of its
+defs exist. **When a reference goes missing while its owning mod is plainly
+present, read that mod's `LoadFolders.xml` before concluding anything**; the
+syntax and the real Vanilla-Animals-Expanded/Odyssey case are in
+`references/patch-operations.md`.
