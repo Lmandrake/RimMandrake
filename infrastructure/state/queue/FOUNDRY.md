@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T02:32:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T02:55:04Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1760,8 +1760,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREENTIDE_JUNGLE_TREE_ROSTER_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Design the roster first, on paper: ≥10 jungle TREE species with bizarre Star Wars names,
 prose:    infrastructure/state/items/GREENTIDE_JUNGLE_TREE_ROSTER_1.md
 
 ## GREENTIDE_EXOTIC_JUNGLE_FISH_1 The Greentide's catch becomes exotic jungle creatures, not base-game fish
@@ -1770,6 +1770,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREENTIDE_EXOTIC_JUNGLE_FISH_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Design the roster inside the commission's register system — which band each species sits in,
 prose:    infrastructure/state/items/GREENTIDE_EXOTIC_JUNGLE_FISH_1.md
+
+## HOSTILE_MOBILE_PLANTS_1 Hostile mobile plants as animals - a new creature class
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/HOSTILE_MOBILE_PLANTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HOSTILE_MOBILE_PLANTS_1.md

@@ -13,8 +13,16 @@ pair for the generic Greentide (one of the three optional additions
 this biome**. ⛔ Do not author it; it is not a fallback to land first.
 
 🔑 **"Get wild" is the brief.** Aquatic worms, eels, parasitic *moving plants*, toothy tadpoles,
-spiked eels — his list is the register, not an exhaustive spec. A parasitic moving plant is a
-creature, not a plant def; that is deliberate and is the kind of thing he is asking for.
+spiked eels — his list is the register, not an exhaustive spec.
+
+✅ **What the "parasitic moving plant" is — clarified by the owner 2026-09-22**, verbatim:
+
+> *"I had just meant it as a very strange kind of fish to catch. But yes we should ALSO make some
+> "animals" that are hostile mobile plants too, that's cool."*
+
+⇒ **In THIS item it is a catch, not a creature.** The strangeness is that the thing you haul out of
+the water is a plant that moves. ⇒ And the hostile mobile-plant *creatures* he additionally approved
+are **separate, newly-scoped work**: `HOSTILE_MOBILE_PLANTS_1`. ⛔ Do not build creatures here.
 
 ## ⛔ This EXTENDS a ratified programme — do not re-derive a catch design
 
@@ -58,15 +66,22 @@ Greentide defect, but it blocks live verification either way.
 1. **Design the roster inside the commission's register system** — which band each species sits in,
    what it is worth, what it looks like. His five named shapes (aquatic worm, eel, parasitic moving
    plant, toothy tadpole, spiked eel) are the seed.
-2. **Two defs per species where the pairing rule applies** — the ruled pattern from
-   `SEA_FLOOR_AND_CATCH_PASS_1`: every catch species gets a floor/water creature, a shoal species
-   gets ONE swarm creature standing in for the cloud, existing megafauna stay creature-only with no
-   catch item. `SeaBeasts_Swarm.xml` is the file swarm creatures grow in, not a new one.
-3. **Tier the defs correctly.** ⛔ A RimMandrake-tier def never names Star Wars
-   (§7 Q11) — so bizarre-named species live in the `RSW_`/`RUT_` tier and reach the biome by
-   patch, the way `WildAnimals_Greentide.xml` already delivers 22 Star Wars animals.
-   Whether `RM_Greentide` gets any generic catch table at all is **left open**: his ruling rejected
-   the vanilla-only list, and he has not been asked what the dependency-free fallback should be.
+2. 🔴 **ONE def per species — the sea pairing rule does NOT apply here. Owner ruling 2026-09-22**,
+   verbatim, asked whether the jungle's fish should each also get a creature living in the water the
+   way the seas do:
+
+   > *"There is no "underwater" beast version for a land biome. Just fishable."*
+
+   ⇒ Every species here is a **catch item only**. ⛔ Do not author a paired water creature, and do
+   not cite `SEA_FLOOR_AND_CATCH_PASS_1`'s pairing rule here — that rule is scoped to the four
+   impassable sea biomes, where diving is the way the floor is met. A land biome has no floor to
+   visit. This halves the def and art count.
+3. **Tier the defs by NAME PROVENANCE.** Owner refined §7 Q11 on 2026-09-22: *"The fact that we will
+   use "star wars style" naming doesn't mean they have to live in the star wars layer."* So an
+   **invented** exotic name is not Star Wars IP and belongs in the `RM_` tier; only a **genuine
+   canon** name must sit in `RSW_` and be patched on. ⇒ The bulk of these species can live in
+   `RM_Greentide`'s own catch table, which is what makes the franchise-free mod rich on its own.
+   See `GREENTIDE_JUNGLE_TREE_ROSTER_1`'s tier section for the full ruling.
 4. **Check for existing art before queuing any**, per CLAUDE.md's standing rule — search
    `infrastructure/artpipe/done/` and `_artsrc/` by subject, and check for a review sheet's
    `.decisions.json` in `Transient/` in case he has already ruled on a candidate's art.
