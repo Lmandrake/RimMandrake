@@ -270,7 +270,7 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
   transplant. What the `RUT_` file uniquely holds is the **campaign** layer, and that
   belongs in Utinni, not in the `RM_` def.
 
-### 4b. Slime — `RM_GelatinousSlime` (192 lines + 30 defs of kit) vs `RUT_Slime` (105 lines)
+### 4b. Slime — `RM_GelatinousSlime` (198 lines, 134 defs/ops across 24 def files) vs `RUT_Slime` (110 lines)
 
 - **Survivor: `mandrake.rm.gelatinousslime`, `RM_GelatinousSlime` — RULED 2026-09-21**
   (owner decision, taken by question card rather than in prose, so there is no verbatim
@@ -280,7 +280,7 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
   `RUT_` twin is thin. As of 2026-09-21 it also carries the full 33-target A/B-list gene
   system (`SLIME_GENE_ARCHIVE_BUILD_1`, live-verified), widening the gap further.
 - **Merged in:** anything `RUT_Slime.xml` carries that the RimMandrake def lacks — compare
-  the terrain-by-fertility and weather tables at the move; its 9 fauna entries (7 `AA_`,
+  the terrain-by-fertility and weather tables at the move; its 10 fauna entries (7 `AA_`,
   2 `GR_`) stay inline, none is Star Wars.
 - **Deleted:** `RUT_Slime.xml`, at Phase B step 4.
 - **Retargets:** `TITANOSLIME_SLIME_BIOME_1` says "for `RUT_Slime`"; the Titanoslime is
