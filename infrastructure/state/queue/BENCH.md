@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T14:11:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T14:33:32Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -551,13 +551,3 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Confirm the pairing per animal — that the donor def and the RSW port really are the same
 prose:    infrastructure/state/items/DUPLICATE_CANON_DEFNAME_PAIRS_1.md
-
-## SKILL_SIZE_SPLIT_PASS_1 Split rimworld-modding (659 lines) and generating-rimworld-sprites (887) SKILL.md into references/ — both passed the 500-line guideline in the 2026-09-23 lessons drain
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SKILL_SIZE_SPLIT_PASS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SKILL_SIZE_SPLIT_PASS_1.md
