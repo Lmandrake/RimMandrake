@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T19:51:51Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-23T21:08:05Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1893,73 +1893,3 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Follow the spec document. Order, because it front-loads what can fail:
 prose:    infrastructure/state/items/GREATBOLE_HARVEST_LADDER_1.md
-
-## FEVERWOOD_FLORA_ROSTER_1 The Fever Wood gets 18 invented plants of its own, replacing 7 donor placeholders
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  🔑 The roster document IS the spec:
-prose:    infrastructure/state/items/FEVERWOOD_FLORA_ROSTER_1.md
-
-## FEVERWOOD_BOUGH_SOIL_TERRAIN_1 The crown cannot grow anything: boughway is fertility 0, so bough-soil is owed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
-prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
-
-## FEVERWOOD_TENTACLE_BESTIARY_1 Six tentacle types, the drive-off ladder, and a severed limb you can harvest
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
-prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_BESTIARY_1.md
-
-## FEVERWOOD_SAP_SUCKER_GUILD_1 Three sap-suckers, three defences, and the host plant that feeds them
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6.
-prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_GUILD_1.md
-
-## FEVERWOOD_ALIEN_BIRD_CHORUS_1 Alien birds whose chorus falls silent only for the water, and some of them steal
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
-prose:    infrastructure/state/items/FEVERWOOD_ALIEN_BIRD_CHORUS_1.md
-
-## FEVERWOOD_TWO_FRONT_LURE_1 Staked living bait, and two raiders who arrive one after the other
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §5, §6l.
-prose:    infrastructure/state/items/FEVERWOOD_TWO_FRONT_LURE_1.md
-
-## FEVERWOOD_DIANOGA_PRISON_1 A prison tank, not a pen: it teaches, it produces, and it can get out
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6j, §6m.
-prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_PRISON_1.md

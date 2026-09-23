@@ -361,3 +361,45 @@ between `BMT_FAUNA_ABSORPTION_1` and closing. The plant-porting decision
 (`CUT_FALLOUT_GENERATED_DATA_1`) is the one item actually capable of moving the
 remaining crossref/configerror residue further, and it needs a content call, not
 another harvest pass.
+
+## (8) 2026-09-23 FOUNDRY — confirmation pass, no new fixable-offline residue, ledger/prose desync flagged
+
+Assigned a task brief generated from this item's ledger `note` events only, which
+stop at the 2026-09-19T16:57 note (naming crossref candidates "worth a fresh --top
+pass"). That work was already done and superseded: entries (5)–(7) above, added
+directly to this prose file on 2026-09-20, ran the actual --top pass, root-caused
+and fixed the two biggest remaining threads (DEFS DISCARDED, the BMT_-statBases
+patchfail wave), and live-confirmed both. **Those entries were never logged as
+`rimflow note` events**, so any brief built from ledger notes alone (like this
+pass's) will read as 5 days staler than the item's own prose file actually is —
+flagging this desync so a future ledger-note-only summary doesn't repeat the same
+redundant "fresh --top pass" ask. Read the prose file itself, not just `rimflow
+show`'s event history, before triaging this item again.
+
+Checked for a fresher full-load harvest to re-triage against: **none exists.**
+`Player.log` on the live install is static since 2026-09-21T11:27 (confirmed not
+growing — restat 5s apart, byte-identical) and is only 1,625 lines / 206KB — a
+small quicktest/debug session (map-gen GenStep errors, `DebugToolsSpawning`
+traces), not a full 617-mod cold load; `Player-prev.log` (09-21T11:24, 180KB) is
+the same shape. No full-list harvest has landed since entry (7)'s 2026-09-20
+pass. Per this pass's own brief, did not touch the bridge or restart the game
+(a concurrent live session was flagged as possibly in progress; regardless, this
+item is scoped `needs offline`).
+
+Re-verified entry (7)'s attribution still holds, rather than assume it does:
+`rimflow show` on all four root-cause items confirms **all still `doing`** —
+`BMT_FAUNA_ABSORPTION_1`, `FORGE_MECHANICS_1`, `SCALD_MECHANICS_1`,
+`SUMP_MECHANICS_1`. Nothing has landed to change the crossref(38)/
+configerror(155)/patchfail(7 residual)/stale-Scribe(105) shape since entry (7).
+
+**No new offline fix found or attempted this pass** — every thread that was
+fixable offline (patchfail dominant wave, the 5 discarded Absorbed_* defs, the
+aquatic Juv config errors, the TwinkleSpike/KilnClay defects) was already fixed
+and live-confirmed in entries (1)/(2)/(6)/(7). What remains is either (a)
+gated on the four still-open build items above landing, or (b) genuinely not a
+repo defect (stale-Scribe LocalLow `Config/*.xml` advisory noise, `RM_LiquidProperties`
+advisory text, the third-party `JumppackForMeleeAI` HarmonyException — 4th load
+in a row, still unowned, still not ours). **Recommend**: leave this item `doing`
+(real residue remains, just not actionable from this seat right now) and do not
+spend a dedicated harvest pass on it again until either a full-list cold load
+happens for other reasons (ride it) or one of the four gating items lands.
