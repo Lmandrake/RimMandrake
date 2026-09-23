@@ -336,13 +336,15 @@ the PNG on the Desktop.
 
 **⛔ Nothing is commissioned here.** 18 of 22 rows owe art — the 17 measured this session, plus
 `RM_Greatbole`, which was ruled in afterwards and is the **largest canvas on the page** (2048² at
-16 cells, §3a0). 🔴 **And the life-stage visual family has to run BACKWARDS, because the landmark has no art.**
-MEASURED 2026-09-23: `RUT_GreatboleCore.xml:36` uses vanilla `Things/Building/Misc/DeepDrillPowered`
-retinted `(74,58,36)` at `drawSize (7,7)` — there is no greatbole texture to reference. (The only
-greatbole PNG on disk is `RUT_GreatboleHeartwood.png`, the harvested item, which is a material swatch
-and not a silhouette.) ⇒ **The greatbole tree's art becomes the family, and the LANDMARK then owes art
-matching it** — a retinted deep drill cannot read as an ancient tree, so today the life-stage claim is
-invisible in-game no matter how the tree is drawn. Per the
+16 cells, §3a0). 🔴 **The ancient form is not a tree sprite, so the two stages share a MATERIAL family and never a
+silhouette.** Owner, 2026-09-23: the landmark is *"a blob of wood on the map, representing a trunk so
+vast that you can't even see the tree in the game"*, whose **outer edge reads as bark** and which regrows
+into cut chambers. MEASURED: it is `RUT_GreatboleHeartwood`, `ParentName="RockBase"`, a mineable footprint
+of radius 4–6 carrying an admitted flat-colour placeholder; `RUT_GreatboleHeartwood.png` is that
+placeholder, not a harvested-item swatch. The retinted `DeepDrillPowered` sprite belongs to
+`RUT_GreatboleCore`, the **1×1 bookkeeping marker** at the centre drawing at 7×7 — a real visible defect,
+and the reason the greatbole looked like machinery. ⇒ Generate the tree on its own brief and match bark
+colour, grain and plate pattern only. Owed work: `GREATBOLE_BARK_EDGE_ART_1`. Per the
 standing check-before-queuing rule, `artpipe/done/`, `_artsrc/` and `registry.jsonl` were all searched
 for every one of the other 17 subjects before saying so — and the answer came back negative, so there is no already-ruled art
 being thrown away. ~14 other tree/fern subjects in `done/` belong to **other biomes** (the

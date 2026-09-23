@@ -16,13 +16,17 @@ shared-visual-family requirement the life-stage ruling created. ⇒ **Art may be
 ⚠️ **Three things the art queue must carry**, none of them optional:
 1. **The greatbole is 2048²** at the `128 px/cell` canvas law — the largest job on the page. If that is
    not renderable, the cell count moves, not the ruling.
-2. 🔴 **There is NO landmark art to reference, so the family runs backwards.** MEASURED 2026-09-23:
-   `RUT_GreatboleCore.xml:36` uses vanilla `Things/Building/Misc/DeepDrillPowered` retinted
-   `(74,58,36)` at `drawSize (7,7)`. ⇒ Generate the tree on its own brief, and **the landmark then owes
-   art matching the tree.** ⚠️ Until that exists the life-stage fiction is invisible in-game whatever the
-   tree looks like, because a retinted deep drill cannot read as an ancient tree — worth his awareness,
-   since he accepted the cost of the growth never being simulated but not the cost of the ancient form
-   having no art at all.
+2. 🔴 **The ancient form is not a tree sprite at all, so there is nothing to match and the family runs
+   backwards.** Owner, 2026-09-23: the landmark is *"a blob of wood on the map, representing a trunk so
+   vast that you can't even see the tree in the game"* — a mineable mass whose **outer edge reads as
+   bark**, which regrows into cut chambers. MEASURED: that blob is `RUT_GreatboleHeartwood`
+   (`ParentName="RockBase"`, radius 4–6 cells) carrying an admitted flat-colour placeholder; the
+   retinted `DeepDrillPowered` art belongs to `RUT_GreatboleCore`, the **1×1 bookkeeping marker** at the
+   centre, which draws at 7×7 and is a real visible defect.
+   ⇒ **Generate the mature tree on its own brief.** The two life stages can only share a *material*
+   family — bark colour, grain, plate pattern — never a silhouette, because one is a tree and the other
+   is a cross-section of a trunk too large to draw. Full account and the owed work:
+   `GREATBOLE_BARK_EDGE_ART_1`.
 3. **Four rows' art briefs CHANGED** when the ground cover became sight-blocking — brakkel, tumbel,
    wollick and illurin were written low and are now tall. ⛔ Do not generate them from a pre-2026-09-23
    copy of the roster.
