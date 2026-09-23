@@ -12,6 +12,21 @@ two with one of ours* and specified the disease in the same breath:
 ⇒ **Two rulings in one:** the biome's disease count drops (two generic illnesses come out, this goes
 in), and this is the first disease this project has ever authored.
 
+### ✅ The delivery route is RULED — owner, 2026-09-22
+
+Offered three routes — travel to a living plant, a harvestable dose, or a medical bill — he chose
+**a harvestable dose the player administers**: harvested from a jungle plant, carried, used on
+whoever the player picks.
+
+⇒ **It is an item.** It stockpiles, it travels, it works at home, and the timing is entirely the
+player's. ⛔ The un-stockpilable plant-interaction route is **declined, not deferred** — do not
+reintroduce it later as the "safer" variant.
+
+🔴 **This moves the entire balance burden onto the coma.** With doses on a shelf, nothing in the
+delivery route stops a player cycling twenty colonists through the speed boost, so the brake is
+now the coma's length and the death risk alone. Those stop being flavour and become load-bearing —
+design them as the bound (spec §4, and the anti-exponential warning at the bottom).
+
 ## why it is the best thing in the risk/reward pass
 
 🔑 **It is his own "reward and hazard are the same object" principle at its purest** — the hazard IS
@@ -53,15 +68,17 @@ decompiler. ⛔ Do not name a field, class or value for any of them from reasoni
    incapacitating mechanism can be reused rather than invented.
 4. **How treatment gates on stage** — his ruling requires treatment to be possible *in the coma stage
    specifically*, which is a tighter requirement than ordinary tending.
-5. **How a player deliberately infects a colonist** — an item, a recipe, a bill, or an interaction with
-   a plant. This is a design choice as much as a mechanism, and it needs a card.
+5. **How a harvestable dose applies a hediff to a chosen colonist** — the route is ruled (an item),
+   so what is left is the mechanism: which existing consumable/administer pattern carries it, and
+   whether applying it needs a colonist's consent or a doctor.
 6. **Whether "work already done is kept" needs anything at all** — probably not, since work completed
    is simply completed. Confirm rather than build for it.
 
 ## spec
 
-1. **Settle the delivery route first** (question 5 above) — it changes whether this is an item, a
-   building, or a plant interaction, and everything else hangs off it. Bring him a card.
+1. **Name the source plant** in the 21-row roster (`GREENTIDE_JUNGLE_TREE_ROSTER_1`) the dose is
+   harvested from, and the harvest/craft route to it. The route being an item is ruled; which plant
+   pays for it is not.
 2. Establish the mechanism questions on the Desktop. ⛔ Author nothing before that.
 3. Choose and record which two vanilla diseases are removed.
 4. Design the severity curve so the *decision* is real: too short and there is no temptation, too long

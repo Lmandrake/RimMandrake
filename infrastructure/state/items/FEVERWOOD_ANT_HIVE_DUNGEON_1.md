@@ -32,18 +32,19 @@ prior owner ruling:
 matches). The hive inherits a war it is already part of, which is far richer than a hive in isolation —
 that is the substance of his placement ruling.
 
-## ⚠️ CONSEQUENCE, left OPEN rather than assumed: the jungle's insect axis is now empty
+## ✅ RESOLVED — the jungle's insect axis got its own creature, owner 2026-09-22
 
-He named four danger axes for the Greentide — plants, beasts, diseases, **insects** — and the
-risk/reward audit established there is **no authored insect threat of ours in that biome at all**.
-Putting the Ants in the Fever Wood leaves that axis unfilled.
+Putting the Ants in the Fever Wood left the Greentide's fourth danger axis (plants, beasts, diseases,
+**insects**) unfilled. Offered a new jungle insect, dropping the axis, or a brood riding the existing
+plants, he wrote in a fourth answer: **tiny numerous wasps whose hives attach to plants — trivial
+individually, overwhelming in aggregate.** Filed on his verbatim words as `GREENTIDE_WASP_SWARM_1`.
 
-⇒ 🔑 **This is an open question for him, not a gap to fill unilaterally.** Either the jungle gets its
-own insect (a different creature, built around the hidden floor and choking foliage) or the axis is
-dropped there. ⛔ **Do not solve it by extending the Ants into the Greentide** — that is the
-multi-biome placement his standing fauna law restricts to creatures with a real in-game mechanism
-reason, and roster placement belongs to a biome's own review sitting. It was offered to him as an
-option and he declined it.
+⇒ **The Ants stay in the Fever Wood, unextended**, which is what this item required. ⛔ Still do not
+move them into the Greentide; the jungle now has its own insect and there is no remaining reason to.
+
+🔑 **Build-order consequence for THIS item:** the wasps' hive-boils-out reaction is the same mechanism
+as the ant hive's rally, and it is far smaller. ⇒ **The wasps prove the shared mechanism; this hive is
+its most complex instance, not its first.** Do not start the ant hive's reaction work ahead of them.
 
 ## 🔑 The reaction behaviour is ALREADY BEING BUILT — do not invent a second one
 
@@ -104,8 +105,8 @@ You decide how deep to go, and then you decide too late.
 
 ## Watch out
 
-- ⛔ **Do not move the Ants into the Greentide.** Offered and declined; the jungle's insect axis is a
-  separate open question for him.
+- ⛔ **Do not move the Ants into the Greentide.** Offered and declined, and the axis is now filled by
+  the wasps — there is no longer even a gap to argue from.
 - ⚠️ **A reacting enemy the player cannot read feels unfair rather than tense.** His own stated cost on
   this choice. The hive must telegraph — sound, sealed doors, visible rallying — and that is judged by
   playing, not by reading a spec.

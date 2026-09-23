@@ -19,6 +19,23 @@ vessel. The Contagion version is *manufacture*: you inject a genome into a livin
 produces **a plethora of organs and limbs** matched to that individual. ⇒ The output is **items**, and
 plural. That is a different economic object entirely and must be balanced as one.
 
+### ✅ THE HOST IS CONSUMABLE — owner, 2026-09-22
+
+Offered renewable-with-unsellable-output, a consumable host, or renewable-on-a-long-cycle, he chose
+**consumable: the host dies producing one batch.** ⇒ Another harvest means finding and reaching
+another amoeba.
+
+🔑 **This settles the money-printer problem outright and changes what the feature IS.** It is not an
+industry — it is an *expedition*, and the supply ceiling is however many amoebas the Contagion
+offers. ⇒ The balance question moves off the output (which can now be ordinary sellable vanilla
+organs, since it is not repeatable) and onto **how hard the host is to reach and to use**, which is
+adventure design rather than economy tuning.
+
+⛔ Renewable variants are **declined, not deferred** — no long-cycle reuse, no capped-output host.
+⚠️ And "matched to that individual" now matters *more*, not less: with one batch per host, a batch
+that turns out to be generic organs is a wasted expedition. If matching is not expressible, that is
+a finding he needs, not a quiet downgrade.
+
 ## what this attaches to
 
 **A relevant Contagion creature** — his words. The Contagion is the biome whose cast includes
@@ -46,9 +63,9 @@ go to the Contagion, and that is the point of it.
 3. **How a genome is taken from a colonist** — an existing sampling operation, or something new.
 4. **How the creature is made a vessel**: a building-like interaction on a live animal, a bill, or a
    containment mechanism. This is a design choice as much as a mechanism.
-5. **Whether the creature survives the process**, and whether it is repeatable on the same host. This
-   determines whether the mechanic is a renewable industry or a consumable find — the single most
-   important balance question here.
+5. **How a host dies producing its batch** — the fate is ruled (consumable), so what is left is
+   mechanism: whether an existing death-with-products pattern carries it, and how the batch reaches
+   the player rather than rotting where the amoeba fell.
 
 ## spec
 
@@ -56,8 +73,8 @@ go to the Contagion, and that is the point of it.
    creature unless the existing cast genuinely has no fit, and say so if it does not.
 2. Establish feasibility (question 1) on the Desktop before anything else. If it cannot be done, say so
    plainly and bring him the fallback rather than building a lesser version silently.
-3. **Card him on whether it is renewable or consumable** (question 5) — that is his call, not a
-   balance detail, and everything else follows from it.
+3. **Design the reaching, not the economy** — the host being consumable is ruled, so the cost lives
+   in the expedition: how the amoeba is found, approached and used in the worst place on the planet.
 4. Mod Settings toggle per the standing rule.
 
 ## verify
@@ -73,10 +90,10 @@ You go to the worst place on the planet to get a piece of someone back.
 
 ## Watch out
 
-- 🔴 **"A plethora of organs" is an economy, not a heal.** Vanilla organs are valuable trade goods, so a
-  repeatable source of them is a money printer — the exact class of problem that got a creature's
-  market value deliberately flattened in this project. ⇒ Bound it before building it: a consumable
-  host, a long timer, a cost in something scarce, or output that cannot be sold.
+- ⚠️ **The consumable-host ruling removed the money-printer risk; do not re-add it.** A batch is
+  one-per-amoeba, so organs may be ordinary sellable goods. ⛔ But that means the supply ceiling is
+  now *entirely* the Contagion's amoeba population — if amoebas are common or respawn freely, the
+  ruling is undone without anyone editing it. Check that before pricing anything.
 - ⚠️ **This is body horror, and the project deliberately limits that content.** The Contagion may
   already have a ruling on how far it goes; check before designing the visuals.
 - ⚠️ **It overlaps whatever medical content already exists.** Check for existing organ, prosthetic or
