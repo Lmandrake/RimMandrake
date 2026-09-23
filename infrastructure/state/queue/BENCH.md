@@ -551,3 +551,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Confirm the pairing per animal — that the donor def and the RSW port really are the same
 prose:    infrastructure/state/items/DUPLICATE_CANON_DEFNAME_PAIRS_1.md
+
+## GREENTIDE_TERROR_REPLACEMENT_1 Something new and terrifying for the Greentide, replacing the dianoga
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Owner, 2026-09-23, in conversation (quoted from the chat turn; ⚠️ not recorded via
+prose:    infrastructure/state/items/GREENTIDE_TERROR_REPLACEMENT_1.md
