@@ -27,6 +27,7 @@ in NOT_STANDALONE with its real invocation, so it is a VISIBLE `SKIPPED` line ra
 than a glob miss nobody can see.
 """
 import argparse
+import re
 import subprocess
 import sys
 import time
@@ -35,6 +36,20 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 PER_TEST_TIMEOUT_S = 240
+# A test that legitimately outlasts that (one that walks every deployed mod on
+# the drvfs mount) declares its own cap in its first 40 lines, e.g.
+#   # selftest-timeout: 600
+# so the runner does not report a 367 s PASS as a TIMEOUT (2026-09-23).
+_TIMEOUT_TAG = re.compile(r"^#\s*selftest-timeout:\s*(\d+)", re.M)
+
+
+def per_test_timeout(path: Path) -> int:
+    try:
+        head = "".join(path.open(encoding="utf-8", errors="replace").readlines()[:40])
+    except OSError:
+        return PER_TEST_TIMEOUT_S
+    m = _TIMEOUT_TAG.search(head)
+    return int(m.group(1)) if m else PER_TEST_TIMEOUT_S
 # The phrase a child prints when it could not run at all (a toolchain this
 # machine lacks, a game that is not up) rather than when something is wrong.
 # It is a convention the children already follow verbatim — grep it before
@@ -77,7 +92,7 @@ def run_one(path: Path) -> tuple[Path, str, float, str]:
             cwd=REPO_ROOT,
             capture_output=True,
             text=True,
-            timeout=PER_TEST_TIMEOUT_S,
+            timeout=per_test_timeout(path),
         )
         elapsed = time.monotonic() - start
         if proc.returncode == 0:
@@ -97,7 +112,7 @@ def run_one(path: Path) -> tuple[Path, str, float, str]:
         return path, "FAIL", elapsed, "\n".join(tail)
     except subprocess.TimeoutExpired:
         elapsed = time.monotonic() - start
-        return path, "TIMEOUT", elapsed, f"exceeded {PER_TEST_TIMEOUT_S}s"
+        return path, "TIMEOUT", elapsed, f"exceeded {per_test_timeout(path)}s"
     except Exception as exc:  # harness-side failure: OSError, ENOMEM, bad interpreter
         # Never let this escape into as_completed — one raised future would abort the
         # whole loop and print NO summary at all, which is the truncation this file
