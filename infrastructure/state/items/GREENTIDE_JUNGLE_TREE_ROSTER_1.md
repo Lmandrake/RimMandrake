@@ -5,7 +5,30 @@
 🔴 **He asked to review the plants and their sizes BEFORE art is generated**, verbatim: *"I would
 like to review the plants and their sizes before you generate art. I really want these to be huge,
 and want to make sure you were sufficiently bold."* ⇒ That review happened, and produced the four
-rulings below. ⛔ **No art job may be queued until the sizes in the roster document match them.**
+rulings below.
+
+✅ **THE ART GATE IS CLEARED, 2026-09-23.** The roster document now matches all four rulings:
+`design/Jawa/worldbuilding/biomes/greentide_tree_roster_2026-09-22.md` carries the fellable giant as
+row 22 (`RM_Greatbole`, **16 cells**, above the canopy rather than inflating the middle), all seven
+ground rows carry sizes and are rewritten as sight-blockers, the names stand, and §3a0 states the
+shared-visual-family requirement the life-stage ruling created. ⇒ **Art may be queued.**
+
+⚠️ **Three things the art queue must carry**, none of them optional:
+1. **The greatbole is 2048²** at the `128 px/cell` canvas law — the largest job on the page. If that is
+   not renderable, the cell count moves, not the ruling.
+2. **It must be generated against `RUT_GreatboleCore`'s existing art as reference**, not from the brief
+   alone — same leaf, same bark plating, same fluting. That shared family *is* the implementation of
+   the life-stage claim, and a greatbole that looks unrelated to the landmark silently deletes it.
+3. **Four rows' art briefs CHANGED** when the ground cover became sight-blocking — brakkel, tumbel,
+   wollick and illurin were written low and are now tall. ⛔ Do not generate them from a pre-2026-09-23
+   copy of the roster.
+
+🔴 **A tier problem the giant surfaced, and it is not mine to decide** (§3a0): `RM_Greatbole` is
+franchise-free tier but the ancient form it grows into, `RUT_GreatboleCore`, is campaign-only. ⇒ A free-mod
+player gets the mature giant and can never meet the landmark, so the life-stage fiction has no payoff for
+them — which contradicts the tier ruling that the free mod looks the same *"save for any star wars beasts"*.
+"Greatbole" is an invented name, so nothing about the landmark needs to stay behind the campaign layer.
+Owed: either the landmark moves to `RM_` tier, or the free mod gets its own.
 
 ### The sizes as proposed, and what the review found
 
