@@ -51,7 +51,7 @@ ruling on that entry already assigned the food material to the **Star Wars Cuisi
 product half has a home.
 
 ⚠️ **"Dianoga cheese" is UNCONFIRMED** — named by the owner, but no page was pulled for it.
-⚠️ **"Lavender" is NOT canon** — zero occurrences across 13 pages. Purple is sourced.
+**Colour is purple** (deep purple skin, purple-staining tea) — owner-confirmed 2026-09-23.
 
 ## tier
 

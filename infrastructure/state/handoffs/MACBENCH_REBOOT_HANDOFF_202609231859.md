@@ -36,11 +36,10 @@ that was invented. **Read the canon entry before designing a canon-adjacent crea
    clearly intend it — *"learn the lore at last"*, ambient tentacles, a captive on display — but
    it is a frozen-sheet ban and the edit is mine, so it deserves his eye. Record:
    `fever_wood_deep_and_mud_2026-09-23.md` §0.
-2. ⚠️ **"Lavender" is not canon and I did not write it in as though it were.** He said *"There is
-   a lavender association with its body parts."* MEASURED: zero occurrences across 13 dianoga
-   pages. Purple is thoroughly sourced (deep purple skin; the tea stains lips purple). Recorded in
-   the canon entry as his flavour note, explicitly not as canon. **"Dianoga cheese" is likewise
-   UNCONFIRMED** — he named it, no page exists that I could find.
+2. ⚠️ **"Dianoga cheese" is UNCONFIRMED** — he named it at the sitting, but no page for it was
+   found, so the canon entry marks it unconfirmed rather than sourced. ✅ **The creature's colour is
+   settled as PURPLE** (deep purple skin; the tea stains lips purple), owner-confirmed 2026-09-23 —
+   ⛔ nothing further is owed on colour and it needs no re-raising.
 3. ✅ **I told him this biome lacked a fellable giant tree and needed an `RM_Greatbole` equivalent.
    That was WRONG**, and his own ruling showed why — *"they are so interconnected above you that
    they can no longer fall, so you can just mine right through one"* describes exactly the
