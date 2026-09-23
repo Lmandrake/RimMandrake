@@ -29,11 +29,31 @@ creature: *"A massive crab-like creature carrying a huge boulder-textured shell 
 thick stony grey-brown hide, slow and ancient looking, Star Wars alien creature design,
 desert palette, painterly game-art style."*
 
-🔴 They were filed as `RSW_Stoneback_*`, i.e. under the **bokka's** defName, which already has
-finished art. Landing them unchanged would have overwritten it. They are now correctly keyed.
+🔴 They were filed as `RSW_Stoneback_*`, i.e. under the **bokka's** defName. Landing them unchanged
+would have delivered korrum art onto the bokka. They are now correctly keyed.
+
+⛔ **The old wording here said the bokka "already has finished art" — that was FALSE** and is
+corrected rather than annotated. MEASURED 2026-09-23: the bokka's three PNGs are Biomes! Caverns'
+**stone-mimic** art (a legless mound with one dot eye) against a def whose body is
+`QuadrupedAnimalWithClawsTailAndJowl` with left/right claw tools. Its own regen is queued under
+`STONEBACK_BOKKA_ART_STANDARD_1`. ⇒ The collision was real and the re-key was right; only the
+reassurance about the other creature was wrong.
+
+⚠️ **The re-key renamed the job FILES but wrote no registry event**, so `registry.jsonl` still
+records these three as `RSW_Stoneback/*`. ⇒ A name search for the bokka's art finds them and reads
+as "already queued" — a false positive that cost a search. Disambiguate on `ts`
+(`2026-09-20T16:51:43Z`) and `source` (`DESERT_FAMILY_PORT_EXECUTION_1`, the korrum's batch).
+
+## ✅ status 2026-09-23 — BLOCKED, not neglected. No decision is owed.
 
 ⚠️ The artpipe daemon is **quota-blocked until ~2026-09-26T19:52 UTC** (FOUNDRY measured this
-from `throughput.jsonl`'s own `secondary_resets_at`, not guessed). Nothing to do but wait.
+from `throughput.jsonl`'s own `secondary_resets_at`, not guessed) — **and it does not run on the Mac
+at all**, so this cannot advance from the laptop under any circumstances.
+
+🔑 **This is why the item has ridden several handoffs untouched, and that is correct behaviour.**
+⛔ Do not carry it forward as a pending decision or keep re-asking whether to drop it: its next
+action is mechanical and belongs to whichever Desktop session follows the quota reset. Re-checked
+2026-09-23 — the three jobs are still in `pending/`, still correctly keyed, nothing to do.
 
 ## spec
 
