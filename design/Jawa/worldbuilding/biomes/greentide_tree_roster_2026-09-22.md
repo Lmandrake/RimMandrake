@@ -319,9 +319,9 @@ MEASURED 2026-09-22 from our own files:
   `RUT_Greentide_LivingBolesGenStep`, with `RUT_GreatboleHeartwood` and `RUT_ToxinSealant` around it.
   It is in no `wildPlants` list and it does not fall.
 
-⇒ **The previous revision's whole §4 is deleted, not superseded.** It proposed a canon giant
-(`RSW_WroshyrTree`) as a new top rung, and its blocking question Q1 (*"which rung is the signature
-giant?"*) is **answered and closed**. Nothing on this page designs a giant.
+⇒ **Nothing on this page designs a giant, and no question about which rung is the signature tree
+remains open** — the Greatbole is it, and the item's previous blocking question is closed. ⛔ Do not
+file a new giant; ⛔ do not add a tree row above veluthar.
 
 ### 4a. What that changes for the roster — it gets *more* important, not less
 
