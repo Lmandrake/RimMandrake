@@ -37,6 +37,16 @@ size of.
 5. **Never let a subagent write to shared state** (git, the ledger, queue
    files, deploys). It cannot see the other seats. It returns findings; the parent
    writes.
+6. **A subagent's environment is byte-identical to its parent seat's** — same
+   session id, same seat identity, same session-role file present. Nothing
+   distinguishes "a subagent did this" from "the seat did this" by identity
+   alone; a guard that needs to tell them apart must check provenance (the
+   transcript), not identity.
+7. **Brief a prompt that may touch interactive or live resources (browser
+   automation, killing processes, a running game) with an explicit "never kill
+   an interactive app; abandon the route instead."** Without that line, a
+   subagent chasing a stuck port or process will happily `taskkill`/`pkill`
+   everything matching, including things it does not own.
 
 ## Scoping the ask
 
@@ -49,6 +59,10 @@ One question. Bounded inputs. An explicit stop condition.
   problem being handed downstream at full price.
 - **Stop condition** — "stop after the first match", "check these 6 files only",
   "if X is absent, return NOT FOUND and stop". Without one it keeps looking.
+- **For a job of many repeated items (hundreds+ of fetches, files, or rows),
+  have the agent WRITE A SCRIPT and run it, not process one item per
+  conversational turn.** A script cleared ~1,750 items in ~22 minutes where a
+  turn-by-turn agent died at 10 minutes having done a handful.
 - 🔴 **Always pass `model`.** Omitting it inherits the parent — which is how every
   grep in this project's history ran on Opus. `haiku` for greps, censuses and
   existence checks; `sonnet` when the agent must interpret what it finds; `opus`
@@ -109,7 +123,11 @@ regression **14/14**. Structure intact, semantics destroyed. Only `git diff` fou
    delegate.** Hand over a stale ticket and a weak worker re-does finished work —
    and re-doing is how it gets damaged. Check the target's current state yourself;
    it is one grep, and it is the parent's job.
-2. 🔑 **An example's CONSTANTS are not part of its shape.** "Copy the pattern that
+2. **A subagent can misreport whose judgement a number is** — returning its own
+   pre-fill as though it were a human's already-ruled verdict. Verify
+   attribution (whose call was this, really?) before repeating a subagent's
+   number as fact.
+3. 🔑 **An example's CONSTANTS are not part of its shape.** "Copy the pattern that
    file already ships" is read by a weak model as "copy that file's numbers". If you
    point at an exemplar, say explicitly which parts are the pattern and which are
    that instance's own values.
@@ -140,6 +158,40 @@ pattern-matched kills (`pgrep -f <script>` can match the parent shell too).
 ⇒ Also: **check `pgrep` / `readlink /proc/<pid>/fd/1` for duplicate work before
 assuming a slow run is just slow** — a second copy racing on the same output path is
 a more likely explanation than "it's still thinking."
+
+🔴 **A backgrounded agent is killed after ~600s with no streamed output, and it
+leaves NOTHING on disk** — a stall this way is a full loss, not a truncation,
+because it typically dies mid-read before its first write. ⇒ **Brief every
+writing subagent to create its output file as a skeleton FIRST and fill it
+section by section.** A file write emits progress (resetting the watchdog) and
+persists partial work; a long read-then-write brief is exactly the shape that
+trips the kill. ⇒ Also brief it to **commit its progress more than once**, not
+just write it — on a stall notification, the first act is to commit whatever
+survived on disk before anything else can overwrite or lose it; a narrow
+relaunch of only the missing part costs a fraction of repeating the whole pass.
+
+**You cannot correct a backgrounded agent mid-run.** `SendMessage` to a
+subagent is not available in every harness/window, and even where it is, a
+subagent already executing a brief you've since realized is wrong will run to
+completion on the old brief. Either let it finish and re-grade the output, or
+accept the loss — and weigh that against how much of a contested premise you
+put in the brief before launching.
+
+**A subagent backgrounding its own long-running sub-command despite an
+explicit foreground-only instruction is not a deadlock, but it costs a round
+trip.** It happens anyway sometimes; the harness auto-resumes and re-notifies
+once the background task finishes. Brief foreground-only as clearly as
+possible and still expect this once in a while.
+
+**Sending an artifact (an image, a file) while the agent that produced it is
+still running can hand out a stale version** — the agent may overwrite it
+before the recipient looks. Either wait for the completion report, or record a
+hash/fingerprint of exactly what you sent.
+
+**Viewing an image over ~2000px in either dimension can abort the whole agent
+run** ("exceeds the dimension limit for many-image requests"), not just fail
+that one read. Check dimensions first and view a downscaled copy, keeping the
+full-size original as the reference asset.
 
 ## Limits that actually exist
 

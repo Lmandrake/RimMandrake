@@ -37,10 +37,18 @@ last is the one everyone skips.
 Then give it a **test**. "How would someone check this was applied?" A ruling
 nobody can verify is an opinion with a timestamp.
 
-## Supersede, don't delete
+## Supersede, don't delete — narrowed to gates and criteria only
 
-When a ruling kills something, the instinct is to remove the dead text. Resist it,
-and the reason is not sentiment.
+🔴 **This pattern is overruled for ordinary inaccurate content.** For a plain
+wrong sentence — a stale fact, a superseded instruction, a wrong claim in
+someone else's file — DELETE it outright and fix every inbound reference; git
+is the provenance, not a strikethrough in the doc. The strike-and-keep pattern
+below survives **only** for the narrow case where the *evidence itself* would
+otherwise mislead — a gate or criterion whose result looks alarming unless the
+reader is told the gate no longer applies.
+
+When a ruling kills a gate or criterion whose evidence would otherwise mislead,
+the instinct is to remove the dead text. Resist it, and the reason is not sentiment.
 
 Dead text leaves evidence behind. Delete the ruling but leave the evidence, and the
 next reader finds the evidence, reasons from it, and reconstructs the thing you
@@ -183,6 +191,14 @@ from how they were said. It takes one command and it is the difference between a
 ruling that lands and one that no-ops. Flag near-misses too: if a name resembles
 other names that are staying, say which is which, or a later sweep by prefix will
 take all of them.
+
+⚠️ **Renumbering a document's sections silently breaks cross-references in
+OTHER files.** Fixing every reference *inside* the doc you restructured is not
+the whole job — an item or spec elsewhere that points at "§6" is now pointing
+at the wrong heading if §6 became §9. After any renumber, grep the whole repo
+for references to that document, not just the document itself, and verify each
+one both **resolves** and **means what it used to** — a mechanical remap can
+land a reference on a real heading that is nonetheless the wrong one.
 
 ## When a ruling collides with a guard
 

@@ -67,6 +67,16 @@ now, not 585" is a correction. "It is 585 − 11 + 1 = 575, and here is the comm
 each" is a finding, and it also surfaces the changes nobody recorded — which is
 usually the actual problem.
 
+🔑 **Re-measure immediately before putting a number in front of the
+decision-maker — not when the item that cites it was written.** A queue that
+moves fast can make a number stale between filing and review; the fix survives
+even if the person's answer happened not to depend on the stale count, because
+next time it will.
+
+A commit trailer or reference that *names* an item (`Closes: <ID>`) is
+evidence that work touched it, never proof the item is done — read what the
+commit actually changed before treating the reference as the measurement.
+
 ### A documented command is not a command
 
 Flags get renamed, tools get rewritten, docs do not follow. Before reporting that a
@@ -113,6 +123,12 @@ contradicts a teammate's, suspect your invocation first: an argument passed in t
 wrong shape can produce a confident, catastrophic-looking number. A disagreement
 with someone else's measurement is a reason to re-read your own command, not a
 reason to escalate faster.
+
+**A "before" snapshot is not a baseline if it came from a run that never
+finished.** A log from an aborted load, a killed process, or a cancelled pass
+undercounts by construction — comparing a healthy run against it makes the
+healthy run look like a regression. Confirm the baseline itself completed
+before trusting the comparison.
 
 ## Finish the job: correct the source
 
