@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T10:51:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T12:08:38Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1880,6 +1880,16 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREATBOLE_BARK_EDGE_ART_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Answer the three questions above on the Desktop. ⛔ Nothing authored or commissioned first.
 prose:    infrastructure/state/items/GREATBOLE_BARK_EDGE_ART_1.md
+
+## GREATBOLE_HARVEST_LADDER_1 The greatbole harvest: 40/60/70 thresholds, the fruit's three products, and the grubs that contest it
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREATBOLE_HARVEST_LADDER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREATBOLE_HARVEST_LADDER_1.md
