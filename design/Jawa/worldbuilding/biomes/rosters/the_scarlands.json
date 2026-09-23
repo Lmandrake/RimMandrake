@@ -397,14 +397,14 @@
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_CrystalFairyMole",
-      "law": "owner review 2026-09 (round2 move mapping): Scarlands, oddly. 1 cell"
+      "def": "RSW_CrystalFairyMole",
+      "law": "owner review 2026-09 (round2 move mapping): Scarlands, oddly. 1 cell | WIRED 2026-09-23 (ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 4) at the roster's 0.5 into RUT_Scarlands.xml wildAnimals, gated MayRequire=\"mandrake.rsw.swbestiary\". Wired at 0.5 rather than trimmed the way RSW_Korrum was (0.05), because this is a SMALL animal: raising its commonality raises the small share, which is what ECOSYSTEM_PYRAMID_LAW_1 wants of the weakest pyramid we have (53.0% small at the 2026-09-20 sweep). Also one of the six names in the Lantern Deeps' hard ban 3, but that cut is scoped to THAT sheet (owner ruling 2026-09-21) and does not reach here."
     },
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_MegaphoridLarva",
-      "law": "owner review 2026-09 (round2 move mapping): scarlands"
+      "def": "RSW_MegaphoridLarva",
+      "law": "owner review 2026-09 (round2 move mapping): scarlands | WIRED 2026-09-23 (ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 4) at the roster's 0.5 into RUT_Scarlands.xml wildAnimals, gated MayRequire=\"mandrake.rsw.swbestiary\". Wired at 0.5 rather than trimmed the way RSW_Korrum was (0.05), because this is a SMALL animal: raising its commonality raises the small share, which is what ECOSYSTEM_PYRAMID_LAW_1 wants of the weakest pyramid we have (53.0% small at the 2026-09-20 sweep)."
     },
     {
       "action": "import",

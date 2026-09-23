@@ -243,28 +243,28 @@
     },
     {
       "def": "AA_FissionMouse",
-      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")",
-      "disposition": "cut-for-real"
+      "disposition": "cut-for-real",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")"
     },
     {
       "def": "AB_GiantToxicFlower",
-      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → poison_forest; poison forest",
-      "disposition": "move:poison_forest"
+      "disposition": "move:poison_forest",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → poison_forest; poison forest"
     },
     {
       "def": "AB_ToxiGrass",
-      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_blue_desert; blue desert rare",
-      "disposition": "move:the_blue_desert"
+      "disposition": "move:the_blue_desert",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_blue_desert; blue desert rare"
     },
     {
       "def": "PoisonPlantTallGrass",
-      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_blue_desert; blue desert rare",
-      "disposition": "move:the_blue_desert"
+      "disposition": "move:the_blue_desert",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_blue_desert; blue desert rare"
     },
     {
       "def": "PoisonShrub",
-      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_propane_lakes; .8 cells, propane lakes",
-      "disposition": "move:the_propane_lakes"
+      "disposition": "move:the_propane_lakes",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_propane_lakes; .8 cells, propane lakes"
     },
     {
       "def": "RSW_Stoneback",
@@ -378,8 +378,8 @@
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "BMT_Sacapillar",
-      "law": "owner review 2026-09 (round2 move mapping): PLACED: wasteland (homeless disposition sitting, frozen 2026-09-10)"
+      "def": "RSW_Sacapillar",
+      "law": "owner review 2026-09 (round2 move mapping): PLACED: wasteland (homeless disposition sitting, frozen 2026-09-10) | WIRED 2026-09-23 (ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 4) at the ruled 0.5 into RUT_Wasteland.xml wildAnimals, gated MayRequire=\"mandrake.rsw.swbestiary\". The one LARGE row (bodySize 2.40) in that step, so the only one that can move ECOSYSTEM_PYRAMID_LAW_1 the wrong way. Not trimmed the way RSW_Korrum was in the Scarlands: that trim answered a MEASURED thin roster (total 1.51); this one is rich (17 rows, total 8.28) so 0.5 is ~6% of spawns. BOUND not a precise claim: at the 2026-09-20 sweep this biome was 73.3% small and adding 0.5 large gives 66.1%, far above the 50% floor; the current split is UNMEASURABLE on the Mac (no defs.sqlite). NEXT: re-run the pyramid sweep on the Desktop."
     }
   ],
   "fish": {
