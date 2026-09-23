@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T23:45:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T23:55:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -560,3 +560,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Owner, 2026-09-23, in conversation (quoted from the chat turn; ⚠️ not recorded via
 prose:    infrastructure/state/items/GREENTIDE_TERROR_REPLACEMENT_1.md
+
+## SEA_BEASTS_TIER_RULING_1 11 of the 18 sea beasts are invented originals filed as Star Wars IP
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  SEABEASTSTIERRULING1 — 11 of the 18 sea beasts are invented originals filed as Star Wars IP
+prose:    infrastructure/state/items/SEA_BEASTS_TIER_RULING_1.md
