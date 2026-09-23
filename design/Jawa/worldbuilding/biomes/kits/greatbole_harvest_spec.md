@@ -341,6 +341,54 @@ reasoning.
 mechanic is a dice roll rather than a decision, and the whole point is that the player chooses what the
 pilgrims will find.
 
+## 8b. Two OPT-IN crossovers: anima focus and arboreal servants
+
+**Owner ruling 2026-09-23: yes to either, or even both — as Mod Settings toggles, DEFAULT OFF.** His
+framing, verbatim: *"I had only meant that the player could switch either or both on in the mod settings
+should they wish to include it in their campaign in that way. For Utinni, both will be switched off of
+course."*
+
+⇒ 🔴 **These are player options, not campaign content.** The Utinni campaign ships with both **off**, so
+nothing in the campaign's design may depend on either. ⛔ Do not wire any campaign mechanic, quest or
+balance assumption to them.
+
+### 8b-i. The anima crossover
+
+The greatbole grows the special grass and serves as a **meditation focus** — *"a superior version of an
+anima tree"*, which it plainly would be, being the largest living thing on the planet.
+
+🔑 **It has a natural marriage with the song and the moral ledger** (§5, §8a): anima grass requires
+undisturbed ground, and the greatbole is a thing you cut into. ⇒ **Grass grows only where you have not
+cut**, and — if achievable — **focus quality tracks the tree's harmony**, so mining degrades meditation
+and the dissonance a player *hears* at a threshold is the same dissonance that ruins their psycasting.
+That makes the ledger something the player feels rather than something a visiting faction judges.
+
+⚠️ **Build the simple version first.** A **fixed-strength** focus is far more likely to be expressible;
+harmony-tracking needs a focus whose strength varies at runtime, which is UNMEASURED (§10). 🔑 Being
+opt-in and default-off means the simple version can ship and the harmony enhancement can follow **without
+blocking anything** — a luxury nothing else in this feature has.
+
+### 8b-ii. The servant crossover
+
+The tree produces arboreal servants a connected colonist directs — the second thing he named.
+
+⚠️ **An objection I raised, and it does not survive his framing:** I argued servile arboreal helpers would
+compete with the hostile grubs, since the grubs are this feature's only balance brake (§4b). That holds
+when the design chooses for the player. It does not hold when **the player chooses** — someone who
+switches servants on has accepted what it does to the tree's character.
+
+### 8b-iii. When both are on, and what to expect
+
+They touch different systems and do not mechanically conflict. One interaction is worth stating as
+**expected behaviour rather than a defect**:
+
+🔑 **Servants near the tree and grubs near the fruit will fight.** The tree's servants defending against
+the fruit's eaters is emergent, coherent, and probably a pleasure to watch. ⇒ Document it; do not
+suppress it.
+
+⛔ **The grubs stay hostile in every configuration.** They belong to the **fruit**, not to the tree — so
+no toggle tames them, and no amount of the tree favouring you makes them share.
+
 ## 9. ✅ What is ALREADY BUILT — measured 2026-09-23, six mechanisms
 
 🔑 **This concept is far cheaper than it looks. Four of the six are shipped.**
@@ -400,6 +448,12 @@ own source; everything here needs the Desktop.
     event" is detected while they are on the map (§8a).
 11. **Whether hauling can be made deliberately awkward** per-item — a mass high enough to force one at a
     time without making the fruit unhaulable (§4c).
+12. **Whether a meditation focus's strength can vary at runtime** (§8b-i) — the whole harmony-tracking
+    idea rests on it, and a fixed-strength focus is the safe fallback.
+13. **Whether anima grass growth can be attached to a non-anima Thing at all**, and whether its
+    undisturbed-ground requirement can read our own mined cells.
+14. **Whether the servant/connected-pawn system can attach to a custom tree**, and what it does when that
+    tree is mined, crushed or killed.
 
 ---
 
