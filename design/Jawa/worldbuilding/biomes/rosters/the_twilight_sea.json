@@ -130,7 +130,7 @@
   ],
   "fish": {
     "list": [],
-    "ruling": "no surface fish — saturated brine plus the no-schools ban (terminator_sea §6); the silver shoals exist ONLY beneath the mat-roof (the_twilight_deep §4, 'the only ordinary fishing on the planet' §7) and ride the deferred diving-mods implementation; analogs only, owed as new defs (FISH_BY_BIOME_1)"
+    "ruling": "SUPERSEDED 2026-09-20 by the owner, verbatim \"Just make the surface fishable\" (FISH_BESTIARY_BUILD_1): the surface IS fishable; 8 species ride a fishTypes patch today (see TERMINALBIOMES_RM_MOD_BUILD_1 STATE). The earlier no-surface-fish reading (terminator_sea §6 / the_twilight_deep §4) no longer binds; this list is still owed its rows."
   },
   "flora": [],
   "flora_purged": [],

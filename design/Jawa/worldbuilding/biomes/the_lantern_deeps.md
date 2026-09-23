@@ -10,8 +10,8 @@
 
 _Owner + BENCH, 2026-09-06, written in conversation over three passes. **Not a worldmap
 biome** (owner: "that was a mistake") — an **injected underground layer** beneath any
-nightside map with temperature ≤ −40 °C, using Biomes! Caverns' `BMT_CrystalCaverns` as
-the cave-map def it was built to be (`isCavern true`, enclosed, roofed with stable
+nightside map with temperature ≤ −40 °C, using its own `RUT_LanternDeeps` def (the donor `BMT_CrystalCaverns` was retired by
+`CAVERNS_PARITY_BUILD_1`, `ad1ab9336`) as the cave-map def it was built to be (`isCavern true`, enclosed, roofed with stable
 overhead mountain). Thematic handle: **light that is alive** — and its image: **a blue
 lantern burning under the mountain, and a dead miner's suit walking toward it.**_
 
