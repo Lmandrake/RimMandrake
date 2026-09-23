@@ -102,6 +102,46 @@ needed now** — the camera-attached route answers the capability question by al
 ⚠️ The one thing still worth confirming is cheap and is a *tuning* check, not a gate: how audible the
 layer pop is in practice. That is settled by listening, not by reading the engine.
 
+## 🔨 BUILT 2026-09-23 — written, registered, NOT compiled and NOT proven
+
+Two files in `mandrake.rm.creaturebehaviors`, generic per his ruling — this assembly still names no
+plant, no biome and no sound:
+
+- **`RM_ProximitySoundscapeExtension.cs`** — a `DefModExtension` a content mod puts on its own ThingDef:
+  `groupKey`, `humLayers` (several authored SoundDefs at different pitches, so no runtime pitch
+  manipulation), `radius`, `thingsPerLayer`, `checkIntervalTicks`, `dropHysteresisThings`,
+  `minLayerChangeIntervalTicks`. Full `ConfigErrors` on every field.
+- **`RM_MapComponent_ProximitySoundscape.cs`** — counts tagged Things near the listener each interval,
+  converts the count to a layer total, and syncs `TrySpawnSustainer(SoundInfo.OnCamera(MaintenanceType.PerTick))`
+  exactly as `RM_MapComponent_BiomeAttitude` does. De-escalation-only hysteresis, plus a minimum
+  layer-change interval as the only available mitigation for the no-volume-ramp pop.
+- **Registered:** both added to `RM_CreatureBehaviors.csproj` (it sets `EnableDefaultCompileItems false`
+  and lists all 75 files, so an unregistered file compiles into nothing silently), and
+  `proximitySoundscapeEnabled` added as field, `Scribe_Values` entry and settings checkbox.
+- ✅ `run_selftests.py`: **61/73, identical with these changes stashed** — the 3 failures pre-exist
+  (`selftest_codex_image`, `selftest_frozen_dumps`, `selftest_handoff`).
+
+🔴 **One call is UNVERIFIED and it is isolated on purpose: reading the camera's current map position.**
+`Find.CameraDriver` itself is proven live in this repo (our bridge calls `JumpToCurrentMapLoc(IntVec3)`
+and `.shaker.DoShake(...)`), so the driver exists and speaks in map cells — but the **member that reads
+its position** is not verified from our own source, and the Mac has no game, no def dump and no
+decompiler. ⇒ It sits alone in `TryGetListenerCell`, marked `❓ CONFIRM ON THE DESKTOP`, and a false
+return makes the whole mechanism silent rather than throwing every interval. ⛔ Confirm that member
+before this ships.
+
+⛔ **Nothing here is compiled.** There is no RimWorld assembly to reference on this machine, so
+"written and brace-balanced" is the strongest claim available. ⚠️ And per the `## verify` below, it is
+not *working* until he has heard it.
+
+### Two deliberate departures from the Cathedral, both required by this item
+
+1. **Zero layers never means danger here.** In the Cathedral, silence is the survival tell. Here zero
+   only ever means "nothing tagged nearby", which is the ordinary state of most of a map — so the two
+   cannot be confused, and it does not contradict `RM_MapComponent_SilenceCue`'s predator hush.
+2. **State is not Scribed.** Every input is re-derivable from spawned Things and the camera, and a
+   `Sustainer` cannot be saved — the `SenseWeb`/`DreadField` posture, deliberately not
+   `LivingRegrowth`'s.
+
 ## spec
 
 1. **Copy `RM_MapComponent_BiomeAttitude`'s shape** — plain `MapComponent`, per-tick layer decision,

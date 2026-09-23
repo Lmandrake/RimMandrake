@@ -76,6 +76,8 @@
     <Compile Include="RM_AlarmResponderExtension.cs" />
     <Compile Include="RM_CompProperties_PlantAlarm.cs" />
     <Compile Include="RM_CompPlantAlarm.cs" />
+    <Compile Include="RM_ProximitySoundscapeExtension.cs" />
+    <Compile Include="RM_MapComponent_ProximitySoundscape.cs" />
     <Compile Include="RUT_Plant_FalseFruit.cs" />
     <Compile Include="RM_HediffDef_Grapple.cs" />
     <Compile Include="RM_Hediff_Grappled.cs" />
