@@ -1,5 +1,73 @@
 # GREENTIDE_JUNGLE_TREE_ROSTER_1 — ten-plus jungle trees of our own, plus the signature giant
 
+## ✅ SCALE AND NAMING RULINGS, 2026-09-22 — the last gate before any art
+
+🔴 **He asked to review the plants and their sizes BEFORE art is generated**, verbatim: *"I would
+like to review the plants and their sizes before you generate art. I really want these to be huge,
+and want to make sure you were sufficiently bold."* ⇒ That review happened, and produced the four
+rulings below. ⛔ **No art job may be queued until the sizes in the roster document match them.**
+
+### The sizes as proposed, and what the review found
+
+| layer | plants | cells |
+|---|---|---|
+| canopy | veluthar · kaddrath · mourvel · sarnstilt | 10 · 9 · 8 · 7 |
+| mid-storey | brunnock · ghemmel | 6 · 6 |
+| mid-storey | nemmer · vurmeloth · zhorrel | 5 · 5 · 5 |
+| mid-storey | mirrelbole | 4 |
+| understory | quathis · thalquith | 4 · 4 |
+| understory | gorbeleth · cundral | 3 · 2 |
+| ground (7 rows) | brakkel, tumbel, sarquin, phorrik, wollick, maddrick, illurin | **none given** |
+
+Reference points used, both from this repo rather than from the engine: our own `RUT_SweetlineTree`
+carries `visualSizeRange` `5.0~6.5`, authored under his ruling *"Huge, ancient, powerful things …
+never small trees"*; and `TREE_GRAPHICS_OWNERSHIP_1` records vanilla's biggest common tree at about
+**6.0** (qualified — measured under a third-party tree template, not bare vanilla).
+
+⚠️ **Challenge I raised, and he overruled — recorded once, not to be re-litigated:** six mid-storey
+rows at 4–6 are merely *normal-big-tree* sized against those reference points, and `RM_Mirrelbole` at
+**4** is the sap tap feeding the whole fuel economy while being smaller than a vanilla pine.
+
+### 1. ✅ Sizes stand — boldness goes ABOVE the range, not into it
+
+He ruled **keep the existing range and add above it**: the fellable giant slots in at a genuinely
+enormous size, well past 10, and the sense of hugeness comes from the top of the ladder rather than
+from inflating the middle. ⇒ This deliberately preserves the readable three-layer structure, which
+matters because layering is what keeps a fully-covered map legible (`GREENTIDE_BIOME_DENSITY_1`).
+⛔ Do not raise the mid-storey sizes; that was considered and declined.
+
+### 2. ✅ The ground cover is BIG ENOUGH TO BLOCK SIGHT
+
+The seven ground rows get sizes, and the bar is functional: **tall and broad enough that a colonist
+cannot see over or past them.** 🔑 That is the mechanism behind the whole biome — the floor is hidden,
+which is what lets `HOSTILE_MOBILE_PLANTS_1`'s rooted ambushers genuinely hide and what makes
+*"choked with foliage"* real at ground level rather than decorative.
+
+🔴 **How a plant blocks sight in this engine is UNMEASURED and must not be guessed.** Plant cover and
+line-of-sight in RimWorld involve `fillPercent` and cover mechanics; ⛔ do not name a field or a value
+from reasoning. Establish it on the Desktop, and establish the **side effects too** — sight-blocking
+growth interacts with shooting, pathing and the player's ability to see their own colonists. That
+testing is owed before these seven ship.
+
+### 3. ✅ The names stay alien and organic — NOT Jawa
+
+Asked whose language names these plants, with a Jawa-naming option available (the voice mod already
+ships real Jawa dialogue to draw a sound from), he ruled **nobody's — alien and organic**. The 21
+coined names stand as they are. ⇒ Keeps the standalone mod free of Jawa framing, which matters because
+it is meant to generate on anyone's planet. ⛔ Do not rename them into a Jawa register later.
+
+### 4. ✅ The two giants differ by LIFE STAGE
+
+Answering what stops the fellable giant and the built landmark reading as the same thing, he ruled
+**different life stages of the same species** — the fellable giants are mature trees, and the landmark
+is what one becomes after centuries, too vast to cut.
+
+⚠️ **The stated cost, accepted:** the game will not actually simulate that growth, so an attentive
+player may wonder why none of their giants ever becomes one. ⇒ Do not build a growth path to satisfy
+it; the relationship is fiction, and saying so in the description is the whole implementation.
+🔑 It also means the two should **share a visual family** — same bark, same leaf, different scale —
+because that is what makes the life-stage claim legible without a word of text.
+
 ## ✅ Three further rulings, 2026-09-22 — after the 21-row roster was proposed
 
 ### 1. 🔴 A FELLABLE GIANT STILL EXISTS. The landmark is not the only giant.
