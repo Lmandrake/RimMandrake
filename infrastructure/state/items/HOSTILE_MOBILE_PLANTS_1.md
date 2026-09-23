@@ -16,10 +16,65 @@ item is the other half he approved: creatures that are plants, that move, and th
 or attack; the only route to a mobile aggressive organism is the animal pipeline. That is why he put
 the word in quotes rather than calling them plants.
 
-## ⚠️ Scope is UNSET — this needs a design sitting before anything is authored
+## ✅ RULED 2026-09-22 — the creature's core is now specified
 
-He approved the concept in one sentence while ruling on something else. **Nothing below is ruled**,
-and these are the questions a design pass owes him:
+Three of the five open questions were answered the same evening, by card.
+
+### 1. It reads as a plant by WAITING — plus one deliberate tell
+
+He chose *"It waits, rooted and still"* and added, verbatim:
+
+> *"but we should add a small animation that one of its leaves occasionally twitches if you watch
+> carefully."*
+
+🔑 **The twitch is the whole craft of this creature.** It solves the exact cost the option carried —
+a motionless creature reading as a broken animal — by making the stillness demonstrably *alive* to
+anyone paying attention, without giving the ambush away. Rooted, indistinguishable from scenery,
+with a rare single-leaf movement.
+
+⚠️ **Animation route is UNDECIDED and must not be guessed.** This is a small, occasional,
+partial-body idle movement on an otherwise static sprite. 🔴 Do NOT assume the whole-body
+directional flip-book that `PawnKindDef`'s `flyingAnimation*` fields drive — that mechanism exists
+for flight and needs a full pose per frame per facing. A per-node idle wiggle
+(`PawnRenderNodeProperties_Spastic`) is closer to the shape of this ask — **but note that approach
+was REVERSED for flight on 2026-09-19** because it cannot express per-facing, per-frame motion and
+misaligned a single texture across facings. ⇒ For *this* creature the requirement is the opposite of
+flight's: one small part, one facing at a time, no locomotion. Establish which mechanism actually
+delivers that **on the Desktop, against the engine**, before authoring art. Getting this wrong is
+how the fire hawk cost a live test.
+
+### 2. Hostile to anything that comes close — and they wake each other
+
+He chose *"Anything that comes close"*, colonists included, and added, verbatim:
+
+> *"plus activates if others of its own kind activate nearby: swarm"*
+
+⇒ **Activation propagates between neighbours of the same species.** Triggering one wakes the others
+in range, which converts a single ambush into a developing situation and makes a dense patch
+genuinely dangerous. This is the mechanic that makes them worth building.
+
+🔑 **Design consequences to settle, not assume:** the propagation radius, whether it chains
+outward without limit or decays, and whether a woken plant re-roots after the threat leaves. ⚠️ An
+unbounded chain across a biome *"choked with foliage"* (his density ruling below) is a
+colony-killer — bound it deliberately and say what the bound is.
+🔑 `src/RimMandrake/Greentide/Source/RM_MapComponent_SilenceCue.cs` and the shared
+`mandrake.rm.creaturebehaviors` assembly already hold cross-creature map-wide reaction machinery —
+read them before inventing a propagation system.
+
+### 3. It belongs to a biome that is CHOKED — his density ruling
+
+Answering what the new flora should *do*, he ruled the biome's feel as well, verbatim:
+
+> *"most are useful, many are dangerous. There should be virtually no squares uncovered by lush
+> foliage. Choked with foliage. Immediately intimidating to hack through, movement extremely
+> difficult."*
+
+⇒ Near-total plant coverage and severe movement cost. **That is what makes a rooted ambusher
+frightening** — you cannot see the ground, so you cannot see what is standing on it. ⇒ It also
+makes the swarm bound above load-bearing rather than academic. Recorded in full on
+`GREENTIDE_BIOME_DENSITY_1`.
+
+## ⚠️ Still UNSET — what a design sitting still owes him
 
 1. **Which biomes?** The concept arose in the Greentide (jungle), but hostile flora is not obviously
    jungle-only — the Rot, the Miasma, the Webwork and the Poison Forest are all plausible homes.

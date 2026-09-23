@@ -73,11 +73,28 @@ the placeholder names as *"reserved, already roster-tracked art … for the flor
 real giant"*. Further already-finished tree/fern subjects in `artpipe/done/`: `alientree_v1`,
 `alientree_v2`, `alientreepolluted_v1`, `halfalientree_v1`, `hydenocktree_v1`, `jogantree_v1`,
 `mangrovetree_v1`, `firevinetree_v1`, `largeslimytree_v1`, `greenrockfern_v1`, `slimyfern_v1`,
-`fungusfern_a/b/c/d_v1`. ⇒ **Search `artpipe/done/` and `_artsrc/` per subject before queuing a
-single new art job.** A large part of ten trees' worth of art may already be on disk.
-⚠️ UNVERIFIED which of those subjects are *replacement art for the donor rows above* versus free
-for a new def of ours — several match donor defNames (`jungletree`→`AB_JungleTree`,
-`hydenocktree`/`jogantree`→the Mlie rows). Establish that per subject before reusing one.
+`fungusfern_a/b/c/d_v1`.
+
+🔴 **CORRECTION — my hopeful reading of that inventory was WRONG, and the item said it as if it were
+a finding.** I wrote *"a large part of ten trees' worth of art may already be on disk."* MEASURED
+2026-09-22 by the roster design pass: **every subject in `artpipe/done/` names its own
+`Source row: flora:<biome>:<donorDefName>`**, so a subject is bound to the row it was generated for.
+Only **4** key to Greentide/Fever-Wood rows and transfer; ~14 belong to other biomes (the Contagion,
+Miasma, Slime, Forge, Rot, Webwork, Lantern Deeps) and are **not free**. ⇒ **10 of 13 trees owe
+art.** The standing check-for-existing-art rule still applies, but the answer here came back mostly
+negative — do not plan on reuse.
+
+🔴 **And the giant's reserved art is under-resolved.** `jungletree_v1` was rendered at **256×256**
+for a tree declared ~10 cells; the canvas law wants **1280×1280**. This is the same defect
+`alientree_v2` was re-rendered to fix (256→1024) under `FLORA_LEGIBILITY_BAR_1`, and that fix was
+never applied to the four Greentide tree subjects. Shipping as-is puts a 5×-upscaled 256px sprite at
+the biome's visual centre.
+
+✅ **Also already ruled, and I nearly re-asked it:** the donor rows' fate is settled.
+`Transient/port_tail_2026-09-20.decisions.json` and `port_swac_2026-09-20.decisions.json` are
+**frozen**, carrying `approvedSaid: "Yes replace everything."`, and all four Greentide donor trees
+carry `decision: replace`. Today's *"draft the replacements for everything right now"* confirms a
+standing ruling rather than making a new one.
 
 ## 🔑 The tier split — by NAME PROVENANCE, not by aesthetic. Owner ruling 2026-09-22.
 
