@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-22T21:09:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T01:12:08Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -529,13 +529,13 @@ needs:    offline
 target:   v1
 kind:     design
 thin:     spec, verify and criteria all present
-summary:  1. Bucket the 52 first, cheaply: flier / juvenile-line / twin-or-alias artifact / desert-pair
+summary:  ⛔ The old spec here instructed a planet-wide pass that picked each species' one home and wrote
 prose:    infrastructure/state/items/BIOME_SPECIFIC_FAUNA_LAW_1.md
 
 ## SEA_FLOOR_AND_CATCH_PASS_1 Every sea describes BOTH its floor (animals you meet by diving) and its catch (fish from the shore): the floor half is unbuilt across all four seas
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    game-up
 target:   v1
 kind:     design
 thin:     spec, verify and criteria all present
@@ -548,6 +548,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DUPLICATE_CANON_DEFNAME_PAIRS_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Confirm the pairing per animal — that the donor def and the RSW port really are the same
 prose:    infrastructure/state/items/DUPLICATE_CANON_DEFNAME_PAIRS_1.md
