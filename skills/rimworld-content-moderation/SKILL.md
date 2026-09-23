@@ -139,6 +139,11 @@ entry is a typo, because a typo and a successful cut look identical from here.
   its slot.
 - **Attribute every row to its mod.** The reviewer needs it to look things up,
   and it catches the case where a name belongs to two different mods.
+- **Describe a mod from its `About.xml` `<description>`, never from its
+  packageId or name.** A mod inventory once described Utility Columns from its
+  packageId (`nephlite.orbitaltradecolumn`) rather than its About text and
+  called it a trade-column mod; it is a structural-columns building mod. The
+  identity string is not the pitch. (2026-09-13)
 - **Lead with the principle, not the list.** Agreement on "real-world firearms
   are out" disposes of 74 items in one ruling; adjudicating 74 rows does not.
 - **State the batch size and let them retune it.** Ask directly whether they want
@@ -238,6 +243,18 @@ audit as "nothing still cross-references it from a biome cast".
 - 🔴 **A mod can inject defs attributed to Core.** 1,073 `HL_` humanlike-animal
   twins reported as `ludeon.rimworld` and were invisible in every per-mod count
   until someone asked which mod owned a specific row.
+- 🔴 **Cherry Picker does not cut every def type — `FactionDef` cuts are
+  silently NO-OPS.** `BS_Muspelheim` and `BS_OgreFaction` were both correctly
+  listed as `FactionDef/...` cuts in `Mod_CherryPicker.xml`, and both still
+  loaded as real `FactionDef`s after the same batch's `PawnKindDef`/
+  `XenotypeDef`/`GeneDef`/`AbilityDef` entries for the same content were
+  successfully removed — verified live via a fresh DefDump capture. Never rely
+  on a Cherry Picker `FactionDef` cut alone; verify with a live DefDump or pair
+  it with an explicit suppression patch (e.g. zeroing
+  `startingCountAtWorldCreation`). (2026-09-11)
+- **Never infer a def's owning mod from its defName prefix.** Bare, unprefixed
+  names (`Bantha`, `Rat`) ship from mods whose prefix appears nowhere in the
+  defName — read `MayRequire`/the mod's own `About.xml`, not the string.
 - **Some mods generate a twin of every def in a class.** If a census returns
   suspiciously round doubles, look for a generator before cutting anything.
 - **A def dump is disk, not runtime.** Mods that mutate defs at load — dedup

@@ -42,6 +42,12 @@ including another seat's half-finished work.** Five seats share this tree.
 > **Read the plan. `--apply` only if every listed file is yours.** A file you do not
 > recognise is a live hazard, not a todo — tell the owner before you write.
 
+⚠️ **With no `--mod`, the walk is alphabetical and a 120s tool-call timeout can
+TRUNCATE it mid-list.** A run that stopped at "Cuisine" would have been read as
+"only Armoury drifts"; the real answer that day was 5 mods including one the
+caller owned. Redirect the run to a file and confirm it printed its final
+`Drift found` / `Everything in sync` line before believing any drift list.
+
 ## 3. A `-` line means someone hand-edited the deployed copy
 
 `-` = present in the game, absent from the repo: an edit made directly in `Mods/`
@@ -59,8 +65,13 @@ python src/RimMandrake/Utils/deploy_custom_mods.py --pull <ModName>   # game -> 
 python skills/rimworld-modding/scripts/validate_patch.py <file> \
   --live <dump> \
   --defs "C:/Program Files (x86)/Steam/steamapps/common/RimWorld/Data" \
-  --defs "C:/Program Files (x86)/Steam/steamapps/workshop/content/294100"
+  --defs "C:/Program Files (x86)/Steam/steamapps/workshop/content/294100" \
+  --defs "C:/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
 ```
+
+🔴 **The Mods folder is not optional.** First-party `mandrake.*` mods live
+there, not in Workshop content — omit it and a real, working cross-mod
+`ParentName` inheritance reports as "resolves to no def" (a false failure).
 
 ⚠️ **`--live` and `--defs` are orthogonal, and only `--defs` checks xpaths.**
 `--live` checks defName existence; `--defs` walks the XML and reports xpath hit
@@ -131,6 +142,18 @@ Deploying it creates a `Mods/` folder RimWorld ignores; the plan flags
 a packageId is an identity, and guessing one ships a name nobody chose. Hold the
 mod with its reason and put the decision in the owner's path. Minimum viable folder:
 
+⚠️ **That refusal message can point at the wrong field.** It also fires when
+`ET.parse` throws on a genuinely malformed `About.xml` — a raw `<=`/`<` inside
+plain description text parses as a tag start (`harvestAfterGrowth <= 0f` written
+straight into a description broke one this way). The tool refused correctly; the
+message named `packageId` when the real defect was that the file does not parse
+at all. Check the file actually parses before assuming the packageId is absent.
+
+🔴 **`[ -e "$dir" ]` is not a test for "a mod lives here."** `src/RimMandrake/Pits`
+passed that test while holding only `__pycache__` — the mod had merged elsewhere
+and the folder was a shell. Test `$dir/About/About.xml` instead; existence of a
+directory is not identity of a mod.
+
 ```
 <ModName>/
 ├── About/About.xml          (packageId, name, supportedVersions, description)
@@ -143,6 +166,26 @@ A DLL the game has loaded **cannot be written while RimWorld runs** — memory-m
 and Windows refuses with `WinError 1224`. The copy is impossible, not merely
 ineffective. Deploy in the gap after the game closes and before it launches, and
 tell CHECK before any shutdown: `skills/rimworld-load-round/SKILL.md` §6.
+
+⚠️ **But `WinError 1224` is not the only lock failure, and the other one is
+silent.** `deploy_custom_mods.py --apply` has printed the DLL's `~` plan line
+and "Deployed N file(s)" while silently SKIPPING a locked assembly — the file
+count printed is the only tell that it did not match the plan-line count.
+Mechanism: a TRUNCATING copy (`shutil.copy2`, `open(dst, "wb")`) fails on a
+locked file with `[Errno 22] Invalid argument` while an in-place
+`open(dst, "r+b")` write + `os.truncate` lands byte-identical. Without the
+in-place route, the XML half of a deploy lands and the DLL half silently does
+not — which discards every def whose comp `Class` lives in that DLL. Re-run
+once the game is really gone, and check the deployed vs. plan file counts
+before trusting either "Deployed" line.
+
+⚠️ **`MayRequire` checks the MOD, never the TYPE — it is no protection against
+an assembly that is PRESENT but STALE.** New C# written and never rebuilt can
+leave types missing from the deployed DLL while every `Class=` reference
+guards correctly on the mod being active: the guard passes, the type still
+isn't there, and the def carrying it is silently discarded. Check that the
+type is actually IN the deployed DLL's bytes, not merely that the owning mod
+is active. (2026-09-21)
 
 ## 7b. 🔴 Is this artifact CURRENT? Never answer from a timestamp
 
@@ -163,6 +206,7 @@ Each of these was believed, acted on, and false:
 | **`Version.txt`** | Reads `rev590` while every engine-written file reads `rev591`. **The build stamp comes from the RUNNING game**, not from the file that appears to name it. (BUILD, 2026-08-15) |
 | **A flat `DefDump/manifest.json` reader** | Silently degrades to `Version.txt` since the dump layout migrated to `captures/` — the flat path is gone, the reader finds nothing, and it resurfaces the exact rev590/591 lie one row up. `sync_mod_state.py` nearly stamped `rev590` over `rev591` saves before this was caught (fixed `801bd127`; swept as `FLAT_MANIFEST_READER_SWEEP_1`). |
 | **`refresh.py` calling `defs.sqlite` "current"** | `DumpDB.stale` checks the mod-set **fingerprint**, not whether the capture it names still **exists on disk**. Retention had already PRUNED the source capture (built 08-23) while a newer one existed (08-29); the fingerprint still matched, so the verdict read current anyway. Rebuild whenever provenance names a missing capture — a matching fingerprint is not proof the file behind it survives (BENCH 2026-08-29). |
+| **A generator's own "regenerating is a no-op" header comment** | Can drift silently from a renamed/moved target and never say so. `gen_pawnkind_roster.py`'s own claim was stale — it emitted pre-rename defNames across 49 `PawnKindDef`s, and a routine re-run per the file's own instructions would have silently reverted a whole naming migration. **Verify a generator's no-op claim with `git diff --stat` against committed output, never the exit code** (2026-09-18). |
 
 ✅ **What was right the whole time: `refresh.py`'s `STALE` verdict**, because it
 keys on the load-set fingerprint rather than the clock — and it named the one real

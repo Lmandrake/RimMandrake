@@ -309,3 +309,100 @@ Config error in <kind>: initial will range is undefined for humanlike pawn kind.
 Two lines each — 48 new kinds produced **108 red lines** in one load. Not fatal, and easy
 to dismiss as noise, but they are also the numbers that decide what recruiting or enslaving
 a captured pawn costs. A kind without them is not just noisy; it is meaningless to capture.
+
+---
+
+## `maxGenerationAge`/`minGenerationAge` are integer YEARS — they cannot express "always juvenile"
+
+`PawnKindDef.maxGenerationAge`/`minGenerationAge` are `int` (years), so a
+sub-1-year `AnimalAdult` threshold on a short-lived creature is not
+representable. Forcing `maxGenerationAge=0` looks like the fix and instead
+makes `PawnGenerator`'s age-roll loop exhaust its 300 tries and spam
+`Log.Error` on every spawn.
+
+⇒ For a permanently-juvenile creature, drop the `AnimalAdult` entry from
+`race.lifeStageAges` entirely — `LifeStageUtility.GetLifeStageAgeForYears` caps
+at the last remaining stage forever, regardless of rolled age. (2026-09-08)
+
+---
+
+## Deleting a def is not the whole cut — grep the repo for the dead defName as a final step
+
+Removing `guy762_KotORWorkbench` left 86 dangling `recipeUsers`/
+`descriptionHyperlinks` references and 50 dead JunkPile loot-table rows across
+18 other files, invisible until the boot log's own cross-reference errors named
+them. ⇒ A full-cut item needs an explicit repo-wide grep for the deleted
+defName as its own final step — deleting the def's own file is not the whole
+job. (2026-09-14)
+
+---
+
+## `wildPlants`/`wildAnimals` use the `<DefName>commonality</DefName>` shorthand — not `<li>`
+
+Same dictionary-keyed shape as `xenotypeChances` above, and it bites the same
+way: a parser (or a person) expecting `<li><plant>…</plant></li>` children
+reads every row as empty and reports the biome's roster as `None`. It produced
+two flatly contradictory measurements of the same file in one session, until
+the raw block was read directly. Same class as the northstar dict-vs-attr
+trap: **when two of your own reads of one file disagree, the parser is wrong,
+not the file.**
+
+A patched-in `<wildAnimals>`/`<wildPlants>` entry also cannot be attributed by
+hunting for a nearby `<xpath>` element — resolve the target from the
+`PatchOperation`'s OWN xpath and read the species from its `<value>`. The lazy
+version silently placed one creature in the wrong biome and missed another
+entirely, understating a roster 2-vs-4. An `RM_` twin's `BiomeDef` often carries
+only generic vanilla filler; its real campaign roster is patch-added, so
+reading the `BiomeDef` alone sees the wrong half of a twin.
+(`BIOME_SPECIFIC_FAUNA_LAW_1`, 2026-09-22)
+
+---
+
+## `<ingestible />` (self-closed) is NOT "no ingestible" — it CONSTRUCTS a bare properties object
+
+An empty `<ingestible />` element still builds an `IngestibleProperties`
+instance; it does not suppress the field the way omitting the tag would.
+Reparenting a plant that carried one, from `PlantBase` to `PlantBaseNonEdible`,
+turned one Config error into two (`undefined preferability` + `no foodType`) —
+there was suddenly no parent left to merge the missing fields in from.
+
+⇒ Override the one field that is actually wrong and inherit the rest; do not
+reparent away from a base that was silently supplying fields. And re-verify a
+def fix on a second load — this one read as fixed offline. (2026-09-21)
+
+---
+
+## A patch file placed under a mod's `Defs/` folder parses as a Def, and every operation in it is INERT
+
+It logs `Type PatchOperationX is not a Def type` once, then is silent forever
+— every operation inside never runs. ⇒ Scope any patch-content search by
+`root.tag == "Patch"`, never by folder name or by grepping for `PatchOperation`
+mentions: a string search over `Defs/` files returned ~20 hits that merely
+*mention* PatchOperation; the real count of misplaced, inert patch files was 2.
+(`PATCH_FILES_UNDER_DEFS_INERT_1`, 2026-09-21)
+
+---
+
+## A duplicate-defName scan over-reports badly unless keyed on def TYPE, not on the bare name
+
+32 raw "duplicate defName" hits became 1 real collision once typed: 6 were
+`ThingDef`/`PawnKindDef` pairs legitimately sharing a name (a `PawnKindDef`
+carries a `<race>` element, which fools an "is it an animal" filter into
+treating the pair as one def counted twice), and 30 were a dead def tree under
+`Source/` that RimWorld never loads. ⇒ Key any duplicate scan on
+`(defType, defName)`, and exclude anything under a `Source/` (or otherwise
+never-loaded) tree before counting. (2026-09-22)
+
+---
+
+## A `--` inside `<!-- -->` doesn't just fail quietly — it can wedge the owner's live game behind a stack of popups
+
+`SKILL.md` §4 already states the rule (no double hyphen inside an XML
+comment). What is easy to under-rate: RimWorld auto-opens an error-log popup
+**per malformed file**, so a house style of using `--` as an em-dash in prose
+comments ("fails silently -- nothing logs it") produced ~8 stuck popups behind
+one another on `Armoury/About.xml` before anyone found it
+(`ARMOURY_LOADAFTER_STALE_1`, 2026-09-08). ⇒ Brief any subagent writing a long
+prose comment into an XML file not to use `--` inside `<!-- -->`, and have it
+run `xml.etree.ElementTree.parse()` on the file afterward — ElementTree
+correctly rejects this; it is not a lenient parser here.

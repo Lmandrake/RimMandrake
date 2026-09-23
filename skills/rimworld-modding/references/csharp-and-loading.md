@@ -12,6 +12,8 @@ problem, or a `LoadFolders.xml` that quietly excluded the folder you're editing.
 5. Harmony
 6. Building
 7. Failure shapes and what they actually mean
+8. `EnableDefaultCompileItems false` csproj — a new file needs listing twice
+9. Job drivers and think nodes that silently swallow a custom job or state
 
 ---
 
@@ -246,3 +248,46 @@ The pattern worth carrying between sessions: in a large stack, hard breaks
 concentrate in **mods that reflect over other mods' types at startup** — patchers,
 compatibility layers, indexers. They run early, they assume a shape, and the
 shape changed. Grep for `static constructor` first, every time.
+
+---
+
+## 8. A csproj with `EnableDefaultCompileItems false` needs the new file listed twice
+
+⚠️ **A project that sets `EnableDefaultCompileItems false` and lists every
+`.cs` file explicitly** — `RM_CreatureBehaviors.csproj` lists all ~75 files
+this way — **compiles a new file dropped into `Source/` into NOTHING, with no
+error.** The class simply does not exist at runtime, and every def
+referencing it then fails to resolve for a reason that points nowhere near the
+missing `<Compile Include>` line. ⇒ Adding a `.cs` file to such an assembly is
+always a two-file change: the source file, and the csproj's file list.
+(2026-09-23)
+
+## 9. Job drivers and think nodes that silently swallow a custom job or state
+
+**A job that "starts then reverts to Wait after 60 ticks" is usually the
+DRIVER killing it, not the target.** Read the job driver's `FailOn`/
+`AddFailCondition` lines in source before blaming the thing the pawn was
+aimed at — `JobDriver_Refuel.cs` kills any unforced job when its auto-refuel
+gating says no. A companion mod fixed this class of bug by setting
+`job.playerForced` on the jobs it hands out. (2026-09-09)
+
+**`Pawn.CurrentlyUsableForBills()` requires `InBed()` for EVERY pawn
+billGiver** (surgery, memory wipe, any whole-pawn `Recipe_Surgery`-style
+bill). A droid-type pawn never satisfies this: `needsRest=false` gives it no
+drive to seek a bed, and `WorkGiver_TakeToBedToOperate` explicitly refuses any
+pawn with `RaceProps.IsFlesh==false`. This silently blocks **every**
+whole-pawn recipe on a non-fleshy race, not just whichever one happens to be
+under test. Fix: a Harmony prefix on `CurrentlyUsableForBills` that skips the
+`InBed()` check for non-fleshy pawns specifically, keeping the
+`InteractionCell` reachability check. (2026-09-12, `DROIDWORKS_WIPE_SEVERITY_1`)
+
+**Two think nodes dispatch mental states and only one of them is
+subclass-aware.** `ThinkNode_ConditionalMentalState` tests
+`pawn.MentalStateDef == state` (def IDENTITY); `ThinkNode_ConditionalMentalStateClass`
+tests `stateClass.IsInstanceOfType(...)`. Manhunting is routed by the CLASS
+one, so a custom `MentalStateDef` whose `stateClass` subclasses
+`MentalState_Manhunter` inherits `JobGiver_Manhunter` with **no** think-tree
+patch and **no** Harmony needed — and conversely a state routed by the DEF one
+would silently have no behaviour at all if authored the same way. Check which
+of the two the vanilla think tree actually uses before assuming a custom
+mental state needs its own JobGiver wiring. (2026-09-21)

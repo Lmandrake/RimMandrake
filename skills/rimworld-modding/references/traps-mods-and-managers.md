@@ -137,3 +137,20 @@ md5sum <repo copy> <deployed copy>                   # differ => the game has th
 * A DLL verified with `strings -a -el` in the repo — md5 `b7730027` — while the game
   held a different build, `82b48e53`, dated before the launch. "Verified in the
   binary" and "verified in the game" are different claims.
+
+### An inactive mod's `MayRequire`-gated content vanishes with ZERO log lines
+
+**Symptom:** `environmentalhazards` sat deployed for 7 days, never appearing in
+any active mod list, and never once logged an error about it.
+**Cause:** a `MayRequire` gate on a def or patch node simply drops the node
+when the named mod is inactive — silently, by design, the same as any
+optional-compat gate. Nothing distinguishes "gated off because the mod isn't
+installed" from "gated off because it's installed but inactive" in the log,
+because neither one logs anything.
+**Fix:** census the ACTIVE mod list (parse `ModsConfig.xml`'s `<activeMods>`,
+never a `<li>` count — see `SKILL.md` §1) to learn what is really gated off.
+The log can only tell you what fired; it cannot tell you what a `MayRequire`
+quietly declined to load.
+**Recurs when:** anything reasoned from "no errors about it" instead of from
+the mod list itself — an inactive mod is exactly as quiet as a fully-working
+optional dependency. (2026-09-19)

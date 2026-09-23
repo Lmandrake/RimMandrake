@@ -313,8 +313,12 @@ It catches the silent failures, which otherwise cost a full game restart to find
 ```bash
 python3 scripts/validate_patch.py path/to/Patch.xml \
     --defs "C:/Program Files (x86)/Steam/steamapps/common/RimWorld/Data" \
-    --defs "C:/Program Files (x86)/Steam/steamapps/workshop/content/294100"
+    --defs "C:/Program Files (x86)/Steam/steamapps/workshop/content/294100" \
+    --defs "C:/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
 ```
+
+🔴 **Pass the Mods folder too** — first-party mods live there, not in Workshop
+content (`references/patch-operations.md` has the failure this avoids).
 
 The valuable check is the last one: it **runs each xpath against the real Defs on
 disk and reports how many nodes it hits**. Zero hits means the patch would silently
