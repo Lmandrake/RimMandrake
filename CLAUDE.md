@@ -147,6 +147,7 @@ MEASURED about the live world — the live system is the only instrument for "ri
   two subagents disagree on a number, measure it yourself before it becomes a fact.
 
 ### Tools with surprising side effects
+- 🔴 **A `PreToolUse` hook added to `.claude/settings.json` mid-session does not fire** — not for this window's Bash calls and not for its subagents' — until a new session starts; a hook already present at session start does fire for subagents. Test a new hook in a fresh window, never by exercising it in the one that added it.
 
 - 🔴 **A backgrounded `Agent` dies at 600 s of silence and leaves NOTHING on disk.** Three died
   that way 2026-09-17, all mid-read before their first write, all leaving a clean tree — so each
@@ -550,6 +551,8 @@ Single-source only what a generator can enforce; where only discipline enforces
 a duplicate, write a pointer instead.
 
 ## Git
+
+The laptop's `chore(sync): laptop` sweep commits whatever is in progress under a generic message — if the message matters, commit each unit the moment it lands (2026-09-15).
 
 Explicit paths, never `git add -A`/`.`/`-a` (hook-enforced). Push immediately after
 committing; rejected push → `git pull --rebase`, never `--force`. Never a file over
