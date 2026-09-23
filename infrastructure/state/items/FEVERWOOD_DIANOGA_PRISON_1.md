@@ -81,6 +81,44 @@ layer, and ⛔ it gets no `canon_references/` entry — there is no canon to ref
 actually ships, with the dianoga *mapped over it* when the campaign layer is active — never an
 impoverished substitute for it.
 
+### ✅ The campaign-layer occupant is ALREADY BUILT — MEASURED 2026-09-23
+
+⇒ **Yes: with the Star Wars layer active the tank holds a dianoga, and it costs nearly nothing,
+because `RSW_Dianoga` already ships** (`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Dianoga.xml`)
+with its own BodyDef and four SoundDefs. ⛔ Do not author a dianoga for this.
+
+| measured on the shipped def | value | why it matters here |
+|---|---|---|
+| life stages | **3** — *"dianoga larva"* `drawSize 0.8`, mid `2.6`, adult `3.8` | 🔑 the **larva stage is the tank's juvenile already** — no new art, no new def, and it matches the canon "Toothy" display tank |
+| `baseBodySize` | 4.0 | an adult is genuinely big; the larva is what a tank can hold |
+| body parts | **left tentacle / right tentacle** | the creature is already tentacled at the BodyDef level |
+| `foodType` | Carnivore, Omnivore, Ovivore, **AnimalProduct** | ✅ the §6j feeding loop (fed corpses or meat) needs no new food wiring |
+| `trainability` | **Advanced** | 🔴 see the conflict below |
+
+🔑 **And the adult's sprite is irrelevant to the thing below**, because the deep adult is *never
+rendered* (bestiary item: only tentacles are ever drawn). ⇒ The dianoga art is only ever seen **in
+the tank**. That is a clean split and it is why one def can serve both roles.
+
+### 🔴 three things this mapping exposes, none of them ruled
+
+1. 🔴 **`RSW_Dianoga` is ALREADY AMBIENT — in the Greentide, not the Fever Wood.** Patch-wired live
+   at `src/RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml`, with a tolerance entry in
+   `AnimalTolerances_Ashkarr.xml`. So with the campaign layer on, one species would be a Greentide
+   wild animal **and** the Fever Wood's unkillable elder being **and** the tank's captive. ⛔ **Not
+   mine to resolve and evictions are stopped** — this is a row for the **Fever Wood's own review
+   sitting**, judged at that biome's stage of completion, never a sweep.
+2. ⚠️ **Swap or add?** Whether the campaign layer **re-skins the one Sekkulaath def** (patch
+   label/graphic/sounds) or **spawns `RSW_Dianoga` as a second creature** is unset. 🔑 §1 says *"two
+   layers, one creature"*, and two rival elder beings in one biome is incoherent — so a **swap** is
+   the reading the design supports, but it is not ruled.
+3. 🔴 **`trainability: Advanced` contradicts "it is a PRISONER, not livestock."** As shipped, a
+   player could tame and train it, which is exactly the husbandry framing §6m forbids. ⇒ Either the
+   tank path bypasses taming entirely, or the campaign mapping patches trainability down. Unset.
+
+⚠️ Two rosters cite the dianoga as bare **`Dianoga`** (`the_greentide.json`, `the_miasma.json`)
+against the shipped `RSW_Dianoga` — two more instances of the bare-name class noted on
+`ROSTER_DEAD_BMT_NAMES_SWEEP_1`.
+
 ## 🔴 build it GENERIC — it is the model for a whole class
 
 **Owner note, 2026-09-23:** the tank is **a high-prize item with many uses**, and it **will serve
