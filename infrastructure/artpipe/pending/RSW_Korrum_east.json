@@ -18,5 +18,5 @@
   "prompt": "A massive crab-like creature carrying a huge boulder-textured shell on its back, thick stony grey-brown hide, slow and ancient looking, Star Wars alien creature design, desert palette, painterly game-art style.",
   "reference": null,
   "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
-  "style_notes": "STONEBACK_DEFNAME_COLLISION_1 2026-09-22: re-keyed from RSW_Stoneback_east. That defName was TWO animals; this job's prompt describes the boulder-shelled giant crab, which is now RSW_Korrum. Left on RSW_Stoneback it would have delivered korrum art onto the bokka, whose own art already exists. Owner note on the identity sheet: \"Regenerate art.\""
+  "style_notes": "STONEBACK_DEFNAME_COLLISION_1 2026-09-22: re-keyed from RSW_Stoneback_east. That defName was TWO animals; this job's prompt describes the boulder-shelled giant crab, which is now RSW_Korrum. Left on RSW_Stoneback it would have delivered korrum art onto the bokka, whose own art was itself WRONG - it was Biomes! Caverns' stone-mimic, a legless mound, not the bokka's clawed tailed quadruped. Regenerated separately 2026-09-23 under STONEBACK_BOKKA_ART_STANDARD_1. Note this registry's rows for RSW_Stoneback/* are THESE korrum jobs under the pre-rename key - the re-key never wrote a registry event. Owner note on the identity sheet: \"Regenerate art.\""
 }
