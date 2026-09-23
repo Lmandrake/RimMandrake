@@ -80,7 +80,11 @@ decompiler. ⛔ Do not name a field, class or value for any of them from reasoni
    harvested from, and the harvest/craft route to it. The route being an item is ruled; which plant
    pays for it is not.
 2. Establish the mechanism questions on the Desktop. ⛔ Author nothing before that.
-3. Choose and record which two vanilla diseases are removed.
+3. **Remove `Disease_Flu` and `Disease_Malaria`** — ruled by the owner 2026-09-22, choosing the two
+   routine tendable illnesses over the animal pair or the wet-tropical pair. ⇒ Everything left in the
+   jungle is severe: plague, gut worms, organ decay, the Frenzy. ⚠️ He accepted the stated cost, so do
+   not re-add a mild illness later to give the axis low rungs — a new colony gets no warning shots
+   here, and that is the intent.
 4. Design the severity curve so the *decision* is real: too short and there is no temptation, too long
    and it is free value. This is the balance heart of the feature.
 5. Mod Settings toggle and tuning per the standing every-mod-ships-settings rule — the curve is exactly
@@ -88,8 +92,8 @@ decompiler. ⛔ Do not name a field, class or value for any of them from reasoni
 
 ## verify
 
-`RM_Greentide` carries six diseases, two of the original seven removed and recorded, with The Frenzy
-among them. The illness escalates, collapses, and is survivable only if treated during the coma.
+`RM_Greentide` carries six diseases — the original seven less `Disease_Flu` and `Disease_Malaria` —
+with The Frenzy among them. The illness escalates, collapses, and is survivable only if treated during the coma.
 A player can inflict it deliberately. ⛔ No live-proven claim from the Mac.
 
 ## criteria
