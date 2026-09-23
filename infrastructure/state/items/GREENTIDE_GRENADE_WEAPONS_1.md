@@ -18,6 +18,21 @@ becomes *portable*. You carry the jungle out with you — its stench, its growth
 it somewhere else. That is a reward only a violently alive place could give a clan living on dead
 sand, and it pays in capability rather than in goods, so it cannot inflate the economy.
 
+### ✅ SCOPE RULED — the stench smoke goes first, owner 2026-09-22
+
+Asked which of the three proves the category, he chose **stench smoke**. ⇒ **Build one grenade, not
+three.** The seeding grenade and both toxin routes stay designed-but-unbuilt in this item — they are
+**queued behind the proof, not dropped.**
+
+🔑 It is also the least mechanically risky of the three, so the category gets proven before the two
+features whose mechanisms may not be expressible at all are attempted.
+
+⚠️ **New question this creates, and it is not mine to decide:** the jungle's insect danger is now
+tiny swarming wasps (`GREENTIDE_WASP_SWARM_1`). His wording here is *"beasts"* — if the stench also
+repels wasps, the jungle's first grenade is also its insect counter, which is either elegant or
+defuses the new hazard entirely. Flagged there too; needs his call before the smoke's target set is
+written.
+
 ## the three he named
 
 ### 1. Stench smoke — beasts flee
@@ -72,9 +87,11 @@ not a real trap.
 
 ## spec
 
-1. **Card him on scope first** — three grenades is a lot; which of the three is the one to prove the
-   category with? ⚠️ Note the toxin idea is really *two* features (darts and water-tainting).
-2. Establish the five mechanism questions on the Desktop. ⛔ Nothing authored before that.
+1. **Build the stench smoke only** (ruled above). ⛔ Do not open the seeding grenade or either toxin
+   route until he has seen the smoke work.
+2. Establish mechanism questions 1 and 2 on the Desktop — released volume effects, and whether
+   animals can be made to flee one. Questions 3–5 belong to the unbuilt two and can wait.
+   ⛔ Nothing authored before that.
 3. Trace each grenade to its source plant in the roster, and add the harvest/craft route.
 4. Settle the friendly-fire questions explicitly: stench on your own animals, toxin in your own water.
 5. Mod Settings toggles per the standing rule.

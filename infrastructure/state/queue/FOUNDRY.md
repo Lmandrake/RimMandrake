@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T05:35:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T06:02:21Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1850,6 +1850,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FEVERWOOD_ANT_HIVE_DUNGEON_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Read the Fever Wood doc's Ant material in full and the third-party ant mod it names, before
 prose:    infrastructure/state/items/FEVERWOOD_ANT_HIVE_DUNGEON_1.md
+
+## GREENTIDE_WASP_SWARM_1 Jungle wasps: tiny, numerous, hives on plants, stings that stack
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREENTIDE_WASP_SWARM_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREENTIDE_WASP_SWARM_1.md
