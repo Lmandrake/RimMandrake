@@ -492,6 +492,118 @@ ruling is rewritten.
 
 ---
 
+## 6h. Verticality is PAINT, not mechanism — and the mud does the defensive work
+
+Decision taken by question card: **purely terrain, walk on and off.** The crown simply *is*
+the boughway and bough-soil terrain; a pawn steps onto it from the ground wherever the two
+touch. **Height is read, never enforced.** ⛔ No climb points, no lifts, no ascent gating, no
+asymmetric access rules.
+
+✅ **Cost of zero new mechanism:** every vanilla pathing, hauling and building system works
+unchanged.
+
+🔑 **But the sheet claims life and safety are UP (§7b), and that claim now has to be earned
+somewhere else — and it already is, twice over:**
+
+1. **Ban 4 forbids heavy structures on the ground.** You cannot fortify down there, so the
+   crown is where a real base *can* exist. That is an authored constraint, not an access rule.
+2. ⭐ **Sink-mud stick-chance scales with weight (§3).** So the ground punishes *heavy* things
+   most — and a raid column is heavier than a colonist. ⇒ **The mud is the biome's defensive
+   asymmetry.** Raiders bog down crossing the floor while colonists move the boughways; the
+   crown is safer because the approach to it is worse for the attacker, not because a rule
+   forbids them entry.
+
+⇒ This is why the mud ruling (§3) is load-bearing far beyond being a hazard: **without it,
+"safety is up" is only paint too.** ⛔ Do not weaken the weight-scaling; it is the mechanism
+behind the biome's central claim.
+
+⚠️ Accepted consequence: nothing stops a raider walking into the treetop town if it gets
+across the floor. That is intended — the floor is the wall.
+
+---
+
+## 6i. The set-piece gets NO protection
+
+Decision taken by question card: **no protection at all.** The eye attack can arrive whenever
+the pressure model (§6d) says, and **it can end a colony outright**, the way a serious raid
+can.
+
+⇒ This closes the tuning question §6d created, and closes it in the harshest direction
+offered. ⛔ **Do not add a maturity gate, a wealth floor, or a scaling clamp** — all three
+were offered and declined.
+
+🔑 **What this makes mandatory instead:** the player must be able to *see it coming*. With no
+mechanical protection, fairness has to come entirely from legibility — and the design already
+carries the instruments:
+
+- **`RM_Corvath`** rings a fed pool, so an occupied one is readable botanically before you
+  settle near it (flora roster row 13).
+- **Pool size telegraphs reach** (§3), so a large mirror is visibly the dangerous one.
+- **The chorus falling silent** is the immediate warning (§4).
+- **The town sells the pool-list** (sheet §8).
+
+⇒ ⛔ **Settling beside a great pool must be a warned gamble, never a surprise.** If a player
+can be wiped by something the map never told them about, this ruling becomes arbitrary rather
+than honest — the legibility is the entire justification.
+
+---
+
+## 6j. The tank teaches, produces, and can get out
+
+Decision taken by question card: **both, and it can get out.**
+
+| what it does | detail |
+|---|---|
+| **teaches** | seeing it names the creature; hearing the hum up close is how a player learns to recognise the real signal before it kills them |
+| **produces** | fed corpses or meat, it yields the canon product line — meat for **pie**, **spleen chemicals** for the narcotic tea, **cream** (all sourced, see the canon entry) |
+| ⭐ **escapes** | a **neglected or damaged tank releases it** — a disaster the player built themselves |
+
+🔑 **The escape is what keeps the horror horrifying while being useful.** It is the answer to
+the risk named when this was offered: that domesticating the beast turns it into a livestock
+pen.
+
+⚠️ **Two things this needs and does not yet have:**
+- **The escape must be survivable**, or nobody builds the tank at all and the whole feature is
+  dead content. A juvenile getting out is not the map's elder being — it should be a bad
+  afternoon, not a colony-ender.
+- ⚠️ **Water dependency is canon** (*"survives only brief stretches in open air"*). An escapee
+  therefore cannot roam freely — it must make for water, which is both a canon-honest
+  behaviour and a natural containment on the disaster.
+
+✅ Canon precedent for the tank itself is real: **"Toothy," a juvenile dianoga kept in a
+display tank**, plus canon dianoga living in the **SoroSuub refinery's water tanks on
+Sullust**. Both in the canon entry's source list. ⭐ And the owner's own 2026-09-14 ruling on
+that entry already assigned this material to the **Star Wars Cuisine mod** — so the product
+half has a home.
+
+---
+
+## 6k. The chorus is emergent, not a track
+
+**Owner, verbatim:** *"Each animal literally makes its own noise and just adds together"*
+
+⇒ ⛔ **No map-wide ambient chorus track, and no synthesized "chorus level" number.** Every
+bird carries its **own call sound**, and the cacophony is simply the sum of the animals
+actually alive and present.
+
+🔑 **This makes the silence ruling (§4) straightforward rather than clever.** "The crown goes
+quiet" = **suppress every bird's own call**, which is precisely what
+`RM_MapComponent_SilenceCue` does once it has the public "hush now" entry point F2 recorded as
+missing. No parallel audio system is needed.
+
+⇒ **Consequences that follow for free, and are better than a track:**
+- **Killing birds genuinely quiets the map**, permanently and proportionally — so the
+  plumage temptation (§6c) has an audible cost, not a bookkeeping one.
+- **A tamed flock near the base is a private alarm**, because its members are really there
+  making noise.
+- **The chorus thins as the biome is depleted**, with no extra code.
+
+⚠️ Sound-density risk: many animals each emitting a call can become mush or a performance
+problem. The per-species calls must be sparse and differentiated, and that is a sound-design
+constraint, not a mechanism change.
+
+---
+
 ## 7. What this sitting did NOT settle
 
 - **The flora roster.** The Fever Wood still carries **7 donor plant rows** (5 Alpha
@@ -502,14 +614,12 @@ ruling is rewritten.
 - **The full fauna roster** beyond the guild and the birds.
 - **Free-tier naming** for our own eldritch horror, its tentacle types, the three
   sap-suckers, and the birds.
-- 🔴 **Whether an early colony can survive the set-piece.** §6d's four-input pressure model
-  can fire before a young colony can win, so it needs either a maturity floor or a survivable
-  failure state (driven off with losses rather than wiped). ⇒ The tuning question this
-  sitting *created*.
 - **How much radioactive material, for how long, and whether suppression harms the pool's
   other content** (§6f) — the treasure trickle and `RM_Corvath`.
-- **How the birds' call registers divide** (swoop / shrill / warble) and how many there are.
-  §6c settles what they are *to the player*, not how the chorus is voiced.
+- **How many birds there are**, and their individual calls. §6k settles that the chorus is
+  emergent from per-animal sounds; it does not say how many animals or what each sounds like.
+- **Whether the escaped juvenile is survivable, and its behaviour** (§6j) — canon water
+  dependency is the natural containment, but nothing is specified.
 - **Bough-soil's fertility value and which cells the genstep paints it on** (§6b).
 
 ---
