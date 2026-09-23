@@ -55,7 +55,7 @@ packageId exists yet to check (folder MISSING), not UNMEASURED.
 | 17 | Webwork | MISSING | — | — | WEBWORK_RM_MOD_BUILD_1 (proposed) | EXISTS (the_webwork.md, kits/webwork_kit_spec.md) | NO | — | — |
 | 18 | GelatinousSlime | EXISTS | mandrake.rm.gelatinousslime (MATCH) | 1 | GELATINOUSSLIME_RM_MOD_BUILD_1 (proposed) | EXISTS (the_slime.md, the_slime_gene_lists.md) | YES | YES | — |
 | 19 | Miasma | MISSING | — | — | MIASMA_RM_MOD_BUILD_1 (proposed) | EXISTS (the_miasma.md, kits/miasma_kit_spec.md) | NO | — | — |
-| 20 | Scarlands | MISSING | — | — | SCARLANDS_STANDALONE_MOD_1 (proposed) | EXISTS (the_scarlands.md, kits/scarlands_kit_spec.md) | NO (only legacy `ScarlandsLadder` deployed) | — | unblocked (naming picked); absorbs `mandrake.rut.scarlandsladder` |
+| 20 | Scarlands | MISSING | — | — | SCARLANDS_STANDALONE_MOD_1 (proposed) | EXISTS (the_scarlands.md, kits/scarlands_kit_spec.md) | NO (only legacy `ScarlandsLadder` deployed) | — | unblocked (naming picked); `mandrake.rut.scarlandsladder` stays RimUtinni (owner 2026-09-23, arch §7 Q15) |
 | 21 | TheForge | MISSING | — | — | THEFORGE_RM_MOD_BUILD_1 (proposed) | EXISTS (the_forge.md, kits/forge_kit_spec.md) | NO | — | — |
 | 22 | FeverWood | MISSING | — | — | FEVERWOOD_RM_MOD_BUILD_1 (proposed) | EXISTS (the_fever_wood.md, kits/fever_wood_kit_spec.md) | NO | — | — |
 | 23 | TheSump | MISSING | — | — | THESUMP_RM_MOD_BUILD_1 (proposed) | EXISTS (the_sump.md, kits/sump_kit_spec.md) | NO | — | — |

@@ -97,7 +97,7 @@ and in the deserts' case the owner named them separately in the ruling.
 | 17 | `RUT_Webwork` | 161 | the Webwork | `the_webwork.md`, `kits/webwork_kit_spec.md` | `Webwork` | `mandrake.rm.webwork` | `RM_Webwork` | PROPOSED |
 | 18 | `RUT_Slime` | 96 | the Slime | `the_slime.md`, `the_slime_gene_lists.md` | `GelatinousSlime` (EXISTS) | `mandrake.rm.gelatinousslime` | `RM_GelatinousSlime` | twin pair, §4; `TITANOSLIME_SLIME_BIOME_1` builds here |
 | 19 | `RUT_Miasma` | 93 | the Miasma | `the_miasma.md`, `kits/miasma_kit_spec.md` | `Miasma` | `mandrake.rm.miasma` | `RM_Miasma` | PROPOSED |
-| 20 | `RUT_Scarlands` | 90 | Warscar (RULED 2026-09-21, was "the Scarlands" — §7 Q5) | `the_scarlands.md`, `kits/scarlands_kit_spec.md` | `Scarlands` | `mandrake.rm.warscar` | `RM_Warscar` | PROPOSED; absorbs `mandrake.rut.scarlandsladder`; label collision with vanilla's own `Scarlands` biome fixed on `RUT_Scarlands` directly — defName move to `RM_Warscar` is the row's own migration, item `SCARLANDS_STANDALONE_MOD_1` |
+| 20 | `RUT_Scarlands` | 90 | Warscar (RULED 2026-09-21, was "the Scarlands" — §7 Q5) | `the_scarlands.md`, `kits/scarlands_kit_spec.md` | `Scarlands` | `mandrake.rm.warscar` | `RM_Warscar` | PROPOSED; `mandrake.rut.scarlandsladder` stays RimUtinni (§7 Q15); label collision with vanilla's own `Scarlands` biome fixed on `RUT_Scarlands` directly — defName move to `RM_Warscar` is the row's own migration, item `SCARLANDS_STANDALONE_MOD_1` |
 | 21 | `RUT_TheForge` | 44 | the Forge | `the_forge.md`, `kits/forge_kit_spec.md` | `TheForge` | `mandrake.rm.theforge` | `RM_TheForge` | PROPOSED |
 | 22 | `RUT_FeverWood` | 43 | the Fever Wood | `the_fever_wood.md`, `kits/fever_wood_kit_spec.md` | `FeverWood` | `mandrake.rm.feverwood` | `RM_FeverWood` | PROPOSED |
 | 23 | `RUT_Sump` | 41 | the Sump | `the_sump.md`, `kits/sump_kit_spec.md` | `TheSump` | `mandrake.rm.thesump` | `RM_TheSump` | PROPOSED |
@@ -174,8 +174,9 @@ it would, the line is a patch.
 ### 3c. Two things that look like Utinni content and are not
 
 - **The mechanics kits.** `mandrake.rut.rotsporekit`, `mandrake.rut.rustcathedralhum`,
-  `...roaches`, `...walls`, `mandrake.rut.scarlandsladder` and `mandrake.rut.pyrelandsmechanics`
-  are biome mechanics filed at the wrong tier. A spore that rots food, a wall that hums, a
+  `...roaches`, `...walls` and `mandrake.rut.pyrelandsmechanics`
+  are biome mechanics filed at the wrong tier (⛔ not `mandrake.rut.scarlandsladder` — it is Ashfall Road
+  lore stages, campaign content, and stays where it is per §7 Q15). A spore that rots food, a wall that hums, a
   roach that eats deck plate — none of it needs Star Wars. They fold into their biome's
   RimMandrake mod (§2 table). ⚠️ UNMEASURED whether any of them contains a Star Wars
   reference internally; the move is the moment to check, file by file.
@@ -279,9 +280,10 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
   ladder, compressor, gene archive, antidote, four plants, `SlimeMod.cs` settings) and the
   `RUT_` twin is thin. As of 2026-09-21 it also carries the full 33-target A/B-list gene
   system (`SLIME_GENE_ARCHIVE_BUILD_1`, live-verified), widening the gap further.
-- **Merged in:** anything `RUT_Slime.xml` carries that the RimMandrake def lacks — compare
-  the terrain-by-fertility and weather tables at the move; its 10 fauna entries (7 `AA_`, 1 `RM_Titanoslime`,
-  2 `GR_`) stay inline, none is Star Wars.
+- **NOT merged (owner, 2026-09-23 — §7 Q14):** `RM_GelatinousSlime` stays donor-free and thin. `RUT_Slime.xml`'s
+  10 fauna entries (7 `AA_`, 2 `GR_`, 1 `RM_Titanoslime`) are not copied across; the Titanoslime is already in
+  both, and the rest of the roster is filled with new creatures of ours, not donor rows. Compare only the
+  terrain-by-fertility and weather tables at the move.
 - **Deleted:** `RUT_Slime.xml`, at Phase B step 4.
 - **Retargets:** `TITANOSLIME_SLIME_BIOME_1` says "for `RUT_Slime`"; the Titanoslime is
   not Star Wars, so it is a RimMandrake creature and it is built inside this mod.
@@ -558,8 +560,8 @@ article** (owner, verbatim: "Warscar. Drop the 'the'" — every other biome labe
 table keeps the house `the Xxx` form; this one deliberately doesn't). Not the DLC's label,
 not keeping the name. `RUT_Scarlands`'s own `<label>` is changed to `Warscar` immediately
 (zero live-tile risk — defName untouched, the 90 live tiles still resolve by shortHash);
-the defName move to `RM_Warscar` plus absorbing `mandrake.rut.scarlandsladder` is the
-row-20 twin-pair migration itself, tracked as its own build item so it gets the same care
+the defName move to `RM_Warscar` is the
+row-20 migration itself (`mandrake.rut.scarlandsladder` is NOT absorbed — §7 Q15), tracked as its own build item so it gets the same care
 Pyrelands/GelatinousSlime got, not folded into the naming pick. Item:
 `SCARLANDS_RENAME_OURS_1` (closed on the label fix + this ruling); follow-on:
 `SCARLANDS_STANDALONE_MOD_1`.
@@ -640,10 +642,33 @@ never sees it fire, so the hook is a guard for him, not a check an agent can rel
 a per-creature call. None has a canon-library entry and each is a campaign-original
 re-authoring, so none of them is Star Wars content.
 
+**Q12 — invented-name creatures still prefixed `RSW_` (Rot's ten ex-`BMT_` ports, Stillsand's
+LightPipeNub/Ollim/Drazzik, …): WHEN do they move to the RM tier? PER BIOME, AT ITS SITTING.**
+Decision taken by question card, 2026-09-23. A build ticket ships them behind the Utinni
+`WildAnimals_<Biome>.xml` patch as they are; the biome's own review sitting decides its
+renames. Never a sweep inside Phase A.
+
+**Q13 — content wired into TWO biome mods (`RUT_ScorchedStars` Wasteland + Warscar,
+`RUT_Dewshrooms` Rot + Weeping Stones, `JOE_Cephalope`/`JOE_Landopus` Stillsand + Long Shade,
+root causeways Greentide + Fever Wood): DUPLICATE, THEN DIVERGE.** Owner, 2026-09-23,
+verbatim: *"We duplicated and then regenerate one of them into its own variant."* Each mod
+carries its own copy under its own defName; the second copy is regenerated — art and
+identity — into a distinct variant. No commons library, no cross-mod dependency.
+
+**Q14 — the Slime's donor rows: STAY DONOR-FREE.** Decision taken by question card,
+2026-09-23. `RM_GelatinousSlime` keeps its standalone-without-Alpha-Biomes promise; §4b's
+"merged in" instruction is withdrawn above. Holes are filled with new creatures of ours.
+
+**Q15 — does Warscar absorb `mandrake.rut.scarlandsladder`? NO — and the general rule.**
+Owner, 2026-09-23, verbatim: *"All bio mods will eventually be at the top level and not be
+Star Wars or OT specific. Then patches will be applied at the deeper levels."* The ladder is
+Ashfall Road lore stages — campaign content — so it stays RimUtinni and patches the top-level
+Warscar mod. §2a row 20 and §3c are corrected accordingly.
+
 ### Nothing is open
 
-🔴 **All eleven questions in this section are RULED — Q1–Q10 as of 2026-09-21, Q11 as of
-2026-09-22 — and every name is picked.** Q5 landed (`Warscar`); Q2 landed in full — `the
+🔴 **All fifteen questions in this section are RULED — Q1–Q10 as of 2026-09-21, Q11 as of
+2026-09-22, Q12–Q15 as of 2026-09-23 — and every name is picked.** Q5 landed (`Warscar`); Q2 landed in full — `the
 Stillsand`, `the Long Shade`, `the Leaning Scrub`; Q11 narrowed Q9 and put every Star Wars
 fauna row in the Utinni layer. **Nothing in this spec is waiting on the owner. Every row can
 start.**
