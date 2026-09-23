@@ -122,11 +122,11 @@ pay.
 | 14 | `RM_Sodderel` | sodderel | **leaning waterlogged spar, half-dead by nature** | A lopsided spar of a tree, half its limbs already dead and black with water, leaning permanently toward the pool. Living growth only on the high side. It looks like a wreck and is not one. | 5 | **The bog-timber** (sheet §7): the biome's ordinary construction wood, since the towers cannot be felled and varnoth is lethal to reach. ⚠️ Must read as *naturally* half-dead, or players will think it is diseased. | **OWED** |
 | 15 | `RM_Seepril` | seepril | **squat barrel ringed by an oil sheen** | A low dull barrel of a stem sitting in its own iridescent slick, the rainbow film spreading a cell or two around its base. Leafless above; just the barrel and the sheen. | 2 | **The seep-oils** (sheet §7) gather around it — perfume, lubricant, fuel. 🔑 Its rainbow is one of the planet's rainbow registers and must stay the *honest* one: the Miasma's blooms are beauty, the Scarlands' pools lie, and this is *just oil, just useful*. | **OWED** |
 
-⚠️ **`RM_Seepril` may belong to a liquids system rather than to flora.** The roster's own
-`new_defs` list records the seep-oils as *"none (gather point) — or terrain feature at
-mechanics item"*, and `LIQUID_TYPES_MOD_1` is named in the sheet's cross-flow ledger as the
-owner of the seep-oils. ⇒ **Settle which system owns it before authoring the def**; this row
-is the flora-side proposal, not a claim on the mechanism.
+✅ **RESOLVED 2026-09-23 — `RM_Seepril` owns the seep-oils.** Decision taken by question card:
+they are **a plant you harvest**. ⛔ `LIQUID_TYPES_MOD_1` does **not** own them, despite being
+named as their owner in the frozen sheet's cross-flow ledger — that pointer is superseded. ⛔ The
+terrain-feature route was offered and declined. Accepted cost: seepage stops being a property of
+the ground; the compensation is that the oils become findable and farmable at the margin.
 
 ---
 
@@ -207,7 +207,6 @@ eye, and an art pass that "fixes" either has broken the design.
   `RM_GenStep_RootCauseways`' existing `additionalPasses` field. Eight of these 18 rows
   cannot grow until it exists.
 - **Free-tier commonalities and `growDays`** — every number here is a slot, not a value.
-- **Which system owns the seep-oils** (§4's flag) before `RM_Seepril` is authored.
 - **The 7 donor rows on `RUT_FeverWood` are not removed by this document.** Replacing them is
   a def-editing pass, and `BIOME_PAINT_ONCE_AT_THE_END_1` governs anything touching the
   live biome def.

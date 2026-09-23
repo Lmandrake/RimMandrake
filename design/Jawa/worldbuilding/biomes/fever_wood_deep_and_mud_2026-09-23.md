@@ -704,6 +704,82 @@ that does not exist.
 
 ---
 
+## 6p. Animal density asymmetry — ⛔ OUT OF SCOPE
+
+Asked how the crown can teem while the floor stays empty when a map carries one
+`animalDensity` figure, the owner ruled: **"Don't worry about this."**
+
+⛔ **Do not design terrain-biased spawning, split crown/ground rosters, or a density
+override.** All three were offered and dismissed. ⚠️ The apparent contradiction between the
+sheet's teeming crown (§4) and its empty floor (§3) is **accepted as flavour, not a mechanism
+to deliver.** If a later pass rediscovers it as a defect, this is the ruling that says it is
+not one.
+
+---
+
+## 6q. The borers keep digging — the crown keeps changing
+
+Decision taken by question card: **living borers extend their galleries over time.** Bore-caves
+are not a fixed map-gen feature; a trunk you live in **keeps changing**, and can open into
+places you did not wall.
+
+✅ This makes the borers earn their place in the sheet's own §4 guild — *"borers eating
+cave-systems into the living wood (natural rooms the races reuse)"* — instead of being
+decoration beside caves they never made.
+
+⚠️ **Accepted cost, named at the card:** a creature that alters your base's walls without
+asking is a security problem, and players may find it infuriating rather than characterful. ⇒
+The digging must be **slow and visible** — a player should be able to see a gallery advancing
+and deal with it, never find a breach they had no warning of. ⚠️ Rate unset.
+
+🔑 This pairs with §6n's ranching ruling: if borers can be kept, a colony has a **living
+excavation tool** for trunks — which is a construction method nothing else on the planet has.
+⚠️ Whether they can be directed is unsettled; §6n only establishes that guild members are
+herdable, and the borers are not sap-suckers.
+
+---
+
+## 6r. The ants tried the water, and it took them
+
+Decision taken by question card: **broken and abandoned hives near the mirrors.** You find the
+evidence of an ant colony that dared the water and lost.
+
+🔑 **This proves the beast's reach without a single event firing** — environmental storytelling
+that corroborates the sheet's own line, *"even the Ants do not dig here"*, by showing what
+happened to the ones who did. And it is lootable.
+
+⚠️ **This does NOT replace the reactive hive dungeon.** `FEVERWOOD_ANT_HIVE_DUNGEON_1` is the
+owner's 2026-09-22 ruling that hives are *"dungeons in their own right"* which notice you,
+raise alarm, seal passages and hunt you. ⇒ **Two kinds of hive now exist:**
+
+| kind | where | what it is |
+|---|---|---|
+| **live, reactive** | inland, away from the water | the dungeon item's subject — it notices, rallies and hunts |
+| **dead, broken** | near the mirrors | set dressing and a ruin to loot; the beast's proof |
+
+⛔ Do not let the dead ones crowd out the live ones — the cost accepted at the card was that a
+hive with nothing in it is not the dungeon he asked for, so these are the **exception**, not
+the norm.
+
+---
+
+## 6s. The seep-oils are a plant — flag resolved
+
+Decision taken by question card: **a plant you harvest.**
+
+✅ **This resolves the open ownership flag** in `fever_wood_flora_roster_2026-09-23.md` §4.
+`RM_Seepril` (roster row 15) **owns the seep-oils** and is the right shape.
+
+⛔ **`LIQUID_TYPES_MOD_1` does NOT own them**, despite being named as their owner in the frozen
+sheet's own cross-flow ledger — that pointer is now superseded. ⛔ And the terrain-feature route
+was offered and declined.
+
+⚠️ Accepted cost: seepage stops being a property of the ground, which is a slightly weaker
+image than ground that weeps oil. The compensation is that the oils become **findable and
+farmable** at the pool margin, which the margin economy wants.
+
+---
+
 ## 7. What this sitting did NOT settle
 
 - **The flora roster.** The Fever Wood still carries **7 donor plant rows** (5 Alpha
@@ -716,6 +792,7 @@ that does not exist.
   sap-suckers, and the birds.
 - **How much radioactive material, for how long, and whether suppression harms the pool's
   other content** (§6f) — the treasure trickle and `RM_Corvath`.
+- **The borers' digging rate** (§6q), and whether a kept borer can be directed.
 - **How many birds there are**, and their individual calls. §6k settles that the chorus is
   emergent from per-animal sounds; it does not say how many animals or what each sounds like.
 - **How long stage 3 of an escape takes, and whether it is interruptible** (§6m).
