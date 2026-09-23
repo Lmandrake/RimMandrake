@@ -20,14 +20,30 @@
 
   🔑 SOURCE OF TRUTH: every weight below is copied verbatim from
   Defs/BiomeDefs/RUT_Greentide.xml's own wildAnimals block (frozen 2026-09-22),
-  which is the roster the world runs on today. Nothing is rescaled, added or
-  dropped — 27 rows there, 27 rows here, summing to 9.318 either way.
+  which is the roster the world runs on today. Nothing is rescaled or added.
+
+  🔴 ONE ROW WAS DROPPED FROM BOTH, DELIBERATELY: the dianoga. Owner ruling
+  2026-09-23, verbatim: "It's a mistake to have dianoga in the GreenTime. It
+  belongs only in tank prisons and the Fever Wood. Create something new and
+  terrifying for the Green Tide."
+
+  ⇒ MEASURED after that removal: this file and RUT_Greentide.xml each carry
+  26 rows summing to 9.168, so the verbatim correspondence still holds. Any doc
+  still quoting 27 rows / 9.318 is quoting the pre-ruling value. ⛔ Do not
+  "restore parity" by adding the dianoga back to either file.
+
+  ✅ An earlier owner review had already ordered it out of the Greentide
+  (rosters/the_greentide.json: disposition "move:AB_MiasmicMangrove"); the move
+  was never executed in the defs, and the row survived here only because this
+  file copied the roster verbatim. The vacated slot is reserved for a NEW
+  creature — never a neighbour's species.
 
   🔴 OUR DEFS, NOT THE DONOR'S. Owner ruling 2026-09-19, verbatim: "They should
   be using OUR creatures, not the donor references. The donor references, if
-  any, should never be used again." RUT_Greentide still names 22 rows as
-  mlie.starwarsanimalcollection's bare defNames (Gizka, Convor, Nuna...). All
-  22 exist as our own RSW_ ports — MEASURED 2026-09-22, each confirmed present
+  any, should never be used again." RUT_Greentide still names 21 rows as
+  mlie.starwarsanimalcollection's bare defNames (Gizka, Convor, Nuna...) —
+  MEASURED 2026-09-23, down from 22 because the dianoga row is gone. All
+  21 exist as our own RSW_ ports — MEASURED 2026-09-22, each confirmed present
   as BOTH a PawnKindDef and a ThingDef, which matters because a wildAnimals key
   resolves to a PawnKindDef and a ThingDef name there fails silently. This file
   casts the ports:
@@ -41,8 +57,8 @@
     Kinrath      -> RSW_Kinrath       Fambaa       -> RSW_Fambaa
     PekoPeko     -> RSW_PekoPeko      Dalgo        -> RSW_Dalgo
     Hawkbat      -> RSW_Hawkbat       Hssiss       -> RSW_Hssiss
-    Dianoga      -> RSW_Dianoga       Dragonsnake  -> RSW_Dragonsnake
-    Lylek        -> RSW_Lylek         Beldon       -> RSW_Beldon
+    Dragonsnake  -> RSW_Dragonsnake   Lylek        -> RSW_Lylek
+    Beldon       -> RSW_Beldon
 
   RSW_Diggerpede was already ours in the source def. The two AA_ rows and the
   one VFEI2_ row are non-Star-Wars donors, so §7 Q9 would allow them inline on
@@ -97,8 +113,9 @@
   returns true on no match, and an unmatched PatchOperationAdd is silent. A clean
   validate_patch.py run is NOT proof a row landed. 🔴 UNVERIFIED AGAINST A LOAD:
   authored on the Mac laptop, where there is no def dump and no game
-  (GREENTIDE_RM_MOD_BUILD_1 step 5 is owed). Confirm all 27 rows from a
-  post-load def dump on the Desktop before believing this file works.
+  (GREENTIDE_RM_MOD_BUILD_1 step 5 is owed). Confirm all 26 rows from a
+  post-load def dump on the Desktop before believing this file works — and
+  confirm the dianoga is ABSENT, which is the 2026-09-23 ruling's live test.
 -->
 <Patch>
 
@@ -144,7 +161,8 @@
         <RSW_Dalgo>0.18</RSW_Dalgo>
         <RSW_Hawkbat>0.18</RSW_Hawkbat>
         <RSW_Hssiss>0.18</RSW_Hssiss>
-        <RSW_Dianoga>0.15</RSW_Dianoga>
+        <!-- RSW_Dianoga 0.15 REMOVED 2026-09-23 — owner ruling, see the header.
+             ⛔ Do not restore it. The slot is reserved for a new creature. -->
         <RSW_Dragonsnake>0.12</RSW_Dragonsnake>
         <RSW_Lylek>0.05</RSW_Lylek>
         <RSW_Beldon>0.008</RSW_Beldon>

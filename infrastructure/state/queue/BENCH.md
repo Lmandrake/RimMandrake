@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-23T19:22:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-23T19:51:51Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -551,3 +551,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Confirm the pairing per animal — that the donor def and the RSW port really are the same
 prose:    infrastructure/state/items/DUPLICATE_CANON_DEFNAME_PAIRS_1.md
+
+## GREENTIDE_TERROR_REPLACEMENT_1 Something new and terrifying for the Greentide, replacing the dianoga
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREENTIDE_TERROR_REPLACEMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREENTIDE_TERROR_REPLACEMENT_1.md
