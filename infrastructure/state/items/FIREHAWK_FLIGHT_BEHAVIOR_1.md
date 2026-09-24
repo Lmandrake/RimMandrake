@@ -101,3 +101,110 @@ now is, and is an equally in-scope target for the flip-book work above when
 picked up. `RUT_FurnaceBeast` is a quadruped, not a flier. Ash'karr's biome
 `wildAnimals` lists reference donor birds (not our art to rewire here) — not
 re-swept this pass, see the v1 sweep note above for the original scope.
+
+## done this pass, 2026-09-24 (FOUNDRY) — art landed, wired, live-partial
+### art was already generated — do not re-file the "attempt 2" job
+`infrastructure/artpipe/done/rut_firehawk_flying_{1..5}_{north,east,south}.manifest.json`
+show all 15 frames **generated and status:ok** (codex, 2026-09-19, i.e. the
+quota-block noted above cleared before this pass started — the item's own
+"owed" section was stale). PNGs live in
+`infrastructure/artpipe/_artsrc/rut_firehawk_flying_<N>_<dir>/*.png`, all
+256×256 RGBA, clean transparent corners (`validate_sprite.py --describe`),
+and a visual contact-sheet review (`Transient/`-scratch, not committed) shows
+a real 5-frame tuck→full-spread→recovery wingbeat cycle per facing, correct
+per-facing framing (north=rear, south=front, east=profile) per the style
+brief. **Nothing was regenerated.**
+
+### installed and wired
+Copied to
+`src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_<1-5>_<north|east|south>.png`.
+`RUT_PyrelandsFauna.xml`'s `RUT_FireHawk` `PawnKindDef` gets the exact block
+this item already specced (frameCount 5, ticksPerFrame 2, drawSize 1.35,
+multiplier false, inheritColors true, prefix
+`Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_`) as a sibling of
+`<lifeStages>`. `validate_patch.py --live` (full 621-mod def set): **0
+errors, 0 warnings**. Deployed via `deploy_custom_mods.py --mod UtinniPatches
+--apply` (18 files, VERIFIED in sync — this also carried along another
+FOUNDRY thread's concurrent `WEEPINGSTONES_RM_MOD_BUILD_1` changes in the
+same mod folder, untouched/unedited by this pass, git-committed separately).
+
+### live: grounded render confirmed, mid-air frame NOT caught
+Two full-list (621-mod) restarts this pass (first auto-loaded the campaign
+save and hard-crashed ~30s in on a pre-existing, unrelated bug — repeating
+`RimWorldRealFoW.MapComponentSeenFog.IncrementSeen IndexOutOfRangeException`
+while ticking existing colonists Timofei/Eduard/Rachel; nothing in the
+stack trace names FireHawk, UtinniPatches or WeepingStones — worth a look by
+whoever owns RealFoW compat, not filed here). `start_debug_game_ready`
+quicktest-worldgen on the full 621-mod list then hit the OTHER documented
+failure mode (`quicktest-crashes-full-modlist-use-cheap-mechanism-list`):
+looping `Could not execute post-long-event action` NREs, `hasCurrentGame`
+never true. **Built a one-off `modset_builder.py` "firehawk" tier**
+(`BRIDGE + mandrake.rut.patches`, 10 mods incl. all 5 DLC) to get a clean,
+fast (18s) quicktest instead — not added to the tracked `TIERS` table in the
+repo, script discarded after use; worth adding for real if this creature
+gets touched again.
+
+On that tier: `jawa/spawn_pawn RUT_FireHawk` spawns clean, faction Salvagers,
+and **the grounded sprite renders correctly** — confirmed by direct
+screenshot (`rimworld/screenshot_cell_rect`, small crop) showing the
+ash-grey/ember-orange bird, not a magenta placeholder. `MaxFlightTime`,
+`flightStartChanceOnJobStart 0.15` etc. are untouched and present (measured
+via `jawa/get_defs` equivalent — actually just confirmed by the def not
+erroring and the pawn walking at the expected speed).
+
+**Did not catch a live takeoff.** Tracked position over ~35 minutes of
+simulated ticks (`step_game_ticks`, hundreds of calls in windows of
+20–900 ticks) and dozens of distinct movement segments (job-starts, by proxy)
+— no segment showed the large per-tick displacement a `flightSpeedFactor 2.5`
+hop would produce, and no screenshot (~25 taken, both wide `take_screenshot`
+and cropped `screenshot_cell_rect`, after fixing two real traps below) caught
+a wing-spread pose. Tried luring a hunt job with a wild (`faction: none`)
+Chicken 30 tiles off — the pawn did not path toward it in the observed
+window (likely needs real hunger buildup, not available in a fresh
+quicktest). At `flightStartChanceOnJobStart 0.15` this is either bad luck
+across enough job-starts that it shouldn't be, or (more likely) each
+short local-wander job only lasts a handful of ticks once airborne, well
+under this session's ~20–60-tick sampling grain — I could easily have
+straddled a real flight window without a frame landing inside it. **This is
+inconclusive, not a negative finding — do not read "not caught" as "art
+doesn't render in flight."**
+
+Two real bridge traps hit and fixed mid-session, worth keeping in
+`skills/rimbridge/references/traps.md` if not already covered:
+- **The Debug log window reopens over the map even with `jawa/clear_ui`
+  called every time**, once an error has occurred earlier in the session —
+  `rimworld/close_window {"windowType": "LudeonTK.EditWindow_Log"}` before
+  `clear_ui` is needed too, matching traps.md's existing note.
+- **A camera `jump_camera_to_cell` + `set_camera_zoom` while paused can
+  render a STALE frame** — two consecutive screenshots at genuinely
+  different requested positions came back byte-identical until a small
+  `step_game_ticks` (5) was inserted between the camera move and the shot.
+  Matches the existing pause+screenshot staleness trap, generalised to
+  camera moves.
+- Also (separately) confirmed the existing fog trap the hard way: the first
+  spawn point happened to be inside an unrevealed/fogged patch of the
+  quicktest starting base — `jawa/list_pawns` reported `spawned: true` the
+  whole time but nothing rendered at that position at any zoom. Respawning
+  in the open fixed it instantly. Worth a `traps.md` line: fog silently
+  drops a pawn from the RENDER, never from the API.
+
+### state
+Left **`doing`**, not closed — the item's own bar ("verify live — step ticks
+to an actual takeoff, not a standing screenshot") is not yet met. The
+mechanism and art are shipped and validated; only the positive live sighting
+is outstanding.
+
+**NEXT** for whoever picks this back up: on the `firehawk` quicktest tier
+(rebuild with the snippet above, or add it to `modset_builder.py.TIERS` for
+real), either (a) sample much more densely for a short burst — `ticks: 5-10`
+between checks over a couple hundred iterations right after a detected
+position-delta, since flight duration is likely short, or (b) get the pawn
+genuinely hungry first (`step_game_ticks` a full day, ~60000 ticks, before
+introducing wild prey) so a sustained hunt-chase job gives a much longer
+flight window to catch, or (c) if a companion tool is ever added for another
+reason, a debug `[Tool]` that reads `Pawn_FlightTracker`'s current state
+directly would make this deterministic instead of probabilistic for every
+future flyer verification, not just this one.
+
+`RUT_FireWasp` is unchanged this pass — still next-wave, same "flies, no
+animation frames yet" state as before.

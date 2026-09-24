@@ -182,6 +182,24 @@
         </bodyGraphicData>
       </li>
     </lifeStages>
+    <!-- FIREHAWK_FLIGHT_BEHAVIOR_1: real whole-body flip-book, replacing the
+         reverted-and-deleted PawnRenderNodeProperties_Spastic wing overlay
+         (see the file banner above). 5 real frames per direction, generated
+         via the artpipe daemon 2026-09-19 (infrastructure/artpipe/done/
+         rut_firehawk_flying_*.manifest.json), validated (clean alpha, correct
+         256x256 canvas, transparent corners) and installed under
+         Textures/Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_<1-5>_
+         <north|east|south>.png. frameCount/ticksPerFrame follow Locust's
+         defaults per CLAUDE.md; drawSize 1.35 + multiplier=false follows the
+         4-of-5-vanilla-flyers majority (Duck/Goose/Sparrow/Locust), not
+         Chicken's outlier multiplier pattern — see the earlier "owed" note in
+         infrastructure/state/items/FIREHAWK_FLIGHT_BEHAVIOR_1.md. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>5</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.35</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
   </PawnKindDef>
 
 
