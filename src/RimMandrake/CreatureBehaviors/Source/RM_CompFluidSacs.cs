@@ -151,6 +151,7 @@ namespace RimMandrake.CreatureBehaviors
             }
 
             Hediff hediff = HediffMaker.MakeHediff(Props.poisonHediff, self);
+            hediff.Severity = severity * mult; // RM_FluidSacPoison_Hediffs.xml: "a big initial severity (set by RM_CompFluidSacs, not here)"
             self.health.AddHediff(hediff);
 
             // Literal, not a translation key: this mod ships no Languages/
