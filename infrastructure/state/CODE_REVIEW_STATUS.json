@@ -13365,6 +13365,54 @@
     "hash": "5c96407e9e6d889d81f667e865c6c4c90a0aae5644d8243cf6a860abb6fb4028",
     "sha": "970956544"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Strill.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d0e52ce600ded863eafe31449c816d23bdaa77bb6e865c4313661a09460eb706",
+    "sha": "1ef66c91c"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_TeeMuss.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "817ef5feb5d94275a9a780f0c74047fbe3e8f72553ff10d9b651c1556633af57",
+    "sha": "1ef66c91c"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_TunnelSnake.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "970986607a296e3d397059cf21d18d4e28f9064d7041fc9ba7688fb88f0f8919",
+    "sha": "1ef66c91c"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Urusai.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3abf32c6705aa4e4c7bcac9b4d6f57fdc5382735732faf98d106eed9932557c6",
+    "sha": "1ef66c91c"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Uvak.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "00a69882fcef69239f8727cb4b2af3075cec7bf617fe42f2c47bd51fd0256e2c",
+    "sha": "1ef66c91c"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Varactyl.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "92adb8281e4e3530c8deacf16c45ddada5d7ba611264131516b91c61637d56cd",
+    "sha": "1ef66c91c"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Voorpak.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2d39a694e83d2a2de25f3fa46ef85d6da4a147f9a1f1311481d23dbab64d497c",
+    "sha": "1ef66c91c"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Vornskyr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a69d3e7684296ae8fd5ba772e2922f54c90103b8edd1ddc35001c735f4d41362",
+    "sha": "1ef66c91c"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Vulptex.xml": {
     "cleanCount": 3,
     "date": "2026-09-24",
