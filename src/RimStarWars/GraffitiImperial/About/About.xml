@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rsw.graffitiimperial</packageId>
+  <name>RimStarWars: Imperial Graffiti</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>GRAFFITI_PUNK_IDEOLIGION_SCOPE_1, owner ruling 2026-09-24 (question card): RM_Graffiti_Stencil_Crown's anti-Imperial reading (a crossed-out crown, hostile to Royalty's Empire) ships as-is in the franchise-free base mod as a FEATURE. This RSW-tier addon is the Star Wars variant the same ruling asked for alongside it: an Aurebesh-lettered, Imperial-cog stencil - the same anti-authority defiance mark, in the setting's own alphabet and insignia instead of the generic crown.
+
+One ThingDef (RM_Graffiti_Stencil_ImperialCog), ParentName="RM_BaseGraffiti" from mandrake.rm.graffiti - no C# of its own, per NAMING_SCHEME_PLAN's engine-vs-content rule (the RM tier already owns every mechanism a Stencil/Taunt mark needs; this tier only adds content). designatorEligible and raidExitEligible, same placer shape as its franchise-free sibling.
+
+Art: queued, not yet generated (see the item's own note on what's owed) - asemic Aurebesh-styled letterforms per fork F5's recommendation (no literal readable English lettering; this is genuine Aurebesh-adjacent styling, not English hidden in a stencil).</description>
+
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.graffiti</packageId>
+      <displayName>RimMandrake: Graffiti Framework</displayName>
+      <steamWorkshopUrl />
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.graffiti</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+  </loadAfter>
+</ModMetaData>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- GRAFFITI_PUNK_IDEOLIGION_SCOPE_1: the Star Wars variant of
+       RM_Graffiti_Stencil_Crown, per the owner's 2026-09-24 ruling ("ship
+       the crown as-is; also add an Aurebesh/Imperial-cog RSW-tier variant
+       alongside it"). Pure content: ParentName from the RM tier's own
+       abstract def, no new C#. -->
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RSW_Graffiti_Stencil_ImperialCog</defName>
+    <label>crossed-out cog stencil</label>
+    <description>A crisp stencilled Imperial cog, struck through, with an asemic Aurebesh-styled tag beneath it - defiance in the occupier's own alphabet. It does not fade.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RSW_Graffiti_Stencil_ImperialCog</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <filth>
+      <rainWashes>false</rainWashes>
+    </filth>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Taunt</category>
+        <form>Stencil</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <raidExitEligible>true</raidExitEligible>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
