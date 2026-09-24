@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEEPINGSTONES_RM_MOD_BUILD_1, Phase A — DUPLICATE of
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WeepingStonesFish_Items.xml
+  (FISH_BESTIARY_BUILD_1 wave 3), renamed RUT_ -> RM_, so this mod's own
+  RM_WeepingStones BiomeDef has a self-contained fishTypes table. The RUT_
+  originals are left untouched — the frozen RUT_WeepingStones twin still
+  carries the live Ash'karr world and must keep resolving its own items
+  independently until the terminal paint (arch §5 step 4: duplicate content
+  the live world still needs, never move it out from under the twin).
+  Content is otherwise byte-identical to the RUT_ source; see that file for
+  the full provenance comment.
+-->
+<Defs>
+
+  <!-- ikkal — floater, common. "dew-cup." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Ikkal</defName>
+    <label>ikkal</label>
+    <description>A palm-wide bladder that hangs at the surface with a comb of fringe trailing below it, sieving the dew-smoke out of the water as it falls. At wind-hour the whole pool is dimpled with them, tilted to the same side like cups set out. It has no fight in it; a child can lift one out. Thin eating, and nobody minds -- pilgrims cook them for the broth, which tastes faintly of the stones.</description>
+    <graphicData>
+      <texPath>Things/Plant/AloeVera/AloeVeraA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>3</MarketValue>
+      <Mass>0.2</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- tarrik — crustacean, common. "comb-shrimp." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Tarrik</defName>
+    <label>tarrik</label>
+    <description>A thumb-length shrimp-thing with antennae grown into two fine combs that it holds up into the current and licks clean. Kin to the mirrik above the water, and it shows: the same chitin, the same fringed silhouette, the same habit of mist-dancing at wind-hour, only underwater. It breeds in the shallows during the truce, in the open, in crowds -- which is why nobody who has sat at a pool at dusk can eat one without a small pang.</description>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.6</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- duul — cucumber, common. "the janitor." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Duul</defName>
+    <label>duul</label>
+    <description>A slow grey sock of a thing that lies on the pool floor and eats what settles -- silt, dung, dead dew-smoke, the ash blown in from the desert. A pool with duul in it stays clear; a pool without them clouds in a season. Every oasis keeper knows the count. It is edible in the sense that most things are.</description>
+    <graphicData>
+      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>4</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ullo — jellyfish, uncommon. "the wedding bell." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Ullo</defName>
+    <label>ullo</label>
+    <description>A soft bell the size of two cupped hands, near-invisible by day, that lights a slow blue pulse from dusk. Ullo rise together and drift as a lit crowd while the fan-dancers display on the bank; the pools are places of romance and the ullo have never been told otherwise. Netted, it is a sting and a disappointment -- mostly water, a little meat, and the light goes out in your hands.</description>
+    <graphicData>
+      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.08</Nutrition>
+      <MarketValue>4</MarketValue>
+      <Mass>0.3</Mass>
+      <FoodPoisonChanceFixedHuman>0.05</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ozhu — eel, uncommon. "spring-throat." No statBases override — vanilla
+       FishBase tier, same convention as the RUT_ source. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Ozhu</defName>
+    <label>ozhu</label>
+    <description>A blind, comb-gilled eel that lives in the warm throat of the seep itself, down where the spring comes up through the stones. It surfaces at wind-hour to feed on the fallen dew-smoke and goes back down. Warm to the touch when landed, and it stays warm for a while, which unsettles people. The oldest pools have the longest ozhu; oasis-keepers claim they can taste which spring one came from.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- vobbal — octopus, uncommon. "stone-stacker." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Vobbal</defName>
+    <label>vobbal</label>
+    <description>Eight soft arms and a bulb of a body, living in the hollows where the seep water enters the pool. It takes things. Pebbles, offerings, a dropped tool, a ring -- and it stacks them, carefully, in towers in the shallows, and knocks them down, and stacks them again. Some oases forbid catching them; most simply don't. The ones who do eat them say it is very good, in a voice that suggests they would rather not have.</description>
+    <graphicData>
+      <texPath>Things/Plant/Peyote/PeyoteA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.25</Nutrition>
+      <MarketValue>8</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_SeepStone — the rare-catch headline prize. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SeepStone</defName>
+    <label>seep stone</label>
+    <description>A smooth mineral concretion grown drop by drop in the spring throat itself, where the seep comes up through the stones -- the Weeping Stones in miniature, banded pale and dark the same way the cliffs above the pool are. Oasis-keepers set the best ones on the shrine at the water's edge; a lesser one is sold to a pilgrim as a keepsake of the truce.</description>
+    <graphicData>
+      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>30</MarketValue>
+      <Mass>0.15</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>3</Beauty>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>25</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

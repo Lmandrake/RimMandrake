@@ -2,6 +2,17 @@
 <Defs>
 
   <!--
+    FROZEN 2026-09-24 (WEEPINGSTONES_RM_MOD_BUILD_1, Phase A) — carrying the
+    world until the terminal paint; content lives in mandrake.rm.weepingstones;
+    do not edit here. This def is byte-for-byte unchanged below this header:
+    it still carries the live Ash'karr world's 223 tiles and every reference
+    it makes (RUT_Ikkal/Tarrik/Duul/Ullo/Ozhu/Vobbal/RUT_SeepStone,
+    RUT_RareOasisCatches, its own inline Star Wars wildAnimals rows) is left
+    intact and untouched, not moved. mandrake.rm.weepingstones' own
+    RM_WeepingStones BiomeDef is a separate copy with its own duplicated
+    content — see that mod's About.xml. From this moment, every content fix
+    for the Weeping Stones lands in RM_WeepingStones only, never here.
+
     RUT_WeepingStones                              UtinniPatches - authored 2026-09-09
     BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
     weeping_stones.md (FROZEN). Replaces the donor `ZBiome_DesertOasis` (More

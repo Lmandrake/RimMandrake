@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEEPINGSTONES_RM_MOD_BUILD_1, Phase A — DUPLICATE of
+  src/RimUtinni/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RareOasisCatches.xml
+  (FISH_BESTIARY_BUILD_1 wave 3), renamed RUT_ -> RM_ and retargeted to this
+  mod's own RM_SeepStone, so this mod's RM_WeepingStones BiomeDef's own
+  fishTypes.rareCatchesSetMaker resolves without depending on the Utinni
+  tier. The RUT_ original is left untouched — the frozen twin keeps
+  resolving its own RUT_SeepStone independently.
+-->
+<Defs>
+
+  <ThingSetMakerDef ParentName="RareFishingCatchesBase">
+    <defName>RM_RareOasisCatches</defName>
+    <root Class="ThingSetMaker_RandomOption">
+      <options>
+        <li>
+          <weight>4</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RM_SeepStone</li>
+                </thingDefs>
+              </filter>
+              <countRange>1~2</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <weight>1</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>Silver</li>
+                </thingDefs>
+              </filter>
+              <countRange>8~20</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+
+</Defs>

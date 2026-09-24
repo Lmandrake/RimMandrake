@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_WeepingStones.xml              UtinniPatches — new file 2026-09-24
+  ============================================================================
+
+  WEEPINGSTONES_RM_MOD_BUILD_1, Phase A. Wires the 8 Star Wars donor
+  fauna the campaign twin (RUT_WeepingStones.xml) carried inline into
+  RM_WeepingStones' own wildAnimals — same shape as WildAnimals_Pyrelands.xml's
+  RSW_ block. Per Q11 (SW_FAUNA_NEVER_IN_RM_TIER_1), the RimMandrake tier may
+  never carry Star Wars content directly, so these 8 rows live HERE instead of
+  in src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml.
+
+  Every defName and commonality is copied verbatim from the campaign twin's own
+  live wildAnimals block (RUT_WeepingStones.xml, MEASURED 2026-09-23/24) —
+  including Ollopom at 1.3, the ECOSYSTEM_PYRAMID_LAW_1 2026-09-20 boost applied
+  directly in-file, which is ahead of rosters/weeping_stones.json's stale 0.7 and
+  is what actually ships (that JSON was corrected separately by
+  WEEPING_STONES_DESIGN_SITTING_1, 2026-09-24, to the same 0.7 baseline row —
+  the live def's in-file 1.3 boost is the authority carried here, not either
+  JSON snapshot).
+
+  All 8 are already-existing RSW_ ports in SWBestiary (MEASURED — no port work
+  owed): RSW_Ollopom, RSW_Fanback, RSW_Dewback, RSW_Boma, RSW_Dactillion,
+  RSW_Bantha, RSW_Eopie, RSW_Jamel. Gated on mandrake.rsw.swbestiary only — the
+  bare mlie.starwarsanimalcollection donor names are never cast again, same
+  ruling WildAnimals_Pyrelands.xml already applied (owner 2026-09-19: "They
+  should be using OUR creatures, not the donor references.").
+
+  ColossusToad (vanilla Odyssey) and AA_Eyeling (Alpha Animals, non-Star-Wars)
+  are NOT here — both stay inline on the RM_WeepingStones BiomeDef itself,
+  since neither is Star Wars content.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_WeepingStones"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_WeepingStones"]/wildAnimals</xpath>
+      <value>
+        <RSW_Ollopom>1.3</RSW_Ollopom>
+        <RSW_Fanback>0.5</RSW_Fanback>
+        <RSW_Dewback>0.4</RSW_Dewback>
+        <RSW_Boma>0.15</RSW_Boma>
+        <RSW_Dactillion>0.15</RSW_Dactillion>
+        <RSW_Bantha>0.1</RSW_Bantha>
+        <RSW_Eopie>0.1</RSW_Eopie>
+        <RSW_Jamel>0.1</RSW_Jamel>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
