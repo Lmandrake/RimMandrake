@@ -3231,3 +3231,67 @@ ENTERED files remain**: `UtinniPatches` now at **72**, `SWBestiary` at **71**
 `WyyyschokkFangPendantFactions.xml`) — next wave: finish it, or switch to
 `SWBestiary/Defs/ThingDefs_Items` (11) since the two clusters are now
 essentially tied, with `list --show-untracked`.
+
+## Wave 51 — 2026-09-24: UtinniPatches Patches/ finished, SWBestiary races started
+
+Ran `list --show-untracked` fresh: **303 NEVER ENTERED**, matching wave 50's
+close exactly (`UtinniPatches` 72, `SWBestiary` 71 — confirmed, no drift).
+
+First checked `git status --porcelain` on `RUT_TarShallow_GeneratedFilth.xml`
+per the brief: still `M` (uncommitted), same in-flight edit from the
+concurrent `SUMP_TAR_NASTINESS_1` build agent noted in wave 50 — not
+settled, left alone again. That leaves only **4** reviewable files in
+`UtinniPatches/Patches/`, so picked all 4
+(`VQEQuestText_AreForsaken.xml`, `WildAnimals_CrackedLands.xml`,
+`WildAnimals_Greentide.xml`, `WyyyschokkFangPendantFactions.xml`) plus 4
+alphabetically-first from `SWBestiary/Defs/ThingDefs_Races` (the next
+biggest live subfolder there — `Defs/ThingDefs_Items` from wave 50's own
+"next wave" note turned out to already be **fully CLEAN**, nothing left to
+pick; that stale pointer is now corrected by this entry):
+`RSW_Gizka.xml`, `RSW_Gorg.xml`, `RSW_Gornt.xml`, `RSW_GraniteSlug.xml`.
+
+Full-file reviewed all 8. `VQEQuestText_AreForsaken.xml` patches an
+external donor mod's (VQE - Ancients) quest text — its internal xpath/
+index structure and PatchOperationFindMod/Sequence mechanism check out
+and it parses clean, but the donor's own defs aren't in this repo so the
+xpath targets themselves are unverifiable offline; same shape as the
+already-CLEAN `AncientsAreRakata.xml` it says it copies. The two
+`WildAnimals_*` files were checked by diffing their content against the
+live source biome defs they claim to mirror: `WildAnimals_CrackedLands.xml`
+matches `RUT_CrackedLands.xml`'s own frozen wildAnimals/wildPlants/
+baseWeatherCommonalities/terrainsByFertility verbatim (the one deliberate
+addition, `RSW_SandPillar`, is documented and correctly not yet in the
+frozen twin). `WildAnimals_Greentide.xml`'s row count and weight sum were
+recomputed by hand against its own claimed 26 rows / 9.168 total — correct
+— but its Op2 comment still said "all 23" from before the 2026-09-23
+dianoga removal; the block actually carries 22 RSW_ rows. **Fixed**
+(23->22, commit `8b0b715b5`). Every RSW_/AA_/VFEI2_ defName referenced by
+both files was checked to resolve (AA_/VFEI2_ entries are donor-mod
+defNames, correctly absent from this repo — that's expected, not a bug).
+`WyyyschokkFangPendantFactions.xml`'s xpath and target packageId
+(`mandrake.rsw.trophycraft`) were checked directly against
+`RSW_TrophyCraft_Thoughts.xml`'s own `modExtensions/li/factionDefNames`
+node — matches exactly, and `RUT_Jawa_WildsteamClan` resolves to the
+live FactionDef.
+
+The 4 `SWBestiary` race files (Gizka/Gorg/Gornt/GraniteSlug) got the
+wave 49-50 sound-prefix check plus a defName resolution pass on every
+cross-reference (`leatherDef`, `specificMeatDef`, egg comp defs,
+`canCrossBreedWith` targets, `BodyDef`): all `sound{Wounded,Death,Call,
+Angry}` fields are correctly RSW_-prefixed, and every referenced def
+(`RSW_Leather_Saurian`, `RSW_Saurian_Meat`, `RSW_EggGizka*`,
+`RSW_Gorg_Meat`, `RSW_EggGorg*`, `RSW_FrilledGorg`, `RSW_LongtailGorg`,
+`RSW_Leather_Reptomammal`, `RSW_Gornt_Meat`, `RSW_Silica_Meat`) exists.
+No bugs found beyond the one comment fix above.
+
+Commit `8b0b715b5` (the fix), then status file + this entry in a second
+commit, both pushed. No `.git/index.lock` contention this wave.
+
+Re-measured after: `TALLY  CLEAN 3142  DIRTY 6  ORPHANED 0  NEVER ENTERED 295`
+— 295 = 303 - 8 exactly, no concurrent-agent noise this wave. **295 NEVER
+ENTERED files remain**: `UtinniPatches` now at **68** (its `Patches/`
+subfolder is exhausted except the blocked TarShallow file), `SWBestiary`
+at **67**. Nearly tied again — next wave: `SWBestiary/Defs/ThingDefs_Races`
+has ~65 files left (the next-biggest live cluster in either mod now that
+`Patches/` and `ThingDefs_Items` are both spent), or survey `UtinniPatches`
+for its next-biggest subfolder, with `list --show-untracked`.
