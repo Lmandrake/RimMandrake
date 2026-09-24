@@ -40,6 +40,11 @@ content def in any mod opts in through XML alone.
   6. CompProperties_AbilityTargetedHediffAffliction — one ability effect comp that
      either adds N of a HediffDef to random body parts, or destroys every body part
      matching a BodyPartDef with a configured damage type.
+  7. RM_WaterTruceExtension / RM_MapComponent_WaterTruce — a DefModExtension any
+     BiomeDef opts into: the first GUILTY hit (DamageInfo.InstigatorGuilty) landing
+     within its radius of standing water turns wild animals in that radius against
+     the aggressor's faction, via RM_MentalState_WaterTruceRetribution (a
+     MentalState_Manhunter subclass narrowed to one faction). WATER_TRUCE_RETRIBUTION_1.
 
 Live proof is OWED: this mod has not yet been loaded in a running game.
 

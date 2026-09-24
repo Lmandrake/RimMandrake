@@ -83,6 +83,13 @@ namespace RimMandrake.EnvironmentalHazards
                   }),
                   AccessTools.Method(typeof(RM_BodySizeBarrierPatches), nameof(RM_BodySizeBarrierPatches.GetPawnCellBaseCostOverride_Postfix)),
                   "body-size-barrier-move-cost");
+
+            // WATER_TRUCE_RETRIBUTION_1. Thing.PostApplyDamage(DamageInfo, float)
+            // — see RM_WaterTruceDamagePatches for why this seam.
+            Apply(harmony,
+                  AccessTools.Method(typeof(Verse.Thing), nameof(Verse.Thing.PostApplyDamage)),
+                  AccessTools.Method(typeof(RM_WaterTruceDamagePatches), nameof(RM_WaterTruceDamagePatches.PostApplyDamage_Postfix)),
+                  "water-truce-retribution");
         }
 
         private static void Apply(Harmony harmony, MethodBase target, MethodInfo patch, string rule, bool asPrefix = false)

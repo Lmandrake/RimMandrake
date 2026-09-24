@@ -270,6 +270,13 @@ namespace RimMandrake.EnvironmentalHazards
     //      Never changes hue range, radius range or brightness range — only
     //      how fast the two sine waves cycle. At a very small value the
     //      light reads as nearly static without being a hard off.
+    //  48. waterTruceRetributionEnabled — RM_MapComponent_WaterTruce
+    //      (WATER_TRUCE_RETRIBUTION_1). Off: a guilty hit landing in a
+    //      water-truce biome's radius never rouses wildlife against the
+    //      aggressor faction; RM_WaterTruceExtension's own radius field is
+    //      still built (cheap, terrain-only) but every retaliation check
+    //      bails on this flag first. A retribution already under way on an
+    //      affected animal is untouched — this only gates NEW triggers.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -321,6 +328,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool tarredHediffEnabled = true;
         public static bool warblingGlowEnabled = true;
         public static float warblingGlowSpeedMultiplier = 1f;
+        public static bool waterTruceRetributionEnabled = true;
 
         public override void ExposeData()
         {
@@ -373,6 +381,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref tarredHediffEnabled, "tarredHediffEnabled", true);
             Scribe_Values.Look(ref warblingGlowEnabled, "warblingGlowEnabled", true);
             Scribe_Values.Look(ref warblingGlowSpeedMultiplier, "warblingGlowSpeedMultiplier", 1f);
+            Scribe_Values.Look(ref waterTruceRetributionEnabled, "waterTruceRetributionEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -385,7 +394,7 @@ namespace RimMandrake.EnvironmentalHazards
             // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
             // the same edit as whoever adds the next toggle, or their block is
             // invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4300f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4400f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -522,6 +531,10 @@ namespace RimMandrake.EnvironmentalHazards
                 "A lamp or statue built with the warbling glow comp stops dancing/pulsing and just "
               + "glows steadily at its base color and radius, like any plain light. Scrubbing tar "
               + "and crafting Sumpgas are unaffected either way.");
+            list.CheckboxLabeled("Water-truce retribution", ref waterTruceRetributionEnabled,
+                "A biome built with a sacred water truce stops turning wildlife against whoever "
+              + "lands the first guilty hit near the water. Defending yourself never counts as "
+              + "guilty either way — this only gates the retaliation, never who started it.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");

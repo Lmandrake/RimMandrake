@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_MentalStates_WaterTruce.xml             WATER_TRUCE_RETRIBUTION_1
+
+  "First GUILTY hit in truce radius turns wildlife on the aggressor faction"
+  (weeping_stones.md §4, owner near-verbatim 2026-09-06: "Water is always
+  MAD, or peace"). ParentName="Manhunter" so this inherits Manhunter's own
+  Aggro category, tale hook and recovery timing wholesale — the only things
+  that need to differ are the label/flavor and the stateClass, which is
+  RM_MentalState_WaterTruceRetribution (RimMandrake.EnvironmentalHazards):
+  it overrides ForceHostileTo to target ONLY the instigator's faction
+  instead of everyone, which is what makes this retribution rather than a
+  second manhunter event. No <beginLetter> here — RM_MapComponent_WaterTruce
+  starts this state with transitionSilently=true and sends its own letter
+  once per aggressor, not once per rousable animal.
+-->
+<Defs>
+
+  <MentalStateDef ParentName="Manhunter">
+    <defName>RM_WaterTruceRetribution</defName>
+    <label>water-truce retribution</label>
+    <baseInspectLine>Roused: defending the truce water</baseInspectLine>
+    <recoveryMessage>{0} has calmed since the water truce was broken.</recoveryMessage>
+    <nameColor>(0.35,0.65,0.95)</nameColor>
+    <stateClass>RimMandrake.EnvironmentalHazards.RM_MentalState_WaterTruceRetribution</stateClass>
+  </MentalStateDef>
+
+</Defs>
