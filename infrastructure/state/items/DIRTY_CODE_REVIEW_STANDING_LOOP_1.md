@@ -23,3 +23,23 @@ the owner's word — zero commits from it, nothing to clean up.
 
 Resume normally after 2026-09-23 15:00 — this note is the only gate; no other ruling
 changed.
+
+## Wave 3 — 2026-09-24, first wave after the gate
+
+Reviewed 4 files, full-file, none previously recorded in
+`CODE_REVIEW_STATUS.json`: `RM_LiquidTankUtility.cs` and
+`PyrelandsFireFront.cs` (the two files whose bugs were fixed in wave 2, but
+which had never been mark-clean'd — re-reviewed to confirm the fixes hold
+and nothing else was wrong), plus `RM_JobDriver_FilterFeedTerrain.cs` and
+`CompContactVenom.cs` (first-time review). All four confirmed reachable via
+their `.csproj` `<Compile Include>` entries. No new bugs found; no fixes
+needed this wave. All 4 marked CLEAN, commit `7eb44027e`, pushed.
+
+Next wave: pick from the remaining ~175 reachable `.cs`/`.py` files never
+entered in `CODE_REVIEW_STATUS.json` — candidates surveyed but not yet
+reviewed this pass include `RM_CompDungSeeder.cs`, the `SeaShores/Source/`
+cluster, `GizkaStowaway/Source/` cluster, and the `modcheck/` Python tools
+(`doctor.py`, `judge.py`, `northstar.py`, `walklint.py`). The many
+`validation.py` files across mod folders were left unreviewed this wave —
+they are likely near-identical boilerplate per mod and worth a quick
+sampling pass rather than one-by-one full review.
