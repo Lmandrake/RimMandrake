@@ -1,5 +1,61 @@
 # CANON_CREATURE_REGEN_1 — regenerate every SW-canon creature under library guidance
 
+## 2026-09-24 wave 4 (FOUNDRY) — sheet served; 2 of 7 creatures missing one facing (Codex outage)
+
+**The generation itself was already done** — 19 of 21 renders (Boma, Shiro,
+Vornskyr, Whisperbird, Zakkeg all 3/3; Dewback 2/3, Insectomorph 2/3) were
+sitting in `infrastructure/artpipe/done/` from a pass earlier this same
+session, filed against exactly the wave-3-named candidate list (Boma,
+Dewback, Insectomorph, Shiro, Vornskyr, Whisperbird, Zakkeg), never
+surfaced on a sheet. This pass built the composites, wrote the sheet, and
+served it — no new Codex spend for the 19 that already existed.
+
+**The 2 missing facings** (`canon_dewback_v1_south`,
+`canon_insectomorph_v1_east`) had failed for two different real reasons,
+checked individually before retrying: dewback/south was `size_mismatch`
+(worker salvaged a file from `generated_images/` the agent never placed —
+ambiguous, not a hard failure), insectomorph/east was a plain
+`worker_error` timeout. Neither was a content rejection. Retried both via a
+manual requeue (moved failed→pending, parked the old manifests in
+`Transient/artpipe_manual_retries/`); both then hit a **live Codex-channel
+outage** — `HTTP 403 Forbidden` on `wss://chatgpt.com/backend-api/codex/responses`,
+confirmed systemic (every job attempted for the following ~90 minutes
+failed the same way, ~200 failures, first observed this pass). Not a quota
+issue (the quota window had already reset) and not fixable by this seat —
+it needs a Codex CLI re-login on the Windows side, which is an interactive
+OAuth flow, flagged to the owner. Both jobs are left in `pending/` and will
+backfill automatically once the channel is healthy again; `requeue_quota_failures.py`
+should NOT be run again blindly while this outage is live — it will just
+cycle jobs through another guaranteed-fail attempt.
+
+**Canvas check**: all 7 landed at 512x512 (drawsize 4.0×128) — matches the
+existing shipped `ArtOverride` canvas exactly for the 6 that have one
+(Dewback/Insectomorph/Shiro/Vornskyr/Whisperbird/Zakkeg all ship 512x512
+today; Boma has no `ArtOverride` mod yet, this would be new art). Unlike
+wave 3, no canvas mismatch to flag.
+
+**Fidelity sheet**: `Transient/canon_regen_wave4_2026-09-23/sheet.html`
+(served via `review-sheets`' `serve_sheet.py`, decisions at
+`Transient/canon_regen_wave4_2026-09-23/decisions.json`) — one row per
+creature, each a composite (owner-ruled reference beside the new renders;
+Dewback/Insectomorph show a blank panel for their missing facing).
+`check_sheet.py`: 34 ok, 1 expected FAIL (`rows are pre-filled`, 0/7 —
+same intentional gap as waves 1-3, fidelity grading is the owner's call).
+**Not yet graded — the owner has not looked.** No art deployed to any
+`ArtOverride` mod this wave; owed only after his grade.
+
+**Remaining candidates**: none named yet beyond this roster — wave 1's
+"pre-library art wave" bucket (Boma, Dewback, Insectomorph, Shiro,
+Vornskyr, Whisperbird, Zakkeg, plus wave 3's Hawkbat/Kinrath/Kreetle) is
+now fully surfaced across waves 3-4. Any further wave needs a fresh sweep
+of the canon-reference library for creatures not yet covered by any wave.
+
+Files: `Transient/canon_regen_wave4_2026-09-23/` (sheet.html, decisions.json,
+7 composites, build_composites.py, serve.log), `Transient/artpipe_manual_retries/`
+(2 parked failed manifests).
+
+Left `doing` — wave 4 of many, not a close.
+
 Filed by BENCH, 2026-09-13. Owner: *"THEN we regenerate canon creatures with
 that guidance."* CANON_REFERENCE_LIBRARY_1 (the guidance) closed
 `779938cbb2c43ab0390afd9e2d94d519367af707`; this item is unblocked and `doing`.

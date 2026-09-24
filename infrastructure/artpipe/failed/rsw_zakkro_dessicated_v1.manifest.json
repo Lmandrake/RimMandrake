@@ -1,8 +1,8 @@
 {
-  "attempt_elapsed_s": 10.821081975998823,
+  "attempt_elapsed_s": 2.2072456650203094,
   "channel": "codex",
   "daemon_attempts": 2,
-  "elapsed_s": 13.172493699006736,
+  "elapsed_s": 4.310161000001244,
   "id": "rsw_zakkro_dessicated_v1",
   "meter_after": {
     "grumpy": false,
@@ -10,7 +10,7 @@
     "primary_resets_at": null,
     "primary_used_percent": null,
     "primary_window_minutes": null,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/23/rollout-2026-09-23T21-17-42-01a0d1a2-316d-7f62-8f3f-459261fe892c.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T22-33-17-01a0d1e7-62bc-7473-9a52-2f750042bf17.jsonl",
     "secondary_resets_at": null,
     "secondary_used_percent": null,
     "secondary_window_minutes": null
@@ -21,7 +21,7 @@
     "primary_resets_at": null,
     "primary_used_percent": null,
     "primary_window_minutes": null,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/23/rollout-2026-09-23T21-17-37-01a0d1a2-1c8d-7dc3-8a9b-4aa427746804.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T22-33-12-01a0d1e7-4eb1-7c82-b82c-043f251fc895.jsonl",
     "secondary_resets_at": null,
     "secondary_used_percent": null,
     "secondary_window_minutes": null
@@ -33,6 +33,6 @@
   "validator": "not_run",
   "worker_self_report": null,
   "worker_status": "worker_error",
-  "worker_stderr_tail": "ERROR no image produced after 10s (exit 1).\n--- last codex output ---\nthing desiccates -- never a rot/decay read.\n\nThen copy the generated image into the current working directory as rsw_zakkro_dessicated_v1.png. Report the absolute path of the file you saved.\n2026-09-24T04:17:43.979737Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-24T04:17:44.742158Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 2/5\n2026-09-24T04:17:45.422308Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 3/5\n2026-09-24T04:17:46.431067Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 4/5\n2026-09-24T04:17:48.449880Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 5/5\n2026-09-24T04:17:52.226494Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nwarning: Falling back from WebSockets to HTTPS transport. unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a3fefb5f5af49d92-LAX\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\n\n",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rsw_zakkro_dessicated_v1\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d1e7-62bc-7473-9a52-2f750042bf17\n--------\nuser\nUse $imagegen to [artpipe job rsw_zakkro_dessicated_v1] A desiccated, mummified husk of a zakkro cave-beast (see companion job rsw_zakkro_v1 for the living creature's design: hulking four-legged megafauna, dust-pale matted lichen-fiber dreadlocks, blind eyeless tendril-fringed head, lamprey-like circular maw). RimWorld top-down pawn sprite, painterly vanilla-RimWorld creature art style, desiccated/dessicated-corpse convention: dried, shrunken, hollowed, bone-and-dust pale throughout -- no wetness, no rot, no decay, pure desiccation. Transparent background, no scenery. Canvas: exactly 1024x1024 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: RSW_Zakkro dessicatedBodyGraphicData. Desert biome hard rule: nothing rots, everything desiccates -- never a rot/decay read.\n\nThen copy the generated image into the current working directory as rsw_zakkro_dessicated_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\n\n",
   "worker_stdout_tail": ""
 }

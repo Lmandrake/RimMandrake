@@ -1,8 +1,8 @@
 {
-  "attempt_elapsed_s": 2.0437416170025244,
+  "attempt_elapsed_s": 9.971289925044402,
   "channel": "codex",
   "daemon_attempts": 2,
-  "elapsed_s": 10.911271232005674,
+  "elapsed_s": 19.273096140066627,
   "id": "desertportb_mossbeetlepupa_north",
   "meter_after": {
     "grumpy": false,
@@ -10,7 +10,7 @@
     "primary_resets_at": null,
     "primary_used_percent": null,
     "primary_window_minutes": null,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/23/rollout-2026-09-23T21-14-16-01a0d19f-09c9-7313-a3f6-32dcedbf4377.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T22-29-40-01a0d1e4-117a-7f73-a004-50d240565c12.jsonl",
     "secondary_resets_at": null,
     "secondary_used_percent": null,
     "secondary_window_minutes": null
@@ -21,7 +21,7 @@
     "primary_resets_at": null,
     "primary_used_percent": null,
     "primary_window_minutes": null,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/23/rollout-2026-09-23T21-13-57-01a0d19e-c008-7bb1-b1f0-d1f8d9009d2e.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T22-29-19-01a0d1e3-c1ad-7883-b81f-97ac5b4a358e.jsonl",
     "secondary_resets_at": null,
     "secondary_used_percent": null,
     "secondary_window_minutes": null
@@ -33,6 +33,6 @@
   "validator": "not_run",
   "worker_self_report": null,
   "worker_status": "worker_error",
-  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_mossbeetlepupa_north\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d19f-09c9-7313-a3f6-32dcedbf4377\n--------\nuser\nUse $imagegen to [artpipe job desertportb_mossbeetlepupa_north] RimWorld creature sprite, painterly vanilla-RimWorld animal art style: RSW_MossBeetlePupa (\"moss pupa\") -- the immobile pupal stage of the moss beetle, found in dark, damp places. A pale, segmented, cocoon-like insect pupa, motionless, twitching only slightly. Single creature, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Facing: north \u2014 the creature walks AWAY from the viewer; we see its BACK, rear haunches and the back of its head. No face, no eyes visible.\n\nThen copy the generated image into the current working directory as desertportb_mossbeetlepupa_north.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\n\n",
+  "worker_stderr_tail": "ERROR no image produced after 10s (exit 1).\n--- last codex output ---\nved.\n2026-09-24T05:29:40.455789Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-24T05:29:40.985745Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-24T05:29:41.460531Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 2/5\n2026-09-24T05:29:42.081450Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 3/5\n2026-09-24T05:29:43.232831Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 4/5\n2026-09-24T05:29:45.211699Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 5/5\n2026-09-24T05:29:48.792316Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nwarning: Falling back from WebSockets to HTTPS transport. unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a3ff64c28bf7d8a6-LAX\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\n\n",
   "worker_stdout_tail": ""
 }
