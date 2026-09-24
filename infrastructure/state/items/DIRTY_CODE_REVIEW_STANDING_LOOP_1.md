@@ -3295,3 +3295,58 @@ at **67**. Nearly tied again — next wave: `SWBestiary/Defs/ThingDefs_Races`
 has ~65 files left (the next-biggest live cluster in either mod now that
 `Patches/` and `ThingDefs_Items` are both spent), or survey `UtinniPatches`
 for its next-biggest subfolder, with `list --show-untracked`.
+
+## Wave 52 — 2026-09-24: SWBestiary races continued, UtinniPatches Patches/ fully closed
+
+Ran `list --show-untracked` fresh: **306 NEVER ENTERED** (up from wave 51's
+295 — 11 new files appeared from a concurrent build agent's own work, e.g.
+`RUT_TarredSurgery_RecipeUsers.xml`, `build_desert_review_sheet.py`, several
+new `ThingDefs_Items` catch/resource files — normal cross-agent noise, not
+this loop's doing).
+
+First re-checked `git status --porcelain` on `RUT_TarShallow_GeneratedFilth.xml`
+(correct repo-relative path this time — wave 51's check used a wrong path
+that happened to also return empty, so its "still M" reading was actually
+mis-diagnosed; re-verified from scratch): clean, no uncommitted changes —
+the concurrent `SUMP_TAR_NASTINESS_1` build agent's edit has landed and
+committed. Reviewed it: `PatchOperationAdd` wires `<generatedFilth>RM_Filth_Tar
+</generatedFilth>` onto `TerrainDef[defName="RM_TarShallow"]`; both
+`RM_TarShallow` (`FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Tar.xml`) and
+`RM_Filth_Tar` (`FlowWorks/Defs/LiquidTypes/ThingDefs/RM_Filth_Tar.xml`)
+resolve, and the sibling `filthAcceptanceMask` file it depends on exists.
+No bugs. **Marked CLEAN — `UtinniPatches/Patches/` is now fully exhausted.**
+
+Picked the next 7 alphabetically-first files from
+`SWBestiary/Defs/ThingDefs_Races/`: `RSW_Grank.xml`, `RSW_Groundrunner.xml`,
+`RSW_Gutkurr.xml`, `RSW_Hawkbat.xml`, `RSW_Hrumph.xml`, `RSW_Hssiss.xml`,
+`RSW_Igitz.xml`. Full-file reviewed all 7, each got the wave 49-51
+sound-prefix check (`sound{Wounded,Death,Call,Angry}`): six carry
+correctly RSW_-prefixed sounds, all 4 fields present and all 4 resolve in
+`SoundDefs_SWBestiary.xml` for each; `RSW_Groundrunner.xml` deliberately
+uses bare vanilla `Pawn_Muffalo_*` (its own header says so explicitly —
+correct, not this bug class). Every cross-referenced def (bodies:
+`RSW_CorellianHound`, `RSW_Gutkurr`, `RSW_Hssiss`, `RSW_Igitz`; leather/meat:
+`RSW_Reptomammal_Meat`, `RSW_Leather_Insectile`/`RSW_Insectile_Meat`,
+`RSW_Leather_Reptavian`/`RSW_Reptavian_Meat`, `RSW_Leather_Dark`/
+`RSW_Saurian_Meat`, `RSW_Pachydermoid_Meat`, `RSW_Gorg_Meat`; eggs:
+`RSW_EggGutkurr*`, `RSW_EggHawkbat*`, `RSW_EggHssiss*`, `RSW_EggIgitz*`;
+body-part groups: `RSW_SWClaws`, `RSW_SWTailAttackTool`,
+`RSW_SWToxicAppendage`) was confirmed to resolve to a real defName in the
+repo. `RSW_Hawkbat.xml` already carries full native flight
+(`MaxFlightTime`/`FlightCooldown`/`canFlyIntoMap`/`canLeaveMapFlying` plus a
+real `flyingAnimationFramePathPrefix` flip-book, 4 frames) — already
+compliant with the "if it flies in the fiction" rule, nothing to fix. No
+bugs found in any of the 7.
+
+Commit `22125e2f1` (status file), pushed. No `.git/index.lock` contention
+this wave.
+
+Re-measured after: `TALLY  CLEAN 3150  DIRTY 6  ORPHANED 0  NEVER ENTERED 298`
+— 298 = 306 − 8 exactly, no further concurrent-agent noise mid-wave.
+**298 NEVER ENTERED files remain**: `UtinniPatches` at **73** (its own
+`Patches/` subfolder is now fully spent — the 1 remaining `Patches/` file,
+`RUT_TarredSurgery_RecipeUsers.xml`, is new since wave 51 and unreviewed;
+`Defs/` carries 68, `Languages/` 3), `SWBestiary` at **60**
+(`Defs/ThingDefs_Races` has **58** left). Next wave: continue
+`SWBestiary/Defs/ThingDefs_Races` (still the single biggest live cluster),
+with `list --show-untracked`.
