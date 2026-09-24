@@ -1,8 +1,8 @@
 {
-  "attempt_elapsed_s": 10.018006734957453,
+  "attempt_elapsed_s": 9.357437251019292,
   "channel": "codex",
   "daemon_attempts": 2,
-  "elapsed_s": 19.702215216937475,
+  "elapsed_s": 18.945773384009954,
   "id": "rut_grellbush",
   "meter_after": {
     "grumpy": false,
@@ -10,7 +10,7 @@
     "primary_resets_at": null,
     "primary_used_percent": null,
     "primary_window_minutes": null,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T21-18-04-01a0d1a2-8426-77a2-93a7-af34ef4bbd69.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/23/rollout-2026-09-23T22-33-30-01a0d1e7-958d-7a40-968e-ed0f49c9f956.jsonl",
     "secondary_resets_at": null,
     "secondary_used_percent": null,
     "secondary_window_minutes": null
@@ -21,7 +21,7 @@
     "primary_resets_at": null,
     "primary_used_percent": null,
     "primary_window_minutes": null,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T21-17-44-01a0d1a2-3876-7691-966f-71530d8e5cdd.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/23/rollout-2026-09-23T22-33-17-01a0d1e7-64f8-7a33-8632-73912a7abe17.jsonl",
     "secondary_resets_at": null,
     "secondary_used_percent": null,
     "secondary_window_minutes": null
@@ -33,6 +33,6 @@
   "validator": "not_run",
   "worker_self_report": null,
   "worker_status": "worker_error",
-  "worker_stderr_tail": "ERROR no image produced after 10s (exit 1).\n--- last codex output ---\nved.\n2026-09-24T04:18:04.436751Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-24T04:18:05.078545Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-24T04:18:05.548225Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 2/5\n2026-09-24T04:18:06.248582Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 3/5\n2026-09-24T04:18:07.343718Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 4/5\n2026-09-24T04:18:09.305407Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 5/5\n2026-09-24T04:18:12.874460Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nwarning: Falling back from WebSockets to HTTPS transport. unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a3fefbe0af2c5f80-LAX\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\n\n",
+  "worker_stderr_tail": "ERROR no image produced after 9s (exit 1).\n--- last codex output ---\nved.\n2026-09-24T05:33:30.858681Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-24T05:33:31.337087Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-24T05:33:31.792558Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 2/5\n2026-09-24T05:33:32.488786Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 3/5\n2026-09-24T05:33:33.485337Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 4/5\n2026-09-24T05:33:35.215029Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Reconnecting... 5/5\n2026-09-24T05:33:38.767808Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses\nwarning: Falling back from WebSockets to HTTPS transport. unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a3ff6a600e099d5a-LAX\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\n\n",
   "worker_stdout_tail": ""
 }

@@ -1,8 +1,8 @@
 {
-  "attempt_elapsed_s": 18.18845409800997,
+  "attempt_elapsed_s": 2.240314011054579,
   "channel": "codex",
   "daemon_attempts": 2,
-  "elapsed_s": 42.5469903810299,
+  "elapsed_s": 5.0998108550556935,
   "id": "desertportb_feralgrazer_north",
   "meter_after": {
     "grumpy": false,
@@ -10,7 +10,7 @@
     "primary_resets_at": null,
     "primary_used_percent": null,
     "primary_window_minutes": null,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T21-12-36-01a0d19d-843f-7c50-ba72-8f0fc2a6a55a.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/23/rollout-2026-09-23T22-27-56-01a0d1e2-7bfc-7f33-8455-5cc35cdc769f.jsonl",
     "secondary_resets_at": null,
     "secondary_used_percent": null,
     "secondary_window_minutes": null
@@ -18,13 +18,13 @@
   "meter_before": {
     "grumpy": false,
     "ok": true,
-    "primary_resets_at": 1789588916,
-    "primary_used_percent": 51.0,
-    "primary_window_minutes": 300,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/16/rollout-2026-09-16T08-08-14-01a0aac2-e609-7b20-bbd3-d2dee7da22d8.jsonl",
-    "secondary_resets_at": 1790008324,
-    "secondary_used_percent": 20.0,
-    "secondary_window_minutes": 10080
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/23/rollout-2026-09-23T21-19-51-01a0d1a4-2841-7e23-95c2-a8e138ba16a8.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
   },
   "mode": "generate",
   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
@@ -33,6 +33,6 @@
   "validator": "not_run",
   "worker_self_report": null,
   "worker_status": "worker_error",
-  "worker_stderr_tail": "ERROR no image produced after 18s (exit 1).\n--- last codex output ---\ng, and hierarchy; no extra words or reflow unless needed.\n- identity-preserve: Lock identity (face, body, pose, hair, expression); change only the specified elements; match lighting and shadows.\n- precise-object-edit: Specify exactly what to remove/replace; preserve surrounding texture and lighting; keep everything else unchanged.\n- lighting-weather: Change only environmental conditions (light, shadows, atmosphere, precipitation); keep geometry, framing, and subject identity.\n- background-extraction: Request a clean cutout on a genuinely transparent background; preserve fine edges and label text; no halos or restyling.\n- style-transfer: Specify style cues to preserve (palette, texture, brushwork) and what must change; add `no extra elements` to prevent drift.\n- compositing: Reference inputs by index; specify what moves where; match lighting, perspective, and scale; keep the base framing unchanged.\n- sketch-to-render: Preserve layout, proportions, and perspective; choose materials and lighting that support the supplied sketch without adding new elements.\n\n## Where to find copy/paste recipes\nFor copy/paste prompt specs (examples only), see `references/sample-prompts.md`. This file focuses on principles, specificity, and iteration patterns.\n\n\n2026-09-24T04:12:53.721886Z ERROR codex_core::tools::router: error=image generation failed: http 429 Too Many Requests: Some(\"{\\\"error\\\":{\\\"type\\\":\\\"usage_limit_reached\\\",\\\"message\\\":\\\"The usage limit has been reached\\\",\\\"plan_type\\\":\\\"plus\\\",\\\"resets_at\\\":1790234599,\\\"eligible_promo\\\":null,\\\"resets_in_seconds\\\":11425}}\")\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\ntokens used\n9,924\n\n",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_feralgrazer_north\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d1e2-7bfc-7f33-8455-5cc35cdc769f\n--------\nuser\nUse $imagegen to [artpipe job desertportb_feralgrazer_north] RimWorld creature sprite, painterly vanilla-RimWorld animal art style: the Star Wars canon feral grazer -- These slow-moving herbivorous mammalia were native to Alderaan. 'Feral' or 'wild' grazers were significantly leaner than the fatter and more well-fed domestic grazer; however both species were distantly related to\u2026 Single creature, centered, standing pose appropriate to its anatomy, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 512x512 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Facing: north \u2014 the creature walks AWAY from the viewer; we see its BACK, rear haunches and the back of its head. No face, no eyes visible.\n\nThen copy the generated image into the current working directory as desertportb_feralgrazer_north.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\n\n",
   "worker_stdout_tail": ""
 }

@@ -1,0 +1,11 @@
+
+  sheet      D:\Luke\dev\Rimworld\Transient\canon_regen_wave4_2026-09-23\sheet.html
+  decisions  D:\Luke\dev\Rimworld\Transient\canon_regen_wave4_2026-09-23\decisions.json
+             7 rows · 0 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:36367/?t=8i_eL59i3dpD3W80J3pGNg
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  opened with explorer.exe
+

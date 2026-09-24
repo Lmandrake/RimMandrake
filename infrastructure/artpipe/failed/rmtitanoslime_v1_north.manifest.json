@@ -1,8 +1,8 @@
 {
-  "attempt_elapsed_s": 2.2728747189976275,
+  "attempt_elapsed_s": 2.0622683470137417,
   "channel": "codex",
   "daemon_attempts": 2,
-  "elapsed_s": 5.254269310040399,
+  "elapsed_s": 5.08747911604587,
   "id": "rmtitanoslime_v1_north",
   "meter_after": {
     "grumpy": false,
@@ -10,7 +10,7 @@
     "primary_resets_at": null,
     "primary_used_percent": null,
     "primary_window_minutes": null,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/23/rollout-2026-09-23T21-17-37-01a0d1a2-1c8d-7dc3-8a9b-4aa427746804.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/23/rollout-2026-09-23T22-33-12-01a0d1e7-513d-7b51-80d2-0481477a93ff.jsonl",
     "secondary_resets_at": null,
     "secondary_used_percent": null,
     "secondary_window_minutes": null
@@ -21,7 +21,7 @@
     "primary_resets_at": null,
     "primary_used_percent": null,
     "primary_window_minutes": null,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/23/rollout-2026-09-23T21-17-30-01a0d1a2-003f-7d63-84a3-38dbf75cfcbe.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/23/rollout-2026-09-23T22-33-07-01a0d1e7-3ad8-76b1-9ff5-4a066f6caf50.jsonl",
     "secondary_resets_at": null,
     "secondary_used_percent": null,
     "secondary_window_minutes": null

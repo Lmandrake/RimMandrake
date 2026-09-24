@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 2.1141022230149247,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 4.01869398803683,
+  "id": "rutstaggerseed_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T21-18-16-01a0d1a2-b4a5-7800-83a5-c9faafba8062.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T21-18-04-01a0d1a2-8426-77a2-93a7-af34ef4bbd69.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\ntmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d1a2-b4a5-7800-83a5-c9faafba8062\n--------\nuser\nUse $imagegen to [artpipe job rutstaggerseed_v1] RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a low, dense desert bush with small dark grey-green leaves, hung with several fat pale cream-yellow fruits the size of plums, each fruit slightly translucent so a cluster of dark seeds shows through its skin. The bush looks entirely ordinary and wholesome -- an inviting edible bush -- with nothing threatening in its silhouette. Single plant, viewed from directly above at a slight isometric RimWorld camera angle, centered, a short soft shadow beneath it, pale sand ground implied only by the shadow, no other background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: RUT_Vorrel (RULED 2026-09-21, STAGGERSEED_SHIPPING_NAME_1 -- name is vorrel; art below is name-free, no rework needed). desert.md SS4b 'The seed that uses you': an EDIBLE-LOOKING plant of the protected water pockets whose raw fruit kills. The art must read as harmless and appetising -- that is the trap. Also covers the harvested item RUT_VorrelFruit (a small pile of the same pale seed-filled fruits).\n\nThen copy the generated image into the current working directory as rutstaggerseed_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\n\n",
+  "worker_stdout_tail": ""
+}

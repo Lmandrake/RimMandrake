@@ -1,0 +1,18 @@
+{
+  "posture": "none",
+  "reviewStatus": {
+    "state": "prefill",
+    "by": null,
+    "at": null,
+    "evidence": "Generator wrote this at birth; fidelity grading is the owner's call, not this agent's -- no row decided."
+  },
+  "decisions": {
+    "boma": { "decision": "", "note": "", "prefill": "" },
+    "dewback": { "decision": "", "note": "", "prefill": "" },
+    "insectomorph": { "decision": "", "note": "", "prefill": "" },
+    "shiro": { "decision": "", "note": "", "prefill": "" },
+    "vornskyr": { "decision": "", "note": "", "prefill": "" },
+    "whisperbird": { "decision": "", "note": "", "prefill": "" },
+    "zakkeg": { "decision": "", "note": "", "prefill": "" }
+  }
+}
