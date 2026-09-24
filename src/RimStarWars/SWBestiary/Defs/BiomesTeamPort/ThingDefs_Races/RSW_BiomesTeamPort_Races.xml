@@ -9017,8 +9017,8 @@ copied verbatim from the donor mods' own Textures trees.
   </PawnKindDef>
   <ThingDef ParentName="BaseHare">
     <defName>RSW_CaveLemming</defName>
-    <label>cave lemming</label>
-    <description>This big, solitary herbivore can swiftly hop away from danger.</description>
+    <label>mahllik</label>
+    <description>A big, solitary grazer of the ice sheet, a soft lump at rest that becomes a sudden, springing leap the instant danger closes.</description>
     <uiIconScale>1.1</uiIconScale>
     <race>
       <baseBodySize>1.0</baseBodySize>
@@ -9034,7 +9034,7 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="HareBase">
     <defName>RSW_CaveLemming</defName>
-    <label>cave lemming</label>
+    <label>mahllik</label>
     <race>RSW_CaveLemming</race>
     <lifeStages>
       <li>

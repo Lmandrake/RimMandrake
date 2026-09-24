@@ -176,7 +176,7 @@
            to make ECOSYSTEM_PYRAMID_LAW_1 pass. The remedy runs the other way — this biome
            has no small natives of its own, only giant imports, and owes some. -->
       <AA_ShockGoat MayRequire="sarg.alphaanimals">0.03</AA_ShockGoat>  <!-- shock goat - small native visitor, ruled -->
-      <RSW_CaveLemming MayRequire="mandrake.rsw.swbestiary">0.03</RSW_CaveLemming>  <!-- cave lemming - big hopper, LARGE, owner-ruled 2026-09-21; rename + thermal-only sensing refashion still owed on it -->
+      <RSW_CaveLemming MayRequire="mandrake.rsw.swbestiary">0.03</RSW_CaveLemming>  <!-- mahllik - big hopper, LARGE, owner-ruled 2026-09-21; renamed 2026-09-24 (NONCANON_BEAST_RENAME_1 batch 3b) - thermal-only sensing refashion still owed -->
     </wildAnimals>
     <coastalWildAnimals />
     <allowedPackAnimals />

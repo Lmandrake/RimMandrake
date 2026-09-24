@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- ForsakenCrags_Rename.xml            RimUtinni Patches — new file 2026-09-24
+
+       NONCANON_BEAST_RENAME_1 batch 3a — Forsaken Crags. Owner ruled batch 3
+       applied 2026-09-24 (design/Jawa/worldbuilding/biomes/
+       noncanon_beast_names_crags_nightside_contagion_slime.md). Fourteen donor
+       ThingDef+PawnKindDef pairs (13 Alpha Animals AA_, 1 Vanilla Genetics
+       Expanded GR_) get a label/description patch, following the
+       PatchOperationConditional gate pattern of RotSpecies_NamesAndSizes.xml:
+       each block is gated on the ThingDef's own xpath existing, so an absent
+       donor mod makes the block no-op silently — no MayRequire needed.
+
+       LABEL ONLY on the identity; no defName, stat, or art field is touched.
+       Not drafted here: AA_DuskRat (owner ruled the name IS the joke, kept),
+       AA_SandProwler (already port-named RSW_Dunestalker "vosska"). -->
+
+  <!-- ============== AA_Nightling -> vrakk ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Nightling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Nightling"]/label</xpath>
+          <value><label>vrakk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Nightling"]/description</xpath>
+          <value><description>A sleek nocturnal hunter, crowned with rows of quills it can throw to bring down prey many times its own size. A vrakk's jaws finish what the quills start. It never hunts by day.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Nightling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Nightling"]/label</xpath>
+          <value><label>vrakk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Nightling"]/lifeStages/li[1]/label</xpath>
+          <value><label>vrakk cub</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Nightling"]/lifeStages/li[1]/labelPlural</xpath>
+          <value><labelPlural>vrakk puppies</labelPlural></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_NightRam -> dhukk ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_NightRam"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_NightRam"]/label</xpath>
+          <value><label>dhukk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_NightRam"]/description</xpath>
+          <value><description>A stubborn, low-slung herbivore, kin to the vrakk though it eats rather than hunts. Adapted to a world of little sun, the dhukk keeps to the dark and moves only at night. Peaceable unless cornered, and then it puts its head down and charges.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_NightRam"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_NightRam"]/label</xpath>
+          <value><label>dhukk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_NightRam"]/lifeStages/li[1]/label</xpath>
+          <value><label>dhukk calf</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_NightRam"]/lifeStages/li[1]/labelPlural</xpath>
+          <value><labelPlural>dhukk calves</labelPlural></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_NightMule -> hulggarok ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_NightMule"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_NightMule"]/label</xpath>
+          <value><label>hulggarok</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_NightMule"]/description</xpath>
+          <value><description>A hardy pack beast, stronger than a muffalo though it gives little milk and no wool at all. Like its wild kin the hulggarok's back is crowned with quills, but it never learned to throw them — its strength is in the load it carries, not in a fight.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_NightMule"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_NightMule"]/label</xpath>
+          <value><label>hulggarok</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_NightMule"]/lifeStages/li[1]/label</xpath>
+          <value><label>hulggarok calf</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_NightMule"]/lifeStages/li[1]/labelPlural</xpath>
+          <value><labelPlural>hulggarok calves</labelPlural></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_NightAve -> zekkra ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_NightAve"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_NightAve"]/label</xpath>
+          <value><label>zekkra</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_NightAve"]/description</xpath>
+          <value><description>A large flightless bird, black as the crags it runs, faster than any horse and steady enough to carry a rider into a fight at full speed.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_NightAve"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_NightAve"]/label</xpath>
+          <value><label>zekkra</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_NightAve"]/labelPlural</xpath>
+          <value><labelPlural>zekkras</labelPlural></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_NightAve"]/lifeStages/li[1]/label</xpath>
+          <value><label>zekkra chick</label></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Murkling -> kessik ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Murkling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Murkling"]/label</xpath>
+          <value><label>kessik</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Murkling"]/description</xpath>
+          <value><description>A small, quick-witted scavenger that runs in packs, humming to its kin through organs on its snout that no other ear can follow. Sly enough to outwit prey twice its size, the kessik has a reputation across the crags as the thief of the night — and a bite that leaves more than a scar behind.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Murkling"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Murkling"]/label</xpath>
+      <value><label>kessik</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_CrepuscularBeetle -> brekkugar ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_CrepuscularBeetle"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_CrepuscularBeetle"]/label</xpath>
+          <value><label>brekkugar</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_CrepuscularBeetle"]/description</xpath>
+          <value><description>A huge armoured herbivore, plated like a beetle the size of a cart, bred by the crags' old inhabitants as a beast of burden. The brekkugar wakes at dusk and needs little sleep, hauling loads long after other animals have bedded down.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_CrepuscularBeetle"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_CrepuscularBeetle"]/label</xpath>
+      <value><label>brekkugar</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_ShadowCharger -> korrag ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_ShadowCharger"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_ShadowCharger"]/label</xpath>
+          <value><label>korrag</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_ShadowCharger"]/description</xpath>
+          <value><description>A long-horned grazer, placid outside the mating season, when the females charge and lock horns to settle who breeds. Once ridden into battle for its speed and its willingness to ram, the korrag is kept today for its rich milk and abundant meat.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_ShadowCharger"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_ShadowCharger"]/label</xpath>
+          <value><label>korrag</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_ShadowCharger"]/lifeStages/li[1]/label</xpath>
+          <value><label>korrag calf</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_ShadowCharger"]/lifeStages/li[1]/labelPlural</xpath>
+          <value><labelPlural>korrag calves</labelPlural></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Thunderox -> bhoruk ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Thunderox"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Thunderox"]/label</xpath>
+          <value><label>bhoruk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Thunderox"]/description</xpath>
+          <value><description>A shaggy, stump-horned beast of the cold reaches, known for braying at the first breath of a coming storm — a call farmers still listen for. Reared for its thick milk, its warm fur, and its meat, the bhoruk also heals faster than almost anything else that grazes.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Thunderox"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Thunderox"]/label</xpath>
+          <value><label>bhoruk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Thunderox"]/lifeStages/li[1]/label</xpath>
+          <value><label>bhoruk calf</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Thunderox"]/lifeStages/li[1]/labelPlural</xpath>
+          <value><labelPlural>bhoruk calves</labelPlural></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_DarkVandal -> gruzz ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_DarkVandal"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_DarkVandal"]/label</xpath>
+          <value><label>gruzz</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_DarkVandal"]/description</xpath>
+          <value><description>A creature of pure muscle that forages in groups and digs for buried truffles when hunger takes it. Threaten one of its brood and the whole group turns — a gruzz rampage has ended more than one careless camp. Still hunted for its hide, its meat, and by some as a rite of passage.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_DarkVandal"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_DarkVandal"]/label</xpath>
+      <value><label>gruzz</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_DuskProwler -> shekkur ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_DuskProwler"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_DuskProwler"]/label</xpath>
+          <value><label>shekkur</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_DuskProwler"]/description</xpath>
+          <value><description>Something built rather than born: a killing machine whose back carries muscular protrusions that serve as both accelerator and weapon. Old campaigns hunted the shekkur nearly to nothing, and it is rarely seen today — those who do see one seldom live to describe it twice.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_DuskProwler"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_DuskProwler"]/label</xpath>
+          <value><label>shekkur</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_DuskProwler"]/lifeStages/li[1]/label</xpath>
+          <value><label>shekkur puppy</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_DuskProwler"]/lifeStages/li[1]/labelPlural</xpath>
+          <value><labelPlural>shekkur puppies</labelPlural></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Darkbeast -> ulkhorr ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Darkbeast"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Darkbeast"]/label</xpath>
+          <value><label>ulkhorr</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Darkbeast"]/description</xpath>
+          <value><description>A thunderbeast fused with old mechanoid tech: its natural organs are replaced with metal spikes that carry a cloud of sun-blocking mechanites everywhere it goes, trailing a halo of true dark behind it. Unstable by nature, it only lets the cloud loose in full when it dies — which is reason enough for most predators to leave it be.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Darkbeast"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Darkbeast"]/label</xpath>
+      <value><label>ulkhorr</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Frostling -> thrizzik ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Frostling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Frostling"]/label</xpath>
+          <value><label>thrizzik</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Frostling"]/description</xpath>
+          <value><description>A cousin of the vrakk built for the killing cold rather than the crags' dark — a fast, nocturnal hunter of the frozen wastes that runs down whatever else survives out there.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Frostling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Frostling"]/label</xpath>
+          <value><label>thrizzik</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Frostling"]/lifeStages/li[1]/label</xpath>
+          <value><label>thrizzik cub</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Frostling"]/lifeStages/li[1]/labelPlural</xpath>
+          <value><labelPlural>thrizzik puppies</labelPlural></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Behemoth -> ghorrumak ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Behemoth"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Behemoth"]/label</xpath>
+          <value><label>ghorrumak</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Behemoth"]/description</xpath>
+          <value><description>The largest thing that walks the crags — a creature out of the old stories, whose coming is announced by thunder and whose breath is fire. Once there were hundreds; now there are few, and those few heal faster than anything ought to. Once yoked as a beast of burden by whoever lived here before, the ghorrumak answers to nobody now.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Behemoth"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Behemoth"]/label</xpath>
+      <value><label>ghorrumak</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== GR_Nighthrumbo -> zhurrakor ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GR_Nighthrumbo"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Nighthrumbo"]/label</xpath>
+          <value><label>zhurrakor</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Nighthrumbo"]/description</xpath>
+          <value><description>A nocturnal predator built on old thrumbo stock, armed with a horn, strong jaws, and quills it can throw to finish prey at range. It sleeps through the day and hunts through the dark, and nothing in the crags sleeps easy once a zhurrakor starts calling.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="GR_Nighthrumbo"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="GR_Nighthrumbo"]/label</xpath>
+      <value><label>zhurrakor</label></value>
+    </match>
+  </Operation>
+
+</Patch>

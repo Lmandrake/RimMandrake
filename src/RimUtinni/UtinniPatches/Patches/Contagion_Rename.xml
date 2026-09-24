@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Contagion_Rename.xml            RimUtinni Patches — new file 2026-09-24
+
+       NONCANON_BEAST_RENAME_1 batch 3c — the Contagion. Owner ruled batch 3
+       applied 2026-09-24 (design/Jawa/worldbuilding/biomes/
+       noncanon_beast_names_crags_nightside_contagion_slime.md). Fifteen donor
+       ThingDef+PawnKindDef pairs (13 Alpha Animals AA_, 1 Alpha Genes AG_, 1
+       Vanilla Genetics Expanded GR_) get a label/description patch, on the
+       PatchOperationConditional gate pattern of RotSpecies_NamesAndSizes.xml.
+
+       LABEL ONLY on the identity; no defName, stat, or art field is touched.
+
+       Not applied here: AA_Razorjack ("skezzar" drafted in the source doc's
+       3c table) — the doc's own Appendix B flags an UNRESOLVED conflict with
+       the owner's separate card pick "sytheclaw" already live on the
+       Pyrelands port RUT_Sytheclaw (RAZORJACK_IDENTITY_RESTYLE_1, 2026-09-14),
+       and forward-references "batch 5 flag 1" as where it is meant to be
+       settled. Left untouched pending that resolution.
+       Not drafted: AA_Swarmling (chittik, ruled in the Rot pass, already
+       applied) and AA_Eyeling (ikee, owner ruling 2026-08-15, already
+       applied). -->
+
+  <!-- ============== AA_RedGoo -> ghaaz ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_RedGoo"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_RedGoo"]/label</xpath>
+          <value><label>ghaaz</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_RedGoo"]/description</xpath>
+          <value><description>The body of the valley itself — a spreading, bubbling mass that creeps to the rain line, feeding on the dead and the strange vegetation alike, and budding off new pieces of itself every time the Bloom comes round.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_RedGoo"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_RedGoo"]/label</xpath>
+      <value><label>ghaaz</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_OcularJelly -> zhool ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/label</xpath>
+          <value><label>zhool</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/description</xpath>
+          <value><description>A drifting, gas-filled shape that hangs at canopy height, watching the cloud below. It breathes out a faint reddish haze that turns whatever plant it touches into something that shares its own strange flesh. When a zhool sinks low and settles, the valley's old hands know a Burn is coming.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_OcularJelly"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_OcularJelly"]/label</xpath>
+      <value><label>zhool</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Aerofleet -> bulloo (the base species) ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Aerofleet"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Aerofleet"]/label</xpath>
+          <value><label>bulloo</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Aerofleet"]/description</xpath>
+          <value><description>A small, floating, gas-filled creature that drifts on the hydrogen it draws from water and plant matter, bouncing gently off whatever stands in its way. Harmless, and slowly weeping a thick gel that can be refined into fuel.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Aerofleet"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Aerofleet"]/label</xpath>
+      <value><label>bulloo</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_ColossalAerofleet -> greater bulloo ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_ColossalAerofleet"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_ColossalAerofleet"]/label</xpath>
+          <value><label>greater bulloo</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_ColossalAerofleet"]/description</xpath>
+          <value><description>A bulloo grown to enormous size, trailing a little escort of smaller ones that seem to follow it everywhere it drifts. It sheds the same thick gel as its kin, just far more of it.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_ColossalAerofleet"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_ColossalAerofleet"]/label</xpath>
+      <value><label>greater bulloo</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_InfectedAerofleet -> blistered bulloo ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/label</xpath>
+          <value><label>blistered bulloo</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/description</xpath>
+          <value><description>A bulloo whose hide has blistered from too long in the valley's haze, its hydrogen float now carrying a payload of spore rather than the clean gas its kin drift on. It rides the updraft same as any bulloo, bouncing off whatever gets in its way — until the sun catches it, and it pops.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_InfectedAerofleet"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_InfectedAerofleet"]/label</xpath>
+      <value><label>blistered bulloo</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_RedSpore -> vezzok ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_RedSpore"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_RedSpore"]/label</xpath>
+          <value><label>vezzok</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_RedSpore"]/description</xpath>
+          <value><description>Not a creature of carbon at all, but something built on gallium instead, drifting on the same currents as the valley's other floaters. Unstable and short-lived, a vezzok that strays into open sunlight cooks and bursts — the rare one that survives the light seeds a whole new bloom of them.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_RedSpore"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_RedSpore"]/label</xpath>
+      <value><label>vezzok</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_BloodShrimp -> zhirrik ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_BloodShrimp"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_BloodShrimp"]/label</xpath>
+          <value><label>zhirrik</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_BloodShrimp"]/description</xpath>
+          <value><description>A small, fast predator of the shallow pools, quicker than its larger kin though it lacks their regeneration — unless it feeds. A zhirrik bite drains blood, and the blood it drinks knits its own wounds shut. It is the reason nobody drinks from the red pools unwatched.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_BloodShrimp"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_BloodShrimp"]/label</xpath>
+      <value><label>zhirrik</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Helixien -> vulloth (also Slime, Poison Forest, Miasma, Scarlands) ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Helixien"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Helixien"]/label</xpath>
+          <value><label>vulloth</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Helixien"]/description</xpath>
+          <value><description>A vast, slow slug that breathes out a foul, corrosive gas wherever it goes — mostly harmless to the living, but murder on the dead: anything it passes near rots in minutes into a black, reeking fluid, which the vulloth then happily drinks. Watching one clear a field of corpses is not a sight anyone forgets.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Helixien"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Helixien"]/label</xpath>
+      <value><label>vulloth</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Drainer -> fezzira ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Drainer"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Drainer"]/label</xpath>
+          <value><label>fezzira</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Drainer"]/description</xpath>
+          <value><description>A cat-sized flier with wings that flash bright even in the valley's grey light, and an appetite for electricity rather than nectar — a fezzira will strip a battery bank as readily as anything growing on an ocular tree. It goes through a brief larval stage before it grows the wings and the taste for current.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Drainer"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Drainer"]/label</xpath>
+      <value><label>fezzira</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_DrainerLarva -> fezzira larva ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_DrainerLarva"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_DrainerLarva"]/label</xpath>
+          <value><label>fezzira larva</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_DrainerLarva"]/description</xpath>
+          <value><description>The short-lived grub stage of the fezzira, before the wings and the electric hunger come in — for now it eats whatever green it can find.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_DrainerLarva"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_DrainerLarva"]/label</xpath>
+      <value><label>fezzira larva</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_RoughPlatedMonitor -> brossak ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_RoughPlatedMonitor"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_RoughPlatedMonitor"]/label</xpath>
+          <value><label>brossak</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_RoughPlatedMonitor"]/description</xpath>
+          <value><description>A heavy, armour-plated lizard immune to the acid that kills almost everything else here, which is exactly why it preys on the creatures that rely on acid to keep predators off. A brossak comes out to bask the moment the Burn clears the sky, and its eggs go off in a splash of acid the instant they hatch.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_RoughPlatedMonitor"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_RoughPlatedMonitor"]/label</xpath>
+      <value><label>brossak</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_FungalHusk -> ghuvv ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_FungalHusk"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_FungalHusk"]/label</xpath>
+          <value><label>ghuvv</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_FungalHusk"]/description</xpath>
+          <value><description>A dead body kept moving by a fungus that took root in it, shambling toward anything living to spread its own infection through a bite or a scratch. The rot it carries works fast but treats easily if a medic gets to it soon — and whatever a ghuvv kills stays dead, at least.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_FungalHusk"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_FungalHusk"]/label</xpath>
+      <value><label>ghuvv</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_OcularNightling -> gollivra ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_OcularNightling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_OcularNightling"]/label</xpath>
+          <value><label>gollivra</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_OcularNightling"]/description</xpath>
+          <value><description>A vrakk remade by the valley's strange energies — heavier-boned, calmer, and carrying a little of the goo's own gleam in its eyes. Kin to the crags' hunter in everything but temperament.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_OcularNightling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_OcularNightling"]/label</xpath>
+          <value><label>gollivra</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_OcularNightling"]/lifeStages/li[1]/label</xpath>
+          <value><label>gollivra cub</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_OcularNightling"]/lifeStages/li[1]/labelPlural</xpath>
+          <value><labelPlural>gollivra puppies</labelPlural></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ============== AG_OcularSlinger -> pellorax ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]/label</xpath>
+          <value><label>pellorax</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]/description</xpath>
+          <value><description>A large, mutated scorpion, its raised tail held ready and a scatter of eyes across its carapace that never stop twitching, watching every direction at once.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AG_OcularSlinger"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AG_OcularSlinger"]/label</xpath>
+      <value><label>pellorax</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== GR_Fleshling -> pibbo ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GR_Fleshling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Fleshling"]/label</xpath>
+          <value><label>pibbo</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Fleshling"]/description</xpath>
+          <value><description>Something in the valley went wrong to make this one, and it knows it — a small, struggling thing that fights for every breath. It means no harm to anyone. Given real attention, a pibbo can find the strength to make it another day; left alone, it usually doesn't.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="GR_Fleshling"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="GR_Fleshling"]/label</xpath>
+      <value><label>pibbo</label></value>
+    </match>
+  </Operation>
+
+</Patch>
