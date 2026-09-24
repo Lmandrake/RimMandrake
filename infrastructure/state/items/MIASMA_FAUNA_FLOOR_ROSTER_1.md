@@ -8,9 +8,14 @@ sitting of 2026-09-23. Sheet: `design/Jawa/worldbuilding/biomes/the_miasma.md`.
 
 ## why this exists
 
-The sheet books five creatures as owed. **MEASURED 2026-09-23: exactly one exists** —
-`RUT_WardenMother`. The starred arthropod floor, the `karr-` fever-swarm, the delta-loam
-composter and the stranded are all nothing. ⚠️ And the two shipped `karr-` creatures,
+The sheet books five creatures as owed. 🔴 **RE-MEASURED 2026-09-23: NONE of the five exists.**
+An earlier version of this line said the warden mother shipped as `RUT_WardenMother` — **that was
+FALSE and is retracted.** That name appears only as an **XML example inside a C# comment** in
+`RM_CompTerritorialAnchor.cs` plus a by-name mention in `RM_AnchorGuard.xml`; there is no
+`ThingDef` and no `PawnKindDef`. ⚠️ Classic *"an existence test is not an identity test"* — the
+grep hits are all documentation. Her design is now its own item,
+`WARDEN_MOTHER_BEFRIENDING_1`. The starred arthropod floor, the `karr-` fever-swarm, the
+delta-loam composter and the stranded are all nothing too. ⚠️ And the two shipped `karr-` creatures,
 `RUT_Karrun` and `RUT_Karrash`, are the **Greentide's and the Scald's** crab-things: they
 establish the clade's naming and art register, not this biome's swarm.
 

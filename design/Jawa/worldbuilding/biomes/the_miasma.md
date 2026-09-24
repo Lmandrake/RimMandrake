@@ -102,11 +102,25 @@ a war.** Two engines, and they are the same engine:
   its mother is the reason ships sink.** The parents' desperate gamble with
   their own young is the biome's soul in miniature (owner): send them into
   the muck, and they die or come back stronger.
-- **The warden mothers.** The adults that stay: brine-broken elders too old
+- ⭐ **The warden mothers.** The adults that stay: brine-broken elders too old
   for the strengthening sea, hauled into the shallows to end their centuries
-  guarding the crèches. Enormous, stationary, lethal within reach, and
-  tragic — the sea's memory dying in its lifeboat. Placed set-pieces, never
-  random spawns.
+  guarding the crèches. Enormous, **lumbering within the water**, lethal
+  within reach, and tragic — the sea's memory dying in its lifeboat. Her
+  crèche sits in the shallows and is a placed, mapped, named site; **she
+  herself spawns, and sometimes brings stranded young with her.**
+  🔴 **She cannot reach dry land, and that constraint is the whole point:**
+  when a receding surge strands one of her young in a pool the water has
+  left, she can hear it and see it and will never cross the few metres of dry
+  ground between. A colony can. ⇒ **She can be BEFRIENDED** — never tamed —
+  by freeing the young she cannot reach. Tolerance means only that you have
+  left her target set; she is commanded by nobody, and harvesting inside her
+  reach returns you to it at once.
+  🧊 **AMENDED 2026-09-23 by owner ruling at a sitting**, per this sheet's own
+  unfreeze clause. This entry previously read *"stationary"* and *"Placed
+  set-pieces, never random spawns"*; both are superseded by the clauses above.
+  Full design and the built-vs-owed split:
+  `miasma_fauna_roster_2026-09-23.md` §6. ⛔ Nothing else in this section
+  moves, and the giant lane is still hers alone — no second giant.
 - **The stranded.** The surge's orphans: endemics cut off in pools when the
   salt line moves, forced ashore between waters — gills going leathery, fins
   splaying into feet that don't quite work. Creatures that *look

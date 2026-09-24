@@ -19,7 +19,7 @@ built.** Of the five `new_defs` the roster named in September, exactly one exist
 
 | the sheet's owed creature | state, MEASURED 2026-09-23 |
 |---|---|
-| warden mother | ✅ **BUILT** — `RUT_WardenMother` ships |
+| warden mother | ⛔ **NOT BUILT — and an earlier line in this document said it was. That was FALSE and is retracted.** `RUT_WardenMother` exists only as an **XML example inside a C# comment** in `RM_CompTerritorialAnchor.cs`, plus a by-name mention in `RM_AnchorGuard.xml`. There is no `ThingDef`, no `PawnKindDef`, nothing spawnable. What IS built is the generic *mechanism* (§6) |
 | the crusty arthropods (⭐ his pick) | ⛔ **nothing** — no def, no clade |
 | the `karr-` fever-swarm | ⛔ **nothing.** ⚠️ The two shipped `karr-` creatures, `RUT_Karrun` and `RUT_Karrash`, are the **Greentide's and the Scald's** crab-things — they establish the clade's naming and art register, not this biome's swarm |
 | the delta-loam composter | ⛔ **nothing** |
@@ -198,21 +198,129 @@ retier is what removes that cost, which is why the two sections are one question
 
 ---
 
-## 6. The warden mothers — already built, and left alone
+## 6. 🔴 The warden mother — the biome's centrepiece, ruled 2026-09-23
 
-`RUT_WardenMother` ships. The sheet's §4 ring — *"brine-broken elders too old for the
-strengthening sea, hauled into the shallows to end their centuries guarding the crèches.
-Enormous, stationary, lethal within reach, and tragic… Placed set-pieces, never random
-spawns"* — and `MIASMA_MECHANICS_1`'s M6 build pass delivered the placement mechanism as a
-**prototype**.
+### 🔴 First, a retraction
 
-⛔ **Nothing owed here from this sitting**, and the roster deliberately adds no second giant:
-the existing eviction of `AA_OvergrownColossus` is reasoned as *"the giant lane here is owned
-by warden mothers… a random giant dilutes them"*, and that reasoning still holds.
+An earlier line in this document said `RUT_WardenMother` ships. **That was false.** MEASURED
+2026-09-23: the name exists only as an **XML example inside a C# comment** in
+`RM_CompTerritorialAnchor.cs`, plus a by-name mention in `RM_AnchorGuard.xml`. There is **no
+`ThingDef`, no `PawnKindDef`, nothing spawnable.** ⚠️ This is the *"an existence test is not an
+identity test"* trap: a grep for the name returns hits, and every one of them is documentation.
 
-⚠️ **One open thread, not this roster's to close:** M6 shipped as *"PROTOTYPE ONLY"* and the
-item's remaining unchecked boxes are both in-game verification. A quicktest on a scratch world
-is what settles it.
+⇒ And the `RUT_` prefix in that comment is **wrong for this creature anyway.** The warden mother
+is an *invented* creature, not canon IP, so under Q11a and the tier ruling of 2026-09-23 she is
+**`RM_WardenMother`** and belongs in the franchise-free mod. Which matters: she is about to
+become the biome's best content, and the free tier must have her.
+
+### The owner's ruling, verbatim
+
+> *"Let's make a not-so-gentle giant who can be befriended when its young call out for it and get
+> stuck. Means that when it spawns, so do some stranded young (sometimes). It should be able to
+> lumber along in the water (and its creche should be in the shallows) but cannot get on dry
+> land."*
+
+### 🔑 The whole mechanism is the waterline
+
+She can go anywhere the water goes. She can go nowhere else. Her young gets caught in a pool the
+water has **left**. She can hear it. She can see it. Between her and it is a few metres of dry
+ground she will never cross in her life.
+
+**You can.**
+
+That is the friendship, and it is one sentence of fiction sitting on one hard movement
+constraint. Every step below is either already built or cheap:
+
+| # | step | state |
+|---|---|---|
+| 1 | a surge recedes and the salt line moves, cutting a pool off | ✅ `RM_GradientSurgeExtension`, `RM_StrandingPoolsExtension` — both shipped 2026-09-13 |
+| 2 | a juvenile is caught in it — an ordinary young carrying the stranding condition, per the same sitting's ruling that **the stranded are the nursery's failures, not their own species** | specified §5, ⛔ nothing new invented |
+| 3 | ⭐ **the young CALLS.** Audible, locatable, and it does not stop | ⛔ owed — the one piece of pure fiction-to-mechanism work |
+| 4 | **she comes**, lumbering through the water toward the call, as far as water goes | ⛔ owed — water-only movement (§ below) |
+| 5 | 🔴 **she stops at the waterline, and stays there** | the constraint *is* the drama |
+| 6 | you free the young — carry it to open water, or cut a channel so the water reaches it | the channel route leans on `FlowWorks`; carrying is ordinary hauling |
+| 7 | freeing it earns **tolerance.** Harvesting or killing it costs far more than tolerance ever bought | ⛔ owed — a tolerance state |
+
+### ⭐ Why "when it spawns, so do some stranded young (sometimes)" is the sharpest part of the ruling
+
+Without it, the entire relationship waits on an **irregular, storm-driven** surge — and hard ban
+4 forbids ever making that predictable. A colony could play a whole game and never be offered
+the chance. Spawning her *with* a stranded young some of the time means **the offer arrives with
+her**, on the first day, and the surge becomes the thing that keeps offering it afterwards.
+
+⇒ So the linkage is not flavour: it is what makes this content reachable at all.
+
+### "Not-so-gentle" — what tolerance is, and what it is emphatically not
+
+🔴 **She is never tamed.** Tolerance means exactly one thing: **you are removed from her target
+set.** It does not mean she can be commanded, fed on demand, moved, bonded, hauled, healed,
+ridden, or safely crowded.
+
+✅ **And the mechanism for that is already built.** `RM_JobGiver_AnchorDefense` fights *anything
+hostile-or-harvesting inside the anchor radius*; `RM_JobGiver_AnchorWander` keeps her near her
+anchor. Tolerance is a **predicate on that target test**, not a new AI. ⇒ Harvesting anything
+inside her reach puts you straight back into it, tolerated or not — which is the "not-so-gentle"
+he asked for, delivered by the code as it already stands.
+
+### Her crèche is the anchor, and it is in the shallows
+
+✅ `RM_CompTerritorialAnchor.SetAnchor()` takes whatever `Thing` it is given, so **the crèche is
+the anchor object** and her radius is her reach. ✅ `RM_ScattererValidator_BrineShallowWater`
+already validates shallow-water placement, which is precisely where he ruled the crèche goes.
+
+🔑 **This makes her protection GEOGRAPHIC, and that is the best thing about her.** A colony with
+its back to open water is nearly unraidable from that side. A colony four tiles inland gets
+nothing. ⇒ The player buys as much of her as their building site is brave enough to claim — and
+that is a real decision made at settling time, not a toggle.
+
+### The two amendments this ruling makes to the frozen sheet
+
+Recorded here, and **edited in place** in `the_miasma.md` §4 rather than left to contradict a
+newer document:
+
+| the sheet said | it now says | why |
+|---|---|---|
+| *"Enormous, **stationary**, lethal within reach"* | enormous, **lumbering within the water**, lethal within reach, and unable to reach dry land | owner ruling above. She moves; the water is her cage |
+| *"Placed set-pieces, **never random spawns**"* | she **spawns**, and sometimes brings stranded young with her | owner ruling above. Her crèche can still be a placed, mapped, named site — §8's *"placed, mapped and named"* survives for the crèche, not for her |
+
+⛔ **Nothing else in §4 moves**, and ⛔ the roster still adds **no second giant** — the eviction of
+`AA_OvergrownColossus` is reasoned as *"the giant lane here is owned by warden mothers… a random
+giant dilutes them"*, and that holds harder now than before.
+
+### What is actually owed, and the trap sitting in the middle of it
+
+| owed | note |
+|---|---|
+| `RM_WardenMother` **ThingDef + PawnKindDef** | does not exist in any form. Huge `bodySize`, aquatic, lethal in reach |
+| 🔴 **a water-only movement constraint** | **the single new mechanism.** Nothing in this repo does it — `RM_JobGiver_ReturnToWater` gets a stranded animal *back* to water, `RM_LurkingWaterExtension` marks pool terrain, `RM_ScattererValidator_BrineShallowWater` validates placement. None of them forbids leaving water |
+| **the young's call** | a locatable, persistent audible cue, and the thing a player learns to recognise |
+| **a tolerance state** | per-colony, persisted through save/load, readable to the player — she must *visibly* stop treating you as prey |
+| **her ThinkTreeDef** | 🔴 see the trap below |
+
+🔴 **THE TRAP, and `RM_AnchorGuard.xml`'s own comment already names it:** *"assigning this
+DutyDef to a pawn requires that pawn's own ThinkTreeDef to actually consult `mindState.duty`
+(vanilla's plain Animal ThinkTreeDef does **not**; only Insect-shaped trees do)."* ⇒ A warden
+mother given `RM_AnchorGuard` on a plain Animal think tree will **silently ignore the duty
+entirely** — she will wander off, defend nothing, and read as a configured creature. The comment
+explicitly hands this decision to *this* pass, so it is now owed: either an insect-shaped tree or
+our own tree that consults duty.
+
+⚠️ **And `RM_EnvironmentalHazards.csproj` sets `EnableDefaultCompileItems false` and lists every
+file**, so the new water-constraint `.cs` needs a `<Compile Include>` line or it compiles into
+nothing, with no error. Always a two-file change.
+
+🔴 **Three things here are UNMEASURABLE on the Mac** and ⛔ must not be reasoned out from a doc:
+whether a pawn's pathing can be constrained to a terrain set at all; whether a `bodySize` that
+large paths through shallow water without breaking; and whether the duty seam behaves on a
+non-insect tree. Desktop, before any of this is built.
+
+### ⚠️ For the owner — one thing I did NOT author, on purpose
+
+When I pitched this, part of the idea was that **she eventually dies and you inherit the crèche**,
+with every scavenger on the map knowing she's gone. You didn't repeat it, and it is the part most
+likely to be resented rather than felt — a scripted loss of a defence a player has spent a
+campaign earning. ⇒ **Left out.** She is currently mortal only in the ordinary way. If you want
+the clock, it needs to be foreshadowed from the first day, and that is its own ruling.
 
 ---
 
