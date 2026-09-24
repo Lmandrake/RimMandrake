@@ -2048,3 +2048,32 @@ closed (wave 31); the bridgetools `.cs` files and `rimflow`/`Utils` Python
 tooling named in wave 28's note are still untouched; the PNG
 binary-art-tracking scope question (wave 15) is still open and still not
 this loop's to decide.
+
+## FOUNDRY, 2026-09-24 (orchestrating window): PNG scope question RESOLVED — binary art gets a deterministic bulk probe, not per-file LLM review
+
+**Owner ruling, verbatim: "PNG's and other binary content for dirty clean health could just do a quick probe that they are a well formed image file (or whatever they are). This should be done in bulk and swiftly using deterministic tools."**
+
+This closes the open scope question waves 15/28 flagged and declined to decide. Built
+`src/RimMandrake/Utils/probe_png_wellformed.py` — pure-stdlib PNG structure validator
+(signature bytes, chunk length/type/CRC32 for every chunk, IHDR first, IEND last,
+non-zero width/height). It proves a file is not truncated, not corrupted, and not a
+renamed non-PNG; it says nothing about whether the ART is right — that stays a human
+call (or the artpipe validator's own job for a fresh generation), same division of
+labour as everywhere else in this repo (CLAUDE.md's art review doctrine).
+
+Self-tested against corrupt/truncated/non-PNG fixtures before trusting it on real
+files (confidently-wrong-numbers discipline) — all three failure modes correctly
+detected with the right diagnosis, exit code 1.
+
+Ran `--dirty-from-status --mark-clean` for real: **161/161 DIRTY PNGs passed and are
+now CLEAN.** Also found and pruned (via `code_review_status.py prune --apply`) 9
+CODE_REVIEW_STATUS.json entries — 1 PNG (`RM_FE_Pyrelands.png`, an orphan of the
+Pyrelands wrong-biome-def rename) and 8 non-PNG — pointing at files that no longer
+exist on disk at all.
+
+**Standing convention going forward**: any newly-DIRTY PNG (or other binary art) should
+be cleared with `probe_png_wellformed.py --dirty-from-status --mark-clean`, in bulk,
+not queued into a per-file review wave. The non-PNG backlog (waves 25-33's re-dirtied
+sweep) is unaffected and continues under the normal diff-scoped review protocol.
+
+Commit: `28df62974`.
