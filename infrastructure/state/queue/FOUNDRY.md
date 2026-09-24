@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T19:38:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T19:40:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -873,6 +873,15 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
+## NONCANON_BEAST_RENAME_1 Rename every non-canon beast to a pseudo-Star-Wars equivalent - owner ruling 2026-09-20; applies to donor creatures with Earth or generic names that survive the port to our own defs
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  ⛔ Do not bulk-rename. This is kind: design — per AgentPolicy.md design
+prose:    infrastructure/state/items/NONCANON_BEAST_RENAME_1.md
+
 ## EXTREME_DESERT_SIGNATURE_FLORA_1 Author glass-nub light-pipe and silverbole flora for RUT_ExtremeDesert
 state:    doing
 row:      unassigned
@@ -1361,16 +1370,6 @@ kind:     chore
 thin:     no ## criteria
 summary:  Do this at the desk, on a day when losing the fleet for ten minutes is fine.
 prose:    infrastructure/state/items/REBOOT_BREAKGLASS_VERIFY_1.md
-
-## NONCANON_BEAST_RENAME_1 Rename every non-canon beast to a pseudo-Star-Wars equivalent - owner ruling 2026-09-20; applies to donor creatures with Earth or generic names that survive the port to our own defs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     spec, verify and criteria all present
-summary:  ⛔ Do not bulk-rename. This is kind: design — per AgentPolicy.md design
-prose:    infrastructure/state/items/NONCANON_BEAST_RENAME_1.md
 
 ## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
 state:    proposed
