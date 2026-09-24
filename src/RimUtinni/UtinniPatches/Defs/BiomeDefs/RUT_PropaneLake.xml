@@ -114,6 +114,21 @@
     <isBackgroundBiome>true</isBackgroundBiome>
     <waterDeepTerrain>AB_PropaneLake</waterDeepTerrain>
     <waterShallowTerrain>AB_SolidPropane</waterShallowTerrain>
+
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-23. Makes the land tiles around the
+         Propane Lake read as coastal and cut a shore of liquid and solid
+         propane. providesCatch is FALSE on purpose: whether "fishing" is even
+         the right verb for a lake of fuel is an open design question, and this
+         file must not answer it by default. MayRequire on the <li> is
+         load-bearing: an unresolvable extension class discards the whole
+         BiomeDef silently. -->
+    <modExtensions>
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores">
+        <deepTerrain>AB_PropaneLake</deepTerrain>
+        <shallowTerrain>AB_SolidPropane</shallowTerrain>
+        <providesCatch>false</providesCatch>
+      </li>
+    </modExtensions>
     <!-- WILD ANIMALS: two floating/flying residents, wired PAINTED_TILES_WITH_NO_CAST_1
          (2026-09-20) from rosters/the_propane_lakes.json's fauna array (round2
          move-mapping ruling, 2026-09-10 — see the file header above for the full

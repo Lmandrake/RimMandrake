@@ -87,6 +87,7 @@
     <li>zal.betterinfestations</li>                         <!-- BiomeCast_Ashkarr.xml -->
     <li>zal.comigogreaterswamps</li>                        <!-- BiomeCast_Ashkarr.xml -->
     <li>zal.gianttoads</li>                                 <!-- BiomeCast_Ashkarr.xml -->
+    <li>mandrake.rm.seashores</li>                          <!-- SEA_FLOOR_AND_CATCH_PASS_1: Defs/BiomeDefs/RUT_TheScald.xml, RUT_TwilightSea.xml, RUT_GreySea.xml and RUT_PropaneLake.xml each carry a RimMandrake.SeaShores.RM_SeaShoreExtension modExtension -->
   </loadAfter>
   <!-- Merged from RimUtinni/FactionSlate (mandrake.rut.patches, MOD_CONSOLIDATION_SPRINT_1):
        Patches/FactionSlate/OnlyOurFactions.xml zeroes startingCountAtWorldCreation on 48

@@ -71,6 +71,16 @@
     <texture>World/Biomes/Ocean</texture>
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
+
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-23. Makes the land tiles around the
+         Twilight Sea read as coastal and cut a real shore. No terrains named:
+         with none set the extension resolves to the vanilla ocean pair, which is
+         exactly what terrainsByFertility below already uses. MayRequire on the
+         <li> is load-bearing: an unresolvable extension class discards the whole
+         BiomeDef silently. -->
+    <modExtensions>
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores" />
+    </modExtensions>
     <!-- WILD ANIMALS, landed 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1 from
          design/Jawa/worldbuilding/biomes/rosters/the_twilight_sea.json. This
          supersedes the "left EMPTY, SEAS_WATERLINE_PASS_1's job" note above: the
