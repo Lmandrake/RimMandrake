@@ -128,7 +128,7 @@
           <def>AnimalAdult</def>
           <minAge>0.4</minAge>
           <soundWounded>Pawn_Wildboar_Wounded</soundWounded>
-          <soundDeath>Pawn_Gullipud_Death</soundDeath>
+          <soundDeath>RSW_Pawn_Gullipud_Death</soundDeath>
           <soundCall>Pawn_Wildboar_Call</soundCall>
           <soundAngry>Pawn_Wildboar_Angry</soundAngry>
         </li>

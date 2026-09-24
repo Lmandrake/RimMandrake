@@ -185,10 +185,10 @@
         <li>
           <def>AnimalAdult</def>
           <minAge>0.4</minAge>
-          <soundWounded>Pawn_Wyyyschokk_Wounded</soundWounded>
-          <soundDeath>Pawn_Wyyyschokk_Death</soundDeath>
-          <soundCall>Pawn_Wyyyschokk_Call</soundCall>
-          <soundAngry>Pawn_Wyyyschokk_Angry</soundAngry>
+          <soundWounded>RSW_Pawn_Wyyyschokk_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Wyyyschokk_Death</soundDeath>
+          <soundCall>RSW_Pawn_Wyyyschokk_Call</soundCall>
+          <soundAngry>RSW_Pawn_Wyyyschokk_Angry</soundAngry>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
