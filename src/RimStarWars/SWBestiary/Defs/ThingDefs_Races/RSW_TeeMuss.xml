@@ -76,7 +76,7 @@
     </tools>
     <comps>
       <li Class="CompProperties_Shearable">
-        <woolDef>WoolCoarse</woolDef>
+        <woolDef>RSW_WoolCoarse</woolDef>
         <shearIntervalDays>12</shearIntervalDays>
         <woolAmount>60</woolAmount>
       </li>
