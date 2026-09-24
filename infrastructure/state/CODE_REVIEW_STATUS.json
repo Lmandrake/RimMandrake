@@ -12501,6 +12501,12 @@
     "hash": "4f6ec5d9ad0c0f1aff4853f0ab36f110006ecd188b77293d45e404d1b5a31bbe",
     "sha": "5952eff03"
   },
+  "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_Maguana.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "e9a4afa963cc10decd8d0e09609b8678038606adf99d59f3604c36262467b7b4",
+    "sha": "6e71f9825"
+  },
   "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveB_Bodies.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -12518,6 +12524,18 @@
     "date": "2026-09-19",
     "hash": "29a8dd45580ed3b241063c20abbaa0ba3140007b7e6cfc7ca9d62ecafc7eb55f",
     "sha": "640d910a8"
+  },
+  "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMechanics.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "cdc917314672a1ec0a34d17d2d30d0f410dba581df81cf9ff5f304bcddb1e4a6",
+    "sha": "6e71f9825"
+  },
+  "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_Ultracactus.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ac8e8c564f0df913e1b7170b3e7c062a42c09602db1f76ad2c4fdc9f99417401",
+    "sha": "6e71f9825"
   },
   "src/RimStarWars/SWBestiary/Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml": {
     "cleanCount": 1,
@@ -12615,6 +12633,12 @@
     "hash": "7539e8ea1b7e403d0abe447fe3ef348823f3828d99636cf1b386cfaddf5dff86",
     "sha": "4fde88749"
   },
+  "src/RimStarWars/SWBestiary/Defs/ScrapNest/RSW_ScrapNest.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a5fef5e999b0267f105ff6d5c08aa4b4391a0ed3e89e4b274756106b893ba5d6",
+    "sha": "6e71f9825"
+  },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colo.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -12686,6 +12710,12 @@
     "date": "2026-09-06",
     "hash": "afe7de302d26b46714cfb232db4907884a86483bf0e35faac8447a86f97691ea",
     "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_GreatDevourerEggs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1f88ca2619aab168515ab7400d0c4dd5c37d331c3f957f114ca18864a96eecdb",
+    "sha": "6e71f9825"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_MlieWaveB_Resources.xml": {
     "cleanCount": 1,
@@ -12866,6 +12896,18 @@
     "date": "2026-09-24",
     "hash": "6bd7715d08551cbf0bd452c9ce5ca12ef353328a058cbe7595df0ba7f7b01f20",
     "sha": "77792d0a9"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_GreatDevourer.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "293af2f981919b1fe65bef6be6d808976a94bdfe7b6eafc37b0b7448e9e874ea",
+    "sha": "6e71f9825"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_GreaterKraytDragon.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7fbc4a5c343f2c660783c5244c3832f8b96b36a371f111426aa5bd54c5e8ff15",
+    "sha": "6e71f9825"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Iriaz.xml": {
     "cleanCount": 2,
