@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T00:17:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T00:25:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1955,3 +1955,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. For each of the 98 rows, decide and apply one of two outcomes — this is not a blanket
 prose:    infrastructure/state/items/MLIE_ABSORPTION_BIOME_WIRING_1.md
+
+## SEA_BEASTS_TIER_RULING_1 11 of the 18 sea beasts are invented originals filed as Star Wars IP
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Rename the 11 ThingDefs / PawnKindDefs and their juveniles from RSW to RM, with the C
+prose:    infrastructure/state/items/SEA_BEASTS_TIER_RULING_1.md
