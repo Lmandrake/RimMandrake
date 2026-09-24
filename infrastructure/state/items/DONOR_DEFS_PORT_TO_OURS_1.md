@@ -444,3 +444,198 @@ but out of scope for this read-only census (no XML touched this pass).
   was not attempted).
 - **`VFEI2_BlackSwarmling` mis-tagging** (above) is unfiled.
 
+## census: Star Wars Animal Collection (Mlie) donor — FOUNDRY, 2026-09-24
+
+Read-only research, step 1 of this item's own spec, for the
+`mlie.starwarsanimalcollection` donor specifically — the larger of the two
+big donors and the one the AA_ census above did not cover. Nothing ported,
+renamed, cut or edited; no Cherry Picker, roster or live/deployed file
+touched.
+
+**Coverage: 76 of 76 currently-live donor-referencing biome-roster entries
+(97 defName/biome pairs) — 100%.** Not "160" (this item's own 2026-09-20
+donor table counts entries, i.e. duplicate defName/biome pairs, and that
+snapshot is four days stale — see drift note below); 76 is the number of
+**unique defNames** our rosters actually reference today, which is what a
+porting plan ports once each.
+
+### Method — MEASURED, not scanned
+
+1. **Live roster membership**: fresh `xml.etree.ElementTree` parse of all 27
+   `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_*.xml`, walking each
+   `BiomeDef`'s `<wildAnimals>`/`<wildPlants>`/`<fishTypes>` children and
+   keeping every entry whose `MayRequire="mlie.starwarsanimalcollection"` —
+   same element-keyed method as `facts/biome_rosters.md` and the AA_ census
+   above, re-run fresh. Also grepped every `UtinniPatches/Patches/*.xml` file
+   naming the packageId (`WildAnimals_CrackedLands.xml`,
+   `WildAnimals_Greentide.xml`, `WildAnimals_Pyrelands.xml`,
+   `AnimalBiomeDuplicates_Fix.xml`, `AnoobaDrawSize_Fix.xml`,
+   `RUT_TibannaTap_BeldonWiring.xml`): `WildAnimals_CrackedLands.xml` adds 5
+   live `MayRequire="mlie.starwarsanimalcollection"` rows (Gornt, Eopie,
+   CanCell, Convor, Woolamander) that **exactly duplicate** what
+   `RUT_CrackedLands.xml` already carries directly (same defNames/values) —
+   no new members. The rest only *mention* the packageId in comments/prose,
+   with zero live `MayRequire="mlie.starwarsanimalcollection"` XML elements.
+   **Result: 76 unique defNames, 97 (defName, biome) pairs.**
+   🔑 **Drift confirms the doctrine, doesn't just illustrate it**:
+   `WildAnimals_Greentide.xml`'s own comment block (dated 2026-09-23) still
+   claims `RUT_Greentide` carries `Gizka`/`Convor`/`Nuna`... as donor bare
+   names; live XML shows `Gizka`, `Worrt` and `Nuna` were already repointed
+   to `RSW_Gizka`/`RSW_Worrt`/`RSW_Nuna` on 2026-09-23
+   (`DUPLICATE_CANON_DEFNAME_PAIRS_1`) — the comment is one day stale. The
+   fresh parse is what this table is built from, not any cited count.
+2. **Per-def cost grading**: donor source resolved from the repo's own
+   vendored copy, `vendor/mod_sources/StarWarsAnimalCollection_src/1.6/`
+   (not present as a Steam Workshop folder on this machine — confirmed
+   absent under `/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/`,
+   matching this item's earlier note). packageId confirmed from the
+   vendored `About/About.xml` (`Mlie.StarWarsAnimalCollection`). **The mod
+   ships NO `Assemblies/` or `Source/` folder at all** — confirmed by a
+   filesystem search of the whole vendored tree, not inferred from the
+   About.xml description. Every `Class=`/`compClass`/`workerClass`/
+   `verbClass`/`hediffClass`/`giverClass` attribute or tag across the
+   mod's **entire** `Defs/` tree (not just the races file) was enumerated
+   and checked: all resolve to vanilla RimWorld Core or DLC (Anomaly)
+   classes (`CompProperties_EggLayer`, `_Milkable`, `_Shearable`,
+   `_CanBeDormant`/`_WakeUpDormant`, `_Glower`, `PawnRenderNodeProperties_Parent`/
+   `_Carried`/`_Spastic`/`_BulbfreakTentacle`, `Verb_CastAbility`,
+   `DeathActionWorker_BigExplosion`, `ThoughtWorker_Hediff`,
+   `TileMutatorWorker_WildPlants`, etc.) — with exactly two exceptions, both
+   **`MayRequire`-guarded soft extensions from OTHER mods**
+   (`Mlie.XNDNocturnalAnimals`'s `NocturnalAnimals.ExtendedRaceProperties`
+   and `pathfinding.framework`'s `PathfindingFramework.MovementExtension`),
+   confirmed optional/degrade-to-nothing from the donor's own `<li
+   MayRequire="..." Class="...">` guard syntax. For each of the 76 live
+   defNames: resolved its `ThingDef` (+ `PawnKindDef` for animals, + parent
+   chain for the 8 wild-plant variants, which inherit from a farmed base def
+   in the same file), and separately resolved a `PawnRenderTreeDef` for any
+   def that has one (`Beldon`, `Lylek` — both live in our rosters), walking
+   its render nodes for `Class`/`workerClass` too, same method as the AA_
+   census's render-tree pass.
+
+### Grade key
+
+- **LOW** — straight ThingDef+PawnKindDef(+art) copy-with-rename, comps are
+  vanilla stock or an optional cross-mod extension that degrades to nothing
+  absent its own donor.
+- MEDIUM/HIGH — n/a for this donor; unlike `sarg.alphaanimals` (NO
+  zero-dependency entries, every graded def rides a private assembly or the
+  VEF framework at minimum), Star Wars Animal Collection ships **zero**
+  required C# anywhere in the mod, so there is no mechanism by which a def
+  here could grade above LOW.
+
+### Result: 76 of 76 graded (100%), 76 LOW / 0 MEDIUM / 0 HIGH
+
+12 of the 76 carry an optional soft-dependency class
+(`NocturnalAnimals.ExtendedRaceProperties`: `Anooba`, `Borcatu`, `Shyrack`,
+`Sketto`, `Voorpak`, `Vornskyr`; `PathfindingFramework.MovementExtension`:
+`Dragonsnake`, `Falumpaset`, `Fambaa`, `Igitz`, `Mott`, `Ollopom`,
+`Pikobis`) — still graded LOW because both extensions are `MayRequire`-guarded
+by mods that are not this donor and disappear cleanly if absent; a port just
+carries the same optional `<li MayRequire="...">` block forward unchanged.
+2 entries (`Beldon`, `Lylek`) also carry a `PawnRenderTreeDef`, using only
+vanilla/Anomaly-DLC render node classes (`PawnRenderNodeProperties_Parent`/
+`_Carried`/`_Spastic`/`_BulbfreakTentacle`) — porting them means copying the
+`PawnRenderTreeDef` alongside the ThingDef, not reimplementing anything.
+
+| defName | kind | our biome(s) + commonality | cost grade | notes |
+|---|---|---|---|---|
+| `Anooba` | ThingDef+PawnKindDef | RUT_AridShrubland 0.4; RUT_Miasma 0.3 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |
+| `Bantha` | ThingDef+PawnKindDef | RUT_AridShrubland 0.5; RUT_WeepingStones 0.1 | LOW | stock comps only: CompProperties_Milkable, CompProperties_Shearable |
+| `Beldon` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_Greentide 0.008; RUT_TheForge 0.08 | LOW | stock comps only: CompProperties_EggLayer, CompProperties_Milkable, PawnRenderNodeProperties_BulbfreakTentacle, PawnRenderNodeProperties_Carried, PawnRenderNodeProperties_Parent |
+| `Boma` | ThingDef+PawnKindDef | RUT_WeepingStones 0.15 | LOW | stock comps only: CompProperties_EggLayer |
+| `Borcatu` | ThingDef+PawnKindDef | RUT_Wasteland 0.7 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |
+| `CanCell` | ThingDef+PawnKindDef | RUT_CrackedLands 0.2 | LOW | stock comps only: CompProperties_EggLayer |
+| `Cannok` | ThingDef+PawnKindDef | RUT_AridShrubland 0.16 | LOW | no comps, plain ThingDef |
+| `Clodhopper` | ThingDef+PawnKindDef | RUT_Greentide 0.7 | LOW | stock comps only: CompProperties_EggLayer |
+| `Convor` | ThingDef+PawnKindDef | RUT_AridShrubland 0.08; RUT_CrackedLands 0.2; RUT_FeverWood 0.3; RUT_Greentide 0.3 | LOW | stock comps only: CompProperties_EggLayer |
+| `Corinathoth` | ThingDef+PawnKindDef | RUT_AridShrubland 0.4 | LOW | no comps, plain ThingDef |
+| `Dactillion` | ThingDef+PawnKindDef | RUT_WeepingStones 0.15 | LOW | stock comps only: CompProperties_EggLayer |
+| `Dalgo` | ThingDef+PawnKindDef | RUT_Greentide 0.18 | LOW | no comps, plain ThingDef |
+| `Dewback` | ThingDef+PawnKindDef | RUT_WeepingStones 0.4 | LOW | stock comps only: CompProperties_EggLayer |
+| `Dragonsnake` | ThingDef+PawnKindDef | RUT_Greentide 0.12 | LOW | stock comps + optional MayRequire-guarded ext: PathfindingFramework.MovementExtension |
+| `Eopie` | ThingDef+PawnKindDef | RUT_AridShrubland 0.8; RUT_CrackedLands 0.25; RUT_WeepingStones 0.1 | LOW | stock comps only: CompProperties_Milkable |
+| `Falumpaset` | ThingDef+PawnKindDef | RUT_Greentide 0.3 | LOW | stock comps + optional MayRequire-guarded ext: PathfindingFramework.MovementExtension |
+| `Fambaa` | ThingDef+PawnKindDef | RUT_FeverWood 0.02; RUT_Greentide 0.25 | LOW | stock comps + optional MayRequire-guarded ext: PathfindingFramework.MovementExtension |
+| `Fanback` | ThingDef+PawnKindDef | RUT_WeepingStones 0.5 | LOW | stock comps only: CompProperties_EggLayer |
+| `FeralNerf` | ThingDef+PawnKindDef | RUT_AridShrubland 0.04 | LOW | stock comps only: CompProperties_Milkable, CompProperties_Shearable |
+| `FrilledGorg` | ThingDef+PawnKindDef | RUT_AridShrubland 1.0 | LOW | stock comps only: CompProperties_EggLayer |
+| `Gelagrub` | ThingDef+PawnKindDef | RUT_FeverWood 0.4; RUT_Greentide 0.3 | LOW | stock comps only: CompProperties_EggLayer, CompProperties_Milkable |
+| `Gorg` | ThingDef+PawnKindDef | RUT_AridShrubland 1.0 | LOW | stock comps only: CompProperties_EggLayer |
+| `Gornt` | ThingDef+PawnKindDef | RUT_CrackedLands 0.3 | LOW | no comps, plain ThingDef |
+| `GraniteSlug` | ThingDef+PawnKindDef | RUT_PoisonForest 0.15 | LOW | no comps, plain ThingDef |
+| `Grank` | ThingDef+PawnKindDef | RUT_AridShrubland 0.2; RUT_Miasma 0.3 | LOW | no comps, plain ThingDef |
+| `Hawkbat` | ThingDef+PawnKindDef | RUT_Greentide 0.18 | LOW | stock comps only: CompProperties_EggLayer |
+| `Hssiss` | ThingDef+PawnKindDef | RUT_Greentide 0.18 | LOW | stock comps only: CompProperties_EggLayer |
+| `Igitz` | ThingDef+PawnKindDef | RUT_AridShrubland 0.7 | LOW | stock comps + optional MayRequire-guarded ext: PathfindingFramework.MovementExtension |
+| `Iriaz` | ThingDef+PawnKindDef | RUT_AridShrubland 1.0 | LOW | no comps, plain ThingDef |
+| `Jamel` | ThingDef+PawnKindDef | RUT_WeepingStones 0.1 | LOW | no comps, plain ThingDef |
+| `Kinrath` | ThingDef+PawnKindDef | RUT_Greentide 0.3 | LOW | stock comps only: CompProperties_CanBeDormant, CompProperties_EggLayer, CompProperties_WakeUpDormant |
+| `Klorslug` | ThingDef+PawnKindDef | RUT_Greentide 0.4 | LOW | stock comps only: CompProperties_CanBeDormant, CompProperties_EggLayer, CompProperties_WakeUpDormant |
+| `KowakianMonkeyLizard` | ThingDef+PawnKindDef | RUT_AridShrubland 0.01 | LOW | no comps, plain ThingDef |
+| `Kybuck` | ThingDef+PawnKindDef | RUT_AridShrubland 0.6 | LOW | no comps, plain ThingDef |
+| `LavaFlea` | ThingDef+PawnKindDef | RUT_TheForge 0.25 | LOW | stock comps only: CompProperties_EggLayer, CompProperties_Shearable |
+| `LongtailGorg` | ThingDef+PawnKindDef | RUT_AridShrubland 1.0; RUT_FeverWood 0.3 | LOW | stock comps only: CompProperties_EggLayer |
+| `Lothcat` | ThingDef+PawnKindDef | RUT_AridShrubland 0.8 | LOW | no comps, plain ThingDef |
+| `Lylek` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_Greentide 0.05 | LOW | stock comps only: CompProperties_EggLayer, PawnRenderNodeProperties_Carried, PawnRenderNodeProperties_Parent, PawnRenderNodeProperties_Spastic |
+| `Massiff` | ThingDef+PawnKindDef | RUT_AridShrubland 0.6 | LOW | no comps, plain ThingDef |
+| `Mott` | ThingDef+PawnKindDef | RUT_Greentide 0.4 | LOW | stock comps + optional MayRequire-guarded ext: PathfindingFramework.MovementExtension |
+| `Mudhorn` | ThingDef+PawnKindDef | RUT_AridShrubland 0.8 | LOW | stock comps only: CompProperties_EggLayer, CompProperties_Shearable |
+| `Mynock` | ThingDef+PawnKindDef | RUT_PoisonForest 0.2; RUT_Scarlands 0.5 | LOW | no comps, plain ThingDef |
+| `Neebray` | ThingDef+PawnKindDef | RUT_PoisonForest 0.8 | LOW | no comps, plain ThingDef |
+| `Ollopom` | ThingDef+PawnKindDef | RUT_WeepingStones 1.3 | LOW | stock comps + optional MayRequire-guarded ext: PathfindingFramework.MovementExtension |
+| `PekoPeko` | ThingDef+PawnKindDef | RUT_Greentide 0.2 | LOW | stock comps only: CompProperties_EggLayer |
+| `Pikobis` | ThingDef+PawnKindDef | RUT_AridShrubland 0.1 | LOW | stock comps + optional MayRequire-guarded ext: PathfindingFramework.MovementExtension |
+| `Plant_Bubblespore_Wild` | ThingDef (plant) | RUT_Greentide 0.5 | LOW | no comps, plain ThingDef |
+| `Plant_Chakroot_Wild` | ThingDef (plant) | RUT_FeverWood 0.4; RUT_Greentide 0.5 | LOW | no comps, plain ThingDef |
+| `Plant_FelucianGlowspore_Wild` | ThingDef (plant) | RUT_Greentide 0.6 | LOW | stock comps only: CompProperties_Glower |
+| `Plant_HubbaGourd_Wild` | ThingDef (plant) | RUT_Greentide 0.8 | LOW | no comps, plain ThingDef |
+| `Plant_HydenockTree_Wild` | ThingDef (plant) | RUT_FeverWood 1.5; RUT_Greentide 1.5 | LOW | no comps, plain ThingDef |
+| `Plant_JoganTree_Wild` | ThingDef (plant) | RUT_FeverWood 0.6; RUT_Greentide 1.2 | LOW | no comps, plain ThingDef |
+| `Plant_MujaFruit_Wild` | ThingDef (plant) | RUT_Greentide 1.0 | LOW | no comps, plain ThingDef |
+| `Plant_TookeTrap_Wild` | ThingDef (plant) | RUT_Greentide 0.5 | LOW | no comps, plain ThingDef |
+| `Porg` | ThingDef+PawnKindDef | RUT_AridShrubland 0.04 | LOW | stock comps only: CompProperties_EggLayer |
+| `Pufferpig` | ThingDef+PawnKindDef | RUT_AridShrubland 0.5 | LOW | no comps, plain ThingDef |
+| `Qormot` | ThingDef+PawnKindDef | RUT_AridShrubland 0.2 | LOW | no comps, plain ThingDef |
+| `Ronto` | ThingDef+PawnKindDef | RUT_AridShrubland 0.8 | LOW | no comps, plain ThingDef |
+| `Runyip` | ThingDef+PawnKindDef | RUT_Miasma 0.5 | LOW | no comps, plain ThingDef |
+| `Scurrier` | ThingDef+PawnKindDef | RUT_AridShrubland 0.8 | LOW | no comps, plain ThingDef |
+| `Shiro` | ThingDef+PawnKindDef | RUT_Greentide 0.5; RUT_Miasma 0.4 | LOW | stock comps only: CompProperties_EggLayer |
+| `ShiroTrap` | ThingDef+PawnKindDef | RUT_Greentide 0.5 | LOW | stock comps only: CompProperties_EggLayer |
+| `Shyrack` | ThingDef+PawnKindDef | RUT_Webwork 0.2 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |
+| `Skalder` | ThingDef+PawnKindDef | RUT_AridShrubland 0.08 | LOW | no comps, plain ThingDef |
+| `Sketto` | ThingDef+PawnKindDef | RUT_AridShrubland 0.8 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |
+| `Snoruuk` | ThingDef+PawnKindDef | RUT_TheRot 0.5 | LOW | stock comps only: CompProperties_EggLayer |
+| `Strill` | ThingDef+PawnKindDef | RUT_AridShrubland 0.2 | LOW | no comps, plain ThingDef |
+| `Urusai` | ThingDef+PawnKindDef | RUT_AridShrubland 0.7; RUT_FeverWood 0.5 | LOW | stock comps only: CompProperties_EggLayer |
+| `Voorpak` | ThingDef+PawnKindDef | RUT_AridShrubland 0.02 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |
+| `Vornskyr` | ThingDef+PawnKindDef | RUT_Miasma 0.15 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |
+| `Vulptex` | ThingDef+PawnKindDef | RUT_AridShrubland 0.08 | LOW | no comps, plain ThingDef |
+| `Whisperbird` | ThingDef+PawnKindDef | RUT_AridShrubland 0.15; RUT_FeverWood 0.3; RUT_Greentide 0.7; RUT_Miasma 0.3 | LOW | stock comps only: CompProperties_EggLayer |
+| `Woolamander` | ThingDef+PawnKindDef | RUT_CrackedLands 0.15 | LOW | no comps, plain ThingDef |
+| `Wyyyschokk` | ThingDef+PawnKindDef | RUT_Webwork 0.4 | LOW | stock comps only: CompProperties_CanBeDormant, CompProperties_EggLayer, CompProperties_Shearable, CompProperties_WakeUpDormant |
+| `Yobshrimp` | ThingDef+PawnKindDef | RUT_Miasma 0.8 | LOW | stock comps only: CompProperties_EggLayer |
+| `Zakkeg` | ThingDef+PawnKindDef | RUT_Miasma 0.05 | LOW | no comps, plain ThingDef |
+
+### What's left
+
+- **The census itself is complete** — 76 of 76 live entries graded by real
+  compClass/render-tree inspection of the vendored source, not by name or
+  sampling, and cross-checked against every patch file naming the donor.
+- **Not done here** (out of scope for a read-only cost census): the keep/cut
+  pass (spec step 2 — the section above already surveyed keep/cut ruling
+  state across all donor-touched biomes, including Webwork, which has a
+  dated CUT ruling on 3 of this donor's defNames: `Wyyyschokk`, `Kreetle`,
+  `Shyrack` — `Kreetle` is not live in any roster today per this pass's
+  fresh scan, so it is absent from the table above); art-copy verification
+  (this pass read XML dependency classes only, not whether the donor's
+  AssetBundle-packaged textures — note the mod's own About.xml says it
+  ships via AssetBundles, not loose PNGs, which the porting work itself
+  will need to account for, `loose-png-beats-assetbundle-donor-art`); and
+  the `VFEI2_BlackSwarmling` mis-tagged row from the AA_ census above (still
+  unfiled, not this donor's problem to fix).
+- **Given the uniform LOW grade and zero-C# mod, the ordering table in the
+  "spec steps 1 and 2" section above stands as written** — nothing here
+  changes `mlie.starwarsanimalcollection`'s cost rating, only sharpens it
+  from a 160-catalog/66-sampled estimate to a 76-live/76-graded measurement.
+
