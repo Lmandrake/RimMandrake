@@ -978,3 +978,77 @@ ContactVenom.cs` — re-derive rather than trust this count. `FlowWorks/Source/
 LiquidTypes` (7) is the next-largest cluster after this one closes. The
 284-row re-dirtied backlog and the binary-art-tracking scope question from
 wave 15 are both still untouched.
+
+## Wave 20 — 2026-09-24: `EnvironmentalHazards/Source` never-entered cluster CLOSED
+
+Re-confirmed the final 5 `EnvironmentalHazards/Source` never-entered files
+against `RM_EnvironmentalHazards.csproj`'s `<Compile Include>` list before
+touching anything (all 5 still present, all 5 still DIRTY/never-entered per
+`code_review_status.py check`) — wave 19's list held exactly. Reviewed all 5,
+full-file each: `RM_LivingProduceExtension.cs` (51 lines, ROT_DECAY_HARVEST_1's
+calibrated heat-per-unit DefModExtension), `RUT_IncidentWorker_SporeCloud.cs`
+(27, a one-line mod-option gate on `IncidentWorker_MakeGameCondition`, same
+shape as the already-CLEAN `RUT_IncidentWorker_Breaklight.cs`),
+`RUT_HediffComp_SheenExposure.cs` (50, same gate shape wrapping
+`RM_HediffComp_EnvironmentalExposure`), `ContactVenomImmunity.cs` (34, a
+deliberately-empty marker DefModExtension — confirmed no current consumer in
+the repo, matching its own header's claim that this is expected, not a
+missing wiring step), and `MapComponent_ContactVenom.cs` (369, the map-side
+contact-venom scan/scratch/prune loop — the meaty one). Traced
+`MapComponent_ContactVenom`'s sample/prune cadence in full: `Sample`'s
+per-pawn first-contact-vs-lingering-contact branch, `Prune`'s staleness
+threshold (`now - lastContactTicks[i] > contactIntervals[i]`), the
+save/load row-alignment repair in `ExposeData` (drops any row left
+misaligned by a null Pawn reference rather than trying to repair it), and
+`ApplyLethalityOption`'s clamp-at-0.99x-of-lethalSeverity approach (matches
+`Hediff.Severity`'s own clamp-at-assignment semantics). Cross-checked every
+field/method these 5 files read against its real declaration:
+`RM_EnvironmentalHazardsSettings.sporeCloudEnabled`/`sheenExposureEnabled`/
+`contactVenomEnabled`/`contactVenomLethal`/`contactVenomScratchMultiplier`/
+`hazardDamageMultiplier` (`RM_EnvironmentalHazardsMod.cs`, all real statics,
+Scribed and UI-wired), `RM_HediffComp_EnvironmentalExposure.SeverityChangePerDay`
+(virtual, correctly overridden), and `CompProperties_ContactVenom`'s
+`damageDef`/`damageAmount`/`armorPenetration`/`contactIntervalTicks`/
+`bodyHeight` fields (`CompContactVenom.cs`, already CLEAN since wave 6). No
+bugs found in any of the 5; no fixes needed. All 5 marked CLEAN, commit
+`354f10fbb`, pushed. **This closes the entire `EnvironmentalHazards/Source`
+never-entered cluster (8/8 recorded, matching wave 19's fresh tally).**
+
+Moved to `FlowWorks/Source/LiquidTypes` per this item's own brief. Re-derived
+the file list fresh from `RimMandrake_FlowWorks.csproj`'s `<Compile Include>`
+entries (20 total under `LiquidTypes\`, not a separate `.csproj` — it's a
+subfolder of the main `RimMandrake_FlowWorks.csproj`) and checked all 20
+against `CODE_REVIEW_STATUS.json`: **13 were already CLEAN** (mostly from a
+2026-09-17/18 pass plus `RM_LiquidTankUtility.cs`'s wave-2 bugfix mark),
+leaving exactly **7 never-entered**, matching wave 19's tally for this
+cluster by coincidence — `WorkGiver_EmptyBottleIntoTank.cs`,
+`JobDriver_EmptyBottleIntoTank.cs`, `WorkGiver_FillBottleFromTank.cs`,
+`JobDriver_FillBottleFromTank.cs`, `RM_LiquidBodyDef.cs`,
+`RM_WorldComponent_LiquidTags.cs`, `RM_GenStep_LiquidShores.cs`.
+
+With time remaining, reviewed 3 of the 7, full-file each, one coherent
+cluster (the tank-pour-in half of LIQUID_BOTTLE_LOOP_1, mirroring the
+already-CLEAN terrain-edge `WorkGiver_FillBottle.cs`/`JobDriver_FillBottle.cs`
+pair): `WorkGiver_EmptyBottleIntoTank.cs` (59 lines), `JobDriver_
+EmptyBottleIntoTank.cs` (77), `WorkGiver_FillBottleFromTank.cs` (58).
+Cross-checked every call against its real target: `RM_LiquidTankUtility.
+TryFindTankToFill`/`TryFindTankToDrain` (`RM_LiquidTankUtility.cs`, already
+CLEAN — confirmed the wave-2 closure-variable bugfix noted in that file's own
+comment is still in place, deriving `liquid` from the chosen `tank` after the
+search rather than from the predicate closure), `Building_LiquidTank.
+CanAccept`/`CanProvide`/`TryAddLiquid`/`Empty`/`storedLiquid` (`Building_
+LiquidTank.cs`, already CLEAN), `RM_BottledLiquidExtension.IsEmpty`/`size`/
+`liquid` and `LiquidDef.UnitsFor`/`bottled.FilledDefFor`
+(`RM_BottledLiquidExtension.cs`/`LiquidDef.cs`, already CLEAN),
+`RM_LiquidBottleUtility.EmptyDefFor`, and `RimMandrakeFlowWorks_DefOf.
+RM_EmptyIntoTankJob`/`RM_FillFromTankJob` (both real, declared `JobDef`
+statics). No bugs found in any of the 3; no fixes needed. All 3 marked
+CLEAN, commit pending below, pushed.
+
+Next wave: 4 `FlowWorks/Source/LiquidTypes` never-entered files remain
+(7 minus this wave's 3): `JobDriver_FillBottleFromTank.cs` (natural next
+pick — closes out the tank-loop pair with this wave's 3),
+`RM_LiquidBodyDef.cs`, `RM_WorldComponent_LiquidTags.cs`,
+`RM_GenStep_LiquidShores.cs` — re-derive rather than trust this count. The
+284-row re-dirtied backlog and the binary-art-tracking scope question from
+wave 15 are both still untouched.

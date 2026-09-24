@@ -2585,6 +2585,12 @@
     "hash": "6c0521436d8153b48875a178e28003930f882e44556b5ebc0b7c122fc87ff01c",
     "sha": "d0b0d6b7b"
   },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/JobDriver_EmptyBottleIntoTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "afa06a68a08d8104bee06de091b44243d25fa43290c847c6a74d06bd924ada6e",
+    "sha": "354f10fbb"
+  },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/JobDriver_FillBottle.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -2639,11 +2645,23 @@
     "hash": "8e1e3e80da32d9c0667cc2104732327c0391fee523d6cd1d1144320c2ceaf713",
     "sha": "a7b96f8d7"
   },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/WorkGiver_EmptyBottleIntoTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8c01534c29528996ab42a336a94f11eee291fc20f5caf2cb942b63fef13af77c",
+    "sha": "354f10fbb"
+  },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/WorkGiver_FillBottle.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
     "hash": "4da9ab8bc18c578c3f7a2e60a873006a17cd6152891819b2dc9a7bc5303b5d70",
     "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/WorkGiver_FillBottleFromTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3d472f34be107370e78109edf99d05e61ed5d21c16d278796bdede03dc1d3e79",
+    "sha": "354f10fbb"
   },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/WorkGiver_WashBottle.cs": {
     "cleanCount": 1,
