@@ -1,1 +1,2 @@
 {"seat":"FOUNDRY","event":"file","id":"EVENTS_JSONL_SHARDING_1","title":"Land the per-seat events.jsonl sharding (model.py/cli.py/render.py + readers), currently uncommitted, paused for owner review","kind":"task","target":"v1","needs":"owner","for":"FOUNDRY","ts":"2026-09-24T04:07:08Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-24T05:07:45Z"}
