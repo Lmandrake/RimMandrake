@@ -121,43 +121,75 @@ namespace RimMandrake.Inhabited
             Dialog_DebugOptionListLister.ShowSimpleDebugMenu(manifests, m => m.settlementName ?? m.defName,
                 delegate (SettlementManifestDef manifest)
                 {
-                    WorldObjectDef def = DefDatabase<WorldObjectDef>.GetNamedSilentFail("Inhabited_Settlement");
-                    if (def == null)
-                    {
-                        Log.Error("[RimMandrake.Inhabited] WorldObjectDef Inhabited_Settlement did not load.");
-                        return;
-                    }
                     WorldObject_InhabitedSettlement settlement =
-                        (WorldObject_InhabitedSettlement)WorldObjectMaker.MakeWorldObject(def);
-                    settlement.Tile = tile;
-                    Faction faction = Find.FactionManager.AllFactionsListForReading
-                        .FirstOrDefault(f => f.def.defName == manifest.factionDefName)
-                        ?? Find.FactionManager.RandomNonHostileFaction(allowNonHumanlike: false);
-                    settlement.SetFaction(faction);
-                    settlement.Name = manifest.settlementName;
-                    settlement.manifest = manifest;
-                    Find.WorldObjects.Add(settlement);
-
-                    // No suggestedMapParentDef needed: GetOrGenerateMap finds the
-                    // MapParent we just added via Find.WorldObjects.MapParentAt(tile)
-                    // and reads ITS MapGeneratorDef (Inhabited_SettlementMapGenerator),
-                    // exactly the def-level wiring this item shipped.
-                    if (!TryEnterSettlementMap(settlement, tile, out Map map))
+                        CreateAndEnterSettlement(tile, manifest, out Map map, out string error);
+                    if (settlement == null || map == null)
                     {
+                        Log.Error("[RimMandrake.Inhabited] " + (error ?? "settlement construction failed."));
                         return;
                     }
                     Log.Message("[RimMandrake.Inhabited] " + settlement.LabelCap + " (" + manifest.defName
-                        + ") created at tile " + tile + " for faction " + (faction?.Name ?? "none")
+                        + ") created at tile " + tile + " for faction " + (settlement.Faction?.Name ?? "none")
                         + " and map generated -- visit #" + settlement.casing.visitCount + ".");
                 });
         }
 
         /// <summary>
-        /// The generate/select/jump sequence "Create settlement here" and
-        /// "Re-enter settlement here" both need -- extracted after adversarial
-        /// review, 2026-09-07, flagged the identical block appearing twice.
+        /// Constructs a WorldObject_InhabitedSettlement at <paramref name="tile"/> from
+        /// <paramref name="manifest"/> and generates its map -- the exact compose logic
+        /// "Create settlement here"'s picker delegate used to inline, extracted 2026-09-24
+        /// (SETTLEMENT_VISIT_LOOP_1) so JawaBench.BridgeTools' jawa/inhabited_settlement_create
+        /// -- the non-interactive producer built because the debug action's picker dialog and
+        /// CurrentTile() are both unreachable from the bridge -- reuses this exactly rather
+        /// than reimplementing it.
+        ///
+        /// Caller is responsible for any MapParentAt(tile) refusal check: this method does
+        /// not repeat it, so it can also serve a re-entry path where a MapParent deliberately
+        /// already exists (the bridge tool's idempotent re-call case).
         /// </summary>
-        private static bool TryEnterSettlementMap(WorldObject_InhabitedSettlement settlement, PlanetTile tile, out Map map)
+        public static WorldObject_InhabitedSettlement CreateAndEnterSettlement(
+            PlanetTile tile, SettlementManifestDef manifest, out Map map, out string error)
+        {
+            map = null;
+            error = null;
+            WorldObjectDef def = DefDatabase<WorldObjectDef>.GetNamedSilentFail("Inhabited_Settlement");
+            if (def == null)
+            {
+                error = "WorldObjectDef Inhabited_Settlement did not load.";
+                return null;
+            }
+            WorldObject_InhabitedSettlement settlement =
+                (WorldObject_InhabitedSettlement)WorldObjectMaker.MakeWorldObject(def);
+            settlement.Tile = tile;
+            Faction faction = Find.FactionManager.AllFactionsListForReading
+                .FirstOrDefault(f => f.def.defName == manifest.factionDefName)
+                ?? Find.FactionManager.RandomNonHostileFaction(allowNonHumanlike: false);
+            settlement.SetFaction(faction);
+            settlement.Name = manifest.settlementName;
+            settlement.manifest = manifest;
+            Find.WorldObjects.Add(settlement);
+
+            // No suggestedMapParentDef needed: GetOrGenerateMap finds the
+            // MapParent we just added via Find.WorldObjects.MapParentAt(tile)
+            // and reads ITS MapGeneratorDef (Inhabited_SettlementMapGenerator),
+            // exactly the def-level wiring this item shipped.
+            if (!TryEnterSettlementMap(settlement, tile, out map))
+            {
+                error = "map generation failed for " + settlement.LabelCap;
+            }
+            return settlement;
+        }
+
+        /// <summary>
+        /// The generate/select/jump sequence "Create settlement here", "Re-enter
+        /// settlement here" and the bridge tool's re-entry path all need --
+        /// extracted after adversarial review, 2026-09-07, flagged the identical
+        /// block appearing twice. Public (not internal) since 2026-09-24: the
+        /// bridge tool lives in a different assembly (JawaBench.BridgeTools) and
+        /// calls this directly for its idempotent re-call case rather than
+        /// duplicating it a third time.
+        /// </summary>
+        public static bool TryEnterSettlementMap(WorldObject_InhabitedSettlement settlement, PlanetTile tile, out Map map)
         {
             map = GetOrGenerateMapUtility.GetOrGenerateMap(tile, new IntVec3(100, 1, 100), null);
             if (map == null)

@@ -118,6 +118,15 @@ def build(clean, gm):
     # missing OracleSettings.claudeCliPath). ORACLE_MOD_DIR overrides it.
     if os.environ.get("ORACLE_MOD_DIR"):
         cmd.append("-p:OracleModDir=%s" % os.environ["ORACLE_MOD_DIR"])
+    # Same trap, same fix, for Inhabited (SETTLEMENT_VISIT_LOOP_1): the deployed
+    # Mods\Inhabited\Assemblies\Inhabited.dll lags the repo whenever a companion
+    # tool adds a new call into RimMandrake.Inhabited and the game is up (so the
+    # mod DLL cannot be redeployed this session). INHABITED_MOD_DIR overrides it
+    # to point at the repo's own build output (src/RimMandrake/Inhabited/Assemblies)
+    # instead, which building Inhabited.csproj writes to WITHOUT touching the
+    # live game's Mods folder.
+    if os.environ.get("INHABITED_MOD_DIR"):
+        cmd.append("-p:InhabitedModDir=%s" % os.environ["INHABITED_MOD_DIR"])
     r = sh(cmd, capture_output=True, text=True)
     sys.stdout.write(r.stdout)
     if r.returncode != 0:

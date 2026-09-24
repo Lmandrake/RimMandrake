@@ -111,6 +111,17 @@
          already-correct fix - the same "call straight into the already-loaded mod"
          route JawaBenchOracleTools.cs uses for RimMandrakeOracle.dll above. -->
     <DroidworksModDir Condition="'$(DroidworksModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Droidworks\Assemblies</DroidworksModDir>
+    <!-- mandrake.rm.inhabited (mod folder "Inhabited"), same reasoning as OracleModDir/
+         RimDefDumpModDir/DroidworksModDir: an ordinary RimWorld mod, already loaded by
+         the mod loader well before RimBridgeServer attaches its companions.
+         SETTLEMENT_VISIT_LOOP_1: JawaBenchInhabitedTools.cs calls
+         DebugActions_Inhabited.CreateAndEnterSettlement/TryEnterSettlementMap directly,
+         the exact compose logic "Create settlement here"'s debug-menu picker already
+         calls, reused rather than reimplemented, to give the bridge a non-interactive
+         producer that takes a tile and a SettlementManifestDef defName as plain
+         parameters instead of a CurrentTile()/Dialog_DebugOptionListLister pair neither
+         of which the bridge can drive. -->
+    <InhabitedModDir Condition="'$(InhabitedModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Inhabited\Assemblies</InhabitedModDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -128,6 +139,10 @@
     </Reference>
     <Reference Include="Droidworks">
       <HintPath>$(DroidworksModDir)\Droidworks.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Inhabited">
+      <HintPath>$(InhabitedModDir)\Inhabited.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
@@ -160,6 +175,8 @@
            Text="RimDefDump.dll not found at $(RimDefDumpModDir). Is mandrake.rm.rimdefdump deployed? Pass /p:RimDefDumpModDir=... " />
     <Error Condition="!Exists('$(DroidworksModDir)\Droidworks.dll')"
            Text="Droidworks.dll not found at $(DroidworksModDir). Is mandrake.rsw.droidworks deployed? Pass /p:DroidworksModDir=... " />
+    <Error Condition="!Exists('$(InhabitedModDir)\Inhabited.dll')"
+           Text="Inhabited.dll not found at $(InhabitedModDir). Is mandrake.rm.inhabited deployed? Pass /p:InhabitedModDir=... " />
   </Target>
 
 </Project>
