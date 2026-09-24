@@ -121,12 +121,31 @@ as an anima tree… or alternatively the servants?"* and I built a four-way pick
 adjudicated into a decision that did not need making. ⇒ **When he asks "could we also do X or Y", check
 whether he means "as options" before designing a choice between them.**
 
+## ✅ Desktop answer to spec §10 question 1 — MEASURED from the decompiled engine (RimSage), 2026-09-23
+
+**Q: can a plant's growth rate read adjacent terrain? YES, with a `Plant` subclass — not from XML alone.**
+
+- `Plant.GrowthRate` is **`public virtual float GrowthRate`** (RimWorld/Plant.cs:289-303). Vanilla returns
+  `GrowthRateFactor_Fertility * _Temperature * _Light * _NoxiousHaze * _Drought`, and `GrowthRateFactor_Fertility`
+  reads **only the plant's own cell**: `PlantUtility.GrowthRateFactorFor_Fertility(def, base.Map.fertilityGrid.FertilityAt(base.Position))` (:350).
+- `GrowthPerTick` (:334-347) multiplies by `GrowthRate` — the virtual — so an override is honoured by the growth tick
+  (`growthInt += GrowthPerTick * 2000f`, :822) and by the "time to grow" readout (:421-426).
+- ⇒ A `thingClass` deriving from `Plant` that overrides `GrowthRate` and multiplies in a factor read from
+  `GenAdj.CellsAdjacent8Way(this)` → `Map.terrainGrid.TerrainAt(c)` (or `fertilityGrid.FertilityAt(c)`) expresses §3c's
+  "seed needs water beside it" exactly. Also override `GrowthRateCalcDesc` (virtual, :305) so the inspect string shows the
+  water factor, or the player sees a slow plant with no explanation.
+- Cost: one C# class in the biome mod (Greentide kit assembly), no Harmony. Nothing in the engine forbids it.
+
+`needs` moves from `game-up` to `offline`: this was the one question that could have come back "not expressible", and it
+did not. The remaining 13 engine questions in §10 are the same shape (read the code, not the game) and are Desktop-RimSage
+work, not game-up work.
+
 ## spec
 
 Follow the spec document. Order, because it front-loads what can fail:
 
 1. **Answer the spec's §7 unmeasured questions on the Desktop.** ⛔ Nothing authored first. The largest
-   is whether a plant's growth rate can read adjacent terrain — §3c's whole appeal rests on it.
+   is whether a plant's growth rate can read adjacent terrain — §3c's whole appeal rests on it. ✅ **ANSWERED 2026-09-23: YES, via a `Plant` subclass overriding the virtual `GrowthRate` — see the Desktop answer section.**
 2. **The threshold ladder and the three events**, on the existing footprint/timer data.
 3. **Widen the two generic extensions** (guard-a-thing; breed-while-fed + manhunter-on-famine) in
    `mandrake.rm.creaturebehaviors`. ⛔ Content stays in a content mod — that assembly ships none.
