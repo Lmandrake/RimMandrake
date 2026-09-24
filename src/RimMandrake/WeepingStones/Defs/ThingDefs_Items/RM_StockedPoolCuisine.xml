@@ -8,41 +8,17 @@
   "MealFineBase") for the feast-batch meal, tasteThought overridden per
   child def since it is a plain scalar field.
 
-  🔴 RM_SeepSalt is a STAND-IN: the flora roster names "seep-salt yield" as
-  RM_Steamfrond's own owed harvest product (weeping_stones_flora_roster_
-  2026-09-24.md, "seep-salt yield shape" listed as an open question, NOT yet
-  built anywhere in the repo — grepped clean 2026-09-24). This item is
-  scoped minimally so recipe #2 (murrin-and-seep-salt broth) is buildable
-  without inventing RM_Steamfrond's own harvest mechanism, which belongs to
-  that plant's own build, not this one. Once RM_Steamfrond ships its real
-  seep-salt yield, this def is the one to retarget/retire — noted here so
-  it isn't rediscovered as a surprise duplicate.
+  RM_SeepSalt shipped here in wave 1 as a STAND-IN, explicitly flagged to be
+  retired once RM_Steamfrond shipped its own real seep-salt yield. That
+  landed 2026-09-24 (WEEPING_STONES_DESIGN_SITTING_1's flora cast,
+  `Defs/ThingDefs_Items/RM_WeepingStonesNativeFlora_Items.xml`), which
+  `selftest_no_duplicate_defs.py` caught as a same-name collision (RimWorld
+  keeps only the last-loaded def and drops the other silently) — this file's
+  own stand-in is the one retired per the header note that predicted exactly
+  this: recipe #2 (murrin-and-seep-salt broth, below) still references the
+  defName `RM_SeepSalt` unchanged and now resolves to Steamfrond's real item.
 -->
 <Defs>
-
-  <!-- ══════════════ RM_SeepSalt — stand-in ingredient, see header ══════════════ -->
-  <ThingDef ParentName="ResourceBase">
-    <defName>RM_SeepSalt</defName>
-    <label>seep-salt</label>
-    <description>Fine mineral salt scraped from the crust that forms where a weeping stone's condensate finally dries. Cooks use it sparingly — a pilgrim's broth needs only a pinch to taste of the stones themselves.</description>
-    <thingCategories>
-      <li>Foods</li>
-    </thingCategories>
-    <graphicData>
-      <texPath>Things/Item/Resource/Chemfuel</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(230, 225, 210)</color>
-    </graphicData>
-    <statBases>
-      <MaxHitPoints>50</MaxHitPoints>
-      <MarketValue>1.2</MarketValue>
-      <Mass>0.01</Mass>
-      <Flammability>0</Flammability>
-    </statBases>
-    <stackLimit>150</stackLimit>
-    <resourceReadoutPriority>Middle</resourceReadoutPriority>
-    <tradeability>Sellable</tradeability>
-  </ThingDef>
 
   <!-- ══════════════ §4.2 — murrin-and-seep-salt broth ══════════════ -->
   <ThingDef ParentName="MealCooked">

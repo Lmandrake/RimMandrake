@@ -9,11 +9,14 @@ namespace RimMandrake.WeepingStones
     //
     // MOD_OPTIONS_RETROFIT_1 doctrine (CLAUDE.md "Every mod ships superb Mod
     // Settings"): defaults = shipped behavior, all-off degrades gracefully.
-    // Wave 1 ships bestiary + cuisine data only — the husbandry loop this
-    // toggle is meant to gate (pen zones, PoolStock bookkeeping, ring-read
-    // overlay, handler injuries) has not landed yet, so the shipped default
-    // is OFF: enabling this mod today must change nothing about a running
-    // game. Flip the default to true in the wave that wires the loop in.
+    // Wave 2 (STOCKED_POOL_BUILD_1) lands the pen-zone designator and
+    // RM_MapComponent_PoolStock's per-pool READ bookkeeping — a real, gated
+    // mechanism now, not inert data. Default STAYS OFF this wave anyway: the
+    // STOCK/FEED/HARVEST/CULL/RECAPTURE jobs that actually populate a pen are
+    // still owed, so turning this on today gives a player a zone designator
+    // that tracks a population nothing can yet place there — correct, but not
+    // yet worth surfacing by default. Flip the default to true once the job
+    // set lands and a pen is actually playable end to end.
     // ════════════════════════════════════════════════════════════════════
     public class RM_WeepingStonesSettings : ModSettings
     {
@@ -33,10 +36,11 @@ namespace RimMandrake.WeepingStones
             list.CheckboxLabeled("Stocked pools enabled", ref stockedPoolsEnabled,
                 "Master switch for the Weeping Stones' stocked-pool husbandry kit — the "
               + "nasty, over-active fish and alien-beast catches, pen zones, and the mood "
-              + "economy around eating them. Off by default: this wave ships only the "
-              + "bestiary and cuisine defs, no live husbandry mechanism yet, so this toggle "
-              + "currently gates nothing. Wild fishing (the ruled gentle six) is never "
-              + "affected by this setting.");
+              + "economy around eating them. Gates the pool-pen zone designator and its "
+              + "per-pool bookkeeping. Off by default: the jobs that actually stock, feed "
+              + "and harvest a pen are still owed, so this is a mechanism with no way yet "
+              + "to put anything in it. Wild fishing (the ruled gentle six) and the bestiary/ "
+              + "cuisine content itself are never affected by this setting.");
 
             list.End();
         }
