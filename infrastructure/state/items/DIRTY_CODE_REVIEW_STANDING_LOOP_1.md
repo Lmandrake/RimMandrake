@@ -311,3 +311,63 @@ Next wave: 23 `validation.py` files remain DIRTY (28 minus this wave's 5) —
 re-derive with the same `comm -23` recipe rather than trusting this count,
 since it has drifted by one before. No other named clusters remain
 outstanding from earlier waves.
+
+## Wave 11 — 2026-09-24
+
+Re-derived the DIRTY `validation.py` list per wave 9/10's recipe (fresh `find
+. -name validation.py` sweep, 55 total, minus `code_review_status.py list`'s
+CLEAN rows, 32) — confirmed exactly 23 DIRTY, matching wave 10's count for
+once. Reviewed the 5 smallest, full-file each: `RestrainingBolts/
+validation.py` (175 lines), `PawnFlavor/validation.py` (197), `AshkarrFlora/
+validation.py` (201), `UtinniPatches/validation.py` (208), `JawaVoice/
+validation.py` (221).
+
+**Found and fixed a real, high-confidence bug in `AshkarrFlora/
+validation.py`**: `sweetline_thingdef_readback` called `jawa/get_def` and read
+`row.get("resolved") or row.get("fields")` — neither key exists on that
+tool's actual response (cross-checked against `JawaBenchTerrainTools.cs`'s
+`GetDef`: the real top-level keys are `statBases`/`comps`/`extra`/
+`extraModelled`, and `extra` never carries `plant.*` or `parentName` for a
+ThingDef). `resolved` was therefore always `{}`, so the chain raised
+`ExpectationFailed` on **every** live run regardless of whether the def was
+correct — a guaranteed false failure that had never been caught because this
+suite had apparently never been run against a live bridge since it was
+written. Fixed by splitting into two components against tools that actually
+expose the data: `jawa/get_def`'s own `statBases` dict (already flat,
+purpose-built) for the four `statBases.*` checks, and
+`jawa/get_defs(fields="plant", deep=True)` — named as the documented escape
+hatch in `GetDef`'s own `extraNote` string — for the plant sub-fields.
+Dropped `parentName` from the expectations entirely (it is consumed by the
+XML loader at parse time and is not a field retained on the resolved runtime
+ThingDef — unreadable by any bridge tool, so it was never a checkable claim)
+and downgraded `plant.visualSizeRange` to a presence-only check rather than
+an exact-value one (its `FloatRange` struct's serialized field names were
+never confirmed against a live call, and this repo's own rule is not to
+assert an unmeasured engine-internal shape).
+
+Also corrected the same file's module docstring: it asserted
+`Textures/` does not exist on disk at all for `RUT_SweetlineTree` — true when
+the suite was first written (`f145b6587`, 2026-09-17) but stale since
+`0d9116326` landed 14 accepted PNG variants the very next day (2026-09-18).
+The suite itself was never re-run/re-read after that commit, which is
+directly why it sat DIRTY this whole time. `art_folder_exists_and_has_art`
+now correctly passes and is kept as a standing regression guard.
+
+The other 4 files (`RestrainingBolts`, `PawnFlavor`, `UtinniPatches`,
+`JawaVoice`) were cross-checked line-by-line against their actual C#/bridge-
+tool dependencies (`GoodwillSituationWorker_RestrainingBolts.cs`,
+`RestrainingBoltsMod.cs`, `DefOfs.cs`; `jawa/faction_goodwill_situations`,
+`jawa/list_factions`, `jawa/get_defs`, `jawa/get_def`, `jawa/world_info_get`,
+`jawa/list_things`, `jawa/drain_log`, `jawa/set_pawn_xenotype` in
+`JawaBenchStoryTools.cs`/`JawaBenchTerrainTools.cs`/`JawaBenchWorldTools.cs`)
+and every field name, response shape and quoted XML/Jawaese string checked
+out exactly as each suite's own docstring claimed — including JawaVoice's
+205-count of `PatchOperationConditional` blocks across 11 files (spot-counted
+fresh, matches exactly) and its `StuckIndoors` line (byte-for-byte match
+against the live XML). No bugs found in those 4. All 5 marked CLEAN, commits
+`8257db565` (the AshkarrFlora fix) and `030894504` (the mark-clean batch),
+pushed.
+
+Next wave: 18 `validation.py` files remain DIRTY (23 minus this wave's 5) —
+re-derive with the same recipe rather than trusting this count. No other
+named clusters remain outstanding from earlier waves.
