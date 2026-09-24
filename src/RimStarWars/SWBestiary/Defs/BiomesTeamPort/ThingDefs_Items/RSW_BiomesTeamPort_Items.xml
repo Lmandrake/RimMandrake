@@ -1810,7 +1810,7 @@ copied verbatim from the donor mods' own Textures trees.
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Stoneback</hatcherPawn>
+        <hatcherPawn>RSW_Bokka</hatcherPawn>
       </li>
     </comps>
   </ThingDef>

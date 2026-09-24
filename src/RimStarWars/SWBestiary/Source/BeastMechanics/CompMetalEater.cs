@@ -9,7 +9,7 @@ namespace RimMandrake.StarWars.SWBestiary
     // Owner, 2026-09-20: "Rebuild in our c#."
     //
     // DESERT_FAMILY_PORT_EXECUTION_1 ported Alpha Animals' AA_Terramorph to
-    // RSW_Ferroclaw and dropped its VEF.AnimalBehaviours.CompProperties_EatWeirdFood,
+    // RSW_Khorrak and dropped its VEF.AnimalBehaviours.CompProperties_EatWeirdFood,
     // which WAS the creature (it eats iron, nothing else). This is that
     // mechanic rebuilt from the donor's own source, MEASURED at
     // vendor/mod_sources/VanillaExpandedFramework-main/Source/VEF/AnimalBehaviours/

@@ -10,8 +10,8 @@ namespace RimMandrake.StarWars.SWBestiary
     // Owner, 2026-09-20: "Rebuild in our c#."
     //
     // DESERT_FAMILY_PORT_EXECUTION_1 dropped
-    // VEF.AnimalBehaviours.CompProperties_InitialAbility from RSW_Voltmaw
-    // (Alpha Animals' AA_TetraSlug) and RSW_Cindermite (VFE Insectoids 2's
+    // VEF.AnimalBehaviours.CompProperties_InitialAbility from RSW_Vozzik
+    // (Alpha Animals' AA_TetraSlug) and RSW_Zhakka (VFE Insectoids 2's
     // VFEI2_Fuelmite). That comp is the ONLY reason those two creatures had a
     // ranged attack at all: everything else about the ability is a vanilla
     // AbilityDef. MEASURED from

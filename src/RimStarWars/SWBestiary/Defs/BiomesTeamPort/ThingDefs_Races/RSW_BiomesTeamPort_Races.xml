@@ -7746,7 +7746,7 @@ copied verbatim from the donor mods' own Textures trees.
     </lifeStages>
   </PawnKindDef>
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RSW_Stoneback</defName>
+    <defName>RSW_Bokka</defName>
     <label>bokka</label>
     <description>These large reptile-like animals normally feed on the likes of cacti. If angered, however, their durable hide makes them quite difficult to kill.\n\nTheir longer back legs and strange appearance lends credence to the belief that they were engineered to live in arid environments. Why they live underground, however, is uncertain.</description>
     <statBases>
@@ -7852,9 +7852,9 @@ copied verbatim from the donor mods' own Textures trees.
     </tradeTags>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RSW_Stoneback</defName>
+    <defName>RSW_Bokka</defName>
     <label>bokka</label>
-    <race>RSW_Stoneback</race>
+    <race>RSW_Bokka</race>
     <combatPower>40</combatPower>
     <ecoSystemWeight>0.30</ecoSystemWeight>
     <lifeStages>
