@@ -1973,6 +1973,12 @@
     "hash": "0eb5130cb31b840947ad8db7579425f3c81c83d0905a4dbcdc87e1128b6de3b1",
     "sha": "0e38767e7"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_GlasswalkSlip.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "09d75ea9e0a4580d3df3c2c009620dc85a9af0dd96e34d84bf1fdb0150407ee9",
+    "sha": "fd960504b"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_GradientAxis.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -2050,6 +2056,18 @@
     "date": "2026-09-13",
     "hash": "cf1bd00cb056c9867a19c0202eb3f28ae5c8965e4d895801c8fec14805190a08",
     "sha": "f4d5c1714"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_RecipeDef_HediffByproduct.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9555a08a15d044301c8ad72442308beb8712801ad914574772659f1b60bb372d",
+    "sha": "fd960504b"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_Recipe_RemoveHediffWithByproduct.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a1f28924500e491028b3130317bd9045885b2157449d44d427e7eed9833355e0",
+    "sha": "fd960504b"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_RootCausewayBiomeExtension.cs": {
     "cleanCount": 3,
