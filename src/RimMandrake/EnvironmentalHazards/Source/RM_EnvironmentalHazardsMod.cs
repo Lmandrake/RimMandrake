@@ -248,6 +248,18 @@ namespace RimMandrake.EnvironmentalHazards
     //  43. glasswalkSlipChancePerSweep — the SAME mechanism's chance dial,
     //      rolled once per eligible pawn every 60-tick sweep. At 0, behaves
     //      identically to the toggle above being off.
+    //  44. tarCoatingEnabled — RM_Comp_TarCoatingSource (SUMP_TAR_NASTINESS_1
+    //      §1). Off: a Thing built to splash a tar filth coating around
+    //      itself (belch events, a surfacing beast) stops splashing; tar
+    //      already tracked onto the ground by ordinary foot traffic
+    //      (SUMP_WALKWAYS_1's own generatedFilth wiring) is a separate
+    //      vanilla mechanism and keeps working either way.
+    //  45. tarredHediffEnabled — RM_MapComponent_CarriedFilthHediffLink /
+    //      RM_HediffComp_CarriedFilthExposure (SUMP_TAR_NASTINESS_1 §2).
+    //      Off: nobody newly carrying tar filth is given the tarred hediff,
+    //      and a carrier already afflicted stops accruing OR healing
+    //      severity — frozen exactly where it is, not cleared, until this
+    //      is back on.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -295,6 +307,8 @@ namespace RimMandrake.EnvironmentalHazards
         public static float bodySizeBarrierThreadCostMultiplier = 1f;
         public static bool glasswalkSlipEnabled = true;
         public static float glasswalkSlipChancePerSweep = 0.02f;
+        public static bool tarCoatingEnabled = true;
+        public static bool tarredHediffEnabled = true;
 
         public override void ExposeData()
         {
@@ -343,19 +357,21 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref bodySizeBarrierThreadCostMultiplier, "bodySizeBarrierThreadCostMultiplier", 1f);
             Scribe_Values.Look(ref glasswalkSlipEnabled, "glasswalkSlipEnabled", true);
             Scribe_Values.Look(ref glasswalkSlipChancePerSweep, "glasswalkSlipChancePerSweep", 0.02f);
+            Scribe_Values.Look(ref tarCoatingEnabled, "tarCoatingEnabled", true);
+            Scribe_Values.Look(ref tarredHediffEnabled, "tarredHediffEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
 
         public void DoWindowContents(Rect inRect)
         {
-            // 36 checkboxes (most with a two-line tooltip) plus six labeled
+            // 38 checkboxes (most with a two-line tooltip) plus six labeled
             // sliders — this is a FIXED view height, so content taller than it
             // is clipped rather than scrolled to. Same pattern as
             // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
             // the same edit as whoever adds the next toggle, or their block is
             // invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3980f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4150f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -480,6 +496,14 @@ namespace RimMandrake.EnvironmentalHazards
                 "A floor built slick (the Sump's glasswalk) stops rarely staggering a pawn who is "
               + "hurrying or hauling across it. No damage either way — the floor's own permanent "
               + "speed cap is untouched by this toggle.");
+            list.CheckboxLabeled("Tar-coating sources", ref tarCoatingEnabled,
+                "A Thing built to splash a tar filth coating around itself (a belch event, a "
+              + "surfacing beast) stops splashing. Tar tracked onto the ground by ordinary foot "
+              + "traffic is a separate mechanism and keeps working either way.");
+            list.CheckboxLabeled("Tarred-pawn hediff", ref tarredHediffEnabled,
+                "Nobody newly tracking tar is given the tarred hediff, and a carrier already "
+              + "afflicted stops accruing or healing severity — frozen exactly where it is until "
+              + "this is back on.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");

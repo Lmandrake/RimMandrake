@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_TarredSurgery_RecipeUsers.xml     SUMP_TAR_NASTINESS_1
+
+  Attaches RUT_ScrubTarred to every race that can be operated on at all.
+  Identical shape and reasoning to src/RimStarWars/BrainWorms/Patches/
+  BrainWormSurgery_RecipeUsers.xml (read in full before writing this):
+  vanilla attaches surgeries like ExciseCarcinoma through each race
+  ThingDef's own <recipes> list, not through RecipeDef.recipeUsers, so
+  "already lists ExciseCarcinoma" is the reliable marker for "this is a
+  body a surgeon works on." Patches run against the raw XML before def
+  inheritance resolves, so matching the two defs that DECLARE that list —
+  Human (Races_Humanlike.xml) and the abstract AnimalThingBase
+  (Races_Animal_Base.xml) — reaches every vanilla race through inheritance,
+  and reaches any alien race in the load order that copied the vanilla list
+  rather than inheriting it.
+
+  Animals match too. Harmless: an animal never carries RUT_Tarred without
+  first carrying RM_Filth_Tar (RM_MapComponent_CarriedFilthHediffLink reads
+  Pawn_FilthTracker the same way for every pawn on the map, humanlike or
+  not), and Recipe_RemoveHediff.AvailableOnNow returns false whenever the
+  hediff is absent — the bill simply never appears on a clean animal's
+  operations tab.
+
+  ⚠️ A patch that matches nothing logs nothing. If "scrub off tar" is
+  missing from a race's operations tab, this xpath found no <recipes> on
+  it; add that race explicitly rather than assuming the patch ran.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[recipes/li="ExciseCarcinoma"]/recipes</xpath>
+    <value>
+      <li>RUT_ScrubTarred</li>
+    </value>
+  </Operation>
+
+</Patch>

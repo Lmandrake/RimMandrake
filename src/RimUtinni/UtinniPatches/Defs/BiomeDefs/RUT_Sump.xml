@@ -134,6 +134,18 @@
         <glowMultiplier>0.55</glowMultiplier>
         <suppressSunlightStatAffecter>true</suppressSunlightStatAffecter>
       </li>
+      <!-- SUMP_TAR_NASTINESS_1 (2026-09-24, item spec §2): the giver half of
+           the tarred-pawn mechanic. RM_MapComponent_CarriedFilthHediffLink
+           reads this off map.Biome every scan; presence is the opt-in, same
+           idiom BiomeGlowMultiplierExtension above already uses. MayRequire
+           on the <li> itself, not the whole BiomeDef, for the same reason
+           that entry's own header already documents — this def must always
+           load regardless of whether mandrake.rm.environmentalhazards is
+           active. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CarriedFilthHediffExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <filthDef>RM_Filth_Tar</filthDef>
+        <hediffDef>RUT_Tarred</hediffDef>
+      </li>
     </modExtensions>
   </BiomeDef>
 

@@ -79,11 +79,13 @@
   to glass") and RUT_TarSpent's own already-shipped "burnt tar is spent"
   precedent; since it is never flammable no burnedDef is required.
 
-  costList: Chemfuel, 6/cell — PLACEHOLDER, same posture and same stand-in
-  RUT_TarMoat.xml's own header already used for "barreled tar" (checked
-  again this pass: still does not exist). ⚠️ OWED: re-point at the real
-  bitumen/dig-barrel chain (korveth nodules, dig barrels — item spec §3)
-  once the items pass ships it.
+  costList: RUT_Bitumen, 6/cell — REPOINTED, SUMP_TAR_NASTINESS_1
+  (2026-09-24): was Chemfuel/6 as a PLACEHOLDER pending a real bitumen def;
+  RUT_Bitumen.xml (this same pass) ships that def, so the placeholder is
+  retired here in the same commit that created its replacement. ⚠️ Still
+  OWED: RUT_Bitumen itself has no harvest source yet (the korveth plant and
+  the dig-barrel economy are both separately unbuilt) — the cost is real,
+  the supply chain feeding it is not.
 
   Texture reuses RM_TarDeep's own texturePath (WaterDeepRamp) — same
   "poured/cooled tar IS the same substance" reasoning RUT_TarMoat.xml
@@ -161,7 +163,7 @@
       <li>RM_SlipperyWalkway</li>
     </tags>
     <costList>
-      <Chemfuel>6</Chemfuel>
+      <RUT_Bitumen>6</RUT_Bitumen>
     </costList>
     <statBases>
       <WorkToBuild>240</WorkToBuild>

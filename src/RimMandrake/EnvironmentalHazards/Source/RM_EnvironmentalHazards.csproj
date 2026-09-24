@@ -171,6 +171,11 @@
     <Compile Include="RM_CompBodySizeBarrier.cs" />
     <Compile Include="RM_MapComponent_BodySizeBarrier.cs" />
     <Compile Include="RM_BodySizeBarrierPatches.cs" />
+    <Compile Include="RM_TarCoatingUtility.cs" />
+    <Compile Include="RM_Comp_TarCoatingSource.cs" />
+    <Compile Include="RM_HediffComp_CarriedFilthExposure.cs" />
+    <Compile Include="RM_CarriedFilthHediffExtension.cs" />
+    <Compile Include="RM_MapComponent_CarriedFilthHediffLink.cs" />
   </ItemGroup>
 
   <ItemGroup>
