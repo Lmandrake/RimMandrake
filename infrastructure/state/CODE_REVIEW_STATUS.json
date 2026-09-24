@@ -4343,6 +4343,54 @@
     "hash": "6b4d3bcf44e84c6543f04955d2f4cc6b8c7d75173f2f40b04f185f7280c46b02",
     "sha": "d28bf3edf"
   },
+  "src/RimMandrake/OasisMaker/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "858c0dfe949bd0b7ff1074aef66a6b32289f534cfbb6ee35fd8afb9aea9ba831",
+    "sha": "bcf0eea3c"
+  },
+  "src/RimMandrake/OasisMaker/Defs/ThingDefs_Buildings/RM_OasisMaker.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "90f73a8a968457e98db0ae96b1f06d70a217d3d76398a0e81e1c7a543126d2ab",
+    "sha": "bcf0eea3c"
+  },
+  "src/RimMandrake/OasisMaker/Languages/English/Keyed/RM_OasisMakerKeyed.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0d960abb0d48277db96764ed9963e7e76248fbabe460fdf503207278b2c39c89",
+    "sha": "bcf0eea3c"
+  },
+  "src/RimMandrake/OasisMaker/Source/RM_CompOasisMaker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fd559aea33b04af6a81548610dbbbbd545fa4df954ca5245f533b41e91522385",
+    "sha": "bcf0eea3c"
+  },
+  "src/RimMandrake/OasisMaker/Source/RM_OasisMakerSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fcd28e558213cf7f1495bb23b9ef1419a108eb8e98be3c76cb785a54f6d64afb",
+    "sha": "bcf0eea3c"
+  },
+  "src/RimMandrake/OasisMaker/Source/RM_OasisPlacementScorer.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f9abd518c4c4a45a3ae9da8ec6ae6f753c7e510658d013594d683d372ad97163",
+    "sha": "bcf0eea3c"
+  },
+  "src/RimMandrake/OasisMaker/Source/RM_OasisPoolIntegration.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1bb12657795e4ab16152a8cebe625d3280041aa45b5be15ed480334b066c0002",
+    "sha": "bcf0eea3c"
+  },
+  "src/RimMandrake/OasisMaker/Source/RM_PlaceWorker_OasisMaker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9f1595632502aa4f55296ee23cc6af1e193259ad32019f4b80c7d699bc099106",
+    "sha": "bcf0eea3c"
+  },
   "src/RimMandrake/Oracle/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
