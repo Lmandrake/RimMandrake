@@ -285,30 +285,26 @@ problem.
 | **`SHOKKWEAVE_SOLE_SOURCE_1`** (ready/needs game-up) | Its mod (`mandrake.rut.shokkweaveeconomy`) is §1c's proposed home, so the build lands beside its patches — and its trader-strip proof run gains a sibling assertion: with the campaign layer up, exactly ONE trader kind stocks eggs |
 | **`WEBWORK_EGG_BLACKMARKET_1`** (BENCH, proposed — this item) | This document is its design deliverable. On acceptance it owes a **build successor** (FOUNDRY): the TraderKindDef + stock/buy generators + tradeability patch, the quest family defs, and the one small C# assembly (2b plant-watcher, §3 hatch part). Quest defs go through `skills/rimworld-quests/scripts/validate_quest.py` before any load |
 
-## §5 Needs owner ruling
+## §5 The seven rulings of 2026-09-24 (data)
 
-Seven calls, each one card. Everything else in this document is proposed detail under §6 ruling 5
-and needs no card unless he objects on read.
+All seven ruled by the owner, 2026-09-24, as **decisions taken by question card** (clicked
+options — ⛔ none is owner-verbatim). This design is ACCEPTED; the build successor is
+`WEBWORK_EGG_BLACKMARKET_BUILD_1`.
 
-1. **Fronting.** The black market is mechanically a **Hutt Cartel** channel (Blackstar cannot
-   trade or ask — `permanentEnemy true` stands by R12); Blackstar appears in quest fiction only.
-   Confirm, or name a different front?
-2. **Hatch mechanism.** PROPOSED: the egg item never hatches anywhere; quests stage the hatch as
-   an event (§3 option B). The alternative (a campaign `CompHatcher`/variant egg) reopens the
-   farm-a-spider back door and splits the egg into two items. Accept B?
-3. **What hatches.** PROPOSED: the one `RM_Ollathrix` kind spawned at a **juvenile life-stage
-   age** — dangerous to a sleeper, beatable by the armed, so the assassination can fail honestly.
-   Alternative: spawn it mature (near-certain kill, no whiff). ⛔ Either way no new PawnKindDef
-   (§0 ruling 2). Juvenile or mature?
-4. **Wildsteam reaction.** Do the Wildsteam react to black-market egg *sales* (goodwill hit when
-   you sell to the Cartel)? Default if unruled: no — vanilla has no trade surveillance and the
-   sale is private. React, or blind?
-5. **Tradeability patch.** The campaign patches the egg's `tradeability` → `All` so the one
-   black-market kind can stock it (Sellable items are un-stockable by any trader — MEASURED,
-   trader strip). Leak-checked at build against every live TraderKindDef. Accept the mechanism?
-6. **Total deniability.** An undiscovered egg assassination costs **zero** goodwill with the
-   target's faction — deniability is the path's entire value; only your own ideoligion ever
-   knows. Confirm zero, or should rumours leak a small hit?
-7. **No free planting.** Bought eggs cannot be planted as weapons outside quests (a consequence
-   of mechanism B — there is no hatch to trigger). Confirm intended, or file the
-   colony-weapon version as future work with mechanism A's costs?
+1. **Fronting: the Hutt Cartel.** The black market is mechanically a Cartel channel (Blackstar
+   cannot trade or ask — `permanentEnemy true` stands by R12); Blackstar appears in quest
+   fiction only.
+2. **Hatch mechanism: staged quest event (§3 option B).** The egg item never hatches anywhere;
+   the quest spawns the spider. No `CompHatcher`, no second egg def.
+3. **What hatches: JUVENILE.** The one `RM_Ollathrix` kind at a juvenile life-stage age —
+   dangerous to a sleeper, beatable by the armed, so the assassination can fail honestly.
+   ⛔ No new PawnKindDef (§0 ruling 2).
+4. **Wildsteam are BLIND to black-market sales.** No trade surveillance; the sale is private.
+   They only react to eggs they see (the bounty route).
+5. **Tradeability patch ACCEPTED.** The campaign patches the egg's `tradeability` → `All` so the
+   one black-market kind can stock it, leak-checked at build against every live TraderKindDef.
+6. **Total deniability CONFIRMED.** An undiscovered egg assassination costs zero goodwill with
+   the target's faction; only your own ideoligion ever knows.
+7. **Quest-only planting stands for THIS design, and the free-form colony-weapon version is
+   FILED as future work** — `WEBWORK_EGG_WEAPON_VERSION_1`, which must carry mechanism A's costs
+   (a campaign hatcher-variant egg) and re-answer the farm-ban question before it builds.
