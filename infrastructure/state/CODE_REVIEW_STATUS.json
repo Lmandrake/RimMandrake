@@ -12424,10 +12424,10 @@
     "sha": "9c1bce648"
   },
   "src/RimStarWars/SWBestiary/About/About.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-19",
-    "hash": "24079516d512a54fbec5c85d7503ee1cb08312d4e20b40b22c6498bda94b068f",
-    "sha": "fad263d00"
+    "cleanCount": 5,
+    "date": "2026-09-24",
+    "hash": "e9b05f9d0777e5e7cf3160f9385e2ff346d58b52489ad14477e6faaff7dca164",
+    "sha": "5952eff03"
   },
   "src/RimStarWars/SWBestiary/Defs/AbilityDefs/RSW_MlieWaveB_Abilities.xml": {
     "cleanCount": 1,
@@ -12460,16 +12460,16 @@
     "sha": "fad263d00"
   },
   "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Items/RSW_BiomesTeamPort_Items.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "dd06f075193247bb2f486c3ee959f0da40f2fac41676a3cd0ceaf1e60e1e4faf",
-    "sha": "2f8d4a99a"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "78190aa633aa1ab456885fee496a4a9d0bedd860a89206015adbd117c31c2853",
+    "sha": "5952eff03"
   },
   "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-20",
-    "hash": "fb7f13df13df339b8331717ed054c88a89b73ee30e8576170ac2318bbac647b9",
-    "sha": "14aaf1757"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "4f6ec5d9ad0c0f1aff4853f0ab36f110006ecd188b77293d45e404d1b5a31bbe",
+    "sha": "5952eff03"
   },
   "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveB_Bodies.xml": {
     "cleanCount": 1,
@@ -12634,10 +12634,10 @@
     "sha": "2f8d4a99a"
   },
   "src/RimStarWars/SWBestiary/Defs/ShipVermin/ThingDefs_Races/RSW_Mynock.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "a87933d3f47abd3d83b95a77318d480e93b991008d07b2768279d369c5c2ff8b",
-    "sha": "2f8d4a99a"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "ba037b25aed8cf9110dc748d334da395d9230dbadc2ef9b4ef20c427a09df476",
+    "sha": "5952eff03"
   },
   "src/RimStarWars/SWBestiary/Defs/SoundDefs/SoundDefs_SWBestiary.xml": {
     "cleanCount": 1,
@@ -13498,10 +13498,10 @@
     "sha": "51867f432"
   },
   "src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "bbfcf5b7d15f43687a47ab259ef966ee540c481e204634abec8e4ecde6b209ef",
-    "sha": "7e8587cea"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "0c461a573e863500d0adf1f6f1fcf1a246ff413ca432cd6cf4b2fc0be94b8626",
+    "sha": "5952eff03"
   },
   "src/RimStarWars/StarWarsRaces/Defs/HeadTypeDefs/SW_HeadTypes.xml": {
     "cleanCount": 3,
@@ -13522,10 +13522,10 @@
     "sha": "e69e40f3"
   },
   "src/RimStarWars/StarWarsRaces/Defs/PawnKindDefs/RimMandrakePawnKinds.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "190eefb4732886a2f99f80616225d4a02c62029ff3f2037b39a1cad976f8d262",
-    "sha": "7e8587cea"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "3fbe980ba5e238cbc30ba933354e3a8c2d6a2f037aed57a76db760428bfb2557",
+    "sha": "5952eff03"
   },
   "src/RimStarWars/StarWarsRaces/Defs/PawnKindDefs/SW_RescuedKinds.xml": {
     "cleanCount": 1,
@@ -13546,10 +13546,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "de031ec179ea336482e8e046a57e2b2612d9014c2dae9021ba54a4f4b030d3c5",
-    "sha": "7e8587cea"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "9ba226936900e5c77fedb13021f3fc50107bd9847d102c32de5945b7cceede06",
+    "sha": "5952eff03"
   },
   "src/RimStarWars/StarWarsRaces/LICENSE": {
     "cleanCount": 1,
