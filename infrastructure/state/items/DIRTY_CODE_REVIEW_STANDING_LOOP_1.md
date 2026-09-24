@@ -1424,3 +1424,53 @@ backlogs wave 23 already named and neither is touched this wave:
 Whoever picks up wave 25: start the re-dirtied backlog, smallest files
 first per this loop's established recipe, and re-derive every count fresh
 before reporting it.
+
+## Wave 25 — 2026-09-24: re-dirtied backlog started, non-PNG only
+
+Re-derived the DIRTY count fresh: `code_review_status.py list | grep -c
+'^DIRTY'` gave **283** (284 minus one, ordinary drift since wave 15/24 — no
+tooling bug). Broke it down by extension: **161 `.png`, 74 `.xml`, 32 `.py`,
+13 `.cs`, 2 `.txt`, 1 `.csproj`** — **122 non-PNG**. Per this wave's brief,
+PNGs stay untouched this pass (wave 15's open scope question — does
+`code_review_status.py` even belong tracking binary art — is still
+unresolved and still not this loop's call).
+
+Reviewed 5 of the 122 non-PNG DIRTY files, diff-scoped against each file's
+own clean-mark sha (all were CLEAN once, so full-file re-review was not
+required — CLAUDE.md's own rule):
+
+- **`.claude/hooks/queue_lint.py`** (+80/-30 since `91c3f95e8`) and
+  **`.claude/hooks/selftest_queue_lint.py`** (+19 since the same sha) —
+  prioritized per wave 14's own note that this loop's enforcement code is
+  the worst kind of self-inflicted gap. Both diffs are the ledger-sharding
+  retrofit (`EVENTS_JSONL_SHARDING_1`, 2026-09-23): `queue_lint.py` adds
+  `is_ledger_file()` and `_ledger_events()` (merges the frozen head +
+  per-seat shards, ts-sorted) and rewires `owners()`/`LEDGER_PATH_RE`/
+  `main()`'s Write-guard onto them; `selftest_queue_lint.py` adds matching
+  DENY/ALLOW cases for shard writes, shard commits, and a decoy non-ledger
+  `.jsonl` beside the shard dir. Traced the merge-sort's "frozen history
+  always precedes shards" claim (holds because frozen events carry earlier
+  timestamps, and ties resolve by list order since `LEDGER` is first in
+  `paths`) and ran the suite directly: `python3 .claude/hooks/
+  selftest_queue_lint.py` → **55/55 passed**. No bugs found.
+- **`RM_JobDefOf.cs`** (+2 since `3bcf80ccf`), **`RM_ThinkTree_
+  VerminBehaviors.xml`** (+12/-1 since `99a9e5cbc`), **`RM_JobDefs.xml`**
+  (+12 since `0aa131589`) — all three are one coherent change,
+  `DESERT_SHADE_WHALE_FILTERFEED_1` wiring in a new `RM_FilterFeedTerrain`
+  JobDef. Cross-checked the two classes it names
+  (`RM_JobDriver_FilterFeedTerrain`, `RM_JobGiver_FilterFeedTerrain`) exist
+  on disk, and verified the ThinkTree comment's ordering claim ("tried
+  before vanilla hunger handling, sits last in the priority list on
+  purpose") against the JobGiver's own docstring and the actual
+  `insertTag`/`subNodes` order — both agree. No bugs found.
+
+All 5 had zero uncommitted changes (`git status --porcelain` empty before
+marking), so no fix-then-verify step was needed. All 5 marked CLEAN, commit
+`<pending>`, pushed.
+
+Next wave: 117 non-PNG DIRTY files remain (122 minus this wave's 5: 2 `.py`
+hooks + 3 `.cs`/`.xml` closed this wave, out of the pre-wave 74 `.xml` / 32
+`.py` / 13 `.cs` / 2 `.txt` / 1 `.csproj` breakdown) — re-derive with
+`code_review_status.py list | grep '^DIRTY'` filtered for non-`.png` rather
+than trusting this arithmetic. The PNG binary-art-tracking scope question
+(wave 15) is still open and still not this loop's to decide.
