@@ -141,3 +141,33 @@ note), `doctor.py` (500 lines, never-entered) and `cli.py` (323 lines,
 re-dirtied since its 2026-09-20 clean mark — needs a fresh full-file pass,
 not diff-scoped) in `modcheck/`, and the `validation.py` sampling pass — all
 still untouched.
+
+## Wave 7 — 2026-09-24
+
+Reviewed 4 files, full-file: `cli.py` (323 lines, the modcheck CLI entry
+point — re-dirtied since its 2026-09-20 clean mark at `9ff1457ee`, so this
+was a fresh full-file pass, not diff-scoped; confirmed the previously-fixed
+"stored field" bug (wave notes / CLAUDE.md) is still fixed — `status` prints
+re-derive each row via `northstar.find_walk`/`status.check_or_orphaned`
+rather than trusting `entry["status"]`), `doctor.py` (500 lines, never
+entered — the five-registry cross-check tool; traced `check_walks`'s
+subject-collision logic against `_duplicate_features`/`_is_real_collision`
+and confirmed the FAIL/WARN split and the "raise loudly on empty read" guard
+in `run()` match CLAUDE.md's own traps this module documents itself as built
+against), and two of the `GizkaStowaway/Source/` cluster —
+`RSW_GizkaPopulation.cs` (the stowaway-lineage lookup/spawn helper — donor
+defName fallback via `GetNamedSilentFail`, `CountOnMap`/`ListOnMap` counting
+lineage via the fecundity hediff rather than species) and `RSW_GizkaSettings.cs`
+(Mod Settings + `RSW_GizkaDonorTuning`, which captures the post-patch donor
+baseline once and always rescales from that capture so repeated `Apply()`
+calls don't compound). Confirmed reachable: `cli.py` is the modcheck CLI
+entry point itself (`if __name__ == "__main__"`); `doctor.py` imported by
+`cli.py`'s `doctor` subcommand and by `selftest_doctor.py`; both `.cs` files
+listed in `RimMandrakeGizkaStowaway.csproj`'s `<Compile Include>`. No bugs
+found in any of the 4; no fixes needed this wave. All 4 marked CLEAN, commit
+pending below, pushed.
+
+Next wave: `GizkaStowaway/Source/` cluster has 3 files left
+(`MapComponent_GizkaInfestation.cs`, `RSW_GizkaHarmonyPatches.cs`,
+`RSW_GizkaStowawayManager.cs`), and the `validation.py` sampling pass across
+mod folders is still untouched.

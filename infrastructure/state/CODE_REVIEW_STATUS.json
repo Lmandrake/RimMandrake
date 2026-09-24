@@ -6125,10 +6125,16 @@
     "sha": "d1c393c02"
   },
   "src/RimMandrake/Utils/modcheck/cli.py": {
-    "cleanCount": 3,
-    "date": "2026-09-20",
-    "hash": "6bca848d17ba4f67d2887e57f5ab3d46c9b70aabf1919aea9ac9e556aa778905",
-    "sha": "9ff1457ee"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "beb228efb155078a32c8f7ee413ab3d860c2ced5d2911bb8dda162bb245e85de",
+    "sha": "e11a345dc"
+  },
+  "src/RimMandrake/Utils/modcheck/doctor.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "cd4f6e00185306494e544c731d6557870aef4a9e5e6b1dfdb0aaefbc01a58700",
+    "sha": "e11a345dc"
   },
   "src/RimMandrake/Utils/modcheck/floor.py": {
     "cleanCount": 3,
@@ -10970,6 +10976,18 @@
     "date": "2026-09-24",
     "hash": "b50b2805e8b7090b96384c4ab6db03b781c12b5551aaf1bfaffb13ec949c6945",
     "sha": "d68e5b42e"
+  },
+  "src/RimStarWars/GizkaStowaway/Source/RSW_GizkaPopulation.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d5901c3cbf558fbedb31b5393797060e8190579422cfa88730cf2ef1a8262393",
+    "sha": "e11a345dc"
+  },
+  "src/RimStarWars/GizkaStowaway/Source/RSW_GizkaSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "00bf4bb42791b81cfed4079f239483a0565b517fe2c98493df4fbf7f2b13ab11",
+    "sha": "e11a345dc"
   },
   "src/RimStarWars/GrankArtOverride/About/About.xml": {
     "cleanCount": 1,
