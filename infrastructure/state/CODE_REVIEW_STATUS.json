@@ -1991,6 +1991,12 @@
     "hash": "a8f59a4f457c4bea541aa7f92eda6681d458c79036c96e9223ef9fb2793550a6",
     "sha": "ce17e0865"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_LeachmossWildSpawnGate.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a33dac4071dd53df6b664655cf2a95fa2a7619f488b298465426bc2090b3cf27",
+    "sha": "6e51e2837"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_LivePrepViability.cs": {
     "cleanCount": 1,
     "date": "2026-09-18",
@@ -6615,6 +6621,12 @@
     "hash": "2ab950ca3743f5c4173a10f3721797d4234b82f27e3cdd8b3e7e0963fe5b27df",
     "sha": "d8cd2139"
   },
+  "src/RimMandrake/Utils/probe_png_wellformed.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "41945af32d3ea693c68b728a80a2f5e12893afe1f0fc8dd9413219687ed15230",
+    "sha": "6e51e2837"
+  },
   "src/RimMandrake/Utils/project_maturity_dashboard.py": {
     "cleanCount": 4,
     "date": "2026-09-24",
@@ -7965,6 +7977,12 @@
     "hash": "09acbcc8c74986e79cd8d23e7e7e98260a49281e6a557c8215c61a817395e321",
     "sha": "1fb0888b"
   },
+  "src/RimMandrake/bridgetools/prove_river_water.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a342526f4aa83dd61a6d59ae9115708acb0133f9bd76d0fc258464ace624e53e",
+    "sha": "6e51e2837"
+  },
   "src/RimMandrake/bridgetools/prove_startup_types.py": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -8109,11 +8127,23 @@
     "hash": "38a2f17a4e83a062af51539440db0461096a9faf43f817b6aac781bb00d877c5",
     "sha": "43f96b1b"
   },
+  "src/RimMandrake/rimflow/citations_lint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6312dac78fac253e11d91a74bc47345dea03384ae71002af52f88a3f53b39994",
+    "sha": "6e51e2837"
+  },
   "src/RimMandrake/rimflow/cli.py": {
     "cleanCount": 6,
     "date": "2026-09-24",
     "hash": "8b331354049958d9ea93f850b3715e718913b42e358ba33e1664d0897dbe0f6f",
     "sha": "c44c75b9a"
+  },
+  "src/RimMandrake/rimflow/live_proof_lint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "32c504a30a90df0177ffa47bc347d2abc5c84cad8bef1dafc7cae6b6249824c9",
+    "sha": "6e51e2837"
   },
   "src/RimMandrake/rimflow/model.py": {
     "cleanCount": 6,
@@ -16838,6 +16868,12 @@
     "date": "2026-09-24",
     "hash": "3de0d9157301d3a5cab71929f35b5180d4a8f5a4d33b7bc6c3681e870dbe79ff",
     "sha": "203bf0861"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/Ashfall/gen_ashfall_layout.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "09b5b92bb4b49c4028f4a20a222e63551007558cb5e4916cf4d33f7330af9dff",
+    "sha": "6e51e2837"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/DarkTower/gen_dark_tower_layout.py": {
     "cleanCount": 2,
