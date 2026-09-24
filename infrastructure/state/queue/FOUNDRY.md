@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T21:51:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T21:52:52Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -2090,3 +2090,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  The vanilla psychic event family — psychic drone (the planetary/map condition
 prose:    infrastructure/state/items/FORCE_DISTURBANCE_REFLAVOR_1.md
+
+## VANILLA_BEAST_EXCISION_1 No vanilla beasts in the Utinni scenario: cut every vanilla/DLC animal at the scenario layer, biome by biome as each biome's own cast is ready — never rename, never edit vanilla defs; close manhunter/quest/trade/pack-animal routes too
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Census every vanilla/DLC animal reachable in the Utinni scenario: biome
+prose:    infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md
