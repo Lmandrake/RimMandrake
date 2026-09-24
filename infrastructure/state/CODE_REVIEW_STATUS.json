@@ -7029,6 +7029,12 @@
     "hash": "badb8864d921bb0de1a4b76585c240e1185cc5b1ac6849bcb18ca25fc85cd236",
     "sha": "c1ae25eaa"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchColonyVisibilityTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "b622629a884f8c429964973ac5866fc706479f184d1e3abb2a0f18de2257ac27",
+    "sha": "0ef3680f9"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDebugActionTools.cs": {
     "cleanCount": 2,
     "date": "2026-09-17",
@@ -7082,6 +7088,12 @@
     "date": "2026-09-09",
     "hash": "cb38cb336626d854fd69d33e5f60bbc18274d309174476dd75ed161f5e534caa",
     "sha": "3ea1ca20"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlightTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "ef1987cb10de401693063283ca2c14d899db2582968a619f4f4f72d13ab2aeb8",
+    "sha": "0ef3680f9"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs": {
     "cleanCount": 2,
