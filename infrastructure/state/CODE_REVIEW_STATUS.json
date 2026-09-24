@@ -13083,11 +13083,59 @@
     "hash": "c532cba43014e66469db6865af02b82b81f10ae6a0fc41ddc19a1897942d8bbf",
     "sha": "77792d0a9"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_IridonianReek.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5e78274841511f89ad33132d33d6074c190616cd66eb01b276796343fec7c708",
+    "sha": "7e4dc38a2"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Jakobeast.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "aecc122f141f1ec485e0ee9e55002914154b9ad7ed303e9200f448643f8881b9",
+    "sha": "7e4dc38a2"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Jamel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b6b0f20406eab557c61c4f11aed624b79617af0a9607b1902c166f0c75c550dd",
+    "sha": "7e4dc38a2"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Jerba.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
     "hash": "b4a35657a08f413293dd5e058afe62c6869f56d17ee493ed5d61675a26d27b7c",
     "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Jimvu.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b45b4aee236e9170726226133f65994d388e3b30a1d0d7836f7f7151583ae9be",
+    "sha": "50a5f7f57"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Kinrath.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "61311322f6bd4928df7de7e09caf1a9783bcb7c3c2e7da0a1881d237581713aa",
+    "sha": "7e4dc38a2"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Klorslug.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "346a319a41889543d9a1b453b72c7631523beaab5a8816dfacbe26ecb397e0eb",
+    "sha": "7e4dc38a2"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_KowakianMonkeyLizard.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "49da63cd4bc5d0a973c34af968b9b4c76694783025b41da2c7dae3a245404ded",
+    "sha": "7e4dc38a2"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_KraytDragon.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fad0a3355ded78596535bb5063c389bf13718aebe3d635399f963b0566598974",
+    "sha": "7e4dc38a2"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Mudhorn.xml": {
     "cleanCount": 2,
