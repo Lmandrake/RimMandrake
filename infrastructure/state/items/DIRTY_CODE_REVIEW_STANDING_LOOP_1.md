@@ -1587,3 +1587,68 @@ Next wave: 107 non-PNG DIRTY files remain (112 minus this wave's 5) —
 re-derive with `code_review_status.py list | grep '^DIRTY'` filtered for
 non-`.png` rather than trusting this arithmetic. The PNG binary-art-tracking
 scope question (wave 15) is still open and still not this loop's to decide.
+
+## Wave 28 — 2026-09-24
+
+Re-derived fresh: `code_review_status.py list | grep -c '^DIRTY'` gave 268
+(273→268, ordinary drift); filtered for non-`.png` gave exactly **107**,
+matching wave 27's prediction. Picked 5 for breadth across areas this
+backlog hadn't touched yet (Utils tooling, FlowWorks def XML, LanternDeeps
+patch XML, Pyrelands terrain XML, an Armoury absorption generator script),
+diff-scoped against each file's own clean-mark sha (all were CLEAN once):
+
+- **`src/RimMandrake/Utils/broadcast.py`** (1 line since `0a8d8761`) — the
+  ledger-sharding retrofit's follow-on: `seats_waiting_on_the_game()` now
+  calls `model.read()` with no argument instead of `model.read(model.
+  EVENTS)`. Verified against `model.py`'s own `read()` docstring, which
+  states plainly that a bare `model.EVENTS` argument now means "the history,
+  without today" post-sharding and that every production caller was
+  converted 2026-09-23 — this was exactly that conversion, correctly done.
+  No bug.
+- **`src/RimMandrake/FlowWorks/Defs/ManyWaters/ThingDefs/
+  RM_ColoredWaterBottles.xml`** (1 line since `d0b0d6b7b`) — a comment's
+  cross-reference path corrected from `src/RimStarWars/UtinniPatches/...`
+  to `src/RimUtinni/UtinniPatches/...` (the NAMING_SCHEME_EXECUTION_1
+  tier move). Confirmed the RimStarWars path no longer exists and the
+  RimUtinni path does. A real prior inaccuracy, now fixed. No bug.
+- **`src/RimUtinni/LanternDeeps/Patches/
+  RUT_LanternDeepGateKotorStygium.xml`** (2 lines since `1dc7382d`) — a
+  doc-comment correction recording that `guy762.mm.kotorcore` (the donor
+  whose live GenStepDef this patch used to describe as active) is now
+  ABSENT from the live ModsConfig as of 2026-09-23, so the op it documents
+  matches nothing today — consistent with CLAUDE.md's "a patch that matches
+  nothing logs nothing" doctrine, not a defect. No bug.
+- **`src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshLadder.xml`** (+4/-1
+  since `90940c68`) — moves `texturePath` off the shared abstract
+  `RM_FE_AshBase` and onto each of the four concrete ash-depth terrains
+  individually (`RM_FE_Ash_Trace/_Light/_Heavy/_Deep`). Verified all four
+  referenced textures (`RM_FE_Ash_Trace.png` etc.) actually exist on disk
+  under `Pyrelands/Textures/Terrain/Surfaces/` — a real per-terrain art
+  differentiation, not a placeholder-path guess. No bug.
+- **`src/RimStarWars/Armoury/Source/gen_sovsith_absorption.py`** (+17 since
+  `ee0b3ad6`) — adds a body-type-suffixed texture search
+  (`<path>_<BodyType>_<rotation>.ext`) to `find_and_copy_texture` and adds
+  `wornGraphicPath` to the set of collected texture-path attributes, per
+  the added comment's correct account of `ApparelGraphicRecordGetter`'s
+  real naming scheme and of `wornGraphicPath` being a genuine third texture
+  root distinct from `texPath`/`iconPath`. Traced the nested-loop `rot`
+  variable reuse (inner loop redefines `rot` after the outer rotation loop
+  already finished) — shadowing, not a bug, since the outer loop's `rot`
+  is not read again after the inner loop starts. No bug.
+
+All 5 had zero uncommitted changes before marking (`git status --porcelain`
+empty). All 5 marked CLEAN, commit `5952f0306`, pushed.
+
+Next wave: 102 non-PNG DIRTY files remain (107 minus this wave's 5) —
+re-derive with `code_review_status.py list | grep '^DIRTY'` filtered for
+non-`.png` rather than trusting this arithmetic. Candidates not yet touched
+in this backlog include the 27-file `RUT_*` BiomeDef cluster under
+`UtinniPatches/Defs/BiomeDefs/`, the `~15`-file `RSW_*ThingDefs_Races`
+cluster under `SWBestiary/Defs/ThingDefs_Races/`, the bridgetools `.cs`
+files (`JawaBenchPawnKitTools.cs`, `JawaBenchRenderTools.cs`,
+`JawaBenchTerrainTools.cs` — safety-critical, use full-file context per
+this item's own protocol), and the `rimflow`/`Utils` Python tooling
+(`selftest_concurrency.py`, `codebase_health.py`, `handoff.py`,
+`modset_builder.py`, `run_selftests.py`, several `artpipe/*.py`). The PNG
+binary-art-tracking scope question (wave 15) is still open and still not
+this loop's to decide.
