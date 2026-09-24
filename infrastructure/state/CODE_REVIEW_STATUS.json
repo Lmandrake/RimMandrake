@@ -1422,10 +1422,10 @@
     "sha": "71afa1c0d"
   },
   "src/RimMandrake/EnvironmentalHazards/Languages/English/Keyed/RM_EnvironmentalHazards_Keys.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "556774e91dc84c8828e39575a48751c26c54edf08c286ec93bb3c1081ab26181",
-    "sha": "aeb8d6f40"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "10bf1a39ac53358bbf4b4aa70e36819762bf08095fc078a884d5eba749cadbcc",
+    "sha": "9d2e88945"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/ArmLatentHazardExtension.cs": {
     "cleanCount": 2,
@@ -1698,10 +1698,10 @@
     "sha": "ba59d465f"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj": {
-    "cleanCount": 6,
+    "cleanCount": 7,
     "date": "2026-09-24",
-    "hash": "f2944da0e678567a55524c380c0a8e63414d09bf89cbe572c41d2e8ae8938d21",
-    "sha": "4a023191b"
+    "hash": "d24331eadeafea8baad5aef4e42dc8b483e3c4216897a10c66d068051fdfddab",
+    "sha": "9d2e88945"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
     "cleanCount": 12,
@@ -2034,10 +2034,10 @@
     "sha": "ce17e0865"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_LeachmossWildSpawnGate.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-24",
     "hash": "a33dac4071dd53df6b664655cf2a95fa2a7619f488b298465426bc2090b3cf27",
-    "sha": "6e51e2837"
+    "sha": "9d2e88945"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_LivePrepViability.cs": {
     "cleanCount": 1,
@@ -17902,10 +17902,10 @@
     "sha": "7bfbaa5e7"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-13",
-    "hash": "97e04bd4512b5e1ea402f3a68a5a93b3d4040dc532ce96ecbd313fa7e54b01df",
-    "sha": "779a079ab"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "367e79d3471e7d98724ebe01c879427585cf428360354edb4327337d770a08db",
+    "sha": "9d2e88945"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml": {
     "cleanCount": 4,
@@ -19096,10 +19096,10 @@
     "sha": "212775b67"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_FilthAcceptance.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "8e437811e008e98afb635e61e95cbc2c1591a71491267ded436123c7737e7706",
-    "sha": "0afdb147c"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "a3a7979167b036b15f92ca9dcb17bb1a4b78bf1f3554f0d8ea47fe66333d5436",
+    "sha": "9d2e88945"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml": {
     "cleanCount": 1,
