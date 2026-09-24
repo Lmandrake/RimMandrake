@@ -336,7 +336,7 @@ namespace RimMandrake.EnvironmentalHazards
 
         public void DoWindowContents(Rect inRect)
         {
-            // 35 checkboxes (most with a two-line tooltip) plus three labeled
+            // 36 checkboxes (most with a two-line tooltip) plus six labeled
             // sliders — this is a FIXED view height, so content taller than it
             // is clipped rather than scrolled to. Same pattern as
             // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
