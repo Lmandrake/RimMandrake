@@ -117,9 +117,28 @@ physically cannot.
   ⚠️ Designed against **`mandrake.rm.flowworks`**, which is ours; **no mod named "Earth Flow" is in
   the 2026-09-19 snapshot of 621 active mods**, and the live list is unreachable from the Mac, so
   if a third-party canal mod is intended its behaviour must be measured on the Desktop first.
-  🔴 **Gating engine question, UNMEASURABLE on the Mac:** does a FlowWorks canal produce terrain a
-  pawn can actually PATH on? If not, every canal implication is fictional. ⛔ And a canal must never
-  carry her onto dry land — the moment a canal is treated as a bridge, the creature is ruined.
+  🔴 **THE SWIM RULE, ruled 2026-09-23 — and the mechanism is already built.** He ruled a canal must
+  let her swim *"as long as it connects to the sea"*, and **connection, not wetness, is the gate** —
+  which is exactly the model `RM_MapComponent_StrandingPools` has implemented since 2026-09-14: a
+  full 4-way flood-fill of water cells into connected components, largest treated as the main
+  network, `IsReconnected()` testing whether a pool rejoins open water, and cell-by-cell decay for
+  the ones that do not. ⇒ **Swim-eligibility is that same predicate.** ⛔ Do not write a second
+  connectivity system, and note it unifies both halves of the design: *a stranded young is simply a
+  young in water that lost its connection.*
+  ⚠️ **One real gap his wording exposes:** the built check uses *"reaches the map edge"* as its proxy
+  and its own header is honest about it — but on a Miasma map the **fresh** end touches the edge too,
+  because rivers do. So a canal to a river mouth would read as connected to the sea and let a
+  brine-broken sea elder swim inland up fresh water. ✅ Fix needs no new machinery:
+  `RM_GradientAxisExtension` already knows which direction is brine, so the test becomes *"reaches
+  the **seaward** edge."* A refinement of an existing method, not a new system.
+  🔴 **Gating engine question, UNMEASURABLE on the Mac:** do FlowWorks' canal cells register as
+  water-band cells in that flood-fill? If not, canals are invisible to every mechanism here and the
+  whole section is fiction.
+  ⭐ **And the reversal is sharper than first written:** a cut canal leaves her not in a dry ditch but
+  in **a pond** — still swimming, unable to reach the sea, with the existing decay code shrinking it
+  around her. **The mother suffers her children's fate, by the player's doing.**
+  ⛔ A canal is water, never a bridge. Do not let one carry her onto dry land; the constraint is the
+  content.
 - 🔴 **Corrected on his word 2026-09-23: there are no nautical ships in this world.** The sheet's
   *"its mother is the reason ships sink"* was a dead metaphor, amended in `the_miasma.md` §4 to
   *"why nobody goes out onto the open water."* ⚠️ `design/Jawa/campaign/CAMPAIGN_ARC_GATHER.md` G34
