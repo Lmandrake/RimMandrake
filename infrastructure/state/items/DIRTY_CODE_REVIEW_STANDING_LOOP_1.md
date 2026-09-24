@@ -3408,3 +3408,56 @@ Re-measured after: `TALLY  CLEAN 3158  DIRTY 6  ORPHANED 0  NEVER ENTERED 290`
 cluster in either mod). Next wave: continue `SWBestiary/Defs/
 ThingDefs_Races` alphabetically from `RSW_Kreetle.xml`, with
 `list --show-untracked`.
+
+## Wave 54 — 2026-09-24: SWBestiary races K-L, UtinniPatches/Patches/ closed out
+
+Ran `list --show-untracked` fresh: **290 NEVER ENTERED**, matching wave 53's
+ending tally exactly — no concurrent-agent noise this wave.
+
+Picked the next 8 alphabetically-first files from
+`SWBestiary/Defs/ThingDefs_Races/`: `RSW_Kreetle.xml`, `RSW_Krykna.xml`,
+`RSW_Kwi.xml`, `RSW_Kybuck.xml`, `RSW_LavaFlea.xml`, `RSW_LongtailGorg.xml`,
+`RSW_Lothcat.xml`, `RSW_Lylek.xml`, plus the last unreviewed
+`UtinniPatches/Patches/` file, `RUT_TarredSurgery_RecipeUsers.xml`. Full-file
+reviewed all 9, each race got the wave 49-53 sound-prefix check
+(`sound{Wounded,Death,Call,Angry}`): 6 of 8 carry correctly RSW_-prefixed
+sounds and resolve in `SoundDefs_SWBestiary.xml`; `RSW_Kybuck.xml` and
+`RSW_Lothcat.xml` deliberately reuse bare vanilla `Pawn_Elk_*`/`Pawn_Cat_*`
+clips per their own header comments — correct, not this bug class. Every
+cross-referenced defName (bodies, body-part groups, leather/meat pairs,
+eggs, abilities, a PawnRenderTreeDef for `RSW_Lylek`'s tentacle-spasm
+animation, `canCrossBreedWith` targets `RSW_FrilledGorg`/`RSW_Gorg`) was
+grepped and confirmed to resolve to a real def in the repo — 32 distinct
+names checked, all present. Also ran an XML-tree duplicate-element scan
+(the general form of wave 53's duplicate-`lifeExpectancy` bug class) across
+all 8 race files — zero duplicate non-`<li>` elements found in any block.
+`RUT_TarredSurgery_RecipeUsers.xml` matches its named sibling
+(`BrainWormSurgery_RecipeUsers.xml`) shape exactly, and its
+`RUT_ScrubTarred` target resolves in `RUT_Tarred_Surgery.xml` — no bugs.
+**`UtinniPatches/Patches/` is now fully exhausted** (0 remaining, confirmed
+in the wave's re-measurement below).
+
+🔴 **One real bug found and fixed**: `RSW_LavaFlea.xml`'s PawnKindDef
+`<abilities>` block wrapped `RSW_SW_Leap` in an outer
+`MayRequire="Ludeon.RimWorld.Odyssey"`, while the inner `<li>` — and the
+ThingDef's own `specialTrainables` entry for the same ability — both
+correctly gate it on `Ludeon.RimWorld.Biotech` only (the file's own header
+documents this explicitly: "Biotech-gated, NOT Odyssey"). An outer
+`MayRequire` skips the whole node if unmet, so with Biotech active but not
+Odyssey the ability would never wire into the PawnKindDef at all, silently
+contradicting the ThingDef half of the same def pair. Fixed: removed the
+outer `MayRequire`, leaving only the correct inner Biotech gate. Commit
+`0c0282d70`.
+
+Commits `0c0282d70` (the fix) and `487168757` (status file), both pushed.
+Two transient `.git/index.lock` collisions with the concurrent
+`SUMP_GASLIGHT_1` build agent, both cleared within 5-10s on retry per the
+item's own protocol.
+
+Re-measured after: `TALLY  CLEAN 3167  DIRTY 6  ORPHANED 0  NEVER ENTERED 281`
+— 281 = 290 − 9 exactly, no concurrent-agent noise this wave either.
+**281 NEVER ENTERED files remain**: `UtinniPatches` at **72**, all in
+`Defs/`/`Languages/` (`Patches/` fully spent), `SWBestiary` at **44**
+(`Defs/ThingDefs_Races` has **42** left — still the single biggest live
+cluster). Next wave: continue `SWBestiary/Defs/ThingDefs_Races`
+alphabetically from `RSW_Massiff.xml`, with `list --show-untracked`.
