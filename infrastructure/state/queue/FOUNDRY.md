@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T13:48:38Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-24T14:21:32Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -2054,3 +2054,63 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  Four mechanics, all RM-tier (RMTheSump / its kit), feature-gated per the Mod
 prose:    infrastructure/state/items/SUMP_TAR_NASTINESS_1.md
+
+## SUMP_WALKWAYS_1 Sump walkways, two tiers: duckboards (cheap, foul with tar, burn) and glasswalk (never fouls, never full speed) with cap + rare harmless pratfalls
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_WALKWAYS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_WALKWAYS_1.md
+
+## SUMP_TAR_VAULT_1 Sump tar-vault: seal food/corpses/hides into tar for perfect preservation; extraction REQUIRES solvent or contents are useless (owner-ruled)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_TAR_VAULT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_TAR_VAULT_1.md
+
+## SUMP_GASLIGHT_1 Sump gaslight: tar+acid reaction makes green gas (Helixien integration OK), warbling lamp light, flame statuary, natural flames, discovery-unlocked techs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_GASLIGHT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
+
+## BIOME_ARRIVAL_NARRATION_1 Biome arrival letters: RM-tier machinery in each biome mod fires one survival-reads letter at first gravship landing; Utinni patches the narrator voice
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BIOME_ARRIVAL_NARRATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_ARRIVAL_NARRATION_1.md
+
+## SUMP_UTINNI_LAYER_1 Sump campaign layer: rename the gas Sumpgas, flame-statue holy act to the evil sun god (ideoligion patch), Hssiss WildAnimals_Sump patch
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_UTINNI_LAYER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_UTINNI_LAYER_1.md
+
+## JAWA_MESS_IMMUNITY_1 Jawa are immune from messes (owner-ruled 2026-09-24): no filth/squalor mood penalties for the Jawa xenotype; other factions just live with it and suffer
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/JAWA_MESS_IMMUNITY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md

@@ -42,10 +42,29 @@ tameable; pallick may lie (honest mouse tell); both naming voices kept; thrummel
 
 Same sitting also produced the nastiness ruling and its ticket — see
 `BIOME_NUISANCE_NORMALIZATION_1` (planet-wide, end-gated, his words quoted there)
-and `SUMP_TAR_NASTINESS_1` (the Sump-now slice). Successors filed:
-`SUMP_FLORA_ROSTER_1`, `SUMP_FAUNA_ROSTER_1`, `SUMP_TAR_BELCH_EVENT_1`,
-`SUMP_TAR_NASTINESS_1` (all FOUNDRY). Offered, not yet ruled:
-`BIOME_ARRIVAL_NARRATION_1` (narrator announces each biome at first landing).
+and `SUMP_TAR_NASTINESS_1` (the Sump-now slice).
+
+## ✅ SECOND WAVE — the synthesis round, all ruled 2026-09-24 (11 more cards/rulings)
+
+Walkways two-tier with cap+pratfalls (`SUMP_WALKWAYS_1`); tar-vault with
+solvent-gated extraction (`SUMP_TAR_VAULT_1`, his typed twist); the gaslight
+complex — tar+acid→green gas, the warbling light, flame statuary, natural
+flames, discovery techs (`SUMP_GASLIGHT_1`, the sitting's biggest typed ruling);
+**Q16** — RM-tier mods may require other mods, "free" = franchise-free only
+(recorded in `biome_mod_architecture.md` §7, Helixien allowed, Utinni renames
+the gas Sumpgas via `SUMP_UTINNI_LAYER_1`); seepwax weak acid, generous; Jawa
+immune from messes, nobody rewarded by them (`JAWA_MESS_IMMUNITY_1` — the
+mess-lover trait DECLINED); arrival letters filed (`BIOME_ARRIVAL_NARRATION_1`);
+road re-paving OUT of campaign scope ("this one is about the ship" — quoted in
+`SUMP_WALKWAYS_1`); and two more every-biome passes ticketed end-gated:
+`INDIGENOUS_TECH_REVISIT_1` and `BIOME_SHIP_CONTRIBUTIONS_1` (Sump ship gifts:
+glasswalk deck, gas lamps and burning statues aboard).
+
+Full FOUNDRY successor set: `SUMP_FLORA_ROSTER_1`, `SUMP_FAUNA_ROSTER_1`,
+`SUMP_TAR_BELCH_EVENT_1`, `SUMP_TAR_NASTINESS_1`, `SUMP_WALKWAYS_1`,
+`SUMP_TAR_VAULT_1`, `SUMP_GASLIGHT_1`, `SUMP_UTINNI_LAYER_1`,
+`JAWA_MESS_IMMUNITY_1`, `BIOME_ARRIVAL_NARRATION_1`, plus the pre-existing
+`THESUMP_RM_MOD_BUILD_1` scaffold work.
 
 ## verify
 

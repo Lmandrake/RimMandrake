@@ -26,6 +26,11 @@ Settings law:
    deliberately NOT craftable here (the Poison Forest's acid line is the owner's
    example source — arrives by trade). Do not build the foreign side; leave the
    item hook (trade tag / def placeholder) for the normalization pass.
+   ✅ REFINED same sitting (`SUMP_GASLIGHT_1` holds the verbatim rulings): the
+   cleaner is an ACID and cleaning works BY the tar→green-gas reaction; the weak
+   local acid renders from thrummel seepwax, ruled generous ("one raid should
+   give you a lot. Not meant as a starvation mechanism"); the same acid gates
+   vault extraction (`SUMP_TAR_VAULT_1`) and fuels the warbling lamp.
 4. **The tar's own reward** — annoying materials pay: the sheet already calls the
    tar biologically rich; pick the reward with the roster docs (fuel/chemistry/
    preservation are the obvious axes) and make gathering it want the coping gear.

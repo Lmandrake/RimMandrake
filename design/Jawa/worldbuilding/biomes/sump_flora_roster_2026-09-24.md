@@ -115,7 +115,8 @@ These three don't touch it either — they *are* its surface.
 
 ## 5. Donor terrain and flora dependencies to replace
 
-What the standalone mod must stop depending on (build item §2/§4):
+What the sitting replaces with our own (build item §2/§4) — an identity call per
+row, not a dependency ban (Q16, 2026-09-24: RM-tier mods MAY require other mods):
 
 | donor def | role today | proposed replacement | note |
 |---|---|---|---|
