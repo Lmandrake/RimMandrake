@@ -4553,6 +4553,12 @@
     "hash": "bfc63d7c429140b626879f118885f84d7ad658623e31c620679f205a4b3fad8f",
     "sha": "57d78d214"
   },
+  "src/RimMandrake/RimDefDump/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "856f03cdf0a0a8063e26765f2cff13f514059c3c715d7a9434e21367caebad72",
+    "sha": "db60da8bc"
+  },
   "src/RimMandrake/RimProperty/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -7076,6 +7082,12 @@
     "date": "2026-09-12",
     "hash": "c8f83f181e25f7cf22093b4ac82df5d75cee09af7f26db873fe731ecd63a90b5",
     "sha": "311d90fc5"
+  },
+  "src/RimMandrake/WeatherSuite/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6e6a91e344279a99ff1b8fe5a239c3202970003a2f50e060c4a2aa6d82a164ed",
+    "sha": "db60da8bc"
   },
   "src/RimMandrake/WreckedMachines/About/About.xml": {
     "cleanCount": 2,
@@ -11751,6 +11763,12 @@
     "hash": "61bcccc5fc288884c621184f62739b384b9a2e009f0e2c676b73e57da4c897c9",
     "sha": "5a68d1a6"
   },
+  "src/RimStarWars/MSEDroidFix/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0a45cc49d05ae27d4d29f5dacf45f377a0f0b5fe3ec99080c60331bf8e2bf966",
+    "sha": "db60da8bc"
+  },
   "src/RimStarWars/MynockArtOverride/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -13617,6 +13635,12 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "6e65d276"
   },
+  "src/RimUtinni/AshkarrInhabited/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "15805596cee20cc1151f757841098a20e084e878c509a83c17d563fdc1724dbc",
+    "sha": "db60da8bc"
+  },
   "src/RimUtinni/AshkarrLandmarkArt/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -13652,6 +13676,12 @@
     "date": "2026-09-09",
     "hash": "f5a880c3de6033ef4c2593e7a57e6fbfc2546b6f97ab3392c2c76dd010d51c46",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/AshkarrLandmarkArt/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "db0789d2075488d3777650c068b8024ea80b7d9315c53aca503326aeb6e20704",
+    "sha": "db60da8bc"
   },
   "src/RimUtinni/AshkarrWeatherSuite/About/About.xml": {
     "cleanCount": 2,
