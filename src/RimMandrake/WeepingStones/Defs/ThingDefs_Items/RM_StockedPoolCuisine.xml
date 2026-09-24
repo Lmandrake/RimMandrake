@@ -120,12 +120,14 @@
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(230, 200, 140)</color>
     </graphicData>
+    <tickerType>Rare</tickerType>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <MarketValue>7</MarketValue>
       <Mass>0.02</Mass>
       <Flammability>0.7</Flammability>
       <DeteriorationRate>3</DeteriorationRate>
+      <Nutrition>0.05</Nutrition>
     </statBases>
     <socialPropernessMatters>true</socialPropernessMatters>
     <ingestible>

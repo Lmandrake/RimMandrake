@@ -153,6 +153,17 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <drawSize>0.6</drawSize>
+          <color>(170, 170, 175)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
+          <drawSize>0.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
           <drawSize>0.7</drawSize>
           <color>(170, 170, 175)</color>
         </bodyGraphicData>
@@ -187,7 +198,6 @@
         </capacities>
         <power>1</power>
         <cooldownTime>1.2</cooldownTime>
-        <linkedBodyPartsGroup>Legs</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
@@ -260,6 +270,17 @@
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Spelopede/Dessicated_Spelopede</texPath>
           <drawSize>0.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Spelopede/Spelopede</texPath>
+          <drawSize>0.325</drawSize>
+          <color>(200, 210, 215)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Spelopede/Dessicated_Spelopede</texPath>
+          <drawSize>0.325</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
@@ -381,6 +402,17 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Iguana/Iguana</texPath>
+          <drawSize>1</drawSize>
+          <color>(90, 170, 160)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Iguana</texPath>
           <drawSize>1.1</drawSize>
           <color>(90, 170, 160)</color>
         </bodyGraphicData>
@@ -495,6 +527,17 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Muffalo/Muffalo</texPath>
+          <drawSize>2.4</drawSize>
+          <color>(205, 190, 160)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>2.4</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Muffalo</texPath>
           <drawSize>2.8</drawSize>
           <color>(205, 190, 160)</color>
         </bodyGraphicData>
@@ -527,7 +570,7 @@
         </capacities>
         <power>18</power>
         <cooldownTime>2.0</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
       </li>
       <li>
         <label>bite</label>
@@ -608,6 +651,17 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <drawSize>1.7</drawSize>
+          <color>(120, 110, 95)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>1.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
           <drawSize>1.9</drawSize>
           <color>(120, 110, 95)</color>
         </bodyGraphicData>
@@ -649,7 +703,7 @@
         </capacities>
         <power>14</power>
         <cooldownTime>1.6</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
@@ -718,6 +772,17 @@
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Alligator/Dessicated_Alligator</texPath>
           <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Alligator</texPath>
+          <drawSize>1.675</drawSize>
+          <color>(150, 130, 100)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Dessicated_Alligator</texPath>
+          <drawSize>1.675</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
@@ -826,6 +891,17 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Dromedary/Dromedary</texPath>
+          <drawSize>1.8</drawSize>
+          <color>(215, 200, 175)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dromedary/Dessicated_Dromedary</texPath>
+          <drawSize>1.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dromedary/Dromedary</texPath>
           <drawSize>2.0</drawSize>
           <color>(215, 200, 175)</color>
         </bodyGraphicData>
@@ -860,7 +936,7 @@
         </capacities>
         <power>10</power>
         <cooldownTime>1.8</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
@@ -945,6 +1021,17 @@
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
           <drawSize>0.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Chicken/Chicken</texPath>
+          <drawSize>0.775</drawSize>
+          <color>(120, 115, 110)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
+          <drawSize>0.775</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>

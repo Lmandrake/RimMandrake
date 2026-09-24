@@ -143,6 +143,22 @@
         <label>gorrask</label>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>4.25</drawSize>
+          <color>(140, 130, 115)</color>
+          <shadowData>
+            <volume>(0.7, 0.5, 0.5)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>4.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <label>gorrask</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
           <drawSize>5.0</drawSize>
           <color>(140, 130, 115)</color>
           <shadowData>
