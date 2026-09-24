@@ -129,15 +129,19 @@
            rather than a second terrain def — same "one def, reused
            cross-kit" shape RUT_Scald already set), narrower/shorter/fewer
            per anchor so it reads as the modest, cheap-to-walk alternative
-           rather than a second full network. basinTerrains on BOTH passes
-           is Fever Wood's own two buildable ground terrains
-           (terrainsByFertility above) — an ALLOWLIST that doubles as the
-           water-avoidance answer to the spec's own ❓, see RUT_Boughway.xml's
-           own header for the full resolution (map-gen SetTerrain has no
-           Bridgeable-style gate to reuse in the first place; routing
-           around the registered pools is the honest fix, not a drawn-
-           fiction bridge). No basin hazard of its own to route OVER here
-           (unlike Greentide's churnmud), so this is purely an exclude. -->
+           rather than a second full network. FEVERWOOD_BOUGH_SOIL_TERRAIN_1
+           build: a third pass (RUT_BoughSoil) was added below, same
+           machinery, painting fertile crown soil along that same anchor
+           set — see its own comment on the <li> for why. basinTerrains on
+           ALL THREE passes is Fever Wood's own two buildable ground
+           terrains (terrainsByFertility above) — an ALLOWLIST that doubles
+           as the water-avoidance answer to the spec's own ❓, see
+           RUT_Boughway.xml's own header for the full resolution (map-gen
+           SetTerrain has no Bridgeable-style gate to reuse in the first
+           place; routing around the registered pools is the honest fix,
+           not a drawn-fiction bridge). No basin hazard of its own to route
+           OVER here (unlike Greentide's churnmud), so this is purely an
+           exclude. -->
       <!-- F1: the mirror pools. OWNER RULING 2026-09-18 (FEVER_WOOD_MECHANICS_1
            ledger): "3-6 small pools per generated map, scattered with a
            minimum spacing between them, never a single large landmark-sized
@@ -180,6 +184,41 @@
             <laneWidthRange>1~1</laneWidthRange>
             <pathLengthRange>10~20</pathLengthRange>
             <turnChancePerStep>0.3</turnChancePerStep>
+          </li>
+          <!-- FEVERWOOD_BOUGH_SOIL_TERRAIN_1 build. §6b: "a bespoke
+               high-fertility terrain painted along the boughways and
+               trunk tops" — third pass over the SAME anchor set (the
+               registered bole centers, i.e. the trunk tops themselves;
+               TraceSpline's own first PaintFootprint call is always at
+               the anchor, so trunk tops get bough-soil even when a
+               traced spline is short). basinTerrains is the identical
+               Soil/SoilRich allowlist the two passes above already use —
+               reusing the exact same list (not a new one) is what keeps
+               the pool-exclusion property intact per the item's own
+               warning: cells already converted to RUT_Boughway/
+               RUT_RootCauseway by the two earlier passes, or painted
+               RUT_FeverWoodMirrorPool by F1, are no longer Soil/SoilRich
+               by the time this pass runs and so are automatically
+               skipped — no lane or pool is ever overwritten.
+               laneWidthRange/pathsPerAnchorRange wider than the boughway
+               lane's own (1~2 / 3~6) so the fertile bed reads as a bed
+               beside/around the network rather than a third narrow lane;
+               pathLengthRange shorter since it doesn't need to span the
+               map the way a travel lane does. All four numeric fields are
+               an ENGINEERING DEFAULT — the item file's own "open, and NOT
+               to be guessed" section: cell-selection footprint is UNSET
+               by the owner. Flag for live tuning together with
+               RUT_BoughSoil.xml's own fertility value. -->
+          <li>
+            <causewayTerrain>RUT_BoughSoil</causewayTerrain>
+            <basinTerrains>
+              <li>Soil</li>
+              <li>SoilRich</li>
+            </basinTerrains>
+            <pathsPerAnchorRange>4~8</pathsPerAnchorRange>
+            <laneWidthRange>2~4</laneWidthRange>
+            <pathLengthRange>15~30</pathLengthRange>
+            <turnChancePerStep>0.4</turnChancePerStep>
           </li>
         </additionalPasses>
       </li>
