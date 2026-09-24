@@ -1,5 +1,39 @@
 # SHOKKWEAVE_SOLE_SOURCE_1 — Shokkweave economy (rename, trader strip, harvest routes)
 
+## 2026-09-24 (FOUNDRY, sixth pass) — wake-up fix RE-PARSE confirmed live; full behavioral proof deferred, canonical map is mid-encounter
+
+**Gap closed**: the 5th pass's open question — "does the running process have
+the `wakeUpIfAnyTargetClose` fix, or does it still need a restart to re-parse
+defs" — is answered **yes, restart happened, fix is live**. `jawa/get_defs`
+with `deep: true` on `ThingDef/RUT_Webwork_Nest` (game UP, tile 17007,
+`mandrake.rut.shokkweaveeconomy` loaded) reads the `CompProperties_WakeUpDormant`
+block back with `wakeUpIfAnyTargetClose: true` and `wakeUpOnDamage: true` — the
+2026-09-12 fix is genuinely parsed into the running process, not just sitting on
+disk. This is a static def read, not a behavioral test, but it retires the
+"needs a fresh restart" line from every prior pass.
+
+**Full behavioral proof (wake-on-approach, no damage needed; butchery live
+test) NOT attempted this pass, and the reason is new**: the currently-loaded
+map is not a spare quicktest map, it is the **canonical Ash'karr campaign
+save** (`jawa/map_info`: `mapParent` "Zeddo's Salvage Yard", tile 17007 — the
+CANONICAL_ASHKARR_START colony). `jawa/list_pawns` shows 6 drafted colonists
+(`job: Wait_Combat`) plus 3 live Mechanoids and 7 `RUT_Jawa_HuttCartel`
+pawns on the same map — an encounter in progress, not an idle colony.
+`step_game_ticks` advances simulation regardless of pause state (per this
+skill's own §4b), so stepping the ~300+ ticks this test needs risks resolving
+real combat on the one save this campaign cannot lose. Read-only calls only
+were made; nothing was spawned, damaged, or advanced. The 2026-09-12 pass
+solved this exact problem by repainting a *quicktest* map's tile to
+`RUT_Webwork` — that route is unavailable here because this session is
+connected to the canonical save, not a quicktest session; a dedicated
+throwaway quicktest session is needed to finish this test (rimworld-debug-testing
+skill), which is its own bridge cycle, not attempted this pass.
+
+**Status unchanged**: `doing`, `needs owner` on the two build decisions (trader-
+stock companion tool vs. accepting source proof; new colonist harvest-job for
+the emergent-Shokk spawn half) — this pass only retired the restart question.
+Bridge taken and released clean; no game state touched.
+
 ## 2026-09-18 (FOUNDRY, belt mode, subagent, fifth pass) — trader-stock proof completed by source (all 11 kinds), one gap reassessed as stale-blocker/still-open, half of the other gap found uncommitted and shipped
 
 **Bridge check**: `rimflow bridge who` → held by BENCH (`rot wave: deploy +
