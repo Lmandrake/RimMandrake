@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T03:54:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T04:05:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -559,3 +559,13 @@ kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  STARWARSDONORPORTLABELCOLLISIONS1 — 62 label collisions between donor SW-animal-collection defNames and their…
 prose:    infrastructure/state/items/STARWARS_DONOR_PORT_LABEL_COLLISIONS_1.md
+
+## WEBWORK_DESIGN_SITTING_1 Webwork design sitting: finish the flora/fauna roster docs, then card the 8 open rulings in webwork_owner_and_nest_2026-09-23.md §6
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEBWORK_DESIGN_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_DESIGN_SITTING_1.md
