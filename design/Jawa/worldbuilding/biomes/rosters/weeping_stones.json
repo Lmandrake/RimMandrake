@@ -3,7 +3,7 @@
   "defNames": ["RUT_WeepingStones"],
   "tiles": 223,
   "authored": "2026-09-09",
-  "law_sources": ["weeping_stones.md §4-§6, §10 (enriched bestiary — the grading standard)", "_freeze_rulings_2026-09-07.md R21 (condensate, no rain), R17 (fliers)", "WEEPING_STONES_ROSTER_1 (dewback move RULED)", "owner cards 2026-09-09"],
+  "law_sources": ["weeping_stones.md §4-§6, §10 (enriched bestiary — the grading standard)", "_freeze_rulings_2026-09-07.md R21 (condensate, no rain), R17 (fliers)", "WEEPING_STONES_ROSTER_1 (dewback move RULED)", "owner cards 2026-09-09", "WEEPING_STONES_DESIGN_SITTING_1 (rulings 2026-09-24, 9 cards; verbatim quotes in the two roster docs)"],
   "note": "Cast reconciliation: the sheet counted 29 cast rows off cast_assignment.csv; the live BiomeCast_Ashkarr.xml block holds 27 — MA_Narkospider and MA_Hellboar never generated (Mythic Ages retirement already recorded, prep §10.4). Both are still dispositioned below so the CSV row count closes.",
   "fauna": [
     {"def": "Dewback", "commonality": 0.4, "action": "import", "band": "large-resident", "law": "RULED move from LavaField (owner 2026-09-06, sheet §10 + WEEPING_STONES_ROSTER_1) — the films' dew-drinking lizard; its ridged back IS the comb the biome converges on (§4/§5)", "note": "register lists a predator special (MEASURED) — legal: §6 bans hunting AT the pool, not predators; it drinks in rotation like everything else"},
@@ -15,7 +15,16 @@
     {"def": "AA_Eyeling", "commonality": 0.1, "action": "import", "band": "omen", "law": "this IS the ikee (register label 'ikee' MEASURED) — sheet §10: already placed here, uncommon, 'near water and traffic; an omen, never a herd'"},
     {"def": "Bantha", "commonality": 0.1, "action": "import", "band": "pilgrim", "law": "§10 pilgrims ring — 'every big animal on the hot half of the world must come here' (§4); low commonality = visitor, not resident; primary home stays Desert (herds are Desert infrastructure, owner card 3)"},
     {"def": "Jamel", "commonality": 0.1, "action": "import", "band": "pilgrim", "law": "§10 pilgrims — slow herd endurer off the desert roads; MEASURED bs 1.9, spd 1.5, herd, non-predator"},
-    {"def": "Eopie", "commonality": 0.1, "action": "import", "band": "pilgrim", "law": "§10 pilgrims — pack icon of the caravan string (§8 the oasis string is the bead-chain the roads follow)"}
+    {"def": "Eopie", "commonality": 0.1, "action": "import", "band": "pilgrim", "law": "§10 pilgrims — pack icon of the caravan string (§8 the oasis string is the bead-chain the roads follow)"},
+    {"def": "RM_Sillik", "commonality": 0.8, "action": "invent", "band": "tiny-resident", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: prey base, weep-film licker", "note": "detail row in weeping_stones_fauna_roster_2026-09-24.md"},
+    {"def": "RM_Mirrik", "commonality": 0.6, "action": "invent", "band": "tiny-resident-flier", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: dew-smoke swarm; dewsilk; REAL flight per flier law", "note": "detail row in weeping_stones_fauna_roster_2026-09-24.md"},
+    {"def": "RM_Ssurr", "commonality": 0.35, "action": "invent", "band": "small-resident", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: fan-dancer, pool ritual, tamable charmer", "note": "detail row in weeping_stones_fauna_roster_2026-09-24.md"},
+    {"def": "RM_Kirruk", "commonality": 0.2, "action": "invent", "band": "small-flier", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: RULED ridge-flier (card): comb-winged cliff soarer, REAL flight", "note": "detail row in weeping_stones_fauna_roster_2026-09-24.md"},
+    {"def": "RM_Tirbak", "commonality": 0.15, "action": "invent", "band": "huge-resident", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: walking cistern, caravan pack slot", "note": "detail row in weeping_stones_fauna_roster_2026-09-24.md"},
+    {"def": "RM_Burrak", "commonality": 0.12, "action": "invent", "band": "large-resident", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: well-digger; RULED one def (card) — the burradar elder is a role, not a second def", "note": "detail row in weeping_stones_fauna_roster_2026-09-24.md"},
+    {"def": "RM_Vhakk", "commonality": 0.08, "action": "invent", "band": "large-margin-apex", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: the warden; truce v1 RULED accepted (card) incl. tamed-predator side effect", "note": "detail row in weeping_stones_fauna_roster_2026-09-24.md"},
+    {"def": "RM_Vellak", "commonality": 0.08, "action": "invent", "band": "large-pilgrim", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: RULED RM pilgrim herd (card): tall sail-comb striders in single file; primary home an RM_ desert, named at that biome's sitting", "note": "detail row in weeping_stones_fauna_roster_2026-09-24.md"},
+    {"def": "RM_Murrin", "commonality": 0.0, "action": "invent", "band": "pool-fish-candidate", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: carried to FISH_BY_BIOME_1, not cast here", "note": "detail row in weeping_stones_fauna_roster_2026-09-24.md"}
   ],
   "evictions": [
     {"def": "BMT_Polluwog", "reason": "§10: 'anything whose body is a pollution story — sacrilege in this water'", "disposition": "homeless-reserve"},
@@ -48,7 +57,17 @@
     {"def": "Plant_Reeds", "commonality": 1.0, "law": "upright blade at the water margin — the one donor form that already obeys §4's blade law; generic architecture, not an Earth species name"},
     {"def": "RUT_Dewshrooms", "commonality": 0.4, "law": "DEW-named moisture flora (pool: not cave-flagged) — the seep-line mat register (§4 'mats on the stone')", "note": "renamed from BMT_Dewshrooms 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1): Biomes! Caverns retired, same RUT_ port already used for the_rot.json's identical plant; amendment (defName only), not a ruling change per BIOME_FREEZE_FABLE_REVIEW_1"},
     {"def": "AB_GreenRockFern", "commonality": 0.4, "law": "alien rock fern — lives on stone-shade real estate (§4: nothing here lives on soil)"},
-    {"def": "Plant_Ambrosia", "commonality": 0.12, "law": "kept from prior assignment — a rare sweet find at sacred water fits §7's romance-and-reward register; RimWorld-fictional, not Earth-nameable"}
+    {"def": "Plant_Ambrosia", "commonality": 0.12, "law": "kept from prior assignment — a rare sweet find at sacred water fits §7's romance-and-reward register; RimWorld-fictional, not Earth-nameable"},
+    {"def": "RM_Dewblade", "commonality": 1.0, "action": "invent", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: invented baseline green, wind-aligned blade tufts (weeping_stones_flora_roster_2026-09-24.md)"},
+    {"def": "RM_Weepmat", "commonality": 0.7, "action": "invent", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: corduroy mat on weep-lines, shade-keyed (weeping_stones_flora_roster_2026-09-24.md)"},
+    {"def": "RM_Verdimoss", "commonality": 0.6, "action": "invent", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: seep-line/ruin moss, zero-yield register (weeping_stones_flora_roster_2026-09-24.md)"},
+    {"def": "RM_Shadefern", "commonality": 0.4, "action": "invent", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: RULED replaces donor AB_GreenRockFern (card) (weeping_stones_flora_roster_2026-09-24.md)"},
+    {"def": "RM_Bladderquill", "commonality": 0.5, "action": "invent", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: forage staple; bladder-fruit re-points donor foragedFood off RawAgave, sheet §11 (weeping_stones_flora_roster_2026-09-24.md)"},
+    {"def": "RM_Salvecomb", "commonality": 0.2, "action": "invent", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: medicine plant, healroot-pattern, shade-keyed (weeping_stones_flora_roster_2026-09-24.md)"},
+    {"def": "RM_Rockfinger", "commonality": 0.15, "action": "invent", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: RULED tree, owner typed: scarce, scraggly, hardy, long terrible shadows from the rims of tall rocks; renamed off RG_Rimclaw collision, owner typed 'Tree turns to Rockfinger' (weeping_stones_flora_roster_2026-09-24.md)"},
+    {"def": "RM_Dripfringe", "commonality": 0.3, "action": "invent", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: overhang drip-curtain, rock-edge keyed (weeping_stones_flora_roster_2026-09-24.md)"},
+    {"def": "RM_Steamfrond", "commonality": 0.1, "action": "invent", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: seep-oasis only; seep-salt yield (weeping_stones_flora_roster_2026-09-24.md)"},
+    {"def": "RM_Dewgourd", "commonality": 0.05, "action": "invent", "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: RULED crop, owner typed: large melon-like gourd, long grow, worth a lot of food, keeps a long time; sowable at drip-gardens (weeping_stones_flora_roster_2026-09-24.md)"}
   ],
   "flora_purged": [
     {"def": "VEE_Plant_DatePalm", "reason": "Earth-nameable — the owner's own named example (card 2026-09-09)"},

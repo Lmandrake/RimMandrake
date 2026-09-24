@@ -38,3 +38,36 @@ Webwork before it (`WEBWORK_DESIGN_SITTING_1`, closed `1868e1928`).
    before adjudicating inside it).
 3. Rulings recorded on this item; roster JSON and successor FOUNDRY items
    updated; `WEEPINGSTONES_RM_MOD_BUILD_1` gets the ruled cast.
+
+## ✅ RULED 2026-09-24 — all 9 cards answered, recorded in the docs
+
+Rulings 2 and 3 are his TYPED words (verbatim in the flora doc); the rest were
+card clicks, recorded as card decisions. Headlines:
+
+1. **RM pilgrim herd YES** — tall sail-comb striders (`RM_Vellak`, working
+   name), single file down the caravan roads; canon herds stack on top.
+2. **Farmed crop YES** — typed: *"a large melon like gourd that takes a long
+   time to grow but is then worth a lot of food and keeps for a long time"* —
+   `RM_Dewgourd` (name by card); bladderquill stays wild forage.
+3. **Tree keep, scarce — Rockfinger** — typed brief: long terrible shadows
+   from the rims of tall rocks, very scraggly and hardy. First named Rimclaw;
+   on BENCH surfacing the `RG_Rimclaw` animal collision he typed *"Tree turns
+   to Rockfinger"*.
+4. **Water truce v1 accepted**, tamed-predator side effect included; honest
+   model is v2.
+5. **Burrak/burradar ONE species** — the elder is a role, not a def.
+6. **`AB_GreenRockFern` replaced** by invented `RM_Shadefern` — no donor
+   flora remains in the RM_ roster.
+7. **Ridge-flier YES** — `RM_Kirruk` (working name), comb-winged cliff
+   soarer, real flight per the flier law.
+
+Name sweep 2026-09-24: all new coinages collision-checked (probes korrum 43 /
+stoneback 87); only real hit was rimclaw, resolved by ruling 3.
+
+## Owed next (successors)
+
+- Roster JSON (`rosters/weeping_stones.json`) update + `WEEPINGSTONES_RM_MOD_BUILD_1`
+  gets the ruled cast — noted on that item.
+- Open smalls carried in the docs' "Open questions" sections (seep sub-sheet,
+  Dewshrooms Q13 copy, seep-salt yield shape, ssurr comp toggle, dewsilk tier,
+  tirbak commonality flag, ikee port candidacy). None blocks the build.

@@ -3,7 +3,28 @@
 _Drafted by a Fable design subagent, 2026-09-24, against the frozen sheet, for
 `WEEPING_STONES_DESIGN_SITTING_1`._
 
-**Status: DESIGN PROPOSAL. Nothing authored.**
+**Status: RULED 2026-09-24 (owner sitting, cards + typed words). Nothing authored yet.**
+
+## ⚖️ Rulings, 2026-09-24 sitting
+
+1. **Farmed crop: YES — the dewgourd.** Owner, typed, verbatim: *"Yes and it
+   should be a large melon like gourd that takes a long time to grow but is
+   then worth a lot of food and keeps for a long time."* Name **Dewgourd**
+   taken by question card. Row 9 below. The bladderquill stays a separate
+   wild forage plant, unchanged.
+2. **Tree: keep, scarce — renamed ROCKFINGER.** Owner, typed, verbatim: *"Yes
+   scarce but rename to Rimclaw due to its tendency to cast long terrible
+   shadows from the rims of tall rocks. Make it look very scraggly and
+   hardy."* — then, on BENCH reporting that `RG_Rimclaw` is already a live
+   animal label (ReGrowth donor, cast Desert|Scarlands): *"Tree turns to
+   Rockfinger"* (typed). Row 6 rewritten to his brief: rim-of-tall-rocks
+   placement, long terrible shadows, scraggly and hardy.
+3. **`AB_GreenRockFern`: replace with our own invented plant** (decision
+   taken by question card) — `RM_Shadefern`, row 3b. No donor flora remains.
+4. **Name collisions: CHECKED 2026-09-24** — all eight §2 coinages plus
+   dewgourd/rockfinger/shadefern swept against design/ + src/ (probes korrum
+   43, stoneback 87). Only real hit was rimclaw (the animal), resolved above.
+   Prior `mirrik`/`weep-mat` hits are this biome's own earlier commissions.
 
 Subject: the `RM_WeepingStones` biome mod (RM_ tier per Q12–Q15; live def today is
 `RUT_WeepingStones`). Companion doc: `weeping_stones_fauna_roster_2026-09-24.md`.
@@ -73,7 +94,7 @@ the wind runs wet, where the stone weeps, and where the water stands.
 | **Bladder-fruit re-points the forage economy** | sheet §11; JSON `new_defs` | one row is the forage staple that re-points donor `foragedFood` off RawAgave |
 | **Concentric rings — the most legible tile on the world** | sheet §9 | commonalities banded by ring: pool green > seep lines > wind shoulders > outer scrub |
 | **Seep oases are their own magic** | sheet §2b | one row grows ONLY at seep oases; the seep-salt tie (§11) |
-| **The free mod stands rich alone** | Q11a | eight invented rows, no donor needed |
+| **The free mod stands rich alone** | Q11a | ten invented rows, no donor needed |
 
 ## 2. Rows — the blade country (8 invented plants)
 
@@ -84,6 +105,7 @@ the wind runs wet, where the stone weeps, and where the water stands.
 | 1 | `RM_Dewblade` | dewblade | **sparse tuft of parallel upright leaf-fins, all facing ONE way** | Shin-high tufts of flat grey-green blades standing edge-on to the sun and face-on to the wind, each blade tipped with a drip-point that feeds its own root. Whole hillsides of them align like iron filings — the wind made visible. | **The baseline green** — the grass-analog and graze base. Its alignment is free art: every dewblade on a map faces the same way, so the prevailing wind reads at a glance. Denser toward water: the middle band of the concentric rings. | small / 1.0 (the commonest plant) | none; `growMinGlow` per vanilla grass, fertility rides the donor patch-makers | **OWED** |
 | 2 | `RM_Weepmat` | weep-mat | **flat corduroy mat, ridges all square to one axis** | A dark green-black mat hugging the cold stone faces, ridged like corduroy, every ridge square to the sea-wind, glistening along the weep-lines. Sheet-named (§4, §11 "weep-mats"). | **The signature mark made flora** — it grows exactly where the stone weeps, so a weep-mat IS the wet black streak's green echo, and a face without one is a face that has gone dry. Graze for the sillik; walkable moss register. | small-flat / 0.7 on shade/weep terrain, 0 in the open | placement keyed to shade — ✅ **`RM_MapComponent_ShadeGrid`** (CreatureBehaviors) already computes a shade grid; a GenStep/placement read of it is small wiring, not new machinery | **OWED** |
 | 3 | `RM_Verdimoss` | verdimoss | **low moss bosses in beaded rows, blue-green with metallic sheen** | Cushions of blue-green moss growing in beaded lines along seep cracks — and over the ancient vane arrays, where it takes the color of oxidised bronze. The sheet's palette row made a plant: "verdigris where metal meets moss." | **The relic-dresser.** It marks seep lines and it *ages the machines* — every ruin in the biome is half-mossed, which is the sacred ambiguity (§9: is the machine alive?). Zero yield; pure register, cheap density. | tiny / 0.6 on stone and ruin-adjacent cells | none; decorative-density | **OWED** |
+| 3b | `RM_Shadefern` | shadefern | **one-sided fern fronds all combed to the dark side of the rock** (RULED 2026-09-24 — replaces donor `AB_GreenRockFern`) | A deep-green fern growing only on the shaded face of standing stone, every frond swept to the cold side as if combed, pale rachis catching what light bounces in. Takes the donor fern's kept-in-role slot under our own name. | **The stone-shade fern niche** the ruled JSON kept — now donor-free. Marks which side of a rock is the cold side at a glance. | small / 0.4, shade-keyed (same `RM_MapComponent_ShadeGrid` read as the weep-mat) | none | **OWED** |
 
 ### 2b. The economy — what a colony harvests (3 rows)
 
@@ -91,7 +113,7 @@ the wind runs wet, where the stone weeps, and where the water stands.
 |---|---|---|---|---|---|---|---|---|
 | 4 | `RM_Bladderquill` | bladderquill | **fan of hollow upright quills, each swollen at the base like a waterskin** | A knee-high fan of stiff translucent quills, each fat at the base with stored water, standing in arcs along the green ring. Cut a quill and it sloshes. | 🔑 **The forage staple** — bears the **bladder-fruit** (sheet §11: food and drink in one object). This is the row that re-points the donor's `foragedFood` off RawAgave. The visible promise of the green ring: where bladderquill stands, nobody dies thirsty. | small-med / 0.5, banded to the pool ring | harvest yields `RM_BladderFruit` (item def, sheet-named); no C# | **OWED** |
 | 5 | `RM_Salvecomb` | salvecomb | **single arched frond with teeth on one edge — a comb, literally** | One waist-high arched frond per plant, serrated along its windward edge like a comb's teeth, silver-downy where it combs the fog. Grows alone in shade lines. | **The medicine plant** — the healroot the donor swap evicted, ours. Its down mats wick clean condensate; field dressing is the fiction. Rare enough to be worth a walk under the overhangs. | small / 0.2, shade-keyed | none; healroot-pattern PlantDef | **OWED** |
-| 6 | `RM_Sailfin` | sailfin tree | **ONE huge upright leaf-fin on a short trunk — a ship's sail planted in stone** | The biome's tree-analog: a stubby dark trunk carrying a single rigid two-storey leaf-fin, edge-on to the sun, face-on to the wind, drip-channels scoring its face and feeding the root ring. From a distance indistinguishable from an ancient condenser vane — **that ambiguity is the §9 register, on purpose.** | ⭐ **The wood economy and the skyline.** Slow, scattered, precious timber in high stone country; a felled sailfin is a caravan event. Its sprite is the flora's answer to the vane arrays — machine, plant, who can say. | large / 0.15, wind-shoulder keyed | none blocking; long growDays | **OWED** |
+| 6 | `RM_Rockfinger` | rockfinger | **scraggly clawed tree on a rock rim, all its reach on one side — a long terrible shadow made of wood** (RULED 2026-09-24; was `RM_Sailfin`) | Owner's brief, verbatim: *"long terrible shadows from the rims of tall rocks… very scraggly and hardy."* A gnarled, wind-stripped hardwood rooted in the rim cracks of the tall stone, branches clawing out over the drop, bark pale as the stone it grips. At this biome's low sun its shadow runs down the rock face and across the ground for many times its height — you meet the shadow before the tree. | ⭐ **The wood economy and the dread of the skyline.** Slow, scattered, precious timber in high stone country; a felled rockfinger is a caravan event. | large / 0.15, rim/high-stone keyed | none blocking; long growDays | **OWED** |
 
 ### 2c. The strange — overhangs and seep oases (2 rows)
 
@@ -100,13 +122,19 @@ the wind runs wet, where the stone weeps, and where the water stands.
 | 7 | `RM_Dripfringe` | dripfringe | **hanging fringe of downward comb-teeth under an overhang lip** | A curtain of dark fleshy fingers hanging from overhang lips and cistern mouths, each finger a drip-tip, forever ticking water into the catch-pool below. The comb inverted — teeth down. | **The overhang register** — where the biome's gloom-and-glare light rule lives (§9: hard glare above, cool gloom under the overhangs, a green fringe between). Marks natural catch-pools and cistern shafts; a dripfringe curtain over a dark mouth means water below. | small / 0.3, overhang/rock-edge keyed | placement at rock-edge cells (GenStep scatter rule; no per-tick C#) | **OWED** |
 | 8 | `RM_Steamfrond` | steamfrond | **spiral of pale fronds around a central vent-hole, crusted white at the rim** | A rosette of mineral-pale fronds spiraled around a breathing vent, rims crusted with white salt bloom. Grows ONLY at the seep oases (§2b) — the green eye in open nothing is a steamfrond ring before it is anything else. | 🔑 **The seep-oasis signature.** Where the water rises from below, the flora is fed from below too — mineral-tasting, wrong-colored, magical. Harvest scrapes **seep-salt** (sheet §11: preservative and spice with the underworld's taste; only source, the magical ones). | small-med / 0.1, seep-oasis cells only | placement keyed to seep/vent features (`VAPOR_EMITTER_PLACEMENT_1` siting is CLOSED — the cells exist to key on); salt yield is an item def | **OWED** |
 
+### 2d. The farm — the ruled crop (1 row, RULED 2026-09-24)
+
+| # | defName | label | silhouette FORM | what it looks like | job | size / commonality | mechanism | art |
+|---|---|---|---|---|---|---|---|---|
+| 9 | `RM_Dewgourd` | dewgourd | **one huge pale gourd squatting under a small comb of shade-leaves** | Owner's spec, verbatim: *"a large melon like gourd that takes a long time to grow but is then worth a lot of food and keeps for a long time."* A single melon-sized gourd per plant, rind pale and waxy as the stone, swelling in the shade of its own little blade-comb, fed by drip. | 🔑 **The sowable crop** — the reason a colony can farm here. One slow gourd is a season's promise: very long growDays, big nutrition payout at harvest, very high rot-days (the rind keeps it). Sown at drip-gardens and the pool ring's soil patches. Balances against real farmland by time, not by yield. | med / sowable only (wild rows rare at pool ring) | plain PlantDef + item def `RM_Dewgourd` fruit; long `growDays`, high nutrition, high `daysToRotStart` | **OWED** |
+
 ## 3. Kept rows from the ruled roster JSON (input — not re-adjudicated)
 
 | def | comm. | status here | note |
 |---|---|---|---|
 | `Plant_Reeds` | 1.0 | **kept** — vanilla, generic architecture, already obeys the blade law (JSON's own reading) | free for the RM_ mod: vanilla def, no dependency |
 | `RUT_Dewshrooms` | 0.4 | **kept** — our own port (renamed off BMT_ 2026-09-19); the seep-line mat register | ⚠️ shared with `the_rot.json`'s identical plant — per Q13 (shared content duplicated per biome, then regenerated) the sitting should say whether `RM_WeepingStones` carries its own copy |
-| `AB_GreenRockFern` | 0.4 | **kept in role** — but 🔴 **donor row (Alpha Biomes)**: the RM_ mod cannot depend on it | port-or-replace decision belongs to the sitting; its niche (alien fern on stone-shade) is otherwise covered by no invented row on purpose — see Questions |
+| `AB_GreenRockFern` | 0.4 | **RULED 2026-09-24: replaced by `RM_Shadefern` (row 3b)** — decision taken by question card | the kept-in-role slot survives under our own name; the donor def leaves the RM_ roster entirely |
 | `Plant_Ambrosia` | 0.12 | **kept** — vanilla-fictional; "a rare sweet find at sacred water" (JSON law) | vanilla def, free; its event coupling (ambrosia sprout) is a vanilla behavior worth a note at build time |
 
 The JSON's nineteen `flora_purged` rows (palms, bulrush, alocasia, Grindterra
@@ -116,45 +144,21 @@ copies, smokeleaf) stay purged; nothing here reopens them.
 
 | today | job | replaced by |
 |---|---|---|
-| `AB_GreenRockFern` (Alpha Biomes) | alien fern on stone-shade | port to `RM_` or admit `RM_Salvecomb`/`RM_Weepmat` cover the niche — sitting's call (Q16: a dependency is *allowed*, identity is the question) |
+| `AB_GreenRockFern` (Alpha Biomes) | alien fern on stone-shade | **RULED: `RM_Shadefern`** (row 3b, invented, card decision 2026-09-24) |
 | donor `foragedFood` = RawAgave (ZBiome_DesertOasis carry-over) | forageability target | `RM_BladderFruit` via `RM_Bladderquill` (row 4) — sheet §11 says this re-point explicitly |
 | donor terrainPatchMakers (kept in spirit per sheet §0) | the water/mud/soil islands | reauthored under `RM_WeepingStones`'s own BiomeDef at mod build — mechanical copy, no design change |
 
-## Questions for the owner
+## Open questions (ruled ones moved to the ⚖️ block at top)
 
-**Category-level first:**
-
-1. **Is a farmed crop wanted here at all?** Every row above is wild. The
-   sheet's agriculture story is vaporators and condensers (machines, §8), not
-   fields — so this draft ships no sowable native. If a Sump-dorvel-style
-   "reason a colony can eat" crop is wanted, the bladderquill is the obvious
-   candidate to make sowable. Farmed crop: yes or no?
-2. **Is the tree/wood economy wanted?** `RM_Sailfin` (row 6) gives the biome
-   scarce precious timber and the machine-or-plant skyline ambiguity. Cut it
-   and the biome has no wood at all — which is also a defensible identity
-   (everything built here is stone and salvaged vane-metal). Tree: keep or cut?
-3. **Seep-oasis flora — this roster or a seep sub-sheet?** `RM_Steamfrond`
+1. **Seep-oasis flora — this roster or a seep sub-sheet?** `RM_Steamfrond`
    (row 8) plus seep-salt is one row here; if the seep oases (§2b) deserve
    their own flora register (Wildsteam claims, vent chemistry per
    `the_seas.md`), it should move there and this roster stays dew-country only.
-
-**Per-row:**
-
-4. `AB_GreenRockFern` — port the donor def to `RM_`, or drop the row and let
-   weep-mat/salvecomb carry the stone-shade fern niche? (Row is kept-in-role
-   from the ruled JSON either way; this is only its RM_-tier form.)
-5. `RUT_Dewshrooms` — duplicate into `RM_WeepingStones` as its own copy (Q13
+2. `RUT_Dewshrooms` — duplicate into `RM_WeepingStones` as its own copy (Q13
    pattern) or leave it a shared def? Sitting's call, flagged not argued.
-6. `RM_Bladderquill` naming — "bladder-fruit" is sheet-named; is
-   *bladderquill* the plant's keeper name, or does the owner want to name it?
-7. `RM_Steamfrond`'s seep-salt — confirm seep-salt is *this* row's harvest
+3. `RM_Steamfrond`'s seep-salt — confirm seep-salt is *this* row's harvest
    rather than a mineable crust (it could be terrain-scraped instead; cheaper
-   as a plant yield).
-8. **Name collisions:** the five new coinages (dewblade, weep-mat, verdimoss,
-   bladderquill, salvecomb, sailfin, dripfringe, steamfrond) are NOT yet
-   collision-checked against `creature_names_ashkarr.md`/`Alien_Bestiary.md`
-   (the fauna names from sheet §10 were; these flora names are new today).
-   Check is owed before any def is authored.
+   as a plant yield). BENCH recommendation at build: plant yield, cheaper.
 
 ---
 
