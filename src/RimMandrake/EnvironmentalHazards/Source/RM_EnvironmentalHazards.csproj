@@ -180,6 +180,7 @@
     <Compile Include="RM_Comp_WarblingGlow.cs" />
     <Compile Include="RM_RecipeDef_HediffByproduct.cs" />
     <Compile Include="RM_Recipe_RemoveHediffWithByproduct.cs" />
+    <Compile Include="RM_Patch_LeachmossWildSpawnGate.cs" />
   </ItemGroup>
 
   <ItemGroup>
