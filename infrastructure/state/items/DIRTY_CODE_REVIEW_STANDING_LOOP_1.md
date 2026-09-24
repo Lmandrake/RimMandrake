@@ -2049,6 +2049,96 @@ tooling named in wave 28's note are still untouched; the PNG
 binary-art-tracking scope question (wave 15) is still open and still not
 this loop's to decide.
 
+## Wave 34 — 2026-09-24: `RUT_*` BiomeDef cluster CLOSED
+
+Diff-scoped all 10 remaining files, full rigor, same as waves 32-33:
+`RUT_AridShrubland.xml`, `RUT_BlueDesert.xml`, `RUT_Desert.xml`,
+`RUT_ExtremeDesert.xml`, `RUT_GreySea.xml`, `RUT_PropaneLake.xml`,
+`RUT_TheRot.xml`, `RUT_TheScald.xml`, `RUT_Umbra.xml`,
+`RUT_Wasteland.xml`. **This closes the whole `RUT_*` BiomeDef
+never-clean/re-dirtied cluster that waves 32-34 worked through.**
+
+Every added/renamed defName and every `MayRequire` packageId verified on
+disk (RimSage's live def dump was available this session — used to confirm
+`Plant_GrayGrass`/`Plant_Toxipotato`/`Plant_TreePolux` are real vanilla
+Biotech pollution flora in `RUT_Wasteland.xml`'s newly-populated
+`wildPlants`, after grep-only checks against `src/`/`vendor/` came back
+empty for them — the standing "not vendored ≠ not real" caveat this cluster
+has hit before, now cross-checked against the live game itself, not just
+plausibility). Every commonality cross-checked against its cited roster
+JSON (`the_scald`, `the_propane_lakes`, `wasteland`, `the_rot`, `desert`,
+`dune_sea_deep_desert`, `the_grey_sea`, `the_blue_desert`) or
+`cast_assignment.csv` row. `RUT_Desert.xml` (the largest diff, +179/-71) is
+a full mass-rename of ~50 bare-canon fauna/flora rows to their `RSW_`/`RM_`/
+`RUT_` ports plus several newly-wired round-2 import rows — every single
+renamed/new defName resolves, confirmed by two batched greps (the first
+timed out mid-run at 120s and was let finish in the background rather than
+half-trusted). No duplicate `wildAnimals`/`wildPlants` keys anywhere
+(checked programmatically via `xml.etree`, all 10 files, not by eye); all
+10 parse as valid XML. All 10 had zero uncommitted changes before marking
+(`git status --porcelain` empty).
+
+Two apparent bugs chased down and both resolved as NOT bugs, worth
+recording so a future wave doesn't re-chase them:
+
+- **`RUT_TheRot.xml` wires `AA_AnimaColossus`, but
+  `design/Jawa/worldbuilding/biomes/rosters/the_rot.json`'s own
+  `evictions` array still carries a *different*, unretracted entry for the
+  same defName** ("ban 2: anima (psychic-tree) creature, not fungal; the
+  pale tree owns that register alone (§7)", `homeless-reserve`) —
+  contradicting the `fauna` array's `import`/`commonality 0.5` row the XML
+  actually implements. Traced this to the closed item
+  `ROT_ROSTER_DEAD_DONOR_NAMES_1` (closed 2026-09-21), which explicitly
+  ruled `AA_AnimaColossus | wire as-is` without addressing the older ban-2
+  eviction on record. **The XML is correct — it implements the later,
+  closed-item ruling** — but the roster JSON's `evictions` row is now
+  stale/contradictory and nobody has reconciled it. This is a content
+  question (does the later ruling knowingly override ban 2, or was the
+  eviction simply missed?), not a code defect, so left unfixed and
+  unfiled — flagging here for whoever next touches Rot roster hygiene.
+- **`RUT_ExtremeDesert.xml` silently drops `AA_BoulderMit`, which
+  `design/Jawa/worldbuilding/biomes/rosters/dune_sea_deep_desert.json`'s
+  `fauna` array still lists as `"action": "keep"` at commonality 0.025, with
+  no eviction record.** Initially read as an undocumented content-loss bug
+  (every other removal in that same diff cites a reason). Resolved: the
+  diff's own header comment already covers it under a different name —
+  `AA_BoulderMit` is the donor def behind `RSW_Stoneback`/`RSW_Korrum` (the
+  "korrum"/"bokka" `STONEBACK_DEFNAME_COLLISION_1` /
+  `BIOME_SPECIFIC_FAUNA_LAW_1` "one arid home" ruling the diff cites by its
+  ported name, not its donor name). The `dune_sea_deep_desert.json` `fauna`
+  row is the stale artifact here (same class of staleness as the Rot
+  finding above, in a different roster) — again a roster-hygiene question,
+  not a code defect, left unfixed.
+
+Both findings are roster-JSON staleness, not BiomeDef-XML defects, and both
+are outside this loop's scope to resolve (content/provenance judgment calls
+per this session's brief) — recorded here rather than silently dropped, per
+`nothing-learned-is-dropped-for-space`.
+
+All 10 marked CLEAN, commit `772109351`, pushed.
+
+**Re-derived the full non-PNG re-dirtied list fresh** (`code_review_status.py
+list`, TALLY line): **61 DIRTY** (well under the earlier "~78" figure — most
+of the shrinkage is the just-closed `RUT_*` cluster). Grouped by directory,
+the two largest surviving clusters are tied at 9 files each:
+
+- `src/RimUtinni/UtinniPatches/Patches/` — `AnimalTolerances_Ashkarr.xml`,
+  `AshStorms_Pyrelands.xml`, `BiomeDescriptions_Ashkarr.xml`,
+  `BiomeFlora_Ashkarr.xml`, `FishTypesStrip_NoFishBiomes.xml`,
+  `ManyWaters_RiverSteam_Ashkarr.xml`, `PlantTolerances_Ashkarr.xml`,
+  `SandFishing_CrackedLands.xml`, `WildAnimals_Pyrelands.xml` — all
+  diff-eligible (already CLEAN once per the list output).
+- `src/RimMandrake/Utils/` (top-level scripts, not the `artpipe/` or
+  `rimflow/` subdirectories, which are their own smaller clusters at 2 and
+  6 files respectively) — `ashkarr_paint.py`, `ashkarr_settle.py`,
+  `codebase_health.py`, `codebase_health_publish.py`, `handoff.py`,
+  `modset_builder.py`, `project_maturity_dashboard.py`,
+  `run_selftests.py`, `structure_roster_lint.py`.
+
+`src/RimStarWars/Armoury/Source/` (5 `gen_*_absorption.py` files) and
+`src/RimMandrake/rimflow/` (6 files) are the next-largest after those two.
+Not started — left for whoever picks this up next, per this wave's brief.
+
 ## FOUNDRY, 2026-09-24 (orchestrating window): PNG scope question RESOLVED — binary art gets a deterministic bulk probe, not per-file LLM review
 
 **Owner ruling, verbatim: "PNG's and other binary content for dirty clean health could just do a quick probe that they are a well formed image file (or whatever they are). This should be done in bulk and swiftly using deterministic tools."**
