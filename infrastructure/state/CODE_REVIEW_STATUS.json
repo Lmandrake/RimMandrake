@@ -12939,11 +12939,59 @@
     "hash": "a3feb4364d276a235a31a323c012c3399612f17ac5d844173db34378087c9f0e",
     "sha": "032461ff4"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Drazzik.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f57d15f403cfe258ca673f548f499a6ca4b6fb55a3d863bf960c68cd110444dc",
+    "sha": "41ce89ca8"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Eopie.xml": {
     "cleanCount": 2,
     "date": "2026-09-24",
     "hash": "6bd7715d08551cbf0bd452c9ce5ca12ef353328a058cbe7595df0ba7f7b01f20",
     "sha": "77792d0a9"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Falumpaset.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9b48c44503be5430098996c2d6c0a57296e09bfbe96a05510cfd8b1b575af98b",
+    "sha": "41ce89ca8"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Fambaa.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3541374a9123684f00ae94f007ee9f9482b1d30de5990e022147691ab6866edd",
+    "sha": "41ce89ca8"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Fanback.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f827cfe0de70aa01f70a58afb5ad7236fa2d490d6ee0096b3b3ae90cb1260042",
+    "sha": "41ce89ca8"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_FeralGrazer.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b36f0b0bf4551c3166116a49eb25a77f7b70730e6536db9e0e5cc7b8e5bf0e44",
+    "sha": "41ce89ca8"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_FeralNerf.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b17b9b89e3f277c51e516d45621523d596be447d1c8ef341a13c2d09a1b988c3",
+    "sha": "41ce89ca8"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_FrilledGorg.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "201f6bc04a3597a707febb42f4015aa9377b8230febaa6faa5f1e12686f8b1fb",
+    "sha": "41ce89ca8"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Gelagrub.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "735bcc6972841b72e3cf7c36398fcf7f4751a2fcf5855959d46b6458386c5d2d",
+    "sha": "41ce89ca8"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_GreatDevourer.xml": {
     "cleanCount": 1,
