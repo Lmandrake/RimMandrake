@@ -99,7 +99,11 @@ a war.** Two engines, and they are the same engine:
   breeding ground: the young here, the adults in the terminator waters).
   Juveniles swarm the shallows, small and almost charming and cheap to hunt —
   and every scavenger knows the arithmetic: **don't kill what's small here;
-  its mother is the reason ships sink.** The parents' desperate gamble with
+  its mother is why nobody goes out onto the open water.** 🔴 *(Corrected
+  2026-09-23, owner: there are no nautical ships in this world, so the old
+  phrasing — "the reason ships sink" — was a dead metaphor. The arithmetic it
+  expressed is unchanged: the small are cheap, the parents are
+  catastrophic.)* The parents' desperate gamble with
   their own young is the biome's soul in miniature (owner): send them into
   the muck, and they die or come back stronger.
 - ⭐ **The warden mothers.** The adults that stay: brine-broken elders too old

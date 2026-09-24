@@ -93,9 +93,13 @@ physically cannot.
     lands them on `RM_Thrannock`'s flotsam root-lines, an economy the sheet already has. ⛔ Not
     Rescue and not general Haul: both need land, and an animal that fails its own trained job is a
     bug wearing a feature.
-  - ⭐ **succession is the payoff.** When she dies, a raised young may take the crèche — and ⛔ it
-    must NOT be guaranteed. The sheet's thesis is *"rebirth… maybe"*; if the player rescued
-    nothing, the crèche is just a place and the scavengers come.
+  - ⭐ **succession is the payoff, and the successor is still a CHILD.** ⛔ The "raise it into a
+    leviathan" version is **CUT** — owner, 2026-09-23: *"the game isn't that long to watch it
+    grow."* ⇒ ⛔ Nothing may depend on a maturation arc, there is no "it leaves for the sea", and
+    ⛔ the note about meeting the grown adult later is **withdrawn**. What inherits the crèche is a
+    tamed juvenile a fraction of her size, which needs **no growth simulation** (the same anchor
+    comp on a smaller creature) and is what the sheet already describes — *"the sea's memory dying
+    in its lifeboat."* The gift is continuity, not a replacement. ⛔ Still not guaranteed.
 - 🔴 **Foreshadowing her age is a REQUIREMENT and subtlety is failure.** Visibly ancient in the art
   brief (⛔ not merely large), an inspect string that says it outright, a measurable slowing as she
   ages, and somebody who tells you — the Deepwater vigil measure the brine yearly and would know
@@ -105,6 +109,21 @@ physically cannot.
   and watches you walk inland. ⛔ No land-walking upgrade, no tank, no carrying it about. The
   affection is real and the geography does not care — that inversion of the mother's own tragedy is
   the content, not a defect.
+- ⭐ **CANALS are in scope and they change her category — ruled 2026-09-23, design in §6b of the
+  roster.** Because she goes where water goes and a canal is water a colonist put there, her reach
+  becomes **player-authored**: you can canal her inland and buy her protection with labour instead
+  of location. 🔴 **And you can strand HER** — a canal that silts, is cut, or is redrawn by a surge
+  leaves the giant who cannot leave water sitting in a dry ditch, needing you, by your own doing.
+  ⚠️ Designed against **`mandrake.rm.flowworks`**, which is ours; **no mod named "Earth Flow" is in
+  the 2026-09-19 snapshot of 621 active mods**, and the live list is unreachable from the Mac, so
+  if a third-party canal mod is intended its behaviour must be measured on the Desktop first.
+  🔴 **Gating engine question, UNMEASURABLE on the Mac:** does a FlowWorks canal produce terrain a
+  pawn can actually PATH on? If not, every canal implication is fictional. ⛔ And a canal must never
+  carry her onto dry land — the moment a canal is treated as a bridge, the creature is ruined.
+- 🔴 **Corrected on his word 2026-09-23: there are no nautical ships in this world.** The sheet's
+  *"its mother is the reason ships sink"* was a dead metaphor, amended in `the_miasma.md` §4 to
+  *"why nobody goes out onto the open water."* ⚠️ `design/Jawa/campaign/CAMPAIGN_ARC_GATHER.md` G34
+  still quotes the old phrasing and is stale — ⛔ do not propagate it further.
 - ⚠️ **Depends on the stranded**, which per the same sitting are a *condition* on nursery juveniles
   rather than their own species (`MIASMA_FAUNA_FLOOR_ROSTER_1` §3) — and the free tier's nursery
   depends on `SEA_BEASTS_TIER_RULING_1` landing. Sequence after both.

@@ -116,8 +116,10 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 **G33 — the Fever Wood's "Tenant".** `RULED (2026-09-07, ratified per README_BIOME_GRAMMAR.md row)`
 > "**The Tenant**" is the deep thing's internal working name" … "## F1. The Tenant — one aquifer, one entity, never seen (§4, §6.1)" — `design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md` (lines 9, 44). The biome SHEET carries no "Tenant" (its §8 names Sporefall); the KIT spec is the Tenant's home. Doubt resolved 2026-09-12 (BENCH follow-up, direct read of the kit spec). Campaign-beat purpose beyond the kit: `GAP`.
 
-**G34 — the Miasma's warden-mothers.** `RULED (sheet); campaign purpose GAP`
-> "**The warden mothers.** The adults that stay: brine-broken elders too old …" and "its mother is the reason ships sink." — `design/Jawa/worldbuilding/biomes/the_miasma.md`. Spine-beat purpose: `GAP`.
+**G34 — the Miasma's warden-mothers.** `RULED + DESIGNED 2026-09-23; campaign purpose ANSWERED`
+> "**The warden mothers.** The adults that stay: brine-broken elders too old …" and "its mother is why nobody goes out onto the open water." — `design/Jawa/worldbuilding/biomes/the_miasma.md`.
+
+🔴 **Amended 2026-09-23 by owner ruling at a sitting, and this entry is no longer a `GAP`** — she is the Miasma's centrepiece rather than a static set-piece. She lumbers within the water and cannot reach dry land; she spawns, sometimes bringing stranded young; she is **befriended, never tamed**, by freeing a young she cannot reach; her young are trainable and self-tame where nothing has been done against them; she dies of age and a child may inherit her crèche; canals make her reach player-authored. ⛔ The sheet's former *"stationary"* and *"never random spawns"* clauses are superseded, and so is the *"ships sink"* metaphor — **there are no nautical ships in this world** (owner, 2026-09-23). Authority: `miasma_fauna_roster_2026-09-23.md` §6/§6a/§6b and `WARDEN_MOTHER_BEFRIENDING_1`.
 
 **G35 — the Deeps (three seas).** `DRAFTED (concept + v1 build spec); campaign wiring GAP`
 > "**Because the map already paid for it.** Three seas were hand-authored into a fixed world and currently hold nothing. This mod is the reason they exist." — `design/Jawa/worldbuilding/depths_concept.md` §8. Purposes stated there: sunken colonization-age fleet salvage, leviathan materials, sea-floor quest vaults, Oomo's pilgrimage, the bolt-hole "the one refuge orbital power cannot audit." v1 slice: `RM_Seafloor_WreckField` (`depths_build_spec_v1.md`). No spine beat cites the Deeps: `GAP`.
