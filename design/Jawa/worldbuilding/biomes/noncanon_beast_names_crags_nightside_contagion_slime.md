@@ -202,9 +202,10 @@ Read aloud: wummo, wollub, bezzul, hennul, mubbrak, wuppik, yollum, thummorak, v
    `Toxalope` (Biotech), `LavaSnail`, `StoneCrab`, `ColossusToad` (Odyssey), `GiantAnt_Race`
    (They!). A label patch on a vanilla def changes every RimWorld game the mod loads in. Scope
    question, no draft.
-5. **Two are UNCERTAIN and were not drafted:** `Vapaad` (Mlie's spelling of the Legends
-   *Vaapad*, probably canon), `TetnissCrab`. (`WarWyrm` and `FeralGrazer` were listed here until
-   2026-09-24; batch 4 measured both as canon Legends creatures — see Appendix B.)
+5. **No UNCERTAIN rows remain.** `Vapaad` and `TetnissCrab` were listed here as uncertain until
+   2026-09-24; batch 5 measured both as canon (Wookieepedia *Vaapad/Legends* is our def's text;
+   *Tet'niss* is a named trash crab) — see Appendix B. (`WarWyrm` and `FeralGrazer` were listed
+   here the same way until batch 4 measured them canon.)
 6. **Sea cast:** the Miasma/Scald/Grey Sea/Twilight Sea rosters carry canon Naboo fish
    (mee, faa, laa, yobshrimp, opee, sando, colo — keep, including the *young* and *elder*
    variants) beside a non-canon sea cast (silt lamprey, rust nipper, pod worm, tumorfish,
@@ -260,13 +261,13 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `forsaken_crags` | 16 |  |  | 1 |  | 14 | 1 |  |  |
 | `nightside_ice` | 10 | 2 |  |  |  | 8 |  |  |  |
 | `poison_forest` | 24 | 6 | 1 |  |  | 16 | 1 |  |  |
-| `the_blue_desert` | 2 |  |  |  |  | 1 |  | 1 |  |
+| `the_blue_desert` | 2 | 1 |  |  |  | 1 |  |  |  |
 | `the_contagion` | 16 |  | 2 |  |  | 14 |  |  |  |
 | `the_cracked_lands` | 12 | 5 |  |  |  | 7 |  |  |  |
 | `the_fever_wood` | 12 | 7 | 1 |  |  | 4 |  |  |  |
 | `the_forge` | 9 | 3 |  |  |  | 5 |  |  | 1 |
 | `the_greentide` | 22 | 16 | 1 |  |  | 4 |  |  | 1 |
-| `the_grey_sea` | 8 | 2 |  |  |  | 5 |  | 1 |  |
+| `the_grey_sea` | 8 | 3 |  |  |  | 5 |  |  |  |
 | `the_lantern_deeps` | 2 |  | 1 |  |  | 1 |  |  |  |
 | `the_miasma` | 32 | 17 |  |  |  | 15 |  |  |  |
 | `the_propane_lakes` | 6 |  |  |  |  | 6 |  |  |  |
@@ -281,7 +282,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `the_webwork` | 6 | 3 |  |  |  | 3 |  |  |  |
 | `wasteland` | 15 | 1 | 4 |  |  | 7 | 2 |  | 1 |
 | `weeping_stones` | 10 | 8 | 1 |  |  |  |  |  | 1 |
-| **distinct defs** | **309** | **118** | **16** | **1** | **6** | **156** | **5** | **2** | **5** |
+| **distinct defs** | **309** | **120** | **16** | **1** | **6** | **156** | **5** | **0** | **5** |
 
 ## Appendix B — every beast, one row per def
 
@@ -486,7 +487,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_Radyak` | radyak | poison_forest | Alpha Animals | NONCANON | donor art |  |
 | `AA_RaptorShrimp` | raptor shrimp | the_miasma | Alpha Animals | NONCANON | donor art |  |
 | `AA_RayHound` | ray-hound | the_scald | Alpha Animals | NONCANON | donor art |  |
-| `AA_Razorjack` | razorjack | the_contagion, the_pyrelands | Alpha Animals | NONCANON |  done:3 | DRAFTED HERE: skezzar |
+| `AA_Razorjack` | razorjack | the_contagion, the_pyrelands | Alpha Animals | NONCANON |  done:3 | DRAFTED HERE: skezzar — ⚠️ CONFLICTS with the owner's own card pick *sytheclaw* (2026-09-14, `RAZORJACK_IDENTITY_RESTYLE_1`), live on the Pyrelands port `RUT_Sytheclaw`; batch 5 flag 1 |
 | `AA_RedGoo` | red goo | nightside_ice, the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ghelluva |
 | `AA_RedSpore` | red spore | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: vezzok |
 | `AA_RipperHound` | ripper hound | poison_forest | Alpha Animals | NONCANON | donor art |  |
@@ -588,8 +589,8 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `RSW_Screecher` | screecher | poison_forest, wasteland | RimMandrake: SW — Bestiary | NONCANON* | donor art | non-canon beast wearing a REAL Wookieepedia title ('Screecher') — rename fixes a false canon read |
 | `RSW_ShiroTrap` | shiro-trap | the_rot | RimMandrake: SW — Bestiary | CANON | donor art | Wookieepedia: Shiro-trap — the Naboo Shiro/Tooke-trap symbiote; our description IS that text (corrected 2026-09-24, batch 4: was wrongly NONCANON*) |
 | `FeralGrazer` | feral grazer | desert | Star Wars Animal Collection | CANON |  done:3 | Wookieepedia: Grazer (Alderaan) — "related to the Nerf… wild grazers were significantly leaner"; our description is that text (corrected 2026-09-24, batch 4: was UNCERTAIN) |
-| `TetnissCrab` | tet'niss crab | the_grey_sea | Star Wars Animal Collection | UNCERTAIN | donor art | Wookieepedia has 'Tet'niss'; whether the crab is canon or Mlie's coinage on a canon word is unverified |
-| `Vapaad` | vapaad | the_blue_desert | Star Wars Animal Collection | UNCERTAIN | donor art | Mlie spelling of the Legends 'Vaapad' (Sarapin predator) — probably canon, misspelt |
+| `TetnissCrab` | tet'niss crab | the_grey_sea | Star Wars Animal Collection | CANON | donor art | Wookieepedia: Tet'niss — "a gigantic female trash crab on Lanupa" (*Skeleton Crew*, 2024); the species is the canon *trash crab*, the label carries the individual's name (corrected 2026-09-24, batch 5: was UNCERTAIN). Sea batch. |
+| `Vapaad` | vapaad | the_blue_desert | Star Wars Animal Collection | CANON | donor art | Wookieepedia: Vaapad/Legends — "brown ball-shaped, multi-tentacled creatures with two yellow eyes… native to Sarapin"; our description is that text, Mlie misspelt the title (corrected 2026-09-24, batch 5: was UNCERTAIN). Keep; *vaapad* spelling is a canon-label question. |
 | `WarWyrm` | war wyrm | dune_sea_deep_desert | Star Wars Animal Collection | CANON |  done:3 | Wookieepedia: Sith wyrm — "originally an infant exogorth… Naga Sadow… fourth moon of Yavin"; the def's own text says "sometimes called the 'sith wyrm'" (corrected 2026-09-24, batch 4: was UNCERTAIN) |
 | `ColossusToad` | colossus toad | weeping_stones | Odyssey | SCOPE? | donor art | Odyssey — renaming a vanilla/DLC label is a game-wide patch; scope question |
 | `GiantAnt_Race` | giant ant | the_greentide | They! (Giant Ants) | SCOPE? | donor art | They! (Giant Ants) — Earth animal, donor mod — renaming a vanilla/DLC label is a game-wide patch; scope question |
