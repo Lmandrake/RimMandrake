@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 114.61395119898953,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 114.61395119898953,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "canon_insectomorph_v1_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790272973,
+    "primary_used_percent": 8.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/24/rollout-2026-09-24T06-02-45-01a0d382-e335-72d0-a2da-fc4287bf1a4e.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 48.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/23/rollout-2026-09-23T23-03-22-01a0d202-ebdc-7c13-aa8b-53c4012d5d6a.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "canon_insectomorph_v1_east",
+    "note": "Generated via built-in imagegen; resized and padded to exactly 512\u00d7512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\canon_insectomorph_v1_east\\canon_insectomorph_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/canon_insectomorph_v1_east/canon_insectomorph_v1_east.png\n    512x512  rgba  171,869 bytes  (114s)\n"
+}

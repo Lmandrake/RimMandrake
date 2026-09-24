@@ -101,3 +101,32 @@ deployed yet as of the current process's launch, same as every other def-only ch
 this session waiting on a restart. Flagging rather than asserting: if a restart
 happens and `RSW_Korrum` is STILL missing afterward, that would be a real defect
 worth its own investigation, not assumed here.
+
+## FOUNDRY, 2026-09-24 (BELT art slot): channel recovered, all 3 art jobs GENERATED
+
+The "no image produced ... exit 1" failures across the whole daemon batch (this item's
+note above, `bluedesert_*`, `rsw_zakkro_*`, etc.) were re-checked against their own
+`worker_stderr_tail`, not assumed: every one carries `ERROR: You've hit your usage
+limit ... try again at Sep 24th, 2026 12:23 AM` — a genuine Codex quota exhaustion
+(local/Pacific time, matching the rollout-path timestamps), **not** the websocket 403
+outage this item's previous note guessed at. By the time this pass started (2026-09-24
+~06:02 Pacific / 13:02 UTC) that reset time was ~5.5 hours in the past.
+
+Ran `requeue_quota_failures.py` (the tool built for exactly this — moves any
+`failed/*.manifest.json` carrying the quota sentence back to `pending/`): 168 jobs
+requeued, including all three `RSW_Korrum_{south,east,north}`. Bumped the three
+Korrum jobs' `priority` from 150 to 1 so they claimed ahead of ~140 other
+priority-100 jobs. **All three landed in `done/` with `status: ok`,
+`worker_status: ok`** — confirmed by reading each `.manifest.json` directly, not
+inferred. 16 of the first ~20 requeued jobs resolved within the observation window,
+0 new failures. **Channel is healthy as of this session.**
+
+Two `artpiped.py` processes were found running (PIDs from ~09:22 and ~21:11 the
+previous day) — checked via `/proc/<pid>/fd`, not killed: they hold **disjoint**
+worker-slot leases (w0/w1/w2 vs w3/w4/w5), so this is two independent worker pools
+sharing the queue, not a stuck duplicate. Left both running.
+
+Next step per this item's own spec: land the three generated PNGs into
+`src/RimStarWars/SWBestiary/Textures/` under our own namespaced path and repoint
+`RSW_Korrum`'s `texPath`/`bodyGraphicData`/all three `lifeStages` entries — not done
+this pass (art-regen slot only, no def/texture wiring).

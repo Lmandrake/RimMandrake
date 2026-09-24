@@ -1,12 +1,12 @@
 {
-  "attempt_elapsed_s": 85.57148372998927,
+  "attempt_elapsed_s": 117.41389471001457,
   "channel": "codex",
   "daemon_attempts": 1,
-  "elapsed_s": 85.57148372998927,
+  "elapsed_s": 117.41389471001457,
   "facts": "PASS",
   "facts_findings": [],
   "height": 512,
-  "id": "desertportb_feralgrazer_north",
+  "id": "RSW_Korrum_east",
   "legibility": "skipped",
   "legibility_findings": [
     "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
@@ -15,22 +15,22 @@
     "grumpy": false,
     "ok": true,
     "primary_resets_at": 1790272973,
-    "primary_used_percent": 36.0,
+    "primary_used_percent": 30.0,
     "primary_window_minutes": 300,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/24/rollout-2026-09-24T06-09-59-01a0d389-811c-71a0-aee0-3682a1019bd7.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/24/rollout-2026-09-24T06-08-10-01a0d387-d7bc-7f11-8cf6-625074788810.jsonl",
     "secondary_resets_at": 1790785352,
-    "secondary_used_percent": 52.0,
+    "secondary_used_percent": 51.0,
     "secondary_window_minutes": 10080
   },
   "meter_before": {
     "grumpy": false,
     "ok": true,
     "primary_resets_at": 1790272973,
-    "primary_used_percent": 29.0,
+    "primary_used_percent": 22.0,
     "primary_window_minutes": 300,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/24/rollout-2026-09-24T06-07-59-01a0d387-ab62-7222-ab09-73b760abe7dd.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/24/rollout-2026-09-24T06-06-32-01a0d386-5b30-7130-90d8-a68f02c63fa8.jsonl",
     "secondary_resets_at": 1790785352,
-    "secondary_used_percent": 51.0,
+    "secondary_used_percent": 50.0,
     "secondary_window_minutes": 10080
   },
   "mode": "generate",
@@ -48,13 +48,13 @@
     "corners_transparent": true,
     "has_alpha": true,
     "height": 512,
-    "id": "desertportb_feralgrazer_north",
-    "note": "Generated via built-in imagegen from the provided rear-facing feral grazer prompt; resized to exactly 512\u00d7512 while preserving transparent alpha.",
-    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_feralgrazer_north\\desertportb_feralgrazer_north.png",
+    "id": "RSW_Korrum_east",
+    "note": "Generated the east-facing boulder-shelled Korrum in painterly desert tones, resized to exactly 512\u00d7512, and preserved transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RSW_Korrum_east\\RSW_Korrum_east.png",
     "status": "ok",
     "width": 512
   },
   "worker_status": "ok",
   "worker_stderr_tail": "",
-  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_feralgrazer_north/desertportb_feralgrazer_north.png\n    512x512  rgba  123,014 bytes  (85s)\n"
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_Korrum_east/RSW_Korrum_east.png\n    512x512  rgba  388,362 bytes  (117s)\n"
 }
