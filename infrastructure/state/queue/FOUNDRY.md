@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T14:40:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T15:01:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -62,15 +62,6 @@ target:   v1
 kind:     build
 summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
 prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
-
-## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31).
-prose:    infrastructure/state/items/SETTLEMENT_VISIT_LOOP_1.md
 
 ## SETTLEMENT_VERBS_WAVE_1 v1 interaction verbs: crime suite, salvage-law gray zone, walkable commerce, social fabric
 state:    doing
@@ -899,15 +890,6 @@ target:   v1
 kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
-
-## KORRUM_ART_REGEN_1 The korrum has no art of ours: texPath still points at Alpha Animals' own texture; 3 jobs re-keyed and quota-blocked to ~2026-09-26
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  1. When the daemon clears, confirm infrastructure/artpipe/done/ (and registry.jsonl)
-prose:    infrastructure/state/items/KORRUM_ART_REGEN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

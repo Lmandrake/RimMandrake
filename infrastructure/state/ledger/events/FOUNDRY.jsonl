@@ -34,3 +34,9 @@
 {"seat":"FOUNDRY","event":"start","id":"KORRUM_ART_REGEN_1","ts":"2026-09-24T13:18:35Z"}
 {"seat":"FOUNDRY","event":"needs","id":"KORRUM_ART_REGEN_1","to":"bridge","reason":"art landed + def repointed + validated + deployed offline; live-render check across all 3 life stages needs the bridge","ts":"2026-09-24T13:18:36Z"}
 {"seat":"FOUNDRY","event":"note","id":"KORRUM_ART_REGEN_1","text":"Art landed under swanimals/Korrum/, all 3 lifeStages texPath repointed off AA_BoulderMit, validate_patch.py clean, deployed to SWBestiary. Left doing: live-render proof at all 3 life stages owed to bridge holder. See item prose for full detail.","ts":"2026-09-24T13:18:37Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"BACTA_TANK_CORE_1 live proof (owner said this is me now)","ts":"2026-09-24T13:30:29Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"live test: Bacta/Korrum/Settlement","ts":"2026-09-24T13:55:32Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-24T14:07:59Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"live test v2: Bacta/Korrum/Settlement, no quicktest","ts":"2026-09-24T14:32:12Z"}
+{"seat":"FOUNDRY","event":"close","id":"KORRUM_ART_REGEN_1","sha":"124ac564e0aaaec263b5ba68bdbc3d3364544f8e","reason":"live render confirmed: real non-donor korrum art at all three facings, screenshot evidence","ts":"2026-09-24T15:01:35Z"}
+{"seat":"FOUNDRY","event":"close","id":"SETTLEMENT_VISIT_LOOP_1","sha":"124ac564e0aaaec263b5ba68bdbc3d3364544f8e","reason":"full arrival-compose-departure-gate_search-teardown-casing_persistence loop proven live, independently verified at each step","ts":"2026-09-24T15:01:40Z"}
