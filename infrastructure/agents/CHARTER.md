@@ -42,6 +42,18 @@ CLAUDE.md owns the rules ("Git" + the Transient rule). Charter's additions only:
 commit when a unit of work exists, and `git status --porcelain <path>` before
 touching a file another window may hold.
 
+🔑 **A subagent touching more than a couple of files, or expected to run more than a
+couple of minutes, gets `isolation: "worktree"` on the `Agent` call** — its own
+working tree and its own `.git/index` off this repo, so its staging never collides
+with BENCH's or FOUNDRY's live window mid-run. This was always available on the
+`Agent` tool; the gap was that nobody defaulted to it. Landing the result: `git-efficiency`
+(structural-fix section) for why worktrees exist, `[[merging-worktree-agent-branches]]`
+(session memory) for the actual merge recipe — expect conflicts only on the handful
+of files every worktree regenerates independently (`events.jsonl`, `queue/*.md`, the
+codebase-health artifacts), never on the agent's real work, and resolve those by
+regenerating fresh rather than hand-merging. A quick single-file edit doesn't need
+this — the ceremony only pays for itself once there's real concurrent-edit risk.
+
 ## Queue
 
 An item is one line — `THREE_UPPER_SNAKE_WORDS_# · lane · the ask` — plus optional

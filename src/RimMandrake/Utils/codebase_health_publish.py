@@ -89,6 +89,26 @@ def sh(*args):
     return None if r.returncode != 0 else r.stdout.strip()
 
 
+def rebase_or_merge_in_progress():
+    """True while `.git` shows an in-flight rebase or merge.
+
+    🔴 THIS IS WHY "the rebase looks stuck" kept happening. The post-commit hook
+    fires once per replayed commit during a rebase, and `_trigger_health_rebuild`
+    fires on every rimflow `prune`/`list` too — either one landing mid-rebase used
+    to write 5 tracked artifacts into an already-delicate worktree, so `git status`
+    showed unstaged changes that `rebase --continue` then refused to skip past.
+    Refusing to write here, at the one place every caller funnels through, fixes
+    it for all of them at once rather than teaching each caller separately.
+    """
+    git_dir = sh("git", "rev-parse", "--git-dir")
+    if not git_dir:
+        return False
+    if not os.path.isabs(git_dir):
+        git_dir = os.path.join(REPO, git_dir)
+    return any(os.path.exists(os.path.join(git_dir, name)) for name in
+               ("rebase-merge", "rebase-apply", "MERGE_HEAD"))
+
+
 def fingerprint():
     """HEAD + the working tree. Either moving is a real change to this picture.
 
@@ -252,6 +272,13 @@ def main():
     ap.add_argument("--force", action="store_true", help="rebuild even if the rule says no")
     ap.add_argument("--check", action="store_true", help="report only; write nothing")
     a = ap.parse_args()
+
+    if rebase_or_merge_in_progress():
+        # ⛔ Not even --force: writing derived artifacts into a mid-rebase worktree
+        # is the exact harm this guard exists to prevent, force or no force.
+        print("SKIP: a rebase or merge is in progress — refusing to touch the "
+              "worktree until it resolves.")
+        return 3
 
     st, fp, now = load_state(), fingerprint(), time.time()
     if fp is None:
