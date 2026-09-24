@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T20:47:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T20:48:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -143,6 +143,15 @@ target:   v1
 kind:     design
 summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
+
+## NIGHTSIDE_ICE_DESIGN_SITTING_1 The Nightside Ice design sitting: refine to full mod glory (owner directive 2026-09-24)
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  (no items/NIGHTSIDE_ICE_DESIGN_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NIGHTSIDE_ICE_DESIGN_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
