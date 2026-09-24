@@ -28,12 +28,12 @@
 
   `useMeatFrom AA_ArcticLion` (unported donor creature) substituted with
   vanilla `Cougar` — same substitute already used for this batch's sibling
-  big-cat predator port, `RSW_Dunestalker` (AA_SandProwler). `leatherDef
+  big-cat predator port, `RSW_Vosska` (AA_SandProwler). `leatherDef
   AA_SandLion_Leather` substituted with vanilla `Leather_Panthera` (a big-cat
   leather already shipped in Core). Donor life-stage sounds
   (`AA_ArcticLion_Wounded/Death/Angry/Call`) are not ported (unported donor
   sound defs); omitted, matching the sibling ports in this same wave
-  (`RSW_Dunestalker`/`RSW_Sandstrider`) which also ship with no custom vocal
+  (`RSW_Vosska`/`RSW_Ossik`) which also ship with no custom vocal
   set.
 
   Art: donor's own texture used as a loud TEMP PLACEHOLDER (round2 disposition

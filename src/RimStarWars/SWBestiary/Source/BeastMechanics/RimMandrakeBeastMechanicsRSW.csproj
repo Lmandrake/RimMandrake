@@ -5,9 +5,9 @@
 
     The three gameplay mechanics DESERT_FAMILY_PORT_EXECUTION_1 dropped when it
     ported the desert family off its donor frameworks:
-      * RSW_Ferroclaw   steel diet      (was VEF.AnimalBehaviours.CompEatWeirdFood)
-      * RSW_Voltmaw     plasma volley   (was VEF.AnimalBehaviours.CompInitialAbility)
-      * RSW_Cindermite  chemfuel spew   (was CompInitialAbility + VFEInsectoids.CompAbilityFuelSpew)
+      * RSW_Khorrak   steel diet      (was VEF.AnimalBehaviours.CompEatWeirdFood)
+      * RSW_Vozzik     plasma volley   (was VEF.AnimalBehaviours.CompInitialAbility)
+      * RSW_Zhakka  chemfuel spew   (was CompInitialAbility + VFEInsectoids.CompAbilityFuelSpew)
     Each file's own header says what the donor did and where that was measured.
 
     Same net472 / NuGet-reference-assemblies shape as this mod's sibling
