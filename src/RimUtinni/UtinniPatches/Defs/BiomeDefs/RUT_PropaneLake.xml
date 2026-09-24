@@ -124,18 +124,20 @@
          — the owner ANSWERED that question 2026-09-24 (sea_catch_rosters_
          2026-09-24.md, superseded ruling 3): the Propane Lake carries a real
          catch table below, so providesCatch now stands at its default (true,
-         the field is omitted here rather than restated). shallowTerrain
-         repointed to RUT_PropaneShallow (sibling TerrainDefs/
-         RUT_PropaneShallow.xml) rather than the donor AB_SolidPropane: the
-         donor pair is waterBodyType None / a non-water solid, so no fishing
-         zone could ever form there (engine read, MEASURED 2026-09-23) — the
-         new terrain is a real Saltwater water body at the margin instead.
+         the field is omitted here rather than restated). The shore terrains
+         are FlowWorks' own propane suite (RM_PropaneShallow / RM_PropaneDeep,
+         mandrake.rm.flowworks, the ManyWaters absorption) - owner card
+         2026-09-24 - not the donor AB_ pair and not a duplicate of our own:
+         the donor pair is waterBodyType None / a non-water solid, so no
+         fishing zone could ever form there (engine read, MEASURED
+         2026-09-23); the FlowWorks shallow now carries waterBodyType
+         Saltwater for exactly this (generate_liquid_suite.py propane row).
          MayRequire on the <li> is load-bearing: an unresolvable extension
          class discards the whole BiomeDef silently. -->
     <modExtensions>
       <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores">
-        <deepTerrain>AB_PropaneLake</deepTerrain>
-        <shallowTerrain>RUT_PropaneShallow</shallowTerrain>
+        <deepTerrain>RM_PropaneDeep</deepTerrain>
+        <shallowTerrain>RM_PropaneShallow</shallowTerrain>
       </li>
     </modExtensions>
     <!-- WILD ANIMALS: two floating/flying residents, wired PAINTED_TILES_WITH_NO_CAST_1
@@ -183,7 +185,8 @@
          (owner brief: "Propane lake has some documented crystalline life
          already mentioned... flesh all of these out"). Canonical band pair
          saltwater_* — a build decision, not a default (see the doc's own
-         section for the engine reasoning that produced RUT_PropaneShallow).
+         section for the engine reasoning; the fishable shallow is FlowWorks'
+         RM_PropaneShallow, owner card 2026-09-24).
          maxFishPopulation 60: sparse — a fuel tank is not a fishery. -->
     <maxFishPopulation>60</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
