@@ -79,6 +79,8 @@ animals that differ every game instead of a fixed cast of three.
 - ⛔ **This item does not re-adjudicate the 32 existing fauna rows** on `RUT_Miasma`, nor the
   37-row eviction list. Evictions are stopped (owner, 2026-09-22) and rosters are handled at
   each biome's own sitting.
-- 🔴 **Blocked for the free tier by `SEA_BEASTS_TIER_RULING_1`.** The nursery is entirely
-  campaign-tier today, so a franchise-free Miasma has no juveniles and therefore no stranded at
-  all. That item is the fix and it needs the owner.
+- ⏳ **The free tier's nursery depends on `SEA_BEASTS_TIER_RULING_1`, which is now RULED and
+  owed** (2026-09-23, decision taken by question card: the 11 invented sea beasts move to the
+  `RM_` tier, the 7 canon ones stay). ⇒ Until that lands, a franchise-free Miasma has no
+  juveniles and therefore no stranded. ✅ It is no longer an open question, so ⛔ do not re-raise
+  it — just sequence this item's stranded work after it.
