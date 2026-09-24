@@ -31,11 +31,34 @@
        moved, exactly because the twin still carries the live world and must
        not lose anything it currently references (arch §5 step 4).
 
-  Owed, not shipped this wave: the WEEPING_STONES_DESIGN_SITTING_1
-  (2026-09-24) ruled cast — 8 invented fauna (RM_Sillik/RM_Mirrik/RM_Ssurr/
-  RM_Kirruk/RM_Tirbak/RM_Burrak/RM_Vhakk/RM_Vellak) and the flora additions/
-  RM_Shadefern swap — none of those ThingDefs exist yet, so none is wired
-  into wildAnimals/wildPlants below. See this mod's About.xml.
+  WEEPINGSTONES_RM_MOD_BUILD_1, wave 2 (2026-09-24) — the WEEPING_STONES_
+  DESIGN_SITTING_1 ruled cast now has ThingDefs (RM_WeepingStonesNatives.xml,
+  RM_Gorrask.xml, RM_WeepingStonesNativeFlora.xml, this mod's Defs/
+  ThingDefs_Races and ThingDefs_Plants) and is wired below: 8 invented fauna
+  (RM_Sillik/RM_Mirrik/RM_Ssurr/RM_Kirruk/RM_Tirbak/RM_Burrak/RM_Vhakk/
+  RM_Vellak), the canyon-filling crab (RM_Gorrask, adapted from AA_SummitCrab
+  per the NIGHTSIDE_ICE_DESIGN_SITTING_1 ruling — v1 ships as a real,
+  legendary-rare single-tile creature; true multi-tile landform occupation
+  is a follow-on mechanic, not built here), and the 10 invented flora rows
+  including RM_Shadefern, which now REPLACES the donor `AB_GreenRockFern`
+  per that sitting's ruling 3. RM_Dewgourd (the farmed crop) also carries a
+  low wild commonality near the pool ring per the roster's own note
+  ("wild rows rare at pool ring") in addition to being sowable.
+
+  STOCKED_POOL_BUILD_1, wave 2 — six of the eight stocked-pool bestiary rows
+  (design/Jawa/worldbuilding/biomes/weeping_stones_stocked_pool_2026-09-24.md
+  §2) are wired below per the two-def law (§0/§2): a wildAnimals pawn entry
+  (floor/pen presence) plus a fishTypes item entry (the catchable half,
+  RM_StockedPoolCatchItems.xml). RM_Murrin is UNTOUCHED here — its species
+  selection is owed to FISH_BY_BIOME_1's successor, per wave 1's own note.
+  RM_Vhorrin carries zero ambient commonality by design (spec §2d: "the
+  stocked line's set-piece... an enormous single harvest"; RM_Vhorrin ThingDef
+  header: "NOT placed on any wildAnimals list") — it is a PoolStock
+  mismanagement-state spawn (owed, STOCKED_POOL_BUILD_1 wave 3), never a
+  roaming wild animal. Commonalities follow the spec's own pyramid (§2:
+  "baseline and the two small biters are common... the escaper and the beasts
+  are uncommon... the tyrant is one per pool at most") scaled against the
+  existing ColossusToad/AA_Eyeling entries above.
 -->
 <Defs>
 
@@ -122,13 +145,45 @@
     <wildAnimals>
       <ColossusToad MayRequire="Ludeon.RimWorld.Odyssey">0.4</ColossusToad>  <!-- colossus toad - medium-resident, keep; vanilla Odyssey animal -->
       <AA_Eyeling MayRequire="sarg.alphaanimals">0.1</AA_Eyeling>  <!-- ikee - omen, import; non-Star-Wars donor, stays RM tier per Q9 -->
+      <!-- STOCKED_POOL_BUILD_1 wave 2 — the stocked-pool bestiary's floor/pen
+           half (two-def law). RM_Murrin and RM_Vhorrin deliberately excluded,
+           see the header comment above. -->
+      <RM_Skarrin>0.6</RM_Skarrin>  <!-- skarrin - ring-breaker, common -->
+      <RM_Karrek>0.6</RM_Karrek>  <!-- karrek - flenser swarm, common -->
+      <RM_Vizhik>0.25</RM_Vizhik>  <!-- vizhik - the walker, uncommon -->
+      <RM_Loomu>0.2</RM_Loomu>  <!-- loomu - the caller, uncommon -->
+      <RM_Huldu>0.2</RM_Huldu>  <!-- huldu - the warm one, uncommon -->
+      <RM_Ivvol>0.05</RM_Ivvol>  <!-- ivvol - the tally, rare -->
+      <!-- WEEPINGSTONES_RM_MOD_BUILD_1 wave 2 — the 8 invented natives ruled
+           at WEEPING_STONES_DESIGN_SITTING_1 (2026-09-24), plus the canyon-
+           filling crab ruled at NIGHTSIDE_ICE_DESIGN_SITTING_1 the same day. -->
+      <RM_Sillik>0.8</RM_Sillik>  <!-- sillik - the prey base, weep-face licker -->
+      <RM_Mirrik>0.6</RM_Mirrik>  <!-- mirrik - dew-smoke swarm, flier -->
+      <RM_Ssurr>0.35</RM_Ssurr>  <!-- ssurr - the fan-dancer, tamable -->
+      <RM_Kirruk>0.2</RM_Kirruk>  <!-- kirruk - ridge-flier, comb-wing soarer -->
+      <RM_Tirbak>0.15</RM_Tirbak>  <!-- tirbak - walking cistern, caravan colossus -->
+      <RM_Burrak>0.12</RM_Burrak>  <!-- burrak - well-digger; elder = burradar, same def -->
+      <RM_Vhakk>0.08</RM_Vhakk>  <!-- vhakk - the warden, margin apex predator -->
+      <RM_Vellak>0.08</RM_Vellak>  <!-- vellak - RM pilgrim herd, sail-comb strider -->
+      <RM_Gorrask>0.02</RM_Gorrask>  <!-- gorrask - canyon-filling crab, legendary-rare; v1 single-tile, landform-scale placement owed -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
       <Plant_Reeds>1.0</Plant_Reeds>  <!-- sarnreed -->
-      <AB_GreenRockFern>0.4</AB_GreenRockFern>  <!-- green rock fern; RULED to be replaced by RM_Shadefern once authored, not yet applied -->
+      <RM_Shadefern>0.4</RM_Shadefern>  <!-- shadefern - RULED replacement for the donor AB_GreenRockFern (WEEPING_STONES_DESIGN_SITTING_1 ruling 3) -->
       <RUT_Dewshrooms MayRequire="mandrake.rut.rotsporekit">0.4</RUT_Dewshrooms>  <!-- dewshrooms; shared with The Rot's kit, left inline pending the shared-plant decision -->
       <Plant_Ambrosia>0.12</Plant_Ambrosia>  <!-- ambrosia bush -->
+      <!-- WEEPINGSTONES_RM_MOD_BUILD_1 wave 2 — the other 9 invented flora
+           rows ruled at WEEPING_STONES_DESIGN_SITTING_1 (2026-09-24). -->
+      <RM_Dewblade>1.0</RM_Dewblade>  <!-- dewblade - the baseline green -->
+      <RM_Weepmat>0.7</RM_Weepmat>  <!-- weep-mat - shade/weep-line corduroy mat -->
+      <RM_Verdimoss>0.6</RM_Verdimoss>  <!-- verdimoss - the relic-dresser -->
+      <RM_Bladderquill>0.5</RM_Bladderquill>  <!-- bladderquill - the forage staple, bladder-fruit -->
+      <RM_Dripfringe>0.3</RM_Dripfringe>  <!-- dripfringe - the overhang register -->
+      <RM_Salvecomb>0.2</RM_Salvecomb>  <!-- salvecomb - the medicine plant -->
+      <RM_Rockfinger>0.15</RM_Rockfinger>  <!-- rockfinger - the tree, RULED name (was Sailfin) -->
+      <RM_Steamfrond>0.1</RM_Steamfrond>  <!-- steamfrond - the seep-oasis signature -->
+      <RM_Dewgourd>0.02</RM_Dewgourd>  <!-- dewgourd - the farmed crop; wild rows rare at pool ring, sowable everywhere else -->
     </wildPlants>
     <wildPlantRegrowDays>17</wildPlantRegrowDays>
     <maxFishPopulation>660</maxFishPopulation>
@@ -142,6 +197,17 @@
         <RM_Ullo>1</RM_Ullo>
         <RM_Ozhu>0.8</RM_Ozhu>
         <RM_Vobbal>0.5</RM_Vobbal>
+        <!-- STOCKED_POOL_BUILD_1 wave 2 — the stocked line's catch half
+             (two-def law); a colonist fishing the pool edge with no husbandry
+             job running can still occasionally pull one of these up
+             (RM_StockedPoolCatchItems.xml header). RM_Murrin/RM_Vhorrin
+             excluded, see the wildAnimals comment above for why. -->
+        <RM_SkarrinCatch>0.4</RM_SkarrinCatch>
+        <RM_KarrekCatch>0.4</RM_KarrekCatch>
+        <RM_VizhikCatch>0.2</RM_VizhikCatch>
+        <RM_LoomuCatch>0.15</RM_LoomuCatch>
+        <RM_HulduCatch>0.15</RM_HulduCatch>
+        <RM_IvvolCatch>0.05</RM_IvvolCatch>
       </freshwater_Uncommon>
       <rareCatchesSetMaker>RM_RareOasisCatches</rareCatchesSetMaker>
     </fishTypes>

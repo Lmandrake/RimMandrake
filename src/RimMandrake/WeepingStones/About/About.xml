@@ -25,10 +25,13 @@ UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml) is FROZEN and keeps carrying
 Ash'karr world until the terminal paint (BIOME_PAINT_ONCE_AT_THE_END_1) — this mod's own
 copy is not yet on any live tile, which is the expected mid-migration state, not a defect.
 
-The BiomeDef ships with its franchise-free content only: `ColossusToad` (vanilla Odyssey)
-and `AA_Eyeling` (Alpha Animals, non-Star-Wars donor) in `wildAnimals`; `Plant_Reeds`,
-`AB_GreenRockFern`, `RUT_Dewshrooms` (shared with The Rot's kit, inline via
-`mandrake.rut.rotsporekit`) and `Plant_Ambrosia` in `wildPlants`; the fish bestiary
+The BiomeDef ships with its franchise-free content only: `ColossusToad` (vanilla Odyssey),
+`AA_Eyeling` (Alpha Animals, non-Star-Wars donor), the 8 wave-2 invented natives
+(RM_Sillik/RM_Mirrik/RM_Ssurr/RM_Kirruk/RM_Tirbak/RM_Burrak/RM_Vhakk/RM_Vellak) and the
+canyon-filling crab (RM_Gorrask) in `wildAnimals`; `Plant_Reeds`, `RM_Shadefern` (RULED
+replacement for the donor `AB_GreenRockFern`), `RUT_Dewshrooms` (shared with The Rot's kit,
+inline via `mandrake.rut.rotsporekit`), `Plant_Ambrosia` and the 9 other wave-2 invented
+flora rows in `wildPlants`; the fish bestiary
 (`RM_Ikkal`/`RM_Tarrik`/`RM_Duul`/`RM_Ullo`/`RM_Ozhu`/`RM_Vobbal`/`RM_SeepStone`, each a
 duplicate of the frozen twin's own `RUT_` items so both keep resolving independently); its
 own `RM_BiomeWorker_WeepingStones` in place of the donor `VanillaBiomes.BiomeWorker_
@@ -46,16 +49,26 @@ NOT ride this def — they ride a Utinni patch instead
 existing `RSW_` ports), per Q11 (`SW_FAUNA_NEVER_IN_RM_TIER_1`): Star Wars content stays
 in the campaign tier, never the RimMandrake one.
 
-⛔ **Owed, not shipped this wave**: the 10 invented fauna and the flora-roster additions
-ruled at `WEEPING_STONES_DESIGN_SITTING_1` (2026-09-24) — RM_Vellak, RM_Kirruk, RM_Vhakk,
-RM_Tirbak, RM_Burrak, RM_Ssurr, RM_Sillik, RM_Mirrik, plus RM_Dewblade/RM_Weepmat/
+✅ **Shipped, WEEPINGSTONES_RM_MOD_BUILD_1 wave 2 (2026-09-24)**: the 8 invented fauna and
+10 invented flora ruled at `WEEPING_STONES_DESIGN_SITTING_1`, plus the canyon-filling crab
+ruled at `NIGHTSIDE_ICE_DESIGN_SITTING_1` the same day, all now have ThingDef+PawnKindDef
+(or PlantDef) pairs — `Defs/ThingDefs_Races/RM_WeepingStonesNatives.xml` (RM_Sillik,
+RM_Mirrik, RM_Ssurr, RM_Kirruk, RM_Tirbak, RM_Burrak, RM_Vhakk, RM_Vellak),
+`Defs/ThingDefs_Races/RM_Gorrask.xml` (the canyon crab, adapted from AA_SummitCrab's stats
+only — no donor dependency; v1 ships as a real single-tile legendary-rare creature, true
+multi-tile landform occupation is a follow-on mechanic, not built here), and
+`Defs/ThingDefs_Plants/RM_WeepingStonesNativeFlora.xml` (RM_Dewblade/RM_Weepmat/
 RM_Verdimoss/RM_Shadefern/RM_Bladderquill/RM_Salvecomb/RM_Rockfinger/RM_Dripfringe/
-RM_Steamfrond/RM_Dewgourd and the canyon-filling crab adapted from AA_SummitCrab — are
-RULED and recorded in `rosters/weeping_stones.json`'s `fauna`/`flora`/`new_defs` arrays,
-but none has a ThingDef yet; authoring that full cast is content work at
-`STOCKED_POOL_BUILD_1`'s own scale and ships in a following wave, not invented here.
-`RM_Shadefern` replacing `AB_GreenRockFern` is therefore NOT yet applied to the BiomeDef
-above — the donor stays wired until its replacement actually exists.
+RM_Steamfrond/RM_Dewgourd, with three harvested items in
+`Defs/ThingDefs_Items/RM_WeepingStonesNativeFlora_Items.xml`) — all wired into the
+BiomeDef's `wildAnimals`/`wildPlants` below. `RM_Shadefern` now REPLACES `AB_GreenRockFern`
+in `wildPlants` per that sitting's ruling 3; the donor no longer ships wired to this mod.
+Placeholder art throughout (vanilla-body retints); real art queued this wave. Behavior-comp
+wiring the roster flagged as optional v1 extras (shade-grid placement reads, the verminbreeder
+swarm-cycle reuse for mirrik, the tame-soothe-aura reuse for ssurr) is NOT built this pass —
+every row's mechanism load was ruled "none blocking" for v1, so this is a flagged follow-on,
+not a silent drop. A live-load proof on Desktop is still owed (offline-only pass per task
+scope), same as wave 1.
 
 Original description, kept below for the STOCKED_POOL_BUILD_1 content this mod already
 carries (the Stocked Pool bestiary/cuisine, unwired to any BiomeDef's live spawn lists
@@ -87,19 +100,32 @@ roast.
 
 **Build state (2026-09-24, wave 1):** the bestiary (pawn race + PawnKindDef
 pairs) and the cuisine layer (meat items, recipes, doubt-meat ThoughtDefs)
-ship this wave. The husbandry LOOP — pen zone designator, per-pool-body
-`RM_MapComponent_PoolStock` bookkeeping (stealing `RM_LiquidBody`'s region
-logic), ring-density READ overlay art, handler-injury toil failures, vizhik
-escape events, and the vhorrin cull set-piece — is the honest hard part and
-ships in a following wave. None of these species are wired into the live
-`RUT_WeepingStones` BiomeDef's `wildAnimals`/`fishTypes` yet: that wiring
-waits on `WEEPINGSTONES_RM_MOD_BUILD_1` landing the `RM_WeepingStones`
-BiomeDef this mod's content is meant to populate. Until both land, this mod
-ships inert defs with no spawn path — degrades clean, breaks nothing.
+shipped this wave, inert — no spawn path yet.
+
+**Build state (2026-09-24, wave 2):** six of the eight bestiary rows
+(`RM_Skarrin`/`RM_Karrek`/`RM_Vizhik`/`RM_Loomu`/`RM_Huldu`/`RM_Ivvol`) are now
+wired into `RM_WeepingStones`'s own `wildAnimals`/`fishTypes` per the two-def
+law (`RM_Murrin` stays untouched, owed to `FISH_BY_BIOME_1`'s successor;
+`RM_Vhorrin` stays at zero ambient commonality by design). The pen half of
+the husbandry loop landed too: a `RM_Zone_PoolPen` zone designator (water
+cells only, registered on the vanilla "Zone" tab) and
+`RM_MapComponent_PoolStock` — the per-pool-body bookkeeping the item calls
+"the honest hard part", pattern stolen from `RM_LiquidBody`/`RM_LiquidStock`
+(FlowWorks): a sticky body per pen, scribed, computing a Healthy/Thin/Silent/
+Vhorrin READ state from a live census of pool fauna standing in the pen.
+STILL OWED: the STOCK/FEED/HARVEST/OVERDRAW/CULL/RECAPTURE jobs (nothing yet
+places or moves fauna into a pen — population reads whatever is already
+standing there), the vhorrin emergence trigger (a live one is correctly
+detected; nothing spawns one), ring-density overlay art (the gauge is
+exposed via the zone's inspect string instead), handler injuries, and the
+vizhik escape event.
 
 **Mod Settings** (MOD_OPTIONS_RETROFIT_1 doctrine): a master "Stocked pools
-enabled" toggle, off by default until the husbandry loop ships, so enabling
-this mod today changes nothing about a running game. When the loop lands the
-toggle gates the whole mechanism; wild fishing (the ruled gentle six) is
-never touched by it.</description>
+enabled" toggle gates the pen-zone designator and PoolStock's tick logic.
+Stays OFF by default this wave too — the toggle now gates a real mechanism,
+but one nothing can populate yet (no STOCK job), so surfacing it by default
+would hand a player a zone that tracks a population it has no way to fill.
+Flip to true once the job set lands and a pen is playable end to end. Wild
+fishing (the ruled gentle six) and the bestiary/cuisine content itself are
+never touched by this setting.</description>
 </ModMetaData>

@@ -10,9 +10,10 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    Wave 1 ships Mod Settings only (no behavior yet — the husbandry loop's
-    PoolStock/jobs/designator land in a following wave and get added to the
-    ItemGroup below when they do).
+    Wave 1 shipped Mod Settings only. Wave 2 adds the pen-zone designator and
+    RM_MapComponent_PoolStock's per-pool bookkeeping (STOCKED_POOL_BUILD_1) —
+    jobs (STOCK/FEED/HARVEST/CULL/RECAPTURE), handler injuries and the vizhik
+    escape event are still owed and land in a following wave.
   -->
 
   <PropertyGroup>
@@ -41,6 +42,10 @@
   <ItemGroup>
     <Compile Include="RM_WeepingStonesSettings.cs" />
     <Compile Include="RM_BiomeWorker_WeepingStones.cs" />
+    <Compile Include="RM_PoolBody.cs" />
+    <Compile Include="RM_Zone_PoolPen.cs" />
+    <Compile Include="RM_Designator_ZoneAdd_PoolPen.cs" />
+    <Compile Include="RM_MapComponent_PoolStock.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STOCKED_POOL_BUILD_1, wave 2. Registers RM_Designator_ZoneAdd_PoolPen on the
+  vanilla "Zone" tab, same pattern as FlowWorks_OrdersPatch.xml (which adds its
+  two canal designators to "Orders" instead) — read as precedent before writing
+  this file. Wrapped Conditional-first per rimworld-modding skill's default
+  shape: ground truth confirmed against the decompiled DesignationCategoryDefs
+  ("Zone" is vanilla core, ships in every version this mod targets, but the
+  conditional costs nothing and turns a future rename into a silent no-op
+  instead of a red error).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/DesignationCategoryDef[defName="Zone"]/specialDesignatorClasses</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/DesignationCategoryDef[defName="Zone"]/specialDesignatorClasses</xpath>
+      <value>
+        <li>RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
