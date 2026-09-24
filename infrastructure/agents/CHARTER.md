@@ -49,7 +49,8 @@ with BENCH's or FOUNDRY's live window mid-run. This was always available on the
 `Agent` tool; the gap was that nobody defaulted to it. Landing the result: `git-efficiency`
 (structural-fix section) for why worktrees exist, `[[merging-worktree-agent-branches]]`
 (session memory) for the actual merge recipe — expect conflicts only on the handful
-of files every worktree regenerates independently (`events.jsonl`, `queue/*.md`, the
+of files every worktree regenerates independently (the seat's own ledger shard
+`ledger/events/<SEAT>.jsonl`, `queue/*.md`, the
 codebase-health artifacts), never on the agent's real work, and resolve those by
 regenerating fresh rather than hand-merging. A quick single-file edit doesn't need
 this — the ceremony only pays for itself once there's real concurrent-edit risk.
@@ -61,7 +62,8 @@ prose in `infrastructure/state/items/<ID>.md` for expensive-list items only. �
 close/drop/supersede the prose moves to `items/closed/<ID>.md`** — so `items/*.md` is
 the LIVE set and a sweep stops walking finished work; `rimflow show` resolves both.
 Reboot handoffs are not items and live in `infrastructure/state/handoffs/`. The
-ledger (`events.jsonl`, written only by `rimflow`) is the truth; `queue/*.md` are
+ledger — the frozen `events.jsonl` plus one `ledger/events/<SEAT>.jsonl` shard per
+seat since 2026-09-23, written only by `rimflow` — is the truth; `queue/*.md` are
 rendered views you never edit. Close: `rimflow close <ID> --sha <commit>`, commit
 carrying `Closes: <ID>`, push.
 

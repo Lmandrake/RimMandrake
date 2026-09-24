@@ -1,16 +1,21 @@
 ---
 name: using-rimflow
-description: "Use before ANY rimflow / src/RimMandrake/rimflow/cli.py call — file, claim, start, close, drop, supersede, note, next, seat, sweep, bridge take/release/who — and before passing --owner-said, committing infrastructure/state/ledger/events.jsonl, or reading events.jsonl/queue/*.md projections. Covers exact verb syntax from --help, the close --sha literal-string and silent-HEAD-fallback traps, --owner-said provenance (typed vs clicked), --seat on the Mac laptop, ledger commits being local-only, file-order projection, and the bridge lock."
+description: "Use before ANY rimflow / src/RimMandrake/rimflow/cli.py call — file, claim, start, close, drop, supersede, note, next, seat, sweep, bridge take/release/who — and before passing --owner-said, committing a ledger shard (infrastructure/state/ledger/events/<SEAT>.jsonl), or reading the ledger or queue/*.md projections. Covers the sharded ledger layout, exact verb syntax from --help, the close --sha literal-string and silent-HEAD-fallback traps, --owner-said provenance (typed vs clicked), --seat on the Mac laptop, ledger commits being local-only, merge-order projection, and the bridge lock."
 ---
 
 # Using rimflow
 
 ## What rimflow is
 
-rimflow is one master queue derived from an append-only ledger:
-`infrastructure/state/ledger/events.jsonl`. Every `file`/`claim`/`close`/etc.
-call appends an event there and nothing else — no other file is the source of
-truth. Item prose (spec, context, decisions) lives separately in
+rimflow is one master queue derived from an append-only ledger. 🔴 **The ledger
+is SEVERAL files since 2026-09-23** (`EVENTS_JSONL_SHARDING_1`, landed
+`2b5947555`): `infrastructure/state/ledger/events.jsonl` is frozen history that
+nothing appends to any more, and every `file`/`claim`/`close`/etc. call appends
+to the calling seat's own shard, `infrastructure/state/ledger/events/<SEAT>.jsonl`
+— so two seats can never rebase-conflict in one git-tracked file. `model.read()`
+with no path merges history + every shard; `model.read(model.EVENTS)` reads the
+frozen history alone and is almost never what you want. No other file is the
+source of truth. Item prose (spec, context, decisions) lives separately in
 `infrastructure/state/items/<ID>.md` while the item is open; on close/drop/
 supersede its prose file moves to `infrastructure/state/items/closed/`. IDs
 are `THREE_UPPER_SNAKE_WORDS_#`, guessable cold — never a number. `rimflow
@@ -169,38 +174,42 @@ positionals for a target are refused.
 
 ## Committing ledger writes
 
-rimflow writes `infrastructure/state/ledger/events.jsonl` to disk immediately
-on every `claim`/`start`/`close`/`note`/etc. call — but it has **no git
-integration at all**. Committing it is entirely on the calling seat, and it
+rimflow writes this seat's shard, `infrastructure/state/ledger/events/<SEAT>.jsonl`,
+to disk immediately on every `claim`/`start`/`close`/`note`/etc. call — but it
+has **no git integration at all**. Committing it is entirely on the calling seat, and it
 is easy to miss: CLAUDE.md's "explicit paths, never `git add -A`" means a
 commit that stages only the specific code/content files a fix touched will
 never pick up the ledger delta as a side effect. A full session's queue
 history can sit uncommitted — already-lost territory if the machine goes
 down — until caught by accident.
 
-Commit `infrastructure/state/ledger/events.jsonl` (plus the rendered
+Commit your seat's shard `infrastructure/state/ledger/events/<SEAT>.jsonl` (plus the rendered
 `infrastructure/state/queue/*.md` projections) by **explicit path**, with
 each close or at least once per work wave — not only at session end. Prefer
 a dedicated "ledger sync" commit over folding it silently into a code
 commit's file list; it keeps the code commit's message focused and makes the
 ledger's own commit history legible.
 
-🔴 **A torn/invalid line in `events.jsonl` breaks `rimflow`/`./game` entirely
+🔴 **A torn/invalid line in ANY ledger file breaks `rimflow`/`./game` entirely
 for every seat** — a torn line has no admin-event fix, because rimflow can't
 finish reading the file to append one. This has happened from a botched `git
-stash pop` landing unresolved conflict markers straight into the file.
+stash pop` landing unresolved conflict markers straight into the file. Since
+the sharding a torn line is far likelier in a shard than in the frozen head.
 `src/RimMandrake/Utils/repair_torn_ledger.py` is the fix: dry-run by default,
-`--apply --owner-said "…"` to write; it removes only lines that fail to
+`--apply --owner-said "…"` to write, and `--seat <SEAT>` to target that seat's
+shard (a seat name, never a path); it removes only lines that fail to
 parse, backs up to `Transient/` first, and sanity-caps at 25 bad lines.
 
 ## Reading projections
 
-`events.jsonl` is append-only and the append order IS the truth. **Project in
-FILE ORDER, never by sorting on `(ts, event)`** — same-second `start`+`close`
+Every ledger file is append-only and its own append order IS the truth for the
+events inside it. **Never re-sort on `(ts, event)`** — same-second `start`+`close`
 pairs get their alphabetical tiebreak inverted by an `event`-name sort, which
-once turned 61 real "doing" items into a reported 102. If you are deriving
-your own view of the ledger (rather than reading `rimflow show`/`next`/the
-rendered `queue/*.md`), preserve append order.
+once turned 61 real "doing" items into a reported 102. Across files, the merged
+order is `(ts, source rank, within-file order)` with the frozen history ranked
+ahead of the shards — `model.read()` with no path implements it; if you are
+deriving your own view of the ledger (rather than reading `rimflow show`/`next`/
+the rendered `queue/*.md`), call that rather than merging by hand.
 
 ## Bridge lock
 

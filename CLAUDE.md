@@ -614,16 +614,20 @@ self-inflicted: `code_review_status.py`'s `_trigger_health_rebuild` spawns the h
 so every `prune`/`list` re-dirties 5 tracked artifacts. Commit them and the rebase finishes
 (MIN_INTERVAL is 900 s, so it holds long enough).
 
-🔴 **A rebase conflict in `events.jsonl` is resolved by git PLUMBING**, because `Edit`/`Write`/
-redirect on that path is hook-blocked by design and the hook refuses the whole compound command.
+🔴 **The ledger is SHARDED PER SEAT since 2026-09-23** (`EVENTS_JSONL_SHARDING_1`, `2b5947555`):
+`events.jsonl` is frozen history nothing appends to, and every new event lands in
+`infrastructure/state/ledger/events/<SEAT>.jsonl`, so BENCH and FOUNDRY can never rebase-conflict
+in one ledger file again. **Two windows of the SAME seat still share one shard**, and a rebase
+conflict there is resolved by git PLUMBING, because `Edit`/`Write`/redirect on any ledger file is
+hook-blocked by design and the hook refuses the whole compound command.
 Build the union of both sides **outside the repo** (`/tmp`), verify every line parses, then
 `git hash-object -w` → `git update-index --cacheinfo 100644,<sha>,<path>` →
 `git checkout-index -f -- <path>`. Regenerate the two derived queue views with
 `rimflow render -- --overwrite-queues` — that flag belongs to `render.py`, must come **after
 `--`**, and `reindex` does not accept it. ⛔ **Never resolve it with `checkout --ours/--theirs`:**
-that silently discards a concurrent seat's events, and two BENCH windows appending minutes apart
+that silently discards a concurrent window's events — two BENCH windows appending minutes apart
 is exactly when this happens. Done twice — `36de6942c` and 2026-09-23, the second keeping one
-window's 11 notes alongside another's 5 events. Verify after: both seats' ids present, and
+window's 11 notes alongside another's 5 events. Verify after: both windows' ids present, and
 `unparseable=0` over the whole file.
 
 ⚠️ **A `cd` in one Bash call PERSISTS into later calls.** `modcheck` needs
