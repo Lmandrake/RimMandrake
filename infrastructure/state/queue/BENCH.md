@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T21:35:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T21:41:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -150,7 +150,7 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-summary:  (no items/BLUEDESERT_DESIGN_SITTING_1.md yet — write one when you have something to say)
+summary:  Rule, with the owner at the bench, everything the sheet still owes so the
 prose:    infrastructure/state/items/BLUEDESERT_DESIGN_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
