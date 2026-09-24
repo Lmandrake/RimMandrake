@@ -84,7 +84,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
         public void Notify_GravshipLanded(Map map)
         {
             if (map == null) return;
-            if (!Ready(RSW_GizkaStowawayMod.Settings.triggerGravship)) return;
+            if (!Ready(RSW_GizkaStowawayMod.Settings?.triggerGravship ?? false)) return;
             if (!Roll(ChanceGravship)) return;
 
             IntVec3 cell = FindAnchorCell(map);
@@ -97,7 +97,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
         {
             Map map = salvage?.Map;
             if (map == null) return;
-            if (!Ready(RSW_GizkaStowawayMod.Settings.triggerSalvage)) return;
+            if (!Ready(RSW_GizkaStowawayMod.Settings?.triggerSalvage ?? false)) return;
             if (!Roll(ChanceSalvage)) return;
 
             Discover(map, salvage.Position,
@@ -108,7 +108,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
         public void Notify_TradeCompleted(Map map)
         {
             if (map == null) return;
-            if (!Ready(RSW_GizkaStowawayMod.Settings.triggerTrade)) return;
+            if (!Ready(RSW_GizkaStowawayMod.Settings?.triggerTrade ?? false)) return;
             if (!Roll(ChanceTrade)) return;
 
             Discover(map, FindAnchorCell(map),
@@ -119,7 +119,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
         public void Notify_QuestCompleted(Map map)
         {
             if (map == null) return;
-            if (!Ready(RSW_GizkaStowawayMod.Settings.triggerQuest)) return;
+            if (!Ready(RSW_GizkaStowawayMod.Settings?.triggerQuest ?? false)) return;
             if (!Roll(ChanceQuest)) return;
 
             Discover(map, FindAnchorCell(map),
