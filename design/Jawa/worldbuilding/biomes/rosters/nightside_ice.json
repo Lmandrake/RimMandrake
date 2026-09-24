@@ -173,25 +173,25 @@
       "from_sheet": "nightside_ice §4",
       "kind": "creature",
       "mechanic_load": "C#: century accumulation, single commit, inert-forever corpse state; borrow the 107-row dormancy comp for the trigger (prep §7.4)",
-      "name": "the one-move animal"
-    },
-    {
-      "from_sheet": "nightside_ice §4",
-      "kind": "creature",
-      "mechanic_load": "C#: thermal-sense targeting (heat as threat generator)",
-      "name": "thermal-sensing seam striker"
+      "name": "sohl (the one-move animal)",
+      "ruled_name": "sohl",
+      "naming": "ruled by question card at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24"
     },
     {
       "from_sheet": "nightside_ice §4 second pass / Owed",
       "kind": "creature",
       "mechanic_load": "C#: within-ice movement + thaw-pulse surfacing",
-      "name": "the tunnelers (within-ice, blind, thermal)"
+      "name": "shivven (the tunnelers — within-ice, blind, thermal)",
+      "ruled_name": "shivven",
+      "naming": "ruled by question card at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24"
     },
     {
       "from_sheet": "nightside_ice §4 second pass",
       "kind": "creature",
       "mechanic_load": "dormant-until-thaw comp (donor mechanic exists)",
-      "name": "icy insects of the inclusions"
+      "name": "frissim (icy insects of the inclusions)",
+      "ruled_name": "frissim",
+      "naming": "ruled by question card at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24"
     },
     {
       "from_sheet": "nightside_ice §4",
@@ -201,9 +201,29 @@
     },
     {
       "from_sheet": "nightside_ice roster consequences",
-      "kind": "plant",
-      "mechanic_load": "none",
+      "kind": "terrain-feature",
+      "mechanic_load": "scatter terrain features, never PlantDefs (owner: no native plants); folded beside the hoarfrost ice-form family (sheet 4c item 7)",
       "name": "chemical frosts ambiguously alive"
+    },
+    {
+      "kind": "creature",
+      "name": "dhorrumak (the apex ice wyrm)",
+      "ruled_name": "dhorrumak",
+      "naming": "ruled by question card at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24",
+      "from_sheet": "nightside_ice 4c item 6",
+      "mechanic_load": "C#: sustained-high-heat surfacing trigger; absorbs the first-pass thermal-sensing seam striker concept (merge ruled by question card at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24); the nest eruption set-piece (eggs + young, calving family)"
+    },
+    {
+      "kind": "creature",
+      "name": "wyrmlets (juvenile dhorrumak)",
+      "from_sheet": "nightside_ice 4c item 6 (owner extension 2026-09-24)",
+      "mechanic_load": "feed on the frissim; surface at thaw pulses and fresh slab-falls; the foreshadow rung between insects and apex"
+    },
+    {
+      "kind": "terrain-feature",
+      "name": "the hoarfrost ice forms",
+      "from_sheet": "nightside_ice 4c item 7 (owner: hoar, not rime)",
+      "mechanic_load": "authored scatter family from real hoarfrost reference photography — crystal gardens, frost flowers, depth-hoar columns, feathery blades; interior-wide (still air builds them)"
     }
   ],
   "sheet": "nightside_ice",
