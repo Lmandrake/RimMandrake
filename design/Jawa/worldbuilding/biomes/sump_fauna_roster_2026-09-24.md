@@ -9,7 +9,13 @@ Subject: `RM_TheSump` (packageId `mandrake.rm.thesump`, `THESUMP_RM_MOD_BUILD_1`
 Companion doc: `sump_flora_roster_2026-09-24.md`. Frozen sheet: `the_sump.md` —
 its rulings bind; this roster adds detail and never changes one.
 
-## READ FIRST — nine residents, and two deliberate absences
+> **AMENDED 2026-09-24, same sitting: all 8 open rulings landed** (three typed
+> owner rulings, five card decisions — provenance per row and in the RULED
+> section at the end). The flier category is REVERSED and `RM_Skellarn` added;
+> the wrissen is DELETED by ruling; the dorvel carries a growth caveat in the
+> flora doc.
+
+## READ FIRST — nine residents, and one deliberate absence
 
 Every row is **`RM_` tier — invented, franchise-free, cast inline** (Q11a). The
 free mod must stand rich alone; the campaign layer only adds (§8). Sheet §0's
@@ -28,12 +34,16 @@ not a thin one, and the near-emptiness of the black is itself the design.
 claimed. Nothing migrates, nothing has a moving life stage — the biome is a
 trap; its animals do not leave.
 
-🔑 **Flight**: no row flies, and that is a design statement, not an oversight —
-sheet §9's motion doctrine is *"mice, derrick-nod, lamp-flicker — and the
-pools, never."* A flier would hand the dead-flat horizontals a second motion
-the theme refuses. Open ruling 1 puts the category to the owner before any
-within-category question exists. (If he ever wants one, the standing rule
-applies: real `MaxFlightTime`, stat-not-bool.)
+🔑 **Flight — RULED, one flier.** This doc first proposed none (sheet §9's
+motion doctrine); the owner reversed it, typed, 2026-09-24: *"Yes! And let's
+make it have really long spikey legs so when it lands it can still move
+through the tar."* → **`RM_Skellarn`** (row 9): real flight per the standing
+rule (`MaxFlightTime` stat, not a bool), and spiked stilt-legs that keep it
+moving on the tar after it lands. The motion register gains one deliberate
+motion by owner's word — an amendment adding detail, not a change to a frozen
+ruling. The same typed ruling also orders **a random tar-belch event** (*"a
+tar pit just belches a huge amount of tar out all over the local terrain"*) —
+⛔ not designed here; filed separately as `SUMP_TAR_BELCH_EVENT_1`.
 
 ### The silhouette brief is the specification
 
@@ -46,11 +56,11 @@ row. A row whose form duplicates another's has failed.
 
 ## At a glance
 
-| the black (on/in the tar) | the under-layer (beneath it) | the margin ring |
-|---|---|---|
-| **sump-mouse** — runs the black; the instrument | **thrummel** — the warm hive under the lid | **brommet** — the ring's wool-backed grazer |
-| **gulveth** — the tar's own grazer | **thrummel warden** — the mound's temper | **skarrid** — the still hunter that mimics a bulge |
-| **wrissen** — what a dig wakes | **thrummel broodmother** — the deep heart | **dredgel** — the dig-site sifter |
+| the black (on/in the tar) | the under-layer (beneath it) | the margin ring | the sky |
+|---|---|---|---|
+| **sump-mouse** — runs the black; the instrument | **thrummel** — the warm hive under the lid | **brommet** — the ring's wool-backed grazer | **skellarn** — the stilt-flier that lands and keeps walking |
+| **gulveth** — the tar's own grazer | **thrummel warden** — the mound's temper | **skarrid** — the still hunter that mimics a bulge | |
+| | **thrummel broodmother** — the deep heart | **dredgel** — the dig-site sifter | |
 
 ---
 
@@ -62,8 +72,8 @@ row. A row whose form duplicates another's has failed.
 | **Mice run the black; where they won't, you don't** | sheet §4, §5 | row 1 is the prey base AND the biome's navigation system; two other rows (pallick, skarrid) are read *through* it |
 | **The under-layer is kept** (hives beneath the insulating tar, aggressive at their mounds) | sheet §0 (BENCH call, roster verdict keep) | rows 2–4 replace the donor bumbledrones 1:1 in fiction — warm colonies, chitin and wax economy, mound aggression |
 | **The tar defends; nothing crosses it willingly** | sheet §3 | no pursuit predator exists here (the roster JSON evicted Blurrg on exactly this); the one hunter is an ambusher that never chases |
-| **The tar preserves — including live things** | sheet §3, §7 ("the tar preserves everything, including intentions") | row 8: some of what the archive keeps is still running. Open ruling 2 |
-| **Tar beast = set-piece only** | sheet §6 ban 2 | absent from this roster on purpose; row 9 (skarrid) *mimics* its bulge, which is a question (open ruling 8) |
+| **No normal life survives the tar — dig-wake finds are ancient machines or assailants ONLY** | owner ruling (typed), 2026-09-24: *"Only truly ancient machines or assailants. No normal life can survive otherwise."* | zero live-preserved fauna rows (a proposed dug-up swarm was deleted under this ruling); dig-wake outcomes route to the existing ancients/assailant material (`assailant_weapon_remnants.md`, `ancient_machines_design.md`) — wire-up is build-side work, not this doc's |
+| **Tar beast = set-piece only** | sheet §6 ban 2 | absent from this roster on purpose; the skarrid *mimics* its bulge — RULED allowed (question card, 2026-09-24) |
 | **No vanilla-Earth fauna; no partial/whole Assailant or Rakatan spawns** | sheet §6 bans 1, 6 | zero Earth-nameable rows; nothing here is an ancient — the archive's dead stay dig-table content |
 | **Chitin and honey-wax economy** | sheet §7 | the thrummel family carries it — invented product names (`seepwax`, thrummel chitin), no donor def |
 | **One animal, one biome** | owner ruling 2026-09-21 | every one-home note below names why the creature *cannot* live elsewhere |
@@ -75,11 +85,11 @@ row. A row whose form duplicates another's has failed.
 
 | field | value |
 |---|---|
-| defName / label | `RM_SumpMouse` / sump-mouse *(sheet-named by the owner — keeps its plain name; open ruling 6)* |
+| defName / label | `RM_SumpMouse` / sump-mouse *(sheet-named by the owner — keeps its plain name; RULED, card, 2026-09-24)* |
 | silhouette FORM | **tiny pale wedge on absurdly broad star-feet, always mid-dash, always in a LINE** |
 | look, one line | A palm-sized silver-grey mouse-analog on splayed snowshoe feet, coat beaded with shed oil — never alone, never wandering: sump-mice move in lines, and the lines are the map. |
 | niche / trap-identity | ⭐ **The prey base, the charm, and the instrument** (sheet §4): mice cross tar freely *except where they won't*. A stretch of black the lines detour around is a beast's back; an unbroken pale crust no line touches is pallick's lie (flora §4). Junkers read mouse-lines the way sailors read water — and so does the player. |
-| danger / utility | Harmless. Utility is the reading — and, if ruled tameable (open ruling 4), a kept cage of them becomes a living tar-detector a caravan carries. |
+| danger / utility | Harmless. Utility is the reading — and it is **tameable, cheap and easy** (RULED, card, 2026-09-24): a kept cage of them is a living tar-detector a caravan carries. Charm plus utility, no combat value. |
 | commonality | 0.8 — the most common animal here; the base of every chain |
 | mechanism | ⚠️ PARTIAL — the placeholder shipped (`RUT_Placeholder_SumpMouseRace`/`RUT_Placeholder_SumpMouse`, `RUT_ThinkTree_SumpMouseWander`); the line-telegraphy stack is ✅ built (`RM_MapComponent_DreadField` + `RM_JobGiver_DreadAvoidWander` + `RM_CompFilthTrail` + `RUT_Filth_MouseTrack`, `DEPLOY_HOLD` art). **Real def replacing the placeholder is this roster's work.** Free tar-crossing for the race: no vanilla per-race terrain-cost exemption exists — small NEW patch or stat trick, UNMEASURED which is cheapest (build item's call) |
 | art | **OWED** — and the sprite must read at line density, not as one animal; track filth art also OWED |
@@ -99,7 +109,9 @@ row. A row whose form duplicates another's has failed.
 
 ### 4. The under-layer — the thrummel family (rows 3–5)
 
-The donor bumbledrones' fiction, kept by ruling and re-founded as ours: warm
+The donor bumbledrones' fiction, kept by ruling and re-founded as ours — ✅
+confirmed 1:1 (decision taken by question card, 2026-09-24; only the ownership
+changes): warm
 heat-huddled colonies tunneling beneath the insulating tar, aggressive at their
 entrance mounds — a second "something beneath," in miniature (sheet §0). One
 species, three castes, one hive economy: **thrummel chitin** and **seepwax**
@@ -132,19 +144,48 @@ species, three castes, one hive economy: **thrummel chitin** and **seepwax**
 | mechanism | none | placement/wander biased to dug or shaft cells — ✅ mostly EXISTS as a pattern (`RM_JobGiver_DreadAvoidWander` shows the JobGiver shape; this is its attract-mode cousin, small NEW) |
 | art | **OWED** | **OWED** |
 
-### 6. The two frighteners — `RM_Wrissen` and `RM_Skarrid` (rows 8–9)
+### 6. The still hunter — `RM_Skarrid` (row 8)
 
-| field | `RM_Wrissen` (row 8) | `RM_Skarrid` (row 9) |
-|---|---|---|
-| label | wrissen | skarrid |
-| silhouette FORM | **a boil of thumb-length slivers, read as a MASS, never singly** | **flat glossy hummock with a seam — a bulge that is slightly too small to be the Beast** |
-| look, one line | Thumb-sized segmented biters, tar-black and dripping, that erupt as a swarm from broken deep tar — moving like one angry liquid. | A flattened, glass-smooth ambusher that lies half-sunk at the glass-reach margins, indistinguishable from a swell in the tar until the seam opens. |
-| niche / trap-identity | ⭐ 🔴 **What the archive keeps alive.** Wrissen are preserved dormant in the deep black — the tar takes slowly and keeps *perfectly*, and sometimes what it kept is still running. A deep dig, a greedy pump, a moat cut too deep can open a pocket; the swarm is the trap remembering you. | ⭐ **The still hunter.** It takes sump-mice (and the unwary hand) at the margins, by stillness: the pools never move — *until* (sheet §9). Mouse-lines detour around a skarrid exactly as around the Beast's back, so every skarrid is a small, survivable lesson in reading the black. |
-| danger / utility | a burst hazard — painful, mob-scale, finite; the pocket empties and the swarm starves fast on the surface. Never map-persistent wildlife | genuinely dangerous to a lone pawn; its glassy hide is a prized black leather. It never chases far off the black — ambush, not pursuit (sheet §3) |
-| commonality | 0 as ambient — **event-spawned by the dig lottery / beast-wake causes only** (open ruling 2); at most 0.05 near dig fields if the owner wants strays | 0.25 |
-| one-home note | exists only inside deep tar; it *is* the biome | its whole hunt is mouse-lines on glass margins; no other biome has either |
-| mechanism | ⚠️ PARTIAL — the causes are built (`RM_CompWorkedLottery` outcomes, `RM_CompBeastWakeRelay` for cause-plumbing); a **spawn-pawns lottery outcome kind** is NEW (small): whether `RM_LotteryTableDef` rows can already name a pawn spawn is UNMEASURED — check before writing one | ambush stillness: vanilla predator hunting covers the kill; the *mimic-bulge* read is art + a dread-field registration — ⚠️ PARTIAL (`RM_MapComponent_DreadField` exists; registering skarrid as a mobile minor dread source is small NEW) |
-| art | **OWED** — must read as a mass | **OWED** — must be mistakable for `RUT_BeastBulge`'s art at a glance, and distinguishable on a stare (open ruling 8) |
+*(This section first proposed a second row — a swarm of live biters preserved
+dormant in the deep tar, woken by digs. **Deleted under the owner's typed
+ruling, 2026-09-24**: "Only truly ancient machines or assailants. No normal
+life can survive otherwise." Dig-wake outcomes route to ancient
+machines/assailants only; git holds the deleted prose.)*
+
+| field | value |
+|---|---|
+| defName / label | `RM_Skarrid` / skarrid |
+| silhouette FORM | **flat glossy hummock with a seam — a bulge that is slightly too small to be the Beast** |
+| look, one line | A flattened, glass-smooth ambusher that lies half-sunk at the glass-reach margins, indistinguishable from a swell in the tar until the seam opens. |
+| niche / trap-identity | ⭐ **The still hunter.** It takes sump-mice (and the unwary hand) at the margins, by stillness: the pools never move — *until* (sheet §9). Mouse-lines detour around a skarrid exactly as around the Beast's back, so every skarrid is a small, survivable lesson in reading the black. |
+| danger / utility | genuinely dangerous to a lone pawn; its glassy hide is a prized black leather. It never chases far off the black — ambush, not pursuit (sheet §3) |
+| commonality | 0.25 |
+| one-home note | its whole hunt is mouse-lines on glass margins; no other biome has either |
+| mechanism | ambush stillness: vanilla predator hunting covers the kill; the *mimic-bulge* read is art + a dread-field registration — ⚠️ PARTIAL (`RM_MapComponent_DreadField` exists; registering skarrid as a mobile minor dread source is small NEW) |
+| art | **OWED** — must be mistakable for `RUT_BeastBulge`'s art at a glance, and distinguishable on a stare — ✅ RULED allowed, smaller and subtly wrong (question card, 2026-09-24) |
+
+### 6c. The sky — `RM_Skellarn` (row 9)
+
+Added by the owner's typed ruling, 2026-09-24 (READ FIRST): the biome's one
+flier, and its stilts are the point — it is the only thing besides the mice
+that crosses the black on foot.
+
+| field | value |
+|---|---|
+| defName / label | `RM_Skellarn` / skellarn |
+| silhouette FORM | **narrow dark crescent in the air; on the ground, a small body impossibly high on LONG spiked stilt-legs** |
+| look, one line | A crane-sized twilight flier, soot-dark with a horizon-amber throat, that folds out of the sky onto four absurd spike-tipped stilts and simply keeps walking — out across the open tar, where nothing else its size can follow. |
+| niche / trap-identity | ⭐ **The stilt-stalker.** Its spiked legs pierce the tar's skin to the firm layer beneath, so landing never mires it (the owner's typed spec: really long spikey legs so it can still move through the tar after landing). It stalks the open black for sump-mice and gulveth leavings — the one hunter the middle of a pool cannot protect prey from, which is why mouse-lines out on the glass break and scatter when a shadow crosses them: a second read the player learns. |
+| danger / utility | wary of pawns, dangerous only if cornered; huntable — lean meat, and its spine-legs' chitin is prized for awls and fuse-post spikes. A skellarn circling low over one spot is telling you something is moving on that pool. |
+| commonality | 0.15 — sparse-but-strange; usually one in the sky, never a flock |
+| one-home note | Sump only. Its stilts are tar-gear — useless anywhere else — and it lairs in the brindeth scrub of the outer ring; no migration mechanism is claimed. |
+| flight | 🔴 **real flight, per the standing rule** — a STAT, not a bool: `MaxFlightTime` ❓ ~10, `FlightCooldown` ❓ ~5, `flightSpeedFactor` ❓ ~2.2, `canFlyIntoMap` true, **`canLeaveMapFlying` omitted — it lairs**. The flying ANIMATION is a separate whole-body flip-book (frames OWED later) and ⛔ never blocks flight — with no frames it flies without a wing-beat, which is correct and plainer. |
+| mechanism | flight is Core 1.6 def fields (✅ EXISTS as engine); tar-walking on landing shares the sump-mouse's tar-crossing solution — ⚠️ PARTIAL/UNMEASURED, same open question, one implementation should serve both (fauna roll-up) |
+| art | **OWED** — grounded set first (the stilts are the sprite); directional flip-book later |
+
+⛔ **The same typed ruling's tar-belch event** (a pit belching tar over the
+local terrain) is a weather/incident design, **not a roster row and not
+designed here** — filed separately as `SUMP_TAR_BELCH_EVENT_1`.
 
 ## 6b. Legibility matrix — the acceptance test
 
@@ -157,8 +198,8 @@ species, three castes, one hive economy: **thrummel chitin** and **seepwax**
 | wax-pale matriarch, glistening | thrummel broodmother | the jackpot and the moral |
 | wool mantle over a grazing rosette-cropper | brommet | ordinary dinner (the only one) |
 | low many-legged sifter parked on flat ground | dredgel | someone dug here |
-| a boil of black slivers | wrissen | the archive, objecting |
 | a bulge that is slightly too small | skarrid | **the Beast — which is the lie** |
+| a small body impossibly high on spiked stilts | skellarn | the only walker the black can't take |
 
 🔑 Two rows are deliberately deceptive and the matrix records it on purpose:
 **skarrid** must be mistakable for a beast-bulge (its survival strategy and the
@@ -205,58 +246,65 @@ A donor row cut *here* and alive elsewhere is that biome's business, not ours
 | sump-mouse real def (replacing placeholder) | ⚠️ PARTIAL — `RUT_Placeholder_SumpMouseRace`/`RUT_Placeholder_SumpMouse` shipped as placeholders; this roster's row 1 is the real content |
 | mouse free tar-crossing | 🆕 NEW (small) — no vanilla per-race terrain-cost exemption; UNMEASURED which implementation is cheapest |
 | beast set-piece plumbing (out of roster scope, listed to prevent re-invention) | ✅ EXISTS — `RUT_BeastBulge`, `RUT_SumpTarBeastGenStep` + `_Register`, `RM_CompBeastWakeRelay`, `RM_CompStationEater`, `RUT_BeastBulge_DreadRegistration` |
-| dig lottery (wrissen's trigger) | ✅ EXISTS — `RM_LotteryTableDef`, `RUT_DigStratumTable`, `RM_CompWorkedLottery`, `RM_WorkGiver_WorkLottery`, `RM_JobDriver_WorkLottery`, `RUT_DigShaft` |
-| lottery outcome that spawns pawns (wrissen burst) | ⚠️ PARTIAL/UNMEASURED — tables exist; whether an outcome row can name a pawn spawn is unchecked. Check before writing new C# |
+| dig lottery (the archive's gameplay; outcomes route to ancient machines/assailants ONLY, per the typed ruling of 2026-09-24) | ✅ EXISTS — `RM_LotteryTableDef`, `RUT_DigStratumTable`, `RM_CompWorkedLottery`, `RM_WorkGiver_WorkLottery`, `RM_JobDriver_WorkLottery`, `RUT_DigShaft`; wiring the ancients/assailant material into the tables is build-side work |
+| skellarn real flight | ✅ EXISTS as engine — Core 1.6 `MaxFlightTime`/`FlightCooldown` def fields; flip-book animation frames OWED later, never blocking |
+| skellarn tar-walking on landing | ⚠️ PARTIAL/UNMEASURED — same problem as the sump-mouse's tar-crossing; one implementation should serve both races |
 | thrummel mound + defend radius | 🆕 NEW (small) — vanilla `Hive`/`CompSpawnerPawn` is the near-fit pattern; clean-reskin feasibility is an engine question, UNMEASURED here |
 | skarrid as mobile minor dread source (mouse-lines detour) | ⚠️ PARTIAL — dread field exists; mobile registration is small NEW |
 | dredgel dig-site attraction | 🆕 NEW (small) — attract-mode cousin of the shipped avoid-wander JobGiver |
 | gulveth tar diet | ✅ def-only — no C# |
 | moat/burn, dusk lock, smoke column (context the cast lives in) | ✅ EXISTS — `RM_CompFloodIgniter`, `RM_CompTimedTerrainBurn`, `RM_MapComponent_ThresholdSmokeColumn`, `RUT_SumpDuskLock`/`RUT_SumpWeather`, `RUT_TarMoat`/`RUT_TarSpent`, `RUT_MoatFusePost`, `RUT_TarBlaze` |
 
-## Open rulings for the owner
+## Open rulings — ALL RULED 2026-09-24 (same sitting)
 
-At most eight, category-first, each with a recommendation. Simple words.
+Eight questions went to the owner; all eight landed the same day. Provenance:
+rulings 1–3 are his **typed words**, quoted verbatim; rulings 4–8 are
+**decisions taken by question card, 2026-09-24** — the chosen option is named,
+not quoted as his words.
 
-1. **Should anything fly in the Sump?** The sheet's motion list is mice,
-   derrick-nod, lamp-flicker — and the pools, never. A flier would add a fourth
-   motion to a place built on stillness. **Recommendation: no flier at all.**
-   (If yes, we design one new — it gets real flight per the standing rule.)
-2. **When a dig goes wrong, should it sometimes wake up small LIVE things** —
-   a burst of preserved biters (the wrissen) — alongside the ruled traps and
-   treasure? It says the sheet's line out loud: the tar keeps everything,
-   perfectly. **Recommendation: yes, rare, and only from digs/deep works —
-   never as ordinary wildlife.**
-3. **Do you want a farmable food crop here** (the dorvel, flora doc §2), so a
-   Sump colony can feed itself without sunlamps, the way the stations do?
-   **Recommendation: yes — it is the stations' fiction and the biome's
-   playability in one plant.**
-4. **Should sump-mice be tameable?** A kept cage of mice is a living
-   tar-detector a caravan can carry — the biome's instrument made portable.
-   **Recommendation: yes, cheap and easy — charm plus utility, no combat
-   value.**
-5. **May a plant lie?** The pallick (flora doc §4) mimics safe crust over deep
-   tar; stepping on it mires and hurts, never kills outright, and the mice
-   always tell the truth about it. **Recommendation: yes — it is "the trap
-   that remembers" as a plant, with an honest tell.**
-6. **Naming voice: keep your plain names for the things you named** (sump-mouse,
-   wick-plant, tar beast) **and invented words for the rest** (gulveth,
-   thrummel, skarrid…)? **Recommendation: yes — both voices are yours; the
-   sheet's own names stay.**
-7. **The hive replacement (thrummel): keep the bumbledrone deal exactly** —
-   warm under-layer, chitin + wax, aggressive only at the mounds — **just as
-   ours instead of the donor's?** **Recommendation: yes, 1:1 — the fiction was
-   ruled kept; only the ownership changes.**
-8. **May the skarrid (the ambusher) look like a small tar-beast bulge?** It
-   trains players to fear bulges — and gives false alarms on purpose. Or is
-   the bulge shape reserved for the real Beast alone? **Recommendation: let it
-   mimic, smaller and subtly wrong — the false alarm is the biome teaching.**
+1. **A flier — REVERSED against the recommendation; he wants one.** Owner,
+   typed, 2026-09-24: *"Yes! And let's make it have really long spikey legs so
+   when it lands it can still move through the tar. There should also
+   occasionally be a random event when a tar pit just belches a huge amount of
+   tar out all over the local terrain."* → `RM_Skellarn` designed (§6c), real
+   flight per the standing rule, spiked stilt-legs, tar-walking on landing.
+   The tar-belch event is filed separately as `SUMP_TAR_BELCH_EVENT_1` — not
+   designed in this doc.
+2. **Dig-woken live things — DEAD.** Owner, typed, 2026-09-24: *"Only truly
+   ancient machines or assailants. No normal life can survive otherwise."* →
+   the proposed wrissen row is deleted outright (git is the provenance);
+   dig-wake outcomes route to ancient machines/assailants only, drawing on the
+   existing material (`assailant_weapon_remnants.md`,
+   `ancient_machines_design.md`). Wire-up is build-side work.
+3. **The dorvel food crop — YES, with a growth caveat.** Owner, typed,
+   2026-09-24: *"Yes though due to the inclination of the sun it wouldn't grow
+   very fast."* → the dorvel is slow-growing by ruling; amended in the flora
+   doc (§2 row 2).
+4. **Sump-mice tameable** — decision taken by question card, 2026-09-24:
+   **yes, cheap and easy** — charm plus utility, no combat value. Applied to
+   row 1.
+5. **The pallick may lie** — decision taken by question card, 2026-09-24:
+   **yes** — mires and hurts, never kills outright, and the mice always tell
+   the truth about it. Applied in the flora doc (§4 row 10).
+6. **Naming voice** — decision taken by question card, 2026-09-24: **keep both
+   voices** — the owner's plain names stay for the things he named (sump-mouse,
+   wick-plant, tar beast); invented words for the rest.
+7. **The thrummel hive** — decision taken by question card, 2026-09-24: **1:1
+   bumbledrone deal, ours** — warm under-layer, chitin + wax, aggressive only
+   at the mounds; only the ownership changes. Applied to rows 3–5.
+8. **The skarrid may mimic the beast-bulge** — decision taken by question
+   card, 2026-09-24: **yes, smaller and subtly wrong** — the false alarm is
+   the biome teaching. Applied to row 8's art brief.
 
 ## Appendix — collision sweep (MEASURED, this pass)
 
 Same instrument as the flora roster (python, never a zsh loop; 4,584 files
 under `design/` and `src/`; sanity probes `korrum` 39 / `stoneback` 164 /
-`hawkbat` 261 — the instrument sees). **All 8 new fauna names (`gulveth`,
-`thrummel`, `skarrid`, `dredgel`, `brommet`, `wrissen`, plus caste labels) have
-0 occurrences outside the Sump sitting docs.** `SumpMouse` exists only as the
+`hawkbat` 261 — the instrument sees). **All new fauna names (`gulveth`,
+`thrummel` plus caste labels, `skarrid`, `dredgel`, `brommet`) have 0
+occurrences outside the Sump sitting docs.** `SumpMouse` exists only as the
 shipped placeholder pair this roster's row 1 replaces — the intended
-continuity, not a collision.
+continuity, not a collision. **`skellarn` (the ruling-1 flier, added at the
+amendment) was swept separately the same day**: probes `korrum` 50 /
+`stoneback` 166 (both still seeing), `skellarn` 0 occurrences anywhere —
+clean. (The deleted wrissen's name retires with its row.)
