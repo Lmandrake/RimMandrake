@@ -18555,6 +18555,24 @@
     "hash": "bacde7cc3583238da56c5a43bb07335a9ca7796093818d1e208a0b2494e7ebd3",
     "sha": "4e41e0f74"
   },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_Greentide_LivingBolesGenStep_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b73efbed6ff65f69af40b1917e4dedfb21141f7ff562f86d79acb5c2851a6019",
+    "sha": "343257902"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_Greentide_RootCausewaysGenStep_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "da4c4aaf82c080fd446bcf4557d53a9ffe3d7222c435135e8aaa844fdaf48647",
+    "sha": "343257902"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_CrecheScatterer_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ff2404e062d1ecbe591724589dee25c8d47bafcaf8ef12401abd6eea7e66d8f9",
+    "sha": "343257902"
+  },
   "src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_ForgeOnSurvival.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -18644,6 +18662,30 @@
     "date": "2026-09-05",
     "hash": "ea7ccf24a0867af0506bd2f1a1f17c046ada23386633077efca05bfd390343a3",
     "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RotDecayHarvest_LivingProduce.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a7987ece32fc02ff217cf01c0e2d3cee95ff78f948416584e9af2b4d98fa9d00",
+    "sha": "343257902"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RotGuardianGroves_WildSpawn.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "cc0881f49e6899233519405d69f281f65dc5b9df9ba7752af2a61fd4986bb324",
+    "sha": "343257902"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RotPaleTree_WildSpawn.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "36b1d444bebf40fafafa3b32bac42fd0711b2d207c9b20c5f71bc6afdd85906b",
+    "sha": "343257902"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RotSpecies_NamesAndSizes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c34c126ba4690388414dd8499b5a49332ff4c6ce6e51557e7703afad391771bf",
+    "sha": "343257902"
   },
   "src/RimUtinni/UtinniPatches/Patches/SandFishing_CrackedLands.xml": {
     "cleanCount": 4,
