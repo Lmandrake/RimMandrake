@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FEVERWOOD_BOUGH_SOIL_TERRAIN_1 build. Authority:
+     design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md
+     §6b, "Crown flora grows on a fertile bough-soil terrain" — owner ruling
+     (decision taken by question card): a bespoke high-fertility terrain
+     painted along the boughways and trunk tops, so ordinary plant defs can
+     root in the crown, answering the MEASURED gap that RUT_Boughway.xml
+     ships fertility 0 and an empty <affordances> block.
+
+     🔴 The exact fertility value and the exact cell-selection footprint
+     were explicitly left UNSET by the owner (§6b + the item file's own
+     "open, and NOT to be guessed" section, and §7's own worked list).
+     This is an ENGINEERING DEFAULT, not an owner ruling:
+
+       fertility 1.4 — matches vanilla SoilRich (Data/Core/
+       Defs/TerrainDefs/Terrain_Soil.xml via RimSage, MEASURED this build:
+       Soil=1.0, SoilRich=1.4, MarshyTerrain=1.0), the engine's own ceiling
+       for a natural "rich" soil. Chosen as the most defensible "real,
+       high fertility" number available without inventing a figure with no
+       grounding at all — NOT an owner-set value. Flag for live tuning.
+
+     affordances Light+Medium+GrowSoil — GrowSoil is the affordance the
+     item file's whole premise turns on (nothing can root without it);
+     Light/Medium only, ⛔ never Heavy, per the item's own instruction and
+     RUT_Boughway's own INVENTED affordance tier ("platforms yes, bunkers
+     no") plus hard ban 4 ("no heavy structures on the ground" — the crown
+     tier stays at or below what the boughway lane itself already allows).
+
+     Reuses vanilla SoilRich's own texture, tinted grey-green to read as
+     RM_Plennith's own described surface (fever_wood_flora_roster_2026-09-23.md
+     row 4: "a dense low mat of overlapping grey-green scales... thickening
+     into a spongy bed that visibly holds silt and rot" — Plennith is named
+     in-fiction as the maker of this soil, §6b's own cross-reference). Not
+     the Things/ namespace-ownership check validate_patch.py enforces for
+     ThingDefs (RUT_Boughway/RUT_RootCauseway's own headers already
+     establish this for terrain), so no placeholder PNG or DEPLOY_HOLD
+     entry is needed; real bespoke art is still owed to the standing
+     pipeline, same disclosure as the sibling terrains. -->
+<Defs>
+
+  <TerrainDef>
+    <defName>RUT_BoughSoil</defName>
+    <label>bough-soil</label>
+    <description>A living bed of silt and scale-mat, thick along the boughways and heaped where the trunks crown out — the only ground in the Fever Wood's canopy where anything can put down roots.</description>
+    <renderPrecedence>330</renderPrecedence>
+    <texturePath>Terrain/Surfaces/SoilRich</texturePath>
+    <pathCost>3</pathCost>
+    <fertility>1.4</fertility>
+    <edgeType>FadeRough</edgeType>
+    <color>(74,84,58)</color>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>GrowSoil</li>
+    </affordances>
+    <statBases>
+      <Beauty>2</Beauty>
+    </statBases>
+  </TerrainDef>
+
+</Defs>
