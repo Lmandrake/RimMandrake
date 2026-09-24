@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T18:34:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T19:20:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -26,7 +26,7 @@ prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
 ## ROSTER_DEAD_BMT_NAMES_SWEEP_1 14 ported-but-unwired BMT_ roster rows across 8 rosters: per-species wire-or-drop, never bulk-wire
 state:    ready
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 summary:  Work species-by-species, in this order, because the first two shrink the list without any
@@ -728,15 +728,6 @@ target:   v1
 kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thescarlands.md (FROZEN, §4 mynock,
 prose:    infrastructure/state/items/SCARLANDS_MECHANICS_2.md
-
-## BOOMALOPE_CUT_EVERYWHERE_1 Boomalope cut everywhere: roster, patch, Cherry Picker, in-joke lane dead
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Owner card, 2026-09-14, verbatim: "Absolutely no boomalopes." Reverses the
-prose:    infrastructure/state/items/BOOMALOPE_CUT_EVERYWHERE_1.md
 
 ## FIREHAWK_FLIGHT_BEHAVIOR_1 FireHawk and all flying fauna get donor-style flight animation
 state:    doing
