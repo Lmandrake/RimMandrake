@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T19:33:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T19:35:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -773,15 +773,6 @@ target:   v1
 kind:     task
 summary:  FLOWWORKSBUILDPROGRAM1 — one liquid mod, built on depth
 prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
-
-## GRAFFITI_VANDAL_ART_REGEN_1 Regenerate all 6 RM_Graffiti_Vandal variants as punk/urban marks with ZERO real-world lettering (vandal_0.png ships the donor author's legible tag 'TARTE' plus English tags) and as ONE readable motif per tile rather than a dozen tiny doodles that are pixel mush at ~64px play zoom - owner ruled regenerate 2026-09-16
-state:    doing
-row:      unassigned
-needs:    harvest
-target:   v1
-kind:     build
-summary:  the ask
-prose:    infrastructure/state/items/GRAFFITI_VANDAL_ART_REGEN_1.md
 
 ## ATMOSPHERIC_BASE_BUILD_PROGRAM_1 AtmosphericBase (mandrake.rm.atmosphericbase): the ambient framework the gods speak through — light AND sound, designed in full with the owner 2026-09-16, spec design/RimMandrake/atmospheric_base_mod_definition.md, 15 laws, DRAFT north star at design/validation_walks/RimMandrake/AtmosphericBase.md. Phase 0 is the seven UNMEASURED engine questions in spec §8 and is DESKTOP-ONLY; two are load-bearing (does a per-frame hook run while paused — L10 falls without it; what a live glow-colour change costs the light grid — TWINKLE_FLORA_SPIKE_1 measured a sprite tint, not a cast glow). Nothing else starts until those answer
 state:    doing
