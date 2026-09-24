@@ -15,6 +15,14 @@
 
   No `*ArtOverride` mod exists for Wraid. 4 PNGs extracted this pass:
   `Wraid_{south,east,north}` and `Wraid_Dessicated`.
+
+  DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 59: `tradeTags` carried the donor's
+  own typo `AnimalUnommon` (confirmed in the donor source,
+  vendor/mod_sources/StarWarsAnimalCollection_src — faithfully ported, not
+  introduced here), the only occurrence of that string in the repo against
+  35 files' worth of correctly-spelled `AnimalUncommon`. Fixed to
+  `AnimalUncommon` so this creature's trade tag actually matches the
+  category filters that check for it.
 -->
 <Defs>
 <!-- ThingDef -->
@@ -166,7 +174,7 @@
       <soundEating>Reptile_Eat</soundEating>
     </race>
     <tradeTags>
-      <li>AnimalUnommon</li>
+      <li>AnimalUncommon</li>
       <li>BadassAnimal</li>
       <li>AnimalFighter</li>
     </tradeTags>

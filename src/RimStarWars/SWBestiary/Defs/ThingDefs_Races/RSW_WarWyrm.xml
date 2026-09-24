@@ -22,6 +22,11 @@
 
   No `*ArtOverride` mod exists for WarWyrm. 4 PNGs extracted this pass:
   `WarWyrm_{south,east,north}` and `WarWyrm_Dessicated`.
+
+  DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 59: `statBases` carried a duplicate
+  `ToxicResistance`/`ToxicEnvironmentResistance` pair (identical values,
+  1/1.0 both times — a porting copy-paste, not a value conflict). Removed
+  the second, redundant pair.
 -->
 <Defs>
 <!-- ThingDef -->
@@ -45,8 +50,6 @@
       <ArmorRating_Heat>3.0</ArmorRating_Heat>
       <PainShockThreshold>1.0</PainShockThreshold>
       <Flammability>0.0</Flammability>
-      <ToxicResistance>1.0</ToxicResistance>
-      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
       <PsychicSensitivityOffset>-1.0</PsychicSensitivityOffset>
       <Wildness>0.95</Wildness>
     </statBases>

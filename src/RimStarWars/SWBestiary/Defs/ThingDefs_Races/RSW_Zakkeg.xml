@@ -11,10 +11,18 @@
   texPath swresource/Leather_Scaled, an already-extracted shared texture).
   `specificMeatDef` (`Saurian_Meat`) ALREADY EXISTS as `RSW_Saurian_Meat`
   (Wave B). No egg comp (live birth via gestationPeriodDays/litterSizeCurve).
-  Flagged, not fixed: the adult lifeStage's own vocal sounds are the donor's
-  own bug — they point at `Pawn_Boma_*` (a DIFFERENT species' sounds), not
-  `Pawn_Zakkeg_*`; ported byte-identical (pre-existing donor mismatch, not
-  introduced here).
+  DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 59 correction: the adult lifeStage's
+  own vocal sounds carry the donor's own semantic mismatch (they point at
+  `Boma`'s sounds, a DIFFERENT species, not `Zakkeg`'s own — left as-is, not
+  this pass's call to invent new Zakkeg-specific sounds) but a PREVIOUS pass's
+  note that this was "ported byte-identical" was wrong: the donor's own
+  `Pawn_Boma_*` SoundDefs are BARE (no prefix) in the donor mod and resolved
+  fine there, but this repo's absorption pass renamed them to
+  `RSW_Pawn_Boma_*` (SoundDefs_SWBestiary.xml) without updating this file's
+  cross-reference, so the bare `Pawn_Boma_*` these fields named resolved to
+  NOTHING — a silent null SoundDef, no error at load. Fixed to
+  `RSW_Pawn_Boma_*`, which does resolve; the wrong-species CHOICE itself is
+  still the donor's and is left unchanged.
 
   `mandrake.rsw.zakkegartoverride` ships owner-approved art at the SAME
   relative texPath the donor uses (swanimals/Zakkeg/Zakkeg_{south,east,
@@ -169,10 +177,10 @@
         <li>
           <def>AnimalAdult</def>
           <minAge>0.8</minAge>
-          <soundWounded>Pawn_Boma_Wounded</soundWounded>
-          <soundDeath>Pawn_Boma_Death</soundDeath>
-          <soundCall>Pawn_Boma_Call</soundCall>
-          <soundAngry>Pawn_Boma_Angry</soundAngry>
+          <soundWounded>RSW_Pawn_Boma_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Boma_Death</soundDeath>
+          <soundCall>RSW_Pawn_Boma_Call</soundCall>
+          <soundAngry>RSW_Pawn_Boma_Angry</soundAngry>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
