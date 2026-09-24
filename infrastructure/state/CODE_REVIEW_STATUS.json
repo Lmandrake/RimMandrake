@@ -6484,10 +6484,10 @@
     "sha": "e3212aae"
   },
   "src/RimMandrake/Utils/modset_builder.py": {
-    "cleanCount": 5,
-    "date": "2026-09-20",
-    "hash": "e5eea2cdd2055251509b1cacde71c08df8950fbdc05c32f61f90f9845c5b2294",
-    "sha": "23513b419"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "e948478fe040e01f17aec0eab08f5aa477906dab339b9bf6be020a7d29a28d71",
+    "sha": "7f5f81262"
   },
   "src/RimMandrake/Utils/naming_lint.py": {
     "cleanCount": 4,
