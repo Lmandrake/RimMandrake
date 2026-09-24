@@ -837,3 +837,76 @@ ProximitySoundscape.cs`, `RM_ProximitySoundscapeExtension.cs`,
 `RM_WoundLinkExtension.cs`, `RUT_Plant_FalseFruit.cs` — re-derive rather
 than trust this count. The 284-row re-dirtied backlog and the
 binary-art-tracking scope question from wave 15 are both still untouched.
+
+## Wave 18 — 2026-09-24: `CreatureBehaviors` never-entered cluster CLOSED
+
+Reviewed the final 7 `CreatureBehaviors` never-entered files, full-file each,
+closing out the whole cluster this loop has been working since wave 3:
+`RM_Hediff_Drained.cs` (31 lines, the DEEPS_FAUNA_MECHANICS_1 drain-marker
+hediff), `RM_HydrocarbonBloodExtension.cs` (22, the paired DefModExtension —
+cross-checked `RM_Hediff_Drained.PostAdd`'s
+`attacker.TryGetComp<RM_CompFluidSacs>()?.Notify_Fed(pawn, Severity)` call
+against `RM_CompFluidSacs.Notify_Fed(Pawn victim, float severity)`'s real
+signature, matches), `RM_JobGiver_FilterFeedTerrain.cs` (89, DESERT_SHADE_
+WHALE_FILTERFEED_1's terrain-grazing job giver — cross-checked every
+`RM_FilterFeedExtension` field read and `RM_CreatureBehaviorsSettings.
+filterFeedingEnabled`/`RM_JobDefOf.RM_FilterFeedTerrain` against their real
+declarations), `RM_MapComponent_ProximitySoundscape.cs` (304,
+GREENTIDE_HUMMING_GROVE_1's proximity-mix MapComponent — traced the scan/
+apply/hysteresis/pop-mitigation pipeline and the isolated, already-MEASURED
+`CameraDriver.MapPosition` read; noted but did not change one imprecise
+comment, "wind it down through the same hysteresis path", where the actual
+code for a group with zero nearby Things cuts sustainers directly via
+`SyncSustainers(..., null, 0)` rather than routing through `Apply`'s
+hysteresis — functionally reasonable as an immediate silence-when-nothing-
+present policy, not treated as a bug), `RM_ProximitySoundscapeExtension.cs`
+(138, its paired DefModExtension with full `ConfigErrors` validation),
+`RM_WoundLinkExtension.cs` (51, ROT_HEALTH_SHARING_1's kin-tag extension),
+and `RUT_Plant_FalseFruit.cs` (67, ROT_GUARDIAN_GROVES_1's mimic-lure Plant
+subclass — cross-checked `RM_CreatureBehaviorsSettings.guardianAlarmEnabled`
+and `RM_CompPlantAlarm.TriggerAlarm()` against their real declarations). No
+bugs found in any of the 7; no fixes needed. All 7 confirmed reachable via
+`RM_CreatureBehaviors.csproj`'s `<Compile Include>`. All 7 marked CLEAN,
+commit `4ac66bfeb`, pushed. **This closes the entire `CreatureBehaviors`
+never-entered cluster (75 `<Compile Include>` files, all now recorded).**
+
+With time remaining, surveyed the next-largest never-entered cluster from
+wave 14's list, `SWBestiary` (three separate `.csproj`s under `SWBestiary/
+Source/`: `BeastMechanics`, `JawaIkee`, `Livestock`). Re-derived fresh
+rather than trusting wave 14's "12" figure: `JawaIkee` (`EnableDefaultCompile
+Items=true`, glob) and `Livestock` (`<Compile Include>` explicit) were
+**already fully recorded** — `code_review_status.py list` shows all 6 of
+their `.cs` files CLEAN already, so wave 14's per-folder count included
+files that were never actually never-entered (or have since been reviewed
+elsewhere). `BeastMechanics` (`EnableDefaultCompileItems=false`, 11
+`<Compile Include>` entries) had **all 11** absent from
+`CODE_REVIEW_STATUS.json` — the real never-entered set is these 11, not 12,
+and it's entirely in one folder, not spread across three.
+
+Reviewed 3 of the 11 `BeastMechanics` files, full-file each, one coherent
+cluster (the ferroclaw's steel-eating mechanic, PORTED_BEAST_MECHANICS_
+REBUILD_1, rebuilt from Vanilla Expanded Framework's `CompEatWeirdFood`/
+`JobGiver_GetWeirdFood`/`JobDriver_IngestWeird` per this file's own header):
+`CompMetalEater.cs` (82 lines, the marker comp + its Props), `JobGiver_
+EatMetal.cs` (129, priority/job-giving with the dig-when-map-empty fallback),
+`JobDriver_EatMetal.cs` (141, the bespoke chew-then-consume toils, since
+steel has no ordinary ingestible properties for `JobDriver_Ingest` to use).
+Cross-checked `RSW_BeastMechanicsDefOf.RSW_EatMetal` and `RSW_
+BeastMechanicsSettings.metalEatingEnabled` against their real declarations —
+both exist and are wired. No bugs found in any of the 3; no fixes needed.
+All 3 confirmed reachable via `RimMandrakeBeastMechanicsRSW.csproj`'s
+`<Compile Include>`. All 3 marked CLEAN, commit pending below, pushed.
+
+Next wave: 8 `BeastMechanics` never-entered files remain (11 minus this
+wave's 3): `Patch_JobGiver_GetFood.cs`, `CompScrapHoarder.cs`, `JobGiver_
+HoardScrap.cs`, `JobDriver_HoardScrap.cs`, `CompInnateAbility.cs`,
+`CompAbilityEffect_FuelSpew.cs`, `RSW_BeastMechanicsDefOf.cs`, `RSW_
+BeastMechanicsSettings.cs` — re-derive rather than trust this count (recipe:
+`<Compile Include>` in each `src/**/*.csproj` minus every basename recorded
+in `CODE_REVIEW_STATUS.json` in any state). The other never-entered clusters
+from wave 14's survey (`FlowWorks` 9 files, `EnvironmentalHazards` 8,
+`PyrelandsMechanics` 5, and the smaller ones) are still untouched and, per
+this wave's SWBestiary finding, their counts should be re-verified rather
+than trusted — wave 14's per-cluster tally may be stale the same way
+SWBestiary's was. The 284-row re-dirtied backlog and the binary-art-tracking
+scope question from wave 15 are both still untouched.

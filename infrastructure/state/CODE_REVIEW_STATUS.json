@@ -12645,6 +12645,24 @@
     "hash": "eccbe0b535fdd3b091076e1d758a23c081f1a35baade21aae1853f66bfbe2ba1",
     "sha": "51867f432"
   },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/CompMetalEater.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "80481718abf5f7950ebdcb95bb463d1b241972d51f862f75ce18f33925322551",
+    "sha": "4ac66bfeb"
+  },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/JobDriver_EatMetal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7925bd6babb0cff0d8809e435df0f58695c264500a331b19bb4007b234912f3e",
+    "sha": "4ac66bfeb"
+  },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/JobGiver_EatMetal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a37996edaba8fe39404d6c5dcbc393bb39380ed293de7853fe48b24edf3fd2c6",
+    "sha": "4ac66bfeb"
+  },
   "src/RimStarWars/SWBestiary/Source/JawaIkee/RSW_JawaIkeeSettings.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
