@@ -13245,11 +13245,35 @@
     "hash": "dac5141eb017cf8978636d968af249fa211ba499a21a15995282bdec9efe365b",
     "sha": "a37d6d63c"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_PekoPeko.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2e43c2c1a1c105ff8add2b9d700398f3ff962aa8b6316aec57388b236c4d01e0",
+    "sha": "cc3c45709"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Pikobis.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a31b1617ad7e35a2b24fed60ea89cb299154188e53a5fcf46db17756a8f185b3",
+    "sha": "cc3c45709"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Porg.xml": {
     "cleanCount": 3,
     "date": "2026-09-24",
     "hash": "ccdf65dbbcd74cc2ea4d1f575af385b2463f40fb0e57d3bff91eadd70e7b88c9",
     "sha": "77792d0a9"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Pufferpig.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4dc84461de62a3327dd5813b2b1b27978cdb1a00f7d5e8a1ca3548f5d5fa15e8",
+    "sha": "cc3c45709"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Qormot.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "83b85f52cbb12e0ce1e41996de2e634005b4b906e1fb73ff129701353b1c42f2",
+    "sha": "cc3c45709"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Ronto.xml": {
     "cleanCount": 1,
@@ -13257,11 +13281,35 @@
     "hash": "b7eeb9fc8e645b488564153d446afc1da83f050faeb2e301ea1218e27e82009f",
     "sha": "609daf5ad"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Runyip.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "76af2817e2d05056b28ee1bd3814d2351af96299fc7d23a28b5177d4124dce6f",
+    "sha": "cc3c45709"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_SandLion.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2abe50fab579b2e02996a716873c9a1ae0eefa91ba406c907cbacaf850f376bb",
+    "sha": "cc3c45709"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_SandStalker.xml": {
     "cleanCount": 2,
     "date": "2026-09-11",
     "hash": "2ffbcb31a756f3ceb8978eca1e7a4e0107fef5d96f282cdfd606689a6d5ede93",
     "sha": "ab37da311"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Scavrat.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d61ef0fa9bf23a14d5031554a3591be7f6f729d21aef38b0ce43e12a19deb90d",
+    "sha": "cc3c45709"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ScrapNestBird.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "549bf42637b1d71ca44afbe1683b87a94a21ecbc4059bab26835cd38ea0ef638",
+    "sha": "cc3c45709"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Skalder.xml": {
     "cleanCount": 1,
