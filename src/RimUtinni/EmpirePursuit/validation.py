@@ -155,9 +155,14 @@ def scenario_part_lifecycle(t):
     with t.component("part_readback_matches", beyond_toggle=True):
         r = t.bridge_call("jawa/scenario_parts_get")
         parts = (r or {}).get("parts") or []
-        part = next((p for p in parts if p.get("defName") == SCEN_DEF), None)
-        ok = part is not None and str(part.get("firstRaidDelayHours")) == "1" \
-             and str(part.get("canDoNormalRaid")).lower() == "false"
+        # DescribePart (JawaBenchScenarioTools.cs) returns {className, def,
+        # summary} -- the ScenPartDef name is under "def", never "defName",
+        # and every field value (firstRaidDelayHours, canDoNormalRaid, ...)
+        # is nested under "summary", not flat on the part dict.
+        part = next((p for p in parts if p.get("def") == SCEN_DEF), None)
+        summary = (part or {}).get("summary") or {}
+        ok = part is not None and str(summary.get("firstRaidDelayHours")) == "1" \
+             and str(summary.get("canDoNormalRaid")).lower() == "false"
         t._record("scenario_parts_get -> %r" % part, ok)
         if not ok:
             raise ExpectationFailed(
@@ -176,7 +181,9 @@ def normal_raid_pool_gate_flips_both_ways(t):
     with t.component("mechanoid_excluded_when_canDoNormalRaid_false", beyond_toggle=True):
         r = t.bridge_call("jawa/raid_preview", points=2000)
         factions = (r or {}).get("factions") or (r or {}).get("hostileFactions") or []
-        names = [f.get("defName", f) if isinstance(f, dict) else f for f in factions]
+        # RaidPreview (JawaBenchEventTools.cs) returns each hostile faction as
+        # {def, name, canStageAttacks} -- the key is "def", never "defName".
+        names = [f.get("def", f) if isinstance(f, dict) else f for f in factions]
         ok = "Mechanoid" not in names
         t._record("raid_preview(2000) factions -> %r" % names, ok)
         if not ok:
@@ -192,7 +199,7 @@ def normal_raid_pool_gate_flips_both_ways(t):
                 "did not report success: %r" % r)
         r2 = t.bridge_call("jawa/raid_preview", points=2000)
         factions = (r2 or {}).get("factions") or (r2 or {}).get("hostileFactions") or []
-        names = [f.get("defName", f) if isinstance(f, dict) else f for f in factions]
+        names = [f.get("def", f) if isinstance(f, dict) else f for f in factions]
         ok = "Mechanoid" in names
         t._record("raid_preview(2000) factions after canDoNormalRaid=true -> %r"
                   % names, ok)
