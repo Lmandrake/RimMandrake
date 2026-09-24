@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T20:26:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T20:28:36Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -867,7 +867,7 @@ prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 ## NONCANON_BEAST_RENAME_1 Rename every non-canon beast to a pseudo-Star-Wars equivalent - owner ruling 2026-09-20; applies to donor creatures with Earth or generic names that survive the port to our own defs
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     design
 summary:  ⛔ Do not bulk-rename. This is kind: design — per AgentPolicy.md design
