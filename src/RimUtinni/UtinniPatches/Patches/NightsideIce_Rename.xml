@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- NightsideIce_Rename.xml            RimUtinni Patches — new file 2026-09-24
+
+       NONCANON_BEAST_RENAME_1 batch 3b — Nightside Ice. Owner ruled batch 3
+       applied 2026-09-24 (design/Jawa/worldbuilding/biomes/
+       noncanon_beast_names_crags_nightside_contagion_slime.md). Only one of
+       the two batch-3b renames is a donor def; AA_ShockGoat gets a
+       label/description patch here on the RotSpecies_NamesAndSizes.xml
+       PatchOperationConditional pattern. RSW_CaveLemming is OUR OWN def and
+       is edited in place in RSW_BiomesTeamPort_Races.xml instead, not here.
+
+       Both renames were the owner's own ask in the roster itself. -->
+
+  <!-- ============== AA_ShockGoat -> zhissa ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_ShockGoat"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_ShockGoat"]/label</xpath>
+          <value><label>zhissa</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_ShockGoat"]/description</xpath>
+          <value><description>A pale-eyed grazer of the ice sheets, its body running with static it can discharge in a crackling pale-blue burst when threatened. Six eyes see nothing on the nightside — the zhissa reads the world entirely by heat instead. Farmed where it can be kept, for the milk it still gives.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_ShockGoat"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_ShockGoat"]/label</xpath>
+          <value><label>zhissa</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_ShockGoat"]/lifeStages/li[1]/label</xpath>
+          <value><label>zhissa lamb</label></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

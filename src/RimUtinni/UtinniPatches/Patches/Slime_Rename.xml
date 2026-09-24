@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Slime_Rename.xml            RimUtinni Patches — new file 2026-09-24
+
+       NONCANON_BEAST_RENAME_1 batch 3d — the Slime. Owner ruled batch 3
+       applied 2026-09-24 (design/Jawa/worldbuilding/biomes/
+       noncanon_beast_names_crags_nightside_contagion_slime.md). Eleven donor
+       ThingDef+PawnKindDef pairs (9 Alpha Animals AA_, 2 Vanilla Genetics
+       Expanded GR_) get a label/description patch, on the
+       PatchOperationConditional gate pattern of RotSpecies_NamesAndSizes.xml.
+       Slime-law monosyllables (owner ruling 2026-09-24, rule 8) on the
+       gel-bodied residents: wuum, oomb (+greater/lesser), bezzul... no,
+       bezzul is a snail not a slime — see the source doc's rule 8 note.
+
+       LABEL ONLY on the identity; no defName, stat, or art field is touched.
+
+       Not drafted here: AA_Helixien (vulloth, Contagion batch — a slug, not
+       a slime, rule 8 does not take it). RM_Titanoslime — the doc records
+       this only as an OFFER ("if he wants it... otherwise it stands"), not a
+       ruling; left untouched pending his word. -->
+
+  <!-- ============== AA_GreenGoo -> wuum ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_GreenGoo"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_GreenGoo"]/label</xpath>
+          <value><label>wuum</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_GreenGoo"]/description</xpath>
+          <value><description>Countless small bodies that all belong to one vast, spreading thing — every wuum you see is a cell of the same superorganism, working toward the same single purpose: grow, and keep growing.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_GreenGoo"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_GreenGoo"]/label</xpath>
+      <value><label>wuum</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_AcanthamoebaGiganteaLarge -> oomb ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaLarge"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaLarge"]/label</xpath>
+          <value><label>oomb</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaLarge"]/description</xpath>
+          <value><description>A great spiked lobe of a cell, genetically built to eat whatever non-metal trash is put in front of it. An oomb that feeds enough swells and splits clean in two.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_AcanthamoebaGiganteaLarge"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_AcanthamoebaGiganteaLarge"]/label</xpath>
+      <value><label>oomb</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_AcanthamoebaGiganteaHuge -> greater oomb ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaHuge"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaHuge"]/label</xpath>
+          <value><label>greater oomb</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaHuge"]/description</xpath>
+          <value><description>An oomb swollen past its usual size, still growing on whatever refuse it can find before it finally splits.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_AcanthamoebaGiganteaHuge"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_AcanthamoebaGiganteaHuge"]/label</xpath>
+      <value><label>greater oomb</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_AcanthamoebaGiganteaSmall -> lesser oomb (Scarlands) ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaSmall"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaSmall"]/label</xpath>
+          <value><label>lesser oomb</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaSmall"]/description</xpath>
+          <value><description>A young oomb, freshly split from its parent and not yet grown into its full spiked bulk.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_AcanthamoebaGiganteaSmall"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_AcanthamoebaGiganteaSmall"]/label</xpath>
+      <value><label>lesser oomb</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Plasmorph -> bezzul (also Poison Forest) ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Plasmorph"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Plasmorph"]/label</xpath>
+          <value><label>bezzul</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Plasmorph"]/description</xpath>
+          <value><description>A strange snail shelled in iron sulphide, carrying organs that build a weak electric spark down its length. The bezzul uses that spark to light its own flammable spit before lobbing a burning gobbet at whatever is threatening it.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Plasmorph"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Plasmorph"]/label</xpath>
+      <value><label>bezzul</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Mime -> hennul ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Mime"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Mime"]/label</xpath>
+          <value><label>hennul</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Mime"]/description</xpath>
+          <value><description>A quiet, unsettling thing that wears a human face and a human voice well enough to live among a colony for months before anyone notices. A hennul eats what the colony eats, right up until the food runs short — then it stops pretending.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Mime"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Mime"]/label</xpath>
+      <value><label>hennul</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_DecayDrake -> mubbaro (also Miasma, Poison Forest) ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/label</xpath>
+          <value><label>mubbaro</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/description</xpath>
+          <value><description>A winged, flightless lizard that breathes out a slow ferment over any greenery nearby and then eats the result — getting thoroughly, contentedly drunk on it, which its four livers were apparently built to handle. Hard to tame, but a mubbaro that accepts you, especially with a drink in hand, makes a fine hunting companion.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_DecayDrake"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_DecayDrake"]/label</xpath>
+      <value><label>mubbaro</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== GR_Chickenrabbit -> wuppik ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GR_Chickenrabbit"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Chickenrabbit"]/label</xpath>
+          <value><label>wuppik</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Chickenrabbit"]/description</xpath>
+          <value><description>A small, soft, harmless hybrid that breeds faster than almost anything else in the Slime and slips away to the wild given half a chance. The wuppik is the one genuinely funny thing this biome grows.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="GR_Chickenrabbit"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="GR_Chickenrabbit"]/label</xpath>
+      <value><label>wuppik</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== GR_Manbear -> yollum ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GR_Manbear"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Manbear"]/label</xpath>
+          <value><label>yollum</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Manbear"]/description</xpath>
+          <value><description>A round, waist-high shape that talks like a person and looks, at a glance, almost cuddly. It is useless in a fight and knows it, but a yollum can talk a prisoner into joining the colony faster than anyone would expect from something built like a stuffed toy.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="GR_Manbear"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="GR_Manbear"]/label</xpath>
+      <value><label>yollum</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_OvergrownColossus -> thummorak ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_OvergrownColossus"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_OvergrownColossus"]/label</xpath>
+          <value><label>thummorak</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_OvergrownColossus"]/description</xpath>
+          <value><description>A six-legged, six-eyed giant that carries a small grove on its own back, the trees feeding it as much as it feeds them. Tamed, a thummorak can be trimmed for wood without ever needing to be felled.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_OvergrownColossus"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_OvergrownColossus"]/label</xpath>
+      <value><label>thummorak</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_TeratogenicOriginator -> vohhm ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_TeratogenicOriginator"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_TeratogenicOriginator"]/label</xpath>
+          <value><label>vohhm</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_TeratogenicOriginator"]/description</xpath>
+          <value><description>A translucent, wobbling mass that drifts and slowly absorbs whatever plant matter it touches. Inside it float half-formed limbs of ordinary flesh, endlessly regrown — cut carefully, a vohhm can be harvested for tissue without ever needing to be killed for it.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_TeratogenicOriginator"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_TeratogenicOriginator"]/label</xpath>
+      <value><label>vohhm</label></value>
+    </match>
+  </Operation>
+
+</Patch>
