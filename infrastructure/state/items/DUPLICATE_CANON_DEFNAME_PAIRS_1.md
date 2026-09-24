@@ -51,9 +51,16 @@ Report: `Transient/duplicate_canon_pairs_desktop_2026-09-23.md` (side-by-side ta
   counts suggest once same-named `RUT_`/`RM_` twins are counted once.
 - `Shiro`/`RSW_ShiroTrap` untouched — not an established pair.
 
-**NEXT:** one owner card — merge all four onto the `RSW_` port (donor rows become `RSW_` rows in the Utinni
-patches; donor names leave our defs) vs keep nuna split. Then the per-biome sittings apply the one-home law to the
-single defName.
+**✅ RULED — decision taken by question card, 2026-09-23: MERGE ALL FOUR ONTO THE `RSW_` PORT.** Gizka, kreetle,
+nuna and worrt each keep exactly one defName in our content, the `RSW_` one. The earlier keep-both ruling for nuna
+(`STARWARS_DONOR_SUNSET_1`, closed) is superseded — its premise, a vanilla Core nuna, does not exist.
+
+**NEXT (FOUNDRY, offline):** in every def and patch of ours that names the donor bare defName (`Gizka`, `Kreetle`,
+`Nuna`, `Worrt` — the wiring table above and the report list the files: `RUT_AridShrubland`, `RUT_Greentide`,
+`RUT_Miasma`, `RUT_Webwork`, `RUT_FeverWood`, plus any `WildAnimals_*.xml`/doctrine patch), replace the row with the
+`RSW_` defName at the same commonality — under a `MayRequire="mandrake.rsw.swbestiary"` guard where the file is
+RimMandrake-tier per arch §7 Q11. Mlie's mod stays installed; its defs simply stop being cast by us. Do not touch
+`Shiro`/`RSW_ShiroTrap`. Then each biome's own sitting applies the one-home law to the single defName.
 
 ## spec
 

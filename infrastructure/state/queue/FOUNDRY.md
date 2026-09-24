@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T00:44:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T00:44:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1696,6 +1696,16 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. This is not a standalone sweep — it is a rule each <BIOMERMMODBUILD1 obeys at its
 prose:    infrastructure/state/items/SW_FAUNA_NEVER_IN_RM_TIER_1.md
+
+## DUPLICATE_CANON_DEFNAME_PAIRS_1 Four canon animals ship under TWO defNames each (donor + our RSW_ port), both wired into different biomes - gizka/kreetle/nuna/worrt, so one animal occupies up to five biomes and the one-home law is unenforceable per-defName
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Confirm the pairing per animal — that the donor def and the RSW port really are the same
+prose:    infrastructure/state/items/DUPLICATE_CANON_DEFNAME_PAIRS_1.md
 
 ## GREENTIDE_JUNGLE_TREE_ROSTER_1 The Greentide gets ten-plus jungle trees of our own, plus its signature giant
 state:    proposed
