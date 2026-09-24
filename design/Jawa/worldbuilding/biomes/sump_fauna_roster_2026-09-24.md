@@ -217,7 +217,7 @@ nobody here.
 
 | row today | comm. | proposed disposition | why, in one line |
 |---|---|---|---|
-| `AA_TarGuzzler` (donor, `sarg.alphaanimals`) | 0.5 | **replace with `RM_Gulveth`** | same slot, same register (slow tar-grazer), ours — the standalone mod cannot depend on Alpha Animals |
+| `AA_TarGuzzler` (donor, `sarg.alphaanimals`) | 0.5 | **replace with `RM_Gulveth`** | same slot, same register (slow tar-grazer), ours — an identity call, not a dependency ban (Q16, 2026-09-24: RM-tier mods MAY require other mods; the cast is still ours) |
 | `AA_Bumbledrone` (donor) | 0.35 | **replace with `RM_Thrummel`** | the kept under-layer fiction, re-founded as our species |
 | `AA_BumbledroneHierophant` (donor) | 0.2 | **replace with `RM_ThrummelWarden`** | rides the hive verdict |
 | `AA_BumbledroneQueen` (unwired import) | 0.5 | **land as `RM_ThrummelBroodmother` instead of wiring the donor** | it was never wired; wiring a 4th donor def the day before replacing it is backwards |

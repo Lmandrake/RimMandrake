@@ -665,10 +665,21 @@ Star Wars or OT specific. Then patches will be applied at the deeper levels."* T
 Ashfall Road lore stages — campaign content — so it stays RimUtinni and patches the top-level
 Warscar mod. §2a row 20 and §3c are corrected accordingly.
 
+**Q16 — may a top-level (RM-tier) biome mod REQUIRE another mod? YES — "free" means free
+of the franchise, not dependency-free.** Owner, 2026-09-24 (Sump sitting), verbatim: *"It
+is ok for the free mod to require other mods. It is free of the utinni scenario and Star
+Wars entanglement that's all. But the utinni layer should rename it to our own form of
+gas. Let's call it Sumpgas."* Ruled on `RM_TheSump` leaning on Vanilla Helixien Gas
+Expanded for its gas economy (`SUMP_GASLIGHT_1`); the campaign rename rides
+`SUMP_UTINNI_LAYER_1`. ⇒ The stand-alone bar on every `RM_` roster (Q11a's "rich enough
+to stand alone") is about CONTENT richness — a biome mod may declare ordinary mod
+dependencies like any Workshop mod. Replacing a donor's cast with our own species remains
+the ruled default where the sitting rules it (identity, not a dependency ban).
+
 ### Nothing is open
 
-🔴 **All fifteen questions in this section are RULED — Q1–Q10 as of 2026-09-21, Q11 as of
-2026-09-22, Q12–Q15 as of 2026-09-23 — and every name is picked.** Q5 landed (`Warscar`); Q2 landed in full — `the
+🔴 **All sixteen questions in this section are RULED — Q1–Q10 as of 2026-09-21, Q11 as of
+2026-09-22, Q12–Q15 as of 2026-09-23, Q16 as of 2026-09-24 — and every name is picked.** Q5 landed (`Warscar`); Q2 landed in full — `the
 Stillsand`, `the Long Shade`, `the Leaning Scrub`; Q11 narrowed Q9 and put every Star Wars
 fauna row in the Utinni layer. **Nothing in this spec is waiting on the owner. Every row can
 start.**

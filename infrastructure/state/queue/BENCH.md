@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T13:49:59Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-24T14:21:32Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -605,6 +605,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SUMP_INHABITED_NOTES_1.md yet — write one when you have something to say)
+thin:     no ## spec
+summary:  SUMPINHABITEDNOTES1 — the Sump's cast of inhabitants, for the Inhabited injection later
 prose:    infrastructure/state/items/SUMP_INHABITED_NOTES_1.md
+
+## INDIGENOUS_TECH_REVISIT_1 Indigenous-tech revisit per biome, GATED to after the last biome detailing (owner 2026-09-24): which specific techs each biome unlocks on meeting its phenomena
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/INDIGENOUS_TECH_REVISIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/INDIGENOUS_TECH_REVISIT_1.md
+
+## BIOME_SHIP_CONTRIBUTIONS_1 Every-biome pass: how does each biome uniquely improve the SHIP - what players take aboard (owner 2026-09-24); running list per sitting, normalized at the end
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BIOME_SHIP_CONTRIBUTIONS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md
