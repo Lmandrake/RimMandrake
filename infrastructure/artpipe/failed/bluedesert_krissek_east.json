@@ -15,7 +15,7 @@
   ],
   "id": "bluedesert_krissek_east",
   "priority": 100,
-  "prompt": "RimWorld top-down game animal sprite: the krissek, a low fast quadruped predator, all haunch and jaw, no ears, no tail. Body is MID-GREY and PLAIN at rest -- no colour on the body itself, the blue-fire halo is a separate rendered effect layered on top by the game, not part of this sprite. No Earth-nameable silhouette -- not a wolf, not a fox.",
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the krissek, a low fast quadruped predator, all haunch and jaw, no ears, no tail. Body is MID-GREY and PLAIN at rest -- no colour on the body itself, the blue-fire halo is a separate rendered effect layered on top by the game, not part of this sprite. No Earth-nameable silhouette -- not a wolf, not a fox.",
   "reference": null,
   "rimflow_item_id": "BLUE_DESERT_LIFE_AUTHORING_1",
   "style_notes": "grey-on-grey, krissek = mid grey; lean sprinter build, low haunches; no ears, no tail; plain body, NO blue fire baked into the sprite"
