@@ -2320,3 +2320,77 @@ untouched: `src/RimMandrake/Utils/` top-level scripts (9 files: `ashkarr_paint.p
 `gen_*_absorption.py` files), plus the rest of the never-entered `.cs`/Python backlogs
 surveyed in wave 15. The PNG binary-art-tracking scope question (wave 15) is still
 open and still not this loop's to decide.
+
+## Wave 37 — 2026-09-24: `src/RimMandrake/Utils/` top-level scripts cluster CLOSED (8 of 9)
+
+Re-derived the non-PNG DIRTY list fresh (`code_review_status.py list | grep '^DIRTY'`
+filtered non-`.png`): exactly **52**, matching wave 36's count. Took the named
+`src/RimMandrake/Utils/` top-level scripts cluster — all 9 files, all diff-eligible
+(already CLEAN once): `ashkarr_paint.py` (1219 lines, +21/-21 since `3ea1ca20`),
+`ashkarr_settle.py` (556 lines, +96/-9 since `e82a4ea05`), `codebase_health.py` (1188
+lines, +14/-2 since `7d1a18fc1`), `codebase_health_publish.py` (333 lines, +27 since
+`9e5089f22`), `handoff.py` (768 lines, +30/-11 since `6ecce8a3d`), `modset_builder.py`
+(586 lines, +146 since `23513b419`), `project_maturity_dashboard.py` (1174 lines, +1/-1
+since `5e99ea13e`), `run_selftests.py` (192 lines, +17/-2 since `d946c8522`),
+`structure_roster_lint.py` (287 lines, +1/-1 since `cd7a57e06`). Reachability confirmed
+for all 9 by grep — every one is cited live in CLAUDE.md, another script, a handoff, or
+an item doc; none is a dead-file candidate. This is hand-run/safety-critical tooling
+(deploy/bridge/game-state adjacent) so full context was read around every diff hunk, not
+just the patch text.
+
+Traced the load-bearing pieces by hand rather than trusting comments:
+- **`ashkarr_settle.py`'s new `validate_barren_regions()`/`live_feature_names()`**
+  (BARREN_REGIONS_NAME_NOTHING_1's fix: region-name literals used to silently
+  un-protect ground when a rename drifted): live-ran it against the real canonical
+  save (`CANONICAL_ASHKARR_START_2026-09-12.rws`, reachable at
+  `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon
+  Studios/Saves/`) rather than reading the nested `<world><features><features><li>`
+  parse and trusting it — all 22 `BARREN_REGIONS` + 7 `HELIX_BARREN_OK` literals
+  resolve against the live 71-name feature set, zero missing. `ashkarr_paint.py`'s
+  sibling diff (dropping "The " prefixes from ridge/basin/region names) does not
+  itself define every name the settle guard checks (e.g. `Fuelmere` doesn't appear
+  in paint.py at all) — not a bug, since paint.py isn't the sole source of feature
+  names and the settle-time live guard is the actual safety net either way.
+- **`codebase_health.py` and `handoff.py`'s matching ledger-sharding fixes**
+  (`EVENTS_JSONL_SHARDING_1` retrofit, same shape as wave 35's `rimflow/` cluster):
+  both now read `events.jsonl` plus every `ledger/events/<SEAT>.jsonl` shard instead
+  of the frozen head alone; `handoff.py`'s added `out.sort(key=lambda e: str(e.get("ts")
+  or ""))` is a correct stable string-sort on an ISO8601 `ts` field, same tie-break
+  shape `rimflow/model.py`'s own merge uses.
+- **`codebase_health_publish.py`'s new `rebase_or_merge_in_progress()` guard** matches
+  CLAUDE.md's own "stuck rebase" section exactly (checks `rebase-merge`/`rebase-apply`/
+  `MERGE_HEAD` in the real git-dir, resolved via `git rev-parse --git-dir` rather than
+  assuming `.git/` — correct for a worktree too) — refuses even with `--force`, which is
+  the documented intent, not an oversight.
+- **`modset_builder.py`'s new stdout/stderr `reconfigure(encoding="utf-8")`** fixes a
+  real prior incident (FOUNDRY, 2026-09-21: emoji in a tier's `why` string raised
+  `UnicodeEncodeError` on Windows cp1252 stdout, aborting `--apply` before
+  `ModsConfig.xml` was written, so a swap silently didn't happen) — correctly wrapped in
+  try/except so it no-ops if `.reconfigure` is unavailable; all-new tier dicts are data,
+  all carry `"dlc": True` per the standing "all test lists include all 5 expansions"
+  ruling.
+- **`run_selftests.py`'s new per-file `# selftest-timeout: N` tag** — regex
+  `^#\s*selftest-timeout:\s*(\d+)` with `re.M` correctly anchors per-line across the
+  joined first-40-lines string; both the actual `subprocess.run(timeout=...)` call and
+  the `TIMEOUT` message's reported duration were updated together, no stale
+  `PER_TEST_TIMEOUT_S` reference left in either path.
+- **`structure_roster_lint.py`'s one-line diff** is a legitimate data-status update (The
+  Sarlacc: `gap-design` → `done`, citing the `GenStep_RimplacePlan` `anchorThingDef`
+  fix) inside a Python list literal, not a code change to review as logic.
+
+No bugs found in any of the 9. **8 of 9 marked CLEAN**, commit `e55a9b3fd`, pushed.
+`modset_builder.py` left DIRTY: `git status --porcelain` showed it with uncommitted
+changes (a new `"bacta"` tier, `BACTA_REVIVAL_MECHANIC_1`) from the concurrent build
+agent working `BACTA_SIDE_ITEMS_1` — not this review's file to commit or mark clean;
+`code_review_status.py mark-clean` correctly refused with "has uncommitted changes."
+
+**This closes 8/9 of the `src/RimMandrake/Utils/` top-level scripts cluster** —
+`modset_builder.py` remains, pending the build agent's own commit. Next wave: 44
+non-PNG DIRTY files remain (52 minus this wave's 8) — re-derive with
+`code_review_status.py list | grep '^DIRTY'` filtered non-`.png` rather than trusting
+this arithmetic. The one other named cluster from wave 34/35/36's notes is still
+untouched: `src/RimStarWars/Armoury/Source/` (5 `gen_*_absorption.py` files), plus the
+rest of the never-entered `.cs`/Python backlogs surveyed in wave 15 (95 never-entered
+`.cs` files, 13 never-entered Utils Python tools whose reachability still needs
+confirming per-file). The PNG binary-art-tracking scope question (wave 15) is resolved
+separately (see the FOUNDRY note above) and still not this loop's to decide.
