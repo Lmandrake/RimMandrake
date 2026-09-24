@@ -166,9 +166,9 @@ namespace RimMandrake.CreatureBehaviors
                 return false;
             }
 
-            // ❓ CONFIRM ON THE DESKTOP: the accessor for the camera's current
-            // map position. Whatever it turns out to be, assign it to `cell`
-            // and leave the rest of this method alone.
+            // CameraDriver.MapPosition is `public IntVec3 MapPosition` —
+            // MEASURED from the decompiled engine (Verse/CameraDriver.cs:184)
+            // on the Desktop, 2026-09-23.
             cell = camera.MapPosition;
 
             return cell.IsValid && cell.InBounds(map);
