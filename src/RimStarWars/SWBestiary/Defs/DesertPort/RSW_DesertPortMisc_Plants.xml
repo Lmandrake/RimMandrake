@@ -28,7 +28,7 @@ inside a Unity AssetBundle, not a copyable loose PNG. Per the item's own rule
 magenta"), there is no donor loose file to point at for these five, so they
 instead point at Alpha Biomes' AB_Aaklac texture (CONFIRMED present on disk,
 already used correctly by RSW_VellaraBloom below) as a deliberately MISMATCHED
-but non-magenta placeholder - loudly commented at each site. RSW_Scrubgrass's
+but non-magenta placeholder - loudly commented at each site. RSW_JekkaGrass's
 broken path was not flagged by the validator run (a validator gap, not
 evidence the path is good) but was fixed here on the same evidence.
 
@@ -42,7 +42,7 @@ five rows above, loudly commented at its own site.
 <Defs>
 
 	<ThingDef ParentName="PlantBase">
-		<defName>RSW_Dunegrass</defName>
+		<defName>RSW_SurraGrass</defName>
 		<label>surra grass</label>
 		<description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
 		<statBases>
@@ -50,9 +50,9 @@ five rows above, loudly commented at its own site.
 			<Flammability>1.3</Flammability>
 			<Nutrition>0.15</Nutrition>
 		</statBases>
-		<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Dunegrass, no more donor dependency (was rendering as an aaklac) -->
+		<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_SurraGrass, no more donor dependency (was rendering as an aaklac) -->
 		<graphicData>
-			<texPath>Things/Plant/RSW_Dunegrass</texPath>
+			<texPath>Things/Plant/RSW_SurraGrass</texPath>
 			<graphicClass>Graphic_Random</graphicClass>
 		</graphicData>
 		<hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
@@ -77,7 +77,7 @@ five rows above, loudly commented at its own site.
 	</ThingDef>
 
 	<ThingDef ParentName="PlantBase">
-		<defName>RSW_Scrubgrass</defName>
+		<defName>RSW_JekkaGrass</defName>
 		<label>jekka grass</label>
 		<description>Wild grass that grows in arid regions where there is little light and minimally fertile ground.</description>
 		<statBases>
@@ -106,7 +106,7 @@ five rows above, loudly commented at its own site.
 	</ThingDef>
 
 	<ThingDef ParentName="PlantBase">
-		<defName>RSW_Starvine</defName>
+		<defName>RSW_TanniVine</defName>
 		<label>tanni vine</label>
 		<description>Wild ivy with star-shaped leaves. Takes a long time to grow, but is very frost-resistant.</description>
 		<statBases>
@@ -136,7 +136,7 @@ five rows above, loudly commented at its own site.
 	</ThingDef>
 
 	<ThingDef ParentName="PlantBase">
-		<defName>RSW_EmberCarpet</defName>
+		<defName>RSW_RuzzoCarpet</defName>
 		<label>ruzzo carpet</label>
 		<description>A wild crimson-colored carpet plant. Takes a long time to grow, but is very frost-resistant.</description>
 		<statBases>
@@ -167,7 +167,7 @@ five rows above, loudly commented at its own site.
 	</ThingDef>
 
 	<ThingDef ParentName="PlantBase">
-		<defName>RSW_Whirlbloom</defName>
+		<defName>RSW_QuissaBloom</defName>
 		<label>quissa bloom</label>
 		<description>A beautiful bluish flower. Prized for its color where it can be found growing wild.</description>
 		<!-- TEMP PLACEHOLDER: donor texPath (ReGrowth's own RG_Dervish) does not exist as a loose file - falling back to a CONFIRMED-valid texture (Alpha Biomes' AB_Aaklac) so this does not render magenta. Mismatched art until fill_queue.py renders land. -->
@@ -228,15 +228,15 @@ five rows above, loudly commented at its own site.
 	</ThingDef>
 
 	<ThingDef ParentName="TreeBase">
-		<defName>RSW_SweetbarkTree</defName>
+		<defName>RSW_DommoTree</defName>
 		<label>dommo tree</label>
 		<description>A whimsical tree with a sugary trunk, frosting-like growths, and fruit that resembles glazed confections. Lures animals and colonists alike.</description>
 		<descriptionHyperlinks>
 			<ThingDef>WoodLog</ThingDef>
 		</descriptionHyperlinks>
-		<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_SweetbarkTree -->
+		<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_DommoTree -->
 		<graphicData>
-			<texPath>Things/Plant/RSW_SweetbarkTree</texPath>
+			<texPath>Things/Plant/RSW_DommoTree</texPath>
 			<graphicClass>Graphic_Random</graphicClass>
 			<shadowData>
 				<volume>(0.18, 0.3, 0.15)</volume>

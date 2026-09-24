@@ -9,9 +9,9 @@
   (RimMandrakeBeastMechanicsRSW.dll, Source/BeastMechanics/); the C# half
   carries the MEASURED account of what each donor comp actually did.
 
-    RSW_Ferroclaw   eats steel and steel slag, digs slag when a map has none
-    RSW_Voltmaw     fires a four-shot plasma volley
-    RSW_Cindermite  sprays raw, UNIGNITED chemfuel in a cone
+    RSW_Khorrak   eats steel and steel slag, digs slag when a map has none
+    RSW_Vozzik     fires a four-shot plasma volley
+    RSW_Zhakka  sprays raw, UNIGNITED chemfuel in a cone
 
   ART OWED: both AbilityDefs borrow a vanilla icon as a placeholder, and the
   plasma bolt borrows the vanilla charge-shot projectile sprite. Named here so
