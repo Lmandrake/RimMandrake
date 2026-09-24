@@ -1,8 +1,8 @@
 {
-  "attempt_elapsed_s": 166.01901278301375,
+  "attempt_elapsed_s": 96.39449837600114,
   "channel": "codex",
   "daemon_attempts": 1,
-  "elapsed_s": 166.01901278301375,
+  "elapsed_s": 96.39449837600114,
   "facts": "PASS",
   "facts_findings": [],
   "height": 512,
@@ -14,23 +14,23 @@
   "meter_after": {
     "grumpy": false,
     "ok": true,
-    "primary_resets_at": 1790198552,
-    "primary_used_percent": 19.0,
+    "primary_resets_at": 1790272973,
+    "primary_used_percent": 22.0,
     "primary_window_minutes": 300,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T09-37-06-01a0cf20-c405-7ec1-b960-4ca57d1da242.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/24/rollout-2026-09-24T06-06-32-01a0d386-5b30-7130-90d8-a68f02c63fa8.jsonl",
     "secondary_resets_at": 1790785352,
-    "secondary_used_percent": 3.0,
+    "secondary_used_percent": 50.0,
     "secondary_window_minutes": 10080
   },
   "meter_before": {
     "grumpy": false,
     "ok": true,
-    "primary_resets_at": 1790198552,
-    "primary_used_percent": 12.0,
+    "primary_resets_at": 1790272973,
+    "primary_used_percent": 15.0,
     "primary_window_minutes": 300,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T09-30-21-01a0cf1a-9593-7c11-859e-581c067139a2.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/24/rollout-2026-09-24T06-04-35-01a0d384-8f80-75a1-b8f6-d011bf90325c.jsonl",
     "secondary_resets_at": 1790785352,
-    "secondary_used_percent": 2.0,
+    "secondary_used_percent": 49.0,
     "secondary_window_minutes": 10080
   },
   "mode": "generate",
@@ -43,18 +43,18 @@
   ],
   "width": 512,
   "worker_self_report": {
-    "attempts": 2,
+    "attempts": 1,
     "background_used": "transparent",
     "corners_transparent": true,
     "has_alpha": true,
     "height": 512,
     "id": "desertportb_falumpaset_south",
-    "note": "Generated with built-in imagegen and resized to the required 512x512 canvas while preserving transparent alpha.",
+    "note": "Generated with built-in imagegen and resized to exactly 512\u00d7512 while preserving transparent alpha.",
     "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_falumpaset_south\\desertportb_falumpaset_south.png",
     "status": "ok",
     "width": 512
   },
   "worker_status": "ok",
   "worker_stderr_tail": "",
-  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_falumpaset_south/desertportb_falumpaset_south.png\n    512x512  rgba  338,739 bytes  (165s)\n"
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_falumpaset_south/desertportb_falumpaset_south.png\n    512x512  rgba  313,230 bytes  (96s)\n"
 }

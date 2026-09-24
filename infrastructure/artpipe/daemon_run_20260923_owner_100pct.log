@@ -38,3 +38,7 @@ artpiped: NOTE artreg event skipped for bluedesert_krissek_south: no 'queued' ev
 artpiped: NOTE artreg event skipped for bluedesert_vekkit_east: no 'queued' event found for job_id='bluedesert_vekkit_east' — pass --target explicitly
 artpiped: NOTE artreg event skipped for bluedesert_vekkit_north: no 'queued' event found for job_id='bluedesert_vekkit_north' — pass --target explicitly
 artpiped: NOTE artreg event skipped for bluedesert_vekkit_south: no 'queued' event found for job_id='bluedesert_vekkit_south' — pass --target explicitly
+artpiped: NOTE artreg event skipped for canon_dewback_v1_south: no 'queued' event found for job_id='canon_dewback_v1_south' — pass --target explicitly
+artpiped: NOTE artreg event skipped for bluedesert_dorrak_south: no 'queued' event found for job_id='bluedesert_dorrak_south' — pass --target explicitly
+artpiped: NOTE artreg event skipped for bluedesert_vekkit_north: no 'queued' event found for job_id='bluedesert_vekkit_north' — pass --target explicitly
+artpiped: NOTE artreg event skipped for RSW_Korrum_north: no 'queued' event found for job_id='RSW_Korrum_north' — pass --target explicitly
