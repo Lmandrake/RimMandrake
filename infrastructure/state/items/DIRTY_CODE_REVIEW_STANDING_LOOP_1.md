@@ -1124,3 +1124,100 @@ part of the main assembly), `RimMandrake/GelatinousSlime` (3),
 `RimStarWars/TrophyCraft` (3), `RimUtinni/StructureInjectionsRUT` (3). The
 284-row re-dirtied backlog and the binary-art-tracking scope question from
 wave 15 are both still untouched.
+
+## Wave 22 — 2026-09-24: `PyrelandsMechanics` never-entered cluster CLOSED
+
+Re-confirmed the final 3 `PyrelandsMechanics` never-entered files against
+`RimMandrake.Utinni.PyrelandsMechanics.csproj`'s `<Compile Include>` list
+before touching anything — wave 21's list held exactly. Reviewed all 3,
+full-file each: `PyrelandsFireRite.cs` (183 lines, spawns and dispatches the
+Deep Tribes' rite party), `LordJob_RUT_FireRite.cs` (205, the rite's state
+graph — travel/rite-harvest/exit), `JobGiver_RUT_FurnaceThermalCycle.cs`
+(211, the furnace-beast's map-leg heat-seeking + thornvine diet). Cross-
+checked every engine call against the real decompiled source at
+`/mnt/d/Luke/dev/reference/rimworld-decompiled`: `RCellFinder.
+TryFindRandomPawnEntryCell`, `CellFinder.RandomClosewalkCellNear`,
+`LordMaker.MakeNewLord`, `StateGraph.AttachSubgraph`/`StartingToil`,
+`Transition`/`AddSources`, `Trigger_Memo`/`Trigger_TicksPassed`/
+`Trigger_BecamePlayerEnemy`, `GenClosest.ClosestThingReachable`,
+`ThingDef.IsNutritionGivingIngestible` — all real, all matching usage.
+
+**Found and fixed one false engineering claim** (comment-only, no behaviour
+change) in `LordJob_RUT_FireRite.cs`: the `ignited` field's comment claimed
+"a load re-enters the current toil", implying `LordToil.Init()` re-fires on
+reload and the guard exists to stop a second ignition from that. Traced
+`Verse.AI.Group.Lord.ExposeData_StateGraph`/`Lord.SetJob` in the decompiled
+engine: on load, `SetJob(loading: true)` rebuilds the graph via
+`CreateGraph()` and then restores `curLordToil` by **direct index
+assignment** (`curLordToil = graph.lordToils[tmpCurLordToilIdx]`), bypassing
+`GotoToil()` — and therefore `Init()` — entirely. A reload can never
+re-ignite this toil either way, and in a live session only the `arrived`
+transition ever targets `rite`, so `Init()` runs at most once regardless.
+The guard is harmless (kept as cheap insurance against a future transition
+change) but its stated justification was flatly wrong. Corrected the
+comment in place, commit `16a03960e`, pushed.
+
+Also traced `LordToil_Travel.LordToilTick`'s `lord.ReceiveMemo
+("TravelArrived")` call (fires when every pawn is within 10 tiles of the
+destination and can reach it) to confirm the `Trigger_Memo("TravelArrived")`
+this file listens for is real and correctly named, and cross-checked every
+`PyrelandsMechanicsSettings.*`/`PyrelandsTuning.*` field/constant these 3
+files read against their real declarations in `PyrelandsMechanicsMod.cs`/
+`PyrelandsTuning.cs` — all exist, all correctly typed. No functional bugs
+found. All 3 confirmed reachable via `RimMandrake.Utinni.
+PyrelandsMechanics.csproj`'s `<Compile Include>`. All 3 marked CLEAN, commit
+`23259a0a9`, pushed. **This closes the entire `PyrelandsMechanics`
+never-entered cluster.**
+
+With time remaining, re-derived the never-entered survey fresh rather than
+trust wave 21's "35 remain" tally — that tally turned out to be inflated by
+a script bug (Windows-style backslash separators inside some `<Compile
+Include>` paths, e.g. `LiquidTypes\Building_LiquidTank.cs`, joined wrong on
+Linux and produced ~167 phantom "never-entered" entries for files that were
+actually already CLEAN). Fixed the join (normalize backslashes before
+joining) and re-ran across every `src/RimMandrake|RimStarWars|RimUtinni/**/
+*.csproj`: **22 never-entered files genuinely remain**, all real files
+confirmed present on disk. By folder: `GelatinousSlime/Source` (3),
+`RimStarWars/TrophyCraft/Source` (3), `StructureInjectionsRUT/Source/
+Ashfall` (3), `RimMandrake/Pyrelands/Source` (2), `bridgetools/JawaBench.
+BridgeTools` (2), `LanternDeeps/Source` (2), and 1 each in `Aftermath/
+Source`, `FlowWorks/Source` (`RM_StockMath.cs`), `FlowWorks/Source/SelfTest`
+(`Program.cs` — still unconfirmed as part of the main assembly vs. a
+standalone entry point, per wave 21's own caution), `Ninefold/Source`,
+`SeaShores/Source/SelfTest` (`Program.cs`, same caution), `WreckedMachines/
+Source`, `UtinniPatches/Source`.
+
+Reviewed the `RimStarWars/TrophyCraft/Source` cluster (3/3, its whole
+`<Compile Include>` list, confirmed via `RSW_TrophyCraft.csproj`):
+`RSW_FactionApparelThoughtExtension.cs` (17 lines, the DefModExtension
+carrying which apparel + which factions), `RSW_ThoughtWorker_
+ObserverFactionApparel.cs` (66, the ThoughtWorker plus `RSW_Thought_
+ObserverBraveFang`'s opinion-multiplier override), `RSW_
+TrophyCraftSettings.cs` (65, Mod Settings). Traced the whole mechanism
+end to end: `RSW_TrophyCraft_Thoughts.xml`'s `ThoughtDef` sets
+`thoughtClass`/`workerClass` to these exact two classes and ships
+`factionDefNames` empty by design; `WyyyschokkFangPendantFactions.xml`
+(RimUtinni Patches) fills it via `PatchOperationConditional`+
+`PatchOperationAdd` with the 3 real faction defNames; `apparelDefName`
+(`RSW_Apparel_FangPendant`) is a real ThingDef in `RSW_TrophyCraft_
+Items.xml`; the XML's `baseOpinionOffset` of 8 matches the settings UI's
+"(base +8 opinion)" label exactly. Cross-checked `ThoughtWorker.def`
+(real field), `ThoughtWorker.CurrentSocialStateInternal(Pawn p, Pawn
+otherPawn)` (real virtual signature, `p`=observer/`otherPawn`=wearer per
+the file's own cross-check against vanilla's `ThoughtWorker_Precept_
+GroinUncovered_Social`), and `Thought_SituationalSocial.OpinionOffset()`
+(real virtual, correctly overridden) against the decompiled engine. No
+bugs found. All 3 confirmed reachable via `RSW_TrophyCraft.csproj`'s
+`<Compile Include>`. All 3 marked CLEAN, commit `23259a0a9`, pushed.
+**This closes the entire `TrophyCraft` never-entered cluster.**
+
+Next wave: 16 never-entered files remain (22 minus this wave's 3) —
+re-derive with the fixed backslash-safe recipe above rather than trust this
+count. Largest remaining clusters: `GelatinousSlime/Source` (3),
+`StructureInjectionsRUT/Source/Ashfall` (3, the Rakatan command-codes
+mechanic), `RimMandrake/Pyrelands/Source` (2), `bridgetools/JawaBench.
+BridgeTools` (2, `JawaBenchAbilityTools.cs`/`JawaBenchInhabitedTools.cs`),
+`LanternDeeps/Source` (2). Confirm the two `SelfTest/Program.cs` files'
+reachability (standalone entry point vs. main-assembly member) before
+reviewing either. The 284-row re-dirtied backlog and the binary-art-tracking
+scope question from wave 15 are both still untouched.
