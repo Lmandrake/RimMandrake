@@ -101,7 +101,6 @@
       <nameGenerator>SWAnimalNamerMale</nameGenerator>
       <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
-      <lifeExpectancy>22</lifeExpectancy>
       <wildBiomes>
         <AridShrubland>0.6</AridShrubland>
         <Desert>0.00</Desert>
