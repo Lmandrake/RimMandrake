@@ -41,3 +41,9 @@ wants. All four toggleable in Mod Settings.
 
 A Sump colony is a constant, legible fight against the tar — losable by neglect,
 priced in solvent, and worth it because the tar itself pays.
+
+🔑 **Tuning law** (owner, 2026-09-24, typed; full quote on `SUMP_INHABITED_NOTES_1`):
+the biome *rewards* players who enjoy their colony being dirty, messy,
+idiosyncratic, and *frustrates* players who want neat, tidy, controlled. Tune every
+knob here toward that — coping must be viable and characterful; full cleanliness
+should be a losing fight, not an achievable state.
