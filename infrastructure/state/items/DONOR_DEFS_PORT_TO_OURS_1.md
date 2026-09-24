@@ -97,3 +97,50 @@ post-load def dump, never from the patch files.
 
 The shipped game's biome rosters name our defs. Removing any third-party content
 mod changes nothing a player can see.
+
+## FOUNDRY, 2026-09-24: folding in a stray 2026-09-20 census that never landed here
+
+Commit `78b63a97` (2026-09-20, Opus) wrote `Transient/donor_port_twin_census.md`
+citing this item in its message but never touched this file — found this pass
+while checking why the queue flagged this item's prose as possibly stale. The
+work is real and worth keeping; folding it in rather than leaving it to rot in
+`Transient/`.
+
+**Scope**: this is a twin-duplication census of the desert family's 109-row roster
+only (`DESERT_FAMILY_PORT_EXECUTION_1`'s frozen sheet), not the full-roster
+donor-cost census this item's own spec step 1 asks for — it answers "how bad is
+the current live-duplication problem," not "what does porting each donor's
+entries actually cost." Both are still owed.
+
+**MEASURED** (against the 618-mod dump, 2026-09-20T20:14:27Z, fingerprint-matched
+to the live `ModsConfig.xml` at capture time): of the desert sheet's 75
+structurally-twin-eligible rows (bare donor-style names), **66 are live
+identical-label twins** — both the donor ThingDef and our `RSW_` port exist,
+same label, simultaneously. 7 rows are genuinely unported yet (`Rat`,
+`Terrorworm`, `Plant_Brambles`, `Plant_Bush`, `Plant_HealrootWild`,
+`Plant_Ripthorn`, `Plant_ShrubLow`). 2 are near-miss twins failing only on
+pluralization (`Shaak`/`shaaks`, `Skalder`/`skalders`). All from
+`mlie.starwarsanimalcollection`.
+
+**Not a defect** — confirmed against `MLIE_FAUNA_ABSORPTION_1` (closed, moved to
+`items/closed/`), whose own design keeps the donor active through every wave
+and only retires it after a full donor-off cold load. That item's last logged
+pass (2026-09-18) had 26 of 91 Wave-C species still remaining — so the 66 live
+twins are exactly that in-progress state, not new damage.
+
+**The one real gap this surfaced**: `sarg.alphaanimals` (102 roster entries,
+the SECOND-largest donor named in this item's own table) has **no retirement
+plan at all** — no `ALPHA_ANIMALS_*` item exists anywhere in `items/` or
+`items/closed/`. `MLIE_FAUNA_ABSORPTION_1` and `BMT_FAUNA_ABSORPTION_1` cover
+the other two large donors; Alpha Animals' 102 entries have never been scoped
+as a wave. That is real unfiled work, not yet filed as its own item here —
+whoever plans the porting order (spec step 1/3) should treat it as a third
+wave alongside the other two, not a tail item.
+
+Files: `Transient/donor_port_twin_census.md` (the full method + per-donor
+active-state table, kept as-is; this section is the summary, not a
+duplicate).
+
+Still `proposed` — the census does not authorize porting; spec step 1's
+full per-donor cost grading and step 2's keep/cut pass are both still
+unstarted, and `⛔ Do not start porting 300 defs` stands.

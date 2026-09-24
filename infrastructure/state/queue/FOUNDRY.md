@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T05:44:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T05:45:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## DONOR_DEFS_PORT_TO_OURS_1 Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 262 of ~330 borrowed biome-roster entries alone
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
+prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
 
 # IN PROGRESS
 
@@ -1356,16 +1365,6 @@ kind:     chore
 thin:     no ## criteria
 summary:  Do this at the desk, on a day when losing the fleet for ten minutes is fine.
 prose:    infrastructure/state/items/REBOOT_BREAKGLASS_VERIFY_1.md
-
-## DONOR_DEFS_PORT_TO_OURS_1 Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 262 of ~330 borrowed biome-roster entries alone
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
-prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
 
 ## NONCANON_BEAST_RENAME_1 Rename every non-canon beast to a pseudo-Star-Wars equivalent - owner ruling 2026-09-20; applies to donor creatures with Earth or generic names that survive the port to our own defs
 state:    proposed
