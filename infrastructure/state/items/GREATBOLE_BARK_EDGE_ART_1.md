@@ -44,7 +44,7 @@ wood. ⇒ **That is a real visual defect in shipped content**, and it is the thi
 look like machinery. Fix is one of: give the marker real art, or make it draw nothing at all, since its
 job is bookkeeping and the blob is what the player is meant to see.
 
-## ⚠️ UNMEASURED — the bark edge specifically, and it needs the Desktop
+## ✅ MEASURED 2026-09-23 — the bark edge mechanism (answer in the Desktop section below; the questions that follow were the ones asked)
 
 🔴 **How vanilla makes a stone or mineral's outer edge read differently from its interior is UNMEASURABLE
 from the Mac.** No game, no def dump, no decompiler, and RimSage has never connected here. ⛔ Name no
@@ -60,6 +60,39 @@ The question to answer on the Desktop, stated so it can be answered in one sitti
    That distinction decides whether this is an art job or a def job.
 3. **What art does the answer require** — one texture, an atlas, or an edge set? ⛔ Do not commission art
    before this is known; the wrong number of PNGs is the expensive mistake here.
+
+## ✅ Desktop answer — how vanilla rock gets an edge that differs from its interior (MEASURED, RimSage, 2026-09-23)
+
+**Mechanism: ONE atlas PNG + the linked corner-filler draw mode. No separate edge def, no second texture.**
+
+- `RockBase` (Defs/Core/ThingDefs_Buildings/Buildings_Natural.xml:16-58): `thingClass Mineable`,
+  `graphicData.texPath Things/Building/Linked/Rock_Atlas`, `graphicClass Graphic_Single`, **`linkType CornerFiller`**,
+  `linkFlags Rock, MapEdge`. Every vanilla mineable (Sandstone, Granite, MineableSteel …) inherits exactly this.
+- The atlas: `MaterialAtlasPool.MaterialAtlas` (Verse/MaterialAtlasPool.cs:8-40) slices the ONE texture into a
+  **4 × 4 grid of 16 sub-materials**, each `0.25` of the texture with a `1/32` padding inset (`mainTextureScale 0.1875`),
+  indexed by the `LinkDirections` bitmask of which of the four cardinal neighbours also link. Sub-tile 0 is "no
+  neighbours" (a lone boulder), sub-tile 15 is "all four" (pure interior); the other 14 are the edges and corners.
+- `Graphic_Linked.ShouldLinkWith` (Verse/Graphic_Linked.cs:66-81): a neighbour links when
+  `linkGrid.LinkFlagsAt(c) & def.graphicData.linkFlags != 0`; out-of-bounds cells link iff `MapEdge` is set.
+  `Graphic_LinkedCornerFiller.Print` (Verse/Graphic_LinkedCornerFiller.cs:5-79) additionally prints a 0.5-cell cover
+  square over each diagonal gap when both flanking cardinals link, so interior corners read solid.
+- `LinkFlags` (Verse/LinkFlags.cs): `Rock = 2` links to every other rock-flagged thing; **`Custom1 … Custom10`
+  (0x20000 …)** exist for a def that should link only to its own kind.
+
+**⇒ What the greatbole needs, and the number that matters: ONE PNG, laid out as a 4 × 4 atlas in `Rock_Atlas`'s
+cell order** (extract `Things/Building/Linked/Rock_Atlas` from `resources.assets` per `reading-rimworld-graphics`
+to copy the exact layout; the sub-tile order is the `LinkDirections` bit order, not reading order). Interior cells
+show heartwood, edge and corner cells show bark. Def change on `RUT_GreatboleHeartwood`
+(src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_GreatboleHeartwood.xml:31-32): keep `Graphic_Single`, add
+`<linkType>CornerFiller</linkType>` and `<linkFlags><li>Custom1</li></linkFlags>` (not `Rock`, or the bark would
+weld onto adjacent stone; not `MapEdge`, a bole never touches the map edge by design). `drawSize` stays 1×1 — linked
+graphics are per-cell. The edge is then free: no per-cell edge def, no GenStep work, nothing to Scribe.
+
+⚠️ Two things this does NOT settle, both Desktop/live: (a) whether `Mineable`'s mined-away cell re-links its
+neighbours on the same frame (vanilla rock does, so the expectation is yes — it is the same class); (b) the
+`RUT_GreatboleCore` 1×1 marker with `drawSize (7,7)` is a SEPARATE defect and unaffected by this.
+
+`needs` moves from `game-up` to `offline`: art can be commissioned now that the PNG count (one atlas) is known.
 
 ## spec
 

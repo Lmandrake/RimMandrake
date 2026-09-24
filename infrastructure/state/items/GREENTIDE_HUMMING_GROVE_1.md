@@ -102,7 +102,7 @@ needed now** — the camera-attached route answers the capability question by al
 ⚠️ The one thing still worth confirming is cheap and is a *tuning* check, not a gate: how audible the
 layer pop is in practice. That is settled by listening, not by reading the engine.
 
-## 🔨 BUILT 2026-09-23 — written, registered, NOT compiled and NOT proven
+## 🔨 BUILT 2026-09-23 — written, registered; COMPILED the same day on the Desktop (section below), NOT deployed, NOT proven
 
 Two files in `mandrake.rm.creaturebehaviors`, generic per his ruling — this assembly still names no
 plant, no biome and no sound:
@@ -141,6 +141,16 @@ not *working* until he has heard it.
 2. **State is not Scribed.** Every input is re-derivable from spawned Things and the camera, and a
    `Sustainer` cannot be saved — the `SenseWeb`/`DreadField` posture, deliberately not
    `LivingRegrowth`'s.
+
+## ✅ Desktop step done 2026-09-23 — camera accessor confirmed, assembly compiled, NOT deployed
+
+- `Find.CameraDriver` exposes **`public IntVec3 MapPosition`** (Verse/CameraDriver.cs:184, MEASURED from the decompiler).
+  The code already used it; the `❓ CONFIRM` marker in `TryGetListenerCell` is replaced by the measured citation.
+- `dotnet build RM_CreatureBehaviors.csproj -c Release` (user-local SDK 8.0): **0 warnings, 0 errors**;
+  `Assemblies/RimMandrake.CreatureBehaviors.dll` rebuilt (97,280 → 103,424 bytes) and committed.
+- ⛔ **Not deployed** — RimWorld was running (the DLL in `Mods/` is locked while loaded). `deploy_custom_mods.py --mod
+  CreatureBehaviors` dry run shows exactly one drift line, the DLL; run it with `--apply` at the next shutdown window,
+  then the `## verify` walk (he has to HEAR it) is the remaining owed work.
 
 ## spec
 

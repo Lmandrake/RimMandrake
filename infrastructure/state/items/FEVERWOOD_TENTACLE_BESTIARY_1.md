@@ -1,5 +1,33 @@
 # FEVERWOOD_TENTACLE_BESTIARY_1 — six limb types and the drive-off ladder
 
+## ✅ Desktop answer — MEASURED from the decompiled engine (RimSage), 2026-09-23
+
+**Q: does a hediff zeroing `Moving` pin a pawn mid-path without corrupting its job queue? NO — it DOWNS the pawn and clears its mind.**
+
+- `Pawn_HealthTracker.ShouldBeDowned()` (Verse/Pawn_HealthTracker.cs:614-621) returns true the moment
+  `!capacities.CapableOf(PawnCapacityDefOf.Moving)` (unless `RaceProps.doesntMove`). So Moving = 0 ⇒ downed.
+- `MakeDowned` (:809-881) then calls `pawn.ClearMind_NewTemp(...)` (job + queue gone), `DropAndForbidEverything`,
+  `stances.CancelBusyStanceSoft()`, undrafts, fires downed thoughts/tales and `Notify_PawnLost` on the lord.
+  ⇒ It is the vanilla "incapacitated" path, not a snare. Nothing survives it.
+- A hediff that only *slows* Moving does not pin either: `Pawn.TicksPerMove` (Verse/Pawn.cs:3221-3260) clamps at
+  **450 ticks per cell** even at MoveSpeed 0 (`num3 = Mathf.Clamp(num3, 1f, 450f)`), i.e. 7.5 s a cell, still moving.
+
+**What DOES pin a pawn in place with its job and path intact — two vanilla mechanisms, both engine-native:**
+
+1. **Stun.** `pawn.stances.stunner.StunFor(int ticks, Thing instigator, bool addBattleLog = true, bool showMote = true,
+   bool disableRotation = false)` (RimWorld/StunHandler.cs:176-185). `Pawn_StanceTracker.FullBodyBusy` is true
+   while `stunner.Stunned` (Verse/Pawn_StanceTracker.cs:28-37), and `Pawn_PathFollower.PatherTick` returns early on
+   `FullBodyBusy` (Verse/AI/Pawn_PathFollower.cs:217-365) with `curPath`, `destination` and `moving` untouched. `Pawn.Tick`
+   still calls `jobs.JobTrackerTick()` (Verse/Pawn.cs:2796-2874), and no file under `Source/Verse/AI/` tests
+   `stunner.Stunned` — so the job and its queue persist; only the body stops. Re-issue `StunFor` each interval to hold.
+2. **A busy stance.** Any `Stance` whose `StanceBusy` is true (the `Stance_Cooldown`/`Stance_Warmup` family) has the same
+   effect through the same `FullBodyBusy` gate, without the stun mote or battle-log line.
+
+⇒ **Build the sink-mud, the snare's drag and F1's rescue window on `StunFor` (or a custom busy stance), not on a
+Moving-zeroing hediff.** The "held by something" state is a hediff for *display and severity* only; the hold itself is
+the stun. The one thing to test live, not from source: whether a stunned pawn being *carried* (the drag) keeps its job
+— `MakeDowned` is the only path that clears it, and carrying does not down, so the expectation is YES.
+
 ## spec
 
 Authority: `design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md`
@@ -81,6 +109,6 @@ play gets limbs; the whole animal rising is still the plot's to spend.
 - The **porter** must be recognisable *before* a player shoots it, because attacking it
   angers the pool **and** ends its treasure trickle permanently. That makes its distinct
   silhouette an art requirement, not flavour.
-- ⚠️ **UNMEASURED, Desktop only:** whether a hediff zeroing Moving pins a pawn mid-path
+- ✅ **MEASURED 2026-09-23 (see the Desktop answer section): a hediff zeroing Moving DOWNS the pawn and clears its mind — use `StunFor` instead.** Original question: whether a hediff zeroing Moving pins a pawn mid-path
   without corrupting its job queue. RimSage has never connected on the Mac — do not assert
   it from there.

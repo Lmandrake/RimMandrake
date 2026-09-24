@@ -94,9 +94,8 @@ why the def deliberately does not place itself. A `terrainPatchMakers` block on 
 actively create the hazard that file was written to avoid. (The Grey and Twilight Seas are not
 lethal, so this constraint is not obviously theirs.)
 
-**NEXT (Desktop):** open a coastal land map beside an ocean and record which terrain defs
-generate at the water's edge, then answer on this item whether a sea's catch is consumed from
-the land map or from the sea tile. Only then resume step 1.
+**✅ ANSWERED 2026-09-23 from the decompiled engine (section below): the catch is consumed from the LAND map's
+own biome, the shore is the `Coast` tile mutator, and our sea defs never trigger it. Step 1 is re-scoped there.**
 
 ⚠️ All four are `impassable=true`. The floor is reached by **diving**, which already exists
 generically: `mandrake.rm.divinginteraction` makes any `RM_DiveEligible`+Standable terrain a
@@ -173,6 +172,48 @@ which the def file itself flags as a placeholder — `Graphic_StackCount` render
 is a look problem, not a mechanism problem. ✅ Before commissioning any, apply the standing
 check-for-existing-art rule in CLAUDE.md: search `infrastructure/artpipe/done/` and `_artsrc/`
 for these three subjects first.
+
+## ✅ Desktop answer — where a sea's catch is consumed, and what a shore map generates (MEASURED, RimSage, 2026-09-23)
+
+**A sea's catch is consumed from the LAND map, and only ever the land map's own BiomeDef is consulted.**
+
+1. **Fish come from `map.Biome.fishTypes` — the biome of the map the pawn stands on.** `WaterBody.SetFishTypes()`
+   (Verse/WaterBody.cs:164-203) picks `commonFish`/`uncommonFish` from `map.Biome.fishTypes.saltwater_*` or
+   `freshwater_*` by the water body's type; `FishingUtility` (RimWorld/FishingUtility.cs:150-152) reads
+   `pawn.Map.Biome.fishTypes` for rare catches. Nothing reads a *neighbouring tile's* biome.
+2. **Salt vs fresh is a property of the TERRAIN, not the tile.** `GridsUtility.GetWaterBodyType` (Verse/GridsUtility.cs:135-146)
+   returns `TerrainDef.waterBodyType`; in Core only `WaterOceanDeep` and `WaterOceanShallow` carry
+   `<waterBodyType>Saltwater</waterBodyType>` (Defs/Core/TerrainDefs/Terrain_Water.xml:64,137); every other water def is Freshwater.
+3. **A map is never generated ON a sea tile.** `TileFinder` (RimWorld/Planet/TileFinder.cs:34,72) and `World.cs:322`
+   refuse tiles whose `PrimaryBiome.canBuildBase` is false; all four of our seas are `impassable` ocean-class biomes.
+   ⇒ the `fishTypes` block on `RUT_TheScald` (5 entries) and the Twilight Sea's 8-via-patch are **consulted by no map
+   a player can ever stand on**. They are not wrong; they are unreachable.
+4. **What a coastal land map generates at the water's edge — and WHY OUR SEAS GET NONE OF IT.** In 1.6 the shore is
+   the `Coast` tile mutator (`TileMutatorWorker_Coast`, RimWorld/TileMutatorWorker_Coast.cs:7-111): a noise falloff
+   from the coast angle lays `MapGenUtility.DeepOceanWaterTerrainAt` (< 0.4) → `ShallowOceanWaterTerrainAt` (< 0.5) →
+   `BeachTerrainAt` (< 0.6, `map.BiomeAt(cell).coastalBeachTerrain ?? Sand`, overridable per mutator via
+   `overrideCoastalBeachTerrain`, MapGenUtility.cs:210-220). 🔴 **That mutator is attached at worldgen only when
+   `Find.World.CoastDirectionAt(tile)` is valid** (RimWorld/Planet/WorldGenStep_Mutators.cs:41-43), and
+   `CoastDirectionAt` (World.cs:316-346) counts a neighbour as coast **only if `PrimaryBiome == BiomeDefOf.Ocean`** —
+   the vanilla `Ocean` def by reference. `RUT_TheScald`, `RUT_TwilightSea`, `RUT_GreySea`, `RUT_PropaneLake` are not
+   it. ⇒ A land tile beside one of our seas has no coast direction, gets no `Coast` mutator, generates **no ocean water
+   and no beach at all**, and its water bodies (if any) are Freshwater. The `IsCoastal` flag (Tile.cs:98) is false too.
+
+**Consequences for step 1 (do not resume it as written):**
+- The "no shore on the sea map" blocker was measuring a map no player sees. Delete that line of work.
+- The real gap is on the LAND side and has three parts, all engine-shaped: (a) get a `Coast` mutator onto land tiles
+  that border our seas — either a Harmony prefix on `World.CoastDirectionAt`/`CoastAngleAt` treating our sea defs as
+  ocean, or setting the mutator on those tiles at the terminal paint (`jawa/world_*` can write mutators; check the
+  export for a mutators column first — the 2026-09-12 CSV header has none); (b) a per-sea `TileMutatorDef`
+  subclassing `TileMutatorWorker_Coast` so the Scald's shore lays scalding shallows, not `WaterOceanShallow`, and the
+  Propane Lake's lays propane — `DeepWaterTerrainAt`/`ShallowWaterTerrainAt`/`BeachTerrainAt` are all `protected virtual`
+  for exactly this; (c) the catch tables go on the **land biomes' `fishTypes.saltwater_*`** (Long Shade, Stillsand,
+  Nightside Ice, whichever borders which sea), keyed by which sea the coast faces — the sea BiomeDefs' own `fishTypes`
+  can stay as documentation but bind nothing.
+- The floor half (diving) is unaffected: `RM_DiveEligible` terrain lives on the land map already.
+
+`needs` moves from `game-up` to `owner`: the next act is his sitting on (a)–(c), not a game load. The Mac-side shore
+audit above stays banked as the record of what the sea defs carry.
 
 ## spec
 
