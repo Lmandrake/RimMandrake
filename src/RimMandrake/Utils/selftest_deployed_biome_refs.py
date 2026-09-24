@@ -60,6 +60,20 @@ STEAM_WORKSHOP_ROOT = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/conte
 REPO_UTINNI_PATCHES_ABOUT = "/mnt/d/Luke/dev/Rimworld/src/RimUtinni/UtinniPatches/About/About.xml"
 REPO_BIOME_DEFS_GLOB = "/mnt/d/Luke/dev/Rimworld/src/RimUtinni/UtinniPatches/Defs/BiomeDefs/*.xml"
 
+class WorkshopScanFailed(Exception):
+    """Raised when the Workshop root cannot be scanned at all (grep timed out
+    or errored, or the root could not be listed) -- as opposed to scanning it
+    cleanly and finding zero defNames. The two used to be indistinguishable:
+    both returned an empty set from _scan_workshop_fast(), silently shrinking
+    the whole defName universe by ~75k names and turning every real reference
+    into every mod under Workshop into an UNRESOLVED false positive. MEASURED
+    2026-09-24: one grep timeout produced a confident "FAIL: 304 deployed
+    reference(s) dangle" against a universe of 17280 defNames; a clean rerun
+    (same content, cache warm) found universe 90054 and 0 unresolved -- a
+    silent-empty-set instrument lying with a number, the exact class this
+    project's CLAUDE.md exists to catch."""
+
+
 DEFNAME_RE = re.compile(r"<defName>\s*([^<\s]+)\s*</defName>")
 PACKAGEID_RE = re.compile(r"<packageId>\s*([^<\s]+)\s*</packageId>")
 # Matches one opening XML element tag, capturing (tagName, rawAttrs).
@@ -133,8 +147,8 @@ def _scan_workshop_fast(root):
     try:
         entries = list(os.scandir(root))
         key = "%d:%d" % (len(entries), int(max((e.stat().st_mtime for e in entries), default=0)))
-    except OSError:
-        return set()
+    except OSError as exc:
+        raise WorkshopScanFailed("could not list %s: %r" % (root, exc)) from exc
 
     cache = os.path.join(tempfile.gettempdir(), "rimworld_workshop_defnames.json")
     try:
@@ -150,8 +164,13 @@ def _scan_workshop_fast(root):
             ["grep", "-rhoE", "<defName>[^<]+</defName>", root, "--include=*.xml"],
             capture_output=True, text=True, timeout=400,
         ).stdout
-    except (OSError, subprocess.TimeoutExpired):
-        return set()
+    except subprocess.TimeoutExpired as exc:
+        raise WorkshopScanFailed(
+            "grep over %s did not finish inside 400s -- the universe cannot "
+            "be trusted incomplete, this must not silently read as zero "
+            "Workshop defNames" % root) from exc
+    except OSError as exc:
+        raise WorkshopScanFailed("grep over %s failed: %r" % (root, exc)) from exc
 
     names = {line[len("<defName>"):-len("</defName>")]
              for line in out.splitlines() if line.startswith("<defName>")}
@@ -268,7 +287,16 @@ def main():
         print("reason: Steam Workshop root %s is absent, so ~500 of the active\n         mods cannot be resolved and every ref into them would read as dangling."
               % STEAM_WORKSHOP_ROOT)
         return 0
-    universe = build_defname_universe(resolution_roots)
+    try:
+        universe = build_defname_universe(resolution_roots)
+    except WorkshopScanFailed as exc:
+        print("UNMEASURED, not a pass or a fail")
+        print("reason: Workshop defName scan failed (%s) -- refusing to "
+              "resolve against a silently-shrunk universe, which would read "
+              "every reference into an unscanned Workshop mod as dangling. "
+              "Re-run once the scan can complete (a warm /tmp cache makes "
+              "this instant)." % exc)
+        return 0
 
     # PRIMARY: deployed biome files against the deployed defName universe.
     total, unresolved = check_refs(deployed_biome_files, universe)
