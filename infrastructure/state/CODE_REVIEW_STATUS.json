@@ -12939,6 +12939,12 @@
     "hash": "1a574721ee7c00fc550193d49be5da098c9292a5ace87145c781bfefb748a03a",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/StarWarsPatches/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9091cd12e96db729eee2f24f834b0d4b12853568822b2f64a753590f53a2017c",
+    "sha": "1fc63ee14"
+  },
   "src/RimStarWars/StarWarsRaces/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -13707,6 +13713,12 @@
     "hash": "81a4bfa044271304047f0b9e8b0b62ddf948bfebf00a4b14d30cd37ccdd3a328",
     "sha": "52dee04f"
   },
+  "src/RimUtinni/AshkarrWeatherSuite/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fc561b80bd6e4e407ca757317313b058916474ad594e69d97cc4f5ad0129e30e",
+    "sha": "1fc63ee14"
+  },
   "src/RimUtinni/BirthHatchDemo/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -13988,6 +14000,12 @@
     "date": "2026-09-03",
     "hash": "a6967511944351015c05344e31d12c807301de9bbdbae625d33657ffa2a3a89f",
     "sha": "57ce5707"
+  },
+  "src/RimUtinni/EmpirePursuit/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "e1d70c2f77fc2d3eb1b366cd17677e0f1e38c5fa8fad7f99b68ce4042f3074f6",
+    "sha": "1fc63ee14"
   },
   "src/RimUtinni/FrostmiteArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -14954,6 +14972,12 @@
     "date": "2026-09-05",
     "hash": "6ff0b6da33c4b8855ae09b629f4d2b9e27116828a3d1947b9b89b847bcab107d",
     "sha": "ff35f27f"
+  },
+  "src/RimUtinni/PlantGrowth/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f4e963f7a809eebe369205d4f5c32422ef17b097e6a50c58e4d479b2692c42c2",
+    "sha": "1fc63ee14"
   },
   "src/RimUtinni/PyrelandsMechanics/About/About.xml": {
     "cleanCount": 3,
@@ -16364,6 +16388,12 @@
     "date": "2026-09-06",
     "hash": "b91dee8c79f7f8dcec2404972e72a9199ed65c25a8a4bbdc30288a4b98cdbcfa",
     "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3c8c2ee7ba79ad38e8433737d92c43c0911e9d0e20efbbf4ef02639d88f5228f",
+    "sha": "1fc63ee14"
   },
   "src/RimUtinni/TarGuzzlerArtOverride/About/About.xml": {
     "cleanCount": 1,

@@ -447,3 +447,75 @@ found 5 bugs in 4 of 5 files reviewed (all key-mismatch against a bridge
 tool's real C# response shape), a future wave should keep cross-checking
 every `t.bridge_call(...)` against its actual `[Tool]` implementation
 rather than treating the pattern as exhausted after wave 11's single find.
+
+## Wave 13 — 2026-09-24
+
+Re-derived the DIRTY `validation.py` list per the standing recipe: a fresh
+`find . -name validation.py` sweep (55 total) minus `code_review_status.py
+list`'s CLEAN rows (42) gave exactly 13 DIRTY, matching wave 12's count.
+Reviewed the 5 smallest, full-file each, every `t.bridge_call(...)`
+cross-checked against its actual `[Tool]` implementation in
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/*.cs`:
+`EmpirePursuit/validation.py` (248 lines), `AshkarrWeatherSuite/
+validation.py` (249), `StructureInjectionsRUT/validation.py` (259),
+`PlantGrowth/validation.py` (264), `StarWarsPatches/validation.py` (266).
+
+**Found and fixed 3 more real, high-confidence bugs, same family as waves
+11-12, in 2 of the 5 files:**
+
+- **EmpirePursuit** (`scenario_part_lifecycle`'s `part_readback_matches`):
+  read `part.get("defName")` and flat `part.get("firstRaidDelayHours")`/
+  `part.get("canDoNormalRaid")` off `jawa/scenario_parts_get`'s rows, but
+  `DescribePart` (`JawaBenchScenarioTools.cs`) shapes each part as
+  `{className, def, summary}` -- the ScenPartDef name is under `def`, never
+  `defName`, and every field value is nested under `summary`, not flat.
+  `part` was therefore always `None` and the component raised
+  `ExpectationFailed` on every live run regardless of the real readback.
+- **EmpirePursuit** (`normal_raid_pool_gate_flips_both_ways`, both
+  directions): read `f.get("defName", f)` off `jawa/raid_preview`'s
+  `hostileFactions[]`, but `RaidPreview` (`JawaBenchEventTools.cs`) shapes
+  each entry as `{def, name, canStageAttacks}` -- no `defName` key, so the
+  fallback always returned the whole dict. `"Mechanoid" not in names`
+  (dicts, never the string) was therefore always true regardless of real
+  exclusion, and the mirror `"Mechanoid" in names` check in the second half
+  was therefore always false -- one direction silently never tested
+  anything, the other always failed.
+- **AshkarrWeatherSuite** (`planet_geometry_readback`): called `jawa/get_def`
+  (singular) and read `row.get("resolved") or row.get("fields")` -- `GetDef`
+  (`JawaBenchTerrainTools.cs`) only hand-models `extra` for ThingDef/
+  PawnKindDef/BiomeDef; for a custom Def subclass like `PlanetGeometryDef`
+  it returns `extra=null`, `extraModelled=false`, and there is no
+  `resolved`/`fields` key on its response at all -- the check raised
+  unconditionally on every live run. Fixed by switching to `jawa/get_defs`
+  (plural)'s documented `fields=` escape hatch, same fix shape as wave 11's
+  AshkarrFlora bug.
+- **AshkarrWeatherSuite** (`weather_pathway_healthy`'s smoke check): guarded
+  on `"error" in row`, but `jawa/weather_get`'s failure path returns the
+  shared `Fail()` helper's shape (`{success=false, message, details}`,
+  `JawaBenchTerrainTools.cs`) -- there is no `error` key anywhere in this
+  bridge's response family (same finding as wave 12's RimDefDump bug), so
+  the guard could never fire on a genuine failure. Fixed to check
+  `success` directly.
+
+The other 3 files (`StructureInjectionsRUT`, `PlantGrowth`,
+`StarWarsPatches`) were cross-checked line-by-line against their actual
+bridge-tool dependencies (`jawa/map_info`, `jawa/list_things`,
+`jawa/run_genstep`, `jawa/drain_log` for StructureInjectionsRUT;
+`jawa/inspect_string`, `jawa/set_plants`, `jawa/get_defs` for PlantGrowth --
+its own docstring flagged the `things` key on `jawa/inspect_string` as an
+unverified guess, and it turned out correct; `jawa/list_things`,
+`jawa/pawn_get`/`PawnSnapshot` for StarWarsPatches, including confirming
+`apparel[]`/`equipment[]` carry both `def` and `defName` as deliberate
+aliases per that file's own comment) and every field name and response
+shape checked out exactly as each suite assumed. No bugs found in those 3.
+
+All 5 confirmed reachable via `modcheck/runner.py`'s `load_suite()`
+(dynamic per-mod-dir import). Fixes committed at `1fc63ee14`, pushed. All 5
+marked CLEAN, same commit.
+
+Next wave: 8 `validation.py` files remain DIRTY (13 minus this wave's 5) --
+re-derive with the same recipe rather than trusting this count. No other
+named clusters remain outstanding from earlier waves. The key-mismatch
+pattern is still productive (3 more bugs this wave, 11 total across waves
+11-13) -- keep cross-checking every `t.bridge_call(...)` against its real
+`[Tool]` implementation.
