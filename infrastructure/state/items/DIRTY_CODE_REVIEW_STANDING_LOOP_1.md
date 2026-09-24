@@ -654,3 +654,77 @@ self-inflicted gap) or the 95 never-entered `.cs` files (largest cluster:
 `RM_CompDungSeeder.cs` etc. — so the other 20 files there are a natural
 next full-file batch). Confirm reachability on the 13 Utils Python tools
 before spending a review on any of them.
+
+## Wave 15 — 2026-09-24: the 284 re-dirty finding, diagnosed
+
+**Part 1 — re-derived the 284 count independently** (`code_review_status.py
+list | grep -c '^DIRTY'` gave exactly 284 again, same instrument the
+post-tail survey used, so no drift this time). Verdict: **real, not a bug —
+ordinary organic development touching reviewed files, no hashing defect, no
+git-base artifact.**
+
+- Broke the 284 down by extension: **161 `.png`, 74 `.xml`, 32 `.py`, 14
+  `.cs`, 2 `.txt`, 1 `.csproj`.** The PNG majority is one identifiable
+  event: `git log --oneline <clean-sha>..HEAD -- <file>` on a sample of the
+  re-dirtied `*ArtOverride/Textures/**.png` files all point to the same
+  commit, `1135036ce` ("art: zero the sub-visible export halo across 241 of
+  our facing sprites") — a genuine bulk pixel-level art fix that touched
+  hundreds of previously-clean-marked texture files across `RimStarWars`/
+  `RimUtinni` `*ArtOverride` mods weeks after they were marked clean. Byte
+  size differs (209509 → 188379 on the sampled file) confirming real content
+  change, not a re-save no-op.
+- Grouped by clean-mark date: **165 of 284 trace to clean-marks made on
+  2026-09-17** (mostly three bulk mark-clean commits from *before* the
+  2026-09-20 pause: `38ce6b1fa` "mark-clean 7 small RimMandrake dev-tool
+  mods", `9aaf55cec` wave 41, `7d6efe921` an MLIE_FAUNA_ABSORPTION_1 note —
+  these are `code_review_status.py list`'s informational `sha` field, i.e.
+  the mark-clean commit, exactly the "not a per-file content hash" trap
+  wave 8 already flagged). The remaining dates spread from 2026-09-02
+  through 2026-09-20 — a long tail of ordinary re-touches, not a single
+  event.
+- Spot-checked non-PNG samples for legitimacy: `.claude/hooks/queue_lint.py`
+  (+80/-30 lines since its clean-mark, one real commit
+  `1135036ce`'s sibling history shows unrelated hook work), `RM_Environmental
+  HazardsMod.cs` (+93/-1, two feature-build commits:
+  `VENOMVINE_FORTRESS_PASSABILITY_1`, `DESERT_LEACHMOSS_BUILD_1`),
+  `design/Jawa/mods/biome_flora.py` (+263/-57, roster expansion). Every
+  sample is a substantive, real content change — no whitespace-only diffs,
+  no timestamp-only diffs, no case where `git diff --stat` came back empty.
+- **Conclusion: the 284 figure is exactly what `code_review_status.py` is
+  designed to report — files reviewed once, then legitimately edited again
+  by ~3 weeks of active feature work (biome rosters, new mechanics, hook
+  fixes) plus one large bulk art-correction commit that alone accounts for
+  ~57% of the backlog.** Nothing to fix in the tool; this is the review
+  debt the standing loop exists to work down, not a defect to chase. One
+  scope question this surfaces but does NOT answer here (out of scope for
+  this wave, flagging for whoever picks the PNG portion up): binary PNG
+  texture files make up 161 of these 284 "DIRTY" entries and 161/latent of
+  the reachable-file universe generally — whether `code_review_status.py`
+  tracking binary art assets at all (rather than just source/XML/py) is
+  intentional scope or accidental scope-creep from an earlier over-broad
+  `mark-clean` glob is undecided; either way "review" of a PNG can only ever
+  mean "confirm it's the art we mean to ship," not a bug hunt, so those 161
+  rows should probably be handled by the art pipeline's own review-sheet
+  tooling rather than this loop's full-file-read protocol. Not resolved
+  this wave — noted for a future wave or the owner.
+
+**Part 2 — one normal review wave**, 3 files from the `CreatureBehaviors`
+never-entered cluster (re-derived the 20-file list fresh via the item's own
+`<Compile Include>` recipe, matches the post-tail survey's count):
+`RM_CompProperties_ProximityPsychicStun.cs` (87 lines),
+`RM_CompProximityPsychicStun.cs` (115 lines, the Soulchime proximity-stun
+ThingComp — DEEPS_FAUNA_MECHANICS_1), `RM_FilterFeedExtension.cs` (69
+lines, DefModExtension for DESERT_SHADE_WHALE_FILTERFEED_1's terrain-grazing
+mechanic). Traced the stun comp's cooldown/faction/line-of-sight/damage-
+trigger logic in full and cross-checked its two external references —
+`RM_CreatureBehaviorsSettings.soulchimePsychicStunEnabled` (real static at
+`RM_CreatureBehaviorsMod.cs:189`, inside the `RM_CreatureBehaviorsSettings`
+class which spans lines 163–414) and `RM_CompPlantAlarm.TriggerAlarm()`
+(real public method) — both resolve correctly. No bugs found in any of the
+3. Confirmed reachable via `RM_CreatureBehaviors.csproj`'s `<Compile
+Include>`. All 3 marked CLEAN, commit pending below, pushed.
+
+Next wave: 17 `CreatureBehaviors` never-entered files remain (20 minus this
+wave's 3) — re-derive rather than trust this count. The 284-row re-dirtied
+backlog is now diagnosed (see above) but untouched for actual re-review;
+the binary-art-tracking scope question above is still open.
