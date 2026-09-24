@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_PropaneCatch_Refining.xml            SEA_FLOOR_AND_CATCH_PASS_1
+
+  Owner ruling 2026-09-24 (question card, "Refinery bill"): the Propane
+  Lake's catches are fuel as a MECHANIC, not only as flavour. The shore of
+  the Propane Lake becomes a second fuel source beside the pipe-from-the-ship;
+  the_propane_lakes.md ban 5 cut the TANKER economy and this is neither a
+  tanker nor a pipe (design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md,
+  question 2).
+
+  Yield is deliberately far above the vanilla organics bill: vanilla
+  Make_ChemfuelFromOrganics needs 3.5 nutrition of feedstock (about 25 of
+  these catches) for 35 chemfuel, because it is extracting biofuel from food.
+  These catches ARE hydrocarbon (Flammability 1.0, crystalline life grown
+  from fuel snow), so ten of them render to the same 35 chemfuel at half the
+  work. The catches remain valid feedstock for the vanilla bill too; this
+  one is simply the right tool.
+
+  Standalone RecipeDef, no ParentName - the same shape as RUT_Vorrel_Recipes
+  one mod over. recipeUsers names the vanilla refinery by defName, so a
+  refinery from an absent mod is simply not listed rather than failing an
+  xpath. MayRequire Odyssey because every ingredient is a FishBase item that
+  exists only with Odyssey; without it the recipe would log seven dead
+  cross-references.
+-->
+<Defs>
+
+  <RecipeDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Make_ChemfuelFromPropaneCatch</defName>
+    <label>render propane catch into chemfuel</label>
+    <description>Crack a batch of Propane Lake catch into chemfuel. The creatures of that shore are grown from fuel snow and burn like it; rendering them is closer to decanting than to refining.</description>
+    <jobString>Rendering propane catch into chemfuel.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>1200</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <recipeUsers>
+      <li>BiofuelRefinery</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <customSummary>propane catch</customSummary>
+          <thingDefs>
+            <li>RUT_Fessu</li>
+            <li>RUT_Krellik</li>
+            <li>RUT_Oddu</li>
+            <li>RUT_Oovu</li>
+            <li>RUT_Iliss</li>
+            <li>RUT_Tarnn</li>
+            <li>RUT_Zhiil</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_Fessu</li>
+        <li>RUT_Krellik</li>
+        <li>RUT_Oddu</li>
+        <li>RUT_Oovu</li>
+        <li>RUT_Iliss</li>
+        <li>RUT_Tarnn</li>
+        <li>RUT_Zhiil</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Chemfuel>35</Chemfuel>
+    </products>
+  </RecipeDef>
+
+</Defs>
