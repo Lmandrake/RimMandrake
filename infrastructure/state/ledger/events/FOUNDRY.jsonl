@@ -19,3 +19,5 @@
 {"seat":"FOUNDRY","event":"close","id":"DESERT_PORT_PLACEHOLDER_ART_1","sha":"502b24794ce8f04c3571891b2c704e391c0de7d6","reason":"All 16 species now on RSW_ art; deployed, verified in sync; owed a restart to go live","ts":"2026-09-24T05:58:29Z"}
 {"seat":"FOUNDRY","event":"claim","id":"ROSTER_DEAD_BMT_NAMES_SWEEP_1","ts":"2026-09-24T06:00:37Z"}
 {"seat":"FOUNDRY","event":"note","id":"ROSTER_DEAD_BMT_NAMES_SWEEP_1","text":"Resolved the impassable-biome engine question via RimSage (confirmed available this session): no gate exists, wildAnimals populate normally. Updated both sea rosters' law text. Actual wiring stays deferred to TERMINALBIOMES_RM_MOD_BUILD_1 per those rosters' own law.","ts":"2026-09-24T06:00:38Z"}
+{"seat":"FOUNDRY","event":"claim","id":"KORRUM_ART_REGEN_1","ts":"2026-09-24T06:01:33Z"}
+{"seat":"FOUNDRY","event":"note","id":"KORRUM_ART_REGEN_1","text":"Title's quota-block date is stale; current failure is the same Codex 403 outage as everything else this session, not a quota reset. No action possible until the channel recovers.","ts":"2026-09-24T06:01:34Z"}

@@ -75,3 +75,15 @@ resolve under our own Textures tree; the creature renders at all three life stag
 
 The korrum is ours — def and pixels — so the mod does not need Alpha Animals installed to
 show its own animal.
+
+## FOUNDRY, 2026-09-24: title's "quota-blocked to ~2026-09-26" is now stale
+
+All 3 jobs are still in `infrastructure/artpipe/failed/`, but the latest manifest's
+failure reason is `worker_error` / "no image produced after 4s (exit 1)" with no
+`primary_resets_at`/`secondary_resets_at` timestamp — not a quota block. This matches
+a live Codex-channel outage (websocket 403 Forbidden) affecting the whole daemon this
+session (see `CANON_CREATURE_REGEN_1` wave 4 and `DESERT_PORT_PLACEHOLDER_ART_1`'s
+2026-09-24 notes). The item's own title still says "quota-blocked to ~2026-09-26" —
+that was true of an earlier attempt, is no longer the live blocker, and needs
+correcting the next time this item's title is touched. Not requeued this pass
+(nothing to gain while the channel itself is down); no action taken beyond this note.
