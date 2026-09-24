@@ -935,6 +935,12 @@
     "hash": "99c22d37deaa9f13b0cccc6872a6db1b75ff448fb4293ddf161a39d9a9116703",
     "sha": "21b3e2750"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_DungSeeder.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ed3c44f7e94914abfdac94440a9470a3c99990b47fe869c1c0ddf7ee308b2fb1",
+    "sha": "44ecce24d"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_FluidSacs.cs": {
     "cleanCount": 1,
     "date": "2026-09-23",
@@ -958,6 +964,12 @@
     "date": "2026-09-23",
     "hash": "2b1de13b520617207d45ba66bd703b1ae4d6bf92fa25a11b4f0fb17d791d896e",
     "sha": "81f3fa561"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_PlantAlarm.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3a05596ecef5d1db352553f47964995f94506e9f58574a76cee478d6d944a078",
+    "sha": "44ecce24d"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ProximityPsychicStun.cs": {
     "cleanCount": 1,
@@ -1079,6 +1091,12 @@
     "hash": "d2bef25acd6327636728357c2a003fc37d0f3b67365d6cfdc4ab0d7365653c32",
     "sha": "3c1db25d5"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_HediffDef_Grapple.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fdc5d4e4fd394eb9a42e67464843a1de83193a0ba9cc4a9f5e626196e1069450",
+    "sha": "44ecce24d"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_Hediff_Grappled.cs": {
     "cleanCount": 1,
     "date": "2026-09-20",
@@ -1145,6 +1163,12 @@
     "hash": "4fa00c61c2a817bebf44f0f9bb9a7b5e9f8aeb74cc94b44371569f38737d02f7",
     "sha": "20ce46f24"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_WanderInShadeGrid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fb7257d95521e4c5bb99733d1cd5478feeb647ce910409e8978487afca0e29e9",
+    "sha": "44ecce24d"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_FrontCreep.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -1198,6 +1222,12 @@
     "date": "2026-09-11",
     "hash": "745e8cbbd6ee9a244abdaad4540888b2fd67cf37c321fe4ed8b3b7ce743167e0",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeSeekingWanderExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ef2e90ec71ff5c7a542840e67d10ce28e405a71e0bc8d479f9f3d7047d591104",
+    "sha": "44ecce24d"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_SilenceAuraExtension.cs": {
     "cleanCount": 1,
