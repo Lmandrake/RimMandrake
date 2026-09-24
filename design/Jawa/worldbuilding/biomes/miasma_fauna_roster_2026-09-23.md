@@ -118,8 +118,11 @@ pollinator, one and the same swarm. **You cannot have the trees without the feve
 
 The sheet's §4 first ring: the Grey Sea's roster **breeds here** — *"the young here, the
 adults in the terminator waters"* — juveniles swarming the shallows, cheap to hunt, and the
-arithmetic every scavenger knows: *"don't kill what's small here; its mother is the reason
-ships sink."*
+arithmetic every scavenger knows: *"don't kill what's small here; its mother is why nobody goes
+out onto the open water."* 🔴 **Corrected 2026-09-23 on the owner's word — there are no nautical
+ships in this world**, so the sheet's original *"the reason ships sink"* was a dead metaphor and
+is amended in `the_miasma.md` §4. ⚠️ `design/Jawa/campaign/CAMPAIGN_ARC_GATHER.md` G34 still
+quotes the old phrasing and is now stale.
 
 **Eight juvenile defs already ship** — `RSW_MeeJuv`, `RSW_FaaJuv`, `RSW_LaaJuv`,
 `RSW_YobshrimpJuv`, `RSW_SiltLampreyJuv`, `RSW_RustNipperJuv`, `RSW_OpeeSeaKillerJuv`,
@@ -376,13 +379,76 @@ perform:
 | **Release / attack** | in water. Against raiders crossing a channel, and against whatever comes for the crèche |
 | ⛔ **not Rescue, not general Haul** | both need land. An animal that fails its own trained job is a bug wearing a feature |
 
-#### Growing up — and this is where the succession comes from
+#### 🔴 The successor is still a CHILD — corrected 2026-09-23
 
-The nursery's young grow into the Grey Sea's adults, and those adults are *"the reason ships sink."*
-⇒ A young you raised becomes **enormous**. Two outcomes, and the player's record decides:
+⛔ **The "raise it into a leviathan" version is CUT.** Owner, verbatim: *"the game isn't that long
+to watch it grow."* ⇒ A growth arc from nursery juvenile to Grey Sea adult does not fit a RimWorld
+campaign, and ⛔ nothing here may depend on one. No maturation outcome, no "it leaves for the sea",
+and ⛔ **no later encounter with the grown adult** — that note is withdrawn.
 
-- it **leaves for the sea** when it matures, as its kind do — a goodbye, and the ordinary case; or
-- ⭐ it **stays**, and when the warden mother dies it takes the crèche and its reach becomes yours.
+⭐ **And the constraint makes the ending better, not worse.** When she dies of age, what is left
+guarding the crèche is **a juvenile that loves you and is nowhere near her size.**
+
+- Your inherited protection is **much weaker than hers was** — a fraction of the reach, a fraction
+  of the threat. ⇒ The gift is **continuity, not a replacement**, and the player feels the
+  difference immediately.
+- 🔑 **Which is what the sheet actually says is happening:** *"the sea's memory dying in its
+  lifeboat."* An equal successor would contradict the biome's own tragedy. A child holding the
+  crèche is that sentence, exactly.
+- ✅ And it needs **no growth simulation at all** — the successor is simply a tamed juvenile with
+  the anchor comp pointed at the crèche. The same mechanism, on a smaller creature.
+
+⛔ Still not guaranteed: rescue nothing and there is no child to inherit, the crèche is just a
+place, and the scavengers come.
+
+---
+
+### 6b. ⭐ Canals change everything about her — ruled 2026-09-23
+
+Owner, verbatim: *"the Earth Flow mod (canals) has a lot of interesting implications here."*
+
+⚠️ **Sourcing note, because the name matters:** no mod called *Earth Flow* appears in the newest
+modlist snapshot (2026-09-19, **621** active mods); the only canal engine there is **ours**,
+`mandrake.rm.flowworks` — *"Dig a channel, let a fluid flow into it: a species- and biome-agnostic
+engine for canals that carry water, ooze, slime, oil, tar or fuel from a source into the terrain a
+colonist chooses."* ⇒ Designed against FlowWorks. ⚠️ The **live** mod list is a Windows path
+unreachable from the Mac, so this does not rule out that the mod has since been added; if a
+third-party canal mod is intended, its behaviour must be measured on the Desktop before any of
+this is built.
+
+#### 🔑 The point: her reach stops being geography and becomes something the player AUTHORS
+
+She goes where water goes. **A canal is water that a colonist put there.** ⇒ Everything about her
+that was fixed terrain is now a construction decision:
+
+| implication | what it does |
+|---|---|
+| ⭐ **You can build her a road** | Canal inland and her reach follows. A colony that could not site itself on open water can **bring the water to itself** — and buy her protection with labour instead of location. 🔴 This is the single biggest consequence and it turns her from a feature of the map into a relationship with infrastructure |
+| **Rescue by engineering** | Cut a channel to a stranded young and the water reaches it — you free it without touching it. The gentler of the two rescue routes, and the more expensive |
+| ⭐ 🔴 **The reversal: you can strand HER** | A canal that silts, is cut, or is redrawn by a surge leaves **the giant who cannot leave water sitting in a dry ditch.** ⇒ Now she needs you, at scale, and it is your fault. The whole design inverted, and the best consequence available here |
+| ⚠️ **The dark use** | Canal her along your perimeter and you have weaponised a tolerant giant without ever commanding her. Not a bug — but it should feel like using a friend, and the fiction should not pretend otherwise |
+| 🔑 **Brine is a fluid too** | FlowWorks carries *"water, ooze, slime, oil, tar or fuel"*. A canal dug from the wrong end of the gradient carries **brine**, which kills the fresh-end flora — `RM_Ilbareen` above all, the salt-line gauge. ⇒ Careless canal-building salts your own ground, and the player becomes an agent in the one process they were previously only a victim of |
+
+#### Why this matters beyond the warden mother
+
+⭐ **It legitimately recovers the idea he declined.** Of the five proposals he chose the warden
+mother *"only"*, which cut the salt-gate/contested-brine idea — and then chose the mechanism that
+delivers a large part of it anyway, from the opposite direction. ⛔ **That is not licence to build
+salt gates**: it is a reason to make sure FlowWorks' canals interact honestly with the gradient and
+the surge, and to let the consequences be the content rather than authoring a second system.
+
+#### Owed, and the risks
+
+- ⚠️ **Does a FlowWorks canal produce terrain a pawn can PATH on?** A canal that renders as water
+  but is not walkable-by-a-water-creature makes every implication above fictional. 🔴 **Engine
+  question, UNMEASURABLE on the Mac** — and it is the gate on this whole section.
+- ⚠️ **Does a surge interact with a canal at all?** `RM_GradientSurgeExtension` moves the salt line;
+  whether it can cut, fill or salt a player-built channel is unbuilt and is what makes the stranding
+  reversal possible.
+- ⚠️ **Canal-building is labour, and she is a defence.** If canalling her to your walls is cheap,
+  she becomes a standard opener rather than a choice. The cost has to be real.
+- ⛔ **Do not let a canal carry her onto dry land.** The constraint is the content; a canal is water,
+  and the moment it is treated as a bridge the creature is ruined.
 
 #### Foreshadowing her death — the requirement, not a nicety
 
