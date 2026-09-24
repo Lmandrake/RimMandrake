@@ -12645,11 +12645,29 @@
     "hash": "eccbe0b535fdd3b091076e1d758a23c081f1a35baade21aae1853f66bfbe2ba1",
     "sha": "51867f432"
   },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/CompAbilityEffect_FuelSpew.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "62d057dc079536b841feeb5f6cd1858631895cfe477110c7165ac27a07bcd8b7",
+    "sha": "8d9252d24"
+  },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/CompInnateAbility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0e01bc4369c6670636f7d758ddced63044284b61c21e3dcf6de445a0d1dd6555",
+    "sha": "8d9252d24"
+  },
   "src/RimStarWars/SWBestiary/Source/BeastMechanics/CompMetalEater.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "80481718abf5f7950ebdcb95bb463d1b241972d51f862f75ce18f33925322551",
     "sha": "4ac66bfeb"
+  },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/CompScrapHoarder.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "22f1433451e34b929afae5dccf5531fe121fff34227aa12043f8ada14d66d593",
+    "sha": "8d9252d24"
   },
   "src/RimStarWars/SWBestiary/Source/BeastMechanics/JobDriver_EatMetal.cs": {
     "cleanCount": 1,
@@ -12657,11 +12675,41 @@
     "hash": "7925bd6babb0cff0d8809e435df0f58695c264500a331b19bb4007b234912f3e",
     "sha": "4ac66bfeb"
   },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/JobDriver_HoardScrap.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c63eea21786b4c9e5347253eb083acc5317495293cd17e1095d9d60a39c5c753",
+    "sha": "8d9252d24"
+  },
   "src/RimStarWars/SWBestiary/Source/BeastMechanics/JobGiver_EatMetal.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "a37996edaba8fe39404d6c5dcbc393bb39380ed293de7853fe48b24edf3fd2c6",
     "sha": "4ac66bfeb"
+  },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/JobGiver_HoardScrap.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3c15804bd2113cbe359b9c09d36e35fc463c4daa78ba16dccf39ddd72d73a8ad",
+    "sha": "8d9252d24"
+  },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/Patch_JobGiver_GetFood.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5f6129c40b9f2d9db35e780c3a4df8dadfa70314e394f91ff01d289b16849826",
+    "sha": "8d9252d24"
+  },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/RSW_BeastMechanicsDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "086a466992497137d8a8733965b90b2eb938cda1cccc69b306c99b9ff38276df",
+    "sha": "8d9252d24"
+  },
+  "src/RimStarWars/SWBestiary/Source/BeastMechanics/RSW_BeastMechanicsSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f7cca8d0f68828fb8ce5d4b0ea2667567eedd8b0f9940d6cce7f5930d2c2529d",
+    "sha": "8d9252d24"
   },
   "src/RimStarWars/SWBestiary/Source/JawaIkee/RSW_JawaIkeeSettings.cs": {
     "cleanCount": 1,
