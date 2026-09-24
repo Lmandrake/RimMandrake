@@ -4955,6 +4955,12 @@
     "hash": "a0ce5eb837deecde5c68c50e9223f06dab2fbf0bc3aa35b5ecd73868fa478732",
     "sha": "250be7a3"
   },
+  "src/RimMandrake/SacredGraffiti/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "543deff04acd82df373cbfb210a9798cc91103dfe9dc6f9642d397a2be38bac4",
+    "sha": "78a84be85"
+  },
   "src/RimMandrake/SeaShores/Source/RM_SeaShoreExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -13185,6 +13191,12 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "92e56d4f"
   },
+  "src/RimStarWars/StructureInjectionsSW/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6c364014261de77257c21fca0f0614f568462f9b784583f3897299f0255903b7",
+    "sha": "78a84be85"
+  },
   "src/RimStarWars/VornskyrArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -13671,6 +13683,12 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "6e65d276"
   },
+  "src/RimUtinni/BirthHatchDemo/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f1fb20351dfd8363dab1f5d89a57be15793aae962a6e02ac567f6d2d2f4129e9",
+    "sha": "78a84be85"
+  },
   "src/RimUtinni/BloodShrimpArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -14144,6 +14162,12 @@
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "6e65d276"
+  },
+  "src/RimUtinni/IshkoDarkLandmarks/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d7206384798a32820967643af1567c5f0647bf8a057aef698d802c9ec4cb6670",
+    "sha": "78a84be85"
   },
   "src/RimUtinni/KyberTradePlot/About/About.xml": {
     "cleanCount": 1,
@@ -15170,6 +15194,12 @@
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "6e65d276"
+  },
+  "src/RimUtinni/Rites/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ebadecdbb2296b09d06eddeb76407f9a9aab5b281b4d88df8bd5f8ed924bc3ee",
+    "sha": "78a84be85"
   },
   "src/RimUtinni/RiverColors/About/About.xml": {
     "cleanCount": 1,
