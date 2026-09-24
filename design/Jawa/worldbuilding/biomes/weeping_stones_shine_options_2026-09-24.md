@@ -19,9 +19,13 @@ Status: ⚖️ RULED 2026-09-24, owner typed verdicts on all five. This head is 
    on that. Makes obtaining the ancient machines a treasure type.
    Unfortunately it's not very important for the Jawa utinni scenario but
    it's a nice mod component. We would need to weave it into some quests to
-   obtain or sabotage them."* (Base identified: Terramorph — a
-   `TerramorphArtOverride` already ships in the live Mods folder.) → item
-   `OASIS_MAKER_MACHINES_1`. The four-state restorable-vane draft below is
+   obtain or sabotage them."* (Base identified — CORRECTED same sitting: the
+   slow-terraforming mod on disk is **Fertile Fields 1.6**,
+   `jamaicancastle.RF.fertilefields`, workshop 3225843229; its stepwise
+   terrain-ladder pattern is the study base, license unstated so pattern
+   only. `TerramorphArtOverride` is our own art override for the Alpha
+   Animals creature `AA_Terramorph` and has nothing to do with terraforming.)
+   → item `OASIS_MAKER_MACHINES_1`. The four-state restorable-vane draft below is
    superseded by this redirect.
 4. **WIND-HOUR — DEAD.** Verbatim: *"nah."*
 5. **THE ONE LAW — REDIRECTED to animal retribution.** Verbatim: *"I like

@@ -18,10 +18,21 @@ would need to weave it into some quests to obtain or sabotage them."*
   green/red cell overlay at placement, like water-based generator placement
   (vanilla `PlaceWorker_WatermillGenerator` shape; our
   `RM_MapComponent_ShadeGrid` already computes shade).
-- **Slow-terraform base to study: Terramorph** — a `TerramorphArtOverride`
-  mod already ships in the live Mods folder, so the donor is in-list; verify
-  its actual mechanism before building (study the pattern, port nothing
-  verbatim without a license check).
+- **Slow-terraform base to study: Fertile Fields 1.6**
+  (`jamaicancastle.RF.fertilefields`, workshop `3225843229`) — MEASURED on
+  disk 2026-09-24: its `RFF_Code.TerraformationDef` gives explicit multi-step
+  origin→target terrain ladders (labor-driven frames; we take the ladder
+  pattern, machine-clock-driven instead). **License NOT STATED on disk** —
+  pattern only, no code port without a real license check. (An earlier line
+  here named "Terramorph" as the base — wrong: `TerramorphArtOverride` is our
+  own art override for the Alpha Animals creature `AA_Terramorph`.)
+- **Spec drafted 2026-09-24**: `design/RimMandrake/oasis_maker_machines_spec.md`
+  — ring-by-ring stepwise growth (~3 days ring 1, ~1.5× per ring, radius cap
+  6–9 by placement quality), refuse-below-floor placement (shade≥8 within
+  R=8 via `RM_MapComponent_ShadeGrid.ShadeAt` + rock≥15), live
+  projected-footprint overlay (precedent `RM_PlaceWorker_OnRequiredVentComp`),
+  interruption freezes forever (Born-and-Dying stays dead). Owner questions
+  pending in the spec.
 - **Acquisition is treasure**: not craftable; found/quested. Owner: weave
   into quests to obtain or sabotage them — quest hooks are owed but ride the
   quest family passes, not this item's v1.
