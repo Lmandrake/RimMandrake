@@ -263,7 +263,16 @@ wind sing), the wampa (stores prey, does not eat it fresh).
    Recovery means cutting down through the ice into warren territory: the
    breach mechanic's other direction, player descending.
 6. **The apex.** One ice-wyrm-class tunneler, mostly unseen, surfacing only
-   under sustained high heat. The biome's set-piece.
+   under sustained high heat. The biome's set-piece. *(Extended, owner,
+   2026-09-24, same sitting:)* **The wyrmlets foreshadow it** — little baby
+   ice wyrms that feed on the icy insects of the inclusions, surfacing where
+   the insects stir (thaw pulses, fresh slab-falls). Seeing wyrmlets means
+   you are in the big one's country. **And the nest is the eruption**: a
+   calving-family set-piece where the ice bursts open with the apex's nest —
+   eggs and young — suddenly at the surface. Eggs preserved perfectly,
+   enormously valuable, and taking or breaking them is what brings the
+   parent. The foreshadow ladder runs whole: insects → wyrmlets → nest →
+   apex.
 
 - 🔴 **The hull rule (owner, 2026-09-24).** A burst can NEVER come through
   constructed floor or the gravship hull — breaches open only in open ice, at
