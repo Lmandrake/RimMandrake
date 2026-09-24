@@ -1440,10 +1440,10 @@
     "sha": "2eee1995f"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/BiomeGlowPatches.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-14",
-    "hash": "a3dfc56f468da0806dbba083dd8fff937b568043473e0472445fe2c2e2f15e58",
-    "sha": "6f7f5ff61"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "1bf59da85344c67be2a030eba4b3b93129e90268d223fb7f8cbd95771d5bbcce",
+    "sha": "4a023191b"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/CompAbilityEffect_TargetedHediffAffliction.cs": {
     "cleanCount": 2,
@@ -1674,16 +1674,16 @@
     "sha": "c1ae25eaa"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj": {
-    "cleanCount": 5,
-    "date": "2026-09-18",
-    "hash": "5a6f7b9f1bb559f859df5541142473392475f6bfa255eddf576cb6d3f47653e8",
-    "sha": "aeb8d6f40"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "f2944da0e678567a55524c380c0a8e63414d09bf89cbe572c41d2e8ae8938d21",
+    "sha": "4a023191b"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
-    "cleanCount": 10,
-    "date": "2026-09-18",
-    "hash": "d44b4f2d4adf64d4a8196e7dc8ac4e03de930aa6188bb0f103f2cfa9cd379abe",
-    "sha": "2bd3af70f"
+    "cleanCount": 11,
+    "date": "2026-09-24",
+    "hash": "e52ceff90af6185deee4339ee8330eee111a8143c655ee5efd931c47b27a703a",
+    "sha": "4a023191b"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_FellableTreeExtension.cs": {
     "cleanCount": 1,
@@ -4356,10 +4356,10 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml": {
-    "cleanCount": 5,
-    "date": "2026-09-18",
-    "hash": "1b8a5a03329bd1d76fedb7b85a48dbdc3fd3ded1b5862acb271e526e6d4740f4",
-    "sha": "d0639c8e6"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "9220c5a9726bce880eac108eed56051af35d9af1993e68ab3e2cf8a4a6e848ca",
+    "sha": "4a023191b"
   },
   "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshLadder.xml": {
     "cleanCount": 2,
@@ -4440,10 +4440,10 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "2e50f935f3be4bc024df514ac3c178ae4ef28fdf27f100ec7a2708f08da14ba9",
-    "sha": "7fc491ebc"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "36c57a67ec5d4e09e8af8404afe95609cd5bd179593bb9d7e491c712bde06888",
+    "sha": "4a023191b"
   },
   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj": {
     "cleanCount": 4,
@@ -4470,10 +4470,10 @@
     "sha": "fc438d857"
   },
   "src/RimMandrake/Pyrelands/Source/WildPlantAllowlist.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-19",
-    "hash": "eb137a9cbb43e972228eb5e06ad93ca5b5056d63adc50f785b4a1d58dfd2cd01",
-    "sha": "fc438d857"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "89403050a884c1724ee6d1e4fa6a9e46ac3888e62e8d9a47b73dc4942ba2ece6",
+    "sha": "4a023191b"
   },
   "src/RimMandrake/Pyrelands/validation.py": {
     "cleanCount": 1,
