@@ -60,7 +60,7 @@ registration pass, so partial removal mid-loop was checked and is not a bug)
 and its tie-break in `PrimarySeaFor` (defName-ordinal tie break, verified the
 `best == null` first-candidate path is unreachable with count 0 since a
 biome always counts itself as its own neighbour). No bugs found in any of
-the 4; no fixes needed this wave. All 4 marked CLEAN, commit `<pending>`,
+the 4; no fixes needed this wave. All 4 marked CLEAN, commit `04cb87e13`,
 pushed.
 
 Next wave: the `SeaShores/Source/` (`RM_SeaShoresHarmony.cs`,
