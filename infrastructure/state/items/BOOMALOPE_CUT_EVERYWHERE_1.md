@@ -124,3 +124,17 @@ unlock it for this one write, per that hook's own documented route.
 restarted on the full or a matching mod list (this session's def dump/
 mods-config mismatch made that check UNMEASURABLE offline — see rimflow
 note).
+
+## closed 2026-09-24 — the last owed piece run, live-verified
+`cherrypick_build.py --write` run this session (game UP, bridge FREE, no
+bridge call involved — a plain LocalLow file write). Wrote 2133 keys to
+`Mod_3521312241_Mod_CherryPicker.xml`. Verified against a fresh live read
+(`cherrypicker.py --source live --is-cut`): `PawnKindDef/Boomalope` CUT,
+`ThingDef/Boomalope` CUT. Nothing else owed by this item.
+
+The `GR_Boomsnake` landmine this item flagged as "outside scope" turned out
+already moot: `BOOMSNAKE_CUT_CONFLICT_1` (closed 2026-09-14) un-wired it, and
+`PYRELANDS_DONOR_PORT_4` (2026-09-19) then re-authored it entirely as our own
+`RUT_Flamefang` — nothing casts the donor def any more, so its Cherry Picker
+cut state is irrelevant. Filed `GR_BOOMSNAKE_CUT_GAP_1` to check, found this,
+dropped it same session — stale-drop, not real work.
