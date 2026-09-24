@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "codex",
+  "created": "2026-09-24T23:28:09Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "graffiti_paste_wanted_p1",
+  "priority": 100,
+  "prompt": "A torn wanted-style poster: a silhouette figure above asemic lettering, rough torn paper edges. Variant 1 of 2 - a different hand/angle on the same idea, for Graphic_Random.",
+  "reference": null,
+  "rimflow_item_id": "GRAFFITI_PUNK_IDEOLIGION_SCOPE_1",
+  "style_notes": "Blended punk-graffiti reference, owner-ruled 2026-09-24: NYC subway wildstyle (aerosol energy, layered strokes) + UK stencil art in the Banksy-adjacent register (crisp cut edges, social-commentary economy of line) + mystic traditions rendered in the abstract (esoteric sigil/rune quality, not literal religious iconography) - all three blended together, never any one alone. Asemic: letterform-shaped strokes that read as writing but spell nothing, no English lettering anywhere. Painted/sprayed on rough wall material, RimWorld Filth sprite conventions (native alpha, no background)."
+}

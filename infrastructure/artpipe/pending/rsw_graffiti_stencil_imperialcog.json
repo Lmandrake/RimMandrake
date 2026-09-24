@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "codex",
+  "created": "2026-09-24T23:28:09Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rsw_graffiti_stencil_imperialcog",
+  "priority": 100,
+  "prompt": "A crisp stencilled Imperial cog/gear-and-wings insignia shape, struck through, with a short asemic Aurebesh-STYLED tag beneath it (angular geometric letterform shapes evoking Aurebesh's look, never real English text, never real Aurebesh glyphs either - an original angular script that reads as alien lettering).",
+  "reference": null,
+  "rimflow_item_id": "GRAFFITI_PUNK_IDEOLIGION_SCOPE_1",
+  "style_notes": "Blended punk-graffiti reference, owner-ruled 2026-09-24: NYC subway wildstyle (aerosol energy, layered strokes) + UK stencil art in the Banksy-adjacent register (crisp cut edges, social-commentary economy of line) + mystic traditions rendered in the abstract (esoteric sigil/rune quality, not literal religious iconography) - all three blended together, never any one alone. Asemic: letterform-shaped strokes that read as writing but spell nothing, no English lettering anywhere. Painted/sprayed on rough wall material, RimWorld Filth sprite conventions (native alpha, no background). RSW tier: Star Wars-adjacent styling on the insignia and letterforms, still no literal readable text in any language."
+}
