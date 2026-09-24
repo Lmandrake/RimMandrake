@@ -56,3 +56,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"SUMP_WALKWAYS_1","ts":"2026-09-24T17:14:17Z"}
 {"seat":"FOUNDRY","event":"start","id":"SUMP_WALKWAYS_1","ts":"2026-09-24T17:14:18Z"}
 {"seat":"FOUNDRY","event":"note","id":"SUMP_WALKWAYS_1","text":"Offline-complete: RUT_SumpWalkways.xml (duckboards+glasswalk terrain), RM_Filth_Tar.xml+RUT_TarShallow_GeneratedFilth.xml (held, no art), RM_MapComponent_GlasswalkSlip.cs (slip comp). Built, validated, deployed. Needs bridge/quicktest to prove live; see item file build-status section.","ts":"2026-09-24T17:35:11Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SUMP_TAR_NASTINESS_1","ts":"2026-09-24T17:37:21Z"}
+{"seat":"FOUNDRY","event":"start","id":"SUMP_TAR_NASTINESS_1","ts":"2026-09-24T17:37:24Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SUMP_GASLIGHT_1","ts":"2026-09-24T18:06:37Z"}
+{"seat":"FOUNDRY","event":"start","id":"SUMP_GASLIGHT_1","ts":"2026-09-24T18:06:38Z"}
+{"seat":"FOUNDRY","event":"note","id":"SUMP_GASLIGHT_1","text":"FOUNDRY 2026-09-24: pieces 1-4 (reaction, warbling glow, lamp, statue) built, dotnet build clean, validate_patch.py 0 errors on all 5 files, UtinniPatches deployed+verified, EnvironmentalHazards DLL deploy blocked by running game (owed at shutdown window). Pieces 5-7 deferred per spec. Left in doing. sha 53687b094.","ts":"2026-09-24T18:34:42Z"}

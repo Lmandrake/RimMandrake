@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T17:54:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T18:34:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -935,6 +935,15 @@ target:   v1
 kind:     build
 summary:  1. Duckboards (early tier): cheap brindeth-wood plank path (RMBrindeth,
 prose:    infrastructure/state/items/SUMP_WALKWAYS_1.md
+
+## SUMP_GASLIGHT_1 Sump gaslight: tar+acid reaction makes green gas (Helixien integration OK), warbling lamp light, flame statuary, natural flames, discovery-unlocked techs
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. The reaction: tar + acid → green gas (Helixien-compatible). One acid, three
+prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
 
 ## JAWA_MESS_IMMUNITY_1 Jawa are immune from messes (owner-ruled 2026-09-24): no filth/squalor mood penalties for the Jawa xenotype; other factions just live with it and suffer
 state:    doing
@@ -2060,16 +2069,6 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  - The vault: a buildable tar-pit store (pit or sunk barrel-rack). Anything
 prose:    infrastructure/state/items/SUMP_TAR_VAULT_1.md
-
-## SUMP_GASLIGHT_1 Sump gaslight: tar+acid reaction makes green gas (Helixien integration OK), warbling lamp light, flame statuary, natural flames, discovery-unlocked techs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  1. The reaction: tar + acid → green gas (Helixien-compatible). One acid, three
-prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
 
 ## BIOME_ARRIVAL_NARRATION_1 Biome arrival letters: RM-tier machinery in each biome mod fires one survival-reads letter at first gravship landing; Utinni patches the narrator voice
 state:    proposed
