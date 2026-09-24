@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OASIS_MAKER_BUILD_1 — the ancient oasis-maker.
+
+  design/RimMandrake/oasis_maker_machines_spec.md §2/§3. Ground truth checked
+  2026-09-24 against the def dump (defs.sqlite) and the decompiled engine:
+  Sand/SoftSand/Gravel/Soil/SoilRich/Mud/Marsh/WaterShallow are all real Core
+  TerrainDefs; PlaceWorker_WatermillGenerator's DrawGhost (Verse/PlaceWorker.cs,
+  RimWorld/PlaceWorker_WatermillGenerator.cs) is the confirmed pattern this
+  mod's RM_PlaceWorker_OasisMaker follows; ExoticMisc is a real vanilla
+  tradeTag (Luciferium, AIPersonaCore, MechSerumHealer carry it) picked up by
+  StockGenerator_Tag and the Caravan_Outlander_Exotic / Orbital_Exotic trader
+  kinds — the acquisition mechanism the header ruling calls for.
+
+  Not buildable (no costList, no designationCategory) — v1 is trade + scenario
+  start only, per the owner's typed ruling. minifiedDef makes it a normal
+  haulable/installable minified treasure like any other minified building;
+  placeWorkers (below) gate where it may be installed.
+
+  Placeholder art: texPath points at a not-yet-authored texture. The spec's
+  own build-size table lists the comb-silhouette sprite pass as a separate
+  S-sized line item from this mechanism sitting — tracked in the same
+  rimflow item rather than blocking the mechanism build on it.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_OasisMaker</defName>
+    <label>oasis-maker</label>
+    <description>A dense, verdigrised, comb-finned mass, ancient plasteel-grade
+and dormant. Nobody alive knows how it was made or how it works. Placed right
+— in the blue shade of standing rock, where cold stone can be its
+condensation sink — it wakes, and then, at the patience of a thing that has
+already waited an age, it begins to weep: damp gravel where there was sand,
+soil where there was gravel, and at last a still eye of water at its center.
+
+It has no power in it and needs none. It is ancient; it works, or it
+doesn't. Whatever it converts, it never takes back.</description>
+    <thingClass>Building</thingClass>
+    <drawerType>MapMeshOnly</drawerType>
+    <graphicData>
+      <texPath>OasisMaker/RM_OasisMaker</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <size>(2,2)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.6</fillPercent>
+    <rotatable>false</rotatable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <useHitPoints>true</useHitPoints>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <canOverlapZones>false</canOverlapZones>
+    <tickerType>Rare</tickerType>
+    <uiIconScale>0.85</uiIconScale>
+    <statBases>
+      <Mass>140</Mass>
+      <MaxHitPoints>400</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>20</Beauty>
+      <!-- Treasure-class, per spec §2 (~3000-4000, tune later). Not
+           costList-derived since it has no costList — a fixed market value
+           on a non-buildable relic is the standard vanilla shape (Luciferium,
+           AIPersonaCore, etc. carry theirs the same way). -->
+      <MarketValue>3600</MarketValue>
+      <SellPriceFactor>1.0</SellPriceFactor>
+    </statBases>
+    <techLevel>Spacer</techLevel>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <!-- RULED acquisition (header): sold, very expensive, exotic-goods
+         trader stock. Same mechanism as Luciferium/AIPersonaCore. -->
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <building>
+      <isInert>true</isInert>
+    </building>
+    <!-- §3: the whole game is placement. Vanilla precedent
+         PlaceWorker_WatermillGenerator; our own precedent for a validity
+         PlaceWorker is RM_PlaceWorker_OnRequiredVentComp
+         (src/RimMandrake/EnvironmentalHazards/Source). -->
+    <placeWorkers>
+      <li>RimMandrake.OasisMaker.RM_PlaceWorker_OasisMaker</li>
+    </placeWorkers>
+    <comps>
+      <li Class="RimMandrake.OasisMaker.CompProperties_OasisMaker" />
+    </comps>
+  </ThingDef>
+
+</Defs>
