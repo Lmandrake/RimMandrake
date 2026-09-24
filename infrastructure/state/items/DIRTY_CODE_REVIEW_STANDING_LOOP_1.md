@@ -3469,3 +3469,59 @@ Re-measured after: `TALLY  CLEAN 3167  DIRTY 6  ORPHANED 0  NEVER ENTERED 281`
 (`Defs/ThingDefs_Races` has **42** left — still the single biggest live
 cluster). Next wave: continue `SWBestiary/Defs/ThingDefs_Races`
 alphabetically from `RSW_Massiff.xml`, with `list --show-untracked`.
+
+## Wave 55 — 2026-09-24: SWBestiary races M-O
+
+Ran `list --show-untracked` fresh: **289 NEVER ENTERED**, 8 more than wave
+54's ending 281 — concurrent-agent noise (other build work adding new
+`UtinniPatches`/`SWBestiary` files mid-loop), not a regression in this loop.
+
+Picked the next 8 alphabetically-first files from
+`SWBestiary/Defs/ThingDefs_Races/`: `RSW_Massiff.xml`,
+`RSW_MatureFleshbeast.xml`, `RSW_Mott.xml`, `RSW_Neebray.xml`,
+`RSW_Nerf.xml`, `RSW_Nizzek.xml`, `RSW_Ollopom.xml`, `RSW_Orray.xml`.
+Full-file reviewed all 8. Every cross-referenced defName was grepped and
+confirmed to resolve to a real def in the repo: bodies (`RSW_Massiff`
+bare-vanilla-parts, `RSW_TentacledQuadrupedEyeless`, `RSW_Neebray` reusing
+Wave B's `RSW_SW_LeftWing`/`RSW_SW_RightWing`, `QuadrupedAnimalWithPaws`
+and `QuadrupedAnimalWithHoovesAndHorn` vanilla Core, `RSW_Ollopom`,
+`RSW_Orray`, vanilla `Bird` for `RSW_Nizzek`), leather/meat
+(`RSW_Leather_Saurian`/`RSW_Saurian_Meat`, `RSW_Tender_Meat`,
+`RSW_Silica_Meat`, `RSW_Leather_Nerf`/`RSW_Nerf_Meat`,
+`RSW_Rodentia_Meat`, `RSW_Leather_Tough`/`RSW_Reptomammal_Meat`, plus
+`RSW_Nizzek`'s deliberate vanilla `Leather_Panthera`/`useMeatFrom Cougar`),
+new resources (`RSW_WoolNerf`, `RSW_NerfHorn`), abilities/trainables
+(`RSW_SW_Spur`), `canCrossBreedWith` targets (`RSW_FeralNerf`,
+`RSW_FeralGrazer`), and `RSW_Nizzek`'s own hatch wiring (confirmed
+`RSW_Drazzik.xml`'s `CompHatcher` names `<hatcherPawn>RSW_Nizzek</hatcherPawn>`
+correctly). Each race got the wave 49-54 sound-prefix check
+(`sound{Wounded,Death,Call,Angry}`): `RSW_Massiff`, `RSW_Mott`,
+`RSW_Neebray`, `RSW_Nerf` (repoints to `RSW_Pawn_FeralNerf_*`, matching its
+own donor's verbatim reuse), and `RSW_Orray` all carry correctly
+RSW_-prefixed sounds, all 4 fields present and all 4 confirmed to resolve
+in `SoundDefs_SWBestiary.xml`; `RSW_Ollopom` deliberately reuses vanilla
+Core `Pawn_Rodent_*` per its own header (not this bug class);
+`RSW_MatureFleshbeast` deliberately keeps donor `AA_TarGuzzler_*` clips
+live since Alpha Animals stays an active hard dependency for this batch
+(same pattern, not this bug class); `RSW_Nizzek` carries no life-stage
+sound fields at all (single-lifeStage hatchling, consistent with its
+sibling `RSW_BrainWormKind`). Also ran the wave 54 XML-tree duplicate-
+element scan across all 8 files (the general form of wave 53's duplicate-
+`lifeExpectancy` bug class) — zero duplicate non-`<li>` elements found in
+any block. No bugs found in any of the 8.
+
+All 8 marked CLEAN, commit `8c44f08cc`, pushed. No `.git/index.lock`
+contention this wave.
+
+Re-measured after: `TALLY  CLEAN 3175  DIRTY 6  ORPHANED 0  NEVER ENTERED 281`
+— 281 = 289 − 8 exactly, no further concurrent-agent noise mid-wave.
+**281 NEVER ENTERED files remain**: `UtinniPatches` at **77** (up 5 from
+wave 54's 72 — concurrent build-agent noise, all in `Defs/`/`Languages/`,
+`Patches/` still fully spent), `SWBestiary` at **36** (`Defs/
+ThingDefs_Races` has **34** left — exactly wave 54's 42 minus the 8
+reviewed this wave, so `ThingDefs_Races` itself saw no concurrent-agent
+noise; the 8-file gap between the wave-start tally (289) and wave 54's
+ending tally (281) landed entirely in `UtinniPatches` and elsewhere in
+`SWBestiary`, not in this cluster). Next wave: continue `SWBestiary/Defs/
+ThingDefs_Races` alphabetically from `RSW_PekoPeko.xml`, with
+`list --show-untracked`.
