@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T00:11:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T00:29:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1829,7 +1829,7 @@ prose:    infrastructure/state/items/REACTION_MECHANISM_GENERALISE_1.md
 ## GREATBOLE_BARK_EDGE_ART_1 The greatbole blob reads as bark at its edge and wood inside, and its real art is owed
 state:    proposed
 row:      unassigned
-needs:    game-up
+needs:    offline
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
@@ -1839,7 +1839,7 @@ prose:    infrastructure/state/items/GREATBOLE_BARK_EDGE_ART_1.md
 ## GREATBOLE_HARVEST_LADDER_1 The greatbole harvest: 40/60/70 thresholds, the fruit's three products, and the grubs that contest it
 state:    proposed
 row:      unassigned
-needs:    game-up
+needs:    offline
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present

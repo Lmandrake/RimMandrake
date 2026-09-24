@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T00:11:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T00:29:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -534,7 +534,7 @@ prose:    infrastructure/state/items/BIOME_SPECIFIC_FAUNA_LAW_1.md
 ## SEA_FLOOR_AND_CATCH_PASS_1 Every sea describes BOTH its floor (animals you meet by diving) and its catch (fish from the shore): the floor half is unbuilt across all four seas
 state:    proposed
 row:      unassigned
-needs:    game-up
+needs:    owner
 target:   v1
 kind:     design
 thin:     spec, verify and criteria all present
