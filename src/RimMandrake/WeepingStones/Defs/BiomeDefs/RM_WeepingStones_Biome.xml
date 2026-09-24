@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEEPINGSTONES_RM_MOD_BUILD_1, Phase A (biome_mod_architecture.md §5) — the
+  franchise-free RM_ copy of the campaign twin
+  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml (BIOME_
+  OWNERSHIP_WAVE_1, 2026-09-09 — full sheet design/Jawa/worldbuilding/biomes/
+  weeping_stones.md, FROZEN). Terrain/weather/disease blocks are verbatim
+  copies of that def; only three things differ, all per the arch doc's own
+  rule:
+
+    1. workerClass — the twin's `VanillaBiomes.BiomeWorker_DesertOasis` (a
+       donor type) becomes this mod's own `RM_BiomeWorker_WeepingStones`
+       (Source/RM_BiomeWorker_WeepingStones.cs), same shape as the Greentide/
+       FloodedCanyon precedents. `generatesNaturally` stays false below —
+       this biome is placed by hand (Oasis landmark authoring per
+       OASIS_LANDMARK_PLACEMENT_1), never natural worldgen, so the worker's
+       GetScore is inert by construction; it exists only so the field
+       resolves to a real, self-contained type.
+    2. wildAnimals — the twin's 8 `mlie.starwarsanimalcollection` rows
+       (Ollopom/Fanback/Dewback/Boma/Dactillion/Bantha/Eopie/Jamel) are
+       OMITTED here per Q11 (SW_FAUNA_NEVER_IN_RM_TIER_1) and instead ride
+       src/RimUtinni/UtinniPatches/Patches/WildAnimals_WeepingStones.xml as
+       PatchOperationAdds casting their existing RSW_ ports. Only the two
+       non-Star-Wars rows (ColossusToad, vanilla Odyssey; AA_Eyeling, Alpha
+       Animals) stay inline.
+    3. fishTypes/rareCatchesSetMaker — point at this mod's OWN duplicated
+       RM_ fish items (Defs/ThingDefs_Items/RM_WeepingStonesFish_Items.xml,
+       Defs/ThingSetMakerDefs/RM_RareOasisCatches.xml) rather than the
+       twin's RUT_ ones, so this mod is self-contained and the frozen twin
+       keeps resolving its own RUT_ items independently — duplicated, not
+       moved, exactly because the twin still carries the live world and must
+       not lose anything it currently references (arch §5 step 4).
+
+  Owed, not shipped this wave: the WEEPING_STONES_DESIGN_SITTING_1
+  (2026-09-24) ruled cast — 8 invented fauna (RM_Sillik/RM_Mirrik/RM_Ssurr/
+  RM_Kirruk/RM_Tirbak/RM_Burrak/RM_Vhakk/RM_Vellak) and the flora additions/
+  RM_Shadefern swap — none of those ThingDefs exist yet, so none is wired
+  into wildAnimals/wildPlants below. See this mod's About.xml.
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_WeepingStones</defName>
+    <generatesNaturally>false</generatesNaturally>
+    <label>the Weeping Stones</label>
+    <description>High pale stone standing in the path of the sea-wind. Most of this country is bright, dry, wind-scoured ridge and shoulder -- but every cold shaded face of it weeps: thin black streaks of wet running down white rock, moss crowding the seep lines, and here and there a true pool with a green ring around it and a crowd at the water. An oasis here is never merely found water; it is a working thing, part stone, part machine, part congregation of everything that drinks.</description>
+    <workerClass>RimMandrake.WeepingStones.RM_BiomeWorker_WeepingStones</workerClass>
+    <lakeBeachTerrain>SoilRich</lakeBeachTerrain>
+    <riverbankTerrain>SoilRich</riverbankTerrain>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.5</animalDensity>
+    <plantDensity>0.4</plantDensity>
+    <forageability>0.5</forageability>
+    <movementDifficulty>1.5</movementDifficulty>
+    <texture>World/Biomes/ZBiome_Oasis</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>0.95</max>
+      </li>
+      <li>
+        <terrain>SoftSand</terrain>
+        <min>0.95</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>70</Clear>
+      <Fog>25</Fog>
+      <DryThunderstorm>1</DryThunderstorm>
+      <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">6</Sandstorm>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <TorrentialRain>0</TorrentialRain>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <ColossusToad MayRequire="Ludeon.RimWorld.Odyssey">0.4</ColossusToad>  <!-- colossus toad - medium-resident, keep; vanilla Odyssey animal -->
+      <AA_Eyeling MayRequire="sarg.alphaanimals">0.1</AA_Eyeling>  <!-- ikee - omen, import; non-Star-Wars donor, stays RM tier per Q9 -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <Plant_Reeds>1.0</Plant_Reeds>  <!-- sarnreed -->
+      <AB_GreenRockFern>0.4</AB_GreenRockFern>  <!-- green rock fern; RULED to be replaced by RM_Shadefern once authored, not yet applied -->
+      <RUT_Dewshrooms MayRequire="mandrake.rut.rotsporekit">0.4</RUT_Dewshrooms>  <!-- dewshrooms; shared with The Rot's kit, left inline pending the shared-plant decision -->
+      <Plant_Ambrosia>0.12</Plant_Ambrosia>  <!-- ambrosia bush -->
+    </wildPlants>
+    <wildPlantRegrowDays>17</wildPlantRegrowDays>
+    <maxFishPopulation>660</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <freshwater_Common>
+        <RM_Ikkal>1.2</RM_Ikkal>
+        <RM_Tarrik>1</RM_Tarrik>
+        <RM_Duul>0.8</RM_Duul>
+      </freshwater_Common>
+      <freshwater_Uncommon>
+        <RM_Ullo>1</RM_Ullo>
+        <RM_Ozhu>0.8</RM_Ozhu>
+        <RM_Vobbal>0.5</RM_Vobbal>
+      </freshwater_Uncommon>
+      <rareCatchesSetMaker>RM_RareOasisCatches</rareCatchesSetMaker>
+    </fishTypes>
+    <!-- WATER_TRUCE_RETRIBUTION_1, carried over from the frozen twin: a
+         guilty hit landing within `radius` cells of standing water turns
+         nearby wildlife against the aggressor faction. -->
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_WaterTruceExtension">
+        <radius>10</radius>
+      </li>
+    </modExtensions>
+  </BiomeDef>
+
+</Defs>

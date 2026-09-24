@@ -1,12 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>RimMandrake: Weeping Stones — Stocked Pool</name>
+  <name>RimMandrake: Weeping Stones</name>
   <packageId>mandrake.rm.weepingstones</packageId>
   <author>mandrake</author>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>STOCKED_POOL_BUILD_1 (owner typed 2026-09-24, on
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards Kit</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mandrake.rm.environmentalhazards</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+  <description>WEEPINGSTONES_RM_MOD_BUILD_1 Phase A (biome_mod_architecture.md §5) — this
+mod now carries `RM_WeepingStones`, the franchise-free BiomeDef itself, as its own
+standalone RimMandrake mod. The campaign twin `RUT_WeepingStones` (src/RimUtinni/
+UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml) is FROZEN and keeps carrying the live
+Ash'karr world until the terminal paint (BIOME_PAINT_ONCE_AT_THE_END_1) — this mod's own
+copy is not yet on any live tile, which is the expected mid-migration state, not a defect.
+
+The BiomeDef ships with its franchise-free content only: `ColossusToad` (vanilla Odyssey)
+and `AA_Eyeling` (Alpha Animals, non-Star-Wars donor) in `wildAnimals`; `Plant_Reeds`,
+`AB_GreenRockFern`, `RUT_Dewshrooms` (shared with The Rot's kit, inline via
+`mandrake.rut.rotsporekit`) and `Plant_Ambrosia` in `wildPlants`; the fish bestiary
+(`RM_Ikkal`/`RM_Tarrik`/`RM_Duul`/`RM_Ullo`/`RM_Ozhu`/`RM_Vobbal`/`RM_SeepStone`, each a
+duplicate of the frozen twin's own `RUT_` items so both keep resolving independently); its
+own `RM_BiomeWorker_WeepingStones` in place of the donor `VanillaBiomes.BiomeWorker_
+DesertOasis` (a donor type in `workerClass` is a hard dependency the RimMandrake tier may
+not assume); and the water-truce `modExtensions` block (`RM_WaterTruceExtension`, radius
+10, `mandrake.rm.environmentalhazards`) carried over from the twin. `generatesNaturally`
+is false — this biome is placed by hand (Oasis landmark authoring), never natural
+worldgen, so its `workerClass` exists to satisfy the field rather than to compete on the
+tile-scoring pass.
+
+The 8 Star Wars donor fauna the twin's own `wildAnimals` carried inline (`mlie.
+starwarsanimalcollection`'s Ollopom/Fanback/Dewback/Boma/Dactillion/Bantha/Eopie/Jamel) do
+NOT ride this def — they ride a Utinni patch instead
+(`src/RimUtinni/UtinniPatches/Patches/WildAnimals_WeepingStones.xml`, cast as their
+existing `RSW_` ports), per Q11 (`SW_FAUNA_NEVER_IN_RM_TIER_1`): Star Wars content stays
+in the campaign tier, never the RimMandrake one.
+
+⛔ **Owed, not shipped this wave**: the 10 invented fauna and the flora-roster additions
+ruled at `WEEPING_STONES_DESIGN_SITTING_1` (2026-09-24) — RM_Vellak, RM_Kirruk, RM_Vhakk,
+RM_Tirbak, RM_Burrak, RM_Ssurr, RM_Sillik, RM_Mirrik, plus RM_Dewblade/RM_Weepmat/
+RM_Verdimoss/RM_Shadefern/RM_Bladderquill/RM_Salvecomb/RM_Rockfinger/RM_Dripfringe/
+RM_Steamfrond/RM_Dewgourd and the canyon-filling crab adapted from AA_SummitCrab — are
+RULED and recorded in `rosters/weeping_stones.json`'s `fauna`/`flora`/`new_defs` arrays,
+but none has a ThingDef yet; authoring that full cast is content work at
+`STOCKED_POOL_BUILD_1`'s own scale and ships in a following wave, not invented here.
+`RM_Shadefern` replacing `AB_GreenRockFern` is therefore NOT yet applied to the BiomeDef
+above — the donor stays wired until its replacement actually exists.
+
+Original description, kept below for the STOCKED_POOL_BUILD_1 content this mod already
+carries (the Stocked Pool bestiary/cuisine, unwired to any BiomeDef's live spawn lists
+until the husbandry loop lands — see that build's own wave note):
+
+STOCKED_POOL_BUILD_1 (owner typed 2026-09-24, on
 `WEEPING_STONES_FISH_HUSBANDRY_1`: "love it. Moisture farmers specializing in
 fish. Ripe possibilities for rimcuisine stuff too. Make the fish nasty and
 way too active. And some shouldn't be fish but alien beasts you really
@@ -47,9 +102,4 @@ enabled" toggle, off by default until the husbandry loop ships, so enabling
 this mod today changes nothing about a running game. When the loop lands the
 toggle gates the whole mechanism; wild fishing (the ruled gentle six) is
 never touched by it.</description>
-  <loadAfter>
-    <li>Ludeon.RimWorld</li>
-    <li>Ludeon.RimWorld.Odyssey</li>
-    <li>mandrake.rut.patches</li>
-  </loadAfter>
 </ModMetaData>
