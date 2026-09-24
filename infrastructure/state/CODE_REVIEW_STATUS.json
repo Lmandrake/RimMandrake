@@ -7780,10 +7780,10 @@
     "sha": "af2d8daa"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs": {
-    "cleanCount": 5,
-    "date": "2026-09-18",
-    "hash": "614d0d9de9862397e194c9b8e3d8e3e3939cdd1de734f18e5665a548059e1ad3",
-    "sha": "13fa86a09"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "c9d83d4577051c5736ddb1a656528550bfd2532d7415676acd5ae9051915da46",
+    "sha": "c50c60804"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTradeExecuteTools.cs": {
     "cleanCount": 1,
