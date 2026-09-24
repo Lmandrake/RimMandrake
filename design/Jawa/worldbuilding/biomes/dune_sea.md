@@ -288,3 +288,31 @@ makes a recognisable giant the single worst admission this sheet can make.
 **Population target:** ⭐ *sparse to the point of discomfort.* The correct number of
 distinct creature defs in the deep dune is small and the correct spacing is
 enormous. If the dune sea's roster looks healthy, it is wrong.
+
+---
+
+## Amendment — the sand busters (owner-ruled 2026-09-24, at `NIGHTSIDE_ICE_DESIGN_SITTING_1`)
+
+Adds detail under the freeze; no ruling above changes.
+
+**Vanilla's infestation event — the huge insects that burst from the ground —
+has its ONE planetary home here.** Owner's rulings, same sitting: the ground
+must be dry to burrow (the Fever Wood's aquifers rule it out); the insects
+become **sand busters** — not sand swimmers: they do not glide through the
+dune, they ERUPT from it; and 🔴 **the event is banned everywhere else on the
+planet as part of the Utinni scenario** — the campaign layer suppresses the
+incident planet-wide, and only the Dune Sea carries it.
+
+- The vanilla trio's *mechanics* carry over (hive eruption under the
+  colony, the escalating waves); their *bodies* are rebuilt to this sheet's
+  laws — **giant or grain-scale, nothing between (§6), sun-axis polarised,
+  no recognisable spider/insect silhouette** (a nameable giant is this
+  sheet's worst offence). Invented names → `RM_` tier per Q11a.
+- The fit is the sheet's own admission test: "sand-burrowing strike
+  predators… subsurface strikes only… dormant forms that trigger on water,
+  blood or vibration." The surface stays empty — *emptiness is a texture* is
+  preserved because the threat is below it, and an eruption scar is the only
+  mark it leaves.
+- Split of the work: the Dune Sea biome mod owns the sand-buster castes and
+  the biome-gated incident; **UtinniPatches owns the planet-wide ban** of
+  the vanilla infestation incident.

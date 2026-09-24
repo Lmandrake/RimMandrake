@@ -294,6 +294,17 @@ wind sing), the wampa (stores prey, does not eat it fresh).
    the art target. The margins keep only the sheet's existing rime-fall
    weather term; rime is not the sculpture family.
 
+**The cast, closed (decisions taken by question card, 2026-09-24):** all six
+donor residents EVICTED (owner in chat: they don't make sense here;
+`AA_SummitCrab` becomes the Weeping Stones' canyon-filling crab). The four
+visitors all stay — Tauntaun and Wampa (canon, Utinni layer), zhissa and
+mahllik (the owner's own earlier placements). Native names ruled: the
+tunnelers are the **shivven**, the apex ice wyrm is **dhorrumak** (absorbing
+the first-pass "thermal-sensing seam striker" — one set-piece, not two), the
+icy insects are the **frissim**, the one-move animal is the **sohl**. All
+invented names — `RM_` tier per Q11a. Flora ships empty, reaffirmed; the
+chemical frosts and hoarfrost forms are terrain features, never plants.
+
 ## 5. Always true
 
 - **The sky is bright and cold** — starlight and aurora; no warm light exists but yours.

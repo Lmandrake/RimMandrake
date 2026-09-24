@@ -804,6 +804,12 @@
       "kind": "creature",
       "mechanic_load": "reskin, no new C#",
       "name": "dormancy-trigger dune fauna (reskin lane: 107 live VFEI2 dormant rows carry the mechanic)"
+    },
+    {
+      "kind": "creature-family",
+      "name": "the sand busters (vanilla infestation trio rebuilt)",
+      "from_sheet": "dune_sea.md amendment 2026-09-24 (owner-ruled at NIGHTSIDE_ICE_DESIGN_SITTING_1)",
+      "mechanic_load": "vanilla infestation mechanics, ONE planetary home: hive eruption from dry sand, incident biome-gated here and BANNED planet-wide by the Utinni scenario layer; bodies rebuilt to sheet law — giant or grain-scale only, sun-axis polarised, no nameable insect/spider silhouette; owner: sand BUSTERS, they erupt, they do not swim"
     }
   ],
   "sheet": "dune_sea + deep_desert",
