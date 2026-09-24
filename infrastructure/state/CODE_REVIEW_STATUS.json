@@ -827,11 +827,59 @@
     "hash": "ef619f50304775d010dbb9e20dcbb47955809433ee0d149735af29401f28ab35",
     "sha": "e05f7e0f8"
   },
+  "src/RimMandrake/CreatureBehaviors/Defs/DamageDefs/RM_Grapple_DamageDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5591dd6ecc74aa151cc34277fb3c316cbe1be35bc6423faefbe4a849337a9699",
+    "sha": "ac4828bbd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_AquaticAmbush_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2e584265208de99f8c2dbc05c81f2de3a4609e5a0c82a366ee29bea8ae5685aa",
+    "sha": "ac4828bbd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_Drained_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "370578d9fe8e60d738a6fd623eea44346934bc0d944644acdeb7f465d6457e1c",
+    "sha": "ac4828bbd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_DrumLure_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9fae9b25b27f5c6eb7c556796e7d7a23fadeeefd95d8392652100cbf9d9c9682",
+    "sha": "ac4828bbd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_FluidSacPoison_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6e0f0f05202030c6c8be476d8eb7f024126236df9e4e78b0d2da8839fbdb8eb7",
+    "sha": "ac4828bbd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_FluidSacks_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "def943b5230d23b717b1f6f30fd445b53b6918e811bb494677a55a4836568744",
+    "sha": "ac4828bbd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_Grapple_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "72f41a5d3b741051e9681a8cf73d5e77b47ffe623428af75f9065e99451d7d5b",
+    "sha": "ac4828bbd"
+  },
   "src/RimMandrake/CreatureBehaviors/Defs/JobDefs/RM_JobDefs.xml": {
     "cleanCount": 4,
     "date": "2026-09-24",
     "hash": "949ba632a9dddcca16a50d65696ec96a684133e2b6569814c393093197fbf594",
     "sha": "067849df3"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/MentalStateDefs/RM_ParentalEnrage_MentalStates.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "de7e0d93ef9e9bfd0b92f907bbb330a729e6aa28a5a4d9d78b7d99fd74e2b07b",
+    "sha": "ac4828bbd"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_VerminBehaviors.xml": {
     "cleanCount": 3,
