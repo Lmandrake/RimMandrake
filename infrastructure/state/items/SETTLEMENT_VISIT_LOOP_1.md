@@ -409,3 +409,120 @@ world-object count both verified back to their starting values). Left
 `doing` — the live end-to-end lifecycle proof this item's `## verify`/
 `## criteria` want is still owed, and now has a precise, source-and-live-
 confirmed reason why the harness as shipped cannot reach it without new C#.
+
+## FOUNDRY, 2026-09-24 (third pass): built option (b) — a non-interactive
+## `[Tool]` producer, no bridge, no deploy — COMPILED, NOT LIVE-TESTED
+
+Built the "only option (b) remains viable" fix the prior pass named: a new
+bridge tool that takes a tile and a manifest defName directly, bypassing both
+`CurrentTile()` and the `Dialog_DebugOptionListLister` picker entirely.
+
+**What changed, three files:**
+
+- `src/RimMandrake/Inhabited/Source/DebugActions_Inhabited.cs` — extracted
+  `CreateSettlementHere()`'s picker-delegate body (construct the
+  `WorldObject_InhabitedSettlement`, set faction/name/manifest,
+  `Find.WorldObjects.Add`, call `TryEnterSettlementMap`) into a new
+  `public static WorldObject_InhabitedSettlement CreateAndEnterSettlement(PlanetTile tile,
+  SettlementManifestDef manifest, out Map map, out string error)`, and changed
+  `TryEnterSettlementMap` from `private` to `public` so a different assembly can
+  call it directly for a re-entry path. `CreateSettlementHere()`'s debug-menu
+  delegate now calls `CreateAndEnterSettlement` instead of inlining the same
+  code a second time — behaviour unchanged, logic reused rather than
+  reimplemented, exactly as this pass's brief required.
+- `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchInhabitedTools.cs`
+  (new file) — the tool itself, `jawa/inhabited_settlement_create`, on the
+  existing `JawaBenchTerrainTools` partial class:
+  - **Parameters**: `tile` (int, world tile id) and `manifest` (string,
+    `SettlementManifestDef` defName, e.g. `SettlementManifestDefs_TheClaimJump`).
+  - **Logic**: resolves the manifest def, then reads
+    `Find.WorldObjects.MapParentAt(tile)`. If null, calls
+    `DebugActions_Inhabited.CreateAndEnterSettlement` — the same construction
+    path the debug action's picker delegate runs. If a MapParent already
+    exists there: refuses (naming the occupying type) UNLESS it is already a
+    `WorldObject_InhabitedSettlement` built from **this same manifest def**, in
+    which case it re-enters it via `TryEnterSettlementMap` instead of
+    refusing (`reentered: true` in the result) — this is the narrow
+    "MapParentAt(tile) IS the very settlement this call is targeting" carve-out
+    this pass's brief asked for, scoped to idempotent re-calls only.
+  - **Explicitly does NOT** attempt to repurpose a tile already holding some
+    *other* MapParent (e.g. one made by `jawa/world_tile_map_generate` as a
+    scaffold) — the prior pass proved live that removing a MapParent tears its
+    Map down with it (`MapParent.PostRemove` → `DeinitAndRemoveMap`
+    unconditionally), so there is no safe way to convert an already-generated
+    generic map into an Inhabited settlement's map. The tile must be
+    genuinely empty (verify with `jawa/world_objects_get` first) or already
+    hold exactly this settlement.
+  - **Result honesty**: returns `casing{everVisited, visitCount,
+    knownDistrictLabels}` read back from the settlement *after* generation —
+    `knownDistrictLabels` only gains an entry when
+    `GenStep_ComposeSettlementDistrict` genuinely ran, so a caller checking
+    `casing` rather than bare `success` has real compose proof, not a
+    self-reported flag (this is the design rule from
+    `skills/rimbridge/references/silent-failures.md` — write, then read back
+    the raw field). Also returns `mapId`, `mapSize`, `pawnCount`, `thingCount`,
+    `faction`, `settlementName`.
+- `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBench.BridgeTools.csproj`
+  — added an `InhabitedModDir`-hinted `<Reference Include="Inhabited">`
+  (same pattern as the existing Oracle/RimDefDump/Droidworks references: an
+  ordinary mod's DLL, already loaded by the mod loader before RimBridgeServer
+  attaches, `Private=false`).
+- `src/RimMandrake/bridgetools/build.py` — added an `INHABITED_MOD_DIR` env-var
+  override, mirroring the existing `ORACLE_MOD_DIR` override and for the exact
+  same reason: the *deployed* `Mods\Inhabited\Assemblies\Inhabited.dll` lags
+  the repo whenever a companion tool needs a new call into
+  `RimMandrake.Inhabited` and the game is up (so the mod DLL cannot be
+  redeployed this session). Set it to the **repo's own** build output
+  (`src/RimMandrake/Inhabited/Assemblies`, which `dotnet build` on
+  `Inhabited.csproj` writes to directly — this does NOT touch the live game's
+  Mods folder) to build and verify against current source without deploying
+  anything. `INHABITED_MOD_DIR` must be passed through `WSLENV` when invoking
+  Windows `python.exe` from a WSL shell — a bare WSL `export` does not cross
+  that process boundary (confirmed live this pass: `os.environ.get(...)`
+  read `None` until `WSLENV=INHABITED_MOD_DIR/p` was set alongside it).
+
+**Build, this pass, both clean:**
+
+```
+python.exe dotnet.exe build .../Inhabited/Source/Inhabited.csproj -c Release
+  -> 0 Warning(s), 0 Error(s)   (repo-local Assemblies/Inhabited.dll only — NOT deployed)
+
+WSLENV=INHABITED_MOD_DIR/p INHABITED_MOD_DIR=/mnt/d/.../Inhabited/Assemblies \
+  python.exe .../bridgetools/build.py --gm
+  -> Build succeeded, 0 Warning(s), 0 Error(s)
+  -> bundle ships only JawaBench.BridgeTools.dll (no stray assemblies)
+  -> GM tools included and verified present (jawa/fire_incident, jawa/send_letter)
+  -> plan only (no --apply) — game copy differs by commit as expected, NOT deployed
+```
+
+**Not done this pass, on purpose, per this pass's own scope:** no bridge
+taken, no deploy (`--apply` never passed, `taskkill`/relaunch never run), no
+live call to `jawa/inhabited_settlement_create`. The tool is compiled and
+proven to build clean against the current repo source; it has never run
+against a live game.
+
+**Exact next step, for whoever next holds a game-down window or a free
+bridge with time to finish this:**
+1. Deploy: kill RimWorld, `python.exe build.py --gm --apply` (this also
+   requires `Mods\Inhabited\Assemblies\Inhabited.dll` to be redeployed from
+   the repo copy — `deploy_custom_mods.py --mod Inhabited --apply` — since the
+   game-loaded copy still lacks `CreateAndEnterSettlement`/the public
+   `TryEnterSettlementMap` this tool calls into).
+2. Relaunch, confirm `jawa/inhabited_settlement_create` appears in
+   `rimbridge_client.py --list-tools`.
+3. Identify or generate a genuinely empty tile (`jawa/world_objects_get`
+   showing no MapParent there — do NOT use `jawa/world_tile_map_generate`
+   first, that creates a MapParent this tool will then refuse on).
+4. Call `jawa/inhabited_settlement_create {tile: <empty tile>, manifest:
+   "SettlementManifestDefs_TheClaimJump"}` (the Junkers pilot manifest).
+5. Verify: read back `casing.knownDistrictLabels` in the result (non-empty =
+   compose ran), then `jawa/list_things`/a screenshot on the new map to
+   confirm real district content, then call it again with the SAME tile and
+   manifest to prove the `reentered: true` idempotent path, then drive
+   `LeaveSettlementNow`/`ReenterSettlementHere` (or a further bridge call) to
+   exercise the departure→gate-search→teardown→casing-persistence half this
+   item's `## verify` bar still wants.
+
+Left `doing` — compiled, not deployed, not live-tested. This is real forward
+progress (the structural blocker two prior passes proved dead-end is now
+routed around in source), not yet the live proof itself.
