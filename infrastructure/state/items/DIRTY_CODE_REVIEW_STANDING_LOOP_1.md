@@ -1425,6 +1425,60 @@ Whoever picks up wave 25: start the re-dirtied backlog, smallest files
 first per this loop's established recipe, and re-derive every count fresh
 before reporting it.
 
+## Wave 39 — 2026-09-24: two stale wave-38 claims corrected; 5 of the 13 never-entered Utils Python tools CLOSED
+
+First action, per this wave's own brief: wave 38's "Next wave" paragraph
+carried two stale claims and was corrected in place (commit `ff8b3a821`,
+separate from the review commit below) — (1) it called the PNG
+binary-art-tracking scope question "still open" when the orchestrating
+window had already resolved it with the owner earlier this same session
+(deterministic bulk probe, 161/161 PNGs CLEAN, permanently out of scope —
+see the FOUNDRY 2026-09-24 note above); (2) it listed "95 never-entered `.cs`
+files" as a wave-39 candidate when wave 24 (above) already closed that whole
+backlog in full. Neither claim is re-litigated here; both are now correct at
+the source.
+
+Then ran `code_review_status.py list` fresh (`/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/code_review_status.py list`,
+from repo root): **41 DIRTY rows total, all non-`.png`, all "content changed
+since clean mark" (re-dirtied, not never-entered)** — the 284-row backlog
+wave 25 started has been worked down to 41 by waves 25-38's diff-scoped
+passes. None of those 41 were touched this wave (see "next wave" below).
+
+Per the brief, checked the one candidate class never independently verified
+either way: the **13 never-entered Utils Python tools flagged in wave 15**.
+Confirmed reachability first for all 13 via `code_review_status.py check`
+(all still DIRTY "never marked clean" — genuinely untouched) and a repo-wide
+grep for each filename: every one is named in a live item doc, a handoff, a
+skill's usage doc, or has a sibling `selftest_*.py` — none is a dead-file
+candidate. Full-file reviewed the 5 smallest: `apply_blanket_ruling.py` (99
+lines, blanket-ruling stamper with `--over-sitting` refusal on a real
+sitting), `artpipe/requeue_quota_failures.py` (62, quota-failure requeue
+daemon — verified its `parents[4]` root-path arithmetic resolves to the repo
+root from its actual location), `check_pseudo_sw_name.py` (132, pseudo-SW
+name shape/collision heuristic), `label_collision_check.py` (209, CAST-animal
+label-collision checker — verified its `dump_db`/`DUMP_ROOT` imports and its
+None-means-UNMEASURED contract match `dump_manifest.py`'s real API), and
+`sheet_to_artifact.py` (163, review-sheet-to-artifact-db backend patcher —
+verified its spliced `frozen = false` JS assignment targets the page-level
+`let frozen` the template already declares, same pattern `ServerBackend`/
+`FileBackend` use, not an accidental implicit global). No bugs found in any
+of the 5. All 5 marked CLEAN, commit `1a838c529`, pushed.
+
+**8 of the 13 never-entered Utils Python tools remain**:
+`artpipe/build_flora_legibility_sheet.py` (335), `artpipe/facing_set_audit.py`
+(248), `build_landmark_density_sheet.py` (315), `canon_census.py` (230),
+`ecosystem_pyramid_check.py` (339), `modcheck/readline_registry.py` (215),
+`stage_review.py` (409), `stage_xenotype_grid.py` (310) — all confirmed
+reachable (same grep sweep as above), none reviewed yet.
+
+Next wave: either continue this cluster (8 left, largest first or smallest
+first per taste — none is blocked on another) or resume the 41-row re-dirtied
+backlog (`code_review_status.py list | grep '^DIRTY'` from repo root,
+re-derive the count fresh, do not trust "41" next wave). The item file itself
+is now past 2500 lines and getting unwieldy for a human or agent to read in
+full each wave — flagging for a future archiving/summarizing pass, not doing
+it this wave.
+
 ## Wave 25 — 2026-09-24: re-dirtied backlog started, non-PNG only
 
 Re-derived the DIRTY count fresh: `code_review_status.py list | grep -c
