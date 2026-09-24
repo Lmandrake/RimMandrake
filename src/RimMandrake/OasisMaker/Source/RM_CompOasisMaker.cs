@@ -98,7 +98,24 @@ namespace RimMandrake.OasisMaker
                     ticksInState += RareTickInterval;
                     if (ticksInState >= RM_OasisMakerSettings.attuningDays * GenDate.TicksPerDay)
                     {
-                        LockQuality();
+                        // §2/§3: "a one-time commitment, not continuously
+                        // rescaled by later terrain changes near the
+                        // machine" (see the class doc comment and
+                        // qualityLocked's own field). A machine that drops
+                        // back to Dormant (losing shade/rock) and later
+                        // re-attunes must NOT re-roll lockedRadiusCap/
+                        // lockedSpeedMultiplier from whatever the site scores
+                        // today — currentRing etc. persist across the cycle,
+                        // so a re-lock could shrink the cap below progress
+                        // already made and falsely read as "the oasis is
+                        // made." Only the first Attuning->Working transition
+                        // locks quality; qualityLocked itself was the
+                        // intended guard for this and was previously never
+                        // checked.
+                        if (!qualityLocked)
+                        {
+                            LockQuality();
+                        }
                         state = RM_OasisMakerState.Working;
                         ticksInState = 0;
                     }
