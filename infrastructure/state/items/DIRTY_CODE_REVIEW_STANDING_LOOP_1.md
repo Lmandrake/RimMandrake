@@ -2514,3 +2514,100 @@ window) note above: owner ruled binary art gets a deterministic bulk probe
 (`src/RimMandrake/Utils/probe_png_wellformed.py`), 161/161 PNGs already
 passed and are CLEAN, and PNGs are permanently out of this loop's per-file
 scope.
+
+## Wave 40 — 2026-09-24: last 8 never-entered Utils Python tools CLOSED; 3 re-dirtied files marked CLEAN
+
+Note on file structure: wave 39's heading sits mid-file (line 1428, before wave
+25 at line 1482) rather than at the true tail — an artifact of some earlier
+merge, not a defect introduced this wave. Flagging it, not fixing it: an
+append-only rule and a 2500+-line file are a bad combination for reordering by
+hand, and wave 39's own "flagging for a future archiving/summarizing pass" note
+already covers this.
+
+Re-derived the DIRTY list fresh (`code_review_status.py list | grep '^DIRTY'`
+from repo root): **41 non-PNG DIRTY rows**, matching wave 39's count exactly —
+no drift in this window.
+
+Took the 8 never-entered Utils Python tools wave 39 left standing. Reachability
+re-confirmed for all 8 (grep hits in a live item doc, a handoff, or a skill's
+usage doc; `canon_census.py` and `modcheck/readline_registry.py` also carry
+live sibling selftests — ran both, all green including the live-repo checks).
+Full-file reviewed each:
+
+- **`artpipe/build_flora_legibility_sheet.py`** (335) — FLORA_LEGIBILITY_BAR_1
+  sheet builder. Traced `job_art_info`/`resolve_stem`'s suffix-stripping loop,
+  `find_flora_jobs`'s transparent+flora filter, and the weakest-first sort
+  feeding `contested` on the bottom 15. No bugs.
+- **`artpipe/facing_set_audit.py`** (248) — cross-facing sprite metric audit.
+  Verified the canvas-transposition gate (`{(w,h) sorted}` set, not raw
+  equality — correctly permits vanilla's own north/south vs east/west
+  transposition) and that `viewpoint_south()`'s LLM judge is wired as
+  ADVISORY-only, never returned as a FLAG except on UNMEASURED. No bugs.
+- **`build_landmark_density_sheet.py`** (315) — BIOME_LANDMARK_REFINEMENT_1
+  sheet builder. Checked `landmark_effects()` reads mutatorChances from the
+  live def dump (not donor XML) and raises on any missing LandmarkDef rather
+  than silently zeroing it; `measured_rows()`'s water/drift classification
+  against the frozen tiles CSV. No bugs.
+- **`canon_census.py`** (230) — the C8 ruled/unruled/non-conforming classifier.
+  Traced `_BOILERPLATE_RE`'s bounded-gap shape match and the deliberate gizka
+  non-conforming classification (documented, reasoned, not a bug). Ran
+  `selftest_canon_census.py`: **ok** (all 7 boilerplate wordings + gizka/zeer
+  shapes). No bugs.
+- **`ecosystem_pyramid_check.py`** (339) — ECOSYSTEM_PYRAMID_LAW_1 checker.
+  Verified the shortfall-commonality algebra (`t/(1-t) * large_c`, reduces to
+  `large_c - small_c` at t=0.5 exactly as the comment claims) and that EMPTY
+  rosters fail rather than silently pass/skip, per the owner's no-exemption
+  ruling. No bugs.
+- **`modcheck/readline_registry.py`** (215) — shared read-line registry lint.
+  Ran `modcheck/selftest_readline_registry.py`: **ok**, including the live-repo
+  check (78 walks, 0 dangling citations). One unused private helper noted,
+  not fixed: `_read_sections()` is defined but never called anywhere in the
+  file (grepped the whole repo) — dead code, not a behavioural bug, since
+  nothing invokes it.
+- **`stage_review.py`** (409) — live bridge staging tool for review
+  screenshots. **Found and fixed one real bug**: `cell_open()`'s terrain check
+  computed `"Water" in terr or "Rock" in terr or (not terr.endswith("_Rough")
+  and "Marble" in terr)` inside an `if ...: pass` that discarded the result —
+  only `water = "Water" in terr` actually gated the return, so any non-water
+  Rock terrain silently read as open. That is exactly "the #1 review-shot
+  defect" the function's own docstring says it exists to catch (a subject
+  spawned inside rock). Fixed to actually gate on the computed condition.
+  Commit `f2ffed68d`, pushed, verified with `py_compile` before marking clean.
+- **`stage_xenotype_grid.py`** (310) — the companion xenotype-grid staging
+  tool. Compared its `open_cells()`/`grid_cells()` against `stage_review.py`'s
+  broken version above: this one uses the engine's own `walkable` flag from
+  `rimworld/get_cells_info` directly, plus an explicit things-based block list
+  including `"Rock"`/`"Mineable"` — no equivalent dead-code gap. No bugs.
+
+All 8 had zero uncommitted changes except `stage_review.py` (the fix above,
+committed separately from the mark-clean commit). **All 8 marked CLEAN**,
+commit `8b65a2173`, pushed. **This closes the wave-15 never-entered Utils
+Python tools backlog in full (13/13 across waves 39-40).**
+
+With time remaining, picked 3 of the re-dirtied backlog, diff-scoped against
+each file's own clean-mark sha (all confirmed zero uncommitted changes first):
+`artpipe/artpiped.py` (+6/-2 since `74e9d4953` — owner ruling 2026-09-23
+raising the weekly/5h Claude-budget thresholds toward the account ceiling,
+hard_stop unchanged), `bridgetools/build.py` (+9 since `3ea1ca20` — new
+`INHABITED_MOD_DIR` env override, same pattern as the existing
+`ORACLE_MOD_DIR` one), `FlowWorks/Tools/generate_liquid_suite.py` (+1/-1 since
+`51867f432` — Propane Lake's `waterBodyType` `None` -> `Saltwater` per owner
+card `SEA_FLOOR_AND_CATCH_PASS_1`, matches the enum value every other
+Saltwater row in the file already uses). All three are data/config changes
+with clear provenance; no bugs found. All 3 marked CLEAN, commit `b5e8a9245`,
+pushed. Deliberately left the `RimStarWars/Bacta/*` cluster (8 files, all
+sharing clean-mark `d79860270`) and `EnvironmentalHazards`/`Inhabited`-adjacent
+files untouched this wave — they sit close to the concurrent
+`BACTA_SIDE_ITEMS_1` build agent's live work and a stale index.lock was hit
+once mid-wave (transient, cleared on retry, not this agent's own process).
+
+Re-derived the final count: **38 non-PNG DIRTY files remain** (41 minus this
+wave's 3) — re-derive fresh next wave rather than trusting this arithmetic.
+Next wave: no standing named cluster — the two remaining backlogs from wave
+38/39's notes (the 13 never-entered tools, and the PNG scope question) are
+both now closed/resolved. Resume the re-dirtied backlog fresh:
+`code_review_status.py list | grep '^DIRTY'` filtered non-`.png`. The
+`RimStarWars/Bacta/*` 8-file cluster is a reasonable next target once
+`BACTA_SIDE_ITEMS_1` looks settled (check `git status --porcelain` on it
+first — wave 37 hit exactly this collision with `modset_builder.py` and had
+to skip it for a wave).
