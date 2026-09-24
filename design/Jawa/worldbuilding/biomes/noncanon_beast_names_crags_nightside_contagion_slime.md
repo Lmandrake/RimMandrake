@@ -8,7 +8,10 @@ canon entries), a sweep against every `<label>` in `src/` (5,521 labels), a swee
 every coined stem already ruled in `rot_flora_fauna_names.md`, `lantern_deeps_flora_names.md`
 and batch 2, and a Wookieepedia title search (a coined word that turns out to be a real Star
 Wars name was swapped — rule 2). The checker judges shape; the owner judges taste. Strike
-what you dislike, say what it should be, or say *"all fine"*.
+what you dislike, say what it should be, or say *"all fine"*. **Revised 2026-09-24** per the
+owner's typed syllable-variety and slime-law rulings (rules 7–8 below): every revised name
+re-ran the checker clean on stems and collisions; its shape notes on 1- and 3-syllable rows
+are owner-overridden by those rulings.
 
 Format follows the two precedents: current label → **drafted label** (alternate), one-line
 rationale, lowercase RimWorld labels, **defNames do not change here** (that is
@@ -42,8 +45,10 @@ name comes with it.
 The Rot/Lantern rules unchanged, plus the item's STANDARD:
 
 1. **Coined, not compounded.** An alien word, never `<English adjective><English noun>`. The
-   phonetic target is the 37 coined canon creature names: two syllables (three for a giant),
-   4–7 letters, a doubled consonant or a k/q/x/z in most, a vowel or -k/-r/-g ending.
+   phonetic target is the 37 coined canon creature names: 4–7 letters, a doubled consonant
+   or a k/q/x/z in most, a vowel or -k/-r/-g ending. *(The old "two syllables dominant"
+   target is superseded by ruling 7 below; `check_pseudo_sw_name.py` shape notes on 1- and
+   3-syllable rows are owner-overridden, 2026-09-24.)*
 2. **Never a real Star Wars name** on a beast that is not that creature — checked against the
    canon library and Wookieepedia. Three drafts were swapped for this (a hand-bolt, a
    surname, a character).
@@ -52,7 +57,7 @@ The Rot/Lantern rules unchanged, plus the item's STANDARD:
    ruled anywhere on the planet.
 4. **Variants take the canon variant shape** — plain English modifier on the coined stem
    (*greater krayt dragon, jungle worrt, white loth-cat*): *blistered bulloo*, *greater
-   wollub*. A life stage keeps its plain stage word (*fezzira larva*, as *megaspider* does).
+   oomb*. A life stage keeps its plain stage word (*fezzira larva*, as *megaspider* does).
 5. **Each biome has one accent, so its cast sounds like one place.** Crags: hard voiced
    stops, k/g/r clusters. Nightside: hushed, long vowels, sibilants, almost no plosives.
    Contagion: wet liquids — l, v, zh, gl — and open endings. Slime: soft rounded m/b/l,
@@ -60,6 +65,17 @@ The Rot/Lantern rules unchanged, plus the item's STANDARD:
 6. **A def that lives in several biomes has one name planet-wide**, drafted in the biome that
    gives it its job and cross-referenced in the others (evictions are stopped; multi-homing is
    not resolved here).
+7. **Syllable variety — owner ruling, 2026-09-24 (typed, verbatim):** *"Please change some of
+   them to one syllable and some to theee syllable. Too many two syllable names sound all the
+   same."* Each biome's list now mixes roughly a fifth one-syllable, half two, a quarter
+   three — the complaint is monotony, not arithmetic. This overrides the two-syllable target
+   in rule 1 and the checker's shape notes on 1/3-syllable rows.
+8. **THE SLIME LAW — owner ruling, 2026-09-24 (typed, verbatim), PLANET-WIDE:** *"All slimes
+   in the game should have long single names like ahhhz or zoh."* Every slime/goo/amoeba/
+   gel-bodied creature gets a single drawn-out syllable (long or doubled vowels welcome), each
+   distinct from the others when said aloud. Variant sizes keep the plain modifier on the
+   monosyllable stem (*greater oomb*). Applies to every future batch, not just this one; a
+   slug or crustacean is not a slime.
 
 ---
 
@@ -67,30 +83,33 @@ The Rot/Lantern rules unchanged, plus the item's STANDARD:
 
 *Obsidian teeth in a fog light cannot cross.* The donor roster is the population by the
 owner's wholesale ruling — a single transplanted nocturnal family. The accent is the crags
-themselves: hard, dark, consonant-heavy, said in a gust. 14 drafted; 2 not.
+themselves: hard, dark, consonant-heavy, said in a gust. 14 drafted; 2 not. Revised
+2026-09-24 for syllable variety (rule 7): three clipped to one syllable, four stretched to
+three, seven stay at two.
 
 | defName | current label | the creature | drafted label | alternate | why |
 |---|---|---|---|---|---|
-| `AA_Nightling` | nightling | sleek quill-throwing nocturnal apex predator (bs 1.0) | **vrakka** | skravva | The quill volley in one word: *vr-* the lunge, *-kk-* the snap of quills leaving the back; open ending like gizka, acklay. The family's root sound — the rest share the accent, not the stem. |
-| `AA_NightRam` | nightram | stubborn horned herbivore, the nightling's kin (bs 2.5) | **dhukkor** | dhorrak | Low and blunt, head down: *dh-* a hoof on obsidian, *-kkor* the impact. Kinship to the vrakka is written in the description, not the name. |
-| `AA_NightMule` | nightmule | the domestic pack line; quills it cannot throw; stronger than a muffalo (bs 2.8) | **hulggar** | hrukkal | A hauling grunt — heavy *-lgg-* under load, *-ar* trailing off as a beast of burden's name should. The tame one, so the softest consonants in the set. |
+| `AA_Nightling` | nightling | sleek quill-throwing nocturnal apex predator (bs 1.0) | ~~vrakka~~ **vrakk** | skravva | The quill volley clipped to a single snap: *vr-* the lunge, *-akk* the quills leaving the back — one syllable, said in the instant it happens. The family's root sound — the rest share the accent, not the stem. |
+| `AA_NightRam` | nightram | stubborn horned herbivore, the nightling's kin (bs 2.5) | ~~dhukkor~~ **dhukk** | dhorrak | Low and blunt, head down: one syllable, one impact — *dh-* a hoof on obsidian, *-ukk* the hit. Kinship to the vrakk is written in the description, not the name. |
+| `AA_NightMule` | nightmule | the domestic pack line; quills it cannot throw; stronger than a muffalo (bs 2.8) | ~~hulggar~~ **hulggarok** | hrukkal | A hauling grunt stretched over three syllables, as a loaded walk is: heavy *-lgg-* under load, *-arok* the plodding steps. The tame one, so the softest consonants in the set. |
 | `AA_NightAve` | night ave | large flightless black bird, faster than a horse, ridden into battle (bs 1.1) | **zekkra** | tsavik | Speed: a *z* start, the clipped *-kk-*, a runner's name said quickly; bird-shape ending like nuna. |
 | `AA_Murkling` | murkling | small clever pack scavenger; snout-organs hum to the pack; "thief of the night" (bs 0.35) | **kessik** | pizzik | Small and sibilant — the hush of a pack passing, the hiss the snout-organs make; diminutive *-ik* like pikobi. |
-| `AA_CrepuscularBeetle` | Crepuscular Beetle | huge Hercules-beetle herbivore, dusk-active beast of burden (bs 3.0) | **brekkug** | kollugg | Armour on armour: *br-* the bulk, *-kk-* carapace plates knocking, *-ug* heavy. "Crepuscular" is a Latin lab word no colonist would say. |
+| `AA_CrepuscularBeetle` | Crepuscular Beetle | huge Hercules-beetle herbivore, dusk-active beast of burden (bs 3.0) | ~~brekkug~~ **brekkugar** | kollugg | Armour on armour, three syllables for a bs-3 bulk: *br-* the mass, *-kk-* carapace plates knocking, *-ugar* the slow walk under it. "Crepuscular" is a Latin lab word no colonist would say. |
 | `AA_ShadowCharger` | shadow charger | long-horned, passive, milk and meat; females lock horns in season (bs 2.5) | **korrag** | valluk | Horns locking: the rolled *rr* is horn grinding on horn; a herd word short enough to shout across a pen. |
 | `AA_Thunderox` | thunderox | shaggy, stumpy-horned; brays at the dawn of thunderstorms; milk, wool, regenerates (bs 2.5) | **bhoruk** | hurrogh | Its own call — *bho-* the bray farmers listen for before the gust-storm, *-ruk* the shaggy bulk behind it. |
-| `AA_DarkVandal` | dark vandal | pure-muscle boar-thing, digs for truffles, brood-protective rampage (bs 1.2) | **gruzzak** | brokkur | Snout in the ground: *gruzz* is a rooting, grunting sound; *-ak* the sudden charge. |
+| `AA_DarkVandal` | dark vandal | pure-muscle boar-thing, digs for truffles, brood-protective rampage (bs 1.2) | ~~gruzzak~~ **gruzz** | brokkur | Snout in the ground: *gruzz* IS the rooting, grunting sound, whole — one syllable, like the grunt it names. |
 | `AA_DuskProwler` | dusk prowler | weaponised killing machine; back-protrusions are accelerators and weapons (bs 1.5) | **shekkur** | vrixxa | Something made, not born — a clipped, mechanical *shek-* and a hard stop; nothing soft anywhere in it. |
 | `AA_Darkbeast` | darkbeast | mechanoid-infused thunderbeast that wears a trailing halo of Dark (owner ruling §4) (bs 1.5) | **ulkhorr** | vhommag | A hole in the glow: the swallowed *ulkh-* is a word said into darkness, the long *-orr* the halo trailing behind. ⚠️ Also removes a false canon read — "Dark Beast" is a real Wookieepedia entry and this is not it. |
 | `AA_Frostling` | frostling | the nightling's polar cousin; spd 6.0 predator of the frozen wastes (bs 1.5) | **thrizzik** | kirrisk | Ice in the mouth: *thr-* a shiver, *-zz-* claws skittering on rime, *-ik* small and quick. |
 | `AA_Behemoth` | Behemoth | the Forsaken "dragon": fire breath, regeneration, "the thunder is their voice", 16 squares (bs 8.0) | **ghorrumak** | dhuvrakka | Three syllables for the biggest thing in the crags (canon allows it: varactyl, dianoga): *ghorr-* the thunder-voice, *-umak* the weight coming down. "Behemoth" is an Earth word from a book. |
-| `GR_Nighthrumbo` | nighthrumbo | nocturnal thrumbo-line predator with ranged quills (bs 3.0) | **zhurrak** | khurrog | "Thrumbo" is a RimWorld word, not a galaxy word. *zhurr-* the low nocturnal growl, *-ak* the quill strike. |
+| `GR_Nighthrumbo` | nighthrumbo | nocturnal thrumbo-line predator with ranged quills (bs 3.0) | ~~zhurrak~~ **zhurrakor** | khurrog | "Thrumbo" is a RimWorld word, not a galaxy word. Three syllables for a bs-3 predator: *zhurr-* the low nocturnal growl held, *-akor* the quill strike at the end of it. |
 
 **Not drafted:** `AA_DuskRat` — KEPT by owner ruling (the name is the joke; art redo owed
 separately). `AA_SandProwler` — port-named *vosska* (`RSW_Dunestalker`, ruled 2026-09-20).
 
-Read aloud: vrakka, dhukkor, hulggar, zekkra, kessik, brekkug, korrag, bhoruk, gruzzak,
-shekkur, ulkhorr, thrizzik, ghorrumak, zhurrak — fourteen different openings, one accent.
+Read aloud: vrakk, dhukk, hulggarok, zekkra, kessik, brekkugar, korrag, bhoruk, gruzz,
+shekkur, ulkhorr, thrizzik, ghorrumak, zhurrakor — fourteen different openings, one accent,
+three lengths (3 × one syllable, 7 × two, 4 × three).
 
 ---
 
@@ -118,7 +137,7 @@ owed in the Weeping Stones accent and the nightside draft *ohmurra* is retired.
 stands for those homes, but its "named here" justification is void. `AA_BoulderMit`
 (*korrum*, `RSW_Korrum`), `AA_TetraSlug` (*vozzik*, `RSW_Voltmaw`), `AA_Terramorph`
 (*khorrak*, `RSW_Ferroclaw`) keep their port names in their other homes. `AA_RedGoo`
-is named in the Contagion batch below (*ghelluva*), where it is the body.
+is named in the Contagion batch below (*ghaaz*, slime law), where it is the body.
 
 ---
 
@@ -129,12 +148,14 @@ Everything here is wet, warm and unfinished; the sheet's §4 table already gives
 job (the body, the eyes, the sower, the leaker, the drinker, the undertaker, the thieves,
 the basker, the pickers). The accent is water — l, v, zh, gl — with open endings; the one
 hard name belongs to the one beast that is not carbon. 14 drafted (16 labels, counting the
-two aerofleet siblings pulled in from other biomes); 2 not.
+two aerofleet siblings pulled in from other biomes); 2 not. Revised 2026-09-24: the two
+goo-bodied residents take slime-law monosyllables (rule 8), and one more row clips to one
+syllable for variety (rule 7).
 
 | defName | current label | the creature | drafted label | alternate | why |
 |---|---|---|---|---|---|
-| `AA_RedGoo` | red goo | **the body** — creeps to the rain line, eats the dead, buds new forms every Bloom (also Nightside Ice at 0.003) | **ghelluva** | ollumaq | The one name in the valley with nothing hard in it: *gh-* a wet exhalation, *-ell-* liquid, *-uva* formless. Three syllables because it is never the same shape twice. |
-| `AA_OcularJelly` | ocular jelly | **the eyes** — drifts at canopy height watching the cloud; sinks seconds before a Burn (the player's tell) | **ozhilla** | zhellix | An eye hanging in the rain: round *o-*, *zh* the drift, *-illa* slack and floating. The tell the player learns to read should have a soft name. |
+| `AA_RedGoo` | red goo | **the body** — creeps to the rain line, eats the dead, buds new forms every Bloom (also Nightside Ice at 0.003) | ~~ghelluva~~ **ghaaz** | vaaz | Slime law (rule 8): one long drawn syllable — *gh-* a wet exhalation held, *-aaz* the fizz of the dead dissolving. One sound because it is one body, whatever shape it buds. |
+| `AA_OcularJelly` | ocular jelly | **the eyes** — drifts at canopy height watching the cloud; sinks seconds before a Burn (the player's tell) | ~~ozhilla~~ **zhool** | voohl | Gel-bodied, so the slime law takes it (rule 8): a single round drifting sound, *zh-* the hush, long *-ool* the slow hang in the rain. The tell the player learns to read is one soft note. |
 | `AA_InfectedAerofleet` | infected aerofleet | **the sower** — spore-loaded hydrogen float that rides the updraft and pops in sunlight | **blistered bulloo** | red bulloo | The base **aerofleet** (Forge, Grey Sea, Twilight Sea, Slime) becomes **bulloo** — a bounce of a word for a thing that bounces off everything — and the infected variant takes the canon variant shape (*jungle worrt*): plain modifier on the coined stem. Sibling rule: `AA_ColossalAerofleet` → **greater bulloo**. |
 | `AA_RedSpore` | red spore | **the leaker** — gallium-based, unstable, walks into the light and cooks; the rare survivor seeds a bloom | **vezzok** | skovva | The pop: *vezz-* a fizz building, *-ok* the burst. Not carbon-based, so it gets the valley's one hard *k* — it does not belong to the wet register and should not. |
 | `AA_BloodShrimp` | blood shrimp | **the drinker** — vampiric and fast; why visitors die at the red pools | **zhirrik** | sivvra | Small and fast in the shallows: *zh-* under the water, *-irr-* the dart, *-ik* the bite. "Shrimp" is the Earth animal, "blood" the English kenning. |
@@ -142,8 +163,8 @@ two aerofleet siblings pulled in from other biomes); 2 not.
 | `AA_Drainer` · `AA_DrainerLarva` | drainer · drainer larva | **the thieves** — cat-sized bright electrovore butterfly that taps the ocular trees; short larval stage | **fezzira** · **fezzira larva** | nixxa | A flicker with a static sting: *fezz-* the wingbeat and the crackle, *-ira* bright. The larva keeps the plain stage word (as *megaspider* / *megascarab* do), not a second stem. |
 | `AA_RoughPlatedMonitor` | rough-plated monitor | **the basker** — acid-immune, UV-armoured; comes OUT in the Burn; eggs that explode | **brossak** | ghorrix | Plate on plate: *br-* and *-ss-* the scrape of armour, *-ak* the snap. The predator of the window gets the hardest name in the valley after the leaker. |
 | `AA_Razorjack` | razorjack | **the pickers** — dual-jawed rodent-canine omnivore; infecting bites (also Pyrelands) | **skezzar** | vrizzo | Two jaws: *sk-* one, *-zz-* the other, *-ar* the tearing. |
-| `AA_FungalHusk` | fungal husk | shambling corpse animated by weaponised fungus; virulent, treatable; ruled 2 cells | **ghuvva** | drollum | A wet breath through a dead mouth: *gh-*, *-uvv-*, open *-a*. Nothing in it says fungus or corpse — the description does that. |
-| `AA_OcularNightling` | ocular nightling | mutated, eye-studded nightling; sturdier and docile | **gollivra** | ozzavra | Kin to the crags' vrakka — the *-vra* tail echoes it without sharing the stem (Rot rule 3); the *goll-* is the goo it came out of. |
+| `AA_FungalHusk` | fungal husk | shambling corpse animated by weaponised fungus; virulent, treatable; ruled 2 cells | ~~ghuvva~~ **ghuvv** | drollum | A single wet breath through a dead mouth: *gh-*, *-uvv*, and nothing after — one exhale is all it has (clipped for rule 7). Nothing in it says fungus or corpse — the description does that. |
+| `AA_OcularNightling` | ocular nightling | mutated, eye-studded nightling; sturdier and docile | **gollivra** | ozzavra | Kin to the crags' vrakk — the *-vra* tail echoes it without sharing the stem (Rot rule 3); the *goll-* is the goo it came out of. |
 | `AG_OcularSlinger` | ocular slinger | large mutated scorpion, twitching eyes (bs 2.5) | **pellorax** | quizzak | Three syllables ending *-x* like horax and vulptex: *pell-* the many eyes, *-orax* the raised tail. |
 | `GR_Fleshling` | fleshling | wretched failing chimera that needs love to live another day (bs 0.2) | **pibbo** | ubbi | The smallest, softest word in the valley — two puffs of breath. The player should feel sorry for it on hearing the name, which "fleshling" prevents. |
 
@@ -151,8 +172,8 @@ two aerofleet siblings pulled in from other biomes); 2 not.
 owner ruling 2026-08-15 (⚠️ see flag 2 below: its DesertPort port `RSW_Stareling` carries a
 second ruled name, *oxxa*).
 
-Read aloud: ghelluva, ozhilla, bulloo, vezzok, zhirrik, vulloth, fezzira, brossak, skezzar,
-ghuvva, gollivra, pellorax, pibbo.
+Read aloud: ghaaz, zhool, bulloo, vezzok, zhirrik, vulloth, fezzira, brossak, skezzar,
+ghuvv, gollivra, pellorax, pibbo — 3 × one syllable, 7 × two, 3 × three.
 
 ---
 
@@ -160,28 +181,35 @@ ghuvva, gollivra, pellorax, pibbo.
 
 *A body the size of a country, reading everything that touches it.* Soft-bodied
 everything; translucent greens and ambers; slow. The accent is round and wet — m, b, l,
-doubled, ending -o or -um. The Latin binomials go first: nobody in a cantina says
-"acanthamoeba gigantea". 10 drafted (11 labels, counting the Scarlands' small amoeba); 2 not.
+doubled — and, since the 2026-09-24 slime law (rule 8), the true gel-bodies carry it as
+one long held vowel (*wuum*, *oomb*) while the solid-bodied residents keep the -o/-um
+endings. The Latin binomials go first: nobody in a cantina says "acanthamoeba gigantea".
+10 drafted (11 labels, counting the Scarlands' small amoeba); 2 not.
 
 | defName | current label | the creature | drafted label | alternate | why |
 |---|---|---|---|---|---|
-| `AA_GreenGoo` | green goo | **the substrate** — countless cells of one superorganism, commonality 2.0 | **wummo** | bubbloq | Round and wet: *w-*, *-mm-*, *-o*. A herd of it is "wummo", plural and singular alike, as bantha is. |
-| `AA_AcanthamoebaGiganteaLarge` · `…Huge` · `…Small` | acanthamoeba gigantea, large / huge / small | giant spiked amoeba that eats trash and splits when engorged; three size defs (Small lives in the Scarlands) | **wollub** · **greater wollub** · **lesser wollub** | gumbra | *woll-* the lobe, *-ub* the blunt spikes. The three sizes take the canon *greater/lesser* shape rather than three stems, and drop the one Latin binomial a player would never hear said. |
+| `AA_GreenGoo` | green goo | **the substrate** — countless cells of one superorganism, commonality 2.0 | ~~wummo~~ **wuum** | wohm | Slime law (rule 8): one long held syllable — the hum of countless cells saying one thing. A herd of it is "wuum", plural and singular alike, as bantha is. |
+| `AA_AcanthamoebaGiganteaLarge` · `…Huge` · `…Small` | acanthamoeba gigantea, large / huge / small | giant spiked amoeba that eats trash and splits when engorged; three size defs (Small lives in the Scarlands) | ~~wollub~~ **oomb** · **greater oomb** · **lesser oomb** | bwaal | Slime law (rule 8): one blunt lobe of a sound, long *oo-* the mass, *-mb* the spikes. The three sizes keep the canon *greater/lesser* shape on the monosyllable stem, and drop the one Latin binomial a player would never hear said. |
 | `AA_Plasmorph` | plasmorph | iron-sulphide-shelled snail that sparks and lobs burning spit; the resistant native (also Poison Forest) | **bezzul** | quobbin | *bezz-* the spark, *-ul* the shell it hides in. |
 | `AA_Mime` | mime | human-derived psionic parasite that wears a person's face; trace experiment | **hennul** | sabbek | Deliberately gentle — a name that sounds like a neighbour's. The horror is in the description, where it belongs. "Mime" is an Earth stage word. |
-| `AA_DecayDrake` | decay drake | winged flightless lizard whose pheromones ferment plants; four livers; drunk (also Miasma, Poison Forest — one name) | **mubbrak** | zollubb | A sozzled, sagging word: *mubb-* slack, *-rak* the reptile under it. "Drake" is an Earth dragon word. |
+| `AA_DecayDrake` | decay drake | winged flightless lizard whose pheromones ferment plants; four livers; drunk (also Miasma, Poison Forest — one name) | ~~mubbrak~~ **mubbaro** | zollubb | A sozzled, sagging word stretched to three syllables, the way a drunk stretches a sentence: *mubb-* slack, *-aro* trailing off (rule 7). "Drake" is an Earth dragon word. |
 | `GR_Chickenrabbit` | chickenrabbit | harmless, hopping, breeds without limit; trace tail | **wuppik** | fippa | Small, quick, silly-soft — the Slime's one joke, and sayable by a child. Both halves of the donor name are Earth animals. |
 | `GR_Manbear` | manbear | waist-high teddy-bear humanoid that talks prisoners round; trace tail | **yollum** | bubbal | Round and companionable: *yoll-* the soft bulk, *-um* the murmur it keeps up. |
 | `AA_OvergrownColossus` | overgrown colossus | six-legged, six-eyed grove-walker with trees on its back (bs 6.0) | **thummorak** | dhollumar | Three syllables for a bs-6 body, as the Rot's vorrugath (its mycoid sibling) has: *thumm-* the footfall, *-orak* the ridge of trees. Own stem; kinship in the description. |
-| `AA_TeratogenicOriginator` | teratogenic originator | translucent stem-cell colony with limbs floating in it; drawSize ruled 3, tinted green | **vubbola** | nulloq | Wobble made into a word: *vubb-* and the trailing *-ola*. The current label reads as a lab report. |
+| `AA_TeratogenicOriginator` | teratogenic originator | translucent stem-cell colony with limbs floating in it; drawSize ruled 3, tinted green | ~~vubbola~~ **vohhm** | luul | Slime law (rule 8): a wobble held on one breath — *v-* the tremble, *-ohh-* drawn out, *-m* closed round. The current label reads as a lab report. |
 
-**Not drafted:** `AA_Helixien` — *vulloth*, Contagion batch. `RM_Titanoslime` — the owner's
-own creature, named in his ask of 2026-09-20; "titanoslime" is an English compound but it is
-his word. If he wants it in register the offer is **mogguloth** (alt *ossumar*); otherwise it
-stands. `AA_AcanthamoebaGiganteaSmall` is not in this roster (Scarlands) but takes *lesser
-wollub* by the sibling rule.
+**Not drafted:** `AA_Helixien` — *vulloth*, Contagion batch (a slug, not a slime — rule 8
+does not take it). `RM_Titanoslime` — the owner's own creature, named in his ask of
+2026-09-20; "titanoslime" is an English compound but it is his word. If he wants it in
+register the offer is now slime-law shaped: **baahm** (alt *ghoom*) — ~~mogguloth~~ is
+retired, three syllables on a slime is against rule 8. Otherwise it stands.
+`AA_AcanthamoebaGiganteaSmall` is not in this roster (Scarlands) but takes *lesser oomb*
+by the sibling rule.
 
-Read aloud: wummo, wollub, bezzul, hennul, mubbrak, wuppik, yollum, thummorak, vubbola.
+Read aloud: wuum, oomb, bezzul, hennul, mubbaro, wuppik, yollum, thummorak, vohhm — 3 × one
+syllable (the gel-bodies), 4 × two, 2 × three. Planet-wide, the slime monosyllables so far
+are ghaaz, zhool, wuum, oomb, vohhm (offer: baahm) — each distinct said aloud; future slime
+batches must not reuse or approach them.
 
 ---
 
@@ -229,7 +257,7 @@ before subtracting rows already port-named:
 | `the_miasma` | 15 | mostly RSW\_ sea juveniles + AA (raptor shrimp, mantrap, lockjaw, thermadon); helixien/decay drake/slurrypede already named above |
 | `poison_forest` | 17 | AA/AM dryads, bedbug, silkie, luciferbug, radyak, ripper hound; helixien/decay drake/plasmorph/ocular jelly/infected aerofleet named above |
 | `desert` | 15 | most AA rows are port-named by batch 2; left: sand lion, great devourer, groundrunner, mature fleshbeast, jellypot, truffle mole, cephalope, landopus |
-| `the_scarlands` | 12 | Insectoids-2 `SW_Electric*` family, rimclaw, acanthamoeba small (→ lesser wollub), RSW\_ foundry beetle / fairy mole / megaphorid / shale gorger |
+| `the_scarlands` | 12 | Insectoids-2 `SW_Electric*` family, rimclaw, acanthamoeba small (→ lesser oomb), RSW\_ foundry beetle / fairy mole / megaphorid / shale gorger |
 | `the_rot` | 10 | angel moth, anima colossus, the pustule hornet family (5 defs), smog moth, thrumbungus, yooka (shiro-trap is canon — corrected 2026-09-24) |
 | `dune_sea_deep_desert` | 8 | dunealisk, spined gow, sand lion, truffle mole, cephalope; bouldermit/tetra slug/terramorph port-named |
 | `wasteland` | 9 | swarmlings ×2, bloodletter petrel, screecher, megatardi, beetlefleet, spidercat, sacapillar; terramorph port-named |
@@ -433,9 +461,9 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `RUT_FireHawk` | fire-hawk | the_pyrelands | RimUtinni Patches (Jawa campaign) | OURS | regen:19 done:18 | our def (Pyrelands), owner-commissioned |
 | `RUT_FurnaceBeast` | furnace-beast | the_pyrelands | RimUtinni Patches (Jawa campaign) | OURS | regen:1 done:3 | our def (Pyrelands), owner-commissioned |
 | `RUT_ScarRoach` | scar-roach | the_scarlands | RimMandrake: Utinni — Rust Cathedral Roaches | OURS | donor art | our def (Scarlands) |
-| `AA_AcanthamoebaGiganteaHuge` | acanthamoeba gigantea, huge | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: greater wollub |
-| `AA_AcanthamoebaGiganteaLarge` | acanthamoeba gigantea, large | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: wollub |
-| `AA_AcanthamoebaGiganteaSmall` | acanthamoeba gigantea, small | the_scarlands | Alpha Animals | NONCANON | donor art | DRAFTED HERE: lesser wollub |
+| `AA_AcanthamoebaGiganteaHuge` | acanthamoeba gigantea, huge | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: greater oomb |
+| `AA_AcanthamoebaGiganteaLarge` | acanthamoeba gigantea, large | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: oomb |
+| `AA_AcanthamoebaGiganteaSmall` | acanthamoeba gigantea, small | the_scarlands | Alpha Animals | NONCANON | donor art | DRAFTED HERE: lesser oomb |
 | `AA_Aerofleet` | aerofleet | the_forge, the_grey_sea, the_twilight_sea | Alpha Animals | NONCANON | donor art | DRAFTED HERE: bulloo |
 | `AA_AngelMoth` | angel moth | the_rot | Alpha Animals | NONCANON | donor art |  |
 | `AA_AnimaColossus` | anima colossus | the_rot | Alpha Animals | NONCANON | donor art |  |
@@ -451,11 +479,11 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_BumbledroneQueen` | bumbledrone queen | the_sump | Alpha Animals | NONCANON | donor art |  |
 | `AA_Cactipine` | cactipine | arid_shrubland | Alpha Animals | NONCANON | donor art | port-named: RSW_Spinerat chikka |
 | `AA_ColossalAerofleet` | colossal aerofleet | the_forge, the_grey_sea, the_twilight_sea | Alpha Animals | NONCANON | donor art | DRAFTED HERE: greater bulloo |
-| `AA_CrepuscularBeetle` | Crepuscular Beetle | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: brekkug |
+| `AA_CrepuscularBeetle` | Crepuscular Beetle | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: brekkugar |
 | `AA_CrescendoAnole` | crescendo anole | the_forge | Alpha Animals | NONCANON | donor art |  |
 | `AA_CrystalMit` | crystalmit | poison_forest | Alpha Animals | NONCANON | donor art |  |
-| `AA_DarkVandal` | dark vandal | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: gruzzak |
-| `AA_DecayDrake` | decay drake | poison_forest, the_miasma, the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: mubbrak |
+| `AA_DarkVandal` | dark vandal | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: gruzz |
+| `AA_DecayDrake` | decay drake | poison_forest, the_miasma, the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: mubbaro |
 | `AA_DesertAve` | desert ave | desert | Alpha Animals | NONCANON | donor art | port-named: RSW_Sandstrider ossik |
 | `AA_Drainer` | drainer | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: fezzira |
 | `AA_DrainerLarva` | drainer larva | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: fezzira larva |
@@ -465,10 +493,10 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_FrostboundBehemoth` | frostbound behemoth | the_propane_lakes | Alpha Animals | NONCANON | donor art |  |
 | `AA_Frostling` | frostling | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: thrizzik |
 | `AA_Frostmite` | frostmite | the_propane_lakes | Alpha Animals | NONCANON | regen:3 done:3 |  |
-| `AA_FungalHusk` | fungal husk | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ghuvva |
+| `AA_FungalHusk` | fungal husk | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ghuvv |
 | `AA_GiantCrownedSilkie` | giant crowned silkie | poison_forest | Alpha Animals | NONCANON | donor art |  |
 | `AA_Gigantelope` | gigantelope | desert | Alpha Animals | NONCANON | donor art | port-named: RSW_Sandhorn thurra (per the 2026-09-21 sheet) |
-| `AA_GreenGoo` | green goo | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: wummo |
+| `AA_GreenGoo` | green goo | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: wuum |
 | `AA_Groundrunner` | groundrunner | desert | Alpha Animals | NONCANON | donor art |  |
 | `AA_Helixien` | helixien | poison_forest, the_contagion, the_miasma, the_scarlands, the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: vulloth |
 | `AA_InfectedAerofleet` | infected aerofleet | poison_forest, the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: blistered bulloo |
@@ -484,10 +512,10 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_Needlepost` | needlepost | arid_shrubland, the_greentide | Alpha Animals | NONCANON | donor art | port-named: RSW_Barbthorn skorra |
 | `AA_Needleroll` | needleroll | desert, dune_sea_deep_desert | Alpha Animals | NONCANON | donor art | port-named: RSW_Spineroller kudda |
 | `AA_NightAve` | night ave | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: zekkra |
-| `AA_NightMule` | nightmule | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: hulggar |
-| `AA_NightRam` | nightram | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: dhukkor |
-| `AA_Nightling` | nightling | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: vrakka |
-| `AA_OcularJelly` | ocular jelly | poison_forest, the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ozhilla |
+| `AA_NightMule` | nightmule | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: hulggarok |
+| `AA_NightRam` | nightram | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: dhukk |
+| `AA_Nightling` | nightling | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: vrakk |
+| `AA_OcularJelly` | ocular jelly | poison_forest, the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: zhool |
 | `AA_OcularNightling` | ocular nightling | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: gollivra |
 | `AA_OvergrownColossus` | overgrown colossus | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: thummorak |
 | `AA_Plasmorph` | plasmorph | poison_forest, the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: bezzul |
@@ -495,7 +523,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_RaptorShrimp` | raptor shrimp | the_miasma | Alpha Animals | NONCANON | donor art |  |
 | `AA_RayHound` | ray-hound | the_scald | Alpha Animals | NONCANON | donor art |  |
 | `AA_Razorjack` | razorjack | the_contagion, the_pyrelands | Alpha Animals | NONCANON |  done:3 | DRAFTED HERE: skezzar — ⚠️ CONFLICTS with the owner's own card pick *sytheclaw* (2026-09-14, `RAZORJACK_IDENTITY_RESTYLE_1`), live on the Pyrelands port `RUT_Sytheclaw`; batch 5 flag 1 |
-| `AA_RedGoo` | red goo | nightside_ice, the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ghelluva |
+| `AA_RedGoo` | red goo | nightside_ice, the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ghaaz |
 | `AA_RedSpore` | red spore | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: vezzok |
 | `AA_RipperHound` | ripper hound | poison_forest | Alpha Animals | NONCANON | donor art |  |
 | `AA_RoughPlatedMonitor` | rough-plated monitor | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: brossak |
@@ -510,7 +538,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_SpinedGow` | spined gow | dune_sea_deep_desert | Alpha Animals | NONCANON | donor art |  |
 | `AA_SummitCrab` | summit crab | nightside_ice | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ohmurra |
 | `AA_TarGuzzler` | tar guzzler | the_sump | Alpha Animals | NONCANON | donor art |  |
-| `AA_TeratogenicOriginator` | teratogenic originator | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: vubbola |
+| `AA_TeratogenicOriginator` | teratogenic originator | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: vohhm |
 | `AA_Terramorph` | terramorph | desert, nightside_ice, the_propane_lakes, wasteland | Alpha Animals | NONCANON | regen:5 done:3 | port-named: RSW_Ferroclaw khorrak |
 | `AA_TetraSlug` | tetra slug | dune_sea_deep_desert, nightside_ice | Alpha Animals | NONCANON | donor art | port-named: RSW_Voltmaw vozzik |
 | `AA_Thermadon` | thermadon | the_miasma | Alpha Animals | NONCANON | donor art |  |
@@ -530,7 +558,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `GR_Mantistanis` | None | the_pyrelands | ? | NONCANON | regen:1 done:11 |  |
 | `GR_Mechachicken` | mecha-chicken | the_rust_cathedral | Vanilla Genetics Expanded | NONCANON | donor art |  |
 | `GR_Mecharat` | mecha-rat | the_rust_cathedral | Vanilla Genetics Expanded | NONCANON | donor art |  |
-| `GR_Nighthrumbo` | nighthrumbo | forsaken_crags | Vanilla Genetics Expanded | NONCANON | donor art | DRAFTED HERE: zhurrak |
+| `GR_Nighthrumbo` | nighthrumbo | forsaken_crags | Vanilla Genetics Expanded | NONCANON | donor art | DRAFTED HERE: zhurrakor |
 | `JOE_Cephalope` | cephalope | desert, dune_sea_deep_desert | RimUtinni Patches (Jawa campaign) | NONCANON | donor art |  |
 | `JOE_Landopus` | landopus | desert | RimUtinni Patches (Jawa campaign) | NONCANON | donor art |  |
 | `JOE_Nautilant` | nautilant | the_scald | RimUtinni Patches (Jawa campaign) | NONCANON | donor art |  |
