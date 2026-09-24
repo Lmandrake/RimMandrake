@@ -2450,10 +2450,13 @@ Next wave: re-derive the non-PNG DIRTY list fresh
 (`code_review_status.py list | grep '^DIRTY'` filtered non-`.png`) rather
 than trusting any count carried forward — both named clusters from waves
 34-37 are now closed, so the next wave has no standing cluster pointer and
-should re-survey. Still outstanding from wave 15's survey, never
-independently re-confirmed since: the 95 never-entered `.cs` files (many
-already partly worked through in waves 16-24's cluster closures — re-derive
-rather than trust the wave-15 folder breakdown) and the 13 never-entered
-Utils Python tools whose reachability still needs confirming per-file before
-any of them gets a review. The PNG binary-art-tracking scope question (wave
-15) remains open and still not this loop's to decide.
+should re-survey. The never-entered `.cs` backlog is NOT a candidate here —
+wave 24 closed it in full (see that wave's heading), so do not re-open it as
+untouched. The one candidate class never actually verified either way is the
+13 never-entered Utils Python tools flagged in wave 15 — check reachability
+per-file before reviewing any of them. The PNG binary-art-tracking scope
+question is RESOLVED, not open — see the FOUNDRY 2026-09-24 (orchestrating
+window) note above: owner ruled binary art gets a deterministic bulk probe
+(`src/RimMandrake/Utils/probe_png_wellformed.py`), 161/161 PNGs already
+passed and are CLEAN, and PNGs are permanently out of this loop's per-file
+scope.
