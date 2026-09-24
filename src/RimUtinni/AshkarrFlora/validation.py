@@ -33,21 +33,16 @@ pure insurance against a FUTURE donor-mod update reclaiming this defName,
 and is EXPECTED to match nothing and log nothing today (CLAUDE.md: "a patch
 that matches nothing logs nothing").
 
-🔴 A REAL, CURRENTLY-TRUE BLOCKING GAP, confirmed by this pass, not merely
-copied from the walk doc: `RUT_SweetlineTree`'s `texPath` is
-`Things/Plant/RUT_SweetlineTree`, and `src/RimUtinni/AshkarrFlora/Textures/`
-DOES NOT EXIST AT ALL on disk (checked directly: `find
-src/RimUtinni/AshkarrFlora/Textures -type f` returns nothing, and there is
-no `Textures` directory under this mod at any depth) -- not merely empty, as
-the walk doc's own wording ("the texture folder exists but is EMPTY")
-states. Candidate art sits unmoved and unselected in
-`_artsrc/sweetline_orphans_2026-09-06/` (11 PNGs + a CONTACT_SHEET.png +
-README.md, no recorded pick). `art_folder_exists_and_has_art` below asserts
-this directly and is EXPECTED TO FAIL on this pass and every pass until a
-PNG is actually placed there -- this is the correct, honest signal (the mod
-genuinely cannot render a tree today), not a bug in this suite to work
-around. `RUT_SweetlineTree` will still spawn as an invisible/placeholder
-Thing without art -- this suite does not claim otherwise.
+CORRECTED 2026-09-24 (wave 11 of DIRTY_CODE_REVIEW_STANDING_LOOP_1): the art
+gap this section used to describe is CLOSED. `RUT_SweetlineTree`'s `texPath`
+is `Things/Plant/RUT_SweetlineTree`, and
+`src/RimUtinni/AshkarrFlora/Textures/Things/Plant/RUT_SweetlineTree/` now
+holds 14 PNGs (`RUT_SweetlineTreeA.png`..`N.png`, landed at `0d9116326`,
+2026-09-18 -- one day after this file was first written at `f145b6587`,
+which is why the original text below was true when written and stale ever
+since). `art_folder_exists_and_has_art` below now PASSES on every run; it is
+kept as a standing regression guard (the art folder going empty again would
+be exactly the gap this section used to describe) rather than removed.
 
 WHY BOTH REMAINING COMPONENTS ARE DEF READ-BACK / LOG CHECKS ONLY: this mod
 carries no C#, no work-giver, no comp, nothing behavioral to run -- the only
@@ -58,10 +53,9 @@ of this suite's scope per the walk doc's own final line -- a separate
 MOD_HUMAN_EXPLORATION_PASS_1 item.
 
 Still not proven / real gaps:
-  1. `art_folder_exists_and_has_art` will keep failing until art is chosen
-     from `_artsrc/sweetline_orphans_2026-09-06/` and placed at
-     `Textures/Things/Plant/RUT_SweetlineTree/`. This suite cannot pick the
-     art for the owner; it can only detect the gap.
+  1. `art_folder_exists_and_has_art` now passes (14 PNGs landed 2026-09-18,
+     see above) -- a human visual pass on the actual rendered canopy is
+     still separate scope, `MOD_HUMAN_EXPLORATION_PASS_1` (see below).
   2. `betterTrees_patch_stays_noop_on_minimal` proves the patch is silent
      with the three donor mods ABSENT (the minimal list, per the walk doc's
      own environment). It does not prove the patch is STILL a no-op with
@@ -71,9 +65,35 @@ Still not proven / real gaps:
      separate check ("equally on a list where the donor mods are active").
   3. `mustBeWildToSow=true` is inherited from `TreeBase` and never
      re-declared in `RUT_SweetlineTree`'s own XML -- the def read-back below
-     checks the RESOLVED (post-inheritance) value via `jawa/get_def`, since
-     that is the only way to see it; nothing here independently re-derives
-     inheritance from `Plants_Bases.xml` by hand.
+     checks the RESOLVED (post-inheritance) value via `jawa/get_defs`
+     (`fields="plant"`, `deep=True`), since that is the only way to see it;
+     nothing here independently re-derives inheritance from
+     `Plants_Bases.xml` by hand.
+
+FIXED 2026-09-24 (wave 11): `sweetline_thingdef_readback` previously called
+`jawa/get_def` and read `row.get("resolved") or row.get("fields")` -- neither
+key exists on that tool's actual response (verified against
+`JawaBenchTerrainTools.cs`'s `GetDef`: the real top-level keys are `success`,
+`statBases`, `comps`, `extra`, `extraModelled`; `extra` for a ThingDef holds
+category/tickerType/thingClass/etc, never `plant.*` or `parentName`). So
+`resolved` was always `{}` and the chain raised `ExpectationFailed` on every
+live run regardless of whether the def was correct -- a guaranteed false
+failure, never caught because this suite had never been run against a live
+bridge since it was written. Split into two components using tools that
+actually expose the data: `jawa/get_def`'s own `statBases` (already a flat
+`{statDefName: value}` dict, built purpose-fit in the tool's C#) for the four
+`statBases.*` checks, and `jawa/get_defs(fields="plant", deep=True)` --
+`GetDef`'s own `extraNote` names this as the documented escape hatch -- for
+the eleven `plant.*` checks (`DeepSerializeValue` reflects `PlantProperties`'
+own public fields, which are the same names the XML tags bind to). `parentName`
+is dropped outright: it is consumed by the XML loader at parse time and is
+not a field retained on the resolved runtime ThingDef at all, so no bridge
+tool can read it back post-load; asserting it was never checkable. `plant.
+visualSizeRange` (a `FloatRange` struct) is checked for presence only, not
+exact min/max -- this repo's own rule is never to assert an un-measured
+engine-internal field shape (`FloatRange`'s serialized field names were not
+confirmed against a live call), so the other ten scalar/bool/Def-reference
+plant fields get exact-value checks and this one does not.
 """
 from modcheck import Suite, ExpectationFailed
 
@@ -84,26 +104,30 @@ DEF_NAME = "RUT_SweetlineTree"
 DEF_TYPE = "ThingDef"
 
 # Verbatim from RUT_AshkarrFlora_Plants.xml (read in full before writing
-# this), not guessed.
-EXPECT_FIELDS = {
-    "parentName": "TreeBase",
-    "statBases.MaxHitPoints": "650",
-    "statBases.Flammability": "0.1",
-    "statBases.Mass": "900",
-    "statBases.BeautyOutdoors": "10",
-    "plant.visualSizeRange": "7.7~10.0",
-    "plant.growDays": "240",
-    "plant.harvestWork": "4200",
-    "plant.harvestedThingDef": "RUT_SweetlineWool",   # SWEETLINE_WOOL_HARVEST_1: was WoodLog (inherited)
-    "plant.harvestYield": "20",                        # SWEETLINE_WOOL_HARVEST_1: was 160 (wood)
-    "plant.harvestTag": "Standard",                     # SWEETLINE_WOOL_HARVEST_1: was inherited "Wood"
-    "plant.harvestAfterGrowth": "0.05",                 # SWEETLINE_WOOL_HARVEST_1: makes HarvestDestroys false
-    "plant.forceIsTree": "True",                        # SWEETLINE_WOOL_HARVEST_1: harvestTag != "Wood" now
-    "plant.wildClusterRadius": "0",
-    "plant.wildClusterWeight": "0.05",
-    "plant.wildOrder": "4",
-    "plant.mustBeWildToSow": "True",   # inherited from TreeBase, not re-declared here
+# this), not guessed. Split by which tool actually exposes it -- see the
+# module docstring's "FIXED 2026-09-24" note.
+EXPECT_STATBASES = {
+    "MaxHitPoints": "650",
+    "Flammability": "0.1",
+    "Mass": "900",
+    "BeautyOutdoors": "10",
 }
+EXPECT_PLANT = {
+    "growDays": "240",
+    "harvestWork": "4200",
+    "harvestedThingDef": "RUT_SweetlineWool",   # SWEETLINE_WOOL_HARVEST_1: was WoodLog (inherited)
+    "harvestYield": "20",                        # SWEETLINE_WOOL_HARVEST_1: was 160 (wood)
+    "harvestTag": "Standard",                     # SWEETLINE_WOOL_HARVEST_1: was inherited "Wood"
+    "harvestAfterGrowth": "0.05",                 # SWEETLINE_WOOL_HARVEST_1: makes HarvestDestroys false
+    "forceIsTree": "True",                        # SWEETLINE_WOOL_HARVEST_1: harvestTag != "Wood" now
+    "wildClusterRadius": "0",
+    "wildClusterWeight": "0.05",
+    "wildOrder": "4",
+    "mustBeWildToSow": "True",   # inherited from TreeBase, not re-declared here
+}
+# Checked for presence only, not exact min/max -- FloatRange's serialized
+# field names were never confirmed against a live call (module docstring).
+PLANT_PRESENCE_ONLY = ("visualSizeRange",)
 
 
 def _live(t):
@@ -116,7 +140,9 @@ def art_asset_present(t):
     """Pure repo check, no bridge call -- `os.path` against this mod's own
     Textures folder. Runs even under the offline declaration probe (like
     StarWarsRaces' own First.txt check), because it needs neither a session
-    nor a live game. See module docstring: this is EXPECTED TO FAIL today."""
+    nor a live game. See module docstring: art landed 2026-09-18, so this
+    now passes and stands as a regression guard against the folder going
+    empty again."""
     import os
     mod_dir = os.path.dirname(os.path.abspath(__file__))
     tex_dir = os.path.join(mod_dir, "Textures", "Things", "Plant", DEF_NAME)
@@ -126,9 +152,9 @@ def art_asset_present(t):
             raise ExpectationFailed(
                 "%s does not exist at all -- RUT_SweetlineTree's texPath "
                 "(Things/Plant/RUT_SweetlineTree) has no backing art on disk. "
-                "Candidate art is unselected in "
-                "_artsrc/sweetline_orphans_2026-09-06/ (11 PNGs + contact "
-                "sheet, no pick recorded)." % tex_dir)
+                "14 accepted PNGs normally live here (landed 0d9116326, "
+                "2026-09-18) -- their absence means a REGRESSION, not the "
+                "original pre-2026-09-18 gap." % tex_dir)
         pngs = [f for f in os.listdir(tex_dir) if f.lower().endswith(".png")]
         if not pngs:
             raise ExpectationFailed(
@@ -139,37 +165,52 @@ def art_asset_present(t):
 @suite.chain("sweetline_thingdef_readback")
 def sweetline_thingdef_readback(t):
     """Every authored field on RUT_SweetlineTree, exact values copied
-    verbatim from RUT_AshkarrFlora_Plants.xml, checked post-inheritance via
-    jawa/get_def (proves both the def's own values AND that TreeBase's
-    inheritance chain resolves cleanly)."""
+    verbatim from RUT_AshkarrFlora_Plants.xml, checked post-inheritance --
+    proves both the def's own values AND that TreeBase's inheritance chain
+    resolves cleanly. Two components, two tools (module docstring's "FIXED
+    2026-09-24" note explains why one tool cannot do both)."""
     t.clear_area(size=10)
 
-    with t.component("sweetline_fields_match_shipped_xml", beyond_toggle=True):
+    with t.component("statbases_match_shipped_xml", beyond_toggle=True):
         r = t.bridge_call("jawa/get_def", defType=DEF_TYPE, defName=DEF_NAME)
         if _live(t):
-            row = r or {}
-            resolved = row.get("resolved") or row.get("fields") or {}
-
-            def _get(path):
-                cur = resolved
-                for part in path.split("."):
-                    if not isinstance(cur, dict):
-                        return None
-                    cur = cur.get(part)
-                return cur
-
-            bad = []
-            if not resolved:
+            stats = (r or {}).get("statBases") or {}
+            if not stats:
                 raise ExpectationFailed(
-                    "jawa/get_def(%s, %s) returned no resolved fields: %r"
+                    "jawa/get_def(%s, %s) returned no statBases: %r"
                     % (DEF_TYPE, DEF_NAME, r))
-            for path, expect in EXPECT_FIELDS.items():
-                got = _get(path)
-                if str(got) != str(expect):
-                    bad.append("%s: expected %r, got %r" % (path, expect, got))
+            bad = [
+                "%s: expected %r, got %r" % (stat, expect, stats.get(stat, "(no such field)"))
+                for stat, expect in EXPECT_STATBASES.items()
+                if str(stats.get(stat, "(no such field)")) != str(expect)
+            ]
             if bad:
                 raise ExpectationFailed(
-                    "RUT_SweetlineTree field mismatch: %s" % "; ".join(bad))
+                    "RUT_SweetlineTree statBases mismatch: %s" % "; ".join(bad))
+
+    with t.component("plant_fields_match_shipped_xml", beyond_toggle=True):
+        r = t.bridge_call("jawa/get_defs", defs="%s/%s" % (DEF_TYPE, DEF_NAME),
+                          fields="plant", deep=True)
+        if _live(t):
+            rows = (r or {}).get("defs") or []
+            row = rows[0] if rows else {}
+            plant = (row.get("fields") or {}).get("plant")
+            if not isinstance(plant, dict):
+                raise ExpectationFailed(
+                    "jawa/get_defs(%s/%s, fields=plant, deep=True) did not return a "
+                    "plant object: %r" % (DEF_TYPE, DEF_NAME, r))
+            bad = [
+                "%s: expected %r, got %r" % (field, expect, plant.get(field, "(no such field)"))
+                for field, expect in EXPECT_PLANT.items()
+                if str(plant.get(field, "(no such field)")) != str(expect)
+            ]
+            for field in PLANT_PRESENCE_ONLY:
+                got = plant.get(field, "(no such field)")
+                if got in (None, "(no such field)"):
+                    bad.append("%s: expected present, got %r" % (field, got))
+            if bad:
+                raise ExpectationFailed(
+                    "RUT_SweetlineTree plant field mismatch: %s" % "; ".join(bad))
         t.screenshot()
 
 
