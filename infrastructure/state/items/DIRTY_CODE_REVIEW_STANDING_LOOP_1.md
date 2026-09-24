@@ -2963,3 +2963,35 @@ concurrent build agent's commits mid-wave (same expected churn every prior
 wave has noted, not this wave's doing). **340 NEVER ENTERED files remain**,
 still dominated by `SWBestiary` and `UtinniPatches` XML. Next wave: keep
 working this backlog with `list --show-untracked`, not plain `list`.
+
+## Wave 46 — 2026-09-24: SWBestiary cluster, 7 files
+
+Re-ran `list --show-untracked` fresh: **340 NEVER ENTERED**, same tally wave
+45 left. Confirmed `src/RimStarWars/SWBestiary` (packageId
+`mandrake.rsw.swbestiary`, real About.xml) is a reachable live mod, then
+picked 7 files from its 99-file NEVER-ENTERED share, spanning a spread of
+subsystems rather than one folder: `Defs/ThingDefs_Races/
+RSW_GreaterKraytDragon.xml`, `Defs/BiomesTeamPort/ThingDefs_Races/
+RSW_Maguana.xml`, `Defs/DesertPort/RSW_Ultracactus.xml` (+ its raw-food
+item), `Defs/ScrapNest/RSW_ScrapNest.xml`, `Defs/ThingDefs_Races/
+RSW_GreatDevourer.xml`, `Defs/ThingDefs_Items/RSW_GreatDevourerEggs.xml`,
+`Defs/DesertPort/RSW_DesertPortMechanics.xml`.
+
+Full-file review (all 7 had no prior clean mark). Cross-checked the C#
+surface the mechanics file leans on — `RSW_DesertPortMechanics.xml` invokes
+`RimMandrake.StarWars.SWBestiary.JobDriver_EatMetal`,
+`JobGiver_EatMetal`, `JobGiver_HoardScrap` (via `RSW_ScrapNest.xml`'s
+`ThinkTreeDef`) and `CompProperties_AbilityFuelSpew` — grepped
+`Source/BeastMechanics/*.cs` for namespace + class declarations, all four
+resolve exactly. Checked defName cross-refs: `RSW_GreatDevourer`'s
+`<body>RSW_WormWithArmor</body>` resolves in `RSW_AADesertPort_Bodies.xml`.
+No bugs found in any of the 7 — all marked CLEAN, commit `0ff446642`, pushed.
+
+Hit a transient `.git/index.lock` from the concurrent build agent mid-commit
+(brief warned this could happen); waited and retried, succeeded on the third
+attempt with no data loss.
+
+Re-measured after: `TALLY  CLEAN 3102  DIRTY 4  ORPHANED 0  NEVER ENTERED 333`
+— 333 matches 340 − 7 exactly. **333 NEVER ENTERED files remain**, still
+dominated by `SWBestiary` (92 left) and `UtinniPatches` (83). Next wave: keep
+working this backlog with `list --show-untracked`.
