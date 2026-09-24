@@ -1749,3 +1749,66 @@ Next wave: finish `JawaBenchTerrainTools.cs` first (bridge-tools priority
 still stands until it's done), then return to the 102-file non-PNG backlog
 (now effectively 100, two down). Re-derive counts fresh rather than trusting
 this arithmetic — it has drifted before.
+
+## Wave 30 — 2026-09-24: `JawaBenchTerrainTools.cs` cleared, bridge-tools priority DONE
+
+Per the owner's brief for this wave: finished the one bridge-tools file wave
+29 left, `JawaBenchTerrainTools.cs` (7010 lines, clean-marked 2026-09-18,
+re-dirtied since — the file this whole loop's waves 9-14 cross-checked
+their validation.py bug hunt against, since it holds most of the
+bridge-response shapes those 14 bugs turned out to be CALLER-side
+misreadings of).
+
+**Reviewed lines 1-7010 of 7010 — the entire file, full-file, in one
+sitting.** Read it in ~15 overlapping sections of 200-430 lines each,
+covering every one of its 29 `[Tool]`-attributed public methods
+(`SetTerrain`, `SetTerrainBatch`, `GetTerrainBatch`, `SpawnBatch`,
+`DestroyBatch`, `ListPawns`, `SetPlants`, `Damage`, `GetDef`, `DrainLog`,
+`RefreshRectTool`, `SpawnPawn`, `SetPawnStyle`, `SetPawnRotation`,
+`SetPawnXenotype`, `OrderPawn`, `WorldStats`, `WorldTileExport`, `GetDefs`,
+`FireQuest`, `FireIncident`, `SendLetter` [both `#if JAWA_GM_TOOLS`],
+`SetRoofBatch`, `GetRoofBatch`, `ListFactions`, `ClearUi`, `ListThings`,
+`IdeoOf`, `BiomeProbe`, `InspectString`, `SetFactionRelation`,
+`WorldNeighbors`) plus every private helper (`Scalars`,
+`DeepSerializeValue`, `CompScalars`, `TryParseOps`, `RunLengthEncode`,
+`ResolvePawns`, the terrain/roof layer helpers, the CSV/JSON tile-export
+writers, the Vehicle Framework reflection shim).
+
+Prioritized per this wave's brief: `GetDef` (line 1669), `GetDefs` (3965)
+and `ListThings` (5422) first, cross-checked line by line against the
+exact key-mismatch bugs waves 9-14 found in validation.py CALLERS
+(`resolved`/`fields` on `GetDef`, `extra`-modelled-only-for-three-types,
+`fields` on `GetDefs`, `things[]` with `hitPoints`/`def`/`id` on
+`ListThings`) — every one of those response shapes in the actual C# matches
+what the corrected validation.py callers now expect. The bugs waves 9-14
+fixed were genuinely all on the calling side; the tool implementations
+were already correct.
+
+**No new bugs found anywhere in the file.** It already carries extensive
+prior hardening directly visible in the comments — a `COMPANION_HARDENING_
+AUDIT_2026-09-09` pass (findings #30/#31: bare try/catch-and-skip on pawn
+capacities and reflection fields replaced with reported errors), an "opus
+code review 2026-09-02" pass (at least 9 distinct fixed defects cited
+inline: missing cell caps, `outOfBounds`/`thingsShort` not entering
+verdicts, unconditional `success=true` on several batch tools, the
+`RemoveEmptyEntries` ops-parsing shift bug, split terrain/roof perimeter
+definitions, the `MaxFlightTime`-adjacent main-thread-livelock caps, the
+`order_pawn` speed-restore-on-cancellation `finally` block), and a
+`MASS_VALIDATION_LADDER_1` pass (2026-09-18, the `System.Type` field
+serializing to `{}` fix in `DeepSerializeValue`). Spot-verified several of
+these fix claims directly against the code rather than trusting the
+comment (e.g. `RoofGrid.SetRoof`'s self-dirtying claim, the `GenSpawn.Spawn`
+never-merges-stacks claim, the `TryTakeOrderedJob` accept-is-not-arrival
+claim) and all held.
+
+Zero uncommitted changes before marking (`git status --porcelain` empty).
+Marked CLEAN, commit `e0f3787f4`, pushed.
+
+**This closes the bridge-tools priority wave 29 opened.** All three files
+named in wave 28's note (`JawaBenchPawnKitTools.cs`, `JawaBenchRenderTools.cs`,
+`JawaBenchTerrainTools.cs`) are now CLEAN. Next wave: return to the non-PNG
+backlog (was 102 at wave 28, minus wave 29's implicit 0 — those two files
+were bridge-tools priority pickups, not backlog draws — re-derive fresh with
+`code_review_status.py list | grep '^DIRTY'` filtered for non-`.png`). The
+PNG binary-art-tracking scope question (wave 15) is still open and still
+not this loop's to decide.
