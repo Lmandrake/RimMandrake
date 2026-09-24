@@ -3879,3 +3879,105 @@ that wave's own recipe (`<Compile Include>`/default-glob per `.csproj`,
 Python tools under `src/RimMandrake/Utils/` named in wave 14's post-tail
 note also still need a reachability check before any of them are spent on
 a review.
+
+## Wave 60 — 2026-09-24: `.cs` never-entered survey re-derived, EnvironmentalHazards cluster started
+
+Ran `list --show-untracked` fresh at wave start: matched wave 59's ending
+248 NEVER ENTERED / 13 DIRTY exactly (no concurrent-agent noise). Re-derived
+the whole-repo reachable-`.cs` survey per wave 14's own recipe (every
+`src/**/*.csproj`'s `<Compile Include>` list, plus a default-glob fallback
+for any project without `EnableDefaultCompileItems=false`, diffed against
+`list`'s tracked-path column) — **fresh, not trusted, since wave 14's own
+95-file count was ~10 waves stale.** Result: only **11 never-entered `.cs`
+files remain in the whole repo, all in one folder**:
+`src/RimMandrake/EnvironmentalHazards/Source/`. The other 84 files wave
+14 named (`CreatureBehaviors`, `SWBestiary`, `FlowWorks`, `PyrelandsMechanics`,
+`bridgetools`, and the rest) have all been absorbed into CLEAN or DIRTY
+status by waves 15-59's work — that whole backlog class is now down to one
+folder.
+
+Confirmed all 11 reachable by reading `RM_EnvironmentalHazards.csproj`
+directly: every one is an explicit `<Compile Include>` entry (the project
+sets `EnableDefaultCompileItems=false`), not a default-glob guess.
+
+Reviewed 8 of the 11, full-file each, grouped by mechanism (leaving the
+remaining 3 — `RM_MapComponent_GlasswalkSlip.cs`,
+`RM_RecipeDef_HediffByproduct.cs`, `RM_Recipe_RemoveHediffWithByproduct.cs`
+— for next wave, per this wave's own 8-file budget):
+
+- **`RM_EnvironmentalHazardsMod.cs`** (589 lines, the whole kit's Mod
+  Settings — 48 fields/47 documented toggles). Cross-checked every static
+  field against both `Scribe_Values.Look` (ExposeData) and its UI widget
+  (`CheckboxLabeled`/`Slider`) with a small Python script rather than eyeballing
+  47 entries — found all 48 fields present in both, no orphaned field and no
+  UI widget referencing a nonexistent field. One apparent miss
+  (`treeFallEnabled` absent from a naive `CheckboxLabeled` regex) was the
+  regex's own fault — its label string `"Tree fall (crack, shatter, gnaw)"`
+  contains a comma, breaking a `[^,]+` capture — confirmed by direct grep
+  that the checkbox is wired correctly. Not a bug.
+- **Carried-filth cluster (3 files)**: `RM_CarriedFilthHediffExtension.cs`
+  (the BiomeDef opt-in DefModExtension, correctly `MayRequire`-gated per
+  this repo's own modextension-missing-type-discards-def trap, per its own
+  header), `RM_MapComponent_CarriedFilthHediffLink.cs` (the giver — scans
+  spawned pawns' `Pawn_FilthTracker.CarriedFilthListForReading` for a
+  configured filth def and hands out the hediff), and
+  `RM_HediffComp_CarriedFilthExposure.cs` (the severity-tuner, riding
+  `HediffComp_SeverityModifierBase`). Verified `Pawn_FilthTracker` and its
+  `CarriedFilthListForReading` property, and `HediffComp_SeverityModifierBase`'s
+  200-tick/`SeverityChangePerDay()`-to-per-tick conversion, against the
+  decompiled engine source (`/mnt/d/Luke/dev/reference/rimworld-decompiled`)
+  rather than trusting the files' own header claims — both check out
+  exactly as described. No bugs.
+- **Warbling-glow cluster (2 files)**: `RM_CompProperties_WarblingGlow.cs`
+  and `RM_Comp_WarblingGlow.cs` (SUMP_GASLIGHT_1's animated-light sibling
+  comp). Verified against decompiled `CompGlower`/`CompProperties_Glower`/
+  `ColorInt`: `GlowColor`'s setter re-registers the glower automatically
+  (so a plain assignment is enough), `GlowRadius`'s setter does NOT
+  (confirming the file's own explicit `ForceRegister(map)` call after a
+  radius change is necessary, not defensive over-caution), and
+  `Thing.IsHashIntervalTick(int)` is a real extension method matching the
+  call site. The color/radius math always re-derives from the sibling
+  `CompGlower.Props`' own static base values each tick (never drifting off
+  a previous frame's output), so the animation can't wander off its base
+  color over a long session. No bugs.
+- **Tar-coating cluster (2 files)**: `RM_TarCoatingUtility.cs` and
+  `RM_Comp_TarCoatingSource.cs` (SUMP_TAR_NASTINESS_1 §1, the splash-a-
+  filth-coating-around-a-source mechanism). Verified the
+  `FilthMaker.TryMakeFilth(cell, map, filthDef, count, additionalFlags,
+  shouldPropagate: false)` call against the decompiled `FilthMaker.cs`
+  signature and confirmed calling it once per thickness-layer inside a loop
+  is the documented-correct way to lay down N thickness (each call either
+  thickens existing filth or spawns a new Filth Thing). `PostSpawnSetup`'s
+  `!respawningAfterLoad` guard correctly prevents a re-splash on every
+  save/reload. No bugs.
+
+All 8 confirmed to have no uncommitted local changes before mark-clean
+(`git status --short` on all 8 came back empty — nothing of ours to commit
+this wave). All 8 marked CLEAN, commit `ba59d465f` (already HEAD at wave
+start — `mark-clean` stamps the current HEAD sha, no new commit was needed
+since no fix was made).
+
+Re-measured after: `TALLY  CLEAN 3210  DIRTY 12  ORPHANED 0  NEVER ENTERED 241`.
+Total (3210+12+241=3463) matches the pre-wave total (3202+13+248=3463)
+exactly — no concurrent-agent noise — but the DIRTY/NEVER-ENTERED split
+shifted by one from what a naive "248 − 8" would predict (241, not 240) and
+DIRTY dropped by one (13→12) alongside it; not chased down since the total
+reconciles and this file's own recipe has flagged this exact kind of
+one-off drift as not worth chasing before (waves 9-11).
+
+Next wave: 3 files left in `EnvironmentalHazards/Source/` —
+`RM_MapComponent_GlasswalkSlip.cs`, `RM_RecipeDef_HediffByproduct.cs`,
+`RM_Recipe_RemoveHediffWithByproduct.cs` — finishing them closes out the
+last `.cs` never-entered cluster in the whole repo per this wave's own
+fresh survey. After that, re-survey `list --show-untracked` for what's
+left: this wave's survey also surfaced (not reviewed, out of scope) a
+handful of never-entered EnvironmentalHazards `Defs/*.xml` files
+(`RM_Damages_ContactVenom.xml`, `RM_AnchorGuard.xml`,
+`RM_Hediffs_ContactVenom.xml`, `RM_JobDefs_TreeFall.xml`,
+`RM_WetBulbProtection.xml`, `RM_FlameStatuary.xml`, `RM_Leachmoss.xml`,
+`RM_Venomvine.xml`), a re-dirtied `RM_EnvironmentalHazards.csproj` itself,
+and a re-dirtied `RM_EnvironmentalHazards_Keys.xml` — none chased this
+wave. The 13 never-entered Python tools under `src/RimMandrake/Utils/`
+named in wave 14's post-tail note (`apply_blanket_ruling.py`,
+`canon_census.py`, etc.) still need a reachability check before any of
+them are spent on a review — untouched for 46 waves running now.
