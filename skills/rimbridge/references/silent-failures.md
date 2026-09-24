@@ -488,3 +488,32 @@ comp is switched off it answers `"has no Pawn_AbilityTracker"` — a stronger ne
 
 `row['hediffs']` returns `[]` for every pawn and reads as a working mechanism being
 inert. Read `row['health']['hediffs']` (2026-09-21).
+
+## 🔴 `jawa/pawn_health` adding `WoundInfection` at severity 1.0 is IMMEDIATELY LETHAL — `success:true`, no warning, no corpse in the obvious place
+
+Measured 2026-09-24, four separate pawns, four separate death letters, same exact
+tick as the add. `{"pawn": p, "action":"add", "hediff":"WoundInfection", "severity": 1}`
+returns `success:true, didWhat:"added WoundInfection to ..."` — and the pawn is
+simply gone from every subsequent `jawa/list_pawns` census, `jawa/list_colonists`,
+and `jawa/pawn_get`, with **zero ticks elapsed** (`ticksGame` identical before and
+after). No `dead:true` is ever observed on the subject because it never comes back
+in a query at all. The tell is `jawa/letter_list`: each loss is preceded by a
+`"Disease: Infection"` letter at the identical `arrivalTick` as the add, followed by
+a `"Death: <name>"` letter — the kill happens **synchronously inside `AddHediff`**,
+before any tick-based disease progression is even possible. Reproduced 4/4 across a
+freshly-spawned `Colonist`-kind pawn, a freshly-spawned `RSW_Jawa`-kind pawn, an
+existing non-drafted colonist, and an existing player-faction animal — not
+race/kind-specific. Isolated by adding one hediff at a time: `Cut`,
+`MissingBodyPart`, and `Bruise` on Brain are all safe; only `WoundInfection` kills.
+
+⇒ **`WoundInfection`'s severity scale is evidently already at or past its own
+lethal threshold at 1.0** — it is not a "gentle infection that develops over days"
+when added this way; treat any `WoundInfection` add as pawn-destroying until a
+lower severity is proven safe (untested — 1.0 was the first value tried and it was
+already fatal every time). **Never add `WoundInfection` to a pawn you want to keep**
+without testing a much lower severity on a disposable subject first, and never add
+it as part of a batch of hediffs meant to exercise several guards at once — the
+pawn is gone before the later calls in the batch even run, so a whole batch can
+silently test nothing. Costly discovery: 4 pawns died finding this (`BACTA_TANK_CORE_1`,
+2026-09-24) — none were saved, so the loss was recoverable by not saving, but the
+next session may not be so lucky.

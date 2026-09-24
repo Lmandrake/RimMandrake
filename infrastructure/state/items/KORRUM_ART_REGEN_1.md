@@ -194,3 +194,34 @@ bridge-reachable map or load route afterward — pure `DefDatabase` reads
 possible, but `jawa/spawn_pawn` + `take_screenshot` need a live map and none
 is reachable this session. Needs a restart (not this pass's call) before the
 render half of `## verify`/`## criteria` can be attempted. Left `doing`.
+
+## FOUNDRY, 2026-09-24 (live test v2, post-restart): render CONFIRMED live — closing
+
+Fresh restart (orchestrating window), canonical save loaded via `rimworld/load_game`
+(621 mods, compatible, 0 missing). Confirmed `ThingDef/RSW_Korrum` and
+`PawnKindDef/RSW_Korrum` both resolve via `jawa/get_defs` on this fresh process too.
+
+Spawned `RSW_Korrum` twice via `jawa/spawn_pawn` (once far from the colony at
+230,230 — rendered but fully FoW-shaded, a `references/map-authoring.md` "fog
+defeats screenshots" case, not usable for judging art; once at 190,140, near the
+colony's own explored/lit area, faction `None` — this one rendered clean) and
+screenshotted both (`Transient/` scratch, not committed — screenshots are
+ephemeral evidence here, not deliverables). The second shot shows a real,
+distinct, non-donor sprite: a massive crab-like creature with a rounded
+boulder-textured shell on its back and jointed clawed legs, rendered in a
+stony grey-brown palette — matching the queued art prompt
+("massive crab-like creature carrying a huge boulder-textured shell... thick
+stony grey-brown hide") exactly, and visibly nothing like Alpha Animals'
+`AA_BoulderMit` donor texture (no magenta, no placeholder, no donor art).
+Both test pawns destroyed cleanly afterward (`Actions\T: Destroy` by cell,
+each cell held only the korrum, `thingCount: 0` confirmed after).
+
+`## verify`'s three conditions are now all met: no `texPath` on `RSW_Korrum`
+references `AA_BoulderMit` (confirmed prior pass, re-confirmed this pass — the
+live def's `modName`/`packageId` show our own `mandrake.rsw.swbestiary`, not a
+donor mod), the three facings resolve under our own `swanimals/Korrum/` tree
+(prior pass), and the creature renders — now MEASURED live, not just deployed.
+`## criteria` ("the korrum is ours — def and pixels — so the mod does not need
+Alpha Animals installed to show its own animal") is met.
+
+Closing. `git rev-parse HEAD` at close: `9b64f4fded6ecba29145ab60035e1517085df440`.
