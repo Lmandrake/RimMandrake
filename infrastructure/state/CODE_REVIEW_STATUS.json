@@ -815,6 +815,12 @@
     "hash": "72337e77d743df4d66bf2badeabab766d2e3c0a5a3ec26efa6da4473f9661d9f",
     "sha": "5ed4b469"
   },
+  "src/RimMandrake/Aftermath/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1b05cfd9bbb30f2ff43f5269e8481d55f4e3301fd8c72531d8dc68facc665cfc",
+    "sha": "3e547d539"
+  },
   "src/RimMandrake/CreatureBehaviors/About/About.xml": {
     "cleanCount": 3,
     "date": "2026-09-19",
@@ -4991,6 +4997,12 @@
     "hash": "4aadb21fd6acf9a5aa343f5b171d4cd628fb12fadbc61aaefdb3121c446f9ea9",
     "sha": "464011ed2"
   },
+  "src/RimMandrake/SeaShores/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2c4616931470cb45b7f83596bdebf788521278fe63764041a6e639774a1b4a2c",
+    "sha": "3e547d539"
+  },
   "src/RimMandrake/ShipVermin/About/About.xml": {
     "cleanCount": 3,
     "date": "2026-09-17",
@@ -7124,6 +7136,12 @@
     "date": "2026-09-03",
     "hash": "a86c3b44e361880ffe29bf956e793474c1862afb8cf2f83c87b5e9a088ed8378",
     "sha": "a94bc803"
+  },
+  "src/RimMandrake/WreckedMachines/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c1755f4daf09709ccd508b7c58100538653b8898c752c30ea26db2ffe626f4a1",
+    "sha": "3e547d539"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchAnimalStatsTools.cs": {
     "cleanCount": 1,
@@ -11006,6 +11024,12 @@
     "date": "2026-09-24",
     "hash": "00bf4bb42791b81cfed4079f239483a0565b517fe2c98493df4fbf7f2b13ab11",
     "sha": "e11a345dc"
+  },
+  "src/RimStarWars/GizkaStowaway/Source/RSW_GizkaStowawayManager.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8f574bb500b9b4105e1977be7f4526088357e7b2d148c47d5caf4e3e02108424",
+    "sha": "3e547d539"
   },
   "src/RimStarWars/GrankArtOverride/About/About.xml": {
     "cleanCount": 1,
