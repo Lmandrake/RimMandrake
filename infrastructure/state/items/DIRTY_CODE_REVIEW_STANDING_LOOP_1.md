@@ -3679,3 +3679,84 @@ ThingDefs_Races` files remain**: `RSW_Strill.xml`, `RSW_TeeMuss.xml`,
 with `list --show-untracked` (re-derive the 266 count fresh, do not trust
 it — this wave's own start count already showed the standard drift from
 concurrent build agents).
+
+## Wave 58 — 2026-09-24: SWBestiary races St-Vo
+
+Ran `list --show-untracked` fresh: matched wave 57's ending 266 (no
+concurrent-agent noise at wave start). Confirmed `RSW_Strill.xml` still the
+alphabetically-first NEVER ENTERED file in `SWBestiary/Defs/
+ThingDefs_Races/` (18 files there, unchanged) — wave 57's pointer held.
+
+Picked the next 8 alphabetically-first files: `RSW_Strill.xml`,
+`RSW_TeeMuss.xml`, `RSW_TunnelSnake.xml`, `RSW_Urusai.xml`, `RSW_Uvak.xml`,
+`RSW_Varactyl.xml`, `RSW_Voorpak.xml`, `RSW_Vornskyr.xml`. Full-file
+reviewed all 8.
+
+**Found and fixed one real, high-confidence bug**: `RSW_TeeMuss.xml`'s
+`CompProperties_Shearable` read `<woolDef>WoolCoarse</woolDef>` — bare
+`WoolCoarse` is not a defName that exists anywhere in the repo (confirmed by
+grep and by `infrastructure/state/facts/
+mlie_creature_defname_map_wave_c.json`, whose own resources map records
+`"WoolCoarse": "RSW_WoolCoarse"`); only `RSW_WoolCoarse`
+(`RSW_MlieWaveC_Resources.xml`, ported Pass 6 for Mudhorn) exists. The
+file's own header comment even says the resource was "already-ported
+(RSW_WoolCoarse, Pass 6 Mudhorn) — left/renamed accordingly," so the intent
+was clearly to use the renamed defName; the XML just didn't follow its own
+comment. `RSW_Mudhorn.xml` (same resource, same wave) correctly uses
+`RSW_WoolCoarse`, confirming TeeMuss was the outlier, not the convention.
+Silent-failure class: `CompProperties_Shearable.woolDef` would resolve to
+null at load with no error — a shearable animal that silently produces no
+wool. Fixed to `RSW_WoolCoarse`, commit `1ef66c91c`, pushed.
+
+Every other cross-referenced defName across all 8 files was grepped and
+confirmed to resolve: bodies (`RSW_Strill`/`RSW_FlyingAvian` (Urusai)/
+`RSW_Bogwing` (Uvak)/`RSW_Varactyl`/`RSW_Voorpak`/`RSW_Vornskyr` all new
+this wave in `RSW_MlieWaveC_Bodies.xml`; `RSW_TunnelSnake` reuses
+already-ported `RSW_Klorslug` — its two art-reuse claws
+`RSW_SWLeftLegClawAttackTool`/`RSW_SWRightLegClawAttackTool` and its tail
+`RSW_SWToxicAppendage` all confirmed present as `<groups>` entries on the
+Klorslug BodyDef; `RSW_TeeMuss` uses vanilla Core
+`QuadrupedAnimalWithHoovesAndHump`, bare per its own header), leather/meat
+(`RSW_Leather_Mammavian`/`RSW_Mammavian_Meat` (Strill), vanilla
+`Leather_Plain`/new `RSW_Cameloid_Meat` (TeeMuss), `RSW_Leather_Insectile`/
+`RSW_Insectile_Meat` (TunnelSnake, reused from Klorslug's own resources),
+`RSW_Leather_Reptavian`/`RSW_Reptavian_Meat` (Urusai/Uvak/Varactyl, Wave B),
+`RSW_Leather_SoftFur`/`RSW_Felinoid_Meat` (Voorpak), vanilla `Leather_Wolf`/
+`RSW_Tough_Meat` (Vornskyr)), eggs (`RSW_EggUrusai{,Un}Fertilized`,
+`RSW_EggUvak{,Un}Fertilized`, `RSW_EggVaractyl{,Un}Fertilized`, all
+confirmed present in `RSW_MlieWaveC_Resources.xml`), and the new
+`RSW_SW_ForceFocus` AbilityDef+HediffDef+TrainableDef trio wired off
+Vornskyr (`RSW_MlieWaveC_Abilities.xml`) — traced all three top-level Defs
+and confirmed each carries a correct **single-level**
+`MayRequire="Ludeon.RimWorld.Odyssey"` on the Def element itself (not the
+double-nested bug class waves 55/56 found), matching the equally
+single-level `<li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_ForceFocus</li>`
+wiring in both `RSW_Vornskyr.xml`'s PawnKindDef `<abilities>` and ThingDef
+`<race><specialTrainables>`. Ran the sound-prefix check (wave 49+): all 7
+sound-bearing races (`Strill`/`Urusai`/`Uvak`/`Varactyl`/`Voorpak`/
+`Vornskyr`/`TunnelSnake`'s reused `Klorslug` set) plus the ForceFocus
+ability's two sounds (`RSW_Ability_Force`/`RSW_Ability_ForceFocus_Warmup`)
+all confirmed present in `SoundDefs_SWBestiary.xml`; `TeeMuss` deliberately
+keeps vanilla `Pawn_Dromedary_*` per its own header, confirmed unchanged
+from the donor. Also ran the wave 54+ XML-tree duplicate-element scan
+(Python, non-`<li>` elements per parent) across all 8 files — zero
+duplicates found in any block.
+
+All 8 marked CLEAN, commit `d07130272`, pushed. One transient
+`.git/index.lock` collision with a concurrent agent during the mark-clean
+commit, cleared on retry within seconds per the item's own protocol.
+
+Re-measured after: `TALLY  CLEAN 3192  DIRTY 13  ORPHANED 0  NEVER ENTERED 258`
+— 258 = 266 − 8 exactly, no concurrent-agent noise this wave. **10
+`SWBestiary/Defs/ThingDefs_Races` files remain**: `RSW_WarWyrm.xml`,
+`RSW_Whisperbird.xml`, `RSW_WompRat.xml`, `RSW_Woolamander.xml`,
+`RSW_Worrt.xml`, `RSW_Wraid.xml`, `RSW_WraidAlpha.xml`,
+`RSW_Wyyyschokk.xml`, `RSW_Yobshrimp.xml`, `RSW_Zakkeg.xml`. Next wave:
+finish `SWBestiary/Defs/ThingDefs_Races` (10 files, under one wave's usual
+8-file batch plus 2 — either do all 10 in one wave or split 8+2) with
+`list --show-untracked` (re-derive the 258 count fresh, do not trust it).
+After that cluster closes, no other named cluster remains outstanding from
+recent waves — re-survey `code_review_status.py list --show-untracked` for
+the next NEVER ENTERED candidates (the 95-file `.cs` never-entered survey
+from wave 14's post-tail note, largest cluster `CreatureBehaviors`, is
+likely stale by now and should be re-derived, not trusted).
