@@ -425,7 +425,7 @@ that was fixed terrain is now a construction decision:
 |---|---|
 | ⭐ **You can build her a road** | Canal inland and her reach follows. A colony that could not site itself on open water can **bring the water to itself** — and buy her protection with labour instead of location. 🔴 This is the single biggest consequence and it turns her from a feature of the map into a relationship with infrastructure |
 | **Rescue by engineering** | Cut a channel to a stranded young and the water reaches it — you free it without touching it. The gentler of the two rescue routes, and the more expensive |
-| ⭐ 🔴 **The reversal: you can strand HER** | A canal that silts, is cut, or is redrawn by a surge leaves **the giant who cannot leave water sitting in a dry ditch.** ⇒ Now she needs you, at scale, and it is your fault. The whole design inverted, and the best consequence available here |
+| ⭐ 🔴 **The reversal: you can strand HER — in WATER** | A canal that silts, is cut, or is redrawn by a surge leaves her in a body of water that **no longer reaches the sea.** 🔑 Not a dry ditch — **a pond.** She is still swimming, and she can never go home. ⇒ **The mother suffers her children's fate, by your doing** — which is the thematic bullseye of the whole design, and ✅ the existing pool-decay code then shrinks that pool around her |
 | ⚠️ **The dark use** | Canal her along your perimeter and you have weaponised a tolerant giant without ever commanding her. Not a bug — but it should feel like using a friend, and the fiction should not pretend otherwise |
 | 🔑 **Brine is a fluid too** | FlowWorks carries *"water, ooze, slime, oil, tar or fuel"*. A canal dug from the wrong end of the gradient carries **brine**, which kills the fresh-end flora — `RM_Ilbareen` above all, the salt-line gauge. ⇒ Careless canal-building salts your own ground, and the player becomes an agent in the one process they were previously only a victim of |
 
@@ -437,18 +437,56 @@ delivers a large part of it anyway, from the opposite direction. ⛔ **That is n
 salt gates**: it is a reason to make sure FlowWorks' canals interact honestly with the gradient and
 the surge, and to let the consequences be the content rather than authoring a second system.
 
-#### Owed, and the risks
+#### 🔴 The swim rule, ruled 2026-09-23 — and the mechanism is ALREADY BUILT
 
-- ⚠️ **Does a FlowWorks canal produce terrain a pawn can PATH on?** A canal that renders as water
-  but is not walkable-by-a-water-creature makes every implication above fictional. 🔴 **Engine
-  question, UNMEASURABLE on the Mac** — and it is the gate on this whole section.
-- ⚠️ **Does a surge interact with a canal at all?** `RM_GradientSurgeExtension` moves the salt line;
-  whether it can cut, fill or salt a player-built channel is unbuilt and is what makes the stranding
-  reversal possible.
-- ⚠️ **Canal-building is labour, and she is a defence.** If canalling her to your walls is cheap,
-  she becomes a standard opener rather than a choice. The cost has to be real.
-- ⛔ **Do not let a canal carry her onto dry land.** The constraint is the content; a canal is water,
-  and the moment it is treated as a bridge the creature is ruined.
+Owner, verbatim: *"FlowWorks. Yes, it needs to allow the critter to swim for sure as long as it
+connects to the sea"*
+
+🔑 **Connection to the sea is the gate — not wetness.** And that is *exactly* the model
+`RM_MapComponent_StrandingPools` already implements, shipped 2026-09-14 and running with nothing
+to swim in it:
+
+| what his ruling needs | what already exists |
+|---|---|
+| a notion of "water that reaches the sea" | ✅ a **full 4-way flood-fill of the map's water-band cells into connected components**, with the **largest** treated as the main network |
+| a test for "this pool is cut off" | ✅ `IsReconnected(pool)` — a bounded local flood-fill; reaching the map edge or something large/open counts as rejoined, and rejoined pools stop being tracked |
+| what happens to water that stays cut off | ✅ it **decays cell-by-cell, edge cells first**, over `decayDaysRange` |
+
+⇒ **Swim-eligibility is that same predicate.** She may path any water cell whose component reaches
+the sea; she may not enter one that does not. ⛔ **Do not write a second connectivity system** — and
+🔑 this also unifies the design's two halves, because *a stranded young is simply a young in water
+that has lost its connection*, which is what that component was built to detect.
+
+#### ⚠️ One genuine gap in the existing predicate, and his wording exposes it
+
+The built check uses **"reaches the map edge"** as its proxy, and its own header is honest about the
+tradeoff — *"vanilla rivers/coasts always touch the map edge."* But on a Miasma map **the fresh end
+touches the map edge too**, because the rivers do. ⇒ Under the current proxy, a canal dug to a
+**river** mouth would read as "connected to the sea" and she could swim inland up fresh water — and
+she is a brine-broken **sea** elder.
+
+✅ **The fix needs no new machinery either:** `RM_GradientAxisExtension` already knows which
+direction is brine, so the predicate becomes *"component reaches the **seaward** edge"* rather than
+any edge. ⇒ Owed as a refinement of an existing method, not a new system.
+
+#### What is actually owed
+
+- 🔴 **Do FlowWorks' canal cells register as water-band cells in that flood-fill?** This is *the*
+  integration point and the gate on the whole section — if they do not, canals are invisible to
+  every mechanism above. **Engine question, UNMEASURABLE on the Mac.**
+- **Seaward-edge refinement** of `IsReconnected`, per the gap above.
+- ⚠️ **Does a surge interact with a player-built canal at all?** `RM_GradientSurgeExtension` moves
+  the salt line; whether it can cut, fill or salt a dug channel is what makes the stranding reversal
+  possible, and it is unbuilt.
+- ⚠️ **Canal-building is labour, and she is a defence.** If canalling her to your walls is cheap she
+  becomes a standard opener rather than a choice. The cost has to be real.
+- ⛔ **A canal is water, never a bridge.** Do not let one carry her onto dry land; the constraint is
+  the content.
+
+🔑 **Worth recording: this is the FOURTH time in this sitting that the answer was "already built"** —
+the anchor mechanism, the stranding pools, the surge axis, and now the connectivity predicate. The
+project's own standing instruction to read the source before designing is not a nicety here; it has
+been the single highest-yield action of the session, every time.
 
 #### Foreshadowing her death — the requirement, not a nicety
 
