@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STOCKED_POOL_BUILD_1 §4 — rimcuisine hooks, the non-meat items the six
+  recipes (RM_StockedPoolRecipes.xml) need. Shapes verified against real
+  vanilla templates via RimSage before writing (raw inheritance, not the
+  merged view): Pemmican (ParentName="OrganicProductBase", long
+  `daysToRotStart`) for the keeping ration; MealFineBase (Name=
+  "MealFineBase") for the feast-batch meal, tasteThought overridden per
+  child def since it is a plain scalar field.
+
+  🔴 RM_SeepSalt is a STAND-IN: the flora roster names "seep-salt yield" as
+  RM_Steamfrond's own owed harvest product (weeping_stones_flora_roster_
+  2026-09-24.md, "seep-salt yield shape" listed as an open question, NOT yet
+  built anywhere in the repo — grepped clean 2026-09-24). This item is
+  scoped minimally so recipe #2 (murrin-and-seep-salt broth) is buildable
+  without inventing RM_Steamfrond's own harvest mechanism, which belongs to
+  that plant's own build, not this one. Once RM_Steamfrond ships its real
+  seep-salt yield, this def is the one to retarget/retire — noted here so
+  it isn't rediscovered as a surprise duplicate.
+-->
+<Defs>
+
+  <!-- ══════════════ RM_SeepSalt — stand-in ingredient, see header ══════════════ -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SeepSalt</defName>
+    <label>seep-salt</label>
+    <description>Fine mineral salt scraped from the crust that forms where a weeping stone's condensate finally dries. Cooks use it sparingly — a pilgrim's broth needs only a pinch to taste of the stones themselves.</description>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(230, 225, 210)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>1.2</MarketValue>
+      <Mass>0.01</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <stackLimit>150</stackLimit>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <tradeability>Sellable</tradeability>
+  </ThingDef>
+
+  <!-- ══════════════ §4.2 — murrin-and-seep-salt broth ══════════════ -->
+  <ThingDef ParentName="MealCooked">
+    <defName>RM_MealMurrinBroth</defName>
+    <label>murrin-and-seep-salt broth</label>
+    <description>The pilgrim's comfort dish: murrin simmered thin with a pinch of seep-salt. Nothing fancy — it tastes like the pool is well.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/Simple</texPath>
+      <graphicClass>Graphic_MealVariants</graphicClass>
+      <color>(180, 160, 120)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>16</MarketValue>
+      <WorkToMake>300</WorkToMake>
+      <Nutrition>0.9</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealSimple</preferability>
+      <tasteThought>RM_AteMurrinBroth</tasteThought>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+      <optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+
+  <!-- ══════════════ §4.3 — karrek paste, keeps a season ══════════════ -->
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_KarrekPaste</defName>
+    <label>karrek paste</label>
+    <description>A basketful of karrek rendered at a stove into a dense, gray-brown ration. Caravan food for the oasis string — eaten with resignation, not enjoyment, but it does not spoil for a season.</description>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Pemmican</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120, 90, 60)</color>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>1.6</MarketValue>
+      <Mass>0.018</Mass>
+      <Flammability>0.6</Flammability>
+      <WorkToMake>600</WorkToMake>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Meal</foodType>
+      <preferability>MealSimple</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+      <optimalityOffsetHumanlikes>4</optimalityOffsetHumanlikes>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>70</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="CompProperties_FoodPoisonable" />
+    </comps>
+  </ThingDef>
+
+  <!-- ══════════════ §4.4 — the Cull Feast, one vhorrin, feast-scale ══════════════ -->
+  <ThingDef ParentName="MealFineBase">
+    <defName>RM_MealCullFeast</defName>
+    <label>cull feast</label>
+    <description>The set-piece dish of a working stocked pool: one culled vhorrin, dressed and served whole to the table that saved the farm for another season. Relief and unease in one dish — everyone eating it knows what it grew fat on.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/Fine</texPath>
+      <graphicClass>Graphic_MealVariants</graphicClass>
+      <color>(90, 95, 80)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>26</MarketValue>
+      <WorkToMake>500</WorkToMake>
+      <Nutrition>0.9</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealFine</preferability>
+      <tasteThought>RM_AteCullFeast</tasteThought>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+      <optimalityOffsetFeedingAnimals>-75</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+
+  <!-- ══════════════ §4.6 — rendered huldu fat ══════════════ -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_HulduFat</defName>
+    <label>rendered huldu fat</label>
+    <description>Fine cooking fat rendered from a huldu carcass — the best cooking on the planet, priced in exactly the discomfort of knowing what it came from. Any kitchen that knows what to do with it turns out a better dish for the addition.</description>
+    <thingCategories>
+      <li>Foods</li>
+      <li>MeatRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(230, 200, 140)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>7</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.7</Flammability>
+      <DeteriorationRate>3</DeteriorationRate>
+    </statBases>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <preferability>RawBad</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>RawMeat_Eat</ingestSound>
+      <specialThoughtDirect>RM_AteHulduDirect</specialThoughtDirect>
+      <specialThoughtAsIngredient>RM_AteHulduAsIngredient</specialThoughtAsIngredient>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STOCKED_POOL_BUILD_1 — the "netted from open water" half of the two-def
+  law (spec §0/§2, commission §0): a `fishTypes` entry is an item def
+  (`FishBase` lineage), never a race def. These are the generic-fishing-job
+  catch representation, distinct from the pawn+meat pair in
+  RM_StockedPoolFauna.xml/RM_StockedPoolMeats.xml — a colonist fishing at a
+  stocked pool's edge with no husbandry job running can still occasionally
+  pull one of these up. Pattern and MayRequire copied from the sibling wild
+  table, src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WeepingStonesFish_Items.xml
+  (RUT_Ikkal etc.) — ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey".
+
+  🔴 NOT wired into any BiomeDef's `fishTypes` yet — see this mod's About.xml
+  and RM_StockedPoolFauna.xml's header for why (RM_WeepingStones BiomeDef
+  does not exist; WEEPINGSTONES_RM_MOD_BUILD_1 is still proposed/unclaimed).
+
+  Placeholder art CORRECTION (caught before shipping): the sibling wild
+  table's texPaths (AloeVeraA, PincushionPlantA, ...) are NOT vanilla Core
+  assets — they are loose PNGs shipped in UtinniPatches' OWN Textures/
+  folder (verified: absent from Core's packed textures, present as loose
+  files at Mods/UtinniPatches/Textures/Things/Plant/...). Reusing them here
+  would make this RM_-tier mod's item art silently depend on RimUtinni
+  loading, breaking Q11a's "stand alone" requirement. These items instead
+  reuse the real vanilla meat-stack icon (`Things/Item/Resource/MeatFoodRaw/
+  Meat_Small`, confirmed directly from `ThingDefGenerator_Meat.cs` via
+  RimSage — the engine's own meat-item generator uses exactly this path for
+  any race with `baseBodySize < 0.7`, which every one of these eight is),
+  tinted per species — genuinely standalone, no cross-mod texture dependency.
+-->
+<Defs>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_SkarrinCatch</defName>
+    <label>skarrin</label>
+    <description>A silver arc netted mid-air at wind-hour — the one catch you make above the water. A missed net is a bite.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(200, 200, 210)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>3</MarketValue>
+      <Mass>0.2</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_KarrekCatch</defName>
+    <label>karrek</label>
+    <description>A basket-trapped handful of finger-length armored fish, chitin combs still snapping. Never a line, never bare hands.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(120, 90, 60)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.08</Nutrition>
+      <MarketValue>2</MarketValue>
+      <Mass>0.15</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_VizhikCatch</defName>
+    <label>vizhik</label>
+    <description>Picked off wet stone at wind-hour, gloved — not caught in the pool, caught traveling.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(190, 195, 170)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.12</Nutrition>
+      <MarketValue>4</MarketValue>
+      <Mass>0.25</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_LoomuCatch</defName>
+    <label>loomu</label>
+    <description>It came to the feed whistle. That IS the catch method, and everyone hates it.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(150, 150, 158)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.14</Nutrition>
+      <MarketValue>8</MarketValue>
+      <Mass>0.4</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_HulduCatch</defName>
+    <label>huldu</label>
+    <description>Picked up. It holds on. The easiest catch on the farm, and the one that leaves the handler uneasy.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(170, 110, 70)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.16</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_IvvolCatch</defName>
+    <label>ivvol</label>
+    <description>Lifted from the floor at night, when the eye-ridge closes. By day it sees the net coming, every time.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(120, 115, 100)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>9</MarketValue>
+      <Mass>0.45</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STOCKED_POOL_BUILD_1 — wires the five new stocked-pool cuisine recipes
+  into the two vanilla cooking stations, same shape vanilla uses for
+  Make_Pemmican on ElectricStove (verified via RimSage, raw def). Every
+  operation is Conditional-wrapped per rimworld-modding doctrine — vanilla
+  Core always ships both stations, so this is belt-and-braces, not a real
+  absence case, but it costs nothing and matches house style.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="ElectricStove"]/recipes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="ElectricStove"]/recipes</xpath>
+      <value>
+        <li>RM_CookPoolFryBasket</li>
+        <li>RM_CookMurrinBroth</li>
+        <li>RM_RenderKarrekPaste</li>
+        <li>RM_CookCullFeast</li>
+        <li>RM_RenderHulduFat</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="FueledStove"]/recipes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="FueledStove"]/recipes</xpath>
+      <value>
+        <li>RM_CookPoolFryBasket</li>
+        <li>RM_CookMurrinBroth</li>
+        <li>RM_RenderKarrekPaste</li>
+        <li>RM_CookCullFeast</li>
+        <li>RM_RenderHulduFat</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

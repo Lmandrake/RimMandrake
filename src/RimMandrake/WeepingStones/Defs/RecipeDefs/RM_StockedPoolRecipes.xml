@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STOCKED_POOL_BUILD_1 §4 — the five cookable recipes (the sixth hook,
+  doubt-meat, is data on the meat items + ThoughtDefs, not a recipe of its
+  own — see RM_StockedPoolMeats.xml/RM_StockedPoolThoughts.xml). Shapes
+  verified against real vanilla RecipeDefs via RimSage (raw inheritance):
+  `CookMealSimple`/`CookMealBase` for the basket recipe, `Make_Pemmican` for
+  the keeping-paste recipe. `ParentName="CookMealBase"` (Name="CookMealBase",
+  Data/Core/Defs/RecipeDefs/Recipes_Meals.xml) for every meal recipe below.
+
+  Wiring: RM_StockedPoolRecipeWiring.xml (Patches/) adds these five defNames
+  to ElectricStove's and FueledStove's `<recipes>` lists, conditional-
+  wrapped per rimworld-modding doctrine.
+-->
+<Defs>
+
+  <!-- §4.1 Pool-fry basket — skarrin + karrek, the volume line, no thought hooks. -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RM_CookPoolFryBasket</defName>
+    <label>cook pool-fry basket</label>
+    <description>Cook a simple basket of skarrin and karrek — the stocked farm's daily bread.</description>
+    <jobString>Cooking a pool-fry basket.</jobString>
+    <workAmount>300</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_SkarrinMeat</li>
+            <li>RM_KarrekMeat</li>
+          </thingDefs>
+        </filter>
+        <count>0.5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_SkarrinMeat</li>
+        <li>RM_KarrekMeat</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <MealSimple>1</MealSimple>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>1450</displayPriority>
+  </RecipeDef>
+
+  <!-- §4.2 Murrin-and-seep-salt broth — the pilgrim's comfort dish. -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RM_CookMurrinBroth</defName>
+    <label>cook murrin-and-seep-salt broth</label>
+    <description>Simmer murrin thin with a pinch of seep-salt — the taste of the stones.</description>
+    <jobString>Cooking murrin broth.</jobString>
+    <workAmount>300</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_MurrinMeat</li>
+          </thingDefs>
+        </filter>
+        <count>0.4</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_SeepSalt</li>
+          </thingDefs>
+        </filter>
+        <count>0.05</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_MurrinMeat</li>
+        <li>RM_SeepSalt</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_MealMurrinBroth>1</RM_MealMurrinBroth>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>1455</displayPriority>
+  </RecipeDef>
+
+  <!-- §4.3 Karrek paste — rendered, keeps a season, caravan food. -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RM_RenderKarrekPaste</defName>
+    <label>render karrek paste</label>
+    <description>Render a basketful of karrek at a stove into a dense ration that keeps for a season.</description>
+    <jobString>Rendering karrek paste.</jobString>
+    <workAmount>600</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_KarrekMeat</li>
+          </thingDefs>
+        </filter>
+        <count>1.0</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_KarrekMeat</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_KarrekPaste>8</RM_KarrekPaste>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>1460</displayPriority>
+  </RecipeDef>
+
+  <!-- §4.4 The Cull Feast — one vhorrin, feast-scale batch. -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RM_CookCullFeast</defName>
+    <label>cook the cull feast</label>
+    <description>Dress and serve a culled vhorrin whole — the feast that follows the pool's rescue.</description>
+    <jobString>Cooking the cull feast.</jobString>
+    <workAmount>500</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_VhorrinMeat</li>
+          </thingDefs>
+        </filter>
+        <count>1.0</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_VhorrinMeat</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_MealCullFeast>4</RM_MealCullFeast>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>1465</displayPriority>
+  </RecipeDef>
+
+  <!-- §4.6 Rendered huldu fat. -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RM_RenderHulduFat</defName>
+    <label>render huldu fat</label>
+    <description>Render a huldu carcass into fine cooking fat — the best cooking on the planet, priced in the discomfort.</description>
+    <jobString>Rendering huldu fat.</jobString>
+    <workAmount>300</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_HulduMeat</li>
+          </thingDefs>
+        </filter>
+        <count>1.0</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_HulduMeat</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_HulduFat>2</RM_HulduFat>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>1470</displayPriority>
+  </RecipeDef>
+
+</Defs>
