@@ -767,6 +767,12 @@
     "hash": "0ec6d1044b37697da18c36915ff1d6784b82dc93ab44de0bcce7f2f16dcfebe4",
     "sha": "bb73b6bd"
   },
+  "src/RimMandrake/Aftermath/Source/Patch_PayloadLanded.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "070c9fa69f6a344856d55f9fee61f1ae6a7e134a4a707ad2ed29ab46167c2e6a",
+    "sha": "203bf0861"
+  },
   "src/RimMandrake/Aftermath/Source/Patch_RaidGenerated.cs": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -2855,6 +2861,12 @@
     "hash": "0b8b90975d2b4517f1785b9e995c48307b118dc1083b3b5a5073d5dd8c970b3b",
     "sha": "b32878458"
   },
+  "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5f0f07a9600cf3db254e843aedf97f547492e0e20dde017b0c6b9100f32f5715",
+    "sha": "203bf0861"
+  },
   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs": {
     "cleanCount": 5,
     "date": "2026-09-19",
@@ -2866,6 +2878,12 @@
     "date": "2026-09-18",
     "hash": "d532d9aa4833af23c2f49c3d2bf5ecafb953d1e7cc58a3105b03bfe9776f39eb",
     "sha": "c0b15fdbc"
+  },
+  "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2309b013783450f719a0c4863d9609783772c893a27161e5cfaef1c57a3518d2",
+    "sha": "203bf0861"
   },
   "src/RimMandrake/FlowWorks/Source/Superdeep/Building_SuperdeepPit.cs": {
     "cleanCount": 1,
@@ -4145,6 +4163,12 @@
     "hash": "5293c76cbe24db9b9d69b17ca8c81ebef9c82aa1660e100de082f155f618674e",
     "sha": "564bd122"
   },
+  "src/RimMandrake/Ninefold/Source/Patch_GravshipLanded.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "88663a3e4870b6da509611534f2da9c411a03d84ae156c698b19e28baf906bb9",
+    "sha": "203bf0861"
+  },
   "src/RimMandrake/Ninefold/Source/Patch_GravshipLaunched.cs": {
     "cleanCount": 3,
     "date": "2026-09-10",
@@ -4444,6 +4468,18 @@
     "date": "2026-09-19",
     "hash": "8a3a26f8e13b1bc3b3760cb9718bc65e60d7ab58921c735c503adb7e49e4b261",
     "sha": "fc438d857"
+  },
+  "src/RimMandrake/Pyrelands/Source/PlantGrowthStages.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6f423da0db5a1d7b3de766f48bdf0fa9b00d2981654fb1b140f49c09c3b93cc7",
+    "sha": "203bf0861"
+  },
+  "src/RimMandrake/Pyrelands/Source/RM_PyrelandsDensityEnforcer.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f7903dc52b32b49ddeee8a4ff8061227f26dd82567d219f0f2dc18f6f2f00495",
+    "sha": "203bf0861"
   },
   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs": {
     "cleanCount": 3,
@@ -5242,6 +5278,12 @@
     "date": "2026-09-24",
     "hash": "4aadb21fd6acf9a5aa343f5b171d4cd628fb12fadbc61aaefdb3121c446f9ea9",
     "sha": "464011ed2"
+  },
+  "src/RimMandrake/SeaShores/Source/SelfTest/Program.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3d4b8372556ccd09da81fab70138c9538e2a8ea95b3e6352a010f58b98cf7ea8",
+    "sha": "203bf0861"
   },
   "src/RimMandrake/SeaShores/validation.py": {
     "cleanCount": 1,
@@ -7352,6 +7394,12 @@
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "92e56d4f"
+  },
+  "src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b2d6970d432d25d2c34ef609b9a37053ca1df584e268341b4fdde4789e5a3c14",
+    "sha": "203bf0861"
   },
   "src/RimMandrake/WreckedMachines/Source/briefs.py": {
     "cleanCount": 1,
@@ -14733,11 +14781,23 @@
     "hash": "7780230c7e5655bdb43c3e3c2d5f02b55237954ee530ce90c006a447954307a5",
     "sha": "009b887ef"
   },
+  "src/RimUtinni/LanternDeeps/Source/GenStep_LanternstoneRock.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1326941907970f27c5bfbddb63fd53e496bd389f4d281861fc8dfb5cb3f6fad3",
+    "sha": "203bf0861"
+  },
   "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterCavePortal.cs": {
     "cleanCount": 3,
     "date": "2026-09-18",
     "hash": "6208214ccaf669e5901ecda7b44c8289ab7a920cc69a262709cc065bc188a92c",
     "sha": "50cdce358"
+  },
+  "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterLanternstone.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "e43fc0b1b6c533297473411afcbda846e410a0a79e981f6c91a5b0d9288540f5",
+    "sha": "203bf0861"
   },
   "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterMineshaftPortal.cs": {
     "cleanCount": 2,
@@ -16647,6 +16707,24 @@
     "hash": "29cb3f95520b21ec13306b2bf42df04fe50dda015797a88a788366f898cd01af",
     "sha": "18e1ab1b6"
   },
+  "src/RimUtinni/StructureInjectionsRUT/Source/Ashfall/AshfallCommandCodesFlag.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "504cb6bbcdeae6412549c058fc4408d8c898b67643bd339f384ff94c79546b48",
+    "sha": "203bf0861"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/Ashfall/CompRedeemRakatanCommandCodes.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bf8e2da9eb6806f14844b17d99bafea8fba126955b61878856f315a41e15dc26",
+    "sha": "203bf0861"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/Ashfall/GameComponent_AshfallCommandCodes.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3de0d9157301d3a5cab71929f35b5180d4a8f5a4d33b7bc6c3681e870dbe79ff",
+    "sha": "203bf0861"
+  },
   "src/RimUtinni/StructureInjectionsRUT/Source/DarkTower/gen_dark_tower_layout.py": {
     "cleanCount": 2,
     "date": "2026-09-20",
@@ -18308,6 +18386,12 @@
     "date": "2026-09-11",
     "hash": "354834811cac5f0cd3ba6dbf1ffc5ffc712cb2f5c5c7323681c22fdb00e6941d",
     "sha": "4cd37218f"
+  },
+  "src/RimUtinni/UtinniPatches/Source/BlueDesertLife.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bed95b34b12b6865367fcaaacc8596d6030fe5473ac195105e364e5da61ae5d7",
+    "sha": "203bf0861"
   },
   "src/RimUtinni/UtinniPatches/Source/GeothermalDensityField.cs": {
     "cleanCount": 2,

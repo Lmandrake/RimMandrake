@@ -1325,3 +1325,102 @@ two more waves.** After that, the loop's only remaining backlogs are the
 never-independently-confirmed 13 `Utils/` Python tools from the post-tail
 survey (wave 14) — the binary-art-tracking scope question (wave 15) is
 still open and unresolved.
+
+## Wave 24 — 2026-09-24: the never-entered `.cs` backlog is CLOSED
+
+Re-confirmed wave 23's 14-file list against `code_review_status.py check`
+(all 14 DIRTY/"never marked clean") and against each owning `.csproj`'s
+`<Compile Include>` (or, for `Ninefold.csproj`, its documented default-glob
+compile — the csproj's own comment records that a hand-maintained
+`<Compile Include>` list once silently dropped 10 `Patch_*.cs` files
+including both `Pawn.Kill` hooks, which is why it now compiles every `.cs`
+under `Source/` by default) before touching anything. All 14 confirmed
+reachable. Reviewed all 14, full-file each — this closes the entire
+never-entered `.cs` backlog in one wave, as wave 23 predicted:
+
+- **`StructureInjectionsRUT/Source/Ashfall`** (3/3): `AshfallCommandCodesFlag.cs`
+  (51 lines, static flag + `Seize()`), `CompRedeemRakatanCommandCodes.cs` (41,
+  the redeem gizmo), `GameComponent_AshfallCommandCodes.cs` (28, Scribed
+  persistence). Confirmed `StructureInjectionsRUTSettings.ashfallCommandCodesEnabled`
+  is a real, correctly-wired static.
+- **`RimMandrake/Pyrelands/Source`** (2/2): `PlantGrowthStages.cs` (269, the
+  three-stage plant growth art `DefModExtension` + `Plant_GrowthStaged`
+  subclass) and `RM_PyrelandsDensityEnforcer.cs` (71, the post-load
+  plantDensity re-assertion GameComponent). Cross-checked
+  `Plant.Graphic`'s exact rung order (Sowing → polluted → leaflessImmature →
+  leafless → immature) and the `CurrentlyCultivated()` mesh-dirty gate
+  against the decompiled `RimWorld/Plant.cs` (lines 474-492, 827) — both
+  match byte-for-byte as the file's own comments claim.
+- **`LanternDeeps/Source`** (2/2): `GenStep_LanternstoneRock.cs` (66, appends
+  a `RockNoises.RockNoise` entry so a pocket map's lanternstone rock rides
+  the engine's own rock-noise mechanism) and `GenStep_ScatterLanternstone.cs`
+  (76, the settings-gated crystal scatter). Cross-checked `RockNoises.Init`/
+  `RockNoise.rockDef`/`.noise` and `GenStep_Scatterer.countPer10kCellsRange`
+  against the decompiled `Verse/RockNoises.cs` and `Verse/GenStep_Scatterer.cs`
+  — field names and the Perlin constructor's parameters match exactly.
+- **`Aftermath/Source`**: `Patch_PayloadLanded.cs` (30, a Harmony postfix on
+  `IncidentWorker.TryExecute` — confirmed that is the single funnel every
+  incident category's successful fire passes through, decompiled
+  `RimWorld/IncidentWorker.cs:183`).
+- **`FlowWorks/Source`**: `RM_StockMath.cs` (316, the whole §5 source-stock
+  arithmetic — Verse-free by design so `Source/SelfTest/` can compile it in
+  directly). Cross-checked every one of its 15 public members against its
+  real call sites in `RM_LiquidStock.cs`/`RM_LiquidBody.cs`/
+  `RM_MapComponent_Excavation.cs`: argument order and units match at every
+  call.
+- **`FlowWorks/Source/SelfTest/Program.cs`** and **`SeaShores/Source/SelfTest/
+  Program.cs`** (both reachability-confirmed in wave 23, reviewed for content
+  this wave): hand-traced a sample of each suite's assertions against the
+  production formulas/logic they exercise (`RM_StockMath`'s budget/refill/
+  recession/displacement arithmetic; `RM_SeaShoreUtility.DeepTerrainOf`/
+  `ShallowTerrainOf`/`BandFor`'s resolution-order and salt/fresh-fallback
+  logic) — every assertion's expected value matches what the real code
+  actually computes.
+- **`Ninefold/Source`**: `Patch_GravshipLanded.cs` (38, a Harmony postfix on
+  `GenStep_GravshipMarker.Generate` calling `GameComponent_Ninefold.
+  ReckonFrontAtLanding()`). Checked this against `GameComponent_Ninefold.
+  FinalizeInit`, which also calls `ReckonFrontAtLanding()` as a baseline —
+  confirmed this is the documented dual-call design (baseline at
+  `FinalizeInit`, overwritten at every real landing), not a double-fire bug.
+- **`WreckedMachines/Source`**: `WreckedMachinesMod.cs` (240, Mod Settings +
+  a `[StaticConstructorOnStartup]` patcher that captures shipped baselines
+  once and rescales from them on every `Apply()`, same non-compounding
+  pattern wave 7 verified in `RSW_GizkaSettings.cs`). Cross-checked
+  `ThingDefCountClass`'s constructor and `Scribe_Values.Look`'s 4-arg
+  overload against the decompiled `Verse/ThingDefCountClass.cs` and
+  `Verse/Scribe_Values.cs` — both match.
+- **`UtinniPatches/Source`**: `BlueDesertLife.cs` (243, the Blue Desert's
+  hydrocarbon fauna/flora mechanics — explosion-on-part-destroyed, flora
+  warm-detonation chain, cold-wax temperature-ruin wiring, the Burner's
+  conditional halo VFX, and the natives' toxin exemption). Cross-checked
+  `HediffComp.Notify_PawnPostApplyDamage`'s signature, `CompTemperatureRuinable.
+  RuinedSignal`'s literal value, `CompEffecter.ShouldShowEffecter`'s
+  protected-virtual signature, `IngestionOutcomeDoer_GiveHediff.
+  DoIngestionOutcomeSpecial`'s signature, and `GenExplosion.DoExplosion`'s
+  full named-parameter list against the decompiled engine — all match. Every
+  `UtinniPatchesSettings.*` field it reads is a real, correctly-wired static.
+
+No bugs found in any of the 14; no fixes needed this wave — a clean pass.
+All 14 marked CLEAN, commit pending below, pushed.
+
+**🔴 THE NEVER-ENTERED `.cs` BACKLOG IS NOW CLOSED.** Every reachable `.cs`
+file across `src/RimMandrake|RimStarWars|RimUtinni/**/*.csproj` (backslash-
+safe join, per wave 22's fix) that was never once recorded in
+`CODE_REVIEW_STATUS.json` has now been full-file reviewed and marked CLEAN.
+Waves 3 through 24 covered this ground; the loop's remaining work is the two
+backlogs wave 23 already named and neither is touched this wave:
+
+1. **The 284-row RE-DIRTIED backlog** (files previously marked CLEAN, then
+   changed and gone DIRTY again) — diagnosed wave 15 as real organic drift,
+   not an instrument bug. Needs individual full-file re-review, file by
+   file, same discipline as this loop's never-entered pass. Re-derive the
+   live count with `code_review_status.py list` rather than trusting "284"
+   — it will have moved.
+2. **The scope question**: does binary PNG art belong in this tool's
+   tracking at all? Flagged wave 15. Needs owner input — do not decide it
+   yourself, and do not let either backlog block on it; they are
+   independent.
+
+Whoever picks up wave 25: start the re-dirtied backlog, smallest files
+first per this loop's established recipe, and re-derive every count fresh
+before reporting it.
