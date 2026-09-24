@@ -393,3 +393,11 @@ quoted verbatim.
 8. **`Plant_TookeTrap_Wild` is KEPT LOW via a Utinni `WildPlants_Webwork` patch**, with the
    invented `RM_Kessaroth` as the free tier's snap-trap. Canon injects on top; the free mod
    stands whole.
+
+Two follow-up dispositions, ruled by question card later the same sitting (also clicked, ⛔ not
+owner-verbatim):
+
+9. **The six generic donor flora rows are CUT from this biome** (flora roster §7) — every donor's
+   job passes to a named invented plant of the 16-row roster.
+10. **`RSW_JewelBeetle` is CUT from this biome** — superseded by `RM_Quarrok`; the def goes to the
+    homeless reserve unless another sitting seats it.
