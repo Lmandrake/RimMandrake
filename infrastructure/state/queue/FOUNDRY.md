@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T15:03:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T17:11:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -675,6 +675,24 @@ kind:     task
 summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
 prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
 
+## BACTA_REVIVAL_MECHANIC_1 Bacta revival of the recently dead (owner ruling: works on dead bodies IF retrieved within a few hours): corpse-freshness window, tank accepts fresh corpse, revives minus brain/mental damage which stays unhealed; vanilla ResurrectionUtility as the base; settings toggle + window tunable
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  BACTAREVIVALMECHANIC1 — bacta revival of the recently dead
+prose:    infrastructure/state/items/BACTA_REVIVAL_MECHANIC_1.md
+
+## BACTA_SIDE_ITEMS_1 Bacta full-kit satellites: 2-1B-style medical droid linkable facility (KR pattern), bacta patch + bacta spray consumables (field heal items), trader-tag wiring for all bacta goods
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  BACTASIDEITEMS1 — bacta full-kit satellites: medical droid, field consumables, trader wiring
+prose:    infrastructure/state/items/BACTA_SIDE_ITEMS_1.md
+
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    doing
 row:      unassigned
@@ -890,6 +908,24 @@ target:   v1
 kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
+
+## FEVERWOOD_BOUGH_SOIL_TERRAIN_1 The crown cannot grow anything: boughway is fertility 0, so bough-soil is owed
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
+prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
+
+## JAWA_MESS_IMMUNITY_1 Jawa are immune from messes (owner-ruled 2026-09-24): no filth/squalor mood penalties for the Jawa xenotype; other factions just live with it and suffer
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  A gene (or trait) on the Jawa xenotype suppressing filth/squalor/mess-derived
+prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1297,16 +1333,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## BACTA_REVIVAL_MECHANIC_1 Bacta revival of the recently dead (owner ruling: works on dead bodies IF retrieved within a few hours): corpse-freshness window, tank accepts fresh corpse, revives minus brain/mental damage which stays unhealed; vanilla ResurrectionUtility as the base; settings toggle + window tunable
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BACTA_REVIVAL_MECHANIC_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BACTA_REVIVAL_MECHANIC_1.md
-
 ## BACTA_TANK_ART_1 Bacta tank art from the ESB canon image (tall 2:1 cylinder, translucent pale-blue backlit fluid, bubbles, white clinical collar top+bottom): building sprite set, visible-pawn overlay layers per RECON findings, fluid item + patches/spray icons, droid sprite
 state:    proposed
 row:      unassigned
@@ -1316,16 +1342,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BACTA_TANK_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BACTA_TANK_ART_1.md
-
-## BACTA_SIDE_ITEMS_1 Bacta full-kit satellites: 2-1B-style medical droid linkable facility (KR pattern), bacta patch + bacta spray consumables (field heal items), trader-tag wiring for all bacta goods
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BACTA_SIDE_ITEMS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BACTA_SIDE_ITEMS_1.md
 
 ## REBOOT_BREAKGLASS_VERIFY_1 Verify the break-glass path survives a Windows reboot: WSL Keepalive must bring tailscaled back before login, and the fleet may need a hand
 state:    proposed
@@ -1797,16 +1813,6 @@ thin:     no ## verify, no ## criteria
 summary:  🔑 The roster document IS the spec:
 prose:    infrastructure/state/items/FEVERWOOD_FLORA_ROSTER_1.md
 
-## FEVERWOOD_BOUGH_SOIL_TERRAIN_1 The crown cannot grow anything: boughway is fertility 0, so bough-soil is owed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
-prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
-
 ## FEVERWOOD_TENTACLE_BESTIARY_1 Six tentacle types, the drive-off ladder, and a severed limb you can harvest
 state:    proposed
 row:      unassigned
@@ -2086,16 +2092,6 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  1. Sumpgas rename: the campaign renames the green gas to Sumpgas — owner,
 prose:    infrastructure/state/items/SUMP_UTINNI_LAYER_1.md
-
-## JAWA_MESS_IMMUNITY_1 Jawa are immune from messes (owner-ruled 2026-09-24): no filth/squalor mood penalties for the Jawa xenotype; other factions just live with it and suffer
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  A gene (or trait) on the Jawa xenotype suppressing filth/squalor/mess-derived
-prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md
 
 ## SUMP_TAR_HYDROLOGY_1 Sump tar hydrology on FlowWorks: belch floods with glass fronts, full canal-work, network fire with gate firebreaks, outflow seams, the Deep Black mere, living-map responders, tar rain (mod, not this scenario)
 state:    proposed
