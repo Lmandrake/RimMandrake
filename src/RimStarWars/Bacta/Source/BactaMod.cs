@@ -25,8 +25,8 @@ namespace RimMandrake.StarWars.Bacta
         public static bool autoEjectEnabled = true;
 
         /// <summary>
-        /// Reserved for BACTA_REVIVAL_MECHANIC_1. Shipped OFF and inert: no code reads it yet,
-        /// and the toggle exists so a player's choice survives the update that lands it.
+        /// BACTA_REVIVAL_MECHANIC_1. Shipped OFF: reviving the dead is a bigger claim than
+        /// healing the living, and a player should opt into it deliberately.
         /// </summary>
         public static bool revivalEnabled = false;
 
@@ -36,6 +36,12 @@ namespace RimMandrake.StarWars.Bacta
         public static float immunityGainPerDay = BactaTuning.ImmunityGainPerDay;
         public static float fluidCostPerDay = BactaTuning.FluidCostPerDay;
         public static float tendQuality = BactaTuning.TendQuality;
+
+        /// <summary>
+        /// Hours since death a corpse stays eligible for the tank. Owner ruling verbatim:
+        /// "works on dead bodies IF retrieved within a few hours."
+        /// </summary>
+        public static float revivalWindowHours = BactaTuning.RevivalWindowHours;
 
         private Vector2 scrollPosition = Vector2.zero;
 
@@ -54,11 +60,12 @@ namespace RimMandrake.StarWars.Bacta
             Scribe_Values.Look(ref immunityGainPerDay, "immunityGainPerDay", BactaTuning.ImmunityGainPerDay);
             Scribe_Values.Look(ref fluidCostPerDay, "fluidCostPerDay", BactaTuning.FluidCostPerDay);
             Scribe_Values.Look(ref tendQuality, "tendQuality", BactaTuning.TendQuality);
+            Scribe_Values.Look(ref revivalWindowHours, "revivalWindowHours", BactaTuning.RevivalWindowHours);
         }
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, 780f);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, 860f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
 
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
@@ -121,10 +128,19 @@ namespace RimMandrake.StarWars.Bacta
               + "when the tank runs dry. Off: they stay in until ejected by hand.");
             list.GapLine();
 
-            list.Label("Not yet built");
+            list.Label("Revival");
             list.CheckboxLabeled("Revive the recently dead", ref revivalEnabled,
-                "Reserved. Bacta revival is a separate piece of work and no code reads this "
-              + "switch yet; it is here so the choice survives the update that adds it.");
+                "Off (shipped): the tank never touches a corpse. On: a fresh corpse of ours — "
+              + "one retrieved within the window below — can be carried into an empty tank and "
+              + "revived. The revived pawn keeps whatever bacta can't fix: no missing part "
+              + "regrows, and nothing about the brain or the mind is touched. It then heals in "
+              + "the tank exactly like a living occupant.");
+            if (revivalEnabled)
+            {
+                list.Label("Revival window: " + revivalWindowHours.ToString("0.0") + " hours since death"
+                    + "   (shipped: " + BactaTuning.RevivalWindowHours.ToString("0.0") + ")");
+                revivalWindowHours = list.Slider(revivalWindowHours, 0.5f, 48f);
+            }
 
             list.End();
             Widgets.EndScrollView();

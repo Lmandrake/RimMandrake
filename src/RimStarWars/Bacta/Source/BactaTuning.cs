@@ -14,6 +14,15 @@ namespace RimMandrake.StarWars.Bacta
         /// <summary>Ticks in a day, for the per-day rates below.</summary>
         public const int TicksPerDay = 60000;
 
+        /// <summary>Ticks in an hour, for the revival window below.</summary>
+        public const int TicksPerHour = TicksPerDay / 24;
+
+        /// <summary>
+        /// BACTA_REVIVAL_MECHANIC_1, owner ruling verbatim: "works on dead bodies IF retrieved
+        /// within a few hours". Hours since death a corpse stays eligible for the tank.
+        /// </summary>
+        public const float RevivalWindowHours = 6f;
+
         /// <summary>
         /// Severity healed per day, per fresh injury. A hospital bed with good medicine
         /// closes an average wound over days; 30/day means a severity-12 gunshot is gone

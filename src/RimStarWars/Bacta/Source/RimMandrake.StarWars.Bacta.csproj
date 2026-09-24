@@ -47,6 +47,8 @@
     <Compile Include="CompBactaImmersion.cs" />
     <Compile Include="Building_BactaTank.cs" />
     <Compile Include="WorkGiver_CarryToBactaTank.cs" />
+    <Compile Include="WorkGiver_CarryCorpseToBactaTank.cs" />
+    <Compile Include="JobDriver_CarryCorpseToBactaTank.cs" />
   </ItemGroup>
 
   <ItemGroup>

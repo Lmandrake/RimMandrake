@@ -130,8 +130,10 @@ namespace RimMandrake.StarWars.Bacta
 
             if (pawn.Dead)
             {
-                // Revival of the recently dead is BACTA_REVIVAL_MECHANIC_1, not this item.
-                // Here a death in the tank simply ends the immersion.
+                // A living occupant who died in the tank (bled out despite the comp's own
+                // tend-immediately pass, or died some other way): revival is deliberately a
+                // separate ADMISSION path (TryAcceptCorpse below), never an automatic response
+                // to a death here. End the immersion.
                 EjectOccupant("RSW_BactaTankEjectedDead", MessageTypeDefOf.NegativeEvent);
                 return;
             }
@@ -252,6 +254,125 @@ namespace RimMandrake.StarWars.Bacta
                 Messages.Message(messageKey.Translate(pawn.Named("PAWN")), pawn,
                     messageType ?? MessageTypeDefOf.NeutralEvent, historical: false);
             }
+        }
+
+        // ---- BACTA_REVIVAL_MECHANIC_1: fresh corpses --------------------------------------
+        //
+        // Owner ruling, verbatim: "works on dead bodies IF retrieved within a few hours" —
+        // corpse-freshness window, tank accepts fresh corpse, revives minus brain/mental
+        // damage which stays unhealed, vanilla ResurrectionUtility as the base.
+        //
+        // Deliberately NOT a multi-tick process: the corpse is accepted and resurrected in the
+        // same call. There is nothing to tick — CompBactaImmersion's existing 250-tick heal
+        // loop (which already excludes Hediff_MissingPart and anything on the
+        // ConsciousnessSource part, per its own law above) takes over the instant the pawn is
+        // alive again, because a freshly revived pawn is exactly the "grievously wounded
+        // occupant" that comp already exists to heal. Two mechanisms, one shared loop.
+
+        /// <summary>Everything that must be true for this tank to accept this corpse right now.</summary>
+        public AcceptanceReport CanAcceptCorpse(Corpse corpse)
+        {
+            if (!BactaSettings.revivalEnabled)
+            {
+                return "RSW_BactaTankRevivalDisabled".Translate();
+            }
+            if (corpse == null || corpse.Bugged)
+            {
+                return false;
+            }
+
+            Pawn pawn = corpse.InnerPawn;
+            if (pawn == null || !pawn.RaceProps.IsFlesh)
+            {
+                // Same law as CanAcceptPawn: bacta is a bacterial culture for living tissue.
+                return false;
+            }
+            if (ModsConfig.AnomalyActive && corpse is UnnaturalCorpse)
+            {
+                // The same carve-out ResurrectionUtility.TryResurrect itself makes — Anomaly
+                // owns unnatural-corpse resurrection, bacta stays out of it.
+                return false;
+            }
+            if (!pawn.IsColonist && !pawn.IsSlaveOfColony && !pawn.IsPrisonerOfColony
+                && !(pawn.RaceProps.Animal && pawn.Faction == Faction.OfPlayer))
+            {
+                return false;
+            }
+
+            int windowTicks = Mathf.RoundToInt(BactaSettings.revivalWindowHours * BactaTuning.TicksPerHour);
+            if (corpse.Age > windowTicks)
+            {
+                return "RSW_BactaTankReportTooLate".Translate();
+            }
+
+            if (selectedPawn != null || innerContainer.Count > 0)
+            {
+                return "Occupied".Translate();
+            }
+            if (!PowerOn)
+            {
+                return "NoPower".Translate().CapitalizeFirst();
+            }
+            if (ImmersionComp != null && !ImmersionComp.HasFluid)
+            {
+                return "RSW_BactaTankReportNoFluid".Translate();
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Takes the corpse apart (the same InnerPawn=null/Destroy step
+        /// ResurrectionUtility.TryResurrect performs on a spawned corpse), places the bare pawn
+        /// in the tank exactly like a carried-in living occupant, and resurrects it there.
+        /// </summary>
+        public void TryAcceptCorpse(Corpse corpse)
+        {
+            if (!(bool)CanAcceptCorpse(corpse))
+            {
+                return;
+            }
+
+            Pawn pawn = corpse.InnerPawn;
+            corpse.InnerPawn = null;
+            corpse.Destroy();
+
+            selectedPawn = null;
+            if (!innerContainer.TryAdd(pawn))
+            {
+                return;
+            }
+
+            startTick = Find.TickManager.TicksGame;
+            frozenFood = -1f;
+            frozenRest = -1f;
+
+            // Plain TryResurrect, never TryResurrectWithSideEffects: bacta is a controlled
+            // medical process, not a raw ritual, so it does not roll vanilla's rot-scaled
+            // dementia/blindness/psychosis chances. restoreMissingParts:false is the exact
+            // same "does not regrow" law CompBactaImmersion.TryHealPawn already enforces on
+            // wound healing (see its Hediff_MissingPart guard) — MEASURED against
+            // Pawn_HealthTracker.Notify_Resurrected, which only restores missing parts when
+            // that flag is true.
+            bool revived = ResurrectionUtility.TryResurrect(pawn, new ResurrectionParams
+            {
+                restoreMissingParts = false,
+                removeDiedThoughts = true,
+                dontSpawn = true,
+                noLord = true
+            });
+
+            if (!revived || pawn.Dead)
+            {
+                // TryResurrect already logged its own error; don't strand an unreachable body.
+                innerContainer.TryDropAll(def.hasInteractionCell ? InteractionCell : base.Position,
+                    base.Map, ThingPlaceMode.Near);
+                Messages.Message("RSW_BactaTankRevivalFailed".Translate(pawn.Named("PAWN")), this,
+                    MessageTypeDefOf.NegativeEvent, historical: false);
+                return;
+            }
+
+            Messages.Message("RSW_BactaTankRevived".Translate(pawn.Named("PAWN")), this,
+                MessageTypeDefOf.PositiveEvent, historical: false);
         }
 
         private void CancelLoad()

@@ -14,6 +14,12 @@
   <RSW_BactaTankEjectedHealed>{PAWN_labelShort} has nothing left for the bacta to heal, and has been released.</RSW_BactaTankEjectedHealed>
   <RSW_BactaTankEjectedDead>{PAWN_labelShort} died in the bacta tank.</RSW_BactaTankEjectedDead>
 
+  <!-- Revival (BACTA_REVIVAL_MECHANIC_1) -->
+  <RSW_BactaTankRevived>{PAWN_labelShort} has been revived in the bacta tank.</RSW_BactaTankRevived>
+  <RSW_BactaTankRevivalFailed>The bacta tank failed to revive {PAWN_labelShort}.</RSW_BactaTankRevivalFailed>
+  <RSW_BactaTankRevivalDisabled>revival disabled in mod settings</RSW_BactaTankRevivalDisabled>
+  <RSW_BactaTankReportTooLate>too long dead</RSW_BactaTankReportTooLate>
+
   <!-- Gizmos -->
   <RSW_BactaTankInsertDesc>Choose someone to immerse in the bacta. A pawn who can walk will come here themselves; a downed one will be carried in by a hauler.</RSW_BactaTankInsertDesc>
   <RSW_BactaTankEjectDesc>Drain the harness and let the occupant out.</RSW_BactaTankEjectDesc>
