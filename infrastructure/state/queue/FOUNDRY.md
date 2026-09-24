@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T21:55:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T21:59:35Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -891,6 +891,15 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
+## WEEPINGSTONES_RM_MOD_BUILD_1 Phase A: build RM_WeepingStones as its own RimMandrake mod (mandrake.rm.weepingstones) — the Weeping Stones
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
+prose:    infrastructure/state/items/WEEPINGSTONES_RM_MOD_BUILD_1.md
+
 ## FEVERWOOD_BOUGH_SOIL_TERRAIN_1 The crown cannot grow anything: boughway is fertility 0, so bough-soil is owed
 state:    doing
 row:      unassigned
@@ -1520,16 +1529,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/GREENTIDE_RM_MOD_BUILD_1.md
-
-## WEEPINGSTONES_RM_MOD_BUILD_1 Phase A: build RM_WeepingStones as its own RimMandrake mod (mandrake.rm.weepingstones) — the Weeping Stones
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/WEEPINGSTONES_RM_MOD_BUILD_1.md
 
 ## PYRELANDS_RM_MOD_BUILD_1 Phase A: build RM_Pyrelands as its own RimMandrake mod (mandrake.rm.pyrelands) — the Pyrelands - twin pair, mod EXISTS; defName rename done at 84d42c63b, BUILT NOT DEPLOYED
 state:    proposed
