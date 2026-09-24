@@ -17,9 +17,10 @@ the five faces:
 |---|---|
 | floods | FlowWorks pulsed spread (the engine's home turf) |
 | rain | weather form slot (reserved in the framework; tar rain is the pilot) |
-| rivers | terrain suite + flow seams (the Sump's outflow seams are the pilot) |
+| rivers | terrain suite + flow seams (⚠️ map edges are SINKS, never sources — the edge law, `SUMP_TAR_HYDROLOGY_1` ruling 6) |
 | lakes | terrain bodies + landmark meres (the Deep Black is the pilot) |
-| oceans | terrain/worldmap body slot (⚠️ the frozen world map is NOT touched — map-scale and lore faces only until the paint pass) |
+| oceans | terrain/worldmap body slot (⚠️ the frozen world map is NOT touched — map-scale and lore faces only until the paint pass; an on-map ocean canal-connected = infinite source, per the edge law) |
+| **ground pump** | buildable on-site producer filling canals — owner, typed, 2026-09-24, verbatim: *"for flow works for some liquids it will make sense to be able to add a ground pump to produce the liquid on site to fill canals these should be switchable options in the mod because it is scenario dependent on whether it makes sense clearly"* ⇒ per-liquid YES/NO in the matrix, and every YES ships as a **Mod Settings toggle** (scenario-dependent by ruling — same mod-vs-scenario split as tar rain). The Sump's Junker pumping derricks are the fiction precedent |
 
 ## spec
 
