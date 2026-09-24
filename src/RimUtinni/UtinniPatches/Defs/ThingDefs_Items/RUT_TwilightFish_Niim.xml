@@ -242,4 +242,55 @@
     </tradeTags>
   </ThingDef>
 
+  <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-24 — two NEW catches added per the
+       owner's brief (design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md),
+       to give the Twilight a shellfish (the one kind the built eight lack)
+       and a second glowing entry. The built eight's own descriptions are
+       UNCHANGED here — the glow-phrase question (reword or art-only) is
+       still with the owner (doc's "Questions for the owner" #1). -->
+
+  <!-- aluun — shellfish, common (0.6). "the lamp-shell." Sessile, same
+       floor-pairing shape as the Grey's hessal. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Aluun</defName>
+    <label>aluun</label>
+    <description>A fan-shaped shell-thing that grows on the kelp stems in the light columns, two thin translucent valves held open to the fall of detritus, and inside them a mantle that lights — a steady pale gold, the colour of the palette's lamps, bright enough that a kelp tower hung with aluun reads from the shore as a column of small windows. The Compact harvests them by the stem. The meat is a coin of sweet white flesh; the valves, dried, are the lantern-panes in every deep dock.</description>
+    <graphicData>
+      <texPath>Things/Plant/AloeVera/AloeVeraC</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.7</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- liiru — eel, uncommon (0.5). "the ribbon." Both niim and liiru read
+       blue-white; the art brief separates them — niim a dotted line on a
+       fish body, liiru a continuous line on a ribbon with no fish
+       silhouette at all. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Liiru</defName>
+    <label>liiru</label>
+    <description>The Twilight's elegant thing: a ribbon-eel as long as an arm and no wider than a finger, that swims upright through the light columns in slow vertical S-curves, and carries along its whole length a single unbroken line of blue-white light. A column with liiru in it looks, from the bank, as if someone had drawn on the water. It eats what falls, it is eaten by the kellu, and it is not fast; it does not need to be, because nothing wants the trouble of a mouthful of ribbon. Netted, it is a long thin excellent meal and a light that takes a minute to go out.</description>
+    <graphicData>
+      <texPath>Things/Plant/Schlumbergera/SchlumbergeraD</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>7</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
 </Defs>

@@ -47,13 +47,14 @@
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
 
-    <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-23. Makes the land tiles around the
-         Grey Sea read as coastal and cut a real shore. No terrains named: with
-         none set the extension resolves to the vanilla ocean pair, which is
-         exactly what terrainsByFertility below already uses. This sea has no
-         fishTypes at all yet, so providesCatch stays true but binds nothing
-         until one is authored. MayRequire on the <li> is load-bearing: an
-         unresolvable extension class discards the whole BiomeDef silently. -->
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-23/24. Makes the land tiles around
+         the Grey Sea read as coastal and cut a real shore. No terrains named:
+         with none set the extension resolves to the vanilla ocean pair, which
+         is exactly what terrainsByFertility below already uses. providesCatch
+         stays true (the default) and now binds a real table — the fishTypes
+         block below, authored 2026-09-24 per the owner's sea catch brief.
+         MayRequire on the <li> is load-bearing: an unresolvable extension
+         class discards the whole BiomeDef silently. -->
     <modExtensions>
       <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores" />
     </modExtensions>
@@ -110,6 +111,33 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-24 — the Grey Sea's catch table,
+         per design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md (owner
+         brief: "timorous, sickly, extremophile, or alien saline creatures
+         often with crusty bits and shell"). Superseded here: the earlier
+         comment above ("this sea has no fishTypes at all yet") no longer
+         applies. Canonical band pair saltwater_* (WaterOceanDeep/Shallow
+         both declare Saltwater). No shoal register, no swarm pairing, no
+         corpse option — the_grey_deep.md ban 4 (no glow) and its no-schools/
+         no-swarms note both hold; the dead do not rot here either (ban 5).
+         maxFishPopulation 120: a chemistry, not a fishery — below the
+         Twilight's 700, above the Scald's 40. -->
+    <maxFishPopulation>120</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <saltwater_Common>
+        <RUT_Sallik>1.2</RUT_Sallik>
+        <RUT_Karrud>1</RUT_Karrud>
+        <RUT_Hessal>1</RUT_Hessal>
+        <RUT_Oomal>0.6</RUT_Oomal>
+      </saltwater_Common>
+      <saltwater_Uncommon>
+        <RUT_Maalu>1</RUT_Maalu>
+        <RUT_Immu>0.7</RUT_Immu>
+        <RUT_Haarn>0.4</RUT_Haarn>
+      </saltwater_Uncommon>
+      <rareCatchesSetMaker>RUT_RareGreyCatches</rareCatchesSetMaker>
+    </fishTypes>
   </BiomeDef>
 
 </Defs>
