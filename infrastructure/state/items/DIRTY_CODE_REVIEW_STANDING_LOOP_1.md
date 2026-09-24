@@ -793,3 +793,47 @@ re-dirtied backlog (including this assembly's own
 `RM_CreatureBehaviorsMod.cs` and `RM_JobDefOf.cs`) is still untouched for
 actual re-review; the binary-art-tracking scope question from wave 15 is
 still open.
+
+## Wave 17 — 2026-09-24
+
+Reviewed 5 of the 12 remaining `CreatureBehaviors` never-entered files,
+full-file each: `RM_JobGiver_WanderInShadeGrid.cs` (65 lines, the shade
+grid's third consumer — closes out that cluster), `RM_ShadeSeekingWander
+Extension.cs` (22, its paired DefModExtension), `RM_CompProperties_
+DungSeeder.cs` (82, the Comp already marked clean in wave 3 but whose own
+Properties file was still never-entered), `RM_CompProperties_PlantAlarm.cs`
+(50, same shape — pairs with wave-3-clean `RM_CompPlantAlarm.cs`), and
+`RM_HediffDef_Grapple.cs` (77, pairs with wave-1-clean `RM_Hediff_
+Grappled.cs`).
+
+Cross-checked every field each Properties/Def file declares against its
+paired already-CLEAN consumer's actual `Props.*`/`Def.*` reads
+(`RM_CompDungSeeder.cs`, `RM_CompPlantAlarm.cs`, `RM_Hediff_Grappled.cs`) —
+every field name and type matches exactly, no orphaned or missing fields
+either direction. For `RM_JobGiver_WanderInShadeGrid.cs` (a `JobGiver_
+Wander` subclass, a vanilla base class none of this repo's other source
+files had been checked against RimSage for — unavailable on this machine
+per CLAUDE.md's Mac/WSL note), corroborated its `wanderDestValidator`
+signature and constructor-field pattern against `RM_JobGiver_
+DreadAvoidWander.cs` (`EnvironmentalHazards/Source/`, already CLEAN since
+2026-09-14), whose own header records reading `Verse.AI/JobGiver_Wander.cs`
+in a live 1.6 decompile and confirms the exact same `Func<Pawn, IntVec3,
+IntVec3, bool> wanderDestValidator` shape — a real, reviewed, compiling
+precedent in this repo, so the shade-grid file's use of the same shape
+needed no fresh decompile to trust. Also confirmed `RM_CreatureBehaviors
+Settings.shadeGridEnabled`/`shadeSeekingWanderEnabled` are real wired
+statics (declared, Scribed, and exposed via `CheckboxLabeled` in
+`RM_CreatureBehaviorsMod.cs`) despite that file itself sitting in the
+284-row re-dirtied backlog.
+
+No bugs found in any of the 5; no fixes needed this wave. All 5 confirmed
+reachable via `RM_CreatureBehaviors.csproj`'s `<Compile Include>`. All 5
+marked CLEAN, commit pending below, pushed.
+
+Next wave: 7 `CreatureBehaviors` never-entered files remain (12 minus this
+wave's 5): `RM_Hediff_Drained.cs`, `RM_HydrocarbonBloodExtension.cs`,
+`RM_JobGiver_FilterFeedTerrain.cs`, `RM_MapComponent_
+ProximitySoundscape.cs`, `RM_ProximitySoundscapeExtension.cs`,
+`RM_WoundLinkExtension.cs`, `RUT_Plant_FalseFruit.cs` — re-derive rather
+than trust this count. The 284-row re-dirtied backlog and the
+binary-art-tracking scope question from wave 15 are both still untouched.
