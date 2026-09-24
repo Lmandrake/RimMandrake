@@ -376,7 +376,7 @@ def seats_waiting_on_the_game():
     try:
         sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake"))
         from rimflow import model
-        w = model.replay(model.read(model.EVENTS))
+        w = model.replay(model.read())      # no path: history + every per-seat shard
     except Exception:                            # noqa: BLE001 - never gate the send
         return None
     return {it.owner for it in w.open_items()

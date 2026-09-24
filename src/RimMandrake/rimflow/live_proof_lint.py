@@ -75,7 +75,39 @@ def commit_body(root, sha):
     return p.stdout if p.returncode == 0 else None
 
 
+def _ledger_paths(path):
+    """-> the ledger head plus every per-seat shard beside it.
+
+    🔴 THE LEDGER IS SEVERAL FILES since 2026-09-23. `events.jsonl` is frozen history
+    and every new event lands in `events/<SEAT>.jsonl` (the authority is
+    `rimflow.model.SHARD_DIR`; this file stays stdlib-only and import-free because the
+    `.claude/hooks/` guard imports it, so the pattern is duplicated on purpose). Reading
+    the head alone would make this lint blind to every close and every spawn written
+    since the cutover — and its whole job is to notice a MISSING spawn, so going blind
+    reads as "all clear".
+    """
+    paths = [path]
+    d = os.path.join(os.path.dirname(path) or ".", "events")
+    try:
+        paths += [os.path.join(d, n) for n in sorted(os.listdir(d))
+                  if n.endswith(".jsonl")]
+    except OSError:
+        pass
+    return paths
+
+
 def _read_events(path):
+    """-> every event across the ledger head and its shards, ordered by `ts`."""
+    out = []
+    for p in _ledger_paths(path):
+        out.extend(_read_one(p))
+    # `str(...)`: a non-string stamp must not raise TypeError inside a lint. Stable
+    # sort, so each file's own order survives a tie — same rule as `model.read()`.
+    out.sort(key=lambda e: str(e.get("ts") or ""))
+    return out
+
+
+def _read_one(path):
     out = []
     try:
         with open(path, encoding="utf-8") as fh:

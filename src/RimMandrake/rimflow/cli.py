@@ -160,7 +160,10 @@ def resolve_seat(explicit, required=True):
 def load():
     """-> (events, world). Read once; every command needs both."""
     try:
-        evs = model.read(model.EVENTS)
+        # 🔴 NO PATH. `model.read()` merges the frozen events.jsonl with every per-seat
+        # shard; `model.read(model.EVENTS)` would read the HISTORY ONLY and every
+        # command would be blind to everything written since the sharding cutover.
+        evs = model.read()
     except model.LedgerError as e:
         die(str(e))
     w = model.replay(evs)               # non-strict: mistakes already in the file stand
@@ -315,7 +318,10 @@ def _emit(ev, world=None, quiet=False):
     try:
         model.check(ev, _replay_now())
         _stamp_owner_and_override(ev)
-        model.append(ev, model.EVENTS)
+        # 🔴 NO PATH: the event goes to THIS SEAT'S shard, `<ledger>/events/<SEAT>.
+        # jsonl`, so BENCH and FOUNDRY never append to the same git-tracked file and
+        # can never conflict in one on rebase. See `model.SHARD_DIR`.
+        model.append(ev)
     except model.LedgerError as e:
         die(str(e))                     # verbatim, non-zero — see the module docstring
     if not quiet:
@@ -352,7 +358,12 @@ def _rerender_queue_views():
         # from the synthetic test ledger. ⚠️ And getting the ROOT wrong is the
         # same defect wearing a different hat — see `_state_root`.
         state_root = _state_root(model.EVENTS)
-        s = _render.render(events_path=model.EVENTS, overwrite_queues=True,
+        # ⚠️ `events_path=None`, not `model.EVENTS`: render must see the merged ledger
+        # (history + every shard), and `render.build(None)` resolves `model.EVENTS` at
+        # call time exactly the same way, so a redirected RIMFLOW_LEDGER is still fully
+        # sandboxed. The ROOT below is still derived from model.EVENTS — that is the
+        # directory question, not the which-files question.
+        s = _render.render(events_path=None, overwrite_queues=True,
                            queue_root=os.path.join(state_root, "queue"),
                            out_dir=os.path.join(state_root, "derived", "queue_preview"),
                            quiet=True)
@@ -1086,7 +1097,7 @@ def _replay_now():
     every other read path prints.
     """
     try:
-        return model.replay(model.read(model.EVENTS))
+        return model.replay(model.read())        # no path: history + every shard
     except model.LedgerError as e:
         die(str(e))
 
@@ -1273,7 +1284,7 @@ def _announce_unblocks(target):
     # has already landed, so a ledger it cannot read must leave the close reported and
     # exit quietly — `_replay_now` would `die(2)` and make a successful close look failed.
     try:
-        st = model.replay(model.read(model.EVENTS))
+        st = model.replay(model.read())                          # no path: see load()
     except Exception:                                            # noqa: BLE001
         return
     waiting = [it for it in st.items.values()

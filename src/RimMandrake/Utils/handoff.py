@@ -145,17 +145,36 @@ def seat():
 
 
 def events():
-    if not os.path.isfile(LEDGER):
-        return []
+    """-> every ledger event, ordered by `ts`.
+
+    🔴 THE LEDGER IS SEVERAL FILES since 2026-09-23: `events.jsonl` is frozen history
+    and each seat appends to its own `ledger/events/<SEAT>.jsonl` shard, so two windows
+    can never conflict in one git-tracked file (`rimflow.model.SHARD_DIR` is the
+    authority). Reading the head alone would hand every handoff a seat's in-flight
+    items as they stood at the cutover — stale in exactly the way this script exists to
+    prevent.
+    """
+    shards = os.path.join(os.path.dirname(LEDGER), "events")
+    paths = [LEDGER]
+    try:
+        paths += [os.path.join(shards, n) for n in sorted(os.listdir(shards))
+                  if n.endswith(".jsonl")]
+    except OSError:
+        pass
     out = []
-    with io.open(LEDGER, encoding="utf-8") as fh:
-        for line in fh:
-            line = line.strip()
-            if line:
-                try:
-                    out.append(json.loads(line))
-                except ValueError:
-                    pass
+    for p in paths:
+        if not os.path.isfile(p):
+            continue
+        with io.open(p, encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if line:
+                    try:
+                        out.append(json.loads(line))
+                    except ValueError:
+                        pass
+    # Stable sort, so each file's own append order survives a same-second tie.
+    out.sort(key=lambda e: str(e.get("ts") or ""))
     return out
 
 

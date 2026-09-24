@@ -208,13 +208,30 @@ def t_ledger_path_is_redirectable():
     `def read(path=EVENTS)` binds the real file at import, so a test that reassigns
     `model.EVENTS` still reads — and on any write path, APPENDS TO — the real,
     append-only ledger. There is no undo for that file.
+
+    ⚠️ SINCE THE SHARDING the write does not land ON `model.EVENTS`; it lands in that
+    ledger's own `events/<SEAT>.jsonl`. The property being protected is unchanged and
+    is the reason `shard_dir()` is derived from the ledger in use rather than from the
+    module constant: NOTHING may escape into the real repo's ledger — neither its head
+    nor its shard directory.
     """
-    probe = os.path.join(TMP, "redirect.jsonl")
+    # ⚠️ IN ITS OWN DIRECTORY. A bare `TMP/redirect.jsonl` shares TMP's own shard
+    # directory with this suite's ambient ledger, so the escape check below would
+    # false-positive on its own write.
+    probe = os.path.join(TMP, "redirect", "events.jsonl")
     real = model.EVENTS
+    real_shards = model.shard_dir(real)
     model.EVENTS = probe
     try:
-        model.append(filed("REDIRECTED_ITEM_HERE_1"))
-        assert os.path.exists(probe), "append ignored the reassigned model.EVENTS"
+        model.append(filed("REDIRECTED_ITEM_HERE_1"))            # seat DECIDE
+        shard = model.shard_path("DECIDE")
+        assert os.path.dirname(shard) == os.path.join(TMP, "redirect", "events"), (
+            "the shard is not beside the redirected ledger: %s" % shard)
+        assert os.path.exists(shard), (
+            "append ignored the reassigned model.EVENTS — nothing at %s" % shard)
+        assert not os.path.exists(probe), (
+            "append wrote the ledger HEAD; events.jsonl is frozen history and every "
+            "new event belongs in a per-seat shard")
         assert len(model.read()) == 1, "read ignored the reassigned model.EVENTS"
         assert "REDIRECTED_ITEM_HERE_1" in model.replay().items, (
             "replay ignored the reassigned model.EVENTS")
@@ -222,9 +239,135 @@ def t_ledger_path_is_redirectable():
                        text="x"))
     finally:
         model.EVENTS = real
-    assert not os.path.exists(real) or "REDIRECTED_ITEM_HERE_1" not in \
-        open(real, encoding="utf-8").read(), (
-            "🔴 the probe event reached the REAL ledger at %s" % real)
+    for esc in (real, os.path.join(real_shards, "DECIDE.jsonl")):
+        assert not os.path.exists(esc) or "REDIRECTED_ITEM_HERE_1" not in \
+            open(esc, encoding="utf-8").read(), (
+                "🔴 the probe event reached the REAL ledger at %s" % esc)
+
+
+# ---- the ledger is sharded by seat, and events.jsonl is frozen history -----
+# 🔴 WHAT THESE THREE PROTECT. One git-tracked `events.jsonl` that BENCH and FOUNDRY
+# both append to and both commit produces a real rebase CONFLICT inside an append-only
+# file, resolvable only by manual git plumbing — done twice, and `checkout --ours`
+# silently discards a whole seat's events. Sharding by seat makes that conflict class
+# impossible, and these cases pin the three properties that buys it.
+def t_a_shard_is_a_pure_function_of_the_seat():
+    """No registry, no external state: the same seat always names the same file, two
+    seats never name the same one, and it is always beside the ledger IN USE."""
+    probe = os.path.join(TMP, "shardnames", "events.jsonl")
+    real = model.EVENTS
+    model.EVENTS = probe
+    try:
+        seen = {s: model.shard_path(s) for s in model.SEATS}
+        assert len(set(seen.values())) == len(model.SEATS), (
+            "two seats share a shard file, so two seats can still conflict in one "
+            "git-tracked file: %r" % seen)
+        for s, p in seen.items():
+            assert p == model.shard_path(s), "shard_path is not deterministic for %s" % s
+            assert os.path.dirname(p) == os.path.join(os.path.dirname(probe), "events"), (
+                "%s's shard is not beside the ledger in use: %s" % (s, p))
+        refuses(lambda: model.shard_path("NOT_A_SEAT"), "not one of",
+                "an unknown seat produced a shard path — `ev['seat']` is what makes "
+                "the filename bounded, and validate() is what guarantees it")
+        refuses(lambda: model.shard_path("../escape"), "not one of",
+                "a seat carrying a path separator produced a path OUTSIDE the ledger")
+    finally:
+        model.EVENTS = real
+
+
+def t_read_merges_frozen_history_with_every_shard_in_ts_order():
+    """⭐ (b) `read()` with no path IS the whole ledger.
+
+    The legacy `events.jsonl` is never split or rewritten — it stays exactly as
+    committed — so a reader that only looked at the shards would lose all of history
+    and a reader that only looked at the head would lose everything since the cutover.
+    Both halves are asserted, plus the ORDER, because the order is a design decision:
+    `(ts, source rank, within-file order)` with history ranked ahead of every shard.
+    """
+    d = os.path.join(TMP, "merged")
+    os.makedirs(os.path.join(d, "events"), exist_ok=True)
+    head = os.path.join(d, "events.jsonl")
+    real = model.EVENTS
+    model.EVENTS = head
+    try:
+        # frozen history, written as the real one already is: one literal file
+        model.append(filed("HISTORICAL_ITEM_HERE_1", seat="BUILD",
+                           ts="2026-08-01T00:00:00Z"), head)
+        model.append(ev(seat="BUILD", event="note", id="HISTORICAL_ITEM_HERE_1",
+                        text="old", ts="2026-09-23T12:00:00Z"), head)
+        # and two seats' shards, interleaved in time with each other
+        model.append(filed("BENCH_FILED_THIS_ITEM_1", seat="BENCH",
+                           ts="2026-09-23T12:00:01Z"))
+        model.append(filed("FOUNDRY_FILED_THIS_1", seat="FOUNDRY",
+                           ts="2026-09-23T12:00:00Z"))
+        model.append(ev(seat="FOUNDRY", event="note", id="FOUNDRY_FILED_THIS_1",
+                        text="second", ts="2026-09-23T12:00:00Z"))
+
+        assert sorted(os.listdir(os.path.join(d, "events"))) == \
+            ["BENCH.jsonl", "FOUNDRY.jsonl"], os.listdir(os.path.join(d, "events"))
+        evs = model.read()
+        assert len(evs) == 5, "read() merged %d of 5 events: %r" % (len(evs), evs)
+        ids = [(e["ts"], e.get("id") or e.get("text")) for e in evs]
+        assert [t for t, _ in ids] == sorted(t for t, _ in ids), (
+            "the merged ledger is not in ts order: %r" % ids)
+        # 🔑 THE TIE-BREAK, SPELLED OUT. Three events share 12:00:00Z: one in the
+        # frozen head and two in FOUNDRY's shard. History ranks first, and within one
+        # file the append order is never permuted (a stable sort over the file list).
+        tied = [e for e in evs if e["ts"] == "2026-09-23T12:00:00Z"]
+        assert [e["seat"] for e in tied] == ["BUILD", "FOUNDRY", "FOUNDRY"], (
+            "the same-ts tie-break is not (history first, then shard by seat name, "
+            "then within-file order): %r" % [(e["seat"], e.get("text")) for e in tied])
+        assert [e.get("text") for e in tied] == ["old", None, "second"], (
+            "one shard's own append order was permuted by the merge: %r" % tied)
+        assert model.read() == evs, "the merge is not deterministic across two reads"
+        w = model.replay()
+        for iid in ("HISTORICAL_ITEM_HERE_1", "BENCH_FILED_THIS_ITEM_1",
+                    "FOUNDRY_FILED_THIS_1"):
+            assert iid in w.items, (
+                "%s is missing from the replayed world — the merge dropped a whole "
+                "source file" % iid)
+        # And the frozen file was not touched by any of the sharded appends.
+        with open(head, encoding="utf-8") as fh:
+            body = fh.read()
+        assert body.count("\n") == 2 and "BENCH_FILED_THIS_ITEM_1" not in body, (
+            "events.jsonl is FROZEN HISTORY and something appended to it: %r" % body)
+    finally:
+        model.EVENTS = real
+
+
+def t_an_explicit_path_is_still_one_literal_file():
+    """⭐ (c) The old single-file contract, unchanged — the selftests' sandbox.
+
+    `append(ev, path)` writes exactly `path` and shards nothing; `read(path)` reads
+    exactly `path` and merges nothing. That is what `selftest_concurrency.py`'s first
+    arm and every fixture in this file are written against, and it is what keeps a
+    throwaway ledger airtight.
+    """
+    d = os.path.join(TMP, "explicit")
+    os.makedirs(os.path.join(d, "events"), exist_ok=True)
+    one = os.path.join(d, "events.jsonl")
+    real = model.EVENTS
+    model.EVENTS = one
+    try:
+        model.append(filed("EXPLICIT_PATH_ITEM_1", seat="BENCH",
+                           ts="2026-09-23T13:00:00Z"), one)
+        assert os.path.exists(one), "an explicit path was not written literally"
+        assert not os.path.exists(os.path.join(d, "events", "BENCH.jsonl")), (
+            "an explicit path was SHARDED — the escape hatch is gone and every "
+            "single-file fixture in this suite is now writing somewhere else")
+        # A shard that exists is invisible to an explicit-path read, and visible to a
+        # pathless one. Same directory, two different questions.
+        model.append(filed("SHARDED_NEIGHBOUR_ITEM_1", seat="FOUNDRY",
+                           ts="2026-09-23T13:00:01Z"))
+        got = [e.get("id") for e in model.read(one)]
+        assert got == ["EXPLICIT_PATH_ITEM_1"], (
+            "read(path) merged the shards; selftests and repair_torn_ledger.py both "
+            "need it to answer for ONE file: %r" % got)
+        assert [e.get("id") for e in model.read()] == \
+            ["EXPLICIT_PATH_ITEM_1", "SHARDED_NEIGHBOUR_ITEM_1"], (
+                "read() with no path did not see both sources")
+    finally:
+        model.EVENTS = real
 
 
 def t_seat_idle_takes_the_handoff_note():

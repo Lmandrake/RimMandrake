@@ -43,7 +43,7 @@ def check(items_dir=None):
     """-> (ok_ids, bad) where bad is [(filename, reason)]. `items_dir` overrides
     `model.ITEMS` for the self-check below — never for the real run."""
     items_dir = items_dir or model.ITEMS
-    state = model.replay(model.read(model.EVENTS))
+    state = model.replay(model.read())
     files = sorted(glob.glob(os.path.join(items_dir, "*.md")))
     ok, bad = [], []
     for f in files:
@@ -84,7 +84,7 @@ def main():
     # items/ directory, so this never touches the real one.
     import tempfile
     with tempfile.TemporaryDirectory(prefix="rimflow_selftest_items_glob_") as tmp:
-        state = model.replay(model.read(model.EVENTS))
+        state = model.replay(model.read())
         closed_id = next((iid for iid, it in state.items.items()
                            if it.state in TERMINAL), None)
         if closed_id is None:

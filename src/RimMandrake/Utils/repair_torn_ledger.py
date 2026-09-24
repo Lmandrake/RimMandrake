@@ -67,6 +67,14 @@ distinction the hook itself draws (LEDGER_MSG: "a shell redirect or an editor
 takes nothing") applied honestly to a tool the hook was never taught to
 recognise. Never invoke this with the ledger path spelled out on the command
 line — that reintroduces exactly what the hook is refusing to allow.
+
+⚠️ A TORN LINE IS NOW FAR MORE LIKELY IN A SHARD THAN IN `events.jsonl`. The ledger
+was sharded by seat on 2026-09-23 (`rimflow.model.SHARD_DIR`): `events.jsonl` is
+frozen history that nothing appends to any more, and every new event goes to
+`ledger/events/<SEAT>.jsonl`. So `--seat <SEAT>` points this tool at that shard —
+a SEAT NAME, not a path, which keeps the rule above intact.
+
+    python3 src/RimMandrake/Utils/repair_torn_ledger.py --seat FOUNDRY
 """
 import argparse
 import json
@@ -76,6 +84,11 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 LEDGER = REPO_ROOT / "infrastructure" / "state" / "ledger" / "events.jsonl"
+# The per-seat shards, sharded 2026-09-23. Seat names duplicated from
+# `rimflow.model.SEATS` on purpose: this script is stdlib-only and must still run when
+# the ledger it repairs is too broken for `rimflow` to import cleanly.
+SHARDS = LEDGER.parent / "events"
+SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP")
 TRANSIENT_DIR = REPO_ROOT / "Transient"
 MAX_BAD_LINES = 25
 
@@ -155,7 +168,7 @@ def repair(path: Path, apply: bool, owner_said: str | None, backup_dir: Path = N
 
     backup_dir.mkdir(exist_ok=True, parents=True)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    backup_path = backup_dir / f"events.jsonl.pre-repair-{stamp}.bak"
+    backup_path = backup_dir / f"{path.name}.pre-repair-{stamp}.bak"
     backup_path.write_text("".join(lines), encoding="utf-8")
     print(f"Backed up pre-repair file ({len(lines)} lines) to {backup_path}")
 
@@ -173,8 +186,12 @@ def main():
                      help="Actually write the repaired file. Default is dry-run (report only).")
     ap.add_argument("--owner-said", default=None,
                      help="Verbatim authorization for this specific repair. Required with --apply.")
+    ap.add_argument("--seat", default=None, choices=SEATS,
+                     help="Repair that SEAT'S shard (ledger/events/<SEAT>.jsonl) instead "
+                          "of the frozen events.jsonl. A seat name, never a path.")
     args = ap.parse_args()
-    return repair(LEDGER, apply=args.apply, owner_said=args.owner_said)
+    target = (SHARDS / ("%s.jsonl" % args.seat)) if args.seat else LEDGER
+    return repair(target, apply=args.apply, owner_said=args.owner_said)
 
 
 if __name__ == "__main__":

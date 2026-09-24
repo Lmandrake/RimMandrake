@@ -109,7 +109,7 @@ def load_capabilities():
     read must never render as "0 systems", the same silent-zero shape that bit
     codebase_health.py before that fix)."""
     try:
-        events = model.read(model.EVENTS)
+        events = model.read()               # no path: history + every per-seat shard
     except model.LedgerError as e:
         err = "%s: %s" % (type(e).__name__, e)
         sys.stderr.write("FAIL: could not read the rimflow ledger: %s\n" % err)

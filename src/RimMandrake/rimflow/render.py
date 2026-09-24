@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""rimflow/render.py — every derived view, rebuilt from `events.jsonl` alone.
+"""rimflow/render.py — every derived view, rebuilt from the LEDGER alone.
+
+⚠️ "The ledger" is the frozen `events.jsonl` PLUS every per-seat shard under
+`events/` (sharded 2026-09-23 — see `model.SHARD_DIR`). `model.read()` with no path
+merges them; nothing here may name `events.jsonl` as if it were the whole ledger.
 
 WHAT THIS PRODUCES, AND WHY EACH ONE IS DERIVED
 ===============================================
@@ -22,7 +26,7 @@ ledger diverge: an `owner` item is shown as offered even when `MODE` is `afk`, a
 a `harvest` item is shown as waiting even when `RIMFLOW_HARVEST_PENDING` is set.
 `next` is right in both cases; the file is one shared artifact and cannot be right
 for two askers at once. ⛔ Do not "fix" this by reading `MODE` or the environment
-here — the render would stop being a pure function of `events.jsonl` and
+here — the render would stop being a pure function of the ledger and
 `reindex --verify` would differ for a reason that means nothing, which is the
 failure the whole no-wall-clock rule below exists to prevent.
 
@@ -110,10 +114,27 @@ SUMMARY_WIDTH = 110
 # READING THE LEDGER
 # ---------------------------------------------------------------------------
 def build(events_path=None):
-    """-> (world, events). One read, one replay; everything below is pure."""
-    path = events_path or model.EVENTS
-    events = model.read(path)
+    """-> (world, events). One read, one replay; everything below is pure.
+
+    🔴 `events_path=None` MEANS THE WHOLE LEDGER, NOT `model.EVENTS`. Since the ledger
+    was sharded by seat (2026-09-23), `model.read()` merges the frozen `events.jsonl`
+    with every `events/<SEAT>.jsonl`, and `model.read(model.EVENTS)` reads the history
+    alone. Passing the constant through here would have rendered every queue view from
+    a ledger that stopped at the cutover, silently, with nothing said. An explicit
+    `events_path` is still honoured literally — `bench()` and the selftests pass one.
+    """
+    events = model.read(events_path)
     return model.replay(events), events
+
+
+def _ledger_label(events_path):
+    """-> what to CALL the ledger in a message. Not a path to open: with no explicit
+    `events_path` the ledger is several files, and naming only `events.jsonl` in a
+    refusal would send a human to restore the one file that is frozen history."""
+    if events_path:
+        return events_path
+    names = [os.path.basename(f) for f in model.ledger_files()]
+    return " + ".join(names) if names else model.EVENTS
 
 
 def as_of(events):
@@ -469,7 +490,7 @@ def render(events_path=None, out_dir=None, overwrite_queues=False, target="v1",
             "The ledger looks truncated — restore it from git before rendering; "
             "the one-way importer that once filled it was retired 2026-08-27."
             % (len(world.items), q_total, q_total - len(world.items),
-               len(world.items), events_path or model.EVENTS, q_total,
+               len(world.items), _ledger_label(events_path), q_total,
                ", ".join("%s=%d" % (k, v) for k, v in sorted(q_per.items()))))
         overwrite_queues = False
 
@@ -576,7 +597,7 @@ def _tree(root):
 
 
 def reindex(verify=False, events_path=None, target="v1", ctx=None):
-    """Rebuild every derived artifact from `events.jsonl` alone.
+    """Rebuild every derived artifact from the ledger alone (history + shards).
 
     ⭐ `--verify` is the real test of the claim that the ledger IS the truth. It
     renders into a scratch tree and compares BYTE FOR BYTE with what is on disk.
