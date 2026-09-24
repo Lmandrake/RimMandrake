@@ -233,3 +233,43 @@ waves' notes — a future wave should re-survey
 `code_review_status.py list --show-untracked` for what's left reachable and
 never-entered, since the GizkaStowaway/SeaShores/modcheck clusters named in
 waves 3–7 are now exhausted or down to their last file.
+
+## Wave 9 — 2026-09-24
+
+Closed out the `GizkaStowaway/Source/` cluster: reviewed
+`RSW_GizkaStowawayManager.cs` (the four discovery hooks —
+`Notify_GravshipLanded`/`Notify_SalvageDeconstructed`/`Notify_TradeCompleted`/
+`Notify_QuestCompleted` — plus `Discover`/`FindAnchorCell`). **Found and
+fixed a real bug**: all four hooks called `Ready(RSW_GizkaStowawayMod.Settings.triggerX)`
+— a hard dereference of `Settings` passed as the argument — while `Ready`'s
+own body checks `s == null` internally, too late to matter: a null `Settings`
+would throw an NRE at the call site before `Ready`'s guard ever ran. `Roll()`
+in the same file already used the null-safe `Settings?.discoveryFrequency ?? 1f`
+pattern, so the four hooks were the outliers. Fixed all four to
+`Settings?.triggerX ?? false`, commit `3e547d539`, pushed. Confirmed
+reachable via `RimMandrakeGizkaStowaway.csproj`'s `<Compile Include>`, and
+cross-checked `RSW_GizkaPopulation.SpawnStowaway`'s signature matches the
+call site. Marked CLEAN after the fix.
+
+Also reviewed 3 of the 32 DIRTY `validation.py` files, full-file each, no
+sampling shortcut per wave 8's finding: `SeaShores/validation.py` (135
+lines — verified its API usage against `modcheck/suite.py`'s actual
+`component`/`bridge_call`/`_guard`/`screenshot` signatures), `WreckedMachines/
+validation.py` (189 lines — verified `t.spawn`'s returned `(x, z)` cells feed
+correctly into the `rect="x,z,20,20"` format `jawa/list_things` expects, matching
+`clear_area`'s own rect convention), and `Aftermath/validation.py` (153
+lines — traced the suite's core assumption, that killing every raider outright
+classifies as `"-> Repelled"`, against `BattleOutcomeClassifier.Classify`'s
+actual priority order in `BattleOutcomeClassifier.cs` [`fraction >= 0.6f` checked
+first, before LOST/ROUTED/STALEMATE] and confirmed both DevMode-gated
+`Log.Message` lines the suite greps for — "battle opened"/"battle closed ->
+Repelled" in `MapComponent_BattleRecorder.cs` — match the suite's exact
+substrings and that the suite correctly sets `devMode=True` before firing).
+No bugs found in any of the 3. All 3 marked CLEAN, commit `270bf9bc2`, pushed.
+
+Next wave: 29 `validation.py` files remain DIRTY (32 minus this wave's 3;
+re-derive the live list with `comm -23` between a fresh `find . -name
+validation.py` sweep and `code_review_status.py list`'s CLEAN rows, since
+`list` only shows entries that have ever been recorded — a file never
+entered doesn't appear as DIRTY, it just doesn't appear). No other named
+clusters remain outstanding from earlier waves.
