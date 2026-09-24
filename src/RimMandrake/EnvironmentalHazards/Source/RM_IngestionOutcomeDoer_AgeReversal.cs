@@ -101,14 +101,22 @@ namespace RimMandrake.EnvironmentalHazards
             long reversal = (long)(TicksPerYear * Math.Max(0f, yearsReversed) * pawn.ageTracker.AdultAgingMultiplier);
             long adultFloor = (long)(TicksPerYear * pawn.ageTracker.AdultMinAge);
 
-            pawn.ageTracker.AgeBiologicalTicks = Math.Max(adultFloor, before - reversal);
-            long actual = before - pawn.ageTracker.AgeBiologicalTicks;
+            // Math.Max(adultFloor, before - reversal) only clamps a reversal
+            // that would go BELOW the floor. A pawn already younger than
+            // adultFloor (a child who drank this) makes before - reversal
+            // even smaller, so the clamp would compute a result ABOVE
+            // `before` — i.e. it would age the pawn UP to adult instead of
+            // doing nothing. Never write the field unless the result is
+            // actually a reversal.
+            long after = Math.Max(adultFloor, before - reversal);
+            long actual = before - after;
 
             if (actual <= 0L)
             {
                 // Already at or under the adult floor: the cup did nothing,
                 // so it does not burn the pawn's once-a-year allowance
-                // either.
+                // either, and — critically — AgeBiologicalTicks is left
+                // untouched rather than being pulled up to adultFloor.
                 if (messageOnWasted && PawnUtility.ShouldSendNotificationAbout(pawn))
                 {
                     Messages.Message(
@@ -118,6 +126,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
+            pawn.ageTracker.AgeBiologicalTicks = after;
             pawn.ageTracker.ResetAgeReversalDemand(Pawn_AgeTracker.AgeReversalReason.ViaTreatment);
 
             if (satedHediff != null)
