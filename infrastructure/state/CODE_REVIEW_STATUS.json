@@ -959,6 +959,12 @@
     "hash": "2b1de13b520617207d45ba66bd703b1ae4d6bf92fa25a11b4f0fb17d791d896e",
     "sha": "81f3fa561"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ProximityPsychicStun.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "01e1623cc6fbbb77d5a100b875d3e9b14738eaa176ff924fcd48958491a6683d",
+    "sha": "d2c598667"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ShardArmor.cs": {
     "cleanCount": 1,
     "date": "2026-09-19",
@@ -976,6 +982,12 @@
     "date": "2026-09-11",
     "hash": "d5c4672f24db1dd7ec730a74cbccd2a2938825ea4cf966ac5ac01236e3210f2a",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProximityPsychicStun.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "dcba19785a5bd77079323914f9671e2e082c80666cd5303b05ed0e9384aea1c7",
+    "sha": "d2c598667"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompSenseWebNode.cs": {
     "cleanCount": 1,
@@ -1018,6 +1030,12 @@
     "date": "2026-09-11",
     "hash": "117fe9bfa2046e4ea25c25fcd76b45968064d0ff268c6e459388b7c87bf0202e",
     "sha": "99a9e5cbc"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_FilterFeedExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "961afcebc3004fdff4e7b99e434a6639e102a957b510f3f6e9f9199906ee339c",
+    "sha": "d2c598667"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_FrontCreepExtension.cs": {
     "cleanCount": 1,
