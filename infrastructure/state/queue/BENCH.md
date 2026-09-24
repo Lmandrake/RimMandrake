@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T17:54:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T17:57:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -143,15 +143,6 @@ target:   v1
 kind:     design
 summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
-
-## FLOWWORKS_LIQUID_FACES_1 FlowWorks: consider floods, rain, rivers, lakes and oceans for EVERY supported liquid and fuel in the registry (owner ticket 2026-09-24)
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-summary:  A design pass over the registry: one matrix, liquids × five faces, each cell
-prose:    infrastructure/state/items/FLOWWORKS_LIQUID_FACES_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
