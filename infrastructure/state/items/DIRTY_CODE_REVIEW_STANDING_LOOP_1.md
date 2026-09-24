@@ -71,3 +71,41 @@ and `GizkaStowaway/Source/` (`MapComponent_GizkaInfestation.cs`,
 `RSW_GizkaSettings.cs`, `RSW_GizkaStowawayManager.cs`) clusters both still
 have files remaining; the `modcheck/` Python tools and the `validation.py`
 sampling pass are both still untouched.
+
+## Wave 5 — 2026-09-24
+
+Reviewed 5 files, full-file, none previously recorded in
+`CODE_REVIEW_STATUS.json`: the remaining `SeaShores/Source/` cluster —
+`RM_SeaShoresHarmony.cs` (the Harmony patch set: `CoastDirectionAt`
+postfix, `WorldGenStep_Mutators.TryAddMutator` prefix reached via
+`AccessTools.Method` since it's private static, `WaterBody.SetFishTypes`
+postfix, and a `FishingUtility.GetCatchesFor` transpiler), `RM_SeaShoresMod.cs`,
+`RM_SeaShoresSettings.cs`, `RM_TileMutatorWorker_SeaCoast.cs`, and
+`RM_WorldComponent_SeaShoreHealer.cs`. This completes the whole
+`SeaShores/Source/` cluster (`RM_SeaShoreExtension.cs` and
+`RM_SeaShoreUtility.cs` were already marked clean in wave 4). All 5
+confirmed reachable via `RM_SeaShores.csproj` `<Compile Include>` entries.
+
+Traced the transpiler's IL rewrite closely since it's the highest-risk code
+in the cluster: it replaces the `callvirt Map.get_Biome()` instruction
+in-place with `ldarg.1` (leaving the already-pushed `Map` reference on the
+stack instead of consuming it) then appends a `call` to
+`RM_SeaShoreUtility.FishBiomeFor(Map, IntVec3)` — stack ends up
+`[Map, cell]` matching the static method's signature, which is correct and
+is why the rewrite is done in-place rather than as an insert (preserves
+labels/exception-block targets on that instruction). Also checked the
+`SetFishTypes` postfix's early-return ordering (`ext == null || ...`
+short-circuits before `sea.fishTypes` is dereferenced when `sea` itself is
+null) and the `WorldComponent`'s heal pass for idempotency (skips any tile
+already wearing a `Coast`-category mutator). No bugs found in any of the 5;
+no fixes needed this wave. All 5 marked CLEAN, commit `477c30d53`, pushed.
+
+Next wave: `GizkaStowaway/Source/` cluster (`MapComponent_GizkaInfestation.cs`,
+`RSW_GizkaHarmonyPatches.cs`, `RSW_GizkaPopulation.cs`,
+`RSW_GizkaSettings.cs`, `RSW_GizkaStowawayManager.cs` —
+`HediffComp_GizkaFecundity.cs` was already marked clean in wave 4), the
+`modcheck/` Python tools (`doctor.py`, `judge.py`, `northstar.py`,
+`walklint.py` all confirmed DIRTY/never-entered this wave; `status.py` is
+already CLEAN; `cli.py` is DIRTY again — content changed since its
+2026-09-20 clean mark, so it needs a fresh full-file review, not a diff
+review), and the `validation.py` sampling pass, all still untouched.
