@@ -1097,6 +1097,12 @@
     "hash": "fdc5d4e4fd394eb9a42e67464843a1de83193a0ba9cc4a9f5e626196e1069450",
     "sha": "44ecce24d"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_Hediff_Drained.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7c4710d12b4a5835a7155ddd255487aa8db208262ab982c76c7f569179e36cb4",
+    "sha": "39ad7169b"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_Hediff_Grappled.cs": {
     "cleanCount": 1,
     "date": "2026-09-20",
@@ -1108,6 +1114,12 @@
     "date": "2026-09-11",
     "hash": "5f1f647c0a511c58c568217701f726ff32ba65ed515b49c0860ab843f31e063d",
     "sha": "20ce46f24"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_HydrocarbonBloodExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "dd6f016da1637cd91b72b2b4d9e8fb00a668301a5a9cf29a4721a2b057c096e7",
+    "sha": "39ad7169b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobDefOf.cs": {
     "cleanCount": 3,
@@ -1145,6 +1157,12 @@
     "hash": "23cd3f7965bbf1a9f2bf3d285840ab8084d9179b5ed7ce696a3e569f263ba828",
     "sha": "7f2ff5541"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_FilterFeedTerrain.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "e06c281c59d561667c1cd6b8ec7de1cd5ffd32e79f7dfba0341e2f8d7ae059f3",
+    "sha": "39ad7169b"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_GnawTargets.cs": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -1174,6 +1192,12 @@
     "date": "2026-09-12",
     "hash": "ca509008fe7804d53bcf4539b65ae9721a007a782437398077a6098baa2cba27",
     "sha": "7f2ff5541"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ProximitySoundscape.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "e584ef2b9c5a26a5243f136aec9abad312f0f3aa4dcdb5a6b9edb0aba7dbc8a2",
+    "sha": "39ad7169b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SenseWeb.cs": {
     "cleanCount": 1,
@@ -1211,6 +1235,12 @@
     "hash": "4e1ad24616a4e17e7f7a950389847ef799143b0aa4a1aadcb72d05a025467844",
     "sha": "81f3fa561"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ProximitySoundscapeExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f7a5766c37d55936b349c104ee20972a66cdb8a0ab8250ccdc555ada00bd8ed0",
+    "sha": "39ad7169b"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_SeekShadeExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -1246,6 +1276,18 @@
     "date": "2026-09-11",
     "hash": "162749759da3662caaca2327aaeeb3a498c0c734c28f4b8abaa460fe86c79248",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_WoundLinkExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "67b7ee345a63c0a642559257e30349abaea024cfeb3229627536d08277a0037b",
+    "sha": "39ad7169b"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RUT_Plant_FalseFruit.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "69fcebf788bb2c7469492d68ac6a11420b764f9c5f668115b9c64e5510423e15",
+    "sha": "39ad7169b"
   },
   "src/RimMandrake/DivingInteraction/About/About.xml": {
     "cleanCount": 1,
