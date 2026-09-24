@@ -3350,3 +3350,61 @@ Re-measured after: `TALLY  CLEAN 3150  DIRTY 6  ORPHANED 0  NEVER ENTERED 298`
 (`Defs/ThingDefs_Races` has **58** left). Next wave: continue
 `SWBestiary/Defs/ThingDefs_Races` (still the single biggest live cluster),
 with `list --show-untracked`.
+
+## Wave 53 — 2026-09-24: SWBestiary races continued (I-K)
+
+Ran `list --show-untracked` fresh: **298 NEVER ENTERED**, matching wave 52's
+ending tally exactly — no concurrent-agent noise this wave.
+
+Picked the next 8 alphabetically-first files from
+`SWBestiary/Defs/ThingDefs_Races/`: `RSW_IridonianReek.xml`,
+`RSW_Jakobeast.xml`, `RSW_Jamel.xml`, `RSW_Jimvu.xml`, `RSW_Kinrath.xml`,
+`RSW_Klorslug.xml`, `RSW_KowakianMonkeyLizard.xml`, `RSW_KraytDragon.xml`.
+Full-file reviewed all 8, each got the wave 49-52 sound-prefix check
+(`sound{Wounded,Death,Call,Angry}`): all 8 carry correctly RSW_-prefixed
+sounds (`RSW_Pawn_Reek_*`/`RSW_Pawn_ReekBaby_*` for IridonianReek — a
+deliberate donor-documented reuse of plain Reek's clips, not this bug
+class — plus `RSW_Pawn_{Jakobeast,Jamel,Jimvu,Kinrath,Klorslug,
+KowakianMonkeyLizard,KraytDragon}_*` for the rest), all 4 fields present
+and all 4 confirmed to resolve in `SoundDefs_SWBestiary.xml`. Every
+cross-referenced def was swept and confirmed to resolve: bodies
+(`RSW_Reek`, `RSW_Jakobeast`, `RSW_Jimvu`, `RSW_Kinrath`, `RSW_Klorslug`,
+`RSW_KowakianMonkeyLizard`, `RSW_KraytDragon`), body-part groups
+(`RSW_SWHornAttackTool`, `RSW_SWToxicAppendage`,
+`RSW_SWLeftLegClawAttackTool`/`RSW_SWRightLegClawAttackTool`,
+`RSW_SWTailAttackTool`, `RSW_SW_DexterousTail`, `RSW_SW_Spikes`), leather/
+meat (`RSW_Leather_Tough`/`RSW_Tough_Meat`, `RSW_Leather_Bright`/
+`RSW_Felinoid_Meat`, `RSW_Leather_Reptomammal`/`RSW_Reptomammal_Meat`,
+`RSW_Leather_Insectine`, `RSW_Leather_Insectile`/`RSW_Insectile_Meat`,
+`RSW_Leather_Mammavian`/`RSW_Anthropoid_Meat`,
+`RSW_Leather_KraytDragon`/`RSW_Krayt_Meat`), eggs (`RSW_EggKinrath*`,
+`RSW_EggKlorslug*`, `RSW_EggKraytDragon*`), trophies
+(`RSW_JakobeastHorn`, `RSW_KraytDragonSkull`), and abilities
+(`RSW_SW_WebShot`/`RSW_SW_Webbed`/`RSW_SW_WebShotprojectile`,
+`RSW_SW_Calamity`). `RSW_KraytDragon.xml`'s own header claims it already
+fixed `RSW_GreaterKraytDragon.xml`'s `canCrossBreedWith` to point at
+`RSW_KraytDragon` instead of the bare donor name in an earlier pass — spot-
+checked directly against that file, confirmed true. `TuskAttackTool`
+(Jakobeast's tusks) correctly stays bare/unresolvable in this repo — it's
+Alpha Animals' (`sarg.alphaanimals`) own group, per the file's own header,
+same "leave bare, no MayRequire" pattern as other cross-mod group reuse.
+
+🔴 **One real bug found and fixed**: `RSW_Jimvu.xml`'s `race` block carried
+`<lifeExpectancy>` twice — `22` then, 20 lines later after the
+`litterSizeCurve` block, `30`. XML last-node-wins means `30` was already
+the live value, but the dead `22` line is exactly the kind of duplicate
+that gets "corrected" back to the wrong number by a future edit. Fixed:
+removed the dead first occurrence, `30` stands. Commit `50a5f7f57`.
+
+Commits `50a5f7f57` (the fix) and `73a1b0b33` (status file), both pushed.
+No `.git/index.lock` contention this wave.
+
+Re-measured after: `TALLY  CLEAN 3158  DIRTY 6  ORPHANED 0  NEVER ENTERED 290`
+— 290 = 298 − 8 exactly, no concurrent-agent noise this wave either.
+**290 NEVER ENTERED files remain**: `UtinniPatches` still at **73** (its
+`Patches/` subfolder holds only the 1 unreviewed
+`RUT_TarredSurgery_RecipeUsers.xml`), `SWBestiary` at **52**
+(`Defs/ThingDefs_Races` has **50** left — still the single biggest live
+cluster in either mod). Next wave: continue `SWBestiary/Defs/
+ThingDefs_Races` alphabetically from `RSW_Kreetle.xml`, with
+`list --show-untracked`.
