@@ -1861,3 +1861,87 @@ from wave 28, the 25-file `RUT_*` BiomeDef cluster under
 pick (all 25 confirmed still present in the DIRTY list this wave). The PNG
 binary-art-tracking scope question (wave 15) is still open and still not
 this loop's to decide.
+
+## Wave 32 — 2026-09-24: `RUT_*` BiomeDef cluster, 8 of 26 cleared
+
+Re-derived the cluster fresh rather than trusting wave 31's "25": a real
+`find` under `UtinniPatches/Defs/BiomeDefs/` gave **26** `RUT_*` files, of
+which `code_review_status.py check` showed **25 DIRTY** and **1 already
+CLEAN** (`RUT_Sump.xml`, clean since 2026-09-13) — so 25 was correct as a
+DIRTY count, not a file count; wave 31's phrasing conflated the two. One
+file, `RUT_FuelSnows.xml`, has never been marked clean and needs a full-file
+review rather than diff-scoped, so it was left for a future wave per this
+item's own protocol (diff-scoped review is only valid once a file has been
+CLEAN once).
+
+Reviewed 8 of the 24 diff-eligible DIRTY files, diff-scoped against each
+file's own clean-mark sha, prioritizing roster/commonality correctness over
+XML validity per this wave's brief: `RUT_Contagion.xml` (+7/-1),
+`RUT_Slime.xml` (+6/-1), `RUT_FeverWood.xml` (+2/-2), `RUT_Miasma.xml`
+(+7/-5), `RUT_CrackedLands.xml` (+8/-3), `RUT_WeepingStones.xml` (+9/-2),
+`RUT_Webwork.xml` (+8/-1), `RUT_Scarlands.xml` (+5/-2) — the 8 smallest
+diffs in the cluster.
+
+Every diff traced to a real, well-documented ruling, cross-checked against
+its cited commit/item rather than taken on the comment's word alone:
+
+- **RUT_Contagion / RUT_Miasma / RUT_Slime**: `SHEET_ORPHAN_CONSUMPTION_1`
+  (owner review 2026-09-20) plant moves/cuts, transplanted from the retired
+  `BiomeFlora_Ashkarr.xml` replace-patch onto the base defs directly by
+  `BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1` (`921c04e1c`). Read the full commit
+  chain on `RUT_Miasma.xml` (`8725fb338` → `921c04e1c` → `429446d0d`) since
+  its diff removed 4 plant rows and added only 1, which looked at first
+  glance like a bulk-drop: confirmed via commit message that the 4 removed
+  rows (`BMT_Plant_TreeTanglerootMangrove`/`SewerReed`/`RainbowTongue`/
+  `Snaketails`) were a deliberate 2026-09-18 cut (mangal family already
+  carried 92% of that roster's weight), unrelated to the 1 added row
+  (`RUT_Nogtyl`, a separate 2026-09-20 move-in) — two different rulings
+  landing in the same diff, not one bug.
+- **RUT_FeverWood / RUT_Miasma / RUT_Webwork**: `DUPLICATE_CANON_DEFNAME_PAIRS_1`
+  (owner-ruled merge 2026-09-23) repointing bare donor defNames (`Nuna`,
+  `Kreetle`) onto their `RSW_` ports.
+  `RUT_Webwork`'s `Kreetle`→`RSW_Kreetle` also carries an independent
+  commonality boost (0.2→0.8) under `ECOSYSTEM_PYRAMID_LAW_1` — verified
+  the file's own comment against its cited frozen roster
+  (`the_webwork.json`) rather than trusting the math: the roster's two
+  unwired candidates (`AA_Feralisk`/`GR_Chickenspider`) are genuinely
+  bodySize 1.0/1.1 (LARGE), so raising an already-wired small species was
+  correctly the only pyramid-safe move.
+- **RUT_CrackedLands**: two independent changes in one diff — a `BMT_`→`RUT_`
+  defName sync (`RUT_TwistingThorngrass`/`Thornweed`/`Thornwood`,
+  `8725fb338`/`61c6a9233`) and a `FloodedCanyon` freeze-header comment
+  (`962ee9a80`, closed item `FLOODEDCANYON_RM_MOD_BUILD_1`) declaring this
+  `RUT_` def frozen — content now lives in `mandrake.rm.floodedcanyon`,
+  this def only "carries the world until the terminal paint." Checked commit
+  order to confirm the freeze comment landed AFTER the plant-name sync, not
+  a content edit smuggled in after the freeze.
+- **RUT_WeepingStones / RUT_Webwork / RUT_Scarlands**: `ECOSYSTEM_PYRAMID_LAW_1`
+  commonality raises on already-wired small fauna (no megafauna cuts, no new
+  wiring beyond what each biome's own frozen roster already names) plus,
+  on Scarlands, a label change (`"the Scarlands"` → `"Warscar"`) and three
+  newly-wired `RSW_` species from the round2 move mapping — each carries an
+  inline bodySize-grounded commonality rationale (`RSW_CrystalFairyMole`
+  0.86, `RSW_MegaphoridLarva` 0.32 both small so wired high;
+  `RSW_Korrum` 4.00 large so deliberately wired at 0.05, not the roster's
+  placeholder 0.5).
+
+Verified independently for all 8: every added/renamed defName
+(`RUT_RustPuff`, `RUT_Nogtyl`, `RSW_Nuna`, `RUT_GiantLeaf`, `RSW_Kreetle`,
+`RSW_PodWorm`, `RUT_TwistingThorngrass`/`Thornweed`/`Thornwood`,
+`RUT_Dewshrooms`, `RUT_ScorchedStars`, `RSW_CrystalFairyMole`,
+`RSW_MegaphoridLarva`, `RSW_Korrum`) resolves to a real `defName` element on
+disk, and every `MayRequire` packageId resolves to a real `About.xml`. All 8
+files parse as valid XML with no duplicate `wildAnimals`/`wildPlants` keys
+introduced (checked programmatically, not by eye). No bugs found; no fixes
+needed this wave. All 8 had zero uncommitted changes before marking
+(`git status --porcelain` empty). All 8 marked CLEAN, commit pending below,
+pushed.
+
+Next wave: 16 `RUT_*` BiomeDef files remain in the cluster (24 diff-eligible
+minus this wave's 8), plus `RUT_FuelSnows.xml` still needs its first
+full-file review (never marked clean) — re-derive both counts fresh with
+`code_review_status.py check` rather than trusting this arithmetic. The
+`~15`-file `RSW_*ThingDefs_Races` cluster is already closed (wave 31); the
+bridgetools `.cs` files and `rimflow`/`Utils` Python tooling named in wave
+28's note are still untouched; the PNG binary-art-tracking scope question
+(wave 15) is still open and still not this loop's to decide.
