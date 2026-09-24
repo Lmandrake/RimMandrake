@@ -70,6 +70,22 @@
             </fixedParams>
           </thingSetMaker>
         </li>
+        <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-24 — +1 option per the
+             design doc's rare-catch table: "a whole stem of lamp-shells,
+             still lit." -->
+        <li>
+          <weight>1</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RUT_Aluun</li>
+                </thingDefs>
+              </filter>
+              <countRange>6~10</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
       </options>
     </root>
   </ThingSetMakerDef>

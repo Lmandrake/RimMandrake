@@ -54,12 +54,14 @@
   lake (R-H6b: propane liquefies at −42 C, so the shallow/cold edge freezes
   solid while the deep centre stays liquid).
 
-  fishTypes: left EMPTY. AB_PropaneLakes' own donor fishTypes
-  (VCEF_PropaneBag, VCEF_AbyssalEel, VCEF_GiantPolarPrawn etc., read off the
-  live dump this pass) belong to the LAND biome's local-map fishing zones
-  and are not copied here — this is a world-tile water biome, a different
-  gameplay surface, and copying them without an owner ruling would invent a
-  content decision, not just an engine reconciliation. the_propane_lakes.md
+  fishTypes: WAS left EMPTY (2026-09-06 reconciliation pass); now carries a
+  real table, authored SEA_FLOOR_AND_CATCH_PASS_1 2026-09-24 per the
+  owner's sea catch brief (design/Jawa/worldbuilding/sea_catch_rosters_
+  2026-09-24.md) — seven new crystalline-life catches, none of them the
+  donor AB_PropaneLakes' own fishTypes (VCEF_PropaneBag/VCEF_AbyssalEel/
+  VCEF_GiantPolarPrawn etc.), which stay uncopied for the same reason this
+  note always gave: those belong to the LAND biome's local-map fishing
+  zones, a different gameplay surface. the_propane_lakes.md
   §4's "V-wake creature and its kin" (propane-native, agitated by pumping,
   attacking pawns and pipe on sight) also stays unbuilt — no PawnKindDef
   exists for it yet (checked the live dump: no def named anything
@@ -115,18 +117,25 @@
     <waterDeepTerrain>AB_PropaneLake</waterDeepTerrain>
     <waterShallowTerrain>AB_SolidPropane</waterShallowTerrain>
 
-    <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-23. Makes the land tiles around the
-         Propane Lake read as coastal and cut a shore of liquid and solid
-         propane. providesCatch is FALSE on purpose: whether "fishing" is even
-         the right verb for a lake of fuel is an open design question, and this
-         file must not answer it by default. MayRequire on the <li> is
-         load-bearing: an unresolvable extension class discards the whole
-         BiomeDef silently. -->
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-23/24. Makes the land tiles around
+         the Propane Lake read as coastal and cut a shore of liquid and solid
+         propane. providesCatch was FALSE on purpose ("whether 'fishing' is
+         even the right verb for a lake of fuel is an open design question")
+         — the owner ANSWERED that question 2026-09-24 (sea_catch_rosters_
+         2026-09-24.md, superseded ruling 3): the Propane Lake carries a real
+         catch table below, so providesCatch now stands at its default (true,
+         the field is omitted here rather than restated). shallowTerrain
+         repointed to RUT_PropaneShallow (sibling TerrainDefs/
+         RUT_PropaneShallow.xml) rather than the donor AB_SolidPropane: the
+         donor pair is waterBodyType None / a non-water solid, so no fishing
+         zone could ever form there (engine read, MEASURED 2026-09-23) — the
+         new terrain is a real Saltwater water body at the margin instead.
+         MayRequire on the <li> is load-bearing: an unresolvable extension
+         class discards the whole BiomeDef silently. -->
     <modExtensions>
       <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores">
         <deepTerrain>AB_PropaneLake</deepTerrain>
-        <shallowTerrain>AB_SolidPropane</shallowTerrain>
-        <providesCatch>false</providesCatch>
+        <shallowTerrain>RUT_PropaneShallow</shallowTerrain>
       </li>
     </modExtensions>
     <!-- WILD ANIMALS: two floating/flying residents, wired PAINTED_TILES_WITH_NO_CAST_1
@@ -168,6 +177,29 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-24 — the Propane Lake's catch
+         table, per design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md
+         (owner brief: "Propane lake has some documented crystalline life
+         already mentioned... flesh all of these out"). Canonical band pair
+         saltwater_* — a build decision, not a default (see the doc's own
+         section for the engine reasoning that produced RUT_PropaneShallow).
+         maxFishPopulation 60: sparse — a fuel tank is not a fishery. -->
+    <maxFishPopulation>60</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <saltwater_Common>
+        <RUT_Fessu>1.2</RUT_Fessu>
+        <RUT_Krellik>1</RUT_Krellik>
+        <RUT_Oddu>0.8</RUT_Oddu>
+        <RUT_Oovu>0.6</RUT_Oovu>
+      </saltwater_Common>
+      <saltwater_Uncommon>
+        <RUT_Iliss>1</RUT_Iliss>
+        <RUT_Tarnn>0.6</RUT_Tarnn>
+        <RUT_Zhiil>0.4</RUT_Zhiil>
+      </saltwater_Uncommon>
+      <rareCatchesSetMaker>RUT_RarePropaneCatches</rareCatchesSetMaker>
+    </fishTypes>
   </BiomeDef>
 
 </Defs>
