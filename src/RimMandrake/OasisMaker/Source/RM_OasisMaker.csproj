@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    OASIS_MAKER_BUILD_1. Same recipe as
+    src/RimMandrake/DivingInteraction/Source/RM_DivingInteraction.csproj —
+    copy that header if this one goes stale.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\OasisMaker\Source\RM_OasisMaker.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+
+    No Harmony: RM_PlaceWorker_OasisMaker is instantiated by the engine off
+    the ThingDef's <placeWorkers> list (PlaceWorker instances are created by
+    name, same mechanism as every vanilla PlaceWorker); RM_CompOasisMaker is
+    instantiated off <comps><li Class="...CompProperties_OasisMaker" />.
+    RM_OasisMakerMod/RM_OasisMakerSettings are plain Mod/ModSettings,
+    auto-discovered by RimWorld's own mod-loading reflection. No patches.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrake.OasisMaker</AssemblyName>
+    <RootNamespace>RimMandrake.OasisMaker</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RM_OasisMakerSettings.cs" />
+    <Compile Include="RM_OasisPlacementScorer.cs" />
+    <Compile Include="RM_OasisPoolIntegration.cs" />
+    <Compile Include="RM_CompOasisMaker.cs" />
+    <Compile Include="RM_PlaceWorker_OasisMaker.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Oasis Maker</name>
+  <packageId>mandrake.rm.oasismaker</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>OASIS_MAKER_BUILD_1 (owner ruling, 2026-09-24, verbatim: "machines that
+create oases slowly when placed near shaded terrain near rocks. Placement is
+key. We should guide it with green red area selections... Makes obtaining the
+ancient machines a treasure type."). Spec: design/RimMandrake/oasis_maker_machines_spec.md.
+
+A treasure-class ancient building (`RM_OasisMaker`, minifiable) that, once
+placed on cold shaded stone, wakes after a short attuning window and then
+grows an oasis around itself ring by ring, on its own clock — no power, no
+fuel, no colonist labor. Terrain climbs a stepwise natural ladder
+(Sand/SoftSand -> Gravel -> Soil -> SoilRich at the margin; Soil -> Mud ->
+Marsh -> WaterShallow at the innermost ring, forming a real, fishable,
+stockable pool at the machine's heart) — never floors, never constructed
+terrain, never existing water, never stone. Placement is guided by a live
+green/red projected-footprint overlay that recomputes per ghost move, the
+same shape as vanilla's `PlaceWorker_WatermillGenerator`: red means the
+hard floor (shaded cells + standing rock nearby) is not met and the machine
+refuses to place; green shows the oasis the current spot would actually
+grow, sized and paced by how good the spot is. Interrupting it (uninstall,
+destruction, losing its shade/rock) freezes growth forever — everything
+already converted stays; nothing this mod does ever reverses a cell.
+
+**Acquisition (RULED, owner typed, 2026-09-24): "They are sold but very
+expensive. Same tech as moisture farming itself. You can start a colony with
+some of those. And priced accordingly."** Not craftable in v1 — the machine
+is tagged for exotic-goods trader stock (`ExoticMisc`, treasure-class market
+value) and is an ordinary minifiable buildable, so it is legal starting gear
+in the scenario editor exactly like any other tradeable minified building.
+Quest obtain/sabotage hooks are deferred to the quest-design passes per the
+spec; this mod ships the mechanism only.
+
+Tier: RimMandrake (`RM_`) — works on any map with shade and rock, not tied
+to any one biome. Feature-gated: Mod Settings carries a master on/off plus
+every rate and floor number named in the spec (shade/rock floor, attuning
+length, base ring time, per-ring growth factor, radius cap band).
+
+**Pool integration**: a newly grown `WaterShallow` cell fires the public
+`RimMandrake.OasisMaker.RM_OasisPoolIntegration.PoolCellCreated` event
+(map, cell, source="RM_OasisMaker") so a grown oasis registers with the
+Stocked Pool kit's bookkeeping (`STOCKED_POOL_BUILD_1`,
+`RM_MapComponent_PoolStock`) exactly like a natural pool once that kit
+subscribes — see this mod's own rimflow item for the exact contract, since
+that component did not exist yet when this mod was built.
+
+**Art**: the spec's own build-size table lists the comb-silhouette sprite
+pass as its own S-sized line item separate from this mechanism sitting
+(alongside the deferred quest weaves) — this build ships with a placeholder
+texture pending that pass, tracked in the same item.</description>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
