@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T00:59:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T01:04:21Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -549,3 +549,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Owner, 2026-09-23, in conversation (quoted from the chat turn; ⚠️ not recorded via
 prose:    infrastructure/state/items/GREENTIDE_TERROR_REPLACEMENT_1.md
+
+## STARWARS_DONOR_PORT_LABEL_COLLISIONS_1 label_collision_check.py finds 62 label collisions between donor SW-animal-collection defNames and their RSW_ ports, both simultaneously cast -- DUPLICATE_CANON_DEFNAME_PAIRS_1 fixed only 4 of them
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STARWARS_DONOR_PORT_LABEL_COLLISIONS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STARWARS_DONOR_PORT_LABEL_COLLISIONS_1.md
