@@ -10161,6 +10161,18 @@
     "hash": "b4b7128d4e48731971b08cd3919e22f9f8642d38c734d3ed54c38cf2b7293014",
     "sha": "5ae0191cc"
   },
+  "src/RimStarWars/Bacta/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6f83a6e358ccd748209e10f4fc2829e5a9411af5ccd286ca50473175931331bb",
+    "sha": "245805910"
+  },
+  "src/RimStarWars/Bacta/Defs/JobDefs/RSW_BactaJobDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0a5176653712f792febc7e6eb48587bb5cf5f0b36f919ec2e2139969d0c9e871",
+    "sha": "245805910"
+  },
   "src/RimStarWars/Bacta/Defs/ResearchProjectDefs/RSW_BactaResearch.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -10168,10 +10180,16 @@
     "sha": "d79860270"
   },
   "src/RimStarWars/Bacta/Defs/ThingDefs_Buildings/RSW_BactaTank.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "ba895cd9d429bb11a570b7760efa36a5188b81001deb306e24696be6f8076835",
+    "sha": "245805910"
+  },
+  "src/RimStarWars/Bacta/Defs/ThingDefs_Buildings/RSW_MedicalDroid.xml": {
     "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "b4bb0166ea91947c725de9ada85b039ee4c8e4a4e5eb6543f30272d259d0bd5a",
-    "sha": "d79860270"
+    "date": "2026-09-24",
+    "hash": "87ef2f21ff60b489242852cd1ebc31289dff7fbe8768c56b4d797f72999b4a83",
+    "sha": "245805910"
   },
   "src/RimStarWars/Bacta/Defs/ThingDefs_Items/RSW_Bacta.xml": {
     "cleanCount": 1,
@@ -10179,59 +10197,101 @@
     "hash": "59f02a6ebc2b2ddcd5653b10503834fef257e2095a78d34517cd792d898b8ff3",
     "sha": "d79860270"
   },
-  "src/RimStarWars/Bacta/Defs/WorkGiverDefs/RSW_BactaWorkGivers.xml": {
+  "src/RimStarWars/Bacta/Defs/ThingDefs_Items/RSW_BactaFieldItems.xml": {
     "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "5dea476698d69c8a8a8df19b5ba47293da46dece523bf75f007ee6d8df413392",
-    "sha": "d79860270"
+    "date": "2026-09-24",
+    "hash": "b9a85d48e48d0d07a9cec40bc71a94381d19f64e8dc346da37e875ca145d201c",
+    "sha": "245805910"
+  },
+  "src/RimStarWars/Bacta/Defs/WorkGiverDefs/RSW_BactaWorkGivers.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "cf7cf5859c33802b5698c1e6a4bfb89e331020ed16bdc5cc74803976d0b78e18",
+    "sha": "245805910"
   },
   "src/RimStarWars/Bacta/Languages/English/Keyed/RSW_Bacta.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "0a3907130ed1eb679c09f79b3823e2104f962f8a25fbbc3c47e3a800ccaab51e",
+    "sha": "245805910"
+  },
+  "src/RimStarWars/Bacta/Patches/RSW_Bacta_RecipeWiring.xml": {
     "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "ec7f8518d5d1fbba7331cd45b0f4395f7e386d51eb0c0ca26a505557126b95d6",
-    "sha": "d79860270"
+    "date": "2026-09-24",
+    "hash": "1156b92fc8f0a04d89dc6499bbd630796f3ffaa96015570f89a4778b1b33bb62",
+    "sha": "245805910"
   },
   "src/RimStarWars/Bacta/Patches/RSW_Bacta_TraderStock.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "5033a3e72117c351fcac8cc0ccdd81bc23b63b8156a30a3febeaf036fcf856aa",
-    "sha": "d79860270"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "1c275d282e8f781ef9674751db9db7de451bd0a4587e6b2a4b3fe0b5d7440340",
+    "sha": "245805910"
   },
   "src/RimStarWars/Bacta/Source/BactaDefOf.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "31e3f67c68929943f81b4ab6cab66bb792d60a54094f126f3686dbf1ec699cf6",
+    "sha": "245805910"
+  },
+  "src/RimStarWars/Bacta/Source/BactaHealingUtility.cs": {
     "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "7d71c1d0388d73fb9b5d5d9a7483ae647f1d3d4854f5a61e4e3ca42d4e9c7674",
-    "sha": "d79860270"
+    "date": "2026-09-24",
+    "hash": "9024c7112342ad511df6e491f16c6bd67339929a093b3eeb4a4d188a4eb01686",
+    "sha": "245805910"
   },
   "src/RimStarWars/Bacta/Source/BactaMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "fef342e13720592edec6b84c4402e29fa35a1801249ad3b127743cfd24fcee78",
-    "sha": "d79860270"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "d08b8c502c365da975d1e85635f41688c1eb5b24bf292bee772feb29abb25f9e",
+    "sha": "245805910"
   },
   "src/RimStarWars/Bacta/Source/BactaTuning.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "d01d06e9fa3010b08c469bd748433a93c3c5bc1f980873863023bce1a756a007",
-    "sha": "d79860270"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "f5628165953dce20a2e418ec0e98e6b837fc8d001ec5b265b0e32fb9d6857741",
+    "sha": "245805910"
   },
   "src/RimStarWars/Bacta/Source/Building_BactaTank.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "0c4db74dec587316719eebc752d500e7dfc08f149b4b277d980a9fba470366c2",
-    "sha": "d79860270"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "af417f474aacfdc751ab53a515573db62d00310f7b7f7fb8de8a8f495abda08a",
+    "sha": "245805910"
   },
   "src/RimStarWars/Bacta/Source/CompBactaImmersion.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "2d88c2c5bc5e6e6ce75a9a6d841bc85fd376ee7e59e478f495049fbfb5205f9d",
-    "sha": "d79860270"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "eca344405b2bb55b9ac067d7c3908a4161a731aa0e0deff04718d1843586fc9a",
+    "sha": "245805910"
   },
   "src/RimStarWars/Bacta/Source/CompBactaShell.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
     "hash": "dcdaa13dda51afcdf191c08287d87d7c6785dffd995568a5ec5ba342418b15d1",
     "sha": "d79860270"
+  },
+  "src/RimStarWars/Bacta/Source/CompUseEffect_BactaHeal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c235572e41e1d8401cc22494a082a4adfe82a55b7286b27a6cd3065d9607b39f",
+    "sha": "245805910"
+  },
+  "src/RimStarWars/Bacta/Source/JobDriver_CarryCorpseToBactaTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "285aa2b5af0098709b45079131a2883df95f6c97382f3271e0cad3f3eea3a08d",
+    "sha": "245805910"
+  },
+  "src/RimStarWars/Bacta/Source/RimMandrake.StarWars.Bacta.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8d49f7221a6d2ff477412c9cd9cf62dcb8c1b08674ffee3689d18fe50d9c2d45",
+    "sha": "245805910"
+  },
+  "src/RimStarWars/Bacta/Source/WorkGiver_CarryCorpseToBactaTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ce6ae8fbd078f95130aad24cb6e9586a4beed3aa39620dc8d592e45da4804829",
+    "sha": "245805910"
   },
   "src/RimStarWars/Bacta/Source/WorkGiver_CarryToBactaTank.cs": {
     "cleanCount": 1,
