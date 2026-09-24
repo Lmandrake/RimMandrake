@@ -3605,3 +3605,77 @@ Re-measured after: `TALLY  CLEAN 3182  DIRTY 7  ORPHANED 0  NEVER ENTERED 274`
 at **28** (`Defs/ThingDefs_Races` has **26** left). Next wave: continue
 `SWBestiary/Defs/ThingDefs_Races` alphabetically from `RSW_Scurrier.xml`,
 with `list --show-untracked`.
+
+## Wave 57 — 2026-09-24: SWBestiary races Sc-Sk
+
+Ran `list --show-untracked` fresh: matched wave 56's ending 274 (no
+concurrent-agent noise at wave start). Confirmed `RSW_Scurrier.xml` still
+the alphabetically-first NEVER ENTERED file in `SWBestiary/Defs/
+ThingDefs_Races/` (26 files there, unchanged) — wave 56's pointer held.
+
+Picked the next 8 alphabetically-first files: `RSW_Scurrier.xml`,
+`RSW_Shaak.xml`, `RSW_ShadeWhale.xml`, `RSW_Shiro.xml`,
+`RSW_ShiroTrap.xml`, `RSW_ShrublandGiant.xml`, `RSW_Shyrack.xml`,
+`RSW_Sketto.xml`. Full-file reviewed all 8. Every cross-referenced defName
+was grepped and confirmed to resolve to a real def in the repo: bodies
+(`RSW_Scurrier`/`RSW_Shaak`/`RSW_ShiroTrap`/`RSW_Shyrack` new this wave in
+`RSW_MlieWaveC_Bodies.xml`; `RSW_ShadeWhale` reuses already-ported
+`RSW_Horax`; `RSW_Shiro` uses vanilla Core `TurtleLike`; `RSW_ShrublandGiant`
+reuses `RSW_Dewback` — cross-checked against `RSW_Fambaa.xml`'s own header,
+which documents Fambaa itself repointing to Dewback's body plan, so
+ShrublandGiant's header claim "same body as Fambaa" and its literal
+`<body>RSW_Dewback</body>` are consistent, not a mismatch; `RSW_Sketto`
+reuses already-ported `RSW_Bogwing`), leather/meat (`Leather_Light`/
+`RSW_Rodentia_Meat`, `Leather_Plain`/`RSW_Pachydermoid_Meat`,
+`RSW_Leather_Horax`/`RSW_Saurian_Meat`, `RSW_Leather_Testudine`/
+`RSW_Saurian_Meat` shared by Shiro+ShiroTrap, `RSW_Leather_Fambaa`/
+`RSW_Gorg_Meat`, `RSW_Leather_Dark`/`RSW_Insectile_Meat`, vanilla
+`Leather_Lizard`/`RSW_Reptavian_Meat`), eggs (`RSW_EggShiro{,Un}Fertilized`
+shared by Shiro+ShiroTrap per both files' own header claim of shared
+symbiote eggs, `RSW_EggShyrack{,Un}Fertilized`), `canCrossBreedWith`
+(`RSW_Shiro`<->`RSW_ShiroTrap`, both directions confirmed), an ability/
+trainable pair (`RSW_SW_SwarmCall`, both `Shyrack`'s ThingDef
+`specialTrainables` and PawnKindDef `abilities` correctly single-level
+`MayRequire="Ludeon.RimWorld.Odyssey"` — matches the AbilityDef/TrainableDef's
+own gating in `RSW_MlieWaveC_Abilities.xml`, NOT the wave 55/56 double-
+MayRequire bug class), and 4 CreatureBehaviors C# extension/comp classes new
+to this wave's review (`RM_ShadeSeekingWanderExtension`,
+`RM_FilterFeedExtension`, `RM_CompProperties_DungSeeder` on `RSW_ShadeWhale`;
+`RM_ParentalEnrageExtension`/`RM_CompProperties_ParentalEnrage` on
+`RSW_ShrublandGiant`) — read each class's actual C# field declarations and
+confirmed every XML field name used (`intervalTicksRange`, `minShadeToSeed`,
+`dungFilthDef`, `seedPlants`, `feedTerrainDefNames`, `beginBelowFoodPercent`,
+`triggerRadius`, `guardianSearchRadius`, etc.) matches exactly, no
+key-mismatch bugs. Each race got the wave 49-56 sound-prefix check
+(`sound{Wounded,Death,Call,Angry}`): all 6 sound-bearing races
+(`Scurrier`/`Shaak`/`Shiro`/`Shyrack`/`Sketto` plus `ShadeWhale`'s reused
+`Horax` set) carry correctly RSW_-prefixed sounds, all 4 fields present and
+confirmed to resolve in `SoundDefs_SWBestiary.xml` (`Sketto`'s own header
+flags all 4 fields deliberately pointing at the same `RSW_Pawn_Sketto_Call`
+clip — verified true off the donor's own race block, not a typo).
+`RSW_ShiroTrap`'s own header flags a deliberately-unfixed dangling
+cross-reference (`butcherBodyPart.thing` = bare donor `RawTookeTrapRoot`,
+out of scope per the item's own "not-yet-ported dependency" tolerance) —
+confirmed the flag is accurate and left it, not this wave's job. Also ran
+the wave 54-56 XML-tree duplicate-element scan (Python, non-`<li>` elements
+per parent) across all 8 files — zero duplicates found in any block. No
+bugs found in any of the 8.
+
+All 8 marked CLEAN, commit `1f0ffd7ca`, pushed. One transient
+`.git/index.lock` collision with a concurrent agent, cleared on retry
+within seconds per the item's own protocol.
+
+Re-measured after: `TALLY  CLEAN 3184  DIRTY 13  ORPHANED 0  NEVER ENTERED 266`
+— 266 = 274 − 8 exactly, no concurrent-agent noise mid-wave (DIRTY rose
+274→7→13 between wave 56's end and this wave's start/end from unrelated
+concurrent build work, not this loop's doing). **18 `SWBestiary/Defs/
+ThingDefs_Races` files remain**: `RSW_Strill.xml`, `RSW_TeeMuss.xml`,
+`RSW_TunnelSnake.xml`, `RSW_Urusai.xml`, `RSW_Uvak.xml`, `RSW_Varactyl.xml`,
+`RSW_Voorpak.xml`, `RSW_Vornskyr.xml`, `RSW_WarWyrm.xml`,
+`RSW_Whisperbird.xml`, `RSW_WompRat.xml`, `RSW_Woolamander.xml`,
+`RSW_Worrt.xml`, `RSW_Wraid.xml`, `RSW_WraidAlpha.xml`, `RSW_Wyyyschokk.xml`,
+`RSW_Yobshrimp.xml`, `RSW_Zakkeg.xml`. Next wave: continue
+`SWBestiary/Defs/ThingDefs_Races` alphabetically from `RSW_Strill.xml`,
+with `list --show-untracked` (re-derive the 266 count fresh, do not trust
+it — this wave's own start count already showed the standard drift from
+concurrent build agents).
