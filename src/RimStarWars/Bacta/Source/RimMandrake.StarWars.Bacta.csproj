@@ -43,8 +43,10 @@
     <Compile Include="BactaTuning.cs" />
     <Compile Include="BactaDefOf.cs" />
     <Compile Include="BactaMod.cs" />
+    <Compile Include="BactaHealingUtility.cs" />
     <Compile Include="CompBactaShell.cs" />
     <Compile Include="CompBactaImmersion.cs" />
+    <Compile Include="CompUseEffect_BactaHeal.cs" />
     <Compile Include="Building_BactaTank.cs" />
     <Compile Include="WorkGiver_CarryToBactaTank.cs" />
     <Compile Include="WorkGiver_CarryCorpseToBactaTank.cs" />

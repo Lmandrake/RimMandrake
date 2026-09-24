@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BACTA_SIDE_ITEMS_1 — lets a doctor administer the bacta patch/spray as a bill, the same
+  way Core wires AdministerMechSerumHealer onto ThingDef Human and the animal-base abstract
+  (Data/Core/Defs/ThingDefs_Races/Races_Humanlike.xml, Races_Animal_Base.xml — both carry a
+  literal <recipes> list with AdministerMechSerumHealer in it). Same two targets, same shape.
+
+  MEASURED, not guessed: the animal abstract has no <defName> at all — it is
+  `<ThingDef ParentName="BasePawn" Name="AnimalThingBase" Abstract="True">`
+  (Races_Animal_Base.xml line 49), so it is addressed by the XML attribute `@Name`, not a
+  defName predicate. An earlier draft of this file used `[defName="AnimalBase"]`, which the
+  offline patch validator (its live def scan mode) caught as a genuine 0-match xpath before
+  this ever reached the game.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[defName="Human"]/recipes</xpath>
+    <value>
+      <li>RSW_AdministerBactaPatch</li>
+      <li>RSW_AdministerBactaSpray</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[@Name="AnimalThingBase"]/recipes</xpath>
+    <value>
+      <li>RSW_AdministerBactaPatch</li>
+      <li>RSW_AdministerBactaSpray</li>
+    </value>
+  </Operation>
+
+</Patch>

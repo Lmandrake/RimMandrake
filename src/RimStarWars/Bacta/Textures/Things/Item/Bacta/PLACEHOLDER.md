@@ -4,6 +4,12 @@
 BACTA_TANK_CORE_1. It is a flat metal canister with a pale-blue fill line. Not
 finished art.
 
+`RSW_BactaPatch.png` and `RSW_BactaSpray.png` (128x128 each) were generated
+the same way, this session, to unblock BACTA_SIDE_ITEMS_1: an adhesive
+dressing and an aerosol canister, both carrying the same pale-blue fill
+colour as the fluid. Not finished art — same art-acceptance item as the rest
+of this mod's textures.
+
 ## Constraints the real art must keep
 
 - **128x128, transparent background**, silhouette inside roughly the middle 70%

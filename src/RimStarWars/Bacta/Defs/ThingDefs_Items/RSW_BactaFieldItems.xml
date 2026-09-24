@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_BactaPatch / RSW_BactaSpray — BACTA_SIDE_ITEMS_1's field-usable consumables. Both apply
+  ONE guarded pass of BactaHealingUtility.ApplyHealingDose (see CompUseEffect_BactaHeal.cs) —
+  the exact mechanism CompBactaImmersion runs continuously in the tank, at item scale.
+
+  Wiring verified against Core's own MechSerumHealer ("healer mech serum",
+  Data/Core/Defs/ThingDefs_Items/Items_Exotic.xml): CompProperties_Usable (the vanilla "Use"
+  float-menu/gizmo, JobDef UseItem) driving one or more CompProperties_UseEffect-derived comps,
+  plus vanilla CompProperties_UseEffectPlaySound and CompProperties_UseEffectDestroySelf
+  (single-use, consumed on application) — all three reused unmodified. Only the healing comp
+  itself (CompProperties_UseEffect_BactaHeal) is ours: Core's own
+  CompUseEffect_FixWorstHealthCondition regrows missing parts and can touch the brain, which
+  this mod's tank explicitly never does (BACTA_TANK_CORE_1 card 2).
+
+  thingCategories is Drugs, NOT a Medicine category, on purpose — the same precedent
+  MechSerumHealer sets. A Medicine-category item can be auto-selected as tend-job medicine by
+  an ordinary doctor's Tend job and burned on whoever is being tended without the player
+  choosing to use it. These are player-directed field items: the Use gizmo/float menu, or the
+  AdministerUsableItem-based recipes below for a doctor to give one to someone else.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase" Name="RSW_BactaFieldItemBase" Abstract="True">
+    <thingClass>ThingWithComps</thingClass>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <useHitPoints>true</useHitPoints>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <thingCategories>
+      <li>Drugs</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <tradeability>All</tradeability>
+    <techLevel>Spacer</techLevel>
+    <allowedArchonexusCount>25</allowedArchonexusCount>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_BactaFieldItemBase">
+    <defName>RSW_BactaPatch</defName>
+    <label>bacta patch</label>
+    <description>A self-adhesive dressing soaked in stabilized bacta gel. Peel it, press it over a fresh wound, and it goes to work immediately — nothing like the tank's slow, total-body immersion, but enough to close one bad cut before it becomes a bigger problem.\n\nIt has nothing to offer an old scar, a missing limb, a damaged brain, or a disease already running its course. It is used once and gone.</description>
+    <graphicData>
+      <texPath>Things/Item/Bacta/RSW_BactaPatch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.65</drawSize>
+    </graphicData>
+    <stackLimit>15</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>60</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Apply {0_label}</useLabel>
+        <useDuration>180</useDuration>
+        <showUseGizmo>true</showUseGizmo>
+      </li>
+      <li Class="CompProperties_UseEffect_BactaHeal">
+        <woundHealAmount>6</woundHealAmount>
+        <tendQuality>0.65</tendQuality>
+      </li>
+      <li Class="CompProperties_UseEffectPlaySound">
+        <soundOnUsed>TechMedicineUsed</soundOnUsed>
+      </li>
+      <li Class="CompProperties_UseEffectDestroySelf" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_BactaFieldItemBase">
+    <defName>RSW_BactaSpray</defName>
+    <label>bacta spray</label>
+    <description>A pressurized canister of atomized bacta, meant to be misted over a whole wounded area rather than pressed onto one cut. It tends and closes every fresh wound it reaches, and its antiseptic base gives a treatable infection a real push toward beating itself — the closest a field item gets to the tank's own reach, in one burst instead of a slow immersion.\n\nStill just a dose: it cannot touch a scar, a missing limb, a damaged brain, or an infection medicine could never have helped anyway.</description>
+    <graphicData>
+      <texPath>Things/Item/Bacta/RSW_BactaSpray</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>140</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>1.5</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Use {0_label}</useLabel>
+        <useDuration>240</useDuration>
+        <showUseGizmo>true</showUseGizmo>
+      </li>
+      <li Class="CompProperties_UseEffect_BactaHeal">
+        <woundHealAmount>10</woundHealAmount>
+        <tendQuality>0.8</tendQuality>
+        <immunityGainAmount>0.05</immunityGainAmount>
+        <infectionAssistEnabled>true</infectionAssistEnabled>
+      </li>
+      <li Class="CompProperties_UseEffectPlaySound">
+        <soundOnUsed>TechMedicineUsed</soundOnUsed>
+      </li>
+      <li Class="CompProperties_UseEffectDestroySelf" />
+    </comps>
+  </ThingDef>
+
+  <!--
+    Lets a doctor administer either item to someone else via a bill, exactly the vanilla
+    MechSerumHealer pattern (Recipe_AdministerUsableItem reads the target's CompUsable and
+    calls UsedBy — no new C# needed).
+  -->
+  <RecipeDef>
+    <defName>RSW_AdministerBactaPatch</defName>
+    <label>apply bacta patch</label>
+    <description>Apply a bacta patch to close a fresh wound.</description>
+    <workerClass>Recipe_AdministerUsableItem</workerClass>
+    <jobString>Applying bacta patch.</jobString>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <workAmount>180</workAmount>
+    <dontShowIfAnyIngredientMissing>true</dontShowIfAnyIngredientMissing>
+    <surgeryOutcomeEffect IsNull="True" />
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_BactaPatch</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_BactaPatch</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_AdministerBactaSpray</defName>
+    <label>use bacta spray</label>
+    <description>Mist a wounded pawn with bacta spray.</description>
+    <workerClass>Recipe_AdministerUsableItem</workerClass>
+    <jobString>Using bacta spray.</jobString>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <workAmount>240</workAmount>
+    <dontShowIfAnyIngredientMissing>true</dontShowIfAnyIngredientMissing>
+    <surgeryOutcomeEffect IsNull="True" />
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_BactaSpray</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_BactaSpray</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+  </RecipeDef>
+
+</Defs>
