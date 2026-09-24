@@ -7,10 +7,13 @@
   ("ship RM_CompVaporDrifter and RM_MapComponent_VaporColumns as generic,
   content-free, compiling classes plus the wiring PATTERN ... a placeholder
   using an EXISTING shipped flying/aerofleet kind ... is fine ... clearly
-  commented PLACEHOLDER"). This is NOT a roster decision: whether the
-  Forge's actual sky fauna IS AA_Aerofleet (renamed "fumerider" per the kit
-  spec's own XML-only ledger line — "Aerofleet→Fumerider rename... roster
-  pass") is `rosters/the_forge.json`'s call, owed to that pass, not this one.
+  commented PLACEHOLDER"). This is NOT a roster decision: which biome(s) get
+  AA_Aerofleet in their wildAnimals list is `rosters/the_forge.json`'s call,
+  owed to that pass, not this one. NAMING is settled though: AA_Aerofleet is
+  labeled "bulloo" as of 2026-09-24 (NONCANON_BEAST_RENAME_1 batch 3,
+  Contagion_Rename.xml) — the Forge sheet's old "fumerider" placeholder was
+  flagged and never ruled (noncanon_beast_names_propane_arid_forge_pyre_
+  fever_greentide_rust_lantern_blue.md flag 2); bulloo is the applied name.
 
   Target: AA_Aerofleet is CONFIRMED already in RUT_TheForge's own
   <wildAnimals> list today (`<AA_Aerofleet MayRequire="sarg.alphaanimals">
