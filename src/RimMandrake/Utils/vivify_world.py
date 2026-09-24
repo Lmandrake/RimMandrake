@@ -472,7 +472,7 @@ def main():
         if not counts:
             print("  ✅ the live world matches the authored bundle on every compared "
                   "column.")
-        for col in sorted(counts, key=lambda c: -counts[col] if False else -counts[c]):
+        for col in sorted(counts, key=lambda c: -counts[c]):
             print("  %-12s differs on %6d / %d tiles" % (col, counts[col], compared))
             for tid, was, now in examples.get(col, [])[:3]:
                 print("        tile %-6s authored=%-24s live=%s" % (tid, was, now))
