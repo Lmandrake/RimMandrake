@@ -81,3 +81,4 @@
 {"seat":"BENCH","event":"file","id":"NIGHTSIDE_ICE_DESIGN_SITTING_1","title":"The Nightside Ice design sitting: refine to full mod glory (owner directive 2026-09-24)","kind":"task","target":"v1","needs":"owner","spec":"design/Jawa/worldbuilding/biomes/nightside_ice.md","for":"BENCH","ts":"2026-09-24T20:48:23Z"}
 {"seat":"BENCH","event":"claim","id":"NIGHTSIDE_ICE_DESIGN_SITTING_1","ts":"2026-09-24T20:48:24Z"}
 {"seat":"BENCH","event":"start","id":"NIGHTSIDE_ICE_DESIGN_SITTING_1","ts":"2026-09-24T20:48:26Z"}
+{"seat":"BENCH","event":"file","id":"FORCE_DISTURBANCE_REFLAVOR_1","title":"Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-24T20:57:29Z"}
