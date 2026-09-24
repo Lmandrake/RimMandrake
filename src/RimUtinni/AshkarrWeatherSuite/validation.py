@@ -94,7 +94,6 @@ from modcheck import Suite, ExpectationFailed
 suite = Suite("AshkarrWeatherSuite")
 suite.toggles = []   # no Source/, no ModSettings of its own -- every component beyond_toggle
 
-GEOMETRY_TYPE = "RimMandrake.StarWars.WeatherSuite.PlanetGeometryDef"
 GEOMETRY_DEF = "RUT_WS_AshkarrGeometry"
 
 GEOMETRY_EXPECT = {
@@ -178,14 +177,25 @@ def planet_geometry_readback(t):
     t.clear_area(size=8)
 
     with t.component("geometry_def_matches_shipped_xml", beyond_toggle=True):
-        r = t.bridge_call("jawa/get_def", defType=GEOMETRY_TYPE, defName=GEOMETRY_DEF)
+        # jawa/get_def (singular) only hand-models ThingDef/PawnKindDef/
+        # BiomeDef under `extra` (GetDef, JawaBenchTerrainTools.cs) -- for a
+        # custom Def subclass like PlanetGeometryDef it returns extra=null,
+        # extraModelled=false, and there is no "resolved" or "fields" key on
+        # its response at all, so the original call here always raised
+        # ExpectationFailed regardless of the def's real content. jawa/get_defs
+        # (plural)'s `fields=` parameter is the documented escape hatch for
+        # reading an arbitrary def type's own scalar fields.
+        r = t.bridge_call(
+            "jawa/get_defs", defs="PlanetGeometryDef/%s" % GEOMETRY_DEF,
+            fields=",".join(GEOMETRY_EXPECT))
         if _live(t):
-            row = r or {}
-            fields = row.get("resolved") or row.get("fields") or {}
+            rows = (r or {}).get("defs") or []
+            row = next((d for d in rows if d.get("defName") == GEOMETRY_DEF), None)
+            fields = (row or {}).get("fields") or {}
             if not fields:
                 raise ExpectationFailed(
-                    "jawa/get_def(%s, %s) returned no resolved fields: %r"
-                    % (GEOMETRY_TYPE, GEOMETRY_DEF, r))
+                    "jawa/get_defs(PlanetGeometryDef/%s) returned no fields: %r"
+                    % (GEOMETRY_DEF, r))
             bad = []
             for field, expect in GEOMETRY_EXPECT.items():
                 got = fields.get(field)
@@ -243,7 +253,13 @@ def weather_pathway_healthy(t):
         r = t.bridge_call("jawa/weather_get")
         if _live(t):
             row = r or {}
-            if not row.get("success", True) and "error" in row:
+            # WeatherGet's own failure path returns Fail(), whose shared
+            # helper (JawaBenchTerrainTools.cs) shapes a refusal as
+            # {success=false, message, details} -- there is no "error" key
+            # anywhere in this bridge's response family, so the original
+            # `"error" in row` guard could never be true and this component
+            # never actually failed on a genuine error.
+            if not row.get("success", True):
                 raise ExpectationFailed(
                     "jawa/weather_get reported an error: %r" % row)
         t.screenshot()
