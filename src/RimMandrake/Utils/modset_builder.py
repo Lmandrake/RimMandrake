@@ -96,6 +96,30 @@ TIERS = {
         "want": [BRIDGE],
         "dlc": True,
     },
+    "weepingstones": {
+        "why": "Live-load/quicktest proof for WEEPINGSTONES_RM_MOD_BUILD_1: does "
+               "mandrake.rm.weepingstones load clean, does RM_WeepingStones "
+               "resolve and generate a map, and do its native fauna/flora, the "
+               "stocked-pool bestiary and the Utinni-patched RSW_ Star Wars "
+               "fauna (WildAnimals_WeepingStones.xml, mandrake.rut.patches) all "
+               "spawn/resolve with no cross-reference errors. "
+               "mandrake.rm.environmentalhazards is a hard <modDependencies> "
+               "entry (RM_WaterTruceExtension); mandrake.rut.rotsporekit is "
+               "needed for the shared RUT_Dewshrooms wildPlants row; "
+               "mandrake.rsw.swbestiary pulls sarg.alphaanimals + "
+               "mlie.starwarsanimalcollection transitively via its own "
+               "modDependencies (also needed directly for AA_Eyeling).",
+        "want": [
+            BRIDGE,
+            "mandrake.rm.weepingstones",
+            "mandrake.rm.environmentalhazards",
+            "mandrake.rut.patches",
+            "mandrake.rut.rotsporekit",
+            "mandrake.rsw.swbestiary",
+            "sarg.alphaanimals",
+        ],
+        "dlc": True,
+    },
     "slime": {
         "why": "Prove the Gelatinous Slime gene machine (SLIME_GENE_ARCHIVE_BUILD_1): "
                "the campaign's RUT_SlimeGeneArchive (priority 100) must win over "
