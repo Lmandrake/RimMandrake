@@ -140,9 +140,18 @@ SWBestiary files (`RSW_DesertPortMisc_Races.xml` and siblings). The reaction she
 `check_pseudo_sw_name.py` before he saw it. (Header corrected 2026-09-24 — it still read
 "DRAFTED, NOT RULED" four days after the apply commit.)
 
-**Batch 3 (Forsaken Crags, Nightside Ice, the Contagion, the Slime) is DRAFTED, not ruled:**
-`design/Jawa/worldbuilding/biomes/noncanon_beast_names_crags_nightside_contagion_slime.md`
-— 45 labels plus the planet-wide census (Appendix A/B there). Do not apply until he reacts.
+**Batch 3 (Forsaken Crags, Nightside Ice, the Contagion, the Slime) — RULED AND APPLIED
+2026-09-24 (`d9b150ab5`).** The owner ruled the batch with two new laws, typed same day:
+syllable VARIETY (some one-, some three-syllable — no wall of twos) and the PLANET-WIDE
+slime law (slime/goo/gel creatures take long-vowel monosyllables: ghaaz, zhool, wuum,
+oomb, vohhm). Doc records the rulings + strike-throughs:
+`design/Jawa/worldbuilding/biomes/noncanon_beast_names_crags_nightside_contagion_slime.md`.
+Applied as 4 conditional patch files (`UtinniPatches/Patches/*_Rename.xml`) + in-place
+`RSW_CaveLemming` → mahllik; 42 labels, validate 0 errors, 0 collisions. **Left open:**
+`AA_Razorjack` (skezzar/sytheclaw conflict — owner warned 2026-09-24 the sytheclaw was
+mistakenly removed from the Pyrelands; settle at the Pyrelands sitting, never by renaming
+razorjack to sytheclaw) and `RM_Titanoslime` (offer *baahm* unaccepted; his word
+"titanoslime" stands). Art: 114 jobs queued same day under ruled names.
 
 🔴 **Batch 1 is the rejected one** (Sandstrider, Spineroller, EmberCarpet,
 Ferroclaw, Dunestalker, Whirlbloom — 23/23 English compounds). Those labels are
