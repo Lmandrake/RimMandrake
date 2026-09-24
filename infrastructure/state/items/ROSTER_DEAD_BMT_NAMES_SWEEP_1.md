@@ -227,3 +227,48 @@ instead of chased further here, since Korrum is out of this item's scope.
 now stale) and step 3/step 5's owner-judgment calls (Stoneback's one-species-
 three-rosters question; CaveLemming's owed rename/refashion). None of those are
 offline-doable by this seat.
+
+## FOUNDRY, 2026-09-24 (later same day): item 2 done — pyramid floor RE-MEASURED, holds comfortably
+
+**MEASURED, not bound.** `RUT_Wasteland` clears `ECOSYSTEM_PYRAMID_LAW_1`'s 50%
+small-weighted floor at **71.8% small** (smallC 6.30, largeC 2.48, 18 wired
+rows, 0 unresolved) — `python3 src/RimMandrake/Utils/ecosystem_pyramid_check.py`,
+run against `defs.sqlite`.
+
+🔴 **The first run of that checker this pass gave a WRONG, stale answer, and the
+staleness was silent.** `defs.sqlite` (built 2026-09-23 15:17, from the
+2026-09-23T21:58:37Z capture) reported `RUT_Wasteland` at 17 rows / largeC
+1.98 — **missing `RSW_Sacapillar` entirely**, even though it was already wired
+in the committed `RUT_Wasteland.xml` at that point (committed 14:30, file mtime
+14:50, both before the db build at 15:17). `dump_manifest.dump_db`'s staleness
+guard checks the db only against the capture it was built FROM, never against
+whether a *newer* capture exists on disk — and a newer capture
+(`2026-09-24T00-30-55Z`, taken after a cold-load run sheet) already existed,
+unbuilt, the whole time. Confirmed directly off that capture's own
+`defs/BiomeDef.json`: 18 wildAnimals rows including `RSW_Sacapillar` at 0.5,
+matching the live XML. Rebuilt with `measure build`
+(`/mnt/d/Luke/dev/measuring-large-artifacts/scripts/measure/cli.py build`,
+picks the newest capture automatically — 78489 defs, 541 types, 0 absent/
+shadowed/ambiguous/orphan/partial/failed) before re-running the checker. The
+17-row/largeC-1.98 number never appeared in this file and was never reported
+anywhere else, but flagging it here because it is exactly the
+confident-wrong-number shape `CLAUDE.md`'s "Instruments that return a
+confident wrong number" section warns about, from an instrument that is
+supposed to refuse rather than mislead.
+
+**The real, current number**: `RSW_Sacapillar` resolves live at bodySize 2.40
+(matches the wiring comment) and sits among 7 large entries totalling largeC
+2.48 against smallC 6.30 — 71.8% small, well clear of the 50% floor and clear
+of the bound's own worst case ("~3.9+ largeC" would be needed to fail it;
+actual is 2.48). No other biome's numbers changed by this rebuild in a way
+that concerns this item — full 29-biome table re-measured clean, only
+`RUT_Desert`, `RUT_ExtremeDesert`, `RUT_NightsideIce` FAIL (pre-existing,
+unrelated to this item's 14 names) and `RUT_Jawa_BackgroundWater` is EMPTY
+(pre-existing, expected per this item's own biome-painting-stage doctrine).
+
+**Item 2 of "what is still owed" is now closed.** The only work left on this
+item is the two owner-judgment calls already named (Stoneback's
+one-species-three-rosters question; CaveLemming's owed rename/refashion) —
+**every offline-doable piece of this item is now done.** This item cannot
+`rimflow close` itself while those two owner questions are open, but nothing
+further is owed from an unattended pass.
