@@ -159,6 +159,22 @@ water-based lives here.
   accuracy and *range* reduced, movement slowed. The sensor-shadow theme's second home.
 - 🔴 No rain (R-H1: greatest altitudes only; this is not one).
 
+⭐ **Amendment — engine mechanisms ruled (owner at `BLUEDESERT_DESIGN_SITTING_1`,
+2026-09-24; decisions taken by question card except where quoted).** Feasibility
+RimSage-measured against the decompiled 1.6 engine the same day:
+
+- **Ice-sand drift rides Odyssey's SAND grid** (`WeatherDef.sandRate` → SandGrid:
+  Perlin-patchy accumulation, path-cost burial, auto-erosion after the storm), plus a
+  small Harmony tint patch for blue-white instead of tan. Owner, typed on the card:
+  *"But we need to do testing to make sure it goes deep"* — a live test proving drifts
+  pile DEEP against structures gates the build item's done.
+- **The Haze carries a mild exposure hediff** on unroofed pawns (hydrocarbon film:
+  chill, minor breathing; decays under roof) via the existing
+  `EnvironmentalHazards.EnvironmentalWeatherExtension` — zero new C#.
+- **Ice fog ships at BlindFog-verbatim severity**: accuracy 0.5, weapon range capped
+  22.9 cells (`WeatherDef.maxRangeCap`, native in 1.6), re-hued bright, plus a
+  `moveSpeedMultiplier` slow.
+
 ## 5. Always true
 
 - Nothing is blue up close; the color is scattering, and it is real from a distance.
