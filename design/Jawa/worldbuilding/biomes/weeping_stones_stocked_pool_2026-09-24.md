@@ -1,6 +1,17 @@
 # Weeping Stones — The Stocked Pool: pool-fish bestiary, husbandry loop, cuisine hooks
 
-**Item:** `WEEPING_STONES_FISH_HUSBANDRY_1` · **Date:** 2026-09-24 · **Status:** DRAFT for owner review
+**Item:** `WEEPING_STONES_FISH_HUSBANDRY_1` · **Date:** 2026-09-24 · **Status:** ⚖️ RULED 2026-09-24 (second card round)
+
+1. **Wild gentle, stocked nasty** (decision taken by question card) — the
+   2026-09-18 gentle six-species wild table stands untouched; nastiness is
+   what STOCKED pools breed. Domestication concentrates them and turns them
+   mean: the shore line stays serene, the pens are where the trouble lives.
+2. **Doubt-meat is a real mood economy** (card) — per-beast `Ate X` thoughts
+   (no new C#), squeamish/callous divergence, ideoligion bless/ban hook left
+   open for the ideo passes.
+   Smalls settled by BENCH at build: handler injuries real-but-minor (bites
+   and cuts, no maiming lottery), tier is the `RM_WeepingStones` kit per the
+   biome-kit law, vhorrin ships as the pool-state row as drafted.
 
 **Owner ruling (typed 2026-09-24, binding):**
 > "love it. Moisture farmers specializing in fish. Ripe possibilities for rimcuisine stuff too.

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T20:07:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T20:21:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2090,3 +2090,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  WATERTRUCERETRIBUTION1 — break the truce at the water, the biome fights back
 prose:    infrastructure/state/items/WATER_TRUCE_RETRIBUTION_1.md
+
+## STOCKED_POOL_BUILD_1 Build the Stocked Pool kit: 8-row pool bestiary, husbandry loop (pen zones, PoolStock bookkeeping), doubt-meat mood economy, cuisine hooks - all rulings in the spec header
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  STOCKEDPOOLBUILD1 — build the Stocked Pool kit (Weeping Stones)
+prose:    infrastructure/state/items/STOCKED_POOL_BUILD_1.md
+
+## OASIS_MAKER_BUILD_1 Build the oasis-maker machine: ring-growth to real water at center, shade+rock placement floor with projected-footprint overlay, sold-very-expensive + scenario-start acquisition (ruled)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  OASISMAKERBUILD1 — build the oasis-maker machine
+prose:    infrastructure/state/items/OASIS_MAKER_BUILD_1.md

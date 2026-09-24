@@ -1,6 +1,25 @@
 # Oasis-Maker Machines — spec (OASIS_MAKER_MACHINES_1)
 
-**Status: DRAFT for owner review, 2026-09-24.** Redirect of Weeping Stones shine
+**Status: ⚖️ RULED 2026-09-24 (second card round).** Two rulings land on this spec:
+
+1. **Real water at the center** (decision taken by question card) — a finished
+   oasis's heart is true shallow-water pool terrain: fishable, stockable,
+   drinkable, and the truce/retribution radius applies. The machine makes the
+   biome's heart, composing with the Stocked Pool kit.
+2. **Acquisition REVISED — owner, typed, verbatim:** *"They are sold but very
+   expensive. Same tech as moisture farming itself. You can start a colony
+   with some of those. And priced accordingly."* ⇒ NOT quest-only relics:
+   trader stock at a very high price, tech-tier aligned with moisture farming
+   (the biome's §8 vaporator family, not alien mystery tech), and legal as
+   scenario starting gear ("start a colony with some of those" — a scenario
+   part carrying 1–2, priced into the scenario). This refines the earlier
+   "treasure type" wording below; quest obtain/sabotage hooks remain wanted
+   but are no longer the only faucet. Craftability stays OPEN — BENCH
+   recommendation: not craftable v1 (trade + quest + scenario start only).
+   Half-made-oasis permanence stands as drafted (freeze forever, never
+   reverse) — BENCH call, consistent with the dead Born-and-Dying ruling.
+
+Redirect of Weeping Stones shine
 option 3 ("The Machines That Weep") — the four-state restorable-vane draft in
 `design/Jawa/worldbuilding/biomes/weeping_stones_shine_options_2026-09-24.md` is
 SUPERSEDED by this; it is mined here only for register and flavor.
