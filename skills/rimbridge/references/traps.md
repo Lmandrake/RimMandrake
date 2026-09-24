@@ -1102,3 +1102,18 @@ NRE'd silently on 2 of 34 pawns in this session ("Object reference not set", no
 kill). Fall back to `jawa/damage {"thingId":<bare id>,"amount":large,"damageDef":
 "Bomb"}` looped until `dead:true` in the response — `amount` is a request, not a
 result (§ elsewhere in this file), so one call is not enough evidence of a kill.
+
+## `jawa/get_defs` says "No def TYPE named 'X'" for a genuinely-loaded custom Def subclass
+**Symptom:** `jawa/get_defs {"defs": "InhabitedPlaceDef/Foo"}` returns `"error": "No def TYPE
+named 'InhabitedPlaceDef'."`, read as proof the mod/def never loaded.
+**Cause:** `get_defs`'s def-type resolver does not recognise every project-custom `Def`
+subclass — tried and failed on `SettlementManifestDef` and `InhabitedPlaceDef`, both from a
+mod independently confirmed loaded (its `WorldObjectDef`s resolved fine via the same tool, its
+`Player.log` init line printed, and its debug actions were present in the live debug tree).
+Vanilla/common types (`ThingDef`, `WorldObjectDef`, `TraderKindDef`) resolve fine; some
+project-custom ones do not — the boundary is untested beyond these two.
+**Fix:** never conclude "not loaded" from this error alone for a custom Def subclass. Verify
+independently: a debug-action census (`rimworld/list_debug_action_children`), a
+`Player.log` init line, or a live spawn/read through a different route.
+**Recurs when:** querying any mod-defined (non-vanilla) Def subclass via `get_defs`.
+(SETTLEMENT_VISIT_LOOP_1, 2026-09-24)

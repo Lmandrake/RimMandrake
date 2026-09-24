@@ -6,3 +6,8 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-24T05:26:17Z"}
 {"seat":"FOUNDRY","event":"needs","id":"SHOKKWEAVE_SOLE_SOURCE_1","to":"owner","reason":"trader-stock companion-tool build vs source-proof-accepted decision; emergent-Shokk harvest-job (new colonist work type) build decision","ts":"2026-09-24T05:26:47Z"}
 {"seat":"FOUNDRY","event":"start","id":"CANON_CREATURE_REGEN_1","ts":"2026-09-24T05:35:29Z"}
+{"seat":"FOUNDRY","event":"needs","id":"CANON_CREATURE_REGEN_1","to":"owner","reason":"wave 4 fidelity sheet served, needs owner's grade before deploy; 2 facings still backfilling behind the Codex outage","ts":"2026-09-24T05:36:42Z"}
+{"seat":"FOUNDRY","event":"start","id":"SETTLEMENT_VISIT_LOOP_1","ts":"2026-09-24T05:37:55Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SETTLEMENT_VISIT_LOOP_1: live quicktest of the Inhabited visit lifecycle on an empty world tile, away from the colony","ts":"2026-09-24T05:37:56Z"}
+{"seat":"FOUNDRY","event":"note","id":"SETTLEMENT_VISIT_LOOP_1","text":"Mod+debug-actions confirmed live; real blocker is tile-selection + picker-dialog tooling, not the mod. Full account in item file. get_defs trap recorded in rimbridge skill.","ts":"2026-09-24T05:42:46Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-24T05:42:47Z"}

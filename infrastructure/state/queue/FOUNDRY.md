@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T05:35:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T05:42:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -660,7 +660,7 @@ prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md
 ## CANON_CREATURE_REGEN_1 Regenerate every SW-canon creature from library guidance (gated on CANON_REFERENCE_LIBRARY_1 + pilot sheet grades); wyyyschokk blue-grey/yellow-cross is the exemplar
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 summary:  Every SW-canon creature in the stack (the library's roster), re-rendered:
