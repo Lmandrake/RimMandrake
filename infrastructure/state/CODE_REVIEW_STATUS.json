@@ -1775,6 +1775,12 @@
     "hash": "6c7d87d92aa42ea6a74973ae48fd15a502866b1cb713bfb7a5b746e97887611d",
     "sha": "3901f320b"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_HaulVictimAIUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a6034eef78b3dc72da539706ab478473452a39f59aceefb90b98cd5273872fcb",
+    "sha": "91bf261fb"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_EnvironmentalExposure.cs": {
     "cleanCount": 2,
     "date": "2026-09-17",
@@ -1979,6 +1985,12 @@
     "hash": "b016353eebbf1b0aca075b31fcd79d56248e622e921b08ba80bcf41907f22e65",
     "sha": "009b887ef"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_TreasureSaleConscience.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8dbe349a1ea9cc513c6ecb574b67f914f33ee821ffb03db76101c5b0d4593644",
+    "sha": "91bf261fb"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_PlaceWorker_OnRequiredVentComp.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -2032,6 +2044,12 @@
     "date": "2026-09-17",
     "hash": "21d3334c902bcbe79a82e7d67e93d388219388f506e1b67044e57fa49b4c1462",
     "sha": "d3aa7fb5d"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_TreasureConscienceDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c62cd1e041d5943bbfe98275cd001ce76c7f4e96f39f5e10d29dfb2ffe32c59e",
+    "sha": "91bf261fb"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_TreeFallUtility.cs": {
     "cleanCount": 2,

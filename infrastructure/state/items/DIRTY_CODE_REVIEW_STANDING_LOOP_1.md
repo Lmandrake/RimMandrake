@@ -910,3 +910,71 @@ this wave's SWBestiary finding, their counts should be re-verified rather
 than trusted — wave 14's per-cluster tally may be stale the same way
 SWBestiary's was. The 284-row re-dirtied backlog and the binary-art-tracking
 scope question from wave 15 are both still untouched.
+
+## Wave 19 — 2026-09-24: `BeastMechanics` never-entered cluster CLOSED
+
+Reviewed the final 8 `BeastMechanics` never-entered files, full-file each,
+closing out the whole SWBestiary `BeastMechanics` cluster (11/11 recorded):
+`CompScrapHoarder.cs`/`JobGiver_HoardScrap.cs`/`JobDriver_HoardScrap.cs`
+(SHRUBLAND_SCRAPNEST_BIRDS_1's scrap-hoarding bird mechanic — a marker comp,
+a `ThinkNode_JobGiver` inserted at `Animal_PreMain`, and a haul job built
+almost entirely from vanilla `Toils_Haul`), `CompInnateAbility.cs` (grants a
+donor-comp-replacement AbilityDef once, Scribed so it isn't re-granted),
+`CompAbilityEffect_FuelSpew.cs` (the cindermite's chemfuel spew — confirmed
+against both the vanilla `CompAbilityEffect_FireSpew` and the VFE Insectoids
+donor source that this is deliberately Blunt/no-ignition, not vanilla's
+Flame, matching the file's own header claim), and `RSW_
+BeastMechanicsDefOf.cs`/`RSW_BeastMechanicsSettings.cs`/`Patch_JobGiver_
+GetFood.cs` (JobDef/settings/Harmony-prefix scaffolding). Cross-checked every
+field and DefOf reference against its consumer or its paired XML
+(`RSW_ScrapNest.xml`'s `CompProperties_ScrapHoarder`/`RSW_HoardScrap` JobDef/
+`RSW_ScrapHoarderInsert` ThinkTreeDef all match the C# exactly) and
+`CompMetalEater.cs`'s `blockNormalFood` field the Harmony prefix reads. No
+bugs found in any of the 8. All 8 confirmed reachable via `RimMandrakeBeast
+MechanicsRSW.csproj`'s `<Compile Include>`. All 8 marked CLEAN, commit
+`91bf261fb`, pushed.
+
+With time remaining, re-derived every never-entered cluster fresh from
+scratch (fresh `<Compile Include>`/default-glob parse of every
+`src/**/*.csproj`, diffed against `CODE_REVIEW_STATUS.json`'s full key set —
+not just CLEAN rows, any recorded status) rather than trusting wave 14's
+tallies, which wave 18 already found stale once (SWBestiary's true 11 vs its
+claimed 12). **Current total: 43 never-entered `.cs` files**, far below wave
+14's original 95 — most of that gap is prior waves' own work already having
+closed out `CreatureBehaviors` (75) and `BeastMechanics` (11) entirely, plus
+some folders wave 14 counted (`JawaIkee`, `Livestock`) turning out to already
+be fully recorded. Fresh per-folder breakdown: `EnvironmentalHazards/Source`
+8, `FlowWorks/Source/LiquidTypes` 7, `PyrelandsMechanics/Source` 5,
+`GelatinousSlime/Source` 3, `TrophyCraft/Source` 3,
+`StructureInjectionsRUT/Source/Ashfall` 3, `bridgetools/JawaBench.
+BridgeTools` 2, `FlowWorks/Source` 2, `Pyrelands/Source` 2, `LanternDeeps/
+Source` 2, and 1 each in `Aftermath/Source`, `FlowWorks/Source/SelfTest`,
+`Ninefold/Source`, `SeaShores/Source/SelfTest`, `WreckedMachines/Source`,
+`UtinniPatches/Source`.
+
+Reviewed 3 of `EnvironmentalHazards/Source`'s 8, full-file each:
+`RM_TreasureConscienceDef.cs` + `RM_Patch_TreasureSaleConscience.cs`
+(ROT_LIVE_PREPARATIONS_1 card 6's "selling the Rot's treasure gives a guilt
+memory" mechanic — verified the Harmony prefix/postfix split against the
+`TradeDeal.TryExecute` source RimSage cited in the file's own header, since
+`ResolveTrade()`+`Reset()` clear the deal before a postfix could read it),
+and `RM_HaulVictimAIUtility.cs` (FEVER_WOOD_MECHANICS_1's generalized
+kidnap-victim finder — diffed field-for-field against the real
+`RimWorld/KidnapAIUtility.TryFindGoodKidnapVictim` in
+`/mnt/d/Luke/dev/reference/rimworld-decompiled/RimWorld/KidnapAIUtility.cs`:
+identical validator shape with `RaceProps.Humanlike` correctly generalized
+to a caller-supplied predicate; the one omission — vanilla's Anomaly-DLC
+`IsSubhuman` exclusion — is not a bug, the file's own header names this a
+SPIKE that doesn't yet build the calling LordJob). Confirmed both
+`TryFindGoodHaulVictim` (called from `RUT_HaulPawnAndExit.cs`) and
+`treasureConscienceEnabled` (declared and read in `RM_EnvironmentalHazards
+Mod.cs`) are real, wired, non-dead code. No bugs found in any of the 3. All
+3 marked CLEAN, commit pending below, pushed.
+
+Next wave: 5 `EnvironmentalHazards/Source` never-entered files remain:
+`RM_LivingProduceExtension.cs`, `RUT_IncidentWorker_SporeCloud.cs`, `RUT_
+HediffComp_SheenExposure.cs`, `ContactVenomImmunity.cs`, `MapComponent_
+ContactVenom.cs` — re-derive rather than trust this count. `FlowWorks/Source/
+LiquidTypes` (7) is the next-largest cluster after this one closes. The
+284-row re-dirtied backlog and the binary-art-tracking scope question from
+wave 15 are both still untouched.
