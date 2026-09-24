@@ -162,9 +162,10 @@ withered states must be distinguishable at a glance or sheet §4c's promise is d
 ## 7. What is replaced — disposition of the 7 donor rows (PROPOSED)
 
 The live `RUT_Webwork` `<wildPlants>` carries 7 rows (`rosters/the_webwork.json`, flora
-block). ⛔ **PROPOSED only — evictions are stopped as a sweep; this is the Webwork's own
-sitting, so each disposition below is the owner's call here and nowhere else
-(sitting record §6 item 8 carries the one canon case). Nothing is executed by this
+block). ⛔ **The six CUT rows are PROPOSED only — evictions are stopped as a sweep; this
+is the Webwork's own sitting, so they are the owner's call here and nowhere else.
+The one canon case (`Plant_TookeTrap_Wild`) is RULED — kept low via the Utinni patch,
+by question card 2026-09-24 (sitting record §6 ruling 8). Nothing is executed by this
 document.**
 
 | donor row | comm. | disposition (PROPOSED) | why, in one line |
@@ -172,7 +173,7 @@ document.**
 | `AB_JungleTree` | 1.1 | **CUT** | the donor tree standing in for the thicket's body — `RM_Kollavane` (§2 row 1) is that body, designed for the churn and the nest |
 | `RG_Plant_TropicalChokevine` | 1.0 | **CUT** | the hostile vine mass's job passes whole to `RM_Vessark` (§2 row 2), which is authored against the churn rather than borrowed for it |
 | `AB_TangleTea` | 0.4 | **CUT** | generic donor tangle-understory; the churn understory is now vessark/norrveth work |
-| `Plant_TookeTrap_Wild` | 0.3 | **MOVE to the Utinni injection layer, kept low** | genuine canon (a *tooke*-trap is Star Wars IP — Q11); it cannot sit in the free roster, and `RM_Kessaroth` is the free tier's snap-trap. See §8 — awaiting the owner's card (sitting record §6 item 8) |
+| `Plant_TookeTrap_Wild` | 0.3 | **RULED (card, 2026-09-24): MOVE to the Utinni injection layer, kept low** | genuine canon (a *tooke*-trap is Star Wars IP — Q11); it cannot sit in the free roster, and `RM_Kessaroth` is the free tier's snap-trap. See §8 — sitting record §6 ruling 8 |
 | `AB_Gomphoeria` | 0.15 | **CUT** | generic donor understory filler; the floor's work is done by named rows now |
 | `AB_RedBugloss` | 0.07 | **CUT** | donor understory the JSON itself flagged for the eye pass — and "bugloss" is an Earth plant name besides (ban 3 by the letter) |
 | `AB_Aaklac` | 0.05 | **CUT** | generic donor understory filler |
@@ -190,7 +191,7 @@ never the `RM_` tier, and never substitute for a row above (Q11a).
 
 | candidate | canon status | framing | verdict |
 |---|---|---|---|
-| `Plant_TookeTrap_Wild` | ✅ genuine canon (tooke-trap — named in the tier law itself, `biome_mod_architecture.md` §7 Q11, as an example of a name that IS IP) | Exactly as the sitting record §6 item 8 frames it: **PROPOSED kept low via a Utinni `WildPlants_Webwork` patch**, with `RM_Kessaroth` (§4 row 9) as the free tier's snap-trap. The canon trap injects *beside* ours at low commonality — a second, recognisable jaw in the thicket for campaign players — or is cut outright. | ⚠️ **AWAITING THE OWNER'S CARD** — §6 item 8 of the sitting record. Both readings written; neither executed |
+| `Plant_TookeTrap_Wild` | ✅ genuine canon (tooke-trap — named in the tier law itself, `biome_mod_architecture.md` §7 Q11, as an example of a name that IS IP) | **KEPT LOW via a Utinni `WildPlants_Webwork` patch**, with `RM_Kessaroth` (§4 row 9) as the free tier's snap-trap. The canon trap injects *beside* ours at low commonality — a second, recognisable jaw in the thicket for campaign players. | ✅ **RULED — question card, 2026-09-24** (sitting record §6 ruling 8). Execution belongs to the build items |
 
 **No other canon flora is recommended for this biome.** The Webwork's flora story is the
 thicket, the plumbing and the white half — all invented, all load-bearing — and the
