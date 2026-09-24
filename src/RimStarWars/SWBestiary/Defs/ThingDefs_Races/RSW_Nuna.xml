@@ -1,24 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  MLIE_FAUNA_ABSORPTION_1 Wave B — Nuna creature port, executing the owner's ruling
-  (STARWARS_DONOR_SUNSET_1, question card 2026-09-02): "Nuna collision: port Mlie's
-  under a NEW name and keep both — Mlie's version becomes a distinct ... species
-  alongside vanilla Core's Nuna; the collision dissolves in the port." The RSW_
-  tier prefix already gives a distinct defName (RSW_Nuna vs. vanilla Core's bare
-  "Nuna" — no rename-collision to solve beyond the standard convention), so "keep
-  both" is executed by ADDING RSW_Nuna alongside every existing bare "Nuna" cast
-  entry in BiomeCast_Ashkarr.xml (AridShrubland, BiomeCypreJungle,
-  COMIGO_GreaterSwamp_Tropical, Desert, ZBiome_Grasslands) at the same commonality,
-  rather than replacing the vanilla bird's slot.
-
-  Ported from mlie.starwarsanimalcollection's `Nuna` ThingDef/PawnKindDef pair,
-  renamed under the RSW_ tier prefix. Vanilla Core body (Bird) — no donor BodyDef
-  needed. Egg/leather/meat (RSW_EggNuna{,Un}Fertilized, RSW_Leather_Reptavian,
-  RSW_Reptavian_Meat, RSW_MlieWaveB_Resources.xml), sounds (RSW_Pawn_Nuna_*,
-  already absorbed; chick stage keeps vanilla Pawn_Chick_Call). The
-  `PathfindingFramework.MovementExtension` modExtension (MayRequire=
-  "pathfinding.framework", amphibious movement) is kept verbatim and gated — the
-  game is whole without that framework, Nuna just loses the swamp-movement bonus.
+  MLIE_FAUNA_ABSORPTION_1 Wave B — Nuna creature port. The 2026-09-02 "keep both" ruling
+  (STARWARS_DONOR_SUNSET_1) assumed a vanilla Core "Nuna" existed; MEASURED on the Desktop
+  2026-09-23, no Core or DLC Defs tree contains one — the bare "Nuna" is Mlie's own def
+  (mlie.starwarsanimalcollection), byte-identical to this port apart from cross-ref names.
+  Owner ruling 2026-09-23 (DUPLICATE_CANON_DEFNAME_PAIRS_1): the pair COLLAPSES onto RSW_Nuna —
+  every bare "Nuna" row in our defs and patches becomes an RSW_Nuna row at the same commonality.
 -->
 <Defs>
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">

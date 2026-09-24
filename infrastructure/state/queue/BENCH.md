@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T00:44:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T00:44:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -540,16 +540,6 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
-
-## DUPLICATE_CANON_DEFNAME_PAIRS_1 Four canon animals ship under TWO defNames each (donor + our RSW_ port), both wired into different biomes - gizka/kreetle/nuna/worrt, so one animal occupies up to five biomes and the one-home law is unenforceable per-defName
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Confirm the pairing per animal — that the donor def and the RSW port really are the same
-prose:    infrastructure/state/items/DUPLICATE_CANON_DEFNAME_PAIRS_1.md
 
 ## GREENTIDE_TERROR_REPLACEMENT_1 Something new and terrifying for the Greentide, replacing the dianoga
 state:    proposed
