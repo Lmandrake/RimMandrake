@@ -42,10 +42,10 @@
     "sha": "43f96b1b"
   },
   ".claude/hooks/queue_lint.py": {
-    "cleanCount": 4,
-    "date": "2026-09-20",
-    "hash": "2df64992ae601ec04556d609e37b21a6f00afb4375b54a58442075af856381db",
-    "sha": "91c3f95e8"
+    "cleanCount": 5,
+    "date": "2026-09-24",
+    "hash": "69a5913b09ee58ae23a08fdc6cc9b7cf316c5255579049af97b780e5f642736f",
+    "sha": "067849df3"
   },
   ".claude/hooks/selftest_block_agent_without_model.py": {
     "cleanCount": 1,
@@ -84,10 +84,10 @@
     "sha": "43f96b1b"
   },
   ".claude/hooks/selftest_queue_lint.py": {
-    "cleanCount": 3,
-    "date": "2026-09-20",
-    "hash": "cd2bbd9914af5d4a13cbbb61e30168409dbaa50c72fc8048f8aed2feaa579d69",
-    "sha": "91c3f95e8"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "76e2255fa719efa29554c7511a81a3f092a6791dee3821c35543f6c580e8671f",
+    "sha": "067849df3"
   },
   ".claude/hooks/selftest_warn_skill_unwired.py": {
     "cleanCount": 1,
@@ -834,16 +834,16 @@
     "sha": "fc438d857"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/JobDefs/RM_JobDefs.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "06b1923b19c8aa59d742ac5d23d5516241be636c194dcdf4e63d2ae51123f810",
-    "sha": "0aa131589"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "949ba632a9dddcca16a50d65696ec96a684133e2b6569814c393093197fbf594",
+    "sha": "067849df3"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_VerminBehaviors.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "3945a503986056aa3849e16c62b0d81e01b8df47470199032b07bbbb091b6d2d",
-    "sha": "99a9e5cbc"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "40858245a09dcde7cb849cfc3ec8859412c8b0317b9484d4dc234818e67131c0",
+    "sha": "067849df3"
   },
   "src/RimMandrake/CreatureBehaviors/Source/CompProperties_AquaticAmbusher.cs": {
     "cleanCount": 1,
@@ -1128,10 +1128,10 @@
     "sha": "39ad7169b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobDefOf.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-14",
-    "hash": "7c9fe2912305bc91ebb1bc5cf16545c52c3ee6798f4c041cd8278e869f5fb346",
-    "sha": "3bcf80ccf"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "d3ee3294aa025c8e1645d753338f6b712cb131c05315d5e8573160b3fc798f54",
+    "sha": "067849df3"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobDriver_EatCleanable.cs": {
     "cleanCount": 1,
