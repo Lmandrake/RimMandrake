@@ -2995,3 +2995,57 @@ Re-measured after: `TALLY  CLEAN 3102  DIRTY 4  ORPHANED 0  NEVER ENTERED 333`
 — 333 matches 340 − 7 exactly. **333 NEVER ENTERED files remain**, still
 dominated by `SWBestiary` (92 left) and `UtinniPatches` (83). Next wave: keep
 working this backlog with `list --show-untracked`.
+
+## Wave 47 — 2026-09-24: SWBestiary DesertPort/Zakkro cluster, 9 files, 1 bug fixed
+
+Re-ran `list --show-untracked` fresh: **333 NEVER ENTERED**, matching wave
+46's close exactly (`CLEAN 3101 DIRTY 5`, 4→5 DIRTY is the same concurrent
+build-agent churn every wave notes). `SWBestiary` still the biggest single
+cluster at 92 files.
+
+Picked 9 files (7 planned, +1 mid-wave, +1 to round out the spread) from
+`SWBestiary`'s `DesertPort`/`ThingDefs_Items`/`ThingDefs_Misc`/`Bodies`/`art`
+subtrees — none had a prior clean mark:
+
+- `Defs/BiomesTeamPort/ThingDefs_Items/RSW_Maguana_Items.xml` — **found and
+  fixed a real bug**: `RSW_EggMaguanaUnfertilized`'s `<label>` read
+  "**magmuana** egg (unfert.)" — a copy-paste typo off the fertilized egg's
+  label two defs above it ("maguana egg (fert.)"). Player-facing text error,
+  high confidence, fixed to "maguana egg (unfert.)". Commit `7775fe8ba`,
+  pushed.
+- `Defs/Bodies/RSW_AADesertPort_Bodies.xml` — Alpha Animals body/body-part
+  port (`RSW_WormWithArmor`, `RSW_TentacledQuadrupedEyeless`), defName-only
+  rename, pure data. No bugs.
+- `Defs/DesertPort/RSW_DesertPortB_Plants.xml` — 4 SWAC flora ports
+  (chak-root, nysillin, hubba gourd, bloddle) with raw-food closures. No bugs.
+- `Defs/DesertPort/RSW_ExtremeDesertSignatureFlora.xml` — Extreme Desert's
+  own signature flora (light-pipe nub, ollim, ollim wood), heavily
+  cross-referenced against live engine config-error fixes from 2026-09-21.
+  No bugs.
+- `Defs/DesertPort/RSW_Zakkro.xml` + `Defs/ThingDefs_Items/RSW_ZakkroEgg.xml`
+  — the cavern-beast pair (`EXTREME_DESERT_CAVERN_BEAST_1`), deliberately
+  unwired pending cavern map-gen. No bugs.
+- `Defs/ThingDefs_Misc/RSW_Filth_WhaleDung.xml` — fixes a shipped no-op
+  (Filth placementMask vs NaturalTerrainBase's filthAcceptanceMask). Verified
+  the claimed real texture actually exists on disk:
+  `Textures/Things/Filth/RSW_WhaleDung.png` — present. No bugs.
+- `art/ScrapNest/gen_scrapnest_placeholder.py` — 3-variant procedural
+  placeholder-nest generator, explicitly self-documented as throwaway. No
+  bugs.
+- `Defs/DesertPort/RSW_DesertPortMisc_Items.xml` — leather/meat/egg closure
+  for the misc DesertPort fauna. Checked the `RSW_Sandstrider`/`RSW_Tuskcoil`
+  defName vs "ossik"/"ulgga" label mismatch that looked suspicious at first
+  glance — cross-checked both race defs in `RSW_DesertPortMisc_Races.xml`:
+  same defName/label split there too, so it's the repo's deliberate
+  bare-defName-vs-renamed-label convention, not a bug.
+
+All 9 marked CLEAN (one after its typo fix was committed first, since
+`mark-clean` refuses on uncommitted changes). Commits `7775fe8ba` (the fix)
+and `3d90e4806` (status file), both pushed. No `.git/index.lock` contention
+this wave.
+
+Re-measured after: `TALLY  CLEAN 3110  DIRTY 5  ORPHANED 0  NEVER ENTERED 324`
+— 324 matches 333 − 9 exactly. **324 NEVER ENTERED files remain**, `SWBestiary`
+now at 83 left, `UtinniPatches` still 83. Next wave: keep working
+`SWBestiary` (still the larger single cluster once it drops below
+`UtinniPatches`, switch to that) with `list --show-untracked`.
