@@ -11,10 +11,17 @@
   (Pass 18, Mott) — no new resource needed. Its Royalty-gated
   specialTrainable/ability (`SW_GoldForage`) ported this pass as
   `RSW_SW_GoldForage` (AbilityDef + TrainableDef pair,
-  RSW_MlieWaveC_Abilities.xml) — the donor's own gating quirk (PawnKindDef
-  `<abilities>` wrapper says `MayRequire="Ludeon.RimWorld.Odyssey"` while the
-  inner `<li>` says `MayRequire="Ludeon.RimWorld.Royalty"`) preserved
-  verbatim, not corrected. Adult lifeStage sounds
+  RSW_MlieWaveC_Abilities.xml). Wave 56 code review: the donor's `<abilities>`
+  wrapper carried an extra outer `MayRequire="Ludeon.RimWorld.Odyssey"` around
+  the inner `<li MayRequire="Ludeon.RimWorld.Royalty">` — the same
+  outer-vs-inner MayRequire bug class fixed in `RSW_LavaFlea.xml` (wave 55):
+  `RSW_SW_GoldForage`'s own AbilityDef/TrainableDef are Royalty-gated only, so
+  the outer Odyssey wrapper silently dropped the whole `<abilities>` element
+  (and with it the ability) for a Royalty-only player, contradicting both the
+  ThingDef's own `specialTrainables` gate and the AbilityDef's own MayRequire.
+  Removed the outer wrapper's MayRequire; the inner `<li>`'s Royalty gate
+  alone now matches the AbilityDef/TrainableDef/specialTrainables gating.
+  Adult lifeStage sounds
   (`Pawn_Wildboar_Wounded`/`Pawn_Gullipud_Death`/`Pawn_Wildboar_Call`/
   `Pawn_Wildboar_Angry`) are ALL vanilla Core, confirmed directly off the
   donor's own `<race>` block — NOT a Mlie custom sound set, left bare (no
@@ -150,7 +157,7 @@
     <combatPower>45</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
     <wildGroupSize>2~4</wildGroupSize>
-    <abilities MayRequire="Ludeon.RimWorld.Odyssey">
+    <abilities>
       <li MayRequire="Ludeon.RimWorld.Royalty">RSW_SW_GoldForage</li>
     </abilities>
     <lifeStages>
