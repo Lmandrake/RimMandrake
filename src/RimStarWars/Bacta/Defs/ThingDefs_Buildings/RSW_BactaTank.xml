@@ -105,14 +105,17 @@
         </fuelFilter>
       </li>
       <!--
-        The facility hook BACTA_SIDE_ITEMS_1 needs: the 2-1B-style medical droid will be
-        added to this list as a linkable facility. VitalsMonitor is vanilla and already
-        does the right thing (its tend-quality and immunity offsets are read off the pawn's
-        stats, which is what CompBactaImmersion's tend pass uses).
+        The facility hook: VitalsMonitor is vanilla furniture, harmless to leave linkable
+        (it has nothing to offer here since the tank's healing never runs through vanilla
+        TendUtility, but there is no reason to forbid it). RSW_MedicalDroid is
+        BACTA_SIDE_ITEMS_1's own 2-1B-style droid — CompBactaImmersion.DroidAssisting reads
+        this same link list directly (LinkedFacilitiesListForReading + IsFacilityActive) to
+        apply its heal-rate multiplier.
       -->
       <li Class="CompProperties_AffectedByFacilities">
         <linkableFacilities>
           <li>VitalsMonitor</li>
+          <li>RSW_MedicalDroid</li>
         </linkableFacilities>
       </li>
       <!-- The glass shell, drawn OVER the suspended pawn. -->

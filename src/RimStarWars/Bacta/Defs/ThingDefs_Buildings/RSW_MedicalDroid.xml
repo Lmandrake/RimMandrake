@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_MedicalDroid — BACTA_SIDE_ITEMS_1's 2-1B-style medical droid: a stationary linkable
+  facility, wired via the same vanilla CompFacility/CompAffectedByFacilities pattern already
+  used for VitalsMonitor on RSW_BactaTank (BACTA_TANK_CORE_1's own comment names this the
+  "KR pattern" and left the hook open — see RSW_BactaTank.xml's CompProperties_AffectedByFacilities).
+  Verified against Core's own VitalsMonitor ThingDef
+  (Data/Core/Defs/ThingDefs_Buildings/Buildings_Misc.xml) and
+  RimWorld/CompFacility.cs, RimWorld/CompProperties_Facility.cs in the decompiled source.
+
+  Deliberately NOT wired through CompProperties_Facility.statOffsets + a StatDef (VitalsMonitor's
+  own route, e.g. MedicalTendQualityOffset): the tank's healing is entirely custom code
+  (CompBactaImmersion), never vanilla TendUtility, so there is no natural StatDef consumer to
+  hook a generic offset into. CompBactaImmersion.DroidAssisting instead reads the link directly
+  off CompAffectedByFacilities (LinkedFacilitiesListForReading + IsFacilityActive), both public
+  vanilla API already present on the tank via its own CompProperties_AffectedByFacilities.
+
+  Zero Harmony. No new C# beyond the mechanism already documented in CompBactaImmersion.cs.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RSW_MedicalDroid</defName>
+    <label>medical droid</label>
+    <description>A squat, multi-limbed automaton bristling with surgical waldos and diagnostic sensors, parked on standby beside a bacta tank. It has no bedside manner and does not need one: while it is powered and within reach of an immersed patient, its constant micro-adjustments to dosage and posture measurably speed the tank's own work.\n\nIt does nothing on its own — no tank, no patient, nothing to attend.</description>
+    <graphicData>
+      <texPath>Things/Building/Bacta/RSW_MedicalDroid</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.35</fillPercent>
+    <pathCost>30</pathCost>
+    <size>(1,1)</size>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>6500</WorkToBuild>
+      <Mass>35</Mass>
+      <Flammability>0.3</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <costList>
+      <Steel>70</Steel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <buildingSizeCategory>Small</buildingSizeCategory>
+    </building>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>60</basePowerConsumption>
+        <idlePowerDraw>10</idlePowerDraw>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Forbiddable" />
+      <!--
+        The facility itself. maxDistance is left at its 8-cell default (unset here) so the
+        droid does not need to sit literally adjacent to the tank — it attends from a short
+        range, not touching it. requiresLOS keeps the vanilla "must be able to see the tank"
+        gate, same as VitalsMonitor.
+      -->
+      <li Class="CompProperties_Facility">
+        <maxSimultaneous>1</maxSimultaneous>
+        <requiresLOS>true</requiresLOS>
+      </li>
+    </comps>
+    <designationCategory>Misc</designationCategory>
+    <researchPrerequisites>
+      <li>RSW_BactaImmersion</li>
+    </researchPrerequisites>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <techLevel>Spacer</techLevel>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+</Defs>

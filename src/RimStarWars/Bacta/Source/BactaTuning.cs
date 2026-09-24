@@ -55,5 +55,16 @@ namespace RimMandrake.StarWars.Bacta
 
         /// <summary>The fluid's colour, for the fill quad drawn over the suspended pawn.</summary>
         public static readonly Color FluidColor = new Color32(123, 220, 255, 75);
+
+        // ---- BACTA_SIDE_ITEMS_1 ------------------------------------------------------------
+
+        /// <summary>
+        /// Multiplier applied to the tank's wound/scar/immunity rates while a linked, powered
+        /// RSW_MedicalDroid is active. 1.5x turns a day of immersion into ~16 hours.
+        /// </summary>
+        public const float MedicalDroidHealMultiplier = 1.5f;
+
+        /// <summary>Multiplier applied to every field item's (bacta patch, bacta spray) per-use amounts.</summary>
+        public const float FieldItemPotency = 1f;
     }
 }

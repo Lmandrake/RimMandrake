@@ -10,6 +10,9 @@ namespace RimMandrake.StarWars.Bacta
 
         public static ThingDef RSW_BactaTank;
 
+        /// <summary>BACTA_SIDE_ITEMS_1: the linkable facility whose presence speeds the tank.</summary>
+        public static ThingDef RSW_MedicalDroid;
+
         public static ResearchProjectDef RSW_BactaImmersion;
 
         public static JobDef RSW_CarryCorpseToBactaTank;

@@ -45,13 +45,14 @@ namespace RimMandrake.StarWars.Bacta
     /// </summary>
     public class CompBactaImmersion : ThingComp
     {
-        private static readonly List<Hediff> tmpHediffs = new List<Hediff>();
-
         [Unsaved(false)]
         private CompRefuelable cachedFluid;
 
         [Unsaved(false)]
         private CompPowerTrader cachedPower;
+
+        [Unsaved(false)]
+        private CompAffectedByFacilities cachedFacilities;
 
         /// <summary>Last pass did something a player would call healing. Drives the inspect line.</summary>
         private bool workedLastPass;
@@ -87,6 +88,53 @@ namespace RimMandrake.StarWars.Bacta
         public bool Powered => Power == null || Power.PowerOn;
 
         public float FluidPercent => (Fluid == null) ? 0f : Fluid.FuelPercentOfMax;
+
+        public CompAffectedByFacilities Facilities
+        {
+            get
+            {
+                if (cachedFacilities == null)
+                {
+                    cachedFacilities = parent.TryGetComp<CompAffectedByFacilities>();
+                }
+                return cachedFacilities;
+            }
+        }
+
+        /// <summary>
+        /// BACTA_SIDE_ITEMS_1: a linked, powered RSW_MedicalDroid speeds the tank's own
+        /// healing pass. Read directly off the vanilla facility link list
+        /// (CompAffectedByFacilities.LinkedFacilitiesListForReading + IsFacilityActive — the
+        /// same "KR pattern" CompProperties_AffectedByFacilities already wires for
+        /// VitalsMonitor on this tank, RSW_BactaTank.xml) rather than through the generic
+        /// StatDef-offset plumbing VitalsMonitor itself uses: the tank's healing is entirely
+        /// custom code, never vanilla TendUtility, so there is no natural StatDef consumer to
+        /// hook a stat offset into. A direct link check is the simplest correct thing.
+        /// </summary>
+        public bool DroidAssisting
+        {
+            get
+            {
+                if (!BactaSettings.medicalDroidEnabled)
+                {
+                    return false;
+                }
+                CompAffectedByFacilities facilities = Facilities;
+                if (facilities == null)
+                {
+                    return false;
+                }
+                List<Thing> linked = facilities.LinkedFacilitiesListForReading;
+                for (int i = 0; i < linked.Count; i++)
+                {
+                    if (linked[i].def == BactaDefOf.RSW_MedicalDroid && facilities.IsFacilityActive(linked[i]))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
         private Building_BactaTank Tank => parent as Building_BactaTank;
 
@@ -168,176 +216,26 @@ namespace RimMandrake.StarWars.Bacta
         /// <summary>
         /// One aggregate pass. Returns true if anything was actually healed, which is both the
         /// fluid-drain condition and the "still work to do" condition for auto-eject.
+        ///
+        /// The guarded law-abiding mechanism itself (never regrow a missing part, never touch
+        /// the brain/mind, scar erasure and infection-assist gates) lives in
+        /// BactaHealingUtility.ApplyHealingDose — BACTA_SIDE_ITEMS_1 extracted it out of this
+        /// method unchanged so the field consumables (CompUseEffect_BactaHeal) could reuse the
+        /// exact same code at item scale instead of reimplementing it. This method's own job
+        /// is just computing the tank's per-pass amounts, including the optional
+        /// RSW_MedicalDroid speed bonus.
         /// </summary>
         private bool TryHealPawn(Pawn pawn)
         {
-            if (pawn.health == null || pawn.Dead)
-            {
-                return false;
-            }
-
             float intervalDays = (float)BactaTuning.ImmersionIntervalTicks / BactaTuning.TicksPerDay;
-            float woundHeal = BactaSettings.woundHealPerDay * intervalDays;
-            float scarHeal = BactaSettings.scarHealPerDay * intervalDays;
-            float immunityGain = BactaSettings.immunityGainPerDay * intervalDays;
+            float droidMult = DroidAssisting ? BactaSettings.medicalDroidHealMultiplier : 1f;
+            float woundHeal = BactaSettings.woundHealPerDay * intervalDays * droidMult;
+            float scarHeal = BactaSettings.scarHealPerDay * intervalDays * droidMult;
+            float immunityGain = BactaSettings.immunityGainPerDay * intervalDays * droidMult;
 
-            bool did = false;
-
-            tmpHediffs.Clear();
-            tmpHediffs.AddRange(pawn.health.hediffSet.hediffs);
-
-            for (int i = 0; i < tmpHediffs.Count; i++)
-            {
-                Hediff hediff = tmpHediffs[i];
-                if (hediff == null || hediff.pawn != pawn)
-                {
-                    continue;
-                }
-
-                // ---- LAW: bacta never regrows anything. -------------------------------
-                // Owner, 2026-09-13: "Does heal organs, does not regrow them. Healing, not
-                // regeneration." A missing finger, ear, kidney or leg is NOT a thing this
-                // comp may ever remove. Do not delete this branch to "simplify" the type
-                // checks below — it is the ruling, written where an editor will hit it.
-                if (hediff is Hediff_MissingPart)
-                {
-                    continue;
-                }
-
-                // ---- LAW: physical only, never the brain and never the mind. ----------
-                if (IsBrainOrMind(hediff))
-                {
-                    continue;
-                }
-
-                if (hediff is Hediff_Injury injury)
-                {
-                    if (injury.IsPermanent())
-                    {
-                        // Scars and permanent physical injuries: slow erasure.
-                        if (!BactaSettings.scarErasureEnabled)
-                        {
-                            continue;
-                        }
-
-                        injury.Severity -= scarHeal;
-                        did = true;
-
-                        if (injury.Severity <= 0.001f)
-                        {
-                            pawn.health.RemoveHediff(injury);
-                        }
-                        continue;
-                    }
-
-                    // Fresh wound, burn, or damaged organ (an organ injury is a
-                    // Hediff_Injury whose Part is the organ — same branch, by design).
-                    if (injury.TendableNow(ignoreTimer: true) && !injury.IsTended())
-                    {
-                        // Tend-equivalent immediately: the ruled point of the tank is that a
-                        // pawn brought back alive stops dying of blood loss on the way.
-                        injury.Tended(BactaSettings.tendQuality, BactaSettings.tendQuality);
-                        did = true;
-                    }
-
-                    if (injury.Severity > 0f)
-                    {
-                        injury.Heal(woundHeal);
-                        did = true;
-
-                        if (injury.Severity <= 0.001f)
-                        {
-                            pawn.health.RemoveHediff(injury);
-                        }
-                    }
-                    continue;
-                }
-
-                // ---- Infections: only where medicine would have helped. ---------------
-                // Owner verbatim: "as long as medicine would aid the infections. Some
-                // infections remain in effect." The test is the game's own: a disease with
-                // a TendDuration comp that can develop natural immunity is one a doctor
-                // could fight. Anything chronic, untendable, or immunity-less is left alone.
-                if (!BactaSettings.infectionAssistEnabled)
-                {
-                    continue;
-                }
-
-                if (hediff.TryGetComp<HediffComp_TendDuration>() == null)
-                {
-                    continue;
-                }
-
-                if (!hediff.def.PossibleToDevelopImmunityNaturally())
-                {
-                    continue;
-                }
-
-                if (hediff.TendableNow(ignoreTimer: true) && !hediff.IsTended())
-                {
-                    hediff.Tended(BactaSettings.tendQuality, BactaSettings.tendQuality);
-                    did = true;
-                }
-
-                if (BoostImmunity(pawn, hediff, immunityGain))
-                {
-                    did = true;
-                }
-            }
-
-            tmpHediffs.Clear();
-            return did;
-        }
-
-        /// <summary>
-        /// Nudges the pawn's real immunity record for this disease. Deliberately reaches
-        /// ImmunityListForReading rather than GetImmunityRecord: the latter can hand back a
-        /// freshly-built detached record for gene-granted immunity, and writing to that
-        /// would look like it worked and do nothing.
-        /// </summary>
-        private static bool BoostImmunity(Pawn pawn, Hediff hediff, float amount)
-        {
-            if (amount <= 0f || pawn.health.immunity == null)
-            {
-                return false;
-            }
-
-            List<ImmunityRecord> records = pawn.health.immunity.ImmunityListForReading;
-            for (int i = 0; i < records.Count; i++)
-            {
-                ImmunityRecord record = records[i];
-                if (record.hediffDef != hediff.def)
-                {
-                    continue;
-                }
-                if (record.immunity >= 1f)
-                {
-                    return false;
-                }
-                record.immunity = Mathf.Clamp01(record.immunity + amount);
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// True for anything bacta must not touch on neurological grounds.
-        ///
-        /// The brain test is structural, not by defName: the brain is the body part tagged
-        /// ConsciousnessSource, in every body def including modded and alien ones, so an
-        /// injury sitting on it is skipped whatever that part happens to be called.
-        /// Mental damage needs no test of its own — mental states are not hediffs at all,
-        /// and psychic/mood hediffs match neither the Hediff_Injury branch nor the
-        /// tendable-immunizable disease branch, so they are never reached.
-        /// </summary>
-        private static bool IsBrainOrMind(Hediff hediff)
-        {
-            BodyPartRecord part = hediff.Part;
-            if (part?.def?.tags == null)
-            {
-                return false;
-            }
-            return part.def.tags.Contains(BodyPartTagDefOf.ConsciousnessSource);
+            return BactaHealingUtility.ApplyHealingDose(pawn, woundHeal, scarHeal,
+                BactaSettings.tendQuality, immunityGain,
+                BactaSettings.scarErasureEnabled, BactaSettings.infectionAssistEnabled);
         }
 
         public override void PostDraw()
@@ -394,9 +292,14 @@ namespace RimMandrake.StarWars.Bacta
             {
                 return "RSW_BactaTankHealingDisabled".Translate();
             }
-            return workedLastPass
+            string line = workedLastPass
                 ? "RSW_BactaTankImmersing".Translate(Occupant.LabelShort)
                 : "RSW_BactaTankNothingToHeal".Translate(Occupant.LabelShort);
+            if (DroidAssisting)
+            {
+                line += "\n" + "RSW_BactaTankDroidAssisting".Translate();
+            }
+            return line;
         }
     }
 

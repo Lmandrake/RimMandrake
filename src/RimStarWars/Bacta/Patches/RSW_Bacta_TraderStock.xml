@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Who sells bacta.
+  Who sells bacta — and BACTA_SIDE_ITEMS_1's satellite goods, wired the same way.
 
-  The ExoticMisc tradeTag on RSW_Bacta already puts it in the pool that Orbital_Exotic,
-  Caravan_Outlander_Exotic and Base_Outlander_Standard roll through StockGenerator_Tag —
-  but that is a roll: the tag generator picks a handful of def kinds out of a large pool
-  (thingDefCountRange 3~5 on Orbital_Exotic), so relying on the tag alone means a colony
-  can go a whole year without ever being offered any.
+  The ExoticMisc tradeTag on RSW_Bacta (and on RSW_BactaPatch/RSW_BactaSpray, same tag)
+  already puts them in the pool that Orbital_Exotic, Caravan_Outlander_Exotic and
+  Base_Outlander_Standard roll through StockGenerator_Tag — but that is a roll: the tag
+  generator picks a handful of def kinds out of a large pool (thingDefCountRange 3~5 on
+  Orbital_Exotic), so relying on the tag alone means a colony can go a whole year without
+  ever being offered any.
 
   Card 3 rules bacta TRADE-SCARCE, not trade-absent. So these three trader kinds also get
-  an explicit single-def row with a small countRange: whenever one of them shows up there
-  is some bacta, and never much. Core has no "medical" tradeTag to use instead — medicine
-  in vanilla is stocked by StockGenerator_SingleDef and StockGenerator_Category, verified
-  against Core/Defs/TraderKindDefs — so an explicit row IS the medical-trader mechanism.
+  an explicit single-def row per good, with a small countRange: whenever one of them shows
+  up there is some stock, and never much. Core has no "medical" tradeTag to use instead —
+  medicine in vanilla is stocked by StockGenerator_SingleDef and StockGenerator_Category,
+  verified against Core/Defs/TraderKindDefs — so an explicit row IS the medical-trader
+  mechanism, for the fluid, the two field items, and the droid alike.
+
+  RSW_MedicalDroid gets the same explicit-row treatment despite being a building, not an
+  item: it carries <minifiedDef>MinifiedThing</minifiedDef> (same as vanilla VitalsMonitor),
+  which is what makes a building sellable/buyable via StockGenerator_SingleDef at all — a
+  much rarer, more expensive row than the consumables, matching a droid being a whole-unit
+  purchase rather than a stack good.
 
   PatchOperationAdd into an existing <stockGenerators> list: safe on no-match only in the
   sense that it logs. If a later mod renames these trader kinds this file will complain
@@ -27,6 +35,18 @@
         <thingDef>RSW_Bacta</thingDef>
         <countRange>4~14</countRange>
       </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_BactaPatch</thingDef>
+        <countRange>2~6</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_BactaSpray</thingDef>
+        <countRange>1~4</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_MedicalDroid</thingDef>
+        <countRange>0~1</countRange>
+      </li>
     </value>
   </Operation>
 
@@ -37,6 +57,14 @@
         <thingDef>RSW_Bacta</thingDef>
         <countRange>2~8</countRange>
       </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_BactaPatch</thingDef>
+        <countRange>1~4</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_BactaSpray</thingDef>
+        <countRange>0~2</countRange>
+      </li>
     </value>
   </Operation>
 
@@ -46,6 +74,10 @@
       <li Class="StockGenerator_SingleDef">
         <thingDef>RSW_Bacta</thingDef>
         <countRange>0~6</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_BactaPatch</thingDef>
+        <countRange>0~3</countRange>
       </li>
     </value>
   </Operation>

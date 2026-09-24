@@ -12,6 +12,7 @@ something legible instead of magenta while the mechanism is tested.
 | `RSW_BactaTankShell_north.png` | 128x256 | the GLASS, drawn over the occupant — must be mostly transparent |
 | `RSW_BactaTankShell_south.png` | 128x256 | ditto, front |
 | `RSW_BactaTankShell_east.png` | 256x128 | ditto, horizontal |
+| `RSW_MedicalDroid.png` | 128x128 | BACTA_SIDE_ITEMS_1's 2-1B-style droid, non-rotating (`Graphic_Single`) |
 
 ## Constraints the real art must keep
 

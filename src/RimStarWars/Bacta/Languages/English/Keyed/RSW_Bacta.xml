@@ -25,4 +25,13 @@
   <RSW_BactaTankEjectDesc>Drain the harness and let the occupant out.</RSW_BactaTankEjectDesc>
   <RSW_BactaTankNoCandidates>Nobody here can use a bacta tank.</RSW_BactaTankNoCandidates>
 
+  <!-- BACTA_SIDE_ITEMS_1: medical droid -->
+  <RSW_BactaTankDroidAssisting>Medical droid assisting</RSW_BactaTankDroidAssisting>
+
+  <!-- BACTA_SIDE_ITEMS_1: field items (bacta patch, bacta spray) -->
+  <RSW_BactaFieldItemsDisabled>field items disabled in mod settings</RSW_BactaFieldItemsDisabled>
+  <RSW_BactaFieldNothingToHeal>nothing this can treat</RSW_BactaFieldNothingToHeal>
+  <RSW_BactaFieldUsed>{PAWN_labelShort} feels the bacta take hold.</RSW_BactaFieldUsed>
+  <RSW_BactaFieldNothingHappened>{PAWN_labelShort} had nothing this could treat.</RSW_BactaFieldNothingHappened>
+
 </LanguageData>

@@ -30,6 +30,12 @@ namespace RimMandrake.StarWars.Bacta
         /// </summary>
         public static bool revivalEnabled = false;
 
+        /// <summary>BACTA_SIDE_ITEMS_1: the 2-1B-style medical droid facility.</summary>
+        public static bool medicalDroidEnabled = true;
+
+        /// <summary>BACTA_SIDE_ITEMS_1: the field consumables (bacta patch, bacta spray).</summary>
+        public static bool fieldItemsEnabled = true;
+
         // ---- Tunables --------------------------------------------------------------------
         public static float woundHealPerDay = BactaTuning.WoundHealPerDay;
         public static float scarHealPerDay = BactaTuning.ScarHealPerDay;
@@ -43,6 +49,12 @@ namespace RimMandrake.StarWars.Bacta
         /// </summary>
         public static float revivalWindowHours = BactaTuning.RevivalWindowHours;
 
+        /// <summary>BACTA_SIDE_ITEMS_1: multiplies the tank's heal/scar/immunity rates while a linked, powered RSW_MedicalDroid is active.</summary>
+        public static float medicalDroidHealMultiplier = BactaTuning.MedicalDroidHealMultiplier;
+
+        /// <summary>BACTA_SIDE_ITEMS_1: multiplies every field item's per-use wound/scar/immunity amounts.</summary>
+        public static float fieldItemPotency = BactaTuning.FieldItemPotency;
+
         private Vector2 scrollPosition = Vector2.zero;
 
         public override void ExposeData()
@@ -54,6 +66,8 @@ namespace RimMandrake.StarWars.Bacta
             Scribe_Values.Look(ref suspendNeedsEnabled, "suspendNeedsEnabled", true);
             Scribe_Values.Look(ref autoEjectEnabled, "autoEjectEnabled", true);
             Scribe_Values.Look(ref revivalEnabled, "revivalEnabled", defaultValue: false);
+            Scribe_Values.Look(ref medicalDroidEnabled, "medicalDroidEnabled", true);
+            Scribe_Values.Look(ref fieldItemsEnabled, "fieldItemsEnabled", true);
 
             Scribe_Values.Look(ref woundHealPerDay, "woundHealPerDay", BactaTuning.WoundHealPerDay);
             Scribe_Values.Look(ref scarHealPerDay, "scarHealPerDay", BactaTuning.ScarHealPerDay);
@@ -61,11 +75,13 @@ namespace RimMandrake.StarWars.Bacta
             Scribe_Values.Look(ref fluidCostPerDay, "fluidCostPerDay", BactaTuning.FluidCostPerDay);
             Scribe_Values.Look(ref tendQuality, "tendQuality", BactaTuning.TendQuality);
             Scribe_Values.Look(ref revivalWindowHours, "revivalWindowHours", BactaTuning.RevivalWindowHours);
+            Scribe_Values.Look(ref medicalDroidHealMultiplier, "medicalDroidHealMultiplier", BactaTuning.MedicalDroidHealMultiplier);
+            Scribe_Values.Look(ref fieldItemPotency, "fieldItemPotency", BactaTuning.FieldItemPotency);
         }
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, 860f);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, 1060f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
 
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
@@ -140,6 +156,33 @@ namespace RimMandrake.StarWars.Bacta
                 list.Label("Revival window: " + revivalWindowHours.ToString("0.0") + " hours since death"
                     + "   (shipped: " + BactaTuning.RevivalWindowHours.ToString("0.0") + ")");
                 revivalWindowHours = list.Slider(revivalWindowHours, 0.5f, 48f);
+            }
+            list.GapLine();
+
+            list.Label("Medical droid (BACTA_SIDE_ITEMS_1)");
+            list.CheckboxLabeled("2-1B-style medical droid speeds the tank", ref medicalDroidEnabled,
+                "On (shipped): a powered RSW_MedicalDroid linked to a bacta tank multiplies its "
+              + "wound/scar/immunity rates while it is active. Off: the droid still builds and "
+              + "links, but does nothing.");
+            if (medicalDroidEnabled)
+            {
+                list.Label("Droid speed multiplier: " + medicalDroidHealMultiplier.ToString("0.00") + "x"
+                    + "   (shipped: " + BactaTuning.MedicalDroidHealMultiplier.ToString("0.00") + "x)");
+                medicalDroidHealMultiplier = list.Slider(medicalDroidHealMultiplier, 1f, 3f);
+            }
+            list.GapLine();
+
+            list.Label("Field kit (BACTA_SIDE_ITEMS_1)");
+            list.CheckboxLabeled("Bacta patch and bacta spray are usable", ref fieldItemsEnabled,
+                "Off: the patch and the spray still build/buy but their Use option is disabled "
+              + "— nothing happens if used. On (shipped): each is a one-shot field dose of the "
+              + "same guarded mechanism the tank runs, scaled down. Neither ever regrows a "
+              + "missing part or touches the brain — same law as the tank.");
+            if (fieldItemsEnabled)
+            {
+                list.Label("Field item potency: " + fieldItemPotency.ToString("0.00") + "x"
+                    + "   (shipped: " + BactaTuning.FieldItemPotency.ToString("0.00") + "x)");
+                fieldItemPotency = list.Slider(fieldItemPotency, 0.25f, 3f);
             }
 
             list.End();
