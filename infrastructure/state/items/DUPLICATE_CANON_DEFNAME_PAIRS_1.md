@@ -29,6 +29,32 @@ deliberately different creature. Establish that before touching it.
    as two creatures. UNMEASURED — the donor defs are not under `src/` and are unreadable from the
    Mac laptop.
 
+## ✅ Desktop step 1 done — donor vs `RSW_` port compared per animal (MEASURED 2026-09-23)
+
+Report: `Transient/duplicate_canon_pairs_desktop_2026-09-23.md` (side-by-side tables, path:line).
+
+- **gizka, kreetle, worrt: SAME CREATURE.** The donor ThingDef/PawnKindDef (Mlie's `Races_Animal_SW.xml`,
+  workshop 3497316713) and our `RSW_` port are byte-identical apart from renamed cross-refs (leather/meat/egg/sound);
+  the `texPath` strings are literally identical, so both defNames render the same sprite.
+- **nuna: SAME CREATURE by content; the standing ruling's premise is false.** `STARWARS_DONOR_SUNSET_1` (closed) kept
+  both on the ground that *"Mlie's becomes distinct alongside vanilla Core's Nuna"*. MEASURED on the Desktop: a
+  full-text search of Core + all five DLC `Defs/` trees finds **zero** occurrences of "Nuna" — there is no vanilla
+  Nuna. ⇒ Owner call: the keep-both ruling was made on a wrong fact, so the nuna pair is a merge candidate like
+  the other three. Not resolved here.
+- Donor mod `mlie.starwarsanimalcollection` is **ACTIVE** in the live list (623 active, parsed).
+- Wiring today, file-read: donor bare names sit on `RUT_AridShrubland`/`RUT_Greentide`/`RUT_Miasma`/`RUT_Webwork`/
+  `RUT_FeverWood`; the `RSW_` ports sit on `RUT_Desert`/`RUT_ExtremeDesert` and, via the Utinni patches, on
+  `RM_Greentide`/`RM_Pyrelands`. ⚠️ Corrections to this item's own table: `RUT_Pyrelands` is not a file (the
+  Pyrelands twin is the donor `ZBiome_Grasslands` + `RM_Pyrelands`), and `RM_Pyrelands` already carries **only** the
+  `RSW_` forms of gizka/nuna. The live tile-holder `RUT_Greentide` carries only donor-bare names while its `RSW_`
+  counterparts sit on the not-yet-painted `RM_Greentide` — so today's live double-cast is smaller than the 5/5/5/3
+  counts suggest once same-named `RUT_`/`RM_` twins are counted once.
+- `Shiro`/`RSW_ShiroTrap` untouched — not an established pair.
+
+**NEXT:** one owner card — merge all four onto the `RSW_` port (donor rows become `RSW_` rows in the Utinni
+patches; donor names leave our defs) vs keep nuna split. Then the per-biome sittings apply the one-home law to the
+single defName.
+
 ## spec
 
 1. **Confirm the pairing per animal** — that the donor def and the `RSW_` port really are the same
