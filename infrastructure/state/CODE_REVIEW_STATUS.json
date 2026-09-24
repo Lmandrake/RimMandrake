@@ -899,6 +899,18 @@
     "hash": "ff01f9e387c97e439da063781eb6a913486d1a3848b246f98130a945cea9e110",
     "sha": "8aca07749"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompHeatBurstPredator.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "02270120a41de776595131fb8c89d9f0285c7a2c381106cd5bfbfabf2cbabd97",
+    "sha": "81f3fa561"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompParentalEnrage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "b596d229f7efdc21ffd5957c383243f9714989d5a03c9a1b410909908228fe21",
+    "sha": "81f3fa561"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompPlantAlarm.cs": {
     "cleanCount": 1,
     "date": "2026-09-18",
@@ -922,6 +934,18 @@
     "date": "2026-09-20",
     "hash": "f338169ee4515d9e8c73136691b7e6aa99f50ffc053d128dd63f9d73e9581547",
     "sha": "8aca07749"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_HeatBurstPredator.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "36da4d5f49d0528e7b6af32fdb8fd7927d48af2e7b5d5a3c3af8014a9f28deaf",
+    "sha": "81f3fa561"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ParentalEnrage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "2b1de13b520617207d45ba66bd703b1ae4d6bf92fa25a11b4f0fb17d791d896e",
+    "sha": "81f3fa561"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ShardArmor.cs": {
     "cleanCount": 1,
@@ -1084,6 +1108,18 @@
     "date": "2026-09-11",
     "hash": "220409cf1e6a72e6e9a7a7901ba5f18e8c8ad884a8ec3650662812f0bccc4aa6",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_MentalState_ParentalEnrage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "b4e262432ebd858a9b9120c24920041f0bad6992cc0080ec167dfce0236eae54",
+    "sha": "81f3fa561"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ParentalEnrageExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "4e1ad24616a4e17e7f7a950389847ef799143b0aa4a1aadcb72d05a025467844",
+    "sha": "81f3fa561"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_SeekShadeExtension.cs": {
     "cleanCount": 1,
