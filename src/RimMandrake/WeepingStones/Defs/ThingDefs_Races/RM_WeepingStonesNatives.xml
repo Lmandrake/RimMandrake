@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEEPINGSTONES_RM_MOD_BUILD_1, wave 2 — the 8 invented natives ruled at
+  WEEPING_STONES_DESIGN_SITTING_1 (2026-09-24, closed af3eaa622):
+  design/Jawa/worldbuilding/biomes/weeping_stones_fauna_roster_2026-09-24.md
+  §2, rows RM_Sillik/RM_Mirrik/RM_Ssurr/RM_Tirbak/RM_Burrak/RM_Vhakk/
+  RM_Vellak/RM_Kirruk. Every row is franchise-free RM_ tier per Q11a — no
+  donor content, no Star Wars content; the canon herd (Dewback/Fanback/…)
+  stays on the Utinni patch layer per WildAnimals_WeepingStones.xml.
+
+  `RM_Murrin` (roster row 2g, the pool fish) is NOT authored here — it
+  already exists as STOCKED_POOL_BUILD_1's own def
+  (RM_StockedPoolFauna.xml, this same mod) and the fauna roster explicitly
+  carries it to FISH_BY_BIOME_1 rather than casting it in this sitting.
+
+  Placeholder art only (marked, not a considered choice — same precedent as
+  RM_StockedPoolFauna.xml): every row below reuses a vanilla Core body
+  texture retinted, chosen for silhouette fit, not for the pun. Real art
+  rides the art queue as of this wave
+  (infrastructure/artpipe/pending/weepingstones2_<name>_{south,east,north}.json
+  for fauna, bare `weepingstones2_<name>.json` for flora — filed after a
+  done/_artsrc/registry sweep found nothing existing for any of these 19
+  names 2026-09-24).
+
+  Sound cues and vanilla texPaths below are all MEASURED against the
+  installed game's Data/Core (and Data/Odyssey for Alligator), not guessed:
+  Pawn_Rodent_*, Pawn_Spelopede_*, Pawn_Iguana_*, Pawn_Muffalo_*,
+  Pawn_Warg_*, Pawn_Pinniped_* (Alligator's own, despite the group file's
+  name), Pawn_Dromedary_*, Pawn_Chicken_*, and the four vanilla
+  soundMelee*/soundEating families all read from the real race files they
+  are borrowed from.
+
+  Water truce (§4/§10 ruling 3): already built at the BIOME level via
+  `RM_WaterTruceExtension` on RM_WeepingStones_Biome.xml (WATER_TRUCE_
+  RETRIBUTION_1) — every wildAnimal on this def, native or donor, is
+  already covered; no per-row wiring is owed for the truce.
+
+  Flight law (CLAUDE.md "if it flies in the fiction, it flies in the
+  game"): RM_Mirrik and RM_Kirruk both carry real MaxFlightTime/
+  FlightCooldown + race flight fields. RM_Kirruk additionally reuses the
+  vanilla Chicken flying flip-book (`Chicken_Flying_1..8`, a real shipped
+  asset) so it has genuine flight animation from wave 2, not just the stat;
+  RM_Mirrik ships with no flip-book frames, which the flight law explicitly
+  says blocks nothing (flight ships plainer without them).
+
+  specificMeatDef/leatherDef: specificMeatDef is left unset on every row so
+  the engine's own DefGenerator implies a meat ThingDef from race.meatLabel,
+  same as most vanilla animals — no new meat items authored. leatherDef
+  points at existing vanilla leather defs picked for fit (Leather_Lizard for
+  the reptile rows, Leather_Plain/Leather_Heavy for the mammal-shaped rows,
+  Leather_Bird for the flier).
+
+  Mechanisms: the roster rules every row's v1 mechanism load as "none
+  blocking" — no new C# is owed this wave. The optional comp reuses it
+  flags (RM_JobGiver_FilterFeedTerrain/RM_MapComponent_ShadeGrid for Sillik,
+  RM_CompVerminBreeder for Mirrik, RM_CompTameSootheAura for Ssurr,
+  RM_CompDungSeeder for Burrak's v2 dig-catch-basin) are NOT wired in this
+  pass — flagged as follow-on behavior wiring, not silently dropped.
+-->
+<Defs>
+
+  <!-- ══════════════════════ RM_Sillik — the prey base (weep-mouse) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sillik</defName>
+    <label>sillik</label>
+    <description>A palm-sized silver-grey licker that lives ON the vertical weep-faces themselves, spread flat against the rock, its whisker-comb fanned around the muzzle to comb the thin water film off the stone. Whole faces stipple with them at wind-hour. It harvests the thinnest water in the biome and never joins the crowd at the pool — the one native the water truce barely touches.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>12</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>48</ComfyTemperatureMax>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <uiIconScale>0.5</uiIconScale>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Monkey</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHungerRate>0.25</baseHungerRate>
+      <baseHealthScale>0.4</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <lifeExpectancy>4</lifeExpectancy>
+      <gestationPeriodDays>5</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1)</li>
+          <li>(4, 1)</li>
+          <li>(6, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Rodent_Eat</soundEating>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sillik</defName>
+    <label>sillik</label>
+    <race>RM_Sillik</race>
+    <combatPower>8</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <drawSize>0.5</drawSize>
+          <color>(170, 170, 175)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <drawSize>0.7</drawSize>
+          <color>(170, 170, 175)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
+          <drawSize>0.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ RM_Mirrik — the dew-smoke (flier, swarm) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Mirrik</defName>
+    <label>mirrik</label>
+    <description>Thumb-sized insects with water-combing mesh wings that mist-dance over the pools at wind-hour — from any distance, smoke rising off the water that flows the wrong way. It pollinates the blade-flora, and its cocoons are the source of dewsilk, the biome's signature trade good. The swarm at wind-hour is the biome doing its actual living.</description>
+    <statBases>
+      <MoveSpeed>1.0</MoveSpeed>
+      <MarketValue>6</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>48</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+      <MaxFlightTime>8</MaxFlightTime>
+      <FlightCooldown>4</FlightCooldown>
+    </statBases>
+    <uiIconScale>0.35</uiIconScale>
+    <tools>
+      <li>
+        <label>sting</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>1.2</cooldownTime>
+        <linkedBodyPartsGroup>Legs</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <baseBodySize>0.05</baseBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>0.15</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <lifeExpectancy>1</lifeExpectancy>
+      <gestationPeriodDays>1.5</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(3, 0)</li>
+          <li>(6, 1)</li>
+          <li>(14, 1)</li>
+          <li>(20, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.15</minAge>
+          <soundWounded>Pawn_Spelopede_Pain</soundWounded>
+          <soundDeath>Pawn_Spelopede_Death</soundDeath>
+          <soundCall>Pawn_Spelopede_Call</soundCall>
+          <soundAngry>Pawn_Spelopede_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Rodent_Eat</soundEating>
+      <trainability>None</trainability>
+      <predator>false</predator>
+      <manhunterOnDamageChance>0.01</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+      <flightStartChanceOnJobStart>0.3</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.0</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Mirrik</defName>
+    <label>mirrik</label>
+    <race>RM_Mirrik</race>
+    <combatPower>2</combatPower>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Spelopede/Spelopede</texPath>
+          <drawSize>0.3</drawSize>
+          <color>(200, 210, 215)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Spelopede/Dessicated_Spelopede</texPath>
+          <drawSize>0.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Spelopede/Spelopede</texPath>
+          <drawSize>0.35</drawSize>
+          <color>(200, 210, 215)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Spelopede/Dessicated_Spelopede</texPath>
+          <drawSize>0.35</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ RM_Ssurr — the fan-dancer (display reptile) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Ssurr</defName>
+    <label>ssurr</label>
+    <description>A hound-sized reptile with one enormous half-circle crest-fan folded flat or blazing open — closed it is a blade, open it is a wheel. Its breeding displays happen at the pools, harmless and spectacular; the fan doubles as its dew-comb at wind-hour, so courtship and drinking are the same gesture. The tamable charmer of the biome.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <MarketValue>220</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>48</ComfyTemperatureMax>
+      <Wildness>0.45</Wildness>
+    </statBases>
+    <uiIconScale>0.75</uiIconScale>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>tail-slap</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Tail</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <baseBodySize>0.7</baseBodySize>
+      <baseHungerRate>0.28</baseHungerRate>
+      <baseHealthScale>0.8</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <trainability>Advanced</trainability>
+      <petness>0.6</petness>
+      <lifeExpectancy>10</lifeExpectancy>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1)</li>
+          <li>(4, 1)</li>
+          <li>(6, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>Pawn_Iguana_Wounded</soundWounded>
+          <soundDeath>Pawn_Iguana_Death</soundDeath>
+          <soundCall>Pawn_Iguana_Call</soundCall>
+          <soundAngry>Pawn_Iguana_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+      <manhunterOnDamageChance>0.03</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalExoticFriend</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ssurr</defName>
+    <label>ssurr</label>
+    <race>RM_Ssurr</race>
+    <combatPower>25</combatPower>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Iguana</texPath>
+          <drawSize>0.9</drawSize>
+          <color>(90, 170, 160)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>0.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Iguana</texPath>
+          <drawSize>1.1</drawSize>
+          <color>(90, 170, 160)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>1.1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ RM_Tirbak — the walking cistern ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Tirbak</defName>
+    <label>tirbak</label>
+    <description>A placid colossus, round-backed, with a row of dorsal rain-fins like a ship's ventilation cowls. It drinks once per wind-cycle and carries it for days, fins fanned to the wind as it walks — the caravan mount of the oasis string, and the beast the desert roads were beaded for. It replaces the muffalo/dromedary/elephant pack slot a donor mod once filled here.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <MarketValue>900</MarketValue>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>52</ComfyTemperatureMax>
+      <Wildness>0.3</Wildness>
+    </statBases>
+    <uiIconScale>1.2</uiIconScale>
+    <tools>
+      <li>
+        <label>headbutt</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>kick</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>25</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHump</body>
+      <baseBodySize>3.5</baseBodySize>
+      <baseHungerRate>0.55</baseHungerRate>
+      <baseHealthScale>3.2</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <packAnimal>true</packAnimal>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>25</lifeExpectancy>
+      <gestationPeriodDays>90</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 1)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Dromedary_Wounded</soundWounded>
+          <soundDeath>Pawn_Dromedary_Death</soundDeath>
+          <soundCall>Pawn_Dromedary_Call</soundCall>
+          <soundAngry>Pawn_Dromedary_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalFarm</li>
+      <li>AnimalExoticFriend</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Tirbak</defName>
+    <label>tirbak</label>
+    <race>RM_Tirbak</race>
+    <combatPower>120</combatPower>
+    <ecoSystemWeight>1.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Muffalo</texPath>
+          <drawSize>2.0</drawSize>
+          <color>(205, 190, 160)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Muffalo</texPath>
+          <drawSize>2.8</drawSize>
+          <color>(205, 190, 160)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>2.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ RM_Burrak — the well-digger (elder = burradar, same def) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Burrak</defName>
+    <label>burrak</label>
+    <description>A bear-sized wallower that digs catch-basins that outlive it — abandoned burrak digs are how new micro-oases start. A working oasis tolerates its one huge elder, worn claw-combs and all, the way a town tolerates its engineer; in fiction the biggest of them earns the name burradar, but it is the same animal grown vast, not a second kind.</description>
+    <statBases>
+      <MoveSpeed>1.8</MoveSpeed>
+      <MarketValue>260</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>48</ComfyTemperatureMax>
+      <Wildness>0.8</Wildness>
+    </statBases>
+    <uiIconScale>1.0</uiIconScale>
+    <tools>
+      <li>
+        <label>claw-rake</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <baseBodySize>2.2</baseBodySize>
+      <baseHungerRate>0.42</baseHungerRate>
+      <baseHealthScale>2.0</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <trainability>None</trainability>
+      <lifeExpectancy>30</lifeExpectancy>
+      <gestationPeriodDays>60</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 1)</li>
+          <li>(2, 0.3)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.35</minAge>
+          <soundWounded>Pawn_Warg_Wounded</soundWounded>
+          <soundDeath>Pawn_Warg_Death</soundDeath>
+          <soundCall>Pawn_Warg_Call</soundCall>
+          <soundAngry>Pawn_Warg_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+      <predator>false</predator>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.03</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Burrak</defName>
+    <label>burrak</label>
+    <race>RM_Burrak</race>
+    <combatPower>70</combatPower>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <drawSize>1.5</drawSize>
+          <color>(120, 110, 95)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <drawSize>1.9</drawSize>
+          <color>(120, 110, 95)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>1.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ RM_Vhakk — the warden (margin apex) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vhakk</defName>
+    <label>vhakk</label>
+    <description>A long low courser with a single blade-crest running nape to tail like a dorsal keel — the margin made flesh. It never hunts at water, by design, not restraint; it drinks in strict rotation like everything else, and owns the approaches instead. Its patrol is the oasis's outermost wall, enforcing the geometry of pilgrimage that only exists here.</description>
+    <statBases>
+      <MoveSpeed>3.4</MoveSpeed>
+      <MarketValue>400</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>48</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <uiIconScale>1.0</uiIconScale>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <baseBodySize>1.8</baseBodySize>
+      <baseHungerRate>0.38</baseHungerRate>
+      <baseHealthScale>1.6</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <predator>true</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>14</lifeExpectancy>
+      <gestationPeriodDays>30</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1)</li>
+          <li>(3, 1)</li>
+          <li>(4, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>Pawn_Pinniped_Wounded</soundWounded>
+          <soundDeath>Pawn_Pinniped_Death</soundDeath>
+          <soundCall>Pawn_Pinniped_Call</soundCall>
+          <soundAngry>Pawn_Pinniped_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+      <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalExoticFriend</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vhakk</defName>
+    <label>vhakk</label>
+    <race>RM_Vhakk</race>
+    <combatPower>140</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Alligator</texPath>
+          <drawSize>1.5</drawSize>
+          <color>(150, 130, 100)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Dessicated_Alligator</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Alligator</texPath>
+          <drawSize>1.85</drawSize>
+          <color>(150, 130, 100)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Dessicated_Alligator</texPath>
+          <drawSize>1.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ RM_Vellak — the pilgrim herd (sail-comb strider) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vellak</defName>
+    <label>vellak</label>
+    <description>Camel-tall striders that walk the dry country between pools in single file down the caravan roads, dorsal sail-combs fanned to drink the wind as they come. From the rim, moving lines converging on water: pilgrimage made visible. The RM_ tier's own pilgrim ring — the free mod keeps the pilgrimage identity without a canon herd, which only stacks on top in the campaign.</description>
+    <statBases>
+      <MoveSpeed>2.8</MoveSpeed>
+      <MarketValue>320</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>48</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <uiIconScale>1.1</uiIconScale>
+    <tools>
+      <li>
+        <label>kick</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>1.6</baseBodySize>
+      <baseHungerRate>0.35</baseHungerRate>
+      <baseHealthScale>1.4</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <packAnimal>true</packAnimal>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>18</lifeExpectancy>
+      <gestationPeriodDays>45</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 1)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.35</minAge>
+          <soundWounded>Pawn_Dromedary_Wounded</soundWounded>
+          <soundDeath>Pawn_Dromedary_Death</soundDeath>
+          <soundCall>Pawn_Dromedary_Call</soundCall>
+          <soundAngry>Pawn_Dromedary_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vellak</defName>
+    <label>vellak</label>
+    <race>RM_Vellak</race>
+    <combatPower>55</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dromedary/Dromedary</texPath>
+          <drawSize>1.6</drawSize>
+          <color>(215, 200, 175)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dromedary/Dessicated_Dromedary</texPath>
+          <drawSize>1.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dromedary/Dromedary</texPath>
+          <drawSize>2.0</drawSize>
+          <color>(215, 200, 175)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dromedary/Dessicated_Dromedary</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ RM_Kirruk — the ridge-flier (comb-wing soarer) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Kirruk</defName>
+    <label>kirruk</label>
+    <description>A hawk-sized soarer that rides the wind forced up the tall stone, long stiff wings that are themselves combs — slotted trailing edges like comb-teeth — hanging motionless on the updraft off a rock face, wings combing the wet air as it hangs. It drinks the way the biome does, on the wing, and lands only to nest on the rims. The RM_ tier's own sky presence.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>48</ComfyTemperatureMax>
+      <Wildness>0.85</Wildness>
+      <MaxFlightTime>25</MaxFlightTime>
+      <FlightCooldown>8</FlightCooldown>
+    </statBases>
+    <uiIconScale>0.65</uiIconScale>
+    <tools>
+      <li>
+        <label>talon</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>0.5</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Bird</leatherDef>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <gestationPeriodDays>15</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>Pawn_Chicken_Wounded</soundWounded>
+          <soundDeath>Pawn_Chicken_Death</soundDeath>
+          <soundCall>Pawn_Chicken_Call</soundCall>
+          <soundAngry>Pawn_Chicken_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.03</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+      <flightStartChanceOnJobStart>0.15</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.2</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.6</leaveMapOnFleeChance>
+    </race>
+    <tradeTags>
+      <li>AnimalExoticFriend</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Kirruk</defName>
+    <label>kirruk</label>
+    <race>RM_Kirruk</race>
+    <combatPower>35</combatPower>
+    <ecoSystemWeight>0.35</ecoSystemWeight>
+    <!-- Real flight animation reuse (CLAUDE.md "if it flies in the fiction, it
+         flies in the game"): Chicken_Flying_1..8 is a genuine shipped vanilla
+         flip-book (Core, RIMWORLD_1_6_NATIVE_ANIMAL_FLIGHT_IMPLEMENTATION.md
+         precedent), so kirruk gets real flight animation from wave 2 rather
+         than a wingless stat. Body art is still the placeholder Chicken
+         retint pending real art. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/Chicken/Chicken_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.6</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Chicken/Chicken</texPath>
+          <drawSize>0.7</drawSize>
+          <color>(120, 115, 110)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
+          <drawSize>0.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Chicken/Chicken</texPath>
+          <drawSize>0.85</drawSize>
+          <color>(120, 115, 110)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
+          <drawSize>0.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEEPINGSTONES_RM_MOD_BUILD_1, wave 2 — the 10 invented flora rows ruled at
+  WEEPING_STONES_DESIGN_SITTING_1 (2026-09-24, closed af3eaa622):
+  design/Jawa/worldbuilding/biomes/weeping_stones_flora_roster_2026-09-24.md
+  §2, rows RM_Dewblade/RM_Weepmat/RM_Verdimoss/RM_Shadefern/RM_Bladderquill/
+  RM_Salvecomb/RM_Rockfinger/RM_Dripfringe/RM_Steamfrond/RM_Dewgourd. Every
+  row is franchise-free RM_ tier, invented, per Q11a — no donor dependency.
+
+  RM_Shadefern (row 3b) REPLACES the donor `AB_GreenRockFern` (Alpha Biomes)
+  per ruling 3 — the biome's wildPlants swap to it happens in
+  RM_WeepingStones_Biome.xml alongside this file landing, so the donor
+  never ships wired to an RM_ def that also has its own replacement.
+
+  Two hard laws bind every row (sheet §4-§6, restated in the roster doc):
+  the blade law (upright fins/corduroy mats, never a bushy crown) and R21
+  (condensate/drip/seep water story, never rain) — both are flavor-text
+  laws with no engine field, honored in every description below, not
+  something a stat enforces.
+
+  Placeholder art only: texPaths below point at where each art job lands
+  (infrastructure/artpipe/pending/weepingstones2_<name>.json, filed this
+  wave after a done/_artsrc/registry sweep found nothing existing for any
+  of these 10 names 2026-09-24) — same convention as RUT_Vorrel.xml. They
+  will read as missing/magenta until the daemon works through the queue;
+  expected offline-pass state, not a defect.
+
+  Harvest routing: RM_Bladderquill -> RM_BladderFruit (new item, this
+  mod's own ThingDefs_Items/RM_WeepingStonesNativeFlora_Items.xml).
+  RM_Salvecomb -> vanilla MedicineHerbal (the healroot pattern named in the
+  roster; no new item needed — same harvestedThingDef vanilla Healroot
+  itself uses). RM_Steamfrond -> RM_SeepSalt (new item, same items file).
+  RM_Dewgourd -> RM_DewgourdFruit (new item, same items file). RM_Rockfinger
+  -> vanilla WoodLog (an ordinary tree).
+-->
+<Defs>
+
+  <!-- ══════════════════════ RM_Dewblade — the baseline green ══════════════════════ -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Dewblade</defName>
+    <label>dewblade</label>
+    <description>Shin-high tufts of flat grey-green blades standing edge-on to the sun and face-on to the wind, each blade tipped with a drip-point that feeds its own root. Whole hillsides of them align like iron filings -- the wind made visible. The grass-analog and graze base of the biome, densest toward true water.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Dewblade</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Nutrition>0.12</Nutrition>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>3</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.3~0.8</visualSizeRange>
+      <topWindExposure>0.6</topWindExposure>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ══════════════════════ RM_Weepmat — the signature mark, made flora ══════════════════════ -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Weepmat</defName>
+    <label>weep-mat</label>
+    <description>A dark green-black mat hugging the cold stone faces, ridged like corduroy, every ridge square to the sea-wind, glistening along the weep-lines. It grows exactly where the stone weeps, so a weep-mat is the wet black streak's green echo -- a face without one is a face that has gone dry. Graze for the sillik.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Weepmat</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.08</Nutrition>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>4</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.3~0.6</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>28</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ══════════════════════ RM_Verdimoss — the relic-dresser ══════════════════════ -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Verdimoss</defName>
+    <label>verdimoss</label>
+    <description>Cushions of blue-green moss growing in beaded lines along seep cracks -- and over the old machines, where it takes the colour of oxidised bronze. It marks the seep lines and ages the ruins: every relic in the biome is half-mossed, which is its own sacred ambiguity. Zero yield; pure register, cheap density.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Verdimoss</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Nutrition>0.05</Nutrition>
+      <Flammability>0.1</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>5</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.2~0.5</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>24</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ══════════════════════ RM_Shadefern — RULED replacement for AB_GreenRockFern ══════════════════════ -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Shadefern</defName>
+    <label>shadefern</label>
+    <description>A deep-green fern growing only on the shaded face of standing stone, every frond swept to the cold side as if combed, its pale rachis catching what light bounces in. Marks which side of a rock is the cold side at a glance -- the stone-shade fern niche, now donor-free under its own name.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Shadefern</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Nutrition>0.1</Nutrition>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.08</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>5</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.3~0.7</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>22</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ══════════════════════ RM_Bladderquill — the forage staple (bladder-fruit) ══════════════════════ -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Bladderquill</defName>
+    <label>bladderquill</label>
+    <description>A knee-high fan of stiff translucent quills, each fat at the base with stored water, standing in arcs along the green ring. Cut a quill and it sloshes. It bears the bladder-fruit -- food and drink in one object -- and is the visible promise of the green ring: where bladderquill stands, nobody dies thirsty.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Bladderquill</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.15</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.15</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_BladderFruit</harvestedThingDef>
+      <harvestYield>7</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestAfterGrowth>0.4</harvestAfterGrowth>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>26</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+    </plant>
+  </ThingDef>
+
+  <!-- ══════════════════════ RM_Salvecomb — the medicine plant ══════════════════════ -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Salvecomb</defName>
+    <label>salvecomb</label>
+    <description>One waist-high arched frond per plant, serrated along its windward edge like a comb's teeth, silver-downy where it combs the fog. Grows alone in shade lines. Its down mats wick clean condensate; field dressing is the fiction. Rare enough to be worth a walk under the overhangs.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Salvecomb</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Nutrition>0.06</Nutrition>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.08</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>14</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.4~0.7</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>MedicineHerbal</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <harvestWork>300</harvestWork>
+      <harvestAfterGrowth>0.5</harvestAfterGrowth>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ══════════════════════ RM_Rockfinger — the tree (RULED name, was Sailfin) ══════════════════════ -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Rockfinger</defName>
+    <label>rockfinger</label>
+    <description>A gnarled, wind-stripped hardwood rooted in the rim cracks of the tall stone, branches clawing out over the drop, bark pale as the stone it grips. At this biome's low sun its shadow runs down the rock face and across the ground for many times its height -- you meet the shadow before the tree. Scarce, and hardy the way it has to be. Slow, scattered, precious timber in high stone country; a felled rockfinger is a caravan event.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Rockfinger</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.35, 0.5, 0.28)</volume>
+        <offset>(0,0,-0.4)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+      <BeautyOutdoors>3</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>60</growDays>
+      <harvestWork>900</harvestWork>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestYield>16</harvestYield>
+      <harvestTag>Wood</harvestTag>
+      <harvestAfterGrowth>0.3</harvestAfterGrowth>
+      <visualSizeRange>1.5~3.2</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+  <!-- ══════════════════════ RM_Dripfringe — the overhang register ══════════════════════ -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Dripfringe</defName>
+    <label>dripfringe</label>
+    <description>A curtain of dark fleshy fingers hanging from overhang lips and cistern mouths, each finger a drip-tip, forever ticking water into the catch-pool below. The comb inverted -- teeth down. A dripfringe curtain over a dark mouth means water below.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Dripfringe</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.07</Nutrition>
+      <Flammability>0.1</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>6</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.4~0.8</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>14</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>true</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ══════════════════════ RM_Steamfrond — the seep-oasis signature ══════════════════════ -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Steamfrond</defName>
+    <label>steamfrond</label>
+    <description>A rosette of mineral-pale fronds spiralled around a breathing vent, rims crusted with white salt bloom. Grows only at the seep oases -- the green eye in open nothing is a steamfrond ring before it is anything else. Its harvest scrapes seep-salt, a preservative and spice with the underworld's taste, and the only source of it.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Steamfrond</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.05</Nutrition>
+      <Flammability>0.05</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.02</fertilityMin>
+      <fertilitySensitivity>0.05</fertilitySensitivity>
+      <growDays>12</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.4~0.8</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_SeepSalt</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <harvestWork>260</harvestWork>
+      <harvestAfterGrowth>0.5</harvestAfterGrowth>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ══════════════════════ RM_Dewgourd — the sowable crop (RULED 2026-09-24) ══════════════════════ -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Dewgourd</defName>
+    <label>dewgourd</label>
+    <description>Owner's spec, verbatim: "a large melon like gourd that takes a long time to grow but is then worth a lot of food and keeps for a long time." A single melon-sized gourd per plant, rind pale and waxy as the stone, swelling in the shade of its own little blade-comb, fed by drip. One slow gourd is a season's promise -- the reason a colony can farm here.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Dewgourd</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Nutrition>0.15</Nutrition>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.35</fertilityMin>
+      <fertilitySensitivity>0.7</fertilitySensitivity>
+      <growDays>26</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.5~1.1</visualSizeRange>
+      <topWindExposure>0.2</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_DewgourdFruit</harvestedThingDef>
+      <harvestYield>14</harvestYield>
+      <harvestWork>400</harvestWork>
+      <harvestAfterGrowth>0.85</harvestAfterGrowth>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <sowMinSkill>0</sowMinSkill>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+    </plant>
+  </ThingDef>
+
+</Defs>
