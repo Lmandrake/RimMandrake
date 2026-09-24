@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STOCKED_POOL_BUILD_1, wave 3 — the husbandry loop's job vocabulary (spec
+  §3): STOCK is two jobs back to back (NET a wild breeder into a carried
+  item, then carry that item into a pen and release it); FEED delivers feed
+  to a pen that's due. Driver classes: RM_JobDriver_NetPoolBreeder/
+  RM_JobDriver_StockPoolPen/RM_JobDriver_FeedPoolPen, same folder tree.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_NetPoolBreeder</defName>
+    <driverClass>RimMandrake.WeepingStones.RM_JobDriver_NetPoolBreeder</driverClass>
+    <reportString>netting breeding stock from TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_StockPoolPen</defName>
+    <driverClass>RimMandrake.WeepingStones.RM_JobDriver_StockPoolPen</driverClass>
+    <reportString>carrying TargetA to a stocked pool.</reportString>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_FeedPoolPen</defName>
+    <driverClass>RimMandrake.WeepingStones.RM_JobDriver_FeedPoolPen</driverClass>
+    <reportString>feeding a stocked pool.</reportString>
+  </JobDef>
+
+</Defs>
