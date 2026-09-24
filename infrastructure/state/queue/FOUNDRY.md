@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T01:17:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T01:30:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1956,3 +1956,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Rename the 11 ThingDefs / PawnKindDefs and their juveniles from RSW to RM, with the C
 prose:    infrastructure/state/items/SEA_BEASTS_TIER_RULING_1.md
+
+## WARDEN_MOTHER_BEFRIENDING_1 The warden mother: lumbers in water, cannot reach land, befriended by freeing the young she cannot
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  🔑 The whole mechanism is the waterline. She goes anywhere the water goes and nowhere else. A
+prose:    infrastructure/state/items/WARDEN_MOTHER_BEFRIENDING_1.md
