@@ -3695,6 +3695,12 @@
     "hash": "9296150cf86557eed9f1c26edf524ec4becef7cd531e9d18f399ac38a1c1d269",
     "sha": "bb73b6bd"
   },
+  "src/RimMandrake/MandrakePatches/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "16e6d23792377b79bbbed2bc714a8449e78236a493c9d63935345855097919cd",
+    "sha": "5ae0191cc"
+  },
   "src/RimMandrake/MovingDunes/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -9807,6 +9813,12 @@
     "hash": "76b5f9e2ed7e11312636984ac4e769b82284b5af24fbe7ec18d7f5b52b44dd6b",
     "sha": "6784196e"
   },
+  "src/RimStarWars/Armoury/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b4b7128d4e48731971b08cd3919e22f9f8642d38c734d3ed54c38cf2b7293014",
+    "sha": "5ae0191cc"
+  },
   "src/RimStarWars/Bacta/Defs/ResearchProjectDefs/RSW_BactaResearch.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -10071,6 +10083,12 @@
     "hash": "8b6e03361470c648e04e2f4f6dcc4984871a285b4622144a0111547a1eb5dd5d",
     "sha": "4c830bfd"
   },
+  "src/RimStarWars/Cuisine/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "08ea3374ce9791c2e6e090b2c2802b8e06a3b64f6c1d249f4a5e9eebaed00ed9",
+    "sha": "5ae0191cc"
+  },
   "src/RimStarWars/DalgoArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -10256,6 +10274,12 @@
     "date": "2026-09-09",
     "hash": "59b40f3dbb5e66a279e89a69211ca9114d42ab61fd22e2b6a9262113e1a46230",
     "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "990a7fa7acf80b7cb1ce5e64f35daa7c13a0fae384855ae95d784925adb9d259",
+    "sha": "5ae0191cc"
   },
   "src/RimStarWars/DewbackArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -11385,6 +11409,12 @@
     "hash": "d9457bef6dd4ae5e5f2bcf7a382541703f068dcf69e334453091ebb62c52dd8f",
     "sha": "2d32e8be7"
   },
+  "src/RimStarWars/JawaRules/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "741343c2c0abc0b18f732c9bf906008226f4767e682f2c385d0786f7dc4cf1af",
+    "sha": "5ae0191cc"
+  },
   "src/RimStarWars/JawaVoice/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -11660,6 +11690,12 @@
     "date": "2026-09-05",
     "hash": "f9d9a87ee1ef724b1e63cc65773d619413b9598515657a66f63281f6e3ccf689",
     "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7265ae26324e3384978b89bb1bd2874e005728e77d6847ac1a8899320a4b7872",
+    "sha": "5ae0191cc"
   },
   "src/RimStarWars/KreetleArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -14415,6 +14451,12 @@
     "hash": "170bc217ab9d2eb832826307be41dbd031d9062a227a336aca02c9ca988de2f5",
     "sha": "b3c315579"
   },
+  "src/RimUtinni/LanternDeeps/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8ac76415af6ca0de546bc337360daf2d3c8c933330b82f2be64d1300725178fa",
+    "sha": "5ae0191cc"
+  },
   "src/RimUtinni/LongHunger/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -14474,6 +14516,12 @@
     "date": "2026-09-11",
     "hash": "a335596ece9d1c8aab32a54aeab3f1cef09b91a52a86b61375c7469348a31d26",
     "sha": "e2333e565"
+  },
+  "src/RimUtinni/LongHunger/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4bcce6b6da57a4647e270383c9690bfe51d7486ecb77271771f239ecab11138a",
+    "sha": "5ae0191cc"
   },
   "src/RimUtinni/MantistanisArtOverride/About/About.xml": {
     "cleanCount": 1,
