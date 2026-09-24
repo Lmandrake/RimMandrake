@@ -12495,6 +12495,12 @@
     "hash": "78190aa633aa1ab456885fee496a4a9d0bedd860a89206015adbd117c31c2853",
     "sha": "5952eff03"
   },
+  "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Items/RSW_Maguana_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bd4acac32f0e9893928ed36420155f3bafe50bcb004ce32781a69b7586be3064",
+    "sha": "7775fe8ba"
+  },
   "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml": {
     "cleanCount": 4,
     "date": "2026-09-24",
@@ -12506,6 +12512,12 @@
     "date": "2026-09-24",
     "hash": "e9a4afa963cc10decd8d0e09609b8678038606adf99d59f3604c36262467b7b4",
     "sha": "6e71f9825"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_AADesertPort_Bodies.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5b49cc4fb1a299f6b64b6893ee5520bbd7df28a83ed25678f1dc8ccf71093cab",
+    "sha": "01eeb9648"
   },
   "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveB_Bodies.xml": {
     "cleanCount": 1,
@@ -12525,17 +12537,41 @@
     "hash": "29a8dd45580ed3b241063c20abbaa0ba3140007b7e6cfc7ca9d62ecafc7eb55f",
     "sha": "640d910a8"
   },
+  "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortB_Plants.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7bc593df1ebdfdb2cca50d56cea5189fe182b04875ce7615a68d803d874a82d3",
+    "sha": "01eeb9648"
+  },
   "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMechanics.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "cdc917314672a1ec0a34d17d2d30d0f410dba581df81cf9ff5f304bcddb1e4a6",
     "sha": "6e71f9825"
   },
+  "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "585c6b703e0694314204af0fc811d5ccd7f3ff89bbaf830ce3ca285c10d49c26",
+    "sha": "01eeb9648"
+  },
+  "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_ExtremeDesertSignatureFlora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "641f37a66bf75fd6a4622207c280efd8815daedfacfb1eaa15a5a953187c3e42",
+    "sha": "01eeb9648"
+  },
   "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_Ultracactus.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "ac8e8c564f0df913e1b7170b3e7c062a42c09602db1f76ad2c4fdc9f99417401",
     "sha": "6e71f9825"
+  },
+  "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_Zakkro.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3af8fc8c14481e7d6c1633459a38930ee26cafd875a2fb5419741ad601de7ef4",
+    "sha": "01eeb9648"
   },
   "src/RimStarWars/SWBestiary/Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml": {
     "cleanCount": 1,
@@ -12740,6 +12776,18 @@
     "date": "2026-09-11",
     "hash": "5892f8651b1517b5c210670a10237639b91cda97685b63b34d2231be92d3a602",
     "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_ZakkroEgg.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "96345d01387477d596159ef59071a0b06e89e1138744ba97a905e57496942d62",
+    "sha": "01eeb9648"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Misc/RSW_Filth_WhaleDung.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b195d3f10fe63734b4bc39a539948b8e3f73ef9a5305f53c288a566111ce2e05",
+    "sha": "01eeb9648"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Baseopsis.xml": {
     "cleanCount": 1,
@@ -13106,6 +13154,12 @@
     "date": "2026-09-17",
     "hash": "75d28a310470c24c2d0b2ebe9a1c78ba137e342ac64e43d66d2b7b6ec9361d2f",
     "sha": "616570761"
+  },
+  "src/RimStarWars/SWBestiary/art/ScrapNest/gen_scrapnest_placeholder.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "cfe200ec262c075e817109c49039de126d50d2432cede5677cad45ce8e6bf4a4",
+    "sha": "01eeb9648"
   },
   "src/RimStarWars/SWBestiary/art/SeaBeasts/gen_sea_mockups.py": {
     "cleanCount": 2,
