@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Jawa_MessImmunity.xml                      UtinniPatches · JAWA_MESS_IMMUNITY_1
+  ============================================================================
+
+  OWNER RULING, 2026-09-24, filed off SUMP_DESIGN_SITTING_1: "no filth/squalor
+  mood penalties for the Jawa xenotype; other factions just live with it and
+  suffer." Planet-wide, not Sump-specific.
+
+  WHY A CAMPAIGN-TIER GENE, PATCHED IN, RATHER THAN AN RSW GENE
+  ===============================================================
+  RSW_MandrakeJawa (src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/
+  MandrakeJawaXenotype.xml) is authored at RimStarWars tier because "the Jawa
+  are a species like any other" and could belong to ANY Star Wars scenario.
+  Mess-immunity is a ruling about THIS campaign's clan, the same way
+  XenotypeTolerances_Ashkarr.xml patches Ash'karr-native temperature bands
+  onto the same def rather than baking them into the RSW xenotype itself.
+  The gene lives here; the patch in JawaMessImmunity.xml wires it onto
+  RSW_MandrakeJawa's <genes> list.
+
+  WHY nullifyingGenes ON NeedBeauty, NOT A NEW THOUGHT OR A DISABLED-WORK-TAG
+  =============================================================
+  RimWorld has no dedicated "squalor" ThoughtDef. Filth reduces two stats:
+  `Cleanliness` (feeds RoomStat Impressiveness -> per-room-role mood, e.g.
+  bedroom/barracks/hospital "impressive room" thoughts) and `Beauty` (-15 per
+  filth item, decompile-confirmed: Defs/Core/ThingDefs_Misc/Filth_Various.xml
+  BaseFilth statBases). `Beauty` alone drives the ambient, room-independent
+  mood thought every player calls "the filth penalty" -
+  `NeedBeauty` (Defs/Core/ThoughtDefs/Thoughts_Situation_Needs.xml), worked by
+  `ThoughtWorker_NeedBeauty` off `pawn.needs.beauty.CurCategory`
+  (decompile-confirmed, Source/RimWorld/ThoughtWorker_NeedBeauty.cs) - this is
+  what fires wherever a pawn stands, not just in an owned room, which matches
+  the item's verify wording ("a Jawa pawn in a filthy room").
+
+  `ThoughtDef.nullifyingGenes` (Source/RimWorld/ThoughtDef.cs) is a real,
+  vanilla, well-tested field consumed by `ThoughtUtility.NullifyingGene` /
+  `ThoughtNullified` (Source/RimWorld/ThoughtUtility.cs) - the SAME mechanism
+  vanilla itself uses for `DarkVision` nullifying `EnvironmentDark`
+  (Defs/Core/ThoughtDefs/Thoughts_Situation_General.xml:11-13). That precedent
+  is a purely-negative thought, so nulling it is clean both ways.
+
+  🔴 TRADEOFF, RECORDED RATHER THAN HIDDEN: NeedBeauty carries BOTH the
+  negative stages (hideous/ugly/unsightly, from filth) and the positive ones
+  (pretty/beautiful/gorgeous, from decor) on the SAME ThoughtDef.
+  `nullifyingGenes` nulls the whole ThoughtDef per pawn, not per stage -
+  there is no vanilla field to null only the negative half. A Jawa carrying
+  this gene therefore also stops getting positive mood from a beautifully
+  decorated room, not just the filth penalty. This does NOT violate the
+  item's criteria ("mess costs everyone except the Jawa, and rewards no
+  one") - filth was never a positive contributor to Beauty, so "rewards no
+  one" already held - and it fits the fiction: junk scavengers indifferent to
+  squalor read as indifferent to finery too. FOUNDRY.md "Specs state
+  outcomes": this is the implementation that meets the criteria with the
+  smallest, most vanilla-respecting footprint (zero new C#). If the owner
+  wants the positive half preserved, that needs a custom ThoughtWorker
+  subclass (a real C# addition) - flagged in the item, not built here.
+
+  RoomStat Impressiveness (bedroom/barracks/etc.) is UNTOUCHED - Cleanliness
+  is only one input among Wealth/Space/Beauty there, so nulling those whole
+  ThoughtDefs would also null wealth- and space-based mood, which is well
+  outside "filth/squalor/mess-derived." Left as vanilla for every pawn,
+  Jawa included.
+
+  biostatMet -1 mirrors DarkVision (Defs/Biotech/GeneDefs/GeneDefs_Misc.xml) -
+  the closest vanilla precedent for "nullifies a purely environmental mood
+  thought," a modest quality-of-life upside.
+  ============================================================================
+-->
+<Defs>
+
+  <GeneDef>
+    <defName>RUT_Jawa_MessImmune</defName>
+    <label>mess-indifferent</label>
+    <labelShortAdj>mess-indifferent</labelShortAdj>
+    <description>Carriers of this gene do not register their surroundings as filthy or squalid, however deep the junk and grime run. A lifetime spent living inside wrecks and scrap heaps has worn the reaction out of them entirely - the clan simply does not see mess as a problem worth having a feeling about.</description>
+    <iconPath>UI/Icons/Genes/Gene_DeadCalm</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <displayOrderInCategory>1795</displayOrderInCategory>
+    <biostatMet>-1</biostatMet>
+  </GeneDef>
+
+</Defs>
