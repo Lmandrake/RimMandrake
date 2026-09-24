@@ -65,7 +65,31 @@ namespace RimMandrake.Graffiti
                     IntVec3 cell = job.GetTarget(MarkCellInd).Cell;
                     if (cell.IsValid && Map != null)
                     {
-                        FilthMaker.TryMakeFilth(cell, Map, RMGraffitiDefOf.RM_Graffiti_Vandal);
+                        // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 mechanism 4: pool
+                        // selection (skill-weighted via poolWeight on each
+                        // def) replaces the hardcoded RM_Graffiti_Vandal
+                        // reference, and Filth_Mark.MakeMark stamps
+                        // provenance (maker/faction/ideo) instead of the
+                        // bare FilthMaker call - every mark this pawn paints
+                        // now carries who made it, for the relation-keyed
+                        // viewer reactions and going-over.
+                        // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 mechanism 4's
+                        // designator placer shares this same job/driver: a
+                        // cell the player designated (RM_PaintGraffitiHere,
+                        // see Designator_PaintGraffitiMark) picks from the
+                        // designator-eligible pool instead of the ordinary
+                        // spree/joy pool, and the designation is cleared
+                        // once painted so the colonist doesn't loop forever
+                        // repainting the same cell. A joy/spree job never
+                        // has a designation at its cell, so this is a no-op
+                        // for the ordinary path.
+                        bool designated = Map.designationManager.DesignationAt(cell, RMGraffitiDefOf.RM_PaintGraffitiHere) != null;
+                        ThingDef markDef = designated ? GraffitiPool.PickForDesignator(pawn) : GraffitiPool.PickForSpree(pawn);
+                        Filth_Mark.MakeMark(cell, Map, markDef, pawn);
+                        if (designated)
+                        {
+                            Map.designationManager.TryRemoveDesignation(cell, RMGraffitiDefOf.RM_PaintGraffitiHere);
+                        }
                     }
                 }
             });

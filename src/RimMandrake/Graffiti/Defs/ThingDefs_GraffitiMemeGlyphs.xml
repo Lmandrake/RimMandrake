@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       Tier C (design §3.2): one glyph per meme, chosen by affinity.
+       GraffitiPool.MemeGateAllows only offers these to a placer whose Ideo
+       holds the named meme (Ideo.HasMeme).
+
+       Owner ruling 2026-09-24 (question card + free-text addition): "ALL
+       vanilla memes get a mark, including Cannibal, MaleSupremacy/
+       FemaleSupremacy, Nudism, Inhuman, PainIsVirtue - no exclusions."
+       The mechanism (ModExtension_Graffiti.requiresAnyMeme + GraffitiPool's
+       meme gate) already supports all 27 non-structure vanilla MemeDefs
+       MEASURED this pass (`measure sql` on defs.sqlite, mods=623,
+       captured=2026-09-24T00:30:55Z: 24 Ideology + Biotech Bloodfeeding +
+       Anomaly Inhuman/Ritualist + Odyssey Shipborn). This file ships the
+       EIGHT the owner's own ruling most needed proven - the six named
+       explicitly (Cannibal/MaleSupremacy/FemaleSupremacy/Nudism/Inhuman/
+       PainIsVirtue) plus two of the five placeholder-mapped memes this
+       item's own open question left unresolved (Loyalist, Guilty) - rather
+       than the pre-ruling design doc's own v1 shortlist (Raider/Cannibal/
+       Supremacist/Collectivist/Individualist/Proselytizer/Transhumanist/
+       NaturePrimacy), which conspicuously included none of the taste-
+       boundary memes the ruling was actually about.
+
+       The remaining 19 memes (Raider, Blindsight, Darkness, Tunneler,
+       Rancher, AnimalPersonhood, NaturePrimacy, TreeConnection,
+       HumanPrimacy, Supremacist, Collectivist, Individualist,
+       Proselytizer, Transhumanist, FleshPurity, HighLife, Bloodfeeding,
+       Ritualist, Shipborn) have the mechanism available but no ThingDef
+       yet - owed work, not a gap in the engine. Collectivist/Individualist/
+       Shipborn are also among the five placeholder glyph-subject mappings
+       this item's open questions left for the owner to override.
+
+       Glyph subjects are the design doc's own grounded readings (§3.2's
+       table: each traced to the meme's description/style/precepts, not
+       invented). Loyalist (banner) and Guilty (chain link) are explicitly
+       PLACEHOLDER mappings per this item's open question 3 - flagged here,
+       not settled. -->
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Cannibal</defName>
+    <label>cannibal glyph</label>
+    <description>A skull, crossed with a fork - a mark for those who feed on their own kind.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Cannibal</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Taunt</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <requiresAnyMeme>
+          <li>Cannibal</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_MaleSupremacy</defName>
+    <label>male supremacy glyph</label>
+    <description>A crowned gender mark - a claim of dominance painted where it will be seen.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_MaleSupremacy</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-4</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <requiresAnyMeme>
+          <li>MaleSupremacy</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_FemaleSupremacy</defName>
+    <label>female supremacy glyph</label>
+    <description>A crowned gender mark - a claim of dominance painted where it will be seen.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_FemaleSupremacy</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-4</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <requiresAnyMeme>
+          <li>FemaleSupremacy</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Nudism</defName>
+    <label>nudism glyph</label>
+    <description>A bare figure, sketched plain - clothing means nothing here.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Nudism</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Jest</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <requiresAnyMeme>
+          <li>Nudism</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Anomaly">
+    <defName>RM_Graffiti_Glyph_Inhuman</defName>
+    <label>void ring glyph</label>
+    <description>A ring struck through with nothing at its centre - the Cult's own mark, never seen on a colony's own walls by choice.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Inhuman</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-8</Beauty>
+      <Cleanliness>-4</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Taunt</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <requiresAnyMeme>
+          <li>Inhuman</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_PainIsVirtue</defName>
+    <label>thorn ring glyph</label>
+    <description>A ring of thorns, closed - pain worn as devotion.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_PainIsVirtue</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>PainIsVirtue</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- PLACEHOLDER mapping (this item's open question 3, unresolved) -
+       banner is the design doc's own guess, not an owner-confirmed
+       subject. Override when he has an image. -->
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Loyalist</defName>
+    <label>banner glyph</label>
+    <description>A banner, painted plain - a placeholder subject for Loyalist devotion, pending the owner's own reading.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Loyalist</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>Loyalist</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- PLACEHOLDER mapping (this item's open question 3, unresolved) -
+       chain link is the design doc's own guess, not an owner-confirmed
+       subject. Override when he has an image. -->
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Guilty</defName>
+    <label>chain link glyph</label>
+    <description>A single chain link, sketched rough - a placeholder subject for Guilty devotion, pending the owner's own reading.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Guilty</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>Guilty</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

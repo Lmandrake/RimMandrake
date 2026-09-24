@@ -45,15 +45,22 @@
 
   <ItemGroup>
     <Compile Include="GraffitiCategory.cs" />
+    <Compile Include="GraffitiForm.cs" />
     <Compile Include="ModExtension_Graffiti.cs" />
     <Compile Include="RMGraffitiDefOf.cs" />
     <Compile Include="GraffitiJobUtility.cs" />
+    <Compile Include="GraffitiPool.cs" />
+    <Compile Include="Filth_Mark.cs" />
     <Compile Include="JobDriver_PaintGraffiti.cs" />
     <Compile Include="JoyGiver_PaintGraffiti.cs" />
     <Compile Include="MentalState_GraffitiSpree.cs" />
     <Compile Include="JobGiver_GraffitiPaintingSpree.cs" />
     <Compile Include="ThoughtWorker_ViewedGraffitiMark.cs" />
     <Compile Include="BreachBiasHook.cs" />
+    <Compile Include="AutoCleanProtection.cs" />
+    <Compile Include="RaidExitTagger.cs" />
+    <Compile Include="Designator_PaintGraffitiMark.cs" />
+    <Compile Include="WorkGiver_PaintGraffitiDesignated.cs" />
     <Compile Include="RM_GraffitiMod.cs" />
   </ItemGroup>
 

@@ -25,6 +25,15 @@ namespace RimMandrake.Graffiti
     //   4. Breach-bias — raiders funneling their breach target toward a
     //      "Come And Take It" taunt mark (BreachBiasHookMod's Harmony
     //      postfix on BreachingGrid.FindBuildingToBreach).
+    //
+    // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 adds two more:
+    //   5. Raid-exit tagging — a departing hostile pawn leaves its gang's
+    //      own mark nearby (RaidExitTaggerMod's Harmony prefix on
+    //      CaravanExitMapUtility.ExitMapAndCreateCaravan).
+    //   6. Scrub protection — own-faction/Devotional marks skip the
+    //      ambient home-area auto-clean scan (AutoCleanProtectionMod's
+    //      Harmony prefix on WorkGiver_CleanFilth.HasJobOnThing); a
+    //      player's explicit right-click "Clean now" always still works.
     // ════════════════════════════════════════════════════════════════════
     public class RM_GraffitiSettings : ModSettings
     {
@@ -32,6 +41,8 @@ namespace RimMandrake.Graffiti
         public static int paintIntervalTicks = 250;
         public static bool viewerReactionEnabled = true;
         public static bool breachBiasEnabled = true;
+        public static bool raidExitTaggingEnabled = true;
+        public static bool autoCleanProtectionEnabled = true;
 
         public override void ExposeData()
         {
@@ -40,6 +51,8 @@ namespace RimMandrake.Graffiti
             Scribe_Values.Look(ref paintIntervalTicks, "paintIntervalTicks", 250);
             Scribe_Values.Look(ref viewerReactionEnabled, "viewerReactionEnabled", true);
             Scribe_Values.Look(ref breachBiasEnabled, "breachBiasEnabled", true);
+            Scribe_Values.Look(ref raidExitTaggingEnabled, "raidExitTaggingEnabled", true);
+            Scribe_Values.Look(ref autoCleanProtectionEnabled, "autoCleanProtectionEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -61,6 +74,15 @@ namespace RimMandrake.Graffiti
             list.CheckboxLabeled("Raiders lured to taunt marks", ref breachBiasEnabled,
                 "A \"Come And Take It\"-style taunt mark biases raiders to breach toward it. "
               + "Off: raiders pick a breach target the ordinary (nearest) way.");
+            list.Gap();
+            list.CheckboxLabeled("Raiders tag on their way out", ref raidExitTaggingEnabled,
+                "A departing hostile pawn leaves its own gang's mark on a nearby wall. "
+              + "Off: raiders leave no marks when they exit the map.");
+            list.Gap();
+            list.CheckboxLabeled("Protect own/devotional marks from auto-clean", ref autoCleanProtectionEnabled,
+                "Your own faction's marks and Devotional marks are skipped by the ambient "
+              + "home-area clean scan. Off: every mark is fair game for ordinary cleaning. "
+              + "A player's explicit right-click \"Clean now\" always still works either way.");
 
             list.End();
         }
