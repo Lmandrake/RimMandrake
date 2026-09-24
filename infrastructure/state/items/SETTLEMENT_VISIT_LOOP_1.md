@@ -526,3 +526,41 @@ bridge with time to finish this:**
 Left `doing` — compiled, not deployed, not live-tested. This is real forward
 progress (the structural blocker two prior passes proved dead-end is now
 routed around in source), not yet the live proof itself.
+
+## FOUNDRY, 2026-09-24 (fourth pass): tool DEPLOYED and confirmed registered live — BLOCKED before the actual call, game process crashed on an unrelated quicktest attempt
+
+`JawaBench.BridgeTools.dll` (carrying `jawa/inhabited_settlement_create` from
+the third pass) and `Inhabited.dll` were deployed and the game relaunched
+this session (by the orchestrating window, not this pass — see this
+subagent's own task context). Confirmed via a full companion census
+(`prove_new_tools.py --census`, game up, 621 mods): **337 of 338 tools in the
+deployed DLL registered live, including `jawa/inhabited_settlement_create`
+by name.** So the deploy genuinely took — this item's own step 2 from the
+third pass's "exact next step" list is done.
+
+**Steps 3-5 (find an empty tile, call the tool, verify casing/re-entry/
+departure) were never reached.** This pass chose to run the live-lifecycle
+proof — for this item, `BACTA_TANK_CORE_1` and `KORRUM_ART_REGEN_1` alike —
+on a disposable `rimworld/start_debug_game_ready` quicktest map rather than
+the canonical save (which loaded with 6 colonists drafted in active combat
+against 3 Mechanoids, 3 Scavrats and 7 `RUT_Jawa_HuttCartel` raiders — not a
+safe backdrop for open-ended testing). That quicktest call crashed the
+shared game process: a genuine, reproducible `NullReferenceException` in
+`Vehicles.World.WorldVehiclePathGrid.CancelGridRequests()` (Vehicle
+Framework/SmashTools, unrelated to Inhabited) inside `Game.Dispose()`,
+which is now unconditionally on the only path back to a clean scene — every
+subsequent `go_to_main_menu`/load attempt throws the same way. Full account
+and root-cause log excerpts are in `BACTA_TANK_CORE_1`'s note this session;
+not duplicated here. The process is alive but wedged: no map, no game, no
+load reachable via the bridge; only pure `DefDatabase` reads
+(`jawa/get_defs`, the census above) still answer.
+
+**Net**: the tool is proven deployed and registered — real forward progress —
+but the actual `jawa/inhabited_settlement_create` call, the empty-tile
+identification, and the whole verify/criteria bar (compose, cast, departure,
+gate-search, teardown, casing-persistence-across-a-second-visit) are still
+untouched. Needs a restart (not this pass's call) before the next attempt.
+Left `doing`. Bridge was taken and released clean this pass; no destructive
+game-state change was made by this window (the crash was a pre-existing
+Vehicle Framework defect triggered by ordinary quicktest worldgen, not
+anything Inhabited-specific).
