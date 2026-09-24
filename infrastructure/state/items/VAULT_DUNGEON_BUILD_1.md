@@ -460,6 +460,71 @@ built and re-confirmed clean; what remains is bridge-gated (Type-2 proof, V5
 placement) or owner-gated (hand-finish, dialogue). Nothing invented or
 padded to make this pass look bigger than it was.
 
+## 2026-09-24 (FOUNDRY) — re-verify only, bridge not taken (held by owner's
+window this session); one unrelated stale-config fix found and fixed
+
+Picked up per this session's own instruction: no live/quicktest work this
+pass (another window's session, not this one, may be driving the game
+tonight) — offline-doable work only, record exactly what's left for the
+bridge holder.
+
+**Re-verified this item's own scope from scratch, not trusted from the
+2026-09-18 note (6 days old, shared worktree):**
+- `Source/gen_vault_layouts.py` re-run: byte-identical output, `git status
+  --porcelain` on `Defs/VaultDungeons/` and `Source/VaultDungeons/` empty.
+- `validate_patch.py` on the whole `Defs/VaultDungeons/` tree against the
+  **current live 623-active-mod set** (`--defs` Data+Mods+Workshop, down
+  from 632/634 in prior notes — the mod list has shrunk since, not grown):
+  7 files, **0 errors, 1 warning** — same pre-existing `RUT_VaultHeart`
+  vanilla-asset-bundle texPath advisory every prior pass already classified
+  as a false positive. Unchanged.
+- Deployed copies checked byte-for-byte, not assumed: `diff -rq` on
+  `.../Mods/StructureInjectionsRUT/Defs/VaultDungeons/` against the repo
+  path, and `diff -q` on
+  `.../Mods/UtinniPatches/Defs/LandmarkDefs/RUT_Slough_GelatinousBreach.xml`
+  — both clean, no deploy drift.
+- Read (never wrote) the live `ModsConfig.xml`: **`mandrake.rut.injections`
+  is now ACTIVE** in the current 623-mod list (parsed via `ElementTree`, not
+  a `<li>` grep) — a change since the 2026-09-17/18 notes, which both
+  recorded it as NOT active. **`mandrake.rut.utinnipatches` (V5's landmark
+  mod) is still NOT active.** So even once V5's landmark is placed on tile
+  37, it will not render in the live game until that mod is also enabled —
+  worth flagging for whoever does that placement pass, since enabling a mod
+  is a live/ModsConfig decision outside this pass's scope and not acted on
+  here. Note per this repo's own lesson (`modsconfig-describes-the-next-
+  load`): this describes the *next* load, not necessarily what a
+  currently-running session has loaded.
+
+**🔴 One real, unrelated stale-reference bug found and fixed while auditing
+the MINIMAL test list this item depends on** (same class as the
+`mandrake.rut.vaultdungeons` regression the 2026-09-18 pass caught in this
+same file): `infrastructure/state/modlists/ModsConfig.MINIMAL.xml` still
+named the dead packageId `mandrake.rm.fluidcanals`. That packageId does not
+exist anywhere in the current source tree — `grep -rl` for it across `src/`
+returns nothing live; the mod was renamed to `mandrake.rm.flowworks`
+(confirmed against `src/RimMandrake/FlowWorks/About/About.xml`'s own
+`<packageId>`, per `CLAUDE.md`'s "Ship names are three-tier" / "the
+migration is DONE" note). Fixed: swapped the one `<li>` in place, no other
+change to the file. Not this item's mod, not this item's file's usual
+scope, but "correctness outranks seat ownership" applies to any file, fixed
+on sight. Low risk: config-only edit, not a live/bridge action, and
+FlowWorks' only modDependency is Harmony, already present in this list.
+
+**Not attempted this pass, and why:** the Type-2 live third-party-symbol
+proof (needs `ModsConfig.MINIMAL.xml` extended with Alpha Animals/VFE
+Insectoids 2/GravTech and a restart — every prior pass declined this for
+transitive-dependency cascade risk, and this pass has no bridge to verify
+a restart against besides); V5's landmark placement on tile 37; the six
+real-site hand-finish passes (owner, per this item's own "Watch out");
+wake/loot/leave dialogue reconciliation against `dungeons_arc_spec.md`
+§3.10 (still `VAULT_THAW_QUEST_FAMILY_1`'s own file). No bridge/ModsConfig/
+deploy action taken.
+
+Staying `doing`. Everything this item can build offline is built and
+re-confirmed clean for the seventh consecutive pass; what remains is
+bridge-gated (Type-2 proof, V5 placement, enabling `mandrake.rut.
+utinnipatches`) or owner-gated (hand-finish, dialogue).
+
 ## 2026-09-18 (FOUNDRY) — MINIMAL-list regression found and fixed, fresh live re-proof
 
 Picked up as a fresh task brief that assumed the three templates still
