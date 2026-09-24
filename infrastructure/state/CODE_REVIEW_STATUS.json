@@ -17068,16 +17068,22 @@
     "sha": "7bfbaa5e7"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "c3956c893f5f47faf13e886c27c6e3d48f7a8cfd3fdbfd2b7c1625c606dfd2b2",
+    "sha": "28026b29c"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FuelSnows.xml": {
     "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "ad0126c5a246a8425e5c73506e0d8315a0bd47e3957aae27e0ca8fc2255e1fe4",
-    "sha": "bb73b6bd"
+    "date": "2026-09-24",
+    "hash": "5b09ffef67b6dab400ff79ae671cf3aa2d2762eb39cc48e0c8cbdaaefd921cee",
+    "sha": "28026b29c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml": {
-    "cleanCount": 8,
-    "date": "2026-09-20",
-    "hash": "fe8b2f42424af822dac0432692ba5e160f3be84b33d4818ae881a31f4bef3ef9",
-    "sha": "dec103e98"
+    "cleanCount": 9,
+    "date": "2026-09-24",
+    "hash": "81f9068654f89d34199cc00df57e736c869435419977b9c5ee045c8b100abf50",
+    "sha": "28026b29c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml": {
     "cleanCount": 2,
@@ -17092,16 +17098,16 @@
     "sha": "7bfbaa5e7"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "ce3abd4deb9af896b42250d3549972c89372904976ff57c0fc7173697190afcc",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "6aa01b929908a4bf7e9286605da125938803a997ad81e8119f2680d167c9ee47",
+    "sha": "28026b29c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "360b82ccafd8a4356f1fb27b276c7aee00f10651e94da1b68eccbabf94a888ee",
-    "sha": "ac17db00a"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "f6aa79b15fa395759859177c617b67b199d6cb5203c42db5226d0bc8b3bd44e3",
+    "sha": "28026b29c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml": {
     "cleanCount": 2,
@@ -17110,10 +17116,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "6b4469ea965909485e22950e96eddf29b0255cc8b7279bbab3e3ba479220e51a",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "67c0af965768f795d0c9ebd464d1401ded3ed5a0bd1d18644bcca2cc8f1d969a",
+    "sha": "28026b29c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml": {
     "cleanCount": 5,
@@ -17134,10 +17140,10 @@
     "sha": "779a079ab"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "20308932dc80ab187d313ec76f9cb746e9e4b9cad3147859cfdbda8671ea2fc5",
-    "sha": "4e41e0f74"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "fc521b50cfe1a720e2a9f5bae4063a2d9c264713f598786a3e3224979686ea0a",
+    "sha": "28026b29c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml": {
     "cleanCount": 5,
@@ -17152,10 +17158,10 @@
     "sha": "dd0d313eb"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "d01aa05c4af16bc92422d3880211d0bf53600587fbfd39d68be39effcdc535bf",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "eae9a068ef37faa72e5cbb407ace9d4ef64d08aab460d0076e5562e294f59e1e",
+    "sha": "28026b29c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml": {
     "cleanCount": 2,
