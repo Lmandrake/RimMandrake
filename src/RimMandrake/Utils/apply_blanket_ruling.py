@@ -62,9 +62,19 @@ def main():
     ids = sheet_row_ids(a.sheet)
     doc = json.load(open(a.decisions, encoding="utf-8"))
 
-    # Refuse to flatten a real sitting. A sidecar/page write is the tell.
+    # Refuse to flatten a real sitting. A sidecar/page/phone write is the tell.
+    #
+    # 🔴 The literal string this checked against used to be "sidecar", but
+    # serve_sheet.py's own STAMP_BY constant is "review-sheet-sidecar" — so
+    # this guard never once fired for a real ServerBackend sitting (the
+    # "ruled default" backend, per sheet_to_artifact.py's own docstring),
+    # only for a FileBackend one. A blanket ruling could silently flatten a
+    # genuinely tapped-through sidecar review with zero protection. Also
+    # added "artifact-db-merge" (merge_artifact_db.py's own stamp): a phone
+    # sitting folded back by that tool is just as real a per-row sitting as
+    # the other two and deserves the same guard.
     prior = doc.get("savedBy")
-    if prior in ("review-sheet-page", "sidecar") and not a.over_sitting:
+    if prior in ("review-sheet-page", "review-sheet-sidecar", "artifact-db-merge") and not a.over_sitting:
         sys.exit(f"REFUSED: {a.decisions} was written by '{prior}' — that is a real sitting, and a "
                  "blanket ruling would overwrite per-row judgements. Pass --over-sitting only if "
                  "the owner explicitly said to discard them.")

@@ -23,8 +23,9 @@ THE THREE BUCKETS (AGENT_BRIEF.md: "he rules only on ambiguity, deliberate
 departures and contested regens" — an empty `## ruling` means canon stands
 unopposed, NOT that the entry is broken)
 ====================================================================================
-  * **ruled**          — the `## ruling` body contains a literal `**RULED**`
-                          marker block.
+  * **ruled**          — the `## ruling` body bold-opens a `RULED` marker
+                          (`**RULED**` or the whole-clause form `**RULED —
+                          owner, DATE. ...**`).
   * **unruled**         — the body IS the known "not reviewed yet" boilerplate,
                           in any of its known wordings (measured 2026-09-17:
                           seven exact strings, varying only in "owner" vs "the
@@ -90,6 +91,17 @@ DEFAULT_DIR = os.path.join(ROOT, "design", "RimStarWars", "canon_references")
 
 RULED_MARKER = "**RULED**"
 
+# The marker is a bold-opened "RULED" — most entries close the bold right after
+# the word (`**RULED**`, an exact match on RULED_MARKER), but several real
+# owner rulings bold the WHOLE clause instead (`**RULED — owner, DATE.
+# Verbatim: ...**`), so the bold never closes right after the word and a plain
+# `RULED_MARKER in body` substring check misses them entirely — measured
+# 2026-09-24: chagrian/ugnaught/umbaran all carry a real, dated `**RULED —
+# owner...**` ruling and were silently falling into non-conforming, the exact
+# "2 of 137" class of miscount this module exists to stop. Match the bold
+# OPEN instead, word-bounded so `**RULEDOUT**` (hypothetical) would not.
+_RULED_RE = re.compile(r"\*\*RULED\b")
+
 # Matches the "(empty — [the ]owner has not reviewed this <noun> yet[...])"
 # boilerplate across all observed wordings (measured 2026-09-17: differs in
 # "owner"/"the owner", the noun, and one entry with an extra trailing
@@ -130,7 +142,7 @@ def classify(body):
         return "non-conforming", "no `## ruling` heading found"
     if body == "":
         return "non-conforming", "`## ruling` body is genuinely blank"
-    if RULED_MARKER in body:
+    if _RULED_RE.search(body):
         return "ruled", None
     if _BOILERPLATE_RE.match(body):
         return "unruled", None

@@ -84,7 +84,7 @@ def check(name, canon):
     if s > 3:
         problems.append(f"{s} syllables — canon coinages are 2 (26/37) or 3 (6/37)")
     if not 4 <= len(bare) <= 9:
-        problems.append(f"{len(bare)} letters — canon coinages run 4-7")
+        problems.append(f"{len(bare)} letters — must be 4-9 (canon coinages mostly run 4-7, 31/37)")
 
     if s != 2:
         notes.append(f"{s} syllables; 2 is the canon default")
