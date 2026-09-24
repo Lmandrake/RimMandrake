@@ -1,6 +1,43 @@
 # Weeping Stones — "Make It Shine" Option Portfolio (2026-09-24)
 
-Status: COMPLETE — comparative assessment + five options, for the owner's pick at `WEEPING_STONES_DESIGN_SITTING_1` or its successor.
+Status: ⚖️ RULED 2026-09-24, owner typed verdicts on all five. This head is the record; the option bodies below are the drafts those verdicts judged.
+
+## ⚖️ Verdicts (owner, typed, 2026-09-24)
+
+1. **THE STOCKED POOL — GREENLIT, expanded.** Verbatim: *"love it. Moisture
+   farmers specializing in fish. Ripe possibilities for rimcuisine stuff too.
+   Make the fish nasty and way too active. And some shouldn't be fish but
+   alien beasts you really wonder if we should be eating."* → item
+   `WEEPING_STONES_FISH_HUSBANDRY_1`.
+2. **THE BORN AND THE DYING WATER — DEAD.** Verbatim: *"nah too much."* Not
+   deferred; do not revive.
+3. **THE MACHINES THAT WEEP — REDIRECTED** into oasis-maker machines.
+   Verbatim: *"let's try for machines that create oases slowly when placed
+   near shaded terrain near rocks. Placement is key. We should guide it with
+   green red area selections. Like placing water based generators. I know
+   there was a mod that used to grow terraforming slowly so we could base it
+   on that. Makes obtaining the ancient machines a treasure type.
+   Unfortunately it's not very important for the Jawa utinni scenario but
+   it's a nice mod component. We would need to weave it into some quests to
+   obtain or sabotage them."* (Base identified: Terramorph — a
+   `TerramorphArtOverride` already ships in the live Mods folder.) → item
+   `OASIS_MAKER_MACHINES_1`. The four-state restorable-vane draft below is
+   superseded by this redirect.
+4. **WIND-HOUR — DEAD.** Verbatim: *"nah."*
+5. **THE ONE LAW — REDIRECTED to animal retribution.** Verbatim: *"I like
+   that anyone fighting including raiders attacking you near the water get
+   animal retribution. That's cool. Like the existing animal mind control
+   architect but baked into the biome. Don't fight back and the creatures
+   will fight for you. Unless rimworld can tell 'who started it?' If they can
+   then it doesn't even need to be 'don't fight back'. We should check that."*
+   ✅ CHECKED same sitting (RimSage, decompiled source): the engine CAN tell —
+   `DamageInfo.Instigator` + `InstigatorGuilty` per hit (undrafted
+   self-defense is not-guilty: `Bullet.cs:22`, `Verb_MeleeAttackDamage.cs:50`),
+   `Trigger_PawnHarmed` filters by instigator faction, `Faction.cs` detects
+   mutual crossfire, `Hediff_Shambler.cs:239` shows targeted retaliation. So
+   "don't fight back" is NOT needed — retribution keys on the first guilty
+   hit inside the truce radius. → item `WATER_TRUCE_RETRIBUTION_1`. The
+   neutral-ground/diplomacy draft below is superseded by this redirect.
 Companion to: `weeping_stones.md` (frozen sheet), `weeping_stones_flora_roster_2026-09-24.md`, `weeping_stones_fauna_roster_2026-09-24.md`.
 
 ## 1. Comparative assessment — where Weeping Stones stands

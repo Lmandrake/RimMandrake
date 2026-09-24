@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T20:04:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T20:07:16Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -143,6 +143,24 @@ target:   v1
 kind:     design
 summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
+
+## WEEPING_STONES_FISH_HUSBANDRY_1 Stocked Pool greenlit (owner typed 2026-09-24): fish husbandry, moisture-farmer-fishers, rimcuisine hooks, nasty overactive fish, alien-beast catches
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  WEEPINGSTONESFISHHUSBANDRY1 — the Stocked Pool: fishing as gardening
+prose:    infrastructure/state/items/WEEPING_STONES_FISH_HUSBANDRY_1.md
+
+## OASIS_MAKER_MACHINES_1 Ancient oasis-maker machines (owner typed 2026-09-24): slow terraform near shade+rocks, green/red placement overlay, treasure-class acquisition, quest hooks owed; study Terramorph
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  OASISMAKERMACHINES1 — ancient machines that grow oases, slowly
+prose:    infrastructure/state/items/OASIS_MAKER_MACHINES_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
