@@ -11457,6 +11457,12 @@
     "hash": "9c1c11dcc69b7e01181f534e2f522fc373ea6148f148685ab67ac262bc4127c4",
     "sha": "1478cedd"
   },
+  "src/RimStarWars/JawaVoice/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4ea9e5ed736aa6252f95104c62df462cb590b92bf52e620251593884ca432f71",
+    "sha": "8257db565"
+  },
   "src/RimStarWars/KinrathArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -13557,6 +13563,12 @@
     "hash": "75dee61b2d652af4c62c7a7c26d353b06e4ec50c8bde1abf05e72fcaa9a07636",
     "sha": "52dee04f"
   },
+  "src/RimUtinni/AshkarrFlora/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ca01a4ac9aab64e1258bd14dcc39f4989a347e35e906077da5abb48f67251b11",
+    "sha": "8257db565"
+  },
   "src/RimUtinni/AshkarrInhabited/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -14859,6 +14871,12 @@
     "hash": "a6795732d5d411d177b33ed8f65ffef8457c6ee43b8e6fa47605b6d40132a4a3",
     "sha": "c97663189"
   },
+  "src/RimUtinni/PawnFlavor/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d8db5e92f784f19f0601b7965c1d832028c8df14be50b4f30511ca24eaac2c85",
+    "sha": "8257db565"
+  },
   "src/RimUtinni/PlantGrowth/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -15146,6 +15164,12 @@
     "date": "2026-09-11",
     "hash": "73bcd2800c243451d785eca5feb92747dada10f38bf77c989d3a3b6f1bc11c4e",
     "sha": "fd3bafa39"
+  },
+  "src/RimUtinni/RestrainingBolts/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9df01cc687385123a888443e3efbd8c62138f2e274876952e17fa7a0ddbab363",
+    "sha": "8257db565"
   },
   "src/RimUtinni/RimclawArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -17858,6 +17882,12 @@
     "date": "2026-09-12",
     "hash": "b57597465f751a859c09999687879934a9b5f6d2743c31a333abca435ecd3168",
     "sha": "d8a0b9b7d"
+  },
+  "src/RimUtinni/UtinniPatches/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "918b018187389568b96a070369de64c47e59b552ba7004178f7fc416246f03af",
+    "sha": "8257db565"
   },
   "src/RimUtinni/WildpodArtOverride/About/About.xml": {
     "cleanCount": 1,
