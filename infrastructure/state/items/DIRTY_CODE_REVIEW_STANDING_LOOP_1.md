@@ -2820,3 +2820,77 @@ arithmetic-expected 16 — files keep re-dirtying between waves from other
 agents' commits, expected, same as every prior wave). Next wave: no standing
 named cluster surfaced this pass; re-derive fresh via `code_review_status.py
 list | grep '^DIRTY'` filtered non-`.png`.
+
+## Wave 44 — 2026-09-24: recorded DIRTY backlog reached 0, but the full
+## picture is NOT "every file is CLEAN" — 346 files were NEVER ENTERED
+
+Reviewed all 17 non-PNG DIRTY files from wave 43's re-derived list, diff-scoped
+against each file's own clean-mark sha (`git status --porcelain` confirmed
+nothing was mid-edit by the concurrent FEVERWOOD_BOUGH_SOIL_TERRAIN_1 build
+agent before touching `RUT_FeverWood.xml`): `src/DEPLOY_HOLD.txt`,
+`CreatureBehaviors/About/About.xml` + `Source/RM_CreatureBehaviorsMod.cs`,
+`FloodedCanyon/Defs/BiomeDefs/RM_FloodedCanyon_Biome.xml`, `FlowWorks/Defs/
+LiquidTypes/TerrainDefs/RM_Propane.xml` + `Source/ManyWaters/RiverSteamHook.cs`,
+`Inhabited/Source/DebugActions_Inhabited.cs`, `StructureInjections/Source/
+GenStep_RimplacePlan.cs`, `Utils/artpipe/selftest_artpipe.py`,
+`RimStarWars/StarWarsPatches/Defs/PawnKindDefs/AlienSpawnEnablers.xml`,
+`RimUtinni/AshkarrFlora/About/About.xml` + `Defs/ThingDefs_Plants/
+RUT_AshkarrFlora_Plants.xml`, `RimUtinni/PawnFlavor/Patches/
+PawnFlavorPhase2_Xenotype.xml`, `RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/
+RUT_PaleTree.xml`, `RimUtinni/UtinniPatches/About/About.xml` +
+`Defs/BiomeDefs/RUT_FeverWood.xml` + `Defs/FactionDefs/JawaAscendantHelix.xml`.
+
+Verified cross-references rather than trusting prose: `RM_Propane.xml`'s
+`waterBodyType: None→Saltwater` change traced to the generator's own
+`LIQUID_ROWS` table in `generate_liquid_suite.py` (an owner-carded
+`native_overrides`, not a hand-edit of generated output); the
+`RSW_RimMandrakeSithKissaiPureblood→RSW_RimMandrakeSithKissai` rename in
+`AlienSpawnEnablers.xml` and `JawaAscendantHelix.xml` confirmed against the
+already-renamed `XenotypeDef`; `RUT_SweetlineWool`, `RUT_BoughSoil`,
+`mandrake.rm.seashores`/`mandrake.rm.flowworks` packageIds, and the
+`PaleTree`/`PaleMoss` texPaths all confirmed to resolve to real defs/files on
+disk; `selftest_artpipe.py`'s hardcoded-threshold→named-constant rewrite
+re-run (`python3 selftest_artpipe.py`) and passes in full.
+
+**One real bug found and fixed**, not code but a doc-correctness defect inside
+a reviewed file: `RM_CreatureBehaviorsMod.cs`'s 27-entry mod-settings header
+comment had inserted the new `proximitySoundscapeEnabled` entry as "`9.`"
+directly ahead of the pre-existing "`8. senseWebEnabled`" without renumbering
+anything after it, leaving TWO entries both claiming "`9.`"
+(`proximitySoundscapeEnabled` and `chewAnchorsBehaviorEnabled`) and the list
+running 1,2,3,4,5,6,7,9,8,9,10,... Renumbered the whole 1..28 sequence in file
+order, no functional change. Commit `e05f7e0f8`, pushed. Verified the file's
+braces still balance and every `//  N.` marker now reads 1..28 with no
+duplicates/gaps.
+
+All 17 files marked CLEAN, commit `1a45ed672`, pushed.
+
+🔴 **Re-derived the count and it is genuinely 0** —
+`code_review_status.py list | grep '^DIRTY' | grep -v '\.png'` returns nothing.
+**But this is NOT the milestone it looks like.** `list --show-untracked` (the
+flag wave 9's own note, 35 waves ago, said a future wave should re-run and no
+wave since appears to have) reports:
+
+```
+TALLY  CLEAN 3093  DIRTY 0  ORPHANED 0  NEVER ENTERED 346
+```
+
+**346 `.py`/`.cs`/`.xml` files under `src/` have never been given a
+`code_review_status.py` entry at all** — the exact trap the tool's own
+`find_untracked()` docstring names by history (485 of 1402 files invisible to
+a "0 DIRTY" claim on 2026-09-05): a path with no entry doesn't appear in plain
+`list`, but CLAUDE.md's own rule is explicit — "no entry ... is DIRTY" — so
+these 346 are review debt too, just invisible to the report every prior wave
+(including this one, until this check) has been deriving its count from.
+⛔ **Do not report "every tracked file in the repo is CLEAN" off a bare `list`
+count — it was never true, and this wave nearly repeated the exact mistake
+CLAUDE.md's own "confident wrong numbers" doctrine warns about.** The real
+backlog going into wave 45 is **346 NEVER ENTERED files**, not 0; the 17-file
+recorded backlog closing out is real progress, but it was the smaller of two
+backlogs and the loop has been counting only that one for at least 35 waves.
+
+Next wave: run `code_review_status.py list --show-untracked` (not the plain
+`list | grep DIRTY` every prior wave used) to get the real backlog, and start
+working the 346 NEVER ENTERED files — full-file review (never diff-scoped,
+per the loop's own protocol for a file with no prior clean mark) since none of
+them have ever been reviewed once.
