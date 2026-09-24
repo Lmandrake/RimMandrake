@@ -3525,3 +3525,83 @@ ending tally (281) landed entirely in `UtinniPatches` and elsewhere in
 `SWBestiary`, not in this cluster). Next wave: continue `SWBestiary/Defs/
 ThingDefs_Races` alphabetically from `RSW_PekoPeko.xml`, with
 `list --show-untracked`.
+
+## Wave 56 — 2026-09-24: SWBestiary races P-S
+
+Ran `list --show-untracked` fresh: **282 NEVER ENTERED** (1 more than wave
+55's ending 281 — minor concurrent-agent noise, not a regression).
+
+Picked the next 8 alphabetically-first files from
+`SWBestiary/Defs/ThingDefs_Races/`: `RSW_PekoPeko.xml`, `RSW_Pikobis.xml`,
+`RSW_Pufferpig.xml`, `RSW_Qormot.xml`, `RSW_Runyip.xml`, `RSW_SandLion.xml`,
+`RSW_Scavrat.xml`, `RSW_ScrapNestBird.xml`. Full-file reviewed all 8. Every
+cross-referenced defName was grepped and confirmed to resolve to a real def
+in the repo: bodies (`RSW_FlyingAvian` for PekoPeko/ScrapNestBird,
+`RSW_Pikobis`, `RSW_Qormot`, vanilla Core `QuadrupedAnimalWithHoovesAndTusks`/
+`QuadrupedAnimalWithHoovesAndHorn`/`QuadrupedAnimalWithPawsAndTail` for
+Pufferpig/Runyip/SandLion, `RSW_Scavrat`), leather/meat
+(`RSW_Leather_Reptavian`/`RSW_Reptavian_Meat`, `RSW_Tender_Meat`,
+`RSW_Leather_Reptomammal`/`RSW_Reptomammal_Meat`, vanilla `Leather_Light`,
+`RSW_Pachydermoid_Meat`, vanilla `Leather_Panthera`/`Cougar`,
+`RSW_Leather_SoftFur`/`RSW_Rodentia_Meat`, vanilla `Leather_Bird`), eggs
+(`RSW_EggReptavianUnfertilized`/`RSW_EggPekopekoFertilized`,
+`RSW_EggPikobisUnFertilized`/`RSW_EggPikobisFertilized`,
+`RSW_EggScrapNestBirdFertilized`/`RSW_EggScrapNestBirdUnFertilized`, both
+defined in the reviewed file itself and matching the comp's field names
+exactly), body-part groups (`RSW_SWClaws`, `RSW_SWHornAttackTool`),
+abilities/trainables (`RSW_SW_GoldForage`, `RSW_SW_Spur`, vanilla Odyssey
+`Forage`), a C# comp (`RimMandrake.StarWars.SWBestiary.
+CompProperties_ScrapHoarder`, confirmed live in
+`Source/BeastMechanics/CompScrapHoarder.cs` alongside its
+`JobGiver_HoardScrap.cs`/`JobDriver_HoardScrap.cs`), and the `RSW_ScrapNest`
+nestDef target. Each race got the wave 49-55 sound-prefix check
+(`sound{Wounded,Death,Call,Angry}`): `RSW_PekoPeko`, `RSW_Pikobis`,
+`RSW_Qormot`, `RSW_Runyip` all carry correctly RSW_-prefixed sounds, all 4
+fields present and confirmed to resolve in `SoundDefs_SWBestiary.xml`;
+`RSW_Pufferpig` deliberately reuses vanilla Core `Pawn_Wildboar_*` plus one
+already-ported `RSW_Pawn_Gullipud_Death` per its own header (not this bug
+class, confirmed off the donor's own race block); `RSW_Scavrat` deliberately
+reuses vanilla Core `Pawn_Rodent_*` per its own header; `RSW_SandLion`
+carries no lifeStage sound fields at all (header documents this as
+deliberate — unported donor sound defs, matching its sibling ports); and
+`RSW_ScrapNestBird` deliberately reuses the already-ported
+`RSW_Pawn_Whisperbird_*` set (a documented body/art/sound reskin of an
+existing "ours" species, not a new absorption). Also ran the wave 54-55
+XML-tree duplicate-element scan across all 8 files — zero duplicate
+non-`<li>` elements found in any block.
+
+🔴 **One real bug found and fixed, same class as wave 55's `RSW_LavaFlea`
+fix**: `RSW_Pufferpig.xml`'s PawnKindDef `<abilities>` wrapper carried an
+extra outer `MayRequire="Ludeon.RimWorld.Odyssey"` around the inner
+`<li MayRequire="Ludeon.RimWorld.Royalty">RSW_SW_GoldForage</li>`.
+`RSW_SW_GoldForage`'s own AbilityDef/TrainableDef pair (confirmed in
+`RSW_MlieWaveC_Abilities.xml`) and the ThingDef's own `specialTrainables`
+entry are both Royalty-gated only — so the outer Odyssey wrapper silently
+dropped the whole `<abilities>` element, and the ability with it, for a
+Royalty-only player with no Odyssey, contradicting the rest of the same def
+pair's own gating. The file's own header comment had explicitly documented
+this as "the donor's own gating quirk … preserved verbatim, not corrected" —
+a deliberate choice by an earlier porting pass, not an oversight, but still
+the identical functional bug wave 55 fixed elsewhere. Fixed: removed the
+outer `MayRequire`, leaving only the correct inner Royalty gate. Also
+corrected the matching stale comment in `RSW_MlieWaveC_Abilities.xml` (which
+asserted the quirk was intentionally left uncorrected) so it no longer
+describes a now-false state, per CLAUDE.md's "correctness outranks seat
+ownership." Commit `cc3c45709`.
+
+All 8 marked CLEAN, commit `35f451401`, pushed. No `.git/index.lock`
+contention this wave.
+
+⚠️ Editing `RSW_MlieWaveC_Abilities.xml`'s stale comment (it was CLEAN since
+2026-09-18) put it back to DIRTY per the tool's own by-design behavior — a
+single edit after `mark-clean` always does. Left DIRTY rather than folded
+into this wave's mark-clean batch, since only a two-line comment correction
+was reviewed there, not the whole file; it is now normal review debt for a
+future wave alongside the pre-existing 6 DIRTY files (now 7).
+
+Re-measured after: `TALLY  CLEAN 3182  DIRTY 7  ORPHANED 0  NEVER ENTERED 274`
+— 274 = 282 − 8 exactly, no concurrent-agent noise this wave.
+**274 NEVER ENTERED files remain**: `UtinniPatches` at **75**, `SWBestiary`
+at **28** (`Defs/ThingDefs_Races` has **26** left). Next wave: continue
+`SWBestiary/Defs/ThingDefs_Races` alphabetically from `RSW_Scurrier.xml`,
+with `list --show-untracked`.
