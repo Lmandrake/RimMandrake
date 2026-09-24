@@ -4955,6 +4955,36 @@
     "hash": "c472232e8b220ec8c21928ade4ecdee6002f03901259bdd2d07f31f55b9d9cd2",
     "sha": "d68e5b42e"
   },
+  "src/RimMandrake/SeaShores/Source/RM_SeaShoresHarmony.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d068a998509fe7343efd8e860532d89a873b57c1ab77813319f7c39c3f3ed6de",
+    "sha": "464011ed2"
+  },
+  "src/RimMandrake/SeaShores/Source/RM_SeaShoresMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8d00f2bbd1d74643255f7317a12dfbace6c07e4de7f193559e9b9c883571e4a0",
+    "sha": "464011ed2"
+  },
+  "src/RimMandrake/SeaShores/Source/RM_SeaShoresSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "e9efff7e7c1cb20774173bbd0d3fb4fa777e0d9958ebea94d1a24c4b4ff03383",
+    "sha": "464011ed2"
+  },
+  "src/RimMandrake/SeaShores/Source/RM_TileMutatorWorker_SeaCoast.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "09d0af7c140cfef8181c23e609fae53f9d62b70e69b462538f1ff3cf445088af",
+    "sha": "464011ed2"
+  },
+  "src/RimMandrake/SeaShores/Source/RM_WorldComponent_SeaShoreHealer.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4aadb21fd6acf9a5aa343f5b171d4cd628fb12fadbc61aaefdb3121c446f9ea9",
+    "sha": "464011ed2"
+  },
   "src/RimMandrake/ShipVermin/About/About.xml": {
     "cleanCount": 3,
     "date": "2026-09-17",
