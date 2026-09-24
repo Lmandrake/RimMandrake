@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T05:42:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T05:44:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -560,12 +560,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  STARWARSDONORPORTLABELCOLLISIONS1 — 62 label collisions between donor SW-animal-collection defNames and their…
 prose:    infrastructure/state/items/STARWARS_DONOR_PORT_LABEL_COLLISIONS_1.md
 
-## WEBWORK_EGG_BLACKMARKET_1 Design the campaign black-market egg trader (Hutt/bounty-hunter related) + egg-assassination quests with optional immoral solutions (S6 ruling 5, owner-typed); resolve the hatch tension
+## WEBWORK_EGG_WEAPON_VERSION_1 Future: free-form egg-planting sabotage weapon (mechanism A hatcher-variant, must re-answer the farm ban) - filed by owner card 2026-09-24, S5 ruling 7
 state:    proposed
 row:      unassigned
 needs:    offline
-target:   v1
+target:   v2
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WEBWORK_EGG_BLACKMARKET_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_EGG_BLACKMARKET_1.md
+summary:  (no items/WEBWORK_EGG_WEAPON_VERSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_EGG_WEAPON_VERSION_1.md
