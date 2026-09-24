@@ -3,13 +3,13 @@ subject: src/RimMandrake/Pyrelands  (packageId `mandrake.rm.pyrelands`)
 feature: biome-core
 deps: none — self-contained biome mod (own terrain/plants/weathers, RM_FE_ prefix); fauna wiring rides mandrake.rut.patches (WildAnimals_Pyrelands.xml)
 list: minimal+mandrake.rm.pyrelands+mandrake.rut.patches
-status-hint: THE campaign biome since PYRELANDS_WORLD_SWITCH_1 (2026-09-18): all 222 of Ash'karr's Pyrelands tiles are RM_FE_Pyrelands; the ZBiome_Grasslands donor is retired from the worldmap.
+status-hint: THE campaign biome since PYRELANDS_WORLD_SWITCH_1 (2026-09-18): all 222 of Ash'karr's Pyrelands tiles are RM_Pyrelands (renamed from RM_FE_Pyrelands, PYRELANDS_DEFNAME_RENAME_1, closed); the ZBiome_Grasslands donor is retired from the worldmap.
 
 ## must be true
-- A generated RM_FE_Pyrelands map's plant population comes from the biome's own
+- A generated RM_Pyrelands map's plant population comes from the biome's own
   roster (RM_FE_Plant_EmberGrass, RM_FE_Plant_Quickgrass, RM_FE_Plant_ScorchFruit
   and any later ruled additions) — not from other mods' global flora injection.
-- A generated RM_FE_Pyrelands map's wild animal population comes from the def's
+- A generated RM_Pyrelands map's wild animal population comes from the def's
   wildAnimals list as patched (core placeholder 13 + FindMod adds today; the
   ruled roster once PYRELANDS_FAUNA_WIRING_1 completes) — no foreign kinds.
 - GenStep_Animals completes on Pyrelands mapgen with no
@@ -21,8 +21,8 @@ status-hint: THE campaign biome since PYRELANDS_WORLD_SWITCH_1 (2026-09-18): all
    ArgumentNullException through RimWorld.BiomeDef.CommonalityOfAnimal and no
    "Could not resolve cross-reference: No Verse.PawnKindDef named ... to give to
    RimWorld.BiomeAnimalRecord"
-2. [B] generate a fresh RM_FE_Pyrelands map ON A TILE WHOSE NEIGHBOURS ARE ALSO
-   RM_FE_Pyrelands (⚠️ m00nl1ght.geologicallandforms.biometransitions blends NEIGHBOUR biomes into a map's edge zones (owner confirmed 2026-09-17; deactivated in the live list for the R&D phase, still in ModsConfig.FULL.LATEST for play),
+2. [B] generate a fresh RM_Pyrelands map ON A TILE WHOSE NEIGHBOURS ARE ALSO
+   RM_Pyrelands (⚠️ m00nl1ght.geologicallandforms.biometransitions blends NEIGHBOUR biomes into a map's edge zones (owner confirmed 2026-09-17; deactivated in the live list for the R&D phase, still in ModsConfig.FULL.LATEST for play),
    so a lone re-tiled scratch tile censuses as contaminated when it is not —
    measured 2026-09-17: 78% foreign plants, 45 alien defs led by
    GRim*/TreePalma/Areebian*, regionally zoned, on a tile ringed by GRiNDTerra
@@ -31,11 +31,11 @@ status-hint: THE campaign biome since PYRELANDS_WORLD_SWITCH_1 (2026-09-18): all
    record's own `<map>` field) → every plant def present is on the biome's own
    roster; foreign plant defs number ZERO.
 3. [B] same save, pawn-kind census of wild (factionless) pawns → every kind is in
-   the live wildAnimals list of RM_FE_Pyrelands (jawa/get_def read-back at run
+   the live wildAnimals list of RM_Pyrelands (jawa/get_def read-back at run
    time, not a doc); foreign wild kinds number ZERO. Same interior-tile rule as
    step 2. (2026-09-17 lone-tile baseline: RSW_Bantha ×7, GRimCobra ×2,
    Squirrel ×2, Turkey ×1 present.)
-4. [D] def read-back: RM_FE_Pyrelands wildAnimals resolves every key to a live
+4. [D] def read-back: RM_Pyrelands wildAnimals resolves every key to a live
    PawnKindDef (no null keys); entries for kinds from optional mods carry
    MayRequire on the keyed element (never on a patch Operation — inert).
 X. [S] (human pass) walk a fresh Pyrelands map at play zoom: the ground cover
