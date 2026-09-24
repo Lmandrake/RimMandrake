@@ -37,36 +37,36 @@ namespace RimMandrake.CreatureBehaviors
     //      place, never removed — a content mod's own stages decide what a
     //      frozen severity means). The dial scales both the climb and the
     //      decay rate together.
-    //   9. proximitySoundscapeEnabled — RM_MapComponent_ProximitySoundscape.
-    //      Off: a tagged def stops contributing hum layers as the camera
-    //      moves near it, and any playing layers end.
     //   8. senseWebEnabled — RM_MapComponent_SenseWeb. Off: registered web
     //      nodes still track (cheap bookkeeping), but the map stops scanning
     //      for and marking intruding pawns.
-    //   9. chewAnchorsBehaviorEnabled — RM_JobGiver_ChewAnchors. Off: a
+    //   9. proximitySoundscapeEnabled — RM_MapComponent_ProximitySoundscape.
+    //      Off: a tagged def stops contributing hum layers as the camera
+    //      moves near it, and any playing layers end.
+    //  10. chewAnchorsBehaviorEnabled — RM_JobGiver_ChewAnchors. Off: a
     //      beetle-like race built to chew anchors never seeks one out.
-    //  10. frontCreepEnabled / frontCreepRateMultiplier —
+    //  11. frontCreepEnabled / frontCreepRateMultiplier —
     //      RM_MapComponent_FrontCreep. Off: a border map's advancing front
     //      freezes wherever it currently sits. The dial scales how much of
     //      each band actually spawns (never the advance interval or depth
     //      cap, which stay whatever the biome's own extension says).
-    //  11. aquaticAmbushEnabled — RM_CompAquaticAmbusher / RM_JobDriver_
+    //  12. aquaticAmbushEnabled — RM_CompAquaticAmbusher / RM_JobDriver_
     //      LungeAttack (GREENTIDE_MECHANICS_2 M7). Off: a tagged pawn never
     //      goes invisible while submerged and never lunges — a hediff it
     //      already carries when this is toggled off is removed on the next
     //      check, so nothing stays invisible forever; the pawn hunts
     //      exactly like a normal vanilla predator from then on.
-    //  12. woundLinkEnabled / woundLinkShareMultiplier — RM_CompWoundLink
+    //  13. woundLinkEnabled / woundLinkShareMultiplier — RM_CompWoundLink
     //      (ROT_HEALTH_SHARING_1). Off: a fresh wound on a tagged pawn never
     //      mirrors onto same-tag kin, and the victim keeps 100% of it — the
     //      dial scales only the SHARED fraction (never the severity gate or
     //      radius, which stay whatever the race's own extension says).
-    //  13. kinMendingEnabled / kinMendingBoostMultiplier —
+    //  14. kinMendingEnabled / kinMendingBoostMultiplier —
     //      RM_HediffComp_KinMending (ROT_HEALTH_SHARING_1). Off: kin nearby
     //      never speeds up a tagged pawn's own natural healing. The dial
     //      scales only the extra heal amount (never the kin-count threshold
     //      or radius, which stay whatever the race's own extension says).
-    //  14. guardianAlarmEnabled — RM_CompPlantAlarm / RUT_Plant_FalseFruit
+    //  15. guardianAlarmEnabled — RM_CompPlantAlarm / RUT_Plant_FalseFruit
     //      (ROT_GUARDIAN_GROVES_1, RimUtinni RotSporeKit). Off: a guardian
     //      plant's network alarm never wakes nearby tagged fauna and
     //      harvesting the false-fruit lure never grips the harvester's
@@ -79,7 +79,7 @@ namespace RimMandrake.CreatureBehaviors
     //      pre-existing switch — RM_EnvironmentalHazardsSettings'
     //      "Gas emitters"/"Gas damage and transmuting" toggles, which
     //      already cover it kit-wide.
-    //  15. grapplerHoldEnabled / grapplerCrushMultiplier — RM_Hediff_Grappled
+    //  16. grapplerHoldEnabled / grapplerCrushMultiplier — RM_Hediff_Grappled
     //      + RM_CompGrappler (DEEPS_FAUNA_MECHANICS_1, Grabber). Off: any
     //      active hold releases immediately, a fresh pincer hit never starts
     //      a new one, no crush damage is dealt and hurting the grabber no
@@ -87,37 +87,37 @@ namespace RimMandrake.CreatureBehaviors
     //      per-round crush damage and the hold's tightening rate together
     //      (never the escape chance, rescue chance, round interval or
     //      release radius, which stay whatever the defs say).
-    //  16. drinkerFluidSacsEnabled / drinkerPoisonMultiplier —
+    //  17. drinkerFluidSacsEnabled / drinkerPoisonMultiplier —
     //      RM_CompFluidSacs (DEEPS_FAUNA_MECHANICS_1, Drinker). Off: a bite
     //      never restores the drinker's hunger and never poisons it either
     //      — a bite is just a bite. The dial scales only the poison
     //      severity applied on a bad bite (0 = a bad bite is simply never
     //      fed, same as any other unwanted meal, never the hunger restored
     //      from a good one).
-    //  17. soulchimePsychicStunEnabled — RM_CompProximityPsychicStun
+    //  18. soulchimePsychicStunEnabled — RM_CompProximityPsychicStun
     //      (DEEPS_FAUNA_MECHANICS_1, Soulchime). Off: nobody gets
     //      psychically stunned for standing too close, wild or tamed.
-    //  18. soulchimeShardArmorEnabled / soulchimeShardArmorRateMultiplier —
+    //  19. soulchimeShardArmorEnabled / soulchimeShardArmorRateMultiplier —
     //      RM_CompShardArmor (DEEPS_FAUNA_MECHANICS_1, Soulchime). Off: its
     //      shard armor stops growing (never shrinks what's already grown).
-    //  19. soulchimeTameSootheEnabled — RM_CompTameSootheAura
+    //  20. soulchimeTameSootheEnabled — RM_CompTameSootheAura
     //      (DEEPS_FAUNA_MECHANICS_1, Soulchime). Off: a tamed carrier stops
     //      handing out its soothing memory to nearby colonists.
-    //  20. shadeGridEnabled — RM_MapComponent_ShadeGrid (DESERT_SHADE_GRID_
+    //  21. shadeGridEnabled — RM_MapComponent_ShadeGrid (DESERT_SHADE_GRID_
     //      KEYSTONE_1). Off: ShadeAt reports full sun everywhere and the map
     //      stops recomputing the grid at all — every consumer below degrades
     //      to its "no shade found" behaviour, never a stale or wrong read.
-    //  21. shadeSeekingWanderEnabled — RM_JobGiver_WanderInShadeGrid. Off: a
+    //  22. shadeSeekingWanderEnabled — RM_JobGiver_WanderInShadeGrid. Off: a
     //      shade-wander-tagged animal's idle wandering stops steering toward
     //      shaded cells and falls through to ordinary vanilla wander.
-    //  22. heatDrivenBurstEnabled / heatDrivenBurstDecayMultiplier —
+    //  23. heatDrivenBurstEnabled / heatDrivenBurstDecayMultiplier —
     //      RM_HediffComp_ShadeDrivenSeverity (RM_HeatDrivenBurst). Off: the
     //      hediff's severity freezes wherever it currently sits (never
     //      climbs or decays) — a content mod's own trigger and stages decide
     //      what a frozen severity means. The dial scales the decay rate in
     //      both sun and shade together (never the stage thresholds or the
     //      stat offsets, which stay whatever the def says).
-    //  23. drumLureEnabled / drumLureChanceMultiplier — RM_CompDrumLure
+    //  24. drumLureEnabled / drumLureChanceMultiplier — RM_CompDrumLure
     //      (DRUM_LURE_PREDATOR_BUILD_1). Off: a lure predator drops any
     //      in-progress compulsion immediately (the victim keeps walking
     //      wherever it was already headed, it just stops being steered) and
@@ -125,7 +125,7 @@ namespace RimMandrake.CreatureBehaviors
     //      pawn hunts like a normal vanilla predator from then on. The dial
     //      scales only the per-scan appraisal chance (never the radius or
     //      ambush range, which stay whatever the race's own comp says).
-    //  24. shadeStaggerEnabled / shadeStaggerGerminationMultiplier —
+    //  25. shadeStaggerEnabled / shadeStaggerGerminationMultiplier —
     //      RM_HediffComp_ShadeStagger (DESERT_STAGGERSEED_BUILD_1). Off: a
     //      creature carrying a corpse-dispersal brood still sickens and still
     //      dies on exactly the same schedule — this switch never touches the
@@ -135,7 +135,7 @@ namespace RimMandrake.CreatureBehaviors
     //      the seedling count or the lethality, which stay whatever the def
     //      says); at 0 the dying still walk for the shadows and the plant
     //      simply never spreads that way.
-    //  25. filterFeedingEnabled / filterFeedNutritionMultiplier —
+    //  26. filterFeedingEnabled / filterFeedNutritionMultiplier —
     //      RM_JobGiver_FilterFeedTerrain + RM_JobDriver_FilterFeedTerrain
     //      (DESERT_SHADE_WHALE_FILTERFEED_1). Off: a terrain filter-feeder
     //      never strains the ground for a meal and falls straight through to
@@ -144,14 +144,14 @@ namespace RimMandrake.CreatureBehaviors
     //      for want of a mechanic. The dial scales only how much one completed
     //      bout restores (never the bout duration, search radius or hunger
     //      threshold, which stay whatever the race's own extension says).
-    //  26. dungSeedingEnabled / dungSeedingMultiplier — RM_CompDungSeeder
+    //  27. dungSeedingEnabled / dungSeedingMultiplier — RM_CompDungSeeder
     //      (DESERT_SHADE_WHALE_FILTERFEED_1). Off: a carrier still drops no
     //      dung from this comp and fertilises nothing (its ordinary vanilla
     //      FilthRate is untouched and still dirties the ground). The dial
     //      scales the growth boost, the seedling count and the wildlife chance
     //      together; at 0 the dung still falls and simply seeds nothing. Never
     //      the shade gate or the radius, which stay whatever the def says.
-    //  27. parentalEnrageEnabled — RM_CompParentalEnrage +
+    //  28. parentalEnrageEnabled — RM_CompParentalEnrage +
     //      RM_MentalState_ParentalEnrage (SHRUBLAND_GIANT_ENRAGE_1). Off: the
     //      young of a "giant with young" race stop being guarded — walking up
     //      to a calf rouses nothing, and the herd is exactly as dangerous as
