@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T06:01:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T12:50:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1995,3 +1995,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WEBWORK_EGG_BLACKMARKET_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WEBWORK_EGG_BLACKMARKET_BUILD_1.md
+
+## WEBWORK_WEB_STRUCTURES_1 Real art + build pass for the Anchor/Web/Gutter structures (placeholder Hive texture today) and the deferred commandable-adhesive slick/locked mechanism (kit spec S3)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEBWORK_WEB_STRUCTURES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_WEB_STRUCTURES_1.md
+
+## WEBWORK_SOUNDSCAPE_1 Webwork SoundDefs: the hush (ambient near-silence bed) and the web-thrum when sense-web trips - Lantern Deeps precedent, 2-4 defs, small
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEBWORK_SOUNDSCAPE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_SOUNDSCAPE_1.md

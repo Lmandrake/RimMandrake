@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T06:01:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T12:50:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -569,3 +569,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WEBWORK_EGG_WEAPON_VERSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WEBWORK_EGG_WEAPON_VERSION_1.md
+
+## WEBWORK_TERRAIN_WEATHER_PASS_1 Design sitting: the Webwork's signature terrain (silk-carpet floor, gutters) and weather (hard sun for the light-moat, webfall/silk-drift) + soundscape rows - the one design hole the 2026-09-23/24 sitting left
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEBWORK_TERRAIN_WEATHER_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_TERRAIN_WEATHER_PASS_1.md
