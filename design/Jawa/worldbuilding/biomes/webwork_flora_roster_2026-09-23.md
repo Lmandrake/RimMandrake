@@ -162,13 +162,12 @@ withered states must be distinguishable at a glance or sheet §4c's promise is d
 ## 7. What is replaced — disposition of the 7 donor rows (PROPOSED)
 
 The live `RUT_Webwork` `<wildPlants>` carries 7 rows (`rosters/the_webwork.json`, flora
-block). ⛔ **The six CUT rows are PROPOSED only — evictions are stopped as a sweep; this
-is the Webwork's own sitting, so they are the owner's call here and nowhere else.
-The one canon case (`Plant_TookeTrap_Wild`) is RULED — kept low via the Utinni patch,
-by question card 2026-09-24 (sitting record §6 ruling 8). Nothing is executed by this
-document.**
+block). 🔑 **All seven dispositions are RULED by question card, 2026-09-24: the six CUT
+rows (sitting record §6 ruling 9) and the canon `Plant_TookeTrap_Wild` kept low via the
+Utinni patch (§6 ruling 8). Ruled at this biome's own sitting, as the eviction stop
+requires. Execution belongs to `WEBWORK_FLORA_ROSTER_1`, not this document.**
 
-| donor row | comm. | disposition (PROPOSED) | why, in one line |
+| donor row | comm. | disposition (RULED) | why, in one line |
 |---|---|---|---|
 | `AB_JungleTree` | 1.1 | **CUT** | the donor tree standing in for the thicket's body — `RM_Kollavane` (§2 row 1) is that body, designed for the churn and the nest |
 | `RG_Plant_TropicalChokevine` | 1.0 | **CUT** | the hostile vine mass's job passes whole to `RM_Vessark` (§2 row 2), which is authored against the churn rather than borrowed for it |

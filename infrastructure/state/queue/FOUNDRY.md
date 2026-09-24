@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T05:26:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T05:31:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -237,7 +237,7 @@ prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
 ## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
 state:    doing
 row:      unassigned
-needs:    game-up
+needs:    owner
 target:   v1
 kind:     task
 summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"

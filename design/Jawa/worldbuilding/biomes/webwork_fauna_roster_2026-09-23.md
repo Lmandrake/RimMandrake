@@ -156,15 +156,15 @@ signals the player reads.
 The live `RUT_Webwork` cast is 4 wired rows (`rosters/the_webwork.json`; the JSON's other
 two fauna entries — the `AA_Feralisk` merge row and `GR_Chickenspider` — are dead or
 unwired and already discharged by §0 ruling 2 / §1a of the sitting record, so they are
-not dispositioned here). 🔑 **Three of the four are RULED — cut from this biome by
-question card, 2026-09-24 (sitting record §6 ruling 7): `Wyyyschokk`, `Kreetle`,
-`Shyrack`. `RSW_JewelBeetle` was NOT on that card and stays PROPOSED.** Execution
+not dispositioned here). 🔑 **All four are RULED — cut from this biome by question card,
+2026-09-24: `Wyyyschokk`, `Kreetle`, `Shyrack` (sitting record §6 ruling 7) and
+`RSW_JewelBeetle` on a follow-up card the same sitting (§6 ruling 10).** Execution
 belongs to the build items, not this document.
 
 | live row | band, comm. | disposition | why, in one line |
 |---|---|---|---|
 | `Wyyyschokk` (donor, `mlie.starwarsanimalcollection`) | owner, 0.4 | **RULED CUT (card, 2026-09-24) — the owner species becomes `RM_Ollathrix`, with the Wyyyschokk as its Utinni skin patch** | sitting record §0 ruling 1 and §1c: one defName, the campaign layer patches label/description/art over it; the donor def stays in the game but homeless |
-| `RSW_JewelBeetle` (ours, ported) | anchor-beetle, 0.3 | **PROPOSED cut — superseded by `RM_Quarrok`. ⚠️ Not on the 2026-09-24 card; still owed a ruling** | its own JSON law line calls it an *interim body* for the chew-behaviour; the purpose-built consumer race replaces it, and the RSW_ def goes to the homeless reserve unless another sitting seats it |
+| `RSW_JewelBeetle` (ours, ported) | anchor-beetle, 0.3 | **RULED CUT (follow-up card, 2026-09-24) — superseded by `RM_Quarrok`** | its own JSON law line calls it an *interim body* for the chew-behaviour; the purpose-built consumer race replaces it, and the RSW_ def goes to the homeless reserve unless another sitting seats it |
 | `Kreetle` (donor, bare defName — the convention, not a defect) | trace-prey, 0.2 | **RULED CUT (card, 2026-09-24) — replaced by `RM_Skennet`/`RM_Cravvet`** | a donor multi-homer standing where invented one-home prey now stands; cutting it here also removes this biome from `DUPLICATE_CANON_DEFNAME_PAIRS_1`'s Kreetle-vs-`RSW_Kreetle` count (sitting record §5) |
 | `Shyrack` (donor, multi-homer) | trace-flier, 0.2 | **RULED CUT (card, 2026-09-24) — replaced by `RM_Sivvern`** | its flier claim is UNMEASURED (JSON confidence block: the register's flies flag is broken) while the replacement takes real, stat-backed flight; and a cave-mouth rooster was never this canopy's animal |
 
