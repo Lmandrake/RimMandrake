@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaMessImmunity.xml                       UtinniPatches · JAWA_MESS_IMMUNITY_1
+  ============================================================================
+
+  Wires RUT_Jawa_MessImmune (Defs/GeneDefs/Jawa_MessImmunity.xml - read that
+  file first for the mechanism and its tradeoff) onto RSW_MandrakeJawa - "the
+  ONLY Jawa xenotype active anymore" (owner, 2026-08-14, see
+  MandrakeJawaXenotype.xml) - and onto vanilla's NeedBeauty ThoughtDef, the
+  same shape as XenotypeTolerances_Ashkarr.xml: PatchOperationConditional
+  guards on the xpath, so a missing RimStarWars Races mod (which owns the
+  xenotype) or missing Biotech (which owns genes and xenotypes at all) simply
+  makes both operations no-ops rather than erroring - no MayRequire needed,
+  matching this file's own established local convention.
+
+  🔴 ONLY RSW_MandrakeJawa, deliberately. RSW_RimMandrakeJawa (a leftover
+  generic Outer-Rim-style Jawa in RimMandrakeXenotypes.xml,
+  factionlessGenerationWeight 0, canGenerateAsCombatant false) is not the
+  player's clan and is not touched - the item's spec says "the Jawa
+  xenotype," singular, and the owner's 2026-08-14 ruling already settled
+  which one that is.
+
+  LOAD LAST of the three patch tiers (this mod's own About.xml), after both
+  RimStarWars Races (owns RSW_MandrakeJawa) and vanilla Core (owns
+  NeedBeauty) are loaded.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Add the gene to the Jawa xenotype's own list, once. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="RUT_Jawa_MessImmune"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes</xpath>
+      <value>
+        <li>RUT_Jawa_MessImmune</li>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <!-- NeedBeauty carries no <nullifyingGenes> node out of the box - add the
+       whole container the first time; if some other patch ever adds one
+       first, just append our gene to it instead of clobbering it. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThoughtDef[defName="NeedBeauty"]/nullifyingGenes</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThoughtDef[defName="NeedBeauty"]</xpath>
+      <value>
+        <nullifyingGenes>
+          <li>RUT_Jawa_MessImmune</li>
+        </nullifyingGenes>
+      </value>
+    </nomatch>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThoughtDef[defName="NeedBeauty"]/nullifyingGenes/li[text()="RUT_Jawa_MessImmune"]</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThoughtDef[defName="NeedBeauty"]/nullifyingGenes</xpath>
+        <value>
+          <li>RUT_Jawa_MessImmune</li>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+</Patch>
