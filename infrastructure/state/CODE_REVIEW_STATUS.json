@@ -13311,11 +13311,59 @@
     "hash": "549bf42637b1d71ca44afbe1683b87a94a21ecbc4059bab26835cd38ea0ef638",
     "sha": "cc3c45709"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Scurrier.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1c38c35743eec6af1305c88861850785159406d7d58adfa0826a86f1fd432ee9",
+    "sha": "970956544"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Shaak.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fd6d6d34ab1a92472921dbf5c368dcacb9680a60c94fc85ea7922a5212e26ea6",
+    "sha": "970956544"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShadeWhale.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "adac61b480b7f461be1b02d8869b68d5e442dac20af6860b17c07651e9789aaf",
+    "sha": "970956544"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Shiro.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c8d7cd1660a93f73ded479eaf0c4ad02ad9b122a4e59bac2ed8431d8b2c150d8",
+    "sha": "970956544"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShiroTrap.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3794781a5c63f033880ee21a9623196e8d59380b5fa2b557044dfeaca09eb587",
+    "sha": "970956544"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShrublandGiant.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7320b3e2cbbc230bcd610af77a7be326f440b25e7617e0fe2a0db9a567014fd1",
+    "sha": "970956544"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Shyrack.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9487d22cd8fc94bfff9c0fdebbb8a9f254e1e3cc46ce9d890e5c02bbe6b26c71",
+    "sha": "970956544"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Skalder.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "0e93e79e767854b55f39bd567de1f0acf44b569809be59db0df6ed405cef8faa",
     "sha": "609daf5ad"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Sketto.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5c96407e9e6d889d81f667e865c6c4c90a0aae5644d8243cf6a860abb6fb4028",
+    "sha": "970956544"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Vulptex.xml": {
     "cleanCount": 3,
