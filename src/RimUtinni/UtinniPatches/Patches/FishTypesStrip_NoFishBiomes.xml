@@ -49,8 +49,10 @@
   already the no-fish state this patch is establishing everywhere else); the
   5 `RUT_`-tier own-authored defs (RUT_TheScald/RUT_TwilightSea/RUT_GreySea/
   RUT_PropaneLake/RUT_NightsideIce) are NOT stripped here and carry whatever their
-  own defs/patches say — as of 2026-09-23 the Scald ships 5 `fishTypes` on its def and the
-  Twilight Sea 8 via patch (owner 2026-09-20: "Just make the surface fishable"); the other
+  own defs/patches say — as of 2026-09-24 the Scald ships 8 `fishTypes` on its def and the
+  Twilight Sea 10 via patch (recounted directly from `RUT_TheScald.xml` and
+  `BiomeFishTypes_TwilightDeep.xml`; the prior "5"/"8" figures here were wrong) (owner
+  2026-09-20: "Just make the surface fishable"); the other
   three carry none; `RUT_BlueDesert`/`BiomeCypreJungle`'s
   `RUT_Greentide` sibling defs are not this world's live paint (see
   BiomeFishTypes_Greentide.xml's own note) so nothing to strip there beyond
