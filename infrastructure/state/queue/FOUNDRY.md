@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T23:41:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T23:42:23Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -352,7 +352,7 @@ summary:  Source
 prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    owner
 target:   v1
@@ -1098,16 +1098,6 @@ kind:     task
 blocked:  Fully resolved offline: rename tool (jawa/world_landmark_rename) is fixed, deployed, and proven live per 2026-09-10 history. Nothing left is offline-actionable -- the 18 hand-named renames need (1) owner skim of names.md (not yet done) and (2) a live bridge session batched with OASIS_LANDMARK_PLACEMENT_1, which is itself needs=bridge/ready. BENCH holds the bridge this wave for the owner's Pyrelands session; no FOUNDRY bridge slot exists tonight. (on COLD_LOAD_RUN_SHEET_4)
 summary:  Source
 prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
-
-## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-blocked:  design draft, item's own criterion 1: stays a draft until the owner rules forks F1-F10 (art register, glyph tone/mappings, anti-Imperial stencil scope)
-summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
-prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
 state:    doing  (BLOCKED)
