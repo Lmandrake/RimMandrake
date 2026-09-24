@@ -110,6 +110,12 @@ make_entry(
 
 # ---- unit classify() checks -------------------------------------------------
 eq(CC.classify("**RULED**\nsomething")[0], "ruled", "a body carrying **RULED** classifies ruled")
+# Regression, 2026-09-24: chagrian/ugnaught/umbaran bold the WHOLE clause
+# (the bold never closes right after the word RULED) and were silently
+# falling into non-conforming under a plain "**RULED**" substring check —
+# exactly the miscount class this module exists to catch. Must classify ruled.
+eq(CC.classify('🔴 **RULED — owner, 2026-09-20. Verbatim: *"fake quote."***')[0], "ruled",
+   "a whole-clause bold RULED (chagrian/ugnaught/umbaran shape) classifies ruled")
 for slug, body in zip(WORDINGS[0::2], WORDINGS[1::2]):
     eq(CC.classify(body)[0], "unruled", "wording %r classifies unruled" % slug)
 eq(CC.classify("")[0], "non-conforming", "a blank body classifies non-conforming")

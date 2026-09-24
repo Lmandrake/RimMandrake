@@ -67,9 +67,21 @@ class ArtifactDbBackend {
   }
 
   /* A db path segment admits letters, digits and _ - . ~ : @ + only. Escape
-     everything else rather than trusting row ids to be tame. */
+     everything else rather than trusting row ids to be tame.
+
+     '-' is deliberately EXCLUDED from the pass-through set below, even
+     though the db grammar allows it: the escape marker itself is "-x" plus
+     4 hex digits, all drawn from the allowed alphabet, so a row id that
+     already CONTAINS a literal "-x" + 4 hex digits (e.g. "foo-x0020bar")
+     would pass through unescaped and collide with the escaped form of a
+     DIFFERENT row id that has a disallowed char at that spot (e.g.
+     "foo bar" -> "foo-x0020bar") — two distinct rows would `.set()` the
+     same document path and one decision would silently overwrite the
+     other. Escaping every literal '-' too means "-x" can only ever appear
+     as a real escape sequence, which is what actually keeps this
+     injective, not merely what the comment claimed. */
   static key(rowId) {
-    return String(rowId).replace(/[^A-Za-z0-9_.~:@+-]/g, c =>
+    return String(rowId).replace(/[^A-Za-z0-9_.~:@+]/g, c =>
       '-x' + c.charCodeAt(0).toString(16).padStart(4, '0'));
   }
 
