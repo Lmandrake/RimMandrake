@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T17:35:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T17:54:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -917,6 +917,15 @@ target:   v1
 kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
+
+## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Four mechanics, all RM-tier (RMTheSump / its kit), feature-gated per the Mod
+prose:    infrastructure/state/items/SUMP_TAR_NASTINESS_1.md
 
 ## SUMP_WALKWAYS_1 Sump walkways, two tiers: duckboards (cheap, foul with tar, burn) and glasswalk (never fouls, never full speed) with cap + rare harmless pratfalls
 state:    doing
@@ -2041,16 +2050,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SUMP_FAUNA_ROSTER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUMP_FAUNA_ROSTER_1.md
-
-## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Four mechanics, all RM-tier (RMTheSump / its kit), feature-gated per the Mod
-prose:    infrastructure/state/items/SUMP_TAR_NASTINESS_1.md
 
 ## SUMP_TAR_VAULT_1 Sump tar-vault: seal food/corpses/hides into tar for perfect preservation; extraction REQUIRES solvent or contents are useless (owner-ruled)
 state:    proposed
