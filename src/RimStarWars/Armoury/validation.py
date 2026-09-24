@@ -175,7 +175,13 @@ def _harmony_owner_present(t, type_name, method_name, owner):
     Raises unless `owner` appears on some prefix/postfix/transpiler/finalizer
     of `type_name`(.`method_name`)."""
     r = t.bridge_call("jawa/harmony_patches", typeName=type_name, methodName=method_name)
-    if (r or {}).get("harmonyError"):
+    # HarmonyPatches' own instrument-blind Fail() nests the flag under
+    # `details` (JawaBenchTerrainTools.cs's shared Fail(message, extra) shape
+    # is {success, message, details=extra}) -- there is no top-level
+    # "harmonyError" key, so this guard never fired and a genuinely blind
+    # instrument fell through to the generic "no patch found" raise below,
+    # misreporting an instrument failure as a missing patch.
+    if (r or {}).get("details", {}).get("harmonyError"):
         raise ExpectationFailed(
             "jawa/harmony_patches itself failed (%r) -- THIS INSTRUMENT IS BLIND, "
             "not proof the patch is missing" % r.get("harmonyError"))
