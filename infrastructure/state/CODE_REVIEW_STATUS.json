@@ -3011,6 +3011,12 @@
     "hash": "75bb0f0e2381562c0f6328a11bde046f8f7892521365125a4f5c3787b8430eaf",
     "sha": "f34c32a99"
   },
+  "src/RimMandrake/GelatinousSlime/Source/GeneConditions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4a3a9e7d26b86276019cb27392d4dd797a02fdcc5c31ad29d9b1db90bdccdc4d",
+    "sha": "695878faa"
+  },
   "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs": {
     "cleanCount": 2,
     "date": "2026-09-23",
@@ -3058,6 +3064,18 @@
     "date": "2026-09-11",
     "hash": "22fd2a837f284d6fa9a15948a3f60a64fd363c33b42626376b1b329b21710b7f",
     "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "606ab0a12bdae41922c768d813a3d6d711b35d630cfd6187b247b537cefc6318",
+    "sha": "695878faa"
+  },
+  "src/RimMandrake/GelatinousSlime/Source/TitanoslimeVerb.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "13d7cc4248406f0abc518221e2480b8036d4f635838f04b2659b68df71ced86f",
+    "sha": "695878faa"
   },
   "src/RimMandrake/Graffiti/About/About.xml": {
     "cleanCount": 3,
@@ -7377,6 +7395,12 @@
     "hash": "c1755f4daf09709ccd508b7c58100538653b8898c752c30ea26db2ffe626f4a1",
     "sha": "3e547d539"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchAbilityTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "883f3e4b5b8263cf976350546b41bb0f8b0555305665c97c6f456b439908dd12",
+    "sha": "695878faa"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchAnimalStatsTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -7520,6 +7544,12 @@
     "date": "2026-09-03",
     "hash": "510c2ffc8f25a8d6a4807a8dded584dac5b57befb21fc08e4a979ff61b596761",
     "sha": "1acd1615"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchInhabitedTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "078c153fb71cd8e211869c5b2cb08034d670181a02b38b76a7f723a0f8226e2f",
+    "sha": "695878faa"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchInit.cs": {
     "cleanCount": 1,
@@ -13538,6 +13568,24 @@
     "date": "2026-09-24",
     "hash": "6c364014261de77257c21fca0f0614f568462f9b784583f3897299f0255903b7",
     "sha": "78a84be85"
+  },
+  "src/RimStarWars/TrophyCraft/Source/RSW_FactionApparelThoughtExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f0f129375a2209b3626555a1a58e9cdf0aa6092b8dd0568a96b92f6d0b2b414e",
+    "sha": "23259a0a9"
+  },
+  "src/RimStarWars/TrophyCraft/Source/RSW_ThoughtWorker_ObserverFactionApparel.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3ea12c09655487dc9d271c9b934d3c3f94175dd9a442861787a8891d11b6ae73",
+    "sha": "23259a0a9"
+  },
+  "src/RimStarWars/TrophyCraft/Source/RSW_TrophyCraftSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ed14259e19b4b293a91c893848c7c6a39e444648fa9c034fa59e19169925d82c",
+    "sha": "23259a0a9"
   },
   "src/RimStarWars/VornskyrArtOverride/About/About.xml": {
     "cleanCount": 1,
