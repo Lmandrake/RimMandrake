@@ -1,2 +1,6 @@
 {"seat":"FOUNDRY","event":"file","id":"EVENTS_JSONL_SHARDING_1","title":"Land the per-seat events.jsonl sharding (model.py/cli.py/render.py + readers), currently uncommitted, paused for owner review","kind":"task","target":"v1","needs":"owner","for":"FOUNDRY","ts":"2026-09-24T04:07:08Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-24T05:07:45Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-24T05:24:08Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SHOKKWEAVE_SOLE_SOURCE_1: live-verify nest wake-up fix + butchery yield","ts":"2026-09-24T05:24:13Z"}
+{"seat":"FOUNDRY","event":"note","id":"SHOKKWEAVE_SOLE_SOURCE_1","text":"6th pass: wake-up fix confirmed re-parsed live (deep def read). Full behavioral proof deferred -- canonical map mid-encounter (mechanoids + HuttCartel present), not a quicktest map. Needs owner on tool-build decisions unchanged.","ts":"2026-09-24T05:26:16Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-24T05:26:17Z"}
