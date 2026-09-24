@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T23:07:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T23:08:23Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -156,7 +156,7 @@ prose:    infrastructure/state/items/HORRORS_RAIDING_FACTION_1.md
 ## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
 state:    doing
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     task
 summary:  - ⚠️ The line below is the ORIGINAL 2026-09-06 filing and its def is DEAD.
