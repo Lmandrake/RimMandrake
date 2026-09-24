@@ -1052,3 +1052,75 @@ pick — closes out the tank-loop pair with this wave's 3),
 `RM_GenStep_LiquidShores.cs` — re-derive rather than trust this count. The
 284-row re-dirtied backlog and the binary-art-tracking scope question from
 wave 15 are both still untouched.
+
+## Wave 21 — 2026-09-24: `FlowWorks/Source/LiquidTypes` CLOSED, plus `PyrelandsMechanics`
+
+Re-confirmed the final 4 `FlowWorks/Source/LiquidTypes` never-entered files
+against `RimMandrake_FlowWorks.csproj`'s `<Compile Include>` list (20 entries
+under `LiquidTypes\`, `EnableDefaultCompileItems=false` confirmed explicit)
+before touching anything — wave 20's list held exactly. Reviewed all 4,
+full-file each: `JobDriver_FillBottleFromTank.cs` (69 lines, the tank-draw
+half mirroring the already-CLEAN `JobDriver_EmptyBottleIntoTank.cs` — traced
+the `tank.Empty`/`filledDef == null`/`TryRemoveLiquid` short-circuit chain to
+confirm no side effect fires on a stale WorkGiver scan), `RM_LiquidBodyDef.cs`
+(90, the per-body-of-water authoring Def — `liquid`/`biomes`/`tiles` plus its
+own ConfigErrors), `RM_WorldComponent_LiquidTags.cs` (177, the per-tile/
+per-biome lookup cache with no `ExposeData` by design), and
+`RM_GenStep_LiquidShores.cs` (147, the landing-repaint GenStep). Cross-checked
+every engine call these four make against the real decompiled source at
+`/mnt/d/Luke/dev/reference/rimworld-decompiled`: `PlanetTile.Tile` (indexer
+into `Layer`), `Tile.PrimaryBiome`, `Map.Tile`/`Map.Biome`,
+`BiomeDef.waterDeepTerrain`/`waterShallowTerrain`/`oceanDeepTerrain`/
+`oceanShallowTerrain`, `TerrainDefOf.WaterDeep`/`WaterShallow`/
+`WaterOceanDeep`/`WaterOceanShallow`, `TerrainGrid.SetTerrain`/`TerrainAt` —
+all real, all matching usage. Also read the three companion XML files
+(`RM_GenStep_LiquidShores.xml`'s GenStepDef + order-245 placement,
+`RM_LiquidShores_MapGenPatch.xml`'s `PatchOperationAdd` onto
+`MapCommonBase`, `RM_LiquidBodyRegistry.xml`'s four Ash'karr body rows) and
+confirmed `RimMandrakeFlowWorksSettings.typedLiquidShoresEnabled` is a real
+Scribed static the GenStep reads correctly (it lives in the `...Settings`
+class, not `...Mod`, despite the class boundary falling mid-file — checked
+line ranges to be sure). No bugs found in any of the 4; no fixes needed. All
+4 marked CLEAN, commit pending below, pushed. **This closes the entire
+`FlowWorks/Source/LiquidTypes` never-entered cluster (20/20 recorded).**
+
+Re-surveyed every `src/RimMandrake|RimStarWars|RimUtinni/**/*.csproj`'s
+`<Compile Include>` entries against `code_review_status.py list` (any
+status) fresh, restricted to our three owned tiers (excludes vendored/donor
+source under `1.6/`, `VanillaExpandedFramework-main/`,
+`BiomesFramework_src/`, etc., which are not ours to review): **38
+never-entered files remain**, down from wave 14's ~95 (waves 15-20 closed
+`CreatureBehaviors` and `EnvironmentalHazards`). Largest cluster:
+`RimUtinni/PyrelandsMechanics` (6 files). With time remaining, reviewed 3 of
+those 6, full-file each: `PyrelandsTuning.cs` (265 lines, the kit's single
+tuning-constants file — content-only, no logic to break, spot-checked that
+every `[INVENTED]`-tagged constant does trace to a ruling or an anchor cited
+in its own comment), `Patch_FurnaceBeastHeatImmunity.cs` (123, the Harmony
+prefix absorbing Heat-category damage on `RUT_FurnaceBeast` — verified the
+`ref bool absorbed` prefix parameter correctly mirrors `Pawn.PreApplyDamage`'s
+real `out bool absorbed` signature per Harmony's documented out-param
+convention, confirmed `DamageDef.armorCategory`/`DamageInfo.Def` are real
+fields, and confirmed the file's own cited engine fact —
+`FireUtility.CanEverAttachFire` returning false on `!t.FlammableNow` — reads
+byte-for-byte as claimed against the decompiled source), and
+`JobGiver_RUT_HarvestScorchFruit.cs` (108, the Deep Tribes' pick-up-then-
+harvest duty — verified `ThingOwner.TotalStackCountOfDef`,
+`GenClosest.ClosestThingReachable`'s signature, and `FireUtility.IsBurning`
+all match their real declarations, and confirmed both
+`furnaceHeatImmunityEnabled` and `fireRiteCarryPerPawn` are real Scribed
+statics in `PyrelandsMechanicsMod.cs`). No bugs found in any of the 3. All 3
+marked CLEAN, commit pending below, pushed.
+
+Next wave: 3 `PyrelandsMechanics` never-entered files remain
+(`JobGiver_RUT_FurnaceThermalCycle.cs`, `LordJob_RUT_FireRite.cs`,
+`PyrelandsFireRite.cs`) — re-derive via the recipe above rather than trust
+this count. 35 never-entered files remain across our three tiers overall
+(38 minus this wave's 3); next-largest after PyrelandsMechanics closes:
+`RimMandrake/Pyrelands` (4), `RimMandrake/FlowWorks` (3, non-LiquidTypes:
+`RM_StockMath.cs`, `Source/ManyWaters/RiverSteamHook.cs`,
+`Source/SelfTest/Program.cs` — confirm each is reachable, not just listed,
+since a `SelfTest/Program.cs` may be a standalone entry point rather than
+part of the main assembly), `RimMandrake/GelatinousSlime` (3),
+`RimStarWars/TrophyCraft` (3), `RimUtinni/StructureInjectionsRUT` (3). The
+284-row re-dirtied backlog and the binary-art-tracking scope question from
+wave 15 are both still untouched.

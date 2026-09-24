@@ -2597,6 +2597,12 @@
     "hash": "1ecbdec0f642c6d5e306aeda5e9ae33f16c9ed42d81a4876b50078c3c73b6b9e",
     "sha": "d0b0d6b7b"
   },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/JobDriver_FillBottleFromTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1aeca066f068976ffe7005132793a019ae02569a96d9cb26681aba1506489f0e",
+    "sha": "9b64f4fde"
+  },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/JobDriver_WashBottle.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -2627,6 +2633,18 @@
     "hash": "bfe4b9e9500a2d4866ef32f2d59080fdf0d03a8d61fb6f0770baad5f7c8919f6",
     "sha": "d0b0d6b7b"
   },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_GenStep_LiquidShores.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3366f81eb2f9968f65f92db07196e9a701f7dcfdf36608fb48d06be060d4078a",
+    "sha": "9b64f4fde"
+  },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBodyDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0febef58998d2c122e201839c95bc0a6c1a4addbf1da2b78a3104cb90a0ab4c4",
+    "sha": "9b64f4fde"
+  },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs": {
     "cleanCount": 2,
     "date": "2026-09-18",
@@ -2644,6 +2662,12 @@
     "date": "2026-09-24",
     "hash": "8e1e3e80da32d9c0667cc2104732327c0391fee523d6cd1d1144320c2ceaf713",
     "sha": "a7b96f8d7"
+  },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_WorldComponent_LiquidTags.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6e2523de2d4f798bd8d6648ab9c018ad78fcbbe7970b5e3d0473b0d33cf77bc2",
+    "sha": "9b64f4fde"
   },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/WorkGiver_EmptyBottleIntoTank.cs": {
     "cleanCount": 1,
@@ -15369,11 +15393,23 @@
     "hash": "41c72a8116e26e6cc322ea9d59bc3c7cebebffca89c3ed6aeaaef049a597e4ed",
     "sha": "2679d79d8"
   },
+  "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_HarvestScorchFruit.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c6806221b12012c0b8f28c2fd72d4d91af775350928094c84e9d68688993f4c6",
+    "sha": "9b64f4fde"
+  },
   "src/RimUtinni/PyrelandsMechanics/Source/MapComponent_BurnLine.cs": {
     "cleanCount": 3,
     "date": "2026-09-17",
     "hash": "f016477e90f87c365b3ce828359333d57a1b32a736e41b61230edd6e71e2b143",
     "sha": "d966fa898"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/Patch_FurnaceBeastHeatImmunity.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9a16318c143be42e4e89cde5179869d6321370a380bc4c28229434dea72439cf",
+    "sha": "9b64f4fde"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFactions.cs": {
     "cleanCount": 1,
@@ -15400,10 +15436,10 @@
     "sha": "1135036ce"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsTuning.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "40a9971ae24e16e1e553bc562e36429bde3580f250a426e0fbd5d6f7cf32bccd",
-    "sha": "d966fa898"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "078a28ab430401227eef3ecd8aa58422dd833d7e6bda1b973362391c289345c2",
+    "sha": "9b64f4fde"
   },
   "src/RimUtinni/RaptorShrimpArtOverride/About/About.xml": {
     "cleanCount": 1,
