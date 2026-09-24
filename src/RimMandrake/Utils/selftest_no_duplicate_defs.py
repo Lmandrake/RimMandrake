@@ -10,7 +10,7 @@ Why this test exists, measured:
   2026-09-20 10:50 PDT  DESERT_PORT_DUPLICATE_DEFS_1 closed "0 duplicates",
                         deleting 366 duplicate copies out of SWBestiary.
   2026-09-20 17:35 PDT  DESERT_FAMILY_PORT_EXECUTION_1 added a port of Alpha
-                        Animals' AA_BoulderMit under the defName RSW_Stoneback —
+                        Animals' AA_BoulderMit under the defName RSW_Bokka —
                         already taken by a Biomes! port of BMT_Stoneback. One
                         duplicate, reintroduced 6 hours 45 minutes after the
                         sweep that removed 366 of them.

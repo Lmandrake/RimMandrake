@@ -13,7 +13,7 @@
 
        LABEL ONLY on the identity; no defName, stat, or art field is touched.
        Not drafted here: AA_DuskRat (owner ruled the name IS the joke, kept),
-       AA_SandProwler (already port-named RSW_Dunestalker "vosska"). -->
+       AA_SandProwler (already port-named RSW_Vosska "vosska"). -->
 
   <!-- ============== AA_Nightling -> vrakk ============== -->
   <Operation Class="PatchOperationConditional">

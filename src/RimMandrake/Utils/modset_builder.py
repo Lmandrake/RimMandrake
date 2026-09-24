@@ -170,7 +170,7 @@ TIERS = {
     "beastmechanics": {
         "why": "Live-verify PORTED_BEAST_MECHANICS_REBUILD_1's three rebuilt donor "
                "mechanics (steel-eating ferroclaw, two chemfuel ejectors) on "
-               "RSW_Ferroclaw / RSW_Voltmaw / RSW_Cindermite, AND "
+               "RSW_Khorrak / RSW_Vozzik / RSW_Zhakka, AND "
                "DRUM_LURE_PREDATOR_BUILD_1's vibration-lure ambush + egg-trap clutch "
                "on RSW_Drazzik / RSW_DrazzikEggFertilized -- both items live in "
                "mandrake.rsw.swbestiary and share this same dependency closure. "
@@ -197,7 +197,7 @@ TIERS = {
             #    RSW_Drazzik, RSW_WraidAlpha and the BiomesTeamPort races.
             #  - OskarPotocki.VFE.Insectoid2 is not declared anywhere at all, yet
             #    owns the ONLY copy of Things/Pawn/Animal/Fuelmite/* -- the texPath
-            #    RSW_Cindermite (zhakka) binds to. Without it the creature spawns
+            #    RSW_Zhakka (zhakka) binds to. Without it the creature spawns
             #    fine and renders as a magenta X.
             "mandrake.rm.creaturebehaviors",
             "oskarpotocki.vfe.insectoid2",

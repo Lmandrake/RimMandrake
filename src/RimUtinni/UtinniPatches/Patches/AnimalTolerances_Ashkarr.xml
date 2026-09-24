@@ -1057,37 +1057,37 @@
     </nomatch>
   </Operation>
 
-  <!-- korrum (RSW_Stoneback) - 2390 tiles, home demands -5.5 … 50.1 °C  -65..40 -> -65..51.1 -->
+  <!-- korrum (RSW_Bokka) - 2390 tiles, home demands -5.5 … 50.1 °C  -65..40 -> -65..51.1 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Stoneback"]/statBases</xpath>
+    <xpath>/Defs/ThingDef[defName="RSW_Bokka"]/statBases</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_Stoneback"]/statBases/ComfyTemperatureMin</xpath>
+          <xpath>/Defs/ThingDef[defName="RSW_Bokka"]/statBases/ComfyTemperatureMin</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_Stoneback"]/statBases/ComfyTemperatureMin</xpath>
+            <xpath>/Defs/ThingDef[defName="RSW_Bokka"]/statBases/ComfyTemperatureMin</xpath>
             <value><ComfyTemperatureMin>-65</ComfyTemperatureMin></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_Stoneback"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RSW_Bokka"]/statBases</xpath>
             <value><ComfyTemperatureMin>-65</ComfyTemperatureMin></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_Stoneback"]/statBases/ComfyTemperatureMax</xpath>
+          <xpath>/Defs/ThingDef[defName="RSW_Bokka"]/statBases/ComfyTemperatureMax</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_Stoneback"]/statBases/ComfyTemperatureMax</xpath>
+            <xpath>/Defs/ThingDef[defName="RSW_Bokka"]/statBases/ComfyTemperatureMax</xpath>
             <value><ComfyTemperatureMax>51.1</ComfyTemperatureMax></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_Stoneback"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RSW_Bokka"]/statBases</xpath>
             <value><ComfyTemperatureMax>51.1</ComfyTemperatureMax></value>
           </nomatch>
         </li>
       </operations>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_Stoneback"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Bokka"]</xpath>
       <value>
         <statBases>
           <ComfyTemperatureMin>-65</ComfyTemperatureMin>
