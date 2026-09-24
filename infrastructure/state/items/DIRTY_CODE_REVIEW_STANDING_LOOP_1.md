@@ -519,3 +519,138 @@ named clusters remain outstanding from earlier waves. The key-mismatch
 pattern is still productive (3 more bugs this wave, 11 total across waves
 11-13) -- keep cross-checking every `t.bridge_call(...)` against its real
 `[Tool]` implementation.
+
+## Wave 14 — 2026-09-24, the `validation.py` tail is FINISHED
+
+Re-derived the DIRTY `validation.py` list per the standing recipe: a fresh
+`find . -name validation.py` sweep (55 total) minus `code_review_status.py
+list`'s CLEAN rows (47) gave exactly 8 DIRTY, matching wave 13's count.
+Reviewed all 8, full-file each (the whole remaining tail, per this wave's
+own brief to finish it since it's small) -- `src/RimStarWars/
+KotORBandolierNorthFix/validation.py` (276 lines), `src/RimMandrake/
+MandrakePatches/validation.py` (284, plus a docstring CORRECTION already
+recorded in-file from a prior pass), `src/RimStarWars/JawaRules/
+validation.py` (290), `src/RimStarWars/DesertVehicleReskin/validation.py`
+(303), `src/RimUtinni/LongHunger/validation.py` (310), `src/RimUtinni/
+LanternDeeps/validation.py` (324), `src/RimStarWars/Cuisine/validation.py`
+(332), `src/RimStarWars/Armoury/validation.py` (369) -- 2488 lines total.
+Every `t.bridge_call(...)` in all 8 cross-checked against its actual
+`[Tool]` implementation in `src/RimMandrake/bridgetools/JawaBench.
+BridgeTools/*.cs` (`GetDefs`, `DrainLog`, `FireIncident`, `ListThings`,
+`MapInfo`, `PawnGenes`, `PawnRelations`, `OrderedJob`, `PawnThoughts`,
+`PawnNeed`, `HarmonyPatches`, `Damage`, `ListPawns` all read directly).
+
+**Found and fixed 3 more real, high-confidence bugs, same family as waves
+11-13, in 3 of the 8 files:**
+
+- **JawaRules** (`droid_relations_smoke`): checked `"error" not in (r or
+  {})` after `jawa/pawn_relations`, but `PawnRelations`' failure path is
+  the shared `Fail()` helper (`{success=false, message, details}`,
+  `JawaBenchTerrainTools.cs`) -- there is no `"error"` key anywhere in this
+  response family (same finding as wave 12's RimDefDump and wave 13's
+  AshkarrWeatherSuite bugs). The check was therefore unconditionally True
+  on any non-exception response, success or failure -- only an actual
+  thrown exception could ever fail this component. Fixed to check
+  `r.get("success") is True`.
+- **LanternDeeps** (`biome_gate_on_current_map`): read `jawa/map_info`'s
+  non-existent top-level `"biome"` key. `MapInfo` (`JawaBenchMapInfoTools.cs`)
+  reports the tile's biome at `tileInfo.biome` and the MAP's own resolved
+  biome at the separate top-level `mapBiome` (deliberately both, per the
+  tool's own doc comment on why they can diverge after a live
+  `world_tile_set`) -- neither is a bare `biome` key. `biome` was therefore
+  always `None`, so `biome in QUALIFYING_BIOMES` could never take the
+  positive-scatter branch this suite's own docstring describes as one of
+  its two intended outcomes; the suite always asserted the negative-gate
+  half regardless of the actual map. Fixed to read `mapBiome`.
+- **Armoury** (`_harmony_owner_present`'s instrument-blind guard): checked
+  a top-level `(r or {}).get("harmonyError")`, but `HarmonyPatches`'
+  failure path passes `harmonyError` as the `extra` argument to the same
+  shared `Fail()` helper, which nests it under `details` -- there is no
+  top-level `harmonyError` key. A genuinely blind instrument (HarmonyLib
+  introspection itself throwing) therefore fell through this guard and hit
+  the generic "no Harmony patch owned by ... found" raise below instead of
+  the intended "THIS INSTRUMENT IS BLIND, not proof the patch is missing"
+  message -- same failing test, but a misleading diagnostic that would
+  send a first live-run reader looking for a missing patch that was never
+  actually checked. Fixed to read `details.harmonyError`.
+
+The other 5 files (`KotORBandolierNorthFix`, `MandrakePatches`,
+`DesertVehicleReskin`, `LongHunger`, `Cuisine`) were cross-checked
+line-by-line against their actual bridge-tool dependencies and every field
+name/response shape checked out exactly as each suite assumed --
+including `GetDefs`' `defs`/`fields`/`notFound`/`success` shape (both the
+`str(r)` blob-search pattern several of these files use, robust to key
+names by construction, and the direct `row["fields"][...]` pattern
+MandrakePatches uses), `ListThings`' `things[]` rows (`hitPoints`,
+`def`, `id`), `FireIncident`'s top-level `canFireNow`, `OrderedJob`'s
+top-level `accepted`, `PawnThoughts`' `thoughts[].def`, `PawnGenes`'
+top-level `xenotype`, and `Damage`'s `targets`/`results` dual-key alias
+(the exact pattern the tool's own comment says was added after a prior
+seat's `targets`-only miss). No bugs found in those 5.
+
+Fixes committed at `5ae0191cc`, pushed. All 8 marked CLEAN, commit
+`7ade1065a`, pushed. **This closes out every `validation.py` file in the
+repo — all 55 are now CLEAN, 0 remain DIRTY or never-entered.** 14 real
+bugs found across waves 9/11-14 (1 GizkaStowaway null-guard + 13
+bridge-response key-mismatches), every one caught only by reading the
+actual C# rather than trusting a suite's own assumption about a tool's
+response shape.
+
+### Post-tail survey: what the loop should pick up next
+
+Per this item's own "standing, self-continuing" doctrine, ran a fresh
+`code_review_status.py list` and a repo-wide reachable-file survey now
+that the validation.py tail is closed, so the next wave has real
+candidates instead of restarting from a cold search:
+
+- **284 previously-CLEAN entries are now DIRTY again** (content changed
+  since their clean mark) — this is a SEPARATE backlog from
+  "never-entered," and per this file's own protocol a re-dirtied file
+  needs a fresh full-file review, not a diff review, same as `cli.py` in
+  wave 6/7. Two are this loop's own hooks (`.claude/hooks/queue_lint.py`,
+  `.claude/hooks/selftest_queue_lint.py`, both re-dirtied since
+  2026-09-20), several are `design/Jawa/mods/*.py` and
+  `design/Jawa/worldbuilding/biomes/rosters/_validate.py`, and the bulk
+  are `src/RimMandrake/**` `.cs`/`.xml`/`.md` files re-touched since their
+  last clean mark (`CreatureBehaviors`, `EnvironmentalHazards`, `FlowWorks`
+  and others recur). Full list: `code_review_status.py list | grep
+  '^DIRTY'` (284 rows this pass — re-derive, do not trust this count next
+  wave).
+- **95 reachable `.cs` files have NEVER been entered at all** (present in
+  a `.csproj`'s `<Compile Include>` or its default-compile-items glob, per
+  a fresh survey of every `src/**/*.csproj`, absent from
+  `CODE_REVIEW_STATUS.json` in any state). By folder: 20
+  `CreatureBehaviors`, 12 `SWBestiary`, 9 `FlowWorks`, 8
+  `EnvironmentalHazards`, 5 `PyrelandsMechanics`, 4 `bridgetools`, 3 each
+  `StructureInjectionsRUT`/`Doctrine`/`TrophyCraft`/`DesertVehicleReskin`/
+  `Ninefold`/`GelatinousSlime`, 2 each `LanternDeeps`/`JawaIonWeapons`/
+  `Droidworks`/`Visibility`/`Pyrelands`/`Oracle`/`Inhabited`, 1 each
+  `UtinniPatches`/`WreckedMachines`/`TitanicCreatures`/`SeaShores`/
+  `Aftermath`. Full list saved this pass in the wave's own working notes
+  (not committed — regenerate via the recipe in the next bullet).
+- **13 never-entered Python tools under `src/RimMandrake/Utils/`**:
+  `apply_blanket_ruling.py`, `artpipe/build_flora_legibility_sheet.py`,
+  `artpipe/facing_set_audit.py`, `artpipe/requeue_quota_failures.py`,
+  `build_landmark_density_sheet.py`, `canon_census.py`,
+  `check_pseudo_sw_name.py`, `ecosystem_pyramid_check.py`,
+  `label_collision_check.py`, `modcheck/readline_registry.py`,
+  `sheet_to_artifact.py`, `stage_review.py`, `stage_xenotype_grid.py`.
+  Reachability (importer/CLI entry point) was NOT independently confirmed
+  for each of these 13 this pass — that check is owed before reviewing
+  any of them, per this item's own "check it is still reachable" rule
+  (CLAUDE.md's code-review section) and the DEAD-FILE-candidate protocol.
+- Recipe used, re-derive rather than trust: `find . -name '*.csproj'`,
+  regex `<Compile Include="...">` per project plus a default-glob fallback
+  when a project has no `EnableDefaultCompileItems=false`, diffed via
+  `comm -23` against the path column of `code_review_status.py list`
+  (any status, not just CLEAN — a DIRTY or ORPHANED row still means
+  "recorded", only an absent row means "never entered").
+
+Next wave: pick from either the 284-row re-dirtied backlog (prioritize
+this loop's own hooks and the `design/Jawa/mods/*.py` cluster, since a
+stale review on this loop's own enforcement code is the worst kind of
+self-inflicted gap) or the 95 never-entered `.cs` files (largest cluster:
+`CreatureBehaviors`, already partly reviewed in earlier waves —
+`RM_CompDungSeeder.cs` etc. — so the other 20 files there are a natural
+next full-file batch). Confirm reachability on the 13 Utils Python tools
+before spending a review on any of them.
