@@ -11,3 +11,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SETTLEMENT_VISIT_LOOP_1: live quicktest of the Inhabited visit lifecycle on an empty world tile, away from the colony","ts":"2026-09-24T05:37:56Z"}
 {"seat":"FOUNDRY","event":"note","id":"SETTLEMENT_VISIT_LOOP_1","text":"Mod+debug-actions confirmed live; real blocker is tile-selection + picker-dialog tooling, not the mod. Full account in item file. get_defs trap recorded in rimbridge skill.","ts":"2026-09-24T05:42:46Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-24T05:42:47Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DONOR_DEFS_PORT_TO_OURS_1","ts":"2026-09-24T05:45:11Z"}
+{"seat":"FOUNDRY","event":"note","id":"DONOR_DEFS_PORT_TO_OURS_1","text":"Folded in a stray 2026-09-20 twin-duplication census (66/75 desert rows are live twins, not a defect per MLIE_FAUNA_ABSORPTION_1's design). Surfaced one real gap: sarg.alphaanimals (102 entries) has no retirement plan at all, unlike the other two large donors. Spec steps 1-2 still unstarted; not porting anything.","ts":"2026-09-24T05:45:12Z"}
