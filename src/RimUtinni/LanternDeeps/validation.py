@@ -245,7 +245,12 @@ def biome_gate_on_current_map(t):
     restored true by the previous chain before this one runs."""
     with t.component("biome_gate_matches_current_map", beyond_toggle=True):
         info = t.bridge_call("jawa/map_info")
-        biome = (info or {}).get("biome")
+        # jawa/map_info has no top-level "biome" key -- JawaBenchMapInfoTools.cs
+        # returns tileInfo.biome (the world tile's PrimaryBiome) and the separate
+        # top-level mapBiome (what the map actually generated as, which is what
+        # this chain needs post-generation). The old key read None on every
+        # call, so this branch never once took the qualifying-biome path.
+        biome = (info or {}).get("mapBiome")
         before = _count(t, EMERGENCE_THING)
         for _ in range(40):
             t.bridge_call("jawa/run_genstep", genStepDef=EMERGENCE_SCATTER)

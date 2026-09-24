@@ -258,7 +258,12 @@ def droid_relations_smoke(t):
                      toggle="droidRelationsEnabled"):
         try:
             r = t.bridge_call("jawa/pawn_relations", pawn=colonist, action="list")
-            ok = r is not None and "error" not in (r or {})
+            # PawnRelations' Fail() shape is {success=false, message, details} --
+            # there is no "error" key anywhere in this bridge's response family
+            # (JawaBenchPawnTools.cs), so the old "error" not in r check was
+            # unconditionally True and this component could never catch a real
+            # failure response (only an actual exception).
+            ok = r is not None and (r or {}).get("success") is True
         except Exception:
             ok, r = False, None
         t._record("pawn_relations(list) on a plain Humanlike colonist -> %r"
