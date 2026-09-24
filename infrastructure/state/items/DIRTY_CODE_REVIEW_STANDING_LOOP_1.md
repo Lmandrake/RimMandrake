@@ -2611,3 +2611,81 @@ both now closed/resolved. Resume the re-dirtied backlog fresh:
 `BACTA_SIDE_ITEMS_1` looks settled (check `git status --porcelain` on it
 first — wave 37 hit exactly this collision with `modset_builder.py` and had
 to skip it for a wave).
+
+## Wave 41 — 2026-09-24: `RimStarWars/Bacta/*` cluster CLOSED (18 files, this wave's priority)
+
+`BACTA_SIDE_ITEMS_1` (the concurrent build agent wave 40 stood clear of) finished
+and pushed at `93f810a38` before this wave started — confirmed
+`git status --porcelain -- src/RimStarWars/Bacta/` clean, nothing in flight.
+Full-file reviewed (multiple same-day pieces — BACTA_TANK_CORE_1,
+BACTA_REVIVAL_MECHANIC_1, BACTA_SIDE_ITEMS_1 — never cross-checked against
+each other before now), reading all three items' prose first for the ruled
+mechanics before judging the code.
+
+Re-derived the cluster fresh via `code_review_status.py check` on every file
+under `src/RimStarWars/Bacta/`, not just the 9-row DIRTY count carried
+forward from wave 39/40: the cluster had grown to **22 reviewable files**
+since its last clean mark (`d79860270`, 2026-09-17) — 18 DIRTY (About.xml,
+`RSW_BactaJobDefs.xml`, `RSW_BactaTank.xml`, `RSW_MedicalDroid.xml`,
+`RSW_BactaFieldItems.xml`, `RSW_BactaWorkGivers.xml`, `RSW_Bacta.xml`
+(Languages), `RSW_Bacta_RecipeWiring.xml`, `RSW_Bacta_TraderStock.xml`,
+`BactaDefOf.cs`, `BactaHealingUtility.cs`, `BactaMod.cs`, `BactaTuning.cs`,
+`Building_BactaTank.cs`, `CompBactaImmersion.cs`, `CompUseEffect_BactaHeal.cs`,
+`JobDriver_CarryCorpseToBactaTank.cs`, the `.csproj`,
+`WorkGiver_CarryCorpseToBactaTank.cs`) and 4 already CLEAN from an earlier
+pass (`RSW_BactaResearch.xml`, the item `RSW_Bacta.xml` fluid/container def,
+`CompBactaShell.cs`, `WorkGiver_CarryToBactaTank.cs`), left untouched.
+
+**Specifically checked, per this wave's brief:**
+- **Corpse-vs-living-pawn admission race** (`Building_BactaTank.cs`,
+  `CanAcceptPawn`/`TryAcceptPawn` vs `CanAcceptCorpse`/`TryAcceptCorpse`,
+  `JobDriver_CarryCorpseToBactaTank.cs`): the corpse job's
+  `TryMakePreToilReservations` reserves only the Corpse, never the tank —
+  looked like a missing reservation at first read. Compared directly against
+  the decompiled vanilla `RimWorld/JobDriver_CarryToBuilding.cs` (the base
+  the living-pawn path's `WorkGiver_CarryToBactaTank` extends): vanilla does
+  the **identical** thing — reserves only the Takee, never the Building. Both
+  admission paths gate re-entry via a cheap `selectedPawn`/
+  `innerContainer.Count` check re-evaluated every tick (`FailOn`), the same
+  self-correcting shape vanilla ships for Growth Vats/Gene Extractors. Not a
+  bug — a faithfully copied vanilla pattern, not a new race this mod
+  introduced.
+- **`CompUseEffect_BactaHeal` reusing `BactaHealingUtility.ApplyHealingDose`**:
+  confirmed zero duplicated healing logic — `DoEffect` calls the shared
+  static method with item-scaled amounts (`FieldProps.* *
+  BactaSettings.fieldItemPotency`), same guarded law (skip
+  `Hediff_MissingPart`, skip anything on `ConsciousnessSource`) as the tank's
+  own call site in `CompBactaImmersion.TryHealPawn`. The static `tmpHediffs`
+  scratch list is shared between both call sites but not reentrant (RimWorld
+  is single-threaded, no nested calls), so no aliasing risk.
+- **Medical droid multiplier consistency across all three healing paths**:
+  `CompBactaImmersion.DroidAssisting` reads the facility link and multiplies
+  the TANK's own wound/scar/immunity rates only — by design, not oversight:
+  the droid is a `CompFacility` linked to the tank specifically
+  (`RSW_BactaTank.xml`'s `CompProperties_AffectedByFacilities`), field items
+  have no facility link to read and are a self-contained burst dose, and
+  revival goes through the same tank/`CompBactaImmersion` loop once the pawn
+  is alive, so it inherits the droid bonus automatically post-revival with no
+  separate wiring needed. All three paths correctly obey the same two laws
+  (never regrow, never touch the brain) via the one shared
+  `ApplyHealingDose`; only the *rate* differs by path, which is the intended
+  shape, not an inconsistency.
+- Cross-checked `RSW_Bacta_RecipeWiring.xml`'s `[@Name="AnimalThingBase"]`
+  xpath fix (BACTA_SIDE_ITEMS_1's own noted catch) against the decompiled
+  `Races_Animal_Base.xml` — confirmed correct, not re-broken.
+- XML well-formedness: all 9 touched/new XML files parse clean
+  (`xml.etree.ElementTree`). `.csproj` wiring: both new files
+  (`BactaHealingUtility.cs`, `CompUseEffect_BactaHeal.cs`, plus the revival
+  item's `WorkGiver_CarryCorpseToBactaTank.cs`/
+  `JobDriver_CarryCorpseToBactaTank.cs`) are all explicitly in
+  `<Compile Include>` — no dead-compile trap.
+
+**No bugs found.** All 18 DIRTY files marked CLEAN, commit `3cd8b692f`,
+pushed. **This closes the `src/RimStarWars/Bacta/*` cluster in full (22/22
+reviewable files CLEAN — 18 this wave, 4 already clean).**
+
+Re-derived the final count after this cluster:
+`code_review_status.py list | grep '^DIRTY'` filtered non-`.png` — **20
+non-PNG DIRTY files remain** (38 minus this wave's 18). Next wave: no
+standing named cluster; re-derive fresh from that command rather than
+trusting this arithmetic, same standing instruction as every prior wave.
