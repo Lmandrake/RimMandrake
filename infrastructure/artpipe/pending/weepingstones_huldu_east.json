@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T20:58:47Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "weepingstones_huldu_east",
+  "priority": 150,
+  "prompt": "A forearm-length velvet-skinned swimmer with a dorsal comb folded flat like wet fur, warm-bodied, clings to a handler's forearm when lifted. Soft mammalian-adjacent silhouette, not scaled. RimWorld top-down animal sprite style.",
+  "reference": null,
+  "rimflow_item_id": "STOCKED_POOL_BUILD_1",
+  "style_notes": "painterly RimWorld animal art, velvet-fur-like skin texture, folded-flat dorsal comb, warm affectionate posture"
+}

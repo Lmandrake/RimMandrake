@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T20:58:47Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "weepingstones_murrin_east",
+  "priority": 150,
+  "prompt": "A hand-length pool fish, deep-keeled body, one tall dorsal comb-fin that breaks the surface in rings. Gentle, unremarkable silver-brown scales, small round eye. RimWorld top-down animal sprite style, desert-oasis pool creature, the comb-fin is the read silhouette.",
+  "reference": null,
+  "rimflow_item_id": "STOCKED_POOL_BUILD_1",
+  "style_notes": "painterly RimWorld animal art, muted desert-pool palette, comb-fin silhouette must read clearly at small size"
+}
