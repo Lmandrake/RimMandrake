@@ -2689,3 +2689,64 @@ Re-derived the final count after this cluster:
 non-PNG DIRTY files remain** (38 minus this wave's 18). Next wave: no
 standing named cluster; re-derive fresh from that command rather than
 trusting this arithmetic, same standing instruction as every prior wave.
+
+## Wave 42 — 2026-09-24
+
+Re-derived fresh: the DIRTY non-PNG count had grown to **29** (not 20 — files
+keep re-dirtying between waves from other agents' commits, expected). No
+5+-file cluster existed in one directory; picked two small same-mod trios
+instead, both confirmed `git status --porcelain` clean (no concurrent build
+agent in flight) and both away from the live `JAWA_MESS_IMMUNITY_1` build
+agent's work (traced its likely touch surface — Jawa xenotype/gene defs under
+`RimStarWars/StarWarsRaces` and `RimUtinni/PawnFlavor` — and picked clusters
+with zero overlap):
+
+- **`EnvironmentalHazards` trio** — `BiomeGlowPatches.cs` (+44/-2: two new
+  Harmony patches for `VENOMVINE_FORTRESS_PASSABILITY_1`, wiring
+  `RM_BodySizeBarrierPatches.CreateRequest_Prefix`/
+  `GetPawnCellBaseCostOverride_Postfix` via the existing generic `Apply`
+  helper with a new `asPrefix` param, default `false`, backward compatible);
+  `RM_EnvironmentalHazards.csproj` (+16: 6 new `<Compile Include>` for the
+  contact-venom/body-size-barrier files — confirmed all 6 exist on disk, no
+  dead-compile trap — plus a new `Unity.Collections` engine reference,
+  ships with the game); `RM_EnvironmentalHazardsMod.cs` (+93/-1: new
+  `bodySizeBarrierEnabled`/`bodySizeBarrierThreadCostMultiplier` mod-setting
+  pair, full checkbox+slider+ExposeData+doc-comment wiring, and the fixed
+  scroll-view height correctly raised 3400f→3880f per its own "raise this or
+  the block is invisible" instruction). Cross-read `RM_BodySizeBarrierPatches.cs`
+  and confirmed its two hook methods (already CLEAN from an earlier wave, not
+  re-reviewed) are what's being wired in. **Found and fixed one stale
+  comment**: the settings-window header said "35 checkboxes... three labeled
+  sliders" — actually 36/6 (grepped `CheckboxLabeled`/`list.Slider(` counts);
+  stale from before this wave already. No behavioural bugs.
+- **`Pyrelands` trio** — `Pyrelands.xml`, `FireEcologyHook.cs`,
+  `WildPlantAllowlist.cs`, all three a clean, consistent
+  `RM_FE_Pyrelands` → `RM_Pyrelands` rename (`PYRELANDS_DEFNAME_RENAME_1`,
+  closed 2026-09-21). Verified zero remaining `RM_FE_Pyrelands` in `src/`
+  (criterion met) and that the plant defNames (`RM_FE_Plant_*`) were
+  correctly left alone — only the biome defName was in scope for that
+  rename. **Found and fixed one stale reference outside my DIRTY set**:
+  `design/validation_walks/RimMandrake/Pyrelands.md` — a live north-star
+  validation walk — still cited the dead `RM_FE_Pyrelands` defName 7 times in
+  its `## must be true`/`## the walk` prose (a walk step literally instructs
+  generating "a fresh RM_FE_Pyrelands map", which no longer resolves).
+  Corrected all 7 to `RM_Pyrelands`; left the hashed `## north star` section
+  (state: VALIDATED, `validated-hash: 90a286aa...`) untouched per the
+  standing rule that touching it reverts validation — none of the 7 were
+  inside it anyway.
+
+Both fixes (the stale checkbox-count comment and the stale walk-defName
+references) committed together at `4a023191b`, pushed, before marking any
+file clean. All 6 files marked CLEAN, commit `ee027a88d`, pushed.
+
+Re-derived the final count: **23 non-PNG DIRTY files remain** (29 minus this
+wave's 6). Next wave: no standing named cluster — re-derive fresh via
+`code_review_status.py list | grep '^DIRTY'` filtered non-`.png`, same
+standing instruction as every prior wave. Two other small same-clean-mark-sha
+trios are visible in that list and worth checking for cluster continuity:
+`RimStarWars/StarWarsRaces` (`SW_Genes.xml`, `RimMandrakePawnKinds.xml`,
+`RimMandrakeXenotypes.xml`, all at clean-mark `7e8587cea`) and
+`RimStarWars/SWBestiary` (4 files) — but the StarWarsRaces one is exactly the
+Jawa gene/xenotype territory this wave routed around for
+`JAWA_MESS_IMMUNITY_1`; re-check `git status --porcelain` on it before
+touching, it may still be live.
