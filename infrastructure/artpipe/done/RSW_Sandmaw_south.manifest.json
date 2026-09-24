@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 105.38688955898397,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 105.38688955898397,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RSW_Sandmaw_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 30.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T19-50-23-01a0d152-3ef4-7d32-8521-52947dea48f0.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 24.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T19-44-55-01a0d14d-3d8f-77e1-8eac-0dfc68888b37.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RSW_Sandmaw_south",
+    "note": "Generated with built-in imagegen and resized to exactly 512x512 while preserving transparent alpha. First resize utility was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RSW_Sandmaw_south\\RSW_Sandmaw_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_Sandmaw_south/RSW_Sandmaw_south.png\n    512x512  rgba  407,146 bytes  (104s)\n"
+}

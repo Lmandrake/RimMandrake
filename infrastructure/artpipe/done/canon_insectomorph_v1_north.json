@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-23T21:44:30Z",
+  "drawsize": 4.0,
+  "facing": "north",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_insectomorph_v1_north",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Insectomorph of Malastare (owner-library reference: current-canon infobox render). A low-slung, spider/mantis-like arthropod body carried on four long, jointed, skeletal-looking legs ending in multi-toed pads. Legs are TAN/GOLD with dark brown horizontal banding stripes, bone-white/gray leg segment undertone. Hind legs markedly longer and more muscular than the front legs, in a reared, leaping-insect stance. A small, blunt head held low and forward between the front legs, a wide toothy mouth, one glowing RED eye. No wings, no shiny chitinous beetle-like segmentation \u2014 reads as a bony/skeletal arthropod. Reads as a sturdy, rideable cavalry mount. Single creature, centered, standing/reared pose, no saddle or rider, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": "Canon library entry design/RimStarWars/canon_references/insectomorph/description.md, ruling empty (canon stands unopposed) -- current-canon + Legends text and all three candidate images agree closely. Corrects the existing ArtOverride's gray-hide/greenish-yellow-stripe reading to tan/gold legs with dark brown banding and a bony skeletal-arthropod silhouette."
+}

@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 2.480974189005792,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 4.716483951953705,
+  "id": "desertportb_kraytdragon_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T21-13-30-01a0d19e-56be-7db3-bf98-fc380d34e924.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/23/rollout-2026-09-23T21-13-25-01a0d19e-431e-76d0-8c93-36c7ab90bbf3.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_kraytdragon_east\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d19e-56be-7db3-bf98-fc380d34e924\n--------\nuser\nUse $imagegen to [artpipe job desertportb_kraytdragon_east] RimWorld creature sprite, painterly vanilla-RimWorld animal art style: the Star Wars canon krayt dragon -- Krayt dragons are large, carnivorous reptiles from Tatooine, a desert planet in the galaxy's Outer Rim Territories. They come in two native subspecies and, despite their fierceness, are hunted for the valuable skulls. Single creature, centered, standing pose appropriate to its anatomy, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 1024x1024 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Facing: east \u2014 strict side profile with the camera at the creature's own eye level, the creature's head points to the RIGHT edge of the image. NOT a top-down or overhead view: we do not look down on its back, and only the near side of the body is visible.\n\nThen copy the generated image into the current working directory as desertportb_kraytdragon_east.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\n\n",
+  "worker_stdout_tail": ""
+}

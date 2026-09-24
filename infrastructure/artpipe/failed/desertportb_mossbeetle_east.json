@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-21T08:18:43Z",
+  "drawsize": 1.2,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "desertportb_mossbeetle_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: RSW_MossBeetle (\"moss beetle\") -- A large beetle, commonly found in dark, damp places. It feeds off low underbrush and while not the best source of meat, it works when little else is available. Insectoid flesh, gray chitin exoskeleton, mandibles. Single creature, centered, standing pose appropriate to its anatomy, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

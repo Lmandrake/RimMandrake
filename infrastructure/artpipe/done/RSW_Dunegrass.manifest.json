@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 86.58845427096821,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 86.58845427096821,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RSW_Dunegrass",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 8.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T19-28-50-01a0d13e-85a1-7572-890d-3e7f5f3cab4d.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 2.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T19-23-02-01a0d139-34eb-7c21-8d6d-22ccdc6508bb.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 31.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RSW_Dunegrass",
+    "note": "Generated via built-in imagegen and resized to exactly 256x256; retry was required after a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RSW_Dunegrass\\RSW_Dunegrass.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_Dunegrass/RSW_Dunegrass.png\n    256x256  rgba  45,995 bytes  (85s)\n"
+}

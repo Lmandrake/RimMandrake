@@ -1,0 +1,51 @@
+{
+  "attempt_elapsed_s": 121.15248145197984,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 121.15248145197984,
+  "height": 1254,
+  "id": "RSW_Voltmaw_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T20-20-21-01a0d16d-aeda-75e0-aa73-26080aa9cf4d.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 40.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 52.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T20-14-19-01a0d168-2a2c-7841-9765-90eb0d48e01a.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 39.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "returned 1254x1254, job asked for 1024x1024 \u2014 the image tool is known to ignore requested size; never a silent ok, reference or not",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "width": 1254,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "RSW_Voltmaw_east",
+    "note": "The built-in image generator returned no image artifact on either permitted attempt, so no PNG could be copied or verified.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "size_mismatch",
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-615fa486-089f-4731-8279-4d85e90ca83d.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_Voltmaw_east/RSW_Voltmaw_east.png\n    1254x1254  rgba  1,232,011 bytes  (118s)\n"
+}

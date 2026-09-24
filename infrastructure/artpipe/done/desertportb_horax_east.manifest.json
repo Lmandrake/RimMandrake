@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 135.87496462999843,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 135.87496462999843,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "desertportb_horax_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 48.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T10-11-52-01a0cf40-9a5d-74f3-bfc1-d2087b2dd891.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 7.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 43.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T10-03-50-01a0cf39-3df8-7e90-b4d6-af88d549f541.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 7.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "desertportb_horax_east",
+    "note": "Generated with built-in imagegen; proportionally resized from 1254px to the required 1024px while preserving RGBA transparency.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_horax_east\\desertportb_horax_east.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_horax_east/desertportb_horax_east.png\n    1024x1024  rgba  1,018,016 bytes  (135s)\n"
+}

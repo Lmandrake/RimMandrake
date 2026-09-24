@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 166.01901278301375,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 166.01901278301375,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "desertportb_falumpaset_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 19.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T09-37-06-01a0cf20-c405-7ec1-b960-4ca57d1da242.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 3.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 12.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T09-30-21-01a0cf1a-9593-7c11-859e-581c067139a2.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 2.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "desertportb_falumpaset_south",
+    "note": "Generated with built-in imagegen and resized to the required 512x512 canvas while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_falumpaset_south\\desertportb_falumpaset_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_falumpaset_south/desertportb_falumpaset_south.png\n    512x512  rgba  338,739 bytes  (165s)\n"
+}

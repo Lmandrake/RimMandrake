@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-23T21:44:30Z",
+  "drawsize": 4.0,
+  "facing": "north",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_shiro_v1_north",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Shiro (owner-ruled reference: shiros_group_legends.jpg, a group of Shiros in a muddy Naboo swamp). A hard, ridged/spiny dome shell covering most of the back, duller mud-toned brown-green shell coloring (per the ruled Legends group-shot reference), stubby retractable head, legs and tail (turtle-like withdrawal into the shell), turtle-like rounded proportions overall -- not smooth or unarmoured. Reads as a placid, armored swamp-dwelling reptile. Single creature, centered, standing pose with head and legs extended, no ground shadow, no background scenery, no mud-splatter effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": "Canon library entry design/RimStarWars/canon_references/shiro/description.md, RULED (owner 2026-09-14): shiros_group_legends.jpg. Owner also noted Shiro-Trap (a mud/plant-camouflaged Shiro) could be its own creature -- out of scope for this pass, flagged on the sheet, not built."
+}

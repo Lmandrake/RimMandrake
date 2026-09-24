@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 94.89212056901306,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 94.89212056901306,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RSW_Dunestalker_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 14.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T19-34-00-01a0d143-3f32-79c2-be1e-d2521e049139.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 33.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 8.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T19-28-50-01a0d13e-85a1-7572-890d-3e7f5f3cab4d.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RSW_Dunestalker_south",
+    "note": "Generated with built-in imagegen, copied to the requested workspace path, resized to exactly 512\u00d7512, and verified as 32-bit PNG with transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RSW_Dunestalker_south\\RSW_Dunestalker_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_Dunestalker_south/RSW_Dunestalker_south.png\n    512x512  rgba  292,702 bytes  (93s)\n"
+}

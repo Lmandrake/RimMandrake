@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 151.72434594400693,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 151.72434594400693,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desertportb_kowakianmonkeylizard_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 63.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T10-31-57-01a0cf52-fb5a-7e21-a935-e8b0ae1450b8.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 10.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T10-24-26-01a0cf4c-1b9e-7962-8b9b-163f62b0ccb6.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 9.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desertportb_kowakianmonkeylizard_south",
+    "note": "Generated with built-in imagegen from the supplied south-facing RimWorld sprite prompt; resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_kowakianmonkeylizard_south\\desertportb_kowakianmonkeylizard_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_kowakianmonkeylizard_south/desertportb_kowakianmonkeylizard_south.png\n    256x256  rgba  59,506 bytes  (151s)\n"
+}

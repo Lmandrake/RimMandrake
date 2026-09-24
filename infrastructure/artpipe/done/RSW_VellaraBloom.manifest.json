@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 113.94665878999513,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 113.94665878999513,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RSW_VellaraBloom",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 56.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T20-18-25-01a0d16b-ea17-7310-a6f6-7c9bba32f508.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 40.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 51.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T20-12-06-01a0d166-1f49-7361-80d9-d0960b0463b2.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 39.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RSW_VellaraBloom",
+    "note": "Generated via built-in imagegen; resized to exactly 256\u00d7256 with transparent padding. Retried resizing after the preferred image utility was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RSW_VellaraBloom\\RSW_VellaraBloom.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_VellaraBloom/RSW_VellaraBloom.png\n    256x256  rgba  114,646 bytes  (112s)\n"
+}

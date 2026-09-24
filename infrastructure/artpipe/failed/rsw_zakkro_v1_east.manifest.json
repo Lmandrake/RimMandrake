@@ -1,0 +1,9 @@
+{
+  "channel": "codex",
+  "cost_usd": 0.0,
+  "id": "rsw_zakkro_v1_east",
+  "note": "/mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/active/rsw_zakkro_v1_east.json: this job declares facing 'east', so the daemon stamps an explicit per-facing view direction onto it \u2014 but the prompt body contradicts that stamp: 'top-down' asks for an overhead camera, which the owner ruled is never a facing. Say the SURFACE, never the camera or the set: 'rear view, seen from behind, no face or eyes visible' / 'front view, eyes toward the viewer' / 'side profile at the creature's own eye level'. If this asset really wants an overhead view, drop the 'facing' key instead.",
+  "status": "failed",
+  "validator": "not_run",
+  "worker_status": "bad_job_file"
+}
