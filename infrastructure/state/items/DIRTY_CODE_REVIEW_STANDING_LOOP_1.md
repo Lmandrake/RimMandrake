@@ -728,3 +728,68 @@ Next wave: 17 `CreatureBehaviors` never-entered files remain (20 minus this
 wave's 3) — re-derive rather than trust this count. The 284-row re-dirtied
 backlog is now diagnosed (see above) but untouched for actual re-review;
 the binary-art-tracking scope question above is still open.
+
+## Wave 16 — 2026-09-24
+
+Re-derived the `CreatureBehaviors` never-entered list fresh: `<Compile
+Include>` entries in `RM_CreatureBehaviors.csproj` (75) minus every basename
+recorded in `CODE_REVIEW_STATUS.json` in any state, CLEAN or DIRTY (58 — 56
+CLEAN + 2 re-dirtied: `RM_CreatureBehaviorsMod.cs`, `RM_JobDefOf.cs`, both
+already flagged in the 284-row backlog, not touched this wave) gave exactly
+17, matching wave 15's count.
+
+Reviewed 5 of those 17, full-file each, one coherent cluster — the shade-grid
+keystone's remaining consumers (`RM_MapComponent_ShadeGrid.cs` itself was
+still never-entered despite being the keystone three other files already
+reference): `RM_MapComponent_ShadeGrid.cs` (151 lines, the per-cell shade
+scan — `DESERT_SHADE_GRID_KEYSTONE_1`), `RM_HediffCompProperties_
+ShadeDrivenSeverity.cs` (23) + `RM_HediffComp_ShadeDrivenSeverity.cs` (50,
+the burst-predator's shade-driven severity decay), and
+`RM_HediffCompProperties_ShadeStagger.cs` (64) + `RM_HediffComp_
+ShadeStagger.cs` (237, `DESERT_STAGGERSEED_BUILD_1`'s stagger-toward-shade-
+then-germinate life cycle).
+
+Traced `ShadeGrid.Recompute`/`ComputeShadeAt`/`CastsShade` (roofed cells
+return 1f directly; otherwise a radius-2 falloff score against the nearest
+Building/Plant thing clearing its own fill-percent/visual-size threshold);
+`ShadeDrivenSeverity.SeverityChangePerDay`'s `Mathf.Lerp` between the two
+Props rates gated on both `shadeGridEnabled` and `heatDrivenBurstEnabled`;
+and `ShadeStagger`'s two halves in full — the `CompPostTickInterval` steer
+loop (`FindShadeCell`'s strict-improvement-only update over
+`GenRadial.RadialCellsAround`, confirmed it converges on the best-shaded
+reachable cell within `staggerRadius` with the nearest cell winning ties,
+since only a strictly greater shade value triggers an update) and the
+`Notify_PawnDied` germinate step (confirmed against the engine's own `Pawn.
+Kill` phase ordering already cited in the file's header comment — the corpse
+is spawned and positioned before `Notify_PawnDied` fires, so reading
+`base.Pawn?.Corpse` is safe and `Pawn.Position`/`Pawn.Map` correctly aren't
+touched). Cross-checked every `RM_CreatureBehaviorsSettings.*` field these
+five files read (`shadeGridEnabled`, `heatDrivenBurstEnabled`,
+`heatDrivenBurstDecayMultiplier`, `shadeStaggerEnabled`,
+`shadeStaggerGerminationMultiplier`) against `RM_CreatureBehaviorsMod.cs`'s
+actual static fields and Scribe/settings-UI wiring — all five exist and are
+wired, confirming these files compile against real settings despite that mod
+file itself sitting DIRTY in the 284-row backlog. Also confirmed the
+`pawn.jobs.StartJob(job, JobCondition.InterruptForced, resumeCurJobAfterwards:
+false, cancelBusyStances: true)` call and the `pawn.IsHashIntervalTick(n,
+delta)` two-arg interval pattern both match the exact idiom four other
+already-CLEAN files in this assembly use, so neither is a one-off risk.
+
+No bugs found in any of the 5; no fixes needed this wave. All 5 confirmed
+reachable via `RM_CreatureBehaviors.csproj`'s `<Compile Include>`. All 5
+marked CLEAN, commit pending below, pushed.
+
+Next wave: 12 `CreatureBehaviors` never-entered files remain (17 minus this
+wave's 5) — re-derive rather than trust this count. Candidates visible in
+this pass's diff: `RM_CompProperties_DungSeeder.cs`,
+`RM_CompProperties_PlantAlarm.cs`, `RM_HediffDef_Grapple.cs`,
+`RM_Hediff_Drained.cs`, `RM_HydrocarbonBloodExtension.cs`,
+`RM_JobGiver_FilterFeedTerrain.cs`, `RM_JobGiver_WanderInShadeGrid.cs` (the
+shade grid's third consumer — natural next pick, same cluster as this
+wave), `RM_MapComponent_ProximitySoundscape.cs`,
+`RM_ProximitySoundscapeExtension.cs`, `RM_ShadeSeekingWanderExtension.cs`,
+`RM_WoundLinkExtension.cs`, `RUT_Plant_FalseFruit.cs`. The 284-row
+re-dirtied backlog (including this assembly's own
+`RM_CreatureBehaviorsMod.cs` and `RM_JobDefOf.cs`) is still untouched for
+actual re-review; the binary-art-tracking scope question from wave 15 is
+still open.
