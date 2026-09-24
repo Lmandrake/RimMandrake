@@ -312,8 +312,8 @@ Read aloud: qattora, qetta, saqqat, luttaq, uttaqar.
    shiro-trap (as `NONCANON*`), war wyrm and feral grazer (as `UNCERTAIN`). All three are Legends
    creatures whose Wookieepedia text our descriptions paraphrase (quoted in the settled list
    above). Corrected in that file's Appendix A/B in this commit; nothing else there changes.
-   Two batch-3 `UNCERTAIN` rows remain: `Vapaad` (probably the Legends *Vaapad*, misspelt),
-   `TetnissCrab`.
+   The two batch-3 `UNCERTAIN` rows (`Vapaad`, `TetnissCrab`) were measured canon by batch 5
+   on 2026-09-24 (*Vaapad/Legends*; *Tet'niss*, a trash crab).
 6. **Two stale roster rows:** `AA_Dunealisk` in `dune_sea_deep_desert.json` names a def the
    owner retired with the `-lisk` clade (`7bad94185`); `RSW_ShaleGorger` in `the_scarlands.json`
    is a sea beast (the opee's benthic morph) rostered on dry land. Neither is drafted; both are
