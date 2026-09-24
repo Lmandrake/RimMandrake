@@ -16,6 +16,8 @@ The point is the shape of a lost battle. Without bacta, a bad raid costs colonis
 
 Bacta itself cannot be made. It is bought from exotic and outlander traders, or taken off someone who had some. The tank drinks it while it works, and stops when the tank runs dry.
 
+Off by default, in Mod Settings: revival of the recently dead. A fresh corpse of ours, retrieved within a tunable window of a few hours, can be carried into an empty tank and revived — minus whatever bacta can't fix. No missing part regrows, and the brain and mind are untouched either way.
+
 No Harmony patches: the tank is a Building_Enterable with our own ThingComps, so nothing in the base game is rewritten.</description>
   <modDependencies>
     <li>

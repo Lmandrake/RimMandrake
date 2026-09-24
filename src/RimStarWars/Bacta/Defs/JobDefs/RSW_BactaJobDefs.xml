@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BACTA_REVIVAL_MECHANIC_1. One JobDef: carrying a fresh corpse to a bacta tank.
+  Shape copied from RM_JobDefs.xml (src/RimMandrake/TitanicCreatures) — the minimal schema
+  this codebase's other custom JobDefs already use.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RSW_CarryCorpseToBactaTank</defName>
+    <driverClass>RimMandrake.StarWars.Bacta.JobDriver_CarryCorpseToBactaTank</driverClass>
+    <reportString>carrying TargetA to the bacta tank.</reportString>
+  </JobDef>
+
+</Defs>

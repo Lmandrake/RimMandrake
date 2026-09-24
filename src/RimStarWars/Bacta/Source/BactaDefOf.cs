@@ -12,6 +12,8 @@ namespace RimMandrake.StarWars.Bacta
 
         public static ResearchProjectDef RSW_BactaImmersion;
 
+        public static JobDef RSW_CarryCorpseToBactaTank;
+
         static BactaDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(BactaDefOf));

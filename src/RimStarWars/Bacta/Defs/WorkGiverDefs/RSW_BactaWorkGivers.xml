@@ -25,4 +25,23 @@
     <canBeDoneByMechs>false</canBeDoneByMechs>
   </WorkGiverDef>
 
+  <!--
+    BACTA_REVIVAL_MECHANIC_1. Scans corpses directly (WorkGiver_HaulCorpses' shape), rather
+    than scanning the building — a corpse can't select a tank for itself the way a walking
+    pawn selects one via the tank's own gizmo.
+  -->
+  <WorkGiverDef>
+    <defName>RSW_CarryCorpseToBactaTank</defName>
+    <label>carry corpse to bacta tank</label>
+    <giverClass>RimMandrake.StarWars.Bacta.WorkGiver_CarryCorpseToBactaTank</giverClass>
+    <workType>Hauling</workType>
+    <verb>carry</verb>
+    <gerund>carrying to bacta tank</gerund>
+    <priorityInType>92</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <canBeDoneByMechs>false</canBeDoneByMechs>
+  </WorkGiverDef>
+
 </Defs>
