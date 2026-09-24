@@ -284,6 +284,16 @@ wind sing), the wampa (stores prey, does not eat it fresh).
   with light; that knob is barred here — §6: thermal sensing only, nothing
   native sees. Ward with cold, never with lamps.
 
+7. **The ice forms (owner, 2026-09-24 — hoarfrost, not rime).** A family of
+   authored ice-shape scatter features modelled on real-world **hoarfrost** —
+   crystal gardens, frost flowers, depth-hoar columns, feathery blade growth —
+   the forms only perfectly still air can build, which is exactly what the
+   interior is (§6: no wind). So they live across the whole plateau, kin to
+   the "chemical frosts ambiguously alive" (roster consequences; authored as
+   terrain features, never plants). Real hoarfrost reference photography is
+   the art target. The margins keep only the sheet's existing rime-fall
+   weather term; rime is not the sculpture family.
+
 ## 5. Always true
 
 - **The sky is bright and cold** — starlight and aurora; no warm light exists but yours.
