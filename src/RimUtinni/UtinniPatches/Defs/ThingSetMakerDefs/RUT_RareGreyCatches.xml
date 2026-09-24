@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SEA_FLOOR_AND_CATCH_PASS_1 — the Grey Sea's rare-catch pool, per
+  design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md's rare-catch
+  table. Parented on vanilla's own RareFishingCatchesBase, same shape as
+  RUT_RareScaldCatches/RUT_RareTwilightCatches. No corpse option — the Grey
+  has no predator that would leave one and the Grey's dead do not rot
+  (ban 5, the_grey_deep.md).
+
+  Three options: weight 4 RUT_SaltCameo x1 ("a small creature jacketed in
+  pillar-mineral, the statuary made portable"); weight 2 RUT_Hessal x4-6
+  ("a bed of the sealed came up whole"); weight 1 Silver x5-15 ("somebody's
+  ring, still in its jacket, chiselled out on the shore").
+-->
+<Defs>
+
+  <ThingSetMakerDef ParentName="RareFishingCatchesBase">
+    <defName>RUT_RareGreyCatches</defName>
+    <root Class="ThingSetMaker_RandomOption">
+      <options>
+        <li>
+          <weight>4</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RUT_SaltCameo</li>
+                </thingDefs>
+              </filter>
+              <countRange>1~1</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <weight>2</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RUT_Hessal</li>
+                </thingDefs>
+              </filter>
+              <countRange>4~6</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <weight>1</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>Silver</li>
+                </thingDefs>
+              </filter>
+              <countRange>5~15</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+
+</Defs>

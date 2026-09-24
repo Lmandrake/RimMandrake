@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SEA_FLOOR_AND_CATCH_PASS_1 — the Propane Lake's catch table, per the
+  owner's 2026-09-24 brief ("Propane lake has some documented crystalline
+  life already mentioned... flesh all of these out") and
+  design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md. Seven catches,
+  all new: 1 fish, 1 eel, 1 crustacean, 1 shellfish, 1 floater, 2 alien.
+
+  Nothing here is a water fish — every entry is crystalline life pulled from
+  the fuel, half organic and half frozen hydrocarbon lattice. Common to all
+  seven: Flammability 1.0 (every catch is fuel), preferability RawBad (the
+  FishBase default — no override needed), FoodPoisonChanceFixedHuman 0.08
+  raw (cooking removes it, vanilla's own convention), and a description that
+  says it burns. 🔴 None of it is kyber (ban 2) — no def here carries any
+  lightsaber-adjacent property, and the rare table's def comment restates
+  this explicitly.
+
+  This table does not bind until RUT_PropaneShallow (sibling TerrainDef,
+  TerrainDefs/RUT_PropaneShallow.xml) exists and RUT_PropaneLake.xml's
+  RM_SeaShoreExtension points its shallowTerrain there with providesCatch
+  true — the donor AB_PropaneLake/AB_SolidPropane pair is waterBodyType
+  None / a non-water solid, so no fishing zone can ever form on it as
+  shipped (engine read, MEASURED against RimSage 2026-09-23, doc's own
+  Propane Lake section).
+
+  Placeholder art: no icon exists for any of these seven (or the prize) in
+  infrastructure/artpipe/done/ or _artsrc/ (MEASURED 2026-09-23, sanity
+  probe Cindermite 15 hits, every fish name 0 hits) — every texPath below
+  reuses a non-fish sprite already physically present in this mod's own
+  Textures/, distinct within this table. Real icons are OWED art work.
+-->
+<Defs>
+
+  <!-- fessu — fish, common (1.2). "the flake." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Fessu</defName>
+    <label>fessu</label>
+    <description>A hand-wide, paper-thin fish-thing that is more crystal than flesh: a translucent lattice of frozen hydrocarbon grown around a thread of something alive, flat as a snowflake, drifting edge-on through the fuel where the snow falls thickest. It feeds by growing — each night's fall adds a rim to it, and an old fessu is a plate. Landed it steams in the cold, and it is so light it can be held up to the aurora and read through. Cooked it is a thin bitter wafer that burns blue if you leave it in the pan.</description>
+    <graphicData>
+      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>6</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- krellik — crustacean, common (1.0). "rime-crab." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Krellik</defName>
+    <label>krellik</label>
+    <description>A crab-thing plated in hydrocarbon frost, each plate a clear crystal grown from the fuel snow and shed and regrown nightly, so a krellik is always half new. It walks the solid propane at the lake's edge and the floor beneath, picking at the crystal flora's fallen fragments, and it is the one thing on the shore the Frostmite will not eat — the shell is too cold even for that. Cracked, the plates ring like glass. The meat inside is dense and oily and takes fire the moment it dries.</description>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantC</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- oddu — shellfish, common (0.8). "the sac." Kin to the rime nodule; the
+       shore's euphoric. Floor pairing note (doc): sessile. Optional
+       drazz-precedent hediff reuse NOT wired here — no donor hediff def was
+       confirmed at build time; omitted per the same "omit, don't invent"
+       rule the Scald's rare table already uses. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Oddu</defName>
+    <label>oddu</label>
+    <description>Kin to the rime nodule and the reason anyone fishes this shore: a fist-sized shell-thing that sits in the fuel and does what the nodule does on land — draws propane out of its surroundings into a sac of clear jelly that is, eaten, a very mild euphoric. The shell is frost-white and closes when the aurora fades. Raised from the lake it is cold enough to burn, and the scrapers of the Flats carry them home in mittens to eat by the tap-wire, which is as close to a good evening as the nightside offers.</description>
+    <graphicData>
+      <texPath>Things/Plant/JadePlant/JadePlantC</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>9</MarketValue>
+      <Mass>0.7</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- oovu — floater (jellyfish-analog), common (0.6). "frost-bell." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Oovu</defName>
+    <label>oovu</label>
+    <description>A bell of frozen hydrocarbon jelly that rides at the surface of the fuel where the snow lands, catching it — a floating cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing. Netted it is a bell of propane with a frost crust, and the shore-folk keep them for the lamp, not the pot: an oovu on a wire burns steadily for an hour.</description>
+    <graphicData>
+      <texPath>Things/Plant/AloeVera/AloeVeraA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>3</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- iliss — eel, uncommon (1.0). "wire-eel." Optional drazz-precedent
+       hediff reuse (RAW shock, same as RUT_Drazz) NOT wired here for the
+       same reason as oddu's — omitted, not invented, pending confirmation
+       of the exact hediff def at build time. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Iliss</defName>
+    <label>iliss</label>
+    <description>A wire-thin eel the length of a forearm, black, with a spine of conductive mineral that the auroral ground currents run through — it lives along the bed of the lake where the electrojet's currents cross, and on a reconnection night the whole floor of a bay hums with them. It hunts nothing; it feeds on the charge, or on what the charge kills. Landed on a wet line it bites with a shock that has knocked scrapers down. Cooked, it is a good oily eel. Raw, it is still live in a sense that matters.</description>
+    <graphicData>
+      <texPath>Things/Plant/Schlumbergera/SchlumbergeraC</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>7</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- tarnn — alien, uncommon (0.6). "the lattice." A colony, half frozen
+       hydrocarbon and half something alive threaded through it. 🔴 Not
+       kyber — see the def comment on RUT_RarePropaneCatches for the
+       standing ban-2 statement. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Tarnn</defName>
+    <label>tarnn</label>
+    <description>A colony, not a creature — or a creature that grew like a colony. A branching lattice of clear crystal the size of a bucket, half of it frozen hydrocarbon and half of it something alive threaded through the crystal, growing a hand's width every night from the fuel snow and fracturing back when the aurora is weak. It is the sea's version of the crystal flora on the shore, and nobody has decided which side of the line it stands on. A net brings up a piece of it. The piece keeps growing on the shore for a day, then stops. Chipped and boiled it is bitter and it is barely food; dried it is the best kindling on the nightside.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaC</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.08</Nutrition>
+      <MarketValue>8</MarketValue>
+      <Mass>0.8</Mass>
+      <Beauty>2</Beauty>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>6</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- zhiil — alien, uncommon (0.4). "wake-fry." The young of the V-wake
+       exotic — the catch is the young, the owed V-wake adult PawnKindDef
+       is the floor pairing, per the owner's life-stage carve-out. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Zhiil</defName>
+    <label>zhiil</label>
+    <description>The young of the thing that makes the V-wake. Hand-long, black, ridged, a body built of the same propane-native chemistry as its parent and already agitated by anything that moves in the fuel — a zhiil in a net thrashes until it freezes solid, and then it is a spiny black icicle that thaws back to thrashing on the fire. Scrapers who have fished up a zhiil pull the line and leave, because the parent is a thing that attacks pipe on sight and has a fairly clear idea of where its young went.</description>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantC</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RUT_AuroraGlass — the Propane Lake's rare-table headline prize.
+       ExoticMisc, same ResourceBase shape as RUT_SeepStone/RUT_SaltCameo.
+       🔴 Not kyber, carries no lightsaber property, never will (ban 2). -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_AuroraGlass</defName>
+    <label>aurora glass</label>
+    <description>A fist of clear hydrocarbon-mineral crystal grown in the lake bed over a very long time, aurora-green when held up and lit from behind — not kyber, and not warm, and not anything a blade could be built from; the resemblance is entirely visual and every dealer on the shore says so before you ask. It is worth having anyway. Frostmites will not touch it and the cold never leaves it, even indoors.</description>
+    <graphicData>
+      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>30</MarketValue>
+      <Mass>0.15</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>4</Beauty>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>25</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

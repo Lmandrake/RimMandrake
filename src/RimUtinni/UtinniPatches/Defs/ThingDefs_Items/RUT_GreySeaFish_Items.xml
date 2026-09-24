@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SEA_FLOOR_AND_CATCH_PASS_1 — the Grey Sea's catch table, per the owner's
+  2026-09-24 brief ("Grey sea should be timorous, sickly, extremophile, or
+  alien saline creatures often with crusty bits and shell") and
+  design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md. Seven catches,
+  all new: 2 fish, 1 eel, 1 crustacean, 1 shellfish, 2 alien. No shoal
+  register and no swarm pairing — the_grey_deep.md ban 4 (no glow) and the
+  Grey Deep roster note ("schools and swarms stay out of the Grey") both
+  hold; every entry here is a solitary. No corpse option anywhere in this
+  mod's rare table either (the Grey's dead do not rot — ban 5).
+
+  Register stat envelopes per the design doc's §0 table (crustacean .20/7/
+  .6/3d; shoal/fish .25/6.5/.5/2d; shellfish .15/5/.7/5d; jellyfish .08/4/
+  .3/1d + raw poison .05); several rows deliberately sit off the register
+  where the doc's own "Stats:" line says so (sallik's crust-heavy 0.15
+  nutrition, immu's reduced mass, haarn's alien envelope) — never invented,
+  always the doc's own numbers.
+
+  Placeholder art: no icon exists for any of these seven in
+  infrastructure/artpipe/done/ or _artsrc/ (MEASURED 2026-09-23, doc §"art"
+  line — sanity probe Cindermite 15 hits, every fish name 0 hits), so every
+  texPath below reuses a non-fish sprite already physically present in this
+  mod's own Textures/, following the SandSwimmer/niim convention, distinct
+  within this table. Real icons are OWED art work, not done here.
+-->
+<Defs>
+
+  <!-- sallik — crustacean, common (1.2). "salt-hermit." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Sallik</defName>
+    <label>sallik</label>
+    <description>A thumb-sized crab-thing that never grew a shell of its own: it excretes the salt it cannot keep out and wears the crust, layer on layer, until it is a walking lump of the sea's own mineral with legs underneath. Touch the water and every sallik within reach pulls its legs in and becomes a pebble. Cracked open there is very little in it, and that little is salt-sweet and good. The crusts are kept by the shore-folk, who say no two are alike.</description>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantB</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.6</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- karrud — fish, common (1.0). "crust-back." Shoal envelope, but not the
+       shoal register — a solitary fish wearing a fish's stat tier. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Karrud</defName>
+    <label>karrud</label>
+    <description>A slab-flat, palm-wide fish-thing that has given up swimming for lying still. The upper face grows a plate of pillar-mineral — the sea builds on anything that holds still long enough, and the karrud holds very still — so from above it is a chip of grey stone with a mouth-slit underneath. It moves only when the brine at the bottom gets too strong even for it, sliding uphill along the pillar bases a hand's width at a time. Beneath the plate the flesh is pale and soft and tastes faintly of rock.</description>
+    <graphicData>
+      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantB</texPath>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- hessal — shellfish, common (1.0). "the sealed." Sessile — its floor
+       pairing is a non-moving Pawn, per the doc's own note; catch item only
+       here. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Hessal</defName>
+    <label>hessal</label>
+    <description>A bivalve-thing whose two shells are grown from the sea's crystal rather than from anything living, so a hessal bed reads as a patch of frost on the floor. It seals itself for years at a stretch when the brine thickens and reopens when the fog-season thins it, and nobody has seen one open. Prised apart it holds a knot of grey meat that keeps for a week in its own salt and tastes of nothing but the sea. The Homestead sites on the margin live on them.</description>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.7</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- oomal — eel, common (0.6). "the pallid." Eel register verbatim
+       (vanilla FishBase tier), no statBases override — same convention
+       RUT_Murrol/RUT_Zhurr/RUT_Ozhu already use. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Oomal</defName>
+    <label>oomal</label>
+    <description>A blind, arm-long brine-eel the colour of boiled paper, so translucent the salt-crust it has swallowed shows as a grey line down the middle of it. It lives in the silt at the pillar feet and does not come up; the shore-nets take it when the bottom-brine surges. It is always sick — every oomal carries lesions where the salt has got in — and it is never fast. Shore-folk eat it and say it is better than it looks, which is not a high bar.</description>
+    <graphicData>
+      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+    </graphicData>
+  </ThingDef>
+
+  <!-- maalu — alien (jellyfish-analog), uncommon (1.0). "sick-bell." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Maalu</defName>
+    <label>maalu</label>
+    <description>A bell of grey jelly the size of two hands that has half turned to stone: the sea's crystal grows into it from the rim inward, and a maalu drifts with the weight of its own mineral edge pulling it down, sagging, tilting, never quite sinking. It is not luminous — nothing down here is — and it is not dangerous; it is barely alive. Netted, the crystal rim crumbles and the jelly inside is a mouthful of salt water. Some pilgrims eat it for the rim, which they say tastes of the pillars.</description>
+    <graphicData>
+      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.08</Nutrition>
+      <MarketValue>4</MarketValue>
+      <Mass>0.3</Mass>
+      <FoodPoisonChanceFixedHuman>0.05</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- immu — fish, uncommon (0.7). "the lodger." Shoal envelope with the
+       doc's own reduced MarketValue/Mass. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Immu</defName>
+    <label>immu</label>
+    <description>A finger-long, soft, eyeless fish-thing that lives inside the shells of dead hessal — it never grew any armour of its own and borrows the sea's. Lift a shell and it is there, curled, and it will not leave: shore-folk carry the shell home and shake it out over the pan. It is the most timid thing in the Grey and the only one with any colour, a faint sick pink under the skin. Sweet, small, and mostly bones.</description>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>6</MarketValue>
+      <Mass>0.3</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- haarn — alien, uncommon (0.4). "the encased." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Haarn</defName>
+    <label>haarn</label>
+    <description>Nobody agrees what a haarn is. It is a jacket of pillar-mineral the size of a helmet, closed all round, that moves — slowly, along the floor, from pillar to pillar, leaving a scrape-line in the silt like a very small version of the giant's. Cut open there is a soft thing inside with no eyes and a great many small hooks, and it dies at once in open air. It is the Grey's only true extremophile: it lives in the strongest brine at the bottom, where nothing else survives, and it has plainly been doing so for a very long time. Divers who find one do not report it, on the grounds that it seems to have been minding its own business.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>8</MarketValue>
+      <Mass>0.8</Mass>
+      <Beauty>1</Beauty>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>4</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RUT_SaltCameo — the Grey's rare-table headline prize, per the doc's
+       rare-catch table: "a small creature jacketed in pillar-mineral, the
+       statuary made portable." Same ResourceBase/ExoticMisc shape as
+       RUT_SeepStone (RUT_WeepingStonesFish_Items.xml). Never rots — the
+       Grey's dead do not (ban 5), made a stat here: no CompProperties_Rottable. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_SaltCameo</defName>
+    <label>salt cameo</label>
+    <description>A small creature — nobody can say which, or ever could — jacketed whole in pillar-mineral where it sank, the Grey's own statuary shrunk to a fist and made portable. Not carved: grown, the way everything else down there grows. A salt cameo does not rot and does not wear; it is exactly as it was found, and it will still be exactly that in a hundred years.</description>
+    <graphicData>
+      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>30</MarketValue>
+      <Mass>0.15</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>4</Beauty>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>25</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>
