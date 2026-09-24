@@ -2894,3 +2894,72 @@ Next wave: run `code_review_status.py list --show-untracked` (not the plain
 working the 346 NEVER ENTERED files — full-file review (never diff-scoped,
 per the loop's own protocol for a file with no prior clean mark) since none of
 them have ever been reviewed once.
+
+## Wave 45 — 2026-09-24: first wave against the real 346-file NEVER ENTERED
+## backlog; sanity-checked it first, then reviewed 6
+
+Re-ran `code_review_status.py list --show-untracked` fresh rather than
+trusting wave 44's "346" verbatim — it read **346** again (no drift in the
+few minutes between waves this time). Breakdown by extension: **306 `.xml`**,
+**39 `.py`**, **1 `.cs`**. By directory, dominated by two live def/patch
+trees: `src/RimStarWars/SWBestiary` (99), `src/RimUtinni/UtinniPatches` (83),
+then `src/RimUtinni/LanternDeeps` (18), `src/RimMandrake/Utils` (18),
+`src/RimUtinni/StructureInjectionsRUT` (17), `src/RimMandrake/CreatureBehaviors`
+(14), `src/RimMandrake/GelatinousSlime` (12), `src/RimMandrake/FlowWorks` (12),
+smaller tails elsewhere.
+
+**Sanity check on `list --show-untracked` itself, per the brief's instruction
+to verify before diving in blind:** sampled 8 files at random from the 346 —
+all 8 were `git ls-files`-TRACKED, real committed source. Checked the whole
+list for build-artifact contamination (`/obj/`, `/bin/`, `__pycache__`) and
+test-fixture noise — **zero hits on either**. So the tool is not pulling in
+untracked build output; the 346 are genuinely never-reviewed tracked source,
+exactly as wave 44 concluded. No tool bug to flag this time.
+
+Picked 6 files spanning C#/Python and covering a spread of subsystems, all
+confirmed reachable before reviewing (csproj `<Compile Include>` for the .cs,
+`if __name__ == "__main__"` CLI entry + sibling-convention checks for the
+`.py` files — none were orphaned one-offs):
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_LeachmossWildSpawnGate.cs`
+  — Harmony postfix gating `RM_Leachmoss` out of wild-plant spawn rolls behind
+  a Mod Settings bool. Confirmed in `RM_EnvironmentalHazards.csproj`'s Compile
+  list; `RM_EnvironmentalHazardsSettings.leachmossEnabled` resolves to a real
+  field in `RM_EnvironmentalHazardsMod.cs`. No bugs.
+- `src/RimMandrake/Utils/probe_png_wellformed.py` — bulk PNG structural
+  validator (signature/chunk/CRC32/IHDR-first/IEND-last). Traced its
+  `DIRTY  {rel}  ({detail})` parser against `code_review_status.py`'s actual
+  `cmd_check` format line-by-line — matches exactly. No bugs.
+- `src/RimMandrake/rimflow/citations_lint.py` — the stale-gate/state-lie doc
+  linter. Ran its selftest: **11/11 passed**, including the one case that
+  proves the 3-line gate/closure window (which reads one line *after* the
+  citation as well as before — looked like a possible off-by-one until the
+  selftest confirmed it's deliberate and covered). No bugs.
+- `src/RimMandrake/rimflow/live_proof_lint.py` — detects a close whose commit
+  body names live-proof/deploy debt with no spawned successor anywhere in the
+  ledger. Ran the paired hook's selftest (`selftest_warn_close_live_proof_owed.py`):
+  **7/7 passed**. Ran `live_proof_lint.py sweep` live against the real ledger:
+  executes clean, reports 5 pre-existing unspawned closes (process debt,
+  not a code defect — out of this wave's scope). No bugs.
+- `src/RimMandrake/bridgetools/prove_river_water.py` — bridge repro/verify
+  script for the missing-water-terrain bug. Static full-file review only (no
+  bridge access this wave); its hardcoded `D:\Luke\dev\Rimworld\...` sys.path
+  insert matches the same line in both sibling `prove_*.py` scripts, so not a
+  one-off mistake. No bugs.
+- `src/RimUtinni/StructureInjectionsRUT/Source/Ashfall/gen_ashfall_layout.py`
+  — KCSG StructureLayoutDef generator for the Ashfall Spire dungeon. Ran it:
+  reachability BFS proof passes, and the regenerated
+  `StructureLayoutDefs_Ashfall.xml` + `SymbolDefs_Ashfall.xml` came out
+  **byte-identical** to the committed files (`git status` clean after the
+  run) — strongest possible confirmation this generator is still correct.
+  No bugs.
+
+**No bugs found this wave** — all 6 marked CLEAN with nothing significant,
+commit `cf1d9cc76`, pushed.
+
+Re-measured after: `TALLY  CLEAN 3095  DIRTY 4  ORPHANED 0  NEVER ENTERED 340`
+— 340 matches 346 − 6 exactly; the 4 DIRTY are new re-dirties from a
+concurrent build agent's commits mid-wave (same expected churn every prior
+wave has noted, not this wave's doing). **340 NEVER ENTERED files remain**,
+still dominated by `SWBestiary` and `UtinniPatches` XML. Next wave: keep
+working this backlog with `list --show-untracked`, not plain `list`.
