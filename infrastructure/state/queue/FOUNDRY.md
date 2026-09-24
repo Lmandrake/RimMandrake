@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T12:50:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T13:06:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -693,6 +693,15 @@ kind:     task
 summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
 prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
 
+## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
+prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
+
 ## GREENTIDE_MECHANICS_2 The Greentide C# kit build: wet-bulb condition+gear, dry-air blower, steam devils (Scald damage already shipped by FORGE), Roil/Breaklight weather, three-feller tree fall, Lunger ambush, grazing suppression hook, root causeways, Greatbole mineable-living-tree class — spec greentide_kit_spec.md, churnmud+silence-cue+seek-shade already shipped by GREENTIDE_STANDALONE_MOD_1
 state:    doing
 row:      unassigned
@@ -1296,17 +1305,7 @@ prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-waiting:  needs `deploy`, game is UP
-summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
-prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
+_none._
 
 # NOT THIS TARGET
 
