@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 136.35164029803127,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 136.35164029803127,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desertportb_mossbeetlepupa_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 82.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T10-54-50-01a0cf67-f15b-7d50-a9f8-47f52c987439.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 13.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 76.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T10-48-02-01a0cf61-b695-7410-88ed-4aa2508c237a.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 12.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desertportb_mossbeetlepupa_east",
+    "note": "Generated with built-in imagegen and resized to exactly 256\u00d7256; preserved transparent alpha. Utility retry was required because ImageMagick was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_mossbeetlepupa_east\\desertportb_mossbeetlepupa_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_mossbeetlepupa_east/desertportb_mossbeetlepupa_east.png\n    256x256  rgba  48,128 bytes  (135s)\n"
+}

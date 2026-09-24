@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-23T21:44:29Z",
+  "drawsize": 4.0,
+  "facing": "east",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_dewback_v1_east",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Dewback (owner-ruled reference: Wookieepedia infobox render). A scaly, reptilian, elongated LOW-SLUNG body \u2014 never a rounded, blobby, seal-like silhouette. Warm olive-green to yellow-green hide, darker and more mottled toward the back ridge, with visible raised/pebbled scale texture. A LONG heavy tail (not short or stubby). A broad, blunt-snouted head with a wide mouth. Short, thick legs built to carry a rider or pack saddle, no saddle shown. Reads as a hardy desert pack/riding reptile. Single creature, centered, standing pose, no ground shadow, no background scenery, no saddle or riding gear. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": "Canon library entry design/RimStarWars/canon_references/dewback/description.md, RULED (owner 2026-09-14): wookieepedia_infobox.jpg. Owner: 'I think the Donor white shading means it can come in a variety of colors... Follow #4 closest.' Corrects the existing ArtOverride's grey-green/short-tailed/bulky reading to a long-tailed, elongated, olive-green lizard."
+}

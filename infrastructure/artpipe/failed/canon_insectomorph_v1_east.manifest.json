@@ -1,0 +1,49 @@
+{
+  "attempt_elapsed_s": 47.518799257988576,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 92.58472523797536,
+  "id": "canon_insectomorph_v1_east",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790216577,
+    "primary_used_percent": 99.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T16-21-03-01a0d092-983d-73b0-9543-17cd8f2d650a.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 31.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790216577,
+    "primary_used_percent": 94.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T16-14-32-01a0d08c-a0f6-7293-ae33-fd32b5dc21de.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 30.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "canon_insectomorph_v1_east",
+    "note": "Built-in image generation failed twice with HTTP 429 usage_limit_reached; no image was produced or saved.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 45s (exit 0).\n--- last codex output ---\nod silhouette. Facing: east \u2014 strict side profile with the camera at the creature's own eye level, the creature's head points to the RIGHT edge of the image. NOT a top-down or overhead view: we do not look down on its back, and only the near side of the body is visible.\n\nThen copy the generated image into the current working directory as canon_insectomorph_v1_east.png. Report the absolute path of the file you saved.\ncodex\n{\"id\":\"canon_insectomorph_v1_east\",\"status\":\"ok\",\"out\":null,\"width\":null,\"height\":null,\"has_alpha\":null,\"corners_transparent\":null,\"background_used\":null,\"attempts\":1,\"note\":\"Using the requested imagegen skill to create the transparent east-facing sprite, then I\u2019ll copy it into the workspace and verify its file properties.\"}\n2026-09-23T23:21:26.142446Z ERROR codex_core::tools::router: error=image generation failed: http 429 Too Many Requests: Some(\"{\\\"error\\\":{\\\"type\\\":\\\"usage_limit_reached\\\",\\\"message\\\":\\\"The usage limit has been reached\\\",\\\"plan_type\\\":\\\"plus\\\",\\\"resets_at\\\":1790216577,\\\"eligible_promo\\\":null,\\\"resets_in_seconds\\\":10891}}\")\ncodex\n{\"id\":\"canon_insectomorph_v1_east\",\"status\":\"ok\",\"out\":null,\"width\":null,\"height\":null,\"has_alpha\":null,\"corners_transparent\":null,\"background_used\":null,\"attempts\":2,\"note\":\"The built-in generator returned a temporary usage-limit error. I\u2019m making the single permitted retry now.\"}\n2026-09-23T23:21:40.932206Z ERROR codex_core::tools::router: error=image generation failed: http 429 Too Many Requests: Some(\"{\\\"error\\\":{\\\"type\\\":\\\"usage_limit_reached\\\",\\\"message\\\":\\\"The usage limit has been reached\\\",\\\"plan_type\\\":\\\"plus\\\",\\\"resets_at\\\":1790216577,\\\"eligible_promo\\\":null,\\\"resets_in_seconds\\\":10876}}\")\ncodex\n{\"id\":\"canon_insectomorph_v1_east\",\"status\":\"fail\",\"out\":null,\"width\":null,\"height\":null,\"has_alpha\":null,\"corners_transparent\":null,\"background_used\":null,\"attempts\":2,\"note\":\"Built-in image generation failed twice with HTTP 429 usage_limit_reached; no image was produced or saved.\"}\ntokens used\n21,634\n\n",
+  "worker_stdout_tail": ""
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 120.35360983602004,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 120.35360983602004,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "desertportb_krykna_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 75.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T10-46-01-01a0cf5f-db86-72f1-9c76-bdf1308fefbd.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 12.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 69.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T10-39-04-01a0cf59-7fec-71c2-adfd-91987b7ebc36.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 11.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "desertportb_krykna_south",
+    "note": "Generated via built-in imagegen using the supplied frontal RimWorld-style krykna prompt, then resized to exactly 512\u00d7512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_krykna_south\\desertportb_krykna_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_krykna_south/desertportb_krykna_south.png\n    512x512  rgba  359,041 bytes  (119s)\n"
+}

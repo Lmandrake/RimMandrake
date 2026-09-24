@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-23T21:44:30Z",
+  "drawsize": 4.0,
+  "facing": "north",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_whisperbird_v1_north",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Whisper bird (owner-library reference: Star Wars: Alien Archive illustration). A GOLDEN/tan-brown body plumage overall (never grey-brown), dark brown-to-black barred/banded markings across the underside of both wings and a dark chest/belly patch, a BALD blue-gray vulture-like head and upper neck with no feathers, a hooked beak carrying a reddish tip, blue-gray legs and talons with four sharp curved claws per foot, broad swept wings on a lean raptor-proportioned body -- a bird-of-prey/vulture silhouette, not a songbird. Single creature, centered, mid-glide pose with wings spread, no ground shadow, no background scenery, no motion-blur effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": "Canon library entry design/RimStarWars/canon_references/whisperbird/description.md, ruling empty (canon stands unopposed). Identifies the real source species as 'Whisper bird' (two words, golden avian of Yavin 4), distinct from the lore-only one-word 'Whisperbird' Chiss board-game reference. Corrects the existing ArtOverride's generic dusky-grey-brown night-hunter reading (authored before this research, per its own style_notes) to the golden vulture-headed raptor the canon image shows."
+}

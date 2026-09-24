@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 95.21234229800757,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 95.21234229800757,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "RSW_Voltmaw_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 60.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T20-22-24-01a0d16f-8f2a-7851-9d42-f48e4d3d4e56.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 40.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 55.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T20-15-55-01a0d169-9dcb-7fd3-bfe2-e8c54f5856ad.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 39.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "RSW_Voltmaw_north",
+    "note": "Generated via built-in imagegen, copied into the workspace, and resized from 1254px to the required 1024x1024 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RSW_Voltmaw_north\\RSW_Voltmaw_north.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_Voltmaw_north/RSW_Voltmaw_north.png\n    1024x1024  rgba  1,339,888 bytes  (94s)\n"
+}

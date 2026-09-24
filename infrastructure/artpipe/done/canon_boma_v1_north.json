@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-23T21:44:29Z",
+  "drawsize": 4.0,
+  "facing": "north",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_boma_v1_north",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Boma beast, the squat/small predatory variant (owner-ruled reference: File:Boma_Beast.jpg). A squat, monstrous quadruped reptile with a wide face bearing two horns and two tusks, thick wrinkled scaled hide reading solid GREEN (never grey-brown), short powerful clawed legs, a low bulldog/toad-like stance, a moderate-length tail. Reads as a dangerous ambush predator, not a draft animal. Single creature, centered, standing pose, no ground shadow, no background scenery, no harness or rigging. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": "Canon library entry design/RimStarWars/canon_references/boma/description.md, RULED (owner 2026-09-13): boma_wookieepedia_1.jpg (the Databank-style squat green predator), NOT the blue-grey Empire's End mount variant. Corrects the shipped RSW_Boma texture's grey-brown coloring to canon green."
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 122.45161373500014,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 122.45161373500014,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "desertportb_feralgrazer_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 22.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T09-42-17-01a0cf25-82ee-7500-8879-3d26be395896.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 3.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 16.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T09-35-00-01a0cf1e-d865-7e62-bb31-e9e6ba038021.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 3.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "desertportb_feralgrazer_north",
+    "note": "Generated via built-in imagegen, copied to the requested path, resized to exactly 512\u00d7512, and verified as 32-bit PNG with four transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_feralgrazer_north\\desertportb_feralgrazer_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_feralgrazer_north/desertportb_feralgrazer_north.png\n    512x512  rgba  119,747 bytes  (121s)\n"
+}

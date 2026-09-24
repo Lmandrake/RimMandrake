@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 78.6114839859656,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 78.6114839859656,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desertportb_plant_bloddle",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 98.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T11-15-22-01a0cf7a-bb32-79c2-98ea-449c034ef2b9.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 15.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 93.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T11-08-57-01a0cf74-dc76-7ce2-b6ec-8982b44da0c3.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 15.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desertportb_plant_bloddle",
+    "note": "Generated with built-in imagegen, resized to exactly 256\u00d7256, and saved as a transparent PNG with all four corners fully transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_plant_bloddle\\desertportb_plant_bloddle.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_plant_bloddle/desertportb_plant_bloddle.png\n    256x256  rgba  53,150 bytes  (78s)\n"
+}

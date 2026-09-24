@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 111.12901766499272,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 111.12901766499272,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RSW_Cindermite_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 2.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T19-23-02-01a0d139-34eb-7c21-8d6d-22ccdc6508bb.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 31.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790216577,
+    "primary_used_percent": 96.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T16-16-40-01a0d08e-956f-7be3-a117-121639cb0cba.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 30.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RSW_Cindermite_east",
+    "note": "Generated via built-in imagegen; resized to exactly 512x512 with transparent padding and saved under the requested filename.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RSW_Cindermite_east\\RSW_Cindermite_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_Cindermite_east/RSW_Cindermite_east.png\n    512x512  rgba  197,791 bytes  (110s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 114.58599499100819,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 114.58599499100819,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "canon_zakkeg_v1_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 88.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T20-51-08-01a0d189-dbfc-7662-8676-963f77692a05.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 44.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 83.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T20-45-59-01a0d185-24b1-79e2-b2eb-79d7e2660f9a.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 44.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "canon_zakkeg_v1_east",
+    "note": "Generated a rust-red, tank-built, east-facing Zakkeg sprite; resized to exactly 512\u00d7512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\canon_zakkeg_v1_east\\canon_zakkeg_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/canon_zakkeg_v1_east/canon_zakkeg_v1_east.png\n    512x512  rgba  244,337 bytes  (113s)\n"
+}

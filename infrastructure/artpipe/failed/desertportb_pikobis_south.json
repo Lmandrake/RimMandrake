@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-20T16:43:17Z",
+  "drawsize": 1.25,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "desertportb_pikobis_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: the Star Wars canon pikobis -- Pikobi were fast-moving, flightless reptavians which were native to the swamps of Naboo and the jungles of Onderon. Pikobis also had long, pointed beaks lined with sharp teeth that were used to spear and hold onto\u2026 Single creature, centered, standing pose appropriate to its anatomy, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

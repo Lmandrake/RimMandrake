@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 135.43015266797738,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 135.43015266797738,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RSW_Sandstrider_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 34.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T19-54-03-01a0d155-9c90-7003-84fa-1d176a961653.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 36.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 28.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/23/rollout-2026-09-23T19-48-44-01a0d150-bbbc-7a83-bc3f-ce2aad49cc17.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RSW_Sandstrider_north",
+    "note": "Saved project PNG, but generation did not depict the requested bird; it produced an abstract wrapped form, so the asset is reported failed rather than disguised as complete.",
+    "out": null,
+    "status": "fail",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_Sandstrider_north/RSW_Sandstrider_north.png\n    512x512  rgba  114,842 bytes  (134s)\n"
+}

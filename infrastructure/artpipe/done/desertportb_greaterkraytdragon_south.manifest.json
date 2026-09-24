@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 153.65578529401682,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 153.65578529401682,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "desertportb_greaterkraytdragon_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 46.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T10-09-17-01a0cf3e-3b3c-7c43-87d2-5bbcf5536a60.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 7.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790198552,
+    "primary_used_percent": 40.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T10-02-43-01a0cf38-3830-7e90-b626-01eda5669a10.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 6.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "desertportb_greaterkraytdragon_south",
+    "note": "Generated with built-in imagegen; normalized the generated 1254px square to exactly 1024x1024 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_greaterkraytdragon_south\\desertportb_greaterkraytdragon_south.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_greaterkraytdragon_south/desertportb_greaterkraytdragon_south.png\n    1024x1024  rgba  1,689,414 bytes  (153s)\n"
+}

@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-23T21:44:30Z",
+  "drawsize": 4.0,
+  "facing": "east",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_vornskyr_v1_east",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Vornskr (owner-ruled reference: wookieepedia_alienarchive.jpg, 'Two vornskrs on Myrkr'). A quadruped canine/reptile-hybrid predator body, hairless smooth dark GRAY-to-BLACK hide (reptilian texture, not fur), tall pointed bat-like ears, a narrow snarling muzzle with prominent visible fangs, glowing RED eyes (the primary color anchor, never yellow), a long whip-thin tail ending in a distinct bushy dark tuft, four clawed digits per paw. Reads as a dangerous nocturnal pack predator. Single creature, centered, low stalking pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": "Canon library entry design/RimStarWars/canon_references/vornskyr/description.md, RULED (owner 2026-09-14): wookieepedia_alienarchive.jpg. Owner: '#1 and #3 are compatible and correct, the shaggy #2 is rejected as non-canon.' Corrects the existing ArtOverride's grey-green/no-red-eyes reading to gray-black hide with red eyes and a whip tail with a dark tuft."
+}
