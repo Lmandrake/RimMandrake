@@ -131,11 +131,18 @@ rather than on catching English compounds.
 
 ---
 
-## Batch 2 — DRAFTED 2026-09-20, awaiting the owner's ear
+## Batch 2 — RULED AND APPLIED 2026-09-20 (`32ecbc8cb`)
 
-⚠️ **DRAFTED, NOT RULED.** Do not apply any row below until the owner reacts.
-Every name passes `check_pseudo_sw_name.py` — shape and non-collision against all
-137 canon entries. The checker cannot judge taste; that is his.
+✅ **Ruled by the owner and landed the same day**: `32ecbc8cb` *"owner ruled batch 2 —
+apply all 22 renames"* rewrote label + labelPlural + description together across 6
+SWBestiary files (`RSW_DesertPortMisc_Races.xml` and siblings). The reaction sheet is
+`Transient/drafted_creature_names_2026-09-21.md`. Every name passed
+`check_pseudo_sw_name.py` before he saw it. (Header corrected 2026-09-24 — it still read
+"DRAFTED, NOT RULED" four days after the apply commit.)
+
+**Batch 3 (Forsaken Crags, Nightside Ice, the Contagion, the Slime) is DRAFTED, not ruled:**
+`design/Jawa/worldbuilding/biomes/noncanon_beast_names_crags_nightside_contagion_slime.md`
+— 45 labels plus the planet-wide census (Appendix A/B there). Do not apply until he reacts.
 
 🔴 **Batch 1 is the rejected one** (Sandstrider, Spineroller, EmberCarpet,
 Ferroclaw, Dunestalker, Whirlbloom — 23/23 English compounds). Those labels are
