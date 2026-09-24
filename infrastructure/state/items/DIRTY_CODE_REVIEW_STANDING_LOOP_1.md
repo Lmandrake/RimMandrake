@@ -4076,3 +4076,172 @@ reachable `.cs` file in the repo has been through this loop at least once
 rather than trusting this count. The 13 never-entered Python tools under
 `src/RimMandrake/Utils/` (wave 14's list) still need a reachability check
 before any of them are spent on a review — untouched for 47 waves running now.
+
+## Wave 62 — 2026-09-24: the "13 never-entered Utils tools" note was STALE, plus `RUT_Sump.xml`'s open thread resolved
+
+**Part 0 — resolved wave 61's open `RUT_Sump.xml` MayRequire question.** Checked
+another Alpha-Biomes donor-twin BiomeDef (`RUT_ForsakenCrags.xml`) side by side:
+its `workerClass`/`texture`/`wildPlants` also reference bare `AlphaBiomes.*`/`AB_*`
+donor content with **no** `MayRequire`, while its optional `AA_*` (Alpha Animals)
+wildlife entries **are** individually `MayRequire="sarg.alphaanimals"`-gated —
+the identical split RUT_Sump.xml carries. `sarg.alphabiomes` is a soft
+`loadAfter` in `UtinniPatches/About/About.xml`, not a hard `modDependencies`,
+same as Sump. **Verdict: confirmed deliberate, consistent architecture across
+at least two donor-twin BiomeDefs, not a Sump-specific oversight** — a
+donor-twin biome's structural identity (workerClass/texture/base wildPlants)
+assumes its donor is present; genuinely optional add-on content from other
+mods gets the per-entry gate. Nothing to fix; the open thread is closed.
+
+**Part 1 — ran `list --show-untracked` fresh** (`TALLY CLEAN 3217 DIRTY 8
+NEVER ENTERED 238`, exact match to wave 61's ending state, no concurrent-agent
+drift). Picked from the 8 DIRTY (`src/DEPLOY_HOLD.txt`) plus, per this item's
+own wave-14/59/60/61 pointer, the "13 never-entered Python tools under
+`src/RimMandrake/Utils/`" — reachability-checked all 13 first (selftest
+importers, `python3 <name>.py` invocations in docs/items, or an explicit
+`__main__` CLI entry point named in an item file), picked 7 of the smaller/
+more-central ones (strongest reachability evidence): `apply_blanket_ruling.py`,
+`check_pseudo_sw_name.py`, `sheet_to_artifact.py`,
+`artpipe/requeue_quota_failures.py`, `canon_census.py`,
+`label_collision_check.py`, `ecosystem_pyramid_check.py`.
+
+🔴 **Discovered mid-wave: that "never-entered" framing was WRONG, and had been
+for 22 waves.** `code_review_status.py mark-clean` reported `[clean mark #2]`
+on 6 of these 7 (all but `DEPLOY_HOLD.txt`, which is the known re-dirtying
+DIRTY-8 entry) — meaning every one of them was **already CLEAN**, not
+never-entered. `git log -S'"src/RimMandrake/Utils/<name>.py"' -- CODE_REVIEW_
+STATUS.json` traces them to **wave 39** (`1a838c529`: `apply_blanket_ruling.py`,
+`check_pseudo_sw_name.py`, `sheet_to_artifact.py`,
+`artpipe/requeue_quota_failures.py`, `label_collision_check.py`) and **wave
+40** (`8b65a2173`: `canon_census.py`, `ecosystem_pyramid_check.py`, plus
+`build_flora_legibility_sheet.py`/`facing_set_audit.py`/
+`build_landmark_density_sheet.py`/`modcheck/readline_registry.py`/
+`stage_review.py`/`stage_xenotype_grid.py` — the REST of wave 14's 13-item
+list). **All 13 names on wave 14's list are tracked in `CODE_REVIEW_STATUS.
+json` today** (confirmed by grepping every one) — wave 14's "never entered"
+framing was correct only for a few hours in its own session; waves 59-61 each
+copy-forwarded "untouched for N waves running now" without re-checking the
+JSON, compounding the staleness the way `STALE_RENAME_GATE_SWEEP_1` describes
+for doc claims generally. This note is now corrected; the pointer is dead —
+do not carry it into wave 63.
+
+**Reviewed all 7 full-file anyway** (the content review is real work
+regardless of what the tracking status said, and 6 of 7 already having a
+stale-but-matching-hash CLEAN mark from waves 39/40 meant this was
+effectively a SECOND independent full-file pass on those 6 — valuable
+precisely because it did not trust the prior clean mark going in):
+
+**Found and fixed 4 real bugs, one high-severity, across 4 of the 7 — all
+of them MISSED by wave 39/40's original clean-marking pass:**
+
+- **`apply_blanket_ruling.py` (HIGH SEVERITY):** its whole reason to exist is
+  the refusal guard — "REFUSES when the file already carries sheet-written
+  rows, unless `--over-sitting` is passed deliberately" (its own docstring).
+  The guard checked `doc.get("savedBy") in ("review-sheet-page", "sidecar")`,
+  but `serve_sheet.py`'s real stamp constant is `STAMP_BY = "review-sheet-
+  sidecar"` — never literally `"sidecar"`. So the guard **never fired for a
+  genuine ServerBackend sitting**, the "ruled default" backend per
+  `sheet_to_artifact.py`'s own docstring — only for `FileBackend`'s
+  `"review-sheet-page"` stamp. A blanket ruling run against a real,
+  painstakingly-tapped sidecar review had **zero protection** and would
+  silently flatten it. Also added `"artifact-db-merge"`
+  (`merge_artifact_db.py`'s own stamp for a phone sitting folded back into the
+  repo) to the guard — an equally real per-row sitting the original guard
+  never covered at all. Verified live: built a synthetic decisions.json with
+  `savedBy: "review-sheet-sidecar"` and confirmed the tool now correctly
+  REFUSES (it would have silently proceeded before the fix).
+- **`canon_census.py`:** the "ruled" classifier required the literal
+  substring `"**RULED**"` (bold closed immediately after the word). Three
+  real, dated owner rulings — `chagrian`, `ugnaught`, `umbaran` — bold the
+  **whole clause** instead (`🔴 **RULED — owner, 2026-09-20. Verbatim:
+  *"..."***`), so the bold never closes right after the word "RULED" and a
+  plain substring check misses it. All three were silently landing in
+  "non-conforming" — **the exact "2 of 137 ruled" miscount class this module
+  was built to stop** (its own docstring opens with that incident). MEASURED
+  before the fix: `ruled: 24, non-conforming: 6`; after: `ruled: 27,
+  non-conforming: 3` (only genuinely different-shaped entries — `gizka`,
+  `iriaz`, `zeer` — remain). Confirmed via `grep -c '\*\*RULED\*\*'` (24,
+  matching the old count exactly) vs `grep -c '\*\*RULED'` (27, matching the
+  new one) across the whole `canon_references/` corpus. Fixed by matching the
+  bold-OPEN (`\*\*RULED\b`) instead of requiring an immediate close. Added a
+  regression case to `selftest_canon_census.py` for the whole-clause shape;
+  selftest still passes (7/7... unit checks, now 7, plus the live smoke run).
+- **`sheet_to_artifact.py`:** `ArtifactDbBackend.key()`'s row-id escaping left
+  `'-'` in its pass-through set even though its own escape marker is exactly
+  `"-x"` + 4 hex digits (both drawn from that pass-through alphabet) — so a
+  row id already containing a literal `"-x"` + 4 hex digits (e.g.
+  `"foo-x0020bar"`) passes through UNCHANGED and collides with the escaped
+  form of a DIFFERENT row id with a disallowed character at that spot (e.g.
+  `"foo bar"` -> `"foo-x0020bar"`, identical). Two distinct rows would
+  `.set()` the same artifact-db document path and one decision would
+  silently overwrite the other — the docstring's own claim that the mapping
+  "keeps the mapping injective" was false. Low practical likelihood (row ids
+  are defNames/job ids, which don't naturally contain that pattern) but a
+  real, cheap-to-fix correctness gap in a data-loss-shaped direction. Fixed
+  by excluding `'-'` from pass-through, so `"-x"` can now only ever appear as
+  a genuine escape sequence.
+- **`check_pseudo_sw_name.py` (minor):** the length-check's rejection message
+  said "canon coinages run 4-7" while the code's actual enforced gate is
+  `4 <= len(bare) <= 9` — an 8-9 letter name is accepted by the code but the
+  printed reason for any REJECTED name claims a narrower boundary than what's
+  really enforced, misleading whoever reads a REFUSED verdict about the
+  tool's real tolerance. Corrected the message to state the real gate.
+
+The other 3 (`artpipe/requeue_quota_failures.py`, `label_collision_check.py`,
+`ecosystem_pyramid_check.py`) were reviewed in full and cross-checked against
+live behaviour with no fixes needed:
+- `requeue_quota_failures.py`'s `worker_stderr_tail` field name was verified
+  against `artpiped.py`'s actual manifest-writing code (both codex failure
+  sites) and its `SENTENCE = "hit your usage limit"` match was corroborated
+  against a real incident (`BENCH_REBOOT_HANDOFF_202609190938.md`: the
+  2026-09-18 22:18 PDT 5-hour-meter trip this tool was built for, requeued at
+  22:53) — this is a different failure class from the daemon's own
+  `_looks_rate_limited`/TooManyRequests handling (a codex CLI subscription-cap
+  message, not an API 429), deliberately, and it has already worked once for
+  real. No bug.
+- `label_collision_check.py` was run via its own selftest
+  (`selftest_label_collision_check.py`, 6/6 pure-logic unit checks pass) plus
+  a live smoke run: **61 label collisions found against the current dump**
+  (mostly `Donor / RSW_Port` pairs like `Bantha`/`RSW_Bantha`,
+  `Dragonsnake`/`RSW_Dragonsnake`, etc.). This is NOT a new finding — it is
+  the already-known, already-filed `MLIE_ABSORPTION_BIOME_WIRING_1` /
+  `MLIE_FAUNA_ABSORPTION_1` backlog CLAUDE.md itself documents ("98 live rows
+  across 11 biome files still name the donor for 73 creatures we already
+  ported"), surfacing exactly as designed. Flagging this explicitly so it is
+  not rediscovered as new. Tool logic itself: no bug.
+- `ecosystem_pyramid_check.py`'s shortfall-math derivation
+  (`small_c' >= t/(1-t) * large_c`) was checked algebraically against its own
+  comment and confirmed correct; live smoke run: 29 owned biome rosters, 25
+  PASS / 3 FAIL / 1 EMPTY — consistent with the project's documented
+  mid-migration state. No bug.
+
+Fixes committed at `3afd996db`, pushed. All 8 files (`sheet_to_artifact.py`,
+`check_pseudo_sw_name.py`, `apply_blanket_ruling.py`, `canon_census.py`,
+`artpipe/requeue_quota_failures.py`, `src/DEPLOY_HOLD.txt`,
+`label_collision_check.py`, `ecosystem_pyramid_check.py`) marked CLEAN at
+that sha.
+
+Re-measured after: `TALLY CLEAN 3218 DIRTY 7 NEVER ENTERED 238` (was `CLEAN
+3217 DIRTY 8 NEVER ENTERED 238` at wave start) — only `DEPLOY_HOLD.txt`
+actually moved a bucket (DIRTY -> CLEAN); the other 7 were already CLEAN
+before this wave and stayed CLEAN, which is why NEVER ENTERED didn't move
+despite 7 files being reviewed against it. `DEPLOY_HOLD.txt` itself: verified
+every active (non-comment) hold-glob entry against the live filesystem state
+it claims (13 "no art yet" holds re-checked, all still genuinely missing
+their art; the 3 misrouted Droidworks PNGs still unreferenced by any def) —
+accurate, no drift, no bug, marked CLEAN.
+
+Next wave: **the "13 never-entered Utils tools" pointer that waves 14/59/60/61
+all carried forward is DEAD — do not re-pick from it.** 7 DIRTY files remain
+(6 `RM_Graffiti_Vandal` PNGs + `RSW_MlieWaveC_Abilities.xml`, both flagged
+not-a-defect by prior waves — see wave 61's note and wave 15's still-open PNG-
+scope question) and 238 NEVER ENTERED, all XML/Python. Re-survey `list
+--show-untracked` fresh for real candidates rather than trusting any specific
+named list carried in this file's prose — this wave is itself evidence that a
+carried-forward list can go stale for 20+ waves without anyone checking the
+JSON directly. 🔑 Given this wave found 4 real bugs (1 high-severity) in 4 of
+7 files that a PRIOR wave had already reviewed and cleared, a clean mark is
+evidence of "nothing found that pass," not proof nothing is there — worth
+occasionally re-reading an already-CLEAN file with fresh eyes rather than
+treating CLEAN as permanently settled, especially anything safety-guard-
+shaped (`apply_blanket_ruling.py`'s bug sat undetected through one full
+review cycle).
