@@ -2676,10 +2676,10 @@
     "sha": "3505dc594"
   },
   "src/RimMandrake/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "a4e1678e3ea9b7ed66f1707cb7ebf497890098467177e43d90b6345f33a75daa",
-    "sha": "3505dc594"
+    "cleanCount": 2,
+    "date": "2026-09-23",
+    "hash": "86393ced6fd84db70ec6ecb288f886688a7a5dfe23fe1d8d83320a547be6038d",
+    "sha": "f34c32a99"
   },
   "src/RimMandrake/GelatinousSlime/Defs/GeneArchiveDefs/DefaultArchive.xml": {
     "cleanCount": 1,
@@ -2748,10 +2748,10 @@
     "sha": "3505dc594"
   },
   "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Gelatid.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "8c3b3b5cfed52fd95a8ae7601104481c27b5515625ced32f00ba36afbbce0f06",
-    "sha": "3505dc594"
+    "cleanCount": 2,
+    "date": "2026-09-23",
+    "hash": "2e99383b90e1fbd469a4fdbacbfcc014945eba3dd15dab2415381f49c6e53f6c",
+    "sha": "f34c32a99"
   },
   "src/RimMandrake/GelatinousSlime/Defs/ThoughtDefs/SlimeThoughts.xml": {
     "cleanCount": 1,
@@ -2766,16 +2766,16 @@
     "sha": "3505dc594"
   },
   "src/RimMandrake/GelatinousSlime/Source/GeneArchive.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "b867ea889298e9aef3f4983b26d0f60fae884b733c0a04d30c8a8d8d5af56d8e",
-    "sha": "3505dc594"
+    "cleanCount": 2,
+    "date": "2026-09-23",
+    "hash": "75bb0f0e2381562c0f6328a11bde046f8f7892521365125a4f5c3787b8430eaf",
+    "sha": "f34c32a99"
   },
   "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "7bae3ddcd91d75a43991e457f3dbd96b465cbb1f2e8f6ae7a77d553344c08a6c",
-    "sha": "3505dc594"
+    "cleanCount": 2,
+    "date": "2026-09-23",
+    "hash": "7adf7763d5c03d6397d272b0dd754f5a3a11b3000ca2484ec954819dad798325",
+    "sha": "f34c32a99"
   },
   "src/RimMandrake/GelatinousSlime/Source/SlimeAlerts.cs": {
     "cleanCount": 1,
@@ -2802,10 +2802,10 @@
     "sha": "3505dc594"
   },
   "src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "bed1f36ae057574a5dfe3350fcc2d481fdef2abfd4c874720c0535ec033c36ea",
-    "sha": "3505dc594"
+    "cleanCount": 2,
+    "date": "2026-09-23",
+    "hash": "a5600eb6e59452305836e2b955d8468ab50141acdc9253691fd0dccd5624c152",
+    "sha": "f34c32a99"
   },
   "src/RimMandrake/GelatinousSlime/Source/SlimeVisitors.cs": {
     "cleanCount": 1,
@@ -5741,10 +5741,10 @@
     "sha": "af13037d4"
   },
   "src/RimMandrake/Utils/doc_roster.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "cd5e09a91028272f1b0fea2670da19b39d114e3fbee34f50fba7fb4be46f54f7",
-    "sha": "fb248793"
+    "cleanCount": 2,
+    "date": "2026-09-23",
+    "hash": "268c3eeba25eb5404436fc7406c4bc851a3235ba84537eb011f6e9c8a60ad8b3",
+    "sha": "f34c32a99"
   },
   "src/RimMandrake/Utils/dump_manifest.py": {
     "cleanCount": 1,
@@ -6724,10 +6724,10 @@
     "sha": "e5013227"
   },
   "src/RimMandrake/Utils/vivify_world.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "7044701b820170368ee918e37842ba4e52912e17ead57b81e30f19c141787454",
-    "sha": "2b988f1c"
+    "cleanCount": 2,
+    "date": "2026-09-23",
+    "hash": "91ef85dabfbad517c0b941ca0dfce6e7f809bdf773a4de946b83b978c0b3e79f",
+    "sha": "f34c32a99"
   },
   "src/RimMandrake/Utils/w9_run.py": {
     "cleanCount": 3,
@@ -6802,10 +6802,10 @@
     "sha": "7eabd2a4"
   },
   "src/RimMandrake/Utils/worldmap.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "a12b1c4d41ab4a77f6b31313ce9087882a3ea9765a4fddcea1654b11bc89a3a5",
-    "sha": "3c86d6ef"
+    "cleanCount": 2,
+    "date": "2026-09-23",
+    "hash": "0f489f1a4f728b6d0bb110721ff4937fbfaaffc9851c6b63a9c095a673fc985e",
+    "sha": "f34c32a99"
   },
   "src/RimMandrake/Utils/worldmap_effects.py": {
     "cleanCount": 1,
@@ -6826,10 +6826,10 @@
     "sha": "51d41c87"
   },
   "src/RimMandrake/Utils/worldview.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "d4ee20ff7c9bf35be4d99692e99714a90ef9555abf8104d3b4ec01d12c0e50a9",
-    "sha": "d4993d9e"
+    "cleanCount": 2,
+    "date": "2026-09-23",
+    "hash": "89b93e49782ceaae03dc118d81c584655b71ef7374993a00b1795b3de9c639fc",
+    "sha": "f34c32a99"
   },
   "src/RimMandrake/Utils/xenotype_size_audit.py": {
     "cleanCount": 1,
