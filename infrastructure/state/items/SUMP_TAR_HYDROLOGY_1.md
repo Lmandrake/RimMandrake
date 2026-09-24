@@ -32,12 +32,21 @@ has its Inhabited fiction: "attempts at refineries," `SUMP_INHABITED_NOTES_1`).
    along connected liquid — a lit canal burns to its gate, a lit pool to its
    edges. Gate placement is life-and-death craft; a belch during a moat-burn is
    a genuine catastrophe.
-6. **Seams: only outflow.** Typed, verbatim: *"Only outflow."* — answering a
-   proposal of dayside INFLOW seams. ⇒ No visible inflow: the arrival stays
-   geological and unseen. Visible seams carry tar OFF the map nightward (the
-   hydrocarbon ladder toward the Blue Desert / Propane Lakes), crossable at
-   cooled margins. ⚠️ Interpretation is BENCH's from two words — if a build
-   decision hangs on it, card the specific layout before building.
+6. **Edges are sinks, never sources — the FlowWorks edge law.** First typed as
+   *"Only outflow."*, then clarified in full, typed, verbatim: *"What I mean is
+   that a canal, when dug to the edge of the map, can serve as a sink. It can
+   remove any kind of liquid by allowing it to flow to some other map. However,
+   we should not assume that another map will be a source of anything at the
+   edge. So that is why it is a sink only. Sources can be as rich as needed on
+   the local map. And if we are next to an ocean, it should already be on this
+   map, connected to a canal as effectively an infinite source."*
+   ⇒ For the Sump: no inflow seams — the tar's arrival stays geological and
+   unseen; sources are LOCAL (seeps and belches, as rich as the design needs);
+   a canal dug to the map edge drains any liquid off-map — the player's tar
+   disposal; and the Deep Black mere (ruling 7), canal-connected, is the
+   biome's effectively infinite on-map source. This is engine law for ALL
+   FlowWorks liquids, not a Sump special — noted on
+   `FLOWWORKS_BUILD_PROGRAM_1`.
 7. **The Deep Black** (card): a landmark-scale unbroken deep-tar mere — beast
    country, undiggable from shore, the biome's "ocean" at MAP scale. ⛔ No new
    world-map body; the frozen world stays untouched (the "world-map body too"
