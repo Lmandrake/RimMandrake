@@ -150,6 +150,16 @@ water-based lives here.
 - **The spore forms** (injected, `HORRORS_RAIDING_FACTION_1`): not residents — cargo in
   the ice.
 
+⭐ **Amendment — depth cast ruled in (decisions taken by question card,
+`BLUEDESERT_DESIGN_SITTING_1`, 2026-09-24).** The three roles above are BUILT
+(`RM_Dorrak`/`RM_Krissek`/`RM_Vekkit` + the three flora, `BlueDesertLife.cs`); four
+depth creatures join them: **zhaaz** (living propane-slush lobe, engulf-feeder — slime
+monosyllable law), **vrisk** (kite-thin Haze-skimming flier, real flight), **dovvik**
+(proboscis defuser draining plant charges — the life brief's §10 open call), **utikka**
+(fist-sized palefloss-cropper, the krissek's staple prey). Same sitting: the flora
+names glassfern/chimeglobe/palefloss are REAFFIRMED as a deliberate pre-law exception
+to the coined-name law — do not rename them.
+
 ## 4b. Weather
 
 - **Clear** — the common state; less shelter than the crags.
@@ -218,6 +228,11 @@ RimSage-measured against the decompiled 1.6 engine the same day:
   harvestable fuel, at the fauna's own risk.
 - **Ice fog as cover** — knife-and-sensor country by different physics than the crags.
 - **The quarries' epochs** — the archaeology of every civilization that tried this.
+- ⭐ **Ship contribution (`BIOME_SHIP_CONTRIBUTIONS_1`; decision taken by question
+  card, 2026-09-24): THE COLD HOLD** — blue-ice blocks as the ship's distilled-purity
+  water stock, and wild-harvested butane flora / Burner glands as a chemfuel windfall
+  that is safe only refrigerated: one cooling failure aboard and the pantry is a bomb.
+  The phase-line physics travels with you.
 
 ## 8. Inhabited objects
 
@@ -226,6 +241,14 @@ RimSage-measured against the decompiled 1.6 engine the same day:
   propane** — all still here, frozen in time, **alien script covering everything in
   unknown warnings.** Each quarry a tableau of one epoch's attempt and how it ended.
   Nobody who can read the warnings mines; everybody who mines learns what they said.
+  ⭐ **Amendment — the epochs ruled (decision taken by question card, 2026-09-24):**
+  five, oldest→newest: **the Rakata** (the first cut, the archotech layer, and theirs
+  is the script covering everything — the warnings nobody after could read either) →
+  **the war era** (not miners: weapons sites pretending to be industry; the losing
+  side's warnings) → **Czerka** (the industrial attempt, abandoned mid-shift) →
+  **the Empire** (the recent shallow arrogant cut, feeding §7's orbital debris) →
+  **the player** — every earlier tableau is a warning about being epoch five. Later
+  epochs left translations of the Rakatan script that trail off.
 - **The weapon layer** (injected, `HORRORS_RAIDING_FACTION_1`): crysalises in the ice,
   sinkholes, nests — surfaced by ablation, triggered by warmth.
 - **Fall debris fields** — the ablation line's harvest, and the freeze-dried dead.
