@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T13:06:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T13:18:37Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -31,15 +31,6 @@ target:   v1
 kind:     task
 summary:  Work species-by-species, in this order, because the first two shrink the list without any
 prose:    infrastructure/state/items/ROSTER_DEAD_BMT_NAMES_SWEEP_1.md
-
-## KORRUM_ART_REGEN_1 The korrum has no art of ours: texPath still points at Alpha Animals' own texture; 3 jobs re-keyed and quota-blocked to ~2026-09-26
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. When the daemon clears, confirm infrastructure/artpipe/done/ (and registry.jsonl)
-prose:    infrastructure/state/items/KORRUM_ART_REGEN_1.md
 
 # IN PROGRESS
 
@@ -908,6 +899,15 @@ target:   v1
 kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
+
+## KORRUM_ART_REGEN_1 The korrum has no art of ours: texPath still points at Alpha Animals' own texture; 3 jobs re-keyed and quota-blocked to ~2026-09-26
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  1. When the daemon clears, confirm infrastructure/artpipe/done/ (and registry.jsonl)
+prose:    infrastructure/state/items/KORRUM_ART_REGEN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
