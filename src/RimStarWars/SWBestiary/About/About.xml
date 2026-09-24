@@ -68,7 +68,7 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer`, `RSW_Groundrunn
     </li>
     <li>
       <!-- 🔴 ADDED 2026-09-20. Was declared NOWHERE, yet owns the ONLY copy of
-           Things/Pawn/Animal/Fuelmite/* - the texPath RSW_Cindermite (zhakka)
+           Things/Pawn/Animal/Fuelmite/* - the texPath RSW_Zhakka (zhakka)
            binds to. Art binds by texPath, not defName, so without this the
            creature spawns perfectly and renders as a magenta X. Confirmed by
            screenshot and by locating the PNGs in exactly one workshop folder. -->

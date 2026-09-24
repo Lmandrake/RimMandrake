@@ -143,7 +143,7 @@ result is behaviourally identical, without porting the abstract chain.
 		<comps>
 			<li Class="CompProperties_Hatcher">
 				<hatcherDaystoHatch>7</hatcherDaystoHatch>
-				<hatcherPawn>RSW_Sandstrider</hatcherPawn>
+				<hatcherPawn>RSW_Ossik</hatcherPawn>
 			</li>
 		</comps>
 	</ThingDef>
@@ -179,7 +179,7 @@ result is behaviourally identical, without porting the abstract chain.
 		<comps>
 			<li Class="CompProperties_Hatcher">
 				<hatcherDaystoHatch>45</hatcherDaystoHatch>
-				<hatcherPawn>RSW_Tuskcoil</hatcherPawn>
+				<hatcherPawn>RSW_Ulgga</hatcherPawn>
 			</li>
 		</comps>
 	</ThingDef>
