@@ -881,6 +881,12 @@
     "hash": "d15125b00f2ccce8dca747b80a2efe666dbb0e64275d01939fea3d21170969c6",
     "sha": "3bcf80ccf"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompDrumLure.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "81b92280c8fa722f145a7f6aaf9de17c139df958d624aba073514f5866098f16",
+    "sha": "21b3e2750"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompGrappler.cs": {
     "cleanCount": 1,
     "date": "2026-09-20",
@@ -892,6 +898,12 @@
     "date": "2026-09-18",
     "hash": "b0bcdca296fc9d7e0a39e3f2f76705f96576c284f5eee598a84bf49dfcaed4b7",
     "sha": "009b887ef"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_DrumLure.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "99c22d37deaa9f13b0cccc6872a6db1b75ff448fb4293ddf161a39d9a9116703",
+    "sha": "21b3e2750"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_Grappler.cs": {
     "cleanCount": 1,
