@@ -1539,3 +1539,51 @@ Next wave: 112 non-PNG DIRTY files remain (117 minus this wave's 5) —
 re-derive with `code_review_status.py list | grep '^DIRTY'` filtered for
 non-`.png` rather than trusting this arithmetic. The PNG binary-art-tracking
 scope question (wave 15) is still open and still not this loop's to decide.
+
+## Wave 27 — 2026-09-24
+
+Re-derived fresh: `code_review_status.py list | grep -c '^DIRTY'` gave 273
+(278→273, ordinary drift, no orphaned/missing rows — all 273 paths exist on
+disk); filtered for non-`.png` gave exactly **112**, matching wave 26's
+prediction. Reviewed the 5 smallest, diff-scoped against each file's own
+clean-mark sha (all were CLEAN once):
+
+- **`src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/
+  Absorbed_KotorWeapons_BLOCKED_manifest.txt`** (1 line changed since
+  `0fc737f9d`) — a bare item-ID typo fix in a comment,
+  `ARMOUR_MW2_CUT_1` → `ARMOURY_MW2_CUT_1`. No bug; the corrected ID is the
+  real item name.
+- **`src/RimUtinni/PlantGrowth/Defs/JawaPlantGrowthSettings.xml`** (+7 since
+  `ff35f27f`) — adds `RM_Palefloss`/`RM_Glassfern`/`RM_Chimeglobe` to
+  `<exemptPlants>` for `BLUE_DESERT_LIFE_AUTHORING_1`, with a comment
+  explaining why (their growDays already assume vanilla rate; a x4 growth
+  multiplier would erase the "less efficient without polar water" point of
+  those numbers). Comment's claim checked against the three plants' own
+  `growDays` values — consistent. No bug.
+- **`src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepEvictCrystalFauna.xml`**
+  (2-line comment correction since `bb73b6bd`) — fixes a stale claim that
+  this mod declares `BMT_CrystalCaverns` a hard `modDependency`; checked
+  `LanternDeeps/About/About.xml` directly — it lists only Harmony as a
+  dependency, confirming the corrected comment (not the original) is true.
+  A real prior inaccuracy, now fixed — no further action needed.
+- **`src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/
+  RUT_RotSporeKit_FurnaceCap.xml`** and **`.../ThingDefs_Plants/
+  RUT_RotSporeKit_FurnaceCap.xml`** (both since `d4559b984`, `ROT_ART_WAVE_1`/
+  `ROT_FLORA_FAUNA_VERDICTS_1`) — both retarget `texPath` off shared
+  placeholder art (`MortalMorel`/`CrimsonCap`) onto newly authored own-folder
+  art (`LivingFurnaceCap`, `FurnaceCapPlant`) and update the "ART OWED"
+  docstring comments accordingly. Per CLAUDE.md's texPath-binds-by-texPath
+  warning, verified the art actually exists at the new paths rather than
+  trusting the comment: `Textures/RotSporeKit/Things/Item/Crops/
+  LivingFurnaceCap/LivingFurnaceCap_A.png` and `Textures/RotSporeKit/Things/
+  Plant/FurnaceCapPlant/FurnaceCapPlant_A.png` both present on disk,
+  `_A` suffix matching `Graphic_StackCount`/`Graphic_Random`'s expected
+  single-variant naming. No bug.
+
+All 5 had zero uncommitted changes before marking (`git status --porcelain`
+empty). All 5 marked CLEAN, commit pending below, pushed.
+
+Next wave: 107 non-PNG DIRTY files remain (112 minus this wave's 5) —
+re-derive with `code_review_status.py list | grep '^DIRTY'` filtered for
+non-`.png` rather than trusting this arithmetic. The PNG binary-art-tracking
+scope question (wave 15) is still open and still not this loop's to decide.

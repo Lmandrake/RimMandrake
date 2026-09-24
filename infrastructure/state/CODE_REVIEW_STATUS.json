@@ -9058,10 +9058,10 @@
     "sha": "85401ce7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/Absorbed_KotorWeapons_BLOCKED_manifest.txt": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "357257baafc9afc562a70056ab8c1db3f32739b2dd623af9a6578f0688ffac88",
-    "sha": "0fc737f9d"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "5c4f91d4de83825c57bcee0ea7d3f60278c0fcdb7f5d89d8951892b20e17458a",
+    "sha": "5f531aed7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/AdditionalModOptions/Absorbed_KotorWeapons_MVCF.xml": {
     "cleanCount": 2,
@@ -14734,10 +14734,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepEvictCrystalFauna.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "fbe0bd117a9a6c199b7f8464ed904194e06b9b9d89372d9fffb389197d07001c",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "124a1e20ab95d2063c03f60683d6115c356217b2224e981565ca88e6b243dd62",
+    "sha": "5f531aed7"
   },
   "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepGateKotorStygium.xml": {
     "cleanCount": 1,
@@ -15364,10 +15364,10 @@
     "sha": "ff35f27f"
   },
   "src/RimUtinni/PlantGrowth/Defs/JawaPlantGrowthSettings.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "6c6443737ac50e98921f3f9eed549a425a12d1ae5ef35b56b5ab2ad1d51ae6d0",
-    "sha": "ff35f27f"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "607a9c06fe93f04bc9caeb285d1daca0f83c3cf2aabb0a52a24648e976165e1b",
+    "sha": "5f531aed7"
   },
   "src/RimUtinni/PlantGrowth/LICENSE": {
     "cleanCount": 1,
@@ -15868,10 +15868,10 @@
     "sha": "785100e16"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_FurnaceCap.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-20",
-    "hash": "4de33224c350ab7a783f8a9aee8372a54876998d9f0d46ed06f612eafb1d7a5c",
-    "sha": "d4559b984"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "bb849bdeaeb20aec9a7e3a2b18ff7e07c5cd587f110b4a06a4d4a8e1364f207a",
+    "sha": "5f531aed7"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_Resources.xml": {
     "cleanCount": 1,
@@ -15892,10 +15892,10 @@
     "sha": "06e1703d7"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_FurnaceCap.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-20",
-    "hash": "ad6c8597423641884e260197f475796e07065e256e3518b150c2778c997aa648",
-    "sha": "d4559b984"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "57d43389ac3ecce13474e3cbc94af25cef045cc8dccddffeb543475ab9221e6a",
+    "sha": "5f531aed7"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Weapons/RUT_RotSporeKit_MantisScythe.xml": {
     "cleanCount": 3,
