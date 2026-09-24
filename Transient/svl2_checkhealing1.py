@@ -1,0 +1,8 @@
+import sys, json
+sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+from rimbridge_client import RimBridge, resolve_endpoint
+
+host, port, token = resolve_endpoint()
+with RimBridge(host, port, token) as rb:
+    pg = rb.call("jawa/pawn_get", {"pawn": "AA_Eyeling669122"})
+    print(json.dumps(pg)[:3000])
