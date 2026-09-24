@@ -229,6 +229,16 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.oracle"],
         "dlc": True,
     },
+    "bacta": {
+        "why": "Prove BACTA_TANK_CORE_1's live healing loop (tuned-rate heal, "
+               "scar erasure, organ-heals-but-doesn't-regrow, brain untouched, "
+               "fluid drain/eject, all 6 settings toggles) with nothing else on "
+               "the map that could explain a failure. No hard <modDependencies> "
+               "beyond Core -- mandrake.rm.flowworks is only <loadAfter>, not "
+               "required for the tank/comp mechanics themselves.",
+        "want": [BRIDGE, "mandrake.rsw.bacta"],
+        "dlc": True,
+    },
     "fish": {
         "why": "Prove FISH_BESTIARY_BUILD_1's live fishing wiring (Scald, "
                "Wasteland brine mining, Cracked Lands, Weeping Stones, "
