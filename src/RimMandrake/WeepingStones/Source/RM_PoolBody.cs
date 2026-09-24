@@ -1,3 +1,5 @@
+using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.WeepingStones
@@ -58,6 +60,33 @@ namespace RimMandrake.WeepingStones
 
 		public RM_PoolStockState state = RM_PoolStockState.Silent;
 
+		/// <summary>Game tick of the last completed FEED job on this pool
+		/// (spec §3 FEED: "Two missed days and the karrek start on each
+		/// other; three and the whole pool's stock curve bends down.").
+		/// -1 means "never recorded" -- <see cref="RM_MapComponent_PoolStock"/>
+		/// fixes this up to "just fed" on both first creation (grace period,
+		/// wave 3) and on load of a pre-wave-3 save missing the field, so an
+		/// existing pen never reads as instantly starving.</summary>
+		public int lastFedTick = -1;
+
+		/// <summary>Whole days since the last FEED job, or 0 if never tracked
+		/// yet (see <see cref="lastFedTick"/>'s -1 handling).</summary>
+		public int UnfedDays(int currentTick)
+		{
+			if (lastFedTick < 0)
+			{
+				return 0;
+			}
+			return Mathf.Max(0, currentTick - lastFedTick) / GenDate.TicksPerDay;
+		}
+
+		/// <summary>FEED is due once a day (spec §3's cadence: fed "from the
+		/// bank" is the safe, expected rhythm; late is what goes wrong).</summary>
+		public bool NeedsFeed(int currentTick)
+		{
+			return lastFedTick < 0 || currentTick - lastFedTick >= GenDate.TicksPerDay;
+		}
+
 		public RM_PoolBody()
 		{
 		}
@@ -73,22 +102,30 @@ namespace RimMandrake.WeepingStones
 			Scribe_Values.Look(ref zoneId, "zoneId", -1);
 			Scribe_Values.Look(ref population, "population", 0f);
 			Scribe_Values.Look(ref state, "state", RM_PoolStockState.Silent);
+			Scribe_Values.Look(ref lastFedTick, "lastFedTick", -1);
 		}
 
 		/// <summary>The inspect line the zone's GetInspectString appends — same
 		/// "say the mechanism out loud" precedent as RM_LiquidBody.StockReport().</summary>
 		public string StockReport()
 		{
+			string feedLine = "";
+			int currentTick = Find.TickManager?.TicksGame ?? 0;
+			int unfedDays = UnfedDays(currentTick);
+			if (unfedDays >= 2)
+			{
+				feedLine = "\nNot fed in " + unfedDays + " days.";
+			}
 			switch (state)
 			{
 				case RM_PoolStockState.Silent:
-					return "No rings — the pool reads silent.";
+					return "No rings — the pool reads silent." + feedLine;
 				case RM_PoolStockState.Thin:
-					return "Rings are thin: " + population.ToString("F0") + " stock.";
+					return "Rings are thin: " + population.ToString("F0") + " stock." + feedLine;
 				case RM_PoolStockState.Vhorrin:
-					return "One wide slow ring. Something has taken over this pen.";
+					return "One wide slow ring. Something has taken over this pen." + feedLine;
 				default:
-					return "Rings are up: " + population.ToString("F0") + " stock.";
+					return "Rings are up: " + population.ToString("F0") + " stock." + feedLine;
 			}
 		}
 	}

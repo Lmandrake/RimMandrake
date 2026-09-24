@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STOCKED_POOL_BUILD_1, wave 3. All three opportunistic (no player
+  Designation) — same shape as FlowWorks' liquid-bottle WorkGivers
+  (src/RimMandrake/FlowWorks/Defs/LiquidTypes/WorkGiverDefs/
+  RM_LiquidBottleWorkGivers.xml), which this file's own pattern is copied
+  from. Net is Handling work (a live-animal interaction); Stock/Feed are
+  Hauling, same skill as any other carry-and-deliver job. All three are
+  ShouldSkip-gated on RM_WeepingStonesSettings.stockedPoolsEnabled, so
+  they cost nothing when the mod option is off.
+-->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_NetPoolBreederWorkGiver</defName>
+    <label>net pool breeders</label>
+    <giverClass>RimMandrake.WeepingStones.RM_WorkGiver_NetPoolBreeder</giverClass>
+    <workType>Handling</workType>
+    <verb>net</verb>
+    <gerund>netting a pool breeder</gerund>
+    <priorityInType>50</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_StockPoolPenWorkGiver</defName>
+    <label>stock pool pens</label>
+    <giverClass>RimMandrake.WeepingStones.RM_WorkGiver_StockPoolPen</giverClass>
+    <workType>Hauling</workType>
+    <verb>stock</verb>
+    <gerund>stocking a pool pen</gerund>
+    <priorityInType>50</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_FeedPoolPenWorkGiver</defName>
+    <label>feed pool pens</label>
+    <giverClass>RimMandrake.WeepingStones.RM_WorkGiver_FeedPoolPen</giverClass>
+    <workType>Hauling</workType>
+    <verb>feed</verb>
+    <gerund>feeding a pool pen</gerund>
+    <priorityInType>49</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

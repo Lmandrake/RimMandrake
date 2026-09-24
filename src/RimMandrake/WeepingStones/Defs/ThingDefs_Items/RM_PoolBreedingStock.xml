@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STOCKED_POOL_BUILD_1, wave 3 — the STOCK verb's carried item (spec §3:
+  "Net breeders at a wild oasis, carry them home in a wet skin"). Seven
+  rows, one per stockable species (RM_Vhorrin excluded by design — see
+  RM_PoolBreederUtility's header). defName is the species PawnKindDef's
+  defName plus the fixed "BreedingStock" suffix
+  (RM_PoolBreederUtility.BreedingStockDefNameFor); RM_JobDriver_StockPoolPen
+  reads that suffix back off to know which PawnKindDef to spawn on release
+  — convention, not a DefModExtension, so there is nothing to keep in sync
+  between this file and RM_StockedPoolFauna.xml.
+
+  Shape verified against this mod's own working precedent for a small
+  organic haulable, RM_StockedPoolMeats.xml (ParentName="OrganicProductBase")
+  — a live breeder in a wet skin is exactly that: an organic, rottable,
+  stack-of-one carry item, not a resource stack. Placeholder art: vanilla
+  meat-stack icon tinted per species, same convention as the catch items
+  (RM_StockedPoolCatchItems.xml).
+-->
+<Defs>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_MurrinBreedingStock</defName>
+    <label>murrin breeding stock</label>
+    <description>A handful of live murrin, netted at a wild oasis and carried home in a wet skin. Release into a stocked pool pen to found or reinforce a stock.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150, 140, 110)</color>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>14</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_SkarrinBreedingStock</defName>
+    <label>skarrin breeding stock</label>
+    <description>Live skarrin, netted mid-air at a wild oasis, carried home snapping in a wet skin. Release into a stocked pool pen; handle carefully.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200, 200, 210)</color>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>24</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_KarrekBreedingStock</defName>
+    <label>karrek breeding stock</label>
+    <description>A basket-trapped swarm of live karrek, carried home in a wet skin. Release into a stocked pool pen — bandage before you do.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120, 90, 60)</color>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>8</MarketValue>
+      <Mass>0.35</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_VizhikBreedingStock</defName>
+    <label>vizhik breeding stock</label>
+    <description>Live vizhik, picked off wet stone at wind-hour and carried home in a wet skin, gloved. Release into a stocked pool pen.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(190, 195, 170)</color>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>0.35</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_LoomuBreedingStock</defName>
+    <label>loomu breeding stock</label>
+    <description>A live loomu, called in with a whistle and carried home in a wet skin, already murmuring back what it heard on the way. Release into a stocked pool pen.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150, 150, 158)</color>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>40</MarketValue>
+      <Mass>0.5</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_HulduBreedingStock</defName>
+    <label>huldu breeding stock</label>
+    <description>A live huldu, picked up and carried home in a wet skin, clinging and warm the whole way. Release into a stocked pool pen.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(170, 110, 70)</color>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>44</MarketValue>
+      <Mass>0.5</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_IvvolBreedingStock</defName>
+    <label>ivvol breeding stock</label>
+    <description>A live ivvol, lifted from the floor at night and carried home in a wet skin. Release into a stocked pool pen; a pen is said to run better with one.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120, 115, 100)</color>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>60</MarketValue>
+      <Mass>0.5</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

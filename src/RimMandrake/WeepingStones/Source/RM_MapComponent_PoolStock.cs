@@ -4,7 +4,7 @@ using Verse;
 namespace RimMandrake.WeepingStones
 {
 	/// <summary>
-	/// STOCKED_POOL_BUILD_1, wave 2 — "the honest hard part" the spec names
+	/// STOCKED_POOL_BUILD_1 — "the honest hard part" the spec names
 	/// (§3's build table): per-pool-body bookkeeping, pattern stolen from
 	/// <c>RimMandrake.FlowWorks.RM_LiquidBody</c>/<c>RM_LiquidStock</c> per the
 	/// item's own instruction (read that pair before touching this file again).
@@ -15,19 +15,23 @@ namespace RimMandrake.WeepingStones
 	/// Area/zone designator, not a building"), so there is no BFS over raw
 	/// terrain here the way LiquidBody discovers a lake on first canal contact.
 	///
-	/// What this wave DOES: identifies which <see cref="RM_Zone_PoolPen"/> zones
-	/// exist, gives each a scribed <see cref="RM_PoolBody"/> record, and — on a
-	/// throttled pulse — computes the READ gauge (spec §3's READ verb) from a
-	/// live census of pool fauna standing in the pen's cells: population count
-	/// and a Healthy/Thin/Silent/Vhorrin state.
+	/// Wave 2 shipped: zone tracking, a scribed <see cref="RM_PoolBody"/> per
+	/// pen, and the READ gauge (population census + Healthy/Thin/Silent/Vhorrin).
 	///
-	/// What this wave does NOT do, and is owed next (see the item's ledger
-	/// note): the STOCK/FEED/HARVEST/OVERDRAW/CULL/RECAPTURE jobs (nothing
-	/// spawns or moves fauna into a pen yet — population is read from whatever
-	/// is already standing there), the vhorrin EMERGENCE trigger (a live vhorrin
-	/// already present is correctly detected; nothing here ever creates one),
-	/// ring-density overlay ART (the gauge is exposed via the zone's inspect
-	/// string instead), handler injuries, and the vizhik escape event.
+	/// Wave 3 adds: the STOCK verb's release target (<see cref="RM_JobDriver_StockPoolPen"/>
+	/// spawns a pawn here) and the FEED verb's bookkeeping — <see cref="BodiesNeedingFeed"/>
+	/// for <see cref="RM_WorkGiver_FeedPoolPen"/> to find pens that are due, and
+	/// <see cref="Notify_Fed"/> for its JobDriver to record delivery. Going unfed
+	/// now has a real cost per spec §3's own "what goes wrong" column: 2+ days
+	/// forces at least a Thin READ regardless of population, 3+ days adds a small
+	/// per-pulse chance of losing one resident (never a vhorrin — it IS the crash
+	/// state, not a victim of it).
+	///
+	/// Still owed (see the item's ledger note): HARVEST/OVERDRAW/CULL/RECAPTURE
+	/// jobs, the vhorrin EMERGENCE trigger (a live vhorrin is correctly detected;
+	/// nothing yet spawns one from a crashed pool), ring-density overlay ART (the
+	/// gauge is exposed via the zone's inspect string instead), and the vizhik
+	/// escape event.
 	/// </summary>
 	public class RM_MapComponent_PoolStock : MapComponent
 	{
@@ -96,7 +100,54 @@ namespace RimMandrake.WeepingStones
 					bodies.RemoveAt(i);
 					continue;
 				}
+				if (body.lastFedTick < 0)
+				{
+					// A body scribed before wave 3 has no feed record at
+					// all -- treat it as "just fed" rather than instantly
+					// starving on the very first pulse after this update.
+					body.lastFedTick = Find.TickManager.TicksGame;
+				}
 				byZoneId[body.zoneId] = body;
+			}
+		}
+
+		/// <summary>Every body whose FEED is due (spec §3's daily cadence).
+		/// Read by <see cref="RM_WorkGiver_FeedPoolPen"/>.</summary>
+		public IEnumerable<RM_PoolBody> BodiesNeedingFeed(int currentTick)
+		{
+			for (int i = 0; i < bodies.Count; i++)
+			{
+				if (bodies[i].NeedsFeed(currentTick))
+				{
+					yield return bodies[i];
+				}
+			}
+		}
+
+		/// <summary>The live zone a body tracks, or null if orphaned (pruned
+		/// on the next RebuildIndex).</summary>
+		public Zone ZoneFor(RM_PoolBody body)
+		{
+			if (body == null)
+			{
+				return null;
+			}
+			List<Zone> allZones = map.zoneManager.AllZones;
+			for (int i = 0; i < allZones.Count; i++)
+			{
+				if (allZones[i].ID == body.zoneId)
+				{
+					return allZones[i];
+				}
+			}
+			return null;
+		}
+
+		public void Notify_Fed(RM_PoolBody body, int currentTick)
+		{
+			if (body != null)
+			{
+				body.lastFedTick = currentTick;
 			}
 		}
 
@@ -124,7 +175,11 @@ namespace RimMandrake.WeepingStones
 			{
 				return;
 			}
-			RM_PoolBody body = new RM_PoolBody(nextBodyId++) { zoneId = zone.ID };
+			RM_PoolBody body = new RM_PoolBody(nextBodyId++)
+			{
+				zoneId = zone.ID,
+				lastFedTick = Find.TickManager.TicksGame, // grace period: a brand-new pen isn't instantly "starving"
+			};
 			bodies.Add(body);
 			byZoneId[zone.ID] = body;
 			if (Prefs.DevMode)
@@ -166,6 +221,18 @@ namespace RimMandrake.WeepingStones
 			Pulse();
 		}
 
+		/// <summary>Below this many unfed days, FEED's "what goes wrong"
+		/// (spec §3) starts to bite: at least Thin regardless of raw
+		/// population. At <see cref="UnfedDecayDays"/> the stock curve
+		/// itself starts to bend down (a small chance per pulse of losing
+		/// one non-vhorrin resident) -- tuning inputs, not a claim these
+		/// are final, same honesty as <see cref="ThinPopulationFraction"/>.</summary>
+		private const int UnfedThinDays = 2;
+
+		private const int UnfedDecayDays = 3;
+
+		private const float UnfedDeathChancePerPulse = 0.03f;
+
 		/// <summary>One census pass over every spawned pawn, bucketed by which
 		/// pen (if any) it stands in — cheaper than one full-map scan per body,
 		/// and the same "one owner, one pass" reasoning RM_LiquidStock.Pulse
@@ -184,6 +251,7 @@ namespace RimMandrake.WeepingStones
 
 			Dictionary<int, int> populationByZone = new Dictionary<int, int>();
 			Dictionary<int, int> vhorrinByZone = new Dictionary<int, int>();
+			Dictionary<int, List<Pawn>> starveCandidatesByZone = new Dictionary<int, List<Pawn>>();
 			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
 			for (int i = 0; i < pawns.Count; i++)
 			{
@@ -203,9 +271,17 @@ namespace RimMandrake.WeepingStones
 				{
 					vhorrinByZone.TryGetValue(zone.ID, out int vc);
 					vhorrinByZone[zone.ID] = vc + 1;
+					continue; // never a starvation-decay target -- it IS the crash, not a victim of one
 				}
+				if (!starveCandidatesByZone.TryGetValue(zone.ID, out List<Pawn> candidates))
+				{
+					candidates = new List<Pawn>();
+					starveCandidatesByZone[zone.ID] = candidates;
+				}
+				candidates.Add(pawn);
 			}
 
+			int currentTick = Find.TickManager.TicksGame;
 			for (int i = 0; i < bodies.Count; i++)
 			{
 				RM_PoolBody body = bodies[i];
@@ -215,12 +291,25 @@ namespace RimMandrake.WeepingStones
 				}
 				populationByZone.TryGetValue(body.zoneId, out int population);
 				vhorrinByZone.TryGetValue(body.zoneId, out int vhorrinCount);
+				int unfedDays = body.UnfedDays(currentTick);
 				body.population = population;
-				body.state = ClassifyState(population, vhorrinCount, zone.CellCount);
+				body.state = ClassifyState(population, vhorrinCount, zone.CellCount, unfedDays);
+
+				if (unfedDays >= UnfedDecayDays
+					&& starveCandidatesByZone.TryGetValue(body.zoneId, out List<Pawn> candidates)
+					&& candidates.Count > 0
+					&& Rand.Chance(UnfedDeathChancePerPulse))
+				{
+					Pawn victim = candidates[Rand.Range(0, candidates.Count)];
+					if (victim.Spawned)
+					{
+						victim.Kill(null);
+					}
+				}
 			}
 		}
 
-		private static RM_PoolStockState ClassifyState(int population, int vhorrinCount, int cellCount)
+		private static RM_PoolStockState ClassifyState(int population, int vhorrinCount, int cellCount, int unfedDays)
 		{
 			if (vhorrinCount > 0)
 			{
@@ -229,6 +318,10 @@ namespace RimMandrake.WeepingStones
 			if (population <= 0)
 			{
 				return RM_PoolStockState.Silent;
+			}
+			if (unfedDays >= UnfedThinDays)
+			{
+				return RM_PoolStockState.Thin;
 			}
 			if (cellCount > 0 && population < cellCount * ThinPopulationFraction)
 			{
