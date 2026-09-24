@@ -314,13 +314,88 @@ whether a pawn's pathing can be constrained to a terrain set at all; whether a `
 large paths through shallow water without breaking; and whether the duty seam behaves on a
 non-insect tree. Desktop, before any of this is built.
 
-### ⚠️ For the owner — one thing I did NOT author, on purpose
+### 6a. 🔴 She dies of age — and the young inherit her. Ruled 2026-09-23.
 
-When I pitched this, part of the idea was that **she eventually dies and you inherit the crèche**,
-with every scavenger on the map knowing she's gone. You didn't repeat it, and it is the part most
-likely to be resented rather than felt — a scripted loss of a defence a player has spent a
-campaign earning. ⇒ **Left out.** She is currently mortal only in the ordinary way. If you want
-the clock, it needs to be foreshadowed from the first day, and that is its own ruling.
+Two rulings, taken together, and they close the biome's thesis as a mechanic.
+
+**Ruling one, by question card:** *she dies of age, foreshadowed hard from the first day*, and you
+inherit the crèche.
+
+**Ruling two, his words:**
+
+> *"And the babies should be trainable, making it even stranger... now what when they love you but
+> can only survive in the water? They should frequently self-tame if there are no hostilities
+> against them."*
+
+#### The answer to his question: they inherit her
+
+🔑 **The succession IS the payoff, and it is what makes the death clock bearable.** She dies. If
+you have spent the campaign pulling her young out of drying pools — and they have self-tamed, and
+grown — **one of them stays and takes the crèche.** You do not inherit an empty place; you inherit a
+*guarded* one, guarded by an animal that chose you because of what you did for its siblings.
+
+⛔ **And it must NOT be guaranteed.** The sheet's own thesis is *"Out of darkness, possibility. Out
+of muck and stink, rebirth... **maybe**."* ⇒ If you rescued nothing, she dies, the crèche is just a
+place, and the scavengers come. That is the same bargain the Wildsteam pilgrimage already names —
+*"you either die or return with hope found."* The biome should be capable of both outcomes, and the
+difference must be **entirely** the player's record.
+
+#### Self-taming: they are not tamed, they consent
+
+🔑 **Same rule as the mother, at a smaller scale.** Her tolerance is removal from a target set;
+their taming is the same idea with affection on top. You do not tame them — **you simply never harm
+them, and they choose you.** Frequent self-tame while your record against that crèche is clean;
+barred or reset the moment you harvest, kill, or butcher one.
+
+⚠️ **This is now a house pattern worth naming, because three separate sittings have converged on
+it:** the Fever Wood's sap-drinker guild works on consent and *"fear is the universal failure
+mode"*; the warden mother's tolerance is consent; and these young self-tame on consent. ⇒ **Animals
+in this project are not conquered, they agree** — and that is a real identity, not a coincidence. A
+later pass that adds a conventional taming grind here is working against three rulings at once.
+
+#### The ache, and it is the content rather than a problem to solve
+
+🔴 **A tamed young cannot follow you home.** It follows you along the water as far as the water
+goes, and then it **stops at the waterline and watches you walk inland.** It is there when you come
+back.
+
+⇒ That is the exact inversion of the mother's tragedy — she cannot reach her child; now your animal
+cannot reach your home — and it costs nothing to build, because it is the *same* water-only
+constraint applied to a tame pawn. ⛔ **Do not solve it.** No land-walking upgrade, no tank, no
+carrying it around. The whole point is that the affection is real and the geography does not care.
+
+#### What a water-bound tame animal can actually DO
+
+Trainability has to be **water-scoped**, or it ships as an animal that can be trained and cannot
+perform:
+
+| trainable | why it works in water |
+|---|---|
+| **Guard** | it patrols the channel your holding backs onto — the same protection as the mother, smaller, and *yours* |
+| ⭐ **Haul, from the water only** | 🔑 **the flotsam yard is already a Miasma economy** (sheet §7) and `RM_Thrannock`'s root-nets are where it collects. A trained young working the root-lines is the single best fit between a creature and an existing economy in this biome |
+| **Release / attack** | in water. Against raiders crossing a channel, and against whatever comes for the crèche |
+| ⛔ **not Rescue, not general Haul** | both need land. An animal that fails its own trained job is a bug wearing a feature |
+
+#### Growing up — and this is where the succession comes from
+
+The nursery's young grow into the Grey Sea's adults, and those adults are *"the reason ships sink."*
+⇒ A young you raised becomes **enormous**. Two outcomes, and the player's record decides:
+
+- it **leaves for the sea** when it matures, as its kind do — a goodbye, and the ordinary case; or
+- ⭐ it **stays**, and when the warden mother dies it takes the crèche and its reach becomes yours.
+
+#### Foreshadowing her death — the requirement, not a nicety
+
+🔴 **This is the part that decides whether the ruling feels earned or feels like a betrayal, and
+subtlety is failure.** She must read as ancient and failing from the **first** time you see her:
+
+- visibly old in the art brief — barnacled, scarred, clouded; ⛔ not merely large
+- an inspect string that **says it outright**, not a hint
+- she slows measurably as she ages, so the player watches it happen rather than being told once
+- 🔑 **and somebody tells you.** The Deepwater vigil measures the brine year by year; they are
+  exactly who would know how long she has. A Wildsteam pilgrim would say it differently.
+
+⛔ **A player who is surprised by her death means this was built wrong**, however good the rest is.
 
 ---
 
