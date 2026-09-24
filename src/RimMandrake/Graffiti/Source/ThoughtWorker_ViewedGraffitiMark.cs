@@ -59,7 +59,20 @@ namespace RimMandrake.Graffiti
                 for (int i = 0; i < thingList.Count; i++)
                 {
                     ModExtension_Graffiti ext = thingList[i].def.GetModExtension<ModExtension_Graffiti>();
-                    if (ext == null || ext.viewerReactionThought != def)
+                    if (ext == null)
+                    {
+                        continue;
+                    }
+                    // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 §1.5: relation-keyed
+                    // reactions. ResolveReactionThought picks the ONE
+                    // ThoughtDef this specific viewer should get from this
+                    // specific mark (subject > own faction > same ideo >
+                    // hostile maker > other ideo > the old flat fallback) -
+                    // this ThoughtWorker instance only fires if that
+                    // resolved pick is the ThoughtDef it belongs to (`def`),
+                    // exactly as the old single-field check did.
+                    ThoughtDef resolved = ResolveReactionThought(ext, thingList[i] as Filth_Mark, p);
+                    if (resolved != def)
                     {
                         continue;
                     }
@@ -86,6 +99,43 @@ namespace RimMandrake.Graffiti
                 }
             }
             return null;
+        }
+
+        // Priority order per ModExtension_Graffiti's own field comments:
+        // I-am-the-subject beats everything, then my own faction made it,
+        // then same ideo, then a hostile maker, then a different ideo,
+        // and finally the flat viewerReactionThought every mark has always
+        // had. A mark with no provenance (mark == null - predates this
+        // item, or its placer never stamped a maker) or with none of the
+        // relation fields set behaves exactly as before: only the flat
+        // field is checked.
+        private static ThoughtDef ResolveReactionThought(ModExtension_Graffiti ext, Filth_Mark mark, Pawn viewer)
+        {
+            if (mark != null)
+            {
+                if (ext.onViewSubject != null && mark.subject == viewer)
+                {
+                    return ext.onViewSubject;
+                }
+                if (ext.onViewOwnFaction != null && mark.makerFaction != null && mark.makerFaction == viewer.Faction)
+                {
+                    return ext.onViewOwnFaction;
+                }
+                if (ext.onViewSameIdeo != null && mark.makerIdeo != null && mark.makerIdeo == viewer.Ideo)
+                {
+                    return ext.onViewSameIdeo;
+                }
+                if (ext.onViewHostileMaker != null && mark.makerFaction != null && viewer.Faction != null &&
+                    mark.makerFaction.HostileTo(viewer.Faction))
+                {
+                    return ext.onViewHostileMaker;
+                }
+                if (ext.onViewOtherIdeo != null && mark.makerIdeo != null && mark.makerIdeo != viewer.Ideo)
+                {
+                    return ext.onViewOtherIdeo;
+                }
+            }
+            return ext.viewerReactionThought;
         }
     }
 }

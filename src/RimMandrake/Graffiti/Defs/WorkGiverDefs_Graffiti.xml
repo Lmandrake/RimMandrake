@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Fulfils Designator_PaintGraffitiMark's designations. WorkTypeDef Art
+       (vanilla, Core) is the thematic fit - painting graffiti is closer to
+       sculpting/painting than to cleaning or construction. -->
+  <WorkGiverDef>
+    <defName>RM_PaintGraffitiDesignated</defName>
+    <label>paint graffiti</label>
+    <giverClass>RimMandrake.Graffiti.WorkGiver_PaintGraffitiDesignated</giverClass>
+    <workType>Art</workType>
+    <verb>paint graffiti at</verb>
+    <gerund>painting graffiti at</gerund>
+    <priorityInType>50</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

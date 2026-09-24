@@ -8,7 +8,9 @@
   </supportedVersions>
   <description>The engine for the graffiti program (design/Jawa/graffiti_spec.md), superseding Graffiti Mod (Continued) (Mlie.GraffitiMod) per the owner's 2026-08-31 ruling: "we absorb the vandal-spree mechanic into our own framework C# and RETIRE Mlie.GraffitiMod from the mod list."
 
-`ModExtension_Graffiti`: a data annotation any graffiti ThingDef can carry (category - Sacred/Mural/Jest/Taunt/Cant, quality support, maker/subject tracking, a viewer-reaction ThoughtDef seam, and a god-satiation-hook string a RUT content pack reads to call into mandrake.rm.ninefold). Nothing reads these fields yet - the viewer ThoughtWorker and the taunt-driven raid breach-bias hook are a separate, larger pass.
+`ModExtension_Graffiti`: a data annotation any graffiti ThingDef can carry - a FORM axis (Scrawl/Tag/ThrowUp/Stencil/Paste/Sigil/Glyph/Piece) beside the FUNCTION axis (category - None/Devotional/Mural/Jest/Taunt/Code), quality support, maker/subject/faction/ideo tracking (Filth_Mark), relation-keyed viewer-reaction ThoughtDefs, a meme-affinity gate (requiresAnyMeme, tier C), tier-A ideoligion-icon sigil rendering, and a god-satiation-hook string a RUT content pack reads to call into mandrake.rm.ninefold.
+
+GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 (2026-09-24) widened the engine from four example marks into a system: a punk-urban register (tags, throw-ups, crisp non-fading stencils, decaying wheat-pastes), ideoligion sigils grounded in the vanilla Ideology/Biotech/Anomaly/Odyssey meme roster (tier A - every ideo's own icon+colour, zero per-ideo art; tier C - a meme-affinity glyph, gated by GraffitiPool to ideos holding that meme), a data-driven weighted pool selector, a player Designator + WorkGiver, a raid-exit tagger (a departing hostile leaves its own mark), going-over (a rival mark is replaced, never thickened), and scrub protection for own-faction/Devotional marks. Full RM/RUT seam and open questions: infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md.
 
 The absorbed spree mechanic: an unhappy or idle artistic pawn seeks "paint graffiti" as Meditative joy (RM_PaintGraffitiJob/RM_PaintGraffitiJoy) or, on the RM_GraffitiPaintingSpreeBreak mental break, is forced to paint repeatedly for a stretch - both spawn RM_Graffiti_Vandal, an untrained scrawl mark with negative Beauty, on a nearby wall. Fresh C# against the real vanilla toil API (JobDriver_RelaxAlone's goto-and-gain-Joy shape, JobDriver_Floordrawing's spawn-on-completion shape) - the donor mod ships no source to reuse directly.
 
@@ -16,7 +18,16 @@ RM_Graffiti_Vandal's six texture variants are Graffiti Mod (Continued)'s own art
 
 Ships the engine plus four generic vanilla-register example marks (RM_Graffiti_Vandal, RM_Graffiti_Scratches, RM_Graffiti_TallyMarks, RM_Graffiti_WarningGlyph - GRAFFITI_GENERIC_MARKS_1, owner R7 2026-09-08). The nine campaign mark-styles move to Salvation (RUT tier) separately, not this mod.</description>
 
+  <!-- loadAfter is a soft dependency - harmless if the named mod isn't
+       installed at all. Ideology/Biotech/Anomaly/Odyssey added
+       GRAFFITI_PUNK_IDEOLIGION_SCOPE_1: this mod's tier-C meme-glyph
+       ThingDefs (Defs/ThingDefs_GraffitiMemeGlyphs.xml) reference MemeDefs
+       those expansions own, each wrapped in its own per-def MayRequire. -->
   <loadAfter>
     <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
   </loadAfter>
 </ModMetaData>

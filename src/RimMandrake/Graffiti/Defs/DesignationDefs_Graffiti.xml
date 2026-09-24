@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 mechanism 4's Designator placer:
+       marks a wall cell for a colonist to paint on, same shape as vanilla's
+       own cell designations (Mine, PlantsHarvest). Reuses a vanilla UI icon
+       (UI/Designators/Mine) rather than owing new UI art for a tiny gizmo
+       glyph - Designator_PaintGraffitiMark.cs's own icon (shown on the
+       gizmo button itself) is RM_Graffiti_Vandal's own texture instead. -->
+  <DesignationDef>
+    <defName>RM_PaintGraffitiHere</defName>
+    <texturePath>UI/Designators/Mine</texturePath>
+    <targetType>Cell</targetType>
+  </DesignationDef>
+
+</Defs>

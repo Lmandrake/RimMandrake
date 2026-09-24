@@ -9,6 +9,7 @@ namespace RimMandrake.Graffiti
         public static ThingDef RM_Graffiti_Vandal;
         public static JobDef RM_PaintGraffitiJob;
         public static MentalStateDef RM_GraffitiPaintingSpreeState;
+        public static DesignationDef RM_PaintGraffitiHere;
 
         static RMGraffitiDefOf()
         {

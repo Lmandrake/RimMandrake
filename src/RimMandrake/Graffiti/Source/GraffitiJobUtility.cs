@@ -54,13 +54,59 @@ namespace RimMandrake.Graffiti
             return false;
         }
 
+        // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1: with a pool of marks (not just
+        // RM_Graffiti_Vandal) now in play, "already marked" means any
+        // Filth_Mark, not one specific def - otherwise the spree would
+        // happily stack a Tag right on top of a Stencil at the same cell
+        // instead of finding a bare wall (going-over is for placers that
+        // WANT to cover a rival's mark, not the ordinary wander target).
         private static bool AlreadyMarked(IntVec3 c, Map map)
         {
             List<Thing> things = c.GetThingList(map);
             for (int i = 0; i < things.Count; i++)
             {
+                if (things[i] is Filth_Mark) return true;
                 if (things[i].def == RMGraffitiDefOf.RM_Graffiti_Vandal) return true;
             }
+            return false;
+        }
+
+        // RaidExitTagger's own finder: unlike TryFindWallMarkCell, this
+        // takes a bare position (not a pawn to reserve-and-path for) -
+        // the raider is leaving RIGHT NOW, not walking anywhere, so this
+        // is an instant environmental stamp near where they stood, not a
+        // job. No CanReserveAndReach gate (nobody needs to path there);
+        // still requires a cardinal wall and an in-bounds standable cell,
+        // same physical eligibility as the ordinary finder.
+        private const int RaidExitSearchRadius = 6;
+
+        public static bool TryFindWallMarkCellNear(IntVec3 near, Map map, out IntVec3 result)
+        {
+            List<IntVec3> bare = new List<IntVec3>();
+            List<IntVec3> anyValid = new List<IntVec3>();
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(near, RaidExitSearchRadius, useCenter: true))
+            {
+                if (!c.InBounds(map)) continue;
+                if (!c.Standable(map)) continue;
+                if (!HasCardinalWall(c, map)) continue;
+
+                if (!AlreadyMarked(c, map))
+                {
+                    bare.Add(c);
+                    if (bare.Count >= MaxCandidates) break;
+                }
+                else if (anyValid.Count < MaxCandidates)
+                {
+                    anyValid.Add(c);
+                }
+            }
+            List<IntVec3> pool = bare.Count > 0 ? bare : anyValid;
+            if (pool.Count > 0)
+            {
+                result = pool.RandomElement();
+                return true;
+            }
+            result = IntVec3.Invalid;
             return false;
         }
 
