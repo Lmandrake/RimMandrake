@@ -144,3 +144,130 @@ duplicate).
 Still `proposed` — the census does not authorize porting; spec step 1's
 full per-donor cost grading and step 2's keep/cut pass are both still
 unstarted, and `⛔ Do not start porting 300 defs` stands.
+
+## FOUNDRY, 2026-09-24: spec steps 1 and 2, the offline prep the owner sitting needs
+
+Read-only research pass. Nothing ported, nothing renamed, no def/XML touched.
+Method and full data below so the sitting doesn't have to re-derive it.
+
+### 1. Per-donor porting cost — MEASURED against each donor's own source
+
+**`mlie.starwarsanimalcollection`** — not present as a mod folder on this
+machine's Steam Workshop cache, but fully vendored at
+`vendor/mod_sources/StarWarsAnimalCollection_src` (repo already had it). **Full
+census, all 160 ThingDefs** in `1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml`:
+
+- **No `Assemblies/` or `Source/` folder in the mod at all — it is pure XML,
+  zero required C#.**
+- Every comp used across all 160 entries is a stock RimWorld class:
+  `CompProperties_EggLayer` (×71), `CompProperties_Milkable` (×16),
+  `CompProperties_Shearable` (×12), `CompProperties_CanBeDormant`/
+  `WakeUpDormant` (×9 each). One render node,
+  `PawnRenderNodeProperties_BulbfreakTentacle` (3 uses, one species — Beldon),
+  is a **vanilla Anomaly DLC class** reused for a tentacle look, not custom.
+- Two entries carry a `MayRequire`-guarded soft extension
+  (`pathfinding.framework`'s `MovementExtension`, `Mlie.XNDNocturnalAnimals`'s
+  `ExtendedRaceProperties`) — both optional, both degrade to nothing if
+  absent.
+- **GRADE: LOW, essentially uniform across all 160/160.** Straight
+  ThingDef+PawnKindDef copy-with-rename + art-copy job, the `RSW_FungalWeevil`
+  shape exactly. Nothing here needs reimplementing.
+
+**`sarg.alphaanimals`** — vendored nowhere in this repo; measured live from the
+Steam Workshop cache (content id `1541721856`, packageId confirmed from its own
+`About.xml`). Of this donor's **102 roster entries** (per this item's own
+2026-09-20 table), **66 were matched and graded directly** — the ones that
+appear as literal `<li MayRequire="sarg.alphaanimals">` rows inside our own
+`RUT_*.xml` BiomeDef files. The remaining ~36 are wired through
+`UtinniPatches/Patches/WildAnimals_*.xml` injection patches and were **not**
+individually graded this pass — flagging this as a sample, not full coverage,
+per the task's own allowance. (The donor's whole 141-ThingDef races library
+uses the same comp vocabulary uniformly, so the ungraded remainder likely
+splits the same way, but that's an inference, not a measurement.)
+
+- **Every one of the 66 graded entries carries `VEF.AnimalBehaviours.AnimalStatExtension`
+  at minimum** — this donor's entire cast rides on Vanilla Expanded Framework's
+  "Animal Behaviours" module (packageId `vanillaexpanded.vfecore`), not on
+  vanilla Core comps.
+- 🔑 **`vanillaexpanded.vfecore` is already a permanent, load-bearing
+  dependency of our OWN content** — `src/RimStarWars/SWBestiary` (the
+  BiomesTeamPort races/items/bodies/sounds), `src/RimStarWars/Armoury`, and
+  `src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml` all reference
+  `VEF.*` classes directly today. So referencing `VEF.AnimalBehaviours` comps
+  on our own ported ThingDefs is **not new C# work** — it's XML authored
+  against a framework we already keep regardless of Alpha Animals' fate.
+  **61 of 66 graded entries (92%) are this shape — GRADE MEDIUM**: copy +
+  rename + re-verify the VEF comp block, not a zero-risk port but not
+  reimplementation either.
+- **5 of 66 additionally use `AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher`**
+  — `AA_Agaripawn`, `AA_Agaripod`, `AA_DecayDrake`, `AA_MycoidColossus`,
+  `AA_Thermadon`. That class lives in Alpha Animals' own private
+  `AlphaBehavioursAndEvents.dll`, which disappears the moment the donor mod
+  folder is dropped. **GRADE HIGH**: needs either reimplementing that comp in
+  our own C#, or accepting the cosmetic loss (a growth-stage graphics
+  refresher — plausibly droppable, but that's a call for the sitting, not this
+  pass).
+- Full grade table (66 entries, name / grade / comp classes) is in the
+  session's working notes; the counts above are the load-bearing numbers.
+
+**Portability gap worth naming**: Star Wars Animal Collection's source is
+vendored in-repo; Alpha Animals' is not. A future pass done from a machine
+without this Steam Workshop cache (e.g. RimSage's own index did not have
+either donor loaded this session, likely stale/mod-set-mismatched) cannot
+re-derive the Alpha Animals numbers above without vendoring its source too.
+
+### 2. Keep/cut ruling status — repo-wide check, not desert-only
+
+Checked every biome whose `RUT_*` BiomeDef references either donor (22 biomes)
+against its `design/Jawa/worldbuilding/biomes/rosters/*.json` `fauna[].action`
+field and any biome-specific fauna-roster sitting doc.
+
+🔴 **The `action: "keep"/"adjust-keep"/"import"` field inside every roster
+JSON — including the desert's — is NOT an owner ruling.** This item's own
+history already established that the desert roster (which carries 13 `keep`
+and 4 `import` actions on donor rows in `desert.json` right now) was ruled by
+the owner as "never keep/cut ruled at all." That verdict generalizes: these
+fields are a working/proposed categorization, not a sat decision, **repo-wide**.
+Do not mistake a JSON `action` field for a ruling anywhere in this roster set.
+
+The only two donor-touched biomes with an **actual dated owner ruling**
+(RULED CUT / RULED KEEP, per-row, carded or typed, in a dedicated
+`*_fauna_roster_*.md` sitting doc) are:
+
+| biome | sitting doc | donor rows ruled |
+|---|---|---|
+| **Sump** | `sump_fauna_roster_2026-09-24.md` | `AA_TarGuzzler`→`RM_Gulveth`, `AA_Bumbledrone`→`RM_Thrummel`, `AA_BumbledroneHierophant`→`RM_ThrummelWarden`, `AA_BumbledroneQueen`→`RM_ThrummelBroodmother` — all RULED replace, 2026-09-24 |
+| **Webwork** | `webwork_fauna_roster_2026-09-23.md` | `Wyyyschokk`, `Kreetle`, `Shyrack` (`mlie.starwarsanimalcollection`), `RSW_JewelBeetle` — all RULED CUT, 2026-09-23/24 |
+
+Two more biomes have a sitting in progress with behaviour-level rulings landed
+but donor rows only **PROPOSED**, not yet carded:
+
+| biome | doc | state |
+|---|---|---|
+| Miasma | `miasma_fauna_roster_2026-09-23.md` | structural rulings landed (tier, warden mother, stranded); fauna-row dispositions marked PROPOSED, execution explicitly "by nobody here" |
+| Fever Wood | `fever_wood_fauna_roster_2026-09-23.md` | behaviour rulings landed (borer galleries, thornbug contract); no per-donor-row RULED CUT/KEEP table yet |
+
+**Every other donor-touched biome has no keep/cut ruling of any kind found** —
+Arid Shrubland, Contagion, Cracked Lands, Forsaken Crags, Greentide, Grey Sea,
+Nightside Ice, Poison Forest, Propane Lake, Scarlands, Slime, The Forge, The
+Rot, Twilight Sea, Wasteland, Weeping Stones, and Desert (confirmed, matches
+this item's existing finding). **Fuel Snows and Umbra have no
+`rosters/*.json` at all** — even the unruled working categorization is
+missing for those two.
+
+Per-biome donor-row and eviction counts (from each roster JSON, `action`
+field distribution — working categorization, not rulings) are in the
+session's working notes; available on request rather than reproduced here to
+keep this section a decision table, not a dump.
+
+### 3. Ordering table (by entries, cost as a column — not a recommendation)
+
+| donor | roster entries | measured cost | keep/cut state |
+|---:|---|---|---|
+| 160 | `mlie.starwarsanimalcollection` | **LOW**, 160/160 measured, pure XML, zero required C# | 2 of its touched biomes (Webwork) have a dated CUT ruling; the rest do not |
+| 102 | `sarg.alphaanimals` | **MEDIUM** (61/66 sampled) / **HIGH** (5/66 sampled, private-assembly comp) | 1 of its touched biomes (Sump) has a dated replace ruling; the rest do not |
+
+Not concluded here: which donor goes first is the owner sitting's call per
+this item's own spec (`⛔ Do not start porting 300 defs`). The facts above are
+what step 1 and step 2 were owed before that sitting; both are now available
+rather than abstract.
