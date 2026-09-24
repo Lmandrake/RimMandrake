@@ -200,7 +200,7 @@
       <Urusai MayRequire="mlie.starwarsanimalcollection">0.5</Urusai>  <!-- urusai - crown-flier, keep -->
       <VFEI2_Megathrips MayRequire="oskarpotocki.vfe.insectoid2">0.5</VFEI2_Megathrips>  <!-- megathrips - wood-borer, keep -->
       <Gelagrub MayRequire="mlie.starwarsanimalcollection">0.4</Gelagrub>  <!-- gelagrub - crown-grazer, adjust-keep -->
-      <Nuna MayRequire="mlie.starwarsanimalcollection">0.4</Nuna>  <!-- nuna - grazer, keep -->
+      <RSW_Nuna MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Nuna>  <!-- nuna - grazer, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Nuna to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <Convor MayRequire="mlie.starwarsanimalcollection">0.3</Convor>  <!-- convor - crown-flier, import -->
       <LongtailGorg MayRequire="mlie.starwarsanimalcollection">0.3</LongtailGorg>  <!-- longtail gorg - wait-ambush, keep -->
       <Whisperbird MayRequire="mlie.starwarsanimalcollection">0.3</Whisperbird>  <!-- whisperbird - crown-flier, import -->

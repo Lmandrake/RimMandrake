@@ -211,7 +211,7 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <Kreetle MayRequire="mlie.starwarsanimalcollection">1.0</Kreetle>  <!-- kreetle - arthropod-floor, keep -->
+      <RSW_Kreetle MayRequire="mandrake.rsw.swbestiary">1.0</RSW_Kreetle>  <!-- kreetle - arthropod-floor, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Kreetle to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <Yobshrimp MayRequire="mlie.starwarsanimalcollection">0.8</Yobshrimp>  <!-- yobshrimp - arthropod-floor, import -->
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin, keep -->
       <RSW_Gembug MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Gembug>  <!-- gembug - arthropod-floor, keep -->

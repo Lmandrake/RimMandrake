@@ -141,7 +141,7 @@
            bodySize 1.0 and 1.1 — both LARGE, so adding them would move the ratio the
            wrong way). Kreetle is raised instead, same shape as the Gizka fix: no
            megafauna cut. -->
-      <Kreetle MayRequire="mlie.starwarsanimalcollection">0.8</Kreetle>  <!-- kreetle - trace-prey, adjust-keep; boosted from 0.2 for the ecosystem pyramid law -->
+      <RSW_Kreetle MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Kreetle>  <!-- kreetle - trace-prey, adjust-keep; boosted from 0.2 for the ecosystem pyramid law; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Kreetle to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <Shyrack MayRequire="mlie.starwarsanimalcollection">0.2</Shyrack>  <!-- shyrack - trace-flier, keep -->
     </wildAnimals>
     <coastalWildAnimals />
