@@ -654,10 +654,10 @@
     "sha": "43f96b1b"
   },
   "src/DEPLOY_HOLD.txt": {
-    "cleanCount": 5,
-    "date": "2026-09-20",
-    "hash": "1ba5bbd8019a8dbaa68dd6e9514eba989d874c0fcca1417f62ad4ce50f49833a",
-    "sha": "dec103e98"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "629434a192513a2a6eaf7e4bdf35aaa94b605d9dc404d0a4d457044338f3a3b0",
+    "sha": "e05f7e0f8"
   },
   "src/RimMandrake/Aftermath/About/About.xml": {
     "cleanCount": 2,
@@ -822,10 +822,10 @@
     "sha": "3e547d539"
   },
   "src/RimMandrake/CreatureBehaviors/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-19",
-    "hash": "9cffb5b033bac20f8353316d3a81d5393bed8f03bcb2a6accfa386f3c8bfdc45",
-    "sha": "fc438d857"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "ef619f50304775d010dbb9e20dcbb47955809433ee0d149735af29401f28ab35",
+    "sha": "e05f7e0f8"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/JobDefs/RM_JobDefs.xml": {
     "cleanCount": 4,
@@ -1032,10 +1032,10 @@
     "sha": "e1c3162cb"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs": {
-    "cleanCount": 4,
-    "date": "2026-09-19",
-    "hash": "9b82f3105fe3ed316cc9a1bf68463a93343e676af8635d4a2d44b51ba706090c",
-    "sha": "640d910a8"
+    "cleanCount": 5,
+    "date": "2026-09-24",
+    "hash": "28cd4cc56189aca7ac4379054cc209bc43a0051b5a9c25e9bac2ff22cee6d606",
+    "sha": "e05f7e0f8"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_EatCleanableExtension.cs": {
     "cleanCount": 1,
@@ -2190,10 +2190,10 @@
     "sha": "0aa131589"
   },
   "src/RimMandrake/FloodedCanyon/Defs/BiomeDefs/RM_FloodedCanyon_Biome.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "23098ce47de920ccd76576f81bb297a56a5e57018bc10388de5f5f0392462118",
-    "sha": "0aa131589"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "231f4a783eec0defff378c088b932d3a2fea24f065db0409ed5ffb70a4689351",
+    "sha": "e05f7e0f8"
   },
   "src/RimMandrake/FloodedCanyon/Defs/GameConditionDefs/RM_FloodedCanyon_GameConditionDefs.xml": {
     "cleanCount": 1,
@@ -2334,10 +2334,10 @@
     "sha": "336688eb2"
   },
   "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Propane.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "3bb07bb85e1d6b2a9f7e5c3371738ec9a113793ab4670f9261355ce3a8c18ac0",
-    "sha": "336688eb2"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "023c1212f8e07860a381aab972a4eb6e72501c902f77ae46f2fea9854b373fdc",
+    "sha": "e05f7e0f8"
   },
   "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_ReactionLiquor.xml": {
     "cleanCount": 2,
@@ -2688,10 +2688,10 @@
     "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/FlowWorks/Source/ManyWaters/RiverSteamHook.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "b4894dc28dba7174c87e9d00f5301e17cfa92a6c1782731dd381efd957794b9e",
-    "sha": "504ead829"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "238bdd2ae75739c84af94831ca321cb58a788169f11b162d94d72dd174f8cbbb",
+    "sha": "e05f7e0f8"
   },
   "src/RimMandrake/FlowWorks/Source/ManyWaters/RiverSteamSettings.cs": {
     "cleanCount": 1,
@@ -3564,10 +3564,10 @@
     "sha": "7b9f17a9"
   },
   "src/RimMandrake/Inhabited/Source/DebugActions_Inhabited.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-06",
-    "hash": "449373effd81cabebda302bfa9bde742031bc28c2bd71dd4845aaabd37604900",
-    "sha": "572413c0"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "904e1224fcd62eda1f979ebbe98ceb2614cd0ab16d89a74fe89ba6e38b53f68b",
+    "sha": "e05f7e0f8"
   },
   "src/RimMandrake/Inhabited/Source/DisplacedPool.cs": {
     "cleanCount": 1,
@@ -5358,10 +5358,10 @@
     "sha": "b88a6f90"
   },
   "src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "9b680f4b12d63f1bf78e147a62197d99ed739592acaffce4cfefca2880360c86",
-    "sha": "2467e0a2d"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "55811fb8075501bc551da80e565940e337edde786193b7618710d20f14d25dcf",
+    "sha": "e05f7e0f8"
   },
   "src/RimMandrake/StructureInjections/Source/GenStep_Whisper_NoOp.cs": {
     "cleanCount": 1,
@@ -5754,10 +5754,10 @@
     "sha": "ff8b3a821"
   },
   "src/RimMandrake/Utils/artpipe/selftest_artpipe.py": {
-    "cleanCount": 5,
-    "date": "2026-09-20",
-    "hash": "0c7f20471d67f43f2e74502e32b1216884a632c4d3d8dd56d469d55633f81f24",
-    "sha": "918c13ace"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "5694e81adf8364f350dc42b8eb3004f48aee29d1993c854072118c4453316ba1",
+    "sha": "e05f7e0f8"
   },
   "src/RimMandrake/Utils/ashkarr_clamp_rain.py": {
     "cleanCount": 2,
@@ -13252,10 +13252,10 @@
     "sha": "38a129f28"
   },
   "src/RimStarWars/StarWarsPatches/Defs/PawnKindDefs/AlienSpawnEnablers.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "d8d7a427abd40464517af1bd3056f4ab82af70f6506c23a3495696aa9171011f",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "ad9775efcad1192e3af9bd847d24eef25ede70802c34be4c439110a9e957ede4",
+    "sha": "e05f7e0f8"
   },
   "src/RimStarWars/StarWarsPatches/Defs/PawnKindDefs/GamorreanPawnKinds.xml": {
     "cleanCount": 2,
@@ -14086,16 +14086,16 @@
     "sha": "d28bf3edf"
   },
   "src/RimUtinni/AshkarrFlora/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "75f5496a1065001e3715ed509df3f9872d31aa4ff4c4a940f54aba188f88e9dc",
-    "sha": "52dee04f"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "10b257755be45ab61439322c607ee5215c41da0790810796a296a79a2085cb9f",
+    "sha": "e05f7e0f8"
   },
   "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AshkarrFlora_Plants.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "111c43825887ec78f1e769bbb736e60ac37c2acdfdc76576fc1d64459fe2bb25",
-    "sha": "38a129f28"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "92c37034228a19b5f0fd6cfb8b92f16f5cfa62c862ee74b59539ab37a986b163",
+    "sha": "e05f7e0f8"
   },
   "src/RimUtinni/AshkarrFlora/LICENSE": {
     "cleanCount": 1,
@@ -15460,10 +15460,10 @@
     "sha": "21d7a2cec"
   },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-19",
-    "hash": "a6795732d5d411d177b33ed8f65ffef8457c6ee43b8e6fa47605b6d40132a4a3",
-    "sha": "c97663189"
+    "cleanCount": 5,
+    "date": "2026-09-24",
+    "hash": "0da273e1e3a118bfb0a03ecf18a0b1f794b61ea45f9a0915bc45e058cbaebe2d",
+    "sha": "e05f7e0f8"
   },
   "src/RimUtinni/PawnFlavor/validation.py": {
     "cleanCount": 1,
@@ -15994,10 +15994,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_PaleTree.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-19",
-    "hash": "ee922523aedc87516d7496d7e025dfe26b7f75d6d59f8eb41395ca22374b35e7",
-    "sha": "640d910a8"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "e702459f012fbd5c6d29eda8a0e60e89e4e6ea699a34d8ad5a07be183ce4c813",
+    "sha": "e05f7e0f8"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_Flora.xml": {
     "cleanCount": 2,
@@ -17086,10 +17086,10 @@
     "sha": "9c1bce648"
   },
   "src/RimUtinni/UtinniPatches/About/About.xml": {
-    "cleanCount": 7,
-    "date": "2026-09-18",
-    "hash": "b131e29513bf5f3b4b357aee1919993c7074842aaafbca2226a3b36ddad0e073",
-    "sha": "e97fc76e4"
+    "cleanCount": 8,
+    "date": "2026-09-24",
+    "hash": "e92ed59704a5186ab35aed1abaeec4d89774e7dbc57008f06c50f89c63834c62",
+    "sha": "e05f7e0f8"
   },
   "src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml": {
     "cleanCount": 1,
@@ -17152,10 +17152,10 @@
     "sha": "9e603bde2"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml": {
-    "cleanCount": 6,
+    "cleanCount": 7,
     "date": "2026-09-24",
-    "hash": "9daa7eb6ff6c7bc50ee724b3ad03c25970fa5d3f0945668ff104701bf516a782",
-    "sha": "7bfbaa5e7"
+    "hash": "aa417f8ad02ae456d8fdef3ac78af2363b3a6e08ea0e7b0e964ba3856c759945",
+    "sha": "e05f7e0f8"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml": {
     "cleanCount": 2,
@@ -17302,10 +17302,10 @@
     "sha": "52c8c982c"
   },
   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaAscendantHelix.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "8a833b417883e88584984a792fd62dff534b4a42a0d1fdefcb8787c4d0a5d869",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "c01a4deeda0ec8dbea23a6059ab5d42e65f221b712057400721a5bfaeb38af2c",
+    "sha": "e05f7e0f8"
   },
   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaDeepwaterCompact.xml": {
     "cleanCount": 2,
