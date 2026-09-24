@@ -82,6 +82,20 @@
     <waterDeepTerrain>RUT_ScaldWaterDeep</waterDeepTerrain>
     <waterMovingShallowTerrain>RUT_ScaldWaterMovingShallow</waterMovingShallowTerrain>
     <waterMovingChestDeepTerrain>RUT_ScaldWaterMovingChestDeep</waterMovingChestDeepTerrain>
+
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-23. Makes the land tiles around the
+         Scald read as coastal and cut a real shore, with the Scald's OWN water
+         rather than vanilla ocean. The two terrains are named explicitly because
+         the four fields above are the FRESH-water pair this def uses inland; the
+         terrain its own map lays is RUT_ScaldWaterOceanDeep. MayRequire on the
+         <li> is load-bearing: an unresolvable extension class discards the whole
+         BiomeDef silently. -->
+    <modExtensions>
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores">
+        <deepTerrain>RUT_ScaldWaterOceanDeep</deepTerrain>
+        <shallowTerrain>RUT_ScaldWaterOceanShallow</shallowTerrain>
+      </li>
+    </modExtensions>
     <!-- WILD ANIMALS, landed 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1 from
          design/Jawa/worldbuilding/biomes/rosters/the_scald.json. This supersedes the
          "no Scald sheet exists, so wildAnimals is left empty" note above - the_scald.md

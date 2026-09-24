@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_SeaCoast.xml                    mandrake.rm.seashores · authored 2026-09-23
+  ============================================================================
+  SEA_FLOOR_AND_CATCH_PASS_1 (a). The shore a land tile gets when the water it
+  borders is a modded sea rather than the vanilla Ocean def.
+
+  Shaped deliberately as a drop-in twin of vanilla's Coast
+  (Data/Core/Defs/MapGeneration/TileMutators.xml): same `Coast` category, same
+  genOrder 100, same priority 0. That matters twice over —
+    - Tile.AddMutator removes an existing mutator sharing a category only when
+      the incoming priority is >= the existing one, so an equal priority means
+      this cleanly replaces a Coast/Lakeshore rather than logging a conflict;
+    - WorldGenStep_Mutators asks for TileMutatorDefOf.Coast and our Harmony
+      prefix substitutes this def in its place, so nothing downstream sees a
+      different shape of mutator.
+
+  🔴 coastSidesRange is deliberately LEFT UNSET. TileMutatorDef.IsValidTile
+  implements it by counting neighbours whose PrimaryBiome is BiomeDefOf.Ocean
+  or BiomeDefOf.Lake — the vanilla defs by reference. Any value here would
+  count zero for every tile beside one of our seas and refuse the def outright.
+  The equivalent gate lives in RM_TileMutatorWorker_SeaCoast.IsValidTile.
+
+  The worker inherits all of TileMutatorWorker_Coast and overrides only the
+  four answers vanilla hardcodes to the Ocean def / the land biome: the coast
+  angle, and the deep / shallow / beach terrains.
+-->
+<Defs>
+
+  <TileMutatorDef>
+    <defName>RM_SeaCoast</defName>
+    <label>sea coast</label>
+    <description>This tile borders a sea.</description>
+    <workerClass>RimMandrake.SeaShores.RM_TileMutatorWorker_SeaCoast</workerClass>
+    <categories>
+      <li>Coast</li>
+    </categories>
+    <genOrder>100</genOrder>
+    <priority>0</priority>
+  </TileMutatorDef>
+
+</Defs>

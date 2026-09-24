@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Sea Shores</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.seashores</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SEA_FLOOR_AND_CATCH_PASS_1 — makes a MODDED ocean-class biome behave as a real coast for the LAND tiles beside it.
+
+The problem this solves is engine-shaped and total. In 1.6 a coastline is the `Coast` tile mutator, and worldgen attaches it only where `World.CoastDirectionAt(tile)` is valid — and that method counts a neighbouring tile as sea ONLY when its PrimaryBiome is the vanilla `Ocean` def, by reference. Any modded ocean biome is invisible to it. A land tile beside one therefore has no coast direction, gets no `Coast` mutator, generates no ocean water and no beach at all, reads `IsCoastal == false` (so no coastal animals, no emerge-from-water arrivals, no river delta), and its water bodies — if any — are Freshwater. Its neighbour's catch table is consulted by nobody, because `WaterBody.SetFishTypes` and `FishingUtility` read only the biome of the MAP THE PAWN STANDS ON.
+
+This mod makes a sea opt in with one modExtension on its BiomeDef:
+
+  &lt;modExtensions&gt;
+    &lt;li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores"&gt;
+      &lt;deepTerrain&gt;...&lt;/deepTerrain&gt;  &lt;shallowTerrain&gt;...&lt;/shallowTerrain&gt;
+    &lt;/li&gt;
+  &lt;/modExtensions&gt;
+
+and then, for every land tile bordering it:
+
+  1. `IsCoastal` becomes true (Harmony postfix on `World.CoastDirectionAt`, seeded exactly the vanilla way).
+  2. Worldgen attaches `RM_SeaCoast` instead of vanilla `Coast` (prefix on `WorldGenStep_Mutators.TryAddMutator`), so the shore is laid with the SEA's own deep/shallow terrain and the land biome's beach — scalding shallows for the Scald, solid propane for the Propane Lake.
+  3. A frozen, hand-authored planet is healed on load: tile mutators are Scribed, so a world that was painted before this mod existed never re-runs worldgen. A WorldComponent adds `RM_SeaCoast` to every qualifying tile that carries no Coast-category mutator yet. Idempotent, and settings-gated as world-affecting.
+  4. Fishing on that shore pulls the SEA's catch table, not the land biome's (postfix on `WaterBody.SetFishTypes` keyed by the water body's terrain, plus a transpiler swapping the rare-catch table lookup).
+
+Nothing here is campaign-specific and nothing here names a biome: a sea is whatever carries the extension. Every behaviour has its own Mod Settings toggle and all-off degrades exactly to vanilla.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <!-- No mandrake.* mod belongs in modDependencies: this mod knows no sea by
+       name. The seas that use it declare the dependency from their own side,
+       with MayRequire on the <li> so an absent SeaShores does not discard
+       their whole BiomeDef. -->
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
