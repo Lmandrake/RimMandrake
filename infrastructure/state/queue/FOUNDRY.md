@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T01:08:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T01:09:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## DIRTY_CODE_REVIEW_STANDING_LOOP_1 Standing FOUNDRY code-review loop in progress per owner (keep going, bit by bit) - 12 waves in, ~230 ledger entries, ~55 real bugs found, self-continuing via /loop, not blocked on anything
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  the loop
-prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md
 
 ## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
 state:    ready
@@ -125,6 +116,15 @@ target:   v1
 kind:     task
 summary:  SHIELDMODSLEVERAGE1 — particulate screen finished, predictive-failure and landing-advisory built, offline-ver…
 prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
+
+## DIRTY_CODE_REVIEW_STANDING_LOOP_1 Standing FOUNDRY code-review loop in progress per owner (keep going, bit by bit) - 12 waves in, ~230 ledger entries, ~55 real bugs found, self-continuing via /loop, not blocked on anything
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  the loop
+prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md
 
 ## INHABITED_AUGMENTATION_BUILD_1 Build the tile-augmentation content: rimplace templates + Inhabited wiring for the biome/faction/latitude augmentation dream
 state:    doing
