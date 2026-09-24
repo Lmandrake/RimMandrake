@@ -13425,6 +13425,66 @@
     "hash": "f60f200d8bc52d5b063b2e97c68a53c78ded9fe5761a03db536fb726307bc6d0",
     "sha": "bfa7c2f92"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_WarWyrm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bd7c6545bf9de509b51ff48115a22904f27350ebc7c8a5ae57addccde216d469",
+    "sha": "936acd7f7"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Whisperbird.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3f45030608e8c7cd1d3810fe8b2acb2275268631c40ecd77d38d4fd1500de553",
+    "sha": "936acd7f7"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_WompRat.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "140512bc2f38a81ea57c23dcfcf5af486fc2e6ff6e8cf7f0130440e5401129a7",
+    "sha": "936acd7f7"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Woolamander.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a827eb62a06b65467c3b111e60f6a73da04c505ff2eeab6bc0340b45432a83ed",
+    "sha": "936acd7f7"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Worrt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9a536b8603dcf0575c878a4f14451e6ece676e115eb547583a5df8c0ce65c5cc",
+    "sha": "936acd7f7"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Wraid.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0ca2a395434aa1855dc358abb3fbe6137fd84ade23d4bd651889fb2916ad70dc",
+    "sha": "936acd7f7"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_WraidAlpha.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b951b9c7e95c3dc97ceff520bc034f3b82b0817cf9bcfd41881a7d3f4d3ee051",
+    "sha": "936acd7f7"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Wyyyschokk.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1ca0b1d4f72e333096d37590dd28152cfdd0418880273fac8317ec95386e3a28",
+    "sha": "936acd7f7"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Yobshrimp.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6ccb9728dc1faccbcd80c35ed9608c4cbbc064e29e8ae89fcb45c60ddf4913ab",
+    "sha": "936acd7f7"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Zakkeg.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "901048be7c096eef568dfbfb810b3062d89d6ee41d2e4d54baacf31ad9497138",
+    "sha": "936acd7f7"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Zeer.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
