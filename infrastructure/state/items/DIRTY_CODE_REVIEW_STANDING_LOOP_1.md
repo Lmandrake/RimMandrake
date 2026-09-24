@@ -1466,7 +1466,7 @@ required — CLAUDE.md's own rule):
 
 All 5 had zero uncommitted changes (`git status --porcelain` empty before
 marking), so no fix-then-verify step was needed. All 5 marked CLEAN, commit
-`<pending>`, pushed.
+`5e0d7edad`, pushed.
 
 Next wave: 117 non-PNG DIRTY files remain (122 minus this wave's 5: 2 `.py`
 hooks + 3 `.cs`/`.xml` closed this wave, out of the pre-wave 74 `.xml` / 32
