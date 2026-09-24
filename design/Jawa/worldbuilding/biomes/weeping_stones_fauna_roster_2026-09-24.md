@@ -3,7 +3,26 @@
 _Drafted by a Fable design subagent, 2026-09-24, against the frozen sheet, for
 `WEEPING_STONES_DESIGN_SITTING_1`._
 
-**Status: DESIGN PROPOSAL. Nothing authored.**
+**Status: RULED 2026-09-24 (owner sitting, cards). Nothing authored yet.**
+
+## ⚖️ Rulings, 2026-09-24 sitting
+
+1. **The RM_ tier gets its own pilgrim herd** (decision taken by question
+   card), shaped as **tall sail-comb striders** (card): long-legged, single
+   file down the caravan roads, dorsal sail-combs fanned as they come —
+   pilgrimage made visible. Row §2h (`RM_Vellak`, working name, BENCH
+   coinage, collision-checked clean).
+2. **Burrak/burradar: ONE species, two roles** (card) — one def; the
+   sentinel-elder is what the biggest one does. §2e rewritten; burradar
+   stays as the elder's *name in fiction*, not a second def.
+3. **Water truce v1 ACCEPTED as the cheap build** (card): predators never
+   start hunts near full water, and the side effect — the player's tamed
+   predators also refuse to hunt near the pools — is accepted for v1. The
+   honest per-animal behavior model is v2. Build shape per row §2f.
+4. **The RM_ tier gets its own sky-presence ridge-flier** (decision taken by
+   question card, 2026-09-24) — a comb-winged cliff soarer riding the
+   updrafts off the tall stone. Row §2i (`RM_Kirruk`, working name, BENCH
+   coinage, collision-checked clean).
 
 Subject: the `RM_WeepingStones` biome mod (RM_ tier per Q12–Q15; live def today is
 `RUT_WeepingStones`). Companion doc: `weeping_stones_flora_roster_2026-09-24.md`.
@@ -51,6 +70,7 @@ variant and every row must read distinctly top-down against pale stone.
 | **sillik** — the prey base, licking the film | **ssurr** — the fan-dancer; romance made animal | **vhakk** — the warden; the margin made flesh | **mirrik** — the dew-smoke swarm (flier) |
 | | **murrin** — the pool fish (rides FISH_BY_BIOME_1) | **burrak / burradar** — the well-diggers | *(Utinni: Dactillion, the flier mount)* |
 | | *(Utinni: Dewback, Fanback, the pilgrim herds)* | **tirbak** — the walking cistern on the caravan roads | |
+| | | **vellak** — the RM pilgrim lines (RULED 2026-09-24) | **kirruk** — the ridge-soarer (RULED 2026-09-24) |
 
 ## 1. The rulings this roster serves
 
@@ -67,11 +87,12 @@ variant and every row must read distinctly top-down against pale stone.
 | **Fliers fly for real** | flier law 2026-09-19 (core `MaxFlightTime`) | mirrik marked flier; Dactillion's flier claim stays UNMEASURED (register flag broken, JSON) |
 | **The free mod stands rich alone** | Q11a | eight invented rows, no donor, no canon needed |
 
-## 2. Rows — the invented natives (RM_ tier, 8 rows)
+## 2. Rows — the invented natives (RM_ tier, 10 rows after the 2026-09-24 rulings)
 
-Ecosystem pyramid: two abundant small rows (sillik 0.8, mirrik 0.6), two
-small-medium (ssurr, murrin), then the large rows thin out (tirbak 0.15, burrak
-0.12, vhakk 0.08, burradar 0.02). Small outnumbers large in kind and in count.
+Ecosystem pyramid: two abundant small rows (sillik 0.8, mirrik 0.6), three
+small-medium (ssurr, murrin, kirruk 0.2), then the large rows thin out (tirbak
+0.15, burrak 0.12, vhakk 0.08, vellak pilgrim bands ~0.08). Small outnumbers
+large in kind and in count.
 
 ### 2a. The prey base — `RM_Sillik` (row 1)
 
@@ -126,18 +147,18 @@ small-medium (ssurr, murrin), then the large rows thin out (tirbak 0.15, burrak
 | mechanisms | none blocking (JSON agrees): packAnimal + caravan stats; "carries water for days" is fiction v1 since colonists carry water as items — an inspired v2 could hang a comp on it, not owed now |
 | art | **OWED** |
 
-### 2e. The well-diggers — `RM_Burrak` and `RM_Burradar` (rows 5–6)
+### 2e. The well-digger — `RM_Burrak` (row 5) — ONE def, RULED 2026-09-24
 
-| field | `RM_Burrak` (row 5) | `RM_Burradar` (row 6) |
-|---|---|---|
-| label | burrak — *well-digger* (sheet §10 name) | burradar — the elder form |
-| silhouette FORM | **low broad digger, claw-combs held like twin rakes before it** | **the same animal grown vast and high-shouldered, claw-combs worn to stumps, back silted with weep-mat green** |
-| look, one line | A bear-sized wallower that digs catch-basins that outlive it — abandoned burrak digs are how new micro-oases start. | The elder that digs the deep wells; a working oasis tolerates one the way a town tolerates its engineer. |
-| ring / niche | **Resident; the biome's terraformer.** Its digs are the natural bottom rung of the succession ladder (§8 rung 1). | **Rare landmark animal** — one per region, known individually, half-sacred. |
-| size band / commonality | large (bs ~2.2) / **0.12** | huge (bs ~4) / **0.02** |
-| one-home note | digging catch-basins is only a living where the wind refills them — the trade is dew-country-only | rides the burrak's |
-| mechanisms | dig-catch-basin terrain edits are **v2 per the ruled JSON** (`mechanic_load`). If v2 lands: ✅ **`RM_CompDungSeeder`** (CreatureBehaviors — an animal already seeding growth behind itself) and ✅ **`RM_MapComponent_LivingRegrowth`** (EnvironmentalHazards — terrain-gated regrowth) are the built patterns to extend; do not write a third terrain-editing system. v1: wallow = filth + flavor. | rides row 5 |
-| art | **OWED** | **OWED** — same rig, aged |
+| field | value |
+|---|---|
+| defName / label | `RM_Burrak` / burrak — *well-digger* (sheet §10 name). 🔑 **One species, two roles (card ruling)**: the vast worn-clawed elder the sheet calls the *burradar* is what the biggest burrak becomes — its name in fiction, not a second def. |
+| silhouette FORM | **low broad digger, claw-combs held like twin rakes before it** — the elder read is the same rig grown vast, claw-combs worn to stumps, back silted with weep-mat green (age/size variant of one silhouette) |
+| look, one line | A bear-sized wallower that digs catch-basins that outlive it — abandoned burrak digs are how new micro-oases start; a working oasis tolerates its one huge elder the way a town tolerates its engineer. |
+| ring / niche | **Resident; the biome's terraformer.** Its digs are the natural bottom rung of the succession ladder (§8 rung 1); the elder is the rare landmark individual, half-sacred. |
+| size band / commonality | large (bs ~2.2) / **0.12**; elders emerge by age, not by spawn table |
+| one-home note | digging catch-basins is only a living where the wind refills them — the trade is dew-country-only |
+| mechanisms | dig-catch-basin terrain edits are **v2 per the ruled JSON** (`mechanic_load`). If v2 lands: ✅ **`RM_CompDungSeeder`** (CreatureBehaviors — an animal already seeding growth behind itself) and ✅ **`RM_MapComponent_LivingRegrowth`** (EnvironmentalHazards — terrain-gated regrowth) are the built patterns to extend; do not write a third terrain-editing system. v1: wallow = filth + flavor. |
+| art | **OWED** — one rig; the elder is the adult life-stage graphic grown and worn |
 
 ### 2f. The warden — `RM_Vhakk` (row 7)
 
@@ -149,7 +170,7 @@ small-medium (ssurr, murrin), then the large rows thin out (tirbak 0.15, burrak
 | ring / niche | **The margin; the one native apex.** §6's ambush ban satisfied structurally: its hunting story IS the approaches. A predator special on the def is legal (the JSON's Dewback note establishes this reading). |
 | size band / commonality | large (bs ~1.8) / **0.08** — apex-rare, pyramid intact |
 | one-home note | its niche is *enforcing the geometry of pilgrimage* — approach-lanes converging on truce water exist only here |
-| mechanisms | truce v1 is RULED cheap (sheet Owed): spawn/flavor suppression of hunts near water. ✅ The built shape to reuse is **`RM_MapComponent_DreadField` + `RM_JobGiver_DreadAvoidWander`** (EnvironmentalHazards, the Sump's avoid-field): inverted, a water-radius field predators' hunt jobs avoid. Also note **`RM_TenantTruceExtension`** (empty marker DefModExtension, EnvironmentalHazards) — the truce-marker *pattern* exists; a `RM_WaterTruceExtension` marker + one JobGiver filter is the whole v1. |
+| mechanisms | 🔑 **truce v1 RULED ACCEPTED 2026-09-24 (card), side effect included** — player-tamed predators also refuse to hunt near the pools; honest behavior model is v2. Build shape: ✅ reuse **`RM_MapComponent_DreadField` + `RM_JobGiver_DreadAvoidWander`** (EnvironmentalHazards, the Sump's avoid-field): inverted, a water-radius field predators' hunt jobs avoid. Also note **`RM_TenantTruceExtension`** (empty marker DefModExtension, EnvironmentalHazards) — the truce-marker *pattern* exists; a `RM_WaterTruceExtension` marker + one JobGiver filter is the whole v1. |
 | art | **OWED** |
 
 ### 2g. The pool fish — `RM_Murrin` (row 8)
@@ -164,6 +185,33 @@ small-medium (ssurr, murrin), then the large rows thin out (tirbak 0.15, burrak
 | 🔴 lane note | species selection is **owed to `FISH_BY_BIOME_1`** (JSON's own note). This row is a *candidate carried to that item*, not a casting here. Constraints carried: nothing pollution-flavored, nothing that makes the pool a hunting story. Pools are map-scale terrain, so this is likely a FishDef (+ optional pond critter) — the sea-biome two-def law is about seas; whether it binds pools is FISH_BY_BIOME_1's call. |
 | mechanisms | FishDef (Odyssey `MayRequire`) per the Scald precedent | 
 | art | **OWED** (deferred with the row) |
+
+### 2h. The pilgrim herd — `RM_Vellak` (row 9) — RULED 2026-09-24
+
+| field | value |
+|---|---|
+| defName / label | `RM_Vellak` / vellak (working name — BENCH coinage, collision-checked clean 2026-09-24; owner may rename at art) |
+| silhouette FORM | **tall long-legged strider, one dorsal sail-comb running the spine, walking in single file** — the herd silhouette is a LINE, not a cluster |
+| look, one line | Camel-tall striders that walk the dry country between pools in single file down the caravan roads, sail-combs fanned to drink the wind as they come — from the rim, moving lines converging on water: pilgrimage made visible. |
+| ring / niche | 🔑 **The RM_ tier's own pilgrim ring** (card ruling: the free mod keeps the pilgrimage identity without canon herds; Bantha/Eopie/Jamel stack on top in the campaign). |
+| size band / commonality | large (bs ~1.6) / **~0.08 in bands** — arrives as a file of several, not a spawn scatter |
+| one-home note | primary home is one of the RM_ deserts (named at that biome's own sitting — not assigned here); appears in the Weeping Stones as the annotated pilgrim-visitor mechanism, the sheet's own carve-out (§4/§10) |
+| mechanisms | none blocking v1: wildAnimals entry here + herd-animal flags; single-file arrival is a spawn-pattern nicety, not owed C# |
+| art | **OWED** — the line of them is the sprite's whole job; sail-comb per §5 |
+
+### 2i. The ridge-flier — `RM_Kirruk` (row 10) — RULED 2026-09-24 — FLIER
+
+| field | value |
+|---|---|
+| defName / label | `RM_Kirruk` / kirruk (working name — BENCH coinage, collision-checked clean 2026-09-24; owner may rename at art) |
+| silhouette FORM | **long stiff wings that ARE combs — slotted trailing edges like comb-teeth — hanging motionless on the updraft off a rock face** |
+| look, one line | A hawk-sized soarer that rides the wind forced up the tall stone, wings combing the wet air as it hangs — it drinks the way the biome does, on the wing, and lands only to nest on the rims. |
+| ring / niche | 🔑 **The sky presence** (card ruling: the free mod's sky is not empty). The §5 comb rule taken airborne: its wings are the comb. Nests on the same rims the rockfinger grips — the tree's terrible shadow and the kirruk's circling one share the ground below. |
+| size band / commonality | small-med (bs ~0.5) / **0.2** |
+| 🔴 flier law | flies in the fiction ⇒ flies for real: core `MaxFlightTime`/`FlightCooldown` + race flight fields; no flip-book frames blocks nothing — flight ships plainer without them. |
+| one-home note | it soars standing updrafts — high stone in a daily wet wind exists only here; elsewhere the ridge-lift is dry or absent (R17: it may drift as a visitor, homes here only) |
+| mechanisms | none blocking v1: flight stats + wildAnimals entry; wing-drinking is fiction |
+| art | **OWED** — the slotted comb-wing silhouette against pale stone is the brief |
 
 ## 3. Kept and ruled rows (INPUT — never re-adjudicated here)
 
@@ -201,48 +249,22 @@ reopened here.
   prefix/register only and is **owed verification at port time**.
 - No invented row (§2) touches any donor def. The RM_ mod stands alone.
 
-## Questions for the owner
+## Open questions (ruled ones moved to the ⚖️ block at top)
 
-**Category-level first:**
-
-1. **Does the RM_ tier need its own pilgrim ring?** Without the Utinni layer,
-   the free mod has no visiting herds (Bantha/Jamel/Eopie are all
-   canon/donor) — yet "pilgrimage density, mostly visitors" is the biome's §4
-   identity. Q11a says the free mod must look the same. Invent 1–2 RM_ herd
-   pilgrims (homed in an RM_ desert biome, visiting here), or accept that
-   pilgrims are campaign-only?
-2. **Does the RM_ tier want its own flier?** The only mount-flier (Dactillion)
-   and the flier mount niche are Utinni-side; the mirrik is a swarm, not a
-   sky presence. An invented ridge-flier is easy to add if the free mod's sky
-   should not be empty — or R17 lets other biomes' RM_ fliers visit instead.
-3. **Fish: is `FISH_BY_BIOME_1` still the lane,** with row 8 carried there as
-   this biome's candidate — or does this sitting cast pool fish directly now
-   that pools are the biome's heart?
-4. **Burrak/burradar: one def with life stages, or two defs?** The sheet's
-   elder-form ladder reads as a life stage (which would also be the one-home
-   law's own carve-out pattern); two defs is cheaper and vanilla-shaped.
-
-**Per-row:**
-
-5. `RM_Ssurr` — should the beloved/bonding register be mechanical
-   (`RM_CompTameSootheAura` reuse) or pure flavor v1?
-6. `RM_Vhakk` — confirm the truce v1 build shape: water-radius hunt
-   suppression via the DreadField pattern (named in row 7), i.e. predators
-   simply never receive hunt jobs within N cells of pool terrain. Cheap,
-   already-shaped, but it will protect *prey at the pool* from the player's
-   tamed predators too — acceptable?
-7. `RM_Mirrik` — dewsilk: fabric-tier positioning (vs devilstrand/synthread)
-   is unowned; does the sitting set it or does it ride the item-economy pass?
-8. `RM_Tirbak` — commonality 0.15 makes the caravan colossus scarce; if the
-   oasis-string trade read should dominate the biome's big-animal silhouette,
-   raise to ~0.25 and drop Dewback's Utinni add to compensate (Dewback's 0.4
-   is the ruled number, so the *adjust* would need his word — flag only).
-9. `RM_Murrin` and the flora coinages — name collision check against
-   `creature_names_ashkarr.md`/`Alien_Bestiary.md` clade roots is OWED (the
-   six §10 names were checked on the sheet 2026-09-06; murrin is new today).
-10. `AA_Eyeling` → ikee port: file it from this sitting (RM_ or RSW_ tier —
-    the ikee fiction is ours, so RM_ reads right), or leave it riding Alpha
-    Animals until the absorption wave reaches it?
+1. **Fish lane**: `RM_Murrin` (row 8) is carried to `FISH_BY_BIOME_1` as this
+   biome's candidate, per the ruled JSON's own note — BENCH keeps that lane;
+   murrin's coinage is collision-checked clean (2026-09-24 sweep).
+3. `RM_Ssurr` — beloved/bonding register mechanical (`RM_CompTameSootheAura`
+   reuse) or pure flavor v1? BENCH recommendation at build: flavor v1, comp
+   optional behind a Mod Settings toggle.
+4. `RM_Mirrik` — dewsilk fabric-tier positioning rides the item-economy pass
+   (`ECONOMY_TRADE_SWEEP_1` territory), not this sitting.
+5. `RM_Tirbak` — commonality 0.15 makes the caravan colossus scarce; raising
+   it would touch Dewback's ruled 0.4 for balance, so the adjust needs the
+   owner's word — flag only, carried to the biome's review sheet.
+6. `AA_Eyeling` → ikee port: the ikee fiction is ours wearing a donor def, so
+   an RM_ port reads right — BENCH carries it as a candidate row for
+   `DONOR_DEFS_PORT_TO_OURS_1` rather than filing separately from this sitting.
 
 ---
 
