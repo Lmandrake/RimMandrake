@@ -229,7 +229,7 @@ LIQUID_ROWS = {
             "Thin, cold, and utterly indifferent to fire until something "
             "else provides the spark. Do not smoke near it."
         ),
-        "native_overrides": {"waterBodyType": "None", "canFreeze": False, "extinguishesFire": False},
+        "native_overrides": {"waterBodyType": "Saltwater", "canFreeze": False, "extinguishesFire": False},  # Saltwater, not None: owner card 2026-09-24 (SEA_FLOOR_AND_CATCH_PASS_1) - the Propane Lake shore is FISHED, and the fishing designator and WaterBodyTracker both refuse None; Saltwater keeps it non-potable
         "native_overrides_shallow": {"pathCost": 20},  # [INVENTED] thin viscosity, flows easier than water
         "extension": {"viscosityClass": "thin", "pH": 7, "flammable": True, "igniteTemp": 40},  # [INVENTED igniteTemp]
         "compat_targets": [],

@@ -22,7 +22,7 @@
     <description>Thin, cold, and utterly indifferent to fire until something else provides the spark. Do not smoke near it.</description>
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
-    <waterBodyType>None</waterBodyType>
+    <waterBodyType>Saltwater</waterBodyType>
     <canFreeze>false</canFreeze>
     <extinguishesFire>false</extinguishesFire>
     <pathCost>20</pathCost>
@@ -54,7 +54,7 @@
     <description>Thin, cold, and utterly indifferent to fire until something else provides the spark. Do not smoke near it.</description>
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
-    <waterBodyType>None</waterBodyType>
+    <waterBodyType>Saltwater</waterBodyType>
     <canFreeze>false</canFreeze>
     <extinguishesFire>false</extinguishesFire>
     <affordances>
