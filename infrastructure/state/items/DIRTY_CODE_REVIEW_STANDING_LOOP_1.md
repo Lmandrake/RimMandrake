@@ -2394,3 +2394,66 @@ rest of the never-entered `.cs`/Python backlogs surveyed in wave 15 (95 never-en
 `.cs` files, 13 never-entered Utils Python tools whose reachability still needs
 confirming per-file). The PNG binary-art-tracking scope question (wave 15) is resolved
 separately (see the FOUNDRY note above) and still not this loop's to decide.
+
+## Wave 38 — 2026-09-24: `modset_builder.py` closes the Utils cluster; `Armoury/Source` gen_*_absorption.py cluster CLOSED
+
+Picked up `modset_builder.py` first: the concurrent build agent's uncommitted
+`"bacta"` tier (wave 37's blocker) landed committed at `7f5f81262`
+("Add a minimal 'bacta' tier for live-testing BACTA_TANK_CORE_1"), so
+`git status --porcelain` on the file was clean and it was reviewable.
+Diffed since its last clean mark (`23513b419`); wave 37 had already traced
+everything in that range except the new 10-line `"bacta"` tier itself
+(utf-8 stdout/stderr reconfigure, slime/xenotypes/beastmechanics/warlab
+tiers were wave 37's job and are not re-litigated here). Verified the
+`"bacta"` tier's claim ("No hard `<modDependencies>` beyond Core") directly
+against `src/RimStarWars/Bacta/About/About.xml`: `<modDependencies>` lists
+only `Ludeon.RimWorld`, `mandrake.rm.flowworks` is `<loadAfter>`-only —
+matches exactly. No bugs found. Marked CLEAN, commit `8c754d292`, pushed.
+**This closes the `src/RimMandrake/Utils/` top-level scripts cluster in
+full (9/9).**
+
+Then took the named `src/RimStarWars/Armoury/Source/` `gen_*_absorption.py`
+cluster (5 files, all diff-eligible): `gen_additionalmods_absorption.py`,
+`gen_jds_armory_absorption.py`, `gen_kotorcore_absorption.py`,
+`gen_kotorweapons_absorption.py`, `gen_theforcelightsaber_kyber_absorption.py`.
+Confirmed reachability first per this item's own rule — these are one-shot,
+hand-run donor-absorption generators (no importer expected), and all 5 are
+named in closed items (`WEAPONS_DONOR_RETIREMENT_1`, `WEAPONS_ABSORPTION_WAVE_1`,
+`DROIDWORKS_MODULE_ABSORB_1`, etc.) as having actually been run — including
+`gen_theforcelightsaber_kyber_absorption.py`, whose only in-repo citation is
+its own docstring (`CRYSTAL_INGEST_EXECUTION_1` item 2) plus one closed item
+listing it alongside the others; not a dead-file candidate.
+
+Diffed each since its own last clean mark (25-44 lines each). **All 5 diffs
+are the same deliberate fix, applied consistently across the whole
+cluster**: `collect_texpaths`/`collect_paths` now also collects
+`wornGraphicPath` (a third texture-root tag, alongside `texPath`/`iconPath`/
+`uiIconPath`), and `find_and_copy_texture` in all 5 now additionally tries
+`<path>_<BodyType>_<rotation>.<ext>` for BodyType in
+Male/Female/Thin/Fat/Hulk and rotation in south/north/east/west — matching
+`ApparelGraphicRecordGetter`'s real naming convention for worn-apparel
+graphics, which the old rotation-only ladder missed entirely (copying only
+the inventory icon, marking the texture "found", and silently leaving every
+worn-graphic frame behind — a magenta-render defect on 123 absorbed apparel
+defs per `gen_kotorcore_absorption.py`'s own comment). Traced the new nested
+loop's scope/indentation in each file (all correctly nested inside the
+existing per-`ext` loop, none accidentally unconditional or mis-scoped) and
+confirmed `gen_kotorweapons_absorption.py`'s one-line comment typo fix
+(`ARMOUR_MW2_CUT_1` -> `ARMOURY_MW2_CUT_1`) matches the real item ID at
+`infrastructure/state/items/closed/ARMOURY_MW2_CUT_1.md` (already reviewed
+correct back in wave 26 per this item's own line 1554 — re-confirmed, not
+re-fixed). No bugs found in any of the 5. All 5 marked CLEAN, commit
+`8c754d292`, pushed. **This closes the `src/RimStarWars/Armoury/Source/`
+`gen_*_absorption.py` cluster in full.**
+
+Next wave: re-derive the non-PNG DIRTY list fresh
+(`code_review_status.py list | grep '^DIRTY'` filtered non-`.png`) rather
+than trusting any count carried forward — both named clusters from waves
+34-37 are now closed, so the next wave has no standing cluster pointer and
+should re-survey. Still outstanding from wave 15's survey, never
+independently re-confirmed since: the 95 never-entered `.cs` files (many
+already partly worked through in waves 16-24's cluster closures — re-derive
+rather than trust the wave-15 folder breakdown) and the 13 never-entered
+Utils Python tools whose reachability still needs confirming per-file before
+any of them gets a review. The PNG binary-art-tracking scope question (wave
+15) remains open and still not this loop's to decide.

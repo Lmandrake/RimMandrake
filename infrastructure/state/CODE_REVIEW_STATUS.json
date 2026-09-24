@@ -9958,10 +9958,10 @@
     "sha": "70cd2206"
   },
   "src/RimStarWars/Armoury/Source/gen_additionalmods_absorption.py": {
-    "cleanCount": 4,
-    "date": "2026-09-19",
-    "hash": "46ec6a9a3105912f8dbf00769327e1ac074ab3d904ff4a61ec36abd9c1ff5cab",
-    "sha": "51867f432"
+    "cleanCount": 5,
+    "date": "2026-09-24",
+    "hash": "3ce440bb585b7977c1ee9d6837eda5cdfeccec62cc35a85e1ef5081010ed9cdc",
+    "sha": "8c754d292"
   },
   "src/RimStarWars/Armoury/Source/gen_armour_patch.py": {
     "cleanCount": 3,
@@ -9976,22 +9976,22 @@
     "sha": "3ea1ca20"
   },
   "src/RimStarWars/Armoury/Source/gen_jds_armory_absorption.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "0936b564107f6888a860fcf5237edcdae77044ed8de7fd57c1eae6af0d91af1a",
-    "sha": "ee0b3ad6"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "7e9242fe5fea2c32fd95cb35329a8bb27de3ea1e6fd2572be02b7e0d47cdff23",
+    "sha": "8c754d292"
   },
   "src/RimStarWars/Armoury/Source/gen_kotorcore_absorption.py": {
-    "cleanCount": 4,
-    "date": "2026-09-17",
-    "hash": "0373f621246aab04333f6e91b8100c8ef7b36945bb9a2e79a38086bfe38619fa",
-    "sha": "0afdb147c"
+    "cleanCount": 5,
+    "date": "2026-09-24",
+    "hash": "d1d6902ae8a59b33a56fb7b17b27b0fb6e71df260b172c28410b74f0eace25c1",
+    "sha": "8c754d292"
   },
   "src/RimStarWars/Armoury/Source/gen_kotorweapons_absorption.py": {
-    "cleanCount": 5,
-    "date": "2026-09-18",
-    "hash": "1492b9b089cfddc9b7ca8ec3df894395e96f3e645b4db3d794b97814e339646f",
-    "sha": "d946c8522"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "dc8add67080fadc35fcbd8aa4221c289844bd495ecb4dab3d5a45996add2bdd5",
+    "sha": "8c754d292"
   },
   "src/RimStarWars/Armoury/Source/gen_sovsith_absorption.py": {
     "cleanCount": 2,
@@ -10000,10 +10000,10 @@
     "sha": "77a378a63"
   },
   "src/RimStarWars/Armoury/Source/gen_theforcelightsaber_kyber_absorption.py": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "5a7a18311934ba4bf54b268b822b4ade99c8d808a0112042e0b7602ad1d4af20",
-    "sha": "6784196e"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "5be4e633d6acffe6f9902e1c934c8c6e94a11b103b3441a369a9ba4f6d9fd29b",
+    "sha": "8c754d292"
   },
   "src/RimStarWars/Armoury/Source/gen_torpedo_speed.py": {
     "cleanCount": 1,
