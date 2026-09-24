@@ -92,7 +92,7 @@ beyond the leather above.
 
   <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggMaguanaUnfertilized</defName>
-    <label>magmuana egg (unfert.)</label>
+    <label>maguana egg (unfert.)</label>
     <description>An unfertilized maguana egg. It can be eaten raw, but it's much, much better cooked.</description>
     <graphicData>
       <color>(150,60,19)</color>
