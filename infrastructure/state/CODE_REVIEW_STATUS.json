@@ -1667,6 +1667,12 @@
     "hash": "669a77453e7670b6e618ad6bf9e1c9d14ca5f7c512862cf9e850e5652b8a7abc",
     "sha": "009b887ef"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_IngestionOutcomeDoer_AgeReversal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "4ec38cd85ddcc2a73a45f89ed25a03a7328b1186ca8a962f44f06bd8995ded1e",
+    "sha": "b71a46130"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_GnawTreeBase.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
