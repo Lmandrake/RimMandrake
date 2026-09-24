@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T00:48:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T00:57:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -134,6 +134,15 @@ target:   v1
 kind:     build
 summary:  Execute the phases in biomemodarchitecture.md §5, in order, once §7 is ruled.
 prose:    infrastructure/state/items/BIOME_MOD_SPLIT_EXECUTION_1.md
+
+## SEA_FLOOR_AND_CATCH_PASS_1 Every sea describes BOTH its floor (animals you meet by diving) and its catch (fish from the shore): the floor half is unbuilt across all four seas
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+summary:  Work per sea, in this order — cheapest and most decisive first.
+prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -530,16 +539,6 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  ⛔ The old spec here instructed a planet-wide pass that picked each species' one home and wrote
 prose:    infrastructure/state/items/BIOME_SPECIFIC_FAUNA_LAW_1.md
-
-## SEA_FLOOR_AND_CATCH_PASS_1 Every sea describes BOTH its floor (animals you meet by diving) and its catch (fish from the shore): the floor half is unbuilt across all four seas
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     spec, verify and criteria all present
-summary:  Work per sea, in this order — cheapest and most decisive first.
-prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
 
 ## GREENTIDE_TERROR_REPLACEMENT_1 Something new and terrifying for the Greentide, replacing the dianoga
 state:    proposed
