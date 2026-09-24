@@ -13137,6 +13137,54 @@
     "hash": "fad0a3355ded78596535bb5063c389bf13718aebe3d635399f963b0566598974",
     "sha": "7e4dc38a2"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Kreetle.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c1fb71cdd3244646a26dd9606b3c4eac45d2843e76b749bebb15c3cb7977ef06",
+    "sha": "62c7aeb50"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Krykna.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "55c4fc8af9d27b9cdf95a58ce82f6bbb7e4b8df6c52bd64f4fcb9e8e58da6fe2",
+    "sha": "62c7aeb50"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Kwi.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "95e4917e7eb73b856ff483daa2fe65755f76758dd5276d5f29edeb562ccc4cbe",
+    "sha": "62c7aeb50"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Kybuck.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f40aafd323b74ac22bbe5a9d8812a42b6eba2aed04984a70474e8bc062adc08c",
+    "sha": "62c7aeb50"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_LavaFlea.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "706df3dbe87eb5aa2c49629632d6a2a4dba53f1a2107455435189bf14ee6b84c",
+    "sha": "0c0282d70"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_LongtailGorg.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "db7b8f4feb1beee57aeeb4766216bea174ed569bb49945c801cdcf44c88f5733",
+    "sha": "62c7aeb50"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Lothcat.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "37c771a70226e631377a51cac82987cb6074d5bed175836e3155f98c1512ec00",
+    "sha": "62c7aeb50"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Lylek.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "986ee9870be231c1964939bfcd5d959a63a18e28bf98f359652439502f3146f9",
+    "sha": "62c7aeb50"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Mudhorn.xml": {
     "cleanCount": 2,
     "date": "2026-09-24",
@@ -18746,6 +18794,12 @@
     "date": "2026-09-24",
     "hash": "55c6c633f2896d3c031e8d84e580bd0908e0d6394f311831182f5155b713928b",
     "sha": "9432dfc5f"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_TarredSurgery_RecipeUsers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5094186c1e8c1767ee72c792e10198bacfa824c10906e2799d03e3351bc66b86",
+    "sha": "62c7aeb50"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml": {
     "cleanCount": 2,
