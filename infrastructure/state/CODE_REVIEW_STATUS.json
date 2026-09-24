@@ -1481,6 +1481,12 @@
     "hash": "8316455675d7f68e0241627790bb5e2db8c5538d2584a5d6aeed2729accb7e5b",
     "sha": "2eee1995f"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/ContactVenomImmunity.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "67c956ab151a89f2b133772be10d16e7f00482ef21f51ba917a793fbf55e6590",
+    "sha": "18adda449"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/DeathActionProperties_ScaledExplosion.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -1546,6 +1552,12 @@
     "date": "2026-09-14",
     "hash": "2ffc860fe9b7013abb7fd39a54fcc72831f1df764504654fcca8abbf208c3225",
     "sha": "0dedc6cfa"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/MapComponent_ContactVenom.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2ebca93606725924cf9b926e2f24799d88faf6c730f8d7931d6d859fde8f8ece",
+    "sha": "18adda449"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_AcceleratedRotExtension.cs": {
     "cleanCount": 1,
@@ -1871,6 +1883,12 @@
     "hash": "9abe2888202a0a15f5c336d332b8d4cce799eaca22093251b98c615f4c6dd831",
     "sha": "07118c4e6"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_LivingProduceExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "43bd2f465e9170c5f7915d505f81b6291489dfa2f2dafaf797df39cbf55d5ebe",
+    "sha": "18adda449"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_LordJob_DefendPerimeter.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -2093,6 +2111,12 @@
     "hash": "6791ab5ef7c7347fd8d39589936acc8b83a49db63b1f53f3be41136d43c4290d",
     "sha": "aeb8d6f40"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RUT_HediffComp_SheenExposure.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4b47d9c96ee13c722b4b8cc8632c6fc2147dfefc642eb41da9bab45c8c2206e5",
+    "sha": "18adda449"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_Breaklight.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -2110,6 +2134,12 @@
     "date": "2026-09-18",
     "hash": "bc4a5d9b77a89d84e0535c0f8681ee6a108450d322c170ddaab0ad939e264156",
     "sha": "aeb8d6f40"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_SporeCloud.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "e65705e0c06a7834d24a818c52939a1f6b93e45ddb51c7071971e4a2ddcfe799",
+    "sha": "18adda449"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_SteamDevil.cs": {
     "cleanCount": 1,
