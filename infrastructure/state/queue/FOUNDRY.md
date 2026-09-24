@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T20:21:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T20:26:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -747,15 +747,6 @@ kind:     task
 summary:  (no items/TWILEK_TROPE_GENES_MOVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TWILEK_TROPE_GENES_MOVE_1.md
 
-## XENOTYPE_NONCOSMETIC_FIXES_1 Fix the non-cosmetic xenotype canon defects in gen_races_mod.py: water-breathing for four aquatic species, five wrong-species nameMakers, two missing nameMakers, five one-character descriptions, Zuguruk spelling and Pureblood mislabel - COSMETIC GENES ARE OFF LIMITS (skin, heads, masks, eyes, hair, montrals) and labels only, never defNames, without a further ruling
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  (no items/XENOTYPE_NONCOSMETIC_FIXES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/XENOTYPE_NONCOSMETIC_FIXES_1.md
-
 ## OFFBIOME_SHEET_RERENDERS_1 Sheet rerenders outside Pyrelands: bolotaur, gualaar, fulgurite
 state:    doing
 row:      unassigned
@@ -804,7 +795,7 @@ prose:    infrastructure/state/items/BARBSLINGER_SCORPION_REDESIGN_1.md
 ## AQUATIC_WATER_BREATHING_GENE_1 Design and build a real water-breathing mechanism (gene or hediff) for the 4 aquatic xenotypes currently missing one entirely
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     design
 summary:  AQUATICWATERBREATHINGGENE1
