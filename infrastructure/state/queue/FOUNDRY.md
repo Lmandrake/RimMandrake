@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T21:52:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T21:55:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -2100,3 +2100,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Census every vanilla/DLC animal reachable in the Utinni scenario: biome
 prose:    infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md
+
+## THEY_MOD_REPLICATION_1 Replicate They! (Giant Ants) in our own tier and retire the dependency — 1 race/2 kinds/hidden raid faction/carapace stuff+wall trivial XML, one small JobGiver in C#, new art+name; ~a day
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Re-author the whole surface in our tier (race, 2 pawnkinds, hidden raid
+prose:    infrastructure/state/items/THEY_MOD_REPLICATION_1.md
