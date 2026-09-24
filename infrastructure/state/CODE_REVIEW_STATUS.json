@@ -15393,11 +15393,23 @@
     "hash": "41c72a8116e26e6cc322ea9d59bc3c7cebebffca89c3ed6aeaaef049a597e4ed",
     "sha": "2679d79d8"
   },
+  "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_FurnaceThermalCycle.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "004fae2a908c6c1041d2344ee86eb161b7dfbab82e6679fdba14d0ee8976800b",
+    "sha": "69d246198"
+  },
   "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_HarvestScorchFruit.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "c6806221b12012c0b8f28c2fd72d4d91af775350928094c84e9d68688993f4c6",
     "sha": "9b64f4fde"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/LordJob_RUT_FireRite.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fb3c4d6e678f75109b5d1fe7babab6739210856d67216fe3d481b8f5206de290",
+    "sha": "16a03960e"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/MapComponent_BurnLine.cs": {
     "cleanCount": 3,
@@ -15422,6 +15434,12 @@
     "date": "2026-09-24",
     "hash": "07ca7c5400d89f777c548667c2fb2c11b795aace44869038b65ca2d47809dd5d",
     "sha": "a7b96f8d7"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFireRite.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "df4c193b6aa2df6eba66ca019f1ef5b61048cb32e64862043b253dd3f238a75c",
+    "sha": "69d246198"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsDefOf.cs": {
     "cleanCount": 2,
