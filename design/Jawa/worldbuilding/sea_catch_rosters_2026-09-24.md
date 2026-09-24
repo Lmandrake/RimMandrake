@@ -257,10 +257,9 @@ Everything below is build work for `SEA_FLOOR_AND_CATCH_PASS_1` / `TERMINALBIOME
 
 **Tier:** every `RUT_` above is retiered to `RM_` at the TERMINALBIOMES sitting per Q12 — invented names are not IP (Q11a). This doc does not pre-empt that.
 
-## Questions for the owner
+## Questions for the owner — ANSWERED 2026-09-24 (decisions taken by question card)
 
-Only genuine forks; everything the brief answered is taken as answered.
+1. **Twilight glow: art only.** The eight built descriptions stay exactly as ruled final on 2026-09-18; the glow lives in the icon briefs.
+2. **Propane catches as fuel: a MECHANIC.** `RUT_Make_ChemfuelFromPropaneCatch` on the vanilla `BiofuelRefinery` renders 10 catches into 35 chemfuel at 1200 work (`src/RimUtinni/UtinniPatches/Defs/RecipeDefs/RUT_PropaneCatch_Refining.xml`). The shore is a second fuel source beside the pipe; ban 5 (tankers) is untouched.
+3. **The plain entries stay plain** (tikkarr, nuudal, murrol, oomal, hessal) — the ground the strange ones stand out from.
 
-1. **The Twilight's built eight — reword or art-only?** Four of them (pallu, kellu, hollu, oobo) get glowing parts in the art brief. Do the four bracketed phrases also go INTO their shipped descriptions (a small def edit to text he has already ruled final under ruling 5), or does the glow live in the art alone and the text stays exactly as ruled? *Two readings, two different files touched.*
-2. **Propane catches as fuel — a stat or a sentence?** Every Propane Lake catch is written as flammable (`Flammability 1.0`) and the rare table pays `Chemfuel`. Is "the catch is fuel" allowed to become a *mechanic* — e.g. a bill that renders Propane catches into `Chemfuel` at a refinery, which makes the shore a real fuel source beside the pipe — or does it stay flavour + the rare table, with the pipe-from-the-ship as the only fuel economy (`the_propane_lakes.md` ban 5 cut the *tanker* economy; a refinery bill is neither a tanker nor a pipe, so the ban does not decide it)? *Mechanic = new RecipeDef and an economy the biome sheet has not priced; flavour = nothing beyond this doc.*
-3. **The Grey's three "dull" and the Twilight's three "dull" entries.** Each table deliberately carries entries with no hook beyond being ordinary (tikkarr/nuudal/murrol in the Twilight; oomal/hessal in the Grey). The brief asked for *varied and interesting*. Keep the ordinary ones as the ground the interesting ones stand out from, or should every entry carry a hook? *If every entry must, the three Twilight ones get glow notes too and the register loses its floor.*
