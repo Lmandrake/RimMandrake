@@ -57,8 +57,11 @@ every other live Sump kit file currently lives, same tier convention as
   to the pawn's own base cost rather than multiplying; `filthAcceptanceMask`
   None — the real vanilla gate `FilthMaker.TerrainAcceptsFilth` checks first,
   same field `RUT_TarShallow_FilthAcceptance.xml` had to *fix away* on
-  `RM_TarShallow` — here it is deliberate; costList Chemfuel×6 **placeholder**
-  for the real bitumen/dig-barrel chain, §3, which does not exist yet either).
+  `RM_TarShallow` — here it is deliberate; costList **REPOINTED**
+  (`SUMP_TAR_NASTINESS_1`, 2026-09-24) from a Chemfuel×6 placeholder to
+  `RUT_Bitumen`×6, a real def that item shipped — the bitumen/dig-barrel
+  *supply chain* feeding `RUT_Bitumen` is still unbuilt, flagged on that
+  def's own header, not this one's).
 - `src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_Filth_Tar.xml` —
   new FilthDef, pathCost 34 (`RM_GreentideChurnmud`-precedented mire value).
   **DEPLOY_HOLD'd** (`src/DEPLOY_HOLD.txt`): no real texture yet, and
@@ -113,17 +116,16 @@ of this):
 3. Confirm both terrains are actually placeable via the normal floor
    designator on ordinary Sump ground (Light affordance) — not yet checked
    in-engine.
-4. Generate real art for `RM_Filth_Tar` (black tar stain, `Things/Filth/
-   RM_FilthTar`), then lift BOTH `src/DEPLOY_HOLD.txt` entries
-   (`FlowWorks/Defs/LiquidTypes/ThingDefs/RM_Filth_Tar.xml` and
-   `UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml`) in the same
-   pass and redeploy — until then, duckboards place and burn correctly but
-   never actually foul in a live game (the terrain/pathCost half works; the
-   tracking-in half is inert).
-5. `RM_Brindeth` (duckboards' wood) and the real bitumen/dig-barrel chain
-   (glasswalk's cost) don't exist yet — both terrains currently cost vanilla
-   placeholders (WoodLog / Chemfuel), flagged in the XML headers, owed
-   re-pointing once those items ship.
+4. **DONE, `SUMP_TAR_NASTINESS_1` (2026-09-24)**: `RM_Filth_Tar` now ships
+   three placeholder blob sprites (procedurally drawn, not hand-authored)
+   and both `src/DEPLOY_HOLD.txt` entries named above are lifted and
+   deployed — live proof still owed that duckboards actually foul and slow
+   in game, only that the def itself no longer blocks it.
+5. `RM_Brindeth` (duckboards' wood) still doesn't exist — that cost is
+   still a WoodLog placeholder. Glasswalk's own cost is **REPOINTED**
+   (`SUMP_TAR_NASTINESS_1`) from Chemfuel to the real `RUT_Bitumen`; the
+   bitumen/dig-barrel supply chain that would let a colony actually PRODUCE
+   `RUT_Bitumen` is still unbuilt (flagged on that def's own header).
 6. Not touched: ship-buildable placement aboard the gravship specifically
    (`BIOME_SHIP_CONTRIBUTIONS_1`) — should work automatically (ordinary
    Light-affordance floor) but unverified in-engine.
