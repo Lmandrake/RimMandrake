@@ -35,6 +35,20 @@ walk step 4's "An unrecognised marker mode ... defaults ... rather than
 crashing" is about the OTHER path and is NOT exercised here (no bridge tool
 writes the marker file at all; see next paragraph).
 
+🔴 FOUND AND FIXED (wave 12): `bridge_tool_mode_validation` read
+`r.get("error")` to check the refusal message, but `JawaBenchDefDumpTools.cs`
+declares `RimDefDumpRun` inside the SAME partial class as
+`JawaBenchTerrainTools.cs` (`namespace JawaBench.BridgeTools`, both
+`public sealed partial class JawaBenchTerrainTools`), so its `Fail(...)`
+calls resolve to that file's shared helper -- `new { success = false,
+message, details }`. There is no `error` key anywhere in this failure
+shape (confirmed by grep of the whole file). `err` was therefore always
+`""`, so `"must be 'all' or 'animals'" not in err` was always true and the
+component raised `ExpectationFailed` on every live run regardless of
+whether the bridge tool actually refused for the right reason -- the same
+guaranteed-false-failure shape as AshkarrFlora's wave-11 bug. Fixed by
+reading `message` instead.
+
 WHAT THIS SUITE CANNOT PROVE, and why:
   - Walk step 2 ("with no marker file present at game load, Player.log
     contains the inert line and NOT the starting line") is a LOAD-TIME
@@ -234,7 +248,7 @@ def bridge_tool_mode_validation(t):
                 "jawa/rimdefdump_run(mode='ALL_DEFS') SUCCEEDED -- the tool's own "
                 "ToolParameter doc says any mode other than 'all'/'animals' is "
                 "refused before DefDumper.RunOnDemand is ever called: %r" % r)
-        err = (r or {}).get("error") or ""
+        err = (r or {}).get("message") or ""
         if "must be 'all' or 'animals'" not in err:
             raise ExpectationFailed(
                 "rimdefdump_run(mode='ALL_DEFS') failed for an unexpected reason "

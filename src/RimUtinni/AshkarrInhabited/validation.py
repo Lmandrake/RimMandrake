@@ -72,14 +72,26 @@ Still not proven / real gaps:
   2. No live district COMPOSE or cast-slot ROLL is exercised -- see module
      docstring above; that belongs to the engine mod's own suite.
   3. `securityProfile`/`place` are typed def-reference fields
-     (`SecurityProfileDef`/`InhabitedPlaceDef`), not free-text -- this
-     suite checks the RESOLVED reference's own defName appears in
-     `jawa/get_defs`' returned value, but the exact shape that tool hands
-     back for a nested def reference (a defName string vs. a nested object)
-     was not independently measured live before writing this; the check
-     below stringifies defensively (`str(...)` + substring) rather than
-     assuming one shape, same pattern PawnFlavor/ResearchRetag already use
-     for list-typed fields.
+     (`SecurityProfileDef`/`InhabitedPlaceDef`), not free-text -- checked
+     against `JawaBenchTerrainTools.cs`'s `Scalars()`: a `Def`-typed field
+     always collapses to its bare defName regardless of `deep`, so the
+     check below (`str(...)` + substring) is correct as written.
+
+🔴 FOUND AND FIXED (wave 12): `districts` is `List<DistrictSlot>`
+(`SettlementManifestDef.cs`), and `DistrictSlot` is a plain non-Def class --
+per `Scalars()`'s own documented behaviour, a list of non-scalar, non-Def
+items with `deep=false` (the OLD default here) serialises each item as its
+bare TYPE NAME string (`"DistrictSlot"`), never a dict with a `label` key.
+`settlement_manifests_readback`'s `_get_defs` call never passed `deep=True`,
+so `districts[0]` could never come back as a dict and the fallback
+`district0_label not in str(districts)` substring check was comparing
+against a stringified list of type-name strings -- guaranteed to fail on
+every live run that reached this component, regardless of whether the real
+label matched. `castSlots`' own check only needed `len()`, which survives
+either shape, so that half was never actually broken. Fixed by passing
+`deep=True` on this one call (`_get_defs` now takes an optional `deep`
+kwarg); `DeepSerializeValue` (same file) confirms a `DistrictSlot` at
+`deep=True` really does expose `label` as a field.
 """
 from modcheck import Suite, ExpectationFailed
 
@@ -137,9 +149,9 @@ def _live(t):
     return t.session is not None and not t.upstream_failed
 
 
-def _get_defs(t, def_type, names, fields):
+def _get_defs(t, def_type, names, fields, deep=False):
     pairs = ";".join("%s/%s" % (def_type, n) for n in names)
-    return t.bridge_call("jawa/get_defs", defs=pairs, fields=fields)
+    return t.bridge_call("jawa/get_defs", defs=pairs, fields=fields, deep=deep)
 
 
 def _rows_by_name(r):
@@ -190,7 +202,8 @@ def settlement_manifests_readback(t):
     with t.component("all_four_manifests_match_shipped_xml",
                      beyond_toggle=True):
         r = _get_defs(t, MANIFEST_TYPE, names,
-                      "factionDefName,securityProfile,place,districts,castSlots")
+                      "factionDefName,securityProfile,place,districts,castSlots",
+                      deep=True)
         if _live(t):
             rows = _rows_by_name(r)
             not_found = (r or {}).get("notFound") or []
