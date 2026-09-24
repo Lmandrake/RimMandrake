@@ -1221,3 +1221,107 @@ BridgeTools` (2, `JawaBenchAbilityTools.cs`/`JawaBenchInhabitedTools.cs`),
 reachability (standalone entry point vs. main-assembly member) before
 reviewing either. The 284-row re-dirtied backlog and the binary-art-tracking
 scope question from wave 15 are both still untouched.
+
+## Wave 23 — 2026-09-24: `GelatinousSlime` + `bridgetools` never-entered clusters CLOSED
+
+Re-derived the never-entered list fresh with the backslash-safe join wave
+22's fix already carries (normalize `\` to `/` before joining, verified
+still correct — no phantom entries this pass): **19 genuinely never-entered
+files remain**, all confirmed present on disk against every
+`src/RimMandrake|RimStarWars|RimUtinni/**/*.csproj`'s `<Compile Include>`
+list (down from wave 22's 22 — 3 closed by `TrophyCraft` that same wave).
+
+**Resolved the `SelfTest/Program.cs` reachability question first**, per
+this wave's own brief: both `FlowWorks/Source/SelfTest/Program.cs` and
+`SeaShores/Source/SelfTest/Program.cs` sit in their own standalone
+`net8.0`/`net472` `.csproj` (`RimMandrakeFlowWorks.SelfTest.csproj`,
+`RimMandrakeSeaShores.SelfTest.csproj` — `OutputType=Exe`, compiling the
+REAL production `.cs` files in directly rather than reimplementing them,
+per each project's own header comment), each with a documented run path
+(`python3 src/RimMandrake/Utils/selftest_flowworks_stock.py` /
+`selftest_seashores.py`). Confirmed both wrapper scripts exist and are
+picked up by `run_selftests.py`'s `selftest*.py` glob over `SEARCH_ROOTS`
+(the file's own header explains the broadened-from-`selftest_*.py` glob
+fix) — so both `Program.cs` files are genuinely reachable, buildable,
+runnable entry points in the standing pre-commit selftest suite, not
+orphaned test scaffolding. They remain queued for review (not reviewed
+this wave — this pass answered reachability, not content) since this
+wave's time went to the two clusters below.
+
+Reviewed 5 of the 19, full-file each, two clusters closed:
+
+**`GelatinousSlime/Source` (3/3)**: `GeneConditions.cs` (135 lines,
+`Gene_ForcesHediff`/`Gene_TheReek` — cross-checked `GasUtility.AddGas`'s
+signature and `GasType.RotStink` against the vanilla `CompRottable`
+precedent cited in the file's own header), `Titanoslime.cs` (1195,
+`RM_CompEngulfer`'s full growth/swallow/digest/shed lifecycle — traced
+`StageFor`'s hysteresis climb/fall, `ApplyStage`'s life-stage lock via
+`Pawn_AgeTracker.LockCurrentLifeStageIndex`, and `TitanoslimeSpawnTuning`'s
+reflection-based commonality slider; both `wildAnimals`
+[private `List<BiomeAnimalRecord>`] and `cachedAnimalCommonalities`
+[private `Dictionary<PawnKindDef, float>`] field names confirmed byte-exact
+against the decompiled `RimWorld/BiomeDef.cs`, and `BiomeAnimalRecord`
+confirmed a class so the `baseCommonality` dictionary's reference-identity
+keying is sound. Noted one harmless dead branch in `ApplyStage` — an
+`else if (CurLifeStageIndex != target)` that can never be true since
+`current` was captured from that same property moments earlier and nothing
+mutates it in between — not a functional bug, left as-is), and
+`TitanoslimeVerb.cs` (45, `RM_Verb_MeleeEngulf` — a thin `Verb_
+MeleeAttackDamage` override, matches the file's own cited seam against
+`Verb_MeleeAttackDamage.ApplyMeleeDamageToTarget`). All settings fields
+(`titanoslimeMaxStage`/`Grows`/`Reversible`/`Engulfs`/`Sheds`/
+`SpawnFactor`) and all `SlimeDefs`/`SlimeUtility` statics these files read
+confirmed real and wired in `SlimeMod.cs`/`Slimification.cs`.
+
+**`bridgetools/JawaBench.BridgeTools` (2/2)**: `JawaBenchAbilityTools.cs`
+(1137, `jawa/select_things` + `jawa/pawn_use_ability` + `jawa/pawn_use_verb`
+— the non-colonist pawn driving tools) and `JawaBenchInhabitedTools.cs`
+(161, `jawa/inhabited_settlement_create`, `SETTLEMENT_VISIT_LOOP_1`'s
+non-interactive settlement producer). Cross-checked every one of the six
+"engine facts" `JawaBenchAbilityTools.cs`'s own header cites against the
+decompiled source: `Ability.CanApplyOn` reading the private `effectComps`
+field rather than the `EffectComps` property (confirmed,
+`RimWorld/Ability.cs:362-368`), `Ability.Activate` applying `EffectComps`
+only with no verb fired (confirmed), `Verb.TryStartCastOn`'s
+Bursting/`CanHitTarget` refusal (confirmed, `Verse/Verb.cs:324-335`), and
+`HediffSet.GetHediffsVerbs()` returning the shared `tmpHediffVerbs` buffer
+a next call clears (confirmed, `Verse/HediffSet.cs:761-776`) — all four
+read exactly as claimed. For `JawaBenchInhabitedTools.cs`, confirmed
+`DebugActions_Inhabited.CreateAndEnterSettlement`/`TryEnterSettlementMap`'s
+real signatures match the call site exactly
+(`src/RimMandrake/Inhabited/Source/DebugActions_Inhabited.cs:150,192`), and
+`SettlementCasing`'s `everVisited`/`visitCount`/`knownDistrictLabels`
+fields this tool's `casing` result block reads are all real and Scribed.
+One precision nuance, not fixed: the file's description string says
+`MapParent.PostRemove` "unconditionally calls `DeinitAndRemoveMap`" — the
+decompiled source gates it on `if (HasMap)`
+(`RimWorld.Planet/MapParent.cs:110-116`), so it is conditional in the
+literal code, but every MapParent this tool actually encounters (an
+already-generated tile) always `HasMap`, so the claim holds in every case
+this tool matters for. Left as-is, same call as wave 16's imprecise-but-
+harmless comment.
+
+No bugs found in any of the 5. Fixes: none this wave — a clean pass. All 5
+marked CLEAN, commit `b21473703`, pushed. **This closes both the
+`GelatinousSlime/Source` and `bridgetools/JawaBench.BridgeTools`
+never-entered clusters.**
+
+Next wave: 14 never-entered files remain (19 minus this wave's 5) —
+re-derive rather than trust this count. Remaining clusters:
+`StructureInjectionsRUT/Source/Ashfall` (3, the Rakatan command-codes
+mechanic), `RimMandrake/Pyrelands/Source` (2, `PlantGrowthStages.cs`/
+`RM_PyrelandsDensityEnforcer.cs`), `LanternDeeps/Source` (2,
+`GenStep_LanternstoneRock.cs`/`GenStep_ScatterLanternstone.cs`), and 1 each
+in `Aftermath/Source` (`Patch_PayloadLanded.cs`), `FlowWorks/Source`
+(`RM_StockMath.cs`), `FlowWorks/Source/SelfTest` (`Program.cs`, reachability
+now CONFIRMED above — ready to review), `Ninefold/Source`
+(`Patch_GravshipLanded.cs`), `SeaShores/Source/SelfTest` (`Program.cs`,
+reachability now CONFIRMED above — ready to review), `WreckedMachines/
+Source` (`WreckedMachinesMod.cs`), `UtinniPatches/Source`
+(`BlueDesertLife.cs`). **This is small enough (14 files) that a future wave
+should be able to close out the entire never-entered `.cs` backlog in one or
+two more waves.** After that, the loop's only remaining backlogs are the
+284-row re-dirtied set (diagnosed wave 15, not yet re-reviewed) and the
+never-independently-confirmed 13 `Utils/` Python tools from the post-tail
+survey (wave 14) — the binary-art-tracking scope question (wave 15) is
+still open and unresolved.
