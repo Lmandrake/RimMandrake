@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T05:42:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T05:44:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2016,3 +2016,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SHOKK_SKIN_SHRINK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SHOKK_SKIN_SHRINK_1.md
+
+## WEBWORK_EGG_BLACKMARKET_BUILD_1 Build the ruled egg black market: Cartel caravan kind + Bazaar broker channel, tradeability-All patch with leak check, The Reckoning quest family with staged juvenile hatch (S5 rulings 1-6)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEBWORK_EGG_BLACKMARKET_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_EGG_BLACKMARKET_BUILD_1.md
