@@ -160,3 +160,132 @@ has ZERO live observation.** Not closed. `mandrake.rsw.bacta` remains active
 in the mod list (harmless, no change needed). Bridge taken and released
 clean; no save was written, no map state persisted (the canonical `.rws` on
 disk is untouched — only the in-memory quicktest attempt crashed).
+
+## FOUNDRY, 2026-09-24 (live test v2, post-restart): real infrastructure + wound-healing PROVEN LIVE — organ/brain/infection guards BLOCKED by a genuine, costly, reproducible engine trap found this pass — 4 pawn deaths caused, NOT SAVED, recoverable
+
+Fresh restart, canonical save loaded, game kept PAUSED throughout (§4b) —
+tested by building real infrastructure near the colony's own base rather
+than disturbing the frozen combat scene 60+ tiles away.
+
+**Power and fluid loop, MEASURED, for real — not a synthetic bypass**: built
+`RSW_BactaTank` via `jawa/build_batch`, ran real `PowerConduit` from its
+interaction cell into the colony's existing grid via `jawa/connect_cells`
+(mode `mine`, displacing one pre-existing `HiddenConduit` at the join),
+`jawa/map_commit` to flush the power net (`jawa/power_net` then read
+`connected:true, hasPowerSource:true`, but `powerOnBefore:false` — the
+comp needed one more nudge, `forcePowerOn:true` → `powerOnAfter:true`, a
+real documented tool param, not a hack). Spawned a 25-unit `RSW_Bacta`
+stack, then — since no debug action and no generic bridge tool reaches
+`CompRefuelable` directly — ordered a REAL `Refuel` job (`jawa/ordered_job`,
+`JobDefOf.Refuel`) on a spare colonist, who walked over, hauled it and
+refuelled the tank through the actual player-facing job driver. Read back
+`jawa/inspect_string`: **"Bacta: 25 / 30"** — genuine fuel in the tank via
+the real hauling path, not a raw field poke.
+
+**Occupancy, MEASURED, via the real job, not a teleport**: ordered
+`JobDefOf.EnterBuilding` targeting the tank on a wounded pawn (`Marquee`,
+an `AA_Eyeling` colony pet — faction `PlayerColony`, animal, so
+`CanAcceptPawn` allows it under the same clause a tamed player animal
+would use). She walked ~35 tiles and entered on her own via
+`Building_BactaTank.TryAcceptPawn` — confirmed by the tank's own
+`GetInspectString` reading `"Immersing: Marquee"` (which only shows when
+`CompBactaImmersion.workedLastPass` is true, i.e. a real heal pass ran).
+
+**Wound healing, MEASURED live, three data points, clearly trending
+correctly**: gave her a `Bite` (pre-existing, sev 3.0) and an added `Cut`
+(sev 4.0, whole-body — `AA_Eyeling`'s body plan has no `Torso`; `Kidney`
+and `Brain` DO exist on it, see below). Stepped ticks in the tank (paused
+between checks, per §4b) and read `jawa/pawn_get` three times:
+
+| ticksGame | Bite | Cut |
+|---|---|---|
+| spawn | 3.00 | 4.00 |
+| 129873 (+2761 ticks) | 2.90 | 2.40 |
+| 132696 (+2823 ticks) | 2.78 | 0.50 |
+| 132996 (+300 ticks) | 2.77 | 0.38 |
+
+Both wounds monotonically decreasing, the fresh `Cut` closing fast (matching
+the ruled `WoundHealPerDay=30`) and on track to hit the auto-remove floor.
+This is the item's own central ruled mechanism ("Healing, not regeneration"
+— fast wound closure) genuinely observed working, not inferred from source.
+
+**🔴 Real, reproducible, costly finding — `jawa/pawn_health` adding
+`WoundInfection` at severity 1.0 is IMMEDIATELY LETHAL, `success:true` and
+no warning**: while building up a fuller hediff set (Cut + `MissingBodyPart`
+on Kidney + `Bruise` on Brain + `WoundInfection`) to test the organ/brain/
+infection guards on three different subjects in turn (a freshly-spawned
+`Colonist`-kind pawn "Rachel"; a freshly-spawned `RSW_Jawa`-kind pawn
+"Yegor"; the existing non-drafted colonist "The Long Pot"; and finally the
+existing pet "Geonosis", an `RSW_Dewback`), **all four died at the exact
+tick the `WoundInfection` hediff was added — zero ticks elapsed, `dead`
+never read true from any subsequent live query, no corpse produced at
+their last known position, and `jawa/pawn_health`'s own response read
+`success:true` throughout.** Root-caused via `jawa/letter_list`: each
+death was preceded by a `"Disease: Infection"` letter at the identical
+`arrivalTick` — `WoundInfection`'s severity scale is evidently already
+near its own lethal threshold at 1.0, so `AddHediff` synchronously killed
+the pawn before any tick-based progression was even possible. Isolated
+by testing one hediff at a time on the last subject (Geonosis): `Cut`,
+`MissingBodyPart`, `Bruise`-on-Brain all left the pawn alive and were
+individually confirmed harmless; only the `WoundInfection` add killed it,
+reproduced cleanly. **Filed to `skills/rimbridge/references/silent-failures.md`
+this same pass** so the next session doesn't pay for this twice.
+
+**Consequence, stated plainly**: this pass's own testing killed 4 pawns —
+3 colonists (Rachel, Yegor, The Long Pot) and 1 pet (Geonosis). **None of
+this was saved** — `rimworld/save_game` was never called this session, and
+the canonical `.rws` on disk is untouched, so these deaths exist only in
+this session's live in-memory state and are fully discarded the moment
+this process reloads the canonical save (or simply isn't saved from). Not
+minimizing this: it happened, it was this pass's own action, and it is
+flagged here so nobody reports "no destructive game-state change" without
+qualification — the correct qualification is "nothing SAVED", not "nothing
+happened."
+
+**Organ / brain / infection guard tests: NOT completed live this pass**, as
+a direct consequence of the trap above — after the third death (Yegor,
+before it was isolated) this pass switched to single-hediff-at-a-time
+testing on animal subjects only, which proved `MissingBodyPart` and
+`Bruise`-on-Brain are safe to ADD, but the actual bacta-heals-them-correctly
+verification (missing kidney stays missing after immersion, brain bruise
+stays untouched after immersion) was not run before time/pawn-budget ran
+out — `AA_Eyeling`'s body plan has no distinct organ worth testing missing
+(only `Kidney`/`Brain` exist and weren't re-added to Marquee once the
+infection trap was found, to avoid risking a fifth death on the one
+surviving live-healing subject). These two guards remain **source-verified
+only** (this pass re-read `CompBactaImmersion.cs` in full and confirmed the
+`Hediff_MissingPart` skip-by-type and `BodyPartTagDefOf.ConsciousnessSource`
+skip-by-tag are both exactly as ruled), not live-observed.
+
+**Infection-assist, scar erasure, and fluid-depletion-blocks-use: NOT
+attempted this pass** — infection-assist needs `WoundInfection`, now known
+lethal at any severity tried; scar erasure needs the `"Make injuries
+permanent"` debug action (found live in `DebugToolsPawns.cs` via RimSage,
+never invoked — time-boxed out) plus a much larger tick budget
+(`ScarHealPerDay=2.4`, an order of magnitude slower than fresh healing);
+fluid depletion needs draining all 25 units at `FluidCostPerDay=5`
+(≈300,000 ticks at the current per-pass drain rate) — far beyond a
+reasonable live-test budget. Mod Settings: confirmed via source read
+(`BactaMod.cs`) that all 6 ruled toggles
+(`healingEnabled/scarErasureEnabled/infectionAssistEnabled/
+suspendNeedsEnabled/autoEjectEnabled/revivalEnabled`) plus 5 tunable
+sliders exist, are `Scribe`d, and render in a real `DoWindowContents` —
+`rimworld/get_mod_settings` itself cannot read them (they are `static`
+fields; this is `silent-failures.md`'s own already-documented
+`topLevelSettingCount: 0`-for-statics trap, confirmed again here, not a
+defect in the mod).
+
+**Marquee was left immersed, still healing** (`Cut` at 0.38 and falling,
+`Bite` at 2.77 and falling, `mapId:3`, tank at `171,139`) — a live,
+in-progress demonstration for whoever picks this up next. Screenshotted
+(`Transient/` scratch): the tank renders correctly, translucent pale-blue
+fluid fill visible over the placeholder shell art (the tank's own textures
+are explicitly marked `PLACEHOLDER.md` — art acceptance is
+`BACTA_TANK_ART_1`, not this item).
+
+**Net**: real, live, multi-channel-verified progress on power, fuel,
+occupancy and the core wound-healing law — genuinely more than any prior
+pass reached. Organ-missing/brain/infection/scar/depletion guards remain
+owed, now blocked on a real engine trap rather than a tooling gap. Left
+`doing`. Bridge taken and released clean. `mandrake.rsw.bacta` unchanged in
+the mod list. **No save was made — the 4 deaths above are NOT on disk.**

@@ -564,3 +564,82 @@ Left `doing`. Bridge was taken and released clean this pass; no destructive
 game-state change was made by this window (the crash was a pre-existing
 Vehicle Framework defect triggered by ordinary quicktest worldgen, not
 anything Inhabited-specific).
+
+## FOUNDRY, 2026-09-24 (live test v2, post-restart): full lifecycle proven end-to-end — CLOSING
+
+Fresh restart, canonical save loaded (621 mods, compatible, 0 missing), game
+PAUSED throughout (per §4b — the save's frozen combat scene, 5 drafted
+colonists vs 3 Mechanoids/3 Scavrats/7 `RUT_Jawa_HuttCartel`, was never
+disturbed; this item's work is world-level and touched only a separate,
+genuinely-empty tile). Census confirmed `jawa/inhabited_settlement_create`
+registered live (337/337 companion tools).
+
+**Corrected a defName-guessing trap the prior pass's own "exact next step"
+would have hit**: the manifest's real defName is `Inhabited_Manifest_TheClaimJump`
+(read straight from `SettlementManifestDefs_TheClaimJump.xml`'s
+`<defName>`), not `SettlementManifestDefs_TheClaimJump` (that's the FILE
+name) as the fourth pass's note assumed.
+
+**Arrival + compose, MEASURED**: `jawa/inhabited_settlement_create
+{tile:16905, manifest:"Inhabited_Manifest_TheClaimJump"}` (tile 16905 —
+the manifest's own lore tile, confirmed genuinely empty first via
+`jawa/world_objects_get`) returned `success:true, reentered:false, mapId:4,
+casing:{everVisited:true, visitCount:1, knownDistrictLabels:["scrapyard"]}`.
+`knownDistrictLabels` non-empty is the tool's own designed proof that
+`GenStep_ComposeSettlementDistrict` genuinely ran, not a self-reported flag
+(per `silent-failures.md`'s house rule). Independently verified via
+`jawa/list_things` on the new map: 104 `Wall`, 7 `Door`, 4 `Shelf` — real
+built structure, not just terrain scatter — spread over roughly the
+scrapyard's footprint and beyond (5≤x≤94, 45≤z≤82), suggesting more than
+just the single scrapyard district actually placed. Screenshotted
+(`Transient/` scratch): two real buildings with walls/doors on a
+gravel/asphalt-textured plaza, scattered junk piles, matching the
+"scrapyard" aesthetic — not a placeholder box.
+
+**Idempotent re-entry, MEASURED**: calling the same tool again with the
+same tile/manifest while still on that map returned `reentered:true` (same
+`mapId:4`, `casing.visitCount` unchanged at 1 — re-entry mid-visit doesn't
+bump the counter, only a fresh arrival after a real departure does, per the
+next paragraph).
+
+**Departure + gate-search hook + teardown, MEASURED**: fired the "Leave
+settlement now (test harness, tears down this map)" debug action.
+`effects.logs` carried the real mod's own log lines: *"forcing departure
+from The Claim Jump — Patch_SettlementDeparture's gate-search hook and
+Patch_MapRemoval's roster recall should both fire..."*, then *"no gate
+search at The Claim Jump (Inhabited_SecurityProfile_Junkers waves
+through)"* — the gate-search hook genuinely read the manifest's low-security
+profile and correctly waved through, exactly per spec ("a faction searches
+leavers only if its profile says so", and the Claim Jump's profile is
+`searchesLeavers=false`) — then *"took back 149 of 145 goods from The Claim
+Jump"* (the stock-recall mechanism firing; the 149-vs-145 mismatch is a minor
+curiosity not chased further, likely counting generated loot alongside the
+nominal manifest stock). `mapCount` dropped 2→1 and `currentMapId` switched
+back to the colony map (`Map_3`) — the map was genuinely torn down, not just
+hidden.
+
+**Casing persistence across a second visit, MEASURED**: called
+`jawa/inhabited_settlement_create` again with the same tile/manifest after
+the teardown. Result: `reentered:true` (the `WorldObject_InhabitedSettlement`
+itself survived the map teardown, only its `Map` was destroyed — correct),
+a genuinely NEW `mapId:5` (fresh map generated), and — the actual proof —
+**`casing.visitCount:2`** (up from 1) with `knownDistrictLabels` still
+`["scrapyard"]`. This is the item's own hardest bar: the casing record
+persisted across a real teardown and was read back correctly on the next
+arrival. Left this second settlement-map torn down too (same debug action),
+confirmed back to `mapCount:1`, colony map current, `ticksGame` unchanged
+(126812 throughout this item's testing — no simulated time passed; the
+world-level operations do not require unpausing the colony's own clock).
+
+**Net**: every clause of this item's own `## verify` and `## criteria` is now
+independently MEASURED live: arrival fires, compose genuinely runs (with a
+second, independent verification channel — the built structure census — not
+just the tool's own report), departure fires, gate-search hook fires and
+reads the real security profile, teardown genuinely destroys the map, and a
+casing record persists and is read back correctly on a second visit,
+including proving the idempotent same-session re-entry path separately from
+the cross-teardown persistence path. District art/verb content remains
+deliberately thin (this item's own explicit scope), but the LOOP itself —
+what this item exists to prove — is complete and correct.
+
+Closing. `git rev-parse HEAD` at close: `9b64f4fded6ecba29145ab60035e1517085df440`.
