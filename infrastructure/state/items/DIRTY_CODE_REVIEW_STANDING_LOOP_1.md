@@ -1945,3 +1945,106 @@ full-file review (never marked clean) — re-derive both counts fresh with
 bridgetools `.cs` files and `rimflow`/`Utils` Python tooling named in wave
 28's note are still untouched; the PNG binary-art-tracking scope question
 (wave 15) is still open and still not this loop's to decide.
+
+## Wave 33 — 2026-09-24: `RUT_*` BiomeDef cluster, `RUT_FuelSnows` first review + 7 more diff-scoped
+
+Re-derived the cluster fresh rather than trusting wave 32's arithmetic: a
+real `find` under `UtinniPatches/Defs/BiomeDefs/` now gives **27** `RUT_*`
+files (one more than wave 32's 26 — `RUT_Umbra.xml` was restored as a
+live-continuity duplicate by `UMBRA_IS_A_REGION_NOT_A_BIOME_1`'s addendum,
+2026-09-21, unrelated to this loop). `code_review_status.py check` showed
+**19 DIRTY**: 18 diff-eligible (already CLEAN once) plus `RUT_FuelSnows.xml`,
+still never marked clean.
+
+`RUT_FuelSnows.xml` full-file review (first ever): the successor to the
+retired `RUT_Umbra` defName (`UMBRA_IS_A_REGION_NOT_A_BIOME_1`), its whole
+mechanics body carried forward verbatim per its own header. Verified
+independently rather than trusting the header's word: all four
+`wildAnimals` rows (`AA_Frostmite`/`AA_FrostboundBehemoth`/`AA_Terramorph`/
+`AA_Slurrypede`) and all four `wildPlants` rows (`AB_CrystalHorn`/
+`AB_FrostLeaf`/`AB_RimeNodules`/`PoisonShrub`) match their commonalities
+exactly against `design/Jawa/worldbuilding/biomes/rosters/
+the_propane_lakes.json`'s `fauna`/`flora` arrays; `workerClass`
+(`AlphaBiomes.BiomeWorker_PropaneLakes`) and both `terrainsByFertility`
+defNames (`AB_PackedSnow`/`AB_PackedIce`) confirmed against the vendored
+`vendor/mod_sources/AlphaBiomes_src`; `sarg.alphaanimals` packageId confirmed
+referenced as a real dependency elsewhere (no vendored source for Alpha
+Animals itself, consistent with every other AA_-prefixed reference in this
+cluster). No duplicate `wildAnimals`/`wildPlants` keys; XML parses. No bugs.
+
+Diff-scoped the 7 smallest remaining diffs by `git diff --shortstat`:
+`RUT_TwilightSea.xml` (+10), `RUT_RustCathedral.xml` (+12),
+`RUT_PoisonForest.xml` (+13/-4), `RUT_NightsideIce.xml` (+21),
+`RUT_ForsakenCrags.xml` (+18/-2), `RUT_TheForge.xml` (+18/-6),
+`RUT_Greentide.xml` (+31/-5). Every change traced to its cited item/ruling
+and verified on disk, not taken on the comment's word:
+
+- **RUT_TwilightSea**: `SEA_FLOOR_AND_CATCH_PASS_1`'s `RM_SeaShoreExtension`
+  modExtension — class confirmed at
+  `src/RimMandrake/SeaShores/Source/RM_SeaShoreExtension.cs` (namespace
+  `RimMandrake.SeaShores` matches the XML `Class=`), `mandrake.rm.seashores`
+  packageId confirmed at `src/RimMandrake/SeaShores/About/About.xml`, and
+  UtinniPatches' own `About.xml` `loadAfter` carries a matching comment
+  naming this exact file.
+- **RUT_RustCathedral**: `ECOSYSTEM_PYRAMID_LAW_1` wiring in two
+  never-before-wired roster rows (`RUT_CathedralRoach` 0.12,
+  `GR_Mecharat` 0.5) — both defNames confirmed on disk (`RUT_CathedralRoach`
+  in `RustCathedralRoaches/`, `GR_Mecharat` in the vendored
+  `VanillaGeneticsExpanded_src`), both commonalities match
+  `rosters/the_rust_cathedral.json` exactly, and the comment's claim that
+  `GR_Mechachicken` stays cut is correct — it is NOT in the file, and the
+  roster confirms `CUT` disposition.
+- **RUT_PoisonForest**: `RSW_Screecher` multi-homing annotation under
+  `BIOME_SPECIFIC_FAUNA_LAW_1` — confirmed the item exists and the
+  screecher's own def (`RSW_BiomesTeamPort_Races.xml`) really carries
+  `MaxFlightTime 35`, backing the "real flier that migrates" carve-out.
+  Plus a `BMT_`→`RUT_` defName sync (`RUT_TwistingThornwood`/
+  `RUT_TreeMartyr`, both confirmed at `RUT_PollutedFlora.xml`) and a
+  `SHEET_ORPHAN_CONSUMPTION_1` plant swap (`AB_CrystalHorn` out,
+  `AB_GiantToxicFlower` 0.08 in) matching `rosters/poison_forest.json`.
+- **RUT_NightsideIce**: `ECOSYSTEM_PYRAMID_LAW_1` wiring of
+  `AA_ShockGoat` (0.03) and `RSW_CaveLemming` (0.03) — both match
+  `rosters/nightside_ice.json` exactly, including the roster's own note that
+  the cave lemming deliberately WORSENS the small-fauna ratio on the
+  owner's explicit ruling (not a defect to fix).
+- **RUT_ForsakenCrags / RUT_TheForge**: a matched pair — `AG_Gamma` (0.5)
+  and `AG_Septimum` (0.25) moved OUT of `RUT_TheForge` and INTO
+  `RUT_ForsakenCrags` at the same commonalities under
+  `SHEET_ORPHAN_CONSUMPTION_1` (checked both diffs against each other, not
+  just each file's own comment) plus independent `ECOSYSTEM_PYRAMID_LAW_1`
+  small-fauna boosts (`AA_DuskRat`/`AA_Murkling` raises on Crags,
+  `AA_CrescendoAnole` 0.5 new-wire on the Forge) and a `BMT_`→`RUT_`
+  defName sync on the Forge's plants (`RUT_FireLavender`/`RUT_Sagecrust`/
+  `RUT_HeatsinkFungus`, all confirmed on disk). All commonalities match
+  their respective roster JSONs.
+- **RUT_Greentide**: the biggest diff, four independent changes verified
+  separately. (1) A new `FROZEN` header under `GREENTIDE_RM_MOD_BUILD_1` —
+  confirmed `RM_Greentide` exists (`RM_Greentide_Biome.xml`), confirmed
+  `RM_BiomeWorker_Greentide.cs:44` really reads `RM_GreentideBiomeRanges`
+  exactly as the header claims, confirmed `WildAnimals_Greentide.xml`
+  exists. (2) Three `DUPLICATE_CANON_DEFNAME_PAIRS_1` repoints
+  (`Gizka`→`RSW_Gizka`, `Worrt`→`RSW_Worrt`, `Nuna`→`RSW_Nuna`), all three
+  defNames confirmed on disk, item confirmed closed/ruled. (3) The Dianoga
+  row removed outright — cross-checked the removal comment's verbatim owner
+  quote against `rosters/the_greentide.json`'s `evictions` array and it
+  matches word-for-word, and confirmed no live `Dianoga`/`RSW_Dianoga` row
+  survives in either this file or `WildAnimals_Greentide.xml` (only
+  explanatory comments do). (4) A `BMT_GiantLeaf`→`RUT_GiantLeaf` defName
+  sync, confirmed on disk.
+
+No bugs found in any of the 8 files reviewed this wave (1 full-file + 7
+diff-scoped). All had zero uncommitted changes before marking
+(`git status --porcelain` empty). All 8 marked CLEAN, commit `8270c8245`,
+pushed.
+
+Next wave: **10** `RUT_*` BiomeDef files remain DIRTY, all diff-eligible
+(already CLEAN once) — re-derive fresh with `code_review_status.py check`
+rather than trusting this list: `RUT_AridShrubland.xml`, `RUT_BlueDesert.xml`,
+`RUT_Desert.xml`, `RUT_ExtremeDesert.xml`, `RUT_GreySea.xml`,
+`RUT_PropaneLake.xml`, `RUT_TheRot.xml`, `RUT_TheScald.xml`,
+`RUT_Umbra.xml`, `RUT_Wasteland.xml`. This closes out the cluster in the
+next wave or two. The `~15`-file `RSW_*ThingDefs_Races` cluster is already
+closed (wave 31); the bridgetools `.cs` files and `rimflow`/`Utils` Python
+tooling named in wave 28's note are still untouched; the PNG
+binary-art-tracking scope question (wave 15) is still open and still not
+this loop's to decide.
