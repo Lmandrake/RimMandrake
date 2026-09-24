@@ -3981,3 +3981,98 @@ wave. The 13 never-entered Python tools under `src/RimMandrake/Utils/`
 named in wave 14's post-tail note (`apply_blanket_ruling.py`,
 `canon_census.py`, etc.) still need a reachability check before any of
 them are spent on a review — untouched for 46 waves running now.
+
+## Wave 61 — 2026-09-24: `EnvironmentalHazards/Source/` `.cs` cluster FINISHED, a real dead-code bug found
+
+Finished the last 3 never-entered `.cs` files wave 60 left in
+`EnvironmentalHazards/Source/`, full-file each, cross-checked against the
+decompiled engine (`/mnt/d/Luke/dev/reference/rimworld-decompiled`) rather
+than trusting header comments: `RM_MapComponent_GlasswalkSlip.cs` (138
+lines — verified `StunHandler.StunFor`'s signature, `TerrainDef.HasTag`,
+`LocomotionUrgency`'s enum order and `Job`'s default `Jog` value, `Rand.Chance`;
+confirmed the `RM_GlasswalkSlip` Translate key exists with a matching `{0}`
+placeholder), `RM_RecipeDef_HediffByproduct.cs` (29 lines, a plain
+`RecipeDef` subclass adding `byproductDef`/`byproductCountRange`/
+`byproductChance`), and `RM_Recipe_RemoveHediffWithByproduct.cs` (69 lines —
+verified `Recipe_RemoveHediff.ApplyOnPawn`'s exact override signature and
+control flow, `RecipeDef.removesHediff`, `ThingMaker.MakeThing`,
+`GenPlace.TryPlaceThing`, and `Thing.MapHeld`/`PositionHeld`). No bugs in
+any of the 3. All 3 marked CLEAN, commit `80fe48b93`, pushed. **This closes
+out the last never-entered `.cs` cluster in the whole repo** (per wave 60's
+fresh survey — 0 reachable `.cs` files remain never-entered anywhere).
+
+Topped up to a full wave with 5 more files, all cross-referenced against
+real code/defs rather than trusted from header prose:
+`RM_EnvironmentalHazards_Keys.xml` (37 lines — verified all 9 Translate
+keys, including the just-reviewed `RM_GlasswalkSlip`, are each referenced
+from exactly one real `.Translate()` call site with matching placeholder
+counts), `RUT_TarShallow_FilthAcceptance.xml` (56 lines, a patch fixing a
+real prior-pass engine block — verified `FilthSourceFlags.Terrain` exists,
+`FilthMaker.TerrainAcceptsFilth`'s exact bitwise-AND gate, and that
+`RUT_Filth_MouseTrack`'s own `filth.placementMask` is `[Terrain]`, an exact
+match confirming the patch's fix is complete and correct), and
+`RUT_Sump.xml` (152 lines, the Sump BiomeDef — verified `RM_Filth_Tar` and
+`RUT_Tarred` both resolve to real defs in `FlowWorks`/`UtinniPatches`, and
+that `BiomeGlowMultiplierExtension`/`RM_CarriedFilthHediffExtension` are
+both real, already-CLEAN classes; noted but did not chase as a bug that
+`workerClass`/`terrainsByFertility`/`texture` reference Alpha Biomes donor
+content — `AlphaBiomes.BiomeWorker_TarPits`, `AB_GrassySand`, `AB_LushGrass`
+— with no `MayRequire` gating while `sarg.alphabiomes` is only a soft
+`loadAfter` in `UtinniPatches/About/About.xml`, not a hard
+`modDependencies` entry; this looks like a deliberate "this donor-twin
+biome assumes its donor is present" architecture choice matching the file's
+own "replaces the donor AB_TarPits" framing rather than an oversight, but a
+future wave with more budget should confirm against another Alpha-Biomes-
+twin BiomeDef before ruling it out for good).
+
+**Found and fixed a real, high-confidence bug while reviewing the csproj**:
+`RM_EnvironmentalHazards.csproj` (228 lines) is missing a
+`<Compile Include>` line for `RM_Patch_LeachmossWildSpawnGate.cs` — a file
+added by `39a7132b1` (DESERT_LEACHMOSS_BUILD_1) that has sat on disk,
+reachable by nothing, ever since. The project sets
+`EnableDefaultCompileItems=false` (CLAUDE.md's own documented trap: "a new
+`.cs` in `Source/` without a `<Compile Include>` line compiles into nothing,
+with no error"), so this file has never once been part of the built
+assembly. It is the **only** consumer of the `leachmossEnabled` Mod
+Settings toggle (`RM_EnvironmentalHazardsMod.cs` line 312, wired to
+`Scribe_Values.Look` and a `CheckboxLabeled` per wave 60's own review of
+that file) — so unchecking "Leachmoss wild spawning" in Mod Settings has
+done nothing at runtime since the feature shipped; `RM_Leachmoss` has
+always been wild-spawnable regardless of the toggle. Verified the dead
+file's own patch logic is otherwise correct before wiring it in: Harmony
+postfix parameters bind by NAME not position, so
+`CalculatePlantsWhichCanGrowAt_Postfix(List<ThingDef> outPlants)` correctly
+receives `WildPlantSpawner.CalculatePlantsWhichCanGrowAt`'s real
+`outPlants` parameter (confirmed against the decompiled engine's actual
+4-parameter signature — `outPlants` is the 2nd param there, doesn't matter
+for name-based Harmony binding), and `RM_EnvironmentalHazardsSettings` is
+the real settings class name (confirmed via `class
+RM_EnvironmentalHazardsSettings : ModSettings` in
+`RM_EnvironmentalHazardsMod.cs`). Fixed by adding the missing
+`<Compile Include>` line — only the build wiring was broken, the patch code
+itself needed no changes. Commit `9d2e88945`, pushed. Both the csproj and
+the now-live `RM_Patch_LeachmossWildSpawnGate.cs` marked CLEAN alongside the
+other 4 files above, commit `9c6a17531`, pushed.
+
+Re-measured after: `TALLY CLEAN 3217 DIRTY 8 NEVER ENTERED 238` (was `CLEAN
+3210 DIRTY 12 NEVER ENTERED 241` at wave start — the 3-cluster-finish moved
+3 NEVER-ENTERED to CLEAN, the 5-file top-up moved 4 DIRTY + the newly-wired
+Patch file to CLEAN; total review debt DIRTY+NEVER-ENTERED dropped from 253
+to 246, 7 fewer than a naive "8 files reviewed" would predict since 1 of
+the 8 (`RM_Patch_LeachmossWildSpawnGate.cs`) was never separately tracked
+before this wave wired it in).
+
+Next wave: 8 `DIRTY` files remain — `src/DEPLOY_HOLD.txt` (427 lines, the
+deploy-hold manifest — worth checking its entries are still accurate rather
+than a code bug hunt), `RSW_MlieWaveC_Abilities.xml` (635 lines, untouched
+this wave for size), and 6 `RM_Graffiti_Vandal` PNGs
+(`vandal_0.png`..`vandal_5.png`, re-dirtied since a 2026-09-05 clean mark) —
+per wave 15's still-unresolved scope question, whether binary PNG texture
+files belong in this loop's full-file-read protocol at all is undecided;
+"review" of a PNG can only mean "confirm it's the art we mean to ship," not
+a bug hunt. 238 NEVER ENTERED files remain, all XML/Python now that every
+reachable `.cs` file in the repo has been through this loop at least once
+(per wave 60's fresh survey) — re-derive with `list --show-untracked`
+rather than trusting this count. The 13 never-entered Python tools under
+`src/RimMandrake/Utils/` (wave 14's list) still need a reachability check
+before any of them are spent on a review — untouched for 47 waves running now.
