@@ -17866,10 +17866,10 @@
     "sha": "51867f432"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml": {
-    "cleanCount": 5,
-    "date": "2026-09-20",
-    "hash": "bfad58a8b783a7db31518103e66553d17bfe5bb6fa52fdd9973e1dfefd7e3430",
-    "sha": "14aaf1757"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "3eb6ecb7ee4c967bc7462a5ad9605ea29f21bf9011d67860a2e7df3af054c72c",
+    "sha": "17c7dab1a"
   },
   "src/RimUtinni/UtinniPatches/Patches/ApparelTags_DeadTagRepair.xml": {
     "cleanCount": 1,
@@ -17878,10 +17878,10 @@
     "sha": "d92f5459"
   },
   "src/RimUtinni/UtinniPatches/Patches/AshStorms_Pyrelands.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "e75f84e6c0801794bfa36814a40af50c32e1f2a037a51607d648af335deaf1ec",
-    "sha": "d92f5459"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "92cf927e0956179d5bb5d1e892ea75db2da19702f302be137eb4be43deefb2c6",
+    "sha": "17c7dab1a"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeAllowRoads_PropaneLakes.xml": {
     "cleanCount": 1,
@@ -17896,10 +17896,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeDescriptions_Ashkarr.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "2a305b7d62cfd6ac4b8bb422d57dbcd917c740413958baeb67687da2ca234e8f",
-    "sha": "7c80850cb"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "0744edee4a40c10bf59354a13945c51b0ab5b828b61ff10d357930ca6b42a3c6",
+    "sha": "17c7dab1a"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFaunaStatAdjustments_Generated.xml": {
     "cleanCount": 1,
@@ -17914,10 +17914,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFlora_Ashkarr.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-18",
-    "hash": "5974f6e015450658ec9a94ba2dc7a390fc1d03a13aecb9960683307b954a49c1",
-    "sha": "5ab0e549a"
+    "cleanCount": 5,
+    "date": "2026-09-24",
+    "hash": "fdc8d074211e80cfca70956d334d426feaa9bc71160b754b0f662f78e66e69d8",
+    "sha": "17c7dab1a"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeNames_Ashkarr.xml": {
     "cleanCount": 2,
@@ -17962,10 +17962,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/FishTypesStrip_NoFishBiomes.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "49a6f90ed16aaff894220b52497c3d2f763c18a5b98b263bc111f46a3d236e20",
-    "sha": "429d1760"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "caf77c44d197187d9598ac7eb213c18bd154346977cda29a3523d795555d766a",
+    "sha": "17c7dab1a"
   },
   "src/RimUtinni/UtinniPatches/Patches/Fleshbeast_TrispikeCull.xml": {
     "cleanCount": 1,
@@ -18070,10 +18070,10 @@
     "sha": "d9ff62d8"
   },
   "src/RimUtinni/UtinniPatches/Patches/ManyWaters_RiverSteam_Ashkarr.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "361d0ba40f40ad2b96893b97d75d3619f174e484a44ac10e4b012f71191e8aa5",
-    "sha": "504ead829"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "64b7a13f6dce4c62f58fdf34a74b579c05bb212b2a695d74ecad74327a825810",
+    "sha": "17c7dab1a"
   },
   "src/RimUtinni/UtinniPatches/Patches/MechClusterBiomes_AmbientDoctrine.xml": {
     "cleanCount": 1,
@@ -18142,10 +18142,10 @@
     "sha": "629956d2"
   },
   "src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "d3b92ca056d90019a1210a1483e5b6ac9e62049a3057c6b516e9fdcb3c058f55",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "b41670f88b205a40e6a73be51f4d0d8c3c9df7c993b707b7771b60b97569b4bd",
+    "sha": "17c7dab1a"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_BeastBulge_DreadRegistration.xml": {
     "cleanCount": 2,
@@ -18268,10 +18268,10 @@
     "sha": "948cdbc9"
   },
   "src/RimUtinni/UtinniPatches/Patches/SandFishing_CrackedLands.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "d5200d76636b72cb7e1b8041f10842c96d8f9afaf4cf821183ed7b155c2016e6",
-    "sha": "48b321e95"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "7b65015ed2657a4d2e87025954ed6fcd387a092b0c44529d5c791ddb5f86a162",
+    "sha": "17c7dab1a"
   },
   "src/RimUtinni/UtinniPatches/Patches/StatNorm_CaravanAdventures_BossStatsNeutral.xml": {
     "cleanCount": 1,
@@ -18310,10 +18310,10 @@
     "sha": "7c80850cb"
   },
   "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-20",
-    "hash": "bb8d2a4e6322f5e325fd3adc9bda70bfb494f2f1a6f573363caeda6f398ba057",
-    "sha": "204a30ed7"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "51b9e31d1126a97867c2b598dc228a5980cf0a0de9650bafbf7b5bd82a3c0781",
+    "sha": "17c7dab1a"
   },
   "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml": {
     "cleanCount": 3,
