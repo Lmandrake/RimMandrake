@@ -1435,3 +1435,73 @@ without new engine or design work, and the live mapgen-ordering proof
 (now covering two placement modes) is still the item's one real remaining
 blocker, gated entirely on bridge access this session does not have.
 
+## 2026-09-24 (FOUNDRY) — re-verification pass, no new content: state confirmed unchanged, one cross-item defect found
+
+Dispatched to "find the next gap and close it." Re-read this whole file and
+re-ran `structure_roster_lint.py` first, per standing practice — confirmed
+**zero drift since the 2026-09-20 entry**: still 21/22 promises (1 declared
+gap, #5 Junkers' Field), 8/22 whispers (14 `MISSING-MECHANISM`, all with a
+reasoned rejection on record from prior batches), 0 coverage-law violations.
+`git log --since 2026-09-20` on the roster doc, `sacred_sites_pass_1.md`,
+`PIT_SUPERDEEP_COLLAPSE_1.md` and `INHABITED_AUGMENTATION_BUILD_1.md` shows
+no commits — no new territory-table anchor or design content has appeared
+that could unblock any of the 14 declared-`MISSING-MECHANISM` whisper rows,
+so re-litigating them without new information would be pure re-derivation of
+what's already settled. **There is no lint-flagged coverage gap left for a
+rimplace-template pass to close** — every one of the 44 rows has a `covered`
+or an explicitly reasoned non-covered status.
+
+**This dispatch stated the bridge was held by another window; re-checked
+live and it is not** — `rimflow bridge who`: FREE. Did not take it or
+attempt any live/quicktest proof anyway, per this dispatch's own explicit
+constraint (not a state check, a hard instruction) — flagging the
+discrepancy for whoever reads this next, since criterion 1 (the live
+mapgen-ordering proof, owed since 2026-08-31) is now actually reachable and
+is this item's sole remaining bar to closure.
+
+**Also found, re-checking the live mod list directly** (not scanned/grepped
+— parsed with `ElementTree`): `mandrake.rut.injections` is now ACTIVE in the
+live `ModsConfig.xml` (623 active mods total), contradicting every prior
+session's note that it "remains absent" — it must have been enabled by
+other work between 2026-09-20 and now. All three tier mods
+(`mandrake.rm.injections`, `mandrake.rsw.injections`,
+`mandrake.rut.injections`) are active together for the first time in this
+item's history. This means the live ordering proof no longer needs an
+enable step first — whoever holds the bridge next can go straight to the
+quicktest.
+
+**Re-ran `validate_patch.py` against all three mods' full `Defs/`+`Patches/`
+trees**, live 623-mod set + a fresh same-day def capture
+(`2026-09-24T00-30-55Z`, 68,144 defNames, RimWorld 1.6.4871 rev591):
+`mandrake.rm.injections` 3 files, 0/0; `mandrake.rsw.injections` 30 files,
+0/0 (including this item's `SarlaccRing.xml`/`WhisperSarlaccSign.xml`);
+`mandrake.rut.injections` 48 files, **1 error, 7 warnings** — but every one
+of them is on a file this item never touched
+(`Defs/Ashfall/ThingDefs_Items/RUT_RakatanCommandCodes.xml`,
+`RUT_AshfallSpecimenCell`, `RUT_SpireCommandConsole`,
+`RUT_DarkTowerControlConsole`, `RUT_VaultHeart`, `RUT_WarLabArchive`,
+`RUT_WarLabContainmentCell`, `RUT_WarLabReactorCore` — all
+`INHABITED_AUGMENTATION_BUILD_1`'s heavier Ashfall/DarkTower/VaultDungeons/
+WarLab archetypes sharing this mod folder, not this item's promise/whisper
+rows). 🔴 **New finding, not mine to fix**: `RUT_RakatanCommandCodes`'s
+`texPath` (`Things/Item/Special/SubpersonaCoreTechprof`) resolves to no file
+anywhere scanned, and since `'things/' IS this mod's own texture namespace,
+nothing else can supply it — the thing renders as a pink placeholder` per
+the validator's own message. This is a real, live-shippable defect, but it
+belongs to `INHABITED_AUGMENTATION_BUILD_1`'s content, not this item's
+scope — flagging here since it was found in the course of re-verifying this
+item's own coverage, not filing or fixing it myself (out of scope, and
+fixing someone else's missing-art defect blind risks guessing a wrong
+texPath). Every file this item's own batches actually authored or wired
+(all `GenStepDefs_*`, all `TileMutatorDefs_*`, all `Patches/*` this item's
+own history lists by name) is confirmed still 0 errors/0 warnings.
+
+`rimplace selftest`: 62/62 (via `~/.local/venvs/rimlua/bin/python -m
+rimplace.cli selftest` — bare `python3` fails on a missing `lupa` import,
+noted for whoever runs this next).
+
+**No new templates authored, no `rimflow close` called** — criteria are not
+met: criterion 1 (live proof) is still open, now with a materially better
+starting position (bridge free, all three mods active) than any prior
+session recorded. Left `doing`.
+
