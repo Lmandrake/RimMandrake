@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T00:25:40Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-24T00:37:53Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -809,15 +809,6 @@ target:   v1
 kind:     build
 summary:  Full spec: design/Jawa/worldbuilding/fishbestiarycommission2026-09-10.md
 prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
-
-## QUICKTEST_RIVER_WATER_MISSING_1 Quicktest maps generate zero river/lake water on any biome tried this session, blocking water-mechanism verification
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     investigation
-summary:  No design doc — this is an engine/tooling investigation, not a content build.
-prose:    infrastructure/state/items/QUICKTEST_RIVER_WATER_MISSING_1.md
 
 ## DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1 Droidworks races (G2 included) show a default human face despite RSW_DW_HeadType_Blank — AlienRace head-render gap, not a def error
 state:    doing
@@ -1829,7 +1820,7 @@ prose:    infrastructure/state/items/REACTION_MECHANISM_GENERALISE_1.md
 ## GREATBOLE_BARK_EDGE_ART_1 The greatbole blob reads as bark at its edge and wood inside, and its real art is owed
 state:    proposed
 row:      unassigned
-needs:    game-up
+needs:    offline
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
@@ -1839,7 +1830,7 @@ prose:    infrastructure/state/items/GREATBOLE_BARK_EDGE_ART_1.md
 ## GREATBOLE_HARVEST_LADDER_1 The greatbole harvest: 40/60/70 thresholds, the fruit's three products, and the grubs that contest it
 state:    proposed
 row:      unassigned
-needs:    game-up
+needs:    offline
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
