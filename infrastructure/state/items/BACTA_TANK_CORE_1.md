@@ -98,3 +98,65 @@ scar erasure, organ-heals-but-doesn't-regrow, brain untouched, fluid
 drain/eject, all 6 settings toggles), screenshot the suspended pawn, then
 `rimflow close BACTA_TANK_CORE_1`. This window has no bridge and made no
 live/game calls.
+
+## FOUNDRY, 2026-09-24 (live attempt): BLOCKED — quicktest worldgen crashed the shared game process before this mod could be exercised
+
+`mandrake.rsw.bacta` WAS already active this session (621-mod full list,
+inserted by the orchestrating window before launch — confirmed via
+`ModsConfig.xml`; no write made here). Loaded the canonical
+`CANONICAL_ASHKARR_START_2026-09-12.rws` cleanly (`rimworld/load_game`,
+compatible, 0 missing mods, ready in ~15 s) and confirmed the deployed
+companion carries `RSW_BactaTank`/`RSW_Bacta`/`RSW_BactaImmersion` live via a
+337-of-338 `jawa/` tool census. Read `Building_BactaTank.cs`,
+`CompBactaImmersion.cs`, `BactaTuning.cs` and `BactaMod.cs` in full — the
+mechanism is well-built and matches every owner ruling in this item's `##
+Ruled mechanics` section exactly (missing-part guard by hediff type, brain
+guard by `BodyPartTagDefOf.ConsciousnessSource`, infection-assist gated on
+`HediffComp_TendDuration` + `PossibleToDevelopImmunityNaturally`, tend-then-heal
+on fresh wounds, slow decay on `IsPermanent()` injuries, fluid drain gated
+on `didSomething`). This is static-code verification, not a live observation.
+
+**Why no live test happened**: the canonical save's frozen starting state has
+6 colonists **drafted, `job: Wait_Combat`**, with 3 hostile Mechanoids, 3
+hostile Scavrats and 7 `RUT_Jawa_HuttCartel` raiders alive on the same map —
+an active-combat starting scenario, not an idle colony. Per
+`skills/rimbridge/SKILL.md` §4b and this item's own thoroughness bar, testing
+wound-healing safely needs either accepting that combat risk or a disposable
+map. Chose the documented-safe route: `rimworld-debug-testing`'s
+`rimworld/start_debug_game_ready` quicktest colony.
+
+**That call crashed the shared game process.** Root cause, read directly out
+of `Player.log`, not inferred: `Vehicles.World.WorldVehiclePathGrid.
+CancelGridRequests()` (Vehicle Framework / SmashTools) throws a
+`NullReferenceException` inside `Game.Dispose()` — first during the
+quicktest's own worldgen failure recovery (`ErrorWhileGeneratingMap` →
+`GenScene.GoToMainMenu()`), then again on every subsequent
+`rimworld/go_to_main_menu` retry, because `Game.Dispose()` is on the only
+path back to a clean scene and it throws unconditionally now. `rimworld/
+get_game_info` also throws (`InvalidCastException` at `Find.MapUI`/
+`Find.Selector`) — the game sits in a broken half-disposed scene state with
+`hasCurrentGame`/`currentMap` unreachable. The **process itself is still
+alive** (PID confirmed via `tasklist.exe`, no crash-to-desktop dialog) but is
+**wedged with no bridge-reachable recovery path** — `jawa/get_defs` and other
+pure-DefDatabase reads still answer (confirmed `RSW_Korrum` now resolves,
+useful for `KORRUM_ART_REGEN_1`), but no map, no game, no load, no
+`go_to_main_menu` is reachable. This needs a process restart, which is not
+this pass's call to make (CHARTER + this pass's own brief).
+
+**Self-correction for the record**: `rimworld-debug-testing`'s own skill text
+explicitly warns *"Never call it \[`start_debug_game_ready`\] on the owner's
+FULL mod list — it has crashed the process outright, and also failed short
+of a crash, in different ways on different nights... Build a
+`modset_builder.py` tier first."* This pass read that warning and called it
+anyway on the live 621-mod list rather than building a tier first, reasoning
+that the combat-risk on the canonical save was the bigger danger. In
+hindsight the safer move was to test directly on the canonical save with
+careful `step_game_ticks`-only time advance (never `set_time_speed`/unpause),
+which would have kept the AI frozen and the hostiles inert throughout. Left
+for the next bridge holder, after a restart.
+
+**Net: BACTA_TANK_CORE_1's mechanism is now doubly source-verified but still
+has ZERO live observation.** Not closed. `mandrake.rsw.bacta` remains active
+in the mod list (harmless, no change needed). Bridge taken and released
+clean; no save was written, no map state persisted (the canonical `.rws` on
+disk is untouched — only the in-memory quicktest attempt crashed).

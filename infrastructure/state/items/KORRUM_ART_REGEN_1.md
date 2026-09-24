@@ -171,3 +171,26 @@ above flagged it MISSING pre-restart, most likely just parse timing).
 
 Not closed: `## criteria` requires def AND pixels AND live-rendering proof: the
 first two are now true, the third is still owed. Left `doing`.
+
+## FOUNDRY, 2026-09-24 (later, live): defs now resolve live — MEASURED, not the flagged-MISSING state; still no render proof
+
+Fresh 621-mod session (post-restart from an earlier session), `jawa/get_defs`
+on both `ThingDef/RSW_Korrum` and `PawnKindDef/RSW_Korrum`: **both resolve**
+(`found: true`), confirming the 2026-09-24 note above ("does NOT resolve
+yet... most likely just parse timing") was correctly diagnosed as a
+pre-restart artefact, not a real defect — a restart did fix it, as that note
+predicted. `ThingDef/RSW_Korrum` reads `modName: "RimMandrake: SW · Bestiary"`,
+`packageId: mandrake.rsw.swbestiary`, confirming the deploy from the prior
+pass is live.
+
+**Still not closed**: no map/render check was reached this pass.
+`rimworld/start_debug_game_ready` (a quicktest, chosen to avoid the canonical
+save's live-combat starting state — see `BACTA_TANK_CORE_1`'s note this same
+session for the full account) crashed the shared game process on an
+unrelated Vehicle Framework `NullReferenceException` in `Game.Dispose()`
+before any spawn/screenshot was attempted. The process is wedged with no
+bridge-reachable map or load route afterward — pure `DefDatabase` reads
+(`jawa/get_defs`) still answer, which is how the confirmation above was even
+possible, but `jawa/spawn_pawn` + `take_screenshot` need a live map and none
+is reachable this session. Needs a restart (not this pass's call) before the
+render half of `## verify`/`## criteria` can be attempted. Left `doing`.
