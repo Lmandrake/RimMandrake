@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T20:58:47Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "weepingstones_vhorrin_south",
+  "priority": 150,
+  "prompt": "The murrin silhouette scaled wrong: arm-long, deep-bodied, ragged dorsal comb - a pool fish grown monstrous past the point the pen can hold anything else. Scarred, overgrown, apex-predator bearing on a fish body. RimWorld top-down animal sprite style.",
+  "reference": null,
+  "rimflow_item_id": "STOCKED_POOL_BUILD_1",
+  "style_notes": "painterly RimWorld animal art, same base silhouette as murrin but scaled up and ragged - a corrupted sibling, not a new species"
+}

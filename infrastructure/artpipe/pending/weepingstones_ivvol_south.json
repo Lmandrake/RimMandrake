@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T20:58:47Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "weepingstones_ivvol_south",
+  "priority": 150,
+  "prompt": "A doormat-sized flat bottom-dweller with a raised dorsal ridge set with a row of eyes that surfaces to watch. Flat, wide, low-slung silhouette, unnerving multi-eyed ridge. RimWorld top-down animal sprite style.",
+  "reference": null,
+  "rimflow_item_id": "STOCKED_POOL_BUILD_1",
+  "style_notes": "painterly RimWorld animal art, flat bottom-dweller body, eye-studded dorsal ridge is the silhouette tell"
+}
