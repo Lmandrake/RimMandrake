@@ -3107,6 +3107,12 @@
     "hash": "2e99383b90e1fbd469a4fdbacbfcc014945eba3dd15dab2415381f49c6e53f6c",
     "sha": "f34c32a99"
   },
+  "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Titanoslime.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ddfc9d1c134120c6a8bfe9845476c42516b5ea49f56c76a3ba73aeef681a638d",
+    "sha": "ba67ade98"
+  },
   "src/RimMandrake/GelatinousSlime/Defs/ThoughtDefs/SlimeThoughts.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -9873,6 +9879,12 @@
     "hash": "087cb00e4edef6fe37010c3b4472b23834101e4ca097a41114b1d64bd53a5772",
     "sha": "0afdb147c"
   },
+  "src/RimStarWars/Armoury/Defs/ThingDefs/RSW_DesertWraps.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1d63aea2cdfa813b48b17ee96e36fd5e86f046d954b4ffb162f5a93faa7e1ac8",
+    "sha": "ba67ade98"
+  },
   "src/RimStarWars/Armoury/Defs/ThingDefs/RSW_ElectricArcBolt.xml": {
     "cleanCount": 1,
     "date": "2026-09-19",
@@ -11720,6 +11732,42 @@
     "date": "2026-09-24",
     "hash": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb",
     "sha": "9c1bce648"
+  },
+  "src/RimStarWars/GizkaStowaway/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "482ab22dbffe655b8cfd9216f1aa4118c6be2ac6ad574227b789ca17d4953121",
+    "sha": "ba67ade98"
+  },
+  "src/RimStarWars/GizkaStowaway/Defs/HediffDefs/RSW_GizkaHediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "54ebf7b23764e03281d94757268a674b5a52b982f1fc14332e4ed7957c414f06",
+    "sha": "ba67ade98"
+  },
+  "src/RimStarWars/GizkaStowaway/Defs/RecipeDefs/RSW_GizkaBaitRecipe.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bdf71352c370e696cb4eee42c40305d05ffc61d4497588b1b2fb8bf25ef4c76d",
+    "sha": "ba67ade98"
+  },
+  "src/RimStarWars/GizkaStowaway/Defs/ThingDefs_Items/RSW_GizkaBait.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5dd88b816648ef8f1a917238b5ac09e1674a9fc9e33ed1ea1faf854989879f1d",
+    "sha": "ba67ade98"
+  },
+  "src/RimStarWars/GizkaStowaway/Defs/ThoughtDefs/RSW_GizkaThoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6ad15a8d3f8b5eb7494dde1be3db660393bb960adc1ebf14fdc8b706fc74f956",
+    "sha": "ba67ade98"
+  },
+  "src/RimStarWars/GizkaStowaway/Patches/RSW_GizkaDonorPatches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "92bd145c9e43c97793cc755378c330c0b8c5eab8ee79dd7b455e967ac66e5905",
+    "sha": "ba67ade98"
   },
   "src/RimStarWars/GizkaStowaway/Source/HediffComp_GizkaFecundity.cs": {
     "cleanCount": 1,
