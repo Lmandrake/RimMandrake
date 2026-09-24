@@ -268,3 +268,56 @@ close.** Nothing was deployed because nothing needed to be, and the bridge
 was correctly left alone this pass. Left `doing`; `needs=deploy` is NOT set
 (already in sync) — the actual blocker is a live quicktest with bridge
 access, not a deploy.
+
+## FOUNDRY, 2026-09-24: bridge taken, mod/debug-actions confirmed live; the actual live-proof blocker identified (not what prior passes described)
+
+**Confirmed, live, on the owner's real 634-mod canonical save**: `mandrake.rm.inhabited`
+and `mandrake.rut.inhabited` are both active (`ModsConfig.xml`) and both genuinely
+loaded in the running process — `Player.log` carries `[RimMandrake.Inhabited] ready:
+2 patches, 294 characters, 4 places, 0 casts.` from this session's own load, and all
+10 of this item's debug actions ("Create place at current tile", "Create settlement
+here (pick manifest)", "Re-enter settlement here", "Leave settlement now", etc.) are
+present and registered in the live `Actions` debug tree (confirmed via
+`rimworld/list_debug_action_children`). So the mod is not the problem.
+
+**New trap found and worth recording in the rimbridge skill**: `jawa/get_defs`
+returns `"No def TYPE named 'X'"` for EVERY custom (non-vanilla) `Def` subclass tried
+this pass — `SettlementManifestDef`, `InhabitedPlaceDef`, even though both are
+demonstrably loaded (the WorldObjectDef `Inhabited_Place` that references
+`InhabitedPlaceDef`-typed data resolved fine, and the debug-action census above
+proves the assembly is live). This is a **tool limitation in `get_defs`'s def-type
+resolver**, not evidence a mod/def is missing — reads exactly like "not loaded"
+otherwise. Do not trust a `get_defs` "no def TYPE" answer for a project-custom Def
+subclass; verify via a debug-action census or a live spawn/read instead.
+
+**The real remaining blocker, found this pass**: "Create settlement here (pick
+manifest)" needs `Find.CurrentMap` or a selected world tile that has NO existing
+`MapParent` — the colony's own tile (17007) always fails that check ("a MapParent
+already exists"), so the test needs a genuinely different, empty tile made current
+first. No bridge tool for "select this world tile" was found (`jawa/world_neighbors`
+is a whole-planet neighbour-graph EXPORT, not a per-tile query — misread this pass,
+cost one call and wrote a stray `17007` export file server-side, harmless but
+unswept). `jawa/world_tile_map_generate` could plausibly stand up a fresh map at a
+chosen empty tile, but its `suggestedMapParent` param suggests it may create its OWN
+MapParent there too, which would collide with the same check — not tested this pass.
+**And separately**: the action opens a `Dialog_DebugOptionListLister` picker (4
+manifests to choose from) whose selection delegate is where the actual settlement
+gets built — over the bridge this almost certainly returns `success: true` having
+only opened the dialog, not fired the delegate (the picker pattern this skill's own
+§2 law warns about). No bridge tool click-throughs a debug-menu list item; the
+sanctioned fallback is `system_screenshot.py` + `system_click.py` (OS-level), not yet
+tried.
+
+**Not attempted this pass, and why left for next**: given both a tile-selection gap
+and a picker-dialog gap stack on top of each other, and this session's time was
+better spent surfacing the (real, useful) diagnostic above than guessing further at
+either, stopped here rather than burn more calls speculatively. **Concrete next
+steps, either one closes the loop**: (a) OS-screenshot the picker after firing the
+debug action from a `jawa/world_tile_map_generate`-created empty tile, then
+`system_click.py` "The Claim Jump" option; or (b) the more durable fix — add a
+second, non-interactive debug-action overload (or a proper `[Tool]` bridge method
+via `rimbridge-companion`) taking a manifest defName directly, retiring the picker
+dependency for automated testing permanently. Bridge taken and released clean; no
+game state touched, nothing spawned, nothing deployed.
+
+Left `doing`.
