@@ -212,14 +212,43 @@ for these three subjects first.
   can stay as documentation but bind nothing.
 - The floor half (diving) is unaffected: `RM_DiveEligible` terrain lives on the land map already.
 
-`needs` moves from `game-up` to `owner`: the next act is his sitting on (a)–(c), not a game load. The Mac-side shore
-audit above stays banked as the record of what the sea defs carry.
+## ✅ (a)–(c) BUILT 2026-09-24 — `mandrake.rm.seashores`, commit `fb352d7c6` (authored, NOT live-proven)
+
+Owner's sitting on (a)–(c) was one line at wake, *do the shoreline items*, and BENCH built them as one generic
+RimMandrake mod, `src/RimMandrake/SeaShores` (`mandrake.rm.seashores`), rather than per-sea code:
+
+- **(a)** `RM_SeaShoreExtension` on a sea BiomeDef marks it as a coast source. A Harmony postfix on
+  `World.CoastDirectionAt` counts such neighbours the vanilla way (same dedupe, same tile-hash seed), so
+  `Tile.IsCoastal` is true beside our seas. A prefix on `WorldGenStep_Mutators.TryAddMutator` swaps vanilla
+  `Coast` for our `RM_SeaCoast` when the only sea neighbour is ours, so the final remake attaches it itself.
+  🔑 Mutators are Scribed on the tile (`mutatorDefs`), so the FROZEN planet has none: `RM_WorldComponent_SeaShoreHealer`
+  adds `RM_SeaCoast` on `FinalizeInit` to every `canBuildBase` tile with a sea neighbour and no Coast-category
+  mutator (idempotent, one log line, settings-gated). Estimate from the 2026-09-12 tiles RECORD, not the live
+  planet: **577** land tiles qualify (Grey 221 / Twilight 224 / Scald 79 / Propane 53 tile-sea pairs).
+- **(b)** One `TileMutatorDef` `RM_SeaCoast` (category Coast, genOrder 100); its worker subclasses
+  `TileMutatorWorker_Coast`, overrides `GetCoastAngle` → `CoastAngleAt(tile, thatSea)` and the three terrain
+  hooks from the extension: Scald `RUT_ScaldWaterOceanDeep`/`RUT_ScaldWaterOceanShallow`; Twilight and Grey
+  vanilla ocean; Propane Lake `AB_PropaneLake`/`AB_SolidPropane` (donor, `providesCatch false`). All four
+  `RUT_` defs carry the extension with `MayRequire="mandrake.rm.seashores"` on the `<li>`.
+- **(c)** The catch stays ON THE SEA DEF, not copied to land biomes: `WaterBody.SetFishTypes` postfix resolves the
+  sea from the water body's root-cell terrain and serves that sea's bands (falling back salt↔fresh when a pair is
+  empty — the Scald keeps `freshwater_*` bands under Saltwater terrain); rare catches via a transpiler on
+  `FishingUtility.GetCatchesFor` redirecting `Map.Biome` to the fished cell's sea. Ambiguous terrains
+  (`WaterOceanDeep` shared by Twilight and Grey) resolve through the map tile's primary sea, gated on the cell
+  carrying that water, so a vanilla coast elsewhere never serves a modded table.
+
+Build `0 errors 0 warnings`, `validate_patch.py` clean on 7 files, selftest 8/8, four Mod Settings toggles default
+on. ⛔ **Owed:** enable `mandrake.rm.seashores` in the live list + deploy (game-down window: a DLL cannot be written
+while it runs); live proof on a land tile beside the Scald (`jawa/world_tile_map_generate`) — the healer's log line,
+water on the map, a fishing zone accepted, a catch from the Scald's table. The Grey Sea and Propane Lake still have
+no catch table to serve (step 5), and the floor/diving half (steps 2, 4) is untouched.
 
 ## spec
 
 Work per sea, in this order — cheapest and most decisive first.
 
-1. **Shore audit, all four seas.** For each, determine whether any *shallow* water terrain is
+1. ✅ DONE — see the (a)–(c) section above; the shore is laid by `RM_SeaCoast` on the LAND map. Original text:
+   Shore audit, all four seas. For each, determine whether any *shallow* water terrain is
    generated or paintable. The Scald's answer is known (none, and a cove is owed). Record the
    other three. ⛔ A sea with no shore cannot be fished regardless of its table, so this gates
    every catch claim.
