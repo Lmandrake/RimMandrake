@@ -7119,11 +7119,23 @@
     "hash": "3a74d545f8da831412056fe421f85140f2fc0a7c6862134d672387477ba8b0e7",
     "sha": "1135036ce"
   },
+  "src/RimMandrake/Utils/selftest_label_collision_check.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0381efc5dd95c666ce2c6dbcb86e89830bfb1f50ecd09ce62d26fdfd4a8cc7dd",
+    "sha": "bf7b07033"
+  },
   "src/RimMandrake/Utils/selftest_lore_stages.py": {
     "cleanCount": 1,
     "date": "2026-09-11",
     "hash": "5cf19c09f57688c01a02fd8672832efaddfa5ecf2a2a711b7818484eebc754d9",
     "sha": "61dd3f0e3"
+  },
+  "src/RimMandrake/Utils/selftest_no_duplicate_defs.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "e641981f68e15b4d27b9c85c8f9a48f4c9b7452c616bad9a4f28f81db194a2d5",
+    "sha": "bf7b07033"
   },
   "src/RimMandrake/Utils/selftest_one_path_seam.py": {
     "cleanCount": 1,
@@ -7149,6 +7161,12 @@
     "hash": "8019331644c3ee3d64c7e83dc206e9fb47546a71b6dafcbcdaa8b0743d3efe4f",
     "sha": "cbeff2d3"
   },
+  "src/RimMandrake/Utils/selftest_repair_torn_ledger.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8588e54924b13094e3647fde337a2f93b20088d0caa1fa1a7030dde3e5d0d1b2",
+    "sha": "bf7b07033"
+  },
   "src/RimMandrake/Utils/selftest_research_validator.py": {
     "cleanCount": 4,
     "date": "2026-09-20",
@@ -7172,6 +7190,12 @@
     "date": "2026-09-18",
     "hash": "b0711179ef5215f3e87087a236b68e5890e048fba3c13cf6490d6e421b6eea4f",
     "sha": "115846630"
+  },
+  "src/RimMandrake/Utils/selftest_species_skin_rulings.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0dff5fcee9dc65bf7ec3bbf42e22b1d0b0acd752962a3d375c31551b42f9a8f1",
+    "sha": "bf7b07033"
   },
   "src/RimMandrake/Utils/selftest_stun_scaling.py": {
     "cleanCount": 1,
@@ -8085,6 +8109,12 @@
     "hash": "09acbcc8c74986e79cd8d23e7e7e98260a49281e6a557c8215c61a817395e321",
     "sha": "1fb0888b"
   },
+  "src/RimMandrake/bridgetools/prove_noncolonist_ability.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "780ee3150ba0a2aace523978003415813e80ee96ac15cba4bbe9a5db4e091e13",
+    "sha": "bf7b07033"
+  },
   "src/RimMandrake/bridgetools/prove_river_water.py": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -8108,6 +8138,12 @@
     "date": "2026-09-09",
     "hash": "b803b3cbf3fbf54be8777f570392b205d7f41c5b36a503e6d1bf1f77c600959e",
     "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/bridgetools/prove_venomvine_flyer.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4d370e8f86f4ddfaa21b56bd96abea8a03b6cf0a599af53141e99bb650fcc8bf",
+    "sha": "bf7b07033"
   },
   "src/RimMandrake/bridgetools/prove_world_cache_audit.py": {
     "cleanCount": 1,
@@ -8283,6 +8319,12 @@
     "hash": "e182ee78524547e11ecb889746c69819f9c390f82520bc60ca94731a407e9025",
     "sha": "359b0b2c"
   },
+  "src/RimMandrake/rimflow/selftest_citations_lint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7386bc11afcffc05e6df05b57018f576339371af51ae75d70120eef08a929873",
+    "sha": "bf7b07033"
+  },
   "src/RimMandrake/rimflow/selftest_cli.py": {
     "cleanCount": 6,
     "date": "2026-09-24",
@@ -8294,6 +8336,12 @@
     "date": "2026-09-24",
     "hash": "d830d1ae57e1d9b140a31e8ccc180046b9f84495dbafd6a8a2edc701702d993b",
     "sha": "c44c75b9a"
+  },
+  "src/RimMandrake/rimflow/selftest_items_glob_live.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "585b1b2a77ca39fb27768157399cbb7357baa11f6f445e051313195ccdfb2007",
+    "sha": "bf7b07033"
   },
   "src/RimMandrake/rimflow/selftest_model.py": {
     "cleanCount": 6,
