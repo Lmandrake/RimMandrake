@@ -161,4 +161,85 @@
     </comps>
   </ThingDef>
 
+  <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-24 — three NEW catches added per the
+       owner's brief (design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md),
+       bringing the table to eight and adding the two kinds it lacked (an
+       eel, an alien) plus a second crustacean for the dung-fall economy.
+       The five BUILT descriptions above are UNCHANGED (owner ruling 5:
+       nicknames are the shipped names, final). -->
+
+  <!-- doss — crustacean, common (0.7). "dung-shrimp." Comes up cooked, same
+       register-break as the shoal (eesh) and cucumber (muddal) above. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Doss</defName>
+    <label>doss</label>
+    <description>The eesh's small competitor: a finger-length, hunch-backed shrimp-thing, boiled pink from birth, that works the dung-fall from below where the shoals work it from above — picking over what settles on the mats before the muddal get to it. It is everywhere at the margins in the warm season and it is the pilgrims' snack, gathered with a cloth and eaten from the hand, already cooked like everything here. There is very little to one. There are always more.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaD</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.4</Mass>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- thuum — eel, common (0.5). "blanket-eel." Comes up cooked, richer
+       rot-profile than the eesh's precedent. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Thuum</defName>
+    <label>thuum</label>
+    <description>An eel that lives under the welcome blankets — between the rainbow mat and the rock, in the thin hot film where the mat is thickest — and takes the pigment into its skin the way the muddal does, so a thuum is banded down its whole length in the mat's own colours, and a pilgrim who lifts a mat-edge at the baths sometimes finds one lying there like a strip of the Scald's oldest truth that has learned to move. It comes up cooked, and it is the margin's best eating after the eesh — richer, and the bands hold in the pan.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaE</texPath>
+    </graphicData>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ekkel — alien, uncommon (0.4). "the tumbler." Comes up cooked (the
+       eesh's heat-mirror register on a thing that is not a fish at all). -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Ekkel</defName>
+    <label>ekkel</label>
+    <description>Nobody knows which way up an ekkel goes. A fist-sized knot of stiff, heat-mirror filaments — the eesh's skin grown into a tangle — that lives on the vent walls beside the karrash and rolls: it lets go, tumbles down the chimney in the boil-current flashing like a dropped handful of needles, catches, climbs, and lets go again. It is feeding, somehow, on the mat. Netted it is a ball of hot wire with a soft thing at the centre that is already cooked and tastes of the vents, which is to say of metal and something older. Rim-pilgrims keep the filament-knots; they stay bright for years.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaF</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.12</Nutrition>
+      <MarketValue>8</MarketValue>
+      <Mass>0.3</Mass>
+      <Beauty>2</Beauty>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
 </Defs>
