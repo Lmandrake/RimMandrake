@@ -94,24 +94,31 @@ shekkur, ulkhorr, thrizzik, ghorrumak, zhurrak — fourteen different openings, 
 
 ---
 
-## Batch 3b — Nightside Ice (`nightside_ice.json`, 10 rows)
+## Batch 3b — Nightside Ice (`nightside_ice.json`, 4 rows after the 2026-09-24 eviction)
 
-*A chemistry set the size of a hemisphere, switched off, under the aurora.* The sheet's
-own admission test bars "anything instantly nameable", which is this item's test stated
-harder. Two of these renames were asked for by the owner in the roster itself. The accent
-is silence: long vowels, sibilants, no hard stop unless the beast earns one. 4 drafted; 6 not.
+*A chemistry set the size of a hemisphere, switched off, under the aurora.* **Owner
+ruling at `NIGHTSIDE_ICE_DESIGN_SITTING_1` (2026-09-24): all six donor residents are
+EVICTED from this biome** — they never made sense on the ice; the surface stays
+near-empty and the authored natives (the tunneler warren, the ice-wyrm apex and its
+wyrmlets, the icy insects, the one-move animal, the catalytic sheets) carry it. Only
+the four visitors remain, and two of those renames were asked for by the owner in the
+roster itself. The accent is silence: long vowels, sibilants, no hard stop unless the
+beast earns one.
 
 | defName | current label | the creature | drafted label | alternate | why |
 |---|---|---|---|---|---|
-| `AA_SummitCrab` | summit crab | bs 15 landform giant, spd 1.0 — "a ridge is an organism" (§4) | **ohmurra** | suhllak | Three slow syllables and no stop anywhere — a name you would say about a ridge, not shout at an animal. The *ohm* is a hum in the ice. "Crab" is the Earth animal it must not read as. |
-| `AA_Slurrypede` | slurrypede | bio-mechanoid crawler that renders anything into slurry; spd 1.9 (also Miasma, Propane Lakes — one name) | **thollum** | sulmokk | Soft *th-*, swallowed *-oll-*, closed on *-um*: something slow working its way through matter. Named here because the nightside is where its slowness is the whole point. |
 | `AA_ShockGoat` | shock goat | static-charged, six-eyed; **owner: refashion for the nightside, pale blue aura, thermal-only sensing, rename** | **zhissa** | tsirrak | The owner asked for this rename in the roster. *zh-* hushed, *-ss-* the crackle of static in cold dry air, an open ending. Nothing of goat left in it. |
 | `RSW_CaveLemming` | cave lemming | big solitary herbivore that springs away; **owner: "ice sheet, rename"** | **mahllik** | sohmma | The owner asked for this rename in the roster. A soft *mah-* lump on the ice that becomes a sudden *-llik* spring. "Lemming" is an Earth animal. |
 
-**Not drafted:** `Tauntaun`, `Wampa` — canon visitors, keep. `AA_BoulderMit` — port-named
-*korrum* (`RSW_Korrum`, live). `AA_TetraSlug` — port-named *vozzik* (`RSW_Voltmaw`).
-`AA_Terramorph` — port-named *khorrak* (`RSW_Ferroclaw`). `AA_RedGoo` — named in the
-Contagion batch below (*ghelluva*), where it is the body; here it is a 0.003 trace.
+**Not drafted:** `Tauntaun`, `Wampa` — canon visitors, keep.
+**Evicted 2026-09-24 (no nightside name owed):** `AA_SummitCrab` moves to the Weeping
+Stones as an adaptation — owner: "a whole canyon filling crab" — so its name is now
+owed in the Weeping Stones accent and the nightside draft *ohmurra* is retired.
+`AA_Slurrypede` still lives in the Miasma and Propane Lakes; the *thollum* draft
+stands for those homes, but its "named here" justification is void. `AA_BoulderMit`
+(*korrum*, `RSW_Korrum`), `AA_TetraSlug` (*vozzik*, `RSW_Voltmaw`), `AA_Terramorph`
+(*khorrak*, `RSW_Ferroclaw`) keep their port names in their other homes. `AA_RedGoo`
+is named in the Contagion batch below (*ghelluva*), where it is the body.
 
 ---
 

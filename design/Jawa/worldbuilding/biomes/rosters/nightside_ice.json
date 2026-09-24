@@ -65,52 +65,63 @@
       "def": "VanillaIceSheetZoo",
       "disposition": "cut:nightside_ice.md §0 + owner card 2026-09-09",
       "reason": "NOT A DEF — records that vanilla IceSheet's arctic zoo (bears, muffalo, hares, penguins, fish) is never inherited: RUT_NightsideIce overrides every list (sheet §0, own-def ruling); Earth five appear nowhere (owner card)"
+    },
+    {
+      "def": "AA_SummitCrab",
+      "disposition": "move:WeepingStones-adapt",
+      "reason": "owner ruling at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24: all donor residents evicted — they don't make sense here; the surface stays near-empty and the authored natives (shivven/dhorrumak/wyrmlets/frissim/sohl/catalytic sheets) carry the biome; owner: 'Summit crab should be adapted into the weeping stones as a whole canyon filling crab' — adaptation row added to weeping_stones.json new_defs",
+      "was": {
+        "band": "landform-giant",
+        "commonality": 0.004
+      }
+    },
+    {
+      "def": "AA_TetraSlug",
+      "disposition": "evicted",
+      "reason": "owner ruling at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24: all donor residents evicted — they don't make sense here; the surface stays near-empty and the authored natives (shivven/dhorrumak/wyrmlets/frissim/sohl/catalytic sheets) carry the biome; other homes (if any) are their own sittings’ business",
+      "was": {
+        "band": "giant",
+        "commonality": 0.002
+      }
+    },
+    {
+      "def": "AA_BoulderMit",
+      "disposition": "evicted",
+      "reason": "owner ruling at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24: all donor residents evicted — they don't make sense here; the surface stays near-empty and the authored natives (shivven/dhorrumak/wyrmlets/frissim/sohl/catalytic sheets) carry the biome; other homes (if any) are their own sittings’ business",
+      "was": {
+        "band": "giant",
+        "commonality": 0.004
+      }
+    },
+    {
+      "def": "AA_Terramorph",
+      "disposition": "evicted",
+      "reason": "owner ruling at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24: all donor residents evicted — they don't make sense here; the surface stays near-empty and the authored natives (shivven/dhorrumak/wyrmlets/frissim/sohl/catalytic sheets) carry the biome; other homes (if any) are their own sittings’ business",
+      "was": {
+        "band": "medium",
+        "commonality": 0.003
+      }
+    },
+    {
+      "def": "AA_RedGoo",
+      "disposition": "evicted",
+      "reason": "owner ruling at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24: all donor residents evicted — they don't make sense here; the surface stays near-empty and the authored natives (shivven/dhorrumak/wyrmlets/frissim/sohl/catalytic sheets) carry the biome; other homes (if any) are their own sittings’ business",
+      "was": {
+        "band": "small",
+        "commonality": 0.003
+      }
+    },
+    {
+      "def": "AA_Slurrypede",
+      "disposition": "evicted",
+      "reason": "owner ruling at NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24: all donor residents evicted — they don't make sense here; the surface stays near-empty and the authored natives (shivven/dhorrumak/wyrmlets/frissim/sohl/catalytic sheets) carry the biome; other homes (if any) are their own sittings’ business",
+      "was": {
+        "band": "medium",
+        "commonality": 0.002
+      }
     }
   ],
   "fauna": [
-    {
-      "action": "import",
-      "band": "landform-giant",
-      "commonality": 0.004,
-      "def": "AA_SummitCrab",
-      "law": "spd 1.0, bs 15 (MEASURED) — the one donor body at landform scale; 'a ridge is an organism' (§4)",
-      "note": "no-eyes/no-glow art check owed"
-    },
-    {
-      "action": "import",
-      "band": "giant",
-      "commonality": 0.002,
-      "def": "AA_TetraSlug",
-      "law": "spd 0.6 (MEASURED) — barely moving; nearest thing to the one-move read the donor pool holds"
-    },
-    {
-      "action": "import",
-      "band": "giant",
-      "commonality": 0.004,
-      "def": "AA_BoulderMit",
-      "law": "spd 1.0 (MEASURED) — 'what you take for a boulder field has been eating the frost' (§1) in a body"
-    },
-    {
-      "action": "import",
-      "band": "medium",
-      "commonality": 0.003,
-      "def": "AA_Terramorph",
-      "law": "spd 1.8 (MEASURED) passes the <2.0 proxy; the name is the biome's whole art rule — indistinguishable from terrain"
-    },
-    {
-      "action": "import",
-      "band": "small",
-      "commonality": 0.003,
-      "def": "AA_RedGoo",
-      "law": "spd 1.5 (MEASURED); clonal, breeds alone (register special) — matches §4 fragment-reproduction; not green, not glowing"
-    },
-    {
-      "action": "import",
-      "band": "medium",
-      "commonality": 0.002,
-      "def": "AA_Slurrypede",
-      "law": "spd 1.9 (MEASURED) passes the proxy; slow crawler shelf (prep §7.2)"
-    },
     {
       "action": "import",
       "band": "visitor",
