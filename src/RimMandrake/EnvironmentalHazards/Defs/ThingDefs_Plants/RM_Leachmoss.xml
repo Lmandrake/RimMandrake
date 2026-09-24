@@ -92,7 +92,7 @@
       <topWindExposure>0</topWindExposure>
       <harvestWork>60</harvestWork>
       <!-- no harvestedThingDef: design specifies no harvest product, same
-           shape as RSW_Dunegrass (a wild grass cut for nothing) one mod over. -->
+           shape as RSW_SurraGrass (a wild grass cut for nothing) one mod over. -->
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>10</wildClusterWeight>
       <wildOrder>1</wildOrder>

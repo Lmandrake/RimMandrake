@@ -11,7 +11,7 @@ Run under python.exe (the bridge binds Windows loopback), on the beastmechanics 
     python.exe src/RimMandrake/bridgetools/prove_noncolonist_ability.py
 
 Evidence bar, from the item:
-  1. select_things on a wild RSW_Voltmaw -> selectedCount == 1, the row names the voltmaw.
+  1. select_things on a wild RSW_Vozzik -> selectedCount == 1, the row names the voltmaw.
   2. pawn_use_ability cast RSW_VoltmawPlasmaVolley at a colonist, waitTicks=600 ->
      readBack.lastCastTickAdvanced == true AND readBack.onCooldown == true.
      success:true is NOT evidence and is not accepted here.
@@ -62,9 +62,9 @@ def main():
         return summarize()
 
     # ---------------------------------------------------------------- spawns
-    volt = call("jawa/spawn_pawn", kindDef="RSW_Voltmaw", x=100, z=100,
+    volt = call("jawa/spawn_pawn", kindDef="RSW_Vozzik", x=100, z=100,
                 faction="none", count=1)
-    cind = call("jawa/spawn_pawn", kindDef="RSW_Cindermite", x=120, z=120,
+    cind = call("jawa/spawn_pawn", kindDef="RSW_Zhakka", x=120, z=120,
                 faction="none", count=1)
     colo = call("jawa/spawn_pawn", kindDef="Colonist", x=110, z=100,
                 faction="player", count=1)
@@ -100,7 +100,7 @@ def main():
     names = json.dumps(rows)[:300]
     ok1 = (sel.get("selectedCount") == 1
            and any("Voltmaw" in json.dumps(r) for r in rows))
-    record("1. select_things on a wild, faction-less RSW_Voltmaw",
+    record("1. select_things on a wild, faction-less RSW_Vozzik",
            ok1, "selectedCount=%r selected=%s" % (sel.get("selectedCount"), names))
 
     # ----------------------------------- 1b. grant_ability on a tracker-less animal

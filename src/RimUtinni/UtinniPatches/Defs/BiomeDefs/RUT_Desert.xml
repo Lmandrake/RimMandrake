@@ -211,7 +211,7 @@
            predators of this biome); this is the rare apex on top of them, not a
            replacement for either. -->
       <RSW_WraidAlpha MayRequire="mandrake.rsw.swbestiary">0.15</RSW_WraidAlpha>  <!-- alpha wraid - THE burst-predator flagship, rare apex -->
-      <RSW_Sandstrider MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Sandstrider>  <!-- desert ave - navigator, keep -->
+      <RSW_Ossik MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Ossik>  <!-- desert ave - navigator, keep -->
       <RSW_Eopie MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Eopie>  <!-- eopie - herd, keep -->
       <RSW_Hrumph MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Hrumph>  <!-- hrumph - herd, import -->
       <RSW_IridonianReek MayRequire="mandrake.rsw.swbestiary">0.3</RSW_IridonianReek>  <!-- iridonian reek - herd, import -->
@@ -229,7 +229,7 @@
       <RSW_Shaak MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Shaak>  <!-- shaak - herd, import -->
       <RSW_TeeMuss MayRequire="mandrake.rsw.swbestiary">0.2</RSW_TeeMuss>  <!-- tee muss - herd, import -->
       <RSW_Worrt MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Worrt>  <!-- worrt - ambush-small, keep -->
-      <RSW_Spineroller MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Spineroller>  <!-- needleroll - grain, keep -->
+      <RSW_Kudda MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Kudda>  <!-- needleroll - grain, keep -->
       <RSW_Bolotaur MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Bolotaur>  <!-- bolotaur - herd, import -->
       <RSW_Clodhopper MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Clodhopper>  <!-- clodhopper - ambush-small, keep -->
       <RSW_FeralGrazer MayRequire="mandrake.rsw.swbestiary">0.1</RSW_FeralGrazer>  <!-- feral grazer - herd, import -->
@@ -238,11 +238,11 @@
       <RSW_Krykna MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Krykna>  <!-- krykna - ambush-small, keep -->
       <RSW_Runyip MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Runyip>  <!-- runyip - herd, import -->
       <RSW_Voorpak MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Voorpak>  <!-- voorpak - ambush-small, keep -->
-      <RSW_Sandhorn MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Sandhorn>  <!-- gigantelope - herd, keep -->
-      <RSW_Dunestalker MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Dunestalker>  <!-- sand prowler - ambush-burrow, keep -->
-      <RSW_Ferroclaw MayRequire="mandrake.rsw.swbestiary">0.035</RSW_Ferroclaw>  <!-- terramorph - ambush-flat, keep -->
-      <RSW_Sandmaw MayRequire="mandrake.rsw.swbestiary">0.025</RSW_Sandmaw>  <!-- sand squid - subsurface-slow, keep -->
-      <RSW_Tuskcoil MayRequire="mandrake.rsw.swbestiary">0.015</RSW_Tuskcoil>  <!-- mammoth worm - subsurface-slow, keep -->
+      <RSW_Thurra MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Thurra>  <!-- gigantelope - herd, keep -->
+      <RSW_Vosska MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Vosska>  <!-- sand prowler - ambush-burrow, keep -->
+      <RSW_Khorrak MayRequire="mandrake.rsw.swbestiary">0.035</RSW_Khorrak>  <!-- terramorph - ambush-flat, keep -->
+      <RSW_Ommok MayRequire="mandrake.rsw.swbestiary">0.025</RSW_Ommok>  <!-- sand squid - subsurface-slow, keep -->
+      <RSW_Ulgga MayRequire="mandrake.rsw.swbestiary">0.015</RSW_Ulgga>  <!-- mammoth worm - subsurface-slow, keep -->
       <RSW_Horax MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Horax>  <!-- horax - megafauna, import; interim stand-in, complemented (not replaced) by RSW_ShadeWhale below, COMMISSION_LEDGER_CLEANUP_1 -->
       <!-- COMMISSION_LEDGER_CLEANUP_1 (desert sheet): desert.md §4c/§10's actual
            filter-feeding shade-whale megafauna — a reskin of RSW_Horax's body/art,
@@ -256,7 +256,7 @@
       <!-- DESERT_ROUND2_IMPORTS_UNLANDED_1 2026-09-20: round-2 import rows
            (rosters/desert.json "fauna", owner review 2026-09, commonality 0.5 each)
            wired for the first time. -->
-      <RSW_Stoneback MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Stoneback>  <!-- bokka - anywhere on the dayside, import -->
+      <RSW_Bokka MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Bokka>  <!-- bokka - anywhere on the dayside, import -->
       <RSW_TruffleMole MayRequire="mandrake.rsw.swbestiary">0.5</RSW_TruffleMole>  <!-- truffle mole - sand burrower, desert & extreme desert, import -->
       <!-- AA_JOE_DESERT_PORT_BATCH_1 2026-09-20: the remaining round-2 import rows
            (design/Jawa/fauna/cast_assignment.csv, owner review 2026-09, commonality
@@ -279,11 +279,11 @@
       <RSW_Ultracactus MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Ultracactus>  <!-- ultracactus: the buried canopy holding the open ground, DESERT_SIGNATURE_FLORA_1 -->
       <RUT_Vorrel MayRequire="mandrake.rut.ashkarrflora">0.1</RUT_Vorrel>  <!-- the cycle plant, DESERT_STAGGERSEED_BUILD_1. Lowest weight of the three desert plants on purpose: §4b puts it in "the protected water pockets" only, and its own fertilityMin 0.45 already keeps it off Sand, so this weight sets how thickly it fills the pockets it CAN take, not how far it spreads. Working name — see the header. -->
       <RM_Venomvine MayRequire="mandrake.rm.environmentalhazards">0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, §4b "the shade plants, which defend" — VENOMVINE_CONTACT_VENOM_BUILD_1. fertilityMin 0.5 already keeps it off Sand (the ultracactus's ground), so this weight sets how thickly it takes the patch ground it CAN reach, not how far it spreads. -->
-      <RSW_Dunegrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Dunegrass>  <!-- surra grass -->
+      <RSW_SurraGrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_SurraGrass>  <!-- surra grass -->
       <RSW_Plant_Chakroot_Wild MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
       <RSW_Plant_HubbaGourd_Wild MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
       <RSW_VellaraBloom MayRequire="mandrake.rsw.swbestiary">0.12</RSW_VellaraBloom>  <!-- vellara bloom -->
-      <RSW_SweetbarkTree MayRequire="mandrake.rsw.swbestiary">0.06</RSW_SweetbarkTree>  <!-- dommo tree - tree -->
+      <RSW_DommoTree MayRequire="mandrake.rsw.swbestiary">0.06</RSW_DommoTree>  <!-- dommo tree - tree -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
 

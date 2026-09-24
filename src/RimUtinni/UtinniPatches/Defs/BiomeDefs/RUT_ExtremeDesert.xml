@@ -134,22 +134,22 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <!-- BIOME_SPECIFIC_FAUNA_LAW_1 / STONEBACK_DEFNAME_COLLISION_1, owner 2026-09-22:
-           "I meant pick one arid home." Both the bokka (RSW_Stoneback) and the korrum
+           "I meant pick one arid home." Both the bokka (RSW_Bokka) and the korrum
            (RSW_Korrum) were REMOVED from this biome, each keeping exactly one home — the
            bokka the Long Shade (RUT_Desert 0.5, its pre-existing wiring), the korrum the
            Scarlands (0.05), which he called "excellent" for it. ⛔ The arid biomes he
            listed were the CANDIDATE set, not an assignment: a shared habitat class is NOT
            an in-game reason to multi-home an animal. Do not re-add either here. -->
-      <RSW_Spineroller MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Spineroller>  <!-- needleroll - grain-scale, adjust-keep -->
+      <RSW_Kudda MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Kudda>  <!-- needleroll - grain-scale, adjust-keep -->
       <RSW_Kreetle MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Kreetle>  <!-- kreetle - grain-scale, keep -->
       <RSW_WarWyrm MayRequire="mandrake.rsw.swbestiary">0.2</RSW_WarWyrm>  <!-- war wyrm - giant, keep -->
       <RSW_KraytDragon MayRequire="mandrake.rsw.swbestiary">0.15</RSW_KraytDragon>  <!-- krayt dragon - giant, keep -->
-      <RSW_Stareling MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Stareling>  <!-- ikee - grain-scale, adjust-keep -->
+      <RSW_Ikee MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Ikee>  <!-- ikee - grain-scale, adjust-keep -->
       <RSW_GraniteSlug MayRequire="mandrake.rsw.swbestiary">0.1</RSW_GraniteSlug>  <!-- granite slug - grain-scale, keep -->
       <RSW_Scurrier MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Scurrier>  <!-- scurrier - grain-scale, adjust-keep -->
       <RSW_Gizka MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Gizka>  <!-- gizka - grain-scale, keep -->
       <RSW_GreaterKraytDragon MayRequire="mandrake.rsw.swbestiary">0.001</RSW_GreaterKraytDragon>  <!-- greater krayt dragon - giant, keep -->
-      <RSW_Voltmaw MayRequire="mandrake.rsw.swbestiary">0.0005</RSW_Voltmaw>  <!-- tetra slug - giant, keep -->
+      <RSW_Vozzik MayRequire="mandrake.rsw.swbestiary">0.0005</RSW_Vozzik>  <!-- tetra slug - giant, keep -->
       <!-- DESERT_ROUND2_IMPORTS_UNLANDED_1 2026-09-20: round-2 import row
            (rosters/dune_sea_deep_desert.json "fauna", owner review 2026-09, commonality
            0.5), wired for the first time. -->
