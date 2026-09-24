@@ -2904,10 +2904,10 @@
     "sha": "b32878458"
   },
   "src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py": {
-    "cleanCount": 3,
-    "date": "2026-09-19",
-    "hash": "7c8b12d59d9127208e669086d1889b5191e08ca7a4aa3829f8bdc4ed8d3f1330",
-    "sha": "51867f432"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "f668da590f5c69011c6ed0f2c693df9fa4d7b00e164d13681fd08c33ccf9886f",
+    "sha": "8b65a2173"
   },
   "src/RimMandrake/FlowWorks/validation.py": {
     "cleanCount": 1,
@@ -5694,10 +5694,10 @@
     "sha": "aa2e63220"
   },
   "src/RimMandrake/Utils/artpipe/artpiped.py": {
-    "cleanCount": 7,
-    "date": "2026-09-17",
-    "hash": "fc70b23070073648cb79a72f7691e417e9a38819bc07afde4dfa988e99e84c09",
-    "sha": "74e9d4953"
+    "cleanCount": 8,
+    "date": "2026-09-24",
+    "hash": "bce066cb2565d7907753b1f3385b674e0c61089ca68263dfb8ad39b85e1a92f3",
+    "sha": "8b65a2173"
   },
   "src/RimMandrake/Utils/artpipe/artreg.py": {
     "cleanCount": 5,
@@ -7906,10 +7906,10 @@
     "sha": "ef1525da6"
   },
   "src/RimMandrake/bridgetools/build.py": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "3898efc7ea8d3bf87c63838186a612bf8670a8782fb00a21865057b09526e7a5",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "f09f816008447b6db03707e1bd0faf35218a25ec242ceb33c199c7c144e7aa1f",
+    "sha": "8b65a2173"
   },
   "src/RimMandrake/bridgetools/check_map_biomes_live.py": {
     "cleanCount": 2,
