@@ -6580,6 +6580,30 @@
     "hash": "262f980323b1593082a42f36b33a809ac9e64796329bafcf363782f8f83bbf24",
     "sha": "9ff1457ee"
   },
+  "src/RimMandrake/Utils/modcheck/selftest_doctor.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "988e628a777912ec097c495f1da5fc207744c71822dfd38d80db1c3a2edfee64",
+    "sha": "3e9f9b94e"
+  },
+  "src/RimMandrake/Utils/modcheck/selftest_northstar.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a4a05e1e39ab5c2d5d8cfed3be9d961e9bce8bc2bcb2933e3af207a2d8bff166",
+    "sha": "3e9f9b94e"
+  },
+  "src/RimMandrake/Utils/modcheck/selftest_readline_registry.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "86c7c3de29ae9e42ef55568065aeb6cd4cd5df5038ddc67af59bfe45101a40a2",
+    "sha": "3e9f9b94e"
+  },
+  "src/RimMandrake/Utils/modcheck/selftest_walklint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8e1cd96e9cef1a8e2fe6e4657040c2f48f08a2f63a74c7fec2c235444c22b91b",
+    "sha": "3e9f9b94e"
+  },
   "src/RimMandrake/Utils/modcheck/status.py": {
     "cleanCount": 2,
     "date": "2026-09-17",
@@ -7005,11 +7029,23 @@
     "hash": "70723fb118c579b8e66a859375e4edc696ce8464fb78cb155677b378da003c38",
     "sha": "74e20c8dc"
   },
+  "src/RimMandrake/Utils/selftest_ashkarr_settle.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fde4ef665277215a77479de21da5493ba37d27ff752528a58bfdfced0b6ff6e3",
+    "sha": "3e9f9b94e"
+  },
   "src/RimMandrake/Utils/selftest_broadcast_frame.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "hash": "f26d87dad48bb5125da7ca2d230154955fccb6cd64d33bd7c7826a9e2f0d6c79",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/selftest_canon_census.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "420528658a5ebb6723f705000ac6b62fbc431c2fe88dab8606b6674d455a315f",
+    "sha": "3e9f9b94e"
   },
   "src/RimMandrake/Utils/selftest_check_canon.py": {
     "cleanCount": 2,
@@ -7052,6 +7088,18 @@
     "date": "2026-09-03",
     "hash": "90aef967f1655bdb99dbea1218d914133739146103977bb21ebe1ab0bc05e4b7",
     "sha": "e5013227"
+  },
+  "src/RimMandrake/Utils/selftest_deployed_biome_refs.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5e1fa632862903ca20e21c46110b0fc9279ab1e44592a56f88d45f3e668df6e7",
+    "sha": "3e9f9b94e"
+  },
+  "src/RimMandrake/Utils/selftest_ecosystem_pyramid_check.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f5ee76f087c2b7256a406539cab5e5559840ce61755d084534095332878c0691",
+    "sha": "3e9f9b94e"
   },
   "src/RimMandrake/Utils/selftest_expectations_manifest.py": {
     "cleanCount": 2,
