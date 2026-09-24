@@ -13017,6 +13017,12 @@
     "hash": "c6bbd958021fd7955aa9c7b822a1d6eb1bf55d25d7add022f0f136421ef58e07",
     "sha": "8b0b715b5"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Grank.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "090d3656ca26a67c1bffce49d8abbc3af76b32d5777622b893039762d7c44ead",
+    "sha": "9432dfc5f"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_GreatDevourer.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -13029,11 +13035,47 @@
     "hash": "7fbc4a5c343f2c660783c5244c3832f8b96b36a371f111426aa5bd54c5e8ff15",
     "sha": "6e71f9825"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Groundrunner.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "349ae9fc51f0c30359b14fe2ca64cfc8aa97c9e4a9d9abe541c79aa4b5b33280",
+    "sha": "9432dfc5f"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Gutkurr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9744e6f7c9d8d6704d0599cfb31716d7457d8555a96cf5379fddc15f836e625e",
+    "sha": "9432dfc5f"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Hawkbat.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "dc289c6f9ecd3246e8694fd3f9a2ae15ca0e6d30e260d247397a6510ba52a0f5",
+    "sha": "9432dfc5f"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Horax.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "6b1c3e855af679e3e5e094a7bb2a1f1a7df155868ce35c7ca212d082741359f2",
     "sha": "609daf5ad"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Hrumph.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "383e9fcce8e9c6dd1ebde7c16a0e5f28925261b6b2a8bb2f857b5a5b53d59f06",
+    "sha": "9432dfc5f"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Hssiss.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "607ca55c4a481bb74b7e294b73d69a9d841429607865859d52888e7011ab2260",
+    "sha": "9432dfc5f"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Igitz.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b04a3912ab6d1c0b63e9692d2f89a57f680628513ca73b6e10119c2c20296dc8",
+    "sha": "9432dfc5f"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Iriaz.xml": {
     "cleanCount": 2,
@@ -18650,6 +18692,12 @@
     "date": "2026-09-17",
     "hash": "8e437811e008e98afb635e61e95cbc2c1591a71491267ded436123c7737e7706",
     "sha": "0afdb147c"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "55c6c633f2896d3c031e8d84e580bd0908e0d6394f311831182f5155b713928b",
+    "sha": "9432dfc5f"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml": {
     "cleanCount": 2,
