@@ -177,3 +177,31 @@ resolution before wiring.
 `Doctrine/Patches/MegafaunaYield.xml`) while that donor is inactive — but those ops are
 wrapped in `PatchOperationConditional` (931 of them in that file), so they are inert by
 design, not silently broken. Cleanup at most, and only alongside other work in those files.
+
+## FOUNDRY, 2026-09-24: engine question resolved (Desktop session, RimSage confirmed available)
+
+**"What is still owed" item 1's engine question is now answered, CONFIRMED, not
+UNMEASURABLE.** `RimSage` connected successfully this session — RC-verified, not
+assumed — and a source read settled it decisively: `BiomeDef.impassable` is never
+read anywhere in the wild-animal population path. `GenStep_Animals.Generate` loops
+`RCellFinder.RandomAnimalSpawnCell_MapGen` → `WildAnimalSpawner.SpawnRandomWildAnimalAt`,
+and none of the three checks `impassable` — that field is read only by
+world-traversal/UI/landmark code (`Find.World.Impassable`, `CellInspectorDrawer`,
+`LandmarkDef.cs`). So `<wildAnimals>` WILL populate normally on `RUT_GreySea`/
+`RUT_TwilightSea` once a real Map generates for the tile, impassable or not.
+
+Updated both roster JSONs' `law` fields for `RSW_Polluwog` and the three
+`RSW_MutatingTumorfish*` rows to record this (`the_grey_sea.json`,
+`the_twilight_sea.json`) — replacing the stale "UNMEASURABLE on the Mac... NEXT:
+test on the Desktop" line. **Not wiring the four rows into the live `RUT_GreySea.xml`/
+`RUT_TwilightSea.xml` this pass** — both rosters' own `law` text says this wiring is
+scoped to `TERMINALBIOMES_RM_MOD_BUILD_1` (the mod-split build that owns those
+biomes' successor defs), not this sweep item; wiring here first would just have to be
+redone there. This item's own step 2 (surface-vs-floor + the engine question) is now
+fully settled either way — nothing left blocking that step's *reasoning*, only its
+*execution*, which belongs to the other item.
+
+**Not re-checked this pass**: item 2 (ecosystem pyramid sweep re-run, now several
+days stale) and item 3 (live-mod-list resolution check for the four newly-wired
+`RUT_Scarlands`/`RUT_Wasteland` names) — both still genuinely need a live game
+check, out of scope for this pass's narrow engine-question fold-in.

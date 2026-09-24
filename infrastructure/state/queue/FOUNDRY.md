@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T05:58:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T06:00:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,6 +22,15 @@ target:   v1
 kind:     build
 summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
 prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
+
+## ROSTER_DEAD_BMT_NAMES_SWEEP_1 14 ported-but-unwired BMT_ roster rows across 8 rosters: per-species wire-or-drop, never bulk-wire
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Work species-by-species, in this order, because the first two shrink the list without any
+prose:    infrastructure/state/items/ROSTER_DEAD_BMT_NAMES_SWEEP_1.md
 
 # IN PROGRESS
 
@@ -1627,16 +1636,6 @@ kind:     build
 thin:     no ## spec, no ## criteria
 summary:  FURNACEBEASTWORLDMIGRATION1
 prose:    infrastructure/state/items/FURNACEBEAST_WORLD_MIGRATION_1.md
-
-## ROSTER_DEAD_BMT_NAMES_SWEEP_1 14 ported-but-unwired BMT_ roster rows across 8 rosters: per-species wire-or-drop, never bulk-wire
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Work species-by-species, in this order, because the first two shrink the list without any
-prose:    infrastructure/state/items/ROSTER_DEAD_BMT_NAMES_SWEEP_1.md
 
 ## KORRUM_ART_REGEN_1 The korrum has no art of ours: texPath still points at Alpha Animals' own texture; 3 jobs re-keyed and quota-blocked to ~2026-09-26
 state:    proposed
