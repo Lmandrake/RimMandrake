@@ -7702,10 +7702,10 @@
     "sha": "46ac7699"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPawnKitTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "d714d8dd62a60cdaeda8a1b6e81de2264214bde7d5d9bbbb391277aa7c9c2c76",
-    "sha": "b9435727"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "62b220b3b4fa11a3e19f6b1c820202db7b1794c4035250d797efcc46265cf6ac",
+    "sha": "3324f0185"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPawnTools.cs": {
     "cleanCount": 3,
@@ -7720,10 +7720,10 @@
     "sha": "e515c1e9"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchRenderTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "af1c75b6e54458484a018812adc3a0b6a6fce371df965c763f975d69abc415e5",
-    "sha": "c4ea71c4"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "6f6d505b42fac8285d76670da01a0392fecf68f73f7dada581f9e3e7292e9537",
+    "sha": "3324f0185"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchResearchTimeTools.cs": {
     "cleanCount": 1,

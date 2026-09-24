@@ -1652,3 +1652,100 @@ this item's own protocol), and the `rimflow`/`Utils` Python tooling
 `modset_builder.py`, `run_selftests.py`, several `artpipe/*.py`). The PNG
 binary-art-tracking scope question (wave 15) is still open and still not
 this loop's to decide.
+
+## Wave 29 — 2026-09-24: bridge-tools priority, 2 of 3 cleared
+
+Per the owner's explicit brief for this wave: prioritized the three
+bridge-tools files named in wave 28's note (`JawaBenchPawnKitTools.cs`,
+`JawaBenchRenderTools.cs`, `JawaBenchTerrainTools.cs`) over the rest of the
+102-file non-PNG backlog, at a HIGHER bar than this loop's normal diff-scoped
+re-review: full-file review of all three even though each was previously
+CLEAN, with every `[Tool]` method's engine-API usage cross-checked line by
+line against `/mnt/d/Luke/dev/reference/rimworld-decompiled` rather than
+trusting the file's own inline claims about engine behavior (several of
+which cite specific method signatures and silent-failure modes from prior
+review passes).
+
+Re-confirmed DIRTY (all three re-dirtied since their original 2026-09-03/
+2026-09-18 clean marks — ordinary drift, ~9155 combined lines, `git status`
+showed no in-flight edits from another window before starting):
+`JawaBenchPawnKitTools.cs` (961 lines, clean-marked 2026-09-03),
+`JawaBenchRenderTools.cs` (1184 lines, clean-marked 2026-09-03),
+`JawaBenchTerrainTools.cs` (7010 lines, clean-marked 2026-09-18).
+
+**Reviewed and cleared 2 of 3 this wave** (the 7010-line `JawaBenchTerrainTools.cs`
+is roughly 3x the combined size of the other two and was not started this
+wave — thoroughness over count, per this wave's own brief):
+
+- **`JawaBenchPawnKitTools.cs`** (Group E: skills/relations/abilities/
+  inspiration/psychic/genes/apparel-locking/inventory-and-stack tools).
+  Cross-checked against the decompiled engine: `Pawn_SkillTracker.Learn`/
+  `SkillRecord.Learn`/`SkillRecord.TotallyDisabled` (the mutant `CanGainXP`
+  gate the tool re-checks separately is EXACTLY what `Pawn_SkillTracker.Learn`
+  itself gates on — `ModsConfig.AnomalyActive && pawn.IsMutant &&
+  !pawn.mutant.Def.canGainXP` — confirmed identical), `Pawn_AbilityTracker.
+  GainAbility`/`GetAbility`, `InspirationHandler.TryStartInspiration`/
+  `BlockedByHediff` (confirmed the tool's pre-check of `CurStage.
+  blocksInspirations` reproduces the engine's own private gate exactly, so
+  the "should not be reachable" claim after a forced `EndInspiration` holds),
+  `GeneUtility.OffsetHemogen`/`SatisfyChemicalGenes`, `Gene_Resource.Value`/
+  `Max`, `Pawn_GeneTracker.GetFirstGeneOfType<T>`/`ClearXenogenes`,
+  `Pawn_ApparelTracker.Lock`/`Unlock`/`LockAll`/`UnlockAll`/`IsLocked`,
+  `Pawn_InventoryTracker.RemoveCount` (confirmed it touches at most ONE
+  matching stack per call via its `break` after the first match, exactly as
+  the tool's own comment claims — justifying the tool's own loop-until-gone
+  retry logic), `Thing.SplitOff` (confirmed the `count >= stackCount` branch
+  DeSpawns and returns the ORIGINAL thing rather than a copy — the tool
+  correctly refuses that case strictly before calling, so it never hits that
+  branch), `GenPlace.TryPlaceThing`, `Thing.TryAbsorbStack`. Every signature
+  and every behavioral claim in the file's own extensive comments (many
+  citing specific prior 2026-09-02/09-03 code-review fixes) matched the
+  engine exactly. No bugs found.
+- **`JawaBenchRenderTools.cs`** (Group K: buildings/construction, Anomaly,
+  save/load side artifacts, rendering/camera/screenshots, terrain/roof/heat,
+  stat-explanation). Cross-checked: `GenConstruct.CanPlaceBlueprintAt`/
+  `PlaceBlueprintForBuild` (both full parameter lists match positionally),
+  `Frame.CompleteConstruction`, `GameComponent_Anomaly.SetLevel`/`Level`/
+  `LevelDef`, `PortraitsCache.Get` (confirmed `supersample=false,
+  compensateForUIScale=false` are the correct positional args to get exactly
+  width×height out, matching the tool's own comment about why), `CompHolding
+  PlatformTarget`'s `CompStudiable`/`HeldPlatform`/`CanBeCaptured`/`CanStudy`/
+  `StudiedAtHoldingPlatform`/`CurrentlyHeldOnPlatform`/`isEscaping`/
+  `extractBioferrite`/`containmentMode` fields, `CompStudiable.SetStudyEnabled`/
+  `Study(Pawn, float, float)`/`studyPoints`/`anomalyKnowledgeGained`/
+  `ProgressPercent`/`Completed`/`TicksTilNextStudy`/`KnowledgeCategory`,
+  `GameDataSaveLoader`'s all 6 Save*/TryLoad* signatures (and confirmed
+  `SaveScenario` et al. genuinely swallow their own exceptions via a
+  try/catch-and-log, which is exactly why the tool reads the result back via
+  `File.Exists` + size rather than trusting the call returning), `Global
+  TextureAtlasManager.TryMarkPawnFrameSetDirty`/`DumpPawnAtlases`,
+  `GenTemperature.PushHeat`, `Room.Temperature` (confirmed it has a real
+  setter, not just a getter), `PowerNet`'s `hasPowerSource`/`connectors`/
+  `transmitters`/`powerComps`/`batteryComps` fields, `StatRequest.For(Thing)`,
+  `StatWorker.GetExplanationFull`/`ValueToString`. Every signature and claim
+  matched. No bugs found.
+
+`Current.Game.DeinitAndRemoveMap` (jawa/map_drop) and its documented
+serialization-loop trap (`BRIDGE_MAP_DROP_SERIALIZATION_LOOP_1` — a
+`PlanetTile.Tile` circular reference) were read for consistency with the
+tool's own primitives-only response shape but not re-derived against the
+engine independently this pass — the tool's defensive design (project every
+field to a primitive BEFORE the deinit) is sound regardless of the exact
+shape of that trap.
+
+Both files had zero uncommitted changes before marking (`git status
+--porcelain` empty). Both marked CLEAN, commit pending below, pushed.
+
+**`JawaBenchTerrainTools.cs` (7010 lines) remains for the next wave** —
+explicitly not started this wave, per this wave's own brief to favor
+thoroughness over finishing all three. It is the single largest file in the
+bridge-tools set and by a wide margin (all four `[Tool]`-bearing files this
+loop has cross-checked bridge-response shapes against across waves 9-14 —
+`GetDef`, `GetDefs`, `ListThings`, `MapInfo`, etc. — live in this file), so
+a future wave should expect to spend real time on it and may need more than
+one wave itself.
+
+Next wave: finish `JawaBenchTerrainTools.cs` first (bridge-tools priority
+still stands until it's done), then return to the 102-file non-PNG backlog
+(now effectively 100, two down). Re-derive counts fresh rather than trusting
+this arithmetic — it has drifted before.
