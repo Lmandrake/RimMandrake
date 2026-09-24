@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T05:49:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T05:58:29Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -17,7 +17,7 @@ The first heading below is what `rimflow next --seat FOUNDRY` returns. This file
 ## DONOR_DEFS_PORT_TO_OURS_1 Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 262 of ~330 borrowed biome-roster entries alone
 state:    ready
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     build
 summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
@@ -872,15 +872,6 @@ target:   v1
 kind:     task
 summary:  EXTREMEDESERTSIGNATUREFLORA1 — author the extreme desert's own signature flora
 prose:    infrastructure/state/items/EXTREME_DESERT_SIGNATURE_FLORA_1.md
-
-## DESERT_PORT_PLACEHOLDER_ART_1 16 desert species still carry donor texPaths, one renders wrong
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
-prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
 
 ## COMMISSION_LEDGER_CLEANUP_1 85 genuinely-owed new-art/def commissions from the 118-row ledger
 state:    doing
