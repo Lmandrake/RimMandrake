@@ -84,10 +84,27 @@ physically cannot.
   riding, or safe crowding. Tolerance is *only* removal from her target set.
 - ⛔ **No second giant.** The eviction of `AA_OvergrownColossus` is reasoned as *"the giant lane
   here is owned by warden mothers… a random giant dilutes them"*, and that holds harder now.
-- ⚠️ **The death clock was deliberately NOT authored.** The original pitch had her eventually die
-  and the player inherit the crèche. He did not repeat it, and a scripted loss of a defence earned
-  over a campaign is the most resentable shape available. ⇒ Left out; if he wants it, it must be
-  foreshadowed from the first day and it is its own ruling.
+- 🔴 **She dies of age, and the young inherit her — ruled 2026-09-23, design in §6a of the
+  roster.** Three things this adds to the spec, all owed:
+  - **the young are trainable and SELF-TAME** while your record against their crèche is clean —
+    barred or reset the moment you harvest, kill or butcher one. ⛔ Not a taming grind: they
+    consent, exactly as the mother's tolerance and the Fever Wood guild do.
+  - **trainability must be WATER-SCOPED** — Guard, Release, and ⭐ Haul-from-water-only, which
+    lands them on `RM_Thrannock`'s flotsam root-lines, an economy the sheet already has. ⛔ Not
+    Rescue and not general Haul: both need land, and an animal that fails its own trained job is a
+    bug wearing a feature.
+  - ⭐ **succession is the payoff.** When she dies, a raised young may take the crèche — and ⛔ it
+    must NOT be guaranteed. The sheet's thesis is *"rebirth… maybe"*; if the player rescued
+    nothing, the crèche is just a place and the scavengers come.
+- 🔴 **Foreshadowing her age is a REQUIREMENT and subtlety is failure.** Visibly ancient in the art
+  brief (⛔ not merely large), an inspect string that says it outright, a measurable slowing as she
+  ages, and somebody who tells you — the Deepwater vigil measure the brine yearly and would know
+  how long she has. ⛔ **A player surprised by her death means this was built wrong**, however good
+  the rest is.
+- 🔴 **Do NOT solve the ache.** A tamed young follows you along the water, stops at the waterline,
+  and watches you walk inland. ⛔ No land-walking upgrade, no tank, no carrying it about. The
+  affection is real and the geography does not care — that inversion of the mother's own tragedy is
+  the content, not a defect.
 - ⚠️ **Depends on the stranded**, which per the same sitting are a *condition* on nursery juveniles
   rather than their own species (`MIASMA_FAUNA_FLOOR_ROSTER_1` §3) — and the free tier's nursery
   depends on `SEA_BEASTS_TIER_RULING_1` landing. Sequence after both.
