@@ -240,22 +240,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 			<li>
 				<label>ossik chick</label>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_DesertAve/AA_DesertAve</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Sandstrider_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Sandstrider/RSW_Sandstrider</texPath>
 					<drawSize>0.85</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_DesertAve/AA_DesertAve</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Sandstrider_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Sandstrider/RSW_Sandstrider</texPath>
 					<drawSize>2.1</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_DesertAve/AA_DesertAve</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Sandstrider_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Sandstrider/RSW_Sandstrider</texPath>
 					<drawSize>2.75</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -341,22 +341,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Needleroll/AA_Needleroll</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Spineroller_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Spineroller/RSW_Spineroller</texPath>
 					<drawSize>1.25</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Needleroll/AA_Needleroll</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Spineroller_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Spineroller/RSW_Spineroller</texPath>
 					<drawSize>1.6</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Needleroll/AA_Needleroll</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Spineroller_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Spineroller/RSW_Spineroller</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -526,22 +526,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Eyeling/AA_Eyeling</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Stareling/RSW_Stareling</texPath>
 					<drawSize>1</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Eyeling/AA_Eyeling</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Stareling/RSW_Stareling</texPath>
 					<drawSize>1.25</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Eyeling/AA_Eyeling</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Stareling/RSW_Stareling</texPath>
 					<drawSize>1.5</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -866,22 +866,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 				<label>thurra calf</label>
 				<labelPlural>thurra calves</labelPlural>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Gigantelope/AA_Gigantelope_baby</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Sandhorn_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Sandhorn/RSW_Sandhorn</texPath>
 					<drawSize>1.5</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Gigantelope/AA_Gigantelope</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Sandhorn_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Sandhorn/RSW_Sandhorn</texPath>
 					<drawSize>2.25</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Gigantelope/AA_Gigantelope</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Sandhorn_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Sandhorn/RSW_Sandhorn</texPath>
 					<drawSize>3</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -977,23 +977,23 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 			<li>
 				<label>vosska cub</label>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_SandProwler/AA_SandProwler</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Dunestalker_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Dunestalker/RSW_Dunestalker</texPath>
 					<drawSize>1.8</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<label>vosska juvenile</label>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_SandProwler/AA_SandProwler</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Dunestalker_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Dunestalker/RSW_Dunestalker</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_SandProwler/AA_SandProwler</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Dunestalker_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Dunestalker/RSW_Dunestalker</texPath>
 					<drawSize>3.5</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -1087,22 +1087,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Terramorph/AA_Terramorph</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Ferroclaw/RSW_Ferroclaw</texPath>
 					<drawSize>1.5</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Terramorph/AA_Terramorph</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Ferroclaw/RSW_Ferroclaw</texPath>
 					<drawSize>1.75</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Terramorph/AA_Terramorph</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Ferroclaw/RSW_Ferroclaw</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -1176,22 +1176,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_SandSquid/AA_SandSquid</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Sandmaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Sandmaw/RSW_Sandmaw</texPath>
 					<drawSize>1.5</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_SandSquid/AA_SandSquid</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Sandmaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Sandmaw/RSW_Sandmaw</texPath>
 					<drawSize>2.7</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_SandSquid/AA_SandSquid</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Sandmaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Sandmaw/RSW_Sandmaw</texPath>
 					<drawSize>3.5</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -1383,22 +1383,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_MammothWorm/AA_MammothWorm</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Tuskcoil_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Tuskcoil/RSW_Tuskcoil</texPath>
 					<drawSize>1.8</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_MammothWorm/AA_MammothWorm</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Tuskcoil_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Tuskcoil/RSW_Tuskcoil</texPath>
 					<drawSize>3.2</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_MammothWorm/AA_MammothWorm</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Tuskcoil_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Tuskcoil/RSW_Tuskcoil</texPath>
 					<drawSize>4.1</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -1467,22 +1467,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_TetraSlug/AA_TetraSlug</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Voltmaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Voltmaw/RSW_Voltmaw</texPath>
 					<drawSize>2.5</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_TetraSlug/AA_TetraSlug</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Voltmaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Voltmaw/RSW_Voltmaw</texPath>
 					<drawSize>3.2</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_TetraSlug/AA_TetraSlug</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Voltmaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Voltmaw/RSW_Voltmaw</texPath>
 					<drawSize>4.1</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -1566,22 +1566,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/Fuelmite/Fuelmite</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Cindermite_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Cindermite/RSW_Cindermite</texPath>
 					<drawSize>1.2</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/Fuelmite/Fuelmite</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Cindermite_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Cindermite/RSW_Cindermite</texPath>
 					<drawSize>1.6</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/Fuelmite/Fuelmite</texPath>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Cindermite_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RSW_Cindermite/RSW_Cindermite</texPath>
 					<drawSize>2.5</drawSize>
 				</bodyGraphicData>
 			</li>

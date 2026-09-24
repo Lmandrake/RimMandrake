@@ -50,9 +50,9 @@ five rows above, loudly commented at its own site.
 			<Flammability>1.3</Flammability>
 			<Nutrition>0.15</Nutrition>
 		</statBases>
-		<!-- TEMP PLACEHOLDER: donor texPath (Alpha Biomes' own "Grass_Leafless") does not exist as a loose file anywhere on disk - falling back to a CONFIRMED-valid texture (Alpha Biomes' AB_Aaklac) so this does not render magenta. Mismatched art until fill_queue.py renders land. -->
+		<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Dunegrass, no more donor dependency (was rendering as an aaklac) -->
 		<graphicData>
-			<texPath>Things/Plants/AB_Aaklac</texPath>
+			<texPath>Things/Plant/RSW_Dunegrass</texPath>
 			<graphicClass>Graphic_Random</graphicClass>
 		</graphicData>
 		<hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
@@ -209,9 +209,9 @@ five rows above, loudly commented at its own site.
 		<statBases>
 			<Beauty>10</Beauty>
 		</statBases>
-		<!-- TEMP PLACEHOLDER: donor Alpha Biomes texture -->
+		<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_VellaraBloom -->
 		<graphicData>
-			<texPath>Things/Plants/AB_Aaklac</texPath>
+			<texPath>Things/Plant/RSW_VellaraBloom</texPath>
 			<graphicClass>Graphic_Random</graphicClass>
 			<drawSize>1.5</drawSize>
 			<shadowData>
@@ -234,9 +234,9 @@ five rows above, loudly commented at its own site.
 		<descriptionHyperlinks>
 			<ThingDef>WoodLog</ThingDef>
 		</descriptionHyperlinks>
-		<!-- TEMP PLACEHOLDER: donor Alpha Biomes texture -->
+		<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_SweetbarkTree -->
 		<graphicData>
-			<texPath>Things/Plants/AB_DessertTree</texPath>
+			<texPath>Things/Plant/RSW_SweetbarkTree</texPath>
 			<graphicClass>Graphic_Random</graphicClass>
 			<shadowData>
 				<volume>(0.18, 0.3, 0.15)</volume>

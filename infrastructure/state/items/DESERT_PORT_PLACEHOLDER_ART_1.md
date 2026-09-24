@@ -104,3 +104,64 @@ on `RSW_Sandstrider`, `RSW_Spineroller`, `RSW_Sandhorn`, `RSW_Dunestalker`,
 `RSW_Stareling`, `RSW_Voltmaw`, `RSW_Dunegrass`, `RSW_VellaraBloom`,
 `RSW_SweetbarkTree` (all facings for the fauna) before wiring the rest and
 closing this item.
+
+## FOUNDRY, 2026-09-24: remaining 13 landed and wired — item CLOSES
+
+**Checked `infrastructure/artpipe/done/` before doing anything else** (this
+item's own standing instruction) — all 13 remaining defNames had, in fact,
+finished generating: all 10 fauna (3 facings each) plus all 3 plants sitting
+in `infrastructure/artpipe/done/`, real PNGs at `_artsrc/<id>/<id>.png`, none
+magenta/empty (spot-checked `RSW_Voltmaw_east` directly: 1254x1254, real
+alpha coverage — the only one of the 13 that also had a stray duplicate
+failure in `failed/` from a later re-attempt; the earlier `done/` copy is the
+real, valid render and was used). Surra grass's render (`RSW_Dunegrass`) was
+among them, so today's own "renders as an aaklac" defect is fixed with this
+pass, not deferred again.
+
+**Wired all 13** (`Transient/wire_desert_port_art.py`, one-shot script, kept
+for provenance): copied each render into
+`src/RimStarWars/SWBestiary/Textures/Things/{Pawn/Animal,Plant}/RSW_<name>/`
+following this mod's own established conventions — fauna get
+`RSW_<name>_{south,east,north}.png` at `Things/Pawn/Animal/RSW_<name>/RSW_<name>`
+(matching every donor path's own shape, confirmed no separate juvenile art
+was ever generated so, like the donor, all life stages of each PawnKindDef
+now share the one image at different `drawSize`, including `RSW_Sandhorn`'s
+baby stage which had used a donor-only `_baby` texture variant with no
+equivalent of our own); plants get the established single-"A"-variant
+`Things/Plant/RSW_<name>/RSW_<name>A.png` shape already set by
+`RSW_Plant_Chakroot_Wild` etc in the earlier pass. Rewrote every `<texPath>`
+in `RSW_DesertPortMisc_Races.xml`/`RSW_DesertPortMisc_Plants.xml` (30 fauna +
+3 plant occurrences, scoped per-defName since `RSW_Dunegrass` and
+`RSW_VellaraBloom` shared one donor placeholder path and a global replace
+would have collided) and refreshed all 13 "TEMP PLACEHOLDER" comments to
+name the landed render. XML re-parses clean on both files; grepped for every
+donor texture name (`AA_DesertAve`, `AA_Needleroll`, `AA_Gigantelope`,
+`AA_SandProwler`, `AA_Terramorph`, `AA_SandSquid`, `AA_MammothWorm`,
+`Fuelmite`, `AA_Eyeling`, `AA_TetraSlug`) — zero remaining `<texPath>` hits,
+only comment/`useMeatFrom` prose referencing them (expected, out of this
+item's scope).
+
+**Deployed**: `deploy_custom_mods.py --mod SWBestiary --apply` — 38 files (30
+new textures across 13 folders + 2 def files + 3 pre-existing, already-
+committed drift from `DUPLICATE_CANON_DEFNAME_PAIRS_1` this same day, carried
+through incidentally since it shares the mod folder), VERIFIED in sync.
+**Not live yet** — defs parse once at startup; owed on the next restart, same
+as every other def-only deploy this session.
+
+**Not run this pass**: `validate_patch.py --live` (no local def-dump capture
+directory found; these are raw `ThingDef`/`PawnKindDef` edits, not
+`PatchOperation` xpaths, so the tool's main value — xpath-match checking —
+doesn't apply here anyway). Confirmed by direct filesystem check instead:
+every new `<texPath>` resolves to a real PNG that now exists on disk at
+exactly that path, in both the repo and the deployed copy.
+
+## verify — met
+All 16 defNames' texPath fields now point at RSW_-tier art. Surra grass no
+longer renders as an aaklac (fixed this pass). A rendered contact sheet
+showing no magenta/placeholder sprites was not built as a separate
+artifact — verified per-species instead via the `_artsrc` PNGs directly
+(all 16, including the 3 landed in the first pass).
+
+## criteria — met
+No shipped desert species depends on a donor mod remaining subscribed in
+order to render correctly.
