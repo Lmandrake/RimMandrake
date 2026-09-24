@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T14:36:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T14:39:35Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -2121,6 +2121,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SUMP_TAR_HYDROLOGY_1.md yet — write one when you have something to say)
+thin:     no ## spec
+summary:  SUMPTARHYDROLOGY1 — how the tar flows: the Sump on FlowWorks
 prose:    infrastructure/state/items/SUMP_TAR_HYDROLOGY_1.md
