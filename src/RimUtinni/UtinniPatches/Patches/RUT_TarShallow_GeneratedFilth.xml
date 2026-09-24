@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_TarShallow_GeneratedFilth.xml   UtinniPatches — SUMP_WALKWAYS_1
+
+  Wires vanilla's own foot-tracking mechanism onto RM_TarShallow: a pawn
+  standing in shallow tar picks up RM_Filth_Tar "on its boots"
+  (Pawn_FilthTracker.TryPickupFilth, RimWorld/Pawn_FilthTracker.cs — reads
+  TerrainDef.generatedFilth directly, Source/Verse/TerrainDef.cs:292) and
+  later tracks it onto the next dry floor it crosses
+  (Pawn_FilthTracker.Notify_EnteredNewCell/TryDropFilth) — the SAME real
+  engine mechanism vanilla uses for e.g. Sand terrain tracking Filth_Sand
+  indoors. This is duckboards' own "fouls with tar" half (item spec §1);
+  RM_Filth_Tar.xml (FlowWorks) carries the actual movement penalty via its
+  own pathCost, see that file's header.
+
+  Kept as its OWN file, separate from RUT_TarShallow_FilthAcceptance.xml
+  (SUMP_MECHANICS_1 S4, already shipped/undheld) that this op DEPENDS on
+  (TerrainDef.ConfigErrors requires filthAcceptanceMask & Terrain wherever
+  generatedFilth is set, TerrainDef.cs:538 — that sibling file's own
+  Operation already satisfies it) — so that THIS file's own DEPLOY_HOLD
+  (below) never touches the already-working mouse-track fix.
+
+  🔴 DEPLOY_HOLD'd (src/DEPLOY_HOLD.txt): RM_Filth_Tar has no real texture
+  yet (validate_patch.py ERROR, "Things/ IS this mod's own namespace"). This
+  is not merely a cosmetic pink-placeholder risk — <generatedFilth> is a
+  direct ThingDef reference field the config loader resolves by name, same
+  class of reference the cross-mod xref system resolves at load, so
+  deploying this patch alongside an undeployed RM_Filth_Tar.xml would ship a
+  dangling reference (a real Config error on every launch, not a silent
+  no-op like an unmatched PatchOperation). Lift both this file's hold and
+  RM_Filth_Tar.xml's together, in the same pass, the moment real filth art
+  lands.
+
+  No MayRequire/FindMod gate — same posture as the sibling
+  filthAcceptanceMask fix this depends on (that file's own header explains
+  why: every other Sump-side reference to RM_TarShallow already assumes it
+  is a live, always-loaded dependency).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/TerrainDef[defName="RM_TarShallow"]</xpath>
+    <value>
+      <generatedFilth>RM_Filth_Tar</generatedFilth>
+    </value>
+  </Operation>
+
+</Patch>

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T17:11:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T17:35:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -917,6 +917,15 @@ target:   v1
 kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
+
+## SUMP_WALKWAYS_1 Sump walkways, two tiers: duckboards (cheap, foul with tar, burn) and glasswalk (never fouls, never full speed) with cap + rare harmless pratfalls
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. Duckboards (early tier): cheap brindeth-wood plank path (RMBrindeth,
+prose:    infrastructure/state/items/SUMP_WALKWAYS_1.md
 
 ## JAWA_MESS_IMMUNITY_1 Jawa are immune from messes (owner-ruled 2026-09-24): no filth/squalor mood penalties for the Jawa xenotype; other factions just live with it and suffer
 state:    doing
@@ -2042,16 +2051,6 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  Four mechanics, all RM-tier (RMTheSump / its kit), feature-gated per the Mod
 prose:    infrastructure/state/items/SUMP_TAR_NASTINESS_1.md
-
-## SUMP_WALKWAYS_1 Sump walkways, two tiers: duckboards (cheap, foul with tar, burn) and glasswalk (never fouls, never full speed) with cap + rare harmless pratfalls
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  1. Duckboards (early tier): cheap brindeth-wood plank path (RMBrindeth,
-prose:    infrastructure/state/items/SUMP_WALKWAYS_1.md
 
 ## SUMP_TAR_VAULT_1 Sump tar-vault: seal food/corpses/hides into tar for perfect preservation; extraction REQUIRES solvent or contents are useless (owner-ruled)
 state:    proposed

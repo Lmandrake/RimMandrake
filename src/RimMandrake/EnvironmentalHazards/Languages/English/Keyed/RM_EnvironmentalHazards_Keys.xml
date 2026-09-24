@@ -30,4 +30,8 @@
   <RM_MiasmaBoonLetterLabel>Fever-forged</RM_MiasmaBoonLetterLabel>
   <RM_MiasmaBoonLetterText>[PAWN_nameDef] has survived the fever, and it has left [PAWN_objective] changed — for the better.</RM_MiasmaBoonLetterText>
 
+  <!-- SUMP_WALKWAYS_1 build pass. RM_MapComponent_GlasswalkSlip's rare
+       slip-and-fall message. -->
+  <RM_GlasswalkSlip>{0} slips on the glasswalk and goes down — no harm done, just a bruised ego.</RM_GlasswalkSlip>
+
 </LanguageData>

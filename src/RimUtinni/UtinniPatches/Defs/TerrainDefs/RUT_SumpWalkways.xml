@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_SumpWalkways.xml           UtinniPatches · authored 2026-09-24
+  ============================================================================
+  SUMP_WALKWAYS_1 build pass ("Sump walkways, two tiers"). Owner ruling
+  (question card, 2026-09-24): duckboards (cheap, foul with tar, burn) and
+  glasswalk (never fouls, never full speed, plus rare harmless pratfalls).
+  Lives alongside RUT_TarMoat/RUT_Boughway (same authoring style: standalone
+  TerrainDef, no ParentName, Light-affordance buildable ground — NOT a
+  BridgeBase/Bridgeable terrain, since Soil/Sand carry no Bridgeable
+  affordance and a walkway needs to run across ordinary dry ground as well as
+  the tar-adjacent margin; crossing the liquid tar itself is FlowWorks'
+  canal/gate scope, SUMP_TAR_HYDROLOGY_1, not this item's).
+
+  ── RUT_Duckboards ──────────────────────────────────────────────────────
+  "Full speed when fresh; fouls with tar (accumulating filth slows it until
+  scrubbed); flammable" (item spec §1). pathCost 0 = full speed, matching
+  WoodPlankFloor/RUT_Boughway's own zero-or-near-zero convention for a
+  smooth deliberate floor. filthAcceptanceMask is left UNSET (defaults to
+  FilthSourceFlags.Any, Source/Verse/TerrainDef.cs:311) — ordinary floors
+  already accept filth; the actual souring comes from
+  RUT_TarShallow_FilthAcceptance.xml's amended <generatedFilth> wiring
+  (RM_Filth_Tar, pathCost 34) tracked in from natural tar by vanilla's own
+  Pawn_FilthTracker, and RM_Filth_Tar being the max-of-things-on-cell cost
+  PathGrid.CalculatedCostAt already applies (Source/Verse/AI/PathGrid.cs:120)
+  is what actually slows a fouled duckboard cell — no new C# for this half.
+
+  Flammability 1.0 — "flammable — a real liability" (item spec §1), above
+  vanilla WoodPlankFloor's own 0.22: brindeth is described (flora roster row
+  5, sump_flora_roster_2026-09-24.md) as half-dead scrub wood, and the spec's
+  own framing wants duckboards to be a genuine hazard in a biome whose
+  defense economy is setting the ground on fire (SUMP_TAR_HYDROLOGY_1
+  ruling 5). burnedDef reuses vanilla's own BurnedWoodPlankFloor (real,
+  TerrainDef ConfigErrors requires SOME burnedDef when Flammability>0,
+  verified Verse/TerrainDef.cs — same requirement RUT_TarMoat.xml's own
+  header already documents) rather than inventing a new one — no new art.
+
+  costList: WoodLog, 4/cell — PLACEHOLDER. `RM_Brindeth` (the flora this
+  is meant to be built from, flora roster row 5) does not exist yet
+  (checked this pass: 0 hits for RM_Brindeth outside design docs and this
+  item's own file) — same "flag a placeholder, do not invent the items
+  pass's own economy def" posture RUT_TarMoat.xml's own header already
+  established for barreled tar. ⚠️ OWED: re-point at real brindeth wood the
+  moment that flora ships.
+
+  Texture reuses vanilla WoodFloor (Terrain/Surfaces/WoodFloor), tinted
+  greyer/duller than milled WoodPlankFloor's own warm brown to read as
+  weathered scrub-wood planking rather than a proper floor — no new art,
+  same reuse posture RUT_Boughway/RUT_BoughSoil's own headers already
+  establish for terrain (not the Things/ namespace-ownership check
+  validate_patch.py enforces for ThingDefs).
+
+  ── RUT_Glasswalk ───────────────────────────────────────────────────────
+  "Never fouls, never needs cleaning, tar-proof; permanently speed-capped
+  (~80%, never full speed — his spec), plus rare slip-and-fall" (item
+  spec §2). filthAcceptanceMask None is the SAME real engine gate
+  RUT_TarShallow_FilthAcceptance.xml's own header documents discovering as
+  a BUG on RM_TarShallow (FilthMaker.TerrainAcceptsFilth returns false
+  outright when filthAcceptanceMask==None, before any other check,
+  RimWorld/FilthMaker.cs) — here it is the deliberate feature: nothing can
+  ever stick to glasswalk. Do not "fix" this the way that one was fixed.
+
+  pathCost 3 — CALIBRATED against the engine's own displayed-speed formula,
+  not guessed: GenPath.SpeedPercentString (Source/Verse/AI/GenPath.cs:71) is
+  `13f / (extraPathTicks + 13f)`, and 13 ticks/cardinal-move is a standard
+  human's own TicksPerMoveCardinal at the vanilla MoveSpeed stat baseline
+  (verified via Pawn.TicksPerMove, Verse/Pawn.cs:3221 — 60/MoveSpeed with
+  MoveSpeed≈4.6c/s ≈ 13). pathCost 3 reads 13/16 ≈ 81% for a standard-speed
+  pawn — matching "~80%" — and because Pawn_PathFollower.CostToMoveIntoCell
+  (Verse/AI/Pawn_PathFollower.cs:746) ADDS pathCost to the pawn's own base
+  cost rather than multiplying it, actualCost is STRICTLY greater than the
+  pawn's own unencumbered cost for every pawn regardless of stats — "never
+  full speed" is a structural guarantee, not a tuned average, exactly the
+  spec's own wording ("never full speed ever").
+
+  Flammability 0 (omitted, defaults to 0) — cooled/spent bitumen glass does
+  not reignite, matching SUMP_TAR_HYDROLOGY_1 ruling 3 ("flood fronts cool
+  to glass") and RUT_TarSpent's own already-shipped "burnt tar is spent"
+  precedent; since it is never flammable no burnedDef is required.
+
+  costList: Chemfuel, 6/cell — PLACEHOLDER, same posture and same stand-in
+  RUT_TarMoat.xml's own header already used for "barreled tar" (checked
+  again this pass: still does not exist). ⚠️ OWED: re-point at the real
+  bitumen/dig-barrel chain (korveth nodules, dig barrels — item spec §3)
+  once the items pass ships it.
+
+  Texture reuses RM_TarDeep's own texturePath (WaterDeepRamp) — same
+  "poured/cooled tar IS the same substance" reasoning RUT_TarMoat.xml
+  already gives for reusing that path — tinted with a slight sheen instead
+  of RUT_TarMoat's flat matte black, to read as glazed rather than wet.
+
+  Both tiers: designationCategory Floors, terrainAffordanceNeeded Light,
+  affordances Light+Medium+Walkable (matches this kit's own established
+  "platform, not bunker" convention — RUT_Boughway/RUT_BoughSoil — INVENTED
+  judgment call for THIS kit, not inherited from a hard ban). Ship-buildable
+  aboard the gravship (BIOME_SHIP_CONTRIBUTIONS_1) needs no extra wiring:
+  an ordinary Light-affordance floor terrain is buildable anywhere a floor
+  already is, gravship deck included.
+
+  🔑 The slip-and-fall comp (glasswalk only) is generic, not glasswalk-
+  specific: RM_MapComponent_GlasswalkSlip (RimMandrake.EnvironmentalHazards,
+  this same build pass) watches for the tag below on ANY terrain, so a
+  future biome's own "slick floor" can opt in with just this tag and no new
+  C#.
+  ============================================================================
+-->
+<Defs>
+
+  <TerrainDef>
+    <defName>RUT_Duckboards</defName>
+    <label>duckboards</label>
+    <description>Cheap brindeth-plank walkway laid straight over the muck. Fast when fresh — but the black tracks in on every boot, and a fouled board is a slow board until someone scrubs it. Dry planking over a tar biome; treat fire seriously.</description>
+    <renderPrecedence>250</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WoodFloor</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <fertility>0</fertility>
+    <layerable>true</layerable>
+    <color>(96,88,72)</color>
+    <pathCost>0</pathCost>
+    <designationCategory>Floors</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Walkable</li>
+    </affordances>
+    <burnedDef>BurnedWoodPlankFloor</burnedDef>
+    <costList>
+      <WoodLog>4</WoodLog>
+    </costList>
+    <statBases>
+      <WorkToBuild>110</WorkToBuild>
+      <Flammability>1.0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+  </TerrainDef>
+
+  <TerrainDef>
+    <defName>RUT_Glasswalk</defName>
+    <label>glasswalk</label>
+    <description>Bitumen poured, packed, and let cool to a hard black sheen. Nothing sticks to it, nothing tracks off it, and it never needs a scrub — but glass underfoot never lets you run flat out, and a hurrying pawn occasionally finds that out the hard way.</description>
+    <renderPrecedence>251</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <fertility>0</fertility>
+    <layerable>true</layerable>
+    <color>(20,19,22)</color>
+    <pathCost>3</pathCost>
+    <designationCategory>Floors</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Walkable</li>
+    </affordances>
+    <filthAcceptanceMask>
+      <li>None</li>
+    </filthAcceptanceMask>
+    <tags>
+      <li>RM_SlipperyWalkway</li>
+    </tags>
+    <costList>
+      <Chemfuel>6</Chemfuel>
+    </costList>
+    <statBases>
+      <WorkToBuild>240</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

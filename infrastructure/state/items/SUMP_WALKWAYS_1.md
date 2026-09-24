@@ -39,3 +39,91 @@ injury; glasswalk is placeable on a gravship floor.
 
 The build progression is the biome's thesis: cheap-and-tidy is a treadmill; the
 real answer is to stop fighting the tar and glaze it.
+
+## build status — FOUNDRY, 2026-09-24, offline-complete, needs live proof
+
+**Built and deployed** (UtinniPatches/FlowWorks/EnvironmentalHazards — `RM_TheSump`
+mod does not exist yet, `THESUMP_RM_MOD_BUILD_1` still OWED, so this lands where
+every other live Sump kit file currently lives, same tier convention as
+`RUT_TarMoat.xml`):
+
+- `src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_SumpWalkways.xml` —
+  `RUT_Duckboards` (pathCost 0, Flammability 1.0, burnedDef
+  `BurnedWoodPlankFloor`, costList WoodLog×4 **placeholder** for `RM_Brindeth`,
+  which does not exist yet) and `RUT_Glasswalk` (pathCost 3 — calibrated
+  against `GenPath.SpeedPercentString`'s own `13/(cost+13)` formula to read
+  ~80% for a standard pawn, and *structurally* "never full speed" for every
+  pawn since `Pawn_PathFollower.CostToMoveIntoCell` **adds** terrain pathCost
+  to the pawn's own base cost rather than multiplying; `filthAcceptanceMask`
+  None — the real vanilla gate `FilthMaker.TerrainAcceptsFilth` checks first,
+  same field `RUT_TarShallow_FilthAcceptance.xml` had to *fix away* on
+  `RM_TarShallow` — here it is deliberate; costList Chemfuel×6 **placeholder**
+  for the real bitumen/dig-barrel chain, §3, which does not exist yet either).
+- `src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_Filth_Tar.xml` —
+  new FilthDef, pathCost 34 (`RM_GreentideChurnmud`-precedented mire value).
+  **DEPLOY_HOLD'd** (`src/DEPLOY_HOLD.txt`): no real texture yet, and
+  `validate_patch.py` refuses the vanilla `Things/Filth/Grainy` reuse as a
+  hard ERROR once a mod ships its own `Things/` content (same trap
+  `RUT_Filth_MouseTrack.xml` already hit, 2026-09-14).
+- `src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml` —
+  new, isolated patch wiring `RM_TarShallow`'s `<generatedFilth>` to
+  `RM_Filth_Tar` (vanilla's real foot-tracking mechanism,
+  `Pawn_FilthTracker.TryPickupFilth`/`TryDropFilth` — duckboards' "fouls with
+  tar" half, zero new C#). **DEPLOY_HOLD'd together with the FilthDef above**:
+  `generatedFilth` is a direct ThingDef reference the loader resolves by
+  name, so shipping it without the FilthDef deployed would be a real Config
+  error, not a harmless unmatched-patch no-op — kept out of the *existing*,
+  already-shipped `RUT_TarShallow_FilthAcceptance.xml` for exactly this
+  reason (that file is untouched, still just its original filthAcceptanceMask
+  fix).
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_GlasswalkSlip.cs`
+  — new MapComponent (assembly `RimMandrake.EnvironmentalHazards`, already
+  RM-tier, matches every other Sump kit C# file). Generic: watches for
+  TerrainDef tag `RM_SlipperyWalkway` (`RUT_Glasswalk` carries it) on any
+  map, and for a pawn that is hauling or whose job's `LocomotionUrgency` is
+  Jog/Sprint, rolls `RM_EnvironmentalHazardsSettings.glasswalkSlipChancePerSweep`
+  (default 2%, every 60 ticks) to call vanilla's own
+  `pawn.stances.stunner.StunFor(...)` — a real, already-used, damage-free
+  stagger (EMP/teleport/melee-stun's own mechanism), `addBattleLog:false`.
+  No new hediff, no new animation. Wired into the `.csproj`
+  (`<Compile Include>`), Mod Settings (`glasswalkSlipEnabled` toggle +
+  `glasswalkSlipChancePerSweep` slider, checkbox/slider UI added, view-height
+  bumped), and a Keyed translation string (`RM_GlasswalkSlip`).
+
+**Validated offline**: `dotnet build` on `RM_EnvironmentalHazards.csproj` — 0
+warnings/errors. `validate_patch.py` on all four touched/new XML files against
+the live 621-mod set (Data+Workshop+Mods) — 0 errors on the three that should
+be clean, 1 expected ERROR on `RM_Filth_Tar.xml`'s texPath (the held one,
+above). Deployed via `deploy_custom_mods.py --apply` — plan matched
+expectations exactly (2 files correctly HELD, rest `+`/`~`), `-> VERIFIED in
+sync`.
+
+**What a live proof needs** (no bridge access this pass — could not run any
+of this):
+
+1. Quicktest map on a scratch world with `RM_TarShallow` present: confirm a
+   pawn standing in tar actually picks up `RM_Filth_Tar` and tracks it onto
+   an adjacent `RUT_Duckboards` cell within a reasonable number of crossings
+   (5% per-cell drop chance is vanilla's own rate, `Pawn_FilthTracker`) — and
+   confirm the fouled cell's walk speed reads visibly lower.
+2. Confirm `RUT_Glasswalk`'s displayed WalkSpeed tooltip reads ~80% and never
+   100% for a normal colonist, and that a hauling/sprinting pawn occasionally
+   staggers (StunFor) with a "RM_GlasswalkSlip" message and no HP loss.
+   Tune `glasswalkSlipChancePerSweep` by feel if it reads too rare/frequent.
+3. Confirm both terrains are actually placeable via the normal floor
+   designator on ordinary Sump ground (Light affordance) — not yet checked
+   in-engine.
+4. Generate real art for `RM_Filth_Tar` (black tar stain, `Things/Filth/
+   RM_FilthTar`), then lift BOTH `src/DEPLOY_HOLD.txt` entries
+   (`FlowWorks/Defs/LiquidTypes/ThingDefs/RM_Filth_Tar.xml` and
+   `UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml`) in the same
+   pass and redeploy — until then, duckboards place and burn correctly but
+   never actually foul in a live game (the terrain/pathCost half works; the
+   tracking-in half is inert).
+5. `RM_Brindeth` (duckboards' wood) and the real bitumen/dig-barrel chain
+   (glasswalk's cost) don't exist yet — both terrains currently cost vanilla
+   placeholders (WoodLog / Chemfuel), flagged in the XML headers, owed
+   re-pointing once those items ship.
+6. Not touched: ship-buildable placement aboard the gravship specifically
+   (`BIOME_SHIP_CONTRIBUTIONS_1`) — should work automatically (ordinary
+   Light-affordance floor) but unverified in-engine.
