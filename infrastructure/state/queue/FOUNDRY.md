@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T14:25:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-24T14:36:28Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -2114,3 +2114,13 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  A gene (or trait) on the Jawa xenotype suppressing filth/squalor/mess-derived
 prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md
+
+## SUMP_TAR_HYDROLOGY_1 Sump tar hydrology on FlowWorks: belch floods with glass fronts, full canal-work, network fire with gate firebreaks, outflow seams, the Deep Black mere, living-map responders, tar rain (mod, not this scenario)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_TAR_HYDROLOGY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_TAR_HYDROLOGY_1.md

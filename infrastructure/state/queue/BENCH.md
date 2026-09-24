@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T14:25:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-24T14:36:28Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -619,3 +619,13 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Per biome at its sitting: name the contribution(s), make the relevant defs
 prose:    infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md
+
+## FLOWWORKS_LIQUID_FACES_1 FlowWorks: consider floods, rain, rivers, lakes and oceans for EVERY supported liquid and fuel in the registry (owner ticket 2026-09-24)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLOWWORKS_LIQUID_FACES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOWWORKS_LIQUID_FACES_1.md
