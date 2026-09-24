@@ -87,3 +87,17 @@ session (see `CANON_CREATURE_REGEN_1` wave 4 and `DESERT_PORT_PLACEHOLDER_ART_1`
 that was true of an earlier attempt, is no longer the live blocker, and needs
 correcting the next time this item's title is touched. Not requeued this pass
 (nothing to gain while the channel itself is down); no action taken beyond this note.
+
+## FOUNDRY, 2026-09-24 (same session, later): live def check — RSW_Korrum does NOT resolve yet
+
+Checked opportunistically while verifying other names for `ROSTER_DEAD_BMT_NAMES_SWEEP_1`
+(this Desktop session has live bridge access). `jawa/get_defs` on `ThingDef/RSW_Korrum`
+and `PawnKindDef/RSW_Korrum` both came back **MISSING** on the currently-running
+process, despite `mandrake.rsw.swbestiary` being active in `ModsConfig.xml` and the
+def genuinely present in `src/RimStarWars/SWBestiary/Defs/DesertPort/
+RSW_DesertPortMisc_Races.xml` (confirmed on disk). Not chased further this pass — the
+most likely explanation is simply that defs parse once at startup and this def wasn't
+deployed yet as of the current process's launch, same as every other def-only change
+this session waiting on a restart. Flagging rather than asserting: if a restart
+happens and `RSW_Korrum` is STILL missing afterward, that would be a real defect
+worth its own investigation, not assumed here.
