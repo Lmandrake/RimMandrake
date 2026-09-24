@@ -187,7 +187,7 @@
     <combatPower>100</combatPower>
     <ecoSystemWeight>1.1</ecoSystemWeight>
     <wildGroupSize>2~6</wildGroupSize>
-    <abilities MayRequire="Ludeon.RimWorld.Odyssey">
+    <abilities>
       <li MayRequire="Ludeon.RimWorld.Biotech">RSW_SW_Leap</li>
     </abilities>
     <lifeStages>
