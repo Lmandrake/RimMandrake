@@ -152,7 +152,7 @@
       <Iriaz MayRequire="mlie.starwarsanimalcollection">1.0</Iriaz>  <!-- iriaz - small-herd, keep -->
       <LongtailGorg MayRequire="mlie.starwarsanimalcollection">1.0</LongtailGorg>  <!-- longtail gorg - medium-interface, keep -->
       <Eopie MayRequire="mlie.starwarsanimalcollection">0.8</Eopie>  <!-- eopie - medium-pack, keep -->
-      <Kreetle MayRequire="mlie.starwarsanimalcollection">0.8</Kreetle>  <!-- kreetle - small-runway, keep -->
+      <RSW_Kreetle MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Kreetle>  <!-- kreetle - small-runway, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Kreetle to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <Lothcat MayRequire="mlie.starwarsanimalcollection">0.8</Lothcat>  <!-- loth-cat - small-runway, keep -->
       <Mudhorn MayRequire="mlie.starwarsanimalcollection">0.8</Mudhorn>  <!-- mudhorn - huge-predator-exception, keep -->
       <Ronto MayRequire="mlie.starwarsanimalcollection">0.8</Ronto>  <!-- ronto - huge-grazer, keep -->
@@ -171,9 +171,9 @@
       <Pufferpig MayRequire="mlie.starwarsanimalcollection">0.5</Pufferpig>  <!-- Pufferpig - small-runway, keep -->
       <Anooba MayRequire="mlie.starwarsanimalcollection">0.4</Anooba>  <!-- anooba - medium-interface, adjust-keep -->
       <Corinathoth MayRequire="mlie.starwarsanimalcollection">0.4</Corinathoth>  <!-- corinathoth - huge-grazer, keep -->
-      <Gizka MayRequire="mlie.starwarsanimalcollection">0.4</Gizka>  <!-- gizka - small-runway, keep -->
-      <Nuna MayRequire="mlie.starwarsanimalcollection">0.4</Nuna>  <!-- nuna - small-runway, keep -->
-      <Worrt MayRequire="mlie.starwarsanimalcollection">0.4</Worrt>  <!-- worrt - small-runway, keep -->
+      <RSW_Gizka MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Gizka>  <!-- gizka - small-runway, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Gizka to the RSW_ port, owner-ruled merge 2026-09-23 -->
+      <RSW_Nuna MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Nuna>  <!-- nuna - small-runway, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Nuna to the RSW_ port, owner-ruled merge 2026-09-23 -->
+      <RSW_Worrt MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Worrt>  <!-- worrt - small-runway, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Worrt to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <RSW_MossBeetle MayRequire="mandrake.rsw.swbestiary">0.3</RSW_MossBeetle>  <!-- moss beetle - small-runway, keep -->
       <AA_Cactipine MayRequire="sarg.alphaanimals">0.25</AA_Cactipine>  <!-- cactipine - small-venom, keep -->
       <Grank MayRequire="mlie.starwarsanimalcollection">0.2</Grank>  <!-- Grank - medium-interface, keep -->

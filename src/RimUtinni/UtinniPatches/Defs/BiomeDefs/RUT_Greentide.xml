@@ -208,16 +208,16 @@
       <TorrentialRain MayRequire="Ludeon.RimWorld.Odyssey">0</TorrentialRain>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <Gizka MayRequire="mlie.starwarsanimalcollection">1.0</Gizka>  <!-- gizka - floor-vermin, keep -->
+      <RSW_Gizka MayRequire="mandrake.rsw.swbestiary">1.0</RSW_Gizka>  <!-- gizka - floor-vermin, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Gizka to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <Clodhopper MayRequire="mlie.starwarsanimalcollection">0.7</Clodhopper>  <!-- clodhopper - floor-vermin, keep -->
       <Whisperbird MayRequire="mlie.starwarsanimalcollection">0.7</Whisperbird>  <!-- whisperbird - flier, keep -->
-      <Worrt MayRequire="mlie.starwarsanimalcollection">0.7</Worrt>  <!-- worrt - ambush, keep -->
+      <RSW_Worrt MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Worrt>  <!-- worrt - ambush, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Worrt to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <Shiro MayRequire="mlie.starwarsanimalcollection">0.5</Shiro>  <!-- shiro - floor-ambush, keep -->
       <ShiroTrap MayRequire="mlie.starwarsanimalcollection">0.5</ShiroTrap>  <!-- shiro-trap - floor-ambush, keep -->
       <RSW_Diggerpede MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Diggerpede>  <!-- diggerpede - floor-predator, keep -->
       <Klorslug MayRequire="mlie.starwarsanimalcollection">0.4</Klorslug>  <!-- k'lor'slug - gnawer, keep -->
       <Mott MayRequire="mlie.starwarsanimalcollection">0.4</Mott>  <!-- mott - brake, import -->
-      <Nuna MayRequire="mlie.starwarsanimalcollection">0.4</Nuna>  <!-- nuna - brake, import -->
+      <RSW_Nuna MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Nuna>  <!-- nuna - brake, import; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Nuna to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.4</VFEI2_Swarmling>  <!-- swarmlings - floor-vermin, adjust-keep -->
       <Convor MayRequire="mlie.starwarsanimalcollection">0.3</Convor>  <!-- convor - flier, import -->
       <Falumpaset MayRequire="mlie.starwarsanimalcollection">0.3</Falumpaset>  <!-- falumpaset - brake, import -->
