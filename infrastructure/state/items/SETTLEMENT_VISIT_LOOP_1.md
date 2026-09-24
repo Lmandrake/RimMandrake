@@ -321,3 +321,91 @@ dependency for automated testing permanently. Bridge taken and released clean; n
 game state touched, nothing spawned, nothing deployed.
 
 Left `doing`.
+
+## FOUNDRY, 2026-09-24 (second pass, same day): tile-selection gap is a DEAD END,
+## proven both from source and live — option (a) cannot work as designed; only (b) remains
+
+Picked up this item's own note directly. Read `DebugActions_Inhabited.cs`'s
+`CurrentTile()` in full (it is the whole gate):
+
+```csharp
+private static PlanetTile CurrentTile()
+{
+    if (Find.CurrentMap != null) return Find.CurrentMap.Tile;
+    List<WorldObject> sel = Find.WorldSelector?.SelectedObjects?.OfType<WorldObject>().ToList();
+    if (sel != null && sel.Count > 0) return sel[0].Tile;
+    return PlanetTile.Invalid;
+}
+```
+
+`Find.CurrentMap != null` is checked FIRST and unconditionally wins whenever a
+colony home map is loaded (which is always, for this test). The WorldSelector
+fallback is therefore reachable only when `Find.CurrentMap == null` — and **no
+bridge tool sets `Game.CurrentMap` to null.** Read `Game.CurrentMap`'s own
+setter via RimSage (`Verse/Game.cs`): it DOES accept `value == null` (sets
+`currentMapIndex = -1`), but the only bridge tool that reaches this setter,
+`jawa/set_current_map`, requires an already-loaded `mapId` and refuses
+anything else — it cannot express "no current map." So the WorldSelector path
+in `CurrentTile()` is unreachable through the bridge today, full stop,
+regardless of what is selected on the world map.
+
+That leaves only the `Find.CurrentMap != null` path, which means: to target a
+tile other than the colony's own 17007, that tile must **already be the map
+`jawa/set_current_map` switches to** — i.e. it must already have a generated
+`Map`. And every generated `Map` has a `MapParent` (`GetOrGenerateMapUtility.
+GetOrGenerateMap` creates one if none exists — read live in
+`JawaBenchSocietyTools.cs`'s `WorldTileMapGenerate`). So the moment a tile is
+reachable as "current" via any existing bridge route, `Find.WorldObjects.
+MapParentAt(tile)` is non-null there — exactly what `CreateSettlementHere()`
+refuses on. This is not a probabilistic collision, it is structural: **the
+CurrentTile()/MapParent-check pair as currently wired has no tile that
+satisfies both conditions at once, reachable from the bridge.**
+
+**Tried the one plausible workaround — proven dead LIVE, not just from
+source**: generate a throwaway map+MapParent at a genuinely empty tile, then
+strip the MapParent back off (`jawa/world_objects_remove`) hoping the Map
+would survive as an orphan (no MapParent, but already loaded, already
+`Find.CurrentMap`-switchable). It does not survive:
+
+```
+tile 20000 (confirmed empty: world_objects_get -> count 0)
+  jawa/world_tile_map_generate {tile:20000, sizeX:25, sizeZ:25}
+    -> mapId 4, mapCount 1 -> 2, world_objects_get now shows a Settlement (id 278) at 20000
+  jawa/world_objects_remove {ids:"278"}
+    -> removed 1/1, mapCount 2 -> 1, world_objects_get back to count 0
+```
+
+`WorldObjectsRemove` calls `WorldObject.Destroy()` -> `Find.WorldObjects.
+Remove()` -> `o.PostRemove()`, and `MapParent.PostRemove()` (read via RimSage)
+unconditionally calls `Current.Game.DeinitAndRemoveMap(Map, notifyPlayer:
+true)` when `HasMap` — removing the MapParent tears the Map down with it,
+live-confirmed by `mapCount` dropping back to 1 in the same call. There is no
+"orphan map, no MapParent" state reachable this way either. World state was
+left exactly as found (mapCount 1, tile 20000 empty again, `ticksGame`
+unchanged at 126812 throughout — nothing else touched).
+
+**Conclusion: option (a) from the prior note (OS-screenshot the picker after
+generating an empty tile) cannot be reached — there is no way to make an
+empty, MapParent-free tile "current" through the bridge as it exists today.**
+This is not a picker-clicking problem (that part — `system_screenshot.py` +
+`system_click.py` — was never even reached) and not a "didn't try hard
+enough" gap; it is upstream of the picker, in `CurrentTile()`'s own logic
+against the current tool surface. **Only option (b) remains viable**: a new
+`[Tool]` bridge method (or a new non-interactive debug-action overload) that
+takes an explicit `tile` parameter and bypasses `CurrentTile()` entirely, and
+that itself constructs the `WorldObject_InhabitedSettlement` + calls
+`TryEnterSettlementMap` directly with a given `SettlementManifestDef` defName
+— retiring both the tile-selection gap and the picker-dialog gap in the same
+change (see `rimbridge-companion` skill for the build/deploy cycle). That is
+new C# work, not something this pass's scope covers (bridge-driving live
+proof only), so it is not attempted here.
+
+Diagnostic scripts used for the live proof above are committed at
+`Transient/svl_probe1.py` through `svl_probe4.py` (throwaway, safe to delete
+after ~14 days per the Transient rule).
+
+Bridge taken and released clean. No lasting game-state change (mapCount and
+world-object count both verified back to their starting values). Left
+`doing` — the live end-to-end lifecycle proof this item's `## verify`/
+`## criteria` want is still owed, and now has a precise, source-and-live-
+confirmed reason why the harness as shipped cannot reach it without new C#.
