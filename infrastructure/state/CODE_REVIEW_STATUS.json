@@ -1409,11 +1409,23 @@
     "hash": "3ddbe3083b2238a9064aea288281428ccdcdf27d01c5960aff105525bf683faf",
     "sha": "113ad7131"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_BodySizeBarrierPatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "3bd1c871ccd1013ebf64aec84e697fc43291f86b4122f09abbabd79491e33ce6",
+    "sha": "032543816"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompBeastWakeRelay.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
     "hash": "6ba3de8da4eb183696a8c866f7dff6bd4df1e79b6d187f78cf1d3d23fc268a4d",
     "sha": "212775b67"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompBodySizeBarrier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "c6433a7d7fdefba452a82c02e755bfb999bee332b71ddd8541b9e5330ab44d3e",
+    "sha": "032543816"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompCrackFall.cs": {
     "cleanCount": 1,
@@ -1720,6 +1732,12 @@
     "date": "2026-09-18",
     "hash": "e2d6a8223f110713c0f78a1deb6d90f6bd56807eb72da5da29038a401f7256d3",
     "sha": "e1c3162cb"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_BodySizeBarrier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "222fd46f79064c3d5268d85d38029ddd703514f9b51e96f45409bec68ab1def1",
+    "sha": "032543816"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_CrecheMemory.cs": {
     "cleanCount": 1,
