@@ -1474,3 +1474,68 @@ hooks + 3 `.cs`/`.xml` closed this wave, out of the pre-wave 74 `.xml` / 32
 `code_review_status.py list | grep '^DIRTY'` filtered for non-`.png` rather
 than trusting this arithmetic. The PNG binary-art-tracking scope question
 (wave 15) is still open and still not this loop's to decide.
+
+## Wave 26 — 2026-09-24
+
+Re-derived fresh: `code_review_status.py list | grep -c '^DIRTY'` gave 278
+(284→283→278, ordinary drift — no tooling bug); filtered for non-`.png` gave
+exactly **117**, matching wave 25's prediction. Reviewed 5, diff-scoped
+against each file's own clean-mark sha (all were CLEAN once):
+
+- **`design/Jawa/mods/biome_flora.py`** (+263/-57 since `51867f432`) — the
+  emitter change from `BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1` (2026-09-21): a
+  new `owned_flora()` parses the BiomeDefs we author ourselves and `main()`
+  now skips emitting a `wildPlants`/`plantDensity` patch operation for any
+  biome we own (its own def is the shipping truth), while `check()` gained a
+  cross-check that fails the build if an owned def's `wildPlants` disagrees
+  with its roster. Traced the skip logic (family-level `all(b in ours ...)`
+  short-circuit plus the per-biome `if b in ours: continue` inside the loop)
+  and confirmed it's redundant-but-correct, not a double-skip bug. Ran
+  `python3 design/Jawa/mods/biome_flora.py --check`: the live def dump is
+  stale/UNMEASURED for the current capture (expected, per CLAUDE.md's
+  def-dump-currency doctrine — not exercised further, this file's own logic
+  was traced by hand instead). No bugs found.
+- **`design/Jawa/mods/plant_tolerances.py`** (+75/-4 since `3ea1ca20`) — two
+  already-fixed bugs from the same day
+  (`PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1` /
+  `_REGEN_AFTER_KEY_FIX_1`): climate-median lookup now resolves through
+  `rosters/*.json`'s own `defNames` list instead of a frozen, since-renamed
+  `biome_climate.json` key, and `compute()`'s "already survives its whole
+  home, leave alone" skip is now gated `p in donors` so a plant whose `cur`
+  fell back to the live dump (this patch's own prior output) re-affirms its
+  widened band instead of silently dropping it on regen. Both fixes traced
+  against their own surrounding code and confirmed internally consistent.
+  No bugs found.
+- **`design/Jawa/worldbuilding/biomes/rosters/_validate.py`** (+41/-16 since
+  `bb73b6bd`) — `PAINTED_DEFS` is now derived from
+  `world/ASHKARR_WORLDMAP_tiles.csv` instead of a hand-maintained literal
+  that had drifted 19/19 false after the world was repainted onto `RUT_*`
+  defs; confirmed `RUT_BlueDesert` (previously a hardcoded "pending-switch"
+  exception) is genuinely present in the live CSV so dropping that carve-out
+  does not regress it. Also fixed `cross_check()` to check a target roster's
+  `flora` list as well as `fauna` (a flora eviction move was previously
+  always reported as a false positive). Ran `python3 _validate.py` from
+  `design/Jawa/worldbuilding/biomes/rosters/`: exits clean, only the
+  expected "typo, or already gone?" eviction warnings, no errors. No bugs
+  found.
+- **`src/RimMandrake/Utils/repair_torn_ledger.py`** (+19/-2 since
+  `113ad7131`) — adds `--seat <SEAT>` to target a per-seat ledger shard
+  (`ledger/events/<SEAT>.jsonl`) post-`EVENTS_JSONL_SHARDING_1`, and fixes
+  the backup filename to use `path.name` instead of a hardcoded
+  `events.jsonl` (would have silently mislabeled a shard's backup). No bugs
+  found.
+- **`src/RimUtinni/UtinniPatches/Source/UtinniPatchesSettings.cs`** (+45/-0
+  since `18e1ab1b6`) — adds 6 Mod Settings fields for
+  `BLUE_DESERT_LIFE_AUTHORING_1`. Cross-checked all 6 field names
+  (`nativeDetonationsEnabled`, `floraChainReactionsEnabled`,
+  `coldWaxWarmReactiveEnabled`, `butaneGutEnabled`, `burnerHaloEnabled`,
+  `warmDetonationThresholdC`) against their read sites in
+  `BlueDesertLife.cs` — every one matches exactly. No bugs found.
+
+All 5 had zero uncommitted changes before marking. All 5 marked CLEAN,
+commit pending below, pushed.
+
+Next wave: 112 non-PNG DIRTY files remain (117 minus this wave's 5) —
+re-derive with `code_review_status.py list | grep '^DIRTY'` filtered for
+non-`.png` rather than trusting this arithmetic. The PNG binary-art-tracking
+scope question (wave 15) is still open and still not this loop's to decide.

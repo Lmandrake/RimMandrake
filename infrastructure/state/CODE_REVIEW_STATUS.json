@@ -222,10 +222,10 @@
     "sha": "6023bae63"
   },
   "design/Jawa/mods/biome_flora.py": {
-    "cleanCount": 6,
-    "date": "2026-09-19",
-    "hash": "83ae4c2de3296e7c932234e5aca907878e379eeaecc4b31b28b0b2ae481c6706",
-    "sha": "51867f432"
+    "cleanCount": 7,
+    "date": "2026-09-24",
+    "hash": "2ccfe9061ad103406fdbe3c809b28cceb3da4bad084c48b97eb809965113ca6d",
+    "sha": "a2944c826"
   },
   "design/Jawa/mods/gen_fish_types.py": {
     "cleanCount": 1,
@@ -258,10 +258,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/mods/plant_tolerances.py": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "7acfc3f6ed2f57fdc0a3ef75a231e01fc775ac658a97165aa5b18e5b24ed0d69",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "7771a60cc726ab57f8c0f6c771df6e0f7e724fd0ca3a5f879fea0b0b5c92930c",
+    "sha": "a2944c826"
   },
   "design/Jawa/mods/plant_walk_list.py": {
     "cleanCount": 1,
@@ -330,10 +330,10 @@
     "sha": "40c4d4fed"
   },
   "design/Jawa/worldbuilding/biomes/rosters/_validate.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "32eef85eb52a471b02bbc09441513886075e1cd0c6b82aec4f147fdd58db2548",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "ed9d6737f0d001366f21f34215c5d6820901416411945971e7538ac8a72d2196",
+    "sha": "a2944c826"
   },
   "design/Jawa/worldbuilding/review/apply_assignment_verdicts.py": {
     "cleanCount": 2,
@@ -6610,10 +6610,10 @@
     "sha": "39cd22d5"
   },
   "src/RimMandrake/Utils/repair_torn_ledger.py": {
-    "cleanCount": 1,
-    "date": "2026-09-18",
-    "hash": "454f52c1dad1526c858ac48d27b229ccd80ef4d656043a550c38bfbd35bc9fcd",
-    "sha": "113ad7131"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "1fff6a8e2b5e01e38144152ded85a283360b2161ad6cc0f5aa7a8a8d96a4df57",
+    "sha": "a2944c826"
   },
   "src/RimMandrake/Utils/research_manifest_validate.py": {
     "cleanCount": 4,
@@ -18412,10 +18412,10 @@
     "sha": "0e94b4d2"
   },
   "src/RimUtinni/UtinniPatches/Source/UtinniPatchesSettings.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "3265dd1364960a1da56b933fe9f10472ba0270d6ec7c8715c405430b8d8049ce",
-    "sha": "18e1ab1b6"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "fda2146bd667b2c04f255e650fa8ab38e7d069e49694893fcfd45f0768e24ff8",
+    "sha": "a2944c826"
   },
   "src/RimUtinni/UtinniPatches/Source/build_claim_rumour.py": {
     "cleanCount": 1,
