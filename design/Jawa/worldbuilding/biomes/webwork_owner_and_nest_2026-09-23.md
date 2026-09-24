@@ -275,9 +275,10 @@ farm extends to the nest.
 
 ### 3d. Density and the "one nest or none" rule
 
-The existing scatter ("a map either has one nest or none") is the right instinct and stays: one
-nest cluster per map at most, ❓ ~60% of Webwork maps. ⚠️ A nest that never appears is dead content;
-a nest on every map is a farm. The 60% is a placeholder, flagged.
+The scatter is **one nest cluster per map, on EVERY Webwork map** — ruled by question card,
+2026-09-24 (§6 ruling 3): the nest is the biome's identity, and no Webwork colony is without the
+egg economy. The farm risk that motivated the old 60% placeholder is answered by the economy's own
+gates (the mother, the mark, rot, and the raid cost), not by scarcity of nests.
 
 ## §4 The egg economy and the carried-eggs mark
 
@@ -292,14 +293,15 @@ web you pass. The smuggler's jackpot, priced in risk."* And §4: 1,000 eggs a ye
 | category | `Items` (an animal-product-class item), **not** `AnimalProductRaw` with `CompHatcher` | 🔴 **it must NOT hatch.** A hatching egg is a tamed Ollathrix by the back door (ban 1: no tamed, traded or negotiated). No `CompHatcher`, no `CompTemperatureRuinable` hatch path — it is inert cargo |
 | mass | ❓ 2 kg | heavy enough that a clutch is a real carry decision |
 | market value | ❓ 350–500 silver each — above a `RM_OllathrixEgg`'s weight in thrixweave, below a component-class item | the jackpot must beat the walls per kilo, or nobody carries the mark |
-| `tradeability` | **`Sellable` only** | nobody stocks them — the only source is a nest (sheet §7 "smuggled") |
+| `tradeability` | **`Sellable` only in the free tier** | in `mandrake.rm.webwork` the only source is a nest (sheet §7 "smuggled"). 🔑 **The campaign ADDS a black-market stocker** — ruled 2026-09-24, owner-verbatim (§6 ruling 5): a Hutt / bounty-hunter-related trader stocks eggs, and egg-assassination quests ride on it. That layer patches tradeability up; the free tier stays nests-only |
 | `tradeTags` | `RM_Contraband` (new tag, empty of buyers in the free tier by default; the free tier's orbital/exotic traders *buy* via `Sellable` alone) | the offworld route below hangs on this tag |
 | rot | `CompRottable` ❓ 15 days | ⭐ **the eggs are perishable**, so a stolen clutch is a countdown to a buyer — it is smuggling, not hoarding |
 | ban check | no recipe consumes it, no `ingestible` | an egg that is food or medicine is a reason to farm nests |
 
 **"1,000 eggs a year" is expressed here**, not by a hatchling: the clutches regrow. A raided nest's
-walls do not, but a surviving mother re-lays — `RM_Webwork_EggClutch` respawns at the nest ❓ every
-20–30 days while any `RM_Ollathrix` is alive on the map. A map with no mother is a map with a dying
+walls do not, but a surviving mother re-lays — `RM_Webwork_EggClutch` respawns at the nest every
+20–30 days while any `RM_Ollathrix` is alive on the map (ruled by question card, 2026-09-24, §6
+ruling 4 — a living nest re-lays; the one-clutch alternative is dead). A map with no mother is a map with a dying
 nest, which is the sheet's own logic (the eggs are hers). ⛔ No Ollathrix is ever *spawned by* an
 egg — self-predation ("their own main predator") is why the clutch count never becomes a
 population count, and that stays flavour plus the faction-of-none hostility.
@@ -358,36 +360,36 @@ should, but this is an engine question and UNMEASURABLE on the Mac).
 | **`rosters/the_webwork.json`** | 6 fauna (2 dead/unwired), 7 flora, 4 `new_defs` | a regeneration is owed once the owner rules on the two roster docs: `new_defs` rows 1, 2, 4 are now designed (mite, pale flowers, root-mat), row 3 (guild pawnkinds) is **dead** by ruling 2. |
 | **`design/RimStarWars/canon_references/wyyyschokk/description.md`** | header says defName `Wyyyschokk` bare third-party | becomes "a skin patch on `RM_Ollathrix`" the day the mapping ships; the Must-show checklist is unchanged and still grades the *campaign* sprite. ⚠️ Correct it at build, not now (it is true today). |
 
-## §6 Needs owner ruling
+## §6 The eight rulings of 2026-09-24 (data)
 
-Everything I could not settle without changing a ruling — a sheet ruling, a kit-sitting ruling, or
-an item's recorded scope. Each is one card. None is written as fact above.
+All eight ruled by the owner, 2026-09-24. Rulings 1–4 and 6–8 are **decisions taken by question
+card** (clicked options — ⛔ not owner-verbatim). Ruling 5 is **owner-typed free text** and is
+quoted verbatim.
 
-1. **The 2026-09-11 kit ruling 6 ("the Shokk is its own RimStarWars-tier mod; ShokkBound and the
-   spit go RSW") is inverted by today's ruling 1.** With the species invented and RM-tier, its
-   mechanisms (bound hediff, spit, sun-scald, emergent-spawn comp) are mechanism-not-IP and belong
-   in `mandrake.rm.webwork`; `mandrake.rsw.shokk` shrinks to the Wyyyschokk **skin** patch only.
-   Confirm that reading, and whether `SHOKK_RSW_MOD_1` re-opens or a successor item is filed.
-2. **Do the Wildsteam buy eggs, refuse them, or punish them?** Sheet §7 gives them the mandible
-   bounty and §5 says they are at war here. Three readings: (a) bounty — they pay to *destroy*
-   eggs; (b) refusal — no Wildsteam trader buys contraband; (c) betrayal — selling eggs at a
-   Wildsteam seat costs faction goodwill. §4b designs the free-tier sky route only.
-3. **Nest frequency.** "One nest or none" is kept; the placeholder is ❓60% of Webwork maps. A
-   number is his to pick, and it decides whether the egg economy exists for a given colony.
-4. **Egg respawn while the mother lives** (❓ every 20–30 days) — this is the mechanism that makes
-   "1,000 eggs a year" true without a hatchling. Confirm that a *living* nest re-lays; the
-   alternative is one clutch per nest, ever, which makes eggs a one-shot rather than a smuggling
-   economy.
-5. **`tradeability: Sellable` on the egg removes it from every trader's stock, including
-   campaign smugglers.** If he wants a *black-market* trader that *stocks* eggs (to be bought as
-   well as sold), that is a second route and it contradicts "the only source is a nest". Default
-   written: nests only.
-6. **The Utinni skin-patch home** (§1c UNCERTAIN): RSW (`mandrake.rsw.shokk`, tier-correct for a
-   Star Wars creature) or RUT (literal reading of "when the Utinni layer is active"). Default
-   written: RSW.
-7. **The Wyyyschokk donor row and the two donor multi-homers (`RSW_Kreetle`, `Shyrack`) are
-   PROPOSED cut from this biome** (fauna roster §7). Evictions are stopped as a sweep; this is the
-   biome's own sitting, so it is his call here and nowhere else.
-8. **`Plant_TookeTrap_Wild`** — genuine canon; PROPOSED kept low under a Utinni `WildPlants_Webwork`
-   patch (flora roster §8), with the invented `RM_Kessaroth` as the free tier's snap-trap. Confirm,
-   or cut the canon row outright.
+1. **Mechanisms move to the free tier.** The bound hediff, spit, sun-scald and emergent-spawn comp
+   are mechanism-not-IP and belong in `mandrake.rm.webwork`; `mandrake.rsw.shokk` shrinks to the
+   Wyyyschokk **skin** patch only. This inverts the 2026-09-11 kit ruling 6 on tier placement.
+   Successor item: `SHOKK_SKIN_SHRINK_1`.
+2. **The Wildsteam pay an egg BOUNTY** — they pay to *destroy* eggs, the same shape as the mandible
+   bounty. A second, lower-paying legal outlet beside the smugglers' jackpot.
+3. **A nest on EVERY Webwork map** (one cluster per map). §3d carries the consequence.
+4. **A living nest re-lays, every 20–30 days.** §4a carries the consequence.
+5. **A black-market egg trader AND egg-assassination quests exist in the campaign layer.**
+   Owner, verbatim: *"Totally add the black market trader (likely hutt / bounty hunter faction
+   related) and some quests that have opyionalnimmoral solutions to adsassinate someone by
+   planting an egg in their room to hatch in the night."* This overrides the "nests are the only
+   source" default for the campaign tier (free tier unchanged, §4a). ⚠️ The quest eggs *hatching
+   in the night* implies a campaign-layer hatch mechanism that the free-tier item deliberately
+   lacks (§4a ban: no `CompHatcher`) — the quest design must add hatching in the campaign layer
+   only, or stage the hatch as a quest event rather than an item comp. Item:
+   `WEBWORK_EGG_BLACKMARKET_1`.
+6. **The skin patch lives RSW** — `mandrake.rsw.shokk`, tier-correct for a Star Wars creature's
+   look, usable by any Star Wars scenario.
+7. **All three donor fauna rows are CUT from this biome**: the Wyyyschokk donor row (replaced by
+   the Ollathrix) and the multi-homers `RSW_Kreetle` and `Shyrack` (their other homes stand;
+   one animal, one biome). This biome's own sitting — ruled here, executed by the roster/build
+   items, nowhere else. ⚠️ `RSW_JewelBeetle` (fauna roster §7's fourth disposition row) was NOT
+   on this card and stays PROPOSED.
+8. **`Plant_TookeTrap_Wild` is KEPT LOW via a Utinni `WildPlants_Webwork` patch**, with the
+   invented `RM_Kessaroth` as the free tier's snap-trap. Canon injects on top; the free mod
+   stands whole.
