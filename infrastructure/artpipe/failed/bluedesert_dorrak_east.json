@@ -15,7 +15,7 @@
   ],
   "id": "bluedesert_dorrak_east",
   "priority": 100,
-  "prompt": "RimWorld top-down game animal sprite: the dorrak, a six-legged boiler-like beast, plated and slab-sided, low and slow, closing a lidded face over frozen ground. No Earth-nameable silhouette -- not a tortoise, not a rhino. Body reads as the darkest grey step of a blue-grey ice palette (#1c2430 to #d2dde6 family), no colour accent -- the accent belongs to a different creature. Matte armoured plates, no shine.",
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the dorrak, a six-legged boiler-like beast, plated and slab-sided, low and slow, closing a lidded face over frozen ground. No Earth-nameable silhouette -- not a tortoise, not a rhino. Body reads as the darkest grey step of a blue-grey ice palette (#1c2430 to #d2dde6 family), no colour accent -- the accent belongs to a different creature. Matte armoured plates, no shine.",
   "reference": null,
   "rimflow_item_id": "BLUE_DESERT_LIFE_AUTHORING_1",
   "style_notes": "grey-on-grey, dorrak = darkest step; six short stubby legs; sealed lidded head; no earth-animal silhouette"

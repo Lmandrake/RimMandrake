@@ -15,7 +15,7 @@
   ],
   "id": "bluedesert_vekkit_north",
   "priority": 100,
-  "prompt": "RimWorld top-down game animal sprite: the vekkit, a knee-high scavenger that stands and moves like a folding chair, two long jointed forelimbs ending in hooks. Body reads as a lighter grey step than the krissek -- a moving shadow on the ice. No Earth-nameable silhouette -- not a bird, not a crab, not a rodent.",
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the vekkit, a knee-high scavenger that stands and moves like a folding chair, two long jointed forelimbs ending in hooks. Body reads as a lighter grey step than the krissek -- a moving shadow on the ice. No Earth-nameable silhouette -- not a bird, not a crab, not a rodent.",
   "reference": null,
   "rimflow_item_id": "BLUE_DESERT_LIFE_AUTHORING_1",
   "style_notes": "grey-on-grey, vekkit = one step lighter than krissek; folding-chair stance, long jointed hook-tipped forelimbs; no earth-animal silhouette"

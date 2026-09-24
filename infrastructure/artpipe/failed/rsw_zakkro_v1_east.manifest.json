@@ -1,9 +1,38 @@
 {
+  "attempt_elapsed_s": 2.237794050015509,
   "channel": "codex",
-  "cost_usd": 0.0,
+  "daemon_attempts": 2,
+  "elapsed_s": 4.431410108983982,
   "id": "rsw_zakkro_v1_east",
-  "note": "/mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/active/rsw_zakkro_v1_east.json: this job declares facing 'east', so the daemon stamps an explicit per-facing view direction onto it \u2014 but the prompt body contradicts that stamp: 'top-down' asks for an overhead camera, which the owner ruled is never a facing. Say the SURFACE, never the camera or the set: 'rear view, seen from behind, no face or eyes visible' / 'front view, eyes toward the viewer' / 'side profile at the creature's own eye level'. If this asset really wants an overhead view, drop the 'facing' key instead.",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/23/rollout-2026-09-23T23-03-22-01a0d202-ebdc-7c13-aa8b-53c4012d5d6a.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/23/rollout-2026-09-23T23-03-16-01a0d202-d812-7841-91c6-9141a7843eb5.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
   "status": "failed",
+  "timed_out": false,
   "validator": "not_run",
-  "worker_status": "bad_job_file"
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nrt style. A hulking, low-slung, four-legged megafauna covered head to haunch in thick, matted, dust-pale fibrous growths -- like packed dry lichen-fiber dreadlocks, not smooth mammal fur -- entirely powder-pale and matte, never shiny, never crystalline, never gemstone-like. No visible eyes: a blind, eyeless head ringed by a fringe of short blunt sensory tendrils around a wide, sideways-ridged, lamprey-like circular maw. Four thick clawed limbs built for bracing against rock and sand. Heavy, clean black outline around the whole silhouette and major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Transparent background, no scenery, no other creatures, no fire, no ash, no green plants. Canvas: exactly 1024x1024 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: RSW_Zakkro, EXTREME_DESERT_CAVERN_BEAST_1. deep_desert.md SS8's 'Mandalorian cave-beast' reference beat (huge shaggy cavern-dweller guarding massive prized eggs) -- a distinct invented species, not a reuse of the already-ported canon RSW_Mudhorn. Must pass the recognizability rule as a strange/alien silhouette, not an obvious bear or rhino. Facing: east \u2014 strict side profile with the camera at the creature's own eye level, the creature's head points to the RIGHT edge of the image. NOT a top-down or overhead view: we do not look down on its back, and only the near side of the body is visible.\n\nThen copy the generated image into the current working directory as rsw_zakkro_v1_east.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 24th, 2026 12:23 AM.\n\n",
+  "worker_stdout_tail": ""
 }
