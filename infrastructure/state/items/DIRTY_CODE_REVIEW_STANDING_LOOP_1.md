@@ -43,3 +43,31 @@ cluster, `GizkaStowaway/Source/` cluster, and the `modcheck/` Python tools
 `validation.py` files across mod folders were left unreviewed this wave —
 they are likely near-identical boilerplate per mod and worth a quick
 sampling pass rather than one-by-one full review.
+
+## Wave 4 — 2026-09-24
+
+Reviewed 4 files, full-file, none previously recorded in
+`CODE_REVIEW_STATUS.json`: `RM_CompDungSeeder.cs` (desert megafauna dung/seed
+mechanic), `RM_SeaShoreExtension.cs` + `RM_SeaShoreUtility.cs` (SeaShores
+mod's DefModExtension and its sea/terrain/fishing-band resolution logic),
+and `HediffComp_GizkaFecundity.cs` (GizkaStowaway's per-pawn breeding hediff).
+All four confirmed reachable via their `.csproj` `<Compile Include>` entries
+(`RM_CreatureBehaviors.csproj`, `RM_SeaShores.csproj`,
+`RimMandrakeGizkaStowaway.csproj`). Traced `RM_SeaShoreUtility`'s ambiguous-
+terrain dedup logic (a terrain claimed by two seas gets added to an
+`ambiguous` set and stripped from `terrainToSea` only after the full
+registration pass, so partial removal mid-loop was checked and is not a bug)
+and its tie-break in `PrimarySeaFor` (defName-ordinal tie break, verified the
+`best == null` first-candidate path is unreachable with count 0 since a
+biome always counts itself as its own neighbour). No bugs found in any of
+the 4; no fixes needed this wave. All 4 marked CLEAN, commit `<pending>`,
+pushed.
+
+Next wave: the `SeaShores/Source/` (`RM_SeaShoresHarmony.cs`,
+`RM_SeaShoresMod.cs`, `RM_SeaShoresSettings.cs`,
+`RM_TileMutatorWorker_SeaCoast.cs`, `RM_WorldComponent_SeaShoreHealer.cs`)
+and `GizkaStowaway/Source/` (`MapComponent_GizkaInfestation.cs`,
+`RSW_GizkaHarmonyPatches.cs`, `RSW_GizkaPopulation.cs`,
+`RSW_GizkaSettings.cs`, `RSW_GizkaStowawayManager.cs`) clusters both still
+have files remaining; the `modcheck/` Python tools and the `validation.py`
+sampling pass are both still untouched.

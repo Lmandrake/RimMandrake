@@ -887,6 +887,12 @@
     "hash": "81b92280c8fa722f145a7f6aaf9de17c139df958d624aba073514f5866098f16",
     "sha": "21b3e2750"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompDungSeeder.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "05d0a242600204a7ee6fae27ea3a4a6284bebba0e77a102372a19a9b92407292",
+    "sha": "d68e5b42e"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompFluidSacs.cs": {
     "cleanCount": 1,
     "date": "2026-09-23",
@@ -4936,6 +4942,18 @@
     "date": "2026-09-03",
     "hash": "a0ce5eb837deecde5c68c50e9223f06dab2fbf0bc3aa35b5ecd73868fa478732",
     "sha": "250be7a3"
+  },
+  "src/RimMandrake/SeaShores/Source/RM_SeaShoreExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "013ca0b7261919cbc7e30f410be32549b613d73c15841c4065ec14f0588058cf",
+    "sha": "d68e5b42e"
+  },
+  "src/RimMandrake/SeaShores/Source/RM_SeaShoreUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c472232e8b220ec8c21928ade4ecdee6002f03901259bdd2d07f31f55b9d9cd2",
+    "sha": "d68e5b42e"
   },
   "src/RimMandrake/ShipVermin/About/About.xml": {
     "cleanCount": 3,
@@ -10898,6 +10916,12 @@
     "date": "2026-09-17",
     "hash": "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4",
     "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/GizkaStowaway/Source/HediffComp_GizkaFecundity.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b50b2805e8b7090b96384c4ab6db03b781c12b5551aaf1bfaffb13ec949c6945",
+    "sha": "d68e5b42e"
   },
   "src/RimStarWars/GrankArtOverride/About/About.xml": {
     "cleanCount": 1,
