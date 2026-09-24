@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T13:48:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T13:49:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -598,3 +598,13 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  At the end of the last biome detailing: sweep every biome's four answers, fill gaps
 prose:    infrastructure/state/items/BIOME_NUISANCE_NORMALIZATION_1.md
+
+## SUMP_INHABITED_NOTES_1 Sump Inhabited injection notes (owner, 2026-09-24, for later): junkers/Jawa/deep tribes/Black Star more present; tar-expedition ruins, refinery attempts, miserable moisture farmers
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_INHABITED_NOTES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_INHABITED_NOTES_1.md
