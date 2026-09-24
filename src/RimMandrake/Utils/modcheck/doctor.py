@@ -396,7 +396,7 @@ def run(repo_root=None):
     counts.update(s_counts)
 
     try:
-        events = model.read(model.EVENTS)
+        events = model.read()               # no path: history + every per-seat shard
         world = model.replay(events)
     except Exception as e:
         raise RuntimeError(

@@ -19,6 +19,11 @@ So the truth moves to an **append-only event log**, and every view is derived fr
     THE LEDGER IS THE TRUTH. Everything else — queue/<SEAT>.md, the board, this
     module's own `Item` objects — is a projection that can be thrown away and rebuilt.
 
+⚠️ THE LEDGER IS NOW SEVERAL FILES: the frozen `events.jsonl` plus one shard per seat
+under `events/`. `read()` merges them and `append()` routes by `ev["seat"]`; see
+`SHARD_DIR` below for why (two seats appending to one git-tracked file conflict on
+rebase, and the only safe resolution is manual plumbing surgery).
+
 🔴 WHY APPENDING NEEDS A LOCK HERE, AND THE PLAN'S ARGUMENT WAS WRONG
 ====================================================================
 The design's stated safety argument was: on Linux a `write()` to a file opened
@@ -88,12 +93,75 @@ STATE = os.path.join(ROOT, "infrastructure", "state")
 LEDGER = os.path.join(STATE, "ledger")
 EVENTS = os.path.join(LEDGER, "events.jsonl")
 ITEMS = os.path.join(STATE, "items")
+
 # 🔑 Prose for an item that has REACHED A TERMINAL STATE lives one level down, in
 # items/closed/. Moved 2026-09-19 on the owner's word: 581 of the 730 files in items/
 # belonged to done/dropped/superseded work, and FOUNDRY.md sends every seat to grep
 # that directory for "what else it settled" — so four fifths of every such sweep was
 # walking finished tickets. Nothing is deleted; git holds the provenance either way.
 CLOSED = os.path.join(ITEMS, "closed")
+
+# ---------------------------------------------------------------------------
+# 🔴 THE LEDGER IS SHARDED BY SEAT, AND `events.jsonl` IS FROZEN HISTORY.
+#
+# WHAT THIS FIXES. `events.jsonl` is one git-tracked file that BENCH and FOUNDRY both
+# append to and both commit. Two seats appending locally and then pushing produces a
+# real git CONFLICT inside an append-only file, and the only safe resolution is manual
+# plumbing surgery: build the union outside the repo, prove every line parses,
+# `git hash-object -w` + `update-index --cacheinfo` + `checkout-index -f`. Done twice
+# (`36de6942c`, and again 2026-09-23). ⛔ `checkout --ours/--theirs` silently DISCARDS
+# a whole seat's events, which is the loss this ledger exists to prevent.
+#
+# 🔑 GIT NEVER CONFLICTS ACROSS TWO DIFFERENT FILES. So every NEW event goes to
+# `<ledger>/events/<SEAT>.jsonl` — one file per seat, derived from `ev["seat"]` alone —
+# and the conflict class becomes structurally impossible rather than carefully handled.
+#
+# ⛔ `events.jsonl` IS NOT SPLIT, MIGRATED OR REFORMATTED. Its 10,889 historical lines
+# stay exactly as committed and stay readable at that path forever; `read()` merges them
+# with every shard. Rewriting them would be a history rewrite of the one append-only
+# file in this repo, for no gain.
+#
+# ⚠️ The directory name is the one `append()`'s docstring already anticipated for a
+# future monthly roll (`events/2026-08.jsonl`). The two schemes coexist: a seat name is
+# uppercase letters, a month is digits, and `ledger_files()` reads whatever is there.
+SHARD_DIR = "events"
+
+
+def shard_dir(path=None):
+    """-> the directory holding the per-seat shards for the ledger IN USE.
+
+    🔑 RELATIVE TO THE LEDGER IN USE, NEVER A HARDCODED ABSOLUTE PATH. `RIMFLOW_LEDGER`
+    and a reassigned `model.EVENTS` point the whole tool at a throwaway ledger, and a
+    shard path bound to the module constant would let a selftest's appends escape into
+    the real repo's ledger — the one file with no undo. Same discipline as
+    `bridge_mirror_path()`, for the same reason.
+    """
+    return os.path.join(os.path.dirname(path or EVENTS) or ".", SHARD_DIR)
+
+
+def shard_path(seat, path=None):
+    """-> the one file every event from `seat` is appended to. Deterministic from the
+    seat name alone — no registry, no external state, no per-window configuration."""
+    if seat not in SEATS:
+        raise SchemaError("seat %r is not one of %s" % (seat, ", ".join(SEATS)))
+    return os.path.join(shard_dir(path), "%s.jsonl" % seat)
+
+
+def ledger_files(path=None):
+    """-> every file the ledger is spread across, HISTORY FIRST then shards by name.
+
+    The order is the tie-break's outer key (see `read()`), so it is fixed, not
+    incidental: the frozen `events.jsonl` precedes every shard, and shards sort by
+    filename — which, since a shard is named for its seat, means alphabetically by seat.
+    """
+    head = path or EVENTS
+    out = [head] if os.path.exists(head) else []
+    d = shard_dir(head)
+    try:
+        names = sorted(n for n in os.listdir(d) if n.endswith(".jsonl"))
+    except OSError:
+        names = []
+    return out + [os.path.join(d, n) for n in names]
 
 
 def item_path(iid, for_write=False):
@@ -696,6 +764,18 @@ def append(ev, path=None):
     (`--from C40/run-3@full-578`), and they survive any amount of rolling.
 
     The returned offset is a convenience for the CURRENT file only. Do not store it.
+
+    🔑 WITH NO `path`, THE WRITE GOES TO THIS SEAT'S SHARD — `<ledger>/events/<SEAT>.
+    jsonl` — not to `events.jsonl`. That is the whole point of the sharding (see
+    `SHARD_DIR` above): two seats can never append to the same git-tracked file, so
+    they can never conflict in one. Every safety property here is unchanged — same
+    `flock`, same O_APPEND, same PIPE_BUF ceiling, same short-write refusal — because
+    the only thing that moved is WHICH file the lock is taken on.
+
+    ⚠️ WITH AN EXPLICIT `path` IT WRITES EXACTLY THERE, unsharded, exactly as before.
+    That is the contract `selftest_concurrency.py` and several `selftest_model.py`
+    cases are written against, and the escape hatch for anything that genuinely wants
+    one literal file.
     """
     # 🔑 STAMP FIRST, THEN VALIDATE. `validate` now REFUSES an event with no `ts`
     # (see `_check_stamp`: a stamp-less line made `_apply` raise KeyError, which
@@ -703,7 +783,10 @@ def append(ev, path=None):
     # an unstamped dict. Validating before stamping would refuse every one of them.
     ev.setdefault("ts", now())
     validate(ev)
-    path = path or EVENTS
+    # ⚠️ AFTER `validate`, never before: `_check_seat` is what guarantees `ev["seat"]`
+    # is one of SEATS, and therefore that it is a safe, bounded filename. A seat
+    # resolved before validation could carry a path separator.
+    path = path or shard_path(ev["seat"])
     line = json.dumps(ev, separators=(",", ":"), ensure_ascii=False) + "\n"
     blob = line.encode("utf-8")
     if len(blob) >= PIPE_BUF:
@@ -759,14 +842,71 @@ def _read_lines(path):
 
 
 def read(path=None):
-    """-> [event]. A malformed line is REPORTED, never skipped silently.
+    """-> [event], the WHOLE ledger, chronologically ordered.
 
-    ⚠️ Skipping a bad line would make the ledger quietly lie, which is precisely the
-    failure mode the ledger exists to end. A torn tail is recoverable by a human; a
-    silently ignored one is not, because nobody learns it happened.
+    With no `path` this merges the frozen `events.jsonl` and every per-seat shard (see
+    `SHARD_DIR`). With an explicit `path` it reads exactly that one file and merges
+    nothing — the old single-file contract, which the selftests and
+    `repair_torn_ledger.py` are written against.
+
+    🔴 SO EVERY PRODUCTION READER CALLS `read()` WITH NO ARGUMENT. `model.read(model.
+    EVENTS)` now means "the history, without today" — it is not wrong, it is a
+    narrower question, and asking it by accident hides every event written since the
+    cutover. Every caller in this repo was converted on 2026-09-23; if you are adding
+    one, pass nothing.
+
+    THE TIE-BREAK, AND WHY IT IS SAFE
+    =================================
+    `ts` is UTC to the SECOND (`now()`), so same-second events have always been
+    possible. In one file the kernel's append order broke the tie by byte position.
+    Across two files there is no byte order to consult, and there is no monotonic
+    counter to invent one from — a counter would need coordination between the seats,
+    which is exactly what sharding exists to remove.
+
+    So the order is `(ts, source rank, within-file order)`, where source rank is the
+    position in `ledger_files()`: history first, then shards by seat name. Python's
+    sort is stable, so within-file order falls out for free and is never permuted.
+
+    ⭐ THE PROPERTY THAT MATTERS IS AGREEMENT, NOT TRUE INTERLEAVE. Both windows and
+    every derived view must fold the same ledger into the same `World`; a rule that is
+    deterministic and identical everywhere gives that, and single-file byte order gave
+    nothing stronger. What is genuinely lost is the real interleave of two DIFFERENT
+    seats' events inside one second — and that information was never load-bearing:
+      • Ordering decides outcomes only WITHIN one item's lifecycle (`_transition`), and
+        an item's lifecycle events come overwhelmingly from one seat, whose own
+        sequence is preserved exactly.
+      • A genuine same-second cross-seat collision on one item (two `claim`s, a `close`
+        racing a `start`) is refused the same way in either order: one wins, the other
+        lands in `world.errors`. Which one wins was already arbitrary — `cli._emit`
+        does check-then-append with no lock held across the pair, so a concurrent
+        writer can always land in the gap. That race is UNCHANGED by this, not widened:
+        it lived in the write path, and nothing about the read path narrowed it before.
+      • Nothing downstream reads the interleave. `priority.rank()`, `render`,
+        `doctor`, `queue_staleness_review` and the dashboards all read projected item
+        state and per-item history, never "which seat wrote first this second".
+
+    ⚠️ A malformed line is REPORTED, never skipped silently. Skipping one would make
+    the ledger quietly lie, which is precisely the failure mode the ledger exists to
+    end. A torn tail is recoverable by a human; a silently ignored one is not, because
+    nobody learns it happened.
     """
+    if path is None:
+        merged = []
+        for rank, f in enumerate(ledger_files()):
+            # `str(...)`: a non-string `ts` is refused by `_check_stamp` on the way in,
+            # but a line that bypassed the lock can carry one, and comparing int to str
+            # raises TypeError — which is not a LedgerError, so it would take down every
+            # tool that reads the ledger instead of being collected into `world.errors`.
+            merged.extend((str(ev.get("ts") or ""), rank, ev) for ev in _read_one(f))
+        merged.sort(key=lambda t: (t[0], t[1]))      # stable: within-file order kept
+        return [t[2] for t in merged]
+    return _read_one(path)
+
+
+def _read_one(path):
+    """-> [event] from exactly one ledger file, in file order. The single-file reader
+    every path above is built out of."""
     out = []
-    path = path or EVENTS
     if not os.path.exists(path):
         return out
     lines = _read_lines(path)
@@ -796,21 +936,30 @@ def read(path=None):
                             continue
                         except ValueError:
                             pass
+            # ⚠️ NAME THE FLAG FOR THE FILE THAT IS ACTUALLY TORN. Since the sharding,
+            # a torn line is far likelier to be in `events/<SEAT>.jsonl` than in the
+            # frozen `events.jsonl`, and the repair tool takes a SEAT, never a path.
+            seat_flag = ""
+            base = os.path.basename(path)
+            if os.path.basename(os.path.dirname(path)) == SHARD_DIR and \
+                    base[:-6] in SEATS:
+                seat_flag = " --seat %s" % base[:-6]
             raise LedgerError(
                 "%s line %d is not valid JSON (%s). The ledger is append-only, so "
                 "this is almost certainly a torn write — do NOT edit around it by "
-                "hand. Use src/RimMandrake/Utils/repair_torn_ledger.py (dry run by "
+                "hand. Use src/RimMandrake/Utils/repair_torn_ledger.py%s (dry run by "
                 "default; --apply --owner-said \"…\" to write) — it removes ONLY lines "
                 "that fail to parse, backs up first to Transient/, and refuses past a "
                 "sanity cap of bad lines. Then commit and push the repaired file "
-                "deliberately." % (path, i + 1, e))
+                "deliberately." % (path, i + 1, e, seat_flag))
     return out
 
 
 # ---------------------------------------------------------------------------
 # READING — the projection
 #
-# 🔑 Everything below is DERIVED. Delete every file but events.jsonl and `reindex`
+# 🔑 Everything below is DERIVED. Delete every file but the ledger itself — that is
+# `events.jsonl` AND `events/<SEAT>.jsonl`, since the sharding — and `reindex`
 # rebuilds all of it. That is the test of whether the ledger really is the truth, and
 # it is worth running for real rather than believing.
 # ---------------------------------------------------------------------------

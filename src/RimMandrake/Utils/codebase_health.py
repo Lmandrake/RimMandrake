@@ -310,8 +310,20 @@ def descriptive_prose(text):
 def item_texts():
     """{item_id: one big blob of everything DESCRIPTIVE written about it}."""
     blobs = {}
-    ledger = os.path.join(ROOT, "infrastructure", "state", "ledger", "events.jsonl")
-    if os.path.isfile(ledger):
+    # 🔴 THE LEDGER IS SEVERAL FILES since 2026-09-23: `events.jsonl` is frozen history
+    # and each seat appends to `ledger/events/<SEAT>.jsonl` so two windows cannot
+    # conflict in one git-tracked file (`rimflow.model.SHARD_DIR` is the authority).
+    # Reading the head alone would silently drop every item filed since the cutover from
+    # the health picture — order does not matter here, only that nothing is missed.
+    led_dir = os.path.join(ROOT, "infrastructure", "state", "ledger")
+    ledgers = [os.path.join(led_dir, "events.jsonl")]
+    shards = os.path.join(led_dir, "events")
+    if os.path.isdir(shards):
+        ledgers += [os.path.join(shards, n) for n in sorted(os.listdir(shards))
+                    if n.endswith(".jsonl")]
+    for ledger in ledgers:
+        if not os.path.isfile(ledger):
+            continue
         with open(ledger, "r", encoding="utf-8", errors="replace") as f:
             for line in f:
                 line = line.strip()

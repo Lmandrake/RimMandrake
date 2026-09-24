@@ -17,12 +17,18 @@ exits 0 passes any test that only checks a return value.
 the wrong disk is worse than no test, so this one puts its scratch ledger beside the
 code it is testing and deletes it afterwards.
 
-⚠️ `model.read` and `model.append` bind `EVENTS` as a **default argument**, evaluated at
-import — so setting `model.EVENTS` alone does NOT redirect them. The CLI honours
-`RIMFLOW_LEDGER`/`RIMFLOW_ITEMS` and rebinds those defaults in `_bind_paths()`, and
-this test drives it through that env, which is also the proof that the escape hatch
-works. Without it, a bug in this file would append to the REAL ledger, which is
-append-only and has no undo.
+⚠️ THE ESCAPE HATCH IS `RIMFLOW_LEDGER`/`RIMFLOW_ITEMS`, and this file drives the CLI
+through that env — which is also the proof that the hatch works. Without it, a bug in
+this file would append to the REAL ledger, which is append-only and has no undo.
+`model.read`/`model.append` resolve every path at CALL time (`model.py`'s own header
+says why, and `_bind_paths()` sets `model.EVENTS` from that env), so the redirect is
+total: the per-seat shards it writes are derived from the ledger in use, never from the
+module constant.
+
+🔴 `RIMFLOW_LEDGER` NAMES THE HEAD, AND THE LEDGER IS SEVERAL FILES. `events.jsonl` is
+frozen history; every new event lands in `events/<SEAT>.jsonl` beside it. A case that
+opens `<tmp>/events.jsonl` directly reads an EMPTY ledger — use `_ledger_text()` /
+`_ledger_events()`.
 """
 import os
 import shutil
@@ -331,6 +337,46 @@ def t_bridge_is_refused_for_a_non_window_seat():
     assert "bridge taken by CHECK" in ok("bridge", "take", seat="CHECK")
 
 
+def _ledger_paths():
+    """-> every file the throwaway ledger is spread across, head first then shards.
+
+    🔴 THE LEDGER IS SEVERAL FILES since 2026-09-23. `RIMFLOW_LEDGER` names the HEAD
+    (`events.jsonl`, frozen history), and `rimflow` appends every new event to
+    `events/<SEAT>.jsonl` beside it, so two seats can never conflict in one
+    git-tracked file. A case that opens the head alone reads an EMPTY ledger and its
+    assertion passes or fails for the wrong reason — which is exactly what SEVEN of
+    these cases did the moment the sharding landed (measured, not estimated).
+    """
+    paths = [os.path.join(_tmp(), "events.jsonl")]
+    d = os.path.join(_tmp(), "events")
+    try:
+        paths += [os.path.join(d, n) for n in sorted(os.listdir(d))
+                  if n.endswith(".jsonl")]
+    except OSError:
+        pass
+    return [x for x in paths if os.path.exists(x)]
+
+
+def _ledger_text():
+    """-> the raw bytes of the whole throwaway ledger, for `"…" in led` assertions."""
+    out = []
+    for f in _ledger_paths():
+        with open(f, encoding="utf-8") as fh:
+            out.append(fh.read())
+    return "".join(out)
+
+
+def _ledger_events():
+    """-> every event in the throwaway ledger, ts-ordered. Missing ledger -> []."""
+    import json
+    out = []
+    for f in _ledger_paths():
+        with open(f, encoding="utf-8") as fh:
+            out += [json.loads(l) for l in fh if l.strip()]
+    out.sort(key=lambda e: str(e.get("ts") or ""))
+    return out
+
+
 def _bridge_events():
     """Every bridge event in the throwaway ledger, oldest first.
 
@@ -338,13 +384,7 @@ def _bridge_events():
     by the first append, so a case that asserts "nothing was written" has no file to
     read. Raising there made a passing assertion look like a broken test.
     """
-    import json
-    p = os.path.join(_tmp(), "events.jsonl")
-    if not os.path.exists(p):
-        return []
-    with open(p, encoding="utf-8") as fh:
-        return [e for e in (json.loads(l) for l in fh if l.strip())
-                if e.get("event") == "bridge"]
+    return [e for e in _ledger_events() if e.get("event") == "bridge"]
 
 
 def _mirror_holder():
@@ -425,17 +465,23 @@ def t_one_malformed_timestamp_cannot_promote_an_item():
         "the premise is broken: a just-claimed item already scores ≥3, so this case "
         "cannot show the bad stamp doing anything:\n%s" % before)
 
-    p = os.path.join(_tmp(), "events.jsonl")
-    lines = [json.loads(l) for l in open(p, encoding="utf-8") if l.strip()]
+    # ⚠️ The corruption has to be written back into the file the event ACTUALLY lives
+    # in, which since the sharding is `events/<SEAT>.jsonl`, not the frozen head.
     hit = 0
-    for e in lines:
-        if e.get("verb") == "claim" or e.get("event") == "claim":
-            e["ts"] = "not-a-timestamp"
-            hit += 1
-    assert hit, "no claim event to corrupt — the ledger shape changed: %s" % lines
-    with open(p, "w", encoding="utf-8") as fh:
+    for p in _ledger_paths():
+        lines = [json.loads(l) for l in open(p, encoding="utf-8") if l.strip()]
+        touched = False
         for e in lines:
-            fh.write(json.dumps(e) + "\n")
+            if e.get("verb") == "claim" or e.get("event") == "claim":
+                e["ts"] = "not-a-timestamp"
+                hit += 1
+                touched = True
+        if touched:
+            with open(p, "w", encoding="utf-8") as fh:
+                for e in lines:
+                    fh.write(json.dumps(e) + "\n")
+    assert hit, ("no claim event to corrupt — the ledger shape changed: %s"
+                 % _ledger_events())
 
     after = ok("next", "--bench", seat="BENCH")
     trouble = after.split("IN TROUBLE")[1].split("NEEDS HIM")[0]
@@ -469,16 +515,34 @@ def t_an_owner_give_and_a_forced_take_are_attributable_from_the_ledger_alone():
     ok("bridge", "give", "free", "--seat", "OWNER", seat=None)
     evs = _bridge_events()
     assert len(evs) == 4, evs
-    assert evs[0].get("override") is None, (
-        "an uncontested take must stay unmarked, or the marking means nothing: %s" % evs[0])
-    assert "--force" in (evs[1].get("override") or "") and "FOUNDRY" in evs[1]["override"], (
-        "a forced take across a live holder is invisible in the ledger: %s" % evs[1])
-    assert "OWNER" in (evs[2].get("override") or ""), (
-        "an owner handover reads as the target window taking it itself: %s" % evs[2])
-    assert evs[2]["seat"] == "FOUNDRY", (
-        "the holder must still be the target window — `_apply` reads `seat`: %s" % evs[2])
-    assert "OWNER" in (evs[3].get("override") or ""), (
-        "an owner clear reads as the holder releasing it itself: %s" % evs[3])
+
+    # ⚠️ EACH EVENT IS FOUND BY WHAT IT SAYS, NOT BY ITS INDEX. All four land in the
+    # same second, and since the ledger was sharded by seat their relative order across
+    # two shards is resolved by a deterministic tie-break, not by who wrote first —
+    # `model.read()`'s docstring has the reasoning. That never mattered to this case:
+    # the claim under test is that each KIND of bridge event is attributable FROM THE
+    # EVENT, which is precisely the property an index-based assertion could not see.
+    def one(**want):
+        hits = [e for e in evs if all(e.get(k) == v for k, v in want.items())]
+        assert len(hits) == 1, "expected exactly one %r in %r" % (want, evs)
+        return hits[0]
+
+    uncontested = one(state="taken", purpose="foundry work")
+    forced = one(state="taken", purpose="bench work")
+    handover = one(state="taken", purpose="handover")
+    clear = one(state="released")
+    assert uncontested.get("override") is None, (
+        "an uncontested take must stay unmarked, or the marking means nothing: %s"
+        % uncontested)
+    assert "--force" in (forced.get("override") or "") and \
+        "FOUNDRY" in forced["override"], (
+            "a forced take across a live holder is invisible in the ledger: %s" % forced)
+    assert "OWNER" in (handover.get("override") or ""), (
+        "an owner handover reads as the target window taking it itself: %s" % handover)
+    assert handover["seat"] == "FOUNDRY", (
+        "the holder must still be the target window — `_apply` reads `seat`: %s" % handover)
+    assert "OWNER" in (clear.get("override") or ""), (
+        "an owner clear reads as the holder releasing it itself: %s" % clear)
 
 
 def t_a_window_cannot_forge_the_owners_name_with_bridge_give():
@@ -510,15 +574,20 @@ def t_releasing_a_bridge_you_do_not_hold_is_allowed_but_recorded():
     fresh()
     ok("bridge", "take", "--for", "foundry work", seat="FOUNDRY")
     ok("bridge", "release", seat="BENCH")
+    # ⚠️ BY STATE, NOT BY INDEX: the take and the release land in the same second in two
+    # different seats' shards, so `[-1]` no longer means "the one written last".
+    # See the same note in `t_an_owner_give_and_a_forced_take_are_attributable…`.
     evs = _bridge_events()
-    assert evs[-1]["state"] == "released" and evs[-1]["seat"] == "BENCH", evs[-1]
-    assert "FOUNDRY" in (evs[-1].get("override") or ""), (
-        "BENCH cleared FOUNDRY's lock and the event does not say so: %s" % evs[-1])
+    rel = [e for e in evs if e["state"] == "released"]
+    assert len(rel) == 1 and rel[0]["seat"] == "BENCH", evs
+    assert "FOUNDRY" in (rel[0].get("override") or ""), (
+        "BENCH cleared FOUNDRY's lock and the event does not say so: %s" % rel[0])
     # releasing your OWN lock is ordinary and must stay unmarked
     fresh()
     ok("bridge", "take", "--for", "mine", seat="BENCH")
     ok("bridge", "release", seat="BENCH")
-    assert _bridge_events()[-1].get("override") is None, _bridge_events()[-1]
+    mine = [e for e in _bridge_events() if e["state"] == "released"]
+    assert len(mine) == 1 and mine[0].get("override") is None, mine
 
 
 def t_game_state_is_owner_only():
@@ -646,7 +715,7 @@ def t_owner_may_reassign_and_is_told_that_he_overrode():
     assert "OVERRIDE" in err.upper(), (
         "the override was silent. He asked to be able to override AND to be warned; "
         "an unannounced bypass is the failure mode, not the bypass.\n  stderr: %r" % err)
-    led = open(os.path.join(_tmp(), "events.jsonl")).read()
+    led = _ledger_text()
     assert '"override"' in led, (
         "the override is not in the ledger. A year later it must read as a deliberate "
         "crossing of a seat boundary, not as a boundary that never existed.")
@@ -887,7 +956,7 @@ def t_owner_said_authorizes_where_no_seat_is_configured():
     fresh()
     out = ok("game", "UP", "--owner-said", "game up", env=env(seat=None))
     assert "game is UP" in out, out
-    led = open(os.path.join(_tmp(), "events.jsonl"), encoding="utf-8").read()
+    led = _ledger_text()
     assert '"ownerSaid":"game up"' in led.replace(", ", ",").replace('" : "', '":"'), (
         "his words are the authorization and must be ON the event: %s" % led)
     refused(("game", "UP", "--seat", "NOTASEAT", "--owner-said", "game up"),
@@ -998,15 +1067,19 @@ def t_the_real_ledger_was_never_touched():
     real = m.EVENTS
     assert not real.startswith(TMP_ROOT), real
     assert os.path.abspath(real) != os.path.abspath(os.path.join(_tmp(), "events.jsonl"))
-    if os.path.exists(real):
-        with open(real, encoding="utf-8") as fh:
+    # 🔴 THE SHARDS TOO. Since 2026-09-23 the CLI appends to `events/<SEAT>.jsonl`, not
+    # to `events.jsonl` — so checking only the head would check the one file nothing
+    # writes any more, and this case would go green while every selftest event landed
+    # in the real BENCH/FOUNDRY shards.
+    for path in m.ledger_files():
+        assert not path.startswith(TMP_ROOT), path
+        with open(path, encoding="utf-8") as fh:
             body = fh.read()
         for marker in ("DESERT_STORM_TUNING_1", "BLACKSTAR_VESSEL_DEF_1",
                        "URGENT_FOLLOWUP_HERE_9"):
             assert marker not in body, (
-                "%s reached the REAL ledger, which is append-only and has no undo. "
-                "The default-argument binding of model.EVENTS is not being honoured."
-                % marker)
+                "%s reached the REAL ledger at %s, which is append-only and has no "
+                "undo. RIMFLOW_LEDGER is not being honoured." % (marker, path))
 
 
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]

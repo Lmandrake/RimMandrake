@@ -142,6 +142,10 @@ def run(edits, cmd, seat="BUILD", new_files=None, tool=None):
 
 Q = "infrastructure/state/queue"
 L = "infrastructure/state/ledger/events.jsonl"
+# 🔴 THE SHARD IS WHERE EVERY NEW EVENT ACTUALLY GOES since 2026-09-23 — `events.jsonl`
+# is frozen history. A guard that protects only the head protects only the file nothing
+# writes any more, so every rule below is exercised against both.
+LS = "infrastructure/state/ledger/events/FOUNDRY.jsonl"
 I = "infrastructure/state/items"
 
 CASES = [
@@ -204,6 +208,21 @@ CASES = [
      {}, "git commit %s -m x" % L, "BUILD", None),
     ("DENY  Write against the ledger", DENY, "only writer",
      {}, L, "BUILD", None, "Write"),
+    ("DENY  Write against a per-seat SHARD", DENY, "only writer",
+     {}, LS, "BUILD", None, "Write"),
+    ("DENY  Edit against a per-seat SHARD", DENY, "only writer",
+     {}, LS, "BUILD", None, "Edit"),
+    ("DENY  appending to a SHARD with >>", DENY, "only writer",
+     {}, "echo '{\"x\":1}' >> %s" % LS, "BUILD", None),
+    ("DENY  sed -i against a SHARD", DENY, "only writer",
+     {}, "sed -i 's/a/b/' %s" % LS, "BUILD", None),
+    ("ALLOW grepping a SHARD", ALLOW, None,
+     {}, "grep -c '\"event\"' %s" % LS, "BUILD", None),
+    ("ALLOW committing a CHANGED shard — the whole point", ALLOW, None,
+     {LS: '{"ts":"t","seat":"FOUNDRY","event":"note","id":"X_Y_1","text":"z"}\n'},
+     "git commit %s -m x" % LS, "BUILD", None),
+    ("ALLOW Write against a non-ledger .jsonl beside it", ALLOW, None,
+     {}, "infrastructure/state/ledger/github_project_state.json", "BUILD", None, "Write"),
     ("DENY  Edit against the ledger", DENY, "only writer",
      {}, L, "BUILD", None, "Edit"),
     ("ALLOW Write against any other file", ALLOW, None,
