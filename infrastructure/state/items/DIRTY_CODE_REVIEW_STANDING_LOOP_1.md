@@ -109,3 +109,35 @@ Next wave: `GizkaStowaway/Source/` cluster (`MapComponent_GizkaInfestation.cs`,
 already CLEAN; `cli.py` is DIRTY again — content changed since its
 2026-09-20 clean mark, so it needs a fresh full-file review, not a diff
 review), and the `validation.py` sampling pass, all still untouched.
+
+## Wave 6 — 2026-09-24
+
+Reviewed 3 files, full-file, none previously recorded in
+`CODE_REVIEW_STATUS.json`: `judge.py` (grades run screenshots against a
+mod's must-show/cannot-show checklist via `claude -p`, one narrow
+yes/no/unjudgeable question per line — verified `passes()`'s polarity logic,
+that UNJUDGEABLE never counts as a pass, and that `visual_all_green([])`
+returning `True` is the documented "no visual floor for this mod" case, not
+a bug), `northstar.py` (parses a walk's `## north star` section, distinguishes
+`### must show` from `### cannot show` checklists, and computes the
+content-hash that gates VALIDATED vs DRAFT — traced `_checklists`'s
+continuation-line handling, `_canonical`'s header-stripping, and confirmed
+`parse`/`record_validation` hash the same line set so the two never
+disagree; also confirmed this file already returns dict access (`ns["must_show"]`)
+throughout, not `getattr`, so it does not carry the confident-wrong-zero bug
+CLAUDE.md warns about elsewhere), and `walklint.py` (checks every identifier
+a validation walk names still exists — traced the `walklint-ok` escape
+hatch's off-by-one-looking `{i, i+1}` math against its own docstring and
+confirmed it's correct: a marker on line `i` suppresses a finding on `i`
+itself (inline use) or `i+1` (marker-on-the-line-above use)). Confirmed
+reachable: `judge.py`/`northstar.py` imported by `runner.py` and `cli.py`
+(`northstar.find_walk`/`parse`/`record_validation`, `judge.judge_run`/
+`visual_all_green`), `walklint.py` imported by `cli.py`, `doctor.py` and
+`floor.py`. No bugs found in any of the 3; no fixes needed this wave. All 3
+marked CLEAN, commit `c504d3c64`, pushed.
+
+Next wave: `GizkaStowaway/Source/` cluster (5 files, unchanged from wave 5's
+note), `doctor.py` (500 lines, never-entered) and `cli.py` (323 lines,
+re-dirtied since its 2026-09-20 clean mark — needs a fresh full-file pass,
+not diff-scoped) in `modcheck/`, and the `validation.py` sampling pass — all
+still untouched.
