@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-24 — the Propane Lake's fishable
+  shallow terrain, owed by design/Jawa/worldbuilding/sea_catch_rosters_
+  2026-09-24.md's Propane Lake section.
+
+  🔴 Why this def exists at all: the donor pair RUT_PropaneLake.xml points
+  its RM_SeaShoreExtension at (AB_PropaneLake / AB_SolidPropane) is
+  waterBodyType None (deep) / a non-water solid (shallow) — MEASURED
+  against the decompiled engine 2026-09-23 (RimSage): WaterBodyTracker only
+  forms a water body where waterBodyType != None
+  (WaterBodyTracker.cs:50,:81,:178), Designator_ZoneAdd_Fishing refuses a
+  None-type or Impassable cell (Designator_ZoneAdd_Fishing.cs:65), and
+  FishingUtility returns nothing for a None body (FishingUtility.cs:138).
+  So as shipped, no propane cell could ever hold a fishing zone no matter
+  what the fishTypes table said. This terrain is the fix: a SHALLOW,
+  PASSABLE, Saltwater-typed terrain laid as the shore's shallowTerrain so a
+  fishing zone can actually form at the margin.
+
+  ParentName="WaterShallowBase": the proven-safe parent this same pattern
+  already uses for RUT_ScaldWaterOceanShallow (RUT_ScaldWater.xml) — Core's
+  own Terrain_Water.xml carries a real Name="..." attribute on it, unlike
+  Lake/Ocean/IceSheet's own BiomeDef tags.
+
+  waterBodyType Saltwater, not Freshwater: DBH and every drink-from-terrain
+  mechanism read Freshwater as potable, and RUT_PropaneLake.xml's own header
+  states the donor terrain's None type was "correctly not recognised as
+  drinkable water" — Saltwater keeps that non-potable property while still
+  being a real water body the fishing system will recognise. tags Water is
+  load-bearing for the same fishing-zone check.
+
+  Look: reuses the donor AB_SolidPropane's own texture/render values so the
+  new shallow reads as the same frozen-fuel crust the lake already shows —
+  this is a mechanical fix, not new art (checked AB_SolidPropane's own
+  fields via the live def dump before copying below).
+-->
+<Defs>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RUT_PropaneShallow</defName>
+    <label>frozen propane shallows</label>
+    <description>The margin of the lake, where the liquid fuel has frozen into a crust thin enough to break and drag a net through. Cold enough to burn an ungloved hand, and just barely open enough to be called water at all.</description>
+    <renderPrecedence>396</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <driesTo>AB_SolidPropane</driesTo>
+    <canFreeze>false</canFreeze>
+    <waterBodyType>Saltwater</waterBodyType>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>Ocean</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>
