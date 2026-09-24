@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STOCKED_POOL_BUILD_1, wave 1 — the eight-row stocked-pool bestiary's LIVE
+  side: pawn race + PawnKindDef pairs, per the two-def law in
+  design/Jawa/worldbuilding/biomes/weeping_stones_stocked_pool_2026-09-24.md
+  §2 ("a species that is both seen in the pool and netted from it is TWO
+  defs — pawn on wildAnimals/pen, catch item on the table"). The catch-item
+  half (FishBase-lineage) ships in RM_StockedPoolCatchItems.xml, same folder
+  tree, sibling file.
+
+  🔴 NOT WIRED to any biome's wildAnimals yet — WEEPINGSTONES_RM_MOD_BUILD_1
+  (the RM_WeepingStones BiomeDef itself) is still proposed/unclaimed, so
+  there is no RM_-tier biome to patch these into. These defs are complete
+  and load-safe standalone; the wiring patch is owed once that item lands
+  (see this mod's About.xml).
+
+  §6 ambush ban honored: predator is left UNSET (false) on every row.
+  "Nasty and way too active" (owner ruling) is represented as elevated
+  manhunter chances (a handling accident can turn ugly) and flavor tools,
+  never as a hunting-AI predator that stalks the truce line — violence here
+  lives in the HANDLING, per the spec's own law.
+
+  Placeholder art only (marked, not a considered choice — precedent:
+  RM_Gelatid, src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Gelatid.xml):
+  the four fish rows reuse vanilla Cobra's Snake body/texture retinted; the
+  three beast rows reuse vanilla Tortoise's TurtleLike body/texture
+  retinted. Real art for all eight rides the art queue as of this wave
+  (infrastructure/artpipe/pending/weepingstones_<species>_{south,east,north}.json,
+  filed 2026-09-24 after a done/_artsrc/registry sweep found nothing
+  existing for any of the eight names).
+-->
+<Defs>
+
+  <!-- ══════════════════════ 2.0 RM_Murrin — the baseline (gentle) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Murrin</defName>
+    <label>murrin</label>
+    <description>A hand-length pool fish, deep-keeled, with one tall dorsal comb-fin that cuts the surface in rings at wind-hour. The pools' rings-within-rings, alive. A silent pool with no murrin rings is the first sign an oasis is dying. The gentle baseline every stocked pool is measured against.</description>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <MarketValue>12</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <FilthRate>0.5</FilthRate>
+      <Wildness>0.3</Wildness>
+    </statBases>
+    <uiIconScale>0.55</uiIconScale>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHungerRate>0.12</baseHungerRate>
+      <baseHealthScale>0.35</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <specificMeatDef>RM_MurrinMeat</specificMeatDef>
+      <lifeExpectancy>4</lifeExpectancy>
+      <gestationPeriodDays>3</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(3, 0)</li>
+          <li>(5, 1)</li>
+          <li>(10, 1)</li>
+          <li>(14, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>Pawn_Cobra_Wounded</soundWounded>
+          <soundDeath>Pawn_Cobra_Death</soundDeath>
+          <soundCall>Pawn_Cobra_Call</soundCall>
+          <soundAngry>Pawn_Cobra_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Murrin</defName>
+    <label>murrin</label>
+    <race>RM_Murrin</race>
+    <combatPower>8</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <drawSize>0.5</drawSize>
+          <color>(150, 140, 110)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <drawSize>0.7</drawSize>
+          <color>(150, 140, 110)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>0.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ 2a. RM_Skarrin — the ring-breaker ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Skarrin</defName>
+    <label>skarrin</label>
+    <description>A forearm-long pool fish that spends as much time above the water as in it. At wind-hour a stocked pool boils with them, silver arcs snapping at the falling dew-smoke. It jumps, and it bites what it lands on — clears a pen wall from standing water; a handler leaning over the pool takes a face-strike.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <MarketValue>22</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <FilthRate>0.6</FilthRate>
+      <Wildness>0.55</Wildness>
+    </statBases>
+    <uiIconScale>0.7</uiIconScale>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.22</baseBodySize>
+      <baseHungerRate>0.18</baseHungerRate>
+      <baseHealthScale>0.45</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <specificMeatDef>RM_SkarrinMeat</specificMeatDef>
+      <lifeExpectancy>5</lifeExpectancy>
+      <gestationPeriodDays>4</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1)</li>
+          <li>(5, 1)</li>
+          <li>(7, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.35</minAge>
+          <soundWounded>Pawn_Cobra_Wounded</soundWounded>
+          <soundDeath>Pawn_Cobra_Death</soundDeath>
+          <soundCall>Pawn_Cobra_Call</soundCall>
+          <soundAngry>Pawn_Cobra_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallBite_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallBite_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallBite_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.12</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.08</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Skarrin</defName>
+    <label>skarrin</label>
+    <race>RM_Skarrin</race>
+    <combatPower>18</combatPower>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <drawSize>0.6</drawSize>
+          <color>(200, 200, 210)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>0.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <drawSize>0.85</drawSize>
+          <color>(200, 200, 210)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>0.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ 2b. RM_Karrek — the flenser (swarm) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Karrek</defName>
+    <label>karrek</label>
+    <description>Finger-length little armored fish, fin-rays hardened into serrated chitin combs. A boiling crowd that hits thrown feed like one animal and leaves nothing. Feed-throwing is safe; wading is not — a karrek swarm strips a bleeding cut white in seconds. Left hungry two days, the swarm starts on its own smallest.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>4</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <FilthRate>0.4</FilthRate>
+      <Wildness>0.4</Wildness>
+      <ArmorRating_Sharp>0.08</ArmorRating_Sharp>
+    </statBases>
+    <uiIconScale>0.4</uiIconScale>
+    <tools>
+      <li>
+        <label>chitin comb</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.08</baseBodySize>
+      <baseHungerRate>0.10</baseHungerRate>
+      <baseHealthScale>0.25</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <specificMeatDef>RM_KarrekMeat</specificMeatDef>
+      <lifeExpectancy>3</lifeExpectancy>
+      <gestationPeriodDays>2.5</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(5, 0)</li>
+          <li>(8, 1)</li>
+          <li>(16, 1)</li>
+          <li>(22, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.08</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+          <soundWounded>Pawn_Cobra_Wounded</soundWounded>
+          <soundDeath>Pawn_Cobra_Death</soundDeath>
+          <soundCall>Pawn_Cobra_Call</soundCall>
+          <soundAngry>Pawn_Cobra_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallBite_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallBite_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallBite_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.10</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Karrek</defName>
+    <label>karrek</label>
+    <race>RM_Karrek</race>
+    <combatPower>6</combatPower>
+    <ecoSystemWeight>0.25</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <drawSize>0.35</drawSize>
+          <color>(120, 90, 60)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>0.35</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <drawSize>0.45</drawSize>
+          <color>(120, 90, 60)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>0.45</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ 2c. RM_Vizhik — the walker (pot-eel) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vizhik</defName>
+    <label>vizhik</label>
+    <description>A wrist-thin eel, comb-gills fanned along the whole neck like a ruff, cold, quick, and never where you left it. At wind-hour, when every stone face runs wet, a vizhik pours itself out of the pen and crosses open rock on its gill-comb — into the next pool, the cistern, the water barrel, the kitchen stock-pot. Its bite is small and goes septic more often than it should.</description>
+    <statBases>
+      <MoveSpeed>2.8</MoveSpeed>
+      <MarketValue>16</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>48</ComfyTemperatureMax>
+      <FilthRate>0.4</FilthRate>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <uiIconScale>0.5</uiIconScale>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHungerRate>0.14</baseHungerRate>
+      <baseHealthScale>0.4</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <specificMeatDef>RM_VizhikMeat</specificMeatDef>
+      <lifeExpectancy>6</lifeExpectancy>
+      <gestationPeriodDays>4</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1)</li>
+          <li>(4, 1)</li>
+          <li>(6, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Cobra_Wounded</soundWounded>
+          <soundDeath>Pawn_Cobra_Death</soundDeath>
+          <soundCall>Pawn_Cobra_Call</soundCall>
+          <soundAngry>Pawn_Cobra_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallBite_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallBite_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallBite_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.06</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.04</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vizhik</defName>
+    <label>vizhik</label>
+    <race>RM_Vizhik</race>
+    <combatPower>10</combatPower>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <drawSize>0.5</drawSize>
+          <color>(190, 195, 170)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <drawSize>0.65</drawSize>
+          <color>(190, 195, 170)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>0.65</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ 2d. RM_Vhorrin — the cull (mismanagement state) ══════════════════════
+       Ruled 2026-09-24 (WEEPING_STONES_FISH_HUSBANDRY_1): ships as the
+       pool-state row as drafted — it IS the mismanagement state made flesh,
+       not a rare wild monster (spec Q5, option 1). The def below is what
+       the state-flip mechanic (owed, wave 2) will spawn at cull time; it is
+       NOT placed on any wildAnimals list and has zero ambient commonality
+       by construction (no BiomeDef entry exists to carry one). -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vhorrin</defName>
+    <label>vhorrin</label>
+    <description>The murrin silhouette scaled wrong — arm-long, dorsal comb ragged, deep-bodied. It IS a pool fish, the same stock, grown past the point where the pen can hold anything else. Any stocked pool left crowded and unculled grows one; the murrin rings thin week by week until one wide slow ring is doing all the surfacing. It takes fingers.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>60</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <FilthRate>1.2</FilthRate>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <uiIconScale>0.9</uiIconScale>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.75</baseBodySize>
+      <baseHungerRate>0.30</baseHungerRate>
+      <baseHealthScale>0.9</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <specificMeatDef>RM_VhorrinMeat</specificMeatDef>
+      <lifeExpectancy>10</lifeExpectancy>
+      <!-- No litterSizeCurve/gestation: RM_Vhorrin is a state-flip spawn,
+           not a breeding population — PoolStock (wave 2) is its only
+           source. Leaving reproduction fields at the AnimalThingBase
+           default rather than authoring a curve nothing reads yet. -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Cobra_Wounded</soundWounded>
+          <soundDeath>Pawn_Cobra_Death</soundDeath>
+          <soundCall>Pawn_Cobra_Call</soundCall>
+          <soundAngry>Pawn_Cobra_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallBite_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallBite_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallBite_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.20</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vhorrin</defName>
+    <label>vhorrin</label>
+    <race>RM_Vhorrin</race>
+    <combatPower>35</combatPower>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <drawSize>1.1</drawSize>
+          <color>(90, 95, 80)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>1.1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ 2e. RM_Loomu — the caller (NOT a fish) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Loomu</defName>
+    <label>loomu</label>
+    <description>A cat-sized, boneless, dove-grey thing that hangs in the warm seep-throat water and repeats what it hears at the bank: the feed whistle, the wind through the vanes, a child's laugh, its keeper's name for it. Mild in the flesh, terrible in the ear — a loomu pen at night runs through its whole collection. Handlers stop teaching them words on purpose and cannot stop teaching them by accident.</description>
+    <statBases>
+      <MoveSpeed>1.8</MoveSpeed>
+      <MarketValue>45</MarketValue>
+      <ComfyTemperatureMin>8</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <FilthRate>0.6</FilthRate>
+      <Wildness>0.25</Wildness>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+    </statBases>
+    <uiIconScale>0.85</uiIconScale>
+    <race>
+      <body>TurtleLike</body>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHungerRate>0.16</baseHungerRate>
+      <baseHealthScale>0.6</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <specificMeatDef>RM_LoomuMeat</specificMeatDef>
+      <lifeExpectancy>9</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+          <soundAngry>Pawn_Tortoise_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+      <trainability>Intermediate</trainability>
+      <manhunterOnDamageChance>0.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.0</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Loomu</defName>
+    <label>loomu</label>
+    <race>RM_Loomu</race>
+    <combatPower>10</combatPower>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>0.65</drawSize>
+          <color>(150, 150, 158)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>0.65</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>0.85</drawSize>
+          <color>(150, 150, 158)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>0.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ 2f. RM_Huldu — the warm one (NOT a fish) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Huldu</defName>
+    <label>huldu</label>
+    <description>A forearm-length velvet-skinned swimmer, dorsal comb folded flat like wet fur; clings when handled. Warm to the touch — not seep-warm, body-warm, with a pulse you can feel through the skin. Lifted from the water it does not thrash: it grips the handler's forearm and presses close, and it shivers. None whatsoever, which is its own kind of problem: the huldu is the row that makes the handler the uneasy party.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <MarketValue>50</MarketValue>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <FilthRate>0.5</FilthRate>
+      <Wildness>0.15</Wildness>
+    </statBases>
+    <uiIconScale>0.75</uiIconScale>
+    <race>
+      <body>TurtleLike</body>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHungerRate>0.15</baseHungerRate>
+      <baseHealthScale>0.55</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <specificMeatDef>RM_HulduMeat</specificMeatDef>
+      <lifeExpectancy>7</lifeExpectancy>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1, 1)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+          <soundAngry>Pawn_Tortoise_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+      <trainability>Intermediate</trainability>
+      <manhunterOnDamageChance>0.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.0</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Huldu</defName>
+    <label>huldu</label>
+    <race>RM_Huldu</race>
+    <combatPower>6</combatPower>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>0.6</drawSize>
+          <color>(170, 110, 70)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>0.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>0.8</drawSize>
+          <color>(170, 110, 70)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════ 2g. RM_Ivvol — the tally (NOT a fish) ══════════════════════ -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Ivvol</defName>
+    <label>ivvol</label>
+    <description>A flat bottom-dweller, its comb a raised dorsal ridge set with a row of eyes — the ridge surfaces, the eyes count. A doormat-sized floor-thing that knows the feed schedule better than the apprentice does. Passive — but it learns. Pens with an ivvol have fewer vizhik escapes and no vhorrin has ever grown in one, and no farmer can tell you the mechanism. When finally netted it does not struggle; it goes still, and the whole ridge of eyes turns to the farmer, and it watches.</description>
+    <statBases>
+      <MoveSpeed>1.0</MoveSpeed>
+      <MarketValue>70</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <FilthRate>0.5</FilthRate>
+      <Wildness>0.2</Wildness>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+    </statBases>
+    <uiIconScale>0.8</uiIconScale>
+    <race>
+      <body>TurtleLike</body>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHungerRate>0.13</baseHungerRate>
+      <baseHealthScale>0.65</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <specificMeatDef>RM_IvvolMeat</specificMeatDef>
+      <lifeExpectancy>14</lifeExpectancy>
+      <gestationPeriodDays>18</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1, 1)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+          <soundAngry>Pawn_Tortoise_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.0</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ivvol</defName>
+    <label>ivvol</label>
+    <race>RM_Ivvol</race>
+    <combatPower>8</combatPower>
+    <ecoSystemWeight>0.08</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>0.7</drawSize>
+          <color>(120, 115, 100)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>0.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>0.95</drawSize>
+          <color>(120, 115, 100)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>0.95</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

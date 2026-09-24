@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STOCKED_POOL_BUILD_1 §4.5 — the doubt-meat mood economy. RULED REAL
+  2026-09-24 (WEEPING_STONES_FISH_HUSBANDRY_1 card 2): "per-beast Ate X
+  thoughts... no new C#." Mechanism verified against the real vanilla shape
+  before writing a line: Anomaly's Meat_Twisted uses
+  `ingestible.specialThoughtDirect`/`specialThoughtAsIngredient` (pure XML,
+  Data/Anomaly/Defs/ThingDefs_Items/Items_Various.xml, paired with
+  Thoughts_Memory_Misc.xml's `AteTwistedMeat` ThoughtDef) — the exact same
+  pattern already lives in this repo at
+  src/RimUtinni/UtinniPatches/Defs/Absorbed_VAEWasteMegatardi/Absorbed_VAEWasteMegatardi_Defs.xml
+  ("VAEWaste_AteToxicMeatDirect") and
+  src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_LivePreparations.xml
+  ("PURE XML, as the spec requires").
+
+  Grading per the spec: "ate loomu (it answered the whistle) a real mood hit
+  for most pawns, shrugged off by psychopaths and bloodlust; ate huldu (it
+  was warm) a small hit; ate ivvol (it watched) a small hit that certain
+  colonists — the ones who ran the pool — feel twice." The "feel twice" read
+  for pool-runners needs a per-pawn skill/role check this data-only pass
+  cannot express without new C# (RULED no new C#) — carried as flavor text
+  in the ivvol thought's description instead of a mechanical distinction;
+  filed as an owed refinement, not invented past what is ruled.
+
+  Direct (named roast) vs as-ingredient (mixed meal, diluted): two distinct
+  ThoughtDefs per species, direct always the stronger of the pair, matching
+  §4.5 "cooked into mixed meals the thought dilutes; served as the named
+  roast it does not."
+-->
+<Defs>
+
+  <!-- ══════════════════════ loomu — "it answered the whistle" ══════════════════════ -->
+  <ThoughtDef>
+    <defName>RM_AteLoomuDirect</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>2.5</durationDays>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+      <li>Bloodlust</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>ate loomu</label>
+        <description>It came when I called it. That's the whole reason I caught it, and I ate it anyway.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_AteLoomuAsIngredient</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1.5</durationDays>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+      <li>Bloodlust</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>ate loomu (in a dish)</label>
+        <description>There was loomu in that. I could tell, a little.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- ══════════════════════ huldu — "it was warm" ══════════════════════ -->
+  <ThoughtDef>
+    <defName>RM_AteHulduDirect</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>2</durationDays>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+      <li>Bloodlust</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>ate huldu</label>
+        <description>It was warm. It had a pulse. It clung to my arm on the way to the kitchen.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_AteHulduAsIngredient</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1</durationDays>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+      <li>Bloodlust</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>ate huldu (in a dish)</label>
+        <description>The fat in that dish rendered awfully rich. I try not to think about which animal.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- ══════════════════════ ivvol — "it watched" ══════════════════════ -->
+  <ThoughtDef>
+    <defName>RM_AteIvvolDirect</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>2</durationDays>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+      <li>Bloodlust</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>ate ivvol</label>
+        <description>It didn't struggle when we netted it. It went still and watched us, every eye on the ridge. It ran that pool better than I do. Colonists who tended the pool themselves feel this one worse than most.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_AteIvvolAsIngredient</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1</durationDays>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+      <li>Bloodlust</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>ate ivvol (in a dish)</label>
+        <description>Something in that dish was watching me before it was food.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- ══════════════════════ murrin-and-seep-salt broth — §4.2, small buff ══════════════════════ -->
+  <ThoughtDef>
+    <defName>RM_AteMurrinBroth</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>the taste of the stones</label>
+        <description>Murrin and seep-salt, the pilgrim's comfort dish. It tastes like the pool is well.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- ══════════════════════ the Cull Feast — §4.4 ══════════════════════
+       One ThoughtDef carrying both halves of the spec's request ("+mood
+       'the pool is saved', with a small stacking debuff... flavor text
+       does the work, vanilla thought machinery carries it") — a single net
+       -positive memory whose description names the unease rather than a
+       second mechanically stacking thought, since RimWorld's ingestible
+       block gives a meal exactly one direct taste thought to hang either
+       half on. -->
+  <ThoughtDef>
+    <defName>RM_AteCullFeast</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>3</durationDays>
+    <stages>
+      <li>
+        <label>the pool is saved</label>
+        <description>The vhorrin is culled and the pool will surface murrin rings again. It's a good feast. Everyone at the table knows what it grew fat on.</description>
+        <baseMoodEffect>6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

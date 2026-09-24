@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Weeping Stones — Stocked Pool</name>
+  <packageId>mandrake.rm.weepingstones</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>STOCKED_POOL_BUILD_1 (owner typed 2026-09-24, on
+`WEEPING_STONES_FISH_HUSBANDRY_1`: "love it. Moisture farmers specializing in
+fish. Ripe possibilities for rimcuisine stuff too. Make the fish nasty and
+way too active. And some shouldn't be fish but alien beasts you really
+wonder if we should be eating.")
+
+This mod is the Weeping Stones' STOCKED line, in the RM_ (RimMandrake) tier:
+franchise-free, invented names only (Q11a), rich enough to stand alone with
+no Star Wars dependency. It is distinct from the WILD catch (the ruled
+gentle six wild fish, unchanged) — nastiness is what domestication and
+crowding do; the pen makes the monster, never the shore.
+
+The bestiary: `RM_Murrin` (the gentle baseline), four "nasty and way too
+active" fish (`RM_Skarrin` the ring-breaker jumper, `RM_Karrek` the
+swarm-flenser, `RM_Vizhik` the traveling pot-eel, `RM_Vhorrin` the
+mismanagement state made flesh), and three catches that are not fish at all
+(`RM_Loomu` the caller, `RM_Huldu` the warm one, `RM_Ivvol` the tally) — the
+best eating in the biome, and nobody eats them comfortably.
+
+Cuisine hooks: six recipes/ingredients including a real doubt-meat mood
+economy — per-beast "Ate X" thoughts (loomu/huldu/ivvol), graded by
+callousness/psychopathy, diluted in mixed meals, undiluted in the named
+roast.
+
+**Build state (2026-09-24, wave 1):** the bestiary (pawn race + PawnKindDef
+pairs) and the cuisine layer (meat items, recipes, doubt-meat ThoughtDefs)
+ship this wave. The husbandry LOOP — pen zone designator, per-pool-body
+`RM_MapComponent_PoolStock` bookkeeping (stealing `RM_LiquidBody`'s region
+logic), ring-density READ overlay art, handler-injury toil failures, vizhik
+escape events, and the vhorrin cull set-piece — is the honest hard part and
+ships in a following wave. None of these species are wired into the live
+`RUT_WeepingStones` BiomeDef's `wildAnimals`/`fishTypes` yet: that wiring
+waits on `WEEPINGSTONES_RM_MOD_BUILD_1` landing the `RM_WeepingStones`
+BiomeDef this mod's content is meant to populate. Until both land, this mod
+ships inert defs with no spawn path — degrades clean, breaks nothing.
+
+**Mod Settings** (MOD_OPTIONS_RETROFIT_1 doctrine): a master "Stocked pools
+enabled" toggle, off by default until the husbandry loop ships, so enabling
+this mod today changes nothing about a running game. When the loop lands the
+toggle gates the whole mechanism; wild fishing (the ruled gentle six) is
+never touched by it.</description>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+</ModMetaData>
