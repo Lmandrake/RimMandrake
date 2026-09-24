@@ -24,7 +24,7 @@ keep it.
    already built: `RM_GradientAxisExtension` / `RM_GradientSurgeExtension`, shipped 2026-09-13
    in `RimMandrake.EnvironmentalHazards`.
 3. ⭐ **Three rows need more than one graphic and lose their entire point without it** —
-   `RM_Mirrash` (living **and** dead-standing, which is the salt-line record), `RM_Ismerrow`
+   `RM_Ilbareen` (living **and** dead-standing, which is the salt-line record), `RM_Ismerrow`
    (a colour-randomised set, never one sprite), `RM_Braskeen` (open and closed).
 4. **The predators draw on the arthropod floor**, not on colonists — owner ruling, decision
    taken by question card. Pair with `MIASMA_FAUNA_FLOOR_ROSTER_1`, which authors the prey.
@@ -38,7 +38,7 @@ keep it.
   post-load def dump.
 - Zero new Config errors in `Player.log` — 🔴 grep the log; `validate_patch.py` cannot see them.
 - A quicktest map on a **scratch** world whose landing tile is the Miasma, looked at: the
-  gradient must be visibly readable, and a band of dead `RM_Mirrash` must appear where brine
+  gradient must be visibly readable, and a band of dead `RM_Ilbareen` must appear where brine
   has reached.
 - 🔴 **Before queueing a single art job**, search `infrastructure/artpipe/done/`, `_artsrc/`,
   `registry.jsonl` and any review sheet's `.decisions.json` by subject — the owner's standing
