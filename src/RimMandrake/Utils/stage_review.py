@@ -162,12 +162,16 @@ def cell_open(rb, x, z, want_terrain_prefix=None):
     things = ci.get("things") or []
     blocked = any((t.get("category") in ("Building",)) or ("Wall" in str(t.get("defName", "")))
                   for t in things)
-    if "Water" in terr or "Rock" in terr or terr.endswith("_Rough") is False and "Marble" in terr:
-        pass  # Marble_Rough etc are walkable; only water/impassable truly block
-    water = "Water" in terr
+    # Water/bare-Rock terrain blocks a spawn; a walkable "_Rough" floor of the
+    # same stone (Marble_Rough etc.) does not. This used to be a dead `if ...:
+    # pass` that computed the condition and threw it away, so every non-water
+    # Rock terrain silently passed as open — exactly the "#1 review-shot
+    # defect" this function exists to catch. Fixed 2026-09-24 (wave 40).
+    impassable_terrain = ("Water" in terr or "Rock" in terr
+                          or (terr.endswith("_Rough") is False and "Marble" in terr))
     if want_terrain_prefix and not terr.startswith(tuple(want_terrain_prefix.split(","))):
         return False, terr
-    return (not blocked and not water), terr
+    return (not blocked and not impassable_terrain), terr
 
 
 def find_open_grid(rb, cx, cz, n, spread, terrain_prefix):
