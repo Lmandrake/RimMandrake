@@ -869,6 +869,18 @@
     "hash": "72f41a5d3b741051e9681a8cf73d5e77b47ffe623428af75f9065e99451d7d5b",
     "sha": "ac4828bbd"
   },
+  "src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_HeatDrivenBurst_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a252bd377c665daa59f72e04510492af1f53675ee45c908bd161b5fb62d1b2cc",
+    "sha": "c3330da8f"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_ShardArmor_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f08248c34b505e3a281b392a4379623fab333b006c856e92fc1734da50f14fb5",
+    "sha": "c3330da8f"
+  },
   "src/RimMandrake/CreatureBehaviors/Defs/JobDefs/RM_JobDefs.xml": {
     "cleanCount": 4,
     "date": "2026-09-24",
@@ -881,11 +893,35 @@
     "hash": "de7e0d93ef9e9bfd0b92f907bbb330a729e6aa28a5a4d9d78b7d99fd74e2b07b",
     "sha": "ac4828bbd"
   },
+  "src/RimMandrake/CreatureBehaviors/Defs/ThingDefs_Items/RM_DrainedFluids.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9add6e9b265097a5840024877be474ef27b6e125441c343e3073a419e025dfdb",
+    "sha": "c3330da8f"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_ShadeSeekingWander.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fb6113dba0e508f3eb41f5535a9ba65f0a36eb2ad4beb61b92fc095566bd005d",
+    "sha": "c3330da8f"
+  },
   "src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_VerminBehaviors.xml": {
     "cleanCount": 3,
     "date": "2026-09-24",
     "hash": "40858245a09dcde7cb849cfc3ec8859412c8b0317b9484d4dc234818e67131c0",
     "sha": "067849df3"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/ThoughtDefs/RM_TameSoothe_Thoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9f5fad2a8b98f8c3ac7b7515861fdb92adcb3ee51704e10f882c6a4f96f90eef",
+    "sha": "c3330da8f"
+  },
+  "src/RimMandrake/CreatureBehaviors/Defs/ToolCapacityDefs/RM_Grapple_ToolCapacity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1d73cc9d0bfc1b12b19c34bebb7d52d519495aa8f6dcad89c77a5e4e49ec0322",
+    "sha": "c3330da8f"
   },
   "src/RimMandrake/CreatureBehaviors/Source/CompProperties_AquaticAmbusher.cs": {
     "cleanCount": 1,
@@ -2069,6 +2105,18 @@
     "hash": "256f09b2c699527a99473e3135f6efd6bf970d91642add536b011862abbb9d13",
     "sha": "009b887ef"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_WaterTruce.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "665435a69860f839fd9e2f272550913af8101ab20b0c5f9f4fe22713e978fa88",
+    "sha": "c3330da8f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MentalState_WaterTruceRetribution.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5fac62d705ec836d644204e71a341309cba14d3e185a436cdfcd4eb1c50c83f7",
+    "sha": "c3330da8f"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MirrorPoolBiomeExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-23",
@@ -2200,6 +2248,18 @@
     "date": "2026-09-18",
     "hash": "63b95033b9612d16a84489d4742fb3b99a5e341826fcc54ede21031be9d5e024",
     "sha": "113ad7131"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_WaterTruceDamagePatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8ccc57d4bc0e65daca2224a2740ebf9f2e2105582c21e16016ed3e378735a9c7",
+    "sha": "c3330da8f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_WaterTruceExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c3616fe012b19d15314e27afa6d0b2341dc95bccd6376a1b2c502bb4f646f95f",
+    "sha": "c3330da8f"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_WetBulbExtension.cs": {
     "cleanCount": 2,
