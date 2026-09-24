@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T05:45:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T05:49:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -314,15 +314,6 @@ target:   v1
 kind:     task
 summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
 prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
-
-## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     fix
-summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
 state:    doing
@@ -1033,16 +1024,6 @@ kind:     task
 blocked:  wired RUT_WarLabReactorCore (CompIgniteCraterOnDestroy) + deployed; live ignition/save-load/world_commit quicktest owed
 summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
 prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
-
-## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     fix
-blocked:  Not a repo bug: repo's Absorbed_KotorCore_CrystalMapGenerator.xml already lists all 11 variants ungated (confirmed via deploy_custom_mods.py plan: file is under an ACTIVE DEPLOY_HOLD entry, 'donor guy762.mm.kotorcore still active, 2026-09-06'). Live game loads the donor's own un-absorbed CrystalMapGenerator.xml (workshop 3254370945), which gates 10/11 variants behind MayRequire=guy762.KotORWeapons -- a mod confirmed absent from live ModsConfig.xml -- leaving only ungated Stygium. Redeploying now would create a duplicate KOTOR_CrystalFormation defName against the still-active donor; pulling the crippled donor version into repo would be a regression. Real fix is retiring guy762.mm.kotorcore, already tracked and blocked elsewhere. (on DROID_DONOR_PATCH_GATE_1)
-summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
 ## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
 state:    doing  (BLOCKED)
