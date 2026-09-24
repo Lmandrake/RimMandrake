@@ -189,10 +189,10 @@
         <li>
           <def>AnimalBaby</def>
           <minAge>0</minAge>
-          <soundWounded>Pawn_LylekBaby_Wounded</soundWounded>
-          <soundDeath>Pawn_LylekBaby_Death</soundDeath>
-          <soundCall>Pawn_LylekBaby_Call</soundCall>
-          <soundAngry>Pawn_LylekBaby_Angry</soundAngry>
+          <soundWounded>RSW_Pawn_LylekBaby_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_LylekBaby_Death</soundDeath>
+          <soundCall>RSW_Pawn_LylekBaby_Call</soundCall>
+          <soundAngry>RSW_Pawn_LylekBaby_Angry</soundAngry>
         </li>
         <li>
           <def>AnimalJuvenile</def>
@@ -201,10 +201,10 @@
         <li>
           <def>AnimalAdult</def>
           <minAge>1.0</minAge>
-          <soundWounded>Pawn_Lylek_Wounded</soundWounded>
-          <soundDeath>Pawn_Lylek_Death</soundDeath>
-          <soundCall>Pawn_Lylek_Call</soundCall>
-          <soundAngry>Pawn_Lylek_Angry</soundAngry>
+          <soundWounded>RSW_Pawn_Lylek_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Lylek_Death</soundDeath>
+          <soundCall>RSW_Pawn_Lylek_Call</soundCall>
+          <soundAngry>RSW_Pawn_Lylek_Angry</soundAngry>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>

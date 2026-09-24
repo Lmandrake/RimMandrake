@@ -128,10 +128,10 @@
         <li>
           <def>AnimalAdult</def>
           <minAge>0.2</minAge>
-          <soundWounded>Pawn_Voorpak_Wounded</soundWounded>
-          <soundDeath>Pawn_Voorpak_Death</soundDeath>
-          <soundCall>Pawn_Voorpak_Call</soundCall>
-          <soundAngry>Pawn_Voorpak_Angry</soundAngry>
+          <soundWounded>RSW_Pawn_Voorpak_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Voorpak_Death</soundDeath>
+          <soundCall>RSW_Pawn_Voorpak_Call</soundCall>
+          <soundAngry>RSW_Pawn_Voorpak_Angry</soundAngry>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
