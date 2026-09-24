@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Tarred_Hediffs.xml                UtinniPatches — SUMP_TAR_NASTINESS_1
+
+  Item spec §2, "tarred-pawn hediffs — tar on yourself: move/work penalties,
+  mood, hygiene-flavored stink, spreads filth, maybe flammability. Severity
+  from exposure; removal is not free."
+
+  Given out by RM_MapComponent_CarriedFilthHediffLink the moment a pawn's
+  own Pawn_FilthTracker starts carrying RM_Filth_Tar (RUT_Sump.xml's own
+  RM_CarriedFilthHediffExtension wiring), and its severity is then driven
+  entirely by whether that pawn is STILL carrying it — the comp below,
+  RimMandrake.EnvironmentalHazards.HediffCompProperties_CarriedFilthExposure
+  — reading Pawn_FilthTracker.CarriedFilthListForReading directly, the same
+  field SUMP_WALKWAYS_1's own tracking mechanism already fills. No second
+  tar representation: this hediff is a read-only passenger on that list.
+
+  "spreads filth" (the spec's own line) needs no mechanism of its own —
+  Pawn_FilthTracker.Notify_EnteredNewCell (RimWorld/Pawn_FilthTracker.cs)
+  already drops carried filth onto clean cells the carrier crosses, purely
+  from carrying RM_Filth_Tar at all; a tarred pawn is, structurally, already
+  a walking source of more tar filth. This hediff's own job is the pawn-
+  facing HALF: what carrying it costs the pawn themselves.
+
+  hediffClass HediffWithComps (stated explicitly — HediffDef.hediffClass
+  defaults to plain Hediff, which carries no comps at all and would make the
+  <comps> block below load clean and do nothing, same trap
+  RUT_Staggerseed_Hediffs.xml's own header already flags).
+
+  Three stages, thresholds 0 / 0.35 / 0.7 — same threshold shape
+  RUT_VorrelBrood already uses in this repo for a severity-driven escalation
+  read at a glance. Move penalty via capMods (Moving), work penalty via
+  statFactors (WorkSpeedGlobal, RimWorld/StatDefOf.cs — confirmed real,
+  a Factor-type stat so a multiplicative statFactor is the correct field,
+  not statOffsets), flammability via statOffsets (StatModifier list,
+  confirmed on HediffStage — Verse/HediffStage.cs:92) once a pawn is
+  properly slicked, not from the first light tracking. No pain, no capacity
+  offsets beyond Moving — this is squalor and hazard, not an injury.
+
+  "Removal is not free" (the spec's own line): severityPerDayClean below
+  heals a tarred pawn off on their own once their boots are clean, but
+  RUT_ScrubTarredSolvent (this item's piece 3, RUT_Tarred_Solvents.xml) is
+  the deliberate, priced cure via a real Recipe_RemoveHediff bill — same
+  shape RSW_RemoveBrainWorm already ships in this repo.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_Tarred</defName>
+    <label>tarred</label>
+    <description>Black tar tracked in and stuck fast — on boots, cuffs, skin. It does not wash off with water, it reeks, and it does not care whose floor it ends up on next. Left alone it thickens; scrubbed clean, or dissolved with the right solvent, it lets go.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.14, 0.12, 0.10)</defaultLabelColor>
+    <maxSeverity>1</maxSeverity>
+    <isBad>true</isBad>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_CarriedFilthExposure" MayRequire="mandrake.rm.environmentalhazards">
+        <filthDef>RM_Filth_Tar</filthDef>
+        <!-- INVENTED-BUILD tuning: ~1.1 in-game days from fresh contact to the
+             top stage while continuously re-exposed; ~1.7 days to heal off
+             clean on its own. SUMP_TAR_NASTINESS_1's own tuning law ("full
+             cleanliness should be a losing fight") is why clean-healing is
+             slower than dirty-accruing, not faster — avoidance works, but
+             slowly, next to a priced solvent. -->
+        <severityPerDayCarrying>0.9</severityPerDayCarrying>
+        <severityPerDayClean>-0.6</severityPerDayClean>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>tracked in tar</label>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.92</postFactor>
+          </li>
+        </capMods>
+        <statFactors>
+          <li>
+            <stat>WorkSpeedGlobal</stat>
+            <factor>0.95</factor>
+          </li>
+        </statFactors>
+      </li>
+      <li>
+        <label>tar-slicked</label>
+        <minSeverity>0.35</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.8</postFactor>
+          </li>
+        </capMods>
+        <statFactors>
+          <li>
+            <stat>WorkSpeedGlobal</stat>
+            <factor>0.85</factor>
+          </li>
+        </statFactors>
+        <statOffsets>
+          <li>
+            <stat>Flammability</stat>
+            <offset>0.25</offset>
+          </li>
+        </statOffsets>
+      </li>
+      <li>
+        <label>tar-caked</label>
+        <minSeverity>0.7</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.65</postFactor>
+          </li>
+        </capMods>
+        <statFactors>
+          <li>
+            <stat>WorkSpeedGlobal</stat>
+            <factor>0.7</factor>
+          </li>
+        </statFactors>
+        <statOffsets>
+          <li>
+            <stat>Flammability</stat>
+            <offset>0.5</offset>
+          </li>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

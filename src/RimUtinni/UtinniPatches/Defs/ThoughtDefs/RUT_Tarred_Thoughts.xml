@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Tarred_Thoughts.xml               UtinniPatches — SUMP_TAR_NASTINESS_1
+
+  The mood half of item spec §2. Situational (ThoughtWorker_Hediff), not a
+  memory — a tarred colonist's mood should track how tarred they currently
+  ARE, not sit at a fixed penalty for some fixed number of days after the
+  fact. Same vanilla pattern RUT_VorrelEuphoriaThought already uses in this
+  repo (RimWorld/ThoughtWorker_Hediff.cs, read in full there).
+
+  🔴 STAGE COUNT IS LOAD-BEARING, same warning RUT_VorrelEuphoriaThought's
+  own header already carries: ThoughtWorker_Hediff indexes THIS def's stage
+  list by the HEDIFF's current stage index (RimWorld/ThoughtWorker_Hediff.cs:
+  ActiveAtStage(min(hediff stage, hediff stages-1, thought stages-1))).
+  RUT_Tarred has three stages; this has three, same order. Add a stage to
+  one and you must add it to the other.
+
+  Mood values deliberately small and all negative — this is squalor, not a
+  crisis, and per SUMP_TAR_NASTINESS_1's own tuning law the biome should
+  reward players who tolerate mess rather than punish them hard enough to
+  force constant cleaning. INVENTED-BUILD, flagged for live tuning.
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RUT_TarredThought</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RUT_Tarred</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>tracked in tar</label>
+        <description>My boots are black with it and it is on everything I touch. It could be worse.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>tar-slicked</label>
+        <description>It is in my hair, on my hands, down my collar. I can smell myself from an arm's length.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+      <li>
+        <label>tar-caked</label>
+        <description>I am wearing more tar than clothing at this point. Everyone can smell it, including me.</description>
+        <baseMoodEffect>-9</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

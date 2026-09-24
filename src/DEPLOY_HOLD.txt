@@ -310,23 +310,22 @@ UtinniPatches/Patches/RUT_BeastBulge_DreadRegistration.xml           # BENCH: he
 #    UtinniPatches/Textures/Things/Filth/RUT_MouseTrack.png.
 UtinniPatches/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml           # BENCH: no art yet, 2026-09-14
 
-# SUMP_WALKWAYS_1 (2026-09-24): RM_Filth_Tar.xml (FlowWorks) repointed to
+# SUMP_WALKWAYS_1 (2026-09-24): RM_Filth_Tar.xml (FlowWorks) was repointed to
 # Things/Filth/RM_FilthTar after validate_patch.py refused a reuse of
 # vanilla's own Things/Filth/Grainy as a hard ERROR — same shape as
-# RUT_Filth_MouseTrack.xml two entries above: FlowWorks already ships
-# content under Textures/Things/, so Things/ is treated as this mod's own
-# claimed namespace, not a vanilla fallback.
-# => LIFT when a real black/tarry filth sprite lands under
-#    FlowWorks/Textures/Things/Filth/RM_FilthTar.png.
-FlowWorks/Defs/LiquidTypes/ThingDefs/RM_Filth_Tar.xml                # FOUNDRY: no art yet, 2026-09-24
+# RUT_Filth_MouseTrack.xml two entries above. HOLD LIFTED, SUMP_TAR_NASTINESS_1
+# (2026-09-24): three placeholder blob sprites (Graphic_Cluster reads texPath
+# as a FOLDER — Verse/Graphic_Collection.cs's own ContentFinder<Texture2D>.
+# GetAllInFolder call, confirmed against the decompile, not guessed) now sit
+# at FlowWorks/Textures/Things/Filth/RM_FilthTar/RM_FilthTar_{a,b,c}.png —
+# simple procedurally-drawn irregular splotches, not the real hand-authored
+# art a review pass would ship, but real files that render instead of
+# magenta. Both this entry and the patch below are removed from this file
+# together, same pass.
 
-# SUMP_WALKWAYS_1 (2026-09-24): the patch that WIRES RM_Filth_Tar onto
-# RM_TarShallow's <generatedFilth> is held together with the def above —
-# <generatedFilth> is a direct ThingDef reference the loader resolves by
-# name, so shipping this patch without RM_Filth_Tar deployed would be a real
-# Config error on every launch, not a harmless unmatched-patch no-op.
-# => LIFT in the same pass as the entry above.
-UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml              # FOUNDRY: depends on held RM_Filth_Tar, 2026-09-24
+# (SUMP_WALKWAYS_1's own patch entry, held together with the def above, is
+# LIFTED in this same pass — <generatedFilth> now resolves against a real,
+# deployed RM_Filth_Tar.)
 
 # --- FORGE_MECHANICS_1 F2/F5/F6: six new ThingDefs, no art yet ---------------
 # 2026-09-13, FORGE_MECHANICS_1 F2/F5/F6 build pass. All six intended to

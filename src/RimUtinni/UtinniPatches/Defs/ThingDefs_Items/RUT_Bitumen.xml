@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Bitumen.xml                       UtinniPatches — SUMP_TAR_NASTINESS_1
+
+  Item spec §4, "the tar's own reward — annoying materials pay: the sheet
+  already calls the tar biologically rich; pick the reward with the roster
+  docs." the_sump.md §7 already names the axis directly: "Bitumen —
+  waterproofing, adhesive, torch-fuel, and asphalt: the Ashfall Road's
+  material now has its source." sump_flora_roster_2026-09-24.md row 4
+  (`RM_Korveth`) independently confirms the same def as ITS OWN harvest
+  ("the bitumen accumulator... harvest yields a bitumen item — shared item
+  def with the dig economy... 🆕 NEW def only — the item; no C#") and marks
+  it **OWED**. So this is not an invented reward: it is a def two separate
+  design passes already asked for and neither had shipped.
+
+  Fuel/chemistry axis (not preservation — that is SUMP_TAR_VAULT_1's own
+  rot-stop mechanism, a different item, kept distinct rather than doubled
+  up on the same material).
+
+  🔑 A genuine correction, same pass this item was authored: SUMP_WALKWAYS_1
+  flagged RUT_Glasswalk's own costList (Chemfuel x6) as "PLACEHOLDER... OWED:
+  re-point at the real bitumen/dig-barrel chain... once the items pass ships
+  it" — that items pass is this def, so RUT_SumpWalkways.xml is repointed to
+  RUT_Bitumen in this same commit (CLAUDE.md: "correctness outranks seat
+  ownership" applies even to one's own prior-session placeholder).
+
+  NOT BUILT THIS PASS, honestly: the harvest sources. The roster's own
+  korveth plant (RM_Korveth, sump_flora_roster row 4) does not exist yet —
+  that is flora-roster authoring work, a different pass — and "the real
+  dig-barrel economy" (raw tar hauled and refined) has no def either,
+  same gap SUMP_MECHANICS_1's own S1 build pass already flagged for
+  "barreled tar." So this ThingDef is real and immediately usable as a
+  COST (RUT_Glasswalk now spends it for real) but has NO recipeMaker and
+  NO harvest job yet — tradeable/debug-spawnable in the meantime, same
+  "compiles now, real source owed" posture this whole kit already uses.
+  "Make gathering it want the coping gear" (item spec §4's own closing
+  line): a future korveth-harvest or dig-barrel job hauling raw bitumen out
+  of tar country is the natural place to risk tarring the harvester
+  (RM_Filth_Tar/RUT_Tarred) without a weak solvent on hand — flagged as a
+  design note for whichever pass builds that job, not implemented here
+  (no harvest job exists yet to attach the risk to).
+
+  Texture: a first draft reused vanilla Things/Item/Resource/Jade as a
+  placeholder, same choice RUT_ThrummelSeepwax made — but validate_patch.py
+  refuses that as a hard ERROR for the same reason documented on that def's
+  own file (UtinniPatches already claims Textures/Things/Item/Resource/ as
+  its own namespace). Repointed to a new RUT_Bitumen/ folder (Graphic_
+  StackCount reads texPath as a folder, same Graphic_Collection finding)
+  with a simple procedurally-drawn placeholder chunk icon, near-black with
+  a slight sheen — distinct from RUT_ThrummelSeepwax's warm amber so the
+  two are never visually confused on a shelf.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_Bitumen</defName>
+    <label>bitumen</label>
+    <description>Solid black pitch, rendered from raw tar until it sets hard. Waterproofing, adhesive, torch-fuel, road-metal — half the Sump's economy runs on this one substance in one form or another, and the old paved roads were made from exactly this.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_Bitumen</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(24, 22, 20)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>1.8</MarketValue>
+      <Mass>0.35</Mass>
+      <Flammability>0.7</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <stackLimit>100</stackLimit>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+</Defs>

@@ -59,7 +59,18 @@
   under Textures/Things/, the validator treats Things/ as THAT mod's own
   claimed namespace and requires a real file, not a vanilla fallback.
   Repointed to a new RM_-named path under the same vanilla-mirroring folder
-  (Things/Filth/RM_FilthTar) and DEPLOY_HOLD'd — same fix, same pattern.
+  (Things/Filth/RM_FilthTar).
+
+  ART DELIVERED, SUMP_TAR_NASTINESS_1 (2026-09-24), DEPLOY_HOLD LIFTED:
+  graphicClass Graphic_Cluster reads texPath as a FOLDER, not a single file
+  base name (Verse/Graphic_Collection.cs's own Init: `ContentFinder<
+  Texture2D>.GetAllInFolder(req.path)`, confirmed against the decompile) —
+  so the real content is three simple placeholder blob sprites at
+  Textures/Things/Filth/RM_FilthTar/RM_FilthTar_{a,b,c}.png, procedurally
+  drawn irregular dark splotches with soft alpha edges (roughly matching
+  this def's own graphicData <color>), not the hand-authored art a real
+  review pass would ship. Real (reviewed, hand-composed) art is still owed
+  — flagged, not silently treated as done.
   ============================================================================
 -->
 <Defs>

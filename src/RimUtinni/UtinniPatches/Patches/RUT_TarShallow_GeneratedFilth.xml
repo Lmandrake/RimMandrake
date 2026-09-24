@@ -20,16 +20,12 @@
   Operation already satisfies it) — so that THIS file's own DEPLOY_HOLD
   (below) never touches the already-working mouse-track fix.
 
-  🔴 DEPLOY_HOLD'd (src/DEPLOY_HOLD.txt): RM_Filth_Tar has no real texture
-  yet (validate_patch.py ERROR, "Things/ IS this mod's own namespace"). This
-  is not merely a cosmetic pink-placeholder risk — <generatedFilth> is a
-  direct ThingDef reference field the config loader resolves by name, same
-  class of reference the cross-mod xref system resolves at load, so
-  deploying this patch alongside an undeployed RM_Filth_Tar.xml would ship a
-  dangling reference (a real Config error on every launch, not a silent
-  no-op like an unmatched PatchOperation). Lift both this file's hold and
-  RM_Filth_Tar.xml's together, in the same pass, the moment real filth art
-  lands.
+  DEPLOY_HOLD LIFTED, SUMP_TAR_NASTINESS_1 (2026-09-24): RM_Filth_Tar now
+  ships placeholder art (three blob sprites, that def's own header) and is
+  deployed, so <generatedFilth> — a direct ThingDef reference the config
+  loader resolves by name, same class of reference the cross-mod xref system
+  resolves at load — no longer dangles. Lifted in the same pass as
+  RM_Filth_Tar.xml's own hold, per that entry's own instruction.
 
   No MayRequire/FindMod gate — same posture as the sibling
   filthAcceptanceMask fix this depends on (that file's own header explains

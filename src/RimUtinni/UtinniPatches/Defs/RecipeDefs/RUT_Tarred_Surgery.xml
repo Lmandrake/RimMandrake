@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Tarred_Surgery.xml                UtinniPatches — SUMP_TAR_NASTINESS_1
+
+  "A weak solvent removes it" (item spec, verify section). Shape copied
+  from this repo's own RSW_RemoveBrainWorm (src/RimStarWars/BrainWorms/
+  Defs/RecipeDefs/Recipes_BrainWormSurgery.xml) — Recipe_RemoveHediff
+  (RimWorld/Recipe_RemoveHediff.cs, read in full this pass) is the real
+  vanilla worker for "a bill that consumes an ingredient and removes a
+  named hediff by def," so no new C# is owed for the cure itself, only for
+  making the hediff's own severity track carried filth (this item's piece
+  2, RM_HediffComp_CarriedFilthExposure).
+
+  Unlike RSW_RemoveBrainWorm this is NOT risky surgery — no
+  deathOnFailedSurgeryChance is set (Anesthetize's own vanilla precedent,
+  Data/Core/Defs/RecipeDefs/Recipes_Surgery_Misc.xml, leaves it unset too
+  for a routine, non-invasive bill), no skillRequirements (anyone can scrub
+  a colonist down), and surgerySuccessChanceFactor is left at the
+  SurgeryFlesh abstract default rather than lowered — this is application,
+  not incision. isViolation false: applying solvent is not an act of
+  violence regardless of who consents.
+
+  ingredients accepts EITHER solvent (RUT_WeakTarSolvent or the foreign-
+  trade RUT_StrongTarSolvent, RUT_Tarred_Solvents.xml) via an explicit
+  thingDefs filter rather than a shared thingCategory — these two are not a
+  general "Medicine"-style pool, they are specifically the two solvents
+  this item's own spec names, and nothing else should ever satisfy this
+  bill by accident.
+
+  targetsBodyPart false, hideBodyPartNames true — RUT_Tarred carries no
+  <part>, matching RSW_RemoveBrainWorm's own choice for a whole-body
+  hediff.
+-->
+<Defs>
+
+  <RecipeDef ParentName="SurgeryFlesh">
+    <defName>RUT_ScrubTarred</defName>
+    <label>scrub off tar</label>
+    <description>Work a solvent into a tarred colonist's skin and hair until the tar lets go. Not surgery in any real sense — just the only thing that gets it off short of waiting it out.</description>
+    <workerClass>Recipe_RemoveHediff</workerClass>
+    <jobString>Scrubbing off tar.</jobString>
+    <workAmount>600</workAmount>
+    <hideBodyPartNames>true</hideBodyPartNames>
+    <isViolation>false</isViolation>
+    <targetsBodyPart>false</targetsBodyPart>
+    <removesHediff>RUT_Tarred</removesHediff>
+    <successfullyRemovedHediffMessage>{0} has scrubbed the tar off {1}.</successfullyRemovedHediffMessage>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_WeakTarSolvent</li>
+            <li>RUT_StrongTarSolvent</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_WeakTarSolvent</li>
+        <li>RUT_StrongTarSolvent</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+  </RecipeDef>
+
+</Defs>

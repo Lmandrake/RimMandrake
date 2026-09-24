@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Tarred_Solvents.xml               UtinniPatches — SUMP_TAR_NASTINESS_1
+
+  Item spec §3, "Solvents — a WEAK solvent craftable in-biome (an ACID
+  rendered from thrummel seepwax, ruled generous per the item's own 'one
+  raid should give you a lot' note); the cleaning mechanism is tar->green-
+  gas reaction (cross-refs SUMP_GASLIGHT_1's verbatim rulings). Do NOT
+  build the foreign STRONG-solvent trade side — just leave a def/trade-tag
+  placeholder hook."
+
+  PARTIAL BY DESIGN, three pieces:
+
+  1. RUT_ThrummelSeepwax — the raw feedstock. sump_fauna_roster_2026-09-24.md
+     §4 already names "seepwax" as the thrummel hive's own invented product
+     (no donor def, chitin+wax economy, roster line 78). The thrummel
+     creature/hive itself is NOT built this pass (0 of the roster's under-
+     layer species exist yet, per that roster's own build-status table) — so
+     this def carries NO recipeMaker (nothing to render it FROM yet) and is
+     flagged as awaiting its real source, the hive raid, "ruled generous:
+     one raid should give you a lot" (SUMP_GASLIGHT_1's own verbatim owner
+     quote). Tradeable/debug-spawnable in the meantime, same "compiles now,
+     real source owed" posture this whole kit already uses throughout
+     (RUT_WickStem's own header is the precedent for "non-zero MarketValue
+     only so the def is legally tradeable, not a pricing call").
+
+  2. RUT_WeakTarSolvent — the local acid. Crafted straight from
+     RUT_ThrummelSeepwax via recipeMaker (the SAME short vanilla route
+     RM_SapResin -> RM_ToxinSealant already uses in this repo,
+     Greentide/RM_Greentide_Items.xml — no separate RecipeDef needed for a
+     plain bench-crafted resource). Deliberately GENEROUS yield
+     (productCount 4 off a costList of 1) per the ruling's own "not meant as
+     a starvation mechanic" — this is what actually cures RUT_Tarred
+     (RUT_Tarred_Surgery.xml, this item's piece 2/3 seam) and gates vault
+     extraction (SUMP_TAR_VAULT_1) and the gaslight reaction
+     (SUMP_GASLIGHT_1) elsewhere.
+
+     🔴 NOT BUILT THIS PASS: the tar->green-gas reaction chemistry itself.
+     SUMP_GASLIGHT_1 owns "cleaning works BY the tar->green-gas reaction" as
+     its own full mechanism (a Helixien-compatible gas byproduct, the
+     warbling light, vault extraction, three uses of one acid) — this item's
+     own verify section only promises "a weak solvent removes it [the
+     hediff]", which RUT_Tarred_Surgery.xml's Recipe_RemoveHediff bill
+     delivers directly, with no gas byproduct modeled here. Building the
+     reaction/byproduct here would duplicate SUMP_GASLIGHT_1's own scope
+     rather than extend it.
+
+  3. RUT_StrongTarSolvent — the foreign trade hook ONLY, per this item's own
+     explicit instruction not to build that side. No recipeMaker (never
+     craftable here), no source def wired to it — a real, legally-tradeable
+     ThingDef that BIOME_NUISANCE_NORMALIZATION_1's own Poison Forest acid
+     line can later point trade routes at. Distinguished from the weak
+     solvent by color/MarketValue only; both accepted as equally valid
+     ingredients by RUT_Tarred_Surgery.xml's own ingredient filter (either
+     cures the hediff; the strong one is simply never the thing a Sump
+     colony can make for itself).
+
+  Textures: a first draft reused vanilla Jade/Chemfuel texPaths as
+  placeholders (the same reuse RUT_TarMoat.xml/RUT_WickStem.xml use
+  elsewhere in this mod) — but validate_patch.py refused all three as a hard
+  ERROR: UtinniPatches already ships its OWN art under
+  Textures/Things/Item/Resource/ (RUT_Greenwood.png, RUT_Hardwood.png), so
+  that folder is this mod's own claimed namespace, same trap RM_Filth_Tar.xml
+  already hit for Textures/Things/Filth/. Repointed to three new RUT_-named
+  folders (Graphic_StackCount is a Graphic_Collection subclass too —
+  texPath is a FOLDER, confirmed against Verse/Graphic_Collection.cs, same
+  finding RM_Filth_Tar.xml's header already made for Graphic_Cluster) with
+  simple procedurally-drawn placeholder chunk icons, same posture as that
+  def's own art. Real (hand-authored, reviewed) art is still owed.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_ThrummelSeepwax</defName>
+    <label>thrummel seepwax</label>
+    <description>Warm, waxy secretion harvested from a thrummel mound — the hive's own building material and, rendered right, the feedstock for the Sump's one homegrown acid. A raid on a mound yields it by the barrel; nothing about gathering it is stingy.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_ThrummelSeepwax</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(196, 156, 64)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>1.4</MarketValue>
+      <Mass>0.18</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <stackLimit>150</stackLimit>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_WeakTarSolvent</defName>
+    <label>weak tar solvent</label>
+    <description>Thrummel seepwax rendered down into a mild acid — sharp-smelling, safe enough to handle bare-handed, and the only thing on the Sump that lets go of tar once it has set. A colony that raids the mounds is never really short of it.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_WeakTarSolvent</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(178, 196, 110)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>2.2</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>3</DeteriorationRate>
+      <WorkToMake>150</WorkToMake>
+    </statBases>
+    <stackLimit>100</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <displayPriority>420</displayPriority>
+      <!-- Generous on purpose (owner ruling, SUMP_GASLIGHT_1: "one raid
+           should give you a lot. Not meant as a starvation mechanism.") —
+           4 solvent off 1 seepwax, not a 1:1 render. -->
+      <productCount>4</productCount>
+    </recipeMaker>
+    <costList>
+      <RUT_ThrummelSeepwax>1</RUT_ThrummelSeepwax>
+    </costList>
+  </ThingDef>
+
+  <!-- The foreign side — hook only, per this item's own instruction. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_StrongTarSolvent</defName>
+    <label>strong tar solvent</label>
+    <description>An industrial-strength acid, far past anything the Sump renders for itself — this is the Poison Forest's own line of work, not the tar-country trade the local mounds support. Whatever it touches lets go of tar at once, no scrubbing needed.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_StrongTarSolvent</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(214, 96, 48)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>7</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>3</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <techLevel>Industrial</techLevel>
+    <tradeTags>
+      <li>RM_ForeignSolventTrade</li>
+    </tradeTags>
+    <!-- Deliberately no <recipeMaker> — never craftable here. Not wired to
+         any trade route, caravan offer or faction stock this pass; the
+         tradeTags entry above is the hook BIOME_NUISANCE_NORMALIZATION_1's
+         Poison Forest pass wires up, not a working trade path yet. -->
+  </ThingDef>
+
+</Defs>
