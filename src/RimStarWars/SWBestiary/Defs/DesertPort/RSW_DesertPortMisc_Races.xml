@@ -469,7 +469,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Eyeling -> RSW_Stareling. Body AA_EyeBody substituted with vanilla Monkey (confirmed HeadAttackTool group present on Head). ToolCapacityDef AA_ToxicSting substituted with vanilla Scratch (donor poison chain dropped). -->
 		<defName>RSW_Stareling</defName>
-		<label>oxxa</label>
+		<label>ikee</label>
 		<description>A grotesquely enlarged eye that drags itself along on a few fleshy tentacles. Not very useful for much of anything. Said to result from infusing an animal with strange energies from beyond ordinary space.</description>
 		<statBases>
 			<MoveSpeed>3.0</MoveSpeed>
@@ -519,7 +519,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Stareling</defName>
-		<label>oxxa</label>
+		<label>ikee</label>
 		<race>RSW_Stareling</race>
 		<combatPower>10</combatPower>
 		<ecoSystemWeight>0.30</ecoSystemWeight>
@@ -652,8 +652,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Wildpawn -> RSW_Sporepaw. AA_ToxicBite->Bite. Dropped: VEF.AnimalBehaviours.CompProperties_AsexualReproduction (spore-clump reproduction), CompProperties_HighlyFlammable (burn hediff on fire), CompProperties_AnimalProduct (periodic raw-fungus harvest) - all donor framework. hasGenders=false kept so vanilla asexual reproduction still applies; the spore-cloud VISUAL/reproduction event itself is what was dropped, not the ability to breed. -->
 		<defName>RSW_Sporepaw</defName>
-		<label>pukko</label>
-		<description>A fungal quadruped adapted to life outside the swamp, smaller and less dangerous than its wetland kin for lack of water and rot to grow on. Pukkos release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.</description>
+		<label>durrok</label>
+		<description>A fungal quadruped adapted to life outside the swamp, smaller and less dangerous than its wetland kin for lack of water and rot to grow on. Durroks release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.</description>
 		<statBases>
 			<MoveSpeed>4</MoveSpeed>
 			<ComfyTemperatureMin>-15</ComfyTemperatureMin>
@@ -731,7 +731,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Sporepaw</defName>
-		<label>pukko</label>
+		<label>durrok</label>
 		<race>RSW_Sporepaw</race>
 		<combatPower>120</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
@@ -1201,7 +1201,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Wildpod -> RSW_Sporemass. AA_ToxicBite->Bite. Dropped: CompProperties_AsexualReproduction, CompProperties_HighlyFlammable, CompProperties_AnimalProduct - all VEF.AnimalBehaviours donor framework, same as sibling RSW_Sporepaw. -->
 		<defName>RSW_Sporemass</defName>
-		<label>grommo</label>
+		<label>mullgoth</label>
 		<description>A lumbering mass of what looks like decomposing plant matter, in fact a sentient mycoid creature. Its bulk is nearly impervious to gunfire, bullets punching through with little effect, but it burns extremely readily.</description>
 		<statBases>
 			<MoveSpeed>3</MoveSpeed>
@@ -1279,7 +1279,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Sporemass</defName>
-		<label>grommo</label>
+		<label>mullgoth</label>
 		<race>RSW_Sporemass</race>
 		<combatPower>250</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
