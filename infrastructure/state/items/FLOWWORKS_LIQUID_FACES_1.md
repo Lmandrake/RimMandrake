@@ -22,6 +22,30 @@ the five faces:
 | oceans | terrain/worldmap body slot (⚠️ the frozen world map is NOT touched — map-scale and lore faces only until the paint pass; an on-map ocean canal-connected = infinite source, per the edge law) |
 | **ground pump** | buildable on-site producer filling canals — owner, typed, 2026-09-24, verbatim: *"for flow works for some liquids it will make sense to be able to add a ground pump to produce the liquid on site to fill canals these should be switchable options in the mod because it is scenario dependent on whether it makes sense clearly"* ⇒ per-liquid YES/NO in the matrix, and every YES ships as a **Mod Settings toggle** (scenario-dependent by ruling — same mod-vs-scenario split as tar rain). The Sump's Junker pumping derricks are the fiction precedent |
 
+## ✅ SITTING OPENED 2026-09-24, and the native-liquid ruling
+
+Owner, typed, verbatim (opening the sitting):
+
+> "Yes, I think it's time for the liquid matrix uh, sitting. And it seems like we
+> are a go for multiple liquids being in the same biome, at least present. It is
+> most likely useful to have each biome declare a native liquid, which is
+> indicative of either or what rests saturated in the ground and or what will
+> fall from the sky, if relevant. Other than that, other liquids can and
+> probably will sit on the surface for a variety of other local reasons. And
+> that's excellent."
+
+⇒ Two structures the matrix must now carry:
+1. **Per-biome NATIVE LIQUID declaration** — one liquid per biome (or explicitly
+   none), meaning: what saturates the ground there, and/or what falls from its
+   sky where relevant. (The Sump's is tar; every biome sheet gets read for its
+   candidate.)
+2. **Surface guests** — any other liquid may sit on a biome's surface for local
+   reasons (spills, imports, set-pieces, events); presence is free, nativeness
+   is declared.
+
+Grounding: multi-liquid maps are engine-native (MEASURED note below —
+`waterBodyType` bodies coexist and rebuild on terrain change).
+
 ## spec
 
 A design pass over the registry: one matrix, liquids × five faces, each cell
