@@ -1049,11 +1049,35 @@
     "hash": "f00769718018d6d0de7c77d2b1710b248475bade40c2b797f2a78bd75599c8d7",
     "sha": "31e9db1cd"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_HediffCompProperties_ShadeDrivenSeverity.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7b2b1d09edcd48e471e20158132707a1295a9c7aaaeb5a0f7c6cd0d5ccf7680d",
+    "sha": "3c1db25d5"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_HediffCompProperties_ShadeStagger.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7de7ca00dce0b185ddc1204027de6519a5b2048a4f10872880029da94d5a8abb",
+    "sha": "3c1db25d5"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_KinMending.cs": {
     "cleanCount": 2,
     "date": "2026-09-18",
     "hash": "9342b3330f3f541d5116b726895cbc61a3fcd8bd71a56ab2e8ee1c0f0a6f1cc3",
     "sha": "504ead829"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_ShadeDrivenSeverity.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "27852d2ccba23468227da4c8b216885e67fe1d7fe376d043e941cd74f59207e4",
+    "sha": "3c1db25d5"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_ShadeStagger.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d2bef25acd6327636728357c2a003fc37d0f3b67365d6cfdc4ab0d7365653c32",
+    "sha": "3c1db25d5"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_Hediff_Grappled.cs": {
     "cleanCount": 1,
@@ -1132,6 +1156,12 @@
     "date": "2026-09-12",
     "hash": "1eff87c2394cb70c864740c73c0497e4d6fc658e62a8bdc3eed13416c7c345a7",
     "sha": "d8a0b9b7d"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4ed5c61558a0cb2224613bdbe631fa217bbe94d742f6321e5d9676d7cd2338b3",
+    "sha": "3c1db25d5"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs": {
     "cleanCount": 3,
