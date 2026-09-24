@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T13:18:37Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-24T13:48:38Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -2014,3 +2014,43 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WEBWORK_SOUNDSCAPE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WEBWORK_SOUNDSCAPE_1.md
+
+## SUMP_TAR_BELCH_EVENT_1 Sump tar-belch incident: a tar pit occasionally erupts, coating local terrain in tar (owner-ruled 2026-09-24)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_TAR_BELCH_EVENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_TAR_BELCH_EVENT_1.md
+
+## SUMP_FLORA_ROSTER_1 Build the 10 invented Sump flora defs per sump_flora_roster_2026-09-24.md (dorvel slow-growing by ruling)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_FLORA_ROSTER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_FLORA_ROSTER_1.md
+
+## SUMP_FAUNA_ROSTER_1 Build the invented Sump fauna defs per sump_fauna_roster_2026-09-24.md (incl. the ruled spike-legged flier; wrissen deleted by ruling)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_FAUNA_ROSTER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_FAUNA_ROSTER_1.md
+
+## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Four mechanics, all RM-tier (RMTheSump / its kit), feature-gated per the Mod
+prose:    infrastructure/state/items/SUMP_TAR_NASTINESS_1.md

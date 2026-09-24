@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T13:18:37Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-24T13:48:38Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -588,3 +588,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WEBWORK_TERRAIN_WEATHER_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WEBWORK_TERRAIN_WEATHER_PASS_1.md
+
+## BIOME_NUISANCE_NORMALIZATION_1 Nuisance/solvent normalization pass over ALL biomes, run at the end of the last biome detailing (owner ticket 2026-09-24): each biome's annoying material, its reward, its weak local solvent, its strong solvent made elsewhere
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     spec, verify and criteria all present
+summary:  At the end of the last biome detailing: sweep every biome's four answers, fill gaps
+prose:    infrastructure/state/items/BIOME_NUISANCE_NORMALIZATION_1.md
