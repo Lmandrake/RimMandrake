@@ -2,8 +2,16 @@
 
 **the Grey Sea, and the Miasma's nursery**
 
-⭐ **NEEDS THE OWNER.** This is a tier ruling on a roster he already approved, so it is his call
-and not to be executed on a derived rule.
+✅ **RULED 2026-09-23 — decision taken by question card: move the 11 invented originals to the
+`RM_` tier and leave the 7 genuine canon creatures in the campaign layer.** The retier is
+therefore owed work, not a question. ⛔ Do not re-raise it, and ⛔ do not widen it: the 7 canon
+creatures stay exactly where they are.
+
+Three alternatives were offered and **declined**, so none of them is a fallback:
+- leaving all 18 in the campaign tier and accepting a nursery-less free biome — declined;
+- moving only the juveniles and splitting families across two tiers — declined;
+- inventing fresh free-tier sea young instead — declined, and it would have duplicated
+  creatures we already have.
 
 ## the finding
 
@@ -41,13 +49,7 @@ dependency-free fallback roster.
 ⭐ **And the fix invents nothing.** Retiering the 11 originals gives the free mod a real Grey Sea
 and a real nursery out of creatures that already exist, with art already approved.
 
-## the question for him
-
-Retier the 11 invented sea beasts (and their juveniles) from `RSW_` to `RM_`, leaving the 7
-genuine canon creatures in the campaign layer where Q11 requires? Or accept that the Grey Sea
-and the Miasma's nursery are campaign-only content?
-
-## spec — only if he rules for the retier
+## spec
 
 1. Rename the 11 ThingDefs / PawnKindDefs and their juveniles from `RSW_` to `RM_`, with the C#
    namespace and folder moves the three-tier grammar requires
@@ -72,9 +74,9 @@ nursery, and therefore stranded animals, without a single new creature being inv
 
 ## Watch out
 
-- ⛔ **Do not execute any of this before he rules.** A rule derived in-session never overturns a
-  placement a human already approved, and this roster was approved by him on 2026-08-31 with
-  *"They're exceptional. Don't get rid of any of them."*
+- 🔴 **A retier moves creatures between tiers. It removes none of them.** The roster was
+  approved 2026-08-31 with *"They're exceptional. Don't get rid of any of them"* — all 18 stay
+  in the game, and that ruling is untouched by this one.
 - ⚠️ **Art is final-concept and must not be re-rolled.** That same ruling fixed the mockups as
   the art source of truth; a retier moves files, it does not regenerate them.
 - ⚠️ **`RM_Gelatid` and `RM_Titanoslime` are the only `RM_` aquatic creatures shipping today** —
