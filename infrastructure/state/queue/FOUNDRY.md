@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T20:57:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T21:07:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2072,16 +2072,6 @@ thin:     no ## spec
 summary:  SUMPTARHYDROLOGY1 — how the tar flows: the Sump on FlowWorks
 prose:    infrastructure/state/items/SUMP_TAR_HYDROLOGY_1.md
 
-## WATER_TRUCE_RETRIBUTION_1 Water-truce retribution (owner typed 2026-09-24): first GUILTY hit in truce radius turns wildlife on the aggressor faction; engine attribution MEASURED (DamageInfo.InstigatorGuilty) — no dont-fight-back needed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  WATERTRUCERETRIBUTION1 — break the truce at the water, the biome fights back
-prose:    infrastructure/state/items/WATER_TRUCE_RETRIBUTION_1.md
-
 ## STOCKED_POOL_BUILD_1 Build the Stocked Pool kit: 8-row pool bestiary, husbandry loop (pen zones, PoolStock bookkeeping), doubt-meat mood economy, cuisine hooks - all rulings in the spec header
 state:    proposed
 row:      unassigned
@@ -2108,6 +2098,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FORCE_DISTURBANCE_REFLAVOR_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  The vanilla psychic event family — psychic drone (the planetary/map condition
 prose:    infrastructure/state/items/FORCE_DISTURBANCE_REFLAVOR_1.md
