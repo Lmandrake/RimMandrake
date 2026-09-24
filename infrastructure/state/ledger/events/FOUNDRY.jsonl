@@ -40,3 +40,4 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"live test v2: Bacta/Korrum/Settlement, no quicktest","ts":"2026-09-24T14:32:12Z"}
 {"seat":"FOUNDRY","event":"close","id":"KORRUM_ART_REGEN_1","sha":"124ac564e0aaaec263b5ba68bdbc3d3364544f8e","reason":"live render confirmed: real non-donor korrum art at all three facings, screenshot evidence","ts":"2026-09-24T15:01:35Z"}
 {"seat":"FOUNDRY","event":"close","id":"SETTLEMENT_VISIT_LOOP_1","sha":"124ac564e0aaaec263b5ba68bdbc3d3364544f8e","reason":"full arrival-compose-departure-gate_search-teardown-casing_persistence loop proven live, independently verified at each step","ts":"2026-09-24T15:01:40Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-24T15:03:39Z"}
