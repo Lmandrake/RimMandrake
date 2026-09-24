@@ -38,12 +38,14 @@
           <RUT_Pallu>1</RUT_Pallu>
           <RUT_Tikkarr>0.8</RUT_Tikkarr>
           <RUT_Nuudal>0.6</RUT_Nuudal>
+          <RUT_Aluun>0.6</RUT_Aluun>
         </saltwater_Common>
         <saltwater_Uncommon>
           <RUT_Kellu>1</RUT_Kellu>
           <RUT_Murrol>0.8</RUT_Murrol>
           <RUT_Hollu>0.8</RUT_Hollu>
           <RUT_Oobo>0.4</RUT_Oobo>
+          <RUT_Liiru>0.5</RUT_Liiru>
         </saltwater_Uncommon>
         <rareCatchesSetMaker>RUT_RareTwilightCatches</rareCatchesSetMaker>
       </fishTypes>
