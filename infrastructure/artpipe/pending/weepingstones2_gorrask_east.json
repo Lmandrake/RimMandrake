@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T23:10:04Z",
+  "drawsize": 5.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "weepingstones2_gorrask_east",
+  "priority": 130,
+  "prompt": "A gigantic ancient stone-crab, turtle-like body scaled to fill a canyon, heavily armored shell with moss growing along its seams. RimWorld top-down animal sprite style, legendary landmark-scale creature.",
+  "reference": null,
+  "rimflow_item_id": "WEEPINGSTONES_RM_MOD_BUILD_1",
+  "style_notes": "painterly RimWorld animal art, weathered heavy armor plating, moss-grown shell seams"
+}

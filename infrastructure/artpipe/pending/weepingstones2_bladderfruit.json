@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 128,
+    "width": 128
+  },
+  "channel": "codex",
+  "created": "2026-09-24T23:10:04Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "weepingstones2_bladderfruit",
+  "priority": 145,
+  "prompt": "A fat translucent water-filled fruit pod, sloshing, cut from a bladderquill plant. RimWorld top-down item icon style, harvested food item on a small stack.",
+  "reference": null,
+  "rimflow_item_id": "WEEPINGSTONES_RM_MOD_BUILD_1",
+  "style_notes": "painterly RimWorld item icon, translucent water-filled pod, transparent background"
+}

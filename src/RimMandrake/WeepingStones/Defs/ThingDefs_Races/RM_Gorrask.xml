@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEEPINGSTONES_RM_MOD_BUILD_1, wave 2 — the canyon-filling crab.
+
+  Owner ruling, NIGHTSIDE_ICE_DESIGN_SITTING_1, 2026-09-24, verbatim:
+  "Summit crab should be adapted into the weeping stones as a whole canyon
+  filling crab" — landform-scale, evicted from nightside_ice the same
+  sitting. Per Q11a the identity is INVENTED (the donor's body/stats are
+  the reference point, not its name or its franchise), so this ships RM_
+  tier, no donor dependency. Name is a fresh coinage, collision-checked
+  clean against design/ and src/ 2026-09-24 (`gorrask`: 0 hits) — evokes
+  "gorge" + rock, in the Weeping Stones' harsh-consonant register (sillik/
+  mirrik/ssurr/tirbak/burrak/vhakk/vellak/kirruk).
+
+  Adapted FROM (reference only, not reused): AA_SummitCrab (Alpha Animals,
+  Data/ThingDefs_Races/Races_BoulderMit.xml) — baseBodySize 15,
+  baseHealthScale 4, ArmorRating_Blunt/Sharp 1.5, TurtleLike body,
+  untameable, "entire mountains for a home." This def keeps the scale and
+  armor register but drops the donor's VEF.AnimalBehaviours.Compproperties_
+  Untameable comp (a Vanilla Expanded Framework dependency this RM_ mod may
+  not assume) in favor of plain high Wildness + None trainability, which
+  reads the same in play without a new hard dependency.
+
+  🔴 v1 SCOPE NOTE (matches the roster JSON's own mechanic_load note): "fills
+  a whole canyon" as a literal multi-tile landform body is NOT built here —
+  that is a new placement mechanic (a hand-authored landmark occupying many
+  map cells, closer to the Oasis landmark architecture than to an ordinary
+  wildAnimals roll) and is not owed this wave. v1 ships Gorrask as a real,
+  huge, legendary-rare single-tile creature (drawSize 5, matching the donor)
+  so the def loads, tests and is huntable/tamable-checkable now; true
+  landform-scale occupation is a follow-on mechanics item, not silently
+  dropped.
+
+  Placeholder art: reuses vanilla Tortoise body/texture retinted huge, same
+  precedent as RM_StockedPoolFauna.xml's beast rows. Real art job filed
+  this wave (infrastructure/artpipe/pending/weepingstones2_gorrask_{south,
+  east,north}.json) after a done/_artsrc/registry sweep found nothing
+  existing for "gorrask" 2026-09-24.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gorrask</defName>
+    <label>gorrask</label>
+    <description>Legend on this rock says a stone-crab grew so vast and so old that it no longer fits inside any canyon it did not carve itself. Whatever the truth of that, a gorrask this big has never needed to hurry: it moves once, settles for a season, and the pool truce holds around it exactly as it holds around everything smaller. Its shell is old enough that whole weep-mat colonies have taken root along the seams.</description>
+    <statBases>
+      <MoveSpeed>1.0</MoveSpeed>
+      <MarketValue>2200</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>52</ComfyTemperatureMax>
+      <ArmorRating_Blunt>1.5</ArmorRating_Blunt>
+      <ArmorRating_Sharp>1.5</ArmorRating_Sharp>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <uiIconScale>1.4</uiIconScale>
+    <tools>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>45</power>
+        <cooldownTime>2.1</cooldownTime>
+        <linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>shell-slam</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>40</power>
+        <cooldownTime>1.9</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>TurtleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>15</baseBodySize>
+      <baseHungerRate>0.01</baseHungerRate>
+      <baseHealthScale>5</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <manhunterOnDamageChance>0.01</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <gestationPeriodDays>150</gestationPeriodDays>
+      <lifeExpectancy>400</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>12</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+          <soundAngry>Pawn_Tortoise_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExoticFriend</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gorrask</defName>
+    <label>gorrask</label>
+    <race>RM_Gorrask</race>
+    <combatPower>900</combatPower>
+    <ecoSystemWeight>3.0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <label>gorrask</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>3.5</drawSize>
+          <color>(140, 130, 115)</color>
+          <shadowData>
+            <volume>(0.5, 0.35, 0.35)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>3.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <label>gorrask</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>5.0</drawSize>
+          <color>(140, 130, 115)</color>
+          <shadowData>
+            <volume>(0.7, 0.5, 0.5)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>5.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

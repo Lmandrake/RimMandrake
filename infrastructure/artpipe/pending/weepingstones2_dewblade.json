@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T23:10:04Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "weepingstones2_dewblade",
+  "priority": 140,
+  "prompt": "A sparse tuft of parallel upright flat grey-green leaf-fins, all facing one direction, each blade tipped with a drip-point. RimWorld top-down plant sprite style, wind-aligned grass-analog groundcover.",
+  "reference": null,
+  "rimflow_item_id": "WEEPINGSTONES_RM_MOD_BUILD_1",
+  "style_notes": "painterly RimWorld plant art, iron-filing wind alignment, transparent background"
+}

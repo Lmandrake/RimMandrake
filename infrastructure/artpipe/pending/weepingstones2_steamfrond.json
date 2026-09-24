@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T23:10:04Z",
+  "drawsize": 0.9,
+  "facing": null,
+  "facings": [],
+  "id": "weepingstones2_steamfrond",
+  "priority": 140,
+  "prompt": "A rosette of mineral-pale fronds spiralled around a small breathing vent hole, rims crusted with white salt bloom. RimWorld top-down plant sprite style, seep-oasis vent plant.",
+  "reference": null,
+  "rimflow_item_id": "WEEPINGSTONES_RM_MOD_BUILD_1",
+  "style_notes": "painterly RimWorld plant art, white salt-crusted rim, mineral-pale fronds, transparent background"
+}

@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T23:10:04Z",
+  "drawsize": 2.2,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "weepingstones2_tirbak_east",
+  "priority": 150,
+  "prompt": "A massive round-backed colossus pack animal with a row of dorsal rain-fins like ship ventilation cowls fanned to the wind, placid caravan beast. RimWorld top-down animal sprite style, huge pack animal.",
+  "reference": null,
+  "rimflow_item_id": "WEEPINGSTONES_RM_MOD_BUILD_1",
+  "style_notes": "painterly RimWorld animal art, pale sandy hide, dorsal fin row silhouette"
+}
