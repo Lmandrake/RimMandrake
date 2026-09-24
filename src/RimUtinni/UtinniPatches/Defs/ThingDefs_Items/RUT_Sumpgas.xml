@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Sumpgas.xml                       UtinniPatches — SUMP_GASLIGHT_1
+
+  Item spec §1, the reaction: "tar + acid -> green gas (Helixien-compatible).
+  One acid, three uses — this reaction IS how the cleaner works... it is how
+  vault extraction works... and a small tar+acid mix in a lamp is the
+  light." The owner's own naming instruction (same sitting): "the utinni
+  layer should rename it to our own form of gas. Let's call it Sumpgas" —
+  so this def is RUT_-tier by his own explicit word, not the usual
+  RM_-tier-content-lands-as-RUT_-for-now stopgap SUMP_TAR_NASTINESS_1 used
+  elsewhere in this kit.
+
+  "Helixien-compatible" — investigated, not guessed. The live def dump
+  (vanillaexpanded.helixiengas, package installed and active) was read in
+  full for VHGE_Helixien, the mod's own gas ThingDef: it carries
+  CompProperties_Forbiddable + CompProperties_CompDestroyOnSpawn and a
+  deepCommonality/deepCountPerCell pair matching vanilla's deep-resource
+  scatter shape (Gold/Jade's own idiom) — i.e. it is an internal
+  scatter/pipenet-feed marker that DESTROYS ITSELF ON SPAWN, not a
+  haulable crafting product a recipeMaker could ever output (it would
+  vanish the instant the bill finished). So RUT_Sumpgas is its own real,
+  haulable, stackable ThingDef — the SAME green-gas substance in flavor and
+  name (the ruling's own "leverage that [Helixien] economy"), not a
+  disguised VHGE_Helixien. Literal PipeSystem/VHGE_HelixienNet interop
+  (piping RUT_Sumpgas through Helixien infrastructure, or vice versa) is
+  NOT built this pass — flagged owed, since it would need VHGE's own
+  PipeSystem.CompResourceTrader wiring studied live, which this pass had no
+  bridge access to verify.
+
+  The reaction itself: a plain vanilla recipeMaker shorthand (same route
+  RUT_WeakTarSolvent already uses in this repo) rather than a full
+  RecipeDef — costList takes RUT_Bitumen (tar, rendered solid per its own
+  header) + RUT_WeakTarSolvent (the acid) together, matching the ruling's
+  "reacting it with some acid." Gated behind RUT_GaslightChemistry
+  (Defs/ResearchProjectDefs/RUT_Sump_Research.xml, this same item) — a
+  plain researchable project for now; wiring it to auto-complete on first
+  witnessing a natural flame/geyser (item spec §6, the discovery pilot) is
+  explicitly deferred, see that file's own header.
+
+  This is also the byproduct RUT_ScrubTarred now spawns on a successful
+  cure (RUT_Tarred_Surgery.xml, this same item, repointed to
+  RM_Recipe_RemoveHediffWithByproduct) — "cleaning tar converts it to gas."
+
+  Texture: same placeholder posture as RUT_Bitumen/RUT_ThrummelSeepwax
+  (procedurally-drawn, UtinniPatches' own Textures/Things/Item/Resource/
+  namespace already claimed per those defs' own headers) — a translucent
+  green swirl distinct from both.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_Sumpgas</defName>
+    <label>Sumpgas</label>
+    <description>Bottled green gas, rendered by working an acid into raw tar until it lets go of its own vapor. The same chemistry the geysers do for free, on demand and by the jug — sharp-smelling, faintly luminous, and the only fuel on the Sump that burns warm instead of foul.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_Sumpgas</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(96, 214, 128)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <MarketValue>3.2</MarketValue>
+      <Mass>0.12</Mass>
+      <Flammability>1.0</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <displayPriority>430</displayPriority>
+      <researchPrerequisite>RUT_GaslightChemistry</researchPrerequisite>
+      <productCount>3</productCount>
+    </recipeMaker>
+    <costList>
+      <RUT_Bitumen>1</RUT_Bitumen>
+      <RUT_WeakTarSolvent>1</RUT_WeakTarSolvent>
+    </costList>
+  </ThingDef>
+
+</Defs>

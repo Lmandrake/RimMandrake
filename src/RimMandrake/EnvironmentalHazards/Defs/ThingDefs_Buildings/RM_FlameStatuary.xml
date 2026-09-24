@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FlameStatuary.xml                  EnvironmentalHazards — SUMP_GASLIGHT_1
+
+  Item spec §4, "flame statuary: an art line driven by artistic skill where
+  flames issue from parts of the statue — quality scales the fire show.
+  RM-tier, secular." Statues/worship split ruled by card (item's own
+  header): "flame statuary ships RM-tier, secular; the holy-act-to-the-
+  evil-sun-god meaning is an Utinni ideoligion patch" (SUMP_UTINNI_LAYER_1)
+  — so this def is deliberately generic (no Sump/Jawa/Star-Wars flavor in
+  its own text) and lives in this kit's own Defs/ (RM_Leachmoss/RM_Venomvine
+  precedent: this mod already ships RM_-content directly, not just C#),
+  fuel-agnostic like any other CompRefuelable building, usable by ANY
+  biome/campaign that wants a fire-driven art piece.
+
+  Ground truth for the sculpture shape, read in full rather than guessed:
+  Data/Core/Defs/ThingDefs_Buildings/Buildings_Art.xml's own
+  ArtBuildingBase/SculptureBase abstracts (thingClass Building_Art,
+  CompQuality, CompProperties_Art with nameMaker NamerArtSculpture/
+  descriptionMaker ArtDescription_Sculpture/canBeEnjoyedAsArt,
+  recipeMaker workSpeedStat GeneralLaborSpeed/workSkill Artistic/
+  unfinishedThingDef UnfinishedSculpture/effectWorking Sculpt/
+  soundWorking Recipe_Sculpt/recipeUsers TableSculpting, thingCategories
+  BuildingsArt, stuffCategories, costStuffCount). NOT built by
+  ParentName="SculptureBase" — RimWorld XML list-field inheritance REPLACES
+  a parent's <comps> entirely the moment a child declares its own <comps>
+  (confirmed: SculptureSmall/SculptureLarge/SculptureGrand never repeat
+  <comps> themselves, so nothing in this repo demonstrates a safe way to
+  ADD a comp on top of an inherited list) — so every field below is
+  declared explicitly, copied from the same vanilla source, rather than
+  risking a silently-incomplete inherited comps list.
+
+  The "flames issue from the statue, quality scales the fire show":
+  RM_CompProperties_WarblingGlow's own qualityScalingEnabled=true reads the
+  sibling CompQuality directly (no duplicate quality-tracking code) and
+  scales both the color/brightness pulse and the radius pulse by quality —
+  see that comp's own header for the 0.5x (Awful) .. 2x (Legendary) curve.
+  glowColor here is a hotter, more saturated orange-red (255,120,40) than
+  the lamp's amber, reading as open flame rather than lamp-glass warmth.
+
+  qualityScalingEnabled needs no new C# to also drive an actual particle
+  "fire show" beyond the glow itself; FleckMaker.ThrowFireGlow ticks are
+  the honest next step for a literal flame-lick visual and are NOT built
+  this pass (flagged below) — the animated glow alone already delivers
+  "quality scales the fire show" per this comp's own scaling, and adding
+  fleck-spawning C# risked pushing pieces 1-4 past this pass's time budget
+  for a purely cosmetic addition on top of an already-functioning mechanic.
+
+  stuffCategories/costStuffCount/statBases are SculptureGrand's own real
+  vanilla numbers (this is a "grand"-scale statue, matching the ruling's
+  own "a line of statue art"), Beauty left at the inherited-shape default
+  rather than boosted further — the warbling flame itself is this statue's
+  differentiator, not a beauty-stat contest with vanilla's own sculptures.
+
+  Texture: same placeholder posture as this whole kit's other new content
+  this pass — Graphic_Single (not vanilla's own Graphic_Random 3-variant
+  sculpture shape) since only one placeholder image exists; a future art
+  pass can add variants without touching any field here.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_FlameStatuary</defName>
+    <label>flame statuary</label>
+    <description>A grand sculpture built to carry fire in its own shape — flame issues from carved vents worked into the stone, dancing along whatever form the artist gave it. A rough piece merely flickers; a masterwork seems to breathe.</description>
+    <thingClass>Building_Art</thingClass>
+    <castEdgeShadows>true</castEdgeShadows>
+    <graphicData>
+      <texPath>Things/Building/Art/RM_FlameStatuary/RM_FlameStatuary</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <uiIconScale>0.6666</uiIconScale>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <useHitPoints>true</useHitPoints>
+    <rotatable>false</rotatable>
+    <noRightClickDraftAttack>true</noRightClickDraftAttack>
+    <fillPercent>0.5</fillPercent>
+    <size>(2,2)</size>
+    <canOverlapZones>false</canOverlapZones>
+    <thingCategories>
+      <li>BuildingsArt</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Mass>28</Mass>
+      <Beauty>400</Beauty>
+      <WorkToMake>105000</WorkToMake>
+      <Flammability>1.0</Flammability>
+      <MeditationFocusStrength>0.0</MeditationFocusStrength>
+      <SellPriceFactor>1.10</SellPriceFactor>
+    </statBases>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>400</costStuffCount>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <tradeTags>
+      <li>Art</li>
+    </tradeTags>
+    <placeWorkers>
+      <li>PlaceWorker_MeditationOffsetBuildingsNear</li>
+    </placeWorkers>
+    <comps>
+      <li>
+        <compClass>CompQuality</compClass>
+      </li>
+      <li Class="CompProperties_Styleable" />
+      <li Class="CompProperties_Art">
+        <nameMaker>NamerArtSculpture</nameMaker>
+        <descriptionMaker>ArtDescription_Sculpture</descriptionMaker>
+        <canBeEnjoyedAsArt>true</canBeEnjoyedAsArt>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>9</glowRadius>
+        <glowColor>(255,120,40,0)</glowColor>
+        <colorPickerEnabled>false</colorPickerEnabled>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_WarblingGlow">
+        <hueRangeDegrees>22</hueRangeDegrees>
+        <valuePulseFraction>0.18</valuePulseFraction>
+        <radiusPulseFraction>0.16</radiusPulseFraction>
+        <primaryPeriodTicks>179</primaryPeriodTicks>
+        <secondaryPeriodTicks>113</secondaryPeriodTicks>
+        <updateIntervalTicks>10</updateIntervalTicks>
+        <qualityScalingEnabled>true</qualityScalingEnabled>
+      </li>
+    </comps>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Artistic</workSkill>
+      <unfinishedThingDef>UnfinishedSculpture</unfinishedThingDef>
+      <effectWorking>Sculpt</effectWorking>
+      <soundWorking>Recipe_Sculpt</soundWorking>
+      <recipeUsers>
+        <li>TableSculpting</li>
+      </recipeUsers>
+      <productCount>1</productCount>
+      <targetCountAdjustment>1</targetCountAdjustment>
+      <useIngredientsForColor>true</useIngredientsForColor>
+      <workAmount>-1</workAmount>
+    </recipeMaker>
+    <thingSetMakerTags>
+      <li>RewardStandardLowFreq</li>
+    </thingSetMakerTags>
+    <designationCategory>Furniture</designationCategory>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+</Defs>

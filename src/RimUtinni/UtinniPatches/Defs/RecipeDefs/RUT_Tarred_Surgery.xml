@@ -30,14 +30,33 @@
   targetsBodyPart false, hideBodyPartNames true — RUT_Tarred carries no
   <part>, matching RSW_RemoveBrainWorm's own choice for a whole-body
   hediff.
+
+  UPDATED — SUMP_GASLIGHT_1 (item spec §1, "the SAME reaction... is how the
+  cleaner works [cleaning tar converts it to gas]"). Repointed from plain
+  Recipe_RemoveHediff to RM_Recipe_RemoveHediffWithByproduct (Class
+  attribute on the RecipeDef itself changed to
+  RM_RecipeDef_HediffByproduct to carry the new byproductDef/
+  byproductCountRange/byproductChance fields that worker reads) — the cure
+  is otherwise byte-identical to before (same workAmount, ingredients,
+  fixedIngredientFilter, messages); scrubbing a colonist now also spawns
+  1-2 RUT_Sumpgas near them on a successful cure, "the reaction" made
+  literal rather than merely narrated. MayRequire now sits on the whole
+  RecipeDef (it did not before) — correctly, since RUT_Tarred itself is
+  only ever GIVEN to a pawn when mandrake.rm.environmentalhazards is active
+  (RUT_Sump.xml's own RM_CarriedFilthHediffExtension <li> is individually
+  MayRequire-gated on the same packageId), so a cure recipe is meaningless
+  without it — there is no "byproduct-free fallback" case to preserve here.
 -->
 <Defs>
 
-  <RecipeDef ParentName="SurgeryFlesh">
+  <RecipeDef Class="RimMandrake.EnvironmentalHazards.RM_RecipeDef_HediffByproduct" ParentName="SurgeryFlesh" MayRequire="mandrake.rm.environmentalhazards">
     <defName>RUT_ScrubTarred</defName>
     <label>scrub off tar</label>
-    <description>Work a solvent into a tarred colonist's skin and hair until the tar lets go. Not surgery in any real sense — just the only thing that gets it off short of waiting it out.</description>
-    <workerClass>Recipe_RemoveHediff</workerClass>
+    <description>Work a solvent into a tarred colonist's skin and hair until the tar lets go — and lets go of a little green gas with it. Not surgery in any real sense — just the only thing that gets it off short of waiting it out.</description>
+    <workerClass>RimMandrake.EnvironmentalHazards.RM_Recipe_RemoveHediffWithByproduct</workerClass>
+    <byproductDef>RUT_Sumpgas</byproductDef>
+    <byproductCountRange>1~2</byproductCountRange>
+    <byproductChance>1</byproductChance>
     <jobString>Scrubbing off tar.</jobString>
     <workAmount>600</workAmount>
     <hideBodyPartNames>true</hideBodyPartNames>
