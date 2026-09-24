@@ -1589,6 +1589,12 @@
     "hash": "5e38db4e1bdbb5523176f62e8e57f8ead550d3155af0680b659e4cd66915483a",
     "sha": "1741b389a"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_ScatterPools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "c2f0b581bf07778ff177925b278895386099f589dc35304518a6c2030f3ddd76",
+    "sha": "f3ce2720c"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_TerrainChannels.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -1810,6 +1816,12 @@
     "date": "2026-09-18",
     "hash": "256f09b2c699527a99473e3135f6efd6bf970d91642add536b011862abbb9d13",
     "sha": "009b887ef"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MirrorPoolBiomeExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-23",
+    "hash": "00186cc1573900306bfe8c45764358ff7bae0f1fc93660e7abe1c598c061f366",
+    "sha": "f3ce2720c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_CrecheDespoilManhunterFactor.cs": {
     "cleanCount": 1,
