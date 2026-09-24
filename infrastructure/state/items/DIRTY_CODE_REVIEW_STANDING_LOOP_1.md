@@ -6,6 +6,14 @@ review it (never diff-scoped until it's CLEAN once), fix real bugs found, mark-c
 files with nothing significant found. Protocol: CLAUDE.md's "Code isn't clean until
 a review says so" section.
 
+🔴 **Always survey with `code_review_status.py list --show-untracked`, never bare
+`list`.** Bare `list` silently omits every file that has never been given a status
+entry at all — this is documented behavior (see the tool's own help text and
+`LESSONS_INBOX.md`'s 2026-09-13 entry) but waves 1-43 of this exact loop didn't apply
+it, so "0 DIRTY" was reported as a milestone multiple times while 346 never-entered
+files sat invisible. Wave 44 (2026-09-24) rediscovered this the hard way. A future
+curation pass should fold this into a skill; until then, this line is the fix.
+
 ## PAUSED — owner, 2026-09-20
 
 Verbatim: **"Stop all clean/dirty code review until Wednesday 3pm token reset please."**
