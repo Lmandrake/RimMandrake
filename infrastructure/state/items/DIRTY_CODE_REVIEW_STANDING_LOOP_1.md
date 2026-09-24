@@ -273,3 +273,41 @@ validation.py` sweep and `code_review_status.py list`'s CLEAN rows, since
 `list` only shows entries that have ever been recorded — a file never
 entered doesn't appear as DIRTY, it just doesn't appear). No other named
 clusters remain outstanding from earlier waves.
+
+## Wave 10 — 2026-09-24
+
+Re-derived the DIRTY `validation.py` list per wave 9's recipe: a fresh
+`find . -name validation.py` sweep (55 total) minus `code_review_status.py
+list`'s CLEAN rows (27) gave 28 DIRTY (not 29 — the prior wave's count was
+off by one, not worth chasing). Reviewed the 5 smallest of those, full-file
+each, no sampling shortcut: `SacredGraffiti/validation.py` (108 lines —
+confirmed its one outcome-effect def is genuinely unreachable by any bridge
+path, per its own docstring, and both settings-toggle components correctly
+get write+read-back only), `IshkoDarkLandmarks/validation.py` (135 lines —
+pure-XML landmark mod; verified the `mutatorChances` substring-check pattern
+and the "not yet placed on planet" negative-assertion chain), `Rites/
+validation.py` (145 lines — pure-data research-tree gating; verified its
+correction of the walk doc's own wrong claim about `jawa/research_
+availability`'s `unfinishedPrerequisites` field, which walks ordinary
+`prerequisites` only and has no hidden-prerequisite field at all, by reading
+`JawaBenchResearchTimeTools.cs` directly), `BirthHatchDemo/validation.py`
+(166 lines — reproduction-chain demo; verified the baseline-pawn-IDs-before-
+spawn pattern that guards against `CompHatcher`'s `forceGenerateNewPawn:
+false` handing back a recycled world pawn instead of a genuine new one), and
+`StructureInjectionsSW/validation.py` (167 lines — 7 GenStepDef/
+TileMutatorDef pairs; verified the `jawa/get_defs` replacement for the walk
+doc's own wrong-tool (`jawa/get_def`) prescription by reading `JawaBenchTerrainTools.cs`,
+and confirmed the `ChunkSlagSteel` cross-template-collision dodge — checking
+`Filth_AnimalFilth` for Mynock Roost instead — is real, since that defName
+also appears in the earlier-run Podracer Wreck template). Cross-checked
+`jawa/list_things`' and `jawa/get_defs`' actual C# result shapes
+(`JawaBenchTerrainTools.cs`) against both files' parsing to confirm field
+names and the 200-item default `limit` don't silently truncate any of
+StructureInjectionsSW's expected counts (max 62, BanthaHorn/MynockRoost).
+No bugs found in any of the 5; no fixes needed this wave. All 5 marked
+CLEAN, commit `510b4c29f`, pushed.
+
+Next wave: 23 `validation.py` files remain DIRTY (28 minus this wave's 5) —
+re-derive with the same `comm -23` recipe rather than trusting this count,
+since it has drifted by one before. No other named clusters remain
+outstanding from earlier waves.
