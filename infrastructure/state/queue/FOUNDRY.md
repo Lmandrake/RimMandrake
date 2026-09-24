@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T21:15:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-24T21:18:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -935,6 +935,15 @@ target:   v1
 kind:     build
 summary:  A gene (or trait) on the Jawa xenotype suppressing filth/squalor/mess-derived
 prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md
+
+## STOCKED_POOL_BUILD_1 Build the Stocked Pool kit: 8-row pool bestiary, husbandry loop (pen zones, PoolStock bookkeeping), doubt-meat mood economy, cuisine hooks - all rulings in the spec header
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  STOCKEDPOOLBUILD1 — build the Stocked Pool kit (Weeping Stones)
+prose:    infrastructure/state/items/STOCKED_POOL_BUILD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -2071,16 +2080,6 @@ kind:     build
 thin:     no ## spec
 summary:  SUMPTARHYDROLOGY1 — how the tar flows: the Sump on FlowWorks
 prose:    infrastructure/state/items/SUMP_TAR_HYDROLOGY_1.md
-
-## STOCKED_POOL_BUILD_1 Build the Stocked Pool kit: 8-row pool bestiary, husbandry loop (pen zones, PoolStock bookkeeping), doubt-meat mood economy, cuisine hooks - all rulings in the spec header
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  STOCKEDPOOLBUILD1 — build the Stocked Pool kit (Weeping Stones)
-prose:    infrastructure/state/items/STOCKED_POOL_BUILD_1.md
 
 ## FORCE_DISTURBANCE_REFLAVOR_1 Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
 state:    proposed
