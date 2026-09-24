@@ -38,9 +38,21 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         private IntVec3 riteOrigin;
         private int harvestTicks;
 
-        /// <summary>Saved so a reloaded game cannot light a second front for the
-        /// same rite. LordToil.Init runs on toil entry, and a load re-enters the
-        /// current toil.</summary>
+        /// <summary>Guards Init() against firing twice within one live session —
+        /// only the "arrived" transition ever targets this toil, so in practice
+        /// Init() runs exactly once per rite; kept as cheap insurance against a
+        /// future transition change.
+        ///
+        /// NOT a reload guard, and the prior version of this comment claimed it
+        /// was. VERIFIED against the decompiled engine
+        /// (Verse.AI.Group.Lord.ExposeData_StateGraph / Lord.SetJob): on load,
+        /// SetJob(loading: true) rebuilds the graph via CreateGraph() and then
+        /// restores curLordToil by direct index assignment
+        /// (`curLordToil = graph.lordToils[tmpCurLordToilIdx]`), bypassing
+        /// GotoToil() — and therefore Init() — entirely. A reload can never
+        /// re-ignite this toil either way. `ignited` is still Scribed so the flag
+        /// survives a save, but it was never protecting against the reload
+        /// scenario the old comment named.</summary>
         private bool ignited;
 
         public LordJob_RUT_FireRite()
