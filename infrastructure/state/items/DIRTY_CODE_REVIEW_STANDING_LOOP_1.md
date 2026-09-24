@@ -171,3 +171,65 @@ Next wave: `GizkaStowaway/Source/` cluster has 3 files left
 (`MapComponent_GizkaInfestation.cs`, `RSW_GizkaHarmonyPatches.cs`,
 `RSW_GizkaStowawayManager.cs`), and the `validation.py` sampling pass across
 mod folders is still untouched.
+
+## Wave 8 — 2026-09-24
+
+Reviewed 4 files, full-file: two of the three remaining
+`GizkaStowaway/Source/` files — `MapComponent_GizkaInfestation.cs` (the
+stage-escalation MapComponent: verified `StageFor`'s threshold ordering
+holds for any `cap >= 4` — the `Max(const, round(cap*fraction))` floors keep
+Plague > Infestation > Underfoot monotonic at every cap, including the
+`cap < 4` clamp case; verified the chewing mechanism's
+`Rand.MTBEventOccurs(ChewMtbTicksPerGizka / here, 1f, CheckIntervalTicks)`
+call uses the `mtbUnit=1f` pattern correctly since the constant is already
+expressed in raw ticks; verified stage step-down is silent-by-design,
+matching the class docstring's "steps down so the warning can be
+re-earned") and `RSW_GizkaHarmonyPatches.cs` (all 5 Harmony hooks — traced
+every `GameComponent_GizkaStowaway.Notify_*` and
+`RSW_GizkaPopulation.IsStowawayGizka` call target to its real method in
+`RSW_GizkaStowawayManager.cs`/`RSW_GizkaPopulation.cs`, confirmed the
+cull-guilt patch is correctly a Prefix rather than Postfix per its own
+docstring reasoning — `Pawn.Kill` despawns before Postfix would run, so
+Prefix is the only point `victim.Position` is still valid).
+
+Plus a first pass at the **validation.py sampling question wave 3 raised**:
+read `Pyrelands/validation.py` (257 lines) and `SWBestiary/validation.py`
+(241 lines) whole, and separately confirmed all 55 `validation.py` files
+across the repo have **distinct** content (a full MD5 pass found zero
+duplicate files — the illusion of duplication in `code_review_status.py
+list`'s output is the informational `sha` field, which is the **commit**
+they were bulk mark-clean'd in, not a content hash; `list`'s displayed
+`(hash, date)` pair genuinely reads as a per-file content hash at a glance
+and isn't one — worth being careful reading that output). Line counts range
+87–595 across the 55 files. **Verdict: the "likely near-identical
+boilerplate" theory is REFUTED.** All `validation.py` files share the same
+`modcheck.Suite`/`ExpectationFailed` import and `@suite.chain`/
+`t.component`/toggle scaffolding, but the actual content inside each is
+bespoke per mod — mod-specific defNames, tick-count budgets grounded in
+that mod's own prior live runs, per-mod docstrings tracing which item
+closed what and why, and explicit "what this suite cannot prove and why"
+sections. Both files reviewed found no bugs (Pyrelands' `_live()` gate and
+SWBestiary's `t._guard()` calls are two different but both-correct ways of
+implementing the same offline-probe-safety pattern the framework requires).
+⇒ **The remaining 34 DIRTY `validation.py` files need one-by-one full-file
+review, same as everything else in this loop — no sampling shortcut.** (21
+of 55 were already marked CLEAN in a 2026-09-17 bulk pass, confirmed by
+`code_review_status.py list`; this wave's 2 samples bring the total to 23
+CLEAN / 32 DIRTY.)
+
+All 4 confirmed reachable: the two `.cs` files via
+`RimMandrakeGizkaStowaway.csproj`'s `<Compile Include>`; both `validation.py`
+files via `modcheck/runner.py`'s `load_suite()`, which dynamically imports
+`<mod_dir>/validation.py` for `modcheck/cli.py run <Mod>`. No bugs found in
+any of the 4; no fixes needed this wave. All 4 marked CLEAN, commit
+`e220673d9`, pushed.
+
+Next wave: `GizkaStowaway/Source/` cluster has exactly 1 file left
+(`RSW_GizkaStowawayManager.cs`) — finishing it closes out the whole
+cluster. The `validation.py` sampling question is now answered (see above):
+32 files remain DIRTY and need individual full-file review like any other
+file in this loop, no shortcut. No other named clusters remain from earlier
+waves' notes — a future wave should re-survey
+`code_review_status.py list --show-untracked` for what's left reachable and
+never-entered, since the GizkaStowaway/SeaShores/modcheck clusters named in
+waves 3–7 are now exhausted or down to their last file.
