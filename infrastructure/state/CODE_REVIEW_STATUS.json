@@ -13005,6 +13005,12 @@
     "hash": "7fbc4a5c343f2c660783c5244c3832f8b96b36a371f111426aa5bd54c5e8ff15",
     "sha": "6e71f9825"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Horax.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6b1c3e855af679e3e5e094a7bb2a1f1a7df155868ce35c7ca212d082741359f2",
+    "sha": "609daf5ad"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Iriaz.xml": {
     "cleanCount": 2,
     "date": "2026-09-24",
@@ -13035,11 +13041,23 @@
     "hash": "ccdf65dbbcd74cc2ea4d1f575af385b2463f40fb0e57d3bff91eadd70e7b88c9",
     "sha": "77792d0a9"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Ronto.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b7eeb9fc8e645b488564153d446afc1da83f050faeb2e301ea1218e27e82009f",
+    "sha": "609daf5ad"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_SandStalker.xml": {
     "cleanCount": 2,
     "date": "2026-09-11",
     "hash": "2ffbcb31a756f3ceb8978eca1e7a4e0107fef5d96f282cdfd606689a6d5ede93",
     "sha": "ab37da311"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Skalder.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0e93e79e767854b55f39bd567de1f0acf44b569809be59db0df6ed405cef8faa",
+    "sha": "609daf5ad"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Vulptex.xml": {
     "cleanCount": 3,
@@ -13052,6 +13070,12 @@
     "date": "2026-09-12",
     "hash": "f60f200d8bc52d5b063b2e97c68a53c78ded9fe5761a03db536fb726307bc6d0",
     "sha": "bfa7c2f92"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Zeer.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b3d6af977b9663d8b640b146dd640b997c18aab66f5bbd48836d0234ed946269",
+    "sha": "609daf5ad"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingSetMakerDefs/RSW_RareSandCatches.xml": {
     "cleanCount": 1,
@@ -18189,6 +18213,12 @@
     "hash": "3eb6ecb7ee4c967bc7462a5ad9605ea29f21bf9011d67860a2e7df3af054c72c",
     "sha": "17c7dab1a"
   },
+  "src/RimUtinni/UtinniPatches/Patches/AnoobaDrawSize_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8f34abe5886b1513a307c5e0ccbac1010a55981bd0dbab2506813684ede106ba",
+    "sha": "609daf5ad"
+  },
   "src/RimUtinni/UtinniPatches/Patches/ApparelTags_DeadTagRepair.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -18224,6 +18254,12 @@
     "date": "2026-09-09",
     "hash": "d3170d3f7181320d807d9b24bc4ad31e7f4e107c8492366be84212e31d4c8a8e",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_TwilightDeep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "05a31b4e09f4d5513b72f7d7714d7da65f0acec7338bb1cdac5d1e2de8e91576",
+    "sha": "609daf5ad"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFloraStatAdjustments_Generated.xml": {
     "cleanCount": 1,
@@ -18273,6 +18309,12 @@
     "hash": "1036f43bb57da4b56aae9001c6980f5de36c8d0268d3a733ba46f882d6b1c896",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Patches/DesertWrapsApparelWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5c6d8439f7827f39cc7202e9280db670d2dac4d20a0857d4a39ca485068a24cd",
+    "sha": "609daf5ad"
+  },
   "src/RimUtinni/UtinniPatches/Patches/FactionSlate/OnlyOurFactions.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -18290,6 +18332,12 @@
     "date": "2026-09-04",
     "hash": "a9685048212a7473eb988979a5b41c19e109e850140f3d810e46d3aa9bdecb33",
     "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/FlowWorks_SubsurfaceLiquid_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5a7bd08104bfc8663a016601a093a1f4cd392c1c6a1183269cbff0da70207713",
+    "sha": "609daf5ad"
   },
   "src/RimUtinni/UtinniPatches/Patches/ForgottenArsenal.xml": {
     "cleanCount": 1,
@@ -18350,6 +18398,12 @@
     "date": "2026-09-09",
     "hash": "5d86ff66a897155913e8db1875c0aa9b6c3db655031422d21296613cd1c221ff",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/JawaMessImmunity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9654bb112182cfa2583c2618278ec6b11051653dca0ea593ef98d4adfe7db5ec",
+    "sha": "609daf5ad"
   },
   "src/RimUtinni/UtinniPatches/Patches/JawaResource_Scrapfields.xml": {
     "cleanCount": 2,
@@ -18476,6 +18530,12 @@
     "date": "2026-09-13",
     "hash": "c8e1f49b9cf1b0ca8c8141bcf9d42817206ca01f2a919c6d27faeea91b51e3bf",
     "sha": "b62604fad"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_FeverWood_ScatterPoolsGenStep_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8b488510d937909de6cd110e7936b9b13fe1acf44d1597f876b54ab3d2493264",
+    "sha": "609daf5ad"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_ForgePulse_BiomeWiring.xml": {
     "cleanCount": 2,
