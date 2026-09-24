@@ -371,3 +371,79 @@ pushed.
 Next wave: 18 `validation.py` files remain DIRTY (23 minus this wave's 5) —
 re-derive with the same recipe rather than trusting this count. No other
 named clusters remain outstanding from earlier waves.
+
+## Wave 12 — 2026-09-24
+
+Re-derived the DIRTY `validation.py` list per the standing recipe: a fresh
+`find . -name validation.py` sweep (55 total) minus `code_review_status.py
+list`'s CLEAN rows (37) gave exactly 18 DIRTY, matching wave 11's count.
+Reviewed the 5 smallest, full-file each: `MSEDroidFix/validation.py` (228
+lines), `WeatherSuite/validation.py` (235), `AshkarrLandmarkArt/
+validation.py` (235), `RimDefDump/validation.py` (241),
+`AshkarrInhabited/validation.py` (241).
+
+**Found and fixed FIVE real, high-confidence bugs across 4 of the 5
+files** — every one the same class as wave 11's `AshkarrFlora` bug, and
+every one confirmed by reading the actual C# in
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/*.cs` rather than
+trusting the suite's own claim:
+
+- **AshkarrLandmarkArt** (`sample_defs_readback`): called `jawa/get_def`
+  (singular) with `defType="LandmarkDef"` and read
+  `row.get("resolved") or row.get("fields")` — neither key exists on that
+  tool's response for any type; `GetDef`'s `extra` block is hand-modelled
+  for exactly ThingDef/PawnKindDef/BiomeDef, so a LandmarkDef always came
+  back with `extra=null`. The guard (`not resolved and not fields`) was
+  therefore unconditionally true on every call, success or failure, so this
+  component silently never once compared `iconTexturePath` to anything —
+  a permanent no-op, the mirror image of AshkarrFlora's always-fails bug.
+  Switched to `jawa/get_defs` (plural), the tool built exactly for
+  reflective field reads on any def type, whose real per-entry shape
+  (`found`, `fields`) does carry `iconTexturePath`.
+- **AshkarrInhabited** (`settlement_manifests_readback`): read `districts`
+  via `jawa/get_defs` without `deep=True`. `districts` is
+  `List<DistrictSlot>` and `DistrictSlot` is a plain non-Def class — per
+  `Scalars()`'s own documented behaviour, a list of non-scalar/non-Def
+  items at `deep=false` serialises each item as its bare TYPE NAME string
+  (`"DistrictSlot"`), never a dict with `label`. The fallback substring
+  check (`district0_label not in str(districts)`) was therefore comparing
+  against a stringified list of type-name strings — guaranteed to fail on
+  every live run regardless of the real label. `castSlots`' own check only
+  needed `len()`, which survives either shape, so that half was never
+  actually broken. Fixed by passing `deep=True` on this one call.
+- **RimDefDump** (`bridge_tool_mode_validation`): read `r.get("error")`,
+  but `RimDefDumpRun` is declared in the SAME partial class as
+  `JawaBenchTerrainTools.cs` and its `Fail()` calls resolve to that file's
+  shared helper (`{success=false, message, details}`) — there is no
+  `error` key anywhere in the file. `err` was always `""`, so the check
+  raised `ExpectationFailed` on every live run regardless of whether the
+  bridge tool actually refused for the right reason. Fixed to read
+  `message`.
+- **WeatherSuite** — two bugs in one file:
+  1. `terminator_front_registers_permanently_bypassing_geometry` read
+     `r.get("active")`, but `GameConditionTool`'s return statement names
+     the outer key `activeConditions` (`active` is only the local variable
+     it was built from) — guaranteed false failure on every live run.
+  2. `dark_aurora_incident_is_correctly_gated_by_geometry` read
+     `r.get("canFire")`, but `StorytellerFire`'s dry-run response names the
+     field `canFireNow` — a silent no-op: the component could never have
+     raised even if the incident genuinely could fire, so it was never
+     actually testing the geometry gate it claims to test.
+
+`MSEDroidFix/validation.py` (the fifth file) was reviewed line-by-line
+against `jawa/get_defs` (blob-`str()`-search pattern, robust to key names),
+`jawa/texture_audit` (`missing[]` shape confirmed, also `str()`-searched),
+`jawa/drain_log` and `jawa/set_pawn_rotation` (both confirmed correct) — no
+bugs found, no fixes needed.
+
+All 5 confirmed reachable via `modcheck/runner.py`'s `load_suite()`
+(dynamic per-mod-dir import). Fixes committed at `db60da8bc`, pushed. All 5
+marked CLEAN, same commit.
+
+Next wave: 13 `validation.py` files remain DIRTY (18 minus this wave's 5) —
+re-derive with the same recipe rather than trusting this count. No other
+named clusters remain outstanding from earlier waves. 🔑 Given this wave
+found 5 bugs in 4 of 5 files reviewed (all key-mismatch against a bridge
+tool's real C# response shape), a future wave should keep cross-checking
+every `t.bridge_call(...)` against its actual `[Tool]` implementation
+rather than treating the pattern as exhausted after wave 11's single find.
