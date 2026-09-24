@@ -3106,3 +3106,65 @@ wave: switch to `UtinniPatches` with `list --show-untracked`, per wave
 47's own rule. The 4 fixed-but-unreviewed SWBestiary files above
 (Horax/Ronto/Skalder/Zeer) still need a full-file review of their own
 before they can be marked CLEAN — the typo fix alone doesn't cover it.
+
+## Wave 49 — 2026-09-24: SWBestiary Odyssey-typo cleanup + UtinniPatches Patches/, 10 files, 12 fixed
+
+Ran `list --show-untracked` fresh: **320 NEVER ENTERED**, matching wave 48's
+close exactly. Full-file reviewed the 4 SWBestiary files wave 48 left
+fixed-but-unreviewed (`RSW_Horax.xml`, `RSW_Ronto.xml`, `RSW_Skalder.xml`,
+`RSW_Zeer.xml`) — verified the `Odyssey` typo fix in each is correct and
+cross-checked every def/resource/body/ability reference the files make
+(leather, meat, eggs, bodies, abilities, trophies) all resolve.
+
+**Found and fixed a real bug in `RSW_Zeer.xml`, high confidence**: its
+`lifeStageAges`' adult-stage `soundWounded/Death/Call/Angry` referenced
+bare `Pawn_Zeer_Wounded` etc., but the actually-ported SoundDef (per its own
+header comment) is `RSW_Pawn_Zeer_Wounded` — the mod's RSW_ tier rename
+applied the prefix to the SoundDef but never updated this ThingDef's own
+reference to it, so the bare name resolves to nothing and no combat/death
+sound plays for adult Zeer. Wrote a small script to check every
+`sound{Wounded,Death,Call,Angry}` value in
+`Defs/ThingDefs_Races/*.xml` against the SoundDefs actually defined in
+`SoundDefs_SWBestiary.xml`, flagging any bare reference whose RSW_-prefixed
+twin exists but whose bare form doesn't (excluding the many deliberate
+reuses of genuinely vanilla/DLC sound families — Boomrat, Elk, Rhinoceros,
+Cat, Muffalo, Dromedary, Rodent, Chick, Wildboar, Monkey, Thrumbo,
+BigInsect, Spelopede, Megascarab, Iguana — all confirmed present with no
+RSW_ twin, i.e. genuine cross-references, not renamed ports). Found the
+same bug in **11 more files**: `RSW_Uvak.xml`, `RSW_Varactyl.xml`,
+`RSW_Voorpak.xml`, `RSW_WarWyrm.xml`, `RSW_Whisperbird.xml` (adult stage),
+`RSW_Woolamander.xml` (adult stage), `RSW_Wyyyschokk.xml`,
+`RSW_Yobshrimp.xml`, `RSW_Lylek.xml` (both baby and adult stages),
+`RSW_ScrapNestBird.xml` (adult stage, cross-references Whisperbird's
+sounds), `RSW_Pufferpig.xml` (soundDeath only, cross-references Gullipud's)
+— all fixed to the RSW_-prefixed defName that actually exists. Left
+`RSW_Zakkeg.xml`'s own `Pawn_Boma_*` mismatch alone: already flagged in its
+own header comment as a separate pre-existing donor bug (wrong species
+entirely, not just a missing prefix) and explicitly left as-is by a prior
+pass — not the same defect class. Commit `609daf5ad`, pushed. All 4 picked
+files marked CLEAN (Zeer after its fix was committed). No bugs in
+Horax/Ronto/Skalder beyond the already-fixed Odyssey typo.
+
+Switched to `UtinniPatches` (biggest cluster this wave, 85 files) per wave
+48's rule. Its `Patches/` subfolder (18 files) is the largest coherent
+sub-cluster there — picked 6 alphabetically-first: `AnoobaDrawSize_Fix.xml`,
+`BiomeFishTypes_TwilightDeep.xml`, `DesertWrapsApparelWiring.xml`,
+`FlowWorks_SubsurfaceLiquid_Ashkarr.xml`, `JawaMessImmunity.xml`,
+`RUT_FeverWood_ScatterPoolsGenStep_Register.xml`. Full-file reviewed all 6,
+cross-checking every xpath target, MayRequire packageId, and referenced
+defName against the actual def files (fish species, liquid defs, gene defs,
+xenotype defs, pawnkind defs, GenStepDef, the `RM_SubsurfaceLiquidBiomeExtension`
+C# class) — all resolve correctly, all patches well-gated
+(`PatchOperationFindMod`/`PatchOperationConditional` used correctly, no
+double-add risk). No bugs found in any of the 6. All marked CLEAN.
+
+Commit `b8690768e` (status file + this entry), pushed. No `.git/index.lock`
+contention this wave.
+
+Re-measured after: `TALLY  CLEAN 3128  DIRTY 5  ORPHANED 0  NEVER ENTERED 310`
+— 310 = 320 − 10 exactly, no concurrent-agent noise this wave. **310 NEVER
+ENTERED files remain**: `UtinniPatches` now at **79**, `SWBestiary` at
+**71**. `UtinniPatches` is still the larger cluster — next wave: keep
+working it (`Patches/` has 12 files left, or move to
+`Defs/ThingDefs_Items`, its next-biggest subfolder at 11) with
+`list --show-untracked`.
