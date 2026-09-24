@@ -202,8 +202,9 @@ Read aloud: wummo, wollub, bezzul, hennul, mubbrak, wuppik, yollum, thummorak, v
    `Toxalope` (Biotech), `LavaSnail`, `StoneCrab`, `ColossusToad` (Odyssey), `GiantAnt_Race`
    (They!). A label patch on a vanilla def changes every RimWorld game the mod loads in. Scope
    question, no draft.
-5. **Four are UNCERTAIN and were not drafted:** `Vapaad` (Mlie's spelling of the Legends
-   *Vaapad*, probably canon), `TetnissCrab`, `WarWyrm`, `FeralGrazer`.
+5. **Two are UNCERTAIN and were not drafted:** `Vapaad` (Mlie's spelling of the Legends
+   *Vaapad*, probably canon), `TetnissCrab`. (`WarWyrm` and `FeralGrazer` were listed here until
+   2026-09-24; batch 4 measured both as canon Legends creatures — see Appendix B.)
 6. **Sea cast:** the Miasma/Scald/Grey Sea/Twilight Sea rosters carry canon Naboo fish
    (mee, faa, laa, yobshrimp, opee, sando, colo — keep, including the *young* and *elder*
    variants) beside a non-canon sea cast (silt lamprey, rust nipper, pod worm, tumorfish,
@@ -221,7 +222,7 @@ before subtracting rows already port-named:
 | `poison_forest` | 17 | AA/AM dryads, bedbug, silkie, luciferbug, radyak, ripper hound; helixien/decay drake/plasmorph/ocular jelly/infected aerofleet named above |
 | `desert` | 15 | most AA rows are port-named by batch 2; left: sand lion, great devourer, groundrunner, mature fleshbeast, jellypot, truffle mole, cephalope, landopus |
 | `the_scarlands` | 12 | Insectoids-2 `SW_Electric*` family, rimclaw, acanthamoeba small (→ lesser wollub), RSW\_ foundry beetle / fairy mole / megaphorid / shale gorger |
-| `the_rot` | 11 | angel moth, anima colossus, the pustule hornet family (5 defs), smog moth, thrumbungus, yooka, shiro-trap |
+| `the_rot` | 10 | angel moth, anima colossus, the pustule hornet family (5 defs), smog moth, thrumbungus, yooka (shiro-trap is canon — corrected 2026-09-24) |
 | `dune_sea_deep_desert` | 8 | dunealisk, spined gow, sand lion, truffle mole, cephalope; bouldermit/tetra slug/terramorph port-named |
 | `wasteland` | 9 | swarmlings ×2, bloodletter petrel, screecher, megatardi, beetlefleet, spidercat, sacapillar; terramorph port-named |
 | `the_cracked_lands` | 7 | RSW\_ norphea, sand leaper, mantrap, sandpillar; rock troll; sand squid port-named |
@@ -230,7 +231,7 @@ before subtracting rows already port-named:
 | `arid_shrubland` | 6 | imperial toad, needlepost (port-named *skorra*), cactipine (*chikka*), terrorworm (*vurra*), moss beetle, hydra |
 | `the_forge` 5 · `the_pyrelands` 5 · `the_fever_wood` 4 · `the_greentide` 4 · `the_sump` 4 · `the_webwork` 3 · `the_rust_cathedral` 2 · `the_lantern_deeps` 1 · `the_blue_desert` 1 | | |
 
-Total in scope planet-wide: **162** distinct defs; **45** labels drafted here — **42** roster
+Total in scope planet-wide: **161** distinct defs (162 until 2026-09-24; shiro-trap is canon); **45** labels drafted here — **42** roster
 defs across the four biomes plus the aerofleet / colossal aerofleet / small amoeba siblings
 pulled in by rule 4. Two of the 42 are renames the owner asked for in the roster itself
 (shock goat, cave lemming); one is a name he ruled to keep and is not drafted (dusk rat).
@@ -254,8 +255,8 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | biome roster | rows | CANON | RULED | KEPT | OURS | NONCANON | NONCANON* | UNCERTAIN | SCOPE? |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | `arid_shrubland` | 41 | 34 | 1 |  |  | 6 |  |  |  |
-| `desert` | 53 | 36 | 1 |  |  | 14 | 1 | 1 |  |
-| `dune_sea_deep_desert` | 16 | 6 | 1 |  |  | 8 |  | 1 |  |
+| `desert` | 53 | 37 | 1 |  |  | 14 | 1 |  |  |
+| `dune_sea_deep_desert` | 16 | 7 | 1 |  |  | 8 |  |  |  |
 | `forsaken_crags` | 16 |  |  | 1 |  | 14 | 1 |  |  |
 | `nightside_ice` | 10 | 2 |  |  |  | 8 |  |  |  |
 | `poison_forest` | 24 | 6 | 1 |  |  | 16 | 1 |  |  |
@@ -270,7 +271,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `the_miasma` | 32 | 17 |  |  |  | 15 |  |  |  |
 | `the_propane_lakes` | 6 |  |  |  |  | 6 |  |  |  |
 | `the_pyrelands` | 14 | 7 |  |  | 2 | 4 | 1 |  |  |
-| `the_rot` | 20 | 1 | 8 |  |  | 10 | 1 |  |  |
+| `the_rot` | 20 | 2 | 8 |  |  | 10 |  |  |  |
 | `the_rust_cathedral` | 3 |  |  |  | 1 | 2 |  |  |  |
 | `the_scald` | 8 | 4 |  |  |  | 4 |  |  |  |
 | `the_scarlands` | 15 | 1 |  |  | 2 | 12 |  |  |  |
@@ -280,7 +281,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `the_webwork` | 6 | 3 |  |  |  | 3 |  |  |  |
 | `wasteland` | 15 | 1 | 4 |  |  | 7 | 2 |  | 1 |
 | `weeping_stones` | 10 | 8 | 1 |  |  |  |  |  | 1 |
-| **distinct defs** | **309** | **115** | **16** | **1** | **6** | **156** | **6** | **4** | **5** |
+| **distinct defs** | **309** | **118** | **16** | **1** | **6** | **156** | **5** | **2** | **5** |
 
 ## Appendix B — every beast, one row per def
 
@@ -585,11 +586,11 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_GreatDevourer` | great devourer | desert | Alpha Animals | NONCANON* | donor art | non-canon beast wearing a REAL Wookieepedia title ('Great Devourer') — rename fixes a false canon read |
 | `GR_Spidercat` | spidercat | wasteland | Vanilla Genetics Expanded | NONCANON* | regen:3 done:3 | non-canon beast wearing a REAL Wookieepedia title ('Spidercat') — rename fixes a false canon read |
 | `RSW_Screecher` | screecher | poison_forest, wasteland | RimMandrake: SW — Bestiary | NONCANON* | donor art | non-canon beast wearing a REAL Wookieepedia title ('Screecher') — rename fixes a false canon read |
-| `RSW_ShiroTrap` | shiro-trap | the_rot | RimMandrake: SW — Bestiary | NONCANON* | donor art | non-canon beast wearing a REAL Wookieepedia title ('Shiro-trap') — rename fixes a false canon read |
-| `FeralGrazer` | feral grazer | desert | Star Wars Animal Collection | UNCERTAIN |  done:3 | 'grazer' is generic; several canon 'grazer (planet)' pages — unclear which creature the donor means |
+| `RSW_ShiroTrap` | shiro-trap | the_rot | RimMandrake: SW — Bestiary | CANON | donor art | Wookieepedia: Shiro-trap — the Naboo Shiro/Tooke-trap symbiote; our description IS that text (corrected 2026-09-24, batch 4: was wrongly NONCANON*) |
+| `FeralGrazer` | feral grazer | desert | Star Wars Animal Collection | CANON |  done:3 | Wookieepedia: Grazer (Alderaan) — "related to the Nerf… wild grazers were significantly leaner"; our description is that text (corrected 2026-09-24, batch 4: was UNCERTAIN) |
 | `TetnissCrab` | tet'niss crab | the_grey_sea | Star Wars Animal Collection | UNCERTAIN | donor art | Wookieepedia has 'Tet'niss'; whether the crab is canon or Mlie's coinage on a canon word is unverified |
 | `Vapaad` | vapaad | the_blue_desert | Star Wars Animal Collection | UNCERTAIN | donor art | Mlie spelling of the Legends 'Vaapad' (Sarapin predator) — probably canon, misspelt |
-| `WarWyrm` | war wyrm | dune_sea_deep_desert | Star Wars Animal Collection | UNCERTAIN |  done:3 | no exact page; 'Sith wyrm'/'ice wyrm' exist — donor may be a Legends creature under another title |
+| `WarWyrm` | war wyrm | dune_sea_deep_desert | Star Wars Animal Collection | CANON |  done:3 | Wookieepedia: Sith wyrm — "originally an infant exogorth… Naga Sadow… fourth moon of Yavin"; the def's own text says "sometimes called the 'sith wyrm'" (corrected 2026-09-24, batch 4: was UNCERTAIN) |
 | `ColossusToad` | colossus toad | weeping_stones | Odyssey | SCOPE? | donor art | Odyssey — renaming a vanilla/DLC label is a game-wide patch; scope question |
 | `GiantAnt_Race` | giant ant | the_greentide | They! (Giant Ants) | SCOPE? | donor art | They! (Giant Ants) — Earth animal, donor mod — renaming a vanilla/DLC label is a game-wide patch; scope question |
 | `LavaSnail` | lava snail | the_forge | Odyssey | SCOPE? | donor art | Odyssey — renaming a vanilla/DLC label is a game-wide patch; scope question |
