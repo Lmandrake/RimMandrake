@@ -2750,3 +2750,73 @@ trios are visible in that list and worth checking for cluster continuity:
 Jawa gene/xenotype territory this wave routed around for
 `JAWA_MESS_IMMUNITY_1`; re-check `git status --porcelain` on it before
 touching, it may still be live.
+
+## Wave 43 — 2026-09-24: both flagged trios CLOSED (7 files)
+
+`JAWA_MESS_IMMUNITY_1` finished and pushed (`a9aef1bc1`) before this wave
+started; checked its actual diff (`git show --stat`) rather than trusting the
+"likely touch surface" guess from wave 42 — it only ever touched two new
+files under `src/RimUtinni/UtinniPatches/` (`Defs/GeneDefs/Jawa_MessImmunity.xml`,
+`Patches/JawaMessImmunity.xml`), zero overlap with `StarWarsRaces` either way.
+`git status --porcelain` confirmed clean on both target directories.
+
+Reviewed all 7 files diff-scoped against each one's own clean-mark sha:
+`RimStarWars/StarWarsRaces` trio (`SW_Genes.xml`, `RimMandrakePawnKinds.xml`,
+`RimMandrakeXenotypes.xml`) + `RimStarWars/SWBestiary` 4-file cluster
+(`About.xml`, `RSW_BiomesTeamPort_Items.xml`, `RSW_BiomesTeamPort_Races.xml`,
+`RSW_Mynock.xml`).
+
+**StarWarsRaces trio**: mostly `species_skin_rulings.json`-driven gene edits
+(new `RSW_Skin_GreyBlue` GeneDef for the ruled Umbaran grey-blue skin — traced
+to the right XenotypeDef, `RSW_RimMandrakeUmbaran`, not the Tuskens the
+nearby comment block belongs to) plus the `XENOTYPE_CANON_CORRECTION_1`
+rename `RSW_RimMandrakeSithKissaiPureblood(_Kind)` →
+`RSW_RimMandrakeSithKissai(_Kind)`, consistently applied across the
+PawnKindDef and XenotypeDef. Checked every added/changed gene reference
+against `mcp__rimsage__get_def_details`/`search_defs` (RimSage answered —
+this session is not the disconnected Mac laptop): `Hair_DarkBlack`,
+`Hair_Gray`, `RSW_WaterBreathing`, `RSW_Skin_MidGray` all confirmed real
+defs; `AptitudeStrong_Intellectual`/`AptitudeStrong_Artistic` correctly come
+back "not found" because Aptitude genes are procedurally generated from the
+`AptitudeStrong` `GeneTemplateDef` + a `SkillDef` suffix at runtime, not
+static defs — confirmed by checking the pre-existing, already-shipping
+`AptitudeStrong_Mining` resolves identically (also "not found," same
+mechanism). No bugs.
+
+**One finding, not a code bug, not fixed here**: `f894fe574` (2026-09-20)
+renamed the Sith Kissai defName in this repo, but the ledger's
+`FULL_LOAD_RESIDUE_TRIAGE_1` note from a **2026-09-24** Player.log harvest
+still lists `RSW_RimMandrakeSithKissaiPureblood` as an untriaged crossref —
+the live deployed mod still holds the old defName 4 days after the repo
+rename. Deploy-path staleness (`rimworld-deploy`), not a review-scope fix;
+flagging for whoever next touches `FULL_LOAD_RESIDUE_TRIAGE_1` or runs
+`deploy_custom_mods.py` for `mandrake.rsw.starwarsraces`.
+
+**SWBestiary cluster**: `About.xml`'s dependency-list changes (Harmony and
+`OskarPotocki.VFE.Insectoid2` promoted to hard `modDependencies`, with
+inline comments explaining exactly why — missing-comp-type def-discard and
+texPath-binding failures respectively) are self-documenting and correct;
+`brrainz.harmony` was added to `loadAfter` too, `Insectoid2` correctly
+wasn't (texture lookups aren't load-order-sensitive). The `RSW_Stoneback` →
+"bokka" and `RSW_EggStoneback*` → "bokka egg" changes are label-only
+(defNames untouched) and consistent with each other. Verified the two new
+`BIOME_SPECIFIC_FAUNA_LAW_1` hydrocarbon-lifeform defs (`RSW_Gembug`,
+`RSW_GlowSlug`) both reference `RimMandrake.CreatureBehaviors.RM_HydrocarbonBloodExtension`,
+which exists on disk and is in `RM_CreatureBehaviors.csproj`'s `<Compile
+Include>` list — no dead-compile trap, the exact failure class CLAUDE.md
+names for this assembly. `RSW_Mynock`'s flight-stat retrofit
+(`MaxFlightTime`/`FlightCooldown`/`flightStartChanceOnJobStart`/
+`flightSpeedFactor`/`canFlyIntoMap`) matches this repo's house convention
+across other bestiary flyers, and its claimed generated art
+(`RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock.png`) is confirmed present
+on disk. All 7 files parse clean (`xml.etree.ElementTree`). No bugs.
+
+All 7 files marked CLEAN, commit `7b33bb90d`, pushed (one transient
+`index.lock` retry mid-wave, cleared on its own — a concurrent agent's git
+process, not this agent's).
+
+Re-derived the final count: **17 non-PNG DIRTY files remain** (not the
+arithmetic-expected 16 — files keep re-dirtying between waves from other
+agents' commits, expected, same as every prior wave). Next wave: no standing
+named cluster surfaced this pass; re-derive fresh via `code_review_status.py
+list | grep '^DIRTY'` filtered non-`.png`.
