@@ -115,7 +115,19 @@ def terminator_front_registers_permanently_bypassing_geometry(t):
     structural gap). Proves `RM_WS_TerminatorFront` resolves as a real,
     permanent-capable GameConditionDef whose conditionClass (vanilla
     `GameCondition_Flashstorm`) registers without error -- not that this
-    mod's OWN gating logic ever starts it on this list."""
+    mod's OWN gating logic ever starts it on this list.
+
+    🔴 FOUND AND FIXED (wave 12): read `r.get("active")`, but
+    `JawaBenchEventTools.cs`'s `GameConditionTool` returns the list under
+    `activeConditions`, never `active` -- confirmed by reading its return
+    statement (`activeConditions = active` is the OUTER key name; `active`
+    is only the LOCAL variable it was built from). `.get("active")` was
+    therefore always `None` -> `[]`, so `row` was always `None` and this
+    component raised `ExpectationFailed` on every live run regardless of
+    whether the condition actually registered -- another instance of the
+    same guaranteed-false-failure key-mismatch bug class AshkarrFlora's
+    wave-11 fix and this wave's RimDefDump/AshkarrLandmarkArt fixes are
+    all in. Fixed by reading `activeConditions`."""
     t.clear_area(size=20)
     with t.component("terminator_front_condition_resolves_and_registers",
                       beyond_toggle=True):
@@ -125,7 +137,7 @@ def terminator_front_registers_permanently_bypassing_geometry(t):
             raise ExpectationFailed(
                 "jawa/game_condition(start, %s, permanent=True) failed: %r"
                 % (TERMINATOR, r))
-        active = (r or {}).get("active") or []
+        active = (r or {}).get("activeConditions") or []
         row = next((c for c in active if c.get("def") == TERMINATOR), None)
         if row is None or not row.get("permanent"):
             raise ExpectationFailed(
@@ -139,14 +151,23 @@ def terminator_front_registers_permanently_bypassing_geometry(t):
 def dark_aurora_incident_is_correctly_gated_by_geometry(t):
     """`jawa/storyteller_fire(RM_WS_DarkAurora, dryRun=True)` resolves the
     IncidentDef/workerClass (proving `IncidentWorker_NightsideAurora` and
-    the def wiring are intact) and reports `canFire` from
+    the def wiring are intact) and reports `canFireNow` from
     `idef.Worker.CanFireNow(parms)` WITHOUT firing anything. On the minimal
     list this must be false -- not because `nightsideAuroraEnabled` is off
     (it defaults true), but because `WeatherGeometryUtility.
     MapInNightsideBand` is unconditionally false with no `PlanetGeometryDef`
     loaded (module docstring's structural gap). This is the mechanism the
     walk doc's own bullet 4 describes ("on the minimal list that second
-    condition is always false, so the incident never fires")."""
+    condition is always false, so the incident never fires").
+
+    🔴 FOUND AND FIXED (wave 12): checked `r.get("canFire")`, but
+    `JawaBenchIncidentTools.cs`'s `StorytellerFire` names the dry-run field
+    `canFireNow` (`success = true, dryRun = true, resolved, canFireNow =
+    canFire, ...` -- `canFire` is only the LOCAL variable; the response key
+    is `canFireNow`). `.get("canFire")` was therefore always `None`
+    (falsy), so this component's whole check was a silent no-op: it would
+    never have raised even if the incident genuinely could fire on this
+    list. Fixed by reading `canFireNow`."""
     with t.component("nightside_gate_blocks_on_minimal_list", beyond_toggle=True):
         t.set_setting(SETTINGS_TYPE, {"nightsideAuroraEnabled": True})
         r = t.bridge_call("jawa/storyteller_fire", incidentDef=DARK_AURORA,
@@ -155,9 +176,9 @@ def dark_aurora_incident_is_correctly_gated_by_geometry(t):
             raise ExpectationFailed(
                 "jawa/storyteller_fire(%s, dryRun=True) failed to resolve the "
                 "def at all: %r" % (DARK_AURORA, r))
-        if r.get("canFire"):
+        if r.get("canFireNow"):
             raise ExpectationFailed(
-                "%s reported canFire=True on the minimal list with no "
+                "%s reported canFireNow=True on the minimal list with no "
                 "PlanetGeometryDef loaded -- MapInNightsideBand should be "
                 "unconditionally false: %r" % (DARK_AURORA, r))
 

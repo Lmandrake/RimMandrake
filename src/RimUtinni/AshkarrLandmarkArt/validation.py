@@ -182,24 +182,45 @@ def sample_defs_readback(t):
     (StarWarsAnimalCollection-sourced), VEE_AlluvialFan (VEE_-prefixed
     provider). REQUIRES THE FULL MOD LIST -- see module docstring's
     environment note; on minimal, sw_Sarlacc and VEE_AlluvialFan's provider
-    mods are absent and `jawa/get_def` will report not-found, which this
+    mods are absent and `jawa/get_defs` will report not-found, which this
     component treats as an environment gap (UNMEASURED-style skip) rather
-    than a hard failure -- see `_check_one`'s own guard."""
+    than a hard failure -- see `_check_one`'s own guard.
+
+    🔴 FOUND AND FIXED (wave 12): this component used to call `jawa/get_def`
+    (singular) with `defType="LandmarkDef"` and read
+    `row.get("resolved") or row.get("fields")`. Cross-checked against
+    `JawaBenchTerrainTools.cs`'s `GetDef`: neither `resolved` nor `fields`
+    is ever a key on that tool's response -- its per-def `extra` block is
+    hand-modelled for exactly THREE types (ThingDef/PawnKindDef/BiomeDef,
+    per the tool's own comment), so for a LandmarkDef `extra` comes back
+    null and `iconTexturePath` was never reachable through it at all. The
+    old guard (`not row.get("resolved") and not row.get("fields")`) was
+    therefore unconditionally true on EVERY call, success or failure, so
+    this component always took the "not found" branch and never once
+    compared `iconTexturePath` against anything -- a silent, permanent
+    no-op, the mirror image of AshkarrFlora's wave-11 bug (that one always
+    raised; this one never even checked). Switched to `jawa/get_defs`
+    (plural), the tool built exactly for this -- "name the fields you want
+    off ANY def type and they are read reflectively" -- whose real
+    per-entry shape (`found`, `fields` -- confirmed against `GetDefs` in
+    the same file) actually carries `iconTexturePath`."""
     t.clear_area(size=8)
 
     def _check_one(name, expect_path):
         with t.component("landmark_%s_repainted" % name, beyond_toggle=True):
-            r = t.bridge_call("jawa/get_def", defType="LandmarkDef", defName=name)
+            r = t.bridge_call("jawa/get_defs", defs="LandmarkDef/%s" % name,
+                              fields="iconTexturePath")
             if _live(t):
-                row = r or {}
-                if row.get("found") is False or not row.get("resolved") and not row.get("fields"):
+                rows = (r or {}).get("defs") or []
+                row = rows[0] if rows else {}
+                if not row.get("found"):
                     # Provider mod likely absent on this run's list (e.g.
                     # minimal) -- an environment gap, not a patch defect.
                     # Recorded, not silently swallowed.
                     t._record("landmark_%s not found -- provider mod likely "
                              "absent from this run's mod list" % name, None)
                     return
-                fields = row.get("resolved") or row.get("fields") or {}
+                fields = row.get("fields") or {}
                 got = fields.get("iconTexturePath")
                 if got != expect_path:
                     raise ExpectationFailed(
