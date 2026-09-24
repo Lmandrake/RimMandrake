@@ -126,6 +126,7 @@
     <Compile Include="RM_MapComponent_DreadField.cs" />
     <Compile Include="RM_JobGiver_DreadAvoidWander.cs" />
     <Compile Include="RM_CompFilthTrail.cs" />
+    <Compile Include="RM_MapComponent_GlasswalkSlip.cs" />
     <Compile Include="RM_StrandingPoolsExtension.cs" />
     <Compile Include="RM_MapComponent_StrandingPools.cs" />
     <Compile Include="RM_JobGiver_ReturnToWater.cs" />

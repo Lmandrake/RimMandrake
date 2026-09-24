@@ -35,6 +35,12 @@
   Impassable, and a wandering placeholder mouse's own path can never enter
   an Impassable cell — patching it would have no observable effect on this
   mechanic, so it is left alone rather than "fixed" for its own sake.
+
+  🔑 SUMP_WALKWAYS_1 (2026-09-24) reuses this same filthAcceptanceMask fix to
+  wire a SECOND foot-tracking mechanism (RM_TarShallow -> RM_Filth_Tar) — see
+  the sibling file RUT_TarShallow_GeneratedFilth.xml, kept separate and
+  DEPLOY_HOLD'd (RM_Filth_Tar has no art yet) so that hold never risks this
+  already-shipped, unheld fix.
 -->
 <Patch>
 

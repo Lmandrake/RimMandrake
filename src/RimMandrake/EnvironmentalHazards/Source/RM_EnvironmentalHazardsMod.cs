@@ -239,6 +239,15 @@ namespace RimMandrake.EnvironmentalHazards
     //      only moves what threading one costs the creatures that can. At 0
     //      a barrier is free to walk through for anything not outright
     //      blocked.
+    //  42. glasswalkSlipEnabled — RM_MapComponent_GlasswalkSlip
+    //      (SUMP_WALKWAYS_1). Off: a floor tagged RM_SlipperyWalkway (the
+    //      Sump's RUT_Glasswalk) never stuns a hurrying/hauling pawn; the
+    //      terrain's own permanent speed cap (its pathCost) is untouched
+    //      either way — that half needs no toggle since it is a plain
+    //      TerrainDef field, not a mechanism this kit runs.
+    //  43. glasswalkSlipChancePerSweep — the SAME mechanism's chance dial,
+    //      rolled once per eligible pawn every 60-tick sweep. At 0, behaves
+    //      identically to the toggle above being off.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -284,6 +293,8 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool contactVenomLethal = true;
         public static bool bodySizeBarrierEnabled = true;
         public static float bodySizeBarrierThreadCostMultiplier = 1f;
+        public static bool glasswalkSlipEnabled = true;
+        public static float glasswalkSlipChancePerSweep = 0.02f;
 
         public override void ExposeData()
         {
@@ -330,6 +341,8 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref contactVenomLethal, "contactVenomLethal", true);
             Scribe_Values.Look(ref bodySizeBarrierEnabled, "bodySizeBarrierEnabled", true);
             Scribe_Values.Look(ref bodySizeBarrierThreadCostMultiplier, "bodySizeBarrierThreadCostMultiplier", 1f);
+            Scribe_Values.Look(ref glasswalkSlipEnabled, "glasswalkSlipEnabled", true);
+            Scribe_Values.Look(ref glasswalkSlipChancePerSweep, "glasswalkSlipChancePerSweep", 0.02f);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -342,7 +355,7 @@ namespace RimMandrake.EnvironmentalHazards
             // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
             // the same edit as whoever adds the next toggle, or their block is
             // invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3880f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3980f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -463,6 +476,10 @@ namespace RimMandrake.EnvironmentalHazards
               + "pack animals and the largest wildlife route around a stand instead of through it, "
               + "while small creatures cross freely and people force a slow way through. Off: "
               + "everything moves through it on the same terms.");
+            list.CheckboxLabeled("Glasswalk slip-and-fall", ref glasswalkSlipEnabled,
+                "A floor built slick (the Sump's glasswalk) stops rarely staggering a pawn who is "
+              + "hurrying or hauling across it. No damage either way — the floor's own permanent "
+              + "speed cap is untouched by this toggle.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
@@ -492,6 +509,11 @@ namespace RimMandrake.EnvironmentalHazards
                      + "delivers it. Never past 21 C, so it helps a lot in the cold without ever "
                      + "replacing a heater.");
             warmGroundOffsetCelsius = list.Slider(warmGroundOffsetCelsius, 0f, 30f);
+
+            list.Label("Glasswalk slip chance: " + (glasswalkSlipChancePerSweep * 100f).ToString("0.0") + "% per second while hurrying/hauling on it");
+            list.Label("How often a fast-moving or hauling pawn briefly staggers on a slick floor. "
+                     + "At 0, nobody ever slips.");
+            glasswalkSlipChancePerSweep = list.Slider(glasswalkSlipChancePerSweep, 0f, 0.2f);
 
             list.End();
             Widgets.EndScrollView();

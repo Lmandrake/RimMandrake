@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_Filth_Tar.xml            FlowWorks · authored 2026-09-24 (SUMP_WALKWAYS_1)
+  ============================================================================
+  Tracked tar filth — the substance any TerrainDef using RM_Tar (the FlowWorks
+  Heavy-viscosity liquid, RM_LiquidDefRegistry.xml) can leave on a pawn's feet
+  via vanilla's own TerrainDef.generatedFilth field (Source/Verse/TerrainDef.cs
+  line 292) and Pawn_FilthTracker.TryPickupFilth/TryDropFilth (RimWorld/
+  Pawn_FilthTracker.cs — read whole this pass). This is the SAME real,
+  already-shipping mechanism vanilla uses for e.g. Sand terrain tracking
+  Filth_Sand indoors; no new C# generates or tracks this filth, only the
+  FilthDef itself and the <generatedFilth> wiring on RM_TarShallow are new
+  (RUT_TarShallow_FilthAcceptance.xml, extended this pass).
+
+  Lives in FlowWorks (not the Sump kit) because the tar LIQUID is FlowWorks'
+  own (RM_Tar registry row, SUMP_TAR_HYDROLOGY_1's own framing) — the stain it
+  leaves on a boot is the same substance's property, not a Sump-specific
+  invention, and any future biome that opens an RM_Tar body inherits this for
+  free.
+
+  pathCost 34 — CALIBRATED, not guessed: matches RM_GreentideChurnmud's own
+  "brutally slow" mire value (RUT_TarMoat.xml's own header, same repo,
+  same reasoning), deliberately a real, meaningful movement penalty. Vanilla
+  filth normally carries pathCost 0 (checked: Filth_Dirt/Filth_Sand/every
+  BaseFilth-derived def in Data/Core/Defs/ThingDefs_Misc/Filth.xml sets none),
+  so filth does not slow movement at all by default — PathGrid.
+  CalculatedCostAt (Source/Verse/AI/PathGrid.cs:120) takes the MAX of terrain
+  pathCost and every Thing on the cell's own def.pathCost, so a nonzero
+  pathCost here is what turns "tar filth present" into "duckboards fouled and
+  slow" with zero new C#. This is SUMP_WALKWAYS_1's own duckboards mechanism
+  (item spec §1, "fouls with tar... accumulating filth slows it").
+
+  disappearsInDays deliberately OMITTED (defaults FloatRange.Zero → 0 ticks →
+  Filth.DisappearAfterTicks stays 0 → SteadyEnvironmentEffects.cs:128's own
+  `DisappearAfterTicks != 0` guard never fires): tar filth never fades on its
+  own. "Until scrubbed" (his spec) means scrubbed, not weathered — cleaning
+  (JobDriver_Clean, FilthMaker.RemoveAllFilth via the normal cleaning job) is
+  the only way off. rainWashes also left at its default false for the same
+  reason — this is deliberately worse than vanilla mud, matching
+  SUMP_TAR_NASTINESS_1's own tuning law ("full cleanliness should be a losing
+  fight, not an achievable state").
+
+  cleaningWorkToReduceThickness 60 — INVENTED, above Filth_Dirt/Filth_Sand's
+  own 35, reflecting "tar-proof/tar-fouled" being harder to scrub than plain
+  dirt. Flag for live tuning.
+
+  placementMask Terrain — required for FilthProperties.TerrainSourced (true
+  only when placementMask has the Terrain flag, RimWorld/FilthProperties.cs)
+  so Pawn_FilthTracker remembers this as lastTerrainFilthDef and keeps
+  tracking it forward across clean cells, exactly like Filth_Dirt/Filth_Sand.
+
+  🔴 Texture path corrected this pass, caught by validate_patch.py, not
+  guessed around: a first draft reused vanilla's own Things/Filth/Grainy
+  verbatim (the same placeholder reasoning RUT_TarMoat.xml gives for a
+  TERRAIN texPath) — but validate_patch.py refuses that as a hard ERROR for
+  a ThingDef, exactly the trap RUT_Filth_MouseTrack.xml's own header already
+  documents (SUMP_MECHANICS_1 S4, 2026-09-14): once a mod ships ANY content
+  under Textures/Things/, the validator treats Things/ as THAT mod's own
+  claimed namespace and requires a real file, not a vanilla fallback.
+  Repointed to a new RM_-named path under the same vanilla-mirroring folder
+  (Things/Filth/RM_FilthTar) and DEPLOY_HOLD'd — same fix, same pattern.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_Tar</defName>
+    <label>tracked tar</label>
+    <description>Black, sticky, and tracked in on someone's boots. It does not wash off, and it does not forgive a cheap floor.</description>
+    <altitudeLayer>Filth</altitudeLayer>
+    <category>Filth</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <placementMask>
+        <li>Terrain</li>
+      </placementMask>
+      <cleaningWorkToReduceThickness>60</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+    </filth>
+    <graphicData>
+      <graphicClass>Graphic_Cluster</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_FilthTar</texPath>
+      <color>(18,16,14,150)</color>
+    </graphicData>
+    <statBases>
+      <Beauty>-18</Beauty>
+      <Cleanliness>-6</Cleanliness>
+      <BeautyOutdoors>-2</BeautyOutdoors>
+    </statBases>
+    <thingClass>Filth</thingClass>
+    <useHitPoints>false</useHitPoints>
+    <pathCost>34</pathCost>
+  </ThingDef>
+
+</Defs>
