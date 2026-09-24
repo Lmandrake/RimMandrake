@@ -3168,3 +3168,66 @@ ENTERED files remain**: `UtinniPatches` now at **79**, `SWBestiary` at
 working it (`Patches/` has 12 files left, or move to
 `Defs/ThingDefs_Items`, its next-biggest subfolder at 11) with
 `list --show-untracked`.
+
+## Wave 50 — 2026-09-24: UtinniPatches Patches/, 8 files picked, 7 fixed clean
+
+Ran `list --show-untracked` fresh: **310 NEVER ENTERED**, matching wave 49's
+close exactly (`UtinniPatches` 79, `SWBestiary` 71 — confirmed, no drift).
+Continued `UtinniPatches/Patches/` per wave 49's own next-step note, picking
+the 8 alphabetically-first of its 12 remaining files:
+`RUT_Greentide_LivingBolesGenStep_Register.xml`,
+`RUT_Greentide_RootCausewaysGenStep_Register.xml`,
+`RUT_Miasma_CrecheScatterer_Register.xml`, `RUT_TarShallow_GeneratedFilth.xml`,
+`RotDecayHarvest_LivingProduce.xml`, `RotGuardianGroves_WildSpawn.xml`,
+`RotPaleTree_WildSpawn.xml`, `RotSpecies_NamesAndSizes.xml`.
+
+Full-file reviewed all 8, cross-checking every `xpath` target, `MayRequire`
+gate/`PatchOperationFindMod` mod name and referenced defName/C# class against
+the actual live defs rather than reading each patch in isolation: the three
+GenStep-register patches' target GenStepDefs (`RUT_GenStep_LivingBoles`,
+`RUT_GenStep_RootCauseways`, `RUT_GenStep_CrecheScatterer`) all exist with
+matching defNames; `RUT_TarShallow_GeneratedFilth.xml`'s `RM_TarShallow`
+TerrainDef and `RM_Filth_Tar` ThingDef both resolve; `RotDecayHarvest_
+LivingProduce.xml`'s two RotSporeKit flora targets
+(`RUT_Glimmerslime`/`RUT_RawDulcis`) exist with no pre-existing
+`<modExtensions>` (confirming its own nomatch-branch comment still holds),
+its `RM_LivingProduceExtension` class exists with `heatPerUnit = 3.5f`
+matching the comment's stated Campfire calibration exactly; `RotGuardianGroves_
+WildSpawn.xml`'s four plant defNames and `RotPaleTree_WildSpawn.xml`'s
+`RUT_PaleTree` (confirmed genuinely `MayRequire="Ludeon.RimWorld.Royalty"`-gated
+on its own ThingDef, matching the patch's own claim) all exist and none
+already appear in `RUT_TheRot.xml`'s base `<wildPlants>` list, so both
+Add-only patches append with no key collision; `RotSpecies_NamesAndSizes.xml`'s
+~20 `texPath` overrides were checked against `Textures/RotSpecies/` on disk —
+every referenced path has matching art. No bugs found in any of the 8.
+
+Per the brief, re-ran wave 49's own sound-prefix check (`sound{Wounded,Death,
+Call,Angry}` bare name vs RSW_/RUT_-prefixed SoundDef) as a repo-wide sweep
+across both `UtinniPatches/Defs/ThingDefs_Races/*.xml` and
+`SWBestiary/Defs/ThingDefs_Races/*.xml`, since this is a known recurring
+pattern: the only hits were `RSW_Zakkeg.xml`'s 4 `Pawn_Boma_*` references —
+already identified in wave 49 as the pre-existing donor-species mismatch, not
+this bug class, and deliberately left alone. No new instances anywhere in the
+repo; wave 49's fix was complete.
+
+`RUT_TarShallow_GeneratedFilth.xml` reviewed clean (no bugs) but **not**
+marked CLEAN: `mark-clean` refused it as having uncommitted changes — its
+working-tree copy carries an in-flight edit from the concurrent
+`SUMP_TAR_NASTINESS_1` build agent (its own header notes a same-day
+`DEPLOY_HOLD LIFTED` edit). Left it alone rather than touching another
+agent's uncommitted work; it stays NEVER ENTERED for a future wave once that
+edit lands.
+
+Commit `148261324` (status file + this entry), pushed. No `.git/index.lock`
+contention this wave.
+
+Re-measured after: `TALLY  CLEAN 3134  DIRTY 6  ORPHANED 0  NEVER ENTERED 303`
+— 303 = 310 − 7 exactly, no concurrent-agent noise on the NEVER ENTERED count
+this wave (DIRTY ticked 5→6, unrelated to this wave's picks). **303 NEVER
+ENTERED files remain**: `UtinniPatches` now at **72**, `SWBestiary` at **71**
+— nearly tied. `UtinniPatches/Patches/` has **5** files left
+(`RUT_TarShallow_GeneratedFilth.xml` plus `VQEQuestText_AreForsaken.xml`,
+`WildAnimals_CrackedLands.xml`, `WildAnimals_Greentide.xml`,
+`WyyyschokkFangPendantFactions.xml`) — next wave: finish it, or switch to
+`SWBestiary/Defs/ThingDefs_Items` (11) since the two clusters are now
+essentially tied, with `list --show-untracked`.
