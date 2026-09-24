@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T21:59:35Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-24T22:37:47Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -143,15 +143,6 @@ target:   v1
 kind:     design
 summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
-
-## BLUEDESERT_DESIGN_SITTING_1 Blue Desert design sitting: bedazzle pass to full-mod status — rule the sheet's Owed list (Haze / ice-sand-drift / ice-fog weathers, blue-ice mineable, quarry epochs + injections, Swallowers/Burners/Pickers fauna, transparent fractal flora, water-taxonomy row) feeding BLUEDESERT_RM_MOD_BUILD_1
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  Rule, with the owner at the bench, everything the sheet still owes so the
-prose:    infrastructure/state/items/BLUEDESERT_DESIGN_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
