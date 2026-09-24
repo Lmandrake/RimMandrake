@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_GaslightLamp.xml                  UtinniPatches — SUMP_GASLIGHT_1
+
+  Item spec §3, "gaslight lamps: fueled by the mix; the biome's mood
+  answer — warm lamplight offsetting the squalor a Sump colony cannot
+  escape." Comp shape cribbed from RUT_DryAirBlower.xml's own
+  CompProperties_Refuelable block (this repo's established fueled-building
+  pattern), fuelFilter repointed at RUT_Sumpgas instead of Chemfuel.
+
+  Glow: CompProperties_Glower (vanilla, static base) +
+  RM_CompProperties_WarblingGlow (this item's own new comp, riding
+  alongside it — see that comp's own header for why it is a sibling comp
+  rather than a CompGlower subclass) — glowColor is a warm amber-orange
+  base (255,176,84) the warble comp wanders +/-18 degrees of hue around,
+  matching the founding ruling's "beautifully warm light that warbles
+  between adjacent colors."
+
+  Mood: NOT a new ThoughtDef. Vanilla already has a room-beauty-driven mood
+  mechanism (Data/Core/Defs/ThoughtDefs/Thoughts_Environment.xml's own
+  Beauty/UglyRoom family, keyed on RoomStatDefOf.Beauty) — that is the real,
+  already-built vanilla answer for "offsets squalor," so this lamp carries
+  an unusually high Beauty statBase (14 — well above a torch's ~2, on par
+  with a small sculpture) rather than inventing a bespoke Thought. No new
+  code needed for "mood-positive."
+
+  fuelConsumptionRate/fuelCapacity are DESIGNED (a torch-scale fixture, not
+  an industrial burner) — no source doc figure to match, tuned so a full
+  tank (6) runs roughly a full day at the shipped consumption rate (0.25/day
+  scale), a quicktest tune still owed per this item's own verify section.
+
+  Beauty/description keep the description from naming any AC power source
+  (no CompProperties_Power) — the ruling's own "mixing a bit of the two in
+  a lamp" reads as a self-contained combustion fixture, not a piped utility.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_GaslightLamp</defName>
+    <label>gaslight lamp</label>
+    <description>A small brass-and-glass fixture that burns a mix of tar-rendered Sumpgas in a warble-flamed wick. No two flickers land the same color twice — the light dances warm through amber, orange and rose and back, throwing shifting shadows nothing else on the Sump can match. Colonists linger near it without quite knowing why.</description>
+    <graphicData>
+      <texPath>Things/Building/Furniture/RUT_GaslightLamp/RUT_GaslightLamp</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.2</fillPercent>
+    <pathCost>14</pathCost>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>900</WorkToBuild>
+      <Mass>4</Mass>
+      <Flammability>0.6</Flammability>
+      <Beauty>14</Beauty>
+    </statBases>
+    <costList>
+      <Steel>15</Steel>
+      <RUT_Bitumen>3</RUT_Bitumen>
+    </costList>
+    <building>
+      <isPlayerEjectable>false</isPlayerEjectable>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <buildingSizeCategory>Small</buildingSizeCategory>
+    </building>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Glower">
+        <glowRadius>10</glowRadius>
+        <glowColor>(255,176,84,0)</glowColor>
+        <colorPickerEnabled>false</colorPickerEnabled>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_WarblingGlow">
+        <hueRangeDegrees>18</hueRangeDegrees>
+        <valuePulseFraction>0.12</valuePulseFraction>
+        <radiusPulseFraction>0.1</radiusPulseFraction>
+        <primaryPeriodTicks>211</primaryPeriodTicks>
+        <secondaryPeriodTicks>137</secondaryPeriodTicks>
+        <updateIntervalTicks>12</updateIntervalTicks>
+        <qualityScalingEnabled>false</qualityScalingEnabled>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>0.28</fuelConsumptionRate>
+        <fuelCapacity>6</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <consumeFuelOnlyWhenUsed>false</consumeFuelOnlyWhenUsed>
+        <showFuelGizmo>true</showFuelGizmo>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>6</initialConfigurableTargetFuelLevel>
+        <autoRefuelPercent>0.35</autoRefuelPercent>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+        <fuelLabel>Sumpgas</fuelLabel>
+        <fuelGizmoLabel>Sumpgas</fuelGizmoLabel>
+        <outOfFuelMessage>Gaslight lamp out of Sumpgas</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>RUT_Sumpgas</li>
+          </thingDefs>
+        </fuelFilter>
+      </li>
+    </comps>
+    <researchPrerequisites>
+      <li>RUT_GaslightChemistry</li>
+    </researchPrerequisites>
+    <designationCategory>Furniture</designationCategory>
+    <techLevel>Neolithic</techLevel>
+    <uiIconScale>0.85</uiIconScale>
+  </ThingDef>
+
+</Defs>

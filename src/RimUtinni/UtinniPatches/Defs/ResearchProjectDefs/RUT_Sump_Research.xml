@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Sump_Research.xml                 UtinniPatches — SUMP_GASLIGHT_1
+
+  Item spec §6, the discovery pilot, owner's own verbatim: "some specific
+  tech will unlock when meeting tar... often it will just be specific
+  technologies," and the founding ruling's own closer: "a technology they
+  realize upon first meeting one of these flames." Planet-wide
+  generalization of "witnessing X unlocks tech Y" is explicitly GATED to
+  INDIGENOUS_TECH_REVISIT_1 (item's own §6). This pass builds ONLY the def
+  placeholders + a clear note, per this item's own instruction to stub
+  rather than build the generalized mechanism: "Anomaly's encounter-unlock"
+  (CompProperties_Studiable / the anomaly disclosure-letter system) is the
+  named precedent, and this pass did NOT study that C# against the live
+  decompile or a bridge test — verifying it correctly was out of scope for
+  an offline-only pass, and guessing at it risks shipping a broken trigger
+  that silently never fires (the exact failure mode CLAUDE.md's "never
+  guess a RimWorld API" rule exists to prevent).
+
+  So, honestly partial: both projects below are ORDINARY researchable
+  ResearchProjectDefs, manually completable from the research tab like any
+  other tech — NOT yet hidden, and NOT yet auto-completed by any
+  discovery/encounter comp. RUT_GaslightChemistry already gates
+  RUT_Sumpgas's own recipeMaker (RUT_Sumpgas.xml, this same item) for real,
+  so it is meaningful now even without the discovery trigger. RUT_
+  TarRendering is defined but deliberately left UNWIRED to anything (no
+  recipe/building references it) — SUMP_TAR_NASTINESS_1's tar-solvent
+  recipes are already shipped and this pass does not retroactively gate
+  someone else's finished work; a future pass wiring the discovery comp
+  decides what "first meeting tar" should gate, if anything beyond flavor.
+
+  baseCost/techLevel are DESIGNED placeholders (small, Neolithic — this is
+  early-biome flavor tech, not a late-game unlock) with no source doc value
+  to match; a design pass may retune.
+-->
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RUT_GaslightChemistry</defName>
+    <label>gaslight chemistry</label>
+    <description>Working acid into tar until it lets go of a warm green vapor — the same reaction the Sump's own geysers do on their own, wherever a flame dances above the black. Renders Sumpgas from tar and acid, the fuel for the warbling lamps.</description>
+    <baseCost>200</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>2.0</researchViewX>
+    <researchViewY>6.4</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_TarRendering</defName>
+    <label>tar rendering</label>
+    <description>The Sump's tar gives up more than it takes, once someone works out how to handle it — waterproofing, adhesive, road-metal, fuel. Unwired flavor tech for now, placed here for whichever pass wires "first meeting tar" as a discovery trigger (item spec SUMP_GASLIGHT_1 §6).</description>
+    <baseCost>150</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>1.0</researchViewX>
+    <researchViewY>6.4</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>

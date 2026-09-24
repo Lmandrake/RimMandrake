@@ -176,6 +176,10 @@
     <Compile Include="RM_HediffComp_CarriedFilthExposure.cs" />
     <Compile Include="RM_CarriedFilthHediffExtension.cs" />
     <Compile Include="RM_MapComponent_CarriedFilthHediffLink.cs" />
+    <Compile Include="RM_CompProperties_WarblingGlow.cs" />
+    <Compile Include="RM_Comp_WarblingGlow.cs" />
+    <Compile Include="RM_RecipeDef_HediffByproduct.cs" />
+    <Compile Include="RM_Recipe_RemoveHediffWithByproduct.cs" />
   </ItemGroup>
 
   <ItemGroup>

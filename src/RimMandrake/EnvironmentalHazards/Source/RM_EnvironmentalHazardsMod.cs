@@ -260,6 +260,16 @@ namespace RimMandrake.EnvironmentalHazards
     //      and a carrier already afflicted stops accruing OR healing
     //      severity — frozen exactly where it is, not cleared, until this
     //      is back on.
+    //  46. warblingGlowEnabled — RM_Comp_WarblingGlow (SUMP_GASLIGHT_1 §2).
+    //      Off: a lamp or statue built with this comp stops animating and
+    //      simply glows at its sibling CompGlower's own static base color
+    //      and radius — same as any plain glower — rather than the warbling
+    //      pulse. Scrubbing tar and crafting Sumpgas (the reaction itself)
+    //      are untouched either way.
+    //  47. warblingGlowSpeedMultiplier — the SAME mechanism's tempo dial.
+    //      Never changes hue range, radius range or brightness range — only
+    //      how fast the two sine waves cycle. At a very small value the
+    //      light reads as nearly static without being a hard off.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -309,6 +319,8 @@ namespace RimMandrake.EnvironmentalHazards
         public static float glasswalkSlipChancePerSweep = 0.02f;
         public static bool tarCoatingEnabled = true;
         public static bool tarredHediffEnabled = true;
+        public static bool warblingGlowEnabled = true;
+        public static float warblingGlowSpeedMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -359,6 +371,8 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref glasswalkSlipChancePerSweep, "glasswalkSlipChancePerSweep", 0.02f);
             Scribe_Values.Look(ref tarCoatingEnabled, "tarCoatingEnabled", true);
             Scribe_Values.Look(ref tarredHediffEnabled, "tarredHediffEnabled", true);
+            Scribe_Values.Look(ref warblingGlowEnabled, "warblingGlowEnabled", true);
+            Scribe_Values.Look(ref warblingGlowSpeedMultiplier, "warblingGlowSpeedMultiplier", 1f);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -371,7 +385,7 @@ namespace RimMandrake.EnvironmentalHazards
             // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
             // the same edit as whoever adds the next toggle, or their block is
             // invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4150f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4300f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -504,6 +518,10 @@ namespace RimMandrake.EnvironmentalHazards
                 "Nobody newly tracking tar is given the tarred hediff, and a carrier already "
               + "afflicted stops accruing or healing severity — frozen exactly where it is until "
               + "this is back on.");
+            list.CheckboxLabeled("Warbling gaslight animation", ref warblingGlowEnabled,
+                "A lamp or statue built with the warbling glow comp stops dancing/pulsing and just "
+              + "glows steadily at its base color and radius, like any plain light. Scrubbing tar "
+              + "and crafting Sumpgas are unaffected either way.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
@@ -538,6 +556,11 @@ namespace RimMandrake.EnvironmentalHazards
             list.Label("How often a fast-moving or hauling pawn briefly staggers on a slick floor. "
                      + "At 0, nobody ever slips.");
             glasswalkSlipChancePerSweep = list.Slider(glasswalkSlipChancePerSweep, 0f, 0.2f);
+
+            list.Label("Warbling gaslight tempo: " + warblingGlowSpeedMultiplier.ToString("0.00") + "x");
+            list.Label("How fast a warbling lamp or statue's color and radius dance. Never changes "
+                     + "how far they wander, only how quickly.");
+            warblingGlowSpeedMultiplier = list.Slider(warblingGlowSpeedMultiplier, 0.1f, 3f);
 
             list.End();
             Widgets.EndScrollView();
