@@ -5651,6 +5651,12 @@
     "hash": "a1859ef4616aa1fb1bfbb44e364f35607a798d27871cdc59b9a43dd1319431a1",
     "sha": "35c29544"
   },
+  "src/RimMandrake/Utils/apply_blanket_ruling.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "199e6971e80f8373bbaf0026c9b79d3d566c195fdf92a151593948d90b84d0de",
+    "sha": "ff8b3a821"
+  },
   "src/RimMandrake/Utils/apply_floor_plan.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -5728,6 +5734,12 @@
     "date": "2026-09-10",
     "hash": "6723c0a93a72fa5ff987ad1829b843e5141dc4419dceb945661cf85b9317df93",
     "sha": "7dabaa86"
+  },
+  "src/RimMandrake/Utils/artpipe/requeue_quota_failures.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9b7642ba0b28a36cd9792b9142a9e57e2518ca1c9a961611c003296b2e99b721",
+    "sha": "ff8b3a821"
   },
   "src/RimMandrake/Utils/artpipe/selftest_artpipe.py": {
     "cleanCount": 5,
@@ -5998,6 +6010,12 @@
     "date": "2026-09-03",
     "hash": "4d65a38834815a047e725c55eb05a586a5cce922f70d9ff355c91b918634c257",
     "sha": "377864eb"
+  },
+  "src/RimMandrake/Utils/check_pseudo_sw_name.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "345db286360adc71502aaac2ffd30e3e56a68411b428b8a1e764fb9efc42e81a",
+    "sha": "ff8b3a821"
   },
   "src/RimMandrake/Utils/check_refs.py": {
     "cleanCount": 2,
@@ -6363,6 +6381,12 @@
     "date": "2026-09-03",
     "hash": "accb341d40ad30c9cef3d6da8e12b90eafd4fff688ef3904129a81c0255605f5",
     "sha": "934df369"
+  },
+  "src/RimMandrake/Utils/label_collision_check.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "cd4883873dade49b55c23b9b8ebfc37463491e40f168c2c05fe3f4ee5def7c3f",
+    "sha": "ff8b3a821"
   },
   "src/RimMandrake/Utils/landmark_art.py": {
     "cleanCount": 1,
@@ -7022,6 +7046,12 @@
     "date": "2026-09-03",
     "hash": "d2fd2914c733f906675ccab9cedf2954d9a99df867ca2b5a0eaea2f97f60bf21",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/sheet_to_artifact.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "cd2912b7a21971cdda49b23c8e3f9c68ba19c10904d76715ca2b1f8d2ab67ca5",
+    "sha": "ff8b3a821"
   },
   "src/RimMandrake/Utils/ship_dress.py": {
     "cleanCount": 1,
