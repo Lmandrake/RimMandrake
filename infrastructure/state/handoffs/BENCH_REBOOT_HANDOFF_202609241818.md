@@ -53,8 +53,7 @@ Expanded, and the Utinni layer renames the gas Sumpgas.
   LESSONS_INBOX).
 - Two backgrounded design agents share this window's git index — `index.lock`
   contention is normal during their commit windows; a 5s-sleep retry loop clears
-  it, never delete the lock (already covered by git-efficiency skill; no new
-  filing).
+  it, never delete the lock (see: `.claude/skills/git-efficiency`).
 
 ## Closed since the last handoff (5)
 
