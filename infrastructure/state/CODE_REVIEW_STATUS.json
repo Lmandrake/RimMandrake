@@ -8032,16 +8032,16 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/rimflow/cli.py": {
-    "cleanCount": 5,
-    "date": "2026-09-20",
-    "hash": "7f8104d1a55004271fe031c4caa2cc34a040813d70a9df26dc9d1d9cb21bcab8",
-    "sha": "9ff1457ee"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "8b331354049958d9ea93f850b3715e718913b42e358ba33e1664d0897dbe0f6f",
+    "sha": "c44c75b9a"
   },
   "src/RimMandrake/rimflow/model.py": {
-    "cleanCount": 5,
-    "date": "2026-09-20",
-    "hash": "85d8dd34d72cf00b5b70f970ba15ea00af02cbd5dd8aa3671f1edf8accc1286f",
-    "sha": "23513b419"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "0c92f162716c9051979c153b251657c58254e02aae6f73a56159c9d6abd965c6",
+    "sha": "c44c75b9a"
   },
   "src/RimMandrake/rimflow/priority.py": {
     "cleanCount": 1,
@@ -8056,10 +8056,10 @@
     "sha": "f203d6f3"
   },
   "src/RimMandrake/rimflow/render.py": {
-    "cleanCount": 3,
-    "date": "2026-09-05",
-    "hash": "5077cb40d4fa0bf766a3902bc76e2dfc1aeeb740964a828cdcd999dc3dffe25a",
-    "sha": "f203d6f3"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "1c8eb9c54b1e41ed0c33f8741ad79a431c084a9a739c1ec63a91c67c95909c15",
+    "sha": "c44c75b9a"
   },
   "src/RimMandrake/rimflow/selftest_bridge_file_concurrency.py": {
     "cleanCount": 1,
@@ -8068,22 +8068,22 @@
     "sha": "359b0b2c"
   },
   "src/RimMandrake/rimflow/selftest_cli.py": {
-    "cleanCount": 5,
-    "date": "2026-09-20",
-    "hash": "266665cb2047b0b683991db4678a76cae13117d9b594b25e3841114be801683e",
-    "sha": "13b71380a"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "a279c975c893c1af40780c0443b9b9488d278b448843b8f9b339d3ec6082c3c2",
+    "sha": "c44c75b9a"
   },
   "src/RimMandrake/rimflow/selftest_concurrency.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "47e926b752a28b330143d3769f9e872c9722372f7c27417b20db82f51831f22e",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "d830d1ae57e1d9b140a31e8ccc180046b9f84495dbafd6a8a2edc701702d993b",
+    "sha": "c44c75b9a"
   },
   "src/RimMandrake/rimflow/selftest_model.py": {
-    "cleanCount": 5,
-    "date": "2026-09-20",
-    "hash": "9eb5190f48d012d5a0b926b5bb2200e1345bad292b84e6ea8ed916eacbad39e8",
-    "sha": "1a7a75d09"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "43178058b36b5ec13be4f5f9efebb99431d0fdbf26f076c11410e4f086ed7968",
+    "sha": "c44c75b9a"
   },
   "src/RimMandrake/rimflow/selftest_probe.py": {
     "cleanCount": 1,

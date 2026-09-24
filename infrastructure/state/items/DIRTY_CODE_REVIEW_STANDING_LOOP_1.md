@@ -2167,3 +2167,86 @@ not queued into a per-file review wave. The non-PNG backlog (waves 25-33's re-di
 sweep) is unaffected and continues under the normal diff-scoped review protocol.
 
 Commit: `28df62974`.
+
+## Wave 35 — 2026-09-24: `src/RimMandrake/rimflow/` cluster CLOSED, all 6 files reviewed clean
+
+Re-derived the non-PNG DIRTY list fresh (`code_review_status.py list | grep '^DIRTY'`
+filtered non-`.png`): exactly **61**, matching wave 34's count. Per the standing brief
+to prioritize the ledger/queue engine itself as high-leverage (same reasoning as
+prioritizing the bridge-tools files in waves 29-30), took the `src/RimMandrake/rimflow/`
+cluster — all 6 files, all diff-eligible (already CLEAN once): `cli.py` (2418 lines,
++56/-5 since `9ff1457ee`), `model.py` (1664 lines, +159/-10 since `23513b419`),
+`render.py` (756 lines, +28/-7 since `f203d6f3`), `selftest_cli.py` (1110 lines,
++116/-43 since `13b71380a`), `selftest_model.py` (1357 lines, +149/-6 since
+`1a7a75d09`), `selftest_concurrency.py` (232 lines, +115/-1 since `43f96b1b`).
+
+Every diff is one coherent piece of work: the `EVENTS_JSONL_SHARDING_1` retrofit
+(2026-09-23, CLAUDE.md's own ledger section) landing across the whole module —
+`model.py` gains `SHARD_DIR`/`shard_dir()`/`shard_path()`/`ledger_files()` and
+`read()`/`append()` are rewritten so a bare call merges the frozen `events.jsonl`
+with every `events/<SEAT>.jsonl` shard (read) or routes by `ev["seat"]` (append);
+`cli.py` converts every `model.read(model.EVENTS)` call site to `model.read()` (the
+"NO PATH" comments explain why — the old form now means "history only, blind to
+everything since the cutover") and adds `_move_prose_to_closed()` (the
+`LIVE_ITEM_GLOB_DRIFT_1` fix: `close`/`drop`/`supersede` now actually move an item's
+prose to `items/closed/` instead of leaving it a manual `git mv` every closing seat
+had to remember); `render.py` follows suit (`build(events_path=None)` no longer
+resolves the constant, `_ledger_label()` names the ledger correctly in a truncation
+refusal); the three selftest files gain the coverage for all of it.
+
+Traced the load-bearing correctness properties by hand rather than trusting the
+comments:
+- **`append()`'s ordering** — `validate(ev)` (which calls `_check_seat`, refusing any
+  seat not in `SEATS`) runs BEFORE `path = path or shard_path(ev["seat"])`, so
+  `ev["seat"]` is guaranteed present and bounded before it is ever used to build a
+  filename — confirmed by reading `validate()`'s call order and `_check_seat`
+  directly, not just the inline comment claiming it.
+- **`read()`'s merge tie-break** — `(ts, source rank, within-file order)` via
+  `merged.sort(key=lambda t: (t[0], t[1]))`: the sort key deliberately excludes the
+  event dict itself (avoids a TypeError from comparing two dicts on a tie) and Python's
+  stable sort preserves `extend()`'s file-order for same-`(ts, rank)` entries — verified
+  this is exactly what `t_read_merges_frozen_history_with_every_shard_in_ts_order`
+  exercises and its expected tie order (`BUILD, FOUNDRY, FOUNDRY` for three same-second
+  events across head + one shard) matches the sort's actual behavior.
+- **`cli.py`'s `_move_prose_to_closed`** — confirmed `args.id` for `supersede` is the
+  OLD/superseded item (not `--by`, the new one), so moving `args.id`'s prose to
+  `items/closed/` on `drop`/`supersede`/`close` is correct: the terminal item's prose
+  moves, matching CHARTER's "on close/drop/supersede the prose moves to
+  items/closed/<ID>.md".
+- **No stale `model.read(model.EVENTS)` / `.read(EVENTS)` call sites survived the
+  conversion** anywhere in `src/` outside selftests and comments (grepped fresh) — wave
+  26's `broadcast.py` fix was the only production caller elsewhere and it already
+  converted correctly.
+
+**Ran all three selftest suites for real rather than reading them and trusting they'd
+pass** (this cluster earns it — it is the ledger/queue engine itself):
+`selftest_model.py` **71/71 passed**, `selftest_cli.py` **43/43 passed**,
+`selftest_concurrency.py --writers 4 --each 50` **both arms passed** (200/200 events,
+zero torn, zero lost on the one-file arm; 200/200 across BENCH.jsonl/FOUNDRY.jsonl with
+`events.jsonl` correctly left untouched on the sharded arm). No bugs found in any of
+the 6 files.
+
+All 6 had zero uncommitted changes before marking (`git status --porcelain` empty —
+confirmed no collision with the concurrent BACTA_REVIVAL_MECHANIC_1 build agent, which
+does not touch this cluster). All 6 marked CLEAN, commit pending below, pushed.
+`infrastructure/state/queue/BENCH.md`/`FOUNDRY.md` also showed as modified after the
+mark-clean pass (queue views re-render on every `rimflow`-adjacent write per CHARTER)
+but that drift traces to the concurrent build agent's own ledger activity, not to this
+wave's `mark-clean` calls — left uncommitted, not this wave's to claim.
+
+**This closes the whole `src/RimMandrake/rimflow/` cluster.** Next wave: 55 non-PNG
+DIRTY files remain (61 minus this wave's 6) — re-derive with `code_review_status.py
+list | grep '^DIRTY'` filtered for non-`.png` rather than trusting this arithmetic. The
+two other named clusters from wave 34's note are still untouched:
+`src/RimUtinni/UtinniPatches/Patches/` (9 files: `AnimalTolerances_Ashkarr.xml`,
+`AshStorms_Pyrelands.xml`, `BiomeDescriptions_Ashkarr.xml`, `BiomeFlora_Ashkarr.xml`,
+`FishTypesStrip_NoFishBiomes.xml`, `ManyWaters_RiverSteam_Ashkarr.xml`,
+`PlantTolerances_Ashkarr.xml`, `SandFishing_CrackedLands.xml`,
+`WildAnimals_Pyrelands.xml`) and `src/RimMandrake/Utils/` top-level scripts (9 files:
+`ashkarr_paint.py`, `ashkarr_settle.py`, `codebase_health.py`,
+`codebase_health_publish.py`, `handoff.py`, `modset_builder.py`,
+`project_maturity_dashboard.py`, `run_selftests.py`, `structure_roster_lint.py`), plus
+`src/RimStarWars/Armoury/Source/` (5 `gen_*_absorption.py` files) and the rest of the
+never-entered `.cs`/Python backlogs surveyed in wave 15. The PNG binary-art-tracking
+scope question (wave 15) is still open, resolved separately (see the FOUNDRY note
+above) and still not this loop's to decide.
