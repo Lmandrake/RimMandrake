@@ -205,3 +205,25 @@ fully settled either way — nothing left blocking that step's *reasoning*, only
 days stale) and item 3 (live-mod-list resolution check for the four newly-wired
 `RUT_Scarlands`/`RUT_Wasteland` names) — both still genuinely need a live game
 check, out of scope for this pass's narrow engine-question fold-in.
+
+## FOUNDRY, 2026-09-24 (same session, later): item 3's live-resolution check done
+
+The item's own "🔴 NOT measurable on the Mac laptop" caveat no longer applies —
+this session runs on the Desktop, with live bridge access. Checked all four
+2026-09-23-wired names directly against the running process via `jawa/get_defs`:
+**`RSW_SandPillar`, `RSW_MegaphoridLarva`, `RSW_CrystalFairyMole`, `RSW_Sacapillar`
+all resolve live as BOTH ThingDef and PawnKindDef** — CONFIRMED, not inferred from
+`src/`. Item 3 of "what is still owed" is now closed out.
+
+⚠️ **Flagged, not chased**: the same check on `RSW_Korrum` (unrelated to this
+item's 14 names, but checked opportunistically since it shares a file with
+`RSW_SandPillar`) came back MISSING on both ThingDef and PawnKindDef, despite
+`mandrake.rsw.swbestiary` being active and the def genuinely present in
+`RSW_DesertPortMisc_Races.xml`. Likely just pending the next restart (defs
+parse once at startup) rather than a real defect — noted on `KORRUM_ART_REGEN_1`
+instead of chased further here, since Korrum is out of this item's scope.
+
+**Remaining before this item can close**: item 2 (ecosystem pyramid re-sweep,
+now stale) and step 3/step 5's owner-judgment calls (Stoneback's one-species-
+three-rosters question; CaveLemming's owed rename/refashion). None of those are
+offline-doable by this seat.
