@@ -87,7 +87,7 @@ these plants land on working code rather than a proposal.
 
 🔴 **And it makes the flora an instrument.** Because the salt line *moves miles per surge*
 and nothing here reaches equilibrium, a plant that can only live at the fresh end becomes a
-**record of how far the brine last reached** — see `RM_Mirrash`, which is the roster's
+**record of how far the brine last reached** — see `RM_Ilbareen`, which is the roster's
 single most important row for that reason.
 
 ### The other laws this roster serves
@@ -111,7 +111,7 @@ single most important row for that reason.
 | **thessamor** — the maze itself | **ollamane** — the signature fan | **ullavess** — the standing pitcher | **immarel** — the attar is in its root-bed |
 | **brelloch** — farthest into the brine | **vellamine** — colour in the veins | **nemreth** — the jewelled sticky mat | **thrannock** — combs the flotsam out |
 | **quennath** — drinks its host, not the sea | **ismerrow** — no two alike | **velluric** — the trap is underwater | **pallasheen** — grows only on loam |
-| **mirrash** — ⭐ the salt-line gauge | **aphreen** — inflamed and perfectly well | **braskeen** — the only plant that moves | **wessaline** — the salt-pan skin |
+| **ilbareen** — ⭐ the salt-line gauge | **aphreen** — inflamed and perfectly well | **braskeen** — the only plant that moves | **wessaline** — the salt-pan skin |
 | | **nyssolet** — a jewel that looks like a growth | **ommolyn** — the trap is buried | |
 | | **sarrash** — the fever crest | | |
 
@@ -130,9 +130,9 @@ one, so these are not a thin fallback — they are the canopy.
 | 1 | `RM_Thessamor` | thessamor | **tripod prop-root cage under a broad low crown** | The trunk never touches the water — it begins a full metre up, carried on a splayed cage of prop-roots you can see straight through. Below the tide-mark the bark is wet black and polished; above it, grey-green and furred with a **white salt rime it has sweated out**, which flakes when touched. The crown is broad and low and permanently dripping. | anywhere brackish | **9** | 🔑 **The biome's structural unit and its most important object.** The stilt-root maze *is* this species — so the terrain, the architecture and the nursery cage of every horror the Grey Sea still holds are all one plant. Replaces `AB_MangroveTree`. | **OWED** — the largest canvas here |
 | 2 | `RM_Brelloch` | brelloch | **squat, thick, encrusted — wider than it is tall** | A low heavy thing that looks half-buried, its whole upper surface armoured in a **crust of its own excreted salt** an inch thick, grey-white and cracked like old glaze. Where the crust has flaked, the living bark beneath is a startling wet green. Leaves small, thick, and rimed shut. | 🔴 **the brine end, and only there** | 6 | ⭐ **The seaward marker.** Brelloch is the last living thing before the salt wins, so a stand of it tells you exactly where the gradient ends. Its crust is a harvestable salt — the cheapest good in the biome, and the one the stills need. | **OWED** |
 | 3 | `RM_Quennath` | quennath | **a second crown growing out of another tree's roots** | It has no trunk of its own. A knotted mass clamped into a thessamor's prop-root cage sends up a slender stem and a crown that is **visibly more colourful and healthier than its host's** — because it is drinking water another plant already strained. Its leaves are the deepest green in the canopy, veined violet. | wherever its host is | 3 | **The parasite, and the biome's thesis in one plant**: it never touches the brine at all, it just takes from something that did. Replaces `AB_ParasiticMangrove`. ⚠️ Must only spawn adjacent to a thessamor, or it reads as an ordinary shrub. | **OWED** |
-| 4 | `RM_Mirrash` | mirrash | **tall bare stem under a single thin fan — and often dead standing** | A slim pale stem well above the mangal crowns carrying one sparse fan of ribbon-leaves. Living mirrash are yellow-green and translucent at the edges. **Dead ones stay standing for years**, bleached white, fan collapsed into a drooping rag — and they are everywhere in a band. | 🔴 **the fresh end only; killed by brine** | 4 | ⭐ 🔑 **The salt-line gauge, and the roster's single best row.** Mirrash die where brine reaches and their skeletons remain, so **a line of dead mirrash records how far the last surge pushed** — the map's only readable history of the one process that governs it. ⇒ This converts an invisible simulation into something a player learns to read, exactly as corvath does for the Fever Wood's pools. Replaces `AB_MangrovePalm`. | **OWED** — needs a **live** and a **dead** variant |
+| 4 | `RM_Ilbareen` | ilbareen | **tall bare stem under a single thin fan — and often dead standing** | A slim pale stem well above the mangal crowns carrying one sparse fan of ribbon-leaves. Living ilbareen are yellow-green and translucent at the edges. **Dead ones stay standing for years**, bleached white, fan collapsed into a drooping rag — and they are everywhere in a band. | 🔴 **the fresh end only; killed by brine** | 4 | ⭐ 🔑 **The salt-line gauge, and the roster's single best row.** Ilbareen die where brine reaches and their skeletons remain, so **a line of dead ilbareen records how far the last surge pushed** — the map's only readable history of the one process that governs it. ⇒ This converts an invisible simulation into something a player learns to read, exactly as corvath does for the Fever Wood's pools. Replaces `AB_MangrovePalm`. | **OWED** — needs a **live** and a **dead** variant |
 
-⭐ **`RM_Mirrash` needs two graphics, not one.** The dead standing form is the entire point
+⭐ **`RM_Ilbareen` needs two graphics, not one.** The dead standing form is the entire point
 of the row and it is not a damage state — it is a distinct, permanent, common sight. An art
 pass that delivers only the living plant has delivered none of its value.
 
@@ -245,7 +245,7 @@ is a failed roster.
 | tripod prop-root cage under a low crown | thessamor | a structure standing in water |
 | squat thing armoured in cracked salt glaze | brelloch | old pottery |
 | a second crown out of another tree's roots | quennath | a guest |
-| tall bare stem, one thin fan — **or bleached and dead standing** | mirrash | a flagpole, and a graveyard of them |
+| tall bare stem, one thin fan — **or bleached and dead standing** | ilbareen | a flagpole, and a graveyard of them |
 | enormous single-plane fans on near-black stalks | ollamane | held-up hands |
 | low overlapping heart-leaves, colour along the veins | vellamine | something circulating |
 | serrated rosette, **a different colour every plant** | ismerrow | a garden of many species that is one |
@@ -279,7 +279,7 @@ collapses it has broken the sitting.
   ⚠️ And the artpipe daemon does **not** run on the Mac, so queueing here generates nothing
   until a Desktop session runs it.
 - ⭐ **Three rows need more than one graphic**, and each will silently lose its entire point
-  if it ships as a single sprite: **mirrash** (live and dead-standing), **ismerrow**
+  if it ships as a single sprite: **ilbareen** (live and dead-standing), **ismerrow**
   (colour-randomised set), **braskeen** (open and closed).
 - 🔴 **`RM_Velluric` needs a submerged read** — a plant whose body is under water is not a
   solved art problem in this project and should be checked against the existing
@@ -305,7 +305,7 @@ collapses it has broken the sitting.
 
 ## 10. For the owner
 
-1. ⭐ **The salt-line gauge is the row I would defend hardest.** `RM_Mirrash` dies where
+1. ⭐ **The salt-line gauge is the row I would defend hardest.** `RM_Ilbareen` dies where
    brine reaches and its skeletons stay standing, so the band of dead ones is a permanent
    record of the last surge. It turns the biome's central invisible process into something a
    player reads off the landscape. It needs two graphics to work at all.
