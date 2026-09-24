@@ -12993,6 +12993,30 @@
     "hash": "735bcc6972841b72e3cf7c36398fcf7f4751a2fcf5855959d46b6458386c5d2d",
     "sha": "41ce89ca8"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Gizka.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "99d967e26b4b7b0fd873f02e375a1bab48cd8fd1b8903ab717068b86d4ed9dc1",
+    "sha": "8b0b715b5"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Gorg.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "e24933b6c4a2e6c44718f1b2448c9c0f170181cd0ffca6093711898c8791c91b",
+    "sha": "8b0b715b5"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Gornt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1a77f2c5dd8b3f124893edd995a6c6fd5f35ec3f1b5ba4cee0a2cd434cea9a47",
+    "sha": "8b0b715b5"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_GraniteSlug.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c6bbd958021fd7955aa9c7b822a1d6eb1bf55d25d7add022f0f136421ef58e07",
+    "sha": "8b0b715b5"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_GreatDevourer.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -18723,11 +18747,29 @@
     "hash": "787c735663321d413aa846416dbf37cac6c5900612756fad2eb99b243b2aaac8",
     "sha": "948cdbc9"
   },
+  "src/RimUtinni/UtinniPatches/Patches/VQEQuestText_AreForsaken.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "15360907f3a0ccfebe4b4ec82461280a69eebad3b70ca7f7aadc2cc552051669",
+    "sha": "8b0b715b5"
+  },
   "src/RimUtinni/UtinniPatches/Patches/VREArchon_MortisRename.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
     "hash": "17ffac9b0839544489e42f580ea7cba299efaa831a1e36f6232f0d5e5d35d3e5",
     "sha": "7c80850cb"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/WildAnimals_CrackedLands.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ef71c7f4fc102b683919cacb9d86f988a9b074082e8134706c8fbb010b40755d",
+    "sha": "8b0b715b5"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "210c85ca2c4773e3fe2b169868c706ce7a1c57b538b87c6a15e181171a8d5df9",
+    "sha": "8b0b715b5"
   },
   "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml": {
     "cleanCount": 3,
@@ -18740,6 +18782,12 @@
     "date": "2026-09-18",
     "hash": "05433fb056ae3ab8876a634ee77df031b2fa60f3976b72d9b5a190b77d43c000",
     "sha": "48b321e95"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/WyyyschokkFangPendantFactions.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5db47a67de9415af3bb0ea013a21830e1ab87326ea05fed88347491e33abe237",
+    "sha": "8b0b715b5"
   },
   "src/RimUtinni/UtinniPatches/Patches/XenotypeTolerances_Ashkarr.xml": {
     "cleanCount": 2,
