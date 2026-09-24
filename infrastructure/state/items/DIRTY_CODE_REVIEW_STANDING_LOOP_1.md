@@ -1812,3 +1812,52 @@ were bridge-tools priority pickups, not backlog draws — re-derive fresh with
 `code_review_status.py list | grep '^DIRTY'` filtered for non-`.png`). The
 PNG binary-art-tracking scope question (wave 15) is still open and still
 not this loop's to decide.
+
+## Wave 31 — 2026-09-24: SWBestiary RSW_* race ThingDefs cluster closed
+
+Resumed the general non-PNG re-dirtied backlog (bridge-tools priority is
+done as of wave 30). Re-derived fresh: `code_review_status.py list | grep -c
+'^DIRTY'` gave 260 total, 99 non-`.png`. Of the two named clusters wave 28
+flagged, both were still present: the 25-file `RUT_*` BiomeDef cluster under
+`UtinniPatches/Defs/BiomeDefs/` (untouched this wave) and the 13-file `RSW_*`
+`ThingDefs_Races` cluster under `SWBestiary/Defs/ThingDefs_Races/` (all 13,
+not just wave 28's estimated ~15 — the real count). Took the smaller,
+fully-present cluster to close it out in one wave.
+
+Reviewed all 13, diff-scoped against each file's own clean-mark sha (all
+were CLEAN once): `RSW_Anooba.xml`, `RSW_Bantha.xml`, `RSW_Bolotaur.xml`,
+`RSW_Cannok.xml`, `RSW_Clodhopper.xml`, `RSW_Convor.xml`,
+`RSW_Corinathoth.xml`, `RSW_Eopie.xml`, `RSW_Iriaz.xml`, `RSW_Mudhorn.xml`,
+`RSW_Nuna.xml`, `RSW_Porg.xml`, `RSW_Vulptex.xml`. Every diff is the same
+shape — a `<Desert>`/`<AridShrubland>` commonality entry added to
+`<wildBiomes>` (a biome-wiring pass, 1-2 lines each). Verified programmatically
+for all 13: no duplicate `wildBiomes` keys introduced, and every file still
+parses as valid XML (`xml.etree.ElementTree.parse`). `RSW_Nuna.xml` also
+carries a docstring rewrite recording the owner's 2026-09-23
+`DUPLICATE_CANON_DEFNAME_PAIRS_1` ruling (the vanilla-Core-Nuna assumption
+behind the original "keep both" call was wrong — MEASURED on the Desktop,
+no Core/DLC Nuna exists, the bare `"Nuna"` is Mlie's own def — so the pair
+now collapses onto `RSW_Nuna`); the new docstring text is internally
+consistent and correctly dated/attributed, not re-verified independently
+(engine dump is UNMEASURABLE from this laptop per CLAUDE.md). Noted but NOT
+acted on, out of this review's scope: `AnimalBiomeDuplicates_Generated.xml`,
+`AnimalTolerances_Ashkarr.xml` and `BiomeCastEvictions_WildBiomes.xml`
+still target the bare `defName="Nuna"` in several `PatchOperation`s — these
+are generated/curated patch artifacts (not hand-edited per
+`patch-a-curated-artifact-never-reallocate`), and whether they're owed a
+regen onto `RSW_Nuna` is `DUPLICATE_CANON_DEFNAME_PAIRS_1`'s call, not a
+code-review bug in `RSW_Nuna.xml` itself.
+
+No bugs found in any of the 13. All had zero uncommitted changes before
+marking (`git status --porcelain` empty). All 13 marked CLEAN, commit
+`52bc5448d`, pushed.
+
+**This closes the whole `SWBestiary/Defs/ThingDefs_Races/` `RSW_*` cluster.**
+Next wave: 86 non-PNG DIRTY files remain (99 minus this wave's 13) —
+re-derive with `code_review_status.py list | grep '^DIRTY'` filtered for
+non-`.png` rather than trusting this arithmetic. The other named cluster
+from wave 28, the 25-file `RUT_*` BiomeDef cluster under
+`UtinniPatches/Defs/BiomeDefs/`, is still untouched and is a natural next
+pick (all 25 confirmed still present in the DIRTY list this wave). The PNG
+binary-art-tracking scope question (wave 15) is still open and still not
+this loop's to decide.
