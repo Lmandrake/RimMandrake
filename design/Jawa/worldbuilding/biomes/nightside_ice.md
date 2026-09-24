@@ -229,6 +229,52 @@ Vanilla ice-sheet incidents, and what happens here instead:
 Standing weather: **aurora-clear** (interior), ablation drift (margins), rime-fall
 (the Rimewall edge). 🔴 No rain (R-H1). No precipitation on the interior.
 
+## 4c. The tunneler slate — sitting amendments (owner-ratified 2026-09-24, `NIGHTSIDE_ICE_DESIGN_SITTING_1`)
+
+Adds detail under the freeze; no ruling above changes. Ruled after a prior-art
+survey (vanilla + DLC + mods) and a canon survey; the two conclusions that
+frame everything: **no game has ever tracked a moving underground threat with
+a live surface tell, and none scales danger continuously off the player's
+heat output** — both are this biome's to invent. Canon anchors: the ice wyrm
+(blind snow-driller, Barton IV), the sapphire ice worm (tunnels that make the
+wind sing), the wampa (stores prey, does not eat it fresh).
+
+1. **The rumble-tell.** A tunneler moving near the surface shows a travelling
+   tell — a low grumble and an ice-twitch graphic at its position — so the
+   player watches the approach and never sees the animal. Under it, the
+   standing audio layer: the warren's tunnels make the still air sing.
+2. **The insect-fall.** A rare deposition event, kin of calving delivery, not
+   weather: the column drops a freeze-dried dayside swarm at its foot. Food
+   for whoever gets there first; the warren stirs. (§6's precipitation ban is
+   untouched — this is material deposition, like everything else the sky
+   drops here.)
+3. **Assailant incidents.** Mutated assailant assaults reach the plateau only
+   as heat-drawn incidents — a raid form and a wild manhunter-style pack form
+   — never as wildlife roster entries (§4: anything warm here is a visitor, a
+   machine, or dying). What they leave behind is warren food.
+4. **The breach loop.** A warren surfacing point is a visible, attackable
+   crack in the ice (a destructible staging object, not an ambush). The
+   colony's first-ever breach is precisely timed — it teaches the mechanic;
+   every later breach is vaguely warned, direction unknown. Total colony heat
+   output escalates breach frequency: the heat dial is continuous, the
+   biome's signature mechanic.
+5. **The larder.** Tunnelers drag downed and dead pawns under the ice —
+   stored, not eaten (the wampa rule; preservation is perfect here).
+   Recovery means cutting down through the ice into warren territory: the
+   breach mechanic's other direction, player descending.
+6. **The apex.** One ice-wyrm-class tunneler, mostly unseen, surfacing only
+   under sustained high heat. The biome's set-piece.
+
+- 🔴 **The hull rule (owner, 2026-09-24).** A burst can NEVER come through
+  constructed floor or the gravship hull — breaches open only in open ice, at
+  the edge of the base. The colony's waste heat softening the surrounding ice
+  IS the breach ring; flooring it is real defence. And the ring feeds back:
+  a warren fed by a warm colony's edge — its corpses, its insect-falls, its
+  frozen raiders — grows.
+- 🔴 **No light-warding.** Prior art (vanilla infestation) suppresses spawns
+  with light; that knob is barred here — §6: thermal sensing only, nothing
+  native sees. Ward with cold, never with lamps.
+
 ## 5. Always true
 
 - **The sky is bright and cold** — starlight and aurora; no warm light exists but yours.
@@ -353,8 +399,15 @@ strange, and mostly not obviously fauna at all.
 - **Name** — owner's pick if the dirty-ice plateau wants one beyond "the Nightside Ice."
 - **Tunnelers and icy insects** — authoring (art to the NEW-ART ledger; the within-ice
   movement and the thaw-pulse surfacing are C#), admission at the sitting.
+- **The §4c slate's C#** — the rumble-tell tracker (novel: a moving sub-surface
+  agent with a live surface tell), the continuous heat→breach dial, the breach
+  ring with the hull rule, the larder drag + cut-down recovery job, the apex
+  trigger. The breach staging object and two-tier warning follow proven shapes
+  (VFE siege-burrow; Anomaly pit-gate warning tiers; Anomaly's
+  open-ground-only placement rule is the hull rule's precedent).
 - **Events** — the equivalence table as incident defs: thaw pulse, calving delivery, the
-  lost soul, rime-fall/ablation, the Dark drifting over.
+  lost soul, rime-fall/ablation, the Dark drifting over — plus §4c's insect-fall
+  and the assailant raid/pack incident pair.
 - **Engine feasibility pass:** crevasse/collapse in ice with the ruled warning tells; the
   thaw pulse as a temperature-driven map event; inclusions as a calving spawner.
 - **Cross-flow ledger**: ice sheet → Blue Desert (katabatic wind); Umbra → here (aurora);
