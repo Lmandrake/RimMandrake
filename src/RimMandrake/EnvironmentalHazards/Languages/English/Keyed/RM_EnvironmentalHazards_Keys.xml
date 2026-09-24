@@ -34,4 +34,11 @@
        slip-and-fall message. -->
   <RM_GlasswalkSlip>{0} slips on the glasswalk and goes down — no harm done, just a bruised ego.</RM_GlasswalkSlip>
 
+  <!-- WATER_TRUCE_RETRIBUTION_1. RM_MapComponent_WaterTruce's letter, sent
+       once per aggressor faction per retribution, never once per rousable
+       animal (the state itself starts silently). {0} the aggressor
+       faction's name, {1} how many animals rose. -->
+  <RM_WaterTruceRetributionLetterLabel>The water answers</RM_WaterTruceRetributionLetterLabel>
+  <RM_WaterTruceRetributionLetterText>Blood was spilled at the truce water, and {0} broke it. {1} nearby animals have turned on them.</RM_WaterTruceRetributionLetterText>
+
 </LanguageData>

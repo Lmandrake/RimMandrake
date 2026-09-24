@@ -186,6 +186,18 @@
       </freshwater_Uncommon>
       <rareCatchesSetMaker>RUT_RareOasisCatches</rareCatchesSetMaker>
     </fishTypes>
+    <!-- WATER_TRUCE_RETRIBUTION_1. Opts this biome into RM_MapComponent_
+         WaterTruce (mandrake.rm.environmentalhazards): a guilty hit landing
+         within `radius` cells of standing water turns nearby wildlife
+         against the aggressor faction. §4/§6 of the sheet above — "the
+         truce mechanic (SS4, ruled cheap-for-v1, unbuilt)" is no longer
+         true for the retribution half; the suppression half (predators
+         never hunt near the water) remains owed on this same field. -->
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_WaterTruceExtension">
+        <radius>10</radius>
+      </li>
+    </modExtensions>
   </BiomeDef>
 
 </Defs>

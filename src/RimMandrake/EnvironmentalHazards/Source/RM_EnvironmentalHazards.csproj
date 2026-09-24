@@ -181,6 +181,10 @@
     <Compile Include="RM_RecipeDef_HediffByproduct.cs" />
     <Compile Include="RM_Recipe_RemoveHediffWithByproduct.cs" />
     <Compile Include="RM_Patch_LeachmossWildSpawnGate.cs" />
+    <Compile Include="RM_WaterTruceExtension.cs" />
+    <Compile Include="RM_MentalState_WaterTruceRetribution.cs" />
+    <Compile Include="RM_MapComponent_WaterTruce.cs" />
+    <Compile Include="RM_WaterTruceDamagePatches.cs" />
   </ItemGroup>
 
   <ItemGroup>
