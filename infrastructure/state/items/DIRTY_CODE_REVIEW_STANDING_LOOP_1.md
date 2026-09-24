@@ -3049,3 +3049,60 @@ Re-measured after: `TALLY  CLEAN 3110  DIRTY 5  ORPHANED 0  NEVER ENTERED 324`
 now at 83 left, `UtinniPatches` still 83. Next wave: keep working
 `SWBestiary` (still the larger single cluster once it drops below
 `UtinniPatches`, switch to that) with `list --show-untracked`.
+
+## Wave 48 — 2026-09-24: SWBestiary ThingDefs_Races, 8 files, 6 files fixed
+
+Re-ran `list --show-untracked` fresh: **324 NEVER ENTERED**, matching wave
+47's close exactly, `SWBestiary` (83) and `UtinniPatches` (83) tied. Picked
+`SWBestiary` over `UtinniPatches`: its 81 remaining files are almost all one
+folder/one def-type (`Defs/ThingDefs_Races/RSW_*.xml`, one creature per
+file, same template every prior SWBestiary wave has calibrated against),
+the more coherent sub-cluster versus `UtinniPatches`'s mixed
+GenStepDefs/HediffDefs/TerrainDefs/Patches spread.
+
+Picked 8 alphabetically-first files from `ThingDefs_Races`, none had a
+prior clean mark: `RSW_Drazzik.xml`, `RSW_Falumpaset.xml`,
+`RSW_Fambaa.xml`, `RSW_Fanback.xml`, `RSW_FeralGrazer.xml`,
+`RSW_FeralNerf.xml`, `RSW_FrilledGorg.xml`, `RSW_Gelagrub.xml`.
+
+Full-file review of all 8, cross-checking C# and cross-def references
+rather than reading each file in isolation: `RSW_Drazzik`'s
+`RM_CompProperties_DrumLure` and its two hediffs
+(`RM_DrumLureLured`/`RM_DrumLureSubmersion`) resolve in
+`src/RimMandrake/CreatureBehaviors/Source/RM_CompDrumLure.cs` +
+`RM_DrumLure_Hediffs.xml`; its egg's `hatcherPawn` (`RSW_Nizzek`) resolves
+in `RSW_Nizzek.xml`. `RSW_Fambaa`'s body repoints to the already-ported
+`RSW_Dewback` (confirmed present). No bugs in the mechanics/wiring of any
+of the 8.
+
+**Found and fixed a real bug, high confidence**: `RSW_Fambaa.xml`'s and
+`RSW_Gelagrub.xml`'s `<race><willNeverEat>` blocks both carried
+`MayRequire="Ludeon.RimWorld.Odysse"` (missing the trailing "y") on the
+`Plant_TreeArchean` entry — a copy-paste typo, since the other 4 entries
+in the same block (Royalty/Ideology/Biotech/Anomaly sacred trees) are all
+correctly spelled. A misspelled `MayRequire` packageId never matches an
+active mod, so that `<li>` silently drops on every load regardless of
+whether Odyssey is active — these animals would eat the Odyssey sacred
+archotree even with the DLC on, unlike vanilla's intent for the other 4.
+Grepped the whole repo for the same string rather than fixing just the 2
+files in this wave's pick: found **6** total occurrences (also
+`RSW_Horax.xml`, `RSW_Ronto.xml`, `RSW_Skalder.xml`, `RSW_Zeer.xml` — none
+otherwise reviewed this wave), fixed all 6 in one commit per
+"correctness outranks seat ownership." Commit `41ce89ca8`, pushed.
+
+All 8 picked files marked CLEAN (Fambaa/Gelagrub after their fix was
+committed, since `mark-clean` refuses on uncommitted changes). Commit
+`b1d7bd744` (status file), pushed. Hit a transient `.git/index.lock` from
+the concurrent build agent on the status-file commit; waited 5s and
+retried, succeeded with no data loss.
+
+Re-measured after: `TALLY  CLEAN 3118  DIRTY 5  ORPHANED 0  NEVER ENTERED 320`.
+320 = 324 − 8 (cleaned) + 4 (new files the concurrent build agent added
+mid-wave, not this wave's doing) — reconciles exactly, not a discrepancy.
+**320 NEVER ENTERED files remain**: `SWBestiary` now at **75**,
+`UtinniPatches` at **85** (UtinniPatches grew by 2, also the concurrent
+build agent). `SWBestiary` has now dropped below `UtinniPatches` — next
+wave: switch to `UtinniPatches` with `list --show-untracked`, per wave
+47's own rule. The 4 fixed-but-unreviewed SWBestiary files above
+(Horax/Ronto/Skalder/Zeer) still need a full-file review of their own
+before they can be marked CLEAN — the typo fix alone doesn't cover it.
