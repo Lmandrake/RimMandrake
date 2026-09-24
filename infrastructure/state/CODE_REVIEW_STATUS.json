@@ -4223,6 +4223,12 @@
     "hash": "45160942cbe571994025ad2b633dab3edad7e0dadeb0d16256d0f241962b77b2",
     "sha": "90940c68"
   },
+  "src/RimMandrake/Pyrelands/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d37a97e1813c90e4fabb9c042f3ccad8d4f083d117a563a83097c9559116d910",
+    "sha": "64595f255"
+  },
   "src/RimMandrake/Pyrinth/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-10",
@@ -10977,6 +10983,18 @@
     "hash": "b50b2805e8b7090b96384c4ab6db03b781c12b5551aaf1bfaffb13ec949c6945",
     "sha": "d68e5b42e"
   },
+  "src/RimStarWars/GizkaStowaway/Source/MapComponent_GizkaInfestation.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0107cc701d2e1e62859783fc8d4867630c29570f0154440a0a51052339d4916a",
+    "sha": "64595f255"
+  },
+  "src/RimStarWars/GizkaStowaway/Source/RSW_GizkaHarmonyPatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f6d1ba6ff2b77301b930be53283d85f935dc624ab096165dce9be3ce7d72c2d0",
+    "sha": "64595f255"
+  },
   "src/RimStarWars/GizkaStowaway/Source/RSW_GizkaPopulation.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -12500,6 +12518,12 @@
     "date": "2026-09-09",
     "hash": "caf9223ff4470f0db0798cf1c4261fa7170ff9e0f125912640379650e6adc455",
     "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6ef2aecfe404dbffe9e52312ec0b3a99dfec3e38555d4081fb349b380cb95857",
+    "sha": "64595f255"
   },
   "src/RimStarWars/Sarlacc/About/About.xml": {
     "cleanCount": 1,
