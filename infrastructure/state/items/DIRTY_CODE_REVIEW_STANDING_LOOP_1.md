@@ -2250,3 +2250,73 @@ two other named clusters from wave 34's note are still untouched:
 never-entered `.cs`/Python backlogs surveyed in wave 15. The PNG binary-art-tracking
 scope question (wave 15) is still open, resolved separately (see the FOUNDRY note
 above) and still not this loop's to decide.
+
+## Wave 36 — 2026-09-24: `src/RimUtinni/UtinniPatches/Patches/` cluster CLOSED
+
+Re-derived the non-PNG DIRTY list fresh (`code_review_status.py list | grep '^DIRTY'`
+filtered non-`.png`): exactly **61**, matching wave 35's count. Took the named
+`src/RimUtinni/UtinniPatches/Patches/` cluster — all 9 files, all diff-eligible
+(already CLEAN once): `AnimalTolerances_Ashkarr.xml` (19,260 lines, generated,
++5944/-5584 since `14aaf1757`), `PlantTolerances_Ashkarr.xml` (6,770 lines, generated,
++1506/-2262 since `3ea1ca20`), `BiomeFlora_Ashkarr.xml` (99 lines, +51/-377 since
+`5ab0e549a`), `ManyWaters_RiverSteam_Ashkarr.xml` (+32/-21 since `504ead829`),
+`BiomeDescriptions_Ashkarr.xml` (+17/-7 since `7c80850cb`), `AshStorms_Pyrelands.xml`
+(+17/-2 since `d92f5459`), `WildAnimals_Pyrelands.xml` (+7/-7 since `204a30ed7`),
+`SandFishing_CrackedLands.xml` (+33/-0 since `48b321e95`), `FishTypesStrip_NoFishBiomes.xml`
+(+4/-2 since `429d1760`).
+
+Every diff traced to a named ruling/item already in the record: the `RM_FE_Pyrelands` →
+`RM_Pyrelands` rename (owner ruling 2026-09-21, commit `84d42c63b`), `PYRELANDS_WRONG_BIOME_DEF_1`
+(repoints content onto our own def rather than the donor, with an honest unreconciled
+CSV-vs-live caveat left in `ManyWaters_RiverSteam_Ashkarr.xml`'s own comment — correctly
+NOT resolved by this wave, since CLAUDE.md's own rule is never to settle a live-vs-CSV
+disagreement from the CSV, and the file's dual-target patch already hedges by patching
+both defNames rather than picking one), `UMBRA_IS_A_REGION_NOT_A_BIOME_1` (RUT_Umbra →
+RUT_FuelSnows, with the live-continuity duplicate file explained), `BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1`
+(closed item — removed 19 `PatchOperationReplace` ops for BiomeDefs that now own their
+`wildPlants` directly, verified RUT_Desert's def now carries its own list and only the
+`ZBiome_Grasslands` op remains in the patch file), and `FLOODEDCANYON_RM_MOD_BUILD_1`
+(new `RM_FloodedCanyon` fishTypes op, verified byte-for-byte copy of `RUT_CrackedLands.xml`'s
+own inline block).
+
+Verified every defName and packageId cited resolves on disk: `RM_Pyrelands`
+(`src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml`), `RM_FloodedCanyon`
+(`src/RimMandrake/FloodedCanyon/Defs/BiomeDefs/RM_FloodedCanyon_Biome.xml`, confirmed
+no pre-existing `fishTypes`/`maxFishPopulation` so the `PatchOperationAdd` cannot
+double up), `mandrake.rsw.swbestiary` (`src/RimStarWars/SWBestiary/About/About.xml`),
+and the two generated tolerance files' referenced defNames spot-checked (125 unique in
+`PlantTolerances_Ashkarr.xml`, 481 in `AnimalTolerances_Ashkarr.xml` — the latter count
+matches its own regen commit message exactly, `683211335`, including the single
+surviving `BMT_LandOctopus` donor-mod exception). Both generated files parse as
+well-formed XML; both their generating commits (`46ef96ae9` for plants, `683211335`
+for animals) already carry `validate_patch.py --live: 0 errors` / a live deploy
+confirmation, so this wave did not re-run that check, only verified the checked-in
+XML matches what those commits claim to have produced (spot-checked `RUT_FireLavender`'s
+26.9°C re-affirmed band, the specific self-reference regression `46ef96ae9` fixed).
+
+**Found and fixed one real defect, a stale comment (not a patch-behavior bug):**
+`FishTypesStrip_NoFishBiomes.xml`'s own docstring claimed "the Scald ships 5
+`fishTypes` on its def and the Twilight Sea 8 via patch" — recounting both files
+directly gives 8 (Scald) and 10 (Twilight Sea). Corrected in place; the patch's actual
+XML operations don't touch either biome so nothing else was affected. Commit `17c7dab1a`,
+pushed.
+
+No xpath-matches-nothing risk found in any of the 9 — every xpath's target defName was
+independently confirmed present on disk this wave (not inferred from `validate_patch.py`'s
+static syntax check alone, which cannot see match/no-match at all).
+
+All 9 marked CLEAN, commit `17c7dab1a`, pushed. Confirmed no collision with the
+concurrent `BACTA_REVIVAL_MECHANIC_1` build agent (that work doesn't touch this
+cluster; no bridge access was used or needed — pure offline review).
+
+**This closes the whole `src/RimUtinni/UtinniPatches/Patches/` cluster.** Next wave:
+52 non-PNG DIRTY files remain (61 minus this wave's 9) — re-derive with
+`code_review_status.py list | grep '^DIRTY'` filtered non-`.png` rather than trusting
+this arithmetic. The two other named clusters from wave 34/35's notes are still
+untouched: `src/RimMandrake/Utils/` top-level scripts (9 files: `ashkarr_paint.py`,
+`ashkarr_settle.py`, `codebase_health.py`, `codebase_health_publish.py`, `handoff.py`,
+`modset_builder.py`, `project_maturity_dashboard.py`, `run_selftests.py`,
+`structure_roster_lint.py`) and `src/RimStarWars/Armoury/Source/` (5
+`gen_*_absorption.py` files), plus the rest of the never-entered `.cs`/Python backlogs
+surveyed in wave 15. The PNG binary-art-tracking scope question (wave 15) is still
+open and still not this loop's to decide.
