@@ -401,11 +401,14 @@
 <!--
   Pass 20 — RSW_SW_GoldForage (Pufferpig's own ability), ported verbatim
   from the donor's SW_GoldForage AbilityDef/TrainableDef pair, defName
-  rename only. Donor's own MayRequire gating quirk preserved: the
-  AbilityDef/TrainableDef pair itself is Royalty-gated, matching the inner
-  <li> gating on RSW_Pufferpig's own specialTrainables/abilities blocks
-  (the PawnKindDef's own outer <abilities> wrapper additionally gates
-  Odyssey, also preserved verbatim, not corrected — donor's own quirk).
+  rename only. This AbilityDef/TrainableDef pair is Royalty-gated, matching
+  the inner <li> gating on RSW_Pufferpig's own specialTrainables/abilities
+  blocks. The PawnKindDef's own outer <abilities> wrapper originally carried
+  an extra Odyssey MayRequire on top of that (the donor's own gating quirk) —
+  fixed in wave 56 code review (`DIRTY_CODE_REVIEW_STANDING_LOOP_1`): the
+  outer Odyssey gate was silently dropping the whole ability for a
+  Royalty-only player, the same bug class fixed for RSW_LavaFlea in wave 55.
+  Removed; see RSW_Pufferpig.xml's own header for the fix.
 -->
 <AbilityDef MayRequire="Ludeon.RimWorld.Royalty">
     <defName>RSW_SW_GoldForage</defName>
