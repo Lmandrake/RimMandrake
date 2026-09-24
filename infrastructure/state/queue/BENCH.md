@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T05:07:45Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-24T05:25:59Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -560,12 +560,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  STARWARSDONORPORTLABELCOLLISIONS1 — 62 label collisions between donor SW-animal-collection defNames and their…
 prose:    infrastructure/state/items/STARWARS_DONOR_PORT_LABEL_COLLISIONS_1.md
 
-## WEBWORK_DESIGN_SITTING_1 Webwork design sitting: finish the flora/fauna roster docs, then card the 8 open rulings in webwork_owner_and_nest_2026-09-23.md §6
+## WEBWORK_EGG_BLACKMARKET_1 Design the campaign black-market egg trader (Hutt/bounty-hunter related) + egg-assassination quests with optional immoral solutions (S6 ruling 5, owner-typed); resolve the hatch tension
 state:    proposed
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  WEBWORKDESIGNSITTING1 — finish the Webwork sitting of 2026-09-23
-prose:    infrastructure/state/items/WEBWORK_DESIGN_SITTING_1.md
+summary:  (no items/WEBWORK_EGG_BLACKMARKET_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_EGG_BLACKMARKET_1.md

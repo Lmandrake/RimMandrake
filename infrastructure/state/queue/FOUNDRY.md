@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-24T05:07:45Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-24T05:25:59Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
-prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
 ## CANON_CREATURE_REGEN_1 Regenerate every SW-canon creature from library guidance (gated on CANON_REFERENCE_LIBRARY_1 + pilot sheet grades); wyyyschokk blue-grey/yellow-cross is the exemplar
 state:    ready
@@ -242,6 +233,15 @@ target:   v1
 kind:     task
 summary:  Packet B10 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
+
+## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
+prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
 ## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
 state:    doing
@@ -1966,3 +1966,53 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 The whole mechanism is the waterline. She goes anywhere the water goes and nowhere else. A
 prose:    infrastructure/state/items/WARDEN_MOTHER_BEFRIENDING_1.md
+
+## WEBWORK_FLORA_ROSTER_1 Build the 16 invented Webwork flora defs (webwork_flora_roster doc) + Utinni tooke-trap patch (ruled kept-low); the 6 donor cuts stay PROPOSED pending owner
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEBWORK_FLORA_ROSTER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_FLORA_ROSTER_1.md
+
+## WEBWORK_FAUNA_ROSTER_1 Build the 5 invented Webwork fauna defs (Quarrok/Vennick/Skennet/Cravvet/Sivvern, Sivvern flies for real) + execute the 3 ruled donor cuts; JewelBeetle disposition still owed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEBWORK_FAUNA_ROSTER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_FAUNA_ROSTER_1.md
+
+## OLLATHRIX_OWNER_SPECIES_1 Build RM_Ollathrix (one race one kind, owner-and-nest doc S1) with mechanisms in mandrake.rm.webwork and the Wyyyschokk skin patch in mandrake.rsw.shokk (S6 rulings 1,6)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/OLLATHRIX_OWNER_SPECIES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/OLLATHRIX_OWNER_SPECIES_1.md
+
+## WEBWORK_NEST_EGG_ECONOMY_1 Build the Webwork nest + egg economy: nest on EVERY map, re-lay 20-30d while mother lives, RM_OllathrixEgg, Wildsteam egg bounty (S6 rulings 2,3,4)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEBWORK_NEST_EGG_ECONOMY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_NEST_EGG_ECONOMY_1.md
+
+## SHOKK_SKIN_SHRINK_1 Shrink mandrake.rsw.shokk to the Wyyyschokk skin patch; move bound/spit/sun-scald/emergent-spawn mechanisms into mandrake.rm.webwork (S6 ruling 1, inverts 2026-09-11 kit ruling 6)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SHOKK_SKIN_SHRINK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHOKK_SKIN_SHRINK_1.md
