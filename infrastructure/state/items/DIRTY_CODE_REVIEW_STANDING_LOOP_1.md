@@ -3760,3 +3760,122 @@ recent waves — re-survey `code_review_status.py list --show-untracked` for
 the next NEVER ENTERED candidates (the 95-file `.cs` never-entered survey
 from wave 14's post-tail note, largest cluster `CreatureBehaviors`, is
 likely stale by now and should be re-derived, not trusted).
+
+## Wave 59 — 2026-09-24: `SWBestiary/Defs/ThingDefs_Races` FINISHED
+
+Ran `list --show-untracked` fresh: matched wave 58's ending 258 (no
+concurrent-agent noise at wave start). Confirmed the 10 remaining files in
+`SWBestiary/Defs/ThingDefs_Races/` were exactly `RSW_WarWyrm.xml` through
+`RSW_Zakkeg.xml` alphabetically, unchanged from wave 58's pointer. Reviewed
+all 10 in one wave (finishing the cluster outright, per wave 58's own
+either/or note): `RSW_WarWyrm.xml`, `RSW_Whisperbird.xml`,
+`RSW_WompRat.xml`, `RSW_Woolamander.xml`, `RSW_Worrt.xml`, `RSW_Wraid.xml`,
+`RSW_WraidAlpha.xml`, `RSW_Wyyyschokk.xml`, `RSW_Yobshrimp.xml`,
+`RSW_Zakkeg.xml`.
+
+**Found and fixed 3 real defects across 3 of the 10 files:**
+
+- **RSW_Zakkeg.xml** (silent-failure class, same shape as wave 58's
+  TeeMuss bug): the adult lifeStage's `soundWounded`/`soundDeath`/
+  `soundCall`/`soundAngry` all named bare `Pawn_Boma_*` — confirmed byte-
+  identical to the donor's own XML (`vendor/mod_sources/
+  StarWarsAnimalCollection_src`), where it resolved fine because the
+  donor's own Boma sounds are also bare/unprefixed. But this repo's own
+  absorption pass renamed those SoundDefs to `RSW_Pawn_Boma_*`
+  (`SoundDefs_SWBestiary.xml`) without updating Zakkeg's cross-reference,
+  so all four fields resolved to nothing at load — a silent null SoundDef,
+  no error logged (confirmed the bare form doesn't exist anywhere in the
+  repo). A prior pass's header comment had called this "ported byte-
+  identical, pre-existing donor mismatch, not introduced here" — true of
+  the wrong-species CHOICE, false of the resolution failure, which the
+  port itself caused. Fixed to `RSW_Pawn_Boma_*` (all 4 confirmed to
+  exist); left the wrong-species sound choice itself alone, since that part
+  really is the donor's and not this loop's call to invent new
+  Zakkeg-specific sounds. Corrected the header comment to say so.
+- **RSW_WarWyrm.xml**: `statBases` carried a duplicate
+  `ToxicResistance`/`ToxicEnvironmentResistance` pair (identical values
+  both times, `1`/`1.0` — a copy-paste artifact, not a value conflict;
+  caught by the standing wave 54+ XML-tree duplicate-element scan, the
+  first real hit that scan has produced across waves 54-59). Removed the
+  redundant second pair.
+- **RSW_Wraid.xml**: `tradeTags` carried `AnimalUnommon` — confirmed the
+  exact typo in the donor's own source (`vendor/mod_sources/
+  StarWarsAnimalCollection_src`, faithfully ported) and the only
+  occurrence of that string anywhere in the repo, against 35 files' worth
+  of correctly-spelled `AnimalUncommon`. tradeTags don't need to resolve
+  to a def (they're plain strings a `ThingSetMaker` filter matches against),
+  so this doesn't break loading, but it does mean this creature silently
+  never matched the "uncommon animal" trade category. Fixed to
+  `AnimalUncommon`.
+
+Every other cross-referenced defName across all 10 files was grepped and
+confirmed to resolve: bodies (6 new BodyDefs in `RSW_MlieWaveC_Bodies.xml`
+for `WarWyrm`/`Worrt`/`Wyyyschokk`/`Zakkeg`/`YobshrimpLand` plus reused
+`RSW_FlyingAvian` (Whisperbird), `QuadrupedAnimalWithPaws`/`Monkey` vanilla
+Core (WompRat/Woolamander), and `RSW_Dewback` reused by both Wraid and
+WraidAlpha per the donor's own def), leather/meat (`RSW_Leather_Dark`/
+`RSW_Silica_Meat` (WarWyrm), vanilla `Leather_Bird`/`RSW_Reptavian_Meat`
+(Whisperbird), vanilla `Leather_Light`/`RSW_Rodentia_Meat` (WompRat),
+vanilla `Leather_Bluefur`/`RSW_Anthropoid_Meat` (Woolamander),
+`RSW_Leather_Insectile`/`RSW_Gorg_Meat` (Worrt) and
+`RSW_Leather_Insectile` again/no specificMeatDef (Wyyyschokk, vanilla
+`useMeatFrom>Megaspider`), `RSW_Leather_Wraid`/`RSW_Saurian_Meat` (Wraid +
+WraidAlpha, shared), `RSW_Leather_Crustapod`/`RSW_Crustapod_Meat`
+(YobshrimpLand), `RSW_Leather_Zakkeg`/`RSW_Saurian_Meat` (Zakkeg)), eggs
+(`RSW_EggWorrtFertilized`/`UnFertilized`, `RSW_EggWraidFertilized`/
+`UnFertilized`, `RSW_EggWraidAlphaFertilized`/`UnFertilized` (new this
+file, self-contained ThingDefs), `RSW_EggWyyyschokkFertilized`/
+`UnFertilized`, `RSW_EggYobshrimpFertilized`/`UnFertilized`, all confirmed
+present in `RSW_MlieWaveC_Resources.xml`), a wool resource
+(`RSW_WoolWyyyschokk`), abilities (`RSW_SW_Calamity` on WarWyrm,
+`RSW_SW_SootheSong` on Whisperbird, `RSW_SW_WebShot` on Wyyyschokk — all
+three confirmed single-level `MayRequire="Ludeon.RimWorld.Odyssey"`, not
+the wave 55/56 double-nesting bug class), and sound-prefix checks (wave
+49+) for all sound-bearing races. `RSW_WraidAlpha.xml`'s
+`RM_CompProperties_HeatBurstPredator` (DESERT_BURST_PREDATOR_FLAGSHIP_1)
+was cross-checked field-by-field against
+`RM_CompProperties_HeatBurstPredator.cs`/`RM_CompHeatBurstPredator.cs` —
+every XML field (`hediffDef`, `burstTriggerRangeCells`,
+`heatFatigueSeverityThreshold`, `retreatShadeThreshold`,
+`retreatSearchRadiusCells`, `checkIntervalTicks`) matches the C# exactly,
+`RM_HeatDrivenBurst` hediff exists, and `RM_CreatureBehaviorsSettings.
+heatDrivenBurstEnabled` resolves (two classes in one file,
+`RM_CreatureBehaviorsMod.cs` — not a typo). `RSW_Whisperbird.xml` is a
+flyer (`MaxFlightTime`/`FlightCooldown` stats,
+`flyingAnimationFramePathPrefix`/`FrameCount`/`TicksPerFrame`,
+`canFlyIntoMap`/`canLeaveMapFlying`) — confirmed correctly built per "if it
+flies in the fiction, it flies in the game," not a finding. `RSW_Worrt.xml`
+worrtling lifeStage's `swimmingGraphicData` points at the ADULT
+`Worrt_Swimming` texture rather than the extracted `Worrt_j_Swimming` one —
+checked against the donor's own XML and confirmed byte-identical to the
+donor (not a porting bug, a faithful donor art-wiring quirk, left alone).
+`RSW_Yobshrimp.xml`'s documented `YOBSHRIMP_DEFNAME_COLLISION_1` rename
+(`RSW_Yobshrimp` -> `RSW_YobshrimpLand`, freeing the bare name for the
+aquatic `SeaBeasts_Swarm.xml` pair) was independently re-verified: `RSW_
+Yobshrimp` now resolves only inside `SeaBeasts_*` files, no lingering
+reference to the land creature under the old name. Ran the wave 54+
+XML-tree duplicate-element scan (Python, non-`<li>` elements per parent)
+across all 10 files — only WarWyrm's hit above; WraidAlpha's 3 `ThingDef`
+children under `<Defs>` are the expected shape (1 creature + 2 egg
+ThingDefs, not a duplicate).
+
+Fixes committed at `936acd7f7`, pushed. All 10 marked CLEAN, commit
+`d7ed4ce2f`, pushed.
+
+**This closes out every file in `SWBestiary/Defs/ThingDefs_Races/` — 0
+remain DIRTY or NEVER ENTERED in that folder.**
+
+Re-measured after: `TALLY  CLEAN 3202  DIRTY 13  ORPHANED 0  NEVER ENTERED 248`
+— 248 = 258 − 10 exactly, no concurrent-agent noise this wave.
+
+Next wave: no named cluster remains outstanding from recent waves — re-
+survey `code_review_status.py list --show-untracked` for the next NEVER
+ENTERED candidates. The 95-file `.cs` never-entered survey from wave 14's
+post-tail note (largest cluster `CreatureBehaviors`, then `SWBestiary`,
+`FlowWorks`, `EnvironmentalHazards`, `PyrelandsMechanics`, and smaller
+clusters) is now roughly 10 waves stale and should be re-derived fresh via
+that wave's own recipe (`<Compile Include>`/default-glob per `.csproj`,
+`comm -23` against `list`'s path column), not trusted. The 13 never-entered
+Python tools under `src/RimMandrake/Utils/` named in wave 14's post-tail
+note also still need a reachability check before any of them are spent on
+a review.
