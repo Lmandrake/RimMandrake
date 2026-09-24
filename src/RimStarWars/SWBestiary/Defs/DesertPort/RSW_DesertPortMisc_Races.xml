@@ -1680,22 +1680,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit</texPath>
+					<!-- KORRUM_ART_REGEN_1: our own artpipe render, landed 2026-09-24 -->
+					<texPath>swanimals/Korrum/Korrum</texPath>
 					<drawSize>1.5</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit</texPath>
+					<!-- KORRUM_ART_REGEN_1: our own artpipe render, landed 2026-09-24 -->
+					<texPath>swanimals/Korrum/Korrum</texPath>
 					<drawSize>2.7</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit</texPath>
+					<!-- KORRUM_ART_REGEN_1: our own artpipe render, landed 2026-09-24 -->
+					<texPath>swanimals/Korrum/Korrum</texPath>
 					<drawSize>3.5</drawSize>
 				</bodyGraphicData>
 			</li>

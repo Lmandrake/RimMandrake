@@ -130,3 +130,44 @@ Next step per this item's own spec: land the three generated PNGs into
 `src/RimStarWars/SWBestiary/Textures/` under our own namespaced path and repoint
 `RSW_Korrum`'s `texPath`/`bodyGraphicData`/all three `lifeStages` entries — not done
 this pass (art-regen slot only, no def/texture wiring).
+
+## FOUNDRY, 2026-09-24 (no bridge): art landed, def repointed, offline-validated, deployed — verify owed to bridge holder
+
+Confirmed all three `infrastructure/artpipe/done/RSW_Korrum_{south,east,north}.manifest.json`
+carry `status: ok` / `worker_status: ok` (read directly, not inferred). Their
+`worker_self_report.out` paths pointed at
+`infrastructure/artpipe/_artsrc/RSW_Korrum_{south,east,north}/RSW_Korrum_{...}.png`.
+
+Copied those three PNGs into
+`src/RimStarWars/SWBestiary/Textures/swanimals/Korrum/Korrum_{south,east,north}.png` —
+matching the sibling convention read straight off `RSW_GraniteSlug.xml`
+(`<texPath>swanimals/GraniteSlug/GraniteSlug</texPath>`, files
+`GraniteSlug_{south,east,north}.png` in the matching folder).
+
+Repointed all three `lifeStages` `bodyGraphicData/texPath` entries in
+`src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml` from
+`Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit` to `swanimals/Korrum/Korrum`,
+drawSizes unchanged (1.5 / 2.7 / 3.5 — this ThingDef/PawnKindDef carries no
+separate top-level `texPath`; all three donor references were inside these
+`lifeStages` blocks). No `AA_BoulderMit` reference remains anywhere in that file
+except inside provenance-comment prose (donor-mapping notes, not live paths).
+
+`validate_patch.py --defs <Data> --defs <Workshop 294100> --defs <Mods>` on the
+whole file: **0 errors, 3 warnings** — all three warnings are on `RSW_Ashworm`
+(a different creature in the same file, its own pre-existing donor-path issue,
+untouched this pass). Korrum's new texPath drew no warning.
+
+`deploy_custom_mods.py --mod SWBestiary` plan showed exactly the expected diff
+(3 new PNGs `+`, the def file `~`, plus pre-existing unrelated in-game-not-in-repo
+drift on three other DesertPort body files that this pass did not touch or
+prune) — `--apply` deployed 4 files, verified in sync.
+
+**Not done, no bridge this pass:** no live render check. `needs: bridge` is
+already the item's state — the next bridge holder should restart (defs parse
+once at load) and confirm the korrum renders at all three life stages
+in-game, per this item's own `## verify`. Also re-check at that restart
+whether `RSW_Korrum` now resolves via `jawa/get_defs` (the 2026-09-24 note
+above flagged it MISSING pre-restart, most likely just parse timing).
+
+Not closed: `## criteria` requires def AND pixels AND live-rendering proof: the
+first two are now true, the third is still owed. Left `doing`.
