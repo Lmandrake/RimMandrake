@@ -152,3 +152,13 @@ Left `doing` — game stayed down the whole pass, so no bridge was taken and the
 quicktest in `## verify` (droid healing rate, patch/spray consumption, settings render)
 is still owed. Whoever next holds a live game: take the bridge, run that quicktest, then
 close or note accordingly.
+
+## status (FOUNDRY, resumed 2026-09-25)
+
+Offline state re-checked and unchanged: `deploy_custom_mods.py --mod Bacta` plan reports
+`in sync (22 files)` / `Everything in sync` — nothing drifted since the prior pass.
+`bridge who` reports it held by another live FOUNDRY window ("FireHawk flight live
+verify", idle 9 min at check time — provably alive, not stale). Per this item's own
+brief, not force-taking a live-held bridge. Blocked rather than closed
+(`rimflow block BACTA_SIDE_ITEMS_1`); the owed live quicktest (droid heal-rate delta,
+patch/spray consume-and-heal, settings render) is unchanged and still gates the close.

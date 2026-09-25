@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T04:58:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T05:09:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -676,7 +676,7 @@ summary:  (no items/BACTA_TANK_ART_1.md yet — write one when you have somethin
 prose:    infrastructure/state/items/BACTA_TANK_ART_1.md
 
 ## BACTA_SIDE_ITEMS_1 Bacta full-kit satellites: 2-1B-style medical droid linkable facility (KR pattern), bacta patch + bacta spray consumables (field heal items), trader-tag wiring for all bacta goods
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    deploy
 target:   v1
@@ -1293,6 +1293,16 @@ kind:     build
 blocked:  DLL already deployed (b5d418d49); remaining work is live bridge proof of revival mechanic, but bridge is held by another live FOUNDRY window (FireHawk flight live verify, idle ~2 min = alive) — not force-taking
 summary:  BACTAREVIVALMECHANIC1 — bacta revival of the recently dead
 prose:    infrastructure/state/items/BACTA_REVIVAL_MECHANIC_1.md
+
+## BACTA_SIDE_ITEMS_1 Bacta full-kit satellites: 2-1B-style medical droid linkable facility (KR pattern), bacta patch + bacta spray consumables (field heal items), trader-tag wiring for all bacta goods
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+blocked:  Live quicktest owed (droid heal rate, patch/spray consumption, settings render) but bridge held by another live FOUNDRY window (FireHawk flight live verify, idle 9 min, provably alive) — not force-taking per this item's own brief. Offline work confirmed still fully deployed and in sync (22/22 files).
+summary:  BACTASIDEITEMS1 — bacta full-kit satellites: medical droid, field consumables, trader wiring
+prose:    infrastructure/state/items/BACTA_SIDE_ITEMS_1.md
 
 ## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
 state:    doing  (BLOCKED)
