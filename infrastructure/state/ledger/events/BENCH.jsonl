@@ -209,3 +209,6 @@
 {"seat":"BENCH","event":"note","id":"SEA_SHORE_TILE_MUTATOR_1","text":"Decisions taken by question card 2026-09-25: two-seas tile -> majority sea wins, tooling just reports; enable SeaShores NOW and prove it in game.","ts":"2026-09-25T20:33:24Z"}
 {"seat":"BENCH","event":"note","id":"JAWA_SWIM_HOOD_KEEP_1","text":"Decision taken by question card 2026-09-25: styling-station preview keeps the hood too — no exemption.","ts":"2026-09-25T20:33:27Z"}
 {"seat":"BENCH","event":"note","id":"SCALD_FLOOR_PASS_1","text":"Rainbow pigment use: owner asked for a brainstorm beyond dye (halos, shimmer, effects) — open.","ts":"2026-09-25T20:33:31Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"restart: enable SeaShores + deploy JawaRules DLL + pick up today's deploys","ts":"2026-09-25T21:35:02Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-25T22:00:46Z"}
+{"seat":"BENCH","event":"note","id":"SEA_SHORE_TILE_MUTATOR_1","text":"Enabled in live ModsConfig (after terminalbiomes, 628 active) and cold-loaded 14:53: RM_SeaShoresHarmony ctor ran, no SeaShores errors at menu. Healer runs at world load — live proof (map beside a sea gets that sea's water) still owed.","ts":"2026-09-25T22:00:49Z"}
