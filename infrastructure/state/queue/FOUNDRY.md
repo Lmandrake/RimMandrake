@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T07:36:30Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-25T07:44:07Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -96,7 +96,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-summary:  SHIELDMODSLEVERAGE1 — particulate screen finished, predictive-failure and landing-advisory built, offline-ver…
+summary:  SHIELDMODSLEVERAGE1 — cryo envelope built (4th and last shd:-ruled field), all four shields now exist, offlin…
 prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
 
 ## DIRTY_CODE_REVIEW_STANDING_LOOP_1 Standing FOUNDRY code-review loop in progress per owner (keep going, bit by bit) - 12 waves in, ~230 ledger entries, ~55 real bugs found, self-continuing via /loop, not blocked on anything
@@ -940,7 +940,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  Wiring FIXED and proven (RM_FE_Pyrelands now carries RiverSteamBiomeExtension live; map has 1301 river-terrain cells). The remaining bar is visual only and is blocked on the render-void: a map from jawa/world_tile_map_generate draws pure black while a normally-entered map on the same connection draws fine (control shot kept). refresh_rect+map_commit and the vanilla 'Regen All Map Mesh Sections' action BOTH fail to fix it, and jawa/colony_found cannot enter a map (AddNewHome generates none). Cheapest close is now the owner looking at a Pyrelands river tile in the real campaign.
+blocked:  Still needs a live bridge screenshot of a Pyrelands-river map (render-void trap) or an owner glance at a real river tile; bridge held by a live peer FOUNDRY window this session, not taken. Offline preconditions (build, live patch validation, active-mod check) all re-confirmed clean this pass.
 summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.riversteam
 prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
 
