@@ -1,0 +1,21 @@
+{"seat":"OWNER","event":"file","id":"SUMP_TAR_BELCH_EVENT_1","title":"Sump tar-belch incident: a tar pit occasionally erupts, coating local terrain in tar (owner-ruled 2026-09-24)","kind":"task","target":"v1","needs":"offline","caused_by":"SUMP_DESIGN_SITTING_1","for":"FOUNDRY","ownerSaid":"There should also occasionally be a random event when a tar pit just belches a huge amount of tar out all over the local terrain.","ts":"2026-09-24T13:42:41Z"}
+{"seat":"OWNER","event":"note","id":"BARBSLINGER_SCORPION_REDESIGN_1","text":"Owner reviewed the south/east/north contact sheet 2026-09-24. Verdict: tails are approved (concept correct), but there's a cross-facing inconsistency -- the south-facing candidate shows claws near the mouth that the east (side) profile does not have. NEXT: re-file a corrected south-facing job (and check north for the same defect) that matches the east profile's mouth/head treatment -- no claws near the mouth -- keeping the approved two-tail/javelin-needle design otherwise. Do not wire any facing until the corrected south (and north, if it has the same issue) lands and gets a look.","ownerSaid":"It's close. The tails are fine. But the south facing one has claws near the mouth. The side profile does not.","ts":"2026-09-24T20:15:16Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-24T23:45:03Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-09-24T23:45:30Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-24T23:46:41Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ts":"2026-09-24T23:50:45Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-09-24T23:50:51Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-24T23:52:49Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-09-24T23:52:53Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ts":"2026-09-24T23:56:24Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-09-24T23:56:30Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-25T01:26:17Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-09-25T01:26:22Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-25T01:26:51Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-09-25T01:26:56Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-25T01:27:27Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-09-25T01:27:31Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-25T01:33:18Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-09-25T01:33:25Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-25T03:47:29Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-09-25T03:47:55Z"}
