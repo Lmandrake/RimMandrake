@@ -33,17 +33,18 @@
       RM_CompPlantAlarm. harvestedThingDef is vanilla RawFungus — worthless
       on purpose, the trap is the point, not the yield.
 
-    Runtime dependency note (same undeclared-gap precedent already standing
-    for mandrake.rm.environmentalhazards — see ROT_SPORECLOUD_PORT_1's own
-    GameCondition_EnvironmentalWeather wiring, and RUT_ScaldVent.xml's donor
-    precedent header): this file's Class= references into
-    RimMandrake.CreatureBehaviors need that assembly active; RotSporeKit's
-    About.xml does not yet declare either RM_ assembly as a modDependency/
-    loadAfter. Not fixed here (About.xml is mid-edit by a concurrent agent
-    this pass) — type resolution itself does not need load ORDER regardless
-    (RimWorld loads every active mod's Assemblies before resolving any def,
-    per RM_ShipVermin.csproj's own header note), only ACTIVATION, which this
-    campaign's fixed mod list already guarantees for both assemblies.
+    Runtime dependency note: this file's Class= references into
+    RimMandrake.CreatureBehaviors need that assembly active. RotSporeKit's
+    About.xml now declares mandrake.rm.creaturebehaviors in loadAfter
+    (fixed DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 79 — it was still missing
+    as of this comment's original wording, while mandrake.rm.environmentalhazards
+    was already present). Type resolution itself does not need load ORDER
+    regardless (RimWorld loads every active mod's Assemblies before resolving
+    any def, per RM_ShipVermin.csproj's own header note), only ACTIVATION,
+    which this campaign's fixed mod list already guarantees for both
+    assemblies (MEASURED against infrastructure/state/modlists/
+    ModsConfig.PRESWAP.20260924_182608.xml: both mandrake.rm.creaturebehaviors
+    and mandrake.rm.environmentalhazards are active, 621 mods total).
 
     Placeholder texPaths only (no new art this pass, per the build brief):
     reused from already-shipped RotSporeKit/donor mushroom assets. Owed to
