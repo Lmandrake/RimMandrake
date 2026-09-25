@@ -2843,6 +2843,55 @@ def test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly():
             os.environ["ARTPIPE_LEGIBILITY_MODEL"] = saved_model
 
 
+def test_flora_never_gated_or_stroked_by_creature_model():
+    """FLORA_LEGIBILITY_BAR_1's verify clause: 'no flora sprite ever routes
+    through the creature stroke'. Reuse the known-BAD fixture — under the
+    creature model it REJECTs (2-band) / regens (3-band fitted model) and,
+    if borderline, would otherwise take the outside stroke — and confirm a
+    job carrying art_class='flora' short-circuits before any of that: no
+    call to run_legibility_gate, no *_prestroke/_reinforced sidecar, and a
+    disclosed 'skipped (flora...)' note rather than a silent pass."""
+    td = Path(__file__).resolve().parent / "testdata"
+    bad = td / "legibility_known_bad_256.png"
+    thresholds = common.REPO_ROOT / "infrastructure" / "artpipe" / "legibility_thresholds.json"
+    model = common.REPO_ROOT / "infrastructure" / "artpipe" / "legibility_model_fitted.json"
+    ok("flora-skip: bad fixture + calibrated thresholds exist", bad.is_file() and thresholds.is_file())
+
+    saved = os.environ.get("ARTPIPE_LEGIBILITY_THRESHOLDS")
+    saved_model = os.environ.get("ARTPIPE_LEGIBILITY_MODEL")
+    try:
+        from PIL import Image as _Img
+        w, h = _Img.open(bad).size
+        for model_env, label in (("", "2-band"), (str(model) if model.is_file() else "", "3-band")):
+            os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = str(thresholds)
+            os.environ["ARTPIPE_LEGIBILITY_MODEL"] = model_env
+            with tempfile.TemporaryDirectory() as td2:
+                cand = Path(td2) / "flora_bad.png"
+                shutil.copy2(bad, cand)
+                job = {"canvas": {"width": w, "height": h}, "background": "transparent",
+                       "art_class": "flora"}
+                res = artpiped._check_size_and_validate({}, job, None, cand,
+                                                         artpiped.LEGIBILITY_SCRIPT)
+                ok(f"flora-skip ({label}): a known-reject fixture still comes back status=ok",
+                   res.get("status") == "ok", str(res))
+                ok(f"flora-skip ({label}): the note discloses skip, never a silent pass",
+                   "skipped (flora" in (res.get("legibility") or ""),
+                   str(res.get("legibility")))
+                ok(f"flora-skip ({label}): no prestroke sidecar was written",
+                   not (Path(td2) / "flora_bad_prestroke.png").is_file())
+                ok(f"flora-skip ({label}): no reinforced sidecar was written",
+                   not (Path(td2) / "flora_bad_reinforced.png").is_file())
+    finally:
+        if saved is None:
+            os.environ.pop("ARTPIPE_LEGIBILITY_THRESHOLDS", None)
+        else:
+            os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = saved
+        if saved_model is None:
+            os.environ.pop("ARTPIPE_LEGIBILITY_MODEL", None)
+        else:
+            os.environ["ARTPIPE_LEGIBILITY_MODEL"] = saved_model
+
+
 def main() -> int:
     # Gate off by default for every in-process test — synthetic fixtures are
     # not art. The legibility test opts back in around its own calls.
@@ -2850,6 +2899,7 @@ def main() -> int:
     for fn in (
         test_crash_reconciliation,
         test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly,
+        test_flora_never_gated_or_stroked_by_creature_model,
         test_claim_next_stamps_fresh_mtime_not_filing_time,
         test_row5_no_manifest_fails_request_not_account,
         test_row1_rate_limit_hard_stop,
