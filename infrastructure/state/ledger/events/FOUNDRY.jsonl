@@ -321,3 +321,6 @@
 {"seat":"FOUNDRY","event":"block","id":"BACTA_REVIVAL_MECHANIC_1","reason":"live: toggle/window/laws pass, but heart-destroyed corpse revives into re-death (design call) and WorkGiver never auto-fired","ts":"2026-09-25T08:24:09Z"}
 {"seat":"FOUNDRY","event":"block","id":"LIQUID_BOTTLE_LOOP_1","reason":"live: fill job never produces a filled bottle (4 tries, 3 pawns); revert/rot timers unbuilt so verify bar cannot pass","ts":"2026-09-25T08:24:10Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-25T08:24:17Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WASTELAND_RADIOTHERMAL_SOLITARY_1","ts":"2026-09-25T14:45:48Z"}
+{"seat":"FOUNDRY","event":"start","id":"WASTELAND_RADIOTHERMAL_SOLITARY_1","ts":"2026-09-25T14:45:50Z"}
+{"seat":"FOUNDRY","event":"close","id":"WASTELAND_RADIOTHERMAL_SOLITARY_1","sha":"7e262459a","reason":"Heat via RimSage-verified CompHeatPusher (gated subclass) + new spacing law (JobGiver avoidance + cook-damage comp), both halves built and compiled clean","ts":"2026-09-25T14:53:11Z"}
