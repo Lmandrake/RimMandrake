@@ -41,12 +41,18 @@
      item's scope (GREENTIDE_MECHANICS_2's own file) — flagged for the
      record; this def does not repeat the gap.
 
-     PLACEHOLDER ART: reuses the same real vanilla texture path
-     RUT_GreatboleCore.xml already established (Things/Building/Misc/
-     DeepDrillPowered, oversized + tinted) rather than a new placeholder —
-     legitimate reuse, not a namespace-owned path, no DEPLOY_HOLD needed.
-     Tint distinguishes it from the Greentide original (a paler, duller
-     wood tone versus the Greatbole's darker one). -->
+     DRAWS NOTHING (drawerType None, no graphicData) — same idiom as
+     RM_SuperdeepPit, vanilla's DelayedEffecterSpawner, and its own sibling
+     RUT_GreatboleCore (GREATBOLE_BARK_EDGE_ART_1): a bookkeeping Thing whose
+     cell's visual is already fully described by something else (here, the
+     heartwood blob), so a second sprite on top of it would be a
+     contradicting statement, not a placeholder. This def previously cribbed
+     RUT_GreatboleCore's own now-fixed defect verbatim — a retinted vanilla
+     DeepDrillPowered texture at drawSize (7,7), rendering a fake
+     mining-drill sprite across the middle of the fever trunk. The trunk's
+     own real bark-edge art (on RUT_FeverTrunkHeartwood, mirroring the
+     greatbole's still-owed atlas commission) is separate and still owed;
+     this def was never that art's home. -->
 <Defs>
 
   <ThingDef ParentName="BuildingBase">
@@ -62,13 +68,7 @@
     <coversFloor>true</coversFloor>
     <holdsRoof>true</holdsRoof>
     <useHitPoints>true</useHitPoints>
-    <graphicData>
-      <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/Misc/DeepDrillPowered</texPath>
-      <shaderType>CutoutComplex</shaderType>
-      <color>(92,84,60)</color>
-      <drawSize>(7,7)</drawSize>
-    </graphicData>
+    <drawerType>None</drawerType>
     <altitudeLayer>Building</altitudeLayer>
     <statBases>
       <MaxHitPoints>1200</MaxHitPoints>
