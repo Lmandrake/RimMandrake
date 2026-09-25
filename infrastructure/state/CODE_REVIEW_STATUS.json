@@ -5711,11 +5711,23 @@
     "hash": "2dfe981d7bb666adaeeefb18eeff68cceff39415f5dd3efe00905b07e64199bf",
     "sha": "f869774f1"
   },
+  "src/RimMandrake/StructureInjections/Defs/GenStepDefs_Batch1.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a117aa49c0418ef2fa6ab3b52290f3a276a4ff4e19bd34f85367296659b2e0c8",
+    "sha": "d2724af5f"
+  },
   "src/RimMandrake/StructureInjections/LICENSE": {
     "cleanCount": 1,
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "b88a6f90"
+  },
+  "src/RimMandrake/StructureInjections/Patches/SignalMast.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "aba3c16801c5712bdc36071ce406ceee353911ab7f21d6ff4a10f7617c1fc68c",
+    "sha": "d2724af5f"
   },
   "src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs": {
     "cleanCount": 4,
@@ -8102,6 +8114,12 @@
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "92e56d4f"
+  },
+  "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_HideDonorSmelter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "22727dcd1877fe424926ca7dae56117a8b5cdc26b992399f67e9791576020c84",
+    "sha": "d2724af5f"
   },
   "src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs": {
     "cleanCount": 1,
@@ -12285,6 +12303,12 @@
     "hash": "c96fa5d97a4522d44da460f3537de64ef40e928cd37d56c13b1733559cf8eb90",
     "sha": "9c1bce648"
   },
+  "src/RimStarWars/GualaarArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b3f0c3215ccb42afe188c4fb7dd8c74835041d8d4896e49e1ae362739d8c7acb",
+    "sha": "d2724af5f"
+  },
   "src/RimStarWars/HawkbatArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -15062,6 +15086,42 @@
     "date": "2026-09-24",
     "hash": "6c364014261de77257c21fca0f0614f568462f9b784583f3897299f0255903b7",
     "sha": "78a84be85"
+  },
+  "src/RimStarWars/TrophyCraft/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "336f55ecbe12c5874165dae6fa3dcb854fde82b39fac8c53005cd8c4cd51c7d7",
+    "sha": "d2724af5f"
+  },
+  "src/RimStarWars/TrophyCraft/Defs/ApparelLayerDefs/RSW_TrophyCraft_ApparelLayerDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0501a2139a6841a126d20388182f478a5156168f5bd3dbefced45f3a3f3029f1",
+    "sha": "d2724af5f"
+  },
+  "src/RimStarWars/TrophyCraft/Defs/RecipeDefs/RSW_TrophyCraft_Recipes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8578111eac7f8178c35cc2224a2e097dcaad913ceb4c53f89ca375f46691638a",
+    "sha": "d2724af5f"
+  },
+  "src/RimStarWars/TrophyCraft/Defs/ThingDefs/RSW_TrophyCraft_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6668d39d32d66a78fccc5236a79a64b170c37226fc633501b8d1291d8bdc2d9b",
+    "sha": "d2724af5f"
+  },
+  "src/RimStarWars/TrophyCraft/Defs/ThoughtDefs/RSW_TrophyCraft_Thoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4c6d860a242018a0f7d05a471f3427f28391724a8ca13eb52e3d3ee4830218ab",
+    "sha": "d2724af5f"
+  },
+  "src/RimStarWars/TrophyCraft/Patches/RSW_TrophyCraft_WyyyschokkFangDrop.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a85084bc09354b5abfd7e86c3a3af6c3bf459d8ce21147f6341f780efa4883e3",
+    "sha": "d2724af5f"
   },
   "src/RimStarWars/TrophyCraft/Source/RSW_FactionApparelThoughtExtension.cs": {
     "cleanCount": 1,
