@@ -333,3 +333,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"GREATBOLE_BARK_EDGE_ART_1","ts":"2026-09-25T16:52:19Z"}
 {"seat":"FOUNDRY","event":"start","id":"GREATBOLE_BARK_EDGE_ART_1","ts":"2026-09-25T16:52:22Z"}
 {"seat":"FOUNDRY","event":"note","id":"GREATBOLE_BARK_EDGE_ART_1","text":"Marker rendering fix landed at 88f61d76d: RUT_GreatboleCore now drawerType=None (no more retinted DeepDrillPowered at 7x7). Bark-edge atlas art commission (4x4 Rock_Atlas-layout PNG + RUT_GreatboleHeartwood linkType/linkFlags wiring) is still owed.","ts":"2026-09-25T16:52:32Z"}
+{"seat":"FOUNDRY","event":"file","id":"FEVERTRUNK_CORE_DRILL_SPRITE_FIX_1","title":"RUT_FeverTrunkCore cribbed the same fake-drill-sprite defect GREATBOLE_BARK_EDGE_ART_1 fixed","kind":"task","target":"v1","needs":"offline","caused_by":"GREATBOLE_BARK_EDGE_ART_1","for":"FOUNDRY","ts":"2026-09-25T16:55:40Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FEVERTRUNK_CORE_DRILL_SPRITE_FIX_1","ts":"2026-09-25T16:55:40Z"}
+{"seat":"FOUNDRY","event":"start","id":"FEVERTRUNK_CORE_DRILL_SPRITE_FIX_1","ts":"2026-09-25T16:55:40Z"}
+{"seat":"FOUNDRY","event":"close","id":"FEVERTRUNK_CORE_DRILL_SPRITE_FIX_1","sha":"8a872dad2","reason":"same fix as GREATBOLE_BARK_EDGE_ART_1: dropped graphicData (retinted DeepDrillPowered at 7x7), drawerType None","ts":"2026-09-25T16:55:53Z"}
