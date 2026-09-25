@@ -50,6 +50,8 @@
     <Compile Include="CompShieldModuleSwitch.cs" />
     <Compile Include="CompProperties_ShieldThermalVeil.cs" />
     <Compile Include="CompShieldThermalVeil.cs" />
+    <Compile Include="CompProperties_ShieldCryoEnvelope.cs" />
+    <Compile Include="CompShieldCryoEnvelope.cs" />
     <Compile Include="CompProperties_ShieldParticulateScreen.cs" />
     <Compile Include="CompShieldParticulateScreen.cs" />
     <Compile Include="ShieldLandingAdvisory.cs" />

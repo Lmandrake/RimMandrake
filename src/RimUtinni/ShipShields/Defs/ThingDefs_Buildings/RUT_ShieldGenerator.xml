@@ -3,14 +3,15 @@
   <!--
     SHIELD_MODS_LEVERAGE_1 v1 slice (owner ruling, canon_reintegration_plan.md
     sec G.9, 2026-09-04: "bespoke building-scale comp, NOW"). One shield
-    generator, three field modes switched by installing modules
+    generator, four field modes switched by installing modules
     (shd:loadout-tradeoff) instead of four separate buildings:
       - Bubble/kinetic (shd:bubble-not-wall), default, unlocked from the
         start — RimMandrake.Utinni.ShipShields.CompShieldGenerator, a real
         subclass of vanilla's CompProjectileInterceptor (the same base class
         Odyssey's native GravshipShieldGenerator uses).
-      - Thermal veil (shd:thermal-veil) and particulate screen
-        (shd:particulate-screen), module-gated — see
+      - Thermal veil (shd:thermal-veil), particulate screen
+        (shd:particulate-screen), and cryo envelope (shd:cryo-envelope,
+        v2->v1), module-gated — see
         Defs/ThingDefs_Items/RUT_ShieldModules.xml.
 
     <color>, <activeSound>, <hitPoints>, <rechargeHitPointsIntervalTicks> and
@@ -24,17 +25,20 @@
 
     Predictive shield-failure alerts, small-animal repulsion and direct
     weather-damage negation under the particulate screen, the
-    no-hard-landing-gate landing advisory, and its escalating-damage/
-    lava-burst half (ShieldHazardExposureTracker) are all built too — see
-    About.xml / item file for the full account. Still NOT in this build:
-    real art (placeholder vanilla texture only) and any live/bridge test —
-    this mod has never been deployed or enabled in ModsConfig.xml.
+    no-hard-landing-gate landing advisory, its escalating-damage/lava-burst
+    half (ShieldHazardExposureTracker), and the cryo envelope (2026-09-25,
+    wired into the same landing advisory and exposure tracker as the other
+    two hazard types) are all built too — see About.xml / item file for the
+    full account. Still NOT in this build: real art (placeholder vanilla
+    texture only), the cryo envelope's ruled "glowing red-orange black body
+    radiation" visual, and any live/bridge test — this mod has never been
+    deployed or enabled in ModsConfig.xml.
   -->
 
   <ThingDef ParentName="BuildingBase">
     <defName>RUT_ShieldGenerator</defName>
     <label>modulated shield generator</label>
-    <description>A building-scale plasma field projector. It holds one field configuration at a time — kinetic deflection against impactors and blaster fire, thermal rejection against extreme heat, or a particulate screen against wind, sand and ash — and is reconfigured by installing the matching module. Every field is porous to slow-moving things by design: nothing here "holds out water," it simply doesn't work that way.</description>
+    <description>A building-scale plasma field projector. It holds one field configuration at a time — kinetic deflection against impactors and blaster fire, thermal rejection against extreme heat, a particulate screen against wind, sand and ash, or a cryo envelope against severe cold — and is reconfigured by installing the matching module. Every field is porous to slow-moving things by design: nothing here "holds out water," it simply doesn't work that way.</description>
     <thingClass>Building</thingClass>
     <category>Building</category>
     <graphicData>
@@ -106,6 +110,12 @@
         <radius>9.9</radius>
         <intervalTicks>250</intervalTicks>
       </li>
+      <li Class="RimMandrake.Utinni.ShipShields.CompProperties_ShieldCryoEnvelope">
+        <insulationFactor>0.6</insulationFactor>
+        <comfortTemperature>21</comfortTemperature>
+        <interiorDriftPerInterval>0.15</interiorDriftPerInterval>
+        <intervalTicks>250</intervalTicks>
+      </li>
       <li Class="RimMandrake.Utinni.ShipShields.CompProperties_ShieldModuleSwitch">
         <defaultMode>Bubble</defaultMode>
         <moduleMappings>
@@ -116,6 +126,10 @@
           <li>
             <moduleDef>RUT_ShieldModule_Particulate</moduleDef>
             <mode>Particulate</mode>
+          </li>
+          <li>
+            <moduleDef>RUT_ShieldModule_Cryo</moduleDef>
+            <mode>Cryo</mode>
           </li>
         </moduleMappings>
       </li>

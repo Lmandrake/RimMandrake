@@ -54,8 +54,8 @@ namespace RimMandrake.Utinni.ShipShields
     // it is never a per-tick add-on.
     //
     // MapComponent, not GameComponent: the hazard state this tracks (is
-    // THIS MAP currently hot/dusty, is THIS MAP's shield generator powered
-    // and configured) is inherently per-map, and MapComponent is the real
+    // THIS MAP currently hot/dusty/cold, is THIS MAP's shield generator
+    // powered and configured) is inherently per-map, and MapComponent is the real
     // vanilla per-map tracked-state primitive (every non-abstract subclass
     // with a (Map) constructor is auto-instantiated per map by
     // Map.FillComponents -- confirmed via rimsage, not assumed) rather than
@@ -98,8 +98,10 @@ namespace RimMandrake.Utinni.ShipShields
 
         private int heatUnshieldedSinceTick = -1;
         private int particulateUnshieldedSinceTick = -1;
+        private int coldUnshieldedSinceTick = -1;
         private bool heatEscalationLetterSent;
         private bool particulateEscalationLetterSent;
+        private bool coldEscalationLetterSent;
 
         public ShieldHazardExposureTracker(Map map) : base(map)
         {
@@ -110,8 +112,10 @@ namespace RimMandrake.Utinni.ShipShields
             base.ExposeData();
             Scribe_Values.Look(ref heatUnshieldedSinceTick, "heatUnshieldedSinceTick", -1);
             Scribe_Values.Look(ref particulateUnshieldedSinceTick, "particulateUnshieldedSinceTick", -1);
+            Scribe_Values.Look(ref coldUnshieldedSinceTick, "coldUnshieldedSinceTick", -1);
             Scribe_Values.Look(ref heatEscalationLetterSent, "heatEscalationLetterSent", false);
             Scribe_Values.Look(ref particulateEscalationLetterSent, "particulateEscalationLetterSent", false);
+            Scribe_Values.Look(ref coldEscalationLetterSent, "coldEscalationLetterSent", false);
         }
 
         // Called from HarmonyPatches.Patch_Scenario_PostGravshipLanded's
@@ -163,9 +167,12 @@ namespace RimMandrake.Utinni.ShipShields
                 && !ShieldHazardUtility.IsHazardShielded(map, ShieldFieldMode.Thermal);
             bool particulateHazard = ShieldHazardUtility.HasParticulateHazard(map)
                 && !ShieldHazardUtility.IsHazardShielded(map, ShieldFieldMode.Particulate);
+            bool coldHazard = ShieldHazardUtility.HasColdHazard(map)
+                && !ShieldHazardUtility.IsHazardShielded(map, ShieldFieldMode.Cryo);
 
             TrackHazard(heatHazard, ref heatUnshieldedSinceTick, ref heatEscalationLetterSent, "thermal stress");
             TrackHazard(particulateHazard, ref particulateUnshieldedSinceTick, ref particulateEscalationLetterSent, "particulate fouling");
+            TrackHazard(coldHazard, ref coldUnshieldedSinceTick, ref coldEscalationLetterSent, "cold-seize");
         }
 
         private void TrackHazard(bool active, ref int unshieldedSinceTick, ref bool escalationLetterSent, string hazardLabel)
