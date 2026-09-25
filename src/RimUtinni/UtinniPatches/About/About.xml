@@ -105,6 +105,7 @@
     <li>ludeon.rimworld.ideology</li>
     <li>ludeon.rimworld.odyssey</li>
     <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.leaningscrub</li>                       <!-- LEANINGSCRUB_RM_MOD_BUILD_1: WildAnimals_LeaningScrub.xml targets Defs/BiomeDef[defName="RM_LeaningScrub"] -->
     <li>mandrake.rm.pyrelands</li>
     <li>mandrake.rut.rotsporekit</li>
     <li>mandrake.rut.rustcathedralroaches</li>
