@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.feverwood</packageId>
+  <name>RimMandrake: Fever Wood</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards</displayName>
+      <steamWorkshopUrl />
+    </li>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <steamWorkshopUrl />
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.environmentalhazards</li>
+    <li>mandrake.rm.creaturebehaviors</li>
+  </loadAfter>
+  <description>FEVERWOOD_RM_MOD_BUILD_1 — RimMandrake tier standalone build of the Fever
+Wood biome (Phase A row 22 of design/RimMandrake/biome_mod_architecture.md;
+parent BIOME_MOD_SPLIT_EXECUTION_1). A hot, still, tree-canopied swamp: great
+solid trunks have rooted the backswamp still and tamed the flowing waters
+into shallow surface pools with deep mud beneath, laced with living-wood
+byways above the black, unrippled mirror pools below.
+
+RM tier: nothing here knows what campaign or planet uses it. The three
+biome-level hazard modExtensions this def carries (the trunk, the mirror
+pools, the ground-refusal marsh) are defined in the shared
+mandrake.rm.environmentalhazards library (loadAfter, hard dependency) —
+this mod re-points them at RM_FeverWood; it does not re-author them.
+
+⛔ Star Wars canon fauna and flora do NOT ship here — Q11a (owner ruling,
+2026-09-22): a genuinely canon name is IP and must route through the Utinni
+campaign patch layer, never the franchise-free RimMandrake tier. Ten
+wildAnimals rows and three wildPlants rows that carry canon or RSW_ names
+ride src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml instead;
+this def ships only vanilla + one non-Star-Wars donor row
+(VFEI2_Megathrips) + three non-Star-Wars donor plants (AB_KeeningCordax,
+AB_Iashiphus, AB_Gomphoeria) + this mod's own RM_GiantLeaf.
+
+Live proof (step 5, a scratch-world quicktest with all five expansions) is
+Desktop-only and OWED — see the item's own verify record.</description>
+</ModMetaData>
