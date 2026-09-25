@@ -17397,11 +17397,23 @@
     "hash": "9f1622bd6a79eb1f2a5e726dbfc223332c5ca72c629bf9dad0653430cff034a5",
     "sha": "e97fc76e4"
   },
+  "src/RimUtinni/ResearchRetag/Defs/ResearchProjectDefs/RUT_Ported_ResearchTrio.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5d7111917be937d6ba3488893943f64b6788a40acff39ac784470c62c69949f4",
+    "sha": "33550ddc7"
+  },
   "src/RimUtinni/ResearchRetag/Defs/ResearchTabDefs/RUT_Tree_Defs.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "hash": "431b0ad6e1788d6c5f687c3351375aff72bf01c30ca3c3bc61e02ea2cb64a74f",
     "sha": "53661e66"
+  },
+  "src/RimUtinni/ResearchRetag/Defs/ThingDefs_Buildings/RUT_Ported_GravForge.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "dc1fa2a050c4f5b1557b95d709a6ab431ac8bd668991cf170ecd64eba1167e8c",
+    "sha": "33550ddc7"
   },
   "src/RimUtinni/ResearchRetag/LICENSE": {
     "cleanCount": 1,
@@ -17780,6 +17792,12 @@
     "date": "2026-09-24",
     "hash": "5c03bfdd353e27dbef14ca74ab76d2437b3521704a8cbaae208927f4cd1d7fa3",
     "sha": "f869774f1"
+  },
+  "src/RimUtinni/RustCathedralHum/Defs/HediffDefs/RUT_CoolantLoad.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "153ff95aa1ba505e0c65efc1f9fa38cb26d508f989867394dc1fea7846c306f4",
+    "sha": "33550ddc7"
   },
   "src/RimUtinni/RustCathedralHum/Defs/IncidentDefs/RUT_DeepDrillCathedralResponse.xml": {
     "cleanCount": 1,
@@ -18302,6 +18320,12 @@
     "date": "2026-09-11",
     "hash": "805bf674b49c81db104a543bc3b21cddca06f3ac346d5d40608f9bca652728f1",
     "sha": "5040448b5"
+  },
+  "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveCreepWebYield.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ef66aa9adef0db8727f7ef560172b5b3ed7ebc92a6c7206a15457ed19e568828",
+    "sha": "33550ddc7"
   },
   "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveHarvestScatter_MapGenPatch.xml": {
     "cleanCount": 1,
@@ -19149,6 +19173,12 @@
     "hash": "ea007ec74d22b236d44dae6c32acf65454dc18359865f8e8a0b046110c4d4b5a",
     "sha": "52c8c982c"
   },
+  "src/RimUtinni/UtinniPatches/Defs/EffecterDefs/RM_KrissekHalo.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "276a989959f4cf15b86595d3597191db1d62c67c706d959088a71eb1325823a0",
+    "sha": "33550ddc7"
+  },
   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaAscendantHelix.xml": {
     "cleanCount": 3,
     "date": "2026-09-24",
@@ -19209,6 +19239,12 @@
     "hash": "1d0e04405aef62b400bbc04bb4b92ce2fecdb683a91bf10c108eede069692075",
     "sha": "0e38767e7"
   },
+  "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_GradientSurge.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "86ac12ecda77893b23b24195c81c39e53728dfa19a9af53b43c9a3b9837935a9",
+    "sha": "33550ddc7"
+  },
   "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_GreentideWetBulbLock.xml": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -19245,11 +19281,29 @@
     "hash": "f9b9a27e6eff49254db5ad2a3569361caabec3ad39dff25d27f7e1c78e346aa9",
     "sha": "52c8c982c"
   },
+  "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_SheenExposureLock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "26555a3e9105bcdd2204765d74e428cd3dbc3a9319fb9da51da9688d82b5f4a7",
+    "sha": "33550ddc7"
+  },
   "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_SumpDuskLock.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
     "hash": "a6cedf63992708ca5916c275f30107633ed300fe0898a465336027c0c063be8e",
     "sha": "779a079ab"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/GeneArchiveDefs/RUT_SlimeGeneArchive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c8c95ed7fd1968f626d8d91a9546dc649f10fc4940b8b4c88ca43f1db4ef2ad0",
+    "sha": "33550ddc7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/GeneDefs/Jawa_MessImmunity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "e0e5a8e8af17bb07634442575e916a15aadd0d3c68026e45c124c07ab8ffa548",
+    "sha": "33550ddc7"
   },
   "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_FlamefangVenom.xml": {
     "cleanCount": 1,
@@ -19592,6 +19646,24 @@
     "date": "2026-09-18",
     "hash": "6e7e20454654739930b6864c2ae73876ebecbdbb259df66694a3686cf551670f",
     "sha": "4de0abdce"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Apparel/RUT_DryHood.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bc68a26ff80f9c56d34c9ec4427d4ff0257b40080ab70a84472732be5b84f318",
+    "sha": "33550ddc7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Apparel/RUT_SealedSuit.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bf0d4e358d316ceaa272ae1c0ed04cfb263e73387cb40dccd78a5689cf442edb",
+    "sha": "33550ddc7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Apparel/RUT_WickingWrap.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a4cef0d4c6ba971221fa006be0cde1b893466baa5a0bb5365a8a676e17508c44",
+    "sha": "33550ddc7"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml": {
     "cleanCount": 1,
