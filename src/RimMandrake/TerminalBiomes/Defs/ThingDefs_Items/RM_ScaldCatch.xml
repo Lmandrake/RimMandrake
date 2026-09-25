@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ScaldCatch.xml                      TerminalBiomes — authored 2026-09-24
+  ==========================================================================
+  terminal_seas_cast_proposal_2026-09-25.md, the Scald gap-check §2: shulla
+  joins the existing eight-species freshwater catch (RUT_Eesh…RUT_Ekkel,
+  RUT_RareScaldCatches) as ONE ADDITIONAL row in RM_TheScald.xml's own
+  freshwater_Common block.
+
+  Item-only catch def (shulla's own floor-resident form is the SEPARATE
+  roster work in RM_ScaldFauna.xml). Register stats follow RUT_ScaldFish.xml's
+  own envelope; freshwater per that file's own measured note (the Scald's
+  fishing water is freshwater, not saltwater).
+-->
+<Defs>
+
+  <!-- shulla — the silver shoal fish-analog, common. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_ShullaCatch</defName>
+    <label>shulla</label>
+    <description>A hot-white sliver netted from between the Scald's vent plumes, a heat-shimmer still playing off its edge as it cools in the pail. Always comes up in company.</description>
+    <graphicData>
+      <texPath>Things/Item/Special/JawaClaimRumour</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.1</Nutrition>
+      <MarketValue>4</MarketValue>
+      <Mass>0.25</Mass>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

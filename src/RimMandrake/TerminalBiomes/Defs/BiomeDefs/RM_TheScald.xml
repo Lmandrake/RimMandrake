@@ -71,7 +71,9 @@
     </wildPlants>
 
     <!-- FISH_BESTIARY_BUILD_1 / SEA_FLOOR_AND_CATCH_PASS_1 — the margin
-         harvest, eight species + rareCatchesSetMaker, all moved with this def. -->
+         harvest, eight species + rareCatchesSetMaker, all moved with this def.
+         terminal_seas_cast_proposal_2026-09-25.md §"The Scald — gap check":
+         shulla ADDED as a ninth (see RM_ScaldCatch.xml's own header). -->
     <maxFishPopulation>40</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <freshwater_Common>
@@ -79,6 +81,7 @@
         <RUT_Muddal>0.8</RUT_Muddal>
         <RUT_Doss>0.7</RUT_Doss>
         <RUT_Thuum>0.5</RUT_Thuum>
+        <RM_ShullaCatch>0.6</RM_ShullaCatch>
       </freshwater_Common>
       <freshwater_Uncommon>
         <RUT_Karrash>1</RUT_Karrash>

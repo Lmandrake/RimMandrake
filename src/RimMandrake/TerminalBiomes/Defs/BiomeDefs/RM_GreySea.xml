@@ -63,7 +63,10 @@
       </li>
     </terrainsByFertility>
 
-    <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Grey Sea's catch table. -->
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Grey Sea's catch table.
+         terminal_seas_cast_proposal_2026-09-25.md verdict 2: essarn/sorruth
+         ADDED here, not replacing the pre-existing table (see
+         RM_GreySeaCatch.xml's own header). -->
     <maxFishPopulation>120</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <saltwater_Common>
@@ -71,11 +74,13 @@
         <RUT_Karrud>1</RUT_Karrud>
         <RUT_Hessal>1</RUT_Hessal>
         <RUT_Oomal>0.6</RUT_Oomal>
+        <RM_EssarnCatch>1</RM_EssarnCatch>
       </saltwater_Common>
       <saltwater_Uncommon>
         <RUT_Maalu>1</RUT_Maalu>
         <RUT_Immu>0.7</RUT_Immu>
         <RUT_Haarn>0.4</RUT_Haarn>
+        <RM_SorruthCatch>0.5</RM_SorruthCatch>
       </saltwater_Uncommon>
       <rareCatchesSetMaker>RUT_RareGreyCatches</rareCatchesSetMaker>
     </fishTypes>

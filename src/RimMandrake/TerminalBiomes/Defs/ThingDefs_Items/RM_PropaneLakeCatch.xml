@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_PropaneLakeCatch.xml                TerminalBiomes — authored 2026-09-24
+  ==========================================================================
+  terminal_seas_cast_proposal_2026-09-25.md verdict 3: the Propane Lake IS
+  fishable — heemin common, oovanam uncommon dredge become the catch. Added
+  as two ADDITIONAL rows in RM_PropaneLake.xml's own pre-existing fishTypes
+  block (RUT_Fessu/Krellik/Oddu/Oovu common + RUT_Iliss/Tarnn/Zhiil uncommon,
+  RUT_RarePropaneCatches), not a replacement — that block predates this
+  proposal and is out of this pass's scope; see this pass's own build
+  report. hoolen is NOT a catch (surface wildAnimals only, verdict 4).
+
+  Item-only catch defs (heemin/oovanam's own floor-resident forms are the
+  SEPARATE roster work in RM_PropaneLakeFauna.xml). Register stats follow
+  RUT_ScaldFish.xml's own envelope.
+-->
+<Defs>
+
+  <!-- heemin — vaunoom's kin, palm-length glassy swimmers, common. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_HeeminCatch</defName>
+    <label>heemin</label>
+    <description>A near-transparent sliver hauled off the Propane Lake's top layer, aurora colours still faintly refracting through it before it stiffens in the cold.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaE</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.09</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.2</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- oovanam — tholin-sifting bottom crawler, uncommon dredge. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_OovanamCatch</defName>
+    <label>oovanam</label>
+    <description>A soot-dark, flattened crawler dredged off the solid-propane floor, still dusted pale with tholin ash. Uncommon.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaF</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.13</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.35</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
