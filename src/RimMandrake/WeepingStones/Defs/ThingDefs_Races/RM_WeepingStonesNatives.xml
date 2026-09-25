@@ -320,15 +320,22 @@
         <cooldownTime>2.0</cooldownTime>
         <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
       </li>
-      <li>
-        <label>tail-slap</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>6</power>
-        <cooldownTime>2.0</cooldownTime>
-        <linkedBodyPartsGroup>Tail</linkedBodyPartsGroup>
-      </li>
+      <!-- 🔴 "tail-slap" tool DROPPED (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 85):
+           linked to <linkedBodyPartsGroup>Tail</linkedBodyPartsGroup>, which is
+           not a BodyPartGroupDef anywhere in the 600+-mod dump ("Tail" is only a
+           BodyPartDef; RimSage-confirmed) — a dangling cross-reference, red error
+           on every load. vanilla QuadrupedAnimalWithPawsAndTail's own Tail body
+           part carries no <groups> at all, so no bare group name links to it.
+           This repo's real fix for a tail attack is a custom BodyPartGroupDef
+           (RSW_SWTailAttackTool, RimStarWars/SWBestiary/Defs/Bodies/
+           RSW_MlieWaveB_BodyParts.xml) — but this file's own header requires
+           RM_ tier to stay franchise-free with no RSW_ dependency (Q11a), so
+           borrowing that group here would be a worse bug than dropping the
+           tool. Dropped rather than written dead, same convention as
+           RUT_PyrelandsPortedFauna.xml's RUT_FireWasp (LegAttackTool, a group
+           BeetleLike does not carry). Ssurr's bite tool above is unaffected;
+           a from-scratch tail body part/group is real owed follow-on work if
+           a tail attack is wanted. -->
     </tools>
     <race>
       <body>QuadrupedAnimalWithPawsAndTail</body>

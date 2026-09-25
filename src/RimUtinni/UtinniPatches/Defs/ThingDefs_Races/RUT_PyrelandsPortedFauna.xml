@@ -473,8 +473,21 @@
        whenever a target is far enough away — which is "shoot, then close
        for pincer assault" for free, out of two independent vanilla systems
        that were never designed to work together on purpose.
+
+       🔴 MayRequire="Ludeon.RimWorld.Biotech": its only projectile,
+       Bullet_ToxicNeedleGun, is Biotech-exclusive content (RimSage-confirmed,
+       Defs/Biotech/ThingDefs_Misc/Weapons/RangedMechanoid_Medium.xml — the
+       only def in the whole 590+-mod dump using damageDef BulletToxic, so
+       there is no Core-only substitute). UtinniPatches' own modDependencies
+       is Core + mandrake.rm.weathersuite only, not Biotech, so this cannot
+       be a bare reference — matches this file's own Odyssey-gated
+       specialTrainables on Sytheclaw above and GeneSeeker.xml's identical
+       gating pattern. RUT_Barbslinger's two referencing comps below are
+       gated the same way, so without Biotech neither side of the
+       cross-reference exists and Barbslinger simply keeps its melee
+       pincers/sting with no dangling turretDef.
        ====================================================================== -->
-  <ThingDef ParentName="BaseWeaponTurret">
+  <ThingDef ParentName="BaseWeaponTurret" MayRequire="Ludeon.RimWorld.Biotech">
     <defName>RUT_BarbslingerTailGun</defName>
     <label>barbslinger tail spike</label>
     <description>Not a real weapon — exists only to give a barbslinger's tails a ranged verb. Never spawned as a loose item.</description>
@@ -634,11 +647,11 @@
       <soundEating>Insectoid_Eat</soundEating>
     </race>
     <comps>
-      <li Class="CompProperties_TurretGun">
+      <li Class="CompProperties_TurretGun" MayRequire="Ludeon.RimWorld.Biotech">
         <turretDef>RUT_BarbslingerTailGun</turretDef>
         <autoAttack>true</autoAttack>
       </li>
-      <li Class="CompProperties_TurretGun">
+      <li Class="CompProperties_TurretGun" MayRequire="Ludeon.RimWorld.Biotech">
         <turretDef>RUT_BarbslingerTailGun</turretDef>
         <autoAttack>true</autoAttack>
       </li>
