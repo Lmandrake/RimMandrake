@@ -307,3 +307,115 @@ XML files plus the full 618-mod load set: 0 errors on the three built
 defs and the biome file; the one expected warning is `RUT_Fuzz`'s pending
 texPath. 75 slugs across the other 24 sheet groups remain untouched; this
 item stays open.
+
+## 2026-09-24/25 (FOUNDRY) — poison_forest sheet's 3 slugs resolved
+
+Slice: all 3 poison_forest slugs (the smallest remaining group, picked over
+the in-flight `dune_sea + deep_desert` ["Extreme Desert"] group to avoid
+file collision with a parallel FOUNDRY subagent's flora build there, per
+this session's own briefing). Re-verified currency first, per this item's
+own "watch out": read `poison_forest.md` in full (FROZEN, `BIOME_FREEZE_
+FABLE_REVIEW_1`), `rosters/poison_forest.json`'s own `new_defs` entries
+(mechanic_load "none blocking (prep §12)" / "none" / "meat hediff def, no
+C#" — none flagged "unruled"), `_assignment_prep.md` §5's IMPORT-candidates
+notes (the ambusher's own "NEW ART/DEF NEEDED — no donor is vibration-themed;
+nearest body: Biomes! Caverns blind fauna" pointer), and `RUT_PoisonForest.xml`'s
+own header (which explicitly listed the toxic-meat chain as "NOT this pass's
+scope" — stale, corrected in place, see below). Checked `infrastructure/
+artpipe/{done,pending,registry.jsonl}` by subject for all three before
+touching anything (clean — `sagecrust_v1`/`rot_sagecrust_v2` are an
+unrelated the_rot subject) and `design/Jawa/fauna/cast_assignment.csv`
+before reusing any donor species' body/art (caught the same class of
+near-miss the tunnel-snake slug caught last wave — see below).
+
+- **`eyeless-vibration-sensing-ambusher-the-signature` → BUILT.**
+  `RSW_VentStalker` (`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
+  RSW_VentStalker.xml`) — the prep doc's own suggested donor (Biomes!
+  Caverns blind fauna) is not ported into this repo at all, so the body
+  actually reused is the already-ported `RSW_Kinrath`: a blind ambusher by
+  its own donor description ("could sense heat... navigate their way
+  around"), already carrying the poisonous-appendage body group this
+  biome's "everything is either sealed or poisoned" law wants. Checked
+  `cast_assignment.csv` FIRST, same discipline that caught the tunnel-snake
+  near-miss last wave: `Kinrath` itself is cast to `RUT_Greentide`
+  ("canopy-ambush", row 184, status keep), so this def reuses the body/art
+  ASSET only (new defName, retint, zero new PNGs — both `kinrath_v1` and
+  `canon_kinrath_v1` artpipe jobs confirm real generated art already sits at
+  the reused texPath) without double-booking the species. Re-themed
+  heat-sense to ground-vibration-sense in flavor text only (no stat says
+  "heat"). ComfyTemperature reset to poison_forest.md §0's own measured
+  extremes; Kinrath's Odyssey-gated WebShot ability and egg-layer comp
+  dropped for a plain live-birth profile (same simplification precedent
+  `RSW_TunnelSnake` used reskinning Klorslug). Wired into
+  `RUT_PoisonForest.xml`'s wildAnimals at 0.25.
+- **`dark-crust-phototroph-flora-black-purple-red-films-on-starwa` →
+  BUILT.** `RUT_DarkCrust` (`src/RimUtinni/UtinniPatches/Defs/
+  ThingDefs_Plants/RUT_PollutedFlora.xml`) — no donor crust/lichen form
+  exists for a bark/rock-face film specifically (the biome's already-admitted
+  AB_* flora are upright growths, not the doc's own "moss on a north wall"
+  comparison), so this is a plain new PlantBase groundcover rather than a
+  reskin. One art job filed, `rutdarkcrust_v1`
+  (`infrastructure/artpipe/pending/rutdarkcrust_v1.json`) — `mechanic_load`
+  reads "none" so no companion mechanics item. Wired into wildPlants at 0.25,
+  clearly subordinate to the dominant trees (0.5-0.6) per §4's own "tiny,
+  marginal, crowded-out minority" line.
+- **`toxic-prized-meat-def-property-on-the-4-flagged-keepers-neeb` →
+  BUILT.** The roster's own fauna list flags exactly four keepers "toxic-
+  prized-meat carrier": Neebray (donor `mlie.starwarsanimalcollection`),
+  RSW_Screecher (ours — the slug's own stale `BMT_Screecher` spelling
+  already corrected by `ROSTER_DEAD_BMT_NAMES_SWEEP_1`), Visceral (donor
+  `mlie.horrors`), AA_Helixien (donor `sarg.alphaanimals`). Mechanism
+  verified against the real engine before authoring anything (`rimsage
+  read_csharp_symbol ThingDefGenerator_Meat`): a race's meat ThingDef is
+  ENGINE-GENERATED at load time and only skipped when `race.specificMeatDef`
+  is already non-null — there is no XML node to Add/Replace on a
+  "Meat_Neebray"-style def, so patching one directly would have silently
+  done nothing. Authored 4 hand-made meat ThingDefs
+  (`RUT_PoisonForestPrizedMeats.xml`, `ParentName="OrganicProductBase"`,
+  same shape as this mod family's own `RM_StockedPoolMeats.xml` precedent)
+  and a patch (`Patches/PoisonForest_ToxicPrizedMeat.xml`) setting
+  `<race><specificMeatDef>` on all four via `PatchOperationFindMod` on each
+  donor's owning mod (the exact mod-NAME strings already proven live in this
+  repo's own `MegafaunaYield.xml`) — `validate_patch.py`'s live xpath check
+  confirms all four patches hit exactly one real node. The toxic half reuses
+  `VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic`, a donor C# class
+  already absorbed wholesale into this SAME mod's own Assemblies/ and
+  already live on `VAEWaste_ToxicMeat` in `Absorbed_VAEWasteMegatardi_
+  Defs.xml` — zero new C#, matching `mechanic_load: "meat hediff def, no
+  C#"` exactly. The "prized" half is `preferability RawTasty` (not the
+  vanilla generator's default `RawBad`) plus a new positive thought pair
+  (`RUT_PoisonForestMeatThoughts.xml`, one shared pair across all four
+  meats — the slug's own title reads "def PROPERTY on the 4 flagged
+  keepers", a single mechanical property, not four bespoke dishes) and
+  above-market `MarketValue`, inverting the VAEWaste precedent's negative
+  "disgusting" framing per poison_forest.md §7 ("the things a cook brags
+  about surviving"). Placeholder art: vanilla meat-stack textures
+  (`Meat_Small`/`Meat_Big` by body size) retinted per species — zero new
+  PNGs, no artpipe job needed.
+
+Also corrected `RUT_PoisonForest.xml`'s own header, which still called the
+toxic-meat cuisine chain "NOT this pass's scope" — true when written
+(2026-09-09, before this item existed), false now; left in place would have
+misled the next reader the same way the stale `NAMING_SCHEME_EXECUTION_1`
+citations did (CLAUDE.md's own logged incident).
+
+Filed `POISONFOREST_SHIPPING_NAMES_1`, an owner card covering the two
+working names shipped this pass (`RSW_VentStalker`, `RUT_DarkCrust`) — this
+biome's own doc names no pre-existing "Owed" naming list the way
+`arid_shrubland.md` does, so unlike that wave's card this one only covers
+what this pass itself minted.
+
+All three resolved (2 built as def/art commissions — one an asset reskin,
+one a genuinely new PlantDef with art queued — 1 built as a pure def/patch
+mechanism commission with zero new art) — none skipped.
+`skills/rimworld-modding/scripts/validate_patch.py` run against all six
+touched/new files plus the full 621-mod load set: 0 errors except the one
+expected pending-texPath error on `RUT_DarkCrust` (same class, same
+validator wording, as `RUT_Fuzz`'s own still-current state — re-checked
+directly against that file this pass, confirming this is the standing
+"art not landed yet" condition, not a regression); 8 informational/expected
+warnings (4 vanilla meat-stack texPaths the validator cannot resolve from
+loose files by design, 4 "test differs from inner xpath" notes explicitly
+flagged "intentional for add-if-missing patterns"). `run_selftests.py`:
+75/75 passed. 72 slugs across the other 23 sheet groups remain untouched;
+this item stays open.
