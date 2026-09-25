@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.terminalbiomes</packageId>
+  <name>RimMandrake: Terminal Biomes</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>mandrake.rm.environmentalhazards</li>
+    <li>mandrake.rm.divinginteraction</li>
+    <li>mandrake.rm.flowworks</li>
+  </loadAfter>
+  <description>TERMINALBIOMES_RM_MOD_BUILD_1 (owner ruling, 2026-09-21, §7 Q1: four
+biomes, one mod, four independent toggles). Four terminal water biomes, fully
+generalized: none names another franchise or campaign, and each plays
+standalone on any generated RimWorld planet.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+  1. The Scald — a perched, boiling crater lake. Ships its own boiling-lift
+     water terrains and cool bathing margin, a standing-steam sky condition
+     with rare "still days," a steam-catch condenser keyed to natural vents,
+     wandering steam devils, drifting sail/walker set-pieces, and salvageable
+     wrecks in the burning shallows. Its own fishing table (the margin
+     harvest) ships with it.
+  2. The Propane Lake — a black mirror of liquid fuel ringed by a frozen
+     crust, carrying its own catch table and two RimMandrake-authored
+     terrains (no donor dependency).
+  3. The Twilight Sea — a hypersaline terminal sea, moldy shore to shore,
+     with a real fishing table (the under-roof shoal economy).
+  4. The Grey Sea — hypersaline, salt-encrusted, shrinking, with its own
+     fishing table.
+
+Each of the four biomes toggles off independently in Mod Settings, on by
+default. A frozen `RUT_` twin of each biome def carries a separate, older
+campaign's world until that world's own planet is repainted — this mod's
+own defs are what any OTHER planet's generation actually uses.
+
+NOT in this mod (scoped out by the calling item, not deferred sub rosa): new
+wildAnimals/fishTypes rosters for the Propane Lake / Twilight Sea / Grey Sea
+beyond what already existed on their donor defs — whether `wildAnimals` even
+spawns on an impassable water biome is an untested engine question, and the
+terminal-seas cast has not had its owner sitting yet. The Star Wars creatures
+that DO ride these biomes (the sando lineage, the lanternwhale, the reefback,
+the faa/mee pair) ship as a separate Utinni-tier patch onto this mod's own
+BiomeDefs, gated on the Star Wars bestiary mod — this mod itself names no
+franchise.
+
+Live proof is OWED at publish time — Windows-Desktop only; see the item's own
+verify record.</description>
+</ModMetaData>
