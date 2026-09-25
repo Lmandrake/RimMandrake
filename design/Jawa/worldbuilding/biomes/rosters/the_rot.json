@@ -297,11 +297,6 @@
       "reason": "ubiquity-25 EVICT planet-wide — reads dinosaur (prep §9)"
     },
     {
-      "def": "AA_AnimaColossus",
-      "disposition": "homeless-reserve",
-      "reason": "ban 2: anima (psychic-tree) creature, not fungal; the pale tree owns that register alone (§7)"
-    },
-    {
       "def": "AA_WindBeast",
       "disposition": "homeless-reserve",
       "reason": "ban 2: pure animal"

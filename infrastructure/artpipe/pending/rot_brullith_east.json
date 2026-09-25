@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T03:20:52Z",
+  "drawsize": 3.5,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rot_brullith_east",
+  "priority": 100,
+  "prompt": "A gigantic gentle fungal amalgam beast, multi-hued shelf-fungi and mycelial hide over a slow massive body, its surface partially digesting itself in soft patches, beautiful and placid, resistant leathery hide beneath. Decaying fungal forest palette, many muted hues over ochre, painterly game-art style, not photorealistic, heavy clean black outline.",
+  "reference": null,
+  "rimflow_item_id": "THEROT_RM_MOD_BUILD_1",
+  "style_notes": ""
+}
