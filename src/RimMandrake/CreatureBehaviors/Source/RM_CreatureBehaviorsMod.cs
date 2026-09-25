@@ -163,6 +163,18 @@ namespace RimMandrake.CreatureBehaviors
     //      (THEY_MOD_REPLICATION_1). Off: a tagged race stops marching on the
     //      colony when nothing is in sight — it still fights back at whatever
     //      it happens to run into, it just never goes looking.
+    //  30. ambientHeatPusherEnabled — RM_CompHeatPusherGated
+    //      (WASTELAND_RADIOTHERMAL_SOLITARY_1). Off: a tagged pawn stops
+    //      pushing ambient heat into whatever cell/room it currently
+    //      occupies — a plain animal from then on, wild or tamed.
+    //  31. speciesSpacingEnabled / speciesSpacingCookDamageMultiplier —
+    //      RM_JobGiver_AvoidOwnKind + RM_CompHeatCook
+    //      (WASTELAND_RADIOTHERMAL_SOLITARY_1). Off: a tagged pawn stops
+    //      steering away from other members of its own kind and stops taking
+    //      cook-damage for standing too close to one — exactly as sociable
+    //      (or not) as any other animal. The dial scales only the cook-tick
+    //      damage amount (never the avoid/cook radii or the check interval,
+    //      which stay whatever the race's own extension says).
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -208,6 +220,9 @@ namespace RimMandrake.CreatureBehaviors
         public static float dungSeedingMultiplier = 1f;
         public static bool parentalEnrageEnabled = true;
         public static bool directedAssaultBehaviorEnabled = true;
+        public static bool ambientHeatPusherEnabled = true;
+        public static bool speciesSpacingEnabled = true;
+        public static float speciesSpacingCookDamageMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -254,6 +269,9 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref dungSeedingMultiplier, "dungSeedingMultiplier", 1f);
             Scribe_Values.Look(ref parentalEnrageEnabled, "parentalEnrageEnabled", true);
             Scribe_Values.Look(ref directedAssaultBehaviorEnabled, "directedAssaultBehaviorEnabled", true);
+            Scribe_Values.Look(ref ambientHeatPusherEnabled, "ambientHeatPusherEnabled", true);
+            Scribe_Values.Look(ref speciesSpacingEnabled, "speciesSpacingEnabled", true);
+            Scribe_Values.Look(ref speciesSpacingCookDamageMultiplier, "speciesSpacingCookDamageMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -419,6 +437,17 @@ namespace RimMandrake.CreatureBehaviors
                 "On: a tagged animal that has nothing to fight marches toward the colony instead of "
               + "idling at the map edge. Off: it still fights back at whatever it happens to run into, "
               + "it just never goes looking.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Ambient heat pushing", ref ambientHeatPusherEnabled,
+                "A tagged animal stops pushing ambient heat into whatever cell or room it currently "
+              + "occupies, wild or tamed.");
+            list.CheckboxLabeled("Species-spacing law", ref speciesSpacingEnabled,
+                "On: a tagged animal steers away from other members of its own kind, and takes heat "
+              + "damage every so often if it fails to keep even that much distance. Off: it neither "
+              + "avoids nor cooks its own kind, same as any other animal.");
+            list.Label("Cook-damage rate: " + speciesSpacingCookDamageMultiplier.ToString("0.00") + "x");
+            speciesSpacingCookDamageMultiplier = list.Slider(speciesSpacingCookDamageMultiplier, 0f, 3f);
 
             list.End();
         }
