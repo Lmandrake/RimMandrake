@@ -1862,13 +1862,29 @@ class TextureIndex:
     """
 
     def __init__(self, roots: list[str], own_top: set[str] | None = None,
-                 vanilla_loose: bool = False) -> None:
+                 vanilla_loose: bool = False,
+                 own_roots: list[str] | None = None) -> None:
         self.roots = roots
         # Top-level folder names inside THIS mod's own Textures/. A texPath
         # whose first segment is one of these is the mod's own art, so a miss is
         # its own bug. A path under any other namespace may belong to vanilla or
         # to another mod - see `vanilla_loose`.
         self.own_top = own_top or set()
+        # Just THIS mod's own Textures/ root(s) - the subset of `roots` added
+        # with is_own=True in `_textures_for`. `own_parent_exists` must search
+        # only these: searching all of `roots` (every active mod's Textures/,
+        # ~400+ dirs) means any OTHER mod that happens to ship a matching
+        # subfolder (e.g. Things/Item/Special/) falsely proves this mod "owns"
+        # that path, upgrading a correct vanilla texPath reference to a false
+        # ERROR instead of the honest WARN. Found live 2026-09-24:
+        # RUT_RakatanCommandCodes.xml's <texPath>Things/Item/Special/
+        # SubpersonaCoreTechprof</texPath> (real vanilla Core art, per the
+        # def's own header comment) was flagged ERROR "this mod's own texture
+        # namespace" purely because two unrelated Workshop mods and
+        # UtinniPatches happen to ship a Textures/Things/Item/Special/ folder -
+        # none of them StructureInjectionsRUT, whose own Textures/ tree has
+        # only Things/Building/RUT_WindowAdobe/.
+        self.own_roots = own_roots if own_roots is not None else roots
         # 🔴 Is the GAME's own art on disk as loose PNGs? On a Steam install it
         # is NOT: Data/Core, Data/Biotech and the rest ship About/, Defs/ and
         # Languages/ only, with every texture inside a Unity asset bundle.
@@ -1913,7 +1929,7 @@ class TextureIndex:
         if not rel:
             return False
         parent_rel, _, _base = rel.rpartition("/")
-        for root in self.roots:
+        for root in self.own_roots:
             d = os.path.join(root, *parent_rel.split("/")) if parent_rel else root
             if os.path.isdir(d):
                 return True
@@ -2231,7 +2247,7 @@ def _textures_for(path: str, mods: list[ModInfo] | None,
             except OSError:
                 pass
 
-    got = (TextureIndex(roots, own_top, vanilla_loose), ships_dll)
+    got = (TextureIndex(roots, own_top, vanilla_loose, own_roots=own), ships_dll)
     if cache is not None:
         cache[mod_root] = got
     return got
