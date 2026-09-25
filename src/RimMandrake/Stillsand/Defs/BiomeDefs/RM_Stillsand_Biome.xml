@@ -11,14 +11,19 @@
     twin never named a third-party class, so no RM_BiomeWorker_Stillsand is owed
     (item's own MEASURED STATE).
 
-    wildAnimals/wildPlants/allowedPackAnimals are all EMPTY here, on purpose. Q11a
+    wildAnimals/wildPlants/allowedPackAnimals started all EMPTY here, on purpose. Q11a
     (owner ruling 2026-09-22): a genuinely canon Star Wars name is IP and must route
     through the Utinni campaign patch layer, never the franchise-free RimMandrake tier —
-    every row this biome carries in play (13 wildAnimals, 3 wildPlants, 5 pack animals,
+    every row copied off the frozen twin (13 wildAnimals, 3 wildPlants, 5 pack animals,
     all Star-Wars-named, plus JOE_Cephalope, whose own ThingDef lives in Utinni-tier
     Absorbed_Cephaloids_Defs.xml) is patched in by
     src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml instead. These nodes
-    stay present-but-empty so that file's PatchOperationAdd has somewhere to land.
+    stayed present-but-empty so that file's PatchOperationAdd had somewhere to land.
+
+    2026-09-24 (COMMISSION_LEDGER_CLEANUP_1): wildAnimals is no longer empty — it now
+    also carries RM_MirrorGiant, a brand-new invented (non-SW) species authored directly
+    in this mod. Not every future addition here needs the patch route: only content that
+    is genuinely Star Wars IP does (Q11a). wildPlants/allowedPackAnimals remain empty.
   -->
 
   <BiomeDef>
@@ -98,8 +103,15 @@
       <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <!-- Deliberately empty — see the header comment. Wired by
-           src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml. -->
+      <!-- The copied Star-Wars-named cast stays empty here — see the header
+           comment; it is wired by
+           src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml.
+           RM_MirrorGiant below is different: a brand-new, invented (non-SW)
+           RM_-tier species authored directly in this mod
+           (COMMISSION_LEDGER_CLEANUP_1, dune_sea+deep_desert), so it needs
+           no patch at all. -->
+      <RM_MirrorGiant>0.0005</RM_MirrorGiant>
+      <RM_DustHusk>0.15</RM_DustHusk>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

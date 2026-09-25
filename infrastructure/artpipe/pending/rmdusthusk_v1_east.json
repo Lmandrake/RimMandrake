@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T04:54:17Z",
+  "drawsize": 0.3,
+  "facing": "east",
+  "facings": [
+    "east"
+  ],
+  "id": "rmdusthusk_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld top-down animal sprite, painterly vanilla-RimWorld creature art style: a tiny, grain-sized many-legged desert invertebrate, dry and husk-like, pale bone-white and dusty grey all over with no shine or gloss anywhere, a matte powdery bloom on its whole body as if freshly desiccated. Small hard segmented shell, a few short thin legs, shown from the side facing right. Palette: bleached bone, pale dust, sandy tan, no green, no wet or glassy surfaces. Side view, centered, standing on sand, a tiny soft shadow beneath it, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "RM_DustHusk (COMMISSION_LEDGER_CLEANUP_1 dune_sea+deep_desert sheet slug 'dormancy-trigger-dune-fauna-reskin-lane-107-live-vfei2-dorma', mandrake.rm.stillsand, ThingDefs_Races/RM_DustHusk.xml). Must read as desiccated/matte per dune_sea.md/deep_desert.md's own hard ban on shiny/crystalline/glassy creature surfaces — dusty, never glossy."
+}

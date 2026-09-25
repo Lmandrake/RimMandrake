@@ -692,3 +692,150 @@ corrected rather than shipped. `the_slime` sheet is now fully closed out.
 `nightside_ice` 6, `terminator_sea+the_grey_deep` 4,
 `terminator_sea+the_twilight_deep` 6, `the_contagion` 1, `the_fever_wood`
 1, `the_rot` 4, `weeping_stones` 8); this item stays open.
+
+## Wave 12 (2026-09-25, FOUNDRY) — dune_sea+deep_desert, all 8 slugs resolved
+
+Checked `git status`/`git log` first, per this item's own concurrency
+warning, and found HEAVY concurrent activity across most of the remaining
+groups: `nightside_ice` (untracked research docs dated today plus
+failed-art jobs), `terminator_sea+the_grey_deep`/`+the_twilight_deep`
+(modified `RM_TwilightSea.xml`/`RM_GreySeaCatch.xml`/catch tables plus 8
+brand-new pending art jobs — 4 greysea + 4 twilightsea species, an exact
+match to those two groups' slug counts), `the_fever_wood` (a same-day
+naming pass, `fever_wood_rm_cast_proposal_2026-09-24.md`/
+`fever_wood_syllable_variety_pass_2026-09-24.md`), and `the_rot` (STAGED
+deletions of the old `RotSpecies` textures/patch under `UtinniPatches`,
+mid-migration to a biome-mod split). All five avoided entirely. Picked
+`dune_sea+deep_desert` (`rosters/dune_sea_deep_desert.json`'s `new_defs`,
+9 rows including 2026-09-24's non-ledger "sand busters" amendment, which
+is NOT one of this item's 85 and was left untouched) — confirmed clean of
+any uncommitted work.
+
+Read `dune_sea.md`/`deep_desert.md` in full (both FROZEN,
+`BIOME_FREEZE_FABLE_REVIEW_1`) before touching anything. Found
+`RUT_ExtremeDesert.xml` itself now carries its OWN fresh freeze banner,
+dated 2026-09-24 (`STILLSAND_RM_MOD_BUILD_1`): "content lives in
+`mandrake.rm.stillsand`; do not edit here." Every action below routes
+through `RM_Stillsand` (invented, non-SW content, directly in that mod's
+own Defs — no patch needed, Q11a) or was already routed through
+`WildAnimals_Stillsand.xml` (genuine Star-Wars-named content) by earlier
+work — never the frozen twin. This item's own "watch out" about editing a
+frozen file directly (the Greentide lesson from wave 11) held again.
+
+**Two of the eight slugs were ALREADY BUILT before this wave even
+started**, found by reading the roster against `src/` rather than
+assuming work was owed:
+
+- `glass-nub-light-pipe-flora` and
+  `silverbole-owner-to-name-silver-required-heat-flame-immune-w` → BOTH
+  BUILT, closed under `EXTREME_DESERT_SIGNATURE_FLORA_1`.
+  `RSW_LightPipeNub`/`RSW_Ollim`/`RSW_OllimWood`
+  (`src/RimStarWars/SWBestiary/Defs/DesertPort/
+  RSW_ExtremeDesertSignatureFlora.xml`), art rendered and deployed
+  2026-09-24 (today), real non-placeholder textures on all three. The
+  silverbole's final owner-ruled name is **ollim**
+  (`EXTREME_DESERT_SIGNATURE_FLORA_1`, 2026-09-20) — "silverbole" survives
+  only as descriptive prose, never a shipped name.
+- `egg-trap-clutch-birth-trap-eggs` and
+  `drum-lure-subsurface-predator-lures-that-drum-juicy` → BOTH BUILT,
+  closed under `DRUM_LURE_PREDATOR_BUILD_1`, as a SINGLE creature:
+  `RSW_Drazzik` (`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
+  RSW_Drazzik.xml`) carries mechanic 1 (the vibration lure,
+  `RimMandrake.CreatureBehaviors.RM_CompProperties_DrumLure`, real C#
+  already shipped) AND mechanic 2 (the egg-trap clutch,
+  `RSW_DrazzikEggFertilized`/`Unfertilized` via vanilla
+  `CompProperties_EggLayer` + `ProximityHatch`) in one def. Already wired
+  into `RM_Stillsand`'s live cast at 0.05 via
+  `WildAnimals_Stillsand.xml`.
+- `cavern-beast-with-prized-massive-eggs-mandalorian-reference` → BUILT,
+  closed under `EXTREME_DESERT_CAVERN_BEAST_1`. `RSW_Zakkro` +
+  `RSW_ZakkroEgg` (`src/RimStarWars/SWBestiary/Defs/DesertPort/
+  RSW_Zakkro.xml`/`RSW_ZakkroEgg.xml`) — "the Mandalorian cave-beast"
+  identified as Wookieepedia's mudhorn (already ported separately as
+  ordinary wildlife, `RSW_Mudhorn`, which does NOT serve this design
+  beat), so a distinct invented species was authored instead. Deliberately
+  UNWIRED pending cavern map-generation, which the item's own scope
+  correctly excludes as separate, larger work.
+
+**Two slugs were genuinely new, built this wave — both RM_-tier (Q11a:
+invented content, no Star Wars flavor), authored directly in
+`mandrake.rm.stillsand` and wired straight into `RM_Stillsand_Biome.xml`'s
+own `wildAnimals` (not the frozen twin, not the SW patch route):**
+
+- `mirror-plated-sun-axis-asymmetric-giant` → BUILT. `RM_MirrorGiant`
+  (`src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_MirrorGiant.xml`) —
+  `EXTREME_DESERT_GIANT_COMMENSALS_1` (closed, design-only) had left open
+  whether an existing giant (`RSW_KraytDragon`/`RSW_GreaterKraytDragon`/
+  `RSW_WarWyrm`, all cast in `cast_assignment.csv` to a different
+  ecological read — subsurface strike/bulk, never "surface-walking moving
+  shadow") could be reskinned, or a new chassis was owed. Resolved as a
+  new chassis: the sun-face/shade-face asymmetry dune_sea.md SS4 asks for
+  is a property of the ART, which a uniform retint of an existing texture
+  cannot express. Vanilla `QuadrupedAnimalWithHooves` body (Elephant/
+  Muffalo family), no new BodyDef, no Star Wars dependency — correct for
+  an RM_-tier def. Wired at commonality 0.0005, below every existing
+  giant's own, per the sheet's "sparse to the point of discomfort" law.
+  Corrected `RM_Stillsand_Biome.xml`'s own header comment in the same
+  edit, which said `wildAnimals` was "all EMPTY here, on purpose" — true
+  when written, false the moment this def landed.
+- `dormancy-trigger-dune-fauna-reskin-lane-107-live-vfei2-dorma` → BUILT.
+  `RM_DustHusk` (`src/RimMandrake/Stillsand/Defs/ThingDefs_Races/
+  RM_DustHusk.xml`). The roster's own "107 live VFEI2 dormant rows"
+  pointer (`_assignment_prep.md` §1.4) is PRECEDENT for the mechanic
+  (confirmed `oskarpotocki.vfe.insectoid2` is genuinely active in the
+  live 2026-09-24 ModsConfig snapshot, not stale-dormant per
+  `animal_census.csv`'s own mod-status column), not an instruction to
+  graft a live external mod's concrete ThingDef via `ParentName` — that
+  would be a new, untested cross-mod inheritance shape this item has
+  never used. Built instead on the SAME stock comp pair
+  `RUT_SealedSleeper` (this item, wave 10) already proved out
+  (`CompProperties_CanBeDormant`/`CompProperties_WakeUpDormant`,
+  `wakeUpOnDamage` only — "blood," one of dune_sea.md's own three named
+  triggers). The vibration/water triggers stay real future C# (same gap
+  `RUT_SealedSleeper`'s own header measured in the stock class), not
+  invented — satisfies the roster's own "no new C#" line as written.
+  Grain-scale (bodySize 0.15, scaled off `VFEI2_Boomtick`'s 0.18 as a
+  reference point only, no VFEI2 asset or def reused).
+
+**One slug is a genuine mechanics ask, re-filed rather than forced:**
+
+- `shade-commensal-micro-fauna-living-under-a-walking-giant` →
+  superseded/re-filed. Filed `DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1` as the
+  THIRD consumer of the shared shade-follow mechanism
+  (`EXTREME_DESERT_GIANT_COMMENSALS_1` raised it here first, closed
+  design-only; `DESERT_GLITTER_BIRDS_COMMENSALS_1` is the second consumer,
+  open) — same "do not re-derive, build as Nth consumer" posture wave 1
+  used. Names `RM_MirrorGiant` (built this pass) as its now-real host.
+  Filed via `rimflow file`, `## needs: offline`.
+
+Art: checked `infrastructure/artpipe/{done,pending,registry.jsonl}` for
+"mirror giant"/"sun-axis"/"dust husk"/"dormant" first — clean. 6 jobs
+filed (`rmmirrorgiant_v1_{south,east,north}`,
+`rmdusthusk_v1_{south,east,north}`), prompts written to require the
+sun-face/shade-face split explicitly (a property no reskin could carry)
+and the desiccated/matte look dune_sea.md's own hard ban demands.
+
+Validation: `validate_patch.py --live` (2026-09-24T22-19-22Z dump)
+`--defs` Data+Mods+Workshop+src/RimUtinni+RimMandrake+RimStarWars — 0
+errors, 6 expected pending-texPath warnings (same class as every prior
+wave's new art) across the 3 touched/new files.
+`deploy_custom_mods.py --mod Stillsand --apply`: applied, `-> VERIFIED in
+sync` on all 3 files (2 new, 1 modified). `run_selftests.py`: 73/75
+passed; both failures are PRE-EXISTING and unrelated to this wave —
+`src/RimMandrake/TheRot/Tools/selftest_live_prep.py` (the same in-flight
+TheRot biome-mod-split noted in wave 11, still untouched by this pass) and
+`src/RimMandrake/Utils/selftest_deployed_biome_refs.py` (1 unresolved
+`RUT_Vorrel` reference from `RUT_Desert.xml`, traced to a concurrent
+LongShade mod-split commit landed just before this session started —
+`src/RimMandrake/Stillsand`/dune_sea/deep_desert content untouched by
+that commit and not the cause).
+
+All 8 slugs resolved (4 found already built by other closed items, 2
+built new this wave, 1 re-filed as a scoped mechanics item) — none
+skipped. `dune_sea+deep_desert` is now fully closed out. 30 slugs across
+7 sheet groups remain (`nightside_ice` 6,
+`terminator_sea+the_grey_deep` 4, `terminator_sea+the_twilight_deep` 6,
+`the_contagion` 1, `the_fever_wood` 1, `the_rot` 4, `weeping_stones` 8),
+all avoided this wave for live concurrent-agent activity except
+`weeping_stones`, which was clean but not reached this pass; this item
+stays open.
