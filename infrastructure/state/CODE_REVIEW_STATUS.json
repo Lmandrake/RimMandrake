@@ -3288,10 +3288,16 @@
     "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-09",
-    "hash": "b0293b5e0d81a51efd0b91bc3cb6205d5fa5bf9bd5489cb734f711584f39b4bf",
-    "sha": "3ea1ca20"
+    "cleanCount": 5,
+    "date": "2026-09-24",
+    "hash": "8e08bf8463ed443cd681c1151a48bf7a3446cc1741dedcb0f89f00669381d769",
+    "sha": "bec3359ba"
+  },
+  "src/RimMandrake/Graffiti/Defs/ThingDefs_GraffitiMemeGlyphs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c8078bb34176bb9cfe131052c5ed4181d19bed55121c657361d46c42d68fd43b",
+    "sha": "bec3359ba"
   },
   "src/RimMandrake/Graffiti/Defs/ThinkTreeDefs_Graffiti.xml": {
     "cleanCount": 2,
@@ -3316,6 +3322,12 @@
     "date": "2026-09-05",
     "hash": "f39239b7ba0eabcab127a97b1a7fe0e4f2b99aeccd68f79108e7958d3272028a",
     "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Graffiti/Patches/Graffiti_OrdersPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0d3ec123b1486e589760a61c28dec43b4819366629e5df5a89c7de39e6c0ead2",
+    "sha": "bec3359ba"
   },
   "src/RimMandrake/Graffiti/Source/AutoCleanProtection.cs": {
     "cleanCount": 1,
@@ -3342,10 +3354,10 @@
     "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Source/Graffiti.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "9faeb8264dd5b9e31dd8860aada9f6ff799f9c9697d8d474ee2963e8f1bbe5d4",
-    "sha": "76a58422a"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "ea2311b9c4e5ceb9df2a4ac72ad42146074e9a3b72cf08424a314f668ca324fa",
+    "sha": "bec3359ba"
   },
   "src/RimMandrake/Graffiti/Source/GraffitiCategory.cs": {
     "cleanCount": 3,
@@ -11948,6 +11960,18 @@
     "date": "2026-09-24",
     "hash": "8f574bb500b9b4105e1977be7f4526088357e7b2d148c47d5caf4e3e02108424",
     "sha": "3e547d539"
+  },
+  "src/RimStarWars/GraffitiImperial/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "44888c76481ed5e493047bdce1523919c76685496df334bc9d1891ee1a360d6b",
+    "sha": "bec3359ba"
+  },
+  "src/RimStarWars/GraffitiImperial/Defs/ThingDefs_GraffitiImperial.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "55d606c50715c2d6f853317d489692485fc9e57e752172cb5ef6c8558826952c",
+    "sha": "bec3359ba"
   },
   "src/RimStarWars/GrankArtOverride/About/About.xml": {
     "cleanCount": 1,
