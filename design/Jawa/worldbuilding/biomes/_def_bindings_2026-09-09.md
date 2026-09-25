@@ -23,7 +23,7 @@ ground**; the tile column sums to 21,872.
 | `RUT_Umbra` | 2531 | `the_propane_lakes.md` (the antistellar cap the sheet names "Umbra") | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml` |
 | `RM_TheRot` | 2204 | `the_rot.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RM_TheRot.xml` |
 | `RUT_Wasteland` | 1853 | `wasteland.md` | no (§10 = "Campaign hooks") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml` |
-| `RUT_NightsideIce` | 1506 | `nightside_ice.md` | no (§10 = "The door — occupied") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml` |
+| `RUT_NightsideIce` | 1506 | `nightside_ice.md` | no (§10 = "The door — occupied") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml`, FROZEN 2026-09-24 (`NIGHTSIDEICE_RM_MOD_BUILD_1`) — carries the world until Phase B's repaint; content lives in `src/RimMandrake/NightsideIce/Defs/BiomeDefs/RM_NightsideIce.xml` (`mandrake.rm.nightsideice`) now |
 | `RUT_ForsakenCrags` | 1135 | `forsaken_crags.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml` |
 | `RUT_BlueDesert` | 1029 | `the_blue_desert.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml` — 3 `wildAnimals` + 6 `wildPlants` rows since `BLUE_DESERT_LIFE_AUTHORING_1` (done 2026-09-21; re-read 2026-09-23) |
 | `RUT_CrackedLands` | 970 | `the_cracked_lands.md` | **YES** — §10 "The bestiary sorts — a fauna divided by TIME, not space" | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml` |
@@ -124,7 +124,10 @@ defs are in the module's own `PLANTLESS` set on purpose — `RUT_NightsideIce,
 RUT_BlueDesert, RUT_RustCathedral, RM_TwilightSea, RM_GreySea, RM_TheScald,
 RM_PropaneLake`. 20 + 7 = 27: **there is no flora gap.** ⚠️ FOUNDRY was
 mid-edit on this file when it was measured, so re-measure before acting on the
-weights; the key SET is what matters here.
+weights; the key SET is what matters here. (`PLANTLESS` also now carries
+`RM_NightsideIce` — `NIGHTSIDEICE_RM_MOD_BUILD_1`'s new standalone mod's own
+defName, 0 tiles, not one of the 27 painted defs — so the 7/20/27 counts above
+are unaffected.)
 
 **4. De-dup union machinery (`BIOME_DUPLICATES_STILL_LIVE_1`).** Generated file:
 `src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml`

@@ -315,7 +315,11 @@ FAMILIES = {
 # Painted defs that carry NO flora, each by a roster ruling rather than by omission.
 #   RUT_NightsideIce   nightside_ice.json flora_purged "ALL": §6 admits no photosynthesis
 #                      or photosynthetic tissue of any kind, no soil, nothing that reads
-#                      as a plant.
+#                      as a plant. RM_NightsideIce (NIGHTSIDEICE_RM_MOD_BUILD_1, the
+#                      standalone mandrake.rm.nightsideice mod) is the same ruling under
+#                      the RimMandrake tier's own defName — the RUT_ twin stays painted and
+#                      in the set until Phase B's repaint, RM_ is added alongside it, not in
+#                      place of it (BIOME_PAINT_ONCE_AT_THE_END_1: nothing is painted yet).
 #   RUT_RustCathedral  the_rust_cathedral.json lands zero flora rows. (Renamed from
 #                      AB_MechanoidIntrusion — both defs still exist in the dump with the
 #                      same label/description, but only RUT_RustCathedral is on the live map.)
@@ -332,7 +336,7 @@ FAMILIES = {
 # tension with the_blue_desert.md §6 ban 1 ("no water-based plants or animals"); not
 # re-litigated here (see the RUT_BlueDesert family-A entry above), flagging for whoever
 # next reads that sheet's hard bans.
-PLANTLESS = {'RUT_NightsideIce', 'RUT_RustCathedral',
+PLANTLESS = {'RUT_NightsideIce', 'RM_NightsideIce', 'RUT_RustCathedral',
              'RUT_TwilightSea', 'RUT_GreySea', 'RUT_TheScald', 'RUT_PropaneLake',
              'Ocean', 'Lake', 'SeaIce', 'IceSheet'}
 
