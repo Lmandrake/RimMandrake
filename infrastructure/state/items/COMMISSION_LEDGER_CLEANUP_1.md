@@ -902,3 +902,56 @@ fully resolved/closed out for this item's purposes.
 `the_contagion` 1, `the_fever_wood` 1, `the_rot` 4) — all under live
 concurrent-agent activity as of this wave, none reached; this item stays
 open.
+
+## Wave 14 (2026-09-25, FOUNDRY) — re-checked after >1hr gap; all 6 remaining groups still contended, none touched
+
+Per this session's own briefing, re-ran the concurrency check from scratch
+(`git status`/`git log`, plus live process inspection this time, not just
+file timestamps) rather than assuming wave 13's read still held after the
+elapsed time. It does not — if anything the activity intensified:
+
+- **`terminator_sea+the_twilight_deep` / `+the_grey_deep`**: a live bridge
+  process (`prove_fish_bestiary_live.py Cracked Lands Wasteland Twilight`,
+  PID 108156, started 23:59:12, completed mid-check) was caught actually
+  running fish-bestiary proofs naming Twilight explicitly, immediately
+  followed by a second live process (PID 111515/111522, started 00:06,
+  still running at check time) driving the bridge on tiles 107/16 via a
+  `_tmp_probe.py` fishing-designator test — i.e. an agent is proving fish
+  bestiary content on these exact sea biomes RIGHT NOW, not minutes-stale
+  leftovers. `infrastructure/artpipe/pending/greysea_*_v1_*` (4 species) and
+  `twilightsea_*_v1_*` (4 species) — an exact match to both groups' slug
+  counts — are freshly queued (~21:25, same session) and still pending, not
+  yet landed as defs. Untouched again.
+- **`the_rot`**: confirmed via `git log` that `THEROT_RM_MOD_BUILD_1` is a
+  live, in-progress biome-mod-split build (steps 1-3 committed already,
+  most recent `src/RimMandrake/TheRot/` files touched within the last few
+  hours) with the old `RotSpecies` textures/patch still staged for deletion
+  under `UtinniPatches` mid-migration, unresolved across at least 3 waves
+  now. Still an active build, not an abandoned stage. Untouched.
+- **`nightside_ice`** and **`the_fever_wood`**: both show a same-session
+  batch of `artpipe_quota_failures/` manifests (~3 hours old, matching
+  suffix timestamps `.1790311644`/`.1790311645` — one generation run
+  covering both) plus (`nightside_ice` only) two same-day research docs
+  (`Transient/nightside_ice_research_*`). No commit has landed for either
+  group since wave 12/13 identified them, so the owning agent's work is
+  still mid-flight, not finished-and-forgotten. Untouched.
+- **`the_contagion`**: the one group whose artpipe activity is genuinely
+  stale (~7.6 hours since the last `done`/`failed` render, no live process
+  found touching it). Still left alone this wave: its full done+failed art
+  batch (8 species, `blisteredbulloo`/`brossak`/`fezzira`(+larva)/`ghaaz`/
+  `ghuvv`/`gollivra`/`greaterbulloo`/`pellorax`/`pibbo`/`vezzok`/`vulloth`/
+  `zhirrik`/`zhool`) sits entirely uncommitted and is presumably mid-def-
+  authoring by whoever queued it — touching the single `the_contagion`
+  slug here risks colliding with defs that agent is about to add, and this
+  item's own single remaining slug there
+  (`the-unfinished-random-stat-short-lived-chimera-spawns-goo-co`) is not
+  worth the collision risk for one row. Untouched.
+
+**No slugs resolved this wave; no code/def changes made.** Only this item
+file was edited (this entry). 22 slugs across the same 6 sheet groups
+remain; this item stays open. Whoever picks this up next should re-run the
+same live-process check (not just `git status` timestamps) before assuming
+any of these six have cleared — the evidence this wave is that "over an
+hour has passed" is not, by itself, a sign of quiet: this repo currently
+has several FOUNDRY/BENCH-family sessions and a live bridge-driving process
+running concurrently across exactly this remaining set.
