@@ -75,6 +75,17 @@
       <texPath>Things/Building/Ruins/RUT_ScaldWreckHull</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(2,2)</drawSize>
+      <!-- Owner review 2026-09-25 (SCALD_REVIEW walk): inherited ShipChunk's
+           generic (1.39,0.5,1.25) box read as a flat dark box, not the
+           sprite. MEASURED this sprite's own alpha bbox (RUT_ScaldWreckHull_A
+           .png, 256x256): 93% width x 80% height — wide and flat, lying
+           wreckage. Calibrated against ShipChunk's own art-to-shadow ratio
+           (its sprite fills ~97-100% of its canvas for a (1.39,0.5,1.25)
+           shadow on drawSize 2 -> ~0.70x width, ~0.63x height of the sprite
+           bbox): 0.70*0.93*2=1.30, 0.63*0.80*2=1.01. -->
+      <shadowData>
+        <volume>(1.30,0.5,1.01)</volume>
+      </shadowData>
     </graphicData>
     <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
     <resourcesFractionWhenDeconstructed>0.75</resourcesFractionWhenDeconstructed>
@@ -95,6 +106,11 @@
       <texPath>Things/Building/Ruins/RUT_ScaldWreckTank</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(2,2)</drawSize>
+      <!-- Same fix as RUT_ScaldWreckHull, own measurement: 96%x81% bbox ->
+           0.70*0.96*2=1.34, 0.63*0.81*2=1.02. -->
+      <shadowData>
+        <volume>(1.34,0.5,1.02)</volume>
+      </shadowData>
     </graphicData>
     <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
     <resourcesFractionWhenDeconstructed>0.75</resourcesFractionWhenDeconstructed>
@@ -115,6 +131,13 @@
       <texPath>Things/Building/Ruins/RUT_ScaldWreckFrame</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(2,2)</drawSize>
+      <!-- Same fix, own measurement: 93%x94% bbox, nearly square, an
+           upright rib-cage frame rather than lying wreckage, so this one
+           gets the tallest shadow of the three: 0.70*0.93*2=1.30,
+           0.63*0.94*2=1.18. -->
+      <shadowData>
+        <volume>(1.30,0.5,1.18)</volume>
+      </shadowData>
     </graphicData>
     <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
     <resourcesFractionWhenDeconstructed>0.75</resourcesFractionWhenDeconstructed>

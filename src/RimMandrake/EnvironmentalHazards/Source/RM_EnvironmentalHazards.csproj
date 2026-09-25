@@ -191,6 +191,7 @@
     <Compile Include="RM_WaterTruceDamagePatches.cs" />
     <Compile Include="RM_PollinationGateExtension.cs" />
     <Compile Include="RM_Patch_PollinationGate.cs" />
+    <Compile Include="RM_MapComponent_WaterAgitation.cs" />
   </ItemGroup>
 
   <ItemGroup>
