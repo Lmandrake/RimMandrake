@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SaturationHeistRaid.xml            PropaneLakeMechanics · authored for PROPANE_LAKE_PIPE_MECHANICS_1
+  Build ladder row 6 (propane_gas_deep_design.md §5, §9, owner ruling): "Give
+  them better weapons... Strictly non-flammable, non-temperature-based,
+  non-explosive." Same shape as vanilla RaidEnemy (baseChance/category/
+  targetTags copied from it) — IncidentWorker_SaturationHeistRaid only adds
+  the saturation gate and the post-spawn loadout swap; every other field here
+  keeps this a normal enemy-raid incident the storyteller can roll.
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RUT_SaturationHeistRaid</defName>
+    <label>saturation heist raid</label>
+    <baseChance>1.0</baseChance>
+    <canOccurOnAllPlanetLayers>true</canOccurOnAllPlanetLayers>
+    <category>ThreatBig</category>
+    <ignoreRecentSelectionWeighting>true</ignoreRecentSelectionWeighting>
+    <pointsScaleable>true</pointsScaleable>
+    <tale>Raid</tale>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.PropaneLakeMechanics.IncidentWorker_SaturationHeistRaid</workerClass>
+  </IncidentDef>
+
+</Defs>

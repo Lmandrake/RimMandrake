@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_PropaneAgitation.xml               PropaneLakeMechanics · authored for PROPANE_LAKE_PIPE_MECHANICS_1
+  Closes RUT_VWake's own documented gap (RUT_PropaneLakeFauna.xml header,
+  COMMISSION_LEDGER_CLEANUP_1): "the loud pumping agitates them and makes
+  them start to look around more swiftly" (the_propane_lakes.md §4).
+  Added/removed by CompVWakeAgitation, never given by a HediffGiver — no
+  mtb/random trigger of its own.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_PropaneAgitation</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>agitated by pumping</label>
+    <description>A running pump nearby is disturbing the propane — this creature is faster and more alert while it's within earshot of the noise.</description>
+    <defaultLabelColor>(0.9, 0.5, 0.2)</defaultLabelColor>
+    <isBad>false</isBad>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <MoveSpeed>1.2</MoveSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

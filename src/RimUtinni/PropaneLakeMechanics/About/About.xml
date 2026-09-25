@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.propanelakemechanics</packageId>
+  <name>RimMandrake: Utinni — Propane Lake Mechanics</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>PROPANE_LAKE_PIPE_MECHANICS_1 — the propane lake's pipe/vent/saturation build ladder (design/Jawa/proposals/propane_gas_deep_design.md §9, RULED owner sitting 2026-09-01).
+
+Four mechanisms, all riding new comps and one careful combat-path hook:
+
+1. RUT_GasVent — self-igniting puffs, no depletion until a RUT_VentPump is built adjacent and actively pumping; removing the pump while the vent is still live triggers a violent map-wide flammable release that clears by wind (CompGasVent).
+
+2. GasSaturationTracker (MapComponent_GasSaturationTracker) — a map-level saturation meter: transient during a release/rupture event, perpetual in hand-authored caverns and dead-sarlacc dungeons (with rotstink paired in). Exposes a deflagration-risk query used by a single, isolated postfix on ranged fire resolution (Patch_GasSaturationDeflagration) implementing the ruled 0-20/20-50/50-80/80+ curve — melee, thrown-without-a-charge and unpowered tools are untouched because they never call Verb_LaunchProjectile. Feature-gated in Mod Settings; off by default effect strength is tunable, never silent.
+
+3. CompPipeNetwork/CompPipeRupture — pipe segments, a RUT_PipePump and a RUT_PipeValve join an adjacency network (MapComponent_PipeNetworks). A ruptured segment (fire damage, explosion, or the dev "trigger rupture" gizmo) spawns a standing jet that does not go out on its own — only closing a reachable valve on the SAME network depressurizes it. Left running past a tuned delay on a faction-owned map costs real goodwill with that faction.
+
+4. RUT_VWake wiring (CompVWakeAgitation, patched onto the existing creature, no def rework) — the creature ships with plain manhunterOnDamageChance since COMMISSION_LEDGER_CLEANUP_1; this adds the ruled "agitated by pump noise" half: RUT_PropaneAgitation (a temporary hediff, speed/awareness up) applies while any RUT_PipePump within range is running, and clears when pumping stops.
+
+5. RUT_SaturationHeistRaid (IncidentWorker_SaturationHeistRaid) — row 6, "saturation heist": once a map's own saturation has crossed the ruled 50% coin-flip band, an incoming raid re-equips every gunner it would otherwise have spawned with the ruled non-flammable/non-thermal/non-explosive loadout (vibroblade, vibro-double-blade, sonic pistol — MayRequire mandrake.rsw.armoury — falling back to vanilla neolithic melee so the swap is real with or without that mod) rather than sending riflemen to deflagrate themselves. Reuses vanilla's own faction/strategy/arrival pipeline in full; only the fire-gate and the post-spawn re-equip are new.
+
+Not built here (explicitly out of scope for this pass, left for the item's own "work owed" if picked up again): the full pump-reach QuestScriptDef traversal template, and the tanker-run/tar-interplay rows the design doc itself cut.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rut.patches</packageId>
+      <displayName>RimUtinni Patches (Jawa campaign)</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rut.patches</li>
+    <li>mandrake.rsw.armoury</li>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+</ModMetaData>

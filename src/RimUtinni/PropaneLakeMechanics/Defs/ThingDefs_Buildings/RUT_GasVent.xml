@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_GasVent.xml                        PropaneLakeMechanics · authored for PROPANE_LAKE_PIPE_MECHANICS_1
+  ============================================================================
+  Build ladder row 1 (propane_gas_deep_design.md §3, §9): "self-igniting
+  puffs, no depletion until actively pumped; pump-removal triggering a
+  violent map-wide flammable release that clears by wind." The vent is a
+  found natural feature (like SteamGeyser, whose ParentName/placeholder art
+  this reuses) — a lifespan resource once a RUT_VentPump is built adjacent
+  and pumping, not a build-and-forget generator (§3's CompVentYield idea,
+  folded into CompGasVent as one comp rather than two).
+
+  Placeholder art only (no new art commissioned this pass): SteamGeyser's own
+  texture for the vent (a real natural gas seep reads fine as a steam-like
+  vent); GeothermalPlant's own texture, scaled down, for the pump — same
+  "recolored/reused placeholder" idiom this repo already uses elsewhere
+  (e.g. RUT_BurnerAscendant reusing Warg body art).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RUT_GasVent</defName>
+    <label>propane vent</label>
+    <description>A crack in the crust where raw propane seeps up from below, puffing gas into the air. It sometimes catches fire on its own — the puffs have been doing that for longer than anyone's been here to smell it. Left alone it will keep seeping forever; hook a pump to it and it has a lifespan, like anything worth taking.</description>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.3</fillPercent>
+    <blockPlants>true</blockPlants>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <size>(2,2)</size>
+    <selectable>true</selectable>
+    <neverOverlapFloors>true</neverOverlapFloors>
+    <drawerType>MapMeshOnly</drawerType>
+    <tickerType>Normal</tickerType>
+    <graphicData>
+      <texPath>Things/Building/Natural/SteamGeyser</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Utinni.PropaneLakeMechanics.CompProperties_GasVent" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_VentPump</defName>
+    <label>vent extraction pump</label>
+    <description>A squat extraction rig, bolted down beside a propane vent. While it stands here, the vent is being drawn down instead of just left to seep — and it stops being safe to simply walk away from. Tear this out while the vent still has anything left and the whole thing lets go at once.</description>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.6</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <constructEffect>ConstructMetal</constructEffect>
+    <designationCategory>Production</designationCategory>
+    <costList>
+      <Steel>40</Steel>
+    </costList>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>1200</WorkToBuild>
+      <Flammability>0.8</Flammability>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Power/GeothermalPlant</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.5,1.5)</drawSize>
+    </graphicData>
+  </ThingDef>
+
+</Defs>
