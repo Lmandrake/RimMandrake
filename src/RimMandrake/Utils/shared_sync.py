@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+"""Publish this tree's local commits and catch it up with origin — without a merge,
+a stash, or touching anyone's uncommitted work.
+
+    python3 src/RimMandrake/Utils/shared_sync.py            # sync
+    python3 src/RimMandrake/Utils/shared_sync.py --dry-run  # say what it would do
+
+WHY
+===
+The shared tree is never clean (artpipe churn, health artifacts, peers mid-edit), so
+once it diverges from origin, `pull --ff-only` fails and `pull --rebase` refuses; the
+only things that "worked" were a merge or `--autostash`, and a failed merge erased 215
+files' uncommitted edits on 2026-09-25 (block_shared_tree_merge.py has the account).
+
+HOW
+===
+1. `git replay` rebuilds the local commits on top of origin/main entirely in the object
+   store — no worktree, no index, nothing on disk moves — and the result is pushed.
+2. `git reset --keep origin/main` then moves this tree: files that differ between the
+   old HEAD and origin are updated, every uncommitted edit is kept, and git ABORTS
+   rather than overwrite a file that is both changed upstream and dirty here.
+
+If step 2 aborts, the commits are already published; the tool names the overlapping
+files, and a re-run once they are committed or cleared finishes the job (commits whose
+patch is already upstream are recognised and not replayed twice).
+"""
+import argparse
+import subprocess
+import sys
+
+REMOTE, BRANCH = "origin", "main"
+UP = "%s/%s" % (REMOTE, BRANCH)
+GH_HELPER = ["-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential"]
+
+
+def git(*args, check=True):
+    r = subprocess.run(["git", *args], capture_output=True, text=True)
+    if check and r.returncode:
+        sys.exit("git %s failed:\n%s" % (" ".join(args), (r.stderr or r.stdout).strip()))
+    return r
+
+
+def push(sha):
+    r = git("push", REMOTE, "%s:refs/heads/%s" % (sha, BRANCH), check=False)
+    if r.returncode and "rejected" not in r.stderr:
+        # Windows credential manager fails from some WSL contexts; gh's helper works.
+        r = git(*GH_HELPER, "push", REMOTE, "%s:refs/heads/%s" % (sha, BRANCH), check=False)
+    return r
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--dry-run", action="store_true")
+    a = ap.parse_args()
+
+    if git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip() != BRANCH:
+        sys.exit("not on %s — refusing" % BRANCH)
+    if git("rev-list", "--merges", "%s..HEAD" % UP, check=False).stdout.strip():
+        sys.exit("local merge commits present — resolve by hand, never replay a merge")
+
+    for attempt in range(3):
+        git("fetch", "-q", REMOTE)
+        # commits whose patch is not already upstream (a previous run may have pushed them)
+        todo = git("rev-list", "--cherry-pick", "--right-only", "--no-merges",
+                   "%s...HEAD" % UP).stdout.split()
+        behind = int(git("rev-list", "--count", "HEAD..%s" % UP).stdout)
+        print("local-only commits: %d   behind %s: %d" % (len(todo), UP, behind))
+        if not todo:
+            break
+        if a.dry_run:
+            return 0
+        r = git("replay", "--ref-action=print", "--onto", UP, "%s..HEAD" % UP, check=False)
+        if r.returncode:
+            sys.exit("replay hit a conflict — nothing was written or pushed.\n%s\n"
+                     "Resolve in a private worktree: git worktree add --detach "
+                     "/tmp/claude-1000/sync %s, cherry-pick, push HEAD:%s, then re-run."
+                     % (r.stderr.strip(), UP, BRANCH))
+        new = r.stdout.split()[2]            # "update refs/heads/main <new> <old>"
+        p = push(new)
+        if p.returncode == 0:
+            print("pushed %d commit(s) -> %s" % (len(todo), new[:9]))
+            break
+        if "rejected" not in p.stderr:
+            sys.exit("push failed:\n%s" % p.stderr.strip())
+        print("origin moved during push; retrying")
+    else:
+        sys.exit("origin kept moving; nothing lost — re-run")
+
+    if a.dry_run:
+        return 0
+    git("fetch", "-q", REMOTE)
+    r = git("reset", "--keep", UP, check=False)
+    if r.returncode:
+        sys.exit("commits are published, but this tree could not move: these files are "
+                 "changed upstream AND dirty here —\n%s\nCommit or clear them, then re-run."
+                 % r.stderr.strip())
+    print("tree at %s" % git("rev-parse", "--short", "HEAD").stdout.strip())
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

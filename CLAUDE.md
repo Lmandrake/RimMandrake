@@ -629,8 +629,10 @@ file write to a commit, the write never happens either. Keep writes and commits 
 
 🔴 **No real merge in the shared tree** (owner, 2026-09-25; hook-enforced by
 `block_shared_tree_merge.py`). Merge a branch in a private `git worktree add --detach`, push
-`HEAD:main` from there, then move this tree with `git pull --ff-only` or `--rebase`. A bare
-`git pull` is a merge here (`pull.rebase` is unset). Linked worktrees are exempt.
+`HEAD:main` from there. To publish THIS tree's commits and catch it up, run
+`python3 src/RimMandrake/Utils/shared_sync.py` (`git replay` onto origin, push, then `reset --keep`,
+which aborts rather than touch a dirty file) — this tree is never clean, so `pull --rebase`
+refuses and a bare `git pull` merges. Linked worktrees are exempt.
 ⚠️ **A REFUSED merge is not harmless**: git's internal restore_state() stashes, hard-resets
 and re-applies, and if a peer holds `index.lock` the re-apply fails — that erased 215 files'
 edits 2026-09-25 07:54 with nothing in the reflog. The same hook refuses whole-tree

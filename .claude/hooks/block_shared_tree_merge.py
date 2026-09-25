@@ -32,13 +32,15 @@ WHAT IS BLOCKED (only in the main worktree — linked worktrees are free)
   git merge --squash <branch>    it still rewrites the shared worktree
   git pull                       unless --ff-only / --rebase / -r (pull.rebase is
                                  unset here, so a bare pull IS a merge)
-  git reset --hard/--merge/--keep, git checkout -f / . / -- .,
+  git reset --hard/--merge, git checkout -f / . / -- .,
   git restore . (worktree), git stash with no pathspec, git clean -f,
   git checkout-index -a          whole-tree discards
 
 WHAT IS NOT BLOCKED
 ===================
   git merge --ff-only / --abort / --continue / --quit
+  git reset --keep                  aborts rather than touch a dirty file; it is how
+                                    src/RimMandrake/Utils/shared_sync.py moves this tree
   git pull --ff-only / --rebase / -r
   any merge inside a linked worktree (`git worktree add`, `isolation: worktree`)
 
@@ -96,7 +98,7 @@ def offence(tok):
     # Whole-tree discards: each erases every peer's uncommitted edit at once.
     paths = [a for a in args if not a.startswith("-")]
     whole = not paths or any(p in (".", ":/", "*") for p in paths)
-    if sub == "reset" and flags & {"--hard", "--merge", "--keep"}:
+    if sub == "reset" and flags & {"--hard", "--merge"}:
         return "`git reset %s` discards the shared worktree" % " ".join(args)
     if sub == "checkout" and ("-f" in flags or "--force" in flags
                               or ("--" in args and whole)
@@ -172,7 +174,8 @@ def main():
                 "    cd /tmp/claude-1000/merge-x && git merge origin/<branch>\n"
                 "    git push origin HEAD:main\n"
                 "Then move the shared tree forward only:\n"
-                "    git pull --ff-only     (or git pull --rebase)\n\n"
+                "    python3 src/RimMandrake/Utils/shared_sync.py   (this tree is never clean, so\n"
+                "    pull --rebase refuses; the tool replays + reset --keep)\n\n"
                 "⚠️  NOTHING IN THAT COMMAND RAN — a compound "
                 "command is refused whole." % why),
         }}))
