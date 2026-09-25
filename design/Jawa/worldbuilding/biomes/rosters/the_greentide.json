@@ -252,10 +252,10 @@
       "law": "§4 fruit-eater herd; SW icon; passes-seed-quickly read"
     },
     {
-      "action": "import",
+      "action": "port",
       "commonality": 0.5,
-      "def": "GiantAnt_Race",
-      "law": "owner review 2026-09 (round2 move mapping): Only the raiding events in the greentide jungles and surrounding area"
+      "def": "RUT_GreentideAntRace",
+      "law": "owner review 2026-09 (round2 move mapping): Only the raiding events in the greentide jungles and surrounding area. THEY_MOD_REPLICATION_1, 2026-09-25: replicated from They! (Giant Ants) into our own tier; donor dependency retired from this def."
     },
     {
       "action": "import",

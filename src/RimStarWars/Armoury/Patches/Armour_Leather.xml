@@ -3491,41 +3491,10 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>They! (Giant Ants)</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- They_AntCarapace : large beast; naturally armoured -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="They_AntCarapace"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="They_AntCarapace"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.50</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.42</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="They_AntCarapace"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.50</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.42</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
+  <!-- THEY_MOD_REPLICATION_1, 2026-09-25: They_AntCarapace armour boost
+       removed — the def is retired. Its replacement, RUT_GreentideAntCarapace
+       (src/RimUtinni/GreentideRaidAnt), states the same statFactors directly,
+       so no patch is needed for it. -->
 
   <Operation Class="PatchOperationFindMod">
     <mods><li>Vanilla Animals Expanded — Waste Animals</li></mods>

@@ -10657,45 +10657,10 @@
     </nomatch>
   </Operation>
 
-  <!-- giant ant (GiantAnt_Race) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -63.2..75.8 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-63.2</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-63.2</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>75.8</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases</xpath>
-            <value><ComfyTemperatureMax>75.8</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-63.2</ComfyTemperatureMin>
-          <ComfyTemperatureMax>75.8</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-  </Operation>
+  <!-- THEY_MOD_REPLICATION_1, 2026-09-25: giant ant (GiantAnt_Race) tolerance
+       pin removed — the def is retired. Its replacement, RUT_GreentideAntRace
+       (src/RimUtinni/GreentideRaidAnt), states the same -63.2..75.8 range
+       directly in its own statBases, so no patch is needed for it. -->
 
   <!-- gizka (Gizka) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -3.6..79.7 -->
   <Operation Class="PatchOperationConditional">

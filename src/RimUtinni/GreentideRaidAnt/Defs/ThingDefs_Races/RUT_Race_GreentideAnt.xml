@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- THEY_MOD_REPLICATION_1. Replicates They! (Giant Ants)' GiantAnt_Race
+       (Sapiently.TheyAtomicMonsters, read directly off its own on-disk XML,
+       not decompiled). Stats, tools and race fields are ported 1:1; only the
+       defName/leatherDef/thinkTreeMain point at our own tier now. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_GreentideAntRace</defName>
+    <label>giant ant</label>
+    <description>A mutated giant ant that raids in the Greentide's jungles.
+Relentless and hungry.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>
+      <MarketValue>150</MarketValue>
+      <!-- Pinned directly on our own def rather than through a patch: donor's
+           MegafaunaYield.xml/AnimalTolerances_Ashkarr.xml entries computed
+           these same numbers (bodySize 2.0 squared) for GiantAnt_Race; a
+           freshly authored def just states the answer. -->
+      <MeatAmount>280</MeatAmount>
+      <BoneAmount>100</BoneAmount>
+      <ComfyTemperatureMin>-63.2</ComfyTemperatureMin>
+      <ComfyTemperatureMax>75.8</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.3</ArmorRating_Sharp>
+    </statBases>
+    <uiIconScale>1.5</uiIconScale>
+
+    <race>
+      <thinkTreeMain>RUT_ThinkTree_GreentideAnt</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <body>BeetleLike</body>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>1.5</baseHealthScale>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+
+      <leatherDef>RUT_GreentideAntCarapace</leatherDef>
+
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <lifeExpectancy>10</lifeExpectancy>
+
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+          <!-- Donor's soundCall/soundAngry (TheyAntClack/TheyAntTrill) are
+               owed new clips per THEY_MOD_REPLICATION_1 spec step 3 — left
+               unset rather than faking a placeholder SoundDef; both fields
+               are optional. -->
+        </li>
+      </lifeStageAges>
+
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_DirectedAssaultExtension">
+        <huntRadius>60</huntRadius>
+        <arrivalDistance>5</arrivalDistance>
+      </li>
+    </modExtensions>
+
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.8</chanceFactor>
+      </li>
+
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+
+      <li>
+        <label>venomous sting</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>40</power>
+        <cooldownTime>3.5</cooldownTime>
+        <chanceFactor>0.1</chanceFactor>
+        <armorPenetration>0.10</armorPenetration>
+        <extraMeleeDamages>
+          <li>
+            <def>ToxicBite</def>
+            <amount>10</amount>
+          </li>
+        </extraMeleeDamages>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+  </ThingDef>
+</Defs>

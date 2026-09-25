@@ -343,25 +343,10 @@
       </operations>
     </match>
   </Operation>
-  <!-- GiantAnt_Faction -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="GiantAnt_Faction"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="GiantAnt_Faction"]/startingCountAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="GiantAnt_Faction"]/startingCountAtWorldCreation</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="GiantAnt_Faction"]</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
+  <!-- THEY_MOD_REPLICATION_1, 2026-09-25: GiantAnt_Faction zeroing removed —
+       the def is retired. Its replacement, RUT_GreentideAntFaction
+       (src/RimUtinni/GreentideRaidAnt), declares
+       startingCountAtWorldCreation 0 directly, so no patch is needed for it. -->
   <!-- Horrors -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/FactionDef[defName="Horrors"]</xpath>

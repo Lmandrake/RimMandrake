@@ -7286,37 +7286,11 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>They! (Giant Ants)</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- GiantAnt_Race MeatAmount: bodySize 2.00, base 280, yields 560 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- GiantAnt_Race BoneAmount: bodySize 2.00, base 100, yields 200 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>100</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GiantAnt_Race"]/statBases</xpath>
-            <value><BoneAmount>100</BoneAmount></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
+  <!-- THEY_MOD_REPLICATION_1, 2026-09-25: They! (Giant Ants)'s MeatAmount/
+       BoneAmount block removed — GiantAnt_Race is retired, and its
+       replacement RUT_GreentideAntRace (src/RimUtinni/GreentideRaidAnt)
+       states the same computed values (280/100) directly in its own
+       statBases, so no patch is needed for it. -->
 
   <Operation Class="PatchOperationFindMod">
     <mods><li>Vanilla Animals Expanded — Waste Animals</li></mods>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- THEY_MOD_REPLICATION_1. Ports donor's Buildings_Structure_Carapace.xml 1:1. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_GreentideAntCarapaceWall</defName>
+    <label>carapace wall</label>
+    <description>A wall built from densely packed giant ant carapaces and soil. It is tougher than wood and fairly fire resistant.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/Linked/RUT_GreentideAntCarapaceWall_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+        <li>Rock</li>
+      </linkFlags>
+      <damageData>
+        <rect>(0,0,1,1)</rect>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Linked/RUT_GreentideAntCarapaceWall_MenuIcon</uiIconPath>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>150</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <MeditationFocusStrength>0.22</MeditationFocusStrength>
+    </statBases>
+    <costList>
+      <RUT_GreentideAntCarapace>5</RUT_GreentideAntCarapace>
+    </costList>
+    <building>
+      <isInert>true</isInert>
+      <ai_chillDestination>false</ai_chillDestination>
+      <blueprintGraphicData>
+        <texPath>Things/Building/Linked/Wall_Blueprint_Atlas</texPath>
+      </blueprintGraphicData>
+    </building>
+    <fillPercent>1</fillPercent>
+    <passability>Impassable</passability>
+    <holdsRoof>true</holdsRoof>
+    <blockLight>true</blockLight>
+    <designationCategory>Structure</designationCategory>
+    <staticSunShadowHeight>1.0</staticSunShadowHeight>
+  </ThingDef>
+</Defs>

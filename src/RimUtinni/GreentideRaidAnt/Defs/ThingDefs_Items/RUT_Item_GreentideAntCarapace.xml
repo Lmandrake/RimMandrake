@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- THEY_MOD_REPLICATION_1. Ports donor's Items_Resource_Carapace.xml.
+       stuffProps.statFactors carries the boosted armor/beauty values
+       RimStarWars/Armoury/Patches/Armour_Leather.xml used to patch onto
+       They_AntCarapace ("large beast; naturally armoured") directly, rather
+       than through a separate patch. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_GreentideAntCarapace</defName>
+    <label>giant ant carapace</label>
+    <description>The hard, chitinous shell of a giant ant. It is exceptionally durable and heat resistant.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Cloth</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120, 110, 100)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>0.5</Flammability>
+      <StuffPower_Armor_Sharp>0.75</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.5</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Heat>20</StuffPower_Insulation_Heat>
+    </statBases>
+    <thingCategories>
+      <li>Leathers</li>
+    </thingCategories>
+    <stuffProps>
+      <categories>
+        <li>Leathery</li>
+        <li>Woody</li>
+      </categories>
+      <commonality>0.05</commonality>
+      <!-- Final live shape: Armour_Leather.xml's PatchOperationReplace fully
+           REPLACES the donor's original statFactors block (which was just
+           MaxHitPoints 0.85 + Beauty 1) with this 5-value set — MaxHitPoints
+           does not survive into the patched live def, so it is not repeated
+           here either. -->
+      <statFactors>
+        <ArmorRating_Sharp>1.50</ArmorRating_Sharp>
+        <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
+        <ArmorRating_Heat>0.42</ArmorRating_Heat>
+        <Beauty>1.05</Beauty>
+        <Comfort>1.00</Comfort>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+</Defs>
