@@ -289,3 +289,4 @@
 {"seat":"FOUNDRY","event":"start","id":"FORCE_DISTURBANCE_REFLAVOR_1","ts":"2026-09-25T05:43:02Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-25T05:51:59Z"}
 {"seat":"FOUNDRY","event":"close","id":"PROPANE_LAKE_PIPE_MECHANICS_1","sha":"1f4d212710b14b2e05baad92f6d4cd667af00ca4","ts":"2026-09-25T05:52:45Z"}
+{"seat":"FOUNDRY","event":"needs","id":"FORCE_DISTURBANCE_REFLAVOR_1","to":"owner","reason":"survey + draft patch done and validated (34/34 xpaths hit); remaining step is his sign-off on exact wording, then deploy+close","ts":"2026-09-25T05:53:56Z"}
