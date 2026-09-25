@@ -119,7 +119,12 @@
     <label>saal</label>
     <description>The bubble-sailor, netted: a bell no bigger than a fist with a single stiff sail-vane that it sets into the trailing lines of boiling bubbles and rides — up the vent columns, drifting down, riding again. The Scald's kindest resident and its signature silhouette; pilgrims read their traffic the way sailors read gulls. Nobody fishes for them on purpose. One in a margin-net is let go more often than not, and the margin-net that keeps one is not spoken of.</description>
     <graphicData>
-      <texPath>Things/Item/Special/JawaClaimRumour</texPath>
+      <!-- SCALD_FLOOR_PASS_1: interim OWNED texture (was Things/Item/Special/
+           JawaClaimRumour, which only exists under RimUtinni/UtinniPatches
+           and pinked a standalone install; shared interim placeholder with
+           RM_ShullaCatch until each gets its own art). Real art queued to
+           the artpipe as scald_saalcatch_v1 (priority 45). -->
+      <texPath>Things/Item/Resource/RM_ScaldCatchGeneric/RM_ScaldCatchGeneric</texPath>
     </graphicData>
     <statBases>
       <Nutrition>0.08</Nutrition>
@@ -146,7 +151,11 @@
     <label>bladderboil</label>
     <description>A leathery golden sac the size of a head, riding the Scald's boil. When the water around it roars it gulps itself full and swells taut, floating high and hard where nothing else can live; when it drifts into a quiet margin pool it sighs out through its crater-mouths and slumps to a wrinkled bag, half-sunk, resting. Pilgrims call them kettles for the whistle they make letting go. They are entirely harmless, and the shore-folk net the resting ones.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RUT_Greenwood</texPath>
+      <!-- SCALD_FLOOR_PASS_1: interim OWNED texture (was Things/Item/
+           Resource/RUT_Greenwood, which only exists under RimUtinni/
+           UtinniPatches and pinked a standalone install). Real art queued
+           to the artpipe as scald_bladderboilcatch_v1 (priority 45). -->
+      <texPath>Things/Item/Resource/RM_BladderboilCatch/RM_BladderboilCatch</texPath>
     </graphicData>
     <statBases>
       <Nutrition>0.10</Nutrition>
