@@ -15423,11 +15423,59 @@
     "hash": "4117dfac0f9576dcb8301f9c987e84f6cee5dc9e412a79cf9af33d1f2f0d72a3",
     "sha": "f869774f1"
   },
+  "src/RimUtinni/AshkarrFlora/Defs/HediffDefs/RUT_Staggerseed_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "28a71e91eca71bce13a905052fead05d38d35e586bb19695647c028d16115c57",
+    "sha": "77fac9e98"
+  },
+  "src/RimUtinni/AshkarrFlora/Defs/RecipeDefs/RUT_Staggerseed_Recipes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7cb4e3504628ea2b023232e96c4cb80a3446f4de97e1bfb50c6ae92193cf41ee",
+    "sha": "77fac9e98"
+  },
+  "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Items/RUT_Staggerseed_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "450f7d1a9d435d6c4f1261239ad4e17772d228d8c1cb8e7aae0a8ec4eed332d8",
+    "sha": "77fac9e98"
+  },
+  "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Items/RUT_SweetlineTree_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "141cfd774d13b35a58f1923c63bd45abf966b0ffa9f4acc133bfd6d12151df43",
+    "sha": "77fac9e98"
+  },
+  "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AridShrublandVanillaReplacements.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2d99926c68da572474f0eee47e90cd756850f9ca74f28747debaca3bb7a5ad02",
+    "sha": "77fac9e98"
+  },
   "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AshkarrFlora_Plants.xml": {
     "cleanCount": 3,
     "date": "2026-09-24",
     "hash": "92c37034228a19b5f0fd6cfb8b92f16f5cfa62c862ee74b59539ab37a986b163",
     "sha": "e05f7e0f8"
+  },
+  "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_Fuzz.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c52a859b4599a772193ac50cab353eda6d53b88a5464dae5b06fceb27787c3a9",
+    "sha": "77fac9e98"
+  },
+  "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_Staggerseed.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6817a2fcf9c5b5b46d03e30d0179ed1f4fd6353165962e572680706c2029bb86",
+    "sha": "77fac9e98"
+  },
+  "src/RimUtinni/AshkarrFlora/Defs/ThoughtDefs/RUT_Staggerseed_Thoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "00e2c0a587b1a5975b01e4d8dd863021edc17554ad3b94db92f86ded0f856b2c",
+    "sha": "77fac9e98"
   },
   "src/RimUtinni/AshkarrFlora/LICENSE": {
     "cleanCount": 1,
