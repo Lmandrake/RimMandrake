@@ -142,26 +142,43 @@ Cant is the family that makes graffiti a SYSTEM instead of decoration: the
 clan annotates the world the way the player annotates a map, and the two
 become the same gesture.
 
-## 2. The framework build (our C#)
+## 2. The framework build (our C#) — AS ACTUALLY SHIPPED
 
-- **`RM_GraffitiDef`** (new def class): category (Sacred/Mural/Jest/Taunt/
-  Cant) · quality support · maker + subject records · viewer-reaction spec ·
-  faction-reaction spec · visibility class (public / clan-only for Cant).
-- **Placement**: (a) designator + work bill (murals, taunts, cant); (b) the
-  quick-paint job (sacred marks, jests — any Jawa, minutes); (c)
-  **RitualOutcomeEffect** — a rite can LEAVE a mark (the Council's boon
-  language made physical; the assessment flagged this fit); (d) one small
-  **Harmony patch on the base mod's JobDriver** so its spontaneous spray
-  spree picks from our jest/vandal pool when we're present.
-- **Viewer comp**: a ThoughtWorker keyed on room entry/line-of-sight doing
-  per-category reactions (mural admiration by quality, jest laughs,
-  caricature trait-forks, taunt effects on hostiles/visitors).
-- **Supersede vs companion — RECOMMEND COMPANION.** Keep `Mlie.GraffitiMod`
-  as the living vandal tier (its break-spree IS the untrained scrawl, working
-  today); we depend on its `BaseGraffiti` plumbing (filth placement,
-  wall-linking, cleaning) and add everything above. One patch, zero
-  absorbed C#. Supersede only if the pack-retirement wave later demands it —
-  the framework is written so the dependency is one abstract def deep.
+_Corrected 2026-09-24 (`GRAFFITI_PUNK_IDEOLIGION_SCOPE_1` wave 2): this
+section originally described a plan superseded by the owner's own §7 ruling
+2 in the same document, and by the framework's real shape once built
+(`GRAFFITI_FRAMEWORK_BUILD_1`, `mandrake.rm.graffiti`,
+`src/RimMandrake/Graffiti/`). The wrong lines are removed rather than
+banner-superseded, per this repo's own standing rule._
+
+- **`ModExtension_Graffiti`** (a `DefModExtension`, not a new Def class —
+  RimWorld's own idiom for "annotate an existing ThingDef with a data
+  bundle a system reads"): category — `None`/`Devotional`/`Mural`/`Jest`/
+  `Taunt`/`Code` (renamed 2026-09-24 from `Sacred`→`Devotional`,
+  `Cant`→`Code`; `Mural` remains v2/unbuilt) — plus a FORM axis (Scrawl/Tag/
+  ThrowUp/Stencil/Paste/Sigil/Glyph/Piece), maker + subject provenance
+  (`Filth_Mark`), relation-keyed viewer-reaction ThoughtDefs, a
+  `godSatiationHook` string a content pack wires to its own pantheon, and a
+  visibility class (`Public`/`ClanOnly`).
+- **Placement**: the punk/spree pool (`GraffitiPool`, weighted by
+  `poolWeight`, gated by meme/skill/faction-hostility) drives ordinary
+  joy/mental-break painting; a player `Designator` + `WorkGiver` places any
+  `designatorEligible` mark by hand; a Harmony prefix on
+  `CaravanExitMapUtility.ExitMapAndCreateCaravan` has a departing hostile
+  pawn tag a wall on the way out. **Not built**: `RitualOutcomeEffect`
+  rite-left marks (still v2/dream, §6), and the settlement GenStep placer
+  (also v2 by the widening item's own recommendation).
+- **Viewer comp**: `ThoughtWorker_ViewedGraffitiMark`, relation-keyed
+  (subject/own-faction/same-ideo/other-ideo/hostile-maker) with a flat
+  fallback, read from each mark's `ModExtension_Graffiti`.
+- **`Mlie.GraffitiMod` is not a dependency at all.** The owner's own §7
+  ruling 2 (below) overrode this section's original "recommend companion"
+  plan the same sitting it was written: `mandrake.rm.graffiti` absorbed the
+  vandal-spree mechanic into its own `JobDriver_PaintGraffiti`/
+  `JobGiver_GraffitiPaintingSpree`/`JoyGiver_PaintGraffiti`, and
+  `Mlie.GraffitiMod` is retired from the mod list at build time — no
+  Harmony redirect onto its JobDriver, because RM owns the JobDriver
+  outright.
 
 ## 3. Art plan
 
@@ -192,9 +209,9 @@ rows — the marks ARE the livery, painted.
 
 | Piece | Tier | Working id |
 |---|---|---|
-| Framework (def class, jobs, viewer comp, mural/jest/taunt/cant concepts) | RimMandrake | `mandrake.rm.graffiti` |
+| Framework (`ModExtension_Graffiti`, jobs, pool, viewer comp, devotional/mural/jest/taunt/code concepts, tier-A ideo-icon sigils, tier-C meme-affinity glyphs) | RimMandrake | `mandrake.rm.graffiti` |
 | The nine sacred marks + Jawa cant glyph set + taunt theology | RimUtinni | `mandrake.rut.marks` |
-| Aurebesh-lettered taunt/jest art variants (if wanted) | RimStarWars | rides `mandrake.rsw.*` art pass, note only |
+| Aurebesh-lettered taunt/jest art variants (built: the Imperial-cog stencil, `GRAFFITI_PUNK_IDEOLIGION_SCOPE_1`) | RimStarWars | `src/RimStarWars/GraffitiImperial`, `mandrake.rsw.graffitiimperial` |
 
 Migration note: the existing `SacredGraffiti` mod folder (old id
 `mandrake.sacredgraffiti`, the shipped Ishko mark) still needs folding into
