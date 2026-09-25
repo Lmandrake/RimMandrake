@@ -13413,6 +13413,18 @@
     "hash": "a240075621085b2c0da3a158cc7fdc1aff553e85b3e4799aaaa3aaada9e4e3b4",
     "sha": "06e9ecab9"
   },
+  "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Plants.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8dabadcc51855f88f0cc9210585c5a422ca4dd00fd8fb9b92d45eba0f6833198",
+    "sha": "32a8f920c"
+  },
+  "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a4bdec8d90b5c39d076a9cb5478bebbcb60b19319367a7f99614b064235d9755",
+    "sha": "32a8f920c"
+  },
   "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_ExtremeDesertSignatureFlora.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -14259,6 +14271,12 @@
     "hash": "92adb8281e4e3530c8deacf16c45ddada5d7ba611264131516b91c61637d56cd",
     "sha": "1ef66c91c"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_VentStalker.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "df18e1bca6929bdfecd6307b53b07cfaf5fed8cf389b94a0a546a7fa2bdac11e",
+    "sha": "32a8f920c"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Voorpak.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -14973,6 +14991,12 @@
     "hash": "0c461a573e863500d0adf1f6f1fcf1a246ff413ca432cd6cf4b2fc0be94b8626",
     "sha": "5952eff03"
   },
+  "src/RimStarWars/StarWarsRaces/Defs/HeadTypeDefs/DesertWraps_DevolvedNomadHeads.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ad77b134eb58e7c5f4ee09f5655d38239ea36a68649d765087ce799d40e5632f",
+    "sha": "32a8f920c"
+  },
   "src/RimStarWars/StarWarsRaces/Defs/HeadTypeDefs/SW_HeadTypes.xml": {
     "cleanCount": 3,
     "date": "2026-09-17",
@@ -15069,6 +15093,12 @@
     "hash": "50f046277a1e0dffa6ea44fc149be88d3c8ecb847cf423903fb409836aba1bbf",
     "sha": "629956d2"
   },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_Batch7.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7aabf5f42217b4127eedd86f5aca92e2decaea1a6486cc24b7a440d7b4f1e852",
+    "sha": "32a8f920c"
+  },
   "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_BeastLair.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -15117,11 +15147,23 @@
     "hash": "7f57ae8bb904af49bf9d1cfbe1e5acd2f7ec3157bfb8bbbbd4fd896456b16f62",
     "sha": "2f8d4a99a"
   },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_SarlaccRing.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "095ff77f8ef9327a70501486396626f8b38ad2d176cfde26ecb8f71b1e9e847b",
+    "sha": "32a8f920c"
+  },
   "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_TradingPost.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
     "hash": "1cef44a3574a0fc1ee8496156362ffd463ae3f03af19c386e6c21e38cd63034e",
     "sha": "c4858101e"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_Whisper_Batch1.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b48b714baeac56360e6a6520d72e8fbc627158c51714fdda45777fcd9eb4f84d",
+    "sha": "32a8f920c"
   },
   "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_Batch2.xml": {
     "cleanCount": 1,
@@ -15134,6 +15176,12 @@
     "date": "2026-09-05",
     "hash": "450f4beb9fc6213ec29d22aed5491a7d3c0bf9c22225ebd5a1ea008d6ec743a6",
     "sha": "629956d2"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_Batch7.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "61dec44543d6a3eea3fc9e2c95879c3704e425d833899d2b68403f1c68a3875c",
+    "sha": "32a8f920c"
   },
   "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_BeastLair.xml": {
     "cleanCount": 1,
@@ -15194,6 +15242,18 @@
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "92e56d4f"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Patches/SarlaccRing.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "78a720d00cd20d8070cbb0c57402716a0e7322957b577e9ff291ff32f3b1ca2e",
+    "sha": "32a8f920c"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Patches/WhisperSarlaccSign.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "761ce2064c5c62e7fd6c323b868f566a10da707b0e26058420b42f743ea7ac65",
+    "sha": "32a8f920c"
   },
   "src/RimStarWars/StructureInjectionsSW/validation.py": {
     "cleanCount": 1,
