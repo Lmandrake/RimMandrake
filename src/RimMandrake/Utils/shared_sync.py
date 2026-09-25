@@ -27,6 +27,7 @@ patch is already upstream are recognised and not replayed twice).
 import argparse
 import subprocess
 import sys
+import time
 
 REMOTE, BRANCH = "origin", "main"
 UP = "%s/%s" % (REMOTE, BRANCH)
@@ -43,7 +44,11 @@ GH_HELPER =["-c", "credential.helper=", "-c", "credential.helper=!gh auth git-cr
 
 
 def git(*args, check=True):
-    r = subprocess.run(["git", *args], capture_output=True, text=True)
+    for _ in range(10):                      # a peer's commit holds index.lock briefly
+        r = subprocess.run(["git", *args], capture_output=True, text=True)
+        if "index.lock" not in r.stderr:
+            break
+        time.sleep(2)
     if check and r.returncode:
         sys.exit("git %s failed:\n%s" % (" ".join(args), (r.stderr or r.stdout).strip()))
     return r
@@ -78,7 +83,15 @@ def main():
             break
         if a.dry_run:
             return 0
-        r = git("replay", "--ref-action=print", "--onto", UP, "%s..HEAD" % UP, check=False)
+        # Replay only what is not upstream yet: from the oldest such commit to HEAD. Older
+        # local commits already upstream by patch (an earlier run pushed them) are skipped,
+        # or replay would re-create them as empty duplicates.
+        base = todo[-1] + "^"
+        span = git("rev-list", "%s..HEAD" % base).stdout.split()
+        if set(span) != set(todo):
+            sys.exit("already-upstream commits are interleaved with new ones — "
+                     "publish by hand from a private worktree")
+        r = git("replay", "--ref-action=print", "--onto", UP, "%s..HEAD" % base, check=False)
         if r.returncode:
             sys.exit("replay hit a conflict — nothing was written or pushed.\n%s\n"
                      "Resolve in a private worktree: git worktree add --detach "
