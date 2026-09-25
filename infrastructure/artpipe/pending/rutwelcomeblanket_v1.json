@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T00:00:00Z",
+  "drawsize": 0.85,
+  "facing": null,
+  "facings": [],
+  "id": "rutwelcomeblanket_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a thin, fuzzy, low-pile mat of bacterial/algal growth coating the ground in concentric rainbow bands -- deep violet-blue through green, gold, orange, to a warm red core, like a thermal-gradient contour map rendered as living fuzz. No stems, no leaves, no flowers -- a flat encrusting sheet with a slightly raised, velvety nap, faintly damp-looking. Painted as a small low ground clump, viewed from directly above at a slight isometric RimWorld camera angle, centered, a short soft shadow beneath it, dark wet ground implied only by the shadow, no other background scenery. Heavy, clean black outline around the whole silhouette and all major internal band boundaries, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "RUT_WelcomeBlanket (COMMISSION_LEDGER_CLEANUP_1 the_scald sheet slug 'welcome-blanket-thermophile-mats-rainbow-banded-by-temperatu', mandrake.rut.patches). the_scald.md §4: 'rainbow sheets of thermophile bacteria and algae coating everything in the depths, oddly fuzzy, banded by temperature -- one of the planet's rainbow registers.' §7: the harvested pigment is 'rainbow dyes from the most ancient life there is.' Working name only, folded into whatever the_scald biome's own shipping-names card ends up covering."
+}
