@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T03:01:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T03:08:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2085,3 +2085,13 @@ kind:     build
 thin:     no ## spec, no ## criteria
 summary:  PYRELANDSBURROWERGRAZER1 — dedicated burrower-grazer for the Pyrelands' fire-web
 prose:    infrastructure/state/items/PYRELANDS_BURROWER_GRAZER_1.md
+
+## FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
+prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md

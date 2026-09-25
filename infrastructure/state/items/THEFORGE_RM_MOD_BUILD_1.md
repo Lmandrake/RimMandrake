@@ -199,8 +199,11 @@ missing prerequisite work — it is simply a different machine's job.
    `src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheForge.xml`: `PatchOperationAdd` for
    `LavaFlea`→cast as **`RSW_LavaFlea`**, `Beldon`→cast as **`RSW_Beldon`** (fixing the F2 tibanna
    mismatch in the same move), `RSW_Maguana` unchanged — all three keep their commonality and
-   `MayRequire`. `RSW_SW_RedFog` in `baseWeatherCommonalities` needs the same patch treatment
-   (currently undocumented by any ruling — flag to owner, don't invent).
+   `MayRequire`. `RSW_SW_RedFog` in `baseWeatherCommonalities` is RULED (owner, typed into a
+   question card, 2026-09-24): *"Just make our own version and drop the SW label. RedFog has
+   nothing to do with Star Wars.... it came from Alpha Biomes, and we're making our own version.
+   Period."* ⇒ author our own RM_-tier red fog WeatherDef inside `mandrake.rm.theforge`, native
+   in `baseWeatherCommonalities` — no Utinni patch, no `RSW_`/SW name anywhere on it.
 3. **Freeze `RUT_TheForge.xml`** byte-for-byte, header: *"carrying the world until the terminal
    paint; content lives in `mandrake.rm.theforge`; do not edit here."*
 4. **Retarget**: the 7 design/bookkeeping files in §7(a) — safe any time, no world dependency.
