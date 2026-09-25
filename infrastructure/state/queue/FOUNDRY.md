@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T04:16:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T04:26:38Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -631,7 +631,7 @@ summary:  RMBazaarTabDef Broker: rows of (LiquidDef, amount in reachable univers
 prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 ## FLORA_LEGIBILITY_BAR_1 Flora legibility bar: own grading pass + model (no keyline law), sizeBin-scaled canvases, no stroke — carries the owner's alientree + ambrosia flags
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1263,6 +1263,16 @@ kind:     task
 blocked:  precondition unmet: Bazaar slices 1-2 not live-proven yet (WINDOW_GRID needs deploy, PRICE_ENGINE BLOCKED) — premature to rehearse VTE unwind
 summary:  When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
 prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
+
+## FLORA_LEGIBILITY_BAR_1 Flora legibility bar: own grading pass + model (no keyline law), sizeBin-scaled canvases, no stroke — carries the owner's alientree + ambrosia flags
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Spec steps 1/2/4 (owner grades the flora sheet, fit the flora model from those grades, A/B borderline processing to his eye) cannot be done autonomously — Transient/flora_legibility_sheet_2026-09-17/decisions.json is still 100% synthetic prefill (reviewStatus.state=prefill, by=null, at=null), confirmed unchanged by two prior FOUNDRY waves and re-verified this session; only step 3 (canvas law) and the flora-skip mechanism were buildable and are done+tested.
+summary:  1. A flora-specific grading sheet: our flora backlog (129 files exempted at
+prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md
 
 ## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
 state:    doing  (BLOCKED)
