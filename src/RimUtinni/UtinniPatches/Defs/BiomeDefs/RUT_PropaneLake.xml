@@ -61,12 +61,17 @@
   donor AB_PropaneLakes' own fishTypes (VCEF_PropaneBag/VCEF_AbyssalEel/
   VCEF_GiantPolarPrawn etc.), which stay uncopied for the same reason this
   note always gave: those belong to the LAND biome's local-map fishing
-  zones, a different gameplay surface. the_propane_lakes.md
-  §4's "V-wake creature and its kin" (propane-native, agitated by pumping,
-  attacking pawns and pipe on sight) also stays unbuilt — no PawnKindDef
-  exists for it yet (checked the live dump: no def named anything
-  resembling "V-wake"/"VWake"); it is separate, unowed C# work
-  (propane_gas_deep_design.md v1 rows; the sheet's own "Owed" list).
+  zones, a different gameplay surface.
+
+  BUILT 2026-09-25 (COMMISSION_LEDGER_CLEANUP_1): the_propane_lakes.md §4's
+  "V-wake creature and its kin" (propane-native, agitated by pumping,
+  attacking pawns and pipe on sight) — RUT_VWake
+  (ThingDefs_Races/RUT_PropaneLakeFauna.xml), a submerged predator using the
+  same waterSeeker/waterCellCost mechanism RSW_SandoAquaMonster already uses
+  on RUT_TheScald. The pump-noise agitation trigger specifically depends on
+  CompPipeNetwork (propane_gas_deep_design.md's build ladder, unbuilt —
+  PROPANE_LAKE_PIPE_MECHANICS_1) and is not wired yet; the creature stands
+  in with ordinary elevated aggression until that mechanics item lands.
 
   wildAnimals: PAINTED_TILES_WITH_NO_CAST_1 (2026-09-20) found this
   <wildAnimals /> empty and traced it — the 2026-09-09 comment here (now
@@ -143,11 +148,14 @@
     <!-- WILD ANIMALS: two floating/flying residents, wired PAINTED_TILES_WITH_NO_CAST_1
          (2026-09-20) from rosters/the_propane_lakes.json's fauna array (round2
          move-mapping ruling, 2026-09-10 — see the file header above for the full
-         trace). The V-wake propane-sea exotic the sheet also names is still unbuilt
-         (no PawnKindDef exists) and is not represented here. -->
+         trace). RUT_VWake (COMMISSION_LEDGER_CLEANUP_1, 2026-09-25) is the sheet's
+         own "V-wake creature" — a submerged predator, not floating/flying, at a
+         rare/dangerous commonality matching the build ladder's own "often-but-not-
+         guaranteed" wording. -->
     <wildAnimals>
       <AA_AuroraSylph MayRequire="sarg.alphaanimals">0.5</AA_AuroraSylph>  <!-- aurora sylph - "Perfect Propane Lake creature" (round2 move mapping, 2026-09-10) -->
       <AA_Skyeel MayRequire="sarg.alphaanimals">0.5</AA_Skyeel>  <!-- sky eel - "Electrostatic flyer over Propane Lakes" (round2 move mapping, 2026-09-10) -->
+      <RUT_VWake>0.04</RUT_VWake>  <!-- v-wake - "attacks pawns and pipe on sight" (the_propane_lakes.md §4; COMMISSION_LEDGER_CLEANUP_1) -->
     </wildAnimals>
     <coastalWildAnimals />
 

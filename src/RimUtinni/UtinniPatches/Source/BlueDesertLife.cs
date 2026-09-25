@@ -29,11 +29,27 @@
 // the one warm-safe hydrocarbon organic left standing against sheet §6 ban 3.
 // Closing it needs a def-gen patch keyed on RM_HydrocarbonNativeExtension;
 // filed as owed build work, not attempted here.
+//
+// EXTENDED 2026-09-25 (COMMISSION_LEDGER_CLEANUP_1, the_propane_lakes sheet's
+// "burner-polar-ascendant-form" row): two small additions shared by BOTH
+// Burner forms per that row's own mechanic_load ("shared authoring with the
+// Blue Desert's Burners") --
+//   RM_CompEffecter_HaloAlways: the propane lake's ascendant form's halo is
+//   locomotion itself (the_propane_lakes.md §4: "not a sprint trick... it is
+//   LOCOMOTION"), so it shows at any movement, not just Jog+/combat.
+//   RM_DeathActionWorker_BurnerBlast: RM_Krissek's OWN shipped description
+//   ("it goes, all at once, and the field goes with it") had no mechanism
+//   behind it -- checked this pass (RM_BlueDesertFauna.xml carried no
+//   deathAction node at all). Wraps vanilla DeathActionWorker_BigExplosion
+//   (the Boomalope's own mechanism, zero new explosion math) behind the
+//   existing nativeDetonationsEnabled toggle and wires it onto BOTH RM_Krissek
+//   and the new RUT_BurnerAscendant, so the flavour text finally has teeth.
 
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace RimMandrake.BlueDesert
 {
@@ -217,6 +233,53 @@ namespace RimMandrake.BlueDesert
             bool aggro = pawn.InAggroMentalState;
             bool targeting = pawn.mindState != null && pawn.mindState.enemyTarget != null;
             return jogging || aggro || targeting;
+        }
+    }
+
+    // -----------------------------------------------------------------
+    // 4c. The propane lake's ascendant Burner -- the halo is locomotion,
+    // not a sprint/combat tell, so it shows at ANY movement (the_propane_
+    // lakes.md §4). Sibling of RM_CompEffecter_Halo rather than a subclass
+    // of it: the parent's ShouldShowEffecter is itself the jog/aggro/target
+    // gate, so subclassing it would fight the override instead of loosening
+    // it. Same settings gate and effecter plumbing.
+    // -----------------------------------------------------------------
+    public class RM_CompEffecter_HaloAlways : CompEffecter
+    {
+        protected override bool ShouldShowEffecter()
+        {
+            if (!RimMandrake.Utinni.UtinniPatches.UtinniPatchesSettings.burnerHaloEnabled)
+            {
+                return false;
+            }
+            if (!base.ShouldShowEffecter())
+            {
+                return false;
+            }
+            Pawn pawn = parent as Pawn;
+            if (pawn == null)
+            {
+                return false;
+            }
+            return pawn.pather != null && pawn.pather.MovingNow;
+        }
+    }
+
+    // -----------------------------------------------------------------
+    // 4d. The Burner lineage's death -- "it goes, all at once, and the field
+    // goes with it" (RM_Krissek's own shipped description). Wraps vanilla
+    // DeathActionWorker_BigExplosion (Boomalope's own mechanism) behind this
+    // mod's existing native-detonation toggle rather than firing unconditionally.
+    // -----------------------------------------------------------------
+    public class RM_DeathActionWorker_BurnerBlast : DeathActionWorker_BigExplosion
+    {
+        public override void PawnDied(Corpse corpse, Lord prevLord)
+        {
+            if (!RimMandrake.Utinni.UtinniPatches.UtinniPatchesSettings.nativeDetonationsEnabled)
+            {
+                return;
+            }
+            base.PawnDied(corpse, prevLord);
         }
     }
 

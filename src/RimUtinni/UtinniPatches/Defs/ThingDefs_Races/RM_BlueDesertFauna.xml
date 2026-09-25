@@ -26,6 +26,16 @@
   is RM_ColdWax (§7). Untameable-by-training (trainability None, brief §10)
   is the only tameness field this brief sets — no explicit tameable override,
   per the item's own instruction to leave AnimalThingBase's default alone.
+
+  ADDED 2026-09-25 (COMMISSION_LEDGER_CLEANUP_1, the_propane_lakes sheet):
+  RM_Krissek's own description already reads "it goes, all at once, and the
+  field goes with it" — checked this pass and no deathAction node backed that
+  text at all. Wired race.deathAction to RM_DeathActionWorker_BurnerBlast
+  (BlueDesertLife.cs §4d — wraps vanilla DeathActionWorker_BigExplosion,
+  the Boomalope's own mechanism, behind the existing nativeDetonationsEnabled
+  toggle). Filed alongside the propane lake's ascendant form, whose own
+  roster row explicitly calls this "shared authoring with the Blue Desert's
+  Burners" — see RUT_PropaneLakeFauna.xml.
 -->
 <Defs>
 
@@ -240,6 +250,12 @@
       <butcherProducts>
         <RM_ColdWax>6</RM_ColdWax>
       </butcherProducts>
+      <!-- §4d / COMMISSION_LEDGER_CLEANUP_1: "it goes, all at once, and the
+           field goes with it" (this def's own description above): wraps
+           vanilla DeathActionWorker_BigExplosion behind nativeDetonationsEnabled. -->
+      <deathAction>
+        <workerClass>RimMandrake.BlueDesert.RM_DeathActionWorker_BurnerBlast</workerClass>
+      </deathAction>
     </race>
     <comps>
       <!-- §4b: the halo shows only while jogging/fleeing/fighting/hunting
