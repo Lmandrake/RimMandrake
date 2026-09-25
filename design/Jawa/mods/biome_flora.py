@@ -234,7 +234,9 @@ FAMILIES = {
     'AB_DribblingCap': 0.1, 'RUT_Skulltop': 0.1,
     'RUT_BlastpodShroom': 0.05,   # our own RUT_ port; wild-only per owner ruling 2026-09-06
     'AB_AgariluxPrime': 0.01},
-  'RUT_ForsakenCrags': {   # 1,135 tiles · 8 plants — AG_Gamma/AG_Septimum moved in
+  'RM_ForsakenCrags': {   # RM_ mod built 2026-09-25, FORSAKENCRAGS_RM_MOD_BUILD_1 — was
+                           # RUT_ForsakenCrags (still frozen, world-carrying twin, identical
+                           # content). 1,135 tiles · 8 plants — AG_Gamma/AG_Septimum moved in
                            # (SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11 "to
                            # crags" / "elsewhere, not heat resistant"; flora_move_mapping.md's
                            # "already in forsaken_crags" claim was false, MEASURED 2026-09-12 —

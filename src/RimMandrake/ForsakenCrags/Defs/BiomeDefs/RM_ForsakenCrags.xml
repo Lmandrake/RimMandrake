@@ -1,49 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- FORSAKENCRAGS_RM_MOD_BUILD_1, 2026-09-25: carrying the world until the terminal
-       paint; content lives in mandrake.rm.forsakencrags; do not edit here. -->
-
   <!--
-    RUT_ForsakenCrags                              UtinniPatches - authored 2026-09-09
-    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
-    forsaken_crags.md (FROZEN). Replaces the donor `AB_RockyCrags` (Alpha Biomes'
-    "Forsaken Crags") — donor content incorporated wholesale per the sheet's own
-    ruling, then bent (SS0).
+    RM_ForsakenCrags                    FORSAKENCRAGS_RM_MOD_BUILD_1, new 2026-09-25
 
-    MEASURED (sheet SS0): 1,170 tiles (an earlier "4,440" in the grammar README was
-    wrong per this sheet's own correction), arc p10/median/p90 100.3/108.2/115.7
-    (10-31 deg below horizon, past-terminator true night). Hilliest def on the
-    planet: 614 tiles at large-hills or worse.
+    Copied verbatim from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
+    RUT_ForsakenCrags.xml (150 lines, authored 2026-09-09) per
+    design/RimMandrake/biome_mod_architecture.md §5 Phase A step 2. Every field
+    below is the twin's own content, unchanged, EXCEPT:
 
-    Weather: ban 4 is explicit — "No permanent Clear — Clear weather commonality
-    stays 0" — matched exactly (donor already carried Clear:0). AB_ForsakenNight/
-    AB_ForsakenThunderstorm/AB_ForsakenRainyNight (all Alpha Biomes WeatherDefs, kept
-    MayRequire-gated on sarg.alphabiomes since they are optional content, unlike the
-    terrain/texture fields which already assume that mod stays installed) carry the
-    donor's re-skinned physics per the sheet: "the Dark" (permanent), "the
-    Unveiling" (rare illumination rise, still un-authored as its own WeatherDef —
-    SS Owed), "Etchfall" (never water, ban 3), "Witchfire storms." Ban 1 (no
-    geothermal) and ban 2 (no steady wind, gust-pattern only) are mechanic-level, not
-    weather-commonality fields, and are not claimed as satisfied by this def alone.
+      - workerClass: the donor AlphaBiomes.BiomeWorker_RockyCrags becomes this
+        mod's own RM_BiomeWorker_ForsakenCrags (§5 step 2 — a donor type in
+        workerClass is a hard dependency the RimMandrake tier may not assume).
+        The new worker's placement ranges are [INVENTED], same footing as the
+        sibling Gelatinous Slime/Flooded Canyon mods' own worker ranges.
 
-    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
-    BiomeFlora_Ashkarr.xml against rosters/forsaken_crags.json — "the donor roster
-    IS the population" per the sheet's own ruling (SS4), the 13-species nocturnal
-    transplanted family plus the Frostling (moved back here from the Propane Lakes'
-    sheet, per that sheet's own Owed note).
+    Everything else — texture, terrain, weather, diseases, wildAnimals (all 14
+    Alpha Animals rows), wildPlants (all 8 Alpha Biomes/Alpha Genetics rows) —
+    is the twin's content unchanged. Zero RSW_/SW_/RUT_ rows exist in the
+    twin's wildAnimals, so nothing moves to a Utinni patch from THIS def; the
+    real Star Wars content for this biome (RSW_Cindermare/RSW_Skarnix) already
+    lives in a Utinni patch and only had its TARGET corrected to point here
+    (src/RimStarWars/SWBestiary/Patches/Livestock/ForsakenCrags_WildSpawns.xml).
 
-    NOT this pass's scope: the Unveiling as its own rare WeatherDef; the darkbeast,
-    the Dark-folding mechanism, gust-wind variability (all C#, SS Owed); Lightfall
-    chasm authoring (`LIGHTFALL_CHASM_AUTHORING_1`); any world repaint.
-
+    ⚠️ NOT donor-free: terrain/texture and all 8 wildPlants entries carry no
+    MayRequire (inherited from the twin, not this build's scope to fix) — see
+    About.xml for the disclosure. The 14 wildAnimals rows keep their original
+    MayRequire="sarg.alphaanimals" gate and degrade gracefully without it.
   -->
 
   <BiomeDef>
-    <defName>RUT_ForsakenCrags</defName>
+    <defName>RM_ForsakenCrags</defName>
     <label>the Forsaken Crags</label>
     <description>A country of obsidian-black stone twisted into shapes no wind carved, drowned in a darkness that behaves like a substance: it fills the air, it pools, it parts without warning into pockets of impossibly clear air, and it closes again. Light is eaten in transit here, not merely absent. The only reliable illumination is biological -- glowing grass, blue darklight gammas, yellow giant flora -- a land lit like a harbor at night, by its own lamps.</description>
-    <workerClass>AlphaBiomes.BiomeWorker_RockyCrags</workerClass>
+    <workerClass>RimMandrake.ForsakenCrags.RM_BiomeWorker_ForsakenCrags</workerClass>
     <foragedFood>RawAgave</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>
@@ -107,13 +97,6 @@
       <AB_ForsakenRainyNight MayRequire="sarg.alphabiomes">4</AB_ForsakenRainyNight>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
-           33.3% small (the worst real, non-near-empty roster in the sweep). No unwired
-           small fauna exists in this biome's own frozen roster
-           (design/Jawa/worldbuilding/biomes/rosters/forsaken_crags.json) to add instead,
-           so the fix raises the grain already here, same shape as the Gizka fix in
-           Pyrelands (ECOSYSTEM_PYRAMID_LAW_1's first application): the two existing
-           small residents become more common, no megafauna cut. -->
       <AA_DuskRat MayRequire="sarg.alphaanimals">1.5</AA_DuskRat>  <!-- dusk rat - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->
@@ -135,13 +118,6 @@
       <AB_ToxicGamma>0.6</AB_ToxicGamma>  <!-- toxic gamma - tree -->
       <AB_GiantGamma>0.5</AB_GiantGamma>  <!-- giant gamma -->
       <AB_WildRadagast>0.5</AB_WildRadagast>  <!-- wild ragadast -->
-      <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11 ("to crags" / "elsewhere,
-           not heat resistant"): AG_Gamma and AG_Septimum moved here from the_forge, whose
-           42-56 C floor is above their optimal band (opt max 42 C, MEASURED plant_pool.csv)
-           and where AB_GiantGamma above was already their resident kin. The ruling landed
-           in rosters/forsaken_crags.json and reached the game only through
-           BiomeFlora_Ashkarr.xml's now-retired replace operation; transplanted here by
-           BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 so this def carries it itself. -->
       <AG_Gamma>0.5</AG_Gamma>  <!-- gamma -->
       <AB_GiantStikehr>0.3</AB_GiantStikehr>  <!-- giant stikehr -->
       <AG_Septimum>0.25</AG_Septimum>  <!-- septimum -->

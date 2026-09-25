@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.forsakencrags</packageId>
+  <name>RimMandrake: Forsaken Crags</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>sarg.alphabiomes</li>
+    <li>sarg.alphaanimals</li>
+    <li>sarg.alphagenes</li>
+  </loadAfter>
+  <description>FORSAKENCRAGS_RM_MOD_BUILD_1 (Phase A row 6 of the biome-mod-architecture
+split). A drowned-in-darkness, obsidian-black highland biome and its own worldgen
+placement, fully generalized: it names no other franchise or campaign and is
+playable standalone on any generated RimWorld planet. A separate frozen campaign
+world's own Forsaken Crags instance is unaffected and unrelated; this is a new
+sibling biome for everyone else's worlds, not a rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+Ships the biome and its own placement worker (RM_BiomeWorker_ForsakenCrags), the
+donor-content roster (Alpha Biomes' terrain/weather, Alpha Animals' fauna, Alpha
+Biomes/Alpha Genetics flora) transplanted wholesale from the frozen campaign
+twin, and a Mod Settings screen with the standard worldgen-rarity master toggle
+(MOD_OPTIONS_RETROFIT_1 doctrine — defaults = shipped behavior, 0 = never
+generates). No mechanics kit exists for this biome yet (the Unveiling weather,
+darkbeast Dark-halo behaviour, gust-wind variability are all unbuilt and land
+here later, at any point, with no dependency direction).
+
+⚠️ Unlike most RimMandrake biome mods, this one is NOT donor-free: its
+terrain, texture and eight wildPlants entries name Alpha Biomes/Alpha
+Genetics defs with no MayRequire guard, inherited unchanged from the frozen
+campaign twin (the twin's own donor roster was ruled "wholesale" by its
+design sheet, and no fix to that gap was in this build's scope). Alpha
+Biomes and Alpha Genetics are therefore genuinely required for full function;
+the fourteen wildAnimals entries are individually MayRequire'd on Alpha
+Animals and degrade gracefully without it.
+
+NOT in this mod: the Star Wars-tier predators (Cindermare, Skarnix) that hunt
+here in the campaign — those ride a Utinni patch onto this mod's own
+RM_ForsakenCrags def rather than living inside it, per the Q11a naming-tier
+ruling. The Forsakens (the campaign's mystery race) and the six Forsaken vaults
+are campaign plot content and stay in Utinni entirely.</description>
+</ModMetaData>

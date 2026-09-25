@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- FORSAKEN_CRAGS_PREDATORS_BUILD_1 - wires RSW_Cindermare and RSW_Skarnix
-     into Alpha Biomes' AB_RockyCrags (label "forsaken crags") wildAnimals
-     dictionary. Without this the two PawnKindDefs built earlier for this
-     item would never spawn wild anywhere - "both creatures spawn on
-     AB_RockyCrags" is a real criterion, not flavor text, and nothing in the
-     ThingDef/PawnKindDef pair links them to a biome by itself.
+     into the Forsaken Crags' wildAnimals dictionary. Without this the two
+     PawnKindDefs built earlier for this item would never spawn wild anywhere
+     - "both creatures spawn on the Forsaken Crags" is a real criterion, not
+     flavor text, and nothing in the ThingDef/PawnKindDef pair links them to
+     a biome by itself.
+
+     🔴 RETARGETED 2026-09-25 (FORSAKENCRAGS_RM_MOD_BUILD_1): this patch
+     originally targeted the DONOR AB_RockyCrags (Alpha Biomes' own "Forsaken
+     Crags"), authored 2026-09-02, before RUT_ForsakenCrags existed
+     (2026-09-09) and before the RimMandrake split (2026-09-25) — so it never
+     once wired these two predators into either def our campaign actually
+     uses. Per biome_mod_architecture.md §5 step 2, every RSW_/SW_ creature
+     stays out of the RM_ BiomeDef itself and rides here instead, now
+     targeting RM_ForsakenCrags (this campaign's live def is the frozen
+     RUT_ForsakenCrags twin, which carries the world only until the terminal
+     paint — Star Wars content is never added to a RUT_ twin, so RM_
+     ForsakenCrags is correct even though the world does not carry it yet).
 
      Guarded with PatchOperationConditional on the biome's own wildAnimals
-     node rather than a hard modDependency: if Alpha Biomes isn't loaded the
-     condition is false and this whole op is a silent no-op (CLAUDE.md's
-     "PatchOperationConditional/FindMod return true on no match" trap does
-     not bite here because we gate on the TARGET NODE existing, not on the
-     mod's presence) - correct, because this mod's other content (Karrask
-     livestock) does not need Alpha Biomes at all.
+     node rather than a hard modDependency: if mandrake.rm.forsakencrags
+     isn't loaded the condition is false and this whole op is a silent no-op
+     (CLAUDE.md's "PatchOperationConditional/FindMod return true on no match"
+     trap does not bite here because we gate on the TARGET NODE existing, not
+     on the mod's presence) - correct, because this mod's other content
+     (Karrask livestock) does not need the Forsaken Crags mod at all.
 
-     Commonalities picked relative to the biome's existing sole entry
-     (<Rat>0.101</Rat>, live-checked on disk 2026-09-07) - both new predators
-     are rarer than the biome's background vermin, Skarnix (cat-large
-     stalker) somewhat more common than Cindermare (larger, more dangerous
-     solitary threat). -->
+     Commonalities picked relative to the biome's existing background vermin
+     (AA_DuskRat 1.5) - both new predators are rarer than the biome's
+     background vermin, Skarnix (cat-large stalker) somewhat more common than
+     Cindermare (larger, more dangerous solitary threat). Unchanged from the
+     original ruling. -->
 <Patch>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="RM_ForsakenCrags"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_ForsakenCrags"]/wildAnimals</xpath>
       <value>
         <RSW_Cindermare>0.04</RSW_Cindermare>
         <RSW_Skarnix>0.09</RSW_Skarnix>
