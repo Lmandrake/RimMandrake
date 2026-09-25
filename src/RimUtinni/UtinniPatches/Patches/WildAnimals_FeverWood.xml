@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_FeverWood.xml                 UtinniPatches — new file 2026-09-24
+  ============================================================================
+
+  Puts the campaign's Fever Wood Star-Wars-canon fauna/flora onto
+  RM_FeverWood, alongside the one non-Star-Wars-donor animal row
+  (VFEI2_Megathrips) and three non-Star-Wars-donor plant rows
+  (AB_KeeningCordax/AB_Iashiphus/AB_Gomphoeria) that ship inline on
+  src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml itself, per Q9.
+  Same shape as WildAnimals_Pyrelands.xml / WildAnimals_Greentide.xml.
+
+  WHY THIS FILE HAS TO EXIST. §7 Q11a (owner, 2026-09-22): a genuinely canon
+  Star Wars name is IP and must route through the Utinni campaign patch
+  layer, never the franchise-free RimMandrake tier — "the top mod without
+  star wars will look precisely the same as the star wars enhanced one save
+  for any star wars beasts we populate it with." So RM_FeverWood may not
+  carry this cast inline, and at Phase B the RUT_FeverWood twin that
+  currently carries it dies and RM_FeverWood takes the tiles. Without this
+  patch in place by then, the Fever Wood would lose 10 of its 11 fauna rows
+  and 3 of its 7 flora rows on the live world.
+
+  🔑 SOURCE OF TRUTH: every defName and weight below is copied from
+  RUT_FeverWood.xml's own wildAnimals/wildPlants (frozen 2026-09-24), the
+  roster the world runs on today, with ONE live correction: RUT_FeverWood.xml
+  now casts `RSW_Nuna` (MayRequire mandrake.rsw.swbestiary), not the bare
+  donor `Nuna` (MayRequire mlie.starwarsanimalcollection) that
+  FEVERWOOD_RM_MOD_BUILD_1's own written table still names — that row was
+  repointed to the RSW_ port by DUPLICATE_CANON_DEFNAME_PAIRS_1's owner-ruled
+  merge, dated the same day (2026-09-23) as the item's own MEASURED pass, and
+  this file follows the live def rather than the item's now-stale table. The
+  routing verdict (Utinni patch, not inline) is unchanged either way.
+
+  10 wildAnimals rows split by donor mod:
+    mandrake.rsw.swbestiary (our own RSW_ ports):
+      RSW_GlowSlug 0.5, RSW_Nuna 0.4, RSW_JewelBeetle 0.2, RSW_AcidSlug 0.05
+    mlie.starwarsanimalcollection (SW canon, no port yet — DONOR_DEFS_PORT_TO_OURS_1):
+      Urusai 0.5, Gelagrub 0.4, Convor 0.3, LongtailGorg 0.3, Whisperbird 0.3,
+      Fambaa 0.02
+
+  3 wildPlants rows, all mlie.starwarsanimalcollection (SW canon, no port yet):
+    Plant_HydenockTree_Wild 1.5, Plant_JoganTree_Wild 0.6, Plant_Chakroot_Wild 0.4
+    (hydenock/jogan/chak-root are Q11a's own worked canon examples.)
+
+  ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional
+  returns true on no match, and an unmatched PatchOperationAdd is silent. A
+  clean validate_patch.py run is NOT proof a row landed.
+  🔴 UNVERIFIED AGAINST A LOAD: authored offline (FEVERWOOD_RM_MOD_BUILD_1
+  steps 1-4). Step 5 (a scratch-world quicktest, all five expansions) is
+  Desktop-only and owed — confirm all 13 rows from a post-load def dump
+  before believing this file works, same standing caveat as every sibling
+  WildAnimals_*.xml in this folder.
+
+  RM_FeverWood's own inline rows (VFEI2_Megathrips, AB_KeeningCordax,
+  AB_Iashiphus, AB_Gomphoeria, RM_GiantLeaf) need no patch — they are direct
+  fields on the BiomeDef itself, added onto by this file, never replaced.
+-->
+<Patch>
+
+  <!-- Our own RSW_ ports. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildAnimals</xpath>
+      <value>
+        <RSW_GlowSlug>0.5</RSW_GlowSlug>
+        <RSW_Nuna>0.4</RSW_Nuna>
+        <RSW_JewelBeetle>0.2</RSW_JewelBeetle>
+        <RSW_AcidSlug>0.05</RSW_AcidSlug>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Star Wars canon, not yet ported to our own RSW_ defs (DONOR_DEFS_PORT_TO_OURS_1). -->
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
+    <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildAnimals</xpath>
+      <value>
+        <Urusai>0.5</Urusai>
+        <Gelagrub>0.4</Gelagrub>
+        <Convor>0.3</Convor>
+        <LongtailGorg>0.3</LongtailGorg>
+        <Whisperbird>0.3</Whisperbird>
+        <Fambaa>0.02</Fambaa>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Star Wars canon wildPlants, same donor mod, not yet ported. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
+    <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildPlants</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildPlants</xpath>
+      <value>
+        <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild>
+        <Plant_JoganTree_Wild>0.6</Plant_JoganTree_Wild>
+        <Plant_Chakroot_Wild>0.4</Plant_Chakroot_Wild>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

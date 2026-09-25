@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_RM_MOD_BUILD_1 step 2. Own-tier duplicate of RUT_GiantLeaf +
+     RUT_RawGiantLeaf (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/
+     RUT_CavernsFlora.xml), per architecture spec Q13 ("content wired into
+     TWO biome mods: DUPLICATE, THEN DIVERGE" — owner, 2026-09-23, names
+     "root causeways Greentide + Fever Wood" as a worked example; the giant
+     leaf is the same shape, since RUT_GiantLeaf is ALSO an unconditional row
+     in RUT_Greentide.xml's own wildPlants, line 250, and cannot be
+     renamed/moved out from under that still-live twin). The donor-file
+     original is untouched and keeps serving RUT_Greentide/RUT_FeverWood
+     until Phase B; these are real second defs under their own defNames,
+     texture copied (not shared) so this mod can be removed without touching
+     UtinniPatches' own art. Fields copied verbatim from the source defs.
+     Regenerating this copy into its own distinct variant is a follow-on,
+     not done here. -->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_GiantLeaf</defName>
+    <label>giant leaf</label>
+    <description>An enormous, glossy leaf that grows low in the jungle understory, broad enough to shelter a grown man from the rain. Edible when young, and gathered as much for the shade as the food.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.20</Nutrition>
+      <Flammability>1</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_GiantLeaf/RM_GiantLeaf_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.1, 0.2, 0.1)</volume>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <pathCost>10</pathCost>
+    <ingestible/>
+    <plant>
+      <fertilityMin>1</fertilityMin>
+      <fertilitySensitivity>0.7</fertilitySensitivity>
+      <growDays>12</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestYield>15</harvestYield>
+      <sowMinSkill>5</sowMinSkill>
+      <maxMeshCount>9</maxMeshCount>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_RawGiantLeaf</harvestedThingDef>
+      <visualSizeRange>0.5~1.3</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>10</wildClusterRadius>
+      <wildClusterWeight>100</wildClusterWeight>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_RawGiantLeaf</defName>
+    <label>giant leaf</label>
+    <description>A giant and very impressive leaf.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_GiantLeaf/RM_GiantLeaf_a</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>0.9</MarketValue>
+      <Mass>0.01</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+  </ThingDef>
+
+</Defs>

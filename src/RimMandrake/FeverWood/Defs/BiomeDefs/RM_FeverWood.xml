@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWood                                    FEVERWOOD_RM_MOD_BUILD_1
+
+  RimMandrake-tier standalone build of the Fever Wood, derived from the
+  frozen campaign twin src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
+  RUT_FeverWood.xml (232 lines, FROZEN — see that file's own header). This
+  copy carries: vanilla terrainsByFertility/diseases/baseWeatherCommonalities
+  unchanged; the 3 modExtensions (already mandrake.rm.environmentalhazards-
+  tier, so they need only be present here, not re-authored) re-pointed at
+  this def simply by being nested inside it; its own workerClass replacing
+  the twin's donor ReGrowthCore.UniversalBiomeWorker; and the vanilla +
+  non-Star-Wars-donor rows of wildAnimals/wildPlants only.
+
+  ⛔ Star Wars canon fauna/flora do NOT ship here (Q11a) — every RSW_/donor
+  row that carries a canon or franchise name rides
+  src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml instead (10
+  animal rows, 3 plant rows). VFEI2_Megathrips (non-Star-Wars donor) and
+  AB_KeeningCordax/AB_Iashiphus/AB_Gomphoeria (non-Star-Wars donor,
+  sarg.alphabiomes) stay inline per Q9. RUT_GiantLeaf is duplicated as this
+  mod's own RM_GiantLeaf (Q13 — see Defs/ThingDefs_Plants/RM_GiantLeaf.xml
+  for why this is a duplicate, not a move: the donor def is also an
+  unconditional row in RUT_Greentide.xml).
+
+  generatesNaturally stays false, unchanged from the twin: the Fever Wood is
+  a campaign-placed biome, not one meant to win natural worldgen scoring —
+  RM_BiomeWorker_FeverWood exists (and is real, not a stub) so the def still
+  loads cleanly and so a future generatesNaturally=true flip on someone
+  else's world is not starting from a null workerClass.
+
+  World map texture: the twin's `World/Biomes/GreaterTropicalSwamp` is DONOR
+  ART (Steam Workshop item 3620545124), a hard dependency the RM tier may
+  not assume. PLACEHOLDER: `World/Biomes/RM_FeverWood.png`, a flat dark
+  swamp-green/brown 512x512 tone at this mod's own texture path — not a
+  regen, not an artpipe job, just enough to load without borrowing the
+  donor's file. Real bespoke world-map art is owed to the standing art
+  pipeline.
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_FeverWood</defName>
+    <generatesNaturally>false</generatesNaturally>
+    <label>the Fever Wood</label>
+    <description>The place where trees finally won. Great solid trunks, much more than one tile wide, have rooted the backswamp still and solid, tamed the flowing waters into shallow surface pools with deep, deep mud beneath. Their arches and branches have grown into byways well above the dark still pools -- roads made of living wood. In the crown: a whole arboreal world. Below: the black mirrors, unrippled. Nothing goes in the water here. Everything remembers why.</description>
+    <workerClass>RimMandrake.FeverWood.RM_BiomeWorker_FeverWood</workerClass>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>2.3</animalDensity>
+    <plantDensity>0.7</plantDensity>
+    <forageability>0.6</forageability>
+    <movementDifficulty>5</movementDifficulty>
+    <texture>World/Biomes/RM_FeverWood</texture>
+    <diseaseMtbDays>20</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>70</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>140</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>70</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Soil</terrain>
+        <min>-999</min>
+        <max>0.9</max>
+      </li>
+      <li>
+        <terrain>SoilRich</terrain>
+        <min>0.9</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <!-- The 3 hazard modExtensions, unchanged from the twin — all already
+         mandrake.rm.environmentalhazards-tier, re-pointed at this def
+         simply by being nested here. See RUT_FeverWood.xml's own comments
+         for the full field-by-field rationale; not repeated here. -->
+    <modExtensions>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
+        <heartwoodThing>RUT_FeverTrunkHeartwood</heartwoodThing>
+        <coreMarkerThing>RUT_FeverTrunkCore</coreMarkerThing>
+        <boleCountRange>1~2</boleCountRange>
+        <boleRadius>4~6</boleRadius>
+        <minSpacing>30</minSpacing>
+        <edgeMargin>12</edgeMargin>
+      </li>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_MirrorPoolBiomeExtension">
+        <poolTerrain>RUT_FeverWoodMirrorPool</poolTerrain>
+      </li>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
+        <causewayTerrain>RUT_Boughway</causewayTerrain>
+        <basinTerrains>
+          <li>Soil</li>
+          <li>SoilRich</li>
+        </basinTerrains>
+        <pathsPerAnchorRange>3~6</pathsPerAnchorRange>
+        <laneWidthRange>1~2</laneWidthRange>
+        <pathLengthRange>20~40</pathLengthRange>
+        <fallbackAnchorCountRange>1~3</fallbackAnchorCountRange>
+        <fallbackMinAnchorSpacing>25</fallbackMinAnchorSpacing>
+        <fallbackEdgeMargin>10</fallbackEdgeMargin>
+        <additionalPasses>
+          <li>
+            <causewayTerrain>RUT_RootCauseway</causewayTerrain>
+            <basinTerrains>
+              <li>Soil</li>
+              <li>SoilRich</li>
+            </basinTerrains>
+            <pathsPerAnchorRange>1~2</pathsPerAnchorRange>
+            <laneWidthRange>1~1</laneWidthRange>
+            <pathLengthRange>10~20</pathLengthRange>
+            <turnChancePerStep>0.3</turnChancePerStep>
+          </li>
+          <li>
+            <causewayTerrain>RUT_BoughSoil</causewayTerrain>
+            <basinTerrains>
+              <li>Soil</li>
+              <li>SoilRich</li>
+            </basinTerrains>
+            <pathsPerAnchorRange>4~8</pathsPerAnchorRange>
+            <laneWidthRange>2~4</laneWidthRange>
+            <pathLengthRange>15~30</pathLengthRange>
+            <turnChancePerStep>0.4</turnChancePerStep>
+          </li>
+        </additionalPasses>
+      </li>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GroundRefusalBiomeExtension">
+        <refusalTerrain>MarshyTerrain</refusalTerrain>
+        <convertFromTerrains>
+          <li>Soil</li>
+          <li>SoilRich</li>
+        </convertFromTerrains>
+      </li>
+    </modExtensions>
+    <baseWeatherCommonalities>
+      <Clear>30</Clear>
+      <Fog>10</Fog>
+      <Rain>0</Rain>
+      <DryThunderstorm>1</DryThunderstorm>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">2</Overcast>
+    </baseWeatherCommonalities>
+    <!-- Only the non-Star-Wars-donor row — Q9. The other 10 wildAnimals
+         rows from the twin ride WildAnimals_FeverWood.xml (Utinni patch)
+         instead — Q11a. -->
+    <wildAnimals>
+      <VFEI2_Megathrips MayRequire="oskarpotocki.vfe.insectoid2">0.5</VFEI2_Megathrips>  <!-- megathrips - wood-borer, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <!-- The 3 non-Star-Wars-donor rows plus this mod's own RM_GiantLeaf.
+         The other 3 wildPlants rows from the twin (all mlie.starwars-
+         animalcollection canon names) ride WildAnimals_FeverWood.xml
+         instead — Q11a. -->
+    <wildPlants>
+      <AB_KeeningCordax MayRequire="sarg.alphabiomes">1.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
+      <RM_GiantLeaf>0.8</RM_GiantLeaf>  <!-- giant leaf -->
+      <AB_Iashiphus MayRequire="sarg.alphabiomes">0.5</AB_Iashiphus>  <!-- iashiphus -->
+      <AB_Gomphoeria MayRequire="sarg.alphabiomes">0.4</AB_Gomphoeria>  <!-- gomphoeria -->
+    </wildPlants>
+    <wildPlantRegrowDays>15</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>
