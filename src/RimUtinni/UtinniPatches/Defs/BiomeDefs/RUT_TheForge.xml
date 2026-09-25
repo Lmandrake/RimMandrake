@@ -153,6 +153,13 @@
            (AA_ColossalAerofleet bodySize 2, Tibidee bodySize 12) are both LARGE and are
            left out on purpose. -->
       <AA_CrescendoAnole MayRequire="sarg.alphaanimals">0.5</AA_CrescendoAnole>  <!-- crescendo anole - small, ruled -->
+      <!-- COMMISSION_LEDGER_CLEANUP_1: the_forge sheet's own owed roster line ("fleet
+           fliers, flash-flora + fireweed") plus §4's named sky fauna ("small darting
+           things that race in, eat fireweed, and retreat before they perish").
+           RUT_FleetFlier.xml, this same pass, same mod (UtinniPatches) as this
+           BiomeDef, so no MayRequire (matches the bare RUT_FireLavender/RUT_Sagecrust/
+           RUT_HeatsinkFungus entries already in this file's own wildPlants list). -->
+      <RUT_FleetFlier>0.45</RUT_FleetFlier>  <!-- fleet flier - small sky, new -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

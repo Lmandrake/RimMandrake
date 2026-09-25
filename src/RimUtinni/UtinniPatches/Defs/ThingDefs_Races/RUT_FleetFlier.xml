@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FleetFlier.xml                     UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug `the_forge:fleet-fliers-small-darting-fireweed-eaters`
+  (design/Jawa/worldbuilding/biomes/the_forge.md §4: "The fleet fliers -
+  small darting things that race in, eat fireweed, and retreat before they
+  perish"; roster's own new_defs entry, flora_assignment_register.decisions.json
+  ledger:the_forge:fleet-fliers-small-darting-fireweed-eaters, decision "in").
+  A genuinely NEW creature, not a reskin: the roster's own note already
+  recorded "no small donor flier passes heat-adapted; register flies flag
+  broken so no candidate is provable anyway" — checked again this pass
+  (cast_assignment.csv, no unclaimed small heat-adapted flier anywhere in the
+  live cast) before authoring anything new, same discipline the poison_forest
+  wave's VentStalker slug used.
+
+  Fireweed itself needs no new def: `Plant_Fireweed` (Odyssey vanilla) is
+  already wired into RUT_TheForge.xml's own wildPlants at 0.9 — the "eat
+  fireweed" half of this slug was already built long before this pass; only
+  the creature was owed.
+
+  Mechanics: rides FORGE_MECHANICS_1's already-shipped F3 sky-fauna kit
+  wholesale, zero new C#. `CompProperties_VaporDrifter` (RimMandrake.
+  EnvironmentalHazards) is added with `forageRadiusBeyondColumns 12` -
+  literally the class's own doc comment naming this exact figure for "a
+  concrete fleet-flier kind" (RM_CompVaporDrifter.cs). `groundHazardImmune`
+  is left at its class default (true): floating above the vent columns
+  keeps them clear of scald bursts, matching the sheet's "sky herds" framing.
+  No MayRequire on the class reference - matches this same file family's own
+  precedent (RUT_DyingCreep.xml/RUT_TibannaGas.xml both reference
+  RimMandrake.EnvironmentalHazards classes bare; the mod's own About.xml has
+  no formal dependency on mandrake.rm.environmentalhazards at all, a
+  pre-existing gap this pass did not invent and is out of this slug's scope
+  to fix).
+
+  "Retreat before they perish" is read as a REAL mechanical consequence, not
+  flavor text only: ComfyTemperatureMax (38) sits just under the biome's own
+  measured 42-56C floor (the_forge.md §0), so a fleet flier that lingers on
+  the ground (rather than staying aloft in the immune columns) starts taking
+  ordinary heatstroke - unlike Beldon/Aerofleet's wide -100..100 comfort
+  band, this species is NOT heat-adapted on the ground, only shielded while
+  airborne over a column. `leaveMapOnFleeChance 0.7` + `flightStartChanceOnJobStart
+  0.4` push the same "darts in, darts out" read into ordinary wildlife AI
+  (same knobs RSW_Porg's own flight profile already uses, scaled up for a
+  more skittish species).
+
+  Native 1.6 flight (MaxFlightTime/FlightCooldown/race flight fields), not
+  VEF floating - CLAUDE.md's standing "if it flies in the fiction, it flies
+  in the game" law, and this is a from-scratch creature with no donor
+  float-comp to inherit. No flyingAnimationFramePathPrefix: no frame art
+  exists yet and the law is explicit that flight is never blocked waiting on
+  frames - it flies with no wing-beat animation until a later art pass adds
+  a flip-book.
+
+  Live birth (gestationPeriodDays + litterSizeCurve), not CompProperties_
+  EggLayer: an avian-styled RaceProps.body is not required to lay eggs
+  (RimWorld birds do both in different vanilla/mod defs), and inventing a
+  bespoke small egg ThingDef pair for a single low-priority roster slug would
+  be scope creep this pass does not need.
+
+  Art: genuinely new, no existing render found (checked infrastructure/
+  artpipe/{done,pending,registry.jsonl} and design/ for "fireweed"/
+  "fleetflier"/"fleet-flier"/"fleet flier" - only hits are the unrelated
+  firevine_fireweed_v1 plant job and this file's own C# precedent comment).
+  Three facing jobs filed this pass (south/east/north; west mirrors east per
+  the engine's own convention) - rutfleetflier_v1_{south,east,north}.json.
+  texPath points at this mod's own new Things/Pawn/Animal/RUT_FleetFlier
+  path (this mod already ships a Things/Pawn/Animal tree, so
+  validate_patch.py's own-namespace heuristic correctly hard-errors the
+  missing file rather than silently accepting a borrowed vanilla icon - same
+  accepted "expected pending-texPath" class as RUT_DarkCrust/RUT_Fuzz, no
+  DEPLOY_HOLD.txt entry needed per that same precedent, since this item's
+  scope is offline-only and nothing here is being deployed).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_FleetFlier</defName>
+    <label>fleet flier</label>
+    <description>A small, quick-winged creature that darts into the Forge's vapor columns to graze on fireweed before the heat catches up with it. It never lingers - a fleet flier on the open ground is a fleet flier running out of time.</description>
+    <statBases>
+      <MoveSpeed>4.2</MoveSpeed>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>38</ComfyTemperatureMax>
+      <MarketValue>55</MarketValue>
+      <Wildness>0.9</Wildness>
+      <MaxFlightTime>15</MaxFlightTime>
+      <FlightCooldown>4</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>1.5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_VaporDrifter">
+        <forageRadiusBeyondColumns>12</forageRadiusBeyondColumns>
+        <groundHazardImmune>true</groundHazardImmune>
+      </li>
+    </comps>
+    <race>
+      <body>Bird</body>
+      <predator>false</predator>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHungerRate>0.4</baseHungerRate>
+      <baseHealthScale>0.3</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <herdAnimal>true</herdAnimal>
+      <roamMtbDays>3</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <lifeExpectancy>5</lifeExpectancy>
+      <gestationPeriodDays>3</gestationPeriodDays>
+      <flightStartChanceOnJobStart>0.4</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.7</leaveMapOnFleeChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.2)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_FleetFlier</defName>
+    <label>fleet flier</label>
+    <race>RUT_FleetFlier</race>
+    <combatPower>12</combatPower>
+    <wildGroupSize>3~8</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_FleetFlier/RUT_FleetFlier</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_FleetFlier/RUT_FleetFlier</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_FleetFlier/RUT_FleetFlier</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

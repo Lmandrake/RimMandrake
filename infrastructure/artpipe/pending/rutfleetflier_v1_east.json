@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T00:00:00Z",
+  "drawsize": 0.55,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rutfleetflier_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld top-down animal sprite, painterly vanilla-RimWorld creature art style: a tiny, quick, darting flying creature -- a compact rounded body with long narrow swept-back wings built for short fast bursts, a stubby beak, big alert eyes. Ash-grey and basalt-black plumage with a single streak of fireweed's bright silvery-green along the wing edge, like pollen it never quite shakes off. Wings held mid-beat, body angled forward as if it just darted in. Small creature, viewed from directly above at a slight isometric RimWorld camera angle, centered, a short soft shadow beneath it, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "RUT_FleetFlier (COMMISSION_LEDGER_CLEANUP_1 the_forge sheet slug 'fleet-fliers-small-darting-fireweed-eaters', mandrake.rut.patches, ThingDefs_Races/RUT_FleetFlier.xml). the_forge.md \u00a74: 'small darting things that race in, eat fireweed, and retreat before they perish'; \u00a79 palette: basalt black, obsidian gloss, ash grey, fireweed's defiant green as the one accent. Small silhouette (baseBodySize 0.12, drawSize 0.35/0.55/0.75 across life stages), native 1.6 flight (no VEF float), reads as a quick prey-sized flier not a predator."
+}
