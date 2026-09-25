@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T02:50:19Z",
+  "drawsize": 1.1,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "feverwood_thavrik_south",
+  "priority": 100,
+  "prompt": "A heavy-bodied short-winged alien flier covered in coarse hair rather than feathers except on the flight surfaces, a furred thing that flies, stocky and fierce around its high nest. Wet dim swamp-forest palette, dark pelt browns, painterly game-art style, not photorealistic, heavy clean black outline.",
+  "reference": null,
+  "rimflow_item_id": "FEVERWOOD_RM_MOD_BUILD_1",
+  "style_notes": ""
+}
