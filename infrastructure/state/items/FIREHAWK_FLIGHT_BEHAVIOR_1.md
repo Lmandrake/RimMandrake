@@ -210,5 +210,20 @@ hunt, for this and every future flyer. ~~(a) sample much more densely...~~ and
 ~~(b) get the pawn genuinely hungry first...~~ are superseded by the ruling
 above — do not pursue either.
 
+### 🔴🔴 owner ruling, THIRD repetition, same session — do not live-test flight unattended at all
+Verbatim, said again while this bridge hold was still live: *"For the third
+time, do not do live testing of flyers without a human present. It doesn't
+work."* This is broader than the screenshot ban two paragraphs up — it rules
+out **any** unattended FOUNDRY solo bridge session hunting a live flight
+sighting, not just the screenshot method. Filed at the standing-rule level too
+(`CLAUDE.md`, "If it flies in the fiction, it flies in the game" section) so
+this stops needing re-discovery per item. **Whoever is holding the bridge for
+this item right now: stop the unattended hunt.** The positive live sighting
+bar on this item is only closable two ways from here: (c) above (a
+deterministic state-read tool, buildable and provable without the owner
+watching), or a joint session where the owner is actually present and looking.
+Do not open another unattended bridge session against this item's live-verify
+bar.
+
 `RUT_FireWasp` is unchanged this pass — still next-wave, same "flies, no
 animation frames yet" state as before.
