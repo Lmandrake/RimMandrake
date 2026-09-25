@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Vorrel_Items.xml                     DESERT_STAGGERSEED_BUILD_1
+  RM_Vorrel_Items.xml                      LONGSHADE_RM_MOD_BUILD_1 step 2
+
+  Moved and renamed from src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Items/
+  RUT_Staggerseed_Items.xml (RUT_VorrelFruit -> RM_VorrelFruit,
+  RUT_VorrelSeedDish -> RM_VorrelSeedDish), per §7 Q8. Content unchanged.
 
   The two harvested products of one plant, which desert.md §4b makes a point
   of: raw is lethal, prepared is a delicacy, and both come off the same bush.
@@ -8,28 +12,26 @@
   controlled near-miss with a lethal parasite" under Uniquely available, so
   the dish is a named target of the Star Wars cuisine track, not flavour.
 
-  Names are PROVISIONAL — see RUT_Vorrel.xml's header and the owner card
-  items/closed/STAGGERSEED_SHIPPING_NAME_1.md. Both products must keep the same stem
-  as whatever the plant ends up called; the joke only lands if the player
-  recognises the delicacy as the thing that killed their pack animal.
+  Names are PROVISIONAL — see RM_Vorrel.xml's header and the owner card
+  items/closed/STAGGERSEED_SHIPPING_NAME_1.md. Both products must keep the
+  same stem as whatever the plant ends up called; the joke only lands if the
+  player recognises the delicacy as the thing that killed their pack animal.
 
-  Art: jobs rutvorrel_v1 (covers the raw fruit alongside the bush) and
-  rutvorreldish_v1 (the dish) were filed this pass — see
-  RUT_Vorrel.xml's header for the artpipe search that preceded them. The
-  texPaths below are where those renders land and will read as missing until
-  the daemon gets to them.
+  Art: see RM_Vorrel.xml's header — two DONE jobs exist under the old
+  rutstaggerseed_v1/rutstaggerseeddish_v1 names but were never deployed to a
+  Textures/ folder. texPaths below are unchanged in shape from the old ones.
 -->
 <Defs>
 
   <!-- ============== Raw fruit — the lethal one ============== -->
   <ThingDef ParentName="PlantFoodRawBase">
-    <defName>RUT_VorrelFruit</defName>
+    <defName>RM_VorrelFruit</defName>
     <label>vorrel fruit</label>
     <description>Fat, pale, faintly sweet fruit off a vorrel bush. Split one and the flesh is more seed than flesh. Eaten as it comes it is a death sentence with a few hours on it; put through a proper preparation it is the most sought-after dish on the dayside. There is no third option, and the difference is entirely the cook's.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
-      <!-- Job rutvorrel_v1. Pending until the daemon lands it. -->
-      <texPath>Things/Item/Plant/RUT_VorrelFruit</texPath>
+      <!-- Art pending deploy — see RM_Vorrel.xml's header. -->
+      <texPath>Things/Item/Plant/RM_VorrelFruit</texPath>
     </graphicData>
     <statBases>
       <MarketValue>2.4</MarketValue>
@@ -46,7 +48,7 @@
       <tasteThought>AteRawFood</tasteThought>
       <outcomeDoers>
         <li Class="IngestionOutcomeDoer_GiveHediff">
-          <hediffDef>RUT_VorrelBrood</hediffDef>
+          <hediffDef>RM_VorrelBrood</hediffDef>
           <severity>0.1</severity>
         </li>
       </outcomeDoers>
@@ -65,14 +67,14 @@
        A dish whose whole mechanism is live seed on a timer has no business
        keeping indefinitely, and MealBase alone would never rot. -->
   <ThingDef ParentName="MealCooked">
-    <defName>RUT_VorrelSeedDish</defName>
+    <defName>RM_VorrelSeedDish</defName>
     <label>prepared vorrel</label>
     <description>Vorrel, cooked exactly hot enough and exactly long enough. The seeds are not killed before they are eaten — that would waste them. They are woken, so that they germinate on schedule inside the diner and then exhaust themselves and die a few hours short of doing any harm. What is left is a long, bright, entirely undeserved sense of having got away with something, because that is precisely what happened. Cooks who are merely good do not make this dish.</description>
     <graphicData>
-      <!-- Job rutvorreldish_v1. Pending until the daemon lands it.
+      <!-- Art pending deploy — see RM_Vorrel.xml's header.
            Graphic_StackCount, not Graphic_MealVariants: the variants class wants
            a numbered set of meal images and this job renders one dish. -->
-      <texPath>Things/Item/Meal/RUT_VorrelSeedDish</texPath>
+      <texPath>Things/Item/Meal/RM_VorrelSeedDish</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -95,7 +97,7 @@
       <optimalityOffsetFeedingAnimals>-100</optimalityOffsetFeedingAnimals>
       <outcomeDoers>
         <li Class="IngestionOutcomeDoer_GiveHediff">
-          <hediffDef>RUT_VorrelEuphoria</hediffDef>
+          <hediffDef>RM_VorrelEuphoria</hediffDef>
           <severity>1.0</severity>
         </li>
       </outcomeDoers>

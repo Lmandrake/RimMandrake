@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Vorrel_Recipes.xml                   DESERT_STAGGERSEED_BUILD_1
+  RM_Vorrel_Recipes.xml                    LONGSHADE_RM_MOD_BUILD_1 step 2
+
+  Moved and renamed from src/RimUtinni/AshkarrFlora/Defs/RecipeDefs/
+  RUT_Staggerseed_Recipes.xml (RUT_Cook_VorrelSeedDish -> RM_Cook_VorrelSeedDish,
+  ingredient/product defNames updated to match), per §7 Q8. Content unchanged.
 
   The preparation desert.md §4b turns on: "Prepared correctly, the
   preparation lets them begin to grow and then perish before they can hurt
@@ -26,7 +30,7 @@
 <Defs>
 
   <RecipeDef>
-    <defName>RUT_Cook_VorrelSeedDish</defName>
+    <defName>RM_Cook_VorrelSeedDish</defName>
     <label>prepare vorrel</label>
     <description>Wake a batch of vorrel and cook it to the exact point where the seeds will germinate in the diner and then die short of doing harm. Done wrong it is simply a fatal meal.</description>
     <jobString>Preparing vorrel.</jobString>
@@ -44,7 +48,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_VorrelFruit</li>
+            <li>RM_VorrelFruit</li>
           </thingDefs>
         </filter>
         <count>12</count>
@@ -52,16 +56,16 @@
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-        <li>RUT_VorrelFruit</li>
+        <li>RM_VorrelFruit</li>
       </thingDefs>
     </fixedIngredientFilter>
     <defaultIngredientFilter>
       <thingDefs>
-        <li>RUT_VorrelFruit</li>
+        <li>RM_VorrelFruit</li>
       </thingDefs>
     </defaultIngredientFilter>
     <products>
-      <RUT_VorrelSeedDish>1</RUT_VorrelSeedDish>
+      <RM_VorrelSeedDish>1</RM_VorrelSeedDish>
     </products>
     <recipeUsers>
       <li>ElectricStove</li>

@@ -194,9 +194,21 @@ generic RimWorld content, not Star Wars content — tier grammar,
 `NAMING_SCHEME_PLAN.md`; `naming_lint.py` checks prefix against mod tier, which
 is why the plant defs do not go beside `RSW_Ultracactus.xml`). `RUT_Desert`
 wires them into `wildPlants` with `MayRequire="mandrake.rm.environmentalhazards"`,
-exactly as it already does for the SWBestiary plants. When
-`BIOME_MOD_SPLIT_EXECUTION_1` names the desert's own RimMandrake mod, the plant
-defs may move there by `git mv` — no rename.
+exactly as it already does for the SWBestiary plants (and its own frozen copy
+still does — `LONGSHADE_RM_MOD_BUILD_1`, 2026-09-24).
+
+🔴 CORRECTED 2026-09-24: the desert's own RimMandrake mod
+(`LONGSHADE_RM_MOD_BUILD_1`, `mandrake.rm.longshade`, biome_mod_architecture.md
+§7 Q2 "the Long Shade") landed, and `RM_Leachmoss`/`RM_Venomvine` stayed exactly
+where this section said — they did NOT move; they remain in
+`mandrake.rm.environmentalhazards`, wired inline on `RM_LongShade`'s own
+`wildPlants` at the same weights, `MayRequire`-guarded, unchanged. The one plant
+of this desert build that DID change mods is a different one entirely —
+`RUT_Vorrel` (the cycle plant, `DESERT_STAGGERSEED_BUILD_1`, previously
+`mandrake.rut.ashkarrflora`) — and it WAS renamed on the move, `RM_Vorrel` (§7
+Q8). The "no rename" line this replaces was true only for this section's own
+two plants and should not be read as a blanket claim about every desert plant's
+eventual move.
 
 Mod Settings (both plants live behind the kit's settings screen): contact venom
 on/off (default on); scratch damage multiplier; venom lethal on/off (default on);
