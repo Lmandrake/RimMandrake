@@ -466,8 +466,8 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `RSW_AcidSlug` | acid slug | the_fever_wood | NONCANON | batch 3 · quollith |
 | `RSW_BloodletterPetrel` | bloodletter petrel | wasteland | NONCANON | batch 2 · fithrak |
 | `RSW_CaveLemming` | cave lemming | nightside_ice | NONCANON | batch 1 · mahllik |
-| `RSW_ColonyPustuleHornet` | pustule hornet | the_rot | NONCANON | batch 2 · zillok |
-| `RSW_ColonyPustuleHornetQueen` | pustule queen | the_rot | NONCANON | batch 2 · zillok queen |
+| `RSW_ColonyPustuleHornet` | pustule hornet | the_rot | NONCANON | ruled 2026-09-24 · thozzik |
+| `RSW_ColonyPustuleHornetQueen` | pustule queen | the_rot | NONCANON | ruled 2026-09-24 · thozzik queen |
 | `RSW_Creature_Mantrap` | mantrap | the_cracked_lands | NONCANON | batch 2 · saqqat |
 | `RSW_CrestedDragon` | crested dragon | the_miasma | NONCANON | batch 2 · dunkara |
 | `RSW_CrystalFairyMole` | crystal fairy mole | the_scarlands | NONCANON | batch 2 · pittok |
@@ -487,9 +487,9 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `RSW_MutatingTumorfishSpawn` | mutating tumorfish spawn | the_twilight_sea | NONCANON | SEA BATCH — blocked on TERMINALBIOMES_RM_MOD_BUILD_1 |
 | `RSW_PodWorm` | pod worm | the_miasma | NONCANON | batch 2 · lundoba |
 | `RSW_Polluwog` | polluwog | the_grey_sea | NONCANON | SEA BATCH — blocked on TERMINALBIOMES_RM_MOD_BUILD_1 |
-| `RSW_PustuleHornet` | pustule hornet | the_rot | NONCANON | batch 2 · zillok |
-| `RSW_PustuleHornetQueen` | pustule queen | the_rot | NONCANON | batch 2 · zillok queen |
-| `RSW_PustuleHornetSpawned` | pustule hornet | the_rot | NONCANON | batch 2 · zillok |
+| `RSW_PustuleHornet` | pustule hornet | the_rot | NONCANON | ruled 2026-09-24 · thozzik |
+| `RSW_PustuleHornetQueen` | pustule queen | the_rot | NONCANON | ruled 2026-09-24 · thozzik queen |
+| `RSW_PustuleHornetSpawned` | pustule hornet | the_rot | NONCANON | ruled 2026-09-24 · thozzik |
 | `RSW_Reefback` | reefback | the_grey_sea | NONCANON | SEA BATCH — blocked on TERMINALBIOMES_RM_MOD_BUILD_1 |
 | `RSW_RustNipperJuv` | young rust nipper | the_miasma | NONCANON | SEA BATCH — blocked on TERMINALBIOMES_RM_MOD_BUILD_1 |
 | `RSW_Sacapillar` | sacapillar | wasteland | NONCANON | batch 2 · thoffra |
@@ -502,7 +502,7 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `RSW_Starmaw` | starmaw | the_twilight_sea | NONCANON | SEA BATCH — blocked on TERMINALBIOMES_RM_MOD_BUILD_1 |
 | `RSW_Thrumbungus` | thrumbungus | the_rot | NONCANON | batch 2 · brullith |
 | `RSW_TruffleMole` | truffle mole | desert, dune_sea_deep_desert | NONCANON | batch 2 · pikkut |
-| `RSW_Yooka` | yooka | the_rot | NONCANON | batch 2 · yurrok (offer; yooka stands if he prefers) |
+| `RSW_Yooka` | yooka | the_rot | NONCANON | ruled 2026-09-24 · brogg |
 | `SW_Electricfish` | Electricfish | the_scarlands | NONCANON | batch 2 · chekkit |
 | `SW_Electricgryllotalpa` | Electricgryllotalpa | the_scarlands | NONCANON | batch 2 · katchit |
 | `SW_Electrictick` | Electrictick | the_scarlands | NONCANON | batch 2 · tzikket |

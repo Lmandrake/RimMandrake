@@ -226,17 +226,17 @@ and rolled *rr*, endings in -ok, -ik, -ith, -oth. 6 stems, 10 roster defs (the h
 
 | defName | current label | the creature | drafted label | alternate | why |
 |---|---|---|---|---|---|
-| `RSW_PustuleHornet` · `RSW_ColonyPustuleHornet` · `RSW_PustuleHornetSpawned` · `RSW_PustuleHornetQueen` · `RSW_ColonyPustuleHornetQueen` (+ `RSW_PustuleHornetStinger` item) | pustule hornet ×3 · pustule queen ×2 | neurotoxic hive wasps that vent toxic gas when hurt; the wild, colony-loyal and hive-spawned forms; two queens, fast and dangerous (bs 0.32 / 1.0) | **zillok** (all three hornets) · **zillok queen** (both queens) · **zillok stinger** | tirrok | One species, one stem; the colony/wild/spawned split is code, not something a colonist sees (the labels are already identical). *zill-* the wing-whine, *-ok* the sting. "Pustule" is a lab word. |
+| `RSW_PustuleHornet` · `RSW_ColonyPustuleHornet` · `RSW_PustuleHornetSpawned` · `RSW_PustuleHornetQueen` · `RSW_ColonyPustuleHornetQueen` (+ `RSW_PustuleHornetStinger` item) | pustule hornet ×3 · pustule queen ×2 | neurotoxic hive wasps that vent toxic gas when hurt; the wild, colony-loyal and hive-spawned forms; two queens, fast and dangerous (bs 0.32 / 1.0) | **thozzik** (all three hornets, RULED 2026-09-24 — zillok swapped: Wookieepedia search on zillok returns Zillo Beast) · **thozzik queen** (both queens) · **thozzik stinger** | tirrok | One species, one stem; the colony/wild/spawned split is code, not something a colonist sees (the labels are already identical). *thozz-* the wing-whine, *-ik* the sting. "Pustule" is a lab word. |
 | `AA_AngelMoth` (+ `AA_AngelMothLarva`, event reserve) | angel moth | clothes-eating moth, abandoned waste-disposal project; timid larva (bs 0.75) | **mollith** · **mollith larva** | yorrok | Soft as wool and just as ruined: *moll-*, *-ith*. "Angel" is an Earth word. |
 | `AA_AnimaColossus` | anima colossus | six-legged, six-eyed cold-blooded colossus with anima trees on its back; trimmed for wood (bs 6.0) | **kerrugoth** | wurrogath | Three syllables for the third colossus, its own stem beside vorrugath (mycoid) and thummorak (overgrown) — kinship in the description (rule 3). *kerr-* the footfall, *-ugoth* the grove on its back. "Anima" is a RimWorld word. |
 | `RSW_SmogMoth` (+ `…Larvae` "smog caterpillar", + eggs) | smog moth | large moth with faintly glowing wing-markings, luminous abdomen as a lure; owner: *"neat flier"* (bs 0.77) | **illoth** · **illoth caterpillar** | thillik | Light with no weight: *ill-* the glow, *-oth* the dark round it. "Smog" is an Earth word. |
 | `RSW_Thrumbungus` (+ `RSW_ThrumbungusShroom` / `RSW_Proj_ThrumbungusShroom` items; ⚠️ `RUT_ThrumbungusShroom` weapon in RotSporeKit) | thrumbungus | gigantic gentle fungal amalgam, beautiful resistant hide; owner: *"multi-hued, surface partially digesting itself"* (bs 4.0) | **brullith** · **brullith mushroom** | sullogath | "Thrumbo" is a RimWorld word, "fungus" a Latin one; neither belongs in the galaxy. *brull-* the bulk, *-ith* the hide. The mushroom items carry the stem — including RotSporeKit's, which is a second mod's file. |
-| `RSW_Yooka` | yooka | towering hunchbacked camel-llama grazer among the tall fungi, no predators, unconcerned (bs 2.1) | **yurrok** | gurrolla | **Offer, not a forced rename (rule 8):** *yooka* already passes the checker and reads coined — but it is the name of a well-known real-world game character (*Yooka-Laylee*), which is the same tell as "beelzebufo". *yurrok* keeps the *y-* he has seen and joins the Rot's -ok row. If he wants *yooka*, it stands. |
+| `RSW_Yooka` | yooka | towering hunchbacked camel-llama grazer among the tall fungi, no predators, unconcerned (bs 2.1) | **brogg** (RULED 2026-09-24 — yurrok declined as one letter off turrok; yooka declined) | gurrolla | *yooka* was declined for the real-world game-character tell (*Yooka-Laylee*), *yurrok* for sitting one letter off the turrok shelf; *brogg* adds the set's only monosyllable. |
 
 **Not drafted:** `RSW_ShiroTrap` — **canon (Legends)**, corrected this pass; keep. The eight
 ruled names above. Canon kept: Snoruuk.
 
-Read aloud with the ruled eight: zillok, mollith, kerrugoth, illoth, brullith, yurrok.
+Read aloud with the ruled eight: thozzik, mollith, kerrugoth, illoth, brullith, brogg. (zillok and yurrok were superseded at the 2026-09-24 Rot sitting.)
 
 ---
 
@@ -318,7 +318,7 @@ Read aloud: qattora, qetta, saqqat, luttaq, uttaqar.
    owner retired with the `-lisk` clade (`7bad94185`); `RSW_ShaleGorger` in `the_scarlands.json`
    is a sea beast (the opee's benthic morph) rostered on dry land. Neither is drafted; both are
    roster-sitting findings, not this item's.
-7. **Two donor coinages are offered a rename rather than forced one** (rule 8): *yooka* → *yurrok*
+7. **Two donor coinages are offered a rename rather than forced one** (rule 8): *yooka* → *brogg* (ruled 2026-09-24)
    (a real-world game character's name), *mutagenic norphea* → *qattora* or bare *norphea*.
 8. **`RUT_ThrumbungusShroom`** — the thrumbungus's mushroom is also a weapon def in a **second
    mod** (`src/RimUtinni/RotSporeKit/Defs/ThingDefs_Weapons/`). Accepting *brullith* touches
