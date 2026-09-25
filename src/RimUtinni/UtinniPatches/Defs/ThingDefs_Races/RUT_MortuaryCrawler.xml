@@ -42,14 +42,10 @@
   own extreme-heat-biome precedent — Scarlands' own measured median temp is
   59.4 C (RUT_Scarlands.xml header).
 
-  🔴 THE NAME IS NOT SETTLED. `RUT_MortuaryCrawler` is the INTERNAL working
-  defName; "Mortuary Guild" in the sheet names the GROUP (same as "the
-  Fliers"/"the Brakes" in the Greentide), not a ruled species label for the
-  individual creature. Folded into `SCARLANDS_SHIPPING_NAMES_1`, filed this
-  pass (this sheet's own naming-draft doc,
-  noncanon_beast_names_poison_miasma_desert_scar_rot_dune_waste_cracked.md
-  batch 4e, does not draft a name for this slug either — it only covers the
-  Isopoda hive castes and existing roster rows, not this new commission).
+  Label "pallbearer" ruled by owner card 2026-09-24
+  (SCARLANDS_SHIPPING_NAMES_1). `RUT_MortuaryCrawler` stays as the internal
+  defName by that item's own scope; "Mortuary Guild" in the sheet names the
+  GROUP, not the species.
 
   Art: genuinely new, no existing render found (checked infrastructure/
   artpipe/{done,pending,registry.jsonl} for "mortuary"/"crawler" — clean).
@@ -60,8 +56,8 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RUT_MortuaryCrawler</defName>
-    <label>mortuary crawler</label>
-    <description>A heavy, armor-plated scavenger that moves at exactly one speed: unhurried. It works a graveyard the way nothing else here can — patiently, methodically, digesting the preserved dead of ground that won't properly rot. Everything else in the Scarlands is one wrong step from madness; the mortuary crawler never seems to notice there was a war at all, which is exactly what makes it the worst thing to watch eat.</description>
+    <label>pallbearer</label>
+    <description>A heavy, armor-plated scavenger that moves at exactly one speed: unhurried. It works a graveyard the way nothing else here can — patiently, methodically, digesting the preserved dead of ground that won't properly rot. Everything else in the Scarlands is one wrong step from madness; the pallbearer never seems to notice there was a war at all, which is exactly what makes it the worst thing to watch eat.</description>
     <statBases>
       <MoveSpeed>1.2</MoveSpeed>
       <Mass>85</Mass>
@@ -151,7 +147,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RUT_MortuaryCrawler</defName>
-    <label>mortuary crawler</label>
+    <label>pallbearer</label>
     <race>RUT_MortuaryCrawler</race>
     <combatPower>60</combatPower>
     <wildGroupSize>1~2</wildGroupSize>

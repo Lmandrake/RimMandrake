@@ -139,8 +139,7 @@ here means rasping crust off stone or drinking sap that would kill anything else
 ## 4b. Weather
 
 The def's one explicit weather record is `PoisonForestSpores` × 18 (§0); everything
-else here is design register, def work owed. _Names drafted this pass — owner
-ratification owed (carded)._
+else here is design register, def work owed.
 
 | what falls out of the sky | here |
 |---|---|

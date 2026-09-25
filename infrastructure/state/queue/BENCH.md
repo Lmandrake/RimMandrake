@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T03:27:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T03:34:08Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -619,23 +619,3 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Per biome at its sitting: name the contribution(s), make the relevant defs
 prose:    infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md
-
-## POISONFOREST_SHIPPING_NAMES_1 Owner card: poison_forest working names (vent stalker, dark crust)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## criteria
-summary:  POISONFORESTSHIPPINGNAMES1 — Owner card: poisonforest working names (vent stalker, dark crust)
-prose:    infrastructure/state/items/POISONFOREST_SHIPPING_NAMES_1.md
-
-## SCARLANDS_SHIPPING_NAMES_1 Owner naming: Scarlands mortuary crawler (COMMISSION_LEDGER_CLEANUP_1)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  SCARLANDSSHIPPINGNAMES1 — Owner naming: Scarlands mortuary crawler
-prose:    infrastructure/state/items/SCARLANDS_SHIPPING_NAMES_1.md

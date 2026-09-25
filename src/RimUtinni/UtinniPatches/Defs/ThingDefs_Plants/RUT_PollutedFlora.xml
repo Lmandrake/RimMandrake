@@ -182,12 +182,12 @@
        Art: one job filed, `rutdarkcrust_v1`
        (infrastructure/artpipe/pending/rutdarkcrust_v1.json) — mechanic_load
        reads "none" in the roster's own new_defs entry, so no companion
-       mechanics item. Working name only; folded into
-       `POISONFOREST_SHIPPING_NAMES_1` alongside the vent stalker
-       (RSW_VentStalker.xml). ============== -->
+       mechanics item. Label "vein moss" ruled by owner card 2026-09-24
+       (POISONFOREST_SHIPPING_NAMES_1); defName stays RUT_DarkCrust by
+       that item's own scope. ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RUT_DarkCrust</defName>
-    <label>dark crust</label>
+    <label>vein moss</label>
     <description>A thin skin of phototrophic film, patched black, deep purple and blood-red, spread wherever a trunk or a stone faces the star's scattered light. It is not green because green is the wrong pigment for light this weak — it absorbs across the whole dim spectrum instead, and it is losing anyway. This is what grows on the things that actually won.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
