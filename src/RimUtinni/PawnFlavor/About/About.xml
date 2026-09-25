@@ -60,6 +60,8 @@
     <li>VanillaExpanded.VMemesE</li>
     <li>vanillaracesexpanded.saurid</li>                      <!-- also PawnFlavorPhase2_Xenotype.xml -->
     <li>weilbyte.snapout</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.ideology</li>
   </loadAfter>
   <description>Faction-keyed backstories, childhoods and traits for the Ash'karr campaign — every faction answers "why raid them, why enslave theirs, why free them" differently.
 

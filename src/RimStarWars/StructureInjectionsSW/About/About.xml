@@ -26,5 +26,8 @@ Absorbed RimMandrake: RSW — Beast Lairs (mandrake.rsw.injections).</descriptio
   <loadAfter>
     <li>mandrake.rm.injections</li>
     <li>Ludeon.RimWorld</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.odyssey</li>
+    <li>mandrake.rm.inhabited</li>
   </loadAfter>
 </ModMetaData>

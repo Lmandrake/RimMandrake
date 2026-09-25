@@ -17,6 +17,9 @@
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rut.patches</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>mandrake.rut.rotsporekit</li>
+    <li>sarg.alphaanimals</li>
   </loadAfter>
   <description>WEEPINGSTONES_RM_MOD_BUILD_1 Phase A (biome_mod_architecture.md §5) — this
 mod now carries `RM_WeepingStones`, the franchise-free BiomeDef itself, as its own

@@ -97,6 +97,18 @@
     <li>zal.gianttoads</li>                                 <!-- BiomeCast_Ashkarr.xml -->
     <li>mandrake.rm.flowworks</li>                          <!-- SEA_FLOOR_AND_CATCH_PASS_1: Defs/BiomeDefs/RUT_PropaneLake.xml names FlowWorks' RM_PropaneShallow / RM_PropaneDeep as its shore -->
     <li>mandrake.rm.seashores</li>                          <!-- SEA_FLOOR_AND_CATCH_PASS_1: Defs/BiomeDefs/RUT_TheScald.xml, RUT_TwilightSea.xml, RUT_GreySea.xml and RUT_PropaneLake.xml each carry a RimMandrake.SeaShores.RM_SeaShoreExtension modExtension -->
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>biomesteam.biomescaverns</li>
+    <li>leutiankane.mines2patchouterrim</li>
+    <li>ludeon.rimworld.anomaly</li>
+    <li>ludeon.rimworld.biotech</li>
+    <li>ludeon.rimworld.ideology</li>
+    <li>ludeon.rimworld.odyssey</li>
+    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.pyrelands</li>
+    <li>mandrake.rut.rotsporekit</li>
+    <li>mandrake.rut.rustcathedralroaches</li>
+    <li>mlie.preceptsandmemes</li>
   </loadAfter>
   <!-- Merged from RimUtinni/FactionSlate (mandrake.rut.patches, MOD_CONSOLIDATION_SPRINT_1):
        Patches/FactionSlate/OnlyOurFactions.xml zeroes startingCountAtWorldCreation on 48

@@ -20,6 +20,9 @@
     <li>brrainz.harmony</li>
     <li>erdelf.HumanoidAlienRaces</li>
     <li>mandrake.rsw.ionweapons</li>          <!-- IonBuildup_PowersDownDroid.xml patches Jawa Ion Weapons defs -->
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.anomaly</li>
+    <li>ludeon.rimworld.ideology</li>
   </loadAfter>
   <description>The one droid platform: every droid in the Ash'karr campaign on a single
 independent framework. Five states (functional / ion-stunned / powered-down /

@@ -14,5 +14,7 @@ Content packs (RimStarWars, RimUtinni) reference this engine's GenStepDef and su
 
   <loadAfter>
     <li>Ludeon.RimWorld</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.odyssey</li>
   </loadAfter>
 </ModMetaData>

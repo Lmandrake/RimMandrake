@@ -96,5 +96,7 @@ mod's own established convention.</description>
          degrades to an ordinary lethal fruit with no dispersal if the kit is
          absent, and this loadAfter is what makes it work when it is present. -->
     <li>mandrake.rm.creaturebehaviors</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.biotech</li>
   </loadAfter>
 </ModMetaData>

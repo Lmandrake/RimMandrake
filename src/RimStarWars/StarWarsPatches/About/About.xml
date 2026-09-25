@@ -55,5 +55,8 @@
     <li>sarg.alphavehiclesneolithic</li>                    <!-- VehicleBeastLabels.xml, VehicleBeastSound_Fix.xml -->
     <li>VanillaExpanded.VWE</li>                            <!-- WeaponTags_Renormalise.xml -->
     <li>XMB.AncientUrbanrUins.MO</li>                       <!-- WeaponTags_Renormalise.xml -->
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.ideology</li>
+    <li>ludeon.rimworld.royalty</li>
   </loadAfter>
 </ModMetaData>
