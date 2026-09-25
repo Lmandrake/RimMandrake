@@ -163,6 +163,15 @@ namespace RimMandrake.CreatureBehaviors
     //      (THEY_MOD_REPLICATION_1). Off: a tagged race stops marching on the
     //      colony when nothing is in sight — it still fights back at whatever
     //      it happens to run into, it just never goes looking.
+    //  30. seedPassageEnabled / seedPassageGerminationMultiplier —
+    //      RM_HediffComp_SeedPassage (GREENTIDE_YEARNING_FRUIT_FILTH_1). Off:
+    //      a digestive-accelerant hediff still digests fast and still ends on
+    //      exactly the same schedule — this switch never touches the
+    //      hediff's severity — it simply leaves no filth and germinates
+    //      nothing when it ends. The dial scales only the germination CHANCE
+    //      (never the filth drop, the search radius or the seedling count,
+    //      which stay whatever the def says); at 0 the filth still falls and
+    //      the plant simply never spreads that way.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -208,6 +217,8 @@ namespace RimMandrake.CreatureBehaviors
         public static float dungSeedingMultiplier = 1f;
         public static bool parentalEnrageEnabled = true;
         public static bool directedAssaultBehaviorEnabled = true;
+        public static bool seedPassageEnabled = true;
+        public static float seedPassageGerminationMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -254,6 +265,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref dungSeedingMultiplier, "dungSeedingMultiplier", 1f);
             Scribe_Values.Look(ref parentalEnrageEnabled, "parentalEnrageEnabled", true);
             Scribe_Values.Look(ref directedAssaultBehaviorEnabled, "directedAssaultBehaviorEnabled", true);
+            Scribe_Values.Look(ref seedPassageEnabled, "seedPassageEnabled", true);
+            Scribe_Values.Look(ref seedPassageGerminationMultiplier, "seedPassageGerminationMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -419,6 +432,15 @@ namespace RimMandrake.CreatureBehaviors
                 "On: a tagged animal that has nothing to fight marches toward the colony instead of "
               + "idling at the map edge. Off: it still fights back at whatever it happens to run into, "
               + "it just never goes looking.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Seed passage (filth + germination)", ref seedPassageEnabled,
+                "On: when a digestive-accelerant hediff runs its course, the carrier leaves filth "
+              + "behind and may germinate a seedling nearby — free calories with a tax, and the tax "
+              + "is the ground sprouting. Off: the hediff still digests just as fast and ends on the "
+              + "same schedule, it just leaves nothing behind.");
+            list.Label("Seed passage germination chance: " + seedPassageGerminationMultiplier.ToString("0.00") + "x");
+            seedPassageGerminationMultiplier = list.Slider(seedPassageGerminationMultiplier, 0f, 3f);
 
             list.End();
         }

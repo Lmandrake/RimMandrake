@@ -29,12 +29,10 @@
   ground sprouts" half is the same shape as RUT_VorrelBrood's own
   germinate-on-dispersal comp (RM_HediffComp_ShadeStagger,
   DESERT_STAGGERSEED_BUILD_1) but for filth-and-seedling rather than
-  shade-and-germinate — genuinely new C#, so it is NOT guessed at inline.
-  Filed as a dedicated follow-on item, `GREENTIDE_YEARNING_FRUIT_FILTH_1`,
-  same posture CRACKED_LANDS_SEALED_WAKE_MECHANISM_1/
-  WASTELAND_BRINE_BATTERY_DISCHARGE_1 used for a genuinely-new, non-trivial
-  comp; `GREENTIDE_YEARNING_FRUIT_1` (already filed) stays open tracking
-  that piece rather than being closed on this def alone.
+  shade-and-germinate, firing on the hediff's own natural end rather than
+  the carrier's death. Built as `GREENTIDE_YEARNING_FRUIT_FILTH_1`:
+  RM_HediffComp_SeedPassage, wired onto RUT_DigestiveAccelerant in
+  RUT_YearningFruit_Hediffs.xml.
 
   Checked cast_assignment.csv first (per this item's own "watch out"): no
   existing greentide fruit row carries any ingestible mechanic at all, so
