@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ScaldFauna.xml                      TerminalBiomes — authored 2026-09-24
+  ==========================================================================
+  TERMINALBIOMES_RM_MOD_BUILD_1 wiring pass: the two floor-resident species
+  `terminal_seas_cast_proposal_2026-09-25.md` names for the Scald (noohm,
+  shulla) — APPROVED, owner sitting 2026-09-25, verdict 1. noohm settles the
+  slime-naming law (verdict 6: a gel-bodied jelly-analog counts as a slime
+  for the naming law — monosyllable, applied).
+
+  noohm is the LIVING form of the "bubble-sailor" whose CATCH item
+  (RUT_Saal, this mod's Defs/ThingDefs_Items/RUT_ScaldFish.xml) already
+  ships, with that file's own comment saying so: "the item face of the
+  bubble-sailor creature; the creature def is separate roster work." This
+  pass IS that separate roster work — noohm is not itself catchable (per
+  the proposal table), so RUT_Saal is left exactly as it is.
+
+  Mechanically plain, pattern copied from RSW_SandStalker.xml's placeholder
+  idiom (Graphic_Single, three lifeStages). Placeholder art: flat dark
+  silhouette PNGs, real art queued to the artpipe.
+
+  shulla is ALSO wired as a catchable fish, joining the Scald's existing
+  eight-species freshwater table — see RM_TheScald.xml's own fishTypes
+  block.
+-->
+<Defs>
+
+  <!-- =================================================================
+       RM_Noohm — the bubble-sailor jelly-analog. Not caught (its catch
+       analog, saal/RUT_Saal, already ships separately).
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Noohm</defName>
+    <label>noohm</label>
+    <description>A translucent bell heeled over on a bubble-line, sail-membrane raised, riding the Scald's rising steam-columns like a little solar sail — the boiling sea's signature silhouette. Harmless, gel-bodied, and never in a hurry.</description>
+    <statBases>
+      <MoveSpeed>1.5</MoveSpeed>
+      <MarketValue>5</MarketValue>
+      <ComfyTemperatureMin>15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>95</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>sting</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.35</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <lifeExpectancy>3</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Noohm</defName>
+    <label>noohm</label>
+    <race>RM_Noohm</race>
+    <combatPower>5</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Noohm/RM_Noohm</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Noohm/RM_Noohm</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Noohm/RM_Noohm</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       RM_Shulla — the silver shoal fish-analog. Catchable, common.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Shulla</defName>
+    <label>shulla</label>
+    <description>A hot-white sliver with a heat-shimmer double edge, darting in shoals between the Scald's vent plumes, feeding the thermophile dung-fall the herds leave behind. Fast, restless, and always in company.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <MarketValue>5</MarketValue>
+      <ComfyTemperatureMin>15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>95</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>snap</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <body>Snake</body>
+      <baseBodySize>0.06</baseBodySize>
+      <baseHealthScale>0.2</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>3</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Shulla</defName>
+    <label>shulla</label>
+    <race>RM_Shulla</race>
+    <combatPower>5</combatPower>
+    <wildGroupSize>5~15</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Shulla/RM_Shulla</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Shulla/RM_Shulla</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Shulla/RM_Shulla</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
