@@ -15,9 +15,8 @@
   TerrainDef in these fields is exactly the hard dependency the RimMandrake
   tier may not assume (item §2/§5 step 2). No other field changes: no
   wildAnimals row here is `RSW_`/`SW_` (AA_AuroraSylph/AA_Skyeel are Alpha
-  Animals, RUT_VWake is this mod's own campaign-tier creature per §3b — "only
-  Star Wars creatures become patches"), so all three stay on this def
-  unmoved, and fishTypes/description/weather/GravTide-support fields are
+  Animals; RM_Vaunoom is this mod's own creature, the 2026-09-25-ruled name
+  for the V-wake role), so all three stay on this def, and fishTypes/description/weather/GravTide-support fields are
   byte-identical to the twin.
 
   texture: `World/Biomes/Jawa_SickWater` is this mod's OWN texture (was
@@ -58,13 +57,14 @@
          TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
          verdict 1 + verdict 4: heemin/oovanam (lake) + hoolen (the SURFACE
          face — no shelf biome, so it lives here too) from
-         RM_PropaneLakeFauna.xml. RUT_VWake already fills the "vaunoom"
-         V-wake role (COMMISSION_LEDGER_CLEANUP_1) — see that file's header
-         and this mod's own build report; RM_Vaunoom was not built. -->
+         RM_PropaneLakeFauna.xml. RM_Vaunoom (name ruled at the 2026-09-25
+         sitting) is the Q13 duplicate of the campaign RUT_VWake
+         (COMMISSION_LEDGER_CLEANUP_1), which stays Utinni-side until
+         Phase B because the frozen twin references it. -->
     <wildAnimals>
       <AA_AuroraSylph MayRequire="sarg.alphaanimals">0.5</AA_AuroraSylph>
       <AA_Skyeel MayRequire="sarg.alphaanimals">0.5</AA_Skyeel>
-      <RUT_VWake>0.04</RUT_VWake>
+      <RM_Vaunoom>0.04</RM_Vaunoom>
       <RM_Heemin>0.7</RM_Heemin>
       <RM_Oovanam>0.3</RM_Oovanam>
       <RM_Hoolen>0.4</RM_Hoolen>
