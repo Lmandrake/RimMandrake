@@ -4260,3 +4260,13 @@ re-review them again on this note's word.
 
 Next wave: pick from the remaining ~254 UNTRACKED files (`code_review_status.py list
 --show-untracked`), which is the only reliable source — bare `list` omits them.
+
+## Wave 5 — 2026-09-25
+
+Reviewed 3 files, full-file, first-time review (untracked): `RM_GenStep_GroundRefusal.cs`,
+`RM_MapComponent_RoilVortexSpawner.cs` (both EnvironmentalHazards), `RM_WorkGiver_CullVhorrin.cs`
+(WeepingStones). All confirmed reachable via their `.csproj` `<Compile Include>` entries. No
+significant findings in any — all 3 marked CLEAN.
+
+Next wave: pick from the remaining ~253 UNTRACKED files (`code_review_status.py list
+--show-untracked`).
