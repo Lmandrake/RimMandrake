@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_PropaneLakeTerrains.xml             TerminalBiomes · authored 2026-09-25
+  ============================================================================
+  TERMINALBIOMES_RM_MOD_BUILD_1 §2/§11 step 2 — this mod's ONE genuinely new
+  authoring task. RUT_PropaneLake.xml's own waterDeepTerrain/
+  waterShallowTerrain/terrainsByFertility point at AB_PropaneLake /
+  AB_SolidPropane (Alpha Biomes, sarg.alphabiomes) — MEASURED: neither
+  defName is defined anywhere under src/, so a donor TerrainDef sitting in a
+  RimMandrake-tier BiomeDef's water fields is exactly the hard dependency the
+  tier may not assume (item §5 step 2). RM_PropaneLake.xml (this mod) is
+  repointed to the two defs below instead of the donor pair.
+
+  Properties matched to the donor's own measured shape (item §2, live def
+  dump this item cites): the deep liquid is Impassable, avoidWander,
+  waterBodyType None (propane is not recognised as drinkable water by DBH or
+  anything else — matches "propane, not water"); the frozen margin crust is
+  Standable at a low pathCost, also waterBodyType None (it is not liquid).
+  Parented on WaterDeepBase / WaterShallowBase — confirmed to carry a real
+  Name="..." attribute by direct read (Core/Defs/TerrainDefs/Terrain_Water.xml,
+  same citation RUT_ScaldWater.xml's own header already gives), unlike
+  Lake/Ocean.
+
+  Texture: reuses vanilla's own WaterDeepRamp/WaterShallowRamp paths, the
+  same convention RUT_ScaldWater.xml already established for this mod family
+  (no donor mod dependency, no new art needed — this is ordinary vanilla
+  texture reuse, not a placeholder for a missing donor asset). A dedicated
+  "frozen propane crust" look is real, owed art work, not done here.
+  ============================================================================
+-->
+<Defs>
+
+  <TerrainDef ParentName="WaterDeepBase">
+    <defName>RM_PropaneLakeDeep</defName>
+    <label>liquid propane</label>
+    <description>A black mirror of liquid fuel, cold enough to kill and still enough to read the sky in. Nothing drinks it and nothing should try to cross it.</description>
+    <renderPrecedence>401</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <waterBodyType>None</waterBodyType>
+    <canFreeze>false</canFreeze>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_SolidPropane</defName>
+    <label>frozen propane crust</label>
+    <description>Propane frozen solid at the lake's cold margin — a standable crust over the liquid centre, cracked in places, crunching underfoot.</description>
+    <renderPrecedence>400</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterBodyType>None</waterBodyType>
+    <canFreeze>false</canFreeze>
+    <pathCost>12</pathCost>
+    <tags>
+      <li>Water</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>

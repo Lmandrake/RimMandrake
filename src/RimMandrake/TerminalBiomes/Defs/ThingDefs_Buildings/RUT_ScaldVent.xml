@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldVent.xml                      UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 build pass, S4 "geyser fields" (scald_kit_spec.md §S4:
+  "one def family, INVENTED: RUT_ScaldVent as a non-buildable spawned
+  variant that S2's condenser and S5's bubble lines both key on").
+
+  🔴 Correction against my own task brief this pass: the brief said S4
+  reuses RM_CompActiveGasEmitter ("the ruled kit's harmless-gas emitter").
+  Checked directly against scald_kit_spec.md's own §S4 text — it names none:
+  zero hits for "CompActiveGasEmitter"/"GasEmitter" anywhere in that file.
+  §S4 is vanilla-geyser reuse plus one new ThingDef, nothing else; its own
+  Effort line says "no new C# unless the mutator route fails" (it didn't —
+  spike finding 3). Built to the SPEC's text, not the brief's paraphrase.
+
+  A near-exact clone of vanilla SteamGeyser (ParentName="BuildingNaturalBase",
+  thingClass Building_SteamGeyser — read in full this pass, confirmed
+  generic: its steam-spray FX/sound and the `harvester` field it exposes for
+  a comp built on top are not geyser-specific in any way, so reuse needs
+  zero new C#) with its own defName so S2's condenser and (later) S5's
+  anchor/scatterer can key on it without touching vanilla SteamGeyser or any
+  shared-biome def (ban 2). relatedBuildCommands points at RUT_SteamCatch
+  only, NOT vanilla GeothermalGenerator — GeothermalGenerator's own
+  PlaceWorker_OnSteamGeyser hardcodes ThingDefOf.SteamGeyser (spike finding
+  2, decompile-confirmed), so it could never actually be placed on this def;
+  listing it as a build hint here would be a dead, misleading hint.
+
+  Placement onto the actual Scald map (density via
+  TileMutatorDef.geyserCountFactor on map.TileInfo.Mutators, spike finding
+  3, or hand-placement) is explicitly map/world-authoring via the bridge on
+  the frozen planet, per the spec's own S4 text — NOT worldgen, and NOT done
+  this pass (no bridge access in this task; this file ships the def only,
+  same posture RUT_ScaldMargin.xml's own header already established for its
+  terrain: "does not place itself on the map").
+
+  Texture: reuses vanilla's own path is NOT appropriate (a distinct def
+  should read as distinct on the shore) — "Things/Building/Natural/RUT_ScaldVent"
+  is OWED to the art pipeline; not shipped this pass. Missing-texture load
+  logs an error and shows a placeholder, it does not fail to load.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RUT_ScaldVent</defName>
+    <label>scald vent</label>
+    <description>A shore-side vent of the Scald's own breath — high-pressure steam venting on its own rhythm. A condenser raised here drinks the clean breath for free; a geothermal generator will not recognize it as its own kind of geyser.</description>
+    <thingClass>Building_SteamGeyser</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Natural/RUT_ScaldVent</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>Floor</altitudeLayer>
+    <rotatable>false</rotatable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Normal</tickerType>
+    <selectable>true</selectable>
+    <size>(2,2)</size>
+    <neverOverlapFloors>true</neverOverlapFloors>
+    <blockPlants>true</blockPlants>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <relatedBuildCommands>
+        <li>RUT_SteamCatch</li>
+      </relatedBuildCommands>
+      <alwaysShowRelatedBuildCommands>true</alwaysShowRelatedBuildCommands>
+    </building>
+  </ThingDef>
+
+</Defs>

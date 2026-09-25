@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_SteamCatch.xml                     UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 build pass, S2 "the steam-catch" (scald_kit_spec.md §S2,
+  the_scald.md §7 ⭐ "the tap of the world"). Condensers raised on the
+  Scald's vents drink the clean breath: free, endless distilled water.
+
+  comps -> RM_CompResourceCondenser (SCALD_MECHANICS_1 spike, already built
+  and compiling), requiredThingAtPosition repointed from its C# default
+  (vanilla ThingDefOf.SteamGeyser) to RUT_ScaldVent now that S4 ships it —
+  exactly the "S4 repoints it per-building via XML the day that def ships"
+  step the spec's own S2 text called for.
+
+  placeWorkers -> RM_PlaceWorker_OnRequiredVentComp (new this pass, crib of
+  the confirmed-real PlaceWorker_OnSteamGeyser reading its required def off
+  this building's own CompProperties_ResourceCondenser instead of a
+  hardcoded ThingDefOf — see that class's own header for why a hardcoded
+  RUT_ScaldVent check does not belong in the shared RM_ mod).
+
+  🔴 outputDef intentionally LEFT UNSET. Owner card 2 (S2's output FORM) is
+  RULED — (c) BOTH, item water default behind a Mod Settings toggle — but no
+  concrete item-water ThingDef exists anywhere in this repo or in
+  RM_liquid_types_mod.md's own roster (checked: zero ThingDef hits for any
+  "item water"/"WaterPurified"-shaped def). Per this pass's own brief
+  ("ship the comp attached with a placeholder/default output rather than
+  inventing the ruling yourself, and flag it clearly"): the building is
+  fully wired and placement-gated, and RM_CompResourceCondenser's own
+  ProduceCycle() already no-ops cleanly when outputDef is null (see that
+  class), so this produces nothing — visibly, via
+  CompInspectStringExtra's "off vent"/progress readout — until the items
+  pass ships a real water-item ThingDef and this file's outputDef is set to
+  it. Ban 1 patrol holds either way: no bill, no ingredient, no recipe.
+
+  Costs/stats: INVENTED, no ruled figures exist. Scaled down from vanilla
+  GeothermalGenerator's 340 Steel/8 ComponentIndustrial (a full power
+  plant) — this only condenses water, no power output, no CompPowerPlantSteam.
+  Size matches RUT_ScaldVent's own (2,2) footprint rather than
+  GeothermalGenerator's 6x6 — simplest safe placement shape, not a
+  from-source-verified vanilla convention.
+
+  Texture OWED to the art pipeline, same posture as RUT_ScaldVent.xml.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_SteamCatch</defName>
+    <label>steam-catch condenser</label>
+    <description>A condenser locked to a scald vent, drinking the clean breath of the boil and yielding distilled water for free — so long as you hold the ground and pay the shore's burns to build there.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/RUT_SteamCatch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <canOverlapZones>false</canOverlapZones>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>3000</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <costList>
+      <Steel>75</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ResourceCondenser">
+        <requiredThingAtPosition>RUT_ScaldVent</requiredThingAtPosition>
+        <outputCountPerCycle>25</outputCountPerCycle>
+        <cycleTicks>60000</cycleTicks>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>RimMandrake.EnvironmentalHazards.RM_PlaceWorker_OnRequiredVentComp</li>
+    </placeWorkers>
+    <designationCategory>Production</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+  </ThingDef>
+
+</Defs>
