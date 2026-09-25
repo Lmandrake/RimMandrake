@@ -56,7 +56,8 @@
   station and a genuinely stripped/naked Jawa don't clear those flags at all —
   they just have no apparel drawn, and the owner's ruling is that the hood is
   not optional apparel, it is part of what a Jawa IS. So the hood is now a
-  render node on THIS gene (renderNodeProperties below), parented to the Head
+  render node on THIS gene, added by JawaRules/Patches/RSW_JawaHood.xml so this def never names a
+  type from an assembly that may be absent (a missing workerClass discards the whole gene), parented to the Head
   tag, reusing guy762_JawaHood's own worn texture
   (SWApparel/Robes/jawa/hood[_north/_south/_east], Armoury mod).
 
@@ -115,20 +116,6 @@
       <li>Female_AverageNormal</li>
       <li>Female_NarrowNormal</li>
     </forcedHeadTypes>
-    <renderNodeProperties>
-      <li Class="PawnRenderNodeProperties">
-        <debugLabel>Jawa hood (always-on fallback, minimal)</debugLabel>
-        <workerClass>RimMandrake.StarWars.JawaRules.PawnRenderNodeWorker_JawaHoodFallback</workerClass>
-        <texPath>SWApparel/Robes/jawa/hood</texPath>
-        <parentTagDef>Head</parentTagDef>
-        <rotDrawMode>Fresh, Rotting, Dessicated</rotDrawMode>
-        <!-- Smaller than the real item (1.0) and layered BELOW normal
-             headgear (71/90) on purpose — see the header comment above:
-             any worn hat shows in front and hides this. -->
-        <drawSize>0.75</drawSize>
-        <baseLayer>65</baseLayer>
-      </li>
-    </renderNodeProperties>
   </GeneDef>
 
 </Defs>
