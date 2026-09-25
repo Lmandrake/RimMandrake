@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T05:52:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T05:59:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -894,7 +894,7 @@ prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md
 ## FORCE_DISTURBANCE_REFLAVOR_1 Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 summary:  The vanilla psychic event family — psychic drone (the planetary/map condition
@@ -908,15 +908,6 @@ target:   v1
 kind:     task
 summary:  1. Census every vanilla/DLC animal reachable in the Utinni scenario: biome
 prose:    infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md
-
-## MIASMA_KARRATHIL_POLLINATION_GATE_1 Gate the mangals' flowering reproduction on karrathil presence, once the plant-reproduction engine question is answered
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     build
-summary:  MIASMAKARRATHILPOLLINATIONGATE1
-prose:    infrastructure/state/items/MIASMA_KARRATHIL_POLLINATION_GATE_1.md
 
 ## FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
 state:    doing  (BLOCKED)

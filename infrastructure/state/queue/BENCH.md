@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T05:09:07Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-25T05:59:33Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -143,6 +143,15 @@ target:   v1
 kind:     design
 summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
+
+## SCALD_FLOOR_PASS_1 Whole individual pass for the Scald floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  (no items/SCALD_FLOOR_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_FLOOR_PASS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -619,16 +628,6 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Per biome at its sitting: name the contribution(s), make the relevant defs
 prose:    infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md
-
-## SCALD_FLOOR_PASS_1 Whole individual pass for the Scald floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SCALD_FLOOR_PASS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCALD_FLOOR_PASS_1.md
 
 ## GREYSEA_FLOOR_PASS_1 Whole individual pass for the Grey Sea floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
 state:    proposed
