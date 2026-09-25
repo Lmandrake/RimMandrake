@@ -463,6 +463,32 @@ flight, not a walking animal with wings drawn on. Applies to new defs and to any
 def already open for another reason — the rule is "when we can", so the trigger is
 touching it, not a sweep.
 
+### 🔴🔴 NEVER live-test a flyer's flight without the owner present — said THREE times, 2026-09-25
+
+Verbatim, third repetition, same day: *"For the third time, do not do live testing
+of flyers without a human present. It doesn't work."* Also said the same day: *"Don't
+try to capture images of flight. It doesn't work."* **You don't need to keep
+rediscovering this — stop reaching for a live-bridge flight test at all.**
+
+- ⛔ **No unattended bridge session — of any length, any sampling strategy — spent
+  hunting a live mid-air frame or takeoff.** This includes screenshot hunts
+  (`take_screenshot`/`screenshot_cell_rect` timed against `step_game_ticks`) AND any
+  other unattended live-drive attempt at proving flight in the moment. One such pass
+  ran ~35 minutes, ~25 screenshots, dozens of movement-segment checks, and caught
+  nothing — inconclusive, not proof either way, and not a productive use of bridge
+  time regardless of sampling density (worked example, now superseded:
+  `FIREHAWK_FLIGHT_BEHAVIOR_1`).
+- ✅ **Verify flight via a deterministic STATE read instead**, never a screenshot/visual
+  hunt: a debug `[Tool]` (see `rimbridge-companion` skill) that reads
+  `Pawn_FlightTracker`'s current state on a pawn directly. That is buildable and
+  provable offline/asynchronously; a live *visual* sighting of the animation is the
+  one thing that needs the owner actually watching.
+- **How to apply:** if a flyer's live behavior needs eyes on it, that is a
+  `rimworld-live-review`-style session done WITH the owner present, or it waits —
+  it is never a FOUNDRY solo bridge pass. Don't file a "live verify" bar on a flyer
+  item that can only be closed by an unattended screenshot/observation hunt; close it
+  via the state-read instead, or leave the visual bar for a joint session.
+
 🔑 **1.6 flight is CORE, not a donor framework and not Odyssey.** The stat
 `MaxFlightTime` is declared in `Defs/Core/Stats/Stats_Pawns_General.xml` and Core's
 own chicken uses it. MEASURED from the decompiled engine 2026-09-19.
