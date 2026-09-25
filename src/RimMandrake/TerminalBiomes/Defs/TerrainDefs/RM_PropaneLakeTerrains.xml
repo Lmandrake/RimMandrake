@@ -35,7 +35,7 @@
     <defName>RM_PropaneLakeDeep</defName>
     <label>liquid propane</label>
     <description>A black mirror of liquid fuel, cold enough to kill and still enough to read the sky in. Nothing drinks it and nothing should try to cross it.</description>
-    <renderPrecedence>401</renderPrecedence>
+    <renderPrecedence>399</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <waterBodyType>None</waterBodyType>
@@ -50,7 +50,7 @@
     <defName>RM_SolidPropane</defName>
     <label>frozen propane crust</label>
     <description>Propane frozen solid at the lake's cold margin — a standable crust over the liquid centre, cracked in places, crunching underfoot.</description>
-    <renderPrecedence>400</renderPrecedence>
+    <renderPrecedence>398</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
     <waterBodyType>None</waterBodyType>

@@ -67,7 +67,7 @@
          wildTerrainTags: [RUT_ScaldMarginMat], a tag that exists on exactly
          one terrain (RUT_ScaldMargin), moved alongside this def. -->
     <wildPlants>
-      <RUT_WelcomeBlanket>0.4</RUT_WelcomeBlanket>
+      <RUT_WelcomeBlanket MayRequire="mandrake.rut.patches">0.4</RUT_WelcomeBlanket>
     </wildPlants>
 
     <!-- FISH_BESTIARY_BUILD_1 / SEA_FLOOR_AND_CATCH_PASS_1 — the margin
