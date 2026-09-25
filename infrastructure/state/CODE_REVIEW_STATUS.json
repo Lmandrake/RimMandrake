@@ -18628,10 +18628,10 @@
     "sha": "9c1bce648"
   },
   "src/RimUtinni/UtinniPatches/About/About.xml": {
-    "cleanCount": 8,
+    "cleanCount": 9,
     "date": "2026-09-24",
-    "hash": "e92ed59704a5186ab35aed1abaeec4d89774e7dbc57008f06c50f89c63834c62",
-    "sha": "e05f7e0f8"
+    "hash": "9cf8f7404fe21666ebe2195229de6f979121e683674939b67e066512d7f7a3ba",
+    "sha": "5ad3a7af9"
   },
   "src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml": {
     "cleanCount": 1,
@@ -19059,6 +19059,12 @@
     "hash": "ef8d8ad4f08a0046fe3d6b5724a8ea7dcc5906fbecedd6e13f3b636f3b4c63ad",
     "sha": "b62604fad"
   },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FeverWood_ScatterPoolsGenStep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "34237b7b7dcb6f4d7e15be33c717c9b421c128fba21f983a5d4cb2e9670d51c8",
+    "sha": "5ad3a7af9"
+  },
   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor.xml": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -19088,6 +19094,24 @@
     "date": "2026-09-14",
     "hash": "334bca2ca4c1e1496f58fa0dfc60b832289a9166757b6545a6c799299ea18635",
     "sha": "378f67436"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_Greentide_LivingBolesGenStep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "14f5b8c0a3d529b61adbe040da289d8674aaddc55cce5bea02a3cb55c164d0c9",
+    "sha": "5ad3a7af9"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_Greentide_RootCausewaysGenStep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "acbbaebf883b4f9cfe20c1088435487810e5d0891a26d3beb6df45b2181f16bb",
+    "sha": "5ad3a7af9"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_Miasma_CrecheScatterer.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b445be9e6cd7984be17cc3b881056818f7ae4111a927781546398c849944116c",
+    "sha": "5ad3a7af9"
   },
   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_Miasma_GradientAxisGenStep.xml": {
     "cleanCount": 1,
@@ -19197,11 +19221,35 @@
     "hash": "477c9ca14c45252113c0929de75fc3da7a94b76d64d7b625f4eb50a91fb1e0f2",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_BoughSoil.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "89ca64e6d120d00827264cf85a769172c1fe8da660bb8d127514920144a00554",
+    "sha": "5ad3a7af9"
+  },
   "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_Boughway.xml": {
     "cleanCount": 1,
     "date": "2026-09-14",
     "hash": "75edab82f1ff62b83fcc1ece5e093128d8c47c4e62b00bc45e66343080c79cec",
     "sha": "1741b389a"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_FeverWoodMirrorPool.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6df2ac401978bbd07ac643a223a153f8c1c83109172a0e5b3b4445f6a0c17de5",
+    "sha": "5ad3a7af9"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_RootCauseway.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d5cf7d0edf8e8951e7cb56f369526c991fcfef8d4d95292d257725cbde8bad6c",
+    "sha": "5ad3a7af9"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_ScaldMargin.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ef41d49b403d0bff0a51bcd4f1ab6cb0ab41f71b3be8cf624e3e33522e7fa8f0",
+    "sha": "5ad3a7af9"
   },
   "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_ScaldWater.xml": {
     "cleanCount": 2,
@@ -19209,11 +19257,29 @@
     "hash": "b32b2ad7c73d2e6983ed818fb3f0bc360d056504177e1ab48f7ae7bfca720db0",
     "sha": "e7810e12f"
   },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_StiltPlatform.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6da1aafa7a712a17701087e9003e5a21b07542a55fee552ad2462eec52ac8a46",
+    "sha": "5ad3a7af9"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_SumpWalkways.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "99b8f416a61f92db65c4c9e1697c249dbb323b062fd6539d43f1702ef1efe0a2",
+    "sha": "5ad3a7af9"
+  },
   "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_TarMoat.xml": {
     "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "20900ef4e58ef0d8dc50b56c624bbb994d6e34992ce87a1d02e4e5a2c1edd3a2",
     "sha": "fa8ec9d9a"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_ToxinSealant.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1971daecd87441b4f9992c83f22bb3c123ce51d48db16070f73cb6f4bc733742",
+    "sha": "5ad3a7af9"
   },
   "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_WastelandBrineWater.xml": {
     "cleanCount": 1,
