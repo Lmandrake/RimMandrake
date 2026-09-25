@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_WASP_SWARM_1 / REACTION_MECHANISM_GENERALISE_1 step 1.
+     RM_Skerrel — the wasp. Smallest body/HP this mod ships, deliberately:
+     "individually trivial, killable by anything, including a colonist
+     swatting with no weapon" is a design requirement, not flavour text.
+
+     Flight per the standing rule (owner, 2026-09-19): MaxFlightTime/
+     FlightCooldown is the CORE stat pair (Pawn_FlightTracker.CanEverFly),
+     canFlyIntoMap true, canLeaveMapFlying deliberately OMITTED — a skerrel
+     lairs in its gall and must not fly off the map. No
+     flyingAnimationFramePathPrefix/-FrameCount: GetBestFlyAnimation returns
+     null with none set and the creature flies plainly, which is correct at
+     this creature's count (a whole directional flip-book is a lot of art
+     for a 1-cell subject spawned by the dozen) — never block flight waiting
+     on frames.
+
+     Placeholder texPath only, same posture as RM_RotSporeKit_GuardianGroves.xml's
+     own header note: reused from RUT_FireWasp's already-shipped art (closest
+     existing insect silhouette in the mod set) rather than left pointing at
+     nothing. Checked infrastructure/artpipe this pass — no RM_Skerrel job
+     exists yet, queued or done; bespoke art is owed to the pipeline, not
+     this item. -->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Skerrel</defName>
+    <label>skerrel</label>
+    <description>A wasp barely the length of a fingernail, one of a colony that lives packed into a single gall on a sugar plant or a fruit tree. Alone it is nothing — a flick of the hand ends it. Disturb the gall and the colony does not send one.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <ComfyTemperatureMin>15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <MarketValue>1</MarketValue>
+      <Flammability>1.2</Flammability>
+      <Wildness>1</Wildness>
+
+      <!-- Flight, per the owner's standing rule 2026-09-19. Vanilla-Core
+           mechanism; MaxFlightTime>0 is what Pawn_FlightTracker.CanEverFly
+           actually tests. -->
+      <MaxFlightTime>6</MaxFlightTime>
+      <FlightCooldown>2</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>sting</label>
+        <capacities>
+          <li>RM_SkerrelSting</li>
+        </capacities>
+        <!-- Severity added to RM_SkerrelSting per landed hit, via
+             RM_DamageWorker_StingAccumulate. 0.05 so twenty stings reach
+             maxSeverity 1.0 — "negligible once, frightening twenty times"
+             (the owner's own wording) read directly as a number. -->
+        <power>0.05</power>
+        <cooldownTime>1.2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHealthScale>0.12</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <gestationPeriodDays>4</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.99, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>1</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Insect_Ambient</soundWounded>
+          <soundDeath>Pawn_Insect_Ambient</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+
+      <flightStartChanceOnJobStart>1</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.2</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Skerrel</defName>
+    <label>skerrel</label>
+    <race>RM_Skerrel</race>
+    <combatPower>2</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

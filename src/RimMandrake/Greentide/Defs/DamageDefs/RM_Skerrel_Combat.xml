@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_WASP_SWARM_1 / REACTION_MECHANISM_GENERALISE_1 step 1.
+
+     A new, isolated ToolCapacityDef+ManeuverDef pair rather than reusing
+     vanilla "Bite": Bite's own ManeuverDef hardcodes meleeDamageDef=Bite
+     (RimSage-verified this pass, get_def_details on the Bite ManeuverDef),
+     and a Tool has no per-instance damage-def override — so giving the
+     skerrel vanilla Bite would mean either a real wound (wrong: the sting is
+     meant to do nothing but build the hediff) or changing what EVERY other
+     Bite-capacity creature in the mod set deals. A dedicated capacity keeps
+     this entirely off that shared pipeline.
+
+     RM_SkerrelSting (the DamageDef) uses RM_DamageWorker_StingAccumulate
+     (mandrake.rm.creaturebehaviors), not vanilla's own hediff-via-damage
+     paths — see that class's header for the measured reason DamageDef.hediff
+     (DamageWorker_AddGlobal) and Tool.hediff (Verb_MeleeApplyHediff) both
+     give the wrong shape (N coexisting instances, or one per body part). -->
+<Defs>
+
+  <!-- ToolCapacityDef carries no fields beyond Def itself (RimSage-verified
+       against Verse/ToolCapacityDef.cs and the vanilla Bite def this pass) —
+       defName + label is the whole shape. -->
+  <ToolCapacityDef>
+    <defName>RM_SkerrelSting</defName>
+    <label>sting</label>
+  </ToolCapacityDef>
+
+  <ManeuverDef>
+    <defName>RM_SkerrelSting</defName>
+    <requiredCapacity>RM_SkerrelSting</requiredCapacity>
+    <logEntryDef>MeleeAttack</logEntryDef>
+    <combatLogRulesHit>Maneuver_Bite_MeleeHit</combatLogRulesHit>
+    <combatLogRulesMiss>Maneuver_Bite_MeleeMiss</combatLogRulesMiss>
+    <combatLogRulesDodge>Maneuver_Bite_MeleeDodge</combatLogRulesDodge>
+    <combatLogRulesDeflect>Maneuver_Bite_MeleeDeflect</combatLogRulesDeflect>
+    <verb>
+      <verbClass>Verb_MeleeAttackDamage</verbClass>
+      <meleeDamageDef>RM_SkerrelSting</meleeDamageDef>
+      <commonalityVsEdificeFactor>0.01</commonalityVsEdificeFactor>
+    </verb>
+  </ManeuverDef>
+
+  <!-- defaultDamage/defaultArmorPenetration deliberately left at Def's own
+       -1 default (vanilla Bite does the same) so the wasp's own Tool.power
+       is what sets the severity gain per sting, per-creature, with no
+       DamageDef-level override to keep in sync. -->
+  <DamageDef>
+    <defName>RM_SkerrelSting</defName>
+    <label>sting</label>
+    <workerClass>RimMandrake.CreatureBehaviors.RM_DamageWorker_StingAccumulate</workerClass>
+    <armorCategory>Sharp</armorCategory>
+    <externalViolence>true</externalViolence>
+    <harmsHealth>true</harmsHealth>
+    <makesBlood>false</makesBlood>
+    <hasForcefulImpact>false</hasForcefulImpact>
+    <hediff>RM_SkerrelSting</hediff>
+    <isRanged>false</isRanged>
+  </DamageDef>
+
+</Defs>

@@ -50,4 +50,88 @@
     </stages>
   </HediffDef>
 
+  <!-- GREENTIDE_WASP_SWARM_1 / REACTION_MECHANISM_GENERALISE_1 step 1. The
+       skerrel sting curve: "negligible once, frightening twenty times" is the
+       owner's own wording, and the stage floors below are set from it
+       directly — a single sting (severityGain 0.05 on RM_SkerrelSting, the
+       DamageDef in Defs/DamageDefs/RM_Skerrel_Combat.xml) barely enters the
+       first stage, twenty lands the pawn at maxSeverity.
+
+       Accumulates on ONE instance via RM_DamageWorker_StingAccumulate (never
+       stacks separate instances — see that class's own header for the
+       measured engine reason), and decays via HediffCompProperties_SeverityPerDay
+       so a pawn who withdraws recovers instead of carrying the swarm's damage
+       forever — GREENTIDE_WASP_SWARM_1's own "survivable by withdrawing"
+       requirement, on top of (not instead of) RM_MentalState_ScopedAggression
+       giving up the chase. -14/day clears a maxed-out sting load in under two
+       in-game hours once nothing is adding to it.
+
+       lethalSeverity at the max stage is deliberate: "multiple stings add up
+       quickly and overwhelm" is the owner's own word, and overwhelm reads as
+       genuinely lethal if a swarm is never disengaged from at all — the
+       decay and the disengage-on-distance mechanism are what make that an
+       avoidable failure state rather than an inevitable one. -->
+  <HediffDef>
+    <defName>RM_SkerrelSting</defName>
+    <label>skerrel stings</label>
+    <description>The itching, mounting sting-load of a jungle wasp swarm. Any one sting is nothing at all; the count is what matters, and it only goes down once nothing new is landing.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.85, 0.7, 0.15)</defaultLabelColor>
+    <maxSeverity>1.0</maxSeverity>
+    <lethalSeverity>1.0</lethalSeverity>
+    <isBad>true</isBad>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-14</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>faint stinging</label>
+        <painOffset>0.01</painOffset>
+      </li>
+      <li>
+        <minSeverity>0.2</minSeverity>
+        <label>itching</label>
+        <painOffset>0.03</painOffset>
+        <capMods>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.5</minSeverity>
+        <label>swelling</label>
+        <painOffset>0.08</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.15</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.8</minSeverity>
+        <label>overwhelmed by stings</label>
+        <painOffset>0.18</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.35</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.25</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
 </Defs>
