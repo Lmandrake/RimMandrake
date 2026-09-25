@@ -53,6 +53,7 @@
     <description>A salt-white, flat-bodied scraper the size of a thumb, living on the mineral beds under the brine and grazing the crust the drazz lay down. It carries a charge — a small one; picking one up bare-handed is a tingle and a lesson. They swarm on a carcass in the pool and strip it, and on a drazz that has spent its charge, which is how the pool's owner eventually dies. Edible after a long soak. The Junkers do not bother.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RUT_Hardwood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.20</Nutrition>
@@ -78,6 +79,7 @@
     <description>The owner. A forearm-long, plated, sea-cucumber-shaped thing whose body is a stack of living electrode wafers, salt-white and mineral-dark by turns, lying on the bed of a hypersaline pool and running on the ion gradient between the brine and the metal beneath it. It discharges as defense. The pool you want to mine has one, and it is a capacitor, and it does not want you there. Landed — carefully, on a dry line, by people who have done it before — it goes on discharging for an hour. Cooked, it is meat. Raw, it is a lesson.</description>
     <graphicData>
       <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.15</Nutrition>

@@ -38,6 +38,7 @@
     <description>A hand-long river squid, green-gold, that lives in the fast clean reaches and moves the way the river does -- one hard pulse and gone. Shoals of them ride the current down through the root causeways and pulse back up at night. Fast to catch, faster to spoil; the Wildsteam eat them off the line. Its ink is nothing special. Its cousin's is.</description>
     <graphicData>
       <texPath>Things/Plant/AloeVera/AloeVeraA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.25</Nutrition>
@@ -59,6 +60,7 @@
     <description>A bladder-bodied grazer that hangs under the surface with its mouth open, waiting for the fruit-fall. When a giant drops its crop the uvva rise in a crowd and gorge -- and the fruit's accelerants work on them as on everything, so a fed uvva bloats, spins slowly, passes seed downstream and starts again. The river's seed-carrier. Sweet, faintly fizzy, and it does the same to you.</description>
     <graphicData>
       <texPath>Things/Plant/Peyote/PeyoteA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.10</Nutrition>
@@ -81,6 +83,7 @@
     <description>A flat, wide, root-brown crab-thing that lives in the churnmud between the giants, walking on the same swallowed things the mud hides -- and it finds them. A dropped tool, a lost boot, a coin: the karrun carries it about for a while for reasons of its own. Line-fishers along the causeways pull them up holding things. The claws are the eating; the rest is mud.</description>
     <graphicData>
       <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.20</Nutrition>
@@ -103,6 +106,7 @@
     <description>The Greentide is carpeted in filth and sprouts, and this is what eats the filth. A thick, warty, arm-long sweeper of the river floor, moving through the settled muck below the causeways at the pace of a thing that has never been chased. Where the dubbol are thick the water runs clean enough to drink, nearly. The Wildsteam plant them in their channels the way a farmer plants a hedge. Leathery, and it keeps.</description>
     <graphicData>
       <texPath>Things/Plant/SweetheartPlant/SweetheartPlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.20</Nutrition>
@@ -126,6 +130,7 @@
     <description>Lives inside the drowned root causeways, in the channels the roots leave when they rot from within -- an eel the colour of wet bark, thick as a wrist, that hunts along the root-roads at night and ambushes from the same holes travelers step over by day. It is why the causeways are contested by everything that prefers dry footing, and why nobody sleeps with a hand in the water.</description>
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <comps>
       <li Class="CompProperties_Rottable">
@@ -142,6 +147,7 @@
     <description>A wide, thin, freshwater bell that rides the Roil -- the steam-fog over the river -- half in the water and half in the air, trailing stinging threads a body-length down. Under the fog you cannot see them; you feel them. Not lethal. Memorable. A dozen drying on a line is a Wildsteam camp's fly-screen.</description>
     <graphicData>
       <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.08</Nutrition>
@@ -165,6 +171,7 @@
     <description>The water's Swinger. A small, quick, bark-mottled octopus that climbs the root causeways out of the water to reach the fruit-fall, and has been seen on the lower boughs. It steals. Lines, bait, small bright things, a fisher's whole catch left on the bank. Rare on the hook because it is usually the one holding the hook. Good eating, if you can find it.</description>
     <graphicData>
       <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.25</Nutrition>
@@ -194,6 +201,7 @@
     <description>A Lunger no longer than your arm, which means its mother is under this bank -- eat it now, before it eats you next year. The Greentide's one prize fish: netted rarer than anything else the river gives up, and the one catch every Wildsteam crew brags about.</description>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>12</MarketValue>
