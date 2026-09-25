@@ -3258,16 +3258,22 @@
     "sha": "695878faa"
   },
   "src/RimMandrake/Graffiti/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "45479bf184b4bd8bb0192ee52fc20f33bfe00528268507e0540f29e3649ca7eb",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "2b7783889ce34859ebeb1a1c173c6aec02cf06947b0ffdd7b0bd97531b887812",
+    "sha": "fc53980eb"
+  },
+  "src/RimMandrake/Graffiti/Defs/DesignationDefs_Graffiti.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9f35c6cfdac953e2ea924721738dff6db77537294a4b2bf094b15da5ad968f84",
+    "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Defs/JobDefs_Graffiti.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
+    "cleanCount": 3,
+    "date": "2026-09-24",
     "hash": "c362ba4bc1147f88e137b8b7709f951feea700567b45b44450ad029d2c215fbc",
-    "sha": "5a1f89a6"
+    "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Defs/JoyGiverDefs_Graffiti.xml": {
     "cleanCount": 2,
@@ -3293,6 +3299,12 @@
     "hash": "4eb813fb92153f273a3fbc1afe7d75fc1035716e8e30046aebe8091fc165490a",
     "sha": "5a1f89a6"
   },
+  "src/RimMandrake/Graffiti/Defs/WorkGiverDefs_Graffiti.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "28c06dafabd01ae19a1579bdc4a49f3214371e3011ae739fee6e41bc7bdbfa07",
+    "sha": "fc53980eb"
+  },
   "src/RimMandrake/Graffiti/LICENSE": {
     "cleanCount": 1,
     "date": "2026-09-10",
@@ -3305,11 +3317,29 @@
     "hash": "f39239b7ba0eabcab127a97b1a7fe0e4f2b99aeccd68f79108e7958d3272028a",
     "sha": "5a1f89a6"
   },
+  "src/RimMandrake/Graffiti/Source/AutoCleanProtection.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2ad56857b9032b2b7d3fc44aa9394ecba51f61a8d34f4220a0eacd0132ddee07",
+    "sha": "fc53980eb"
+  },
   "src/RimMandrake/Graffiti/Source/BreachBiasHook.cs": {
     "cleanCount": 3,
     "date": "2026-09-11",
     "hash": "1a84c60f6c9b407607cff4343805e244695a69d7a914ff837099504d7155d930",
     "sha": "76a58422a"
+  },
+  "src/RimMandrake/Graffiti/Source/Designator_PaintGraffitiMark.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3486ecfcfa95ca95f3aa113024f90033a49edb9b5ea13b8b3d40feb9a3141238",
+    "sha": "fc53980eb"
+  },
+  "src/RimMandrake/Graffiti/Source/Filth_Mark.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3b8fe295e00e2ba9fda0c77c986b73ec32991d83bb341f547ee4f80812839ef3",
+    "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Source/Graffiti.csproj": {
     "cleanCount": 2,
@@ -3318,22 +3348,34 @@
     "sha": "76a58422a"
   },
   "src/RimMandrake/Graffiti/Source/GraffitiCategory.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "4de6b29352f45272e55b06913482234f5271fd57451a5f0b2cbd9ddc04615aaa",
-    "sha": "5a1f89a6"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "7bc9ff4eb54b56b50d4b04078313450ebc8c37dfcf9df14a3f142729f8abb4bc",
+    "sha": "fc53980eb"
+  },
+  "src/RimMandrake/Graffiti/Source/GraffitiForm.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ee7a77776338bf91750aefbe46551eaf0533b6e94f5e1d19c0885175cc74fa0a",
+    "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Source/GraffitiJobUtility.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "16d3b6f763e6ea19a4336d9b916c466131e3f84fe9d7a732d29549bf9779bec4",
-    "sha": "5a1f89a6"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "3c667ac45e9661914ef5a79f512cba3216ee81981adf41cb76b9168c36cc230a",
+    "sha": "fc53980eb"
+  },
+  "src/RimMandrake/Graffiti/Source/GraffitiPool.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f5e726ed5b39a84ffa0aeaf8a83507a45fa6e8d044cde206d73804d444a011f9",
+    "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Source/JobDriver_PaintGraffiti.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "1f7593a4147674e5b3998cb97b19edc6f85ada9e64e698e72cf609f2fcb2231b",
-    "sha": "76a58422a"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "c97fca31c6e2c0111e7093023f57bdf48bbd95c9a45d1bf6197be5403908780f",
+    "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Source/JobGiver_GraffitiPaintingSpree.cs": {
     "cleanCount": 3,
@@ -3354,28 +3396,40 @@
     "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/ModExtension_Graffiti.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "e7ef5b4f3e1d301551aeb211ddbbbf83f13c7a7b1afc75baa98fa1268d5daa0d",
-    "sha": "5a1f89a6"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "f723f4b95d10036a97519882d061237d98cd96f478df0a7910c448d3658ac76b",
+    "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Source/RMGraffitiDefOf.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "5be1e7a1b6babaa8e5c09c64e5fb55c967951926b9f63743027167c5aad8094f",
-    "sha": "5a1f89a6"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "0b901f7f80338b60de41eea79322c252c31b6391d118a319413ed013e6bed8b7",
+    "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "2b3749d9f1a264ae1cc3a04c55139e1be6ab81a9cf8044d445807fe9bd34184f",
+    "sha": "fc53980eb"
+  },
+  "src/RimMandrake/Graffiti/Source/RaidExitTagger.cs": {
     "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "fa3dce6ae75f2c060df3a470a059c8bcfb396a849883c1eac01cb82698344c35",
-    "sha": "47ae589d5"
+    "date": "2026-09-24",
+    "hash": "8579ec2e8218facd5f908ba7fbbadf5c9ed53bca27af36f7d1264acfca0f745f",
+    "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Source/ThoughtWorker_ViewedGraffitiMark.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "0e802882f3c017aca8bd94029dcce91f01832fa14672522f385ea18b4ff074ff",
-    "sha": "76a58422a"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "23ad2f2829f414e879d2660da7864f9c893ccff7e939fdf06d4145147c1bafb0",
+    "sha": "fc53980eb"
+  },
+  "src/RimMandrake/Graffiti/Source/WorkGiver_PaintGraffitiDesignated.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "cff397e44a7a8ba9d1c21506e6d172271abbeaca6e68c798de558ff47da527f8",
+    "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_0.png": {
     "cleanCount": 1,
