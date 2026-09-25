@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T04:15:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T04:16:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -784,7 +784,7 @@ summary:  AQUATICWATERBREATHINGGENE1
 prose:    infrastructure/state/items/AQUATIC_WATER_BREATHING_GENE_1.md
 
 ## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1263,6 +1263,16 @@ kind:     task
 blocked:  precondition unmet: Bazaar slices 1-2 not live-proven yet (WINDOW_GRID needs deploy, PRICE_ENGINE BLOCKED) — premature to rehearse VTE unwind
 summary:  When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
 prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
+
+## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  bridge held by other live FOUNDRY window (FireHawk flight live verify, idle 0 min, not stale) - live fishing quicktest script prepared and ready at src/RimMandrake/bridgetools/prove_fish_bestiary_live.py, waiting for bridge
+summary:  Full spec: design/Jawa/worldbuilding/fishbestiarycommission2026-09-10.md
+prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
 
 ## ROT_FAUNA_KIN_WIRING_1 Wire the ruled Rot fauna kin/alarm table onto the 16 race defs (UtinniPatches, FindMod-gated) — AFTER BMT_FAUNA_ABSORPTION_1 renames the BMT_ rows
 state:    proposed  (BLOCKED)
