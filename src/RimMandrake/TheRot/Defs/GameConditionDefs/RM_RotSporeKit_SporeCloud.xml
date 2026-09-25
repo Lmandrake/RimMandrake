@@ -84,7 +84,7 @@
            without this second entry the spore-cloud incident would start firing
            on its own home biome the moment this mod loads alongside the frozen
            twin. Drop this line only when Phase B repaints RUT_TheRot away. -->
-      <li>RUT_TheRot</li>
+      <li MayRequire="mandrake.rut.patches">RUT_TheRot</li>
     </disallowedBiomes>
     <disabledWhen>
       <extremeWeatherIncidentsDisabled>true</extremeWeatherIncidentsDisabled>

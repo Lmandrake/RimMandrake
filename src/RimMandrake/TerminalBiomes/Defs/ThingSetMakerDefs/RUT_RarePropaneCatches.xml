@@ -36,7 +36,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_AuroraGlass</li>
+                  <li MayRequire="mandrake.rut.patches">RUT_AuroraGlass</li>
                 </thingDefs>
               </filter>
               <countRange>1~1</countRange>
@@ -49,7 +49,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_Oddu</li>
+                  <li MayRequire="mandrake.rut.patches">RUT_Oddu</li>
                 </thingDefs>
               </filter>
               <countRange>4~6</countRange>

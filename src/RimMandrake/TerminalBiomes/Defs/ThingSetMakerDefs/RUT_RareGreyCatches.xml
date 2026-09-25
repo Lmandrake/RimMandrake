@@ -24,7 +24,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_SaltCameo</li>
+                  <li MayRequire="mandrake.rut.patches">RUT_SaltCameo</li>
                 </thingDefs>
               </filter>
               <countRange>1~1</countRange>
@@ -37,7 +37,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_Hessal</li>
+                  <li MayRequire="mandrake.rut.patches">RUT_Hessal</li>
                 </thingDefs>
               </filter>
               <countRange>4~6</countRange>
