@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!-- DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 75: Designator_PaintGraffitiMark
+       (GRAFFITI_PUNK_IDEOLIGION_SCOPE_1's player designator, added
+       2026-09-24) was never added to any DesignationCategoryDef's
+       specialDesignatorClasses - confirmed via repo-wide grep, nothing
+       registers it. DesignationCategoryDef.ResolveDesignators() (Verse
+       source, read via RimSage this pass) builds resolvedDesignators ONLY
+       from specialDesignatorClasses plus auto-generated Designator_Build
+       entries for buildable defs - a bare Designator_Cells subclass with no
+       entry here can never appear in the Architect/Orders menu, so the
+       whole designated-painting mechanism (Designator, RM_PaintGraffitiHere,
+       WorkGiver_PaintGraffitiDesignated) was unreachable by the player.
+       Same shape and same Orders category as FlowWorks_OrdersPatch.xml's
+       precedent for Designator_DigCanal/Designator_FillInCanal. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Ludeon.RimWorld</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses</xpath>
+      <value>
+        <li>RimMandrake.Graffiti.Designator_PaintGraffitiMark</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
