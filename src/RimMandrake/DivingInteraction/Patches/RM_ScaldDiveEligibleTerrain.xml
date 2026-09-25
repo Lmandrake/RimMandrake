@@ -16,27 +16,28 @@
     RM_DiveUtility.CellIsDiveSite's own Standable() check is the redundant
     second gate if a future biome ever tags impassable terrain by mistake.
 
-    MayRequire guards every operation: absent mandrake.rut.patches (the
-    Scald was never built, or a player has no Utinni content at all), this
-    patch does nothing and this mod ships fully inert but intact — the
-    "medieval-tribe player installs this alone" test in About.xml.
+    MayRequire guards every operation: absent mandrake.rm.terminalbiomes
+    (the mod that ships the Scald terrains since the 2026-09-25 biome-mod
+    split), this patch does nothing and this mod ships fully inert but
+    intact — the "medieval-tribe player installs this alone" test in
+    About.xml.
   -->
 
-  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rut.patches">
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.terminalbiomes">
     <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterShallow"]/tags</xpath>
     <value>
       <li>RM_DiveEligible</li>
     </value>
   </Operation>
 
-  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rut.patches">
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.terminalbiomes">
     <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterMovingShallow"]/tags</xpath>
     <value>
       <li>RM_DiveEligible</li>
     </value>
   </Operation>
 
-  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rut.patches">
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.terminalbiomes">
     <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterMovingChestDeep"]/tags</xpath>
     <value>
       <li>RM_DiveEligible</li>

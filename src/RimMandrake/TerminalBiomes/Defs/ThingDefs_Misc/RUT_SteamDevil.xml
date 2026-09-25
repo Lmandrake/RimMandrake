@@ -44,7 +44,7 @@
     <alwaysFlee>true</alwaysFlee>
     <modExtensions>
       <li Class="RimMandrake.EnvironmentalHazards.RM_WanderingVortexExtension">
-        <damageDef>RUT_Scald</damageDef> <!-- same mod (UtinniPatches) as RUT_Scald.xml itself — no MayRequire needed -->
+        <damageDef>RUT_Scald</damageDef> <!-- same mod as RUT_Scald.xml itself — no MayRequire needed -->
 
         <!-- All other fields left at RM_WanderingVortexExtension's own INVENTED defaults; see that class. -->
       </li>
