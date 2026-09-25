@@ -304,4 +304,121 @@
     </lifeStages>
   </PawnKindDef>
 
+  <!-- RM_Vaunoom — THE V-wake creature, name RULED at the 2026-09-25 sitting
+  (terminal_seas_cast_proposal_2026-09-25.md, all 14 approved). Q13 duplicate of
+  the campaign RUT_VWake (UtinniPatches), which stays until Phase B because the
+  frozen RUT_PropaneLake twin references it; the two diverge from here.
+  Utinni-assembly modExtension stripped for standalone-ness, same as the other
+  three propane creatures. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vaunoom</defName>
+    <label>vaunoom</label>
+    <description>You rarely see the thing itself — only the V-shaped ripple it cuts across the black mirror of the lake, closing fast. Propane-native from nose to tail, it hunts anything that disturbs the surface: a boot, a pipe, a hull. Crews running the pumps learn to read the wake before they learn much else about the lake.</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <Mass>28</Mass>
+      <MarketValue>220</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>fangs</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <!-- serpentine ambush shape, no limbs: fits "you rarely see the
+           thing itself, only the wake." Vanilla Core BodyDef, zero new
+           authoring. -->
+      <body>Snake</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <baseBodySize>1.1</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>1.2</maxPreyBodySize>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <trainability>None</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <!-- "attacking pawns and pipe on sight" (the_propane_lakes.md §4):
+           standing in for the ruled pump-noise trigger until
+           PROPANE_LAKE_PIPE_MECHANICS_1 lands (see file header). -->
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.5</manhunterOnTameFailChance>
+      <!-- the mechanism RSW_SandoAquaMonster already uses to live on an
+           impassable water biome (SeaBeasts_Sando.xml, RUT_TheScald's own
+           floor resident): treats liquid propane as passable, cost 1, for
+           this race only. -->
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vaunoom</defName>
+    <label>vaunoom</label>
+    <race>RM_Vaunoom</race>
+    <combatPower>80</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vaunoom/RM_Vaunoom</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vaunoom/RM_Vaunoom</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vaunoom/RM_Vaunoom</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
 </Defs>
