@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_PropaneLakeFauna.xml                       UtinniPatches — authored 2026-09-25
+  COMMISSION_LEDGER_CLEANUP_1, the_propane_lakes sheet's 2 remaining ledger slugs:
+  `burner-polar-ascendant-form-blue-fire-halo-as-locomotion-alm` and
+  `v-wake-propane-sea-exotic-kin-propane-native-agitated-by-pum`. Full pitch text
+  for both is only stored (truncated form) at those keys in
+  design/Jawa/worldbuilding/review/flora_assignment_register.decisions.json; the
+  fuller prose lives in design/Jawa/worldbuilding/biomes/the_propane_lakes.md §4
+  (FROZEN — amendments add detail, never change a ruling) and
+  design/Jawa/worldbuilding/biomes/rosters/the_propane_lakes.json's own `new_defs`
+  entries, both re-read before authoring anything here.
+
+  =========================================================================
+  RUT_BurnerAscendant — "The Burners, ascendant" (the_propane_lakes.md §4:
+  owner, "yet more powerful here and almost required"; "the apex of the Blue
+  Desert's line, and the most beautiful killer on the ice"). NOT a reskin of
+  a donor mod's creature — this IS a form of this mod's own RM_Krissek
+  lineage (RM_BlueDesertFauna.xml, "KRISSEK — the Burner"), checked against
+  cast_assignment.csv first (Krissek itself is cast to the_blue_desert only,
+  no double-booking here since this is a distinct defName/PawnKind, not a
+  re-cast of Krissek itself). Body/art REUSED from Krissek's own placeholder
+  (vanilla Warg, Graphic_Multi) — same "recolored placeholder, no new art"
+  idiom that file's own header documents — at a brighter, paler blue-white
+  tint and larger drawSize to read as the apex form rather than a duplicate.
+  Checked infrastructure/artpipe/{done,pending,registry.jsonl} and
+  design/Jawa/ for "burner"/"ascendant" first — clean, nothing queued or
+  built.
+
+  Mechanics: rosters/the_propane_lakes.json's own new_defs entry for this row
+  flags "C#: flame-halo movement VFX + detonation-on-death (shared authoring
+  with the Blue Desert's Burners)" — both now real, zero NEW C# beyond two
+  small additions to the shared BlueDesertLife.cs file, wired onto BOTH
+  Burner forms (see that file's own 2026-09-25 header note and RM_Krissek's
+  own race.deathAction, added in the same pass):
+    - RM_CompEffecter_HaloAlways: the halo is LOCOMOTION here, not a sprint
+      tell (§4: "not a sprint trick... it is locomotion... always in flame
+      when moving") — shows at any movement, not just Jog+/combat like
+      Krissek's own RM_CompEffecter_Halo.
+    - RM_DeathActionWorker_BurnerBlast: "it goes, all at once, and the field
+      goes with it" — wraps vanilla DeathActionWorker_BigExplosion (the
+      Boomalope's own mechanism) behind the existing nativeDetonationsEnabled
+      toggle.
+  Colder-tolerant than Krissek (ComfyTemperatureMax lower) per the sheet's
+  own measured range (median -62.2 C, coldest LAND on the planet) and larger/
+  stronger stats matching "yet more powerful ... apex of the line." Lives on
+  RUT_FuelSnows (the land biome, successor to RUT_Umbra per
+  UMBRA_IS_A_REGION_NOT_A_BIOME_1) — wired into BOTH RUT_FuelSnows.xml and
+  its live-continuity duplicate RUT_Umbra.xml (that file's own header:
+  "a full behavioural duplicate... until the terminal repaint"), matching the
+  discipline that file already documents for itself.
+  Solitary (wildGroupSize 1, unlike Krissek's 1~3 pack) — an apex predator,
+  not a pack hunter, and this keeps ecoSystemWeight sane against Krissek's
+  own Blue Desert population.
+
+  =========================================================================
+  RUT_VWake — "the V-wake creature and its kin" (the_propane_lakes.md §4,
+  ruled: "propane-native, agitated by pumping, attacking pawns and pipe on
+  sight"; propane_gas_deep_design.md §9 build-ladder row 5: "often-but-not-
+  guaranteed, visible submerged V-wake... not the lake's origin"). No donor
+  fits (checked cast_assignment.csv and RUT_PropaneLake.xml's own header,
+  which explicitly names this row as unbuilt: "no PawnKindDef exists for it
+  yet") — a genuinely new creature, working name taken directly from the
+  sheet's own term the same way RUT_Glower reused the owner's own
+  capitalized name last wave.
+
+  Lives SUBMERGED on RUT_PropaneLake (the water biome, impassable=true,
+  isWaterBiome=true) via the same vanilla mechanism the Star Wars Bestiary's
+  own RSW_SandoAquaMonster already uses for the Scald's own aquatic
+  predator (SeaBeasts_Sando.xml): race.waterSeeker + waterCellCost 1, so the
+  engine treats liquid propane as ordinary passable terrain for this race
+  specifically — no new C# needed for that half either. Body: vanilla Snake
+  (Core BodyDef) for the serpentine "wake" silhouette — a bite-and-strike
+  layout, no limbs, matching a submerged ambush predator rather than the
+  quadruped shape every other biome resident here uses.
+
+  "Agitated by pumping" is the ONE piece of this row not built: it depends on
+  CompPipeNetwork/CompPipeRupture (propane_gas_deep_design.md §9 build-ladder
+  rows 1-3, 6 — RUT_GasVent, GasSaturationTracker, the pipe network itself),
+  none of which exist in this repo yet (checked: zero hits for
+  CompPipeNetwork/CompPipeRupture/RUT_GasVent/GasSaturationTracker). That
+  whole mechanics stack is too large for this pass and is filed separately,
+  PROPANE_LAKE_PIPE_MECHANICS_1. Until it lands, RUT_VWake ships with
+  ordinary elevated aggression (manhunterOnDamageChance 1.0, matching
+  Krissek/Sando's own precedent for "attacks on sight") standing in for the
+  ruled "agitated by pump noise" trigger — the creature exists and is
+  dangerous now; the specific pump-noise hook wires on top later with no
+  def rework, only a new comp reading this race's own aggression state.
+
+  Wired into RUT_PropaneLake.xml's wildAnimals at a low commonality (0.04) —
+  a rare, dangerous, "often-but-not-guaranteed" sighting per the build
+  ladder's own wording, not a common resident like AA_AuroraSylph/AA_Skyeel.
+  Three art jobs filed (rutvwake_v1_south/east/north) — checked artpipe
+  done/pending/registry.jsonl for "vwake"/"v-wake"/"wake" first, clean.
+-->
+<Defs>
+
+  <!-- =================================================================
+       RUT_BurnerASCENDANT — the Burners, ascendant (propane lakes)
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_BurnerAscendant</defName>
+    <label>burner, ascendant</label>
+    <description>Bigger than any krissek and paler for it — a coat of blue-white fire that never quite goes out, because on this ice nothing moves without burning. It does not sprint into flame the way its cousins do; it simply never stops being alight. Crews who work the lake give it a wide, permanent berth. When one finally goes down, it does not fall so much as detonate, and everything nearby learns why they call it that.</description>
+    <statBases>
+      <MoveSpeed>7.5</MoveSpeed>
+      <Mass>85</Mass>
+      <Flammability>0</Flammability>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>jaws</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <hediffGiverSets>
+        <li>OrganicStandard</li>
+      </hediffGiverSets>
+      <baseBodySize>1.3</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>1.0</maxPreyBodySize>
+      <trainability>None</trainability>
+      <lifeExpectancy>5</lifeExpectancy>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+        </li>
+      </lifeStageAges>
+      <!-- §4d / COMMISSION_LEDGER_CLEANUP_1: "it does not fall so much as
+           detonate" (this def's own description above): wraps vanilla
+           DeathActionWorker_BigExplosion behind nativeDetonationsEnabled. -->
+      <deathAction>
+        <workerClass>RimMandrake.BlueDesert.RM_DeathActionWorker_BurnerBlast</workerClass>
+      </deathAction>
+    </race>
+    <comps>
+      <!-- the halo is locomotion here, not a sprint/combat tell: shows at
+           ANY movement (RM_CompEffecter_HaloAlways.ShouldShowEffecter,
+           BlueDesertLife.cs §4c). Reuses Krissek's own effecterDef: the VFX
+           itself needs no new art, only a different trigger condition. -->
+      <li Class="CompProperties_Effecter">
+        <compClass>RimMandrake.BlueDesert.RM_CompEffecter_HaloAlways</compClass>
+        <effecterDef>RM_KrissekHalo</effecterDef>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_BurnerAscendant</defName>
+    <label>burner, ascendant</label>
+    <race>RUT_BurnerAscendant</race>
+    <combatPower>170</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.85</drawSize>
+          <color>(150,195,230)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>0.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.25</drawSize>
+          <color>(150,195,230)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.65</drawSize>
+          <color>(150,195,230)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>1.65</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       RUT_VWake — the V-wake (propane lakes, submerged)
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_VWake</defName>
+    <label>v-wake</label>
+    <description>You rarely see the thing itself — only the V-shaped ripple it cuts across the black mirror of the lake, closing fast. Propane-native from nose to tail, it hunts anything that disturbs the surface: a boot, a pipe, a hull. Crews running the pumps learn to read the wake before they learn much else about the lake.</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <Mass>28</Mass>
+      <MarketValue>220</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>fangs</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <!-- serpentine ambush shape, no limbs: fits "you rarely see the
+           thing itself, only the wake." Vanilla Core BodyDef, zero new
+           authoring. -->
+      <body>Snake</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <baseBodySize>1.1</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>1.2</maxPreyBodySize>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <trainability>None</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <!-- "attacking pawns and pipe on sight" (the_propane_lakes.md §4):
+           standing in for the ruled pump-noise trigger until
+           PROPANE_LAKE_PIPE_MECHANICS_1 lands (see file header). -->
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.5</manhunterOnTameFailChance>
+      <!-- the mechanism RSW_SandoAquaMonster already uses to live on an
+           impassable water biome (SeaBeasts_Sando.xml, RUT_TheScald's own
+           floor resident): treats liquid propane as passable, cost 1, for
+           this race only. -->
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_VWake</defName>
+    <label>v-wake</label>
+    <race>RUT_VWake</race>
+    <combatPower>80</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_VWake/RUT_VWake</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_VWake/RUT_VWake</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_VWake/RUT_VWake</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

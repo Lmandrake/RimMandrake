@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T00:00:00Z",
+  "drawsize": 1.3,
+  "facing": "south",
+  "facings": ["south", "east", "north"],
+  "id": "rutvwake_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld top-down animal sprite, painterly vanilla-RimWorld creature art style: a long, serpentine submerged predator with no limbs, a narrow wedge-shaped head with small fangs, a sinuous body tapering to a flat propulsive tail, built for cutting fast through liquid. Slick, dark obsidian-black hide with faint oily blue-violet iridescence along the spine, like a film of fuel catching light. Body coiled in a low forward-striking S-curve, mostly submerged with only the head and a sliver of back breaking the surface, a thin V-shaped ripple wake trailing behind it on a black mirror-like liquid surface. Viewed from directly above at a slight isometric RimWorld camera angle, centered, a short soft shadow beneath it, no background scenery beyond a hint of dark liquid surface. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "RUT_VWake (COMMISSION_LEDGER_CLEANUP_1 the_propane_lakes sheet slug 'v-wake-propane-sea-exotic-kin-propane-native-agitated-by-pum', mandrake.rut.patches, ThingDefs_Races/RUT_PropaneLakeFauna.xml). the_propane_lakes.md §4: 'the V-wake creature and its kin -- propane-native, agitated by pumping, attacking pawns and pipe on sight'; propane_gas_deep_design.md build ladder row 5: 'often-but-not-guaranteed, visible submerged V-wake.' Body Snake (serpentine, no limbs, baseBodySize 1.1), drawSize 0.9/1.3/1.7 across life stages. Black mirror lake, black obsidian hide with an oily blue-violet sheen -- matches the biome's own 'black mirror of liquid fuel' description, not a water-blue color."
+}

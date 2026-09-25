@@ -148,6 +148,7 @@
       <AA_FrostboundBehemoth MayRequire="sarg.alphaanimals">0.126</AA_FrostboundBehemoth>  <!-- frostbound behemoth - huge — ammonia life of the Flats, keep -->
       <AA_Terramorph MayRequire="sarg.alphaanimals">0.1</AA_Terramorph>  <!-- terramorph - medium — Flats mineral chemistry, adjust-keep -->
       <AA_Slurrypede MayRequire="sarg.alphaanimals">0.02</AA_Slurrypede>  <!-- slurrypede - lab fauna — the containment facility's feeder, still running, adjust-keep -->
+      <RUT_BurnerAscendant>0.03</RUT_BurnerAscendant>  <!-- the Burners, ascendant — apex of the Blue Desert's line (COMMISSION_LEDGER_CLEANUP_1, §4); mirrored from RUT_FuelSnows.xml per this file's own "full behavioural duplicate" header -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
