@@ -26,6 +26,12 @@
           },
           {
             "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_shared_tree_merge.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking for a merge in the shared tree"
+          },
+          {
+            "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_unclosed_queue_item.py\"",
             "timeout": 10,
             "statusMessage": "Checking for a Closes: trailer"
