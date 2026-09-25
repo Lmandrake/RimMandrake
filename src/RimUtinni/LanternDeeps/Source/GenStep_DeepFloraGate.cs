@@ -24,7 +24,14 @@ namespace RimMandrake.Utinni.LanternDeeps
 	// and RUT_LanternDeepGenerator.xml already lists it after Plants.
 	public class GenStep_DeepFloraGate : GenStep
 	{
-		public override int SeedPart => 1237834912;
+		// Distinct from GenStep_ScatterLanternstone (1237834911) and
+		// GenStep_LanternstoneRock (1237834912) — a duplicate SeedPart here
+		// meant this step and GenStep_LanternstoneRock shared the identical
+		// RNG stream at Generate() time, defeating the per-GenStep
+		// decorrelation SeedPart exists for (both steps derive their Rand
+		// state from map seed + SeedPart, so an identical SeedPart gives them
+		// an identical starting stream).
+		public override int SeedPart => 1237834913;
 
 		private static readonly string[] OwnedFloraDefNames =
 		{
