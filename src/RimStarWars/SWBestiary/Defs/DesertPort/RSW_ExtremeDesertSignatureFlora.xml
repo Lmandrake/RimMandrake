@@ -42,10 +42,11 @@
   Art: no existing render found for ollim/silverbole/light-pipe/glass-nub
   in infrastructure/artpipe/{done,_artsrc,registry.jsonl} (checked
   2026-09-20 per CLAUDE.md's "Check for existing regenerated art before
-  queuing more"). Three jobs filed this pass (rslpn_v1, rswollim_v1,
-  rswollimwood_v1) — texPaths below point at vanilla WoodLog's own icon as
-  a non-magenta placeholder for the wood resource, and are otherwise novel
-  paths the fill_queue.py renders will land at.
+  queuing more"). Three jobs filed 2026-09-20 (rslpn_v1, rswollim_v1,
+  rswollimwood_v1); all three RENDERED (facts PASS, real alpha, correct
+  canvas — infrastructure/artpipe/done/*.manifest.json) and deployed
+  2026-09-24 to their real texPaths below, replacing the WoodLog
+  placeholder on the wood resource.
 -->
 <Defs>
 
@@ -61,7 +62,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <!-- No existing render found (checked done/_artsrc/registry.jsonl, 2026-09-20). Job rslpn_v1 filed. -->
+      <!-- rslpn_v1 rendered + deployed 2026-09-24 (256x256, real alpha, facts PASS). -->
       <texPath>Things/Plant/RSW_LightPipeNub</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
@@ -105,7 +106,7 @@
     </descriptionHyperlinks>
     <fillPercent>0.35</fillPercent>
     <graphicData>
-      <!-- No existing render found (checked done/_artsrc/registry.jsonl, 2026-09-20). Job rswollim_v1 filed. -->
+      <!-- rswollim_v1 rendered + deployed 2026-09-24 (1024x1024, real alpha, facts PASS). -->
       <texPath>Things/Plant/RSW_Ollim</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
@@ -172,9 +173,9 @@
     <label>ollim wood</label>
     <description>Wood struck from an ollim stand — bone-white, dense as stone, and grown so slowly that a single plank predates most ruins on the planet. It shrugs off fire and blistering heat the way almost nothing else does, but a hard strike shatters it clean through: the tree traded strength for the one thing that actually kept it alive out here. Prized in a handful of recipes for exactly that trade-off.</description>
     <graphicData>
-      <!-- Placeholder: vanilla WoodLog's own icon (CONFIRMED present) rather than a
-           dangling path, until job rswollimwood_v1 lands its own render. -->
-      <texPath>Things/Item/Resource/WoodLog</texPath>
+      <!-- rswollimwood_v1 rendered + deployed 2026-09-24 (256x256, real alpha, facts
+           PASS), replacing the vanilla-WoodLog placeholder. -->
+      <texPath>Things/Item/Resource/RSW_OllimWood</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <soundInteract>Wood_Drop</soundInteract>
