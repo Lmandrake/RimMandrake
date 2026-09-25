@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T14:51:35Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-25T15:00:43Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -2057,16 +2057,6 @@ thin:     no ## spec, no ## criteria
 summary:  PYRELANDSBURROWERGRAZER1 — dedicated burrower-grazer for the Pyrelands' fire-web
 prose:    infrastructure/state/items/PYRELANDS_BURROWER_GRAZER_1.md
 
-## WASTELAND_RADIOTHERMAL_SOLITARY_1 Radiothermal solitary: living-furnace creature, NEW C# heat-emission + same-species spacing law (no donor emits heat per _assignment_prep.md 4.4 -- new art/def needed)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  WASTELANDRADIOTHERMALSOLITARY1 — radiothermal solitary: def built, heat + spacing C owed
-prose:    infrastructure/state/items/WASTELAND_RADIOTHERMAL_SOLITARY_1.md
-
 ## GREENTIDE_YEARNING_FRUIT_1 Digestive-accelerant fruit (the fruit that yearns): plant def + eat-fast/pass-seed hediff + filth C#
 state:    proposed
 row:      unassigned
@@ -2087,16 +2077,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CONTAGION_UNFINISHED_SPAWNER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CONTAGION_UNFINISHED_SPAWNER_1.md
 
-## GREENTIDE_YEARNING_FRUIT_FILTH_1 Yearning fruit's filth/seed-dispersal comp: pass-seed + filth on digestion, same shape as RM_HediffComp_ShadeStagger
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  GREENTIDEYEARNINGFRUITFILTH1 — the fruit's filth/seed-dispersal mechanic
-prose:    infrastructure/state/items/GREENTIDE_YEARNING_FRUIT_FILTH_1.md
-
 ## DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1 grain-scale commensal fauna riding RM_MirrorGiant's shade
 state:    proposed
 row:      unassigned
@@ -2116,3 +2096,23 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FLOWWORKS_DONOR_AFFORDANCE_GAP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FLOWWORKS_DONOR_AFFORDANCE_GAP_1.md
+
+## ARTPIPE_QUOTA_RESET_WEDGE_1 artpiped cannot notice a Codex quota reset: idle meter refresh reads only stale rollouts, so it stays parked until something runs codex exec in a leased home
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARTPIPE_QUOTA_RESET_WEDGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARTPIPE_QUOTA_RESET_WEDGE_1.md
+
+## STACKCOUNT_FILEPATH_REDX_SWEEP_1 228 live 'Collection cannot init' errors: defs pointing a Graphic_StackCount/Random/Collection texPath at a FILE, not a folder, render red-X (RUT_Greenwood, RUT_Hardwood, VaultRoot, RM_Venomvine, GlowGoo, JawaClaimRumour, many plants). TerminalBiomes fixed at 860b9e0f9 as the pattern: owned art into a folder, borrowed placeholder overrides graphicClass to Graphic_Single. Census from Player.log, grep 'Collection cannot init'.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STACKCOUNT_FILEPATH_REDX_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STACKCOUNT_FILEPATH_REDX_SWEEP_1.md
