@@ -639,3 +639,232 @@ vanilla/Anomaly-DLC render node classes (`PawnRenderNodeProperties_Parent`/
   changes `mlie.starwarsanimalcollection`'s cost rating, only sharpens it
   from a 160-catalog/66-sampled estimate to a 76-live/76-graded measurement.
 
+## census: the ten smaller donors — FOUNDRY, 2026-09-25
+
+Read-only research, step 1 of this item's own spec, for every donor in this
+item's own table below the two dominants (already fully censused above).
+Nothing ported, renamed, cut or edited. Time permitted covering all ten, not
+just "time permitting" a subset.
+
+🔴 **A packageId lookup trap cost most of this pass's time and is worth
+recording**: `grep "<packageId>$donor</packageId>" */About/About.xml`
+false-positives on any mod that lists the donor as a **dependency** — a
+`<modDependencies><li><packageId>...` entry is byte-identical to the tag
+being searched for. It handed back `3309022698` ("Reel's Insector Faction",
+`packageId Reel.InsectorFaction`) as if it *were*
+`oskarpotocki.vfe.insectoid2`, and separately missed real matches for
+`sarg.alphamemes`, `mlie.horrors`, `biomesteam.biomescaverns`,
+`lingluo.cockroach`, `regrowth.botr.core` and `vanillaexpanded.vgeneticse`
+entirely because their real `About.xml` casing (`Mlie.Horrors`,
+`ReGrowth.BOTR.Core`, ...) didn't string-match the lowercase table spelling.
+Fixed by parsing each `About.xml` with `ElementTree` and reading only
+`root.findtext('packageId')` (never a body-wide grep), case-folded. Every
+grade below is from the packageId re-resolved this way, confirmed by content
+id.
+
+### `neronix17.outerrim.droiddepot` (21 in the 2026-09-20 table) — ALREADY DONE, drop from any ordering
+
+Zero live `MayRequire="neronix17.outerrim.droiddepot"` references anywhere in
+`src/RimUtinni/UtinniPatches/Defs/BiomeDefs/{RUT_Desert,RUT_AridShrubland,RUT_ExtremeDesert}.xml`
+today (MEASURED, fresh grep). `DESERT_FAMILY_PORT_EXECUTION_1` (§"B. The 7
+Droid Depot droids") already resolved this: the 7 droids were never really a
+`wildAnimals` roster in the porting sense — they're crash-wreckage spawns,
+now handled by `FALL_LINE_ARRIVAL_MECHANISM_1`'s own
+`RSW_DW_OuterRim_{MSE,SalvageAssist,DUM,GNK,FX7,Muckraker,Destroyer}Droid`
+defs, removed from the desert biomes same-day 2026-09-20. **This donor needs
+no porting plan at all** — it is off the table, not merely cheap.
+
+### `sarg.alphabiomes` (6) — mostly LOW, one dead-reference flag
+
+Live roster (fauna+flora only, excluding this donor's separate weather-condition
+and disease-HediffDef entries in the same biome files — a different asset
+class, out of this census's "creature/plant" scope): `AB_KeeningCordax`,
+`AB_Iashiphus`, `AB_Gomphoeria` (RUT_FeverWood), `AB_JungleTree`,
+`AB_SugarFamewort` (RUT_Greentide), `LavaSnail` (RUT_TheForge) — 6 unique
+defNames, matching the item's own count exactly.
+
+- **5 of 6 (all but LavaSnail): GRADE LOW.** Resolved from the donor's real
+  source (content id `1841354677`, confirmed by packageId): plain
+  `ThingDef` plants inheriting `TreeBase`/`BushBase`/`AB_FertileTreeBase`,
+  zero `Class=` attributes anywhere in either source file
+  (`Plants_TarPits.xml`, `Plants_FeraliskJungle.xml`). No comps, no C#.
+- 🔴 **`LavaSnail` does not exist anywhere in `sarg.alphabiomes`'s own
+  `Defs/` tree** (confirmed against content id `1841354677` directly), **and
+  a defName-exact search of every mod's `1.6`/`1.5`/no-version `Defs/` tree
+  on this machine's whole Steam Workshop cache (1,271 mods) found it
+  nowhere.** Same shape as this item's own `VFEI2_BlackSwarmling` finding in
+  the AA_ census above — a `MayRequire` guard naming a donor the def doesn't
+  actually belong to, or a def whose real donor mod isn't in this machine's
+  cache at all. **Unresolved, not gradeable**; flag for
+  `RUT_TheForge.xml` next time it's touched, same disposition as the
+  `VFEI2_BlackSwarmling` row (not this pass's to fix — no XML touched here).
+  Practical effect if `sarg.alphabiomes` is ever retired while its real donor
+  (whatever it is) stays active: this row would wrongly vanish, or if its
+  real donor is also gone, it's already a dead reference today.
+- **Retiring this donor is not JUST these 6 rows** — the same biome files
+  carry `sarg.alphabiomes`-guarded `WeatherDef`s (`AB_RedFog`,
+  `AB_ForsakenNight`, `AB_ForsakenThunderstorm`, `AB_ForsakenRainyNight`,
+  `AB_VolcanicAsh`, `AB_VolcanicAshRain`) and `HediffDef`-guarded
+  `<diseases>` entries (`AB_Disease_SporesAllergy`,
+  `AB_Disease_AnimalSporesAllergy`, `AB_Disease_BacterialGangrene`,
+  `AB_Disease_ViralAbasia`, `AB_Disease_RavagingIntestinalParasites`) across
+  `RUT_Contagion`, `RUT_ForsakenCrags`, `RUT_TheRot` and `RUT_Miasma`. Those
+  aren't "roster entries" this item's table counts, but they are real donor
+  dependencies a full retirement test (this item's own `verify` section)
+  would still trip over.
+
+### `oskarpotocki.vfe.insectoid2` (7 in the table; 2 unique defNames measured live: `VFEI2_Megathrips` in RUT_FeverWood, `VFEI2_Swarmling` in RUT_Greentide/RUT_Miasma/RUT_Wasteland)
+
+Real donor is content id `3309003431` (`OskarPotocki.VFE.Insectoid2`) — NOT
+`3309022698`, which is "Reel's Insector Faction" and only *depends on* this
+packageId (the trap above).
+
+- **`VFEI2_Swarmling` — GRADE HIGH.** Carries its own `BodyDef`
+  (`Bodies_Swarmling.xml`) and its own `PawnRenderTreeDef`
+  (`PawnRenderTreeDefs.xml`), plus two private-assembly comps from
+  `VFEInsectoids.dll`: `DeathActionProperties_VanishInsect` and
+  `CompProperties_SwarmlingToCocoon`. Porting means carrying a whole
+  BodyDef+BodyPartDefs+render-tree set, not just a ThingDef, and either
+  reimplementing the death/cocoon behaviour or dropping it.
+- **`VFEI2_Megathrips` — GRADE MEDIUM.** Uses the stock `BeetleLike` body
+  (no custom BodyDef needed) and only
+  `VEF.AnimalBehaviours.CompProperties_InitialHediff` — the same
+  already-load-bearing VEF framework as the `sarg.alphaanimals` census above.
+  Copy+rename+re-verify, not reimplementation.
+- Corroborates rather than duplicates the AA_ census's `VFEI2_BlackSwarmling`
+  finding: this donor's own Swarmling family really does exist and really
+  does need the BodyDef treatment, which is exactly why a misattributed
+  `VFEI2_BlackSwarmling` under `sarg.alphaanimals` was plausible-looking in
+  the first place — it's the same species family from the same modder.
+
+### `who.vfee.isopodageneline` (4; 3 unique defNames: `SW_Electrictick`, `SW_Electricgryllotalpa` (RUT_Scarlands), `SW_Juggernautbeetles` (RUT_Scarlands), `SW_Electrictick` also in RUT_Wasteland)
+
+Content id `3357632382` (`Who.VFEE.IsopodaGeneline`). All three inherit
+`VFEI2_BaseInsect` — **this donor's whole cast is itself parented on
+`oskarpotocki.vfe.insectoid2`'s base insect def**, a compounding
+cross-donor dependency: porting these three cleanly needs
+`VFEI2_BaseInsect` (or an owned equivalent) to already exist, i.e. this
+donor's port is not independent of the one above.
+
+- `SW_Electrictick` — GRADE MEDIUM: stock `CompProperties_Explosive` +
+  `CompProperties_MechPowerCell`, no private assembly (the donor ships
+  `Isopoda_Geneline.dll` but neither this def nor `SW_Electricgryllotalpa`
+  uses a class from it).
+- `SW_Electricgryllotalpa` — GRADE MEDIUM: no comps of its own beyond the
+  parent chain.
+- `SW_Juggernautbeetles` — GRADE MEDIUM: `VEF.AnimalBehaviours.CompProperties_InitialAbility`
+  only — the same already-load-bearing VEF framework.
+- None reach HIGH on their own defs, but the `VFEI2_BaseInsect` parent
+  dependency on the previous donor means "cheap" here is conditional.
+
+### `sarg.alphamemes` (3: `AM_Dryad_Corruptor`, `AM_Dryad_Ocular`, `AM_Dryad_Tumorous`, all RUT_PoisonForest)
+
+Content id `2661356814` (`Sarg.AlphaMemes`, not `3556875187` — the trap
+above). **GRADE HIGH for all three.** These are Gauranlen-tree "dryad"
+spirits, deeply wired into vanilla Ideology's connected-tree mechanic:
+`AM_Dryad_Corruptor` carries its own `ThinkTreeDef`
+(`Dryad_Corruptor.xml`) whose think tree runs vanilla
+`JobGiver_ReturnToGauranlenTree`/`JobGiver_FightFiresNearConnectedTree`
+alongside a **private-assembly** node,
+`AlphaMemes.JobGiver_MergeIntoGaumakerPodCorruptor`
+(`AlphaMemes.dll`). Porting means either reimplementing that JobGiver and
+the whole custom think tree, or accepting the loss of the signature
+merge-into-pod behaviour — a call for the sitting, not this pass. The
+`CompProperties_Spawner` comps on these defs are stock, so the entire cost
+here is the AI tree, not the ThingDef.
+
+### `mlie.horrors` (2: `Terrorworm` RUT_AridShrubland, `Visceral` RUT_PoisonForest)
+
+Content id `3535224844` (`Mlie.Horrors`). **GRADE LOW for both** — plain
+`ThingDef`s off `BaseHorror`/`AnimalKindBase`, zero `Class=` attributes
+anywhere in `Races_Animal_Horrors.xml` despite the mod shipping a private
+`Horrors.dll` (used by other creatures/mechanics in the mod, not these two).
+⚠️ Not to be confused with a *different*, unguarded `Terrorworm` name that
+the 2026-09-20 SWAC twin-census section above lists as one of desert's "7
+genuinely unported" rows — that one has no `MayRequire` at all and needs its
+own resolution (which donor, if any, it's actually meant to come from); this
+census only speaks to the `mlie.horrors`-guarded `Terrorworm` live in
+`RUT_AridShrubland.xml` today.
+
+### `biomesteam.biomescaverns` (2: `BMT_Rocktooth`, `BMT_Boneblade`, both RUT_CrackedLands)
+
+Content id `2969748433` (`BiomesTeam.BiomesCaverns`). **GRADE LOW for both**
+— both are catchable **fish items** (`VCEF_RawFishBase`/`FishBase` parent
+chain in the donor's own `VFE_Items_Resource_Fish.xml`), not living
+creatures: no comps, no BodyDef, no PawnKindDef. Cheapest class of port in
+this whole census — an item ThingDef copy-with-rename.
+
+### `lingluo.cockroach` (1: `Ling_Cockroach`, RUT_RustCathedral)
+
+Content id `3196253802` (`LingLuo.Cockroach`). **GRADE LOW** — stock
+`CompProperties_Milkable` only.
+
+### `regrowth.botr.core` (1: `RG_Rimclaw`, RUT_Scarlands)
+
+Content id `2260097569` (`ReGrowth.BOTR.Core`). **GRADE LOW** — stock
+`CompProperties_EggLayer` only at this def's own tag (parent
+`BigBirdKindBase` not walked further); the donor ships `ReGrowthCore.dll`
+but it isn't referenced by this specific def.
+
+### `vanillaexpanded.vgeneticse` (8 pairs, 7 unique defNames — the item's own table undercounts this one by one, since `GR_Beetlefleet` is wired into both RUT_PoisonForest and RUT_Wasteland)
+
+Content id `2801160906` (`VanillaExpanded.VGeneticsE`; not present as a
+Workshop folder was wrong to assume — it IS cached, the trap above just
+missed it on casing). Vendored source also present at
+`vendor/mod_sources/VanillaGeneticsExpanded_src`, no `Assemblies/` folder in
+the vendored copy but the live cache confirms the real mod ships
+`GeneticRim.dll`.
+
+- `GR_Manbear` (RUT_Slime) — **GRADE HIGH**: private-assembly
+  `GeneticRim.CompProperties_HumanoidHybrid`.
+- `GR_Mecharat` (RUT_RustCathedral) — **GRADE HIGH**: private-assembly
+  `GeneticRim.CompProperties_RegisterMechHybridWithAntenna` and
+  `GeneticRim.CompProperties_DieUnlessReset`, plus VEF comps on top.
+- `GR_Chickenrabbit`, `GR_ParagonRat`, `GR_Molebear`, `GR_Spidercat` — **GRADE
+  MEDIUM**, all VEF.AnimalBehaviours-only (`AnimalStatExtension` plus, per
+  def, `CompProperties_InitialHediff`/`InitialAbility`/`DigPeriodically`) —
+  the same already-load-bearing framework.
+- `GR_Beetlefleet` (RUT_PoisonForest, RUT_Wasteland) — **GRADE MEDIUM**
+  (VEF.AnimalBehaviours only: `AnimalProduct`, `AsexualReproduction`,
+  `Floating`), but 🔑 **it is defined in the donor's own
+  `Mods/AlphaAnimals/` compat sub-folder**, meaning it only exists when
+  *both* `vanillaexpanded.vgeneticse` and `sarg.alphaanimals` are active —
+  a second compounding two-donor dependency found this pass (the first
+  being `who.vfee.isopodageneline`'s `VFEI2_BaseInsect` parent above).
+  Retiring either donor alone orphans this def; both need a joint plan.
+
+### Rollup across all ten smaller donors
+
+| donor | table count | unique defNames measured | LOW | MEDIUM | HIGH | unresolved |
+|---|---:|---:|---:|---:|---:|---:|
+| neronix17.outerrim.droiddepot | 21 | 0 (already fully retired) | – | – | – | – |
+| sarg.alphabiomes | 6 | 6 | 5 | 0 | 0 | 1 (`LavaSnail`, dead/misattributed) |
+| oskarpotocki.vfe.insectoid2 | 7 | 2 | 0 | 1 | 1 | 0 |
+| who.vfee.isopodageneline | 4 | 3 | 0 | 3 | 0 | 0 |
+| sarg.alphamemes | 3 | 3 | 0 | 0 | 3 | 0 |
+| vanillaexpanded.vgeneticse | 8 | 7 | 0 | 5 | 2 | 0 |
+| mlie.horrors | 2 | 2 | 2 | 0 | 0 | 0 |
+| biomesteam.biomescaverns | 2 | 2 | 2 | 0 | 0 | 0 |
+| lingluo.cockroach | 1 | 1 | 1 | 0 | 0 | 0 |
+| regrowth.botr.core | 1 | 1 | 1 | 0 | 0 | 0 |
+
+🔑 **Pattern across the whole census, both waves**: every HIGH-grade def in
+every donor traces to one of two things — a **private assembly class**
+(`AlphaBehavioursAndEvents.dll`, `VFEInsectoids.dll`, `AlphaMemes.dll`,
+`GeneticRim.dll`) or a **custom `BodyDef`/`PawnRenderTreeDef`**. Every
+MEDIUM traces to `VEF.AnimalBehaviours`, a framework this campaign already
+depends on permanently — so MEDIUM is close to LOW in real cost, and the
+true dividing line for the owner sitting is HIGH vs. everything else, not
+the three-tier label. Two cross-donor structural dependencies (`who.vfee.isopodageneline`
+→ `oskarpotocki.vfe.insectoid2`'s `VFEI2_BaseInsect`; `vanillaexpanded.vgeneticse`'s
+`GR_Beetlefleet` → `sarg.alphaanimals`) mean at least two donor pairs can't be
+retired independently of each other, which the ordering-by-entry-count table
+in the "spec steps 1 and 2" section doesn't capture and the sitting should
+know about.
+
+Not done here (out of scope for a read-only cost census): the keep/cut pass
+for any of these ten donors' rows (spec step 2 — none of them appear in the
+Sump/Webwork/Miasma/Fever Wood sitting docs surveyed above), and resolving
+the `LavaSnail`/`VFEI2_BlackSwarmling` dead-reference pair (both still
+unfiled).
+
