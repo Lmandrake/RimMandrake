@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_NightsideIce.xml              UtinniPatches — new file 2026-09-24
+  ============================================================================
+
+  Wires the one Star Wars canon row (Q11a, owner ruling 2026-09-22: a genuinely
+  canon name is IP and must route through the Utinni campaign patch layer, never
+  the franchise-free RimMandrake tier) onto RM_NightsideIce. The other 7 rows
+  (all `AA_*`, non-Star-Wars donor fauna) ship inline on the RimMandrake def
+  itself, same as Greentide's vanilla rows — WildAnimals_Pyrelands.xml is the
+  shape this copies, but this file needs only one PatchOperationAdd, no
+  PatchOperationReplace: RM_NightsideIce already ships its own real cast (the
+  7 AA_* rows), not a Core-only placeholder, so nothing needs swapping out.
+
+  Weight (0.03) and MayRequire copied verbatim from the twin's own row,
+  RUT_NightsideIce.xml (frozen): RSW_CaveLemming MayRequire="mandrake.rsw.swbestiary"
+  0.03. Per NIGHTSIDEICE_RM_MOD_BUILD_1's own MEASURED reading, this row is a
+  deliberate 2026-09-21 owner override of ECOSYSTEM_PYRAMID_LAW_1's small/giant
+  ratio (a LARGE-bodySize visitor at 0.03, chosen over a compensating 0.003) —
+  not a defect to fix here, and not re-litigated by this file.
+
+  ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional
+  returns true on no match, and an unmatched PatchOperationAdd is silent. A clean
+  validate_patch.py run is NOT proof the row landed. 🔴 UNVERIFIED AGAINST A LOAD
+  (step 5 is Desktop-only and OWED) — confirm RSW_CaveLemming actually lands via a
+  post-load def dump before believing this file works.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_NightsideIce"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_NightsideIce"]/wildAnimals</xpath>
+      <value>
+        <RSW_CaveLemming>0.03</RSW_CaveLemming>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
