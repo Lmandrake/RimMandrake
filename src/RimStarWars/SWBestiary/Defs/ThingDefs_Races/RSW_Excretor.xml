@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Excretor.xml                       SWBestiary - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `wasteland:excretor-herd-creature-metal-salt-bezoar-product-def`
+  (design/Jawa/worldbuilding/biomes/wasteland.md §4: "The excretors.
+  Creatures that metabolize contamination concentrate it — and shed what
+  they can't use as dense pellets, metal-salt bezoars, plated casts. A kept
+  herd is a slow refinery: graze them on ruined ground and they hand the
+  poison back as a compact, handleable object"; roster's own `new_defs`
+  entry, rosters/wasteland.json, mechanic_load "mechanic EXISTS in donors
+  (59 timed-producer rows); bezoar def is new"; `_assignment_prep.md`'s own
+  §"Excretor" row: "body: reskin a producer; bezoar product = NEW DEF").
+
+  🔑 The "mechanic exists in donors" reading is vanilla, not a donor C#
+  class: RimWorld's own `CompProperties_Shearable` — already used by this
+  repo's `RSW_Bantha`/`RSW_FeralNerf`/`RSW_LavaFlea` — IS a "produce a
+  harvestable resource on a timer" comp, so no donor dependency or new C#
+  is needed at all, just retargeting the yield to a new resource def
+  (`RUT_MetalSaltBezoar`, this same commission).
+
+  Checked cast_assignment.csv first (per this item's own "watch out"): the
+  only body the prep doc names as a candidate ("reskin a producer") is a
+  generic herd grazer shape, not a specific donor row. `RSW_FeralNerf`
+  (already ported, MLIE_FAUNA_ABSORPTION_1 Wave C, vanilla Core
+  `QuadrupedAnimalWithHoovesAndHorn` body — no custom BodyDef) is NOT wired
+  into any RUT_ biome's wildAnimals (checked: only the bare donor rows
+  `FeralNerf`/arid_shrubland and `Nerf`/desert are cast, both DIFFERENT
+  tracked entities from this RSW_ port), so reusing its body/art asset here
+  does not double-book the species — same asset-reuse-without-species-reuse
+  pattern RSW_CanopySwinger (this same wave, reusing RSW_KowakianMonkeyLizard)
+  used.
+
+  Mechanism: shearable comp retargeted from wool to `RUT_MetalSaltBezoar`;
+  milkable comp dropped (an excretor sheds pellets, it is not a dairy
+  animal). Wildness raised and trainability lowered from the donor's own
+  values — "a kept herd is a slow refinery" reads as tameable-but-not-cuddly
+  livestock, matching the sheet's own utilitarian framing rather than the
+  donor's exotic-pet-adjacent numbers.
+
+  Art: zero new PNGs — same texPath as RSW_FeralNerf (swanimals/FeralNerf/...);
+  checked infrastructure/artpipe/{done,pending,registry.jsonl} for
+  "excretor"/"bezoar" first — clean, confirming no prior job exists; none
+  filed here either, since the asset-reuse posture ships with zero new art
+  by design (same as RSW_CanopySwinger/RSW_TunnelSnake/RSW_VentStalker).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Excretor</defName>
+    <label>excretor</label>
+    <description>A heavy-set, antlered grazer that browses the ruined ground everything else avoids, its body slowly concentrating the metals and salts it can't excrete any other way. Left to its own rhythm it sheds the concentrate as dense, layered pellets every few weeks — which makes a kept herd less a herd and more a slow, patient refinery that happens to also breathe.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <MarketValue>260</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.55</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>horns</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RUT_MetalSaltBezoar</woolDef>
+        <shearIntervalDays>22</shearIntervalDays>
+        <woolAmount>4</woolAmount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>1.1</baseBodySize>
+      <baseHealthScale>2.0</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <trainability>None</trainability>
+      <roamMtbDays>1.6</roamMtbDays>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <lifeExpectancy>20</lifeExpectancy>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1.5, 1)</li>
+          <li>(2.5, 1.7)</li>
+          <li>(3.5, 0.7)</li>
+          <li>(4, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Excretor</defName>
+    <label>excretor</label>
+    <labelPlural>excretors</labelPlural>
+    <race>RSW_Excretor</race>
+    <combatPower>95</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf</texPath>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf</texPath>
+          <drawSize>1.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf</texPath>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

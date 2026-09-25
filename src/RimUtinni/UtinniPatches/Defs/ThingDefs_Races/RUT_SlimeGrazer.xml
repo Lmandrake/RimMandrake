@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SlimeGrazer.xml                    UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `the_slime:filter-feeder-line-scooping-mouthed-slime-grazers`
+  (design/Jawa/worldbuilding/biomes/the_slime.md §4: "The filter-feeder line
+  (owner's ruling): a whole family of scooping-mouthed animals grazing the
+  Slime itself like krill-eaters — new art, NEW-ART ledger"; roster's own
+  `new_defs` entry, rosters/the_slime.json, mechanic_load "none blocking —
+  graze mechanic is vanilla; art is the ask").
+
+  The sheet asks for a WHOLE FAMILY; this ships the flagship species of that
+  family (same "one representative def per commission" posture every prior
+  wave of this item used for a "family"/"line" ask — RUT_EmperorVulture,
+  RSW_ShrublandGiant, etc — rather than inventing several defs at once with
+  no roster row asking for more than one).
+
+  Checked cast_assignment.csv / animal_census.csv first (per this item's own
+  "watch out"): the only filter-feeder-shaped candidate is `BMT_Megakrill`
+  (Biomes! Polluted Lands), and it is `dormant` in animal_census.csv — its
+  mod is not in the active ModsConfig.xml list, so per the
+  GR_Paraceramuffalo precedent (COMMISSION_LEDGER_CLEANUP_1 wave 1) its
+  texPath is not a live asset to reuse, only a scale/flavor reference (a
+  krill-analog grazer, used here only to confirm "filter-feeding grazer" is
+  a plausible silhouette family). Authored from scratch, same posture
+  RUT_EmperorVulture/RUT_MortuaryCrawler used when no live donor passed.
+
+  Mechanism: "grazes the Slime itself" needs no bespoke C# — ordinary
+  VegetarianRoughAnimal foodType (same route RM_Gelatid already uses for
+  "browses the slime-grass") is read as covering "grazes the slime substrate"
+  too; nothing in the sheet's own "engine feasibility pass owed" list names
+  this creature, matching the roster's own "none blocking" tag exactly. Herd
+  animal true + moderate group size reads "like krill-eaters" as a real
+  mechanical property (grazing in loose swarms), the same "flavor text as a
+  real stat" discipline RUT_MortuaryCrawler's manhunter-zeroing used.
+  ComfyTemperatureMin/Max (0/20) sit just outside RUT_Slime.xml's own
+  measured p10/median/p90 (3.1/13.4/17.5 C) — the mildest, most stable
+  biome on Ash'karr, so a tight band is correct here unlike a temperature-
+  extreme biome.
+
+  🔴 Not wired into RM_GelatinousSlime.xml (the parallel `mandrake.rm.*`
+  split mod, `GELATINOUSSLIME_RM_MOD_BUILD_1`, that item's own scope/spec)
+  — every prior wave of THIS item wires new campaign fauna into the live-
+  carrying `RUT_<Biome>.xml` only, never a sibling item's in-progress split
+  mod; that item's own step 4 ("second op for RM_GelatinousSlime beside the
+  RUT_ one") is its build pass's job when it reaches Phase A step 4, not a
+  duplicate op from here.
+
+  Art: genuinely new, no existing render found (checked infrastructure/
+  artpipe/{done,pending,registry.jsonl} for "slimegrazer"/"filterfeed"/
+  "scoop"/"krill" — clean). Three facing jobs filed this pass (south/east/
+  north; west mirrors east) — rutslimegrazer_v1_{south,east,north}.json.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_SlimeGrazer</defName>
+    <label>slime grazer</label>
+    <description>A loose-skinned grazer with a wide, muscular scoop where most animals keep a mouth, built to sieve the Slime's own flesh the way a filter-feeder sieves water. It moves in slow drifting swarms across the body's surface, scooping and straining, never quite eating so much as skimming — and the Slime, for its part, never seems to mind the grazing any more than skin minds being brushed.</description>
+    <statBases>
+      <MoveSpeed>1.7</MoveSpeed>
+      <Mass>28</Mass>
+      <MarketValue>110</MarketValue>
+      <Wildness>0.45</Wildness>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>20</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.05</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>scoop-mouth ram</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>forehoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftFoot</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>forehoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightFoot</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <predator>false</predator>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <herdAnimal>true</herdAnimal>
+      <maxPreyBodySize>0</maxPreyBodySize>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>10</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundCall>Muffalo_Call</soundCall>
+      <soundEating>Muffalo_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_SlimeGrazer</defName>
+    <label>slime grazer</label>
+    <race>RUT_SlimeGrazer</race>
+    <combatPower>35</combatPower>
+    <wildGroupSize>3~7</wildGroupSize>
+    <ecoSystemWeight>0.7</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_SlimeGrazer/RUT_SlimeGrazer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_SlimeGrazer/RUT_SlimeGrazer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_SlimeGrazer/RUT_SlimeGrazer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

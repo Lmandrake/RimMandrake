@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_YearningFruit_Hediffs.xml          UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  The digestive-accelerant hediff RUT_YearningFruit.xml applies. Ships the
+  "digests fast / hunger returns / brief waddle" half of the_greentide.md
+  §4's mechanic with real vanilla stats — HungerRateMultiplier (statFactors)
+  and a short MoveSpeed penalty. hediffClass is HediffWithComps explicitly
+  (RUT_Vorrel_Hediffs.xml's own header names the trap: the default
+  Verse.Hediff carries no comps at all, so a comps block on an unstated
+  class loads clean and silently does nothing).
+
+  The "passes seed quickly, filth follows, the ground sprouts" half stays
+  OUT of this file on purpose — see RUT_YearningFruit.xml's own header and
+  GREENTIDE_YEARNING_FRUIT_FILTH_1 (filed this pass) for the deferred
+  filth/germinate comp.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_DigestiveAccelerant</defName>
+    <label>digestive accelerant</label>
+    <description>A gutful of accelerant compounds off a yearning fruit, pushing everything through fast. The calories land quickly and so does the appetite again after — and for a short while after eating, the body would rather sit still than move.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.9, 0.55, 0.25)</defaultLabelColor>
+    <initialSeverity>1.0</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <isBad>false</isBad>
+    <makesAlert>false</makesAlert>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <!-- ~4 game hours from a full 1.0 dose (1.0 / 6.0 * 24) — "a brief
+           waddle", not a lasting condition. -->
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-6.0</severityPerDay>
+        <showHoursToRecover>true</showHoursToRecover>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>digesting fast</label>
+        <statFactors>
+          <HungerRateMultiplier>1.6</HungerRateMultiplier>
+          <MoveSpeed>0.75</MoveSpeed>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

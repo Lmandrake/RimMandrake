@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T04:17:28Z",
+  "drawsize": 1.3,
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "rutradiothermal_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld top-down animal sprite, painterly vanilla-RimWorld creature art style: a heavy, solitary quadruped with thick, cracked hide like sun-baked mud, faint heat-shimmer lines radiating from its back and flanks, low to the ground, built like a living boulder that happens to move. Palette: ember-orange cracks glowing faintly through charcoal-grey hide, no bright colors, mostly muted dark tones with the glow as the one accent. Front view, eyes toward the viewer, centered, a short soft shadow beneath it, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_RADIOTHERMAL_SOLITARY_1",
+  "style_notes": "RUT_Radiothermal (COMMISSION_LEDGER_CLEANUP_1 wasteland sheet slug 'radiothermal-solitary-living-furnace-spacing-law', WASTELAND_RADIOTHERMAL_SOLITARY_1). wasteland.md: 'so hot with their own decay they must dump heat to live... a tamed one is a living furnace that heats a shelter all winter and irradiates it the entire time.' Working name only, folded into WASTELAND_SHIPPING_NAMES_1."
+}

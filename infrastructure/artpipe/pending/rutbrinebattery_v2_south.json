@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T04:17:28Z",
+  "drawsize": 1.2,
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "rutbrinebattery_v2_south",
+  "priority": 100,
+  "prompt": "RimWorld top-down animal sprite, painterly vanilla-RimWorld creature art style: a squat, rubbery-shelled turtle-like animal with a smooth domed carapace ridged like plates on a battery casing, crusted with pale salt at the rim. Sits low and heavy, built to fit a pool like a lid. Palette: wet slate-grey and salt-white with a faint sulfur-yellow undertone along the carapace ridges, no bright colors. Front view, eyes toward the viewer, centered, a short soft shadow beneath it, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "RUT_BrineBattery (COMMISSION_LEDGER_CLEANUP_1 wasteland sheet slug 'brine-battery-pool-owner-ion-gradient-discharge', mandrake.rut.patches, ThingDefs_Races/RUT_BrineBattery.xml). Re-filed v2: v1 refused by the daemon for saying 'viewed from directly above'/camera-angle language instead of describing the surface per facing (WATCH OUT: never name the camera, name what's visible)."
+}

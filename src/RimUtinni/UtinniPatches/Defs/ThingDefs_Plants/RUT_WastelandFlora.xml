@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_WastelandFlora — COMMISSION_LEDGER_CLEANUP_1 wave 11, wasteland sheet.
+    Two of wasteland.md §"Radiotrophs"'s named flora: the dosimeter-lawn (growth
+    marks the hottest ground) and the vault-root sequestration tree (roots
+    concentrate what the plants absorb into a mineable "vault ore"). Plain
+    vanilla PlantBase/TreeBase, no `<pollution>` gate — same reasoning as
+    RUT_PollutedFlora.xml's own header: Biotech's runtime "Polluted" tile state
+    is an event-driven mechanic these biome themes don't mean by "poisoned
+    ground," and gating on it would make these plants effectively never spawn
+    wild.
+
+    The dosimeter-lawn's actual growth-correlates-with-radiation-dose behaviour
+    and the vault-root's actual ore-mining mechanic are BOTH the "dose/geiger
+    layer" wasteland.md's own Owed section already names as engine-feasibility
+    work — ships now as ordinary flora (RUT_VaultRoot yields WoodLog like every
+    other wood-harvest tree in this mod's rosters), hooks later, same posture
+    RUT_BloomCrop (this item, wave 10) used for its own deferred flood mechanic.
+    Not filed as a second item — it's the same open scope wasteland.md already
+    names.
+
+    Working defNames only — wasteland.md's own "Owed: Names, owner's pick"
+    line explicitly includes "the radiotroph flora" among five things still
+    needing the owner's name; folded into WASTELAND_SHIPPING_NAMES_1.
+  -->
+
+  <!-- ============== Dosimeter lawn (ground cover) — RUT_Wasteland ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_DosimeterLawn</defName>
+    <label>dosimeter lawn</label>
+    <description>A low mat of sickly, unnervingly vivid moss-lichen. It grows thickest over the hottest ground -- locals read its color and density as a rough gauge of what's buried beneath, and camp where it refuses to grow at all.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <Nutrition>0.35</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/DosimeterLawn</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.1</drawSize>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <selectable>false</selectable>
+    <plant>
+      <growDays>3</growDays>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.4~0.7</visualSizeRange>
+      <topWindExposure>0.35</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Vault-root tree — RUT_Wasteland ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RUT_VaultRoot</defName>
+    <label>vault-root tree</label>
+    <description>A squat, gnarled tree whose swollen trunk is seamed with dull metallic veins -- it has spent decades sequestering what it drinks out of the ground into itself. Prospectors call felling one "opening the vault," and know exactly what that name is warning them about.</description>
+    <minifiedDef IsNull="True" />
+    <statBases>
+      <MaxHitPoints>190</MaxHitPoints>
+      <Nutrition>1.6</Nutrition>
+      <Mass>90</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/VaultRoot</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.22, 0.28, 0.15)</volume>
+        <offset>(0,0,-0.36)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.32</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>45</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>18</growDays>
+      <harvestWork>220</harvestWork>
+      <harvestYield>22</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.06</topWindExposure>
+      <visualSizeRange>1.2~2.6</visualSizeRange>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+</Defs>

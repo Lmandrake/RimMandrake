@@ -538,3 +538,157 @@ sheet groups remain (`dune_sea+deep_desert`, `nightside_ice`,
 `the_contagion`, `the_greentide`, `the_rot`, `the_slime`, `wasteland`,
 plus `the_fever_wood`/`weeping_stones`/code-review-loop scopes still
 excluded; `the_cracked_lands` now closed out); this item stays open.
+
+## Wave 11 (2026-09-25, FOUNDRY, resumed session) — wasteland (5), the_slime (1), the_greentide (2) resolved; one live freeze violation caught and fixed
+
+This item had been claimed and started by a prior FOUNDRY session that
+rebooted mid-work: its ledger shard already carried 7 `file` events for new
+sub-items (`WASTELAND_BRINE_BATTERY_CREATURE_1`,
+`WASTELAND_BRINE_BATTERY_DISCHARGE_1`, `WASTELAND_EXCRETOR_BEZOAR_1`,
+`WASTELAND_RADIOTHERMAL_SOLITARY_1`, `WASTELAND_SHIPPING_NAMES_1`,
+`WASTELAND_STORM_WEATHER_DEFS_1`, `GREENTIDE_YEARNING_FRUIT_1`) with no
+item prose written and nothing committed, but the actual def/XML authoring
+for most of them was already done and sitting uncommitted in the working
+tree, unfinished only in wiring/validation/write-up. This session verified,
+fixed, wired, validated and finished that work rather than redoing it.
+
+**wasteland (5 slugs), all resolved:**
+
+- `radiotroph-flora-dosimeter-lawn-vault-root-sequestration-tre` → BUILT.
+  `RUT_DosimeterLawn` (ground-cover) + `RUT_VaultRoot` (tree),
+  `Defs/ThingDefs_Plants/RUT_WastelandFlora.xml`, wired into
+  `RUT_Wasteland.xml` wildPlants at 0.15/0.08. Ships as plain flora; the
+  actual dose-correlated-growth/ore-mining mechanics stay inside
+  wasteland.md's own already-named "dose/geiger layer" engine-feasibility
+  scope, not re-filed. Art job `rutvaultroot_v1` already queued by the
+  prior session; `rutdosimeterlawn_v1` already landed in
+  `infrastructure/artpipe/done/`.
+- `excretor-herd-creature-metal-salt-bezoar-product-def` → BUILT, closed
+  as `WASTELAND_EXCRETOR_BEZOAR_1`. `RSW_Excretor` (reskin of the
+  already-ported, not-otherwise-wired `RSW_FeralNerf`, zero new art) +
+  `RUT_MetalSaltBezoar` (`RUT_WastelandItems.xml`), wired at 0.15.
+  `CompProperties_Shearable` retargeted from wool to the bezoar resource —
+  the roster's "mechanic exists in donors" claim resolved to a plain
+  vanilla comp, no donor C# needed at all.
+- `brine-battery-pool-owner-ion-gradient-discharge` → BUILT (interim),
+  closed as `WASTELAND_BRINE_BATTERY_CREATURE_1`. `RUT_BrineBattery`
+  (`TurtleLike` body), wired at 0.1. Checked this repo's own XML for any
+  absorbed EMP/zap comp first — none exists, so the roster's "comps exist
+  in donor C# to borrow" claim does not hold for the live mod set (the one
+  named candidate, `SW_Electrictick`, is both cast elsewhere and its
+  owning mod is dormant). The discharge-as-defense mechanic itself split
+  to `WASTELAND_BRINE_BATTERY_DISCHARGE_1` (open).
+- `radiothermal-solitary-living-furnace-spacing-law` → BUILT (interim),
+  `WASTELAND_RADIOTHERMAL_SOLITARY_1` stays open. `RUT_Radiothermal`
+  (`QuadrupedAnimalWithPawsAndTail`), solitary/no-herd, wired into
+  `RUT_Wasteland.xml`. Both halves of the roster's own mechanic_load (heat
+  emission, same-species spacing law) are genuinely new C# with no vanilla
+  or donor shortcut found — importantly, whether the vanilla
+  `CompProperties_HeatPusher` (the building-heater comp) even attaches to
+  a Pawn ThingDef is an ENGINE question this machine (WSL/Mac, no RimSage)
+  cannot answer, so it is explicitly NOT assumed; the item's remaining
+  scope says so and flags the Desktop check.
+- `the-three-storm-weather-defs-ash-radiation-halo-plasma-termi` →
+  re-filed as an owner-ruling card, `WASTELAND_STORM_WEATHER_DEFS_1` —
+  wasteland.md's own Owed section already names this as a scope question
+  ("the storm map-reshuffle... needs its own tooling and its own ruling"),
+  not a def-authoring task; three options given (flavor-only now / full
+  scope now / drop the mutator-churn half).
+
+Also filed `WASTELAND_SHIPPING_NAMES_1` (owner card, all five working
+names from this sheet, one consolidated card per this item's own
+established pattern).
+
+**the_slime (1 slug, the sheet's only one), resolved:**
+
+- `filter-feeder-line-scooping-mouthed-slime-grazers` → BUILT.
+  `RUT_SlimeGrazer` (new creature, no live donor — the one candidate,
+  `BMT_Megakrill`, is dormant), wired into `RUT_Slime.xml` at 0.5. Ships
+  the flagship of the "whole family" the sheet asks for, same
+  one-representative-def posture every prior wave used for a family/line
+  ask. Deliberately NOT wired into the parallel `RM_GelatinousSlime.xml`
+  split mod — that item's (`GELATINOUSSLIME_RM_MOD_BUILD_1`) own build
+  pass owns that second wiring op. `the_slime` sheet is now fully
+  resolved.
+
+**the_greentide (2 slugs), resolved — and a real mistake caught mid-wave:**
+
+- `canopy-swinger` → BUILT, but its wiring needed a correction.
+  `RSW_CanopySwinger` (reskin of the already-ported, not-otherwise-wired
+  `RSW_KowakianMonkeyLizard`, zero new art) was found ALREADY ADDED
+  directly to `RUT_Greentide.xml`'s live `wildAnimals` block by the prior
+  session — but that file carries an explicit 🔴 FROZEN banner
+  (`GREENTIDE_RM_MOD_BUILD_1`, 2026-09-22: "content lives in
+  `mandrake.rm.greentide`; do not edit here") that a wave 5 note of this
+  same item had already correctly identified and respected. **This was a
+  real freeze violation, reverted this pass.** The correct route — proven
+  by `WildAnimals_Greentide.xml`'s own existing pattern for exactly this
+  situation — is a `PatchOperationAdd` onto `RM_Greentide`'s
+  `wildAnimals`, so that's where the row now lives, filling the slot the
+  dianoga vacated (owner ruling 2026-09-23, "the slot is reserved for a
+  NEW creature"). Updated that patch file's own header, which had claimed
+  a "verbatim mirror" of the frozen def that is no longer true now that a
+  row has been added beyond it — left uncorrected, that claim would have
+  misled the next reader the same way other stale-doc incidents in this
+  repo's CLAUDE.md have. The live world (still running on the frozen
+  `RUT_Greentide.xml` until Phase B's repaint) does not carry this row
+  yet, by design.
+- `digestive-accelerant-fruit-the-fruit-that-yearns` → BUILT (interim).
+  `RUT_YearningFruit`/`RUT_YearningFruitHarvested`
+  (`Defs/ThingDefs_Plants/RUT_YearningFruit.xml`) + `RUT_DigestiveAccelerant`
+  (`Defs/HediffDefs/RUT_YearningFruit_Hediffs.xml`) — a genuinely new fruit
+  (not a reskin of the sheet's existing, untouched Jogan/Muja rows), whose
+  hediff ships the "digests fast / hunger returns / brief waddle" half for
+  real with plain vanilla stats (`HungerRateMultiplier`, `MoveSpeed`), zero
+  new C#. The "filth follows, ground sprouts" half needs a genuinely new
+  comp (same shape as `RUT_VorrelBrood`'s
+  `RM_HediffComp_ShadeStagger`, but filth/seedling instead of
+  shade/germinate) — split out as `GREENTIDE_YEARNING_FRUIT_FILTH_1`.
+  **Not wired into the world at all yet** — same frozen-`RUT_Greentide.xml`
+  situation as the canopy swinger, except `WildAnimals_Greentide.xml` only
+  covers `wildAnimals`, not `wildPlants`, so there is no existing patch
+  route to reuse; `GREENTIDE_YEARNING_FRUIT_1` (stays open) notes this as
+  owed, cross-referenced to `GREENTIDE_RM_MOD_BUILD_1`.
+
+Also filed `GREENTIDE_SHIPPING_NAMES_1` (owner card, both new greentide
+working names — no pre-existing greentide naming-draft doc was found).
+
+**Art**: `rutbrinebattery_v1_{south,east,north}` and
+`rutslimegrazer_v1_{south,east,north}` (filed by the prior session) had
+FAILED in the daemon — both refused for the same reason, prompt text using
+camera-angle language ("viewed from directly above") that contradicted the
+declared per-facing stamp instead of describing the visible surface.
+Re-filed as `rutbrinebattery_v2_*`/`rutslimegrazer_v2_*` with corrected
+front/side/rear-view phrasing. New jobs filed for `rutradiothermal_v1_*`
+(3 facings) and `rutyearningfruit_v1` (1 job, plant). Checked
+`infrastructure/artpipe/{done,pending,failed,registry.jsonl}` by subject
+for every one of these before filing anything, per this item's own
+"watch out."
+
+**Validation**: `validate_patch.py` caught real bugs of this session's own
+making before anything shipped — three new files (`RUT_Radiothermal.xml`,
+`RUT_YearningFruit.xml`, `RUT_YearningFruit_Hediffs.xml`) plus the
+`WildAnimals_Greentide.xml` edit used a bare `--` inside XML comments
+(illegal, breaks the whole file's parse) in prose written this session; all
+fixed to em-dashes before the second run. Second run: 0 XML parse errors
+across all touched/new files; remaining errors are the expected
+own-namespace pending-texPath class (`RUT_MetalSaltBezoar`,
+`RUT_DosimeterLawn`, `RUT_VaultRoot`, `RUT_YearningFruit`), same class as
+every prior wave's new art. `deploy_custom_mods.py --mod UtinniPatches
+--apply` and `--mod SWBestiary --apply`: both applied, all 8+2 touched
+files byte-diffed repo-vs-deployed and VERIFIED identical.
+`run_selftests.py`: 74/75 passed (wall 408.4s); the 1 failure
+(`src/RimMandrake/TheRot/Tools/selftest_live_prep.py`) is PRE-EXISTING and
+unrelated to this wave — it belongs to a separate, unrelated in-flight
+biome-mod-split build (`src/RimMandrake/TheRot/`, untouched this pass) whose
+own ThingDefs don't yet carry `RM_LivePrepExtension`.
+`selftest_deployed_biome_refs.py` passed (400.4s), confirming this wave's
+deployed defs resolve cleanly.
+
+8 slugs resolved this wave (5 wasteland, 1 the_slime, 2 the_greentide) —
+none skipped, one live mistake (the Greentide freeze violation) caught and
+corrected rather than shipped. `the_slime` sheet is now fully closed out.
+38 slugs across 8 sheet groups remain (`dune_sea+deep_desert` 8,
+`nightside_ice` 6, `terminator_sea+the_grey_deep` 4,
+`terminator_sea+the_twilight_deep` 6, `the_contagion` 1, `the_fever_wood`
+1, `the_rot` 4, `weeping_stones` 8); this item stays open.

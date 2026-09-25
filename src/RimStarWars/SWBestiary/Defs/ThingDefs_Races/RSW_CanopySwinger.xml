@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_CanopySwinger.xml                  SWBestiary - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug `the_greentide:canopy-swinger`
+  (design/Jawa/worldbuilding/biomes/the_greentide.md §4: "The Swingers —
+  nimble canopy dwellers crossing above the river to escape danger… or
+  falling into it (owner)"; roster's own `new_defs` entry,
+  rosters/the_greentide.json, mechanic_load "none blocking (falls into
+  water as flavor)").
+
+  Checked cast_assignment.csv first (per this item's own "watch out"): no
+  existing row is tagged a "swinger"/canopy-prey band anywhere in the
+  greentide cast — `Kinrath` (row 184) is the canopy-AMBUSH PREDATOR the
+  sheet itself calls out as preying on Swingers, a separate niche, already
+  kept there. The nearest reusable body is `RSW_KowakianMonkeyLizard`
+  (already ported, MLIE_FAUNA_ABSORPTION_1 Wave C) — a bipedal arboreal
+  primate-lizard, canonically agile and jungle-native — and it is NOT wired
+  into any RUT_ biome's wildAnimals (checked: only appears in the
+  auto-generated cross-cutting AnimalBiomeDuplicates_Generated.xml /
+  AnimalTolerances_Ashkarr.xml patches, never a per-biome wildAnimals list),
+  so reusing its body/art asset here does not double-book the species — the
+  donor row `KowakianMonkeyLizard` (bare, arid_shrubland "small-runway",
+  cast_assignment.csv row 42) is a DIFFERENT tracked entity from our own
+  `RSW_` port, same asset-reuse-without-species-reuse pattern
+  RSW_TunnelSnake (reusing RSW_Klorslug) and RSW_VentStalker (reusing
+  RSW_Kinrath) used.
+
+  Mechanism: "falls into water as flavor" needs no bespoke C# — an ordinary
+  arboreal-reading grazer/omnivore with no aquatic comp, matching the
+  roster's own "none blocking" tag exactly; the fall-into-the-river beat is
+  prose, not a mechanic (no swim comp exists in this codebase to hook it
+  to). MoveSpeed raised from the donor's 4.0 to 5.5 and Wildness raised from
+  0.40 to 0.6 (a true wild canopy animal, not the donor's exotic-pet
+  framing) to read "nimble" and "escapes danger" as real stats. Herd size
+  widened (the sheet's own "crossing above the river" reads as troops, not
+  loners).
+
+  Art: zero new PNGs — same texPath as RSW_KowakianMonkeyLizard
+  (swanimals/KowakianMonkeyLizard/...), retinted at the def level only via
+  flavor text, not a new render (checked infrastructure/artpipe/
+  {done,pending,registry.jsonl} for "canopyswinger"/"swinger" first — clean,
+  confirming no prior job exists for this subject; none filed here either,
+  since the asset-reuse posture ships with zero new art by design, same as
+  RSW_TunnelSnake/RSW_VentStalker).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_CanopySwinger</defName>
+    <label>canopy swinger</label>
+    <description>A lean, long-limbed climber that never touches the ground if it can help it, crossing the gaps between the Greentide's giants hand over hand along vine and branch. When the canopy runs out — or something faster is behind it — it simply lets go, trusting the river below to break the fall better than whatever is chasing it.</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left fist</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>LeftHand</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right fist</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>RightHand</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_KowakianMonkeyLizard</body>
+      <predator>false</predator>
+      <petness>0.15</petness>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHungerRate>0.14</baseHungerRate>
+      <baseHealthScale>0.5</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Mammavian</leatherDef>
+      <specificMeatDef>RSW_Anthropoid_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <lifeExpectancy>14</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_CanopySwinger</defName>
+    <label>canopy swinger</label>
+    <race>RSW_CanopySwinger</race>
+    <combatPower>25</combatPower>
+    <ecoSystemWeight>0.8</ecoSystemWeight>
+    <wildGroupSize>2~5</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard</texPath>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard_Dessicated</texPath>
+          <drawSize>1.1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

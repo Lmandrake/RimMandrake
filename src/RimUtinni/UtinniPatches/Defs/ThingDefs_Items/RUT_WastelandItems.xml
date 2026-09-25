@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_WastelandItems.xml                 UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  The metal-salt bezoar, companion item to RUT_Excretor.xml (same commission,
+  ledger:wasteland:excretor-herd-creature-metal-salt-bezoar-product-def).
+  design/Jawa/worldbuilding/biomes/wasteland.md §4: "The excretors. Creatures
+  that metabolize contamination concentrate it — and shed what they can't
+  use as dense pellets, metal-salt bezoars, plated casts. A kept herd is a
+  slow refinery: graze them on ruined ground and they hand the poison back
+  as a compact, handleable object."
+
+  Same ResourceBase shape RUT_CrackWax.xml (this mod, the_cracked_lands
+  wave) already used for a biome's own "harvested-off-the-animal signature
+  material" resource.
+
+  Texture: placeholder only, same class as RUT_Bitumen/RUT_CrackWax
+  (UtinniPatches already claims Textures/Things/Item/Resource/ as its own
+  namespace, so a borrowed vanilla icon would hard-error validate_patch.py)
+  — pointed to a new RUT_MetalSaltBezoar/ folder, expected pending texPath.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_MetalSaltBezoar</defName>
+    <label>metal-salt bezoar</label>
+    <description>A dense, layered pellet an excretor sheds once it has concentrated all the contamination its body can hold — mineral salts and heavy metals packed into a hard, handleable lump. A kept herd hands these back on a schedule, which is as close to refining as grazing gets: they extract the poison, they never destroy it, and the pellet still has to go somewhere once you have it.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_MetalSaltBezoar</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(139, 132, 104)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>3.5</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+</Defs>

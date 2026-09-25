@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_BrineBattery.xml                   UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `wasteland:brine-battery-pool-owner-ion-gradient-discharge`
+  (design/Jawa/worldbuilding/biomes/wasteland.md §4: "The brine batteries.
+  Hypersaline pools over mineral beds are half a voltaic cell; what lives in
+  them runs on ion gradients and discharges them as defense. The pool you
+  want to mine has an owner, and the owner is a capacitor"; roster's own
+  `new_defs` entry, rosters/wasteland.json, mechanic_load "NEW ART/DEF;
+  EMP/zap comps exist in donor C# to borrow"; `_assignment_prep.md`'s own
+  candidate row: "SW_Electrictick (electric, wrong scale); AA goo family
+  (right look)").
+
+  Checked cast_assignment.csv/animal_census.csv first (per this item's own
+  "watch out"): `SW_Electrictick` is cast to `RUT_Scarlands` already (row
+  255, "weapon-descendant", keep) AND its owning mod
+  (`who.vfee.isopodageneline`) is `dormant` in animal_census.csv — not in
+  the active ModsConfig.xml list — so per the GR_Paraceramuffalo precedent
+  (COMMISSION_LEDGER_CLEANUP_1 wave 1) it is not a live asset to reuse,
+  only a scale/flavor reference ("runs on a power cell, explodes when
+  destroyed" — a munition with legs). No absorbed EMP/zap CompProperties
+  class was found anywhere in this repo's own XML (checked
+  src/RimUtinni, src/RimStarWars, src/RimMandrake for any
+  `CompProperties_*Emp*`/`*Zap*`/`*Shock*`/`Isopod` reference — clean), so
+  "comps exist in donor C# to borrow" is not actually true of this repo's
+  live dependency set; borrowing it would mean a hard MayRequire on a
+  dormant mod, the exact thing the GR_Paraceramuffalo precedent argues
+  against.
+
+  Ships as an interim, same "def lands first, behaviour comp follows"
+  posture DESERT_SHADE_WHALE_FILTERFEED_1/CRACKED_LANDS_SEALED_WAKE_
+  MECHANISM_1 used: a plain pool-dwelling animal, body `TurtleLike`
+  (vanilla, the same rounded low-slung shape RM_Gelatid already uses for an
+  unrelated "body of a substance" creature — no BodyDef port needed), with
+  `wildness` and a `ComfyTemperature` band read from the hypersaline-pool
+  habitat. The ion-gradient discharge-as-defense mechanic itself is
+  genuinely new C# (a damage-on-melee-contact or EMP-burst comp), filed as
+  its own item, `WASTELAND_BRINE_BATTERY_DISCHARGE_1`, rather than guessed
+  at inline.
+
+  Art: genuinely new, no donor texture fits "capacitor in a salt pool"
+  (checked infrastructure/artpipe/{done,pending,registry.jsonl} for
+  "brinebattery"/"battery"/"capacitor" first — clean). Three facing jobs
+  filed this pass (south/east/north; west mirrors east) —
+  rutbrinebattery_v1_{south,east,north}.json.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_BrineBattery</defName>
+    <label>brine battery</label>
+    <description>A squat, rubbery-shelled animal that never leaves its pool — hypersaline water over a mineral bed is half a voltaic cell already, and this thing is the half that moves. It sits at the deepest point like a fitted lid, feeding on the same gradient it draws its charge from, and everyone in the Wasteland who has ever reached into a promising pool for the wrong reason has a story about the other half.</description>
+    <statBases>
+      <MoveSpeed>1.3</MoveSpeed>
+      <Mass>34</Mass>
+      <MarketValue>130</MarketValue>
+      <Wildness>0.6</Wildness>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>discharge</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>TurtleLike</body>
+      <predator>false</predator>
+      <baseBodySize>0.7</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>VegetarianRoughAnimal, VegetarianEater</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>10</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeExpectancy>16</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0.4)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Warg_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_BrineBattery</defName>
+    <label>brine battery</label>
+    <race>RUT_BrineBattery</race>
+    <combatPower>50</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

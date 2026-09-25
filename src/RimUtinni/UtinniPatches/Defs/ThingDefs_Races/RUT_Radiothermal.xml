@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Radiothermal.xml                   UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `wasteland:radiothermal-solitary-living-furnace-spacing-law`
+  (design/Jawa/worldbuilding/biomes/wasteland.md §4: "The radiothermal
+  solitaries — so hot with their own decay they must dump heat to live:
+  they haunt the cold dark scour and keep distance from their own kind or
+  cook each other (the spacing law returns, driven by heat). A warm boulder
+  in the black country means one passed; a tamed one is a living furnace
+  that heats a shelter all winter and irradiates it the entire time."
+  roster's own `new_defs` entry, rosters/wasteland.json, mechanic_load "NEW
+  C#: heat emission + spacing").
+
+  Checked cast_assignment.csv/animal_census.csv first (per this item's own
+  "watch out") for any donor that already emits ambient heat as a creature
+  mechanic — none found; the roster's own mechanic_load line agrees ("no
+  donor emits heat"). No RimSage available from this machine (WSL/Mac,
+  CLAUDE.md's own standing note) to verify whether CompHeatPusher (the
+  vanilla building-heater comp) attaches cleanly to a Pawn ThingDef, so that
+  is NOT assumed here — ships as a plain interim creature, same "def lands
+  first, behaviour comp follows" posture RUT_BrineBattery (this same wave)
+  and DESERT_SHADE_WHALE_FILTERFEED_1/CRACKED_LANDS_SEALED_WAKE_MECHANISM_1
+  used. Both halves of the mechanic_load (the heat emission AND the
+  same-species spacing law that makes "cook each other" a real threat) are
+  genuinely new C#, so both stay inside WASTELAND_RADIOTHERMAL_SOLITARY_1
+  (already filed by the prior session) rather than being guessed at inline.
+
+  Body: solitary, heavy, ground-hugging quadruped (QuadrupedAnimalWithPawsAndTail,
+  already used elsewhere in this repo for medium/large solitary creatures) —
+  "a living boulder that happens to move" reads as low MoveSpeed + high mass
+  + high armor (its own decay-heat has presumably toughened it), not agility.
+  roamMtbDays widened well past this mod's herd-animal defaults and
+  herdAnimal=false: "solitary" and "keep distance from their own kind" are
+  read as real stats (never grouping, rarely encountered) even before the
+  spacing-law C# lands, the same "flavor text as a real stat" discipline
+  RUT_MortuaryCrawler's manhunter-zeroing used.
+
+  Art: genuinely new, no donor texture fits "cracked, glowing-ember hide"
+  (checked infrastructure/artpipe/{done,pending,registry.jsonl} for
+  "radiothermal"/"living furnace" first — clean). Three facing jobs filed
+  this pass (south/east/north; west mirrors east) — rutradiothermal_v1_
+  {south,east,north}.json, provenance WASTELAND_RADIOTHERMAL_SOLITARY_1.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_Radiothermal</defName>
+    <label>radiothermal</label>
+    <description>A heavy, ground-hugging animal so hot with its own decay that it must constantly dump the excess or cook from the inside. It moves rarely and alone — two of them sharing ground for long enough is a fire, not a meeting — and the cracked, faintly glowing hide is the reason nothing ever finds it by scent alone. A warm boulder sitting in otherwise dead-cold country usually means one has just moved on.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <Mass>110</Mass>
+      <MarketValue>340</MarketValue>
+      <Wildness>0.65</Wildness>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.9</ArmorRating_Heat>
+    </statBases>
+    <tools>
+      <li>
+        <label>fused claw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>fused claw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <maxPreyBodySize>1.4</maxPreyBodySize>
+      <herdAnimal>false</herdAnimal>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>2.4</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <trainability>None</trainability>
+      <wildness>0.65</wildness>
+      <roamMtbDays>25</roamMtbDays>
+      <manhunterOnDamageChance>0.08</manhunterOnDamageChance>
+      <lifeExpectancy>22</lifeExpectancy>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0.3)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Warg_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_Radiothermal</defName>
+    <label>radiothermal</label>
+    <labelPlural>radiothermals</labelPlural>
+    <race>RUT_Radiothermal</race>
+    <combatPower>140</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Radiothermal/RUT_Radiothermal</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Radiothermal/RUT_Radiothermal</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Radiothermal/RUT_Radiothermal</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
