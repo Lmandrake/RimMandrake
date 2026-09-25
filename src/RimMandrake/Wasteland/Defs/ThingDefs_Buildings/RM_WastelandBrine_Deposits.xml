@@ -13,6 +13,7 @@
 
   <ThingDef ParentName="RockBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_BrineDeposit_Tekk</defName>
+    <saveCompressible>false</saveCompressible>
     <label>tekk bed</label>
     <description>A crust of salt-white mineral over a shallow shelf, crawling with plate-scrapers just under the surface. Break the crust and they scatter for the taking.</description>
     <graphicData>
@@ -42,6 +43,7 @@
 
   <ThingDef ParentName="RockBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_BrineDeposit_Drazz</defName>
+    <saveCompressible>false</saveCompressible>
     <label>drazz bed</label>
     <description>A stack of mineral wafers half-buried in the pool floor, salt-white and dark by turns — the owner, dormant and heavy, waiting under the crust. Mining it out is the only way anyone gets one without a dry line and a lot of patience.</description>
     <graphicData>
@@ -71,6 +73,7 @@
 
   <ThingDef ParentName="RockBase">
     <defName>RM_BrineDeposit_BrinePlate</defName>
+    <saveCompressible>false</saveCompressible>
     <label>spent electrode bed</label>
     <description>A drazz's discarded plates, gone still and cold, pressed into the mineral crust by seasons of brine. Rarer than a living bed and worth the extra digging.</description>
     <graphicData>
