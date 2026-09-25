@@ -38,11 +38,8 @@
   (−10.0 / +41.3 °C, median +11.4) with a small buffer, replacing Kinrath's
   donor-biome range (Tropical/Boreal −10/60).
 
-  Working name only ("vent stalker") — folded into a new owner card,
-  `POISONFOREST_SHIPPING_NAMES_1`, alongside the crust flora below and the
-  biome's own still-open weather-name naming gap noted in poison_forest.md
-  §4b's ratified table (names are ratified there; this creature's name is
-  not covered by that ruling and needs its own pass).
+  Label "vent stalker" ruled to stand by owner card 2026-09-24
+  (POISONFOREST_SHIPPING_NAMES_1).
 
   mechanic_load for this slug reads "none blocking (prep §12)" in the
   roster's own new_defs entry — a pure art/def commission, built whole this
