@@ -22,8 +22,8 @@
     plantDensity dropped hard from a normal jungle/plains read: ban 3 is explicit —
     "No green — the flora palette is black, glass and rust; a green plant def
     resident here violates the sheet." SS4's only flora are the Glowers (black
-    radiotrophic moss/lichen) — kept low and non-green in spirit even though the
-    actual Glower PlantDef is not authored here (roster's own call).
+    radiotrophic moss/lichen) — kept low and non-green in spirit. RUT_Glower
+    (COMMISSION_LEDGER_CLEANUP_1, see below) is now authored and wired.
 
     terrainsByFertility kept at the donor's own AncientMegastructure/Soil thresholds
     (first-party Odyssey terrain, "kept nearly whole" per SS0).
@@ -57,6 +57,13 @@
     RUT_ScarlandsSprungDangers (§5 pre-sprung dressing, pure PrefabDef
     content, zero new C#). Full build-pass details:
     infrastructure/state/items/SCARLANDS_MECHANICS_2.md.
+
+    COMMISSION_LEDGER_CLEANUP_1 build pass (2026-09-24): RUT_Glower
+    (RUT_ScarlandsFlora.xml) wired into wildPlants — also corrected the
+    ban-3 paragraph above, which still said the Glower PlantDef was not yet
+    authored. RUT_MortuaryCrawler (RUT_MortuaryCrawler.xml) wired into
+    wildAnimals alongside (not replacing) the AA_Helixien interim — same
+    "wired alongside" precedent RSW_ShadeWhale/RSW_WraidAlpha used.
 
   -->
 
@@ -170,12 +177,14 @@
       <RSW_Korrum MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Korrum>  <!-- korrum - boulder-shelled giant crab (bodySize 4.00), import; owner 2026-09-22 on the identity sheet: "This is good for Scarlands". ⚠️ Wired at 0.05, NOT the roster's 0.5: this roster is the thinnest we have (8 species, total commonality 1.51) and the weakest pyramid (53.0% small, ECOSYSTEM_PYRAMID_LAW_1), so 0.5 would make a mountain-sized crab a quarter of all sightings and drop the biome to ~40% small. 0.05 leaves the ratio where it was. The roster's 0.5 was a round2-mapping placeholder, not an ecology call. -->
       <SW_Electricgryllotalpa MayRequire="who.vfee.isopodageneline">0.15</SW_Electricgryllotalpa>  <!-- Electricgryllotalpa - weapon-descendant, keep -->
       <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>  <!-- rimclaw - weapon-descendant, keep -->
-      <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>  <!-- helixien - mortuary-guild, adjust-keep -->
+      <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>  <!-- helixien - mortuary-guild, adjust-keep (interim; RUT_MortuaryCrawler below is the dedicated body, COMMISSION_LEDGER_CLEANUP_1) -->
       <SW_Juggernautbeetles MayRequire="who.vfee.isopodageneline">0.05</SW_Juggernautbeetles>  <!-- Juggernautbeetles - weapon-descendant, keep -->
+      <RUT_MortuaryCrawler>0.06</RUT_MortuaryCrawler>  <!-- mortuary crawler - mortuary-guild dedicated body, COMMISSION_LEDGER_CLEANUP_1 (2026-09-24); own-mod def, no MayRequire; wired below AA_Helixien's own commonality, not replacing it -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
       <RUT_ScorchedStars>0.25</RUT_ScorchedStars>  <!-- scorched stars -->
+      <RUT_Glower>1.2</RUT_Glower>  <!-- the Glowers - the biome's only flora per the_scarlands.md §4, COMMISSION_LEDGER_CLEANUP_1 (2026-09-24) -->
     </wildPlants>
     <wildPlantRegrowDays>20</wildPlantRegrowDays>
   </BiomeDef>

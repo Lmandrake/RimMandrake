@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_MortuaryCrawler.xml                UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `the_scarlands:mortuary-guild-carrion-specialist-dedicated-body`
+  (design/Jawa/worldbuilding/biomes/the_scarlands.md §4: "The Mortuary Guild
+  — slow, patient carrion-specialists, the only things that can digest the
+  preserved dead of a graveyard that won't properly rot. Uncannily calm
+  where everything else is mad; the one safe animal here, and the most
+  disturbing"; roster's own new_defs entry, rosters/the_scarlands.json,
+  mechanic_load "none blocking; AA_Helixien is the interim body").
+
+  A genuinely NEW body, not a reskin of the interim. Checked cast_assignment.csv
+  first (per this item's own "watch out"): AA_Helixien is already an
+  intentionally shared, multi-homed "corpse decayer special" cast across
+  FIVE biomes (RUT_Contagion/Miasma/PoisonForest/Scarlands/Slime, all
+  "keep"/"adjust-keep") — reusing its own asset again under a new defName
+  would only add a sixth instance of the same shared reuse, not give
+  Scarlands the dedicated species this roster row actually asks for. No
+  other unclaimed "slow calm scavenger" body exists in the live cast for
+  this biome (checked). The only candidate donor found, `BMT_CarrionVulture`
+  (Biomes! Polluted Lands), is `dormant` in animal_census.csv — its mod is
+  not in the active list, so per the GR_Paraceramuffalo precedent
+  (COMMISSION_LEDGER_CLEANUP_1 wave 1, desert sheet) its texPath is not a
+  live asset to reuse, only a scale/flavor reference (a flying vulture-
+  analog, used here only to confirm "carrion specialist, calm" as a
+  plausible silhouette family) — so this is authored from scratch with new
+  art, same posture RUT_FleetFlier (the_forge wave) used when no live donor
+  passed.
+
+  Mechanism: "digests the preserved dead" needs no bespoke C# — ordinary
+  foodType Carnivore + predator=false is the same vanilla combination
+  RimWorld's own scavenger-type wildlife (non-hunting carrion eaters) already
+  uses; nothing in the sheet's own "engine feasibility pass owed" list names
+  this creature, matching the roster's own "none blocking" tag exactly.
+  manhunterOnDamageChance/OnTameFailChance are zeroed and wildness kept low
+  deliberately — the sheet's own text ("the one safe animal here") is read
+  as a real mechanical property, the same "flavor text as a real stat"
+  discipline RUT_FleetFlier's ComfyTemperatureMax used for "retreat before
+  they perish". ComfyTemperatureMin/Max (10/65) match RUT_PyrelandsFauna's
+  own extreme-heat-biome precedent — Scarlands' own measured median temp is
+  59.4 C (RUT_Scarlands.xml header).
+
+  🔴 THE NAME IS NOT SETTLED. `RUT_MortuaryCrawler` is the INTERNAL working
+  defName; "Mortuary Guild" in the sheet names the GROUP (same as "the
+  Fliers"/"the Brakes" in the Greentide), not a ruled species label for the
+  individual creature. Folded into `SCARLANDS_SHIPPING_NAMES_1`, filed this
+  pass (this sheet's own naming-draft doc,
+  noncanon_beast_names_poison_miasma_desert_scar_rot_dune_waste_cracked.md
+  batch 4e, does not draft a name for this slug either — it only covers the
+  Isopoda hive castes and existing roster rows, not this new commission).
+
+  Art: genuinely new, no existing render found (checked infrastructure/
+  artpipe/{done,pending,registry.jsonl} for "mortuary"/"crawler" — clean).
+  Three facing jobs filed this pass (south/east/north; west mirrors east) —
+  rutmortuarycrawler_v1_{south,east,north}.json.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_MortuaryCrawler</defName>
+    <label>mortuary crawler</label>
+    <description>A heavy, armor-plated scavenger that moves at exactly one speed: unhurried. It works a graveyard the way nothing else here can — patiently, methodically, digesting the preserved dead of ground that won't properly rot. Everything else in the Scarlands is one wrong step from madness; the mortuary crawler never seems to notice there was a war at all, which is exactly what makes it the worst thing to watch eat.</description>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <Mass>85</Mass>
+      <MarketValue>140</MarketValue>
+      <Wildness>0.3</Wildness>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>65</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>foreclaw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>foreclaw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>false</predator>
+      <baseBodySize>2.2</baseBodySize>
+      <baseHealthScale>1.3</baseHealthScale>
+      <baseHungerRate>0.55</baseHungerRate>
+      <foodType>Carnivore</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>6</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>22</lifeExpectancy>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0.6)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Warg_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_MortuaryCrawler</defName>
+    <label>mortuary crawler</label>
+    <race>RUT_MortuaryCrawler</race>
+    <combatPower>60</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_MortuaryCrawler/RUT_MortuaryCrawler</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_MortuaryCrawler/RUT_MortuaryCrawler</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_MortuaryCrawler/RUT_MortuaryCrawler</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.2</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

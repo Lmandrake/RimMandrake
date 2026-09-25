@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScarlandsItems.xml                 UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  RUT_GlowerCrust — the harvested product of RUT_Glower
+  (RUT_ScarlandsFlora.xml). ParentName="ResourceBase" (same parent Steel/
+  RUT_FungalSoil use — a plain tradeable raw resource, alwaysHaulable/
+  Sellable by inheritance). Carries BOTH uses the sheet's §4 text names
+  ("harvestable as radiogenic fuel and pigment") in one item rather than
+  two, the same "one commission, one property, not four bespoke items"
+  discipline the poison_forest wave's toxic-meat pass used — there is no
+  separate fuel-vs-pigment mechanic named anywhere yet to justify splitting
+  it, and splitting speculatively would be inventing scope this pass does
+  not own.
+
+  Real radiological handling (dose exposure on harvest/handling, the
+  "glower-fuel harvest" gameplay loop the roster's own mechanic_load names)
+  is deferred to SCARLANDS_MECHANICS_2 — this item lands as a plain sellable
+  raw resource now, same "def first, mechanic follows" precedent.
+
+  Art: no existing render found (checked infrastructure/artpipe/
+  {done,pending,registry.jsonl} for "glower" — clean). One job filed this
+  pass, rutglowercrust_v1 (infrastructure/artpipe/pending/
+  rutglowercrust_v1.json).
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_GlowerCrust</defName>
+    <label>glower crust</label>
+    <description>A scraped-up chunk of black radiotrophic varnish, still faintly warm. Burned, it makes a crude, hot fuel; reduced to ash, it makes a pigment nothing else on the planet can match — deep, matte black that doesn't fade. Handling too much of it too long is its own kind of story.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <!-- Job rutglowercrust_v1, filed this pass. Pending until the daemon lands it. -->
+      <texPath>Things/Item/Resource/RUT_GlowerCrust</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>50</stackLimit>
+    <statBases>
+      <MarketValue>4.5</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+  </ThingDef>
+
+</Defs>
