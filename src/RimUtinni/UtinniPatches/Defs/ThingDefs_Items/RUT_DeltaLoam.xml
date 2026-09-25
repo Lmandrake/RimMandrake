@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_DeltaLoam.xml                      UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves half of ledger slug
+  `the_miasma:delta-loam-composter-castings-producer`
+  (design/Jawa/worldbuilding/biomes/the_miasma.md §7: "Delta loam - the
+  composters' castings: clean, fertile, exportable soil"; miasma_fauna_
+  roster_2026-09-23.md row 2, RM_Karrobel: "The delta loam is its castings.
+  The sheet's §7 export and the hopeful mirror of the Scarlands' mortuary
+  guild").
+
+  Plain resource good, no comps of its own — same shape as RUT_TibannaGas.xml
+  (FORGE_MECHANICS_1 F2): the gathering comp lives on the ANIMAL
+  (RUT_Karrobel.xml, this same pass), not the item.
+
+  MarketValue is a placeholder export-good figure (clean fertile soil, a
+  genuine commodity per the sheet's §7, but not priced against anything —
+  no other soil/fertilizer resource exists in this mod set to benchmark
+  against). thingCategories ResourcesRaw, matching the sheet's framing as a
+  raw export rather than a manufactured good.
+
+  🔴 Deliberately NOT wired to RM_Pallasheen's "germinates only on delta
+  loam" mechanism (miasma_fauna_roster_2026-09-23.md row 18) — that plant is
+  its own roster row from a DIFFERENT slug set (the flora roster, not this
+  ledger's the_miasma group) and is not owed by this item; this def ships
+  only what the ledger slug itself asks for (a castings producer + the
+  castings good it produces).
+
+  Texture: own new texPath, art job filed this pass (checked
+  infrastructure/artpipe/{done,pending,registry.jsonl} for "loam"/"castings"
+  first — clean). No DEPLOY_HOLD.txt entry, matching the RUT_FleetFlier/
+  RUT_DarkCrust precedent for a pending own-namespace texPath.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_DeltaLoam</defName>
+    <label>delta loam</label>
+    <description>Clean, fertile soil worked loose and cast up by karrobel burrowing through the Miasma's muck. Where the karrobel have been, the ground turns rich and dark — the one export from this biome that arrives already refined.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_DeltaLoam</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>3.5</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.6</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>1.0</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

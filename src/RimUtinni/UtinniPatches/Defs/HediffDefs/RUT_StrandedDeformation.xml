@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_StrandedDeformation.xml            UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `the_miasma:the-stranded-transitional-orphan-forms-2-3-species`
+  (design/Jawa/worldbuilding/biomes/the_miasma.md §4: "the surge's orphans:
+  endemics cut off in pools when the salt line moves, forced ashore between
+  waters - gills going leathery, fins splaying into feet that don't quite
+  work. Creatures that look transitional: evolution auditioning, generation
+  by generation, in the pools behind the player's base").
+
+  Per the owner's ruling recorded in miasma_fauna_roster_2026-09-23.md §5
+  ("decision taken by question card"): the stranded are the sea nursery's
+  FAILURES, not their own species - "nothing below is a new animal." This
+  file is that condition: a permanent Hediff applied to a minority of the
+  ordinary nursery juveniles a stranding pool already spawns (the roster's
+  own §5 table, "the deformation" row), never a new creature or PawnKindDef.
+
+  Read this together with the C# half of the same slug
+  (RM_StrandingPoolsExtension.strandedDeformationHediff/
+  strandedDeformationChance, RM_MapComponent_StrandingPools.
+  SpawnStrandedInto, RM_JobGiver_ReturnToWater.TryGiveJob - all three edited
+  this pass, src/RimMandrake/EnvironmentalHazards/Source/): a pawn carrying
+  this hediff is deliberately EXCLUDED from the JobGiver's existing
+  rescue-by-pathing behaviour ("it cannot return to water, and it does not
+  thrive" - roster §5), which is why the mechanical effects below lean on
+  Moving/Metabolism rather than anything cosmetic.
+
+  🔴 THE LOOK (an altered sprite - "gills going leathery, fins splaying into
+  feet") is explicitly flagged UNMEASURABLE ON THE MAC by the roster itself
+  (§7: "how much a hediff can change an animal's rendered appearance") and
+  is NOT attempted here - same "never block on an unmeasured visual" posture
+  this repo's own flight law and DarkCrust/FleetFlier precedent already use
+  for missing frames/art. The condition is real and mechanical; the sprite
+  stays the juvenile's own, pending a Desktop check.
+
+  hediffClass plain Hediff (not HediffWithComps): no comp is needed - the
+  severity never changes on its own (isBad permanent condition, not a
+  disease with a progression curve), and the JobGiver-suppression half of
+  this mechanism lives in C#, not in a HediffComp.
+
+  minSeverity/initialSeverity 1 with a single stage and no upper bound: this
+  is a fixed condition from the moment of stranding, not something that
+  ramps - matching the roster's own framing ("a condition... not a new
+  species," applied once at spawn, never re-rolled).
+
+  Capacity effects, INVENTED-BUILD (no figures named by the roster beyond
+  the qualitative "does not thrive" and "half-working gait"): Moving -35%
+  (splayed, not-quite-working limbs), Metabolism -15% (poorly adapted to
+  either environment, per "auditioning" framing), Breathing -10% (leathery,
+  imperfect gills). Deliberately NOT lethal on its own (no lethalSeverity) -
+  the roster's own "pay-off... occasionally survives into something that
+  works" implies the condition itself must not be a death sentence; being
+  stuck in a drying, undefended pool is what does the killing, same as an
+  ordinary (non-deformed) stranded pawn already risks today.
+-->
+<Defs>
+
+  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_StrandedDeformation</defName>
+    <label>stranded deformation</label>
+    <labelNoun>a stranded deformation</labelNoun>
+    <description>Gills gone leathery, fins splaying toward something that almost works as a foot. Left ashore too long by a retreating salt line, this one is not going back - and it is not quite built for staying, either.</description>
+    <hediffClass>Hediff</hediffClass>
+    <defaultLabelColor>(0.55,0.62,0.35)</defaultLabelColor>
+    <isBad>true</isBad>
+    <minSeverity>1</minSeverity>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <makesSickThought>false</makesSickThought>
+    <tendable>false</tendable>
+    <stages>
+      <li>
+        <label>transitional</label>
+        <painOffset>0.03</painOffset>
+        <statOffsets>
+          <MoveSpeed>-0.6</MoveSpeed>
+        </statOffsets>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.35</offset>
+          </li>
+          <li>
+            <capacity>Metabolism</capacity>
+            <offset>-0.15</offset>
+          </li>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

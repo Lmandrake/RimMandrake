@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 128,
+    "width": 128
+  },
+  "channel": "codex",
+  "created": "2026-09-25T02:30:00Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rutdeltaloam_v1",
+  "priority": 100,
+  "prompt": "RimWorld raw-material item icon, painterly vanilla-RimWorld resource art style: a heaped mound of dark, rich, clean-looking soil, almost black-brown, faintly moist, with no visible debris or filth mixed in -- reads as refined, fertile earth rather than raw muck. A stackable raw resource icon. Centered, isolated on a transparent background, a short soft ground shadow beneath it, no scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld inventory-icon size.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "RUT_DeltaLoam (COMMISSION_LEDGER_CLEANUP_1 the_miasma sheet, harvested castings of RUT_Karrobel, mandrake.rut.patches, ThingDefs_Items/RUT_DeltaLoam.xml). the_miasma.md §7: 'Delta loam - the composters' castings: clean, fertile, exportable soil.' Distinct from ordinary muck/mud -- this is meant to look already refined, the one export good from this biome that 'arrives already refined.'"
+}

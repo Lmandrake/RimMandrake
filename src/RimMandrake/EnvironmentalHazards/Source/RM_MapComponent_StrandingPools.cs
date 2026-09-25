@@ -287,6 +287,17 @@ namespace RimMandrake.EnvironmentalHazards
                 Pawn pawn = PawnGenerator.GeneratePawn(request);
                 GenSpawn.Spawn(pawn, spawnCell, map);
                 pool.occupants.Add(pawn);
+
+                // COMMISSION_LEDGER_CLEANUP_1 the_miasma sheet, slug
+                // `the-stranded-transitional-orphan-forms-2-3-species`. The
+                // roster's own minority "deformed, does not thrive" tier
+                // (miasma_fauna_roster_2026-09-23.md §5), rolled per pawn
+                // rather than per pool so a "big" (3-5) draw doesn't
+                // deform all of them together.
+                if (ext.strandedDeformationHediff != null && Rand.Chance(ext.strandedDeformationChance))
+                {
+                    pawn.health.AddHediff(ext.strandedDeformationHediff);
+                }
             }
         }
 
