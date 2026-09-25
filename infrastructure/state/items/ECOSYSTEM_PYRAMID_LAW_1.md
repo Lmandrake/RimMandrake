@@ -25,7 +25,7 @@ Full output: `Transient/ecosystem_pyramid_sweep_20260920.txt`.
 | `RUT_TheScald` | **0.0%** | 2 | both large |
 | `RUT_NightsideIce` | **16.7%** | 6 | |
 | `RUT_ForsakenCrags` | **33.3%** | 14 | 🔴 the worst real roster |
-| `RUT_TheRot` | 35.9% | 8 | |
+| `RM_TheRot` | 35.9% | 8 | |
 | `RUT_Webwork` | 36.4% | 4 | |
 | `RUT_TheForge` | 43.4% | 6 | |
 | `RUT_WeepingStones` | 44.4% | 10 | |
@@ -101,7 +101,7 @@ named but never wired) — no megafauna cut anywhere, same shape as the Gizka fi
 | `RUT_TheScald` | 0.0% | **96.6%** | wired `RSW_Faa` (0.5) + `RSW_Mee` (0.5) — both already ruled in `rosters/the_scald.json` fauna, never wired |
 | `RUT_NightsideIce` | 16.7% | **68.8%** | wired `AA_ShockGoat` (0.03) — already ruled "visitor" in `rosters/nightside_ice.json`, never wired; the roster's other two unwired visitors (Tauntaun, Wampa) are LARGE and left out on purpose |
 | `RUT_ForsakenCrags` | 33.3% | **55.6%** | boosted `AA_DuskRat` 0.5→1.5, `AA_Murkling` 0.5→1.0 (no unwired small fauna existed in this biome's own roster to draw on instead) |
-| `RUT_TheRot` | 35.9% | **57.6%** | wired `AA_AngelMoth` (0.5) + `Snoruuk` (0.5) — both already ruled in `rosters/the_rot.json` fauna, never wired |
+| `RM_TheRot` | 35.9% | **57.6%** | wired `AA_AngelMoth` (0.5) + `Snoruuk` (0.5) — both already ruled in `rosters/the_rot.json` fauna, never wired |
 | `RUT_Webwork` | 36.4% | **58.8%** | boosted `Kreetle` 0.2→0.8 (the roster's two unwired entries, AA_Feralisk/GR_Chickenspider, are bodySize 1.0/1.1 — LARGE, so left out) |
 | `RUT_TheForge` | 43.4% | **56.1%** | wired `AA_CrescendoAnole` (0.5) — already ruled in `rosters/the_forge.json` fauna, never wired |
 | `RUT_WeepingStones` | 44.4% | **54.5%** | boosted `Ollopom` 0.7→1.3 (this biome's own roster already matches every wired entry one-for-one, nothing unwired to draw on) |

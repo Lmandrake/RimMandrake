@@ -28,7 +28,7 @@ entry's `MayRequire` packageId. Full table and method:
 | 1 each | `lingluo.cockroach`, `regrowth.botr.core` |
 
 🔑 **Two mods carry 262 of ~330 borrowed roster entries.** Any plan that is not
-mostly about those two is aimed at the tail. `RUT_TheRot` is the only biome where
+mostly about those two is aimed at the tail. `RM_TheRot` is the only biome where
 we already own more than we borrow (21 vs 8) — it is the benchmark for what
 "done" looks like.
 
@@ -350,10 +350,10 @@ is not an Alpha Animals def at all and is excluded from the table and count.
 | `AA_AcanthamoebaGiganteaLarge` | ThingDef+PawnKindDef | RUT_Slime 0.15 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_AcidExplosion |
 | `AA_AcanthamoebaGiganteaSmall` | ThingDef+PawnKindDef | RUT_Wasteland 0.1 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_AcidExplosion |
 | `AA_Aerofleet` | ThingDef+PawnKindDef | RUT_GreySea 0.05, RUT_TheForge 0.4, RUT_TwilightSea 0.05 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AsexualReproduction; CompProperties_Floating |
-| `AA_Agaripawn` | ThingDef+PawnKindDef | RUT_TheRot 0.2 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
-| `AA_Agaripod` | ThingDef+PawnKindDef | RUT_TheRot 0.25 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
-| `AA_AngelMoth` | ThingDef+PawnKindDef | RUT_TheRot 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_EatWeirdFood; CompProperties_Floating |
-| `AA_AnimaColossus` | ThingDef+PawnKindDef | RUT_TheRot 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AttachEffecter |
+| `AA_Agaripawn` | ThingDef+PawnKindDef | RM_TheRot 0.2 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
+| `AA_Agaripod` | ThingDef+PawnKindDef | RM_TheRot 0.25 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
+| `AA_AngelMoth` | ThingDef+PawnKindDef | RM_TheRot 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_EatWeirdFood; CompProperties_Floating |
+| `AA_AnimaColossus` | ThingDef+PawnKindDef | RM_TheRot 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AttachEffecter |
 | `AA_AuroraSylph` | ThingDef+PawnKindDef | RUT_PropaneLake 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AutoNutrition; CompProperties_CauseIncident; CompProperties_Floating |
 | `AA_BedBug` | ThingDef+PawnKindDef | RUT_PoisonForest 0.3 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_BloodShrimp` | ThingDef+PawnKindDef | RUT_Contagion 0.2, RUT_Greentide 0.2, RUT_Miasma 0.1 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
@@ -384,7 +384,7 @@ is not an Alpha Animals def at all and is excluded from the table and count.
 | `AA_Metallovore` | ThingDef+PawnKindDef | RUT_TheForge 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood |
 | `AA_Mime` | ThingDef+PawnKindDef | RUT_Slime 0.01 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Untameable |
 | `AA_Murkling` | ThingDef+PawnKindDef | RUT_CrackedLands 0.2, RUT_ForsakenCrags 1.0 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_CorpseDecayer |
-| `AA_MycoidColossus` | ThingDef+PawnKindDef | RUT_TheRot 0.25 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
+| `AA_MycoidColossus` | ThingDef+PawnKindDef | RM_TheRot 0.25 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
 | `AA_Needlepost` | ThingDef+PawnKindDef | RUT_AridShrubland 0.1, RUT_Greentide 0.3 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_InitialAbility; CompProperties_LightSustenance |
 | `AA_NightAve` | ThingDef+PawnKindDef | RUT_ForsakenCrags 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_InitialAbility |
 | `AA_NightMule` | ThingDef+PawnKindDef | RUT_ForsakenCrags 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
@@ -404,15 +404,15 @@ is not an Alpha Animals def at all and is excluded from the table and count.
 | `AA_Slurrypede` | ThingDef+PawnKindDef | RUT_FuelSnows 0.02, RUT_Miasma 0.1, RUT_NightsideIce 0.002, RUT_Umbra 0.02 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct |
 | `AA_SpinedGow` | ThingDef+PawnKindDef | RUT_Scarlands 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_SummitCrab` | ThingDef+PawnKindDef | RUT_NightsideIce 0.004 | MEDIUM | VEF.AnimalBehaviours only: CompProperties_Untameable |
-| `AA_Swarmling` | ThingDef+PawnKindDef | RUT_Contagion 0.1, RUT_TheRot 0.3 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
+| `AA_Swarmling` | ThingDef+PawnKindDef | RUT_Contagion 0.1, RM_TheRot 0.3 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_TarGuzzler` | ThingDef+PawnKindDef | RUT_Sump 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood |
 | `AA_Terramorph` | ThingDef+PawnKindDef | RUT_FuelSnows 0.1, RUT_NightsideIce 0.003, RUT_Umbra 0.1, RUT_Wasteland 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood; CompProperties_NearbyEffecter |
 | `AA_TetraSlug` | ThingDef+PawnKindDef | RUT_NightsideIce 0.002 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Electrified; CompProperties_InitialAbility |
 | `AA_Thermadon` | ThingDef+PawnKindDef | RUT_Miasma 0.1 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
 | `AA_Thunderbeast` | ThingDef+PawnKindDef | RUT_Slime 0.005 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_SummonFlashstorm |
 | `AA_Thunderox` | ThingDef+PawnKindDef | RUT_ForsakenCrags 0.09 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Regeneration |
-| `AA_Wildpawn` | ThingDef+PawnKindDef | RUT_AridShrubland 0.1, RUT_TheRot 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AsexualReproduction; CompProperties_HighlyFlammable |
-| `AA_Wildpod` | ThingDef+PawnKindDef | RUT_AridShrubland 0.025, RUT_PoisonForest 0.05, RUT_TheRot 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AsexualReproduction; CompProperties_HighlyFlammable |
+| `AA_Wildpawn` | ThingDef+PawnKindDef | RUT_AridShrubland 0.1, RM_TheRot 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AsexualReproduction; CompProperties_HighlyFlammable |
+| `AA_Wildpod` | ThingDef+PawnKindDef | RUT_AridShrubland 0.025, RUT_PoisonForest 0.05, RM_TheRot 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AsexualReproduction; CompProperties_HighlyFlammable |
 
 ### One anomaly found, not part of the table — `VFEI2_BlackSwarmling`
 
@@ -605,7 +605,7 @@ vanilla/Anomaly-DLC render node classes (`PawnRenderNodeProperties_Parent`/
 | `Shyrack` | ThingDef+PawnKindDef | RUT_Webwork 0.2 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |
 | `Skalder` | ThingDef+PawnKindDef | RUT_AridShrubland 0.08 | LOW | no comps, plain ThingDef |
 | `Sketto` | ThingDef+PawnKindDef | RUT_AridShrubland 0.8 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |
-| `Snoruuk` | ThingDef+PawnKindDef | RUT_TheRot 0.5 | LOW | stock comps only: CompProperties_EggLayer |
+| `Snoruuk` | ThingDef+PawnKindDef | RM_TheRot 0.5 | LOW | stock comps only: CompProperties_EggLayer |
 | `Strill` | ThingDef+PawnKindDef | RUT_AridShrubland 0.2 | LOW | no comps, plain ThingDef |
 | `Urusai` | ThingDef+PawnKindDef | RUT_AridShrubland 0.7; RUT_FeverWood 0.5 | LOW | stock comps only: CompProperties_EggLayer |
 | `Voorpak` | ThingDef+PawnKindDef | RUT_AridShrubland 0.02 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |

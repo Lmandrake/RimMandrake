@@ -195,7 +195,7 @@ FAMILIES = {
                             # giant mushroom seems misplaced") — it is a Forsaken Crags
                             # organism by Alpha Biomes' own description and is carried there.
     'RSW_LightPipeNub': 0.1, 'RSW_Plant_Bloddle': 0.05, 'RSW_Ollim': 0.01},
-  'RUT_TheRot': {   # 2,204 tiles · 30 plants — was AB_MycoticJungle. 18 of the fungi
+  'RM_TheRot': {   # 2,204 tiles · 30 plants — was AB_MycoticJungle. 18 of the fungi
                      # below were BMT_ (Biomes! Caverns donor) until Caverns retired;
                      # renamed to their RUT_ ports 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1,
                      # e.g. BMT_Dewshrooms -> RUT_Dewshrooms), same renames CAVERNS_PARITY_

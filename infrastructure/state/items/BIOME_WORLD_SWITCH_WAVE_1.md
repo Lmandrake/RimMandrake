@@ -27,7 +27,7 @@ from the donor list remain painted") was therefore never met.
   diff, R36 backup bar). Map donor def → owned def from `BIOME_OWNERSHIP_WAVE_1`'s
   commit (`RUT_Desert`, `RUT_ExtremeDesert`, `RUT_AridShrubland`, `RUT_Wasteland`,
   `RUT_PoisonForest`, `RUT_Scarlands`, `RUT_Contagion`, `RUT_Webwork`, `RUT_Slime`,
-  `RUT_TheRot`, `RUT_TheForge` (LavaField/Volcano/AB_PyroclasticConflagration),
+  `RM_TheRot`, `RUT_TheForge` (LavaField/Volcano/AB_PyroclasticConflagration),
   `RUT_RustCathedral`, `RUT_Umbra`, `RUT_CrackedLands`, `RUT_ForsakenCrags`,
   `RUT_FeverWood`, `RUT_Greentide`, `RUT_Miasma`, `RUT_Sump`, `RUT_WeepingStones`;
   `ZBiome_Grasslands` → `RM_FE_Pyrelands` rides `PYRELANDS_WORLD_SWITCH_1`;
@@ -69,7 +69,7 @@ six donors the message did not name. **Nothing was excluded as unresolved.**
 | ExtremeDesert | 3969 | RUT_ExtremeDesert | 3969 | commit msg |
 | AB_PropaneLakes | 2531 | RUT_Umbra | 2531 | commit msg (land tiles; the 57 `RUT_PropaneLake` water tiles were already owned and untouched) |
 | Desert | 2390 | RUT_Desert | 2390 | commit msg |
-| AB_MycoticJungle | 2204 | RUT_TheRot | 2204 | commit msg |
+| AB_MycoticJungle | 2204 | RM_TheRot | 2204 | commit msg |
 | Wasteland | 1853 | RUT_Wasteland | 1853 | commit msg |
 | AB_RockyCrags | 1135 | RUT_ForsakenCrags | 1135 | `RUT_ForsakenCrags.xml` header |
 | ZBiome_Badlands | 970 | RUT_CrackedLands | 970 | commit msg |
@@ -209,7 +209,7 @@ rename, nothing else touched — checked with a post-edit grep sweep, clean):
 `the_cracked_lands.json`→`RUT_CrackedLands`, `the_fever_wood.json`→`RUT_FeverWood`,
 `the_forge.json`→`RUT_TheForge` (its 3-donor list `AB_PyroclasticConflagration`/
 `LavaField`/`Volcano` collapsed to the one owned def), `the_greentide.json`→`RUT_Greentide`,
-`the_miasma.json`→`RUT_Miasma`, `the_rot.json`→`RUT_TheRot`,
+`the_miasma.json`→`RUT_Miasma`, `the_rot.json`→`RM_TheRot`,
 `the_rust_cathedral.json`→`RUT_RustCathedral`, `the_scarlands.json`→`RUT_Scarlands`,
 `the_slime.json`→`RUT_Slime`, `the_sump.json`→`RUT_Sump`, `the_webwork.json`→`RUT_Webwork`,
 `wasteland.json`→`RUT_Wasteland`, `weeping_stones.json`→`RUT_WeepingStones`.

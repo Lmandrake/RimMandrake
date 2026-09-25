@@ -49,7 +49,7 @@ kept creature.
 **Plants (~98):** `src/RimUtinni/UtinniPatches/Patches/BiomeFlora_Ashkarr.xml` today
 carries **104 `BMT_` tokens, 39 distinct plant defNames** (down from 131 at
 `mod_retirement_audit.md` §5 — the Rot's own def now runs on **34 `RUT_` plants** from
-the RotSporeKit ingest, `RUT_TheRot.xml`). 89 files under `src/` still reference `BMT_`
+the RotSporeKit ingest, `RM_TheRot.xml`). 89 files under `src/` still reference `BMT_`
 somewhere (includes Polluted Lands fish and guarded compat patches).
 
 **Other live couplings, MEASURED this pass:**
@@ -125,7 +125,7 @@ the crystal-life cast or a collapse mechanic into the same wave.
 - **`BMT_FungalForest` — already replaced in substance.** The raid-and-merge is done
   (RotSporeKit: spore kit, terrains, drugs, hediffs, guardian groves as RUT defs; the
   Rot's def carries 34 RUT plants). Residue at cut time: the handful of `BMT_` entries
-  still in `RUT_TheRot.xml` (Brightbells + the ruled-cut straggler animals) and the
+  still in `RM_TheRot.xml` (Brightbells + the ruled-cut straggler animals) and the
   BiomeFlora rows among the 39 distinct (§1). Sweep work, not build work — no new biome.
 
 ## 4. The cut path

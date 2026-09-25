@@ -72,7 +72,7 @@ them (plus their own `RSW_` rows, which this ruling also routes out):
 | `RUT_TheForge` | 2 / 7 |
 | `RUT_Scarlands` | 1 / 9 |
 | `RUT_Wasteland` | 1 / 17 |
-| `RUT_TheRot` | 1 / 20 |
+| `RM_TheRot` | 1 / 20 |
 
 ## spec
 

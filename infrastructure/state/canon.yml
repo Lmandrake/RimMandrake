@@ -675,7 +675,7 @@ ecosystem_laws:
       Against defs.sqlite mods=617/6a41e05c828eed67, captured 2026-09-20T07:47:24Z. 9 of
       24 biome rosters failed and were fixed same-day: RUT_RustCathedral (0.0% -> 92.5%),
       RUT_TheScald (0.0% -> 96.6%), RUT_NightsideIce (16.7% -> 68.8%), RUT_ForsakenCrags
-      (33.3% -> 55.6%), RUT_TheRot (35.9% -> 57.6%), RUT_Webwork (36.4% -> 58.8%),
+      (33.3% -> 55.6%), RM_TheRot (35.9% -> 57.6%), RUT_Webwork (36.4% -> 58.8%),
       RUT_TheForge (43.4% -> 56.1%), RUT_WeepingStones (44.4% -> 54.5%), RUT_Desert
       (45.0% -> 52.8%). Fixed by raising the grain (boosting or wiring already-built,
       already-ruled small fauna), never by cutting megafauna.

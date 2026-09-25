@@ -21,17 +21,17 @@ ground**; the tile column sums to 21,872.
 | `RUT_Desert` | 2390 | `desert.md` | no (§10 = "Implementation", not bestiary) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml` |
 | `RUT_ExtremeDesert` | 3969 | `dune_sea.md` + `deep_desert.md` (ONE merged roster, R22) | no (neither sheet) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml` |
 | `RUT_Umbra` | 2531 | `the_propane_lakes.md` (the antistellar cap the sheet names "Umbra") | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml` |
-| `RUT_TheRot` | 2204 | `the_rot.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml` |
+| `RM_TheRot` | 2204 | `the_rot.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RM_TheRot.xml` |
 | `RUT_Wasteland` | 1853 | `wasteland.md` | no (§10 = "Campaign hooks") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml` |
 | `RUT_NightsideIce` | 1506 | `nightside_ice.md` | no (§10 = "The door — occupied") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml` |
 | `RUT_ForsakenCrags` | 1135 | `forsaken_crags.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml` |
 | `RUT_BlueDesert` | 1029 | `the_blue_desert.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml` — 3 `wildAnimals` + 6 `wildPlants` rows since `BLUE_DESERT_LIFE_AUTHORING_1` (done 2026-09-21; re-read 2026-09-23) |
 | `RUT_CrackedLands` | 970 | `the_cracked_lands.md` | **YES** — §10 "The bestiary sorts — a fauna divided by TIME, not space" | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml` |
 | `RUT_AridShrubland` | 628 | `arid_shrubland.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_AridShrubland.xml` |
-| `RUT_TwilightSea` | 607 | `terminator_sea.md` (surface); `the_twilight_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml` |
+| `RM_TwilightSea` | 607 | `terminator_sea.md` (surface); `the_twilight_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TwilightSea.xml` |
 | `RUT_PoisonForest` | 546 | `poison_forest.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml` |
-| `RUT_GreySea` | 472 | `terminator_sea.md` (surface); `the_grey_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml` |
-| `RUT_TheScald` | 312 | `the_scald.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml` |
+| `RM_GreySea` | 472 | `terminator_sea.md` (surface); `the_grey_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml` |
+| `RM_TheScald` | 312 | `the_scald.md` | no | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml` |
 | `RUT_RustCathedral` | 236 | `the_rust_cathedral.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml` |
 | `RUT_Greentide` | 235 | `the_greentide.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml` |
 | `RUT_WeepingStones` | 223 | `weeping_stones.md` | **YES** — §10 "The bestiary — who comes to the water" (bestiary-content, titled slightly differently than "sorts" but is the enrichment-pass §10) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml` |
@@ -41,7 +41,7 @@ ground**; the tile column sums to 21,872.
 | `RUT_Slime` | 96 | `the_slime.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml` |
 | `RUT_Miasma` | 93 | `the_miasma.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml` |
 | `RUT_Scarlands` | 90 | `the_scarlands.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml` |
-| `RUT_PropaneLake` | 57 | `the_propane_lakes.md` (the lake proper; `RUT_Umbra` is the cap it sits under) | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml` — 3 `wildAnimals` + 6 `wildPlants` rows since `BLUE_DESERT_LIFE_AUTHORING_1` (done 2026-09-21; re-read 2026-09-23) |
+| `RM_PropaneLake` | 57 | `the_propane_lakes.md` (the lake proper; `RUT_Umbra` is the cap it sits under) | no | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_PropaneLake.xml` — 3 `wildAnimals` + 6 `wildPlants` rows since `BLUE_DESERT_LIFE_AUTHORING_1` (done 2026-09-21; re-read 2026-09-23) |
 | `RUT_TheForge` | 44 | `the_forge.md` — one sheet, one massif | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml` |
 | `RUT_FeverWood` | 43 | `the_fever_wood.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml` |
 | `RUT_Sump` | 41 | `the_sump.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml` |
@@ -58,20 +58,20 @@ declare `wildAnimals` directly in their own
 `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/<def>.xml`; no patch file
 wholesale-replaces any of them. `ZBiome_Grasslands` is the sole donor def and
 has no local override. Two of the 26 declare an EMPTY `<wildAnimals />` —
-`RUT_BlueDesert` (1,029 tiles) and `RUT_PropaneLake` (57) — so 1,086 painted
+`RUT_BlueDesert` (1,029 tiles) and `RM_PropaneLake` (57) — so 1,086 painted
 tiles currently have no cast.
 
 🔑 **How each row's def was established.** The row's SHEET was looked up in
 `README_BIOME_GRAMMAR.md`'s progress table, which states the owner-given biome
 NAME for that sheet; that name was matched against the live def's `<label>`
-(`the_rot.md` → "the Rot" → `RUT_TheRot`; `the_cracked_lands.md` → "the Cracked
+(`the_rot.md` → "the Rot" → `RM_TheRot`; `the_cracked_lands.md` → "the Cracked
 Lands" → `RUT_CrackedLands`; `the_blue_desert.md` → "Blue Desert" →
 `RUT_BlueDesert`). Tile-count identity corroborated but never decided. Per-row
 working: `Transient/biome_bindings_regen_20260920.md`.
 
 ## 2. Flags
 
-- **RUT_TwilightSea and RUT_GreySea are each claimed by two sheets.** `terminator_sea.md`
+- **RM_TwilightSea and RM_GreySea are each claimed by two sheets.** `terminator_sea.md`
   defines the surface/open-water ecology for both seas; `the_twilight_deep.md` and
   `the_grey_deep.md` each define that same def's SEA-BOTTOM ecology (design done,
   🔵 implementation deferred to the diving mods per `README_BIOME_GRAMMAR.md`'s own
@@ -118,11 +118,11 @@ narrative-category keys, holding **20** distinct BiomeDef defName keys, all of
 them painted `RUT_*`/`ZBiome_Grasslands` defs: `RUT_AridShrubland,
 RUT_Contagion, RUT_CrackedLands, RUT_Desert, RUT_ExtremeDesert, RUT_FeverWood,
 RUT_ForsakenCrags, RUT_Greentide, RUT_Miasma, RUT_PoisonForest, RUT_Scarlands,
-RUT_Slime, RUT_Sump, RUT_TheForge, RUT_TheRot, RUT_Umbra, RUT_Wasteland,
+RUT_Slime, RUT_Sump, RUT_TheForge, RM_TheRot, RUT_Umbra, RUT_Wasteland,
 RUT_Webwork, RUT_WeepingStones, ZBiome_Grasslands`. The other **7** painted
 defs are in the module's own `PLANTLESS` set on purpose — `RUT_NightsideIce,
-RUT_BlueDesert, RUT_RustCathedral, RUT_TwilightSea, RUT_GreySea, RUT_TheScald,
-RUT_PropaneLake`. 20 + 7 = 27: **there is no flora gap.** ⚠️ FOUNDRY was
+RUT_BlueDesert, RUT_RustCathedral, RM_TwilightSea, RM_GreySea, RM_TheScald,
+RM_PropaneLake`. 20 + 7 = 27: **there is no flora gap.** ⚠️ FOUNDRY was
 mid-edit on this file when it was measured, so re-measure before acting on the
 weights; the key SET is what matters here.
 
