@@ -230,13 +230,13 @@
     </statBases>
     <tools>
       <li>
-        <label>claw</label>
+        <label>claspers</label>
         <capacities>
-          <li>Scratch</li>
+          <li>Bite</li>
         </capacities>
         <power>3</power>
         <cooldownTime>2.2</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
