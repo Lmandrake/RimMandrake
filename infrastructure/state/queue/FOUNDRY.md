@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T07:44:07Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-25T08:24:19Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -648,15 +648,6 @@ kind:     build
 summary:  (no items/BACTA_TANK_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BACTA_TANK_ART_1.md
 
-## BACTA_SIDE_ITEMS_1 Bacta full-kit satellites: 2-1B-style medical droid linkable facility (KR pattern), bacta patch + bacta spray consumables (field heal items), trader-tag wiring for all bacta goods
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-summary:  BACTASIDEITEMS1 — bacta full-kit satellites: medical droid, field consumables, trader wiring
-prose:    infrastructure/state/items/BACTA_SIDE_ITEMS_1.md
-
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    doing
 row:      unassigned
@@ -1180,7 +1171,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     task
-blocked:  Bridge held by another active FOUNDRY window (FireHawk flight live verify, idle ~2min, not stale) -- the item's only remaining owed work is the live quicktest (fill/drink/dirty/wash loop, settings-off run) named in its own verify section. All offline work is done and verified: build clean, validate_patch --live/--defs clean, 22/57/75 selftests passing per prior notes, and this pass committed+pushed the one leftover uncommitted artifact (rebuilt FlowWorks DLL, 1e05f81d7). Not force-taking an active peer's bridge session. Re-check next window with bridge free.
+blocked:  live: fill job never produces a filled bottle (4 tries, 3 pawns); revert/rot timers unbuilt so verify bar cannot pass
 summary:  Bottle chain: RMBottleEmpty → fill job (terrain edge or tank) →
 prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
 
@@ -1270,19 +1261,9 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-blocked:  DLL already deployed (b5d418d49); remaining work is live bridge proof of revival mechanic, but bridge is held by another live FOUNDRY window (FireHawk flight live verify, idle ~2 min = alive) — not force-taking
+blocked:  live: toggle/window/laws pass, but heart-destroyed corpse revives into re-death (design call) and WorkGiver never auto-fired
 summary:  BACTAREVIVALMECHANIC1 — bacta revival of the recently dead
 prose:    infrastructure/state/items/BACTA_REVIVAL_MECHANIC_1.md
-
-## BACTA_SIDE_ITEMS_1 Bacta full-kit satellites: 2-1B-style medical droid linkable facility (KR pattern), bacta patch + bacta spray consumables (field heal items), trader-tag wiring for all bacta goods
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-blocked:  Live quicktest owed (droid heal rate, patch/spray consumption, settings render) but bridge held by another live FOUNDRY window (FireHawk flight live verify, idle 9 min, provably alive) — not force-taking per this item's own brief. Offline work confirmed still fully deployed and in sync (22/22 files).
-summary:  BACTASIDEITEMS1 — bacta full-kit satellites: medical droid, field consumables, trader wiring
-prose:    infrastructure/state/items/BACTA_SIDE_ITEMS_1.md
 
 ## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
 state:    doing  (BLOCKED)
@@ -1290,7 +1271,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  bridge held by other live FOUNDRY window (FireHawk flight live verify, idle 0 min, not stale) - live fishing quicktest script prepared and ready at src/RimMandrake/bridgetools/prove_fish_bestiary_live.py, waiting for bridge
+blocked:  WS+Greentide real catches pass; Twilight tile map is 100% deep brine (unfishable), Cracked Lands/Wasteland not shown live, Scald cove owed
 summary:  Full spec: design/Jawa/worldbuilding/fishbestiarycommission2026-09-10.md
 prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
 
@@ -1310,7 +1291,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  Live proof needs bridge; bridge held by another live FOUNDRY window (FireHawk flight verify, alive <45min) at time of resume. Pieces 1-4 offline-complete, DLL deployed 2026-09-25T01:56Z per prior note; only live-verify steps (glow warble, statue quality scaling, research gates, ScrubTarred->Sumpgas, bench recipe) remain, all requiring bridge access.
+blocked:  live: RUT_ScrubTarred consumes solvent but leaves RUT_Tarred and spawns no Sumpgas (2 runs); lamp animation/statue scaling unconfirmed (daylight)
 summary:  1. The reaction: tar + acid → green gas (Helixien-compatible). One acid, three
 prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
 
