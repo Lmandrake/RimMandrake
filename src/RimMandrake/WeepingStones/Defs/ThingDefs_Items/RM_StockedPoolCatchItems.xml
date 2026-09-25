@@ -10,9 +10,12 @@
   table, src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WeepingStonesFish_Items.xml
   (RUT_Ikkal etc.) — ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey".
 
-  🔴 NOT wired into any BiomeDef's `fishTypes` yet — see this mod's About.xml
-  and RM_StockedPoolFauna.xml's header for why (RM_WeepingStones BiomeDef
-  does not exist; WEEPINGSTONES_RM_MOD_BUILD_1 is still proposed/unclaimed).
+  ✅ Wired into RM_WeepingStones's own `fishTypes/freshwater_Uncommon` as of
+  WEEPINGSTONES_RM_MOD_BUILD_1 wave 2 (2026-09-24) — see
+  Defs/BiomeDefs/RM_WeepingStones_Biome.xml. (This comment previously said
+  "not wired yet, BiomeDef does not exist" — that was true at wave 1 and is
+  stale now; corrected 2026-09-24, DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave
+  78, per CLAUDE.md's "correctness outranks seat ownership".)
 
   Placeholder art CORRECTION (caught before shipping): the sibling wild
   table's texPaths (AloeVeraA, PincushionPlantA, ...) are NOT vanilla Core
