@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T03:13:48Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rutbloomcrop_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, side view, painterly vanilla-RimWorld crop art style: bloom crop, a fast-growing gaudy annual of the Cracked Lands' flood weeks, bright multicolored ragged blossoms bursting from a squat leafy cluster, growing directly from cracked wet clay. Single plant cluster, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "defName RUT_BloomCrop. the_cracked_lands.md \u00a710b/\u00a711, flood-week boom-bust harvest. COMMISSION_LEDGER_CLEANUP_1 wave 9."
+}

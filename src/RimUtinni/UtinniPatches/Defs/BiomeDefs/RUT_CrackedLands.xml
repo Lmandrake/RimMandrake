@@ -121,6 +121,11 @@
       <RSW_Creature_Mantrap MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Creature_Mantrap>  <!-- mantrap - the-Patient, import -->
       <Woolamander MayRequire="mlie.starwarsanimalcollection">0.15</Woolamander>  <!-- woolamander - flier-commuter, import -->
       <AA_SandSquid MayRequire="sarg.alphaanimals">0.1</AA_SandSquid>  <!-- sand squid - the-Sealed, adjust-keep -->
+      <!-- COMMISSION_LEDGER_CLEANUP_1: two signature commissions the roster's
+           own new_defs list flagged as unbuilt ("no live def answers to it" /
+           the flagship vs. the existing sort-fillers above). -->
+      <RUT_EmperorVulture>0.15</RUT_EmperorVulture>  <!-- emperor vulture - the-Patient, new -->
+      <RUT_SealedSleeper>0.2</RUT_SealedSleeper>  <!-- Sealed sleeper - the-Sealed signature, new -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

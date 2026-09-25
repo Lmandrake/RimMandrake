@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_CrackedLandsItems.xml              UtinniPatches · COMMISSION_LEDGER_CLEANUP_1
+
+  Crack-wax, the_cracked_lands.md §11 "Uniquely available": "Crack-wax — the
+  Sealed's shed burrow lining, gathered off the flats after a wake; the
+  waterproofing the Farmers line their cisterns with. The biome's signature
+  material." Companion item to RUT_SealedSleeper.xml (same commission,
+  ledger:the_cracked_lands:sealed-signature-sleeper-wax-lined-burrow-
+  water-wake-sheds-c).
+
+  Waterproofing/adhesive material, same ResourceBase shape RUT_Bitumen.xml
+  (this mod, the_sump kit) already used for an analogous "biome's signature
+  substance" resource.
+
+  NOT BUILT THIS PASS, honestly, same posture RUT_Bitumen's own header
+  used: the real "gathered off the flats after a wake" harvest job (a
+  field-sweep after a Sealed individual wakes and abandons its burrow) is
+  not stock and is not authored here — RUT_SealedSleeper.xml's own header
+  explains why and files the dedicated item for it
+  (`CRACKED_LANDS_SEALED_WAKE_MECHANISM_1`). This ThingDef is real and
+  immediately usable (tradeable/debug-spawnable, and wired as a
+  butcherProducts yield on the Sealed as an interim source) but has no
+  gather job yet.
+
+  Texture: placeholder only, same class as RUT_Bitumen/RUT_ThrummelSeepwax
+  (UtinniPatches already claims Textures/Things/Item/Resource/ as its own
+  namespace, so a borrowed vanilla icon would hard-error validate_patch.py)
+  — repointed to a new RUT_CrackWax/ folder, expected pending texPath.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_CrackWax</defName>
+    <label>crack-wax</label>
+    <description>A pale, waxy lining shed by a Sealed sleeper when it finally wakes and abandons its burrow. Farmers gather it off the flats and line their cisterns with it — the one waterproofing material the Cracked Lands make for free, and the surest sign a dowsing walk found real water.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_CrackWax</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(222, 210, 176)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>2.2</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <stackLimit>100</stackLimit>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+</Defs>

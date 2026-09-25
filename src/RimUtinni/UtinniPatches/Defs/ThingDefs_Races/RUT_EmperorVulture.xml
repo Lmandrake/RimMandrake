@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_EmperorVulture.xml                 UtinniPatches · COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `the_cracked_lands:emperor-vulture-the-sky-s-undertaker-rides-the-flats-thermal`
+  (design/Jawa/worldbuilding/biomes/the_cracked_lands.md §10 "The Patient":
+  "the ambush predators the fauna doctrine already assigns this biome
+  ('ambush country, scavengers'; the emperor vulture rides the flat's
+  thermals as the sky's undertaker)"; rosters/the_cracked_lands.json
+  new_defs row 1: "no live def answers to it (Odyssey Vulture is
+  Earth-nameable, banned; BMT_CarrionVulture a reskin)").
+
+  Checked cast_assignment.csv/animal_census.csv first, per this item's own
+  "watch out": `BMT_CarrionVulture` (Biomes! Polluted Lands) is the only
+  candidate donor and is recorded `dormant` — its mod is not in the active
+  ModsConfig.xml list, so per the GR_Paraceramuffalo precedent
+  (COMMISSION_LEDGER_CLEANUP_1 wave 1, desert sheet) and the
+  RUT_MortuaryCrawler precedent (same item, the_scarlands wave), its
+  texPath is not a live asset — authored from scratch with new art, same
+  posture RUT_FleetFlier (the_forge wave) used when no live donor passed.
+  "emperor vulture" is the sheet's own capitalized name for the creature
+  (not a group label like "the Mortuary Guild"/"the Sealed"), so no
+  shipping-name card is owed the way RUT_MortuaryCrawler's was — same
+  posture as RUT_Glower/ultracactus in prior waves.
+
+  Mechanism: "rides the flat's thermals" is native 1.6 flight
+  (MaxFlightTime/FlightCooldown/race flight fields), not VEF floating —
+  CLAUDE.md's standing "if it flies in the fiction, it flies in the game"
+  law. Unlike RUT_FleetFlier's fast darting profile, this is a soaring
+  scavenger: high MaxFlightTime, low FlightCooldown, and a HIGH
+  flightStartChanceOnJobStart (0.6) so it reads as spending most of its day
+  aloft riding thermals, exactly the sheet's "rides the flats' thermals"
+  line read as a real mechanical property, not flavor text only. No
+  flyingAnimationFramePathPrefix — no frame art exists yet and the law is
+  explicit that flight is never blocked waiting on frames.
+
+  "The sky's undertaker" — a pure scavenger, not a hunter: predator=false,
+  foodType Carnivore, same combination RUT_MortuaryCrawler (this item, the
+  same "carrion specialist" family one biome sheet over) already used for a
+  non-hunting carrion eater. Low Wildness/manhunter chances: it circles
+  drowned/flood-week carcasses (the_cracked_lands.md §10 "the drowned first,
+  the dying carpet after"), not a threat animal.
+
+  Art: genuinely new, no existing render found (checked infrastructure/
+  artpipe/{done,pending,registry.jsonl} for "vulture"/"emperorvulture"/
+  "emperor-vulture" — clean). Three facing jobs filed this pass
+  (south/east/north; west mirrors east) — rutemperorvulture_v1_{south,east,
+  north}.json.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_EmperorVulture</defName>
+    <label>emperor vulture</label>
+    <description>A huge, patient scavenger that spends its days riding the thermals off the cracked flats, circling for hours without a single wingbeat. It reads the water table the way the Farmers read the Sealed — it is never wrong about where the next carcass will be, and it is always early. The floods bring it two feasts: the drowned first, then the dying carpet after.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>
+      <Mass>18</Mass>
+      <MarketValue>140</MarketValue>
+      <Wildness>0.55</Wildness>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MaxFlightTime>60</MaxFlightTime>
+      <FlightCooldown>2</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>talons</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <predator>false</predator>
+      <baseBodySize>1.4</baseBodySize>
+      <baseHungerRate>0.35</baseHungerRate>
+      <baseHealthScale>0.9</baseHealthScale>
+      <foodType>Carnivore</foodType>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>8</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.03</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <lifeExpectancy>18</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <flightStartChanceOnJobStart>0.6</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.4</leaveMapOnFleeChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0.4)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.45</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_EmperorVulture</defName>
+    <label>emperor vulture</label>
+    <race>RUT_EmperorVulture</race>
+    <combatPower>35</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

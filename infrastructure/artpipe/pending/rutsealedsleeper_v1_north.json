@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T03:13:47Z",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rutsealedsleeper_v1_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: Sealed sleeper, a squat armor-plated burrowing animal of the Cracked Lands, thick waxy pale-grey hide, stubby digging claws, low rounded body built for lying motionless under cracked clay for years, half-lidded eyes. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "defName RUT_SealedSleeper. the_cracked_lands.md \u00a710/\u00a711, wax-lined burrow, water-wake, sheds crack-wax. COMMISSION_LEDGER_CLEANUP_1 wave 9."
+}

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SealedSleeper.xml                  UtinniPatches · COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `the_cracked_lands:sealed-signature-sleeper-wax-lined-burrow-water-wake-
+  sheds-c` (design/Jawa/worldbuilding/biomes/the_cracked_lands.md §10 "The
+  Sealed": "creatures that sleep through the dry years. They survive the
+  way Earth's lungfish does — sealed inside a wax-lined burrow under the
+  cracked clay, metabolism banked to almost nothing, until water wakes them
+  ... The Farmers read them as living dowsing rods ... Their shed
+  burrow-lining is crack-wax (§11)."; rosters/the_cracked_lands.json
+  new_defs row 2, mechanic_load "C#: water-trigger wake + crack-wax
+  product; borrow the dormant comp (107-row family)").
+
+  Checked cast_assignment.csv first, per this item's own "watch out":
+  RUT_CrackedLands.xml's wildAnimals block already tags TWO existing
+  species against the-Sealed SORT — `RSW_MutagenicNorphea` ("the-Sealed,
+  keep") and `AA_SandSquid` ("the-Sealed, adjust-keep"). Those fill the
+  bestiary SORT (dormant-fauna category); neither is the roster's own
+  requested SIGNATURE species carrying the specific wax-lined-burrow/
+  water-wake/crack-wax mechanic — same "sort-filler vs. flagship" gap
+  RUT_MortuaryCrawler's own header worked through for AA_Helixien one
+  biome over. Both stay exactly as-is; this is a new fourth species, not a
+  replacement.
+
+  🔴 THE NAME IS NOT SETTLED. `RUT_SealedSleeper` is the INTERNAL working
+  defName; "the Sealed" in the sheet names the GROUP/sort (same shape as
+  "the Mortuary Guild"/"the Spenders"/"the Patient"), not a ruled species
+  label for the individual creature — same posture RUT_MortuaryCrawler's
+  own header used. Folded into a new owner card,
+  `CRACKEDLANDS_SHIPPING_NAMES_1` (filed this pass; no existing
+  the_cracked_lands naming-draft doc was found the way poison_forest/
+  scarlands/propane_lakes/miasma each had one).
+
+  MECHANISM, and what genuinely could not be built inline: the dormancy
+  itself is stock (`CompCanBeDormant`/`CompWakeUpDormant`, RimWorld/
+  CompWakeUpDormant.cs read in full this pass) — but that comp's only wake
+  triggers are `wakeUpOnDamage`, `wakeUpOnThingConstructedRadius`, and
+  `wakeUpIfAnyTargetClose` (a TargetingParameters check, default
+  `ForColonist()`; no water/terrain-type targeting exists in the stock
+  class). There is no stock "wakes when water reaches it" trigger, exactly
+  what the roster's own mechanic_load flags. Shipped here as an INTERIM
+  stand-in, same "stands in with plain elevated aggression until it
+  lands" posture PROPANE_LAKE_PIPE_MECHANICS_1's RUT_VWake used:
+  `wakeUpOnDamage=true` (something disturbs the burrow) and
+  `wakeUpOnThingConstructedRadius=6` (a Farmer building a cistern/vaporator
+  square on top of a dowsing-rod cluster wakes it — a plausible reading of
+  "the Farmers read them as living dowsing rods," even though it is a
+  construction trigger, not the sheet's own water-arrival trigger). The
+  genuinely-new piece — a small rare-tick comp that activates
+  CompWakeUpDormant when a nearby cell turns to real (non-boil) water
+  terrain, plus the "gather crack-wax off the flats after a wake" job —
+  is filed as its own dedicated item, `CRACKED_LANDS_SEALED_WAKE_MECHANISM_1`,
+  rather than guessed at inline (this item's own precedent for a
+  genuinely-new-C#, non-trivial piece: PYRELANDS_BURROWER_GRAZER_1,
+  MIASMA_KARRATHIL_POLLINATION_GATE_1). `receivesSignals=true` is set per
+  `CompProperties_CanBeDormant.ConfigErrors` (RimWorld/
+  CompProperties_CanBeDormant.cs, read this pass) — required whenever
+  `jobDormancy` is false, which it is here (a wild dormant state, not an
+  activity-driven one).
+
+  Crack-wax: wired as an interim `butcherProducts` yield (RUT_CrackWax,
+  this item's own companion file, RUT_CrackedLandsItems.xml) rather than
+  the sheet's actual "gathered off the flats after a wake" ground-drop —
+  that drop-on-wake behaviour is part of the same deferred mechanism item
+  above.
+
+  Body: `QuadrupedAnimalWithPawsAndTail`, same body RUT_MortuaryCrawler
+  (this item, the_scarlands wave) used for a squat, digging, armored
+  scavenger-adjacent species — a reasonable "lungfish analog with legs"
+  silhouette for a burrower, not a literal fish body (no aquatic BodyDef
+  fits "sealed inside a burrow under cracked clay").
+
+  Art: genuinely new, no existing render found (checked infrastructure/
+  artpipe/{done,pending,registry.jsonl} for "sealed"/"sleeper"/"dowsing" —
+  clean, only unrelated hits). Three facing jobs filed this pass
+  (south/east/north; west mirrors east) — rutsealedsleeper_v1_{south,east,
+  north}.json.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_SealedSleeper</defName>
+    <label>Sealed sleeper</label>
+    <description>A squat, armor-clad burrower that spends almost its whole life motionless under the cracked clay, banked down inside a wax-lined burrow the way Earth's lungfish rides out a dry year. Walk the famous cracked-pan flats and you are walking on sleeping animals — the Farmers read where they cluster thickest as the surest sign of water underfoot, and prize the pale wax it sheds when it finally wakes.</description>
+    <receivesSignals>true</receivesSignals>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <Mass>32</Mass>
+      <MarketValue>90</MarketValue>
+      <Wildness>0.35</Wildness>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>68</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>digging claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>digging claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <!-- INTERIM triggers, see header: no stock water-arrival trigger
+             exists. wakeUpOnThingConstructedRadius INVENTED at 6 (a
+             Farmer's cistern/vaporator built directly over a dowsing
+             cluster). -->
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+        <wakeUpOnThingConstructedRadius>6</wakeUpOnThingConstructedRadius>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>false</predator>
+      <baseBodySize>0.7</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>25</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>30</lifeExpectancy>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0.5)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <butcherProducts>
+      <RUT_CrackWax>2</RUT_CrackWax>
+    </butcherProducts>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_SealedSleeper</defName>
+    <label>Sealed sleeper</label>
+    <race>RUT_SealedSleeper</race>
+    <combatPower>18</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
