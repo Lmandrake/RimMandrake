@@ -163,6 +163,12 @@ namespace RimMandrake.CreatureBehaviors
     //      (THEY_MOD_REPLICATION_1). Off: a tagged race stops marching on the
     //      colony when nothing is in sight — it still fights back at whatever
     //      it happens to run into, it just never goes looking.
+    //  30. brineBatteryDischargeEnabled / brineBatteryDischargeMultiplier —
+    //      RM_CompDefensiveDischarge (WASTELAND_BRINE_BATTERY_DISCHARGE_1,
+    //      RUT_BrineBattery). Off: hurting a tagged pawn at close range never
+    //      shocks the attacker back. The dial scales only the discharge
+    //      strength (never the range or cooldown, which stay whatever the
+    //      def says); at 0 a hit is simply never returned.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -208,6 +214,8 @@ namespace RimMandrake.CreatureBehaviors
         public static float dungSeedingMultiplier = 1f;
         public static bool parentalEnrageEnabled = true;
         public static bool directedAssaultBehaviorEnabled = true;
+        public static bool brineBatteryDischargeEnabled = true;
+        public static float brineBatteryDischargeMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -254,6 +262,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref dungSeedingMultiplier, "dungSeedingMultiplier", 1f);
             Scribe_Values.Look(ref parentalEnrageEnabled, "parentalEnrageEnabled", true);
             Scribe_Values.Look(ref directedAssaultBehaviorEnabled, "directedAssaultBehaviorEnabled", true);
+            Scribe_Values.Look(ref brineBatteryDischargeEnabled, "brineBatteryDischargeEnabled", true);
+            Scribe_Values.Look(ref brineBatteryDischargeMultiplier, "brineBatteryDischargeMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -419,6 +429,13 @@ namespace RimMandrake.CreatureBehaviors
                 "On: a tagged animal that has nothing to fight marches toward the colony instead of "
               + "idling at the map edge. Off: it still fights back at whatever it happens to run into, "
               + "it just never goes looking.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Brine battery defensive discharge", ref brineBatteryDischargeEnabled,
+                "On: hurting a brine battery at close range shocks the attacker back (a stun, not a "
+              + "wound). Off: a hit is simply never returned.");
+            list.Label("Discharge strength: " + brineBatteryDischargeMultiplier.ToString("0.00") + "x");
+            brineBatteryDischargeMultiplier = list.Slider(brineBatteryDischargeMultiplier, 0f, 3f);
 
             list.End();
         }
