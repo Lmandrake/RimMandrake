@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 criterion 4 (RM/RUT seam test): "one
+       style row". design/RM_GRAFFITI_SCOPE_WIDENING.md §4's RUT column: "a
+       Salvation style category giving every generic mark a Salvation
+       dialect. Pure XML." This is a NEW StyleCategoryDef (not a patch on a
+       vanilla one - Salvation is its own dialect, not a re-skin of an
+       existing vanilla category), with one thingDefStyles row retexturing
+       an RM-owned mark (RM_Graffiti_Scratches, mandrake.rm.graffiti) via
+       vanilla's own Thing.StyleDef mechanism (Verse/Thing.cs, confirmed a
+       virtual property this pass) - proof the RM engine needs no C# change
+       to let RUT content restyle its marks. Reuses the already-shipped
+       SacredMark_Ishko texture as a placeholder skin; the real Salvation
+       dialect art is separate, owner-reviewed content work, not this
+       seam-test stub's job. -->
+  <StyleCategoryDef>
+    <defName>RM_SalvationDialect</defName>
+    <label>Salvation dialect</label>
+    <thingDefStyles>
+      <li>
+        <thingDef>RM_Graffiti_Scratches</thingDef>
+        <styleDef>Salvation_GraffitiScratches</styleDef>
+      </li>
+    </thingDefStyles>
+  </StyleCategoryDef>
+
+  <ThingStyleDef>
+    <defName>Salvation_GraffitiScratches</defName>
+    <graphicData>
+      <texPath>Things/Filth/SacredMark/SacredMark_Ishko</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+</Defs>

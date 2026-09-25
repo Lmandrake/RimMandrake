@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 criterion 4 (RM/RUT seam test): "one
+       ThoughtDef on the RM worker" - proves a RUT content pack can grant a
+       viewer reaction from RM's own engine mechanism
+       (RimMandrake.Graffiti.ThoughtWorker_ViewedGraffitiMark) with zero new
+       RUT C#. Shape copied from vanilla's own situational-thought precedent
+       (ThoughtWorker_PyromaniacNearFlames's PyromaniacNearFire ThoughtDef,
+       Defs/Core/ThoughtDefs/Thoughts_Situation_Traits.xml) - workerClass +
+       stages, no requiredTraits (this worker gates on nearby-mark presence,
+       not a trait). Wired via RM_SacredMark_Ishko's own
+       viewerReactionThought field (SacredMarks.xml) - the flat fallback
+       reaction, fired for any viewer with no closer relation match. -->
+  <ThoughtDef>
+    <defName>RM_ViewedSacredMark_Ishko</defName>
+    <workerClass>RimMandrake.Graffiti.ThoughtWorker_ViewedGraffitiMark</workerClass>
+    <stages>
+      <li>
+        <label>Ishko's watchful mark</label>
+        <description>A pair of painted eyes watches from the wall, unblinking. Ishko does not punish the unseen - there is something restful in that.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
