@@ -96,24 +96,24 @@ Syllable variety (rule 7, owner-typed 2026-09-24): the five new names run 2×1 /
 syllables (skreth, grolth · kurreth, nemmel · gorrameth). None is a slime, so the slime
 monosyllable law does not bind any of them (grolth is carrion-flesh, not gel; if the owner
 reads it as goo-bodied, its single long syllable already satisfies the law). **No UNCERTAIN
-flags** — but the mechanical bar before ratification is `check_pseudo_sw_name.py` + the
-`src/` label sweep + a Wookieepedia `list=search` probe, exactly as the naming docs ran, and
-that has NOT been run on these five (proposal-stage only; the search API check is a Desktop/
-network step).
+flags.** ✅ **The mechanical bar RAN CLEAN, 2026-09-24 (BENCH, Desktop):**
+`check_pseudo_sw_name.py` 5/5 PASS (shape + 137-entry canon collision); `src/` label sweep
+(`*.xml`/`*.cs`) zero matches; Wookieepedia `list=search` probe 0 hits on each of the five
+with a positive control (`dewback` → 3 hits) proving the instrument. The five names are
+clear to write into defs.
 
-## Open questions for the owner
+## Rulings — decisions taken by question card, 2026-09-24 (BENCH sitting)
 
-- **Ratify the two 2026-09-23 rosters as the `RM_FeverWood` cast?** They are drafted, never
-  ruled; this proposal builds on them, so a strike there is a strike here.
-- **Does rule 7 (syllable variety) retro-apply to the roster's 11 fauna names?** Ten of
-  eleven are two-syllable — exactly the monotony your ruling names — but they predate it by
-  one day. Say the word and a variety pass is drafted; silence keeps them as written.
-- **Where do the raider species ship?** kurreth/skreth defs could live in `RM_FeverWood` or
-  in `mandrake.rm.environmentalhazards` beside the F9 war wiring — the kit spec left
-  packaging as FOUNDRY's call, but the species names should be yours first.
-- **skreth vs the Webwork:** in the campaign the second front reads as the Webwork probing
-  the wetland. Is the skreth the free-tier face of that same brood (canon feralisk/wyyyschokk
-  mapped over it, Sekkulaath-style), or its own species the campaign merely joins?
-- **gorrameth herds or singletons?** The terribly lost read strongest as lone animals
-  (0.02); if you want the occasional doomed herd for spectacle, that is an incident, not a
-  commonality change.
+- **Cast RATIFIED, all of it**: the two 2026-09-23 rosters plus the five new names above are
+  the `RM_FeverWood` cast. Mechanical name checks (`check_pseudo_sw_name.py` + `src/` label
+  sweep + Wookieepedia probe) still gate def-writing.
+- **Syllable variety RETRO-APPLIES**: a rename pass over the roster's 11 fauna names is
+  drafted for the owner to rule name-by-name before anything is applied. Nothing renames on
+  the draft alone.
+- **The skreth IS the free-tier face of the Webwork brood** — one creature, two skins: the
+  campaign patches the canon spider over it, Sekkulaath-style. The two-front war is identical
+  in both tiers.
+- **Gorrameth: lone at 0.02, PLUS a rare doomed-herd incident** — spectacle and a meat
+  windfall, built as an IncidentDef in a later wave, not a commonality change and not wave 1.
+- **Raider packaging** (kurreth/skreth defs in `RM_FeverWood` vs `mandrake.rm.environmentalhazards`)
+  stays FOUNDRY's call per the kit spec — names are ruled, packaging is not a design question.
