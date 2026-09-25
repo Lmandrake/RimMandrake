@@ -22,7 +22,12 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
     // currently sits on the live world, not a snapshot of it.
     public static class WarLabCraterMutation
     {
-        private const string SourceBiomeDefName = "RUT_PropaneLake";
+        // TERMINALBIOMES_RM_MOD_BUILD_1 step 4 (§7b): a second name for the
+        // RimMandrake-tier twin, added alongside the RUT_ one rather than
+        // substituted -- the frozen RUT_PropaneLake def still carries the
+        // world until Phase B repaints it, so both must be matched for the
+        // tile scan below to keep working through the move.
+        private static readonly string[] SourceBiomeDefNames = { "RUT_PropaneLake", "RM_PropaneLake" };
         private const string CraterBiomeDefName = "RUT_Wasteland";
 
         /// <summary>
@@ -45,12 +50,18 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
             if (Find.World == null || Find.WorldGrid == null)
                 return false;
 
-            var sourceBiome = DefDatabase<BiomeDef>.GetNamedSilentFail(SourceBiomeDefName);
+            var sourceBiomes = new List<BiomeDef>();
+            foreach (var name in SourceBiomeDefNames)
+            {
+                var def = DefDatabase<BiomeDef>.GetNamedSilentFail(name);
+                if (def != null)
+                    sourceBiomes.Add(def);
+            }
             var craterBiome = DefDatabase<BiomeDef>.GetNamedSilentFail(CraterBiomeDefName);
-            if (sourceBiome == null || craterBiome == null)
+            if (sourceBiomes.Count == 0 || craterBiome == null)
             {
                 Log.Error("[WAR_LAB_CRATER_HOOK_1] Missing biome def(s): " +
-                    SourceBiomeDefName + "=" + (sourceBiome != null) + ", " +
+                    string.Join(",", SourceBiomeDefNames) + " found=" + sourceBiomes.Count + ", " +
                     CraterBiomeDefName + "=" + (craterBiome != null) + ". Ignition aborted.");
                 return false;
             }
@@ -60,7 +71,7 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
             for (int i = 0; i < grid.TilesCount; i++)
             {
                 var tile = grid[i] as SurfaceTile;
-                if (tile == null || tile.PrimaryBiome != sourceBiome)
+                if (tile == null || !sourceBiomes.Contains(tile.PrimaryBiome))
                     continue;
                 tile.PrimaryBiome = craterBiome;
                 touched.Add(i);
@@ -69,7 +80,7 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
             if (touched.Count == 0)
             {
                 Log.Warning("[WAR_LAB_CRATER_HOOK_1] Ignite() fired but found zero " +
-                    SourceBiomeDefName + " tiles -- footprint may already be gone. No commit run.");
+                    string.Join(",", SourceBiomeDefNames) + " tiles -- footprint may already be gone. No commit run.");
                 return false;
             }
 
@@ -78,7 +89,7 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
             comp.Triggered = true;
             comp.CrateredTileIds = touched;
             Log.Message("[WAR_LAB_CRATER_HOOK_1] Ignition complete: " + touched.Count +
-                " tile(s) " + SourceBiomeDefName + " -> " + CraterBiomeDefName + ".");
+                " tile(s) " + string.Join(",", SourceBiomeDefNames) + " -> " + CraterBiomeDefName + ".");
             return true;
         }
 

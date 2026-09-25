@@ -28,11 +28,11 @@ WeatherDef `accuracyMultiplier`/`moveSpeedMultiplier`,
   boiling-lift spec's ruled values (`design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md`
   R-B4a). The R-B weather set (boiling rain family) is ruled to the rain-canon
   biomes and rides **`FORGE_MECHANICS_1`**, not this kit.
-- `RUT_TheScald` BiomeDef (`…/Defs/BiomeDefs/RUT_TheScald.xml`) with
+- `RM_TheScald` BiomeDef (`…/Defs/BiomeDefs/RM_TheScald.xml`) with
   `wildAnimals` deliberately empty — the roster pass owns the four sorts.
 - **Liquid typing**: `design/RimMandrake/RM_liquid_types_mod.md` (2026-09-11)
   owns what scald water IS (`RM_WaterBoiling*` family, §7 row "boiling water";
-  its §8 sets the `RUT_TheScald` biome terrain overrides and patches
+  its §8 sets the `RM_TheScald` biome terrain overrides and patches
   `RM_LiquidProperties` onto the shipped terrains). This kit consumes those
   defs; it rules nothing about the liquid.
 
@@ -46,11 +46,11 @@ per-biome by XML; RM_ classes live in the ruled kit home
 | Ban | Where it binds |
 |---|---|
 | 1. Never potable | **RESOLVED — SCALD_MECHANICS_1 spike, 2026-09-13.** CONFIRMED `dbh_water` does enable DBH thirst drinking (`BadHygiene.dll`, workshop/294100/836308268, 1.6 Assemblies, carries the literal alongside its own drink-tracking strings; `RUT_ScaldWater.xml`'s own prior header already stated the tag was placed there SO pawns could drink the boil, per R-B4a). That conflicted with this sheet's Ban 1, so the remedial action this row itself pre-ruled was taken: the tag is removed from all six `RUT_ScaldWater*` boil terrains and moved to the new `RUT_ScaldMargin` terrain (S3) — the boil now carries no drink route at all; the margin ring is the Scald's sole drink/draw source. |
-| 2. Never the terminator seas' biome | Every def this kit ships is `RUT_Scald*`-prefixed and referenced only from `RUT_TheScald`; no shared roster/weather/terrain with `RUT_TwilightSea`/`RUT_GreySea`. |
+| 2. Never the terminator seas' biome | Every def this kit ships is `RUT_Scald*`-prefixed and referenced only from `RM_TheScald`; no shared roster/weather/terrain with `RM_TwilightSea`/`RM_GreySea`. |
 | 3. No boiling-immune traversal for free | The shipped burn values stand — S3's bath margin is a NEW ring terrain at the cool edge, it repaints no boil cell; S6's wrecks are priced in burns precisely because no def removes them. No apparel/hediff in this kit grants burn immunity. |
 | 4. No macro-life in the boil itself | Bottom-walkers ship as a surfacing set-piece (S5), never a pawn swimming the surface layer; bubble-sailors are the ban's own carve-out ("nothing swims the roiling surface layer but bubbles and sails"). No wild-spawn commonality puts any kind IN boil cells. |
 | 5. No drained, cooled, or tamed Scald | No mechanic writes boil terrain to anything else — S4's geysers add; nothing subtracts. The margin ring (S3) is authored at gen, not player-extendable (no floor/terraform recipe over boil cells ships from this kit). |
-| 6. No vanilla-Earth flora/fauna | Fish tables (S3) point only at `FISH_BESTIARY_COMMISSION_1`'s thermophile defs; vanilla `Fish_*` never enters `RUT_TheScald.fishTypes`. |
+| 6. No vanilla-Earth flora/fauna | Fish tables (S3) point only at `FISH_BESTIARY_COMMISSION_1`'s thermophile defs; vanilla `Fish_*` never enters `RM_TheScald.fishTypes`. |
 
 Scoreboard: **6 mechanics** · heavy reuse (1 ruled comp + 2 miasma-kit
 generics + vanilla 1.6 fishing/geyser machinery) · **3 new RM_/RUT_ classes**
@@ -147,7 +147,7 @@ in-index this session:
   Scald fishes at all hangs on the salinity ruling — **that card is already
   open and owned at `RM_liquid_types_mod.md` §9 CARD-1** (fouled mineral
   broth: `Saltwater`, `Other`+extension, or a modded bucket). This kit takes
-  the ruling as input and wires `RUT_TheScald.fishTypes` accordingly; it does
+  the ruling as input and wires `RM_TheScald.fishTypes` accordingly; it does
   not pre-empt it. Fish defs themselves (the thermophile silver shoal — "the
   strangest entry the fish roster will ever take") are
   `FISH_BESTIARY_COMMISSION_1`'s; ban 6 keeps vanilla `Fish_*` out.
@@ -267,7 +267,7 @@ the mirror-image avoid case).
   ring without needing to name it) and keeps the one furthest from a map
   edge as a "deep center" stand-in, fires `Messages.Message` (not a Letter)
   with no pawn spawned. **RESOLVED, S5 build pass**: `RUT_WalkerSurfacing.xml`
-  IncidentDef ships (`category Misc`, `allowedBiomes RUT_TheScald`,
+  IncidentDef ships (`category Misc`, `allowedBiomes RM_TheScald`,
   `minRefireDays 14` — the spec's own "8-20" collapsed to its midpoint,
   `baseChance 1.0` INVENTED) — the incident is real and reachable by the
   storyteller now. Effecter choreography (spray, wake, the back) is still
@@ -359,7 +359,7 @@ MIASMA_MECHANICS_1 and SUMP_MECHANICS_1**) ·
    tonight; `FISH_BESTIARY_COMMISSION_1` (S3 fish defs) — **checked this
    pass, still `doing`**: it is a design/roster proposal awaiting owner
    rulings on 8 cardable questions, no build item filed yet. This blocks
-   only `RUT_TheScald.fishTypes`' actual fish content (S3's fishing HALF);
+   only `RM_TheScald.fishTypes`' actual fish content (S3's fishing HALF);
    it does not block S3's `RUT_ScaldMargin` terrain (built this pass, zero
    dependency on the fish roster) or any other mechanic in this kit.
 2. **S1 steam sky** — biome instantly feels right; every later test happens
