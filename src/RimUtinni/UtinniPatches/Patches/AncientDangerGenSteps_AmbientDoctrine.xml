@@ -184,6 +184,23 @@
     </match>
   </Operation>
 
+  <!-- Twin op for RM_NightsideIce (NIGHTSIDEICE_RM_MOD_BUILD_1 step 4, §7(b)): the live
+       world still carries 100% RUT_ tiles, so the RUT_ op above stays; this op keeps
+       RM_NightsideIce behaving identically for any OTHER world that already generates on
+       it, until Phase B's repaint. MayRequire on this mod's own packageId so the op is a
+       silent no-op if mandrake.rm.nightsideice is not loaded. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.nightsideice">
+    <xpath>/Defs/BiomeDef[defName="RM_NightsideIce"]/preventGenSteps</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_NightsideIce"]</xpath>
+      <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_NightsideIce"]/preventGenSteps</xpath>
+      <value><li>ScatterShrines</li></value>
+    </match>
+  </Operation>
+
   <!-- GRiNDTerra Terrain Retexture: AridShrubland (DENY), ExtremeDesert (RARE). -->
   <Operation Class="PatchOperationFindMod">
     <mods>
