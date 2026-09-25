@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T15:00:43Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-25T17:11:52Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -658,3 +658,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PROPANELAKE_FLOOR_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PROPANELAKE_FLOOR_PASS_1.md
+
+## SEA_DIVE_MAPS_BUILD_1 Dive maps for the four seas: diving opens a small underwater map where the sea-floor cast (wildAnimals) actually spawns. Decision taken by question card 2026-09-25 over 'surface in shallows' and 'decide later'. Today diving is only a shore job (DivingInteraction has no map generation), so every sea's floor cast is unreachable in play.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SEA_DIVE_MAPS_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEA_DIVE_MAPS_BUILD_1.md
