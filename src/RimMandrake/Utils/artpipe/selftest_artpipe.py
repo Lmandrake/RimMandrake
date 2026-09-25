@@ -1177,6 +1177,74 @@ def test_detector_resets_at_coercion_never_crashes():
        d4.sleep_until == good_epoch and d4.n_override is None)
 
 
+def test_detector_weekly_resets_at_self_heals_the_wedge():
+    """ARTPIPE_QUOTA_RESET_WEDGE_1: note_meters()'s only OTHER caller is
+    finalize_job of a COMPLETING codex job, but admission_blocked() refuses
+    every NEW codex claim once refuse_new/stop_all is set -- so without some
+    independent signal, nothing could ever write a fresh rollout (only a
+    codex job running does that) and nothing could ever call note_meters()
+    again either. The daemon's own idle refresh (DEFAULT_METER_REFRESH_
+    INTERVAL_S) only re-reads whatever rollout already sits on disk, so it
+    could poll forever and still see the same stale reading -- the wedge
+    only ever cleared if an OUTSIDE process (a human's manual `codex exec`
+    in the same leased codex_home) happened to refresh it, or on a daemon
+    restart. codex_grumpiness.classify() already reports secondary_resets_at
+    (the weekly window's own reset deadline, the same shape primary_resets_at
+    already uses for row 3's sleep_until) in every reading -- note_meters()
+    now remembers it, and admission_blocked() treats a remembered weekly
+    reset time that has already passed as no longer worth blocking on, so
+    the daemon can admit one job past its own known deadline and let that
+    job's OWN completion produce a genuinely fresh reading. No extra API
+    call, no guessed poll cadence -- just trusting the deadline Codex
+    itself already reported."""
+    d = artpiped.Detector()
+    future_reset = time.time() + 9999
+    just_above_stop = artpiped.WEEKLY_STOP + 0.1
+    d.note_meters({"ok": True, "secondary_used_percent": just_above_stop,
+                    "primary_used_percent": 10.0, "secondary_resets_at": future_reset})
+    ok("weekly reset: still blocked while the remembered reset time is in the future",
+       d.admission_blocked() and d.stop_all)
+
+    d2 = artpiped.Detector()
+    past_reset = time.time() - 5.0
+    d2.note_meters({"ok": True, "secondary_used_percent": just_above_stop,
+                     "primary_used_percent": 10.0, "secondary_resets_at": past_reset})
+    ok("weekly reset: no longer blocked once the remembered weekly reset time has passed, "
+       "even though stop_all itself is still the stale True left by the last real reading "
+       "(only a fresh note_meters() call is allowed to actually clear it)",
+       (not d2.admission_blocked()) and d2.stop_all)
+
+    d3 = artpiped.Detector()
+    just_above_refuse = artpiped.WEEKLY_REFUSE + 0.5
+    d3.note_meters({"ok": True, "secondary_used_percent": just_above_refuse,
+                     "primary_used_percent": 10.0, "secondary_resets_at": past_reset})
+    ok("weekly reset: the same self-heal covers refuse_new, not only stop_all",
+       (not d3.admission_blocked()) and d3.refuse_new)
+
+    d4 = artpiped.Detector()
+    d4.note_meters({"ok": True, "secondary_used_percent": just_above_stop,
+                     "primary_used_percent": 10.0})
+    ok("weekly reset: with no secondary_resets_at at all (e.g. an older codex_grumpiness, "
+       "or a rollout that never carried one), the wedge is honestly unresolved rather than "
+       "silently assumed clear -- this is the documented residual, not a regression",
+       d4.admission_blocked() and d4.weekly_resets_at is None)
+
+    d5 = artpiped.Detector()
+    d5.note_meters({"ok": True, "secondary_used_percent": just_above_stop,
+                     "primary_used_percent": 10.0, "secondary_resets_at": "not-a-number"})
+    ok("weekly reset: garbage secondary_resets_at is coerced away, never trusted, "
+       "same as the existing primary_resets_at coercion",
+       d5.admission_blocked() and d5.weekly_resets_at is None)
+
+    d6 = artpiped.Detector()
+    d6.note_rate_limited()
+    d6.note_meters({"ok": True, "secondary_used_percent": just_above_stop,
+                     "primary_used_percent": 10.0, "secondary_resets_at": past_reset})
+    ok("weekly reset: row 1's hard_stop is NEVER de-latched by this -- it stays "
+       "blocked even past a passed weekly reset deadline, exactly as documented",
+       d6.admission_blocked() and d6.hard_stop)
+
+
 def test_exit_code_zero_on_clean_drain_with_healthy_meters():
     """The contrasting case to the row1/self-report tests above: a
     genuinely clean run — nothing wedged, nothing left behind — must still
@@ -2932,6 +3000,7 @@ def main() -> int:
         test_worker_self_report_folded_into_manifest_and_detects_row1,
         test_detector_deescalates_after_fresh_healthy_reading,
         test_detector_resets_at_coercion_never_crashes,
+        test_detector_weekly_resets_at_self_heals_the_wedge,
         test_exit_code_zero_on_clean_drain_with_healthy_meters,
         test_per_job_scratch_directory_is_real_not_shared,
         test_codex_one_retry_rescues_transient_failure,

@@ -228,6 +228,20 @@ DEFAULT_ARTSRC_PRUNE_DAYS = 14.0
 # account's weekly/5h window has reset. A "modest interval" per the spec —
 # not a tight poll, since this is purely a de-escalation check with no
 # urgency of its own.
+#
+# ARTPIPE_QUOTA_RESET_WEDGE_1: that refresh only reads whatever rollout is
+# ALREADY on disk (codex_grumpiness.read_meters() is a passive file read,
+# never a live API probe) — and a fresh rollout is only ever written by a
+# codex job actually running. So this interval alone could still poll
+# forever without ever seeing new data: nothing here makes a new rollout
+# APPEAR, it only decides how often to check for one. The daemon used to
+# depend entirely on some OUTSIDE process (a human's manual `codex exec`
+# in the same leased codex_home) writing that fresh rollout for it.
+# Detector.weekly_resets_at (see note_meters()/admission_blocked()) closes
+# that gap for the weekly window specifically, using the reset deadline
+# Codex already reported in the LAST real reading, so the daemon can admit
+# one job past its own known deadline and get a genuinely fresh reading
+# itself — no guessed probe cadence, no extra spend beyond one ordinary job.
 DEFAULT_METER_REFRESH_INTERVAL_S = 30.0
 
 
@@ -271,6 +285,22 @@ class Detector:
         self.refuse_new = False      # row 2 @ weekly >= 90 — recomputed each reading
         self.stop_all = False        # row 2 @ weekly >= 97 — recomputed each reading
         self.warn_logged = False     # row 2 @ weekly >= 80 — clears below 80 so it can re-fire
+        # ARTPIPE_QUOTA_RESET_WEDGE_1: the account's own reported weekly
+        # reset time (codex_grumpiness.classify()'s secondary_resets_at —
+        # already read off the SAME rollout as primary_resets_at, just
+        # never stored before this). Once refuse_new/stop_all is set, the
+        # only path back to admitting a codex job used to be a FRESH
+        # rollout on disk — but a fresh rollout is only ever written by a
+        # codex job actually running, and admission_blocked() refuses every
+        # new codex job while refuse_new/stop_all is set, so the daemon
+        # could not write its own way out; it stayed parked until an
+        # OUTSIDE process (a human's manual `codex exec` in the same leased
+        # codex_home) happened to refresh the rollout, or until a restart.
+        # Remembering this timestamp gives admission_blocked() the same
+        # self-heal row 3 already has via sleep_until — no extra API call,
+        # no guessed poll interval, just trusting the deadline Codex itself
+        # already reported.
+        self.weekly_resets_at = None
         self.n_override = None       # row 3 @ 5h >= 70 -> N=1 — recomputed each reading
         self.sleep_until = None      # row 3 @ 5h >= 90 -> sleep to resets_at — recomputed
         self.wall_clock_history: dict[str, list[float]] = {}  # keyed by mode ("generate"/"edit")
@@ -291,10 +321,19 @@ class Detector:
         weekly = meters.get("secondary_used_percent")
         five_h = meters.get("primary_used_percent")
         resets_raw = meters.get("primary_resets_at")
+        weekly_resets_raw = meters.get("secondary_resets_at")
 
         if weekly is not None:
             self.stop_all = weekly >= WEEKLY_STOP
             self.refuse_new = (not self.stop_all) and weekly >= WEEKLY_REFUSE
+            # ARTPIPE_QUOTA_RESET_WEDGE_1: remember the best-known weekly
+            # reset deadline on every reading we get, regardless of band —
+            # a coercible value here is the ONLY thing that lets
+            # admission_blocked() ever recover once refuse_new/stop_all
+            # latches (see that method and the field's own docstring above).
+            coerced_weekly_reset = _coerce_epoch(weekly_resets_raw)
+            if coerced_weekly_reset is not None:
+                self.weekly_resets_at = coerced_weekly_reset
             if weekly >= WEEKLY_WARN:
                 if not self.warn_logged:
                     print(f"artpiped: WARNING weekly Codex usage at {weekly:.0f}% "
@@ -368,8 +407,23 @@ class Detector:
             self.effective_n = max(1, base // 2)
             self._slow_streak[mode] = 0  # don't re-trigger every single tick thereafter
 
+    def _weekly_window_should_have_reset(self) -> bool:
+        """ARTPIPE_QUOTA_RESET_WEDGE_1: True once wall-clock time has passed
+        the last weekly reset deadline Codex itself reported. stop_all/
+        refuse_new stay stale-True until a real note_meters() call recomputes
+        them (see that method's docstring — only row 1 is meant to stay
+        latched) — this just stops admission_blocked() from treating that
+        stale True as gospel past its own known expiry, the same way
+        sleep_until already stops blocking row 3 once time.time() passes it.
+        A job admitted on this basis gets a REAL fresh reading via the
+        ordinary finalize_job -> note_meters() path, which confirms or
+        re-blocks; no extra API call is spent finding this out."""
+        return self.weekly_resets_at is not None and time.time() >= self.weekly_resets_at
+
     def admission_blocked(self) -> bool:
-        if self.hard_stop or self.stop_all or self.refuse_new:
+        if self.hard_stop:
+            return True
+        if (self.stop_all or self.refuse_new) and not self._weekly_window_should_have_reset():
             return True
         if self.sleep_until and time.time() < self.sleep_until:
             return True
