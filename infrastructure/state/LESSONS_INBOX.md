@@ -52,3 +52,5 @@ LESSONS: `rimworld/execute_debug_action {"path":"Actions\T: Damage To Death","pa
 - zsh: a bare =word arg (e.g. `echo ===`) is command-path expansion and errors '== not found', killing the compound command — quote any all-equals token (BENCH 2026-09-24)
 - fill_queue.py expands each row x its facings list: per-facing input rows file NxN jobs with doubled suffixes (_south_east); dry-run count is the tell — feed one row per creature (BENCH 2026-09-24, 36 malformed jobs deleted same minute)
 - 2026-09-24 BENCH: sed 's/Name/…/' misses RM_Name (underscore is a word char) AND the verifying grep -E 'Name' shares the same blindness — rename sweeps must check the defName form explicitly; two instruments with one blind spot corroborate nothing.
+- 2026-09-25 BENCH: a Wookieepedia list=search HIT is not an occurrence — "brogg" hit a page whose wikitext holds zero "brogg"; probe the page (action=parse) before calling a name collision.
+- 2026-09-25 BENCH: fandom.com 403s python-urllib's default UA; curl with a browser User-Agent works — and any zero-hit search needs a positive control (dewback -> 3) before the zeros count.
