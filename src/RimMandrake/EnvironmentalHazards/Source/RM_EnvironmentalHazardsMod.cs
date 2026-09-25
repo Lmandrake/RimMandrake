@@ -285,6 +285,14 @@ namespace RimMandrake.EnvironmentalHazards
     //      generated while it is off — that ground stays ordinary
     //      Heavy-capable soil instead. Maps already generated keep
     //      whatever terrain they already have.
+    //  50. pollinationGateEnabled — RM_PollinationGatePatch
+    //      (MIASMA_KARRATHIL_POLLINATION_GATE_1). Off: a plant built to
+    //      require a pollinator species on the map (the Miasma's mangals and
+    //      karrathil) can spawn new individuals with no pollinator present,
+    //      same as any ordinary wild plant. On: it never rolls as a
+    //      candidate for a NEW individual anywhere the pollinator has zero
+    //      living members on that map — an already-grown stand is never
+    //      touched either way, only whether it can replace itself.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -338,6 +346,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static float warblingGlowSpeedMultiplier = 1f;
         public static bool waterTruceRetributionEnabled = true;
         public static bool groundRefusalEnabled = true;
+        public static bool pollinationGateEnabled = true;
 
         public override void ExposeData()
         {
@@ -392,6 +401,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref warblingGlowSpeedMultiplier, "warblingGlowSpeedMultiplier", 1f);
             Scribe_Values.Look(ref waterTruceRetributionEnabled, "waterTruceRetributionEnabled", true);
             Scribe_Values.Look(ref groundRefusalEnabled, "groundRefusalEnabled", true);
+            Scribe_Values.Look(ref pollinationGateEnabled, "pollinationGateEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -404,8 +414,10 @@ namespace RimMandrake.EnvironmentalHazards
             // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
             // the same edit as whoever adds the next toggle, or their block is
             // invisible. Bumped 4400->4480 for setting #49
-            // (groundRefusalEnabled, FEVER_WOOD_MECHANICS_1 F5).
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4480f);
+            // (groundRefusalEnabled, FEVER_WOOD_MECHANICS_1 F5). Bumped
+            // 4480->4540 for setting #50 (pollinationGateEnabled,
+            // MIASMA_KARRATHIL_POLLINATION_GATE_1).
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4540f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -551,6 +563,11 @@ namespace RimMandrake.EnvironmentalHazards
               + "remaining buildable ground to the refusal terrain on any map generated while this "
               + "is off — that ground stays ordinary Heavy-capable soil instead. Maps already "
               + "generated keep whatever terrain they already have.");
+            list.CheckboxLabeled("Pollination gate", ref pollinationGateEnabled,
+                "A plant built to need a pollinator species on the map (the Miasma's mangals and "
+              + "karrathil swarm) stops needing one — it can spawn new individuals with no pollinator "
+              + "present, like any ordinary wild plant. Already-grown stands are never touched either "
+              + "way, only whether they can replace themselves.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
