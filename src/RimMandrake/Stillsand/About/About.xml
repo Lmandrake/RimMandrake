@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.stillsand</packageId>
+  <name>RimMandrake: Stillsand</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>STILLSAND_RM_MOD_BUILD_1 — RimMandrake tier standalone build of the Extreme
+Desert biome (Phase A row 1 of design/RimMandrake/biome_mod_architecture.md; parent
+BIOME_MOD_SPLIT_EXECUTION_1). A corrugated ochre plain under a star that has not moved
+since the world began: nothing here tracks the sun because the sun does not go anywhere;
+everything owns a shadow instead, or is buried, or is a giant carrying its own moving
+shade across a thousand kilometres of nothing.
+
+RM tier: nothing here knows what campaign or planet uses it. `workerClass` is vanilla
+Core's own `RimWorld.BiomeWorker_ExtremeDesert`, reused unchanged — the donor twin never
+carried a third-party worker class, so no `RM_BiomeWorker_Stillsand` is owed.
+
+⛔ Star Wars canon fauna and flora do NOT ship here — Q11a (owner ruling, 2026-09-22): a
+genuinely canon name is IP and must route through the Utinni campaign patch layer, never
+the franchise-free RimMandrake tier. 13 wildAnimals rows, 3 wildPlants rows and all 5
+allowedPackAnimals rows that carry Star Wars names ride
+src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml instead; this def ships no
+creature or plant rows of its own — every wild animal, plant and pack animal this biome
+carries in play is patched in by that file.
+
+⚠️ One row, JOE_Cephalope, carries no RSW_/SW_/RUT_ prefix but is flagged in the item's
+own MEASURED STATE and routed to the same patch file anyway: its ThingDef/PawnKindDef
+live in src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml
+(Utinni tier), so wiring it inline here would give a RimMandrake-tier mod an undeclared
+hard dependency on Utinni content — it would not resolve on a planet with no Ash'karr
+loaded. STILLSAND_RM_MOD_BUILD_1 flags this as UNCERTAIN, not decided; the same is true
+of RSW_LightPipeNub/RSW_Ollim, the biome's own invented signature flora that per Q11a may
+belong in the RimMandrake tier (renamed off RSW_) rather than behind the Utinni patch —
+left as-is, at their current location, pending that call.
+
+Live proof (step 5, a scratch-world quicktest with all five expansions) is Desktop-only
+and OWED — see the item's own verify record.</description>
+</ModMetaData>
