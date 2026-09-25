@@ -15033,6 +15033,12 @@
     "hash": "3a29200735ee94291f4b9a2c1f2f67d035a1ebd36f9c69463e57b8bf2780dcdc",
     "sha": "e69e40f3"
   },
+  "src/RimStarWars/StarWarsRaces/Defs/TraitDefs/RM_TwilekTropeTraits.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4f5af1bb3e44a84efe1215838b67ffa4c844685c8aad1b7f2f1bfc623e7230dd",
+    "sha": "9c035dc7c"
+  },
   "src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/MandrakeJawaXenotype.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -19365,6 +19371,18 @@
     "hash": "e0e5a8e8af17bb07634442575e916a15aadd0d3c68026e45c124c07ab8ffa548",
     "sha": "33550ddc7"
   },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_BrineShock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4ce67233c45bf2f2824da88bf6ca540d4afc7948c19365a3a49db5996df6274f",
+    "sha": "9c035dc7c"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_DryAirAversion.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "66cce436934674421d77d09764973539068fb54e82bbee3d3152e31557e4c4a3",
+    "sha": "9c035dc7c"
+  },
   "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_FlamefangVenom.xml": {
     "cleanCount": 1,
     "date": "2026-09-19",
@@ -19406,6 +19424,24 @@
     "date": "2026-09-14",
     "hash": "69dbeb6f282fd8619fc3d73514df6e8c8d88aa4073aa771a4cee047c6fc1eb8c",
     "sha": "52c8c982c"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_StrandedDeformation.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7039070f2b15aae45be4fdc328eba4883d2a5549b947b03e67b6173748a1a11f",
+    "sha": "9c035dc7c"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Tarred_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0939b45597c7b6fad66a35a9433cd2f8f905a4427bee5237eecda4d92a0c028d",
+    "sha": "9c035dc7c"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_WetBulbOverwhelm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ee404b5ab87389121d0ea4121183a4ec310179db1a7d0f842308d6560c1d2892",
+    "sha": "9c035dc7c"
   },
   "src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_Breaklight.xml": {
     "cleanCount": 1,
@@ -19611,6 +19647,24 @@
     "hash": "0d2e3ada309ddfabb0eafa1309bae980280e3c50bc95b54a02819b5c325e968d",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/RecipeDefs/RUT_PropaneCatch_Refining.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2032ec7c6cef845bb2c33748da61ce035671acc5887be3484e7e5db41f64d0de",
+    "sha": "9c035dc7c"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/RecipeDefs/RUT_Tarred_Surgery.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3c15838b65c645d31cf61136ece55cd9a37d3509791962c841f50407379cf390",
+    "sha": "9c035dc7c"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ResearchProjectDefs/RUT_Sump_Research.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "60d86bf75fe18f56408c2c27e3efc2a2f09ed3390fe8c7919765eaf554c3eaed",
+    "sha": "af13f4632"
+  },
   "src/RimUtinni/UtinniPatches/Defs/RulePackDefs/Namer_AshfallSpire.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -19736,6 +19790,12 @@
     "date": "2026-09-18",
     "hash": "ad44c489168aecf84564b620de15c8452e700779fcefaf446294f333eeed93e4",
     "sha": "71afa1c0d"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_DryAirBlower.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "49777635af84087a84e317e737390cdea9e1b0486bbbc5b00fc3ae7f3dcc271f",
+    "sha": "af13f4632"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FeverTrunkCore.xml": {
     "cleanCount": 1,
