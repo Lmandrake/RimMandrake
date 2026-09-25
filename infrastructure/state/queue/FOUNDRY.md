@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T22:14:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T23:08:23Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## DONOR_DEFS_PORT_TO_OURS_1 Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 262 of ~330 borrowed biome-roster entries alone
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     build
-summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
-prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -1293,6 +1284,16 @@ kind:     build
 blocked:  Owner ruled 2026-09-18: no race def is patched until BMT_FAUNA_ABSORPTION_1 renames the BMT_ rows
 summary:  (no items/ROT_FAUNA_KIN_WIRING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
+
+## DONOR_DEFS_PORT_TO_OURS_1 Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 262 of ~330 borrowed biome-roster entries alone
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+blocked:  spec explicitly forbids starting solo: needs owner-sat plan/ordering first
+summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
+prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
 
 ## SUMP_GASLIGHT_1 Sump gaslight: tar+acid reaction makes green gas (Helixien integration OK), warbling lamp light, flame statuary, natural flames, discovery-unlocked techs
 state:    doing  (BLOCKED)
