@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T03:13:47Z",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rutemperorvulture_v1_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: emperor vulture, a huge patient scavenger bird of the Cracked Lands canyon country, bald wrinkled head, heavy hooked beak, broad soaring wings held in a resting fold, dusty grey-brown plumage with a pale ruff, standing on clawed talons on cracked dry clay. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "defName RUT_EmperorVulture. the_cracked_lands.md \u00a710, \"the sky's undertaker\". COMMISSION_LEDGER_CLEANUP_1 wave 9."
+}

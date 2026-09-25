@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_BloomCrop.xml                      UtinniPatches · COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `the_cracked_lands:bloom-crop-flood-week-boom-bust-harvest-visible-growth`
+  (design/Jawa/worldbuilding/biomes/the_cracked_lands.md §10b/§11: "The
+  Spenders' flora half, and the owner took it planet-wide: water-soaked
+  plants grow VISIBLY ... The bloom harvest — §10b's boom-bust crop.";
+  rosters/the_cracked_lands.json new_defs row 3, mechanic_load "C#:
+  EXPLOSIVE_PLANT_GROWTH_1 (world mechanic born here, §10b)").
+
+  NOT fully built this pass, honestly: `EXPLOSIVE_PLANT_GROWTH_1` (the
+  world-wide "plants grow visibly on screen, boom-bust, a designed terminal
+  moment" mechanic this slug's own real payload) is still OPEN with no C#
+  shipped — checked this pass, item state `doing`/proposed, no code. This
+  def is the crop the mechanic will eventually drive, shipped now as an
+  ordinary fast-cycle harvestable plant (short growDays, big yield, short
+  life) so the flood-week "boom, then bust" READS even without the visible-
+  growth hook — same "ships now, hooks later" posture RUT_VWake
+  (PROPANE_LAKE_PIPE_MECHANICS_1, wave 6) used for its own deferred-mechanic
+  half. Wiring `EXPLOSIVE_PLANT_GROWTH_1`'s eventual comp onto THIS defName
+  is that item's own build step, not repeated here.
+
+  Not wired into wildPlants this pass: the sheet frames the bloom as
+  something that appears IN the flood-week window specifically ("mudflat
+  breeders... a sudden carpet"), not a steady-state wild spawn like ordinary
+  biome flora — gating it to the flood event is squarely
+  `EXPLOSIVE_PLANT_GROWTH_1`/`FLOOD_WITNESS_EVENT_1`'s own build territory
+  (both already own "the flood as an engine event" per this sheet's Owed
+  list). The def compiles and is debug-spawnable/tradeable now; the actual
+  in-world appearance timing is that pass's call, not invented here.
+
+  foragedFood on the biome (`RawBerries`) is untouched — this is a distinct
+  named crop, not a foraging swap.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_BloomCrop</defName>
+    <label>bloom crop</label>
+    <description>A fast, gaudy annual that lives its whole life inside a single flood week — it germinates in standing water, races to full size in days, and sets seed before the flats dry back out from under it. Farmers who time a planting to the roar upstream get one of the biggest harvests on the planet; get it wrong and there is nothing here at all.</description>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Nutrition>0.35</Nutrition>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- Job rutbloomcrop_v1, filed this pass. Pending until the daemon lands it. -->
+      <texPath>Things/Plant/RUT_BloomCrop</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.4, 0.2, 0.2)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <fillPercent>0.25</fillPercent>
+    <pathCost>15</pathCost>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <preferability>RawTasty</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.9</fertilitySensitivity>
+      <growDays>2.5</growDays>
+      <growMinGlow>0.3</growMinGlow>
+      <visualSizeRange>0.4~1.3</visualSizeRange>
+      <topWindExposure>0.6</topWindExposure>
+      <harvestYield>14</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RawBerries</harvestedThingDef>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <sowMinSkill>3</sowMinSkill>
+      <purpose>Food</purpose>
+      <wildOrder>1.5</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>
