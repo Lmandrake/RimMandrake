@@ -70,8 +70,11 @@ namespace RimMandrake.EnvironmentalHazards
         // "Spins off the river" per the spec's own player-experience line —
         // spawned directly on a water cell (Ethereal, no pathing/standing
         // constraint applies to it, same as vanilla Tornado spawning
-        // anywhere InBounds).
-        private static bool TryFindRiverCell(Map map, out IntVec3 result)
+        // anywhere InBounds). internal, not private: reused verbatim by
+        // RM_MapComponent_RoilVortexSpawner (GREENTIDE_MECHANICS_2's Roil-
+        // condition spawn route) so both routes pick a spawn cell the same
+        // way rather than duplicating the sampling logic.
+        internal static bool TryFindRiverCell(Map map, out IntVec3 result)
         {
             result = CellFinderLoose.RandomCellWith(
                 (IntVec3 c) => c.InBounds(map) && (c.GetTerrain(map)?.IsWater ?? false),
