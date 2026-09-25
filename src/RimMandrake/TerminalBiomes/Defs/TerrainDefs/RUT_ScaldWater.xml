@@ -120,6 +120,7 @@
     <avoidWander>true</avoidWander>
     <tags>
       <li>Water</li>
+      <li>RM_WaterAgitationHeavy</li>
     </tags>
   </TerrainDef>
 
@@ -141,6 +142,7 @@
     <tags>
       <li>Water</li>
       <li>Ocean</li>
+      <li>RM_WaterAgitationHeavy</li>
     </tags>
   </TerrainDef>
 
@@ -167,6 +169,7 @@
     <tags>
       <li>Water</li>
       <li>River</li>
+      <li>RM_WaterAgitationHeavy</li>
     </tags>
   </TerrainDef>
 
@@ -188,6 +191,7 @@
     <tags>
       <li>Water</li>
       <li>RUT_ScaldShallow</li>
+      <li>RM_WaterAgitationLight</li>
     </tags>
   </TerrainDef>
 
@@ -212,6 +216,7 @@
       <li>Water</li>
       <li>Ocean</li>
       <li>RUT_ScaldShallow</li>
+      <li>RM_WaterAgitationLight</li>
     </tags>
   </TerrainDef>
 
@@ -239,6 +244,7 @@
       <li>Water</li>
       <li>River</li>
       <li>RUT_ScaldShallow</li>
+      <li>RM_WaterAgitationLight</li>
     </tags>
   </TerrainDef>
 

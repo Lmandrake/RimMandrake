@@ -227,3 +227,54 @@ bar.
 
 `RUT_FireWasp` is unchanged this pass — still next-wave, same "flies, no
 animation frames yet" state as before.
+
+## live-verify CLOSED, art defects found — owner, 2026-09-25, joint bridge session
+Owner watched live (bridge held by FOUNDRY, `140,60` on the current campaign
+map). **The positive live sighting bar is now met** — flapping works, the
+mechanism fires and animates. Two real art defects found by looking, not
+mechanism bugs:
+
+1. **Grounded (walking) sprite still shows one wing raised/extended, the
+   other folded** — asymmetric, in the north facing at least. Root-caused:
+   the v1 grounded prompt literally asked for "one wing slightly raised as
+   if about to take flight" (`pyrelands_firehawk_v1_north/south` jobs,
+   2026-09-11) — that's the defect, not a rendering bug. Owner: *"still uses
+   the asymmetric wings (right one extended, left one folded) that I asked
+   to be regenerated."* Fix: **wings folded closed, symmetric, in every
+   facing, at rest — no raised wing on the ground, ever.**
+2. **Flying flip-book frames bob the head/body up and down jerkily** frame
+   to frame — reads as flicker, not bird flight. Owner: *"The flapping
+   sprite needs to have the head/body held level while the wings flap...
+   producing a flickering wholely unlike actual bird flight."* Fix: **body/
+   head pixel-stable across all 5 frames of the cycle — only the wings
+   move.**
+
+**🔑 Standing rule for every RimWorld flyer's animation from here on** (owner,
+verbatim): *"This is a general rule for flyers: wings move, body does not,
+unless explicitly countered for a very unusual flier (can't think of one
+right now that would do that)."* Filed at the standing-rule level in
+`CLAUDE.md`'s "If it flies in the fiction, it flies in the game" section —
+apply it to every future flyer's flip-book from frame 1, not just FireHawk's
+redo.
+
+**🔑 Testing methodology correction**: owner, verbatim: *"the way to test
+flyers is to spawn like 20 of them to see if any start flying, not just
+one."* One spawned pawn is pure RNG against `flightStartChanceOnJobStart`
+([[spawn-many-for-bridge-tests]] territory, generalised to flight
+specifically) — a single-pawn hunt is why the 2026-09-24 pass ran ~35 minutes
+and caught nothing. Spawn a batch (`jawa/spawn_pawn` `count: 20`, faction
+`none`) instead, next time this or any flyer needs a live check.
+
+**Regen queued this session**: 18 artpipe jobs filed at priority 1 (jumps the
+~500-deep queue), `rimflow_item_id: FIREHAWK_FLIGHT_BEHAVIOR_1` — 3 grounded
+(`rut_firehawk_grounded_v3_{north,east,south}`, symmetric folded wings) + 15
+flying (`rut_firehawk_flying_v2_{1-5}_{north,east,south}`, body/head locked
+level across the cycle). **NEXT** once art lands in `done/`: review the
+contact sheet, deploy over the v1 grounded + v1 flying textures (same
+texPath/prefix, no def change needed), redeploy UtinniPatches, restart, and
+re-verify live the same way (spawn 20, owner watching) before closing this
+item for good.
+
+### state
+Left **`doing`**. The live-sighting bar is met; two art-quality bars are now
+open in its place, tracked above.

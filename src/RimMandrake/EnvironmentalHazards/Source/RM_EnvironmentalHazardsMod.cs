@@ -297,6 +297,13 @@ namespace RimMandrake.EnvironmentalHazards
     //      candidate for a NEW individual anywhere the pollinator has zero
     //      living members on that map — an already-grown stand is never
     //      touched either way, only whether it can replace itself.
+    //  51. waterAgitationEnabled — RM_MapComponent_WaterAgitation (owner
+    //      ruling, SCALD_REVIEW live walk 2026-09-25: margin calm, shallow a
+    //      bit agitated, deep constantly agitated). Off: terrain tagged
+    //      RM_WaterAgitationLight/Heavy stops spawning the ambient ripple
+    //      ambience entirely; the map's own pools are still tracked (cheap,
+    //      terrain-only) so turning this back on resumes immediately with no
+    //      rescan delay. Purely cosmetic either way — no gameplay effect.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -358,6 +365,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool waterTruceRetributionEnabled = true;
         public static bool groundRefusalEnabled = true;
         public static bool pollinationGateEnabled = true;
+        public static bool waterAgitationEnabled = true;
 
         public override void ExposeData()
         {
@@ -414,6 +422,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref waterTruceRetributionEnabled, "waterTruceRetributionEnabled", true);
             Scribe_Values.Look(ref groundRefusalEnabled, "groundRefusalEnabled", true);
             Scribe_Values.Look(ref pollinationGateEnabled, "pollinationGateEnabled", true);
+            Scribe_Values.Look(ref waterAgitationEnabled, "waterAgitationEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -429,7 +438,8 @@ namespace RimMandrake.EnvironmentalHazards
             // (groundRefusalEnabled, FEVER_WOOD_MECHANICS_1 F5). Bumped
             // 4480->4540 for setting #50 (pollinationGateEnabled,
             // MIASMA_KARRATHIL_POLLINATION_GATE_1).
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4540f);
+            // Bumped 4540->4600 for setting #51 (waterAgitationEnabled).
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4600f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -582,6 +592,9 @@ namespace RimMandrake.EnvironmentalHazards
               + "karrathil swarm) stops needing one — it can spawn new individuals with no pollinator "
               + "present, like any ordinary wild plant. Already-grown stands are never touched either "
               + "way, only whether they can replace themselves.");
+            list.CheckboxLabeled("Ambient water agitation ripples", ref waterAgitationEnabled,
+                "Water tagged as agitated (a biome's boiling or roiling surface) stops showing the "
+              + "ambient ripple disturbance across it. Purely cosmetic — no gameplay effect either way.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
