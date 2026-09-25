@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T02:06:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T02:15:03Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2035,3 +2035,23 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Re-author the whole surface in our tier (race, 2 pawnkinds, hidden raid
 prose:    infrastructure/state/items/THEY_MOD_REPLICATION_1.md
+
+## PROPANE_LAKE_PIPE_MECHANICS_1 Propane lake pipe network mechanics: gas vent, saturation tracker, pipe rupture, V-wake pump agitation
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  PROPANELAKEPIPEMECHANICS1 — the propane lake's pipe/vent/saturation build ladder
+prose:    infrastructure/state/items/PROPANE_LAKE_PIPE_MECHANICS_1.md
+
+## PROPANELAKES_SHIPPING_NAMES_1 Owner card: propane lakes working names (Burner Ascendant, V-Wake)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  PROPANELAKESSHIPPINGNAMES1 — owner card: propane lakes working names
+prose:    infrastructure/state/items/PROPANELAKES_SHIPPING_NAMES_1.md
