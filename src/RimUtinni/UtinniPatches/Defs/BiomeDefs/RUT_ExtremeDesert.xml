@@ -2,6 +2,22 @@
 <Defs>
 
   <!--
+    🔴 FROZEN 2026-09-24 — carrying the world until the terminal paint; content lives in
+    `mandrake.rm.stillsand`; do not edit here.
+
+    Phase A step 3 of design/RimMandrake/biome_mod_architecture.md (item
+    STILLSAND_RM_MOD_BUILD_1). This def is what the player's saved world actually carries
+    until Phase B repaints the planet onto `RM_Stillsand`; deleting it before then destroys
+    the save, so it stays as it is. From this moment every CONTENT fix for the Extreme
+    Desert lands in `mandrake.rm.stillsand` only, never here. What the twin got wrong, now
+    fixed only in the RM_ copy: all 13 `wildAnimals` rows, all 3 `wildPlants` rows and all 5
+    `allowedPackAnimals` rows below carry Star Wars names and belong behind the Utinni
+    patch layer (Q11a), not inline on an RM_-tier def — see
+    `src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml`. `JOE_Cephalope` (below,
+    no MayRequire) also moved to that patch in the RM_ copy: its own ThingDef lives in this
+    same mod's `Absorbed_Cephaloids_Defs.xml`, an undeclared hard Utinni dependency the
+    RimMandrake tier may not carry inline.
+
     RUT_ExtremeDesert                              UtinniPatches - authored 2026-09-09
     BIOME_OWNERSHIP_WAVE_1. R22 stands (`_freeze_rulings_2026-09-07.md`): the dune sea
     and the deep desert stay ONE owned def, merging design/Jawa/worldbuilding/biomes/
