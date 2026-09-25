@@ -50,7 +50,7 @@ Assailant row (dungeon-owner column per the 2026-09-10 ruling below); ⛔ never 
 
 | creature | source | note |
 |---|---|---|
-| RUT_Vhessk | GOO_BOOM_COMMISSION_1 | flesh-mutant, detonates on death (Boomalope's `DeathActionWorker_BigExplosion` lineage, re-flavored as rupturing goo sacs); NOT BUILT — design brief only |
+| RUT_Vhessk | GOO_BOOM_COMMISSION_1 | flesh-mutant, detonates on death (Boomalope's `DeathActionWorker_BigExplosion` lineage, re-flavored as rupturing goo sacs); BUILT — ThingDef+PawnKindDef in `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Vhessk.xml`; art queued (`rut_vhessk_{south,east,north}`), pending render, placeholder Thrumbo texture in the meantime; placement in the Assailant complex itself is `ASSAILANT_DUNGEON_BUILD_1`'s own work, held for the owner |
 
 ## 2. trader-beasts (1 explicit, 0 inferred)
 
