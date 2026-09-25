@@ -419,3 +419,122 @@ loose files by design, 4 "test differs from inner xpath" notes explicitly
 flagged "intentional for add-if-missing patterns"). `run_selftests.py`:
 75/75 passed. 72 slugs across the other 23 sheet groups remain untouched;
 this item stays open.
+
+## Wave 10 (2026-09-25) — the_cracked_lands, 4 slugs, all resolved
+
+Checked `git status`/`git log` first (per this item's own concurrency
+warning) and found a concurrent FOUNDRY sibling mid-edit on `the_scald`
+(uncommitted `RUT_WelcomeBlanket.xml` etc., later committed as that
+sibling's own wave 9 at `4b94a2da6`) plus large uncommitted art batches for
+`the_contagion`/`the_slime`/`nightside_ice` — avoided all four, picked
+`the_cracked_lands` (untouched by anyone, confirmed via `git status`).
+
+- **`emperor-vulture-the-sky-s-undertaker-rides-the-flats-thermal`** →
+  BUILT. `RUT_EmperorVulture` (`ThingDefs_Races/RUT_EmperorVulture.xml`),
+  `AnimalThingBase`/`Bird` body, native 1.6 flight (`MaxFlightTime` 60,
+  `FlightCooldown` 2, `flightStartChanceOnJobStart` 0.6 — "rides the flats'
+  thermals" read as a real mechanical property, most of its day spent
+  aloft, same discipline RUT_FleetFlier's ComfyTemperatureMax used).
+  `predator=false` + `foodType Carnivore`, same combination
+  `RUT_MortuaryCrawler` (this item, the_scarlands wave) already used for a
+  non-hunting carrion specialist. Checked `cast_assignment.csv`/
+  `animal_census.csv` first: `BMT_CarrionVulture` (Biomes! Polluted Lands)
+  is the only candidate donor and is recorded `dormant` — its mod is not
+  in the active `ModsConfig.xml` list, so per the `GR_Paraceramuffalo`
+  precedent (wave 1) it is not a live asset, only a scale/flavor
+  reference — authored from scratch. "emperor vulture" is the sheet's own
+  capitalized name, so no shipping-name card owed for this half.
+
+- **`sealed-signature-sleeper-wax-lined-burrow-water-wake-sheds-c`** →
+  BUILT as an interim. `RUT_SealedSleeper`
+  (`ThingDefs_Races/RUT_SealedSleeper.xml`) uses stock
+  `CompProperties_CanBeDormant`/`CompProperties_WakeUpDormant` —
+  `CompWakeUpDormant.cs` read in full via RimSage this pass: its only wake
+  triggers are `wakeUpOnDamage`, `wakeUpOnThingConstructedRadius`, and
+  `wakeUpIfAnyTargetClose` (a `TargetingParameters` check); there is no
+  stock water-terrain trigger, exactly matching the roster's own
+  `mechanic_load` flag ("C#: water-trigger wake ... borrow the dormant
+  comp"). Shipped with `wakeUpOnDamage=true` +
+  `wakeUpOnThingConstructedRadius=6` (INVENTED) as the interim trigger,
+  and a new companion item `RUT_CrackWax`
+  (`ThingDefs_Items/RUT_CrackedLandsItems.xml`, `ResourceBase`, same shape
+  `RUT_Bitumen` already used for this mod's "biome's signature material"
+  pattern) wired as an interim `butcherProducts` yield rather than the
+  sheet's actual "gathered off the flats after a wake" ground-drop. The
+  genuinely-new piece — a small rare-tick comp that activates
+  `CompWakeUpDormant` near real (non-boil) water terrain, plus the
+  gather-after-wake job — is filed as its own dedicated item,
+  `CRACKED_LANDS_SEALED_WAKE_MECHANISM_1`, rather than guessed at inline,
+  same posture `PYRELANDS_BURROWER_GRAZER_1`/
+  `MIASMA_KARRATHIL_POLLINATION_GATE_1` used for a genuinely-new,
+  non-trivial C# piece. `receivesSignals=true` set per
+  `CompProperties_CanBeDormant.ConfigErrors` (read via RimSage — required
+  whenever `jobDormancy` is false).
+
+  Checked `RUT_CrackedLands.xml`'s existing `wildAnimals` first:
+  `RSW_MutagenicNorphea` ("the-Sealed, keep") and `AA_SandSquid`
+  ("the-Sealed, adjust-keep") already tag the-Sealed bestiary SORT — same
+  "sort-filler vs. signature flagship" gap `RUT_MortuaryCrawler`'s own
+  header worked through for `AA_Helixien` one biome over. Both left
+  untouched; this is a new fourth species, not a replacement.
+
+  🔴 THE NAME IS NOT SETTLED — `RUT_SealedSleeper` is the INTERNAL working
+  defName, same posture `RUT_MortuaryCrawler` used. Filed
+  `CRACKEDLANDS_SHIPPING_NAMES_1` (owner card, both new working names —
+  no existing `the_cracked_lands` naming-draft doc was found the way
+  poison_forest/scarlands/propane_lakes/miasma each had one).
+
+- **`bloom-crop-flood-week-boom-bust-harvest-visible-growth`** → BUILT as
+  a ships-now-hooks-later stand-in. `RUT_BloomCrop`
+  (`ThingDefs_Plants/RUT_BloomCrop.xml`), an ordinary `PlantBase`-derived
+  fast-cycle crop (`growDays` 2.5, big yield). `EXPLOSIVE_PLANT_GROWTH_1`
+  (the actual "visible growth" world mechanic this slug's real payload)
+  checked and confirmed still open/proposed with no C# shipped this pass —
+  same "stands in ... until it lands" posture `RUT_VWake`
+  (`PROPANE_LAKE_PIPE_MECHANICS_1`, wave 6) used for its own deferred-
+  mechanic half. Not wired into `wildPlants`: flood-week-only appearance
+  is `EXPLOSIVE_PLANT_GROWTH_1`/`FLOOD_WITNESS_EVENT_1`'s own "the flood
+  as an engine event" build territory, not invented here.
+
+- **`twisted-trees-shade-line-grasses-mosses-our-own-vegetation-o`** →
+  ALREADY BUILT (interim). `RUT_CrackedLands.xml`'s `wildPlants` already
+  carries `RUT_TwistingThornwood` (tree), `RUT_TwistingThorngrass`,
+  `RUT_TwistingThornweed` (all `RUT_PollutedFlora.xml`, donor-texture
+  reskins of a "Biomes! Polluted Lands"-family plant set) plus `GRimMoss`
+  — live, already wired at real commonalities. These satisfy the slug's
+  content ask but are donor-texture reskins, not fresh art authored under
+  `TREE_GRAPHICS_OWNERSHIP_1`'s "our own tree, our own scale" mandate
+  literally (that item's own scope, re-read this pass, targets one named
+  landmark tree — arid_shrubland's sweetline tree — not a general
+  "replace every donor tree" campaign). A future fresh-art pass in that
+  item's house style remains optional future work; not re-filed as new
+  since `TREE_GRAPHICS_OWNERSHIP_1` already exists as the umbrella if the
+  owner wants it extended.
+
+Art: checked `infrastructure/artpipe/{done,pending,registry.jsonl}` for
+"vulture"/"emperorvulture"/"sealedsleeper"/"bloomcrop"/"bloom crop" first —
+clean. 7 jobs filed via `fill_queue.py`
+(`rutemperorvulture_v1_{south,east,north}`,
+`rutsealedsleeper_v1_{south,east,north}`, `rutbloomcrop_v1`).
+
+Validation: `validate_patch.py --live` (2026-09-24T22-19-22Z dump)
+`--defs` Data+Mods+Workshop+src/RimUtinni+RimMandrake+RimStarWars — 2
+expected errors (`RUT_CrackWax`/`RUT_BloomCrop` own-namespace pending
+texPath, same class as `RUT_DarkCrust`/`RUT_Fuzz` precedent), 6 expected
+warnings (vulture/sleeper `PawnKindDef` pending texPaths). No C# touched
+this wave. `deploy_custom_mods.py --mod UtinniPatches --apply`: applied,
+then byte-diffed all 5 touched files repo-vs-deployed — all VERIFIED
+identical (`RUT_EmperorVulture.xml`/`RUT_CrackedLandsItems.xml` deployed
+silently without appearing in the tool's printed `+`/`~` summary — worth
+flagging for whoever next touches `deploy_custom_mods.py`, since
+CLAUDE.md's own standing warning is exactly "verify a def actually
+deployed"). `run_selftests.py`: 75/75 passed, including
+`selftest_deployed_biome_refs.py`.
+
+All four slugs resolved (2 built new, 1 built as a ships-now-hooks-later
+stand-in, 1 confirmed already built) — none skipped. 49 slugs across 15
+sheet groups remain (`dune_sea+deep_desert`, `nightside_ice`,
+`terminator_sea+the_grey_deep`, `terminator_sea+the_twilight_deep`,
+`the_contagion`, `the_greentide`, `the_rot`, `the_slime`, `wasteland`,
+plus `the_fever_wood`/`weeping_stones`/code-review-loop scopes still
+excluded; `the_cracked_lands` now closed out); this item stays open.
