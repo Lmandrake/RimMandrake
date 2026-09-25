@@ -17260,10 +17260,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/RotSporeKit/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "ec87d948264e0640d37fce9fbc1dc46ccfa20fef5d50ac36a8d688a31a43db3a",
-    "sha": "e97fc76e4"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "66bb9c861cb4a702de5672db84e8849ed897692b663d7bf5b6701601a55d9136",
+    "sha": "c3de6451f"
   },
   "src/RimUtinni/RotSporeKit/Defs/DamageDefs/RUT_RotSporeKit_DamageDefs.xml": {
     "cleanCount": 1,
