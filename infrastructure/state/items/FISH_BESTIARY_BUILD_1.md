@@ -836,3 +836,31 @@ side; the next restart plus a live fishing spot-check on Twilight closes this
 item's own long-standing hold. This item is otherwise unchanged — still
 `doing`, still owed a live quicktest per the criteria bars above.
 
+
+## live pass — 2026-09-25 (FOUNDRY, full 627-mod list, canonical save)
+
+**Passed, live:** all five in-scope BiomeDefs carry `fishTypes` live
+(Greentide 720, Cracked Lands 90, Weeping Stones 660, Twilight 700, Scald 40;
+Wasteland 0/null by design — its brine species are mined). All **39** `fishDef`
+rows plus the 5 rare-catch `ThingSetMakerDef`s resolve live (44 of 44); every
+fishDef is `category: Item`, `race: None`, so the Greentide creature-instead-of-item bug is
+gone. **Real catches:** a spawned colonist fishing a placed zone landed
+`RUT_Tarrik` x4 on Weeping Stones (tile 7344) and `RUT_Karrun` x4 on Greentide
+(tile 1174). Those are the two waters the verify bar names.
+
+**Not passed, so blocked rather than closed:**
+- **Twilight:** a map generated on `RUT_TwilightSea` tile 16 is 100%
+  `RM_WaterBrineDeep`. The Fishing designator rejects every cell with the engine's own
+  "Must be placed over shallow water containing fish." So the owner's
+  2026-09-20 ruling ("Just make the surface fishable") is not true live: the
+  surface has no shallow cell.
+- **Cracked Lands:** only one of five candidate tiles (107) had water at all,
+  a 126-cell stagnant pool under thick rock roof, rejected with the same reason.
+  I couldn't show that a Cracked Lands catch reaches a net.
+- **Wasteland:** 4 tiles tried; none generated `RUT_WastelandBrine*` terrain
+  (tile 36 had ocean only), `RUT_BrineDeposit_*` 0 of 19,053 things. The mining route
+  is still unproven live.
+- **Scald:** unchanged, still waits on `SCALD_MECHANICS_1`'s cove.
+
+Three bugs in `prove_fish_bestiary_live.py` (mapId passed to two tools that
+don't declare it; BiomeDef fields read off the wrong level) fixed at `5488e4ddf`.

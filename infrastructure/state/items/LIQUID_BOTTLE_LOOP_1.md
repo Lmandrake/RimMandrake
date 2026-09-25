@@ -86,3 +86,26 @@ container in, drain an empty one out, watch the inspect string move) — bridge
 was held and idle 0 min the entire pass, so this stayed offline per the
 item's own "stay offline in doubt" discipline. Same quicktest debt the
 fill/wash half already carried.
+
+## live pass — 2026-09-25 (FOUNDRY, full 627-mod list, scratch map at tile 7344)
+
+FlowWorks XML redeployed before the load. Settings live:
+`bottleLoopEnabled`/`bottleDirtyStageEnabled` both true.
+
+- **🔴 Fill never produced a filled bottle.** An `RM_BottleEmpty` 5 cells from
+  `WaterShallow` (157,119). Four attempts through `prioritized_work` (real
+  `RM_FillBottleWorkGiver`) and `ordered_job`, with three different colonists including one
+  freshly spawned. The job is accepted, then ends, and the empty bottle sits back at its
+  spawn cell with no `RM_Bottle_*` anywhere. The fresh pawn visibly reached the water
+  cell before it ended. The WorkGiver also never picked the bottle up on its own. Cause
+  not isolated: Player.log was already at its message cap (GreentideRoil
+  static-ctor spam), so any exception in `JobDriver_FillBottle`'s finish toil
+  would not show. Next step is a fresh-log load and reading
+  `RM_LiquidBottleUtility.LiquidAt(WaterShallow)` live.
+- The drink, dirty, wash and settings-off steps were never reached, because they depend on
+  the fill.
+- **The verify bar's timer checks cannot pass as built:** `revertsTo`/`rotsTo` row
+  data is still unimplemented ("nothing reads them yet"), and blood is deferred. This
+  is a scope gap in the item, not a live failure.
+- Deleted the stale "no tank building exists" claim from `RM_LiquidBottles.xml`
+  and its generator (`5fb3dd079`).

@@ -226,3 +226,34 @@ Item stays in `doing` — pieces 1-4 are real, offline-validated, and XML-
 deployed, but need the pending DLL redeploy plus the live checks above before
 this item's own `verify` section is satisfied. Pieces 5-7 explicitly deferred,
 reasons above.
+
+## live pass — 2026-09-25 (FOUNDRY, full 627-mod list, scratch map at tile 7344)
+
+Loaded: the EnvironmentalHazards DLL was redeployed while the game was down, and
+`RUT_GaslightLamp`, `RM_FlameStatuary` and `RUT_Sumpgas` all resolve live.
+
+- **Research gate, check 6:** `RUT_GaslightChemistry` gates both the lamp
+  (`researchPrerequisites`) and `Make_RUT_Sumpgas` (`researchPrerequisite`, recipeUser
+  `TableMachining`), read off the live defs. ⚠️ Live it also carries
+  `techprintCount: 1`, which our XML never sets, so some mod in the stack patches
+  techprints onto it and `canStartNow` is false until a techprint is applied. Nobody has
+  decided whether that is intended.
+- **Lamp, check 4 (partial):** built, refuelled through a real `Refuel` job with
+  `RUT_Sumpgas` ("Sumpgas: 6 / 6 (21 days)"). **Animation not confirmed.** The
+  scratch map was in daylight and a `targetBrightness` override did not darken it in
+  time, and frame-diffing screenshots 3 s apart showed nothing measurable. Owed: a night
+  look.
+- **Statuary, check 5:** built at Awful and Legendary (`build_batch quality`).
+  Quality scaling of the flame is **not confirmed**, same daylight limit.
+- **🔴 Scrub byproduct, check 2 — FAILS live.** `RUT_ScrubTarred` bill on a
+  `RUT_Tarred` colonist in a hospital bed, run twice through the real
+  `WorkGiver_DoBill` path (`jawa/do_bill_now`), doctor Medicine 4 and then 20.
+  Both times the bill completed (repeatCount 0) and 2 `RUT_WeakTarSolvent` were
+  consumed, **but `RUT_Tarred` was still on the patient and no `RUT_Sumpgas`
+  spawned.** Root cause not isolated: Player.log hit its message cap early
+  (see the `RM_WeatherOverlay_GreentideRoil` static-ctor spam) and could not show it. First
+  suspects: `CheckSurgeryFail` succeeding twice, or `ApplyOnPawn` never reaching our
+  worker.
+- Check 3 (recipe shows at the bench) was not exercised.
+
+Blocked on the scrub failure plus the unconfirmed animation.

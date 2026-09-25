@@ -153,3 +153,36 @@ Resumed 2026-09-24 (later pass): `bridge who` reports it held by another live FO
 window ("FireHawk flight live verify", idle ~2 min at check time — provably alive, not
 stale). Per this item's own brief, not force-taking a live-held bridge. Blocked rather than
 closed; the acceptance checklist below is unchanged and still gates the close.
+
+## live pass — 2026-09-25 (FOUNDRY, full 627-mod list, scratch map at tile 7344)
+
+Stage: `RSW_BactaTank` powered from a vanometric cell over real conduit, fuelled
+25/30 by a real `Refuel` job. Two colonists killed and put through the tank.
+
+**Proven live:**
+- **Toggle:** `revivalEnabled=false` (shipped default): corpse left alone, and a
+  forced `RSW_CarryCorpseToBactaTank` job ends at once. `true`: the same job carries
+  the corpse in and `TryAcceptCorpse` revives it (corpse gone, `dead:false`).
+- **Window:** `revivalWindowHours=0.001` makes the forced job end at once and the corpse
+  stays. Back at 6, the same corpse is accepted.
+- **Law:** victim 1 kept its added `MissingBodyPart` (left hand + 5 fingers) and
+  `Dementia` on Brain after revival. Victim 2 kept 5 missing toes.
+- Revival through `dontSpawn:true` into the container ran clean. No exception
+  surfaced (log capped, see SUMP note).
+
+**Findings that block the close:**
+1. **🔴 Vital-organ deaths revive into a second death.** Victim 1 was killed by
+   heart destruction. Revived with `restoreMissingParts:false`, she came back with
+   `MissingBodyPart Heart` + `ClinicalDeathNoHeartbeat`, which rose 0.13 → 0.83,
+   and she died again ("Death: Ellis" letter). Either `CanAcceptCorpse` refuses a
+   corpse missing a vital part, or the never-regrow law gets an exception for vital
+   organs. **That is a design call, not a bug fix.**
+2. **The WorkGiver never fired on its own.** About 2,000 ticks with a fresh eligible
+   corpse, revival on, and an idle colonist with Hauling, and nobody picked it up.
+   Every revival here went through `jawa/prioritized_work` with the real WorkGiverDef.
+   Cause not isolated.
+3. **"Heals normally afterward" doesn't happen.** `TryResurrect` itself cleared victim
+   2's cuts and blood loss, so the tank found nothing to heal and auto-ejected both
+   revivals at once ("nothing to heal"). No bacta was consumed.
+
+`revivalEnabled` restored to false at the end (not persisted; nothing saved).

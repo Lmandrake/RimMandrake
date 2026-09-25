@@ -162,3 +162,29 @@ verify", idle 9 min at check time — provably alive, not stale). Per this item'
 brief, not force-taking a live-held bridge. Blocked rather than closed
 (`rimflow block BACTA_SIDE_ITEMS_1`); the owed live quicktest (droid heal-rate delta,
 patch/spray consume-and-heal, settings render) is unchanged and still gates the close.
+
+## live pass — 2026-09-25 (FOUNDRY, full 627-mod list) — PASSED, closed
+
+**Real bug found and fixed first (`2db13d541`):** `RSW_BactaFieldItems.xml` named
+`Class="CompProperties_UseEffect_BactaHeal"` unqualified. The type lives in
+`RimMandrake.StarWars.Bacta`, so the full load **discarded both field items**
+("Could not find type named …"), and their trader rows became null
+`StockGenerator_SingleDef`s. That is the `ConfigErrors` NRE on `Base_Outlander_Standard`,
+`Orbital_Exotic` and `Caravan_Outlander_Exotic`. Qualified it, deployed, restarted.
+Both items then load clean.
+
+- **Droid heal-rate delta:** occupant with 3 cuts in a powered, fuelled tank.
+  No droid **103/day** → linked powered `RSW_MedicalDroid` **146/day**, and the
+  inspect pane shows "Medical droid assisting". With `medicalDroidEnabled=false`,
+  **109/day**. About 1.42x against the 1.5x default; the gap is 250-tick pass
+  quantisation plus natural healing.
+- **Patch:** a real `UseItem` job cleared two 5-severity cuts and the patch was consumed.
+- **Spray:** cleared three cuts (5/5/4) and was consumed.
+- **`fieldItemsEnabled=false`:** the use job is refused, wounds are untouched, and the patch
+  stays.
+- **Settings screen:** all four new controls render (droid toggle + 1.50x slider,
+  field-kit toggle + 1.00x potency slider).
+  `Transient/bacta_settings_render_2026-09-25.png`.
+- Not exercised: the "nothing healable" refusal, and a brain/missing-part probe with the
+  items (shared `BactaHealingUtility` path already verified on the revival pass, where
+  missing parts and Dementia survived).
