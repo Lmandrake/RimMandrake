@@ -3101,6 +3101,24 @@
     "hash": "86393ced6fd84db70ec6ecb288f886688a7a5dfe23fe1d8d83320a547be6038d",
     "sha": "f34c32a99"
   },
+  "src/RimMandrake/GelatinousSlime/Defs/BodyDefs/AmorphousBody.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d6e7a4e896115953206238773dca0fd68a061c17d532af398a7d373b63b7ec85",
+    "sha": "b5d418d49"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/BodyPartDefs/AmorphousParts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1aeef7e3c5c20cb4696d06dcfd5fbb8b61d44889e9012cce7c1408023eac85a4",
+    "sha": "b5d418d49"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/BodyPartGroupDefs/AmorphousGroups.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "98f6214093200b5016115796e7d940760a70a1871819f84092d4a7d7caea2a70",
+    "sha": "b5d418d49"
+  },
   "src/RimMandrake/GelatinousSlime/Defs/GeneArchiveDefs/DefaultArchive.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -3113,6 +3131,24 @@
     "hash": "1828e13f7acc7ec2293dc30b282f4f29bc4d7610daa23a8ddc4f46e71974a83c",
     "sha": "3505dc594"
   },
+  "src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes_AList.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "cf68461fa7e8ff74a106eba627192145e6e720a863e085fae377b175b3ade106",
+    "sha": "b5d418d49"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes_BList.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8592e3e97c37efad0d9c2c13382aa002db6589560d4c7da18d623c47ea72c30c",
+    "sha": "b5d418d49"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/HediffDefs/SlimeGeneConditions.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "138762b199fd58b594a659dda48ec27b741c4d6ecfcab5a2d68b8f117a7ba8d7",
+    "sha": "b5d418d49"
+  },
   "src/RimMandrake/GelatinousSlime/Defs/HediffDefs/Slimification.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -3124,6 +3160,18 @@
     "date": "2026-09-11",
     "hash": "00a7dbdb08280db9538eb87981576527a83ca27f94ba1752303e1d31d895a290",
     "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/LifeStageDefs/Titanoslime.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b8e910830b6d4ad1a3bf3e93aab092ff54400f92ac6dc3b1393cc2261c68be5f",
+    "sha": "b5d418d49"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/Maneuvers/Engulf.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7c63da87dda9d3465348851c4f31c80a736c670309a8edda0e67514557a71b32",
+    "sha": "b5d418d49"
   },
   "src/RimMandrake/GelatinousSlime/Defs/ResearchProjectDefs/SlimeResearch.xml": {
     "cleanCount": 1,
@@ -3173,17 +3221,35 @@
     "hash": "ddfc9d1c134120c6a8bfe9845476c42516b5ea49f56c76a3ba73aeef681a638d",
     "sha": "ba67ade98"
   },
+  "src/RimMandrake/GelatinousSlime/Defs/ThoughtDefs/SlimeGeneConditionThoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c1a6d1e1f7f8ae00072498fcde7d6af202e1737bb241d69487ae32ee2044a820",
+    "sha": "b5d418d49"
+  },
   "src/RimMandrake/GelatinousSlime/Defs/ThoughtDefs/SlimeThoughts.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
     "hash": "e9c8eeae79e80860f59f113d6eb30b4f4e6b47546e91a6f69c3405972019ece4",
     "sha": "3505dc594"
   },
+  "src/RimMandrake/GelatinousSlime/Defs/ToolCapacityDefs/Engulf.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b8559ff46c68b49c4a38d867ba3efbcb70f07d77447a6bb981ce58cd9f5d32d9",
+    "sha": "b5d418d49"
+  },
   "src/RimMandrake/GelatinousSlime/Defs/WeatherDefs/SlimeRain.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
     "hash": "8b0d43f9a0724b906b4c0120ea4e29257ad34158f6d2f6db4a39d11811532980",
     "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Patches/DryingBiomes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a8e603bd337f14a302fd6a55e291d9cad65068cd5b0dd97f77a80baf0cb5e1b5",
+    "sha": "b5d418d49"
   },
   "src/RimMandrake/GelatinousSlime/Source/GeneArchive.cs": {
     "cleanCount": 2,
