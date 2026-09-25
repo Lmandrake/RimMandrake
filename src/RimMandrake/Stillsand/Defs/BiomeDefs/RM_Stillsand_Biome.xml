@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_Stillsand                             RimMandrake — STILLSAND_RM_MOD_BUILD_1
+    Phase A row 1 of design/RimMandrake/biome_mod_architecture.md. Content copied from
+    src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml (frozen the same
+    pass), minus every RSW_-prefixed row and JOE_Cephalope — see below.
+
+    workerClass stays vanilla RimWorld.BiomeWorker_ExtremeDesert, unchanged: the donor
+    twin never named a third-party class, so no RM_BiomeWorker_Stillsand is owed
+    (item's own MEASURED STATE).
+
+    wildAnimals/wildPlants/allowedPackAnimals are all EMPTY here, on purpose. Q11a
+    (owner ruling 2026-09-22): a genuinely canon Star Wars name is IP and must route
+    through the Utinni campaign patch layer, never the franchise-free RimMandrake tier —
+    every row this biome carries in play (13 wildAnimals, 3 wildPlants, 5 pack animals,
+    all Star-Wars-named, plus JOE_Cephalope, whose own ThingDef lives in Utinni-tier
+    Absorbed_Cephaloids_Defs.xml) is patched in by
+    src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml instead. These nodes
+    stay present-but-empty so that file's PatchOperationAdd has somewhere to land.
+  -->
+
+  <BiomeDef>
+    <defName>RM_Stillsand</defName>
+    <label>the Extreme Desert</label>
+    <description>A corrugated ochre plain under a star that has not moved since the world began, running unbroken to every horizon. Nothing here tracks the sun because the sun does not go anywhere; everything owns a shadow instead, or is buried, or is a giant carrying its own moving shade across a thousand kilometres of nothing. It ends, without a gradient, at a hard green line of river or sea -- and until then, this is the ocean of nothing that line is drawn against.</description>
+    <workerClass>RimWorld.BiomeWorker_ExtremeDesert</workerClass>
+    <settleWarning>Searing heat and a near total lack of arable land make survival here a challenge. Nothing here pursues, but nothing here forgives a mistake either.</settleWarning>
+    <isExtremeBiome>true</isExtremeBiome>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <lakeBeachTerrain>Sand</lakeBeachTerrain>
+    <mudTerrain>Sand</mudTerrain>
+    <riverbankTerrain>Sand</riverbankTerrain>
+    <allowRoads>false</allowRoads>
+    <allowRivers>false</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <animalDensity>0.1</animalDensity>
+    <plantDensity>0.008</plantDensity>
+    <forageability>0.0</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>World/Biomes/ExtremeDesert</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>95</Clear>
+      <DryThunderstorm>1</DryThunderstorm>
+      <Fog>0</Fog>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <!-- Deliberately empty — see the header comment. Wired by
+           src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml. -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <!-- Deliberately empty — see the header comment. Wired by
+           src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml. -->
+    </wildPlants>
+    <wildPlantRegrowDays>35</wildPlantRegrowDays>
+    <allowedPackAnimals>
+      <!-- Deliberately empty — see the header comment. Wired by
+           src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml. -->
+    </allowedPackAnimals>
+  </BiomeDef>
+
+</Defs>

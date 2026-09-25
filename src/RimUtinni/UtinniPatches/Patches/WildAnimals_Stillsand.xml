@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_Stillsand.xml                 UtinniPatches — new file 2026-09-24
+  ============================================================================
+
+  Puts the campaign's Extreme Desert Star-Wars fauna/flora/pack-animals onto
+  RM_Stillsand, plus JOE_Cephalope (see below). Same shape as
+  WildAnimals_Pyrelands.xml / WildAnimals_FeverWood.xml.
+
+  WHY THIS FILE HAS TO EXIST. §7 Q11a (owner, 2026-09-22): a genuinely canon
+  Star Wars name is IP and must route through the Utinni campaign patch
+  layer, never the franchise-free RimMandrake tier — "the top mod without
+  star wars will look precisely the same as the star wars enhanced one save
+  for any star wars beasts we populate it with." So RM_Stillsand may not
+  carry this cast inline, and at Phase B the RUT_ExtremeDesert twin that
+  currently carries it dies and RM_Stillsand takes the tiles. Without this
+  patch in place by then, the Extreme Desert would lose all 13 of its fauna
+  rows, all 3 of its flora rows and all 5 of its pack-animal rows on the
+  live world.
+
+  🔑 SOURCE OF TRUTH: every defName and weight below is copied from
+  RUT_ExtremeDesert.xml's own wildAnimals/wildPlants/allowedPackAnimals
+  (frozen 2026-09-24), the roster the world runs on today. STILLSAND_RM_MOD_BUILD_1's
+  own written §3 table (dated 2026-09-23) names three of these rows under
+  STALE pre-rename defNames — RSW_Spineroller, RSW_Stareling, RSW_Voltmaw — a
+  same-day rename (NONCANON_BEAST_RENAME_1, f7cf979ab, 2026-09-24) landed
+  between that table being written and this file, renaming them to RSW_Kudda,
+  RSW_Ikee and RSW_Vozzik respectively (same commonalities, same rows). This
+  file follows the live def, not the item's now-stale table.
+
+  13 wildAnimals rows, all mandrake.rsw.swbestiary (our own RSW_ ports):
+    RSW_Kudda 0.3, RSW_Kreetle 0.2, RSW_WarWyrm 0.2, RSW_KraytDragon 0.15,
+    RSW_Ikee 0.15, RSW_GraniteSlug 0.1, RSW_Scurrier 0.1, RSW_Gizka 0.01,
+    RSW_GreaterKraytDragon 0.001, RSW_Vozzik 0.0005, RSW_TruffleMole 0.5,
+    RSW_SandLion 0.5, RSW_Drazzik 0.05
+
+  1 wildAnimals row with no MayRequire — JOE_Cephalope 0.5. Flagged, not an
+  RSW_/SW_/RUT_ name, but its ThingDef/PawnKindDef live in THIS SAME MOD
+  (Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml), not in a
+  RimMandrake mod — wiring it inline on RM_Stillsand would give a
+  RimMandrake-tier def an undeclared hard dependency on Utinni content
+  (unresolvable on a planet with no Ash'karr loaded, failing §3a's own
+  test). STILLSAND_RM_MOD_BUILD_1 flagged this as UNCERTAIN rather than
+  deciding it; routing it here avoids inventing a fix (moving the def) while
+  keeping RM_Stillsand safe standalone. No MayRequire guard needed — this
+  patch file only ever loads alongside its own target def.
+
+  3 wildPlants rows, all mandrake.rsw.swbestiary:
+    RSW_Plant_Bloddle 0.05 (genuine SW canon — Tatooine bloddle, SWAC donor)
+    RSW_LightPipeNub 0.1, RSW_Ollim 0.01 — the biome's OWN invented signature
+    flora (EXTREME_DESERT_SIGNATURE_FLORA_1), not genuine Star Wars canon.
+    STILLSAND_RM_MOD_BUILD_1 flags these as strong candidates to move to the
+    RimMandrake tier (renamed off RSW_) per Q11a's "invented content is
+    RimMandrake-tier, prefix notwithstanding" — flagged, not decided here.
+    Left at their current location (RSW_, mandrake.rsw.swbestiary) and
+    routed the same way as the genuine-canon row above, pending that call.
+
+  5 allowedPackAnimals rows, all mandrake.rsw.swbestiary:
+    RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Jamel, RSW_Falumpaset
+    (DESERT_PACK_ANIMALS_FOR_TRADERS_1 — without this list, no trader
+    caravan ever generates here; RUT_ExtremeDesert.xml's own comment).
+
+  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
+  returns true on no match) — validate with
+  skills/rimworld-modding/scripts/validate_patch.py against the live def
+  dump and the full active mod set before trusting a clean log.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildAnimals</xpath>
+      <value>
+        <RSW_Kudda>0.3</RSW_Kudda>
+        <RSW_Kreetle>0.2</RSW_Kreetle>
+        <RSW_WarWyrm>0.2</RSW_WarWyrm>
+        <RSW_KraytDragon>0.15</RSW_KraytDragon>
+        <RSW_Ikee>0.15</RSW_Ikee>
+        <RSW_GraniteSlug>0.1</RSW_GraniteSlug>
+        <RSW_Scurrier>0.1</RSW_Scurrier>
+        <RSW_Gizka>0.01</RSW_Gizka>
+        <RSW_GreaterKraytDragon>0.001</RSW_GreaterKraytDragon>
+        <RSW_Vozzik>0.0005</RSW_Vozzik>
+        <RSW_TruffleMole>0.5</RSW_TruffleMole>
+        <RSW_SandLion>0.5</RSW_SandLion>
+        <RSW_Drazzik>0.05</RSW_Drazzik>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- JOE_Cephalope — no MayRequire, see header. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildAnimals</xpath>
+      <value>
+        <JOE_Cephalope>0.5</JOE_Cephalope>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildPlants</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildPlants</xpath>
+      <value>
+        <RSW_Plant_Bloddle>0.05</RSW_Plant_Bloddle>
+        <RSW_LightPipeNub>0.1</RSW_LightPipeNub>
+        <RSW_Ollim>0.01</RSW_Ollim>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/allowedPackAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/allowedPackAnimals</xpath>
+      <value>
+        <li>RSW_Bantha</li>
+        <li>RSW_Ronto</li>
+        <li>RSW_Eopie</li>
+        <li>RSW_Jamel</li>
+        <li>RSW_Falumpaset</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
