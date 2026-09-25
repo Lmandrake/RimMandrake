@@ -229,20 +229,10 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 # demanded. Kept as the record of why the defs sat undeployed for one render
 # cycle.
 
-# --- SCALD_MECHANICS_1 S4/S2: RUT_ScaldVent + RUT_SteamCatch, no art yet -------
-# 2026-09-13, SCALD_MECHANICS_1 build pass. Both ThingDefs are new this pass
-# (RUT_ScaldVent.xml's texPath is a Scald-specific art identity, deliberately
-# NOT reusing vanilla SteamGeyser's texture; RUT_SteamCatch.xml is a wholly
-# new building with no vanilla equivalent). validate_patch.py: 0 errors on
-# every other field on both files — the ONLY failure on each is the missing
-# texPath, confirmed via the live 589-mod scan (`Things/Building/Natural/
-# RUT_ScaldVent` and `Things/Building/Production/RUT_SteamCatch` resolve
-# nowhere under any Textures/ root). Deploying either now renders a pink
-# placeholder.
-# => LIFT when both sprites land under UtinniPatches/Textures/ — defs and art
-#    deploy together in one --apply, same pattern as the Pyrelands hold above.
-UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldVent.xml    # BENCH: no art yet, 2026-09-13
-UtinniPatches/Defs/ThingDefs_Buildings/RUT_SteamCatch.xml   # BENCH: no art yet, 2026-09-13
+# --- SCALD S4/S2 hold ENDED 2026-09-25: files moved out of UtinniPatches ------
+# RUT_ScaldVent/RUT_SteamCatch now ship from TerminalBiomes (already deployed
+# by that mod's build before this hold could follow them). Their art is still
+# owed — tracked on SCALD_FLOOR_PASS_1, jobs queued to the artpipe.
 
 # --- SUMP_MECHANICS_1 S1: RUT_MoatFusePost, no art yet ------------------------
 # 2026-09-13, SUMP_MECHANICS_1 build pass. RUT_MoatFusePost.xml is a genuinely
@@ -259,22 +249,10 @@ UtinniPatches/Defs/ThingDefs_Buildings/RUT_SteamCatch.xml   # BENCH: no art yet,
 #    deploy together in one --apply, same pattern as the Scald hold above.
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml   # BENCH: no art yet, 2026-09-13
 
-# --- SCALD_MECHANICS_1 S6: RUT_ScaldWreck* + scatter wiring, no art yet -------
-# 2026-09-13, SCALD_MECHANICS_1 build pass. RUT_ScaldWrecks.xml's three
-# ThingDefs (RUT_ScaldWreckHull/Tank/Frame) are new this pass, each with a
-# texPath under UtinniPatches/Textures/ that does not exist yet — same
-# missing-art shape as the S4/S2 hold above. Held TOGETHER with the two
-# files that key on their defNames: RUT_ScaldWreckScatter.xml's three
-# GenStepDefs (each <thingDef> a dangling cross-reference without the defs
-# deployed) and RUT_ScaldWreckScatter_Register.xml (adds those three
-# GenStepDef names to Base_Player's live genSteps — deploying it alone
-# would run map generation against def names nothing in the game provides).
-# => LIFT all three at once when the three wreck sprites land under
-#    UtinniPatches/Textures/ — defs, scatter wiring and art deploy together
-#    in one --apply, same pattern as the Pyrelands/S4/S2 holds above.
-UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldWrecks.xml         # BENCH: no art yet, 2026-09-13
-UtinniPatches/Defs/MapGeneration/RUT_ScaldWreckScatter.xml         # BENCH: held with the ThingDefs it scatters, 2026-09-13
-UtinniPatches/Patches/RUT_ScaldWreckScatter_Register.xml           # BENCH: held with the ThingDefs it scatters, 2026-09-13
+# --- SCALD S6 hold ENDED 2026-09-25: files moved out of UtinniPatches ---------
+# RUT_ScaldWrecks/RUT_ScaldWreckScatter(+Register) now ship from TerminalBiomes
+# (already deployed by that mod's build). Wreck art still owed — tracked on
+# SCALD_FLOOR_PASS_1, jobs queued to the artpipe.
 
 # --- SUMP_MECHANICS_1 S3: RUT_BeastBulge + tar-beast scatter wiring, no art yet --
 # 2026-09-13, SUMP_MECHANICS_1 S3 build pass. RUT_BeastBulge.xml is new this

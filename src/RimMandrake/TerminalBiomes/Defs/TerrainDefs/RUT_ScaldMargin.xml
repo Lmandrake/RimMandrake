@@ -38,8 +38,9 @@
   standalone exactly like RUT_ScaldWater.xml's six siblings.
 
   RUT_ScaldMarginMat tag ADDED — COMMISSION_LEDGER_CLEANUP_1, the_scald
-  sheet's "welcome blanket" flora commission (RUT_WelcomeBlanket.xml,
-  ThingDefs_Plants/). A dedicated tag, not the generic `Water` every boil
+  sheet's "welcome blanket" flora commission (now RM_WelcomeBlanket.xml,
+  TerminalBiomes/Defs/ThingDefs_Plants/, moved from UtinniPatches by
+  SCALD_FLOOR_PASS_1). A dedicated tag, not the generic `Water` every boil
   terrain also carries: gating the plant on plain `Water` would let it wild-
   spawn on open boiling Scald water too, which the biome's own §6 ban 4
   ("nothing swims/grows the roiling surface layer but bubbles and sails")
