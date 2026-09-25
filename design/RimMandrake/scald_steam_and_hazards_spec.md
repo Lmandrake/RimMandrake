@@ -2,7 +2,8 @@
 
 Item: `SCALD_STEAM_WEATHER_DESIGN_1`. Design only; nothing here is built. Written 2026-09-25
 against the live source tree and the RimSage 1.6/Odyssey decompile (every engine claim below is
-tagged MEASURED or UNMEASURED in §10). Companion docs: `infrastructure/state/items/SCALD_MECHANICS_1.md`
+tagged MEASURED or UNMEASURED in §10); the owner's rulings of the same day are folded in (§9 lists
+them; §4, §5, §7 state the decided form). Build step 1 is §8. Companion docs: `infrastructure/state/items/SCALD_MECHANICS_1.md`
 (kit history), `design/Jawa/worldbuilding/biomes/kits/scald_kit_spec.md` (S1–S6),
 `design/Jawa/worldbuilding/biomes/the_scald.md` (FROZEN sheet).
 
@@ -71,8 +72,9 @@ stays exactly as shipped.
 
 ⇒ Of the mechanisms this spec needs, **the exposure clock, the protection-stat aggregation, the
 carrier grant, the damage type, the settings seam and the native material all exist.** New work is
-XML wiring, two apparel defs, one research def, textures, one small overlay-material class, and
-one optional WeatherEvent.
+XML wiring, three apparel defs (wrap, boil-suit, rind coat), one research def, textures, one small
+overlay-material class, a ~10-line species gate on the steam devil (§6), and one optional
+WeatherEvent.
 
 ## 3. The steam weather as an experience
 
@@ -217,16 +219,11 @@ inherited by every animal and humanlike), if the cell's terrain has `burnDamage 
   `WaterShallowBase`) makes the pathfinder prefer land. Neither stops a *swim* path
   (`KnownDangerAt` is edifice-only — `SCALD_MECHANICS_1` spike finding 4).
 
-**Design choice — keep terrain burn as the water's mechanic.** It is vanilla, per-cell, immediate,
-already tuned, and already the owner's "burns to touch". Two options for the *type*, one open
-question (§9 Q2):
-
-- **(a) Stay `Burn`/Heat** (recommended v1): zero work; heat armor is the wading protection,
-  which is a real cost (devilstrand, hyperweave, the boil-suit's own `ArmorRating_Heat`).
-- **(b) Retype to `RUT_Scald`**: a Harmony prefix on `HediffGiver_Terrain.OnIntervalPassed` that,
-  for terrains tagged `RM_ScaldBurn` (new tag on the six defs), deals `RUT_Scald` instead and
-  returns false. ~20 lines; makes `RM_ArmorRating_Scald` the only wading defence. Sharper
-  identity, more work, and it orphans every vanilla heat garment. Not v1.
+**Design — terrain burn is the water's mechanic, and it stays plain `Burn`/Heat.** Ruled
+2026-09-25 (§9 ruling 2). It is vanilla, per-cell, immediate, already tuned, and already the
+owner's "burns to touch"; heat armor is the wading protection, which is a real cost (devilstrand,
+hyperweave, the boil-suit's own `ArmorRating_Heat`, the Royal Rind's). No retype to `RUT_Scald`:
+`RM_ArmorRating_Scald` is the steam devil's stat only. Zero code for the water.
 
 **The steam clock and the water clock are separate and additive**: wading in the steam takes burn
 hits *and* runs the exposure clock. A pawn hauling salvage out of the shallows on a steam day is
@@ -238,6 +235,11 @@ sets a pawn alight.
 
 ## 5. The player's protections — gear, research, buildings, real costs
 
+**The ladder, in the owner's words (typed, 2026-09-25):** *"Industrial research for a boil-suit,
+but advanced vacsuit-types should be able to handle it too. And then there's the Royal Rind from
+the fruit of the great Bole."* Three rungs, then: **Royal Rind gear** (§5a, biological, from the
+Greentide), the **boil-suit** (Industrial research), and **sealed vacsuit-types** (Spacer, patched).
+
 Every row has a price; none reaches immunity (Ban 3). Protection numbers are INVENTED and sum
 across worn apparel; the comp clamps to 1 and floors the clock at 8%.
 
@@ -247,9 +249,45 @@ across worn apparel; the comp clamps to 1 and floors the clock at 8%.
 | **The still day** | clock stops map-wide for 12–24 h | waiting; ~4 days between | shipped lock |
 | **`RUT_ScaldMargin` cove** | the one water with no burn | must be sited as an isolated cove (bridge authoring, owed) | shipped def |
 | **`RM_Apparel_ScaldWrap`** (Neolithic) — hooded oil-waxed cloak, Shell layer, Torso/Neck/Head | `RM_ScaldProtection 0.45` (≈2× slower clock), `ArmorRating_Heat 0.30` | 30 cloth + 12 `RM_ScaldWalkerChitin` (the dive-hunt drop finally has a use); `Insulation_Heat −10` (it is hot inside), `MoveSpeed −0.15` | tailoring bench, no research |
-| **`RM_Apparel_BoilSuit`** (Industrial) — sealed hood-and-suit, Middle+Shell, full body | `RM_ScaldProtection 0.85` (≈7× slower), `ArmorRating_Heat 0.55`, `RM_ArmorRating_Scald 0.60` (steam devils) | research **`RM_ScaldWorking`** (Industrial, 1200 pts, prereq `ComplexClothing`; INVENTED); 60 cloth + 20 chitin + 30 steel + 2 components; `MoveSpeed −0.35`, `Insulation_Heat −20`, Beauty −3, cannot wear with other Shell | machining table |
-| **Odyssey vacsuit + helmet** | patch `RM_ScaldProtection 0.35 + 0.30` and `RM_ArmorRating_Scald 0.4` onto `Apparel_Vacsuit`/`Apparel_VacsuitHelmet` (MayRequire Odyssey) — a sealed suit is a sealed suit | already `MoveSpeed −1.25`; Spacer tech, `OrbitalTech` research | patch in TerminalBiomes |
+| **Royal Rind gear** (§5a) — `RM_Apparel_RindCoat` (proposed name), Shell, Torso/Neck/Shoulders/Arms | `RM_ScaldProtection 0.60`, `ArmorRating_Heat 0.45` (numbers INVENTED; sits between wrap and boil-suit) | the greatbole's fruit — a nasty grub fight or Fruitfall patience (`greatbole_harvest_spec.md` §2d, §3b); no research | tailoring bench, once the rind material exists |
+| **`RM_Apparel_BoilSuit`** (Industrial) — sealed hood-and-suit, Middle+Shell, full body | `RM_ScaldProtection 0.85` (≈7× slower), `ArmorRating_Heat 0.55`, `RM_ArmorRating_Scald 0.60` (steam devils) | research **`RM_ScaldWorking`** (Industrial — **ruled**, §9 ruling 3; 1200 pts, prereq `ComplexClothing` INVENTED); 60 cloth + 20 chitin + 30 steel + 2 components; `MoveSpeed −0.35`, `Insulation_Heat −20`, Beauty −3, cannot wear with other Shell | machining table |
+| **Odyssey vacsuit + helmet** — **ruled in** (§9 ruling 4) | patch `RM_ScaldProtection 0.35 + 0.30` and `RM_ArmorRating_Scald 0.4` onto `Apparel_Vacsuit`/`Apparel_VacsuitHelmet` (MayRequire Odyssey) — a sealed suit is a sealed suit; any later "advanced vacsuit-type" (a donor's sealed suit, a Spacer hardsuit) gets the same patch shape | already `MoveSpeed −1.25`; Spacer tech, `OrbitalTech` research | patch in TerminalBiomes |
 | **Tending** | burns are ordinary injuries; `RUT_ScaldExposure` is not tendable, only waited out indoors | medicine, bed time | vanilla |
+
+### 5a. The Royal Rind — the biological rung (ruled in; no def exists)
+
+The owner named it (§5 quote) and `greatbole_harvest_spec.md` §3b already rules its three uses:
+*protection against our own killing biomes — the Contagion, the Scald, the Miasma*; a vacuum
+garment gated behind the expansion that supplies that mechanic; and a top luxury material. Its
+price is stated there too: *"those grubs are NASTY to deal with"* — difficulty, not scarcity.
+
+**What exists today (MEASURED 2026-09-25, `grep` of `src/` and `design/`):** no `RoyalRind`,
+`GreatboleFruit` or rind-apparel def by any spelling; `RM_SapResin` and `RM_ToxinSealant`
+(`src/RimMandrake/Greentide/Defs/ThingDefs/RM_Greentide_Items.xml`) are the greatbole's only
+shipped products and are the shape to copy. The fruit item and the butcher-table recipe are owed
+by the Greentide build (`greatbole_harvest_spec.md` §9 items 4–5), not by this spec.
+
+**What this spec specifies (all names proposed, none shipped):**
+
+- **`RM_RoyalRind`** — a stuff-capable material item (`Leathery` stuff category so vanilla leather
+  apparel recipes accept it), rendered from `RM_GreatboleFruit` at the butcher table alongside the
+  steaks and seeds. Lives in the Greentide mod (`RM_` tier — the greatbole is franchise-free).
+  Carries, as **stuff stat offsets/factors**, the biome-protection stats: `RM_ScaldProtection`
+  (this spec), `RM_WetBulbProtection` (`EnvironmentalHazards/Defs/StatDefs/`, exists) and a
+  Miasma stat that does **not exist yet** — `RUT_MiasmaExposure.xml` sets no `protectionStat`
+  (MEASURED 2026-09-25), so the Miasma gets one in the same shape when rind lands. ⇒ *any* garment made of rind protects,
+  scaled by its coverage — one material, three biomes, exactly §3b's promise, and no bespoke
+  garment is strictly required.
+- **`RM_Apparel_RindCoat`** — the one bespoke garment worth shipping: a full-coverage shell made
+  only of rind, so a player who has fought the grubs once has a whole answer. Table row above.
+- **The vacuum use** stays in `greatbole_harvest_spec.md` (Odyssey-gated via `MayRequire`; the
+  franchise-free protection must not depend on it — that ban is theirs and stands).
+- **Rind stacks with the other rungs** under the same clamp and 8% floor; rind + vacsuit helmet
+  and rind + boil-suit both clamp at 1.0. Ban 3 holds: it is a fight to get and never zeroes
+  the clock.
+
+Whether rind protects the *steam clock* as well as the *wading burn*, and whether its garments are
+Neolithic craft, are the two open questions in §9.
 
 Deliberately **not** offered: any drink, salve or bath that lowers exposure (Ban 1 patrol — a
 "steam remedy" made from the lake would be the body made useful), and any building that
@@ -274,13 +312,24 @@ the birthday chronics are irrelevant to 3-year animals but harmless), and on bot
 Ships in `RM_ScaldFauna.xml`; the set def lives beside it in TerminalBiomes. No C#, no Harmony,
 no per-tick check; the giver simply never runs for them. `ComfyTemperatureMax 95` already covers
 `HediffGiver_Heat`. ⚠️ Any future Scald native (walkers, sails) takes the same line — put it in the
-file header as the rule.
+file header as the rule. Exact defs and files: §8 step 1.
+
+Why not a gene: the natives are animals, and `hediffGiverSets` is the race-level switch the engine
+already honours. A gene (the shape of `RM_Gene_Furnaceblood`, `TheRot/Defs/GeneDefs/`, or
+`Jawa_MessImmunity.xml`'s `nullifyingGenes` patch in `UtinniPatches/Defs/GeneDefs/`) is the route
+only for a *humanlike* native, and none is cast (§9 open question 4).
 
 **Steam (exposure clock)** — `immuneThingDefs` on the comp (§3.3) and on the carrier condition
 (`HazardTargeting.Affects` reads both, MEASURED). Data, not a hediff, so nothing to save.
 
-**Steam devil** — `RUT_SteamDevil`'s vortex damage already runs through the same
-`immuneThingDefs`/`immunePawnKinds` gate; add the two natives there too.
+**Steam devil — NOT gated today.** `RM_WanderingVortexExtension` (MEASURED 2026-09-25) carries
+`damageDef`, radii, intervals, `damageAmountRange`, `armorPenetration` and **no immune list**;
+`RM_WanderingVortex.DamageCell` calls `TakeDamage` on every Thing in the cell with no species
+check. So a shulla in a steam devil's path is scalded like anyone. Making natives immune here is a
+small C# change, not XML: add `List<ThingDef> immuneThingDefs` / `List<PawnKindDef>
+immunePawnKinds` to the extension and, in `DamageCell`, skip a `Pawn` for which
+`HazardTargeting.Affects(pawn, PawnTargetKind.Flesh, ext.immuneThingDefs, ext.immunePawnKinds)`
+is false. Then `RUT_SteamDevil.xml` lists `RM_Noohm`/`RM_Shulla`. Build order: step 3.
 
 UNMEASURED and flagged for the live pass: `avoidWander true` on the water is per-terrain, not
 per-race, so natives may refuse to *wander* onto their own lake even when immune (the shulla is
@@ -300,41 +349,113 @@ same `Scald.S*` key pattern; defaults = shipped behaviour; all-off leaves a work
 | S1b — vent-flash sky pulses | `Scald.S1.flash` | no flashes, no percussion |
 | S7 — steam exposure | `Scald.S7` | carrier condition stops granting; existing hediffs heal off (`RM_MechanicGateExtension` on `RUT_ScaldSteamCarrier`; `GameCondition_EnvironmentalWeather` needs the same `RM_MechanicGates.Enabled(def)` early-return `WeatherPulse` already has — 3 lines) |
 | S7 — exposure rate | slider 0.25×–3× | multiplies `severityPerDayExposed` (read live through the gate predicate; needs a `rateKey` hook in the comp — or ship v1 without the slider and use the shared `hazardDamageMultiplier`, which the comp does not read today) |
-| S8 — boiling water burns | `Scald.S8` | Harmony prefix on `HediffGiver_Terrain.OnIntervalPassed` skips terrains tagged `RM_ScaldBurn`. Labelled *"world-affecting: the lake stops hurting"* — it is the one toggle that touches a ban, and the settings text should say the sheet does not endorse it |
+| S8 — boiling water burns (**ruled allowed, default ON**, §9 ruling 5) | `Scald.S8` | Harmony prefix on `HediffGiver_Terrain.OnIntervalPassed` skips terrains tagged `RM_ScaldBurn`. Labelled *"world-affecting: the lake stops hurting"*; Ban 5 is honoured by the default, and the settings text says the sheet does not endorse turning it off |
 
 Native immunity is a def, not a mechanic — no toggle.
 
 ## 8. Build order — small shippable steps
 
-1. **Steam off the water + honest burn numbers** (XML, one file, one live look): `fleckData`/
-   `throwFleckChance` on the six terrains, `burnDamage 3` labels. Deploy, `quicktest`, screenshot.
-2. **Native immunity** (XML, two files): `RM_OrganicScaldNative` + race overrides + natives on the
-   steam devil's immune list. Proof: spawn a shulla on deep water, step 3000 ticks, no Burn hediff.
-3. **Exposure clock** (XML only, three defs): `RM_ScaldProtection` stat, `RUT_ScaldExposure`
-   hediff, `RUT_ScaldSteamCarrier` condition wired onto `RM_TheScald.biomeMapConditions` by the same
-   add-if-missing patch shape as the lock; the 3-line gate early-return in
-   `GameCondition_EnvironmentalWeather`. Proof: colonist unroofed 1 day → stage 2; roofed → heals.
-4. **Gear** (XML): wrap, boil-suit, research, vacsuit patch; art via artpipe (check `_artsrc/`
-   first). Proof: boil-suit pawn at the vents all day ends at stage 0–1.
-5. **Overlay material** (C#, one class rewritten): the copy-and-swap material, `ForcedOverlayColor`,
+### Step 1 — native immunity to the water (XML only; two files, one new, one edited)
+
+Every name below was read from the live source or the decompile on 2026-09-25, not guessed.
+
+**New file** `src/RimMandrake/TerminalBiomes/Defs/HediffGiverSetDefs/RM_OrganicScaldNative.xml`
+(the folder does not exist yet — TerminalBiomes has no `HediffGiverSetDefs/`; create it):
+
+```xml
+<HediffGiverSetDef>
+  <defName>RM_OrganicScaldNative</defName>
+  <hediffGivers>
+    <!-- Core's OrganicStandard (Defs/Core/HediffGiverSetDefs/HediffGiverSets.xml) minus HediffGiver_Terrain -->
+    <li Class="HediffGiver_Bleeding"><hediff>BloodLoss</hediff></li>
+    <li Class="HediffGiver_Hypothermia"><hediff>Hypothermia</hediff><hediffInsectoid>HypothermicSlowdown</hediffInsectoid></li>
+    <li MayRequire="Ludeon.RimWorld.Odyssey" Class="HediffGiver_VacuumBurn"><hediff>Hypothermia</hediff></li>
+    <li Class="HediffGiver_Heat"><hediff>Heatstroke</hediff></li>
+    <!-- the age/birthday givers (HeartAttack, Carcinoma, BadBack, Frail, Cataract, HearingLoss,
+         Dementia, Alzheimers, Asthma, HeartArteryBlockage) are copied verbatim from OrganicStandard -->
+  </hediffGivers>
+</HediffGiverSetDef>
+```
+
+`OrganicStandard`'s full list (MEASURED, RimSage): Bleeding, Hypothermia, VacuumBurn (Odyssey),
+Heat, **Terrain**, RandomAgeCurved(HeartAttack), and Birthday × Carcinoma, BadBack, Frail,
+Cataract, HearingLoss, Dementia, Alzheimers, Asthma, HeartArteryBlockage. Copy all but Terrain.
+
+**Edited file** `src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_ScaldFauna.xml` — both
+`ThingDef ParentName="AnimalThingBase"` blocks (`RM_Noohm`, `RM_Shulla`) currently declare **no**
+`hediffGiverSets`, so they inherit `AnimalThingBase`'s `<hediffGiverSets><li>OrganicStandard</li>`
+(MEASURED: `Defs/Core/ThingDefs_Races/Races_Animal_Base.xml`). Add inside each `<race>`:
+
+```xml
+<hediffGiverSets Inherit="False">
+  <li>RM_OrganicScaldNative</li>
+</hediffGiverSets>
+```
+
+`Inherit="False"` is required — without it the list *merges* and `OrganicStandard`'s
+`HediffGiver_Terrain` still runs. Precedent: Ideology's `Races_Animal_Special.xml:107` (MEASURED)
+and, for the plain declared form, our own `RM_BlueDesertFauna.xml` / `RUT_PropaneLakeFauna.xml`.
+The two `PawnKindDef`s in the file are untouched. Put the rule in the file header: *every Scald
+native takes `RM_OrganicScaldNative`.*
+
+**Proof** (Desktop, minimal list + TerminalBiomes): `quicktest` on `RM_TheScald`, spawn one
+`RM_Shulla` and one `RM_Noohm` on a `RUT_ScaldWater*` deep cell and a colonist beside them, step
+3000 ticks; natives carry no `Burn` hediff, the colonist does. Control the instrument: the colonist
+burning proves the terrain giver ran at all.
+
+**Not in step 1:** the steam devil (§6 — needs C#, step 3) and the steam clock (`immuneThingDefs`
+lands with the hediff in step 4).
+
+### Steps 2–9
+
+2. **Steam off the water + honest burn numbers** (XML, `RUT_ScaldWater.xml`, one live look):
+   `fleckData`/`throwFleckChance` on the six terrains, `burnDamage 3` labels. Deploy, `quicktest`,
+   screenshot.
+3. **Steam-devil species gate** (C#, ~10 lines): `immuneThingDefs`/`immunePawnKinds` on
+   `RM_WanderingVortexExtension`, the `HazardTargeting.Affects` skip in `RM_WanderingVortex.DamageCell`,
+   natives listed on `RUT_SteamDevil`. Proof: a shulla under a devil for its whole lifetime takes 0 damage.
+4. **Exposure clock** (XML only, three defs): `RM_ScaldProtection` stat, `RUT_ScaldExposure`
+   hediff (with `immuneThingDefs` = the natives), `RUT_ScaldSteamCarrier` condition wired onto
+   `RM_TheScald.biomeMapConditions` by the same add-if-missing patch shape as the lock; the 3-line
+   gate early-return in `GameCondition_EnvironmentalWeather`. Proof: colonist unroofed 1 day →
+   stage 2; roofed → heals.
+5. **Gear** (XML): wrap, boil-suit + `RM_ScaldWorking` research, vacsuit patch; art via artpipe
+   (check `_artsrc/` first). Proof: boil-suit pawn at the vents all day ends at stage 0–1.
+   **Royal Rind** waits on the Greentide's fruit item and butcher recipe; when those land, add the
+   rind stuff stats and `RM_Apparel_RindCoat` (§5a) in the same XML pass.
+6. **Overlay material** (C#, one class rewritten): the copy-and-swap material, `ForcedOverlayColor`,
    two textures; sky colour retune; accuracy/range. Proof: live look with the owner — this is the
    one step that needs his eyes.
-6. **Vent-flash** WeatherEvent + eventMakers + `Scald.S1.flash` gate.
-7. **Settings**: S1a/S1b/S7/S8 toggles, the S8 Harmony prefix, settings text.
-8. Sound: bespoke breath loop when audio content exists; not blocking.
+7. **Vent-flash** WeatherEvent + eventMakers + `Scald.S1.flash` gate.
+8. **Settings**: S1a/S1b/S7/S8 toggles, the S8 Harmony prefix, settings text.
+9. Sound: bespoke breath loop when audio content exists; not blocking.
 
-Steps 1–4 are XML and each is a same-day quicktest; 5 is the only render risk and it degrades to
-today's look if a texture is missing.
+Steps 1, 2, 4 and 5 are XML and each is a same-day quicktest; 6 is the only render risk and it
+degrades to today's look if a texture is missing.
 
-## 9. Open owner questions
+## 9. Owner rulings (2026-09-25) and open questions
 
-1. Unprotected in the steam: dead in under two days (as specced), or slower — three to four?
-2. Should wading burns stay plain heat burns (vanilla heat armor helps) or become scald-typed so
-   only our gear helps?
-3. Is the sealed boil-suit Industrial research, or should the best protection be craftable from
-   walker chitin with no research at all?
-4. Do Odyssey's vacsuits count as steam gear on the Scald?
-5. Is a settings toggle that switches the lake's burn off acceptable at all, given ban 5?
+Ruled by question card, 2026-09-25 (decisions taken by card; the one typed line is quoted in §5):
+
+1. **Unprotected in the steam: dead in under two days.** §3.3's clock stands as specced.
+2. **Wading burns stay ordinary `Burn`/Heat.** §4 option (a) is the design; option (b) is dropped.
+3. **The boil-suit is Industrial research.** §5's `RM_ScaldWorking` stands.
+4. **Advanced vacsuit-types protect.** The Odyssey vacsuit patch in §5 stands, and any later
+   sealed suit of that class takes the same patch.
+5. **A lake-burn toggle is allowed, default ON.** Ban 5 is honoured by the default, not by
+   refusing the toggle — §7 S8 ships.
+6. **The Royal Rind (greatbole fruit) is a protection source.** Designed in §5a; no def exists yet.
+
+### Open questions (yes/no)
+
+1. Does the Royal Rind protect against the *steam clock* as well as the *water burn*, or the water
+   burn only? (§5a assumes both, weaker than the boil-suit; say no and it becomes wading-only.)
+2. Is Royal Rind gear a **Neolithic** craft (tailoring bench, no research), so the ladder reads
+   rind → boil-suit → vacsuit by tech level?
+3. Should deep boil water bite harder than shallow (`burnDamage 4` deep vs 3 shallow, §4)?
+4. Should Scald-native *people* (any xenotype that lives on the lake, if one is ever cast) get the
+   water immunity as a gene, the way the animals get it as a race set (§6)? Nobody is cast today, so
+   this is a "when it comes up" question, not a blocker.
 
 ## 10. Evidence ledger (MEASURED / UNMEASURED)
 
@@ -351,6 +472,13 @@ fleck block; `GeyserSpray` SoundDef; `Apparel_Vacsuit` stats. Repo source read i
 `RM_HediffComp_EnvironmentalExposure`, `GameCondition_EnvironmentalWeather` (+extension),
 `RM_GameCondition_WeatherPulse` (+extension), `HazardTargeting`, `RM_MechanicGates`, the Scald
 terrain/weather/condition/damage/armor defs, `RM_ScaldFauna.xml`, the Rot Sheen gear precedent.
+Added 2026-09-25 (rulings pass): `AnimalThingBase` carries `hediffGiverSets: OrganicStandard`
+(`Races_Animal_Base.xml`) and `RM_Noohm`/`RM_Shulla` declare none of their own;
+`RM_WanderingVortexExtension` has no immune list and `RM_WanderingVortex.DamageCell` damages every
+Thing in the cell; TerminalBiomes has no `HediffGiverSetDefs/` folder; no Royal Rind / greatbole
+fruit def exists anywhere in `src/` or `design/`; `RM_SapResin`/`RM_ToxinSealant` are the
+greatbole's only shipped products; the gene precedents are `RM_Gene_Furnaceblood` and
+`Jawa_MessImmunity.xml`.
 
 UNMEASURED (settle on the first Desktop live run): fog material declares `_MainTex2`;
 `ForcedOverlayColor` tint strength on a world overlay; `avoidWander` vs immune water-seeking natives;
