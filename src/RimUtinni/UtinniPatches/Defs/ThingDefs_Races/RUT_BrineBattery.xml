@@ -118,6 +118,15 @@
     <tradeTags>
       <li>AnimalExotic</li>
     </tradeTags>
+    <comps>
+      <!-- WASTELAND_BRINE_BATTERY_DISCHARGE_1: ion-gradient discharge as
+           defense. Hurting this pawn at close range shocks the attacker
+           back with vanilla's own DamageDefOf.EMP (a stun, not a wound) —
+           see RM_CompDefensiveDischarge (RimMandrake.CreatureBehaviors)
+           for the mechanism and RM_CreatureBehaviorsSettings' "Brine
+           battery defensive discharge" toggle. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_DefensiveDischarge" />
+    </comps>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
