@@ -343,3 +343,7 @@
 {"seat":"FOUNDRY","event":"note","id":"GREENTIDE_WASP_SWARM_1","text":"RM_Skerrel wasp + RM_SkerrelGall hive built at a29cc8bef on the shared REACTION_MECHANISM_GENERALISE_1 mechanism: sting hediff (RM_SkerrelSting) accumulates via RM_DamageWorker_StingAccumulate, spawned wasps carry RM_MentalState_ScopedAggression (hostile to the instigator only, self-disengages past 20 cells) so the swarm is survivable by withdrawing. RM_Sarquin/RM_Nemmer are not yet built as ThingDefs so the gall ships standalone, not attached to either plant; host-plant placement, stench-smoke integration, and Mod Settings/balance polish still owed.","ts":"2026-09-25T17:11:52Z"}
 {"seat":"FOUNDRY","event":"seat","state":"idle","reason":"full-belt wave complete, handing off","ts":"2026-09-25T17:29:39Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-25T17:36:28Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ARTPIPE_QUOTA_RESET_WEDGE_1","ts":"2026-09-25T17:45:36Z"}
+{"seat":"FOUNDRY","event":"start","id":"ARTPIPE_QUOTA_RESET_WEDGE_1","ts":"2026-09-25T17:45:37Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STACKCOUNT_FILEPATH_REDX_SWEEP_1","ts":"2026-09-25T17:45:38Z"}
+{"seat":"FOUNDRY","event":"start","id":"STACKCOUNT_FILEPATH_REDX_SWEEP_1","ts":"2026-09-25T17:45:39Z"}
