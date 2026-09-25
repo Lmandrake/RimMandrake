@@ -155,6 +155,7 @@
     <Compile Include="RM_WanderingVortexExtension.cs" />
     <Compile Include="RM_WanderingVortex.cs" />
     <Compile Include="RUT_IncidentWorker_SteamDevil.cs" />
+    <Compile Include="RM_MapComponent_RoilVortexSpawner.cs" />
     <Compile Include="RUT_IncidentWorker_SporeCloud.cs" />
     <Compile Include="RUT_HediffComp_SheenExposure.cs" />
     <Compile Include="RM_WarmGroundExtension.cs" />

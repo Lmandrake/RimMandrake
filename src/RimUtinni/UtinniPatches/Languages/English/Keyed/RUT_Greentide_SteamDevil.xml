@@ -7,4 +7,8 @@
   <RUT_SteamDevilDissipated>The steam devil has dissipated.</RUT_SteamDevilDissipated>
   <RUT_SteamDevilLeftMap>The steam devil has wandered off the map.</RUT_SteamDevilLeftMap>
 
+  <!-- GREENTIDE_MECHANICS_2 M3 remainder, second half: the Roil-condition spawn route (RM_MapComponent_RoilVortexSpawner) -->
+  <RUT_SteamDevilAppearsFromRoil>A shape boils up from the fog</RUT_SteamDevilAppearsFromRoil>
+  <RUT_SteamDevilAppearsFromRoilDesc>The standing ground-fog over the river itself has thrown up a steam devil, unprompted by any lull in the weather. It scalds anything it crosses and can knock down weaker trees — heat-rated armor gives no protection against it.</RUT_SteamDevilAppearsFromRoilDesc>
+
 </LanguageData>
