@@ -56,4 +56,41 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- Wave 4. Harvest is Handling work like Net (a live-animal interaction);
+       Cull outranks ordinary Harvest (higher priorityInType number = lower
+       priority in RimWorld's WorkGiver ordering is NOT the convention here —
+       matching the file's existing pattern, a lower number sorts first, so
+       Cull's set-piece job is deliberately below Net/Harvest in urgency,
+       matching Feed's own priorityInType 49 placement). -->
+
+  <WorkGiverDef>
+    <defName>RM_HarvestPoolPenWorkGiver</defName>
+    <label>harvest pool pens</label>
+    <giverClass>RimMandrake.WeepingStones.RM_WorkGiver_HarvestPoolPen</giverClass>
+    <workType>Handling</workType>
+    <verb>harvest</verb>
+    <gerund>harvesting a pool pen</gerund>
+    <priorityInType>48</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_CullVhorrinWorkGiver</defName>
+    <label>cull vhorrin</label>
+    <giverClass>RimMandrake.WeepingStones.RM_WorkGiver_CullVhorrin</giverClass>
+    <workType>Handling</workType>
+    <verb>cull</verb>
+    <gerund>culling a vhorrin</gerund>
+    <priorityInType>47</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
 </Defs>
