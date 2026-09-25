@@ -28,16 +28,13 @@ namespace RimMandrake.EnvironmentalHazards
     // looks (WeatherOverlay_Fog, _Rain, _Snow, ...), rather than presuming
     // to build and name the shared generic on greentide kit's behalf.
     //
-    // Texture NOT shipped this pass (owed to the art pipeline, same posture
-    // as PYRELANDS' DEPLOY_HOLD flora — defs ship ahead of their sprites).
-    // "Weather/ScaldSteamOverlayWorld" does not exist under any Textures/
-    // folder yet; MatLoader.LoadMat on a missing texture logs an error and
-    // returns a placeholder material rather than throwing, so this does not
-    // block a build or a load — the sky simply carries no visible steam
-    // panner until the art lands.
     public class RUT_WeatherOverlay_ScaldSteam : WeatherOverlayDualPanner
     {
-        private static readonly Material SteamOverlayWorld = MatLoader.LoadMat("Weather/ScaldSteamOverlayWorld");
+        // MatLoader.LoadMat reads only Unity Resources/, which no mod can ship to: a mod path
+        // returns null and MaterialAllocator.Create(null) throws in this type initializer,
+        // killing every Update() and blacking the map. Vanilla's own fog material stands in
+        // until a custom panner material exists.
+        private static readonly Material SteamOverlayWorld = MatLoader.LoadMat("Weather/FogOverlayWorld");
 
         public RUT_WeatherOverlay_ScaldSteam()
         {
