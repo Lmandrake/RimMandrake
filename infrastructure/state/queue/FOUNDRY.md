@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T23:23:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T23:37:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -810,6 +810,24 @@ kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
+## FORSAKENCRAGS_RM_MOD_BUILD_1 Phase A: build RM_ForsakenCrags as its own RimMandrake mod (mandrake.rm.forsakencrags) — the Forsaken Crags
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
+prose:    infrastructure/state/items/FORSAKENCRAGS_RM_MOD_BUILD_1.md
+
+## LEANINGSCRUB_RM_MOD_BUILD_1 Phase A: build RM_LeaningScrub as its own RimMandrake mod (mandrake.rm.leaningscrub) — the Leaning Scrub (was arid shrubland, a vanilla label)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
+prose:    infrastructure/state/items/LEANINGSCRUB_RM_MOD_BUILD_1.md
+
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing
 row:      unassigned
@@ -1406,16 +1424,6 @@ thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/THEROT_RM_MOD_BUILD_1.md
 
-## WASTELAND_RM_MOD_BUILD_1 Phase A: build RM_Wasteland as its own RimMandrake mod (mandrake.rm.wasteland) — the Wasteland - owns the RUT_WastelandBrine terrain family
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/WASTELAND_RM_MOD_BUILD_1.md
-
 ## NIGHTSIDEICE_RM_MOD_BUILD_1 Phase A: build RM_NightsideIce as its own RimMandrake mod (mandrake.rm.nightsideice) — the Nightside Ice - thin by design, but a Lantern Deeps host surface
 state:    proposed
 row:      unassigned
@@ -1426,16 +1434,6 @@ thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/NIGHTSIDEICE_RM_MOD_BUILD_1.md
 
-## FORSAKENCRAGS_RM_MOD_BUILD_1 Phase A: build RM_ForsakenCrags as its own RimMandrake mod (mandrake.rm.forsakencrags) — the Forsaken Crags
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/FORSAKENCRAGS_RM_MOD_BUILD_1.md
-
 ## BLUEDESERT_RM_MOD_BUILD_1 Phase A: build RM_BlueDesert as its own RimMandrake mod (mandrake.rm.bluedesert) — the Blue Desert - BLUE_DESERT_LIFE_AUTHORING_1 builds INTO this mod
 state:    proposed
 row:      unassigned
@@ -1445,16 +1443,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/BLUEDESERT_RM_MOD_BUILD_1.md
-
-## LEANINGSCRUB_RM_MOD_BUILD_1 Phase A: build RM_LeaningScrub as its own RimMandrake mod (mandrake.rm.leaningscrub) — the Leaning Scrub (was arid shrubland, a vanilla label)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/LEANINGSCRUB_RM_MOD_BUILD_1.md
 
 ## POISONFOREST_RM_MOD_BUILD_1 Phase A: build RM_PoisonForest as its own RimMandrake mod (mandrake.rm.poisonforest) — the Poison Forest
 state:    proposed
