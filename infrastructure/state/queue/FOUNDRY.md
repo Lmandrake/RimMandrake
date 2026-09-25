@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T04:43:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T04:58:45Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -532,7 +532,7 @@ summary:  Two mature mods could not join the min16 modcheck environment (2026-09
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
 
 ## LIQUID_BOTTLE_LOOP_1 Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    deploy
 target:   v1
@@ -658,7 +658,7 @@ summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
 prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
 
 ## BACTA_REVIVAL_MECHANIC_1 Bacta revival of the recently dead (owner ruling: works on dead bodies IF retrieved within a few hours): corpse-freshness window, tank accepts fresh corpse, revives minus brain/mental damage which stays unhealed; vanilla ResurrectionUtility as the base; settings toggle + window tunable
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    deploy
 target:   v1
@@ -1194,6 +1194,16 @@ blocked:  Armoury half fully resolved offline (kaitorisenkou.ModularWeapons2 + g
 summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
 
+## LIQUID_BOTTLE_LOOP_1 Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+blocked:  Bridge held by another active FOUNDRY window (FireHawk flight live verify, idle ~2min, not stale) -- the item's only remaining owed work is the live quicktest (fill/drink/dirty/wash loop, settings-off run) named in its own verify section. All offline work is done and verified: build clean, validate_patch --live/--defs clean, 22/57/75 selftests passing per prior notes, and this pass committed+pushed the one leftover uncommitted artifact (rebuilt FlowWorks DLL, 1e05f81d7). Not force-taking an active peer's bridge session. Re-check next window with bridge free.
+summary:  Bottle chain: RMBottleEmpty → fill job (terrain edge or tank) →
+prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
+
 ## LIQUID_THIRST_CHAIN_1 Water cleaning chain crude/household/industrial wired to DBH thirst (DBHThirst MEASURED in frozen dump); graceful no-DBH degrade
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1273,6 +1283,16 @@ kind:     task
 blocked:  Spec steps 1/2/4 (owner grades the flora sheet, fit the flora model from those grades, A/B borderline processing to his eye) cannot be done autonomously — Transient/flora_legibility_sheet_2026-09-17/decisions.json is still 100% synthetic prefill (reviewStatus.state=prefill, by=null, at=null), confirmed unchanged by two prior FOUNDRY waves and re-verified this session; only step 3 (canvas law) and the flora-skip mechanism were buildable and are done+tested.
 summary:  1. A flora-specific grading sheet: our flora backlog (129 files exempted at
 prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md
+
+## BACTA_REVIVAL_MECHANIC_1 Bacta revival of the recently dead (owner ruling: works on dead bodies IF retrieved within a few hours): corpse-freshness window, tank accepts fresh corpse, revives minus brain/mental damage which stays unhealed; vanilla ResurrectionUtility as the base; settings toggle + window tunable
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+blocked:  DLL already deployed (b5d418d49); remaining work is live bridge proof of revival mechanic, but bridge is held by another live FOUNDRY window (FireHawk flight live verify, idle ~2 min = alive) — not force-taking
+summary:  BACTAREVIVALMECHANIC1 — bacta revival of the recently dead
+prose:    infrastructure/state/items/BACTA_REVIVAL_MECHANIC_1.md
 
 ## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
 state:    doing  (BLOCKED)
@@ -2165,3 +2185,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  GREENTIDEYEARNINGFRUITFILTH1 — the fruit's filth/seed-dispersal mechanic
 prose:    infrastructure/state/items/GREENTIDE_YEARNING_FRUIT_FILTH_1.md
+
+## DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1 grain-scale commensal fauna riding RM_MirrorGiant's shade
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec
+summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
+prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
