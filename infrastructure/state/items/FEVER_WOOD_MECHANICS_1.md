@@ -505,3 +505,101 @@ Item stays in `doing`.
 - `src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_Boughway.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml` (modExtensions added)
 - `src/RimUtinni/UtinniPatches/Textures/Things/Building/RUT_FeverTrunkHeartwood/RUT_FeverTrunkHeartwood.png` (new placeholder)
+
+## F5 build pass — 2026-09-24 (ground building-refusal terrain)
+
+Picked up F5 point 1, the one concrete gap the continuation pass (2026-09-13)
+flagged and explicitly declined to guess through: `RUT_FeverWood.xml`'s own
+`terrainsByFertility` lists only vanilla `Soil`/`SoilRich`, both
+Heavy-affordance terrains (MEASURED this pass, direct read of the shipped
+`Data/Core/Defs/TerrainDefs/Terrain_Natural.xml`), so hard ban 4 ("No heavy
+structures on the ground — the marsh refuses them (donor, kept)") was not
+actually enforced anywhere on a generated map — a real linter-checkable
+ban, silently unmet.
+
+**Not fixed by editing `terrainsByFertility` directly.** A sibling item
+landed the SAME DAY (`FEVERWOOD_BOUGH_SOIL_TERRAIN_1`, a different FOUNDRY
+pass, 17:01-17:11 UTC — crown-soil fertility, a different gap on the same
+BiomeDef) and its own "Watch out" section rules that table off-limits
+pending the terminal biome-paint pass (`BIOME_PAINT_ONCE_AT_THE_END_1`) and
+names the GenStep route as the correct one instead: "Paint via the GenStep;
+do not reach for the fertility table." Followed that precedent rather than
+re-litigating it.
+
+**The fix: a new generic GenStep, not a bespoke terrain.** `RM_GenStep_GroundRefusal`
++ `RM_GroundRefusalBiomeExtension` (same BiomeDef-modExtension idiom as
+`RM_GenStep_ScatterPools`/`RM_GenStep_RootCauseways`/`RM_GenStep_LivingBoles`)
+sweep every map cell after generation and convert whatever is still listed
+in `convertFromTerrains` (Soil/SoilRich) to `refusalTerrain`. `refusalTerrain`
+reuses **vanilla `MarshyTerrain`** (`Data/Core/Defs/TerrainDefs/Terrain_Natural.xml`)
+rather than a bespoke `RUT_` def — MEASURED this pass: affordances Light +
+GrowSoil + Diggable + Bridgeable, NO Medium, NO Heavy (exactly the ceiling
+ban 4 demands), pathCost 14 against Soil's 2 (independently matches the
+sheet's own §0 donor line, "near-impassable ground movement," kept from the
+donor). No MayRequire needed (Core, always loaded), no invented texture or
+fertility value, no new art debt — the most defensible fix available, not
+an arbitrary engineering default.
+
+**Ordering is the whole safety mechanism, same idiom as F1/F6/F7.**
+`RUT_FeverWood_GroundRefusalGenStep.xml` registers `RUT_GenStep_GroundRefusal`
+at **order 230** — after `RUT_GenStep_ScatterPools` (226) and
+`RUT_GenStep_RootCauseways` (228, which as of `FEVERWOOD_BOUGH_SOIL_TERRAIN_1`
+also runs the bough-soil pass within that same GenStepDef/order). Every
+lane/pool/crown-soil cell those earlier steps paint is no longer
+Soil/SoilRich by the time this step runs, so the blanket "convert whatever
+is still eligible" sweep leaves every previously-painted special cell alone
+by construction — no cross-extension bookkeeping needed. Deliberately
+blanket, not chance-gated: ban 4 is absolute, not a rarity dial.
+
+Wired onto `RUT_FeverWood.xml`'s existing `modExtensions` block (direct
+edit, same `MayRequire="mandrake.rm.environmentalhazards"`-gated `<li>`
+pattern every other extension on this def already uses).
+
+New WORLDGEN-AFFECTING Mod Settings toggle: `groundRefusalEnabled` (49th in
+the kit) — off means a map generated while it's off keeps ordinary
+Heavy-capable ground; maps already generated are untouched either way.
+
+**Build/validate.** `RM_EnvironmentalHazards.csproj` rebuilds clean, 0
+warnings/0 errors (two new `.cs` files added to the `.csproj`'s explicit
+`<Compile>` list — `EnableDefaultCompileItems false`). `validate_patch.py`
+against the live 620-active-mod installed set: 0 errors/0 warnings on all
+3 touched/new files (the two "Class not resolved" infos are the same
+expected pre-deploy note every new-class GenStepDef in this assembly gets).
+Deployed to both `EnvironmentalHazards` and `UtinniPatches`, both VERIFIED
+in sync (`deploy_custom_mods.py --apply`).
+
+**Real finding, not mine to fix, flagged for the record:**
+`run_selftests.py`'s full sweep (74/75 passed) caught one pre-existing,
+unrelated failure surfaced by this pass's full-mod deploy —
+`selftest_deployed_biome_refs.py`: `RUT_PoisonForest.xml`'s `wildAnimals`
+references `RSW_VentStalker` (`MayRequire="mandrake.rsw.swbestiary"`), which
+does not resolve in the currently deployed mod set. Already committed at
+`666f11656` (`COMMISSION_LEDGER_CLEANUP_1`, unrelated wave, a different
+seat's in-progress content), clean working tree — this pass's deploy just
+carried an already-committed dangling reference from repo to the live Mods
+folder for the first time; it predates and is untouched by this pass.
+**Not fixed here** — different item/seat's own content, out of this pass's
+scope.
+
+**Owed after this pass.** No live/bridge/quicktest verification attempted —
+same posture as every prior offline build pass in this item's history (no
+game access in this task). The other owed gaps from prior passes are all
+untouched and unrelated to F5: F4's L-effort remainder (dormant by design,
+plot-owned), F6's ground-causeway true edge-hugging placement
+(disproportionate effort, already flagged), the ants'/Feralisks' FactionDefs
++ LordJob + raid-back quest (blocked on the roster pass), F9's raid-arrival-edge
+wiring. Wild bore-cave occupant content (roster pass) also untouched, per
+the calling brief's own scope line.
+
+Item stays in `doing`.
+
+## files (F5 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GroundRefusalBiomeExtension.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (setting #49, `groundRefusalEnabled`)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (2 new `<Compile>` entries)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FeverWood_GroundRefusalGenStep.xml` (new)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_FeverWood_GroundRefusalGenStep_Register.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml` (modExtensions: added `RM_GroundRefusalBiomeExtension`)
