@@ -209,9 +209,9 @@ inherited by every animal and humanlike), if the cell's terrain has `burnDamage 
 
 - The authored 1 (shallow) / 2 (deep) are **silently 3 in play** — the engine floors at 3. The
   *rate* still differs (mean one hit per 300 vs 240 ticks). Fix the labels, not the numbers: write
-  `burnDamage 3` in the XML so the def says what it does (Ban 3: the *cost* stands; this states
-  it honestly). Deep water can rise to 4 if the owner wants depth to bite harder (Odyssey's
-  `LavaShallow` is 3 per 120).
+  `burnDamage 3` on the shallow terrains so the def says what it does (Ban 3: the *cost* stands;
+  this states it honestly), and **`burnDamage 4` on the deep terrains** — ruled 2026-09-25 (§9
+  ruling 9): depth bites harder. Odyssey's `LavaShallow` is 3 per 120 for scale.
 - The damage is plain `Burn` → `armorCategory Heat` → **`ArmorRating_Heat` on worn apparel already
   reduces it.** So a vanilla devilstrand duster *is* a wading aid today; the `RUT_Scald`/
   `RM_ScaldArmor` "heat armor does nothing" premise applies only to the steam devil.
@@ -249,7 +249,7 @@ across worn apparel; the comp clamps to 1 and floors the clock at 8%.
 | **The still day** | clock stops map-wide for 12–24 h | waiting; ~4 days between | shipped lock |
 | **`RUT_ScaldMargin` cove** | the one water with no burn | must be sited as an isolated cove (bridge authoring, owed) | shipped def |
 | **`RM_Apparel_ScaldWrap`** (Neolithic) — hooded oil-waxed cloak, Shell layer, Torso/Neck/Head | `RM_ScaldProtection 0.45` (≈2× slower clock), `ArmorRating_Heat 0.30` | 30 cloth + 12 `RM_ScaldWalkerChitin` (the dive-hunt drop finally has a use); `Insulation_Heat −10` (it is hot inside), `MoveSpeed −0.15` | tailoring bench, no research |
-| **Royal Rind gear** (§5a) — `RM_Apparel_RindCoat` (proposed name), Shell, Torso/Neck/Shoulders/Arms | `RM_ScaldProtection 0.60`, `ArmorRating_Heat 0.45` (numbers INVENTED; sits between wrap and boil-suit) | the greatbole's fruit — a nasty grub fight or Fruitfall patience (`greatbole_harvest_spec.md` §2d, §3b); no research | tailoring bench, once the rind material exists |
+| **Royal Rind gear** (§5a, **Neolithic** — ruled) — `RM_Apparel_RindCoat` (proposed name), Shell, Torso/Neck/Shoulders/Arms | `RM_ScaldProtection 0.60`, `ArmorRating_Heat 0.45`, plus **extreme heat and cold insulation** from the material (numbers INVENTED; steam protection sits between wrap and boil-suit) | the greatbole's fruit — a nasty grub fight or Fruitfall patience (`greatbole_harvest_spec.md` §2d, §3b); no research | tailoring bench, once the rind material exists |
 | **`RM_Apparel_BoilSuit`** (Industrial) — sealed hood-and-suit, Middle+Shell, full body | `RM_ScaldProtection 0.85` (≈7× slower), `ArmorRating_Heat 0.55`, `RM_ArmorRating_Scald 0.60` (steam devils) | research **`RM_ScaldWorking`** (Industrial — **ruled**, §9 ruling 3; 1200 pts, prereq `ComplexClothing` INVENTED); 60 cloth + 20 chitin + 30 steel + 2 components; `MoveSpeed −0.35`, `Insulation_Heat −20`, Beauty −3, cannot wear with other Shell | machining table |
 | **Odyssey vacsuit + helmet** — **ruled in** (§9 ruling 4) | patch `RM_ScaldProtection 0.35 + 0.30` and `RM_ArmorRating_Scald 0.4` onto `Apparel_Vacsuit`/`Apparel_VacsuitHelmet` (MayRequire Odyssey) — a sealed suit is a sealed suit; any later "advanced vacsuit-type" (a donor's sealed suit, a Spacer hardsuit) gets the same patch shape | already `MoveSpeed −1.25`; Spacer tech, `OrbitalTech` research | patch in TerminalBiomes |
 | **Tending** | burns are ordinary injuries; `RUT_ScaldExposure` is not tendable, only waited out indoors | medicine, bed time | vanilla |
@@ -278,16 +278,22 @@ by the Greentide build (`greatbole_harvest_spec.md` §9 items 4–5), not by thi
   (MEASURED 2026-09-25), so the Miasma gets one in the same shape when rind lands. ⇒ *any* garment made of rind protects,
   scaled by its coverage — one material, three biomes, exactly §3b's promise, and no bespoke
   garment is strictly required.
+  **Ruled 2026-09-25:** rind clothing *"would render you immune to heat and cold to extreme
+  levels"* — so the stuff also carries large `Insulation_Heat` and `Insulation_Cold` offsets
+  (magnitudes INVENTED at build time; "extreme" means a rind-clad pawn is comfortable at the
+  Scald's ambient and on the nightside alike). Temperature is insulation, not the steam clock:
+  the clock is still `RM_ScaldProtection` under the clamp and the 8% floor (Ban 3).
 - **`RM_Apparel_RindCoat`** — the one bespoke garment worth shipping: a full-coverage shell made
-  only of rind, so a player who has fought the grubs once has a whole answer. Table row above.
+  only of rind, so a player who has fought the grubs once has a whole answer. **Neolithic**
+  (ruled): tailoring bench, no research — the fight for the fruit is the whole gate. Table row above.
 - **The vacuum use** stays in `greatbole_harvest_spec.md` (Odyssey-gated via `MayRequire`; the
   franchise-free protection must not depend on it — that ban is theirs and stands).
 - **Rind stacks with the other rungs** under the same clamp and 8% floor; rind + vacsuit helmet
   and rind + boil-suit both clamp at 1.0. Ban 3 holds: it is a fight to get and never zeroes
   the clock.
 
-Whether rind protects the *steam clock* as well as the *wading burn*, and whether its garments are
-Neolithic craft, are the two open questions in §9.
+Rind protects the steam clock as well as the wading burn, and its garments are Neolithic — both
+ruled (§9 rulings 7–8).
 
 Deliberately **not** offered: any drink, salve or bath that lowers exposure (Ban 1 patrol — a
 "steam remedy" made from the lake would be the body made useful), and any building that
@@ -315,9 +321,11 @@ no per-tick check; the giver simply never runs for them. `ComfyTemperatureMax 95
 file header as the rule. Exact defs and files: §8 step 1.
 
 Why not a gene: the natives are animals, and `hediffGiverSets` is the race-level switch the engine
-already honours. A gene (the shape of `RM_Gene_Furnaceblood`, `TheRot/Defs/GeneDefs/`, or
-`Jawa_MessImmunity.xml`'s `nullifyingGenes` patch in `UtinniPatches/Defs/GeneDefs/`) is the route
-only for a *humanlike* native, and none is cast (§9 open question 4).
+already honours. **Note, not a build step (owner, 2026-09-25, §9 ruling 10):** a *humanlike*
+Scald native would need a gene — the shape of `RM_Gene_Furnaceblood` (`TheRot/Defs/GeneDefs/`) or
+`Jawa_MessImmunity.xml`'s patched-on gene (`UtinniPatches/Defs/GeneDefs/`) — and *"we don't have
+any plans for that at this time."* Nothing is cast, nothing is owed; if one is ever cast, that gene
+is where the water immunity goes.
 
 **Steam (exposure clock)** — `immuneThingDefs` on the comp (§3.3) and on the carrier condition
 (`HazardTargeting.Affects` reads both, MEASURED). Data, not a hediff, so nothing to save.
@@ -409,8 +417,8 @@ lands with the hediff in step 4).
 ### Steps 2–9
 
 2. **Steam off the water + honest burn numbers** (XML, `RUT_ScaldWater.xml`, one live look):
-   `fleckData`/`throwFleckChance` on the six terrains, `burnDamage 3` labels. Deploy, `quicktest`,
-   screenshot.
+   `fleckData`/`throwFleckChance` on the six terrains, `burnDamage 3` shallow / `4` deep (ruled).
+   Deploy, `quicktest`, screenshot.
 3. **Steam-devil species gate** (C#, ~10 lines): `immuneThingDefs`/`immunePawnKinds` on
    `RM_WanderingVortexExtension`, the `HazardTargeting.Affects` skip in `RM_WanderingVortex.DamageCell`,
    natives listed on `RUT_SteamDevil`. Proof: a shulla under a devil for its whole lifetime takes 0 damage.
@@ -446,16 +454,21 @@ Ruled by question card, 2026-09-25 (decisions taken by card; the one typed line 
    refusing the toggle — §7 S8 ships.
 6. **The Royal Rind (greatbole fruit) is a protection source.** Designed in §5a; no def exists yet.
 
-### Open questions (yes/no)
+Typed by the owner, 2026-09-25, answering this spec's four follow-ups — verbatim: *"To make
+clothing out of the Royal Rind would render you immune to heat and cold to extreme levels, yes.
+Neolithic, yes. Yes, deep water should burn harder. Yes, a native would need a gene, but we don't
+have any plans for that at this time"*:
 
-1. Does the Royal Rind protect against the *steam clock* as well as the *water burn*, or the water
-   burn only? (§5a assumes both, weaker than the boil-suit; say no and it becomes wading-only.)
-2. Is Royal Rind gear a **Neolithic** craft (tailoring bench, no research), so the ladder reads
-   rind → boil-suit → vacsuit by tech level?
-3. Should deep boil water bite harder than shallow (`burnDamage 4` deep vs 3 shallow, §4)?
-4. Should Scald-native *people* (any xenotype that lives on the lake, if one is ever cast) get the
-   water immunity as a gene, the way the animals get it as a race set (§6)? Nobody is cast today, so
-   this is a "when it comes up" question, not a blocker.
+7. **Rind clothing protects the steam clock too, and grants extreme heat AND cold insulation** (§5a).
+8. **Rind gear is Neolithic** — tailoring bench, no research; the ladder reads rind → boil-suit →
+   vacsuit by tech level (§5).
+9. **Deep boil water burns harder: `burnDamage 4` deep, 3 shallow** (§4).
+10. **A humanlike native would take a gene, not a race set — and none is planned.** A note in §6,
+    not a build step.
+
+### Open questions
+
+None. Every question this spec raised has been ruled.
 
 ## 10. Evidence ledger (MEASURED / UNMEASURED)
 
