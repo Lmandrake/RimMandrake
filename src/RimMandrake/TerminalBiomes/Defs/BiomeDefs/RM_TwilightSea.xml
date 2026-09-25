@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightSea.xml                     TerminalBiomes · moved 2026-09-25
+  ============================================================================
+  TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Content copied as-is from
+  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml (now frozen,
+  same folder) — see that file's own header for the full authorship history.
+
+  Two changes from the twin:
+  1. The one `RSW_` wildAnimals row (RSW_Lanternwhale) is stripped out — it
+     lands on this defName via
+     src/RimUtinni/UtinniPatches/Patches/WildAnimals_TwilightSea.xml,
+     MayRequire="mandrake.rsw.swbestiary" (item §3/§6). AA_Aerofleet (Alpha
+     Animals, not Star Wars) stays.
+  2. `fishTypes`/`maxFishPopulation` are FOLDED IN from
+     src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_TwilightDeep.xml
+     (a PatchOperationAdd onto RUT_TwilightSea, hold lifted 2026-09-20) per
+     item §6/§11 step 2's explicit instruction — that patch keeps targeting
+     the frozen twin unchanged; this def carries the same 10 species
+     natively instead of via a patch, since this mod owns the def outright.
+  ============================================================================
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_TwilightSea</defName>
+    <label>the Twilight Sea</label>
+    <description>A hypersaline terminal sea on the terminator band, moldy from shore to shore with one mat organism that has never had to share it. It has no outflow and it is shrinking — the stranded shoreline terraces mark where it used to reach.</description>
+    <workerClass>BiomeWorker_Ocean</workerClass>
+    <isWaterBiome>true</isWaterBiome>
+    <canBuildBase>false</canBuildBase>
+    <allowRoads>true</allowRoads>
+    <allowRivers>false</allowRivers>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <texture>World/Biomes/Ocean</texture>
+    <impassable>true</impassable>
+    <isBackgroundBiome>true</isBackgroundBiome>
+
+    <modExtensions>
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores" />
+    </modExtensions>
+
+    <!-- Lanternwhale (endemic giant, Star Wars) moved to
+         WildAnimals_TwilightSea.xml. AA_Aerofleet (Alpha Animals) stays. -->
+    <wildAnimals>
+      <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>
+    </wildAnimals>
+    <animalDensity>0.1</animalDensity>
+    <coastalWildAnimals />
+
+    <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+    <baseWeatherCommonalities>
+      <Clear>12</Clear>
+      <Fog>7</Fog>
+      <Rain>4</Rain>
+    </baseWeatherCommonalities>
+    <terrainsByFertility>
+      <li>
+        <terrain>WaterOceanDeep</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <!-- FOLDED IN from Patches/BiomeFishTypes_TwilightDeep.xml (10 species,
+         hold lifted 2026-09-20: "Just make the surface fishable."). -->
+    <maxFishPopulation>700</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <saltwater_Common>
+        <RUT_Niim>1.5</RUT_Niim>
+        <RUT_Pallu>1</RUT_Pallu>
+        <RUT_Tikkarr>0.8</RUT_Tikkarr>
+        <RUT_Nuudal>0.6</RUT_Nuudal>
+        <RUT_Aluun>0.6</RUT_Aluun>
+      </saltwater_Common>
+      <saltwater_Uncommon>
+        <RUT_Kellu>1</RUT_Kellu>
+        <RUT_Murrol>0.8</RUT_Murrol>
+        <RUT_Hollu>0.8</RUT_Hollu>
+        <RUT_Oobo>0.4</RUT_Oobo>
+        <RUT_Liiru>0.5</RUT_Liiru>
+      </saltwater_Uncommon>
+      <rareCatchesSetMaker>RUT_RareTwilightCatches</rareCatchesSetMaker>
+    </fishTypes>
+  </BiomeDef>
+
+</Defs>

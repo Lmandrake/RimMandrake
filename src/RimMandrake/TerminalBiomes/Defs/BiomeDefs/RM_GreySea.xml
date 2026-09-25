@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySea.xml                          TerminalBiomes · moved 2026-09-25
+  ============================================================================
+  TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Content copied as-is from
+  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml (now frozen,
+  same folder) — see that file's own header for the full authorship history.
+
+  ONE substantive change: the one `RSW_` wildAnimals row (RSW_Reefback) is
+  stripped out — it lands on this defName via
+  src/RimUtinni/UtinniPatches/Patches/WildAnimals_GreySea.xml,
+  MayRequire="mandrake.rsw.swbestiary" (item §3/§6). AA_Aerofleet (Alpha
+  Animals, not Star Wars) stays. Everything else — terrain, weather,
+  fishTypes, GravTide support — is byte-identical to the twin.
+  ============================================================================
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_GreySea</defName>
+    <label>the Grey Sea</label>
+    <description>A hypersaline terminal sea on the terminator band, its own endemic mat holding it alone the way the Twilight Sea's holds that one. Salt-encrusted and shrinking faster than its sister sea — the planet's chemical works, and the retreating shoreline is free surveying for anyone who can read the terraces.</description>
+    <workerClass>BiomeWorker_Ocean</workerClass>
+    <isWaterBiome>true</isWaterBiome>
+    <canBuildBase>false</canBuildBase>
+    <allowRoads>true</allowRoads>
+    <allowRivers>false</allowRivers>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <texture>World/Biomes/Ocean</texture>
+    <impassable>true</impassable>
+    <isBackgroundBiome>true</isBackgroundBiome>
+
+    <modExtensions>
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores" />
+    </modExtensions>
+
+    <!-- Reefback (endemic giant, Star Wars) moved to
+         WildAnimals_GreySea.xml. AA_Aerofleet (Alpha Animals) stays. -->
+    <wildAnimals>
+      <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>
+    </wildAnimals>
+    <animalDensity>0.1</animalDensity>
+    <coastalWildAnimals />
+
+    <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+    <baseWeatherCommonalities>
+      <Clear>12</Clear>
+      <Fog>7</Fog>
+      <Rain>4</Rain>
+    </baseWeatherCommonalities>
+    <terrainsByFertility>
+      <li>
+        <terrain>WaterOceanDeep</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Grey Sea's catch table. -->
+    <maxFishPopulation>120</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <saltwater_Common>
+        <RUT_Sallik>1.2</RUT_Sallik>
+        <RUT_Karrud>1</RUT_Karrud>
+        <RUT_Hessal>1</RUT_Hessal>
+        <RUT_Oomal>0.6</RUT_Oomal>
+      </saltwater_Common>
+      <saltwater_Uncommon>
+        <RUT_Maalu>1</RUT_Maalu>
+        <RUT_Immu>0.7</RUT_Immu>
+        <RUT_Haarn>0.4</RUT_Haarn>
+      </saltwater_Uncommon>
+      <rareCatchesSetMaker>RUT_RareGreyCatches</rareCatchesSetMaker>
+    </fishTypes>
+  </BiomeDef>
+
+</Defs>

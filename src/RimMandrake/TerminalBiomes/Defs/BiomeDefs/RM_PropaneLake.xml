@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_PropaneLake.xml                     TerminalBiomes · moved 2026-09-25
+  ============================================================================
+  TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Content copied as-is from
+  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml (now frozen,
+  same folder) — see that file's own header for the full authorship history.
+
+  🔴 ONE substantive change: `waterDeepTerrain`/`waterShallowTerrain`/
+  `terrainsByFertility` are repointed off the donor Alpha Biomes terrains
+  (`AB_PropaneLake`/`AB_SolidPropane`, neither defined anywhere under src/)
+  onto this mod's own `RM_PropaneLakeDeep`/`RM_SolidPropane`
+  (Defs/TerrainDefs/RM_PropaneLakeTerrains.xml, this pass) — a donor
+  TerrainDef in these fields is exactly the hard dependency the RimMandrake
+  tier may not assume (item §2/§5 step 2). No other field changes: no
+  wildAnimals row here is `RSW_`/`SW_` (AA_AuroraSylph/AA_Skyeel are Alpha
+  Animals, RUT_VWake is this mod's own campaign-tier creature per §3b — "only
+  Star Wars creatures become patches"), so all three stay on this def
+  unmoved, and fishTypes/description/weather/GravTide-support fields are
+  byte-identical to the twin.
+
+  texture: `World/Biomes/Jawa_SickWater` is this mod's OWN texture (was
+  already authored under UtinniPatches/Textures, not a donor asset) — moved
+  alongside this def to Textures/World/Biomes/Jawa_SickWater.png, no
+  placeholder needed.
+  ============================================================================
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_PropaneLake</defName>
+    <label>the Propane Lake</label>
+    <description>A black mirror of liquid fuel under the brightest sky on the planet, ringed by a crust of the same compound frozen solid. The cold here is total, and the stillness is older than anyone's records.</description>
+    <workerClass>BiomeWorker_Ocean</workerClass>
+    <isWaterBiome>true</isWaterBiome>
+    <canBuildBase>false</canBuildBase>
+    <allowRoads>true</allowRoads>
+    <allowRivers>false</allowRivers>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <texture>World/Biomes/Jawa_SickWater</texture>
+    <impassable>true</impassable>
+    <isBackgroundBiome>true</isBackgroundBiome>
+    <waterDeepTerrain>RM_PropaneLakeDeep</waterDeepTerrain>
+    <waterShallowTerrain>RM_SolidPropane</waterShallowTerrain>
+
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the shore terrains are FlowWorks' own
+         propane suite (mandrake.rm.flowworks), unchanged by this move. -->
+    <modExtensions>
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores">
+        <deepTerrain>RM_PropaneDeep</deepTerrain>
+        <shallowTerrain>RM_PropaneShallow</shallowTerrain>
+      </li>
+    </modExtensions>
+
+    <!-- Two floating/flying Alpha Animals residents + this mod's own V-wake
+         predator — none is RSW_/SW_, so none moves to a Utinni patch (§3b). -->
+    <wildAnimals>
+      <AA_AuroraSylph MayRequire="sarg.alphaanimals">0.5</AA_AuroraSylph>
+      <AA_Skyeel MayRequire="sarg.alphaanimals">0.5</AA_Skyeel>
+      <RUT_VWake>0.04</RUT_VWake>
+    </wildAnimals>
+    <coastalWildAnimals />
+
+    <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+    <baseWeatherCommonalities>
+      <Clear>14</Clear>
+      <Fog>6</Fog>
+    </baseWeatherCommonalities>
+    <terrainsByFertility>
+      <li>
+        <terrain>RM_PropaneLakeDeep</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Propane Lake's catch table. -->
+    <maxFishPopulation>60</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <saltwater_Common>
+        <RUT_Fessu>1.2</RUT_Fessu>
+        <RUT_Krellik>1</RUT_Krellik>
+        <RUT_Oddu>0.8</RUT_Oddu>
+        <RUT_Oovu>0.6</RUT_Oovu>
+      </saltwater_Common>
+      <saltwater_Uncommon>
+        <RUT_Iliss>1</RUT_Iliss>
+        <RUT_Tarnn>0.6</RUT_Tarnn>
+        <RUT_Zhiil>0.4</RUT_Zhiil>
+      </saltwater_Uncommon>
+      <rareCatchesSetMaker>RUT_RarePropaneCatches</rareCatchesSetMaker>
+    </fishTypes>
+  </BiomeDef>
+
+</Defs>

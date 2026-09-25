@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldWrecks.xml                    UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 build pass, S6 "burning-shallows wreck salvage"
+  (scald_kit_spec.md §S6: "RUT_ScaldWreck* building defs (2-3 silhouettes,
+  art pass) scattered at map-gen in shallow scald water ... Salvage is
+  vanilla deconstruct/smash yields").
+
+  ===========================================================================
+  CRIB TARGET — Core's own ShipChunkBase, read in full this pass
+  ===========================================================================
+  Core/Defs/ThingDefs_Buildings/Buildings_Exotic.xml:130-180,
+  ParentName="BuildingBase" Name="ShipChunkBase" (defName ShipChunk): a
+  static, non-buildable (no designationCategory), non-claimable, always-
+  deconstructible salvage building — deconstruct for costList-derived
+  resources, no comps beyond a flavor inspect string, no pawn spawner, no
+  rot, no corpse. That is exactly S6's own "cooked clean: no rot, no
+  corpses, no hostiles" requirement, structurally, not by a linter rule
+  added after the fact. Three defs below crib this shape directly
+  (ParentName="ShipChunkBase" — same abstract vanilla already ships, no new
+  RM_/RUT_ abstract needed) rather than JawaGroundHulk's own PrefabDef
+  route, which is a hand-placed one-off stamp keyed to a specific ship
+  export, not a repeatable map-gen scatter candidate.
+
+  🔴 THREE SILHOUETTES, NOT THREE MECHANICS. Per the spec's own "(2-3
+  silhouettes, art pass)" — distinct shapes for scatter variety, all
+  carrying the identical salvage mechanism (deconstruct-only, vanilla
+  costList/killedLeavings). No new comp, no loot ThingSetMaker: the spec's
+  own §S6 text flags "a small RUT_ScaldSalvage loot ThingSetMaker" with a
+  ❓ (an open idea, never resolved) alongside the RESOLVED claim that S6
+  needs "zero new C#" for the scatter mechanism itself — a ThingSetMaker
+  wired to fire extra loot ON deconstruct would need a comp to hook
+  Notify_Deconstructed or similar, which is new C# the spec's own build-
+  order item never asked for at S6's "S" effort rating. Deferred to the
+  loot pass (scald_kit_spec.md §S6: "Loot REGISTER ... is the items pass's,
+  per sheet economy convention") rather than invented here. v1 ships the
+  vanilla costList/killedLeavings salvage only, same mechanism ShipChunk
+  itself already uses.
+
+  Values below are INVENTED, stated plainly: sized down from
+  ShipChunk_Mech's 40 Steel/15 GravlitePanel (a fresh mechanoid chunk) since
+  these have sat cooking in near-boiling water — corrosion costs some of
+  the yield back. No uranium/component on any of the three: this is hull
+  and tankage, not the caskets JawaGroundHulk already owns.
+
+  ⚠️ Ban 6 (no vanilla-Earth flora/fauna) and Ban 2 (no burn-immunity def)
+  both hold structurally: nothing here grants terrain immunity or spawns
+  life. The burn-per-tick cost of standing in the shallows to deconstruct
+  these is paid by the terrain itself (RUT_ScaldWaterShallow's own
+  burnDamage/burnIntervalTicks), never waived — S6's own "the price is
+  posted in burns per trip" line is the shipped terrain, unchanged.
+
+  🔴 TERRAIN AFFORDANCE — verified by direct read, not assumed.
+  BuildingBase's own default terrainAffordanceNeeded is Light (Core
+  Buildings_Base.xml:11). WaterShallowBase's affordance list (Core
+  Terrain_Water.xml:103-112) is ShallowWater/WaterproofConduitable/
+  Bridgeable/Walkable — no Light. Left at the inherited default, none of
+  these three defs could ever pass a placement/scatter affordance check on
+  the very terrain they are meant to scatter onto. All three explicitly
+  override terrainAffordanceNeeded to Walkable below, the one affordance
+  every RUT_ScaldWater*Shallow terrain actually carries.
+
+  Art: OWED. texPath below names a path under UtinniPatches/Textures/ that
+  does not exist yet — same posture as RUT_ScaldVent.xml/RUT_SteamCatch.xml
+  this same item. Held via src/DEPLOY_HOLD.txt, together with the scatter
+  GenStepDefs and registration patch that key on these defNames (a
+  GenStepDef shipped without its thingDef deployed is a dangling
+  cross-reference, not a smaller failure).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ShipChunkBase">
+    <defName>RUT_ScaldWreckHull</defName>
+    <label>scalded hull section</label>
+    <description>A broken length of hull plate, cooked in the shallows until the paint is gone and the seams have given. What the pan swallowed and gave back. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/RUT_ScaldWreckHull</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <resourcesFractionWhenDeconstructed>0.75</resourcesFractionWhenDeconstructed>
+    <costList Inherit="False">
+      <Steel>30</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <killedLeavings Inherit="False">
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+    </killedLeavings>
+  </ThingDef>
+
+  <ThingDef ParentName="ShipChunkBase">
+    <defName>RUT_ScaldWreckTank</defName>
+    <label>scalded tank wreck</label>
+    <description>A ruptured pressure tank, half sunk and scoured smooth by the boil. Whatever it once held is long gone; the shell is still worth the walk. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/RUT_ScaldWreckTank</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <resourcesFractionWhenDeconstructed>0.75</resourcesFractionWhenDeconstructed>
+    <costList Inherit="False">
+      <Steel>20</Steel>
+      <GravlitePanel>5</GravlitePanel>
+    </costList>
+    <killedLeavings Inherit="False">
+      <ChunkSlagSteel>1</ChunkSlagSteel>
+    </killedLeavings>
+  </ThingDef>
+
+  <ThingDef ParentName="ShipChunkBase">
+    <defName>RUT_ScaldWreckFrame</defName>
+    <label>scalded frame wreck</label>
+    <description>A stripped strut and frame section, all its skin burned or boiled away, standing bare in the shallows like a rib cage. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/RUT_ScaldWreckFrame</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <resourcesFractionWhenDeconstructed>0.75</resourcesFractionWhenDeconstructed>
+    <costList Inherit="False">
+      <Steel>15</Steel>
+    </costList>
+    <killedLeavings Inherit="False">
+      <ChunkSlagSteel>1</ChunkSlagSteel>
+    </killedLeavings>
+  </ThingDef>
+
+</Defs>

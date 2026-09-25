@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldSteamLock_BiomeWiring.xml     UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 build pass, S1. Wires the permanent steam lock
+  (Defs/GameConditionDefs/RUT_ScaldSteamLock.xml) onto RUT_TheScald as a
+  PATCH rather than a direct edit to RUT_TheScald.xml's own
+  biomeMapConditions field — RUT_ScaldSteamLock only exists when
+  mandrake.rm.environmentalhazards is active (MayRequire-gated def), so a
+  bare <li> baked directly into the BiomeDef would be a dangling
+  cross-reference the moment that mod is absent. Gate: PatchOperationFindMod
+  on the kit's display name, wrapping the whole Conditional below. ⚠️
+  MayRequire on an <Operation> is INERT (MEASURED 2026-09-17 against 1.6
+  source — ModContentPack.LoadPatches never reads the attribute); the
+  Conditional's own xpath test (does RUT_TheScald already carry
+  biomeMapConditions) is structural, not gated on the absent mod, so
+  without a real gate this patch would run every load and inject the
+  dangling reference regardless. FindMod is the only real per-operation
+  gate.
+
+  RUT_TheScald.xml carries no <biomeMapConditions> node at all today (only
+  wildAnimals/baseWeatherCommonalities/terrainsByFertility), so this adds
+  the whole element rather than appending an <li> to an existing one.
+
+  TERMINALBIOMES_RM_MOD_BUILD_1 step 2, 2026-09-25: moved into this mod from
+  UtinniPatches (frozen twin, same folder there). xpath retargeted
+  RUT_TheScald -> RM_TheScald per the item's own §7(a) instruction — this
+  file physically relocated with the rest of the S1 kit.
+  -->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Environmental Hazards Kit</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/biomeMapConditions</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RM_TheScald"]</xpath>
+        <value>
+          <biomeMapConditions>
+            <li>RUT_ScaldSteamLock</li>
+          </biomeMapConditions>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+</Patch>

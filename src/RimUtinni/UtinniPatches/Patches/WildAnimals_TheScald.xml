@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_TheScald.xml                  UtinniPatches — new file 2026-09-25
+  ============================================================================
+  TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Wires the four Star Wars residents
+  RM_TheScald.xml (src/RimMandrake/TerminalBiomes) does NOT carry — item §3/
+  §6/criteria: "the Star Wars fauna ride a Utinni patch rather than the
+  RimMandrake def." Values are the exact commonalities RUT_TheScald.xml (now
+  frozen) shipped for these same four rows — nothing re-derived.
+  WildAnimals_Pyrelands.xml is the shape this follows.
+
+  ⚠️ No <li>: BiomeAnimalRecord's custom loader reads the node NAME as the
+  animal and the node TEXT as the commonality — an <li> wrapper would
+  discard the whole value silently.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/wildAnimals</xpath>
+    <value>
+      <RSW_SandoAquaMonster MayRequire="mandrake.rsw.swbestiary">0.03</RSW_SandoAquaMonster>
+      <RSW_ElderSando MayRequire="mandrake.rsw.swbestiary">0.005</RSW_ElderSando>
+      <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Faa>
+      <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Mee>
+    </value>
+  </Operation>
+
+</Patch>

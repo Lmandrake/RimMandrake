@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_BESTIARY_BUILD_1, wave 1 — the Scald's margin-harvest table (fish
+  bestiary commission §2E/§4.1, owner rulings 2026-09-18). Five catch items:
+  the shoal (eesh, one of the four "owed" defs, full spec §4.1), the cucumber
+  (muddal), the crustacean (karrash), the jellyfish (saal), and the
+  bladderboil catch (a fifth line owed to this table by a sibling commission,
+  `RUT_hydrocarbon_ecology_commission.md` §10c — owner ruling 8: "the
+  bladderboil catch builds with this mod"). The bladderboil's own wildAnimals
+  PAWN (`RUT_Bladderboil`) is that commission's separate creature-roster work
+  and is NOT built here — only the fishing-table item.
+
+  MEASURED, not the doc's own "UNMEASURED" flag: the Scald's actual world-map
+  fishing water is FRESHWATER. RUT_TheScald.xml wires waterDeepTerrain/
+  waterShallowTerrain/waterMovingShallowTerrain/waterMovingChestDeepTerrain to
+  RUT_ScaldWaterDeep/Shallow/MovingShallow/MovingChestDeep
+  (RUT_ScaldWater.xml), none of which override `waterBodyType` off their
+  parents (WaterDeepBase/WaterShallowBase/WaterChestDeepBase, Core's own
+  Terrain_Water.xml) — and those parents default to Freshwater (verified via
+  RimSage direct read). The Ocean-tagged siblings (RUT_ScaldWaterOceanDeep/
+  OceanShallow, Saltwater) exist only for GravTide's terrainsByFertility dive
+  layer and are never assigned to the biome's own fishing water fields. So
+  this table is wired into `freshwater_Common`/`freshwater_Uncommon`, not the
+  ambiguous "_Common"/"_Uncommon" the design doc used pending measurement.
+
+  Register stats per the commission's own §0 envelope table; ANTI-EXPONENTIAL
+  law held throughout (nothing exceeds vanilla FishBase's Nutrition 0.25 /
+  MarketValue 6.5 tier except where the register table itself sets a
+  different baseline, e.g. crustacean's flat MarketValue 7).
+
+  Placeholder art (owed, not generated this pass): every texPath below
+  reuses a non-fish sprite already physically present in THIS mod's own
+  Textures/ folder (the SandSwimmer convention, RSW_SandSwimmer_Items.xml),
+  and no two entries in this table share one, per the fish commission's own
+  art law (§0 "Art").
+-->
+<Defs>
+
+  <!--
+    RUT_Eesh — the Scald thermophile shoal, one of the four owed defs
+    (fish_bestiary_commission_2026-09-10.md §4.1). Nickname AND shipped name
+    are both "eesh" per owner ruling 5 (no rename pass owed for this family).
+  -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Eesh</defName>
+    <label>eesh</label>
+    <description>The silver of the Scald. A finger-long, finless, mirror-skinned sliver that lives in the boiling column and feeds on the dung-fall of the herds below — clouds of them, darting, the water's whole budget in a single restless shape. It has no scales; the skin is a heat-mirror, and a shoal turning is a flash you can see from the rim. Netted at the margin it dies instantly and is already cooked, and it is the one thing on the crater that people call delicious without a caveat.</description>
+    <graphicData>
+      <texPath>Things/Item/ToxicMeat/ToxicMeat_a</texPath>
+    </graphicData>
+    <statBases>
+      <Mass>0.4</Mass>
+      <FoodPoisonChanceFixedHuman>0.0</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- muddal — cucumber, common. "mat-mouse." Register-break per the commission's
+       own note: RawTasty because it comes up already cooked off the margin. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Muddal</defName>
+    <label>muddal</label>
+    <description>The bottom-walkers' small cousin: a hand-long, armored, heat-glossed thing that grazes the welcome blankets at the margins where the boil gentles, moving along the rainbow bands and taking the pigment into its skin, so a muddal is banded too — a little strip of the Scald's oldest truth. Pilgrims gather them at the baths with a cloth. Cooked the moment it leaves the water, which is to say already.</description>
+    <graphicData>
+      <texPath>Things/Item/ToxicMeat/ToxicMeat_b</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>4</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- karrash — crustacean, uncommon. "vent-crab." MarketValue at the top of
+       its band per the commission's own text. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Karrash</defName>
+    <label>karrash</label>
+    <description>Lives on the vent chimneys themselves, in the hottest water anything survives, plated in mineral crust it grows from the brine — a crab-thing that looks like a piece of the vent walked off. It eats the mat where the mat is thickest and is eaten by nothing, because nothing else goes there. Landed, the crust cracks off as it cools and the meat inside is white and sweet. The shells are sold as rim-pilgrim keepsakes.</description>
+    <graphicData>
+      <texPath>Things/Item/ToxicMeat/ToxicMeat_c</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.6</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- saal — jellyfish, uncommon (weight 0.5). "the sailor." The item face of
+       the bubble-sailor creature; the creature def is separate roster work. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Saal</defName>
+    <label>saal</label>
+    <description>The bubble-sailor, netted: a bell no bigger than a fist with a single stiff sail-vane that it sets into the trailing lines of boiling bubbles and rides — up the vent columns, drifting down, riding again. The Scald's kindest resident and its signature silhouette; pilgrims read their traffic the way sailors read gulls. Nobody fishes for them on purpose. One in a margin-net is let go more often than not, and the margin-net that keeps one is not spoken of.</description>
+    <graphicData>
+      <texPath>Things/Item/Special/JawaClaimRumour</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.08</Nutrition>
+      <MarketValue>4</MarketValue>
+      <Mass>0.3</Mass>
+      <FoodPoisonChanceFixedHuman>0.05</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RUT_BladderboilCatch — the fifth line, from RUT_hydrocarbon_ecology_
+       commission.md §10c ("pilgrim's kettle"). Floater register baseline
+       verbatim (nutrition 0.10 / market 3 / mass 0.2 / rot 1d — that doc's
+       own numbers match the fish commission's floater row exactly). The
+       wildAnimals pawn (RUT_Bladderboil) is NOT built here — owner ruling 8
+       scopes only the catch item to this build. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_BladderboilCatch</defName>
+    <label>bladderboil</label>
+    <description>A leathery golden sac the size of a head, riding the Scald's boil. When the water around it roars it gulps itself full and swells taut, floating high and hard where nothing else can live; when it drifts into a quiet margin pool it sighs out through its crater-mouths and slumps to a wrinkled bag, half-sunk, resting. Pilgrims call them kettles for the whistle they make letting go. They are entirely harmless, and the shore-folk net the resting ones.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_Greenwood</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>3</MarketValue>
+      <Mass>0.2</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-24 — three NEW catches added per the
+       owner's brief (design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md),
+       bringing the table to eight and adding the two kinds it lacked (an
+       eel, an alien) plus a second crustacean for the dung-fall economy.
+       The five BUILT descriptions above are UNCHANGED (owner ruling 5:
+       nicknames are the shipped names, final). -->
+
+  <!-- doss — crustacean, common (0.7). "dung-shrimp." Comes up cooked, same
+       register-break as the shoal (eesh) and cucumber (muddal) above. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Doss</defName>
+    <label>doss</label>
+    <description>The eesh's small competitor: a finger-length, hunch-backed shrimp-thing, boiled pink from birth, that works the dung-fall from below where the shoals work it from above — picking over what settles on the mats before the muddal get to it. It is everywhere at the margins in the warm season and it is the pilgrims' snack, gathered with a cloth and eaten from the hand, already cooked like everything here. There is very little to one. There are always more.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaD</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.4</Mass>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- thuum — eel, common (0.5). "blanket-eel." Comes up cooked, richer
+       rot-profile than the eesh's precedent. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Thuum</defName>
+    <label>thuum</label>
+    <description>An eel that lives under the welcome blankets — between the rainbow mat and the rock, in the thin hot film where the mat is thickest — and takes the pigment into its skin the way the muddal does, so a thuum is banded down its whole length in the mat's own colours, and a pilgrim who lifts a mat-edge at the baths sometimes finds one lying there like a strip of the Scald's oldest truth that has learned to move. It comes up cooked, and it is the margin's best eating after the eesh — richer, and the bands hold in the pan.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaE</texPath>
+    </graphicData>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ekkel — alien, uncommon (0.4). "the tumbler." Comes up cooked (the
+       eesh's heat-mirror register on a thing that is not a fish at all). -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Ekkel</defName>
+    <label>ekkel</label>
+    <description>Nobody knows which way up an ekkel goes. A fist-sized knot of stiff, heat-mirror filaments — the eesh's skin grown into a tangle — that lives on the vent walls beside the karrash and rolls: it lets go, tumbles down the chimney in the boil-current flashing like a dropped handful of needles, catches, climbs, and lets go again. It is feeding, somehow, on the mat. Netted it is a ball of hot wire with a soft thing at the centre that is already cooked and tastes of the vents, which is to say of metal and something older. Rim-pilgrims keep the filament-knots; they stay bright for years.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaF</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.12</Nutrition>
+      <MarketValue>8</MarketValue>
+      <Mass>0.3</Mass>
+      <Beauty>2</Beauty>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

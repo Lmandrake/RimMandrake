@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_TwilightSea.xml               UtinniPatches — new file 2026-09-25
+  ============================================================================
+  TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Wires the one Star Wars resident
+  RM_TwilightSea.xml (src/RimMandrake/TerminalBiomes) does NOT carry — item
+  §3/§6/criteria. The Lanternwhale is the endemic giant (terminator_sea §4:
+  every large organism endemic to its own sea) at the exact commonality
+  RUT_TwilightSea.xml (now frozen) shipped. WildAnimals_Pyrelands.xml is the
+  shape this follows.
+
+  ⚠️ No <li>: BiomeAnimalRecord's custom loader reads the node NAME as the
+  animal and the node TEXT as the commonality.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]/wildAnimals</xpath>
+    <value>
+      <RSW_Lanternwhale MayRequire="mandrake.rsw.swbestiary">0.005</RSW_Lanternwhale>
+    </value>
+  </Operation>
+
+</Patch>

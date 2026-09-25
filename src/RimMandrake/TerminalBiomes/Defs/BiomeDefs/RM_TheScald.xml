@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TheScald.xml                        TerminalBiomes · moved 2026-09-25
+  ============================================================================
+  TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Content copied as-is from
+  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml (now frozen,
+  same folder) at the moment of the move — see that file's own header for
+  the full authorship history (LIQUID_BIOMES_MAP_1, FISH_BESTIARY_BUILD_1,
+  SEA_FLOOR_AND_CATCH_PASS_1, GRAVTIDE SUPPORT, ECOSYSTEM_PYRAMID_LAW_1) and
+  this file's own frozen twin for the "carrying the world" note.
+
+  ONE substantive change from the twin: the four `RSW_` wildAnimals rows
+  (RSW_SandoAquaMonster, RSW_ElderSando, RSW_Faa, RSW_Mee) are stripped out —
+  Star Wars creatures ride a Utinni-tier patch, never the RimMandrake def
+  (item §3/§6, criteria). They land on THIS defName via
+  src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheScald.xml,
+  MayRequire="mandrake.rsw.swbestiary", so a franchise-free install of this
+  mod still gets a real biome (terrain, weather, fishing, welcome-blanket
+  flora) — only the four Star Wars residents are absent. Everything else
+  below — terrain, weather, fishTypes, wildPlants, GravTide support — is
+  byte-identical content, this mod's own tier.
+  ============================================================================
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_TheScald</defName>
+    <label>the Scald</label>
+    <description>A perched ocean in the world's hottest basin, held in a vast crater by the ring of mountains that feed it. It boils where it is shallow and simmers where it is deep, and it spills outward through every river that nourishes the world.</description>
+    <workerClass>BiomeWorker_Ocean</workerClass>
+    <isWaterBiome>true</isWaterBiome>
+    <canBuildBase>false</canBuildBase>
+    <allowRoads>true</allowRoads>
+    <allowRivers>false</allowRivers>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <texture>World/Biomes/Ocean</texture>
+    <impassable>true</impassable>
+    <isBackgroundBiome>true</isBackgroundBiome>
+    <waterShallowTerrain>RUT_ScaldWaterShallow</waterShallowTerrain>
+    <waterDeepTerrain>RUT_ScaldWaterDeep</waterDeepTerrain>
+    <waterMovingShallowTerrain>RUT_ScaldWaterMovingShallow</waterMovingShallowTerrain>
+    <waterMovingChestDeepTerrain>RUT_ScaldWaterMovingChestDeep</waterMovingChestDeepTerrain>
+
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1: makes the land tiles around the Scald read
+         as coastal and cut a real shore, with the Scald's own water. -->
+    <modExtensions>
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores">
+        <deepTerrain>RUT_ScaldWaterOceanDeep</deepTerrain>
+        <shallowTerrain>RUT_ScaldWaterOceanShallow</shallowTerrain>
+      </li>
+    </modExtensions>
+
+    <!-- Star Wars residents (sando pair, faa, mee) moved to
+         WildAnimals_TheScald.xml (UtinniPatches), MayRequire
+         mandrake.rsw.swbestiary — item §3/§6. Empty here on purpose. -->
+    <wildAnimals />
+    <animalDensity>0.15</animalDensity>
+    <coastalWildAnimals />
+
+    <!-- RUT_WelcomeBlanket, the_scald.md §4/§7 commission — gated on its own
+         wildTerrainTags: [RUT_ScaldMarginMat], a tag that exists on exactly
+         one terrain (RUT_ScaldMargin), moved alongside this def. -->
+    <wildPlants>
+      <RUT_WelcomeBlanket>0.4</RUT_WelcomeBlanket>
+    </wildPlants>
+
+    <!-- FISH_BESTIARY_BUILD_1 / SEA_FLOOR_AND_CATCH_PASS_1 — the margin
+         harvest, eight species + rareCatchesSetMaker, all moved with this def. -->
+    <maxFishPopulation>40</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <freshwater_Common>
+        <RUT_Eesh>1.5</RUT_Eesh>
+        <RUT_Muddal>0.8</RUT_Muddal>
+        <RUT_Doss>0.7</RUT_Doss>
+        <RUT_Thuum>0.5</RUT_Thuum>
+      </freshwater_Common>
+      <freshwater_Uncommon>
+        <RUT_Karrash>1</RUT_Karrash>
+        <RUT_Saal>0.5</RUT_Saal>
+        <RUT_BladderboilCatch>0.5</RUT_BladderboilCatch>
+        <RUT_Ekkel>0.4</RUT_Ekkel>
+      </freshwater_Uncommon>
+      <rareCatchesSetMaker>RUT_RareScaldCatches</rareCatchesSetMaker>
+    </fishTypes>
+
+    <!-- GRAVTIDE SUPPORT (UNDERWATER_BIOME_SUPPORT_1) — the three fields a
+         modded water biome needs that GravTide otherwise only patches onto
+         vanilla Ocean/Lake by defName. -->
+    <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+    <baseWeatherCommonalities>
+      <Clear>14</Clear>
+      <Fog>8</Fog>
+    </baseWeatherCommonalities>
+    <terrainsByFertility>
+      <li>
+        <terrain>RUT_ScaldWaterOceanDeep</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+  </BiomeDef>
+
+</Defs>
