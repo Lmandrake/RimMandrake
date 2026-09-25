@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_WASP_SWARM_1 / REACTION_MECHANISM_GENERALISE_1 step 1.
+
+     RM_SkerrelGall — the hive. A small, standalone Thing rather than a comp
+     welded onto its host plant: RM_Sarquin and RM_Nemmer (the roster's named
+     hosts, GREENTIDE_JUNGLE_TREE_ROSTER_1) are NOT yet built as ThingDefs in
+     this mod set (checked this pass — neither defName exists anywhere under
+     src/), so there is nothing to attach a comp to yet, and inventing either
+     plant here would be scope creep onto a different item. This matches the
+     item's own offered fallback ("confirm the gall should just be its own
+     small Thing placed adjacent to/on the host plant's cell instead") and is
+     corroborated by infrastructure/artpipe/pending/rm_sarquin_v1.json's own
+     style_notes, written for the SARQUIN roster item before this pass:
+     "leave room in the drip-tentacles for a gall to be drawn later as its
+     own Thing."
+
+     Placement (scattering a gall near/on a live Sarquin or Nemmer plant) is
+     therefore mapgen/roster-build work owed to whichever item ships those
+     two plants, not this one — this def only carries the two real defNames
+     forward as a comment so that wiring doesn't have to rediscover them:
+     host plants = RM_Sarquin (primary, drip-tentacles), RM_Nemmer (canopy).
+
+     Small Building, not a Plant: 1x1, low fill, passable-ish, fragile, and
+     flammable enough that a fire genuinely destroys it (GREENTIDE_WASP_SWARM_1's
+     own question 3 — "what happens to the hive when the plant is cut or
+     burns" resolves the same way it would for any other small burnable
+     clutter, since the gall is not literally welded to the plant's own
+     ThingDef). No designationCategory: wild-spawned only, never
+     player-buildable.
+
+     Placeholder texPath (RUT_FireWasp's own leathery insect-nest silhouette
+     does not exist as a separate asset; reusing RM_RegenerantVeil's shipped
+     plant-tissue texture as the nearest "organic growth" placeholder already
+     in the mod set). Bespoke gall art is owed to the art pipeline. -->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_SkerrelGall</defName>
+    <label>skerrel gall</label>
+    <description>A swollen, papery growth hanging where a plant's sugar runs thickest. Undisturbed, it does nothing at all. Broken open — cut, burned, or simply knocked — it empties in a moment, and what pours out does not stop coming until the gall is spent.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <tickerType>Never</tickerType>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <useHitPoints>true</useHitPoints>
+    <drawerType>MapMeshOnly</drawerType>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <size>(1,1)</size>
+    <passability>PassThroughOnly</passability>
+    <pathCost>15</pathCost>
+    <fillPercent>0.15</fillPercent>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/RegenerantVeil</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Flammability>1.6</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ReactionSource">
+        <cooldownTicks>2500</cooldownTicks>
+        <!-- Total wasps ONE trigger grants (the event's shared budget) —
+             INVENTED, deliberately well under mapPopulationCap so a single
+             gall alone cannot fill the map; several galls triggering close
+             together are what threatens the ceiling, which is the point. -->
+        <eventBudget>8</eventBudget>
+        <tag>SkerrelGall</tag>
+        <response Class="RimMandrake.CreatureBehaviors.RM_ReactionResponseRule_SpawnPawns">
+          <pawnKind>RM_Skerrel</pawnKind>
+          <spawnRadius>2</spawnRadius>
+          <!-- Total live skerrels this map tolerates from ALL galls at once —
+               INVENTED. Performance bound before it is a balance one, per
+               the item's own words. -->
+          <mapPopulationCap>24</mapPopulationCap>
+          <startMentalState>RM_SwarmAggression</startMentalState>
+          <disengageRadius>20</disengageRadius>
+        </response>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
