@@ -8,8 +8,24 @@
   carries the live Ash'karr world and must keep resolving its own items
   independently until the terminal paint (arch §5 step 4: duplicate content
   the live world still needs, never move it out from under the twin).
-  Content is otherwise byte-identical to the RUT_ source; see that file for
-  the full provenance comment.
+
+  ⚠️ Content is NOT otherwise byte-identical to the RUT_ source — the 7
+  texPaths below were corrected (2026-09-24, DIRTY_CODE_REVIEW_STANDING_
+  LOOP_1 wave 78). The straight copy from the RUT_ file pointed at
+  `Things/Plant/AloeVera/AloeVeraA`, `PincushionPlant/PincushionPlantA`,
+  `SweetheartPlant/SweetheartPlantA`, `Schlumbergera/SchlumbergeraA`,
+  `Echeveria/EcheveriaA`, `Peyote/PeyoteA` and `AB_CrystalHorn/
+  AB_CrystalHornA` — all seven confirmed (via `find`) to physically exist
+  ONLY under `src/RimUtinni/UtinniPatches/Textures/...`, never in this mod's
+  own Textures/ folder or in vanilla Core/Odyssey. That is fine for the RUT_
+  original (same mod ships the PNGs), but this RM_ mod's own About.xml
+  declares it franchise-free and standalone (Q11a) with no RimUtinni
+  dependency — exactly the same cross-mod-texture trap
+  RM_StockedPoolCatchItems.xml's header (same folder) already called out and
+  avoided for its own items. Left as copied, these 7 items would render as
+  missing-texture placeholders in any mod list that has this mod without
+  UtinniPatches loaded. Now reusing confirmed-vanilla-Core icons instead,
+  tinted per species, same convention as RM_StockedPoolCatchItems.xml.
 -->
 <Defs>
 
@@ -19,7 +35,8 @@
     <label>ikkal</label>
     <description>A palm-wide bladder that hangs at the surface with a comb of fringe trailing below it, sieving the dew-smoke out of the water as it falls. At wind-hour the whole pool is dimpled with them, tilted to the same side like cups set out. It has no fight in it; a child can lift one out. Thin eating, and nobody minds -- pilgrims cook them for the broth, which tastes faintly of the stones.</description>
     <graphicData>
-      <texPath>Things/Plant/AloeVera/AloeVeraA</texPath>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(210, 225, 230)</color>
     </graphicData>
     <statBases>
       <Nutrition>0.10</Nutrition>
@@ -40,7 +57,8 @@
     <label>tarrik</label>
     <description>A thumb-length shrimp-thing with antennae grown into two fine combs that it holds up into the current and licks clean. Kin to the mirrik above the water, and it shows: the same chitin, the same fringed silhouette, the same habit of mist-dancing at wind-hour, only underwater. It breeds in the shallows during the truce, in the open, in crowds -- which is why nobody who has sat at a pool at dusk can eat one without a small pang.</description>
     <graphicData>
-      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(200, 150, 90)</color>
     </graphicData>
     <statBases>
       <Nutrition>0.20</Nutrition>
@@ -61,7 +79,8 @@
     <label>duul</label>
     <description>A slow grey sock of a thing that lies on the pool floor and eats what settles -- silt, dung, dead dew-smoke, the ash blown in from the desert. A pool with duul in it stays clear; a pool without them clouds in a season. Every oasis keeper knows the count. It is edible in the sense that most things are.</description>
     <graphicData>
-      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantA</texPath>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(140, 140, 135)</color>
     </graphicData>
     <statBases>
       <Nutrition>0.20</Nutrition>
@@ -82,7 +101,8 @@
     <label>ullo</label>
     <description>A soft bell the size of two cupped hands, near-invisible by day, that lights a slow blue pulse from dusk. Ullo rise together and drift as a lit crowd while the fan-dancers display on the bank; the pools are places of romance and the ullo have never been told otherwise. Netted, it is a sting and a disappointment -- mostly water, a little meat, and the light goes out in your hands.</description>
     <graphicData>
-      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(120, 150, 210)</color>
     </graphicData>
     <statBases>
       <Nutrition>0.08</Nutrition>
@@ -105,7 +125,8 @@
     <label>ozhu</label>
     <description>A blind, comb-gilled eel that lives in the warm throat of the seep itself, down where the spring comes up through the stones. It surfaces at wind-hour to feed on the fallen dew-smoke and goes back down. Warm to the touch when landed, and it stays warm for a while, which unsettles people. The oldest pools have the longest ozhu; oasis-keepers claim they can taste which spring one came from.</description>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(190, 140, 120)</color>
     </graphicData>
     <comps>
       <li Class="CompProperties_Rottable">
@@ -121,7 +142,8 @@
     <label>vobbal</label>
     <description>Eight soft arms and a bulb of a body, living in the hollows where the seep water enters the pool. It takes things. Pebbles, offerings, a dropped tool, a ring -- and it stacks them, carefully, in towers in the shallows, and knocks them down, and stacks them again. Some oases forbid catching them; most simply don't. The ones who do eat them say it is very good, in a voice that suggests they would rather not have.</description>
     <graphicData>
-      <texPath>Things/Plant/Peyote/PeyoteA</texPath>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(140, 110, 150)</color>
     </graphicData>
     <statBases>
       <Nutrition>0.25</Nutrition>
@@ -142,8 +164,9 @@
     <label>seep stone</label>
     <description>A smooth mineral concretion grown drop by drop in the spring throat itself, where the seep comes up through the stones -- the Weeping Stones in miniature, banded pale and dark the same way the cliffs above the pool are. Oasis-keepers set the best ones on the shrine at the water's edge; a lesser one is sold to a pilgrim as a keepsake of the truce.</description>
     <graphicData>
-      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+      <texPath>Things/Item/Resource/Jade</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(210, 205, 190)</color>
     </graphicData>
     <thingCategories>
       <li>ResourcesRaw</li>
