@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T07:15:55Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-25T07:28:51Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -350,15 +350,6 @@ target:   v1
 kind:     build
 summary:  Build RUTScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events
 prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
-
-## GOO_BOOM_COMMISSION_1 Commission ONE big Assailant-dungeon boom creature: fleshy-based, sacks of explosive goo, new def + new art - replaces the entire cut boom family (Boomalope, Boomrat, VFEI2_Boomtick, 12 GR_ boom creatures); lives on the dungeon-guardians roster, never a biome spawn
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
-prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
 state:    doing
@@ -1082,16 +1073,6 @@ kind:     build
 blocked:  steps 2-3 of 5 done (harvest reference copied, both FindMod patches deleted, 0 validate_patch errors). Steps 1 (18-22 owned-art props), 4 (ModsConfig removal + cold load + resave) and 5 (owner fauna-sheet coordination) are separate passes - see item
 summary:  Owner-said: "Retire-after-harvest." Harvest then retire VQE Cryptoforge:
 prose:    infrastructure/state/items/CRYPTOFORGE_HARVEST_RETIRE_1.md
-
-## GOO_BOOM_COMMISSION_1 Commission ONE big Assailant-dungeon boom creature: fleshy-based, sacks of explosive goo, new def + new art - replaces the entire cut boom family (Boomalope, Boomrat, VFEI2_Boomtick, 12 GR_ boom creatures); lives on the dungeon-guardians roster, never a biome spawn
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-blocked:  design brief complete and filed (design/Jawa/worldbuilding/creatures/goo_boom_commission.md, commit 477ab973) - RUT_Vhessk fully specified: mechanic grounded in real Core source (a real life-stage-index trap caught), art direction grounded in real donor palette sampling. NOT closing: the item's own title includes 'new def + new art', i.e. the actual BUILD, and the brief leaves 8 concrete open calls (v1/v2 worker, healthScale, melee numbers, market value, butchery yield, BodyDef, glow, spawn timing) that need an owner ruling before building makes sense - building now would mean silently deciding them
-summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
-prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
 ## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)
 state:    ready  (BLOCKED)

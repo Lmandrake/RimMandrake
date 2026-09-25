@@ -19,3 +19,6 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-09-25T01:33:25Z"}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-25T03:47:29Z"}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-09-25T03:47:55Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-25T06:04:57Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-25T06:31:54Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-25T07:20:27Z"}
