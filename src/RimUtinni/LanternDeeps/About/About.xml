@@ -41,5 +41,7 @@ Also ships the darkness mechanic (carried light draws what lives down there) and
          without any of them - it just never scatters. -->
     <li>mandrake.rut.patches</li>
     <li>grimterra.biomesmod</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.ideology</li>
   </loadAfter>
 </ModMetaData>

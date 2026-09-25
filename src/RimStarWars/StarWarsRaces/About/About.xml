@@ -74,5 +74,14 @@ Contains no compiled code.</description>
     <li>guy762.starwarsxenotypes</li>
     <li>neronix17.outerrim.galacticdiversity</li>
     <li>btd.xenotyperemix.starwars</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>guy762.kotorweapons</li>
+    <li>kentington.saveourship2</li>
+    <li>ludeon.rimworld.anomaly</li>
+    <li>ludeon.rimworld.ideology</li>
+    <li>ludeon.rimworld.odyssey</li>
+    <li>ludeon.rimworld.royalty</li>
+    <li>mandrake.rm.flowworks</li>
+    <li>pathfinding.framework</li>
   </loadAfter>
 </ModMetaData>

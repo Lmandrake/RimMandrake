@@ -89,5 +89,14 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer`, `RSW_Groundrunn
     <li>sarg.alphabiomes</li>
     <li>sarg.alphaanimals</li>
     <li>mandrake.rsw.starwarsraces</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>kentington.saveourship2</li>
+    <li>ludeon.rimworld.anomaly</li>
+    <li>ludeon.rimworld.biotech</li>
+    <li>ludeon.rimworld.ideology</li>
+    <li>ludeon.rimworld.royalty</li>
+    <li>mlie.xndnocturnalanimals</li>
+    <li>oskarpotocki.vfe.insectoid</li>
+    <li>pathfinding.framework</li>
   </loadAfter>
 </ModMetaData>

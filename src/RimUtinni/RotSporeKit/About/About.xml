@@ -45,5 +45,9 @@ own scope split. `RUT_FungalMantisScythe`'s claw ingredient still names the dono
     <li>sarg.alphabiomes</li>
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rm.creaturebehaviors</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.ideology</li>
+    <li>mandrake.rsw.swbestiary</li>
+    <li>vanillaexpanded.vplantsemore</li>
   </loadAfter>
 </ModMetaData>

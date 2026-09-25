@@ -19,5 +19,7 @@ v1 slice only: terminator storms, dark-side auroras, Tier 0-1 forecasting. Glass
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.anomaly</li>
   </loadAfter>
 </ModMetaData>

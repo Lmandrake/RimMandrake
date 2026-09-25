@@ -128,5 +128,7 @@ and §6 (roaches) are built in sibling mods; §4/§5 of the kit are untouched.</
     <li>Ludeon.RimWorld</li>
     <li>mandrake.rut.patches</li>
     <li>mandrake.rut.rustcathedralwalls</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.odyssey</li>
   </loadAfter>
 </ModMetaData>

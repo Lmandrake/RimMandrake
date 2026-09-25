@@ -154,5 +154,25 @@ Generated from a live post-patch def dump; load last.</description>
     <li>vanillaquestsexpanded.cryptoforge</li>
     <li>xmb.ancientminingindustry.mo</li>
     <li>xmb.ancienturbanruins.mo</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>fantasyfan.sos2.starwarsship</li>
+    <li>guy762.kotordroids</li>
+    <li>guy762.kotorfactions</li>
+    <li>guy762.lee.kotorpotf</li>
+    <li>guy762.starwarsxenotypes</li>
+    <li>kentington.saveourship2</li>
+    <li>killathon.artificialbeings</li>
+    <li>killathon.artificialbeings.syncore</li>
+    <li>lee.theforce.standalone</li>
+    <li>ludeon.rimworld.biotech</li>
+    <li>ludeon.rimworld.ideology</li>
+    <li>m3.continued.jangodsoul.theforge.anvil</li>
+    <li>redmattis.betterprerequisites</li>
+    <li>rick.fcp.core.tools</li>
+    <li>rim.job.world</li>
+    <li>smartkar.athenaframework</li>
+    <li>smashphil.vehicleframework</li>
+    <li>swcp.gcwvehicles</li>
+    <li>vanillaexpanded.vpsycastse</li>
   </loadAfter>
 </ModMetaData>
