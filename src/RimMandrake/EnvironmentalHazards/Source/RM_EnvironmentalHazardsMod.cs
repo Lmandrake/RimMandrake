@@ -95,6 +95,10 @@ namespace RimMandrake.EnvironmentalHazards
     //      no creak warning fires, no crush/eject pulse lands — until this
     //      is back on. Mining, sealing and the bole's own presence are
     //      unaffected either way.
+    //  18a. livingRegrowthRateMultiplier — same mechanism. Scales the
+    //      per-cell regrow-days roll before it's applied to the tick clock;
+    //      1x is the def's own authored days, higher is slower healing.
+    //      GREATBOLE_BARK_EDGE_ART_1's "a number is the experience" tunable.
     //  19. rootCausewaysEnabled — RM_GenStep_RootCauseways
     //      (GREENTIDE_MECHANICS_2 M9). WORLDGEN-AFFECTING: off means no
     //      causeway network is painted on any map generated while it is
@@ -314,6 +318,13 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool strandingPoolsEnabled = true;
         public static bool livingBolesEnabled = true;
         public static bool livingRegrowthEnabled = true;
+        // GREATBOLE_BARK_EDGE_ART_1 — "a number is the experience" case for
+        // this mechanism: scales the per-cell regrow-days roll
+        // (regrowDaysMin..regrowDaysMax) before it's applied. 1x = the def's
+        // own authored days. 2x makes wounds heal twice as slowly; 0.5x
+        // twice as fast. Content-blind, same as hazardDamageMultiplier two
+        // lines up — it never names a bole or a biome.
+        public static float livingRegrowthRateMultiplier = 1f;
         public static bool rootCausewaysEnabled = true;
         public static bool wetBulbOverwhelmEnabled = true;
         public static bool dryAirBlowerEnabled = true;
@@ -369,6 +380,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref strandingPoolsEnabled, "strandingPoolsEnabled", true);
             Scribe_Values.Look(ref livingBolesEnabled, "livingBolesEnabled", true);
             Scribe_Values.Look(ref livingRegrowthEnabled, "livingRegrowthEnabled", true);
+            Scribe_Values.Look(ref livingRegrowthRateMultiplier, "livingRegrowthRateMultiplier", 1f);
             Scribe_Values.Look(ref rootCausewaysEnabled, "rootCausewaysEnabled", true);
             Scribe_Values.Look(ref wetBulbOverwhelmEnabled, "wetBulbOverwhelmEnabled", true);
             Scribe_Values.Look(ref dryAirBlowerEnabled, "dryAirBlowerEnabled", true);
@@ -473,6 +485,8 @@ namespace RimMandrake.EnvironmentalHazards
                 "A placed bole stops scheduling new regrowth, stops warning, and stops crushing/ejecting "
               + "whatever is in the way — every chamber freezes exactly as it is until this is back on. "
               + "Mining and sealing chambers is unaffected either way.");
+            list.Label("Living-tower regrowth speed: " + livingRegrowthRateMultiplier.ToString("0.00") + "x days");
+            livingRegrowthRateMultiplier = list.Slider(livingRegrowthRateMultiplier, 0.25f, 4f);
             list.CheckboxLabeled("Root causeway network (WORLDGEN-AFFECTING)", ref rootCausewaysEnabled,
                 "A biome built to paint a causeway network stops painting one on any map generated while "
               + "this is off. Maps already generated keep whatever network they already have.");

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.Sound;
 
@@ -181,10 +182,12 @@ namespace RimMandrake.EnvironmentalHazards
                 }
 
                 int days = Rand.RangeInclusive(bole.regrowDaysMin, bole.regrowDaysMax);
+                float rateMult = System.Math.Max(0.01f, RM_EnvironmentalHazardsSettings.livingRegrowthRateMultiplier);
+                int dueTicks = Mathf.RoundToInt(days * GenDate.TicksPerDay * rateMult);
                 bole.timers[cell] = new CellTimer
                 {
                     State = CellTimer.TimerState.Scheduled,
-                    DueTick = tick + days * GenDate.TicksPerDay,
+                    DueTick = tick + dueTicks,
                 };
             }
         }
