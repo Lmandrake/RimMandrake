@@ -1403,6 +1403,12 @@
     "hash": "d2e18516e2c2d307d276a88118807c05f5ee2868be3ec7f74fb27876fb605143",
     "sha": "d8a0b9b7d"
   },
+  "src/RimMandrake/DivingInteraction/Patches/RM_ScaldDiveEligibleTerrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "180e9128d1d9f69fa0f2b4fc57eba0155712f0fc36f90e9c953fd024b79fb1b5",
+    "sha": "cc0825979"
+  },
   "src/RimMandrake/DivingInteraction/Source/RM_DiveUtility.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -4793,6 +4799,12 @@
     "hash": "9220c5a9726bce880eac108eed56051af35d9af1993e68ab3e2cf8a4a6e848ca",
     "sha": "4a023191b"
   },
+  "src/RimMandrake/Pyrelands/Defs/GenStepDefs/PyrelandsGenSteps.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2b201050a5142e00e9d1563479f6f8109947e4e2a9e7bb324c4acf1047135f3d",
+    "sha": "cc0825979"
+  },
   "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshLadder.xml": {
     "cleanCount": 2,
     "date": "2026-09-24",
@@ -5645,6 +5657,18 @@
     "hash": "543deff04acd82df373cbfb210a9798cc91103dfe9dc6f9642d397a2be38bac4",
     "sha": "78a84be85"
   },
+  "src/RimMandrake/SeaShores/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "dc011fa1a019f9ef77168ece741b5f804c51c7eba4a0a8a9ab55bfbc04c78115",
+    "sha": "cc0825979"
+  },
+  "src/RimMandrake/SeaShores/Defs/TileMutatorDefs/RM_SeaCoast.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "33f33b02184a970c7a82329650b090b39d9aed6aec25c0a67f50435793391687",
+    "sha": "cc0825979"
+  },
   "src/RimMandrake/SeaShores/Source/RM_SeaShoreExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -5854,6 +5878,12 @@
     "date": "2026-09-17",
     "hash": "648b3ec8ece0f8aea81bbec141e54c2446184f12205a4cecaca96e2350e90252",
     "sha": "d28bf3edf"
+  },
+  "src/RimMandrake/TheBazaar/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8a751fa5b34307163bd2676a7deb8130f8f6f2ef192194aed0febe29364f34c9",
+    "sha": "cc0825979"
   },
   "src/RimMandrake/TheBazaar/Source/Defs/RM_BazaarBadgeDef.cs": {
     "cleanCount": 1,
@@ -8042,6 +8072,18 @@
     "date": "2026-09-24",
     "hash": "c5b1204d08f1d8123bb7cdbf14f29269595028ed1987eca97a3327034cad3c08",
     "sha": "aaab8b466"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingDefs_Races/RM_StockedPoolFauna.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "dec8474615b20de09ae6153cb63b9d86c975237bfe5f78651ffd6367f2e52a72",
+    "sha": "cc0825979"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingDefs_Races/RM_WeepingStonesNatives.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4c856663e9c7c5c93cc4aa6d3cca93a1feeff098fe6b0c99661ac65fdbb8cc23",
+    "sha": "cc0825979"
   },
   "src/RimMandrake/WeepingStones/Defs/ThingSetMakerDefs/RM_RareOasisCatches.xml": {
     "cleanCount": 1,
@@ -17151,6 +17193,12 @@
     "hash": "c984e96d582d26d0076ff00be208c97185e751fdfbe65b05023d9b9667b36983",
     "sha": "40c4d4fed"
   },
+  "src/RimUtinni/PyrelandsMechanics/Defs/DutyDefs/RUT_PyrelandsDuties.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bf69e9ca34214229bbed6dca8fbb09527804af0d859c3e203e9ac22c9d242a5a",
+    "sha": "cc0825979"
+  },
   "src/RimUtinni/PyrelandsMechanics/Defs/HediffDefs/RUT_PyrelandsHediffs.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -17175,6 +17223,12 @@
     "hash": "3d380cdef225a05d5fe34154b41134db5af686d52d5d853996f7dfd856c6126e",
     "sha": "187bf0389"
   },
+  "src/RimUtinni/PyrelandsMechanics/Defs/ThinkTreeDefs/RUT_FurnaceBeastThinkTree.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3471e50e9514d8c50e39992ec17e9e7ffafde51edc9b387db39330f64f8d3d48",
+    "sha": "cc0825979"
+  },
   "src/RimUtinni/PyrelandsMechanics/Languages/English/Keyed/PyrelandsMechanics.xml": {
     "cleanCount": 2,
     "date": "2026-09-17",
@@ -17186,6 +17240,12 @@
     "date": "2026-09-17",
     "hash": "3a8507c75c7796755da8f0516ac66c1bcfcb68862d506148b53d76384549510b",
     "sha": "d966fa898"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Patches/RUT_Thornvine_Edible.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "05862cbf607f011d96e351d05c95cb0cb49d77fc08d15223875c3d136bc871d1",
+    "sha": "cc0825979"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/CompFireHawkSpread.cs": {
     "cleanCount": 3,
@@ -19712,6 +19772,12 @@
     "date": "2026-09-24",
     "hash": "5b01aeb4700d1868828819028858188caf1d494dd7301a569a88b840009d85b7",
     "sha": "06e9ecab9"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4fb954d4560e2d1ea9300e2c3c15f5991d4ec2762b0d0f766cc53a6759d9eb5b",
+    "sha": "cc0825979"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThinkTreeDefs/RUT_ThinkTree_SumpMouseWander.xml": {
     "cleanCount": 1,
