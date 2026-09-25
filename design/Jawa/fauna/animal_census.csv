@@ -446,7 +446,6 @@ Pulmonoscorpius,pulmonoscorpius,Megafauna,spino.megafauna,Animal,True,1.10000002
 Dinopithecus,dinopithecus,Megafauna,spino.megafauna,Animal,True,2.5,5,0,150,,0,dormant
 Castoroides,castoroides,Megafauna,spino.megafauna,Animal,True,1.75,4.099999904632568,0,105,,0,dormant
 Enhydriodon,enhydriodon,Megafauna,spino.megafauna,Animal,True,3,5.25,0,180,,0,dormant
-MO_AbominationRace,Abomination,Mo'Events (Continued),mlie.moevents,ToolUser,False,2,2.0999999046325684,0,160,,0,dormant
 MA_Aminox,aminox,Mythic Ages: Megafauna Bestiary,veterano.mythicages.megafaunabestiary,Animal,True,3,3.799999952316284,900,180,BorealForest|ColdBog|IceSheet|TemperateForest|Tundra,5,foreign
 MA_Capryak,Capryak,Mythic Ages: Megafauna Bestiary,veterano.mythicages.megafaunabestiary,Animal,True,3,3.799999952316284,0,180,,0,dormant
 MA_Deermoss,deermoss,Mythic Ages: Megafauna Bestiary,veterano.mythicages.megafaunabestiary,Animal,True,2.5,4.5,1600,150,BorealForest|ColdBog|GlacialPlain|IceSheet|TemperateForest|TemperateSwamp|Tundra|ZBiome_AlpineMeadow|ZBiome_GlacialShield|ZBiome_Marsh,10,foreign
