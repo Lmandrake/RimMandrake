@@ -1241,6 +1241,12 @@
     "hash": "23cd3f7965bbf1a9f2bf3d285840ab8084d9179b5ed7ce696a3e569f263ba828",
     "sha": "7f2ff5541"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_DirectedAssault.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "f6bae778a61fb40a4ee4ba6b2908c872048fd8abb4e8dadf09567edb37a2233e",
+    "sha": "e2dc322c8"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_FilterFeedTerrain.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -2116,6 +2122,12 @@
     "date": "2026-09-24",
     "hash": "665435a69860f839fd9e2f272550913af8101ab20b0c5f9f4fe22713e978fa88",
     "sha": "c3330da8f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MechanicGates.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "bd82c2dbfef90619a21e9324e5a7e839f40c23834caa2dbe3de8d2c369410979",
+    "sha": "e2dc322c8"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MentalState_WaterTruceRetribution.cs": {
     "cleanCount": 1,

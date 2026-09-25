@@ -4245,3 +4245,18 @@ occasionally re-reading an already-CLEAN file with fresh eyes rather than
 treating CLEAN as permanently settled, especially anything safety-guard-
 shaped (`apply_blanket_ruling.py`'s bug sat undetected through one full
 review cycle).
+
+## Wave 4 — 2026-09-25
+
+Reviewed 2 files, full-file, first-time review (untracked): `RM_JobGiver_DirectedAssault.cs`
+(CreatureBehaviors) and `RM_MechanicGates.cs` (EnvironmentalHazards). Both confirmed
+reachable via their `.csproj` `<Compile Include>` entries. No significant findings in
+either — both marked CLEAN, commit follows this note.
+
+Note: the wave-3 note's named candidates (`SeaShores/Source/` cluster,
+`GizkaStowaway/Source/` cluster, `RM_CompDungSeeder.cs`) are already CLEAN as of
+2026-09-24 (some other pass reviewed them without updating this note) — don't
+re-review them again on this note's word.
+
+Next wave: pick from the remaining ~254 UNTRACKED files (`code_review_status.py list
+--show-untracked`), which is the only reliable source — bare `list` omits them.
