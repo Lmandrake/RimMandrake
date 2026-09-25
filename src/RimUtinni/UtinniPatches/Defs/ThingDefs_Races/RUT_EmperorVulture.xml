@@ -36,7 +36,7 @@
   explicit that flight is never blocked waiting on frames.
 
   "The sky's undertaker" — a pure scavenger, not a hunter: predator=false,
-  foodType Carnivore, same combination RUT_MortuaryCrawler (this item, the
+  foodType CarnivoreAnimal, same combination RUT_MortuaryCrawler (this item, the
   same "carrion specialist" family one biome sheet over) already used for a
   non-hunting carrion eater. Low Wildness/manhunter chances: it circles
   drowned/flood-week carcasses (the_cracked_lands.md §10 "the drowned first,
@@ -90,7 +90,7 @@
       <baseBodySize>1.4</baseBodySize>
       <baseHungerRate>0.35</baseHungerRate>
       <baseHealthScale>0.9</baseHealthScale>
-      <foodType>Carnivore</foodType>
+      <foodType>CarnivoreAnimal</foodType>
       <herdAnimal>false</herdAnimal>
       <roamMtbDays>8</roamMtbDays>
       <trainability>None</trainability>
