@@ -218,12 +218,21 @@ run** ("exceeds the dimension limit for many-image requests"), not just fail
 that one read. Check dimensions first and view a downscaled copy, keeping the
 full-size original as the reference asset.
 
-**A crashed/dead background agent's worktree lock
-(`.git/worktrees/<name>/index.lock`, pid-keyed) can outlive the process.**
-`fuser <lockfile>` confirms no live holder, then `git worktree remove --force
---force` reclaims it; its local commits, if any, are still mergeable directly
-by sha from the dead worktree's path with no push needed, since worktrees
-share one object store.
+**A worktree agent lands its own work.** End every `isolation: "worktree"`
+brief with: `git fetch origin && git rebase origin/main && git push origin
+HEAD:main`, run inside the worktree, fetch+rebase again on a rejected push,
+never force. ⛔ Never merge its branch into the shared tree — a refused merge
+hard-resets that tree (see `git-efficiency`), and `block_shared_tree_merge.py`
+refuses it; the shared tree catches up with `src/RimMandrake/Utils/shared_sync.py`.
+Three agents briefed this way on 2026-09-25 all landed cleanly.
+
+**A finished agent's worktree can stay locked.** `.git/worktrees/<name>/locked`
+names the SPAWNING session's pid, not the agent's, so it stays "live" while your
+session runs. Once `git rev-list --count origin/main..<branch>` is 0 and its
+tracked files are clean: `git worktree unlock`, `git worktree remove --force`,
+`git branch -D`. Unpushed commits from a dead agent are reachable by sha (one
+object store): replay or cherry-pick them in a private worktree and push, never
+merge them into the shared tree.
 
 ## Limits that actually exist
 

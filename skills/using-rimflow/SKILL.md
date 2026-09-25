@@ -147,6 +147,10 @@ adds the real check, against the session transcript:
 - **Only the current session's transcript is read.** A true quote from an
   earlier session is refused — have him repeat it this session rather than
   reusing an old one.
+- **A message that arrives MID-TURN is refused too** — one he typed while a
+  tool was running reaches you inside the turn, and the guard does not find it
+  in the transcript. Record it under your seat (`--seat BENCH`) with his words
+  quoted in full in `--text`, naming it as his typed ruling.
 - **`note --owner-said` stamps the WHOLE event as OWNER-authored**, not a
   disclaiming free-text field. Only use it when actually relaying an owner
   ruling; use bare `note` for your own investigation writeups.
