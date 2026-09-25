@@ -63,6 +63,7 @@ def main():
         (ALLOW, "git reset --hard HEAD", P),
         (ALLOW, "git reset HEAD -- f.txt", S),
         (ALLOW, "git reset --soft HEAD~1", S),
+        (ALLOW, "git reset --keep origin/main", S),
         (ALLOW, "git checkout -- src/a.xml", S),
         (ALLOW, "git restore --staged .", S),
         (ALLOW, "git restore src/a.xml", S),
