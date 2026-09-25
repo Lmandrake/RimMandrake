@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T00:19:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T00:22:18Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -737,15 +737,6 @@ target:   v1
 kind:     task
 summary:  FIREHAWKFLIGHTBEHAVIOR1 — donor-style wing flap → real flight animation
 prose:    infrastructure/state/items/FIREHAWK_FLIGHT_BEHAVIOR_1.md
-
-## TWILEK_TROPE_GENES_MOVE_1 Move the Twi'lek submissive-aggression, high-libido and beautiful genes off the xenotype and onto individual pawns as a background or trait, so a stereotype is a fact about a person rather than about a race - a mechanism change, not a gene-list edit
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/TWILEK_TROPE_GENES_MOVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWILEK_TROPE_GENES_MOVE_1.md
 
 ## OFFBIOME_SHEET_RERENDERS_1 Sheet rerenders outside Pyrelands: bolotaur, gualaar, fulgurite
 state:    doing
