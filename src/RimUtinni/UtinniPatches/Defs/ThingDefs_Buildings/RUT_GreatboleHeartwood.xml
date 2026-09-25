@@ -11,16 +11,20 @@
      same anti-exponential-yield posture RUT_MineableFungalGround's own
      header explains.
 
-     PLACEHOLDER ART: UtinniPatches ships its own Textures/Things/Building/
-     namespace (validate_patch.py's own ownership check — a "Things/" path
-     with no real file underneath it is an ERROR here, not the WARN
-     RUT_MineableFungalGround's own vanilla-path reuse gets away with in a
-     mod with no Textures/ folder of its own), so reusing vanilla's
-     RockFlecked_Atlas path directly would fail validation here. A genuine
-     flat-color placeholder PNG ships instead
-     (Textures/Things/Building/RUT_GreatboleHeartwood/RUT_GreatboleHeartwood.png)
-     — real bespoke art (a living-wood grain, not a rock fleck) is owed,
-     DEPLOY_HOLD. -->
+     ART: UtinniPatches ships its own Textures/Things/Building/ namespace
+     (validate_patch.py's own ownership check — a "Things/" path with no real
+     file underneath it is an ERROR here, not the WARN RUT_MineableFungalGround's
+     own vanilla-path reuse gets away with in a mod with no Textures/ folder of
+     its own), so reusing vanilla's Rock_Atlas path directly would fail
+     validation here.
+
+     GREATBOLE_BARK_EDGE_ART_1 (2026-09-25): the flat-color placeholder is
+     replaced with a bespoke 4x4 linked-tile atlas
+     (Textures/Things/Building/RUT_GreatboleHeartwood/RUT_GreatboleHeartwood.png,
+     512x512, real alpha) built to match Things/Building/Linked/Rock_Atlas's own
+     16-cell layout cell-for-cell (extracted from resources.assets and used as
+     an edit reference) — interior/mostly-enclosed cells show heartwood grain,
+     isolated/boundary cells show bark, replacing the rock-fleck look entirely. -->
 <Defs>
 
   <ThingDef ParentName="RockBase">
@@ -30,6 +34,16 @@
     <graphicData>
       <texPath>Things/Building/RUT_GreatboleHeartwood/RUT_GreatboleHeartwood</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <!-- GREATBOLE_BARK_EDGE_ART_1, MEASURED via RimSage against RockBase/
+           Graphic_LinkedCornerFiller: CornerFiller + a Custom link flag
+           (never Rock, which would weld the bark onto adjacent stone; never
+           MapEdge, a bole never touches the map edge by design) gives the
+           4x4-atlas texture its bark-vs-heartwood sub-tile selection for
+           free, same mechanism vanilla rock uses for its own edge. -->
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Custom1</li>
+      </linkFlags>
     </graphicData>
     <statBases>
       <MaxHitPoints>900</MaxHitPoints>
