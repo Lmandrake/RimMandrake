@@ -144,6 +144,12 @@ and was explicitly briefed not to attempt one):
 
 ## status (FOUNDRY, 2026-09-24)
 
-Built, offline-validated, mostly deployed (4/5 files; DLL blocked on the running game
-process — re-deploy after a restart). No live/bridge calls made this pass, per brief. Left
-`doing`.
+Built, offline-validated, fully deployed as of `b5d418d49` (DLL rebuilt + deployed once the
+game was down; Bacta is 22/22 files in sync, md5-verified). Live proof of the revival
+mechanic (corpse freshness, tank job, missing-parts/brain preservation, healing, both
+settings) is the only thing left, per this item's own do-not-close-without-live-proof brief.
+
+Resumed 2026-09-24 (later pass): `bridge who` reports it held by another live FOUNDRY
+window ("FireHawk flight live verify", idle ~2 min at check time — provably alive, not
+stale). Per this item's own brief, not force-taking a live-held bridge. Blocked rather than
+closed; the acceptance checklist below is unchanged and still gates the close.
