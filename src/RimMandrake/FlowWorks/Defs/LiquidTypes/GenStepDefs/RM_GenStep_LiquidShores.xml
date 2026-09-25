@@ -23,7 +23,7 @@
   seed-part de-duplication in MapGenerator.GetSeedPart does not fold it in
   with a neighbour.
 
-  Registration is via Patches/RM_LiquidShores_MapGenPatch.xml, onto the
+  Registration is via Patches/LiquidTypes/RM_LiquidShores_MapGenPatch.xml, onto the
   shared MapCommonBase generator — the same self-gating shape
   RUT_FungalSoilScatter already uses. That is safe precisely because the step
   no-ops on every untyped tile.
