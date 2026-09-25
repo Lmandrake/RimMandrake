@@ -15795,11 +15795,23 @@
     "hash": "3d0a88dd1bdff3b460f6c1daf3e4c47674b95742f64c4751404b77b050521ac0",
     "sha": "4fde88749"
   },
+  "src/RimUtinni/LanternDeeps/Defs/Biomes/RUT_LanternDeeps.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "515265c00eca7a1b58963e603092f505acc50ca2e010ce09e34b78d8c91dfaba",
+    "sha": "c8047b0ff"
+  },
   "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepEmergence_Scatter.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "589e61683fce127816b29ec470e6e1c6215e16da75f78ae73c17f62cd4545123",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepFloraGate.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6651d235312b9bff06d5efc747054ee1753957451f6d0c27193a5513e0daf239",
+    "sha": "c8047b0ff"
   },
   "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepGenerator.xml": {
     "cleanCount": 4,
@@ -15825,6 +15837,30 @@
     "hash": "f352251d94036f59735ec75adb17dc1874c2c6e6f8d5dda3bb5e5ec0c034589e",
     "sha": "1dc7382d"
   },
+  "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternstoneFormations.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "82f0c94b30abb68e47892f7065f6f3084d0962a2a2efc1970d36484fb6c460d1",
+    "sha": "c8047b0ff"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternstoneRock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7418936a635862307c8353be8f10e998aebe87fb50b3e9f572f2a908069ba9ee",
+    "sha": "c8047b0ff"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/SoundDefs/RUT_DeepAmbience.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fa9872cda1e43f4389b2d0b910d6ddb54fd646769df3e47814207e07b8e98744",
+    "sha": "c8047b0ff"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/TerrainDefs/RUT_LanternstoneTerrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a2ab5831874a897ac9bd1d4c1fad9e882b908d26dcff3f64b556500f0750499c",
+    "sha": "c8047b0ff"
+  },
   "src/RimUtinni/LanternDeeps/Defs/ThingDefs_Buildings/RUT_LanternDeepEmergence.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -15836,6 +15872,30 @@
     "date": "2026-09-12",
     "hash": "4ae30a2586306f9ea409fa9a1dce7978f20dcb79eaecca2b10ccda1d3071507b",
     "sha": "d1c393c02"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/ThingDefs_Items/RUT_LanternstoneItems.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3e806f9d3d28d2f51c082bc05393c226e75161446892bac4ed85c29e5f69acfc",
+    "sha": "c8047b0ff"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/ThingDefs_Natural/RUT_LanternstoneFormations.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "830859617274d8c1911def7618f9af2bfa7abab9f93311e173b25487fbe63659",
+    "sha": "c8047b0ff"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/ThingDefs_Natural/RUT_LanternstoneWall.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0d9e59086abef17e5c3faacb1cc08463d1e289685697116154985bed0987cb56",
+    "sha": "c8047b0ff"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/ThingDefs_Plants/RUT_DeepFlora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5e5f55e99dd26668eb3f6ec36f5b806c1aad5ceda1fee2e27f2a61e1aed62c69",
+    "sha": "c8047b0ff"
   },
   "src/RimUtinni/LanternDeeps/LICENSE": {
     "cleanCount": 1,
@@ -15892,10 +15952,10 @@
     "sha": "009b887ef"
   },
   "src/RimUtinni/LanternDeeps/Source/GenStep_DeepFloraGate.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-18",
-    "hash": "7780230c7e5655bdb43c3e3c2d5f02b55237954ee530ce90c006a447954307a5",
-    "sha": "009b887ef"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "9be2575bf66aab68a56ad2eebbf9a0d57b320c0f43e3a871ff368297152d1392",
+    "sha": "c8047b0ff"
   },
   "src/RimUtinni/LanternDeeps/Source/GenStep_LanternstoneRock.cs": {
     "cleanCount": 1,
