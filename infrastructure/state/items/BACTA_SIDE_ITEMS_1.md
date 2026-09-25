@@ -134,8 +134,21 @@ Offline (this pass, no bridge):
   (`Textures/Things/Building/Bacta/PLACEHOLDER.md`,
   `Textures/Things/Item/Bacta/PLACEHOLDER.md`, both updated this pass).
 
-## status (FOUNDRY, 2026-09-24)
+## status (FOUNDRY, 2026-09-24 game-down window)
 
-Built, offline-validated clean, 9/10 files deployed (DLL blocked by OS lock, documented
-above). Left `doing` — no bridge this pass, so nothing live-observed. Whoever next holds the
-bridge: redeploy the DLL, then run the quicktest in `## verify` above.
+**DLL now deployed — 10/10 files in sync.** Game was confirmed genuinely down
+(`./game` → `NOT RUNNING`) before touching anything. Rebuilt
+`RimMandrake.StarWars.Bacta.dll` (`dotnet build -c Release`, 0 warnings/0 errors) and
+`deploy_custom_mods.py --mod Bacta --apply` → `VERIFIED in sync`; md5 of the repo copy
+and the deployed copy match byte-for-byte. A full `--mod Bacta` re-plan afterward reports
+`in sync (22 files)` / `Everything in sync`.
+
+Re-ran `validate_patch.py --live --defs` against the live 621-mod dump
+(`DefDump/captures/2026-09-24T22-19-22Z`) and `ModsConfig.FULL.LATEST.xml`: both patches
+`OK - 0 errors` (5 pre-existing advisory warnings, unchanged from the prior pass, not
+regressions). `run_selftests.py`: **75/75 passed, 0 failed.**
+
+Left `doing` — game stayed down the whole pass, so no bridge was taken and the live
+quicktest in `## verify` (droid healing rate, patch/spray consumption, settings render)
+is still owed. Whoever next holds a live game: take the bridge, run that quicktest, then
+close or note accordingly.
