@@ -152,12 +152,19 @@ There is no `kits/slime_kit_spec.md`; `the_slime.md` §3/§7 plus `the_slime_gen
 
 🔑 **None for steps 1–4 — FOUNDRY can start tomorrow morning.** Step 5 is Desktop-only and that is not a blocker.
 
-🔴 **But one DECISION gates the roster half of step 2, and it is BENCH's to put to the owner, not FOUNDRY's to take:** §4b (`biome_mod_architecture.md:281-283`) says *"Merged in: anything `RUT_Slime.xml` carries that the RimMandrake def lacks … its fauna entries stay inline, none is Star Wars."* Doing that would import **10 donor fauna + 5 donor flora rows** (`AA_*`, `GR_*`, `AB_*`) into `RM_GelatinousSlime`. Two things stand against it, both MEASURED:
+✅ **The roster DECISION is RULED — no donor merge, twice over.** The §4b reading this section
+was written against is superseded: `biome_mod_architecture.md` (§4, Slime bullet) has said since
+2026-09-23 (§7 Q14) *"NOT merged … `RM_GelatinousSlime` stays donor-free and thin … the rest of
+the roster is filled with new creatures of ours, not donor rows."* And the owner re-confirmed it
+typed into a question card 2026-09-24: *"We absolutely don't want patched donor stuff in there,
+we would remake."* ⇒ Steps 1–4 are fully unblocked; `the_slime.json`'s donor rows are NOT
+retargeted at the def — that roster's slots are filled with our own new creatures at the Slime's
+own sitting. The two MEASURED facts that stood against the merge, kept for the record:
 
 1. `About.xml` promises, in shipped player-facing text: *"This mod ships standalone: nothing of Alpha Biomes is required, referenced or included, and every terrain, plant, creature, weather and building here is its own."* And it **keeps** that promise — zero `AB_`/`AA_`/`GR_`/`alphaanimals`/`alphabiomes` references across all 24 def files and all 12 `.cs` (only two explanatory *comments* name them).
 2. The def's own comment (`GelatinousSlime.xml:177-185`) rules the thin roster a **design**, not an omission: *"THE ROSTER IS DELIBERATELY THIN, AND THAT IS SPIKE C … SlimeVisitorSpawner pulls arrivals from the NEIGHBOURING world tiles' own biomes … A hand-written animal list would be a lie about a biome whose whole fiction is 'everything that ever touched it'."*
 
-⇒ ⛔ **FOUNDRY must not merge the donor rows on §4b's word, and must not retarget `the_slime.json`'s `defNames` until this is answered** — retargeting the roster alone would point a 17-row donor roster at a def that deliberately ships none of it. Everything else in the plan below is unblocked.
+⇒ ⛔ **FOUNDRY still must not merge donor rows or retarget `the_slime.json`'s donor defNames at the def** — that ban is now the ruling itself, not an open question. Everything in the plan below is unblocked. Open design offer (BENCH, 2026-09-24, pending the owner's word): a small map-generation seed pass spawning 3–5 pre-slimified neighbour visitors so the biome opens already showing its fiction, instead of gelatids-only for the first days.
 
 ### 11. Concrete step plan
 
