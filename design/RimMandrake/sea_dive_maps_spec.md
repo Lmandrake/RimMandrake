@@ -5,18 +5,15 @@ diving opens a small underwater map where each sea's floor cast (the BiomeDef's 
 actually spawns, one per sea, shared machinery across the four terminal seas (`RM_TheScald`,
 `RM_GreySea`, `RM_TwilightSea`, `RM_PropaneLake`, all in `src/RimMandrake/TerminalBiomes`).
 
-Status: DRAFT design, 2026-09-25. Nothing built. Engine claims are labelled **MEASURED** (read in
-the 1.6 decompiled source via RimSage this sitting, symbol cited) or **UNMEASURED**.
-
-⚠️ `infrastructure/state/items/SEA_DIVE_MAPS_BUILD_1.md` does **not** exist on disk and the id
-appears in no ledger shard as of this writing — BENCH files it; this spec is its design input.
+Status: RULED design, 2026-09-25 (§7). Nothing built. Engine claims are labelled **MEASURED**
+(read in the 1.6 decompiled source via RimSage this sitting, symbol cited) or **UNMEASURED**.
 
 ## 0. Read first — what already exists (do not re-invent)
 
 | already built | where | what it gives this spec |
 |---|---|---|
 | **A pocket map, in this repo, live-tested** | `src/RimUtinni/LanternDeeps/` — `RUT_LanternDeepGenerator.xml` (MapGeneratorDef with `pocketMapProperties`), `RUT_LanternDeepMineshaft.xml` (a `thingClass MapPortal` building), `Patch_PocketMapGrowthRate.cs`, `DeepFloraPlanter.cs` | the whole entry/exit/generator shape, plus two MEASURED pocket-map crashes and their fixes (§2.4) |
-| Shore dive jobs | `src/RimMandrake/DivingInteraction/` (`RM_JobDriver_DiveHunt/Commune`, `RM_FloatMenuOptionProvider_Dive`, `RM_MapComponent_DiveSites`, `RM_DiveUtility.DiveEligibleTag`) | the `RM_DiveEligible` terrain tag = where a dive line may stand; the float menu gets a third option |
+| Shore dive jobs | `src/RimMandrake/DivingInteraction/` (`RM_JobDriver_DiveBase/Hunt/Commune`, `RM_FloatMenuOptionProvider_Dive`, `RM_MapComponent_DiveSites`, `RM_DiveUtility.DiveEligibleTag`) | **the entry**: the float menu gets a third option, the job driver base is the descent, the map component owns the floor maps |
 | Settings gate seam | `RM_MechanicGates` / `RM_MechanicGateExtension` (`EnvironmentalHazards`) — TerminalBiomes already registers `Scald.S1…S6` in `RM_TerminalBiomesMod.cs:192-196` | per-sea and per-mechanic toggles with zero new plumbing |
 | Generic floor painters | `RM_GenStep_TerrainChannels` (random-walk channels of any TerrainDef), `RM_GenStep_ScatterPools` (3–6 spaced pools), `RM_GenStep_PlacedSetPieces` + `RM_SetPieceElement_AnchoredPawn`, `RM_ScattererValidator_NearThingDef` | Twilight's underwater rivers, Grey's brine pools, Scald's vents + sail clusters, statuary set-pieces |
 | Weather forcing | `RM_GameCondition_WeatherPulse` / `GameCondition_EnvironmentalWeather` (override `GameCondition.ForcedWeather()`) | one held "murk" weather per floor |
@@ -26,19 +23,20 @@ appears in no ledger shard as of this writing — BENCH files it; this spec is i
 
 ## 1. The experience
 
-**Shared shape (all four seas).** On the shore, on any `RM_DiveEligible` shallow cell, a colonist
-builds a **dive line** — a weighted line and float, cheap (cloth/rope-class + a few steel), the
-one new building. It is a `MapPortal`: its gizmo opens the vanilla enter dialog (pick pawns, load
-gear and food), pawns walk to it and go **down**; the first descent generates that sea's floor map
-(small: 60×60 default, tunable) and it persists — animals live on, harvest regrows, wrecks stay
-chiselled. Below, a **surface line** (the exit, vanilla `PocketMapExit` shape) is the only way up,
-and its rope is the only light source you did not bring. The floor is fully roofed by the water
-column ("the sea is the roof"): permanently dim, no sky, no flyers, no drop pods, no raids
-(pocket maps are outside the storyteller's target list — MEASURED, `StorytellerUtility.
-DefaultThreatPointsNow` redirects a pocket map to its `sourceMap`). The map edge is open floor
-running off into murk; the floor cast **walks in from the edges** exactly as surface wildlife does,
-so each sea's `<wildAnimals>` populate by vanilla rules and keep repopulating. Hauling the line in
-(the `CompSealable` gizmo) destroys the floor map — the game warns who is still down there.
+**Shared shape (all four seas).** On the shore, right-click any `RM_DiveEligible` shallow cell:
+beside today's "Dive to hunt" / "Dive to commune" is **"Dive down"**. No building. The colonist
+walks there, holds position (the same wait toil the shore jobs use), and goes **under**: the first
+descent generates that sea's floor map (100×100) and it **persists** — animals live on, harvest
+regrows, wrecks stay chiselled; every later dive from any shallow cell of that sea on that map
+lands on the same floor. Below, a **surface line** — a rope trailing up into the murk, the exit —
+is the only way up, and its glow is the only light you did not bring; going up returns you to the
+cell you last dived from. The floor is fully roofed by the water column ("the sea is the roof"):
+permanently dim, no sky, no flyers, no drop pods, no raids (pocket maps are outside the
+storyteller's target list — MEASURED, `StorytellerUtility.DefaultThreatPointsNow` redirects a
+pocket map to its `sourceMap`). The map edge is open floor running off into murk; the floor cast
+**walks in from the edges** exactly as surface wildlife does, so each sea's `<wildAnimals>`
+populate by vanilla rules and keep repopulating. What you carry down is what is on you (apparel,
+inventory); what comes up rides the surface line's vanilla load dialog (haul-to-portal).
 
 Every dive is on a clock: **deep exposure** (§4) rises while a diver stands in the open on the
 floor and heals only under a roof-in-the-roof (an air-bell: any built or natural sub-roof cell,
@@ -53,7 +51,7 @@ surface line — the vanilla portal load/unload flow, unchanged.
 | **Scald** (`the_scald.md`) | dark mat-floored basin, rainbow **welcome blankets** on everything, **vents** (`RUT_ScaldVent`) with **bubble-sailors** (`RM_Noohm`) tethered to them, **shulla** shoals darting the dung-fall; the wrecks of §8 in the deep | rainbow pigment (mat harvest), walker chitin, vent-side salvage, the one place the shoal-fish are *seen* not just caught | **heat**: map temperature 55 °C (heatstroke, vanilla) + vent-adjacent floor cells carry `burnDamage 1` (`HediffGiver_Terrain`, the mechanism the shore jobs already pay with) | ban 3 (crossing scald water always costs — heat + burn, no immunity item); ban 4 (the floor is "merely hot", nothing swims the boil: the map IS the depth, the surface never becomes walkable); ban 1 (nothing potable — no water source down here); ban 5 (nothing cools or drains it) |
 | **Grey Sea** (`the_grey_deep.md`) | grey-green murk, a **pillar forest** (pale mineable pillar stone), **brine pools** with shores, the **statuary** (encased dead as mineable/chisel objects) | soluble minerals dip-harvested at pool **shores**, pillar stone, jacketed salvage, the giant's shed crust; **fessk** watching, **otheska/sorruth** grazing | **cold + brine**: 4 °C; pool water is `RM_WastelandBrineDeep` (impassable, so ban 1 is structural) ringed by `…BrineShallow` (`dangerous`, the harvest cell) | ban 1 (no survivable pool entry: deep brine is Impassable — engine-enforced, not a rule); ban 2 (no schools: `wildGroupSize 1` on every Grey kind); ban 4 (no glow: no glowing flora, the only light is the surface line and what you carry); ban 5 (statuary never rots: they are Buildings, not corpses) |
 | **Twilight Sea** (`the_twilight_deep.md`) | green dusk under the **mat-roof**, **skylight** columns (a few unroofed light-well cells — the one place a flyer could enter, and the *only* natural light), **mud-channel rivers** (impassable "sinking water" channels with rich banks), kelp towers, and **lit Compact dwellings** on the banks (v1: a set-piece of 2–3 huts + lamps, uninhabited by pawns; the inhabited town is the sheet's v2) | bank harvest (the richest gathering ground), kelp, **noolim** shoals in the light columns, **loohn** hanging in the dark between | **mild**: 14 °C, the longest clock of the four — the comfortable sea, by ruling | ban 3 (no swimmable river: channels are Impassable); ban 4 (Compact never hostile: no pawns spawn, nothing attacks from the huts); ban 5 (no permanent skylight: regenerated per map, never a building); ban 1 (nothing this map does touches the surface roster) |
-| **Propane Lake** (`the_propane_lakes.md`) | black **solid-propane floor** (`RM_SolidPropane`) under liquid fuel; **tholin dust** fallout, the Blue Desert's arrived dead as salvage, and the **war lab's** outer wall as a locked set-piece (a sealed ancient door — nothing inside in v1) | **oovanam** sifting the dust, **heemin** shimmer in the fuel layer above (rendered as the map's weather, not a pawn: they are the catch, `fishTypes`), the **vaunoom** as a rare arrival that hunts pipe-and-pawn | **cold**: **−79 °C** map temperature; hypothermia is the whole clock and it is short. Fuel above: any fire/explosion on the floor is a map-wide ignition (§4) | ban 4 (no ignition without a source: the map ignites only from a heat or spark event); ban 8 (lab guardians stay mechanoid/ancient — a door, no fauna); ban 3 (no standing visibility penalty: the murk here is dark, not fog); ban 6 (nothing native leaves — the exit's `CompSealable`-style validator refuses tamed natives, §4) |
+| **Propane Lake** (`the_propane_lakes.md`) | black **solid-propane floor** (`RM_SolidPropane`) under liquid fuel; **tholin dust** fallout, the Blue Desert's arrived dead as salvage, and the **war lab's** outer wall as a locked set-piece (a sealed ancient door — nothing inside in v1) | **oovanam** sifting the dust, **heemin** shimmer in the fuel layer above (rendered as the map's weather, not a pawn: they are the catch, `fishTypes`), the **vaunoom** as a rare arrival that hunts pipe-and-pawn | **cold**: **−79 °C** map temperature; hypothermia is the whole clock and it is short. Fuel above: any fire/explosion on the floor is a map-wide ignition (§4) | ban 4 (no ignition without a source: the map ignites only from a heat or spark event); ban 8 (lab guardians stay mechanoid/ancient — a door, no fauna); ban 3 (no standing visibility penalty: the murk here is dark, not fog); ban 6 (nothing native leaves — the surface line's `CanEnterPortal` check refuses tamed natives, §4) |
 
 Hoolen (surface skimmer) and the two `AA_` flyers stay surface `wildAnimals` and are excluded
 from the floor spawn (§3.3).
@@ -62,14 +60,24 @@ from the floor spawn (§3.3).
 
 ### 2.1 Pocket map lifecycle (MEASURED)
 
-- `MapPortal : Building, IThingHolder` (`RimWorld/MapPortal.cs`) — `def.portal`
-  (`MapPortalProperties`: `pocketMapGenerator`, `exitDef`, `pocketMapSize` default 100, entered
-  letter, `traverseSound`). `GetOtherMap()` lazily calls `GeneratePocketMapInt()` — **`protected
-  virtual`**, so a subclass can pick the generator at runtime — which calls
-  `PocketMapUtility.GeneratePocketMap(size, generatorDef, extraGenSteps, sourceMap)`.
-- `PocketMapUtility.GeneratePocketMap` makes a `PocketMapParent` world object (`sourceMap`,
+- **`PocketMapUtility.GeneratePocketMap(size, generatorDef, extraGenSteps, sourceMap)` is a
+  public static** that needs no building: it makes a `PocketMapParent` world object (`sourceMap`,
   `mapGenerator`), runs `MapGenerator.GenerateMap(..., isPocketMap: true)`, adds it to
-  `Find.World.pocketMaps`. `DestroyPocketMap` removes it and `DeinitAndRemoveMap`s.
+  `Find.World.pocketMaps`. `DestroyPocketMap` removes it and `DeinitAndRemoveMap`s. The only
+  building-coupled piece in vanilla is the **exit**: `GenStep_PlaceCaveExit` hard-spawns
+  `ThingDefOf.CaveExit`, and `PocketMapExit.SpawnSetup` binds to
+  `PocketMapUtility.currentlyGeneratingPortal` (logs "could not find map portal" and leaves
+  `entrance` null if none). ⇒ the floor generator **omits `PlaceCaveExit`** and spawns its own
+  exit class (§2.3), which is a `MapPortal` but not a `PocketMapExit`.
+- `MapPortal : Building, IThingHolder` (`RimWorld/MapPortal.cs`) — `GetOtherMap()` /
+  `GetDestinationLocation()` / `EnterString` are `virtual`; `Dialog_EnterPortal`,
+  `JobDriver_EnterPortal`, `WorkGiver_HaulToPortal` and `JobGiver_ExitMap`'s pocket branch all go
+  through those virtuals or `ThingRequestGroup.MapPortal`, which `Includes` **any
+  `MapPortal` subclass** (`ThingListGroupHelper.Includes`: `typeof(MapPortal).IsAssignableFrom`).
+  So a surface-line exit that answers "other map = the surface map, destination = the dive cell"
+  gets the whole up-flow (load dialog, hauling, fleeing pawns head for it) for free.
+- A `Map` is `Scribe_References`-able (`MapPortal.ExposeData` does exactly that with
+  `pocketMap`), so a `MapComponent` can own floor maps across save/load.
 - `MapGenerator.GenerateMap` (isPocketMap branch, lines ~128-137): `map.info.isPocketMap = true`;
   `map.pocketTileInfo = new Tile { PrimaryBiome = pocketMapProperties.biome }`; the properties'
   `tileMutators` are added to that tile. `map.TileInfo` returns `pocketTileInfo` for pocket maps
@@ -77,15 +85,15 @@ from the floor spawn (§3.3).
   `WildAnimalSpawner` reads (`map.BiomeAt(loc).AllWildAnimals`).
 - `PocketMapProperties`: `biome`, `tileMutators`, `temperature`, `destroyOnParentMapAbandoned`
   (default true), `preventPrisonerEscape`, `canLaunchGravship`, `canBeCleaned`.
-- Entry: `MapPortal.GetGizmos` → `Dialog_EnterPortal` → `JobDriver_EnterPortal` (walk, 90-tick
-  wait, `DeSpawnOrDeselect` + `GenSpawn.Spawn` on the other map at `GetDestinationLocation()`, i.e.
-  the exit's position; `UnloadEverything = !otherMap.IsPocketMap`, so gear stays on the pawn going
-  down). Exit: `PocketMapExit : MapPortal`, spawned by the generator's `PlaceCaveExit` GenStep,
-  binds itself to `PocketMapUtility.currentlyGeneratingPortal` in `SpawnSetup` (logs an error if
-  none — the exit **must** be spawned during portal-driven generation). `JobGiver_ExitMap` on a
-  pocket map sends fleeing/leaving pawns to any reachable `MapPortal` instead of the map edge.
-- Teardown: `CompSealable.Seal()` → `PocketMapUtility.DestroyPocketMap` (+ `destroyPortal`
-  option), with the "people/animals will be left behind" confirmation for free.
+- The transfer itself is nine lines in `JobDriver_EnterPortal`'s last toil (`DeSpawnOrDeselect`,
+  `GenSpawn.Spawn` on the other map at a `StandableCellNear` the destination, `UnloadEverything =
+  !otherMap.IsPocketMap`, clear queued work, `Lord.Notify_PawnLost`) — the descent job copies that
+  shape; the ascent IS that driver, via the surface line. `JobGiver_ExitMap` on a pocket map sends
+  fleeing/leaving pawns to any reachable `MapPortal` instead of the map edge.
+- Teardown: `PocketMapUtility.DestroyPocketMap(map)` directly (vanilla `CompSealable` casts its
+  parent to the *entrance* portal's `PocketMap`, which we do not have). Floors persist by ruling;
+  destruction happens only on the persist-off setting or map abandonment
+  (`destroyOnParentMapAbandoned`).
 - Temperature: `MapTemperature.OutdoorTemp`/`SeasonalTemp` return
   `generatorDef.pocketMapProperties.temperature` on a pocket map (before any world lookup) — so
   the per-sea clock temperature is one XML number and needs no world tile.
@@ -100,8 +108,8 @@ from the floor spawn (§3.3).
   not — there is no pocket-map gate in `WildAnimalSpawner`.
 - `DesiredAnimalDensity` = `map.TileInfo.AnimalDensity` (`Tile.cs:159` — `biome.animalDensity ×
   each mutator's animalDensityFactor`) × commonality/season factors. **The four sea defs carry
-  `animalDensity` 0.15 / 0.1 / 0.1 / 0.1** — at that value a 60×60 floor's whole ecosystem budget
-  is ≈0.05 weight, i.e. nothing spawns. ⇒ the generator's `tileMutators` list carries a new
+  `animalDensity` 0.15 / 0.1 / 0.1 / 0.1** — at that value a 100×100 floor's whole ecosystem budget
+  is ≈0.10–0.15 weight (`Area / (10000 / density)`), i.e. nothing spawns. ⇒ the generator's `tileMutators` list carries a new
   `TileMutatorDef RM_SeaFloorHabitat` with `animalDensityFactor` (≈30, tune) and a wide
   `animalDensityRange`. This keeps the surface defs untouched (their density is a GravTide/coastal
   number, not ours to change here).
@@ -110,8 +118,9 @@ from the floor spawn (§3.3).
   A fully roofed floor therefore needs `allowRoofedEdgeWalkIn=true` on the same
   `RM_SeaFloorHabitat` mutator (`Tile.AllowRoofedEdgeWalkIn` reads it from mutators, `Tile.cs:198`;
   Odyssey's own `TileMutators_Natural.xml:255` uses the flag) **and** open walkable floor at the
-  map edge (no rock ring). `CanReachColony` during play is satisfied by any reachable player pawn
-  or colonist building — the surface line qualifies.
+  map edge (no rock ring). `CanReachColony` (`CanReachFactionBase`) during play is satisfied by any
+  reachable player pawn, then by `CanReachBiggestMapEdgeDistrict` — open edges satisfy it even
+  with no colonist below.
 - Initial population: vanilla pocket generators (Undercave, InsectLair) omit the `Animals`
   GenStep; ours **includes `GenStepDef Animals`** (`GenStep_Animals` loops
   `SpawnRandomWildAnimalAt` until the ecosystem is full, using
@@ -128,15 +137,17 @@ from the floor spawn (§3.3).
 
 | piece | status |
 |---|---|
-| `MapPortal`, `PocketMapExit`, `CompSealable`, `Dialog_EnterPortal`, `JobDriver_EnterPortal`, `JobGiver_ExitMap` pocket branch, `PlaceCaveExit`, `Animals`, `Fog` GenSteps, `HediffGiver_Terrain` burn | vanilla, reused as-is |
+| `MapPortal` (as the exit's base), `PocketMapUtility`, `Dialog_EnterPortal`, `JobDriver_EnterPortal`, `WorkGiver_HaulToPortal`, `JobGiver_ExitMap` pocket branch, `Animals`, `Fog` GenSteps, `HediffGiver_Terrain` burn | vanilla, reused as-is |
 | `RM_GenStep_TerrainChannels`, `RM_GenStep_ScatterPools`, `RM_GenStep_PlacedSetPieces`, `RM_ScattererValidator_NearThingDef`, `GameCondition_EnvironmentalWeather` (held weather), `HediffCompProperties_EnvironmentalExposure`, `RM_MechanicGates` | ours, reused as-is (EnvironmentalHazards) |
 | `Patch_PocketMapGrowthRate` (Harmony prefix on `MapPlantGrowthRateCalculator.BuildFor`) and `DeepFloraPlanter`/`MapComponent_DeepFloraRegrowth` | ours but `RUT_`-tier in LanternDeeps; **lift to `RM_` in the new mod** (§2.4) — the LanternDeeps copies then delete in favour of the shared one, or stay until its own sitting |
-| **NEW** `RM_Building_DiveLine : MapPortal` — overrides `GeneratePocketMapInt` to pick the generator from the sea under it (§3.1); `Destroy` → `DestroyPocketMap` | new, small |
-| **NEW** `RM_PlaceWorker_DiveLine` — placement only on `RM_DiveEligible` terrain whose sea carries `RM_DiveMapExtension` | new, small |
-| **NEW** `RM_DiveMapExtension : DefModExtension` (on the sea BiomeDef): `generator`, `floorTerrain`, `edgeTerrain`, `murkWeather`, `excludeFromFloor`, `exposureDays` | new, XML surface only |
+| **NEW** `RM_JobDriver_DiveDown : RM_JobDriver_DiveBase` — `ResolveOutcome` = get-or-generate the sea's floor from `RM_MapComponent_DiveSites`, record this cell as the return cell, transfer the pawn (the `JobDriver_EnterPortal` shape) | new, small |
+| **EXTEND** `RM_MapComponent_DiveSites` — adds `Dictionary<BiomeDef, Map> floorMaps` + `Dictionary<BiomeDef, IntVec3> returnCells` (`Scribe_References` / `Scribe_Values`); `GetOrGenerateFloor(sea)` calls `PocketMapUtility.GeneratePocketMap` with a static `currentlyGeneratingDive` context (the `currentlyGeneratingPortal` pattern) so the exit GenStep can bind | small edit |
+| **NEW** `RM_SurfaceLine : MapPortal` (the exit; `exitDef`-style ThingDef, Standable, glower, `CompProperties_Effecter` lightshafts as `CaveExit` has) — overrides `GetOtherMap` → surface map, `GetDestinationLocation` → the sea's return cell, `EnterString` "Surface"; ignores `def.portal.pocketMapGenerator` | new, small |
+| **NEW** `RM_GenStep_PlaceSurfaceLine` — replaces `PlaceCaveExit`: centre-ish standable cell, clears radius 4.5, spawns `RM_SurfaceLine`, binds it from `currentlyGeneratingDive`, sets `MapGenerator.PlayerStartSpot` | new, tiny |
+| **NEW** `RM_DiveMapExtension : DefModExtension` (on the sea BiomeDef): `generator`, `entryTerrains`, `floorTerrain`, `murkWeather`, `excludeFromFloor`, `exposureDays` | new, XML surface only |
 | **NEW** `RM_GenStep_SeaFloorBase` — paints the whole map with the sea's `floorTerrain`, no rock ring, reading the extension | new, tiny (vanilla `Terrain` GenStep would lay the sea's `terrainsByFertility`, i.e. impassable deep water everywhere — skipped by omission) |
 | **NEW** `RM_MapComponent_SeaFloor` — on `MapGenerated`: starts the held murk `GameCondition` and applies `RM_DeepExposure` bookkeeping; refuses map-wide fire if the sea is not flammable (Propane ignition, §4) | new, small |
-| DivingInteraction float-menu third option "Dive down" (goes to the line's enter dialog) | small edit to `RM_FloatMenuOptionProvider_Dive` |
+| DivingInteraction float-menu third option "Dive down" (`RM_Job_DiveDown`), shown only when the cell's terrain is in some sea's `entryTerrains` | small edit to `RM_FloatMenuOptionProvider_Dive` |
 
 ### 2.4 Two MEASURED pocket-map crashes the Lantern Deeps already paid for
 
@@ -152,9 +163,15 @@ from the floor spawn (§3.3).
 
 ### 2.5 UNMEASURED — test on the Desktop before building past step 2 of §6
 
-- Whether a `MapPortal` whose `def.portal.pocketMapGenerator` differs from the generator actually
-  used (runtime pick) confuses anything beyond the two label lookups (`MapPortal.GetGizmos`,
-  `PocketMapExit.EnterString`) — mitigated by setting the Scald generator as the XML default.
+- A `MapPortal` subclass used as an exit with **no entrance building**: the code paths it needs
+  (`Dialog_EnterPortal` → `JobDriver_EnterPortal` → `GetOtherMap`/`GetDestinationLocation`;
+  `JobGiver_ExitMap`; hauling) are read and go through virtuals/the request group, but no vanilla
+  def does this — a live ascent with a hauled item is the proof. `MapPortal.GetGizmos` reads
+  `def.portal.pocketMapGenerator.label` only when its own `pocketMap != null` (never, for the
+  exit), so `portal` may be an empty block.
+- `PocketMapParent.sourceMap` on a floor whose surface map is later abandoned:
+  `destroyOnParentMapAbandoned` is the vanilla answer; whether our component's `Map` reference
+  survives that cleanly (null on load) needs a save/abandon/load test.
 - Whether `GameCondition.ForcedWeather()` holds against `WeatherDecider` on a pocket map exactly
   as on a surface map (`RUT_ScaldSteamLock` proves it on the surface only).
 - Whether `GenStep_Fog` + `PlaceCaveExit` unfog a sensible radius on an all-open floor (vanilla
@@ -165,7 +182,7 @@ from the floor spawn (§3.3).
 
 ## 3. Map generation
 
-### 3.1 One generator per sea, one building
+### 3.1 One generator per sea, one floor per sea per surface map
 
 Four `MapGeneratorDef`s (`RM_ScaldFloorGenerator`, `RM_GreySeaFloorGenerator`,
 `RM_TwilightSeaFloorGenerator`, `RM_PropaneLakeFloorGenerator`), each: `isUnderground true`
@@ -174,9 +191,18 @@ nobody "mines" the ceiling), `pocketMapProperties { biome = that sea; temperatur
 tileMutators = [RM_SeaFloorHabitat] }`, `disableCallAid true`, `ignoreAreaRevealedLetter true`,
 `customMapComponents = [RM_MapComponent_SeaFloor, RM_MapComponent_DeepFloraRegrowth]`.
 
-The dive line resolves its sea from the terrain it stands on: `RM_DiveMapExtension` on each sea
-BiomeDef lists `entryTerrains` (the sea's `RM_DiveEligible` shallows); `RM_Building_DiveLine`
-finds the one sea claiming that terrain and uses its `generator`. Grey and Twilight today have
+**Anchoring.** The dive job resolves its sea from the clicked cell's terrain: `RM_DiveMapExtension`
+on each sea BiomeDef lists `entryTerrains` (that sea's `RM_DiveEligible` shallows); the one sea
+claiming the terrain supplies the `generator`. The persistent floor is owned by the **surface
+map's `RM_MapComponent_DiveSites`**, keyed by sea BiomeDef — so a shore with two hundred dive
+cells still has exactly **one** floor per sea, and a surface map bordering two seas has two. The
+floor's `PocketMapParent.sourceMap` is that surface map (vanilla abandonment cleanup applies).
+The surface line's return cell is the cell of the **most recent** descent (updated per dive), so
+a colony that dives from its own jetty comes up at its own jetty. Size: `100×100` (vanilla's
+`pocketMapSize` default; 10,000 cells) — four persistent floors on one coastal map tick like four
+extra small maps (each runs `WildAnimalSpawner`/plants/weather every tick); the persist-off
+setting (§5) is the relief valve, and per-floor `animalDensity` stays bounded by the ecosystem
+weight budget, which scales with area. Grey and Twilight today have
 **no own shallow terrain** (they fall back to the vanilla ocean pair in SeaShores' resolution
 order) — tagging vanilla `WaterOceanShallow` would open diving on every ocean, so step 1 authors
 `RM_GreySeaShallow`/`RM_GreySeaDeep` and `RM_TwilightSeaShallow`/`RM_TwilightSeaDeep` (SeaShores
@@ -199,7 +225,7 @@ RM_SeaFloorFeatures      (per sea, 200-300):
            + skylights: 3-5 unroofed discs (roof removed) with a glow-less "lightwell" effecter
            + Compact huts set-piece (buildings + lamps, no pawns)
   Propane  tholin dust filth band (RM_GenStep_EdgeBandFilth exists) + lab wall set-piece
-PlaceCaveExit            (vanilla; the surface line = exitDef RM_SurfaceLine, a CaveExit clone)
+RM_GenStep_PlaceSurfaceLine (ours; spawns RM_SurfaceLine — vanilla PlaceCaveExit is omitted, §2.1)
 RM_DeepFloraGate         (lifted planter: plants from the sea's wildPlants under roof)
 Animals                  (vanilla GenStep_Animals — the cast, from <wildAnimals>)
 Fog                      (vanilla)
@@ -255,9 +281,9 @@ weather with `HediffCompProperties_EnvironmentalExposure` damage rate ×10) for 
 back. No fiat ignition; a diver with a torch is the player's own fault. Whether this should also
 touch the surface lake map is an owner question (§7 Q3).
 
-**Leaving with things.** Vanilla portal load flow. `RM_Building_DiveLine.IsEnterable` (via a
-`ThingComp.CanEnterPortal`) refuses a *tamed Propane native* going up (sheet ban 6, R-H10) — the
-one custom acceptance rule; everything else may come up.
+**Leaving with things.** Vanilla portal load flow on the surface line. A `ThingComp.CanEnterPortal`
+on `RM_SurfaceLine` refuses a *tamed Propane native* going up (sheet ban 6, R-H10) — the one
+custom acceptance rule; everything else may come up. Going down carries only what is on the pawn.
 
 **Death down there.** A downed diver is carried to the surface line by a colonist (vanilla
 `FloatMenuOptionProvider_CarryPawnToExit` is pocket-map aware — MEASURED). A corpse left on the
@@ -268,14 +294,14 @@ than N days into an `RM_Statuary` building (Grey only; sheet §5 "the statuary o
 
 All gates go through `RM_MechanicGates` (unregistered = enabled; a `RM_MechanicGateExtension` on
 each gated def). Registered by the **DivingInteraction** mod constructor next to its existing
-settings (`RM_DivingSettings`), because the dive line is its building; TerminalBiomes' existing
+settings (`RM_DivingSettings`), because the descent is its job; TerminalBiomes' existing
 per-sea toggles (`scaldEnabled` … `greySeaEnabled`) are honoured by ANDing, same as `Scald.S*`.
 
 | setting | default | gate key / effect |
 |---|---|---|
-| Dive maps enabled (master) | on | `Dive.Maps` — off: dive line unbuildable, existing lines' enter gizmo disabled, floors persist |
-| Per sea: Scald / Grey / Twilight / Propane floor | on | `Dive.Floor.<Sea>` on each generator's exit/entry — off hides that sea's dive line option |
-| Floor map size | 60 | `pocketMapSize` override on the building at build time (40–100) |
+| Dive maps enabled (master) | on | `Dive.Maps` — off: "Dive down" absent from the float menu; existing floors persist and can still be surfaced from |
+| Per sea: Scald / Grey / Twilight / Propane floor | on | `Dive.Floor.<Sea>` — off hides that sea's "Dive down" |
+| Floor map size | 100 | side length passed to `GeneratePocketMap` for floors generated after the change (60–150) |
 | Deep exposure rate | 1.0× | multiplies `exposureDays` (0 = clock off — labelled "makes diving free; not the shipped game") |
 | Floor animal density | 1.0× | multiplies `RM_SeaFloorHabitat.animalDensityFactor` (0 = empty floors) |
 | Propane ignition | on | `Dive.PropaneIgnite` on the burn transition |
@@ -292,13 +318,14 @@ All-off degrades to today's shore-job-only diving. No worldgen-affecting toggle 
    per sea, `MayRequire="mandrake.rm.terminalbiomes"`, the existing Scald patch is the shape).
    Ships: the shore hunt/commune jobs now work on all four seas. Verify with `validate_patch.py
    --live --defs`.
-2. **The Scald floor, bare (falsification test).** `RM_DiveMapExtension`, `RM_Building_DiveLine`,
-   `RM_PlaceWorker_DiveLine`, `RM_SurfaceLine`, `RM_ScaldFloorGenerator` with only
-   `RM_SeaFloorBase → PlaceCaveExit → Animals → Fog`, `RM_SeaFloorHabitat` mutator, the lifted
+2. **The Scald floor, bare (falsification test).** `RM_DiveMapExtension`, `RM_JobDriver_DiveDown`
+   + float-menu option, the `RM_MapComponent_DiveSites` extension, `RM_SurfaceLine`,
+   `RM_GenStep_PlaceSurfaceLine`, `RM_ScaldFloorGenerator` with only
+   `RM_SeaFloorBase → RM_GenStep_PlaceSurfaceLine → Animals → Fog`, `RM_SeaFloorHabitat` mutator, the lifted
    growth-rate patch, the comfy-temperature pass on the 14 race defs. **Quicktest on the minimal
    list + TerminalBiomes + DivingInteraction: do noohm and shulla spawn at gen and walk in from
    the roofed edge?** If no, §2.5 is wrong and the mutator flag is the first suspect. Ships: a
-   walkable, populated Scald floor.
+   walkable, populated Scald floor. Same test proves the ascent: surface with a hauled item.
 3. **The clock.** `RM_DeepExposure`, four murk weathers + held condition, the dive suit, per-sea
    temperatures. Ships: diving costs something.
 4. **Scald dressing.** Vents + sails (existing scatterer), burn ring, wrecks, lifted flora planter
@@ -314,15 +341,14 @@ Steps 5–7 are independent of each other; each is one `rimworld-live-review` si
 looking at the floor before the next. Art owed per step is filed as it appears — check
 `infrastructure/artpipe/done/` first (CLAUDE.md rule).
 
-## 7. Open questions for the owner (one line each, draftable)
+## 7. Rulings — owner, 2026-09-25 (decisions taken by question card)
 
-1. **Persistence:** does a sea floor stay generated between dives (animals age, harvest regrows,
-   your dead stand where they fell), or is every dive a fresh map? — spec assumes **stays**.
-2. **Entry point:** a buildable dive line on the shore (spec), or should the existing right-click
-   "Dive" on shallow water be the only way down, with no building? — spec assumes **building**,
-   because the exit must bind to a `MapPortal` on the surface.
-3. **Propane ignition scope:** when the floor ignites, does the surface lake map burn too, or is
-   it contained to the dive? — spec assumes **contained** until ruled.
-4. **Twilight Compact huts in v1:** empty lit dwellings as scenery (spec), or no huts at all until
-   the v2 town? — spec assumes **scenery**.
-5. **Floor size:** 60×60 default (about a third of a small colony map) — bigger, smaller?
+1. **Persistence:** a sea floor stays generated between dives.
+2. **Entry:** right-click "Dive down" on shallow water only — no player-built building
+   (§2.1/§2.3).
+3. **Propane ignition:** contained to the dive map; the surface lake never burns from a dive.
+4. **Floor size:** 100×100.
+5. **Twilight Compact huts in v1** — not asked; the spec **assumes** empty lit dwellings as
+   scenery (the inhabited town stays the sheet's v2). Raise at the Twilight sitting (§6 step 6).
+
+No open questions remain.
