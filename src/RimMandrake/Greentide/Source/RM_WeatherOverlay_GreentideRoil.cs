@@ -49,14 +49,13 @@ namespace RimMandrake.Greentide
     // clear as an actual visibility mechanic) has no verified vanilla hook
     // — the spec's own M4 text already named this ❓/deferred and this pass
     // does not reopen it.
-    //
-    // Texture NOT shipped this pass (owed to the art pipeline, same
-    // DEPLOY_HOLD posture Scald's own overlay used): MatLoader.LoadMat on a
-    // missing texture logs an error and returns a placeholder material
-    // rather than throwing, so this does not block a build or a load.
     public class RM_WeatherOverlay_GreentideRoil : WeatherOverlayDualPanner
     {
-        private static readonly Material RoilOverlayWorld = MatLoader.LoadMat("Weather/GreentideRoilOverlayWorld");
+        // MatLoader.LoadMat reads only Unity Resources/, which no mod can ship to: a mod path
+        // returns null and MaterialAllocator.Create(null) throws in this type initializer,
+        // killing every Update() and blacking the map. Vanilla's own fog material stands in
+        // until a custom panner material exists.
+        private static readonly Material RoilOverlayWorld = MatLoader.LoadMat("Weather/FogOverlayWorld");
 
         public RM_WeatherOverlay_GreentideRoil()
         {
