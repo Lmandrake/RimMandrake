@@ -55,6 +55,11 @@
     <li>sarg.alphavehiclesneolithic</li>                    <!-- VehicleBeastLabels.xml, VehicleBeastSound_Fix.xml -->
     <li>VanillaExpanded.VWE</li>                            <!-- WeaponTags_Renormalise.xml -->
     <li>XMB.AncientUrbanrUins.MO</li>                       <!-- WeaponTags_Renormalise.xml -->
+
+    <!-- Added FORCE_DISTURBANCE_REFLAVOR_1 (2026-09-24): FindMod targets in
+         PsychicToForceDisturbance.xml with no loadAfter declaration. -->
+    <li>vanillaexpanded.vee</li>                            <!-- PsychicToForceDisturbance.xml -->
+    <li>vanillaracesexpanded.archon</li>                    <!-- PsychicToForceDisturbance.xml -->
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>ludeon.rimworld.ideology</li>
     <li>ludeon.rimworld.royalty</li>
