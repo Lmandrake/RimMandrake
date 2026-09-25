@@ -30,7 +30,7 @@ OLD_TO_NEW_BIOME = {
                                           # UMBRA_IS_A_REGION_NOT_A_BIOME_1 (Umbra
                                           # now names the region, not this biome)
     'AB_PyroclasticConflagration': 'RUT_TheForge',
-    'AB_RockyCrags': 'RUT_ForsakenCrags',
+    'AB_RockyCrags': 'RM_ForsakenCrags',  # RM_ mod built 2026-09-25, FORSAKENCRAGS_RM_MOD_BUILD_1
     'AB_TarPits': 'RUT_Sump',
     'AridShrubland': 'RUT_AridShrubland',
     'BiomeCypreJungle': 'RUT_Greentide',

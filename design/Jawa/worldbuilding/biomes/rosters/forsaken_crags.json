@@ -23,7 +23,7 @@
     }
   ],
   "defNames": [
-    "RUT_ForsakenCrags"
+    "RM_ForsakenCrags"
   ],
   "evictions": [
     {
@@ -319,13 +319,13 @@
   ],
   "new_defs": [
     {
-      "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 — ruled wild resident; AUTHORED as an RSW_ def in src/RimStarWars/SWBestiary/Defs/Livestock (FORSAKEN_CRAGS_PREDATORS_BUILD_1, closed 2026-09-02); its spawn patch ForsakenCrags_WildSpawns.xml still targets donor AB_RockyCrags, retarget at FORSAKENCRAGS_RM_MOD_BUILD_1 step 2",
+      "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 — ruled wild resident; AUTHORED as an RSW_ def in src/RimStarWars/SWBestiary/Defs/Livestock (FORSAKEN_CRAGS_PREDATORS_BUILD_1, closed 2026-09-02); its spawn patch ForsakenCrags_WildSpawns.xml retargeted from donor AB_RockyCrags to RM_ForsakenCrags at FORSAKENCRAGS_RM_MOD_BUILD_1, 2026-09-25",
       "kind": "creature",
       "mechanic_load": "per FORSAKEN_CRAGS_FAUNA_1",
       "name": "Cindermare"
     },
     {
-      "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 — ruled wild resident; AUTHORED as an RSW_ def in src/RimStarWars/SWBestiary/Defs/Livestock (FORSAKEN_CRAGS_PREDATORS_BUILD_1, closed 2026-09-02); its spawn patch ForsakenCrags_WildSpawns.xml still targets donor AB_RockyCrags, retarget at FORSAKENCRAGS_RM_MOD_BUILD_1 step 2",
+      "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 — ruled wild resident; AUTHORED as an RSW_ def in src/RimStarWars/SWBestiary/Defs/Livestock (FORSAKEN_CRAGS_PREDATORS_BUILD_1, closed 2026-09-02); its spawn patch ForsakenCrags_WildSpawns.xml retargeted from donor AB_RockyCrags to RM_ForsakenCrags at FORSAKENCRAGS_RM_MOD_BUILD_1, 2026-09-25",
       "kind": "creature",
       "mechanic_load": "per FORSAKEN_CRAGS_FAUNA_1",
       "name": "Skarnix"
