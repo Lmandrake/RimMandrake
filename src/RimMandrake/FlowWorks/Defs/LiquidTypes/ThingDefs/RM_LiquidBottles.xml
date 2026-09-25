@@ -28,12 +28,9 @@
   its bottle/bucket siblings — never barrel, the bulk TRADE good — see
   build_bottle_thingdef_xml's own comment.
 
+  Filling from a tank ships separately (RM_LiquidTank, Building_LiquidTank).
   Still deliberately NOT built (LIQUID_BOTTLE_LOOP_1's own stopping note):
-  filling from a TANK (the universal cargo tank design §6/§9 names, and the
-  spec's own "barrels... plus fill/empty bills at a tank" — no tank building
-  exists yet anywhere in FlowWorks or WreckedMachines, so all three sizes
-  this pass fill from terrain only), and revertsTo/rotsTo row data
-  (boiling/icy revert-on-bottle, blood-rot — LiquidBottledForm.ConfigErrors
+  revertsTo/rotsTo row data (boiling/icy revert-on-bottle, blood-rot — LiquidBottledForm.ConfigErrors
   requires a real revertTicks/rotTicks the moment either is set, and nothing
   reads them yet).
   ============================================================================
