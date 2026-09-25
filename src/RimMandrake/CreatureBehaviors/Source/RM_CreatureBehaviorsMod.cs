@@ -172,6 +172,12 @@ namespace RimMandrake.CreatureBehaviors
     //      (never the filth drop, the search radius or the seedling count,
     //      which stay whatever the def says); at 0 the filth still falls and
     //      the plant simply never spreads that way.
+    //  31. brineBatteryDischargeEnabled / brineBatteryDischargeMultiplier —
+    //      RM_CompDefensiveDischarge (WASTELAND_BRINE_BATTERY_DISCHARGE_1,
+    //      RUT_BrineBattery). Off: hurting a tagged pawn at close range never
+    //      shocks the attacker back. The dial scales only the discharge
+    //      strength (never the range or cooldown, which stay whatever the
+    //      def says); at 0 a hit is simply never returned.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -219,6 +225,8 @@ namespace RimMandrake.CreatureBehaviors
         public static bool directedAssaultBehaviorEnabled = true;
         public static bool seedPassageEnabled = true;
         public static float seedPassageGerminationMultiplier = 1f;
+        public static bool brineBatteryDischargeEnabled = true;
+        public static float brineBatteryDischargeMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -267,6 +275,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref directedAssaultBehaviorEnabled, "directedAssaultBehaviorEnabled", true);
             Scribe_Values.Look(ref seedPassageEnabled, "seedPassageEnabled", true);
             Scribe_Values.Look(ref seedPassageGerminationMultiplier, "seedPassageGerminationMultiplier", 1f);
+            Scribe_Values.Look(ref brineBatteryDischargeEnabled, "brineBatteryDischargeEnabled", true);
+            Scribe_Values.Look(ref brineBatteryDischargeMultiplier, "brineBatteryDischargeMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -441,6 +451,13 @@ namespace RimMandrake.CreatureBehaviors
               + "same schedule, it just leaves nothing behind.");
             list.Label("Seed passage germination chance: " + seedPassageGerminationMultiplier.ToString("0.00") + "x");
             seedPassageGerminationMultiplier = list.Slider(seedPassageGerminationMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Brine battery defensive discharge", ref brineBatteryDischargeEnabled,
+                "On: hurting a brine battery at close range shocks the attacker back (a stun, not a "
+              + "wound). Off: a hit is simply never returned.");
+            list.Label("Discharge strength: " + brineBatteryDischargeMultiplier.ToString("0.00") + "x");
+            brineBatteryDischargeMultiplier = list.Slider(brineBatteryDischargeMultiplier, 0f, 3f);
 
             list.End();
         }
