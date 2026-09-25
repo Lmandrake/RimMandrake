@@ -13,15 +13,14 @@
   (this mod, the_sump kit) already used for an analogous "biome's signature
   substance" resource.
 
-  NOT BUILT THIS PASS, honestly, same posture RUT_Bitumen's own header
-  used: the real "gathered off the flats after a wake" harvest job (a
-  field-sweep after a Sealed individual wakes and abandons its burrow) is
-  not stock and is not authored here — RUT_SealedSleeper.xml's own header
-  explains why and files the dedicated item for it
-  (`CRACKED_LANDS_SEALED_WAKE_MECHANISM_1`). This ThingDef is real and
-  immediately usable (tradeable/debug-spawnable, and wired as a
-  butcherProducts yield on the Sealed as an interim source) but has no
-  gather job yet.
+  BUILT (`CRACKED_LANDS_SEALED_WAKE_MECHANISM_1`): the "gathered off the
+  flats after a wake" behaviour is now real —
+  RUT_SealedSleeper.xml's `CompWaterWakeTrigger` drops 1-3 of this item on
+  the ground next to the sleeper the moment it wakes, and this ThingDef's
+  own `ResourceBase` inheritance (`alwaysHaulable`) is enough for the
+  vanilla hauling WorkGiver to gather it — no bespoke job was needed. Also
+  tradeable/debug-spawnable and wired as an always-available
+  `butcherProducts` yield on the Sealed.
 
   Texture: placeholder only, same class as RUT_Bitumen/RUT_ThrummelSeepwax
   (UtinniPatches already claims Textures/Things/Item/Resource/ as its own
