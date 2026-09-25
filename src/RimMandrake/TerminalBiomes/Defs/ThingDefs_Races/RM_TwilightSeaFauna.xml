@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TwilightSeaFauna.xml               TerminalBiomes — authored 2026-09-24
+  ==========================================================================
+  TERMINALBIOMES_RM_MOD_BUILD_1 wiring pass: the four floor-resident species
+  `terminal_seas_cast_proposal_2026-09-25.md` names for the Twilight Sea
+  (noolim, loohn, weloon, lunoowa) — all APPROVED, owner sitting 2026-09-25,
+  verdict 1. Schooling is legal here only beneath the mat-roof (owner ruling
+  2026-09-10), so noolim alone carries herdAnimal — every other resident of
+  this sea, per the frozen sheet, is solitary.
+
+  Mechanically plain, pattern copied from RSW_SandStalker.xml's placeholder
+  idiom (Graphic_Single, three lifeStages). Placeholder art: flat dark
+  silhouette PNGs, real art queued to the artpipe.
+
+  noolim and weloon are ALSO wired as catchable fish, joining the existing
+  ten-species Twilight catch — see RM_TwilightSea.xml's own fishTypes block.
+-->
+<Defs>
+
+  <!-- =================================================================
+       RM_Noolim — the silver-shoal analog. The one place schooling is
+       legal on this sea: beneath the mat-roof. Catchable, common.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Noolim</defName>
+    <label>noolim</label>
+    <description>A darting cloud of dull silver slivers, working the water beneath the Twilight Sea's mat-roof — the one place on this sea schooling is legal at all, where the roof's shade takes the murk to green. Seen as a shoal, never as an individual.</description>
+    <statBases>
+      <MoveSpeed>4.0</MoveSpeed>
+      <MarketValue>6</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>snap</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <body>Snake</body>
+      <baseBodySize>0.08</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>3</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Noolim</defName>
+    <label>noolim</label>
+    <race>RM_Noolim</race>
+    <combatPower>5</combatPower>
+    <wildGroupSize>5~15</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Noolim/RM_Noolim</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Noolim/RM_Noolim</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Noolim/RM_Noolim</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       RM_Loohn — the one true predator beneath the roof. Not caught.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Loohn</defName>
+    <label>loohn</label>
+    <description>A long, dark body mottled for roof-shadow camouflage, hanging patient where the mat-roof's dapple breaks the murk — the Twilight Sea's one true predator, its only saturated colour a single mate-mark. It waits far more than it hunts, and when it moves nothing beneath the roof is safe.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>180</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>fangs</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>2.5</baseBodySize>
+      <baseHealthScale>1.3</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>2.0</maxPreyBodySize>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.4</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.3</manhunterOnTameFailChance>
+      <lifeExpectancy>18</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.35</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Loohn</defName>
+    <label>loohn</label>
+    <race>RM_Loohn</race>
+    <combatPower>130</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Loohn/RM_Loohn</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Loohn/RM_Loohn</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>2.13</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Loohn/RM_Loohn</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>2.75</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       RM_Weloon — soft-shelled floor crustacean, picking the mat-fall.
+       Catchable, uncommon.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Weloon</defName>
+    <label>weloon</label>
+    <description>A rounded, felt-textured, mold-green shell picking through the mat-fall — dead mat tissue raining slowly off the Twilight Sea's roof — moving slowly among the drifts it feeds on. Soft-shelled and unhurried.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>9</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>7</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Weloon</defName>
+    <label>weloon</label>
+    <race>RM_Weloon</race>
+    <combatPower>10</combatPower>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Weloon/RM_Weloon</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Weloon/RM_Weloon</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Weloon/RM_Weloon</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       RM_Lunoowa — mat-fragment mimic. Not caught.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Lunoowa</defName>
+    <label>lunoowa</label>
+    <description>A ragged, mat-coloured sheet trailing filaments, indistinguishable from a torn piece of the Twilight Sea's roof-mat until it moves. A drifting detritivore that gives itself away only by shifting silhouette.</description>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <MarketValue>7</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>filament lash</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Lunoowa</defName>
+    <label>lunoowa</label>
+    <race>RM_Lunoowa</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

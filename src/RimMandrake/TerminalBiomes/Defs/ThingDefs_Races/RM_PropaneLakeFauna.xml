@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_PropaneLakeFauna.xml                TerminalBiomes — authored 2026-09-24
+  ==========================================================================
+  TERMINALBIOMES_RM_MOD_BUILD_1 wiring pass: THREE of the four floor-resident
+  species `terminal_seas_cast_proposal_2026-09-25.md` names for the Propane
+  Lake (heemin, oovanam, hoolen) — APPROVED, owner sitting 2026-09-25,
+  verdict 1. hoolen lives on RM_PropaneLake's own wildAnimals per verdict 4
+  (no shelf biome — "just confusing words").
+
+  🔴 vaunoom is DELIBERATELY NOT built here. The proposal describes vaunoom
+  as "THE V-wake creature (ruled 2026-09-02, never built)" — but
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PropaneLakeFauna.xml
+  already ships RUT_VWake (authored 2026-09-25, COMMISSION_LEDGER_CLEANUP_1),
+  the identical role — submerged, propane-native, serpentine, "attacks pawns
+  and pipe on sight" — already wired into RM_PropaneLake.xml's wildAnimals at
+  commonality 0.04. There is an OPEN, unresolved decision item on this exact
+  name (`PROPANELAKES_SHIPPING_NAMES_1`: keep RUT_VWake as the shipping name,
+  or rename). Building a second, duplicate RM_Vaunoom ThingDef+PawnKindDef
+  for the same niche would either orphan one of the two or collide with that
+  open decision — escalated, not guessed. See this pass's own report.
+
+  Mechanically plain, pattern copied from RSW_SandStalker.xml's placeholder
+  idiom (Graphic_Single, three lifeStages), and from RUT_VWake/
+  RUT_BurnerAscendant's cold ComfyTemperature range for propane-native fauna.
+  🔴 Deliberately NOT reusing RM_HydrocarbonNativeExtension (RUT_VWake's own
+  modExtension) — that class is compiled into UtinniPatches'
+  BlueDesertLife.cs, a Utinni-tier assembly this standalone RM_ mod does not
+  depend on; wiring it here would break the franchise-free/standalone-
+  install requirement (About.xml: "nothing here knows what campaign or
+  planet uses it"). The hydrocarbon-native, cold-loving nature is carried in
+  the description text and the ComfyTemperature range only. Placeholder art:
+  flat dark silhouette PNGs, real art queued to the artpipe.
+
+  heemin and oovanam are ALSO wired as catchable fish (verdict 3: the
+  Propane Lake IS fishable) — see RM_PropaneLakeCatch.xml.
+-->
+<Defs>
+
+  <!-- =================================================================
+       RM_Heemin — vaunoom's kin: palm-length glassy swimmers in the top
+       fuel layer. Catchable, common (the propane "catch").
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Heemin</defName>
+    <label>heemin</label>
+    <description>A near-transparent sliver swimming the top layer of the Propane Lake, aurora green and violet refracting faintly through it — visible mostly as a distortion in the black mirror rather than a shape. Palm-length kin of the lake's one giant, and far less trouble.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <MarketValue>6</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>snap</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.05</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>4</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Heemin</defName>
+    <label>heemin</label>
+    <race>RM_Heemin</race>
+    <combatPower>5</combatPower>
+    <wildGroupSize>3~8</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Heemin/RM_Heemin</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Heemin/RM_Heemin</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Heemin/RM_Heemin</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       RM_Oovanam — tholin-sifting bottom crawler. Catchable, uncommon
+       dredge.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Oovanam</defName>
+    <label>oovanam</label>
+    <description>A soot-dark, flattened crawler working the solid-propane floor, sifting the aurora-ash fallout and whatever the Blue Desert's dead have carried down. It leaves a clean wake through the pale tholin dust behind it.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>8</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.25</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>9</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Oovanam</defName>
+    <label>oovanam</label>
+    <race>RM_Oovanam</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Oovanam/RM_Oovanam</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Oovanam/RM_Oovanam</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Oovanam/RM_Oovanam</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       RM_Hoolen — ice-sheet rim skimmer, the SURFACE face. Not caught —
+       verdict 4: no shelf biome, so hoolen lives on RM_PropaneLake's own
+       wildAnimals beside the lake-proper residents.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Hoolen</defName>
+    <label>hoolen</label>
+    <description>A long-legged, wide-footed skimmer that runs the frozen sheets between the Propane Lake's pools, licking condensed fuel frost off the crust. A faint blue combustion shimmer plays at its joints — a lesser cousin's read of the burner-line's own fire.</description>
+    <statBases>
+      <MoveSpeed>3.5</MoveSpeed>
+      <MarketValue>9</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>kick</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.45</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Hoolen</defName>
+    <label>hoolen</label>
+    <race>RM_Hoolen</race>
+    <combatPower>10</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Hoolen/RM_Hoolen</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Hoolen/RM_Hoolen</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Hoolen/RM_Hoolen</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
