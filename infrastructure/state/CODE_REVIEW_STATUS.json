@@ -3090,10 +3090,10 @@
     "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/GelatinousSlime/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "00a03e7c06b23abb747fa599aa5f0abe90f168d3ae99d530641708fd6d5f8e5e",
-    "sha": "3505dc594"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "a5a8a3d678140c0b6b2383d01e64aae3937368d77ea09c3d46ca29cef33dcd45",
+    "sha": "f869774f1"
   },
   "src/RimMandrake/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml": {
     "cleanCount": 2,
@@ -3660,10 +3660,10 @@
     "sha": "2c8762586"
   },
   "src/RimMandrake/Inhabited/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "6f99c602ccd50bcd1e8f0d1ae91030d48abe65eb6cf8b7b1696efa6677bcd4b2",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "0959c25d48d4bdff19f546025c8f1a80e479589bab07c908a685dc73e2585bdc",
+    "sha": "f869774f1"
   },
   "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_BLACKSTAR.xml": {
     "cleanCount": 1,
@@ -4644,10 +4644,10 @@
     "sha": "57d78d214"
   },
   "src/RimMandrake/Pyrelands/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "b53515619bb5c65345264399ae08d4da9ca7140624e0c2b410ef246c3cda7ceb",
-    "sha": "90940c68"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "f13ea8095c9ce6595118cc02db12e38e179374f29c002deda4076301af84531f",
+    "sha": "f869774f1"
   },
   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml": {
     "cleanCount": 6,
@@ -5640,10 +5640,10 @@
     "sha": "57d78d214"
   },
   "src/RimMandrake/StructureInjections/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "f63ecddce9e38647f5552ed022a29b8f5f49f50a505fff9e3b17e3a03af59d39",
-    "sha": "0f6a61a33"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "2dfe981d7bb666adaeeefb18eeff68cceff39415f5dd3efe00905b07e64199bf",
+    "sha": "f869774f1"
   },
   "src/RimMandrake/StructureInjections/LICENSE": {
     "cleanCount": 1,
@@ -7756,10 +7756,10 @@
     "sha": "21970f0cd"
   },
   "src/RimMandrake/WeatherSuite/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "6a206bd203e3eaf44d52372928db5ae7cb1c624ad92764817784a3eac56b3fa4",
-    "sha": "a4b734f3"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "91e615619da8100f8c09b5d8738ed5dd9687994898fc57853e30616c9ff5aeb8",
+    "sha": "f869774f1"
   },
   "src/RimMandrake/WeatherSuite/Defs/GameConditionDefs/GameConditionDefs_DarkAurora.xml": {
     "cleanCount": 1,
@@ -7822,10 +7822,10 @@
     "sha": "db60da8bc"
   },
   "src/RimMandrake/WeepingStones/About/About.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-24",
-    "hash": "bd873f79301e6a364a9104173f523d8dcf0e70675ab3999502450ab839d73aad",
-    "sha": "aaab8b466"
+    "hash": "0d8d08744d7212f619da21b6c92d0b28592e0065c1f9e1eb0522bb75b77cdbca",
+    "sha": "f869774f1"
   },
   "src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml": {
     "cleanCount": 1,
@@ -8860,10 +8860,10 @@
     "sha": "9c1bce648"
   },
   "src/RimStarWars/Armoury/About/About.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-18",
-    "hash": "80a9be05b0e5dca8407f567b93c1f89c68c13247fdc07a29d4f8b008f4af7872",
-    "sha": "504ead829"
+    "cleanCount": 5,
+    "date": "2026-09-24",
+    "hash": "e524214c14a53829fe24d8a3c7ed75167228951d1f1e39411a47e71b6fe3eedd",
+    "sha": "f869774f1"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/AdaptiveStorageFramework/Absorbed_Kotorcore_AdaptiveStorageFramework_HiddenSmugglingCompartmentPanels.xml": {
     "cleanCount": 4,
@@ -11068,10 +11068,10 @@
     "sha": "c4858101e"
   },
   "src/RimStarWars/Cuisine/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "fccf460f9df46f0d74a27631414332efc1f69a3d4eb3678cfca1c29a055ed9e8",
-    "sha": "4c830bfd"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "eb38e2a2f67d5fb26ea7e58993e147edeb564ba973df63b4e0a8c228f83269c6",
+    "sha": "f869774f1"
   },
   "src/RimStarWars/Cuisine/Defs/RecipeDefs_Cuisine.xml": {
     "cleanCount": 1,
@@ -11380,10 +11380,10 @@
     "sha": "9c1bce648"
   },
   "src/RimStarWars/Droidworks/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "ea990a13c3e95c129bbeb63d035b88dbbbd9f2743e73738da30280095b1754e2",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "fd468fdc2e1e279a9c8ecce72b645cbd44d68bbd40ad2b673bebae2a895b3913",
+    "sha": "f869774f1"
   },
   "src/RimStarWars/Droidworks/Defs/Absorbed_KotorCore/Absorbed_KotorCore_RulePacks_DroidNameMakers.xml": {
     "cleanCount": 1,
@@ -13108,10 +13108,10 @@
     "sha": "9c1bce648"
   },
   "src/RimStarWars/SWBestiary/About/About.xml": {
-    "cleanCount": 6,
+    "cleanCount": 7,
     "date": "2026-09-24",
-    "hash": "5283651ad4cebec4a2afb56d5c09093925fac7ab1fb1f0efcd46e125a4fdef60",
-    "sha": "06e9ecab9"
+    "hash": "ba8e8f8c1b29e03dd1aafaa5addfbe09805abd7297429e73720ee098cefdded7",
+    "sha": "f869774f1"
   },
   "src/RimStarWars/SWBestiary/Defs/AbilityDefs/RSW_MlieWaveB_Abilities.xml": {
     "cleanCount": 1,
@@ -14494,10 +14494,10 @@
     "sha": "c4858101e"
   },
   "src/RimStarWars/StarWarsPatches/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "695ef23f203e63e5ab460fec6de9a8120b386b9f4c0f108956495d6cd69ee401",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "19c88711dd46aa96ee3d99e129d7561b1fccb00f69a65603e89cd1929b4d7a9b",
+    "sha": "f869774f1"
   },
   "src/RimStarWars/StarWarsPatches/Defs/Absorbed_LumiDoorsExpanded/Absorbed_Lumi_BlastDoors_ResearchProjects.xml": {
     "cleanCount": 2,
@@ -14716,10 +14716,10 @@
     "sha": "1fc63ee14"
   },
   "src/RimStarWars/StarWarsRaces/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "d8c84c76e337bfebaa344fc1f0e1008f60bd3a42cc1032f9db2f66a1a4141a83",
-    "sha": "e69e40f3"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "342a49daa051e5445b236ab93d151f89bd7e15e16517f9e7c6093585b870714b",
+    "sha": "f869774f1"
   },
   "src/RimStarWars/StarWarsRaces/Defs/AbsorbedSovSith/Absorbed_SovSith_Genes.xml": {
     "cleanCount": 1,
@@ -14842,10 +14842,10 @@
     "sha": "d28bf3edf"
   },
   "src/RimStarWars/StructureInjectionsSW/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "75166224f2b6d374a9cca8c25e80797591c1eb4c2d96248b8421366158b177e9",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "094f89166aeec9e42b7b4b2776cbab4652d89ff162a4f98374f0128b3325b2dc",
+    "sha": "f869774f1"
   },
   "src/RimStarWars/StructureInjectionsSW/Defs/BeastLairs/ThingDefs_Buildings/RSW_BeastLairs_Buildings.xml": {
     "cleanCount": 1,
@@ -15352,10 +15352,10 @@
     "sha": "d28bf3edf"
   },
   "src/RimUtinni/AshkarrFlora/About/About.xml": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-24",
-    "hash": "10b257755be45ab61439322c607ee5215c41da0790810796a296a79a2085cb9f",
-    "sha": "e05f7e0f8"
+    "hash": "4117dfac0f9576dcb8301f9c987e84f6cee5dc9e412a79cf9af33d1f2f0d72a3",
+    "sha": "f869774f1"
   },
   "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AshkarrFlora_Plants.xml": {
     "cleanCount": 3,
@@ -16054,10 +16054,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/LanternDeeps/About/About.xml": {
-    "cleanCount": 5,
-    "date": "2026-09-18",
-    "hash": "3d0a88dd1bdff3b460f6c1daf3e4c47674b95742f64c4751404b77b050521ac0",
-    "sha": "4fde88749"
+    "cleanCount": 6,
+    "date": "2026-09-24",
+    "hash": "230c82aa627e3e370d0c00fe22ae4357272fbad07ebc7a80cb3f2cb51fb0783e",
+    "sha": "f869774f1"
   },
   "src/RimUtinni/LanternDeeps/Defs/Biomes/RUT_LanternDeeps.xml": {
     "cleanCount": 1,
@@ -16756,10 +16756,10 @@
     "sha": "7d6efe921"
   },
   "src/RimUtinni/PawnFlavor/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "a0ef0cdb083904c4aae5999f20cf8ca024aedd42315e30063dbd356c2dcb1a86",
-    "sha": "e97fc76e4"
+    "cleanCount": 4,
+    "date": "2026-09-24",
+    "hash": "29c89a43a1d193ae17c6ce0059b4809690b3fb49c1e1a4e293602343e14ee4a9",
+    "sha": "f869774f1"
   },
   "src/RimUtinni/PawnFlavor/Defs/Backstories_Deepwater.xml": {
     "cleanCount": 1,
@@ -17260,10 +17260,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/RotSporeKit/About/About.xml": {
-    "cleanCount": 4,
+    "cleanCount": 5,
     "date": "2026-09-24",
-    "hash": "66bb9c861cb4a702de5672db84e8849ed897692b663d7bf5b6701601a55d9136",
-    "sha": "c3de6451f"
+    "hash": "94f9149d1966ac14ebd506a6780b8d64dae30aeac608feb93a011674f9fd3732",
+    "sha": "f869774f1"
   },
   "src/RimUtinni/RotSporeKit/Defs/DamageDefs/RUT_RotSporeKit_DamageDefs.xml": {
     "cleanCount": 1,
@@ -17470,10 +17470,10 @@
     "sha": "d8016dd57"
   },
   "src/RimUtinni/RustCathedralHum/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "0cff988d7a6829b48c7b2894100e419f46dabd2af8ee38f15c24d8cb8156c35b",
-    "sha": "d1c393c02"
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "5c03bfdd353e27dbef14ca74ab76d2437b3521704a8cbaae208927f4cd1d7fa3",
+    "sha": "f869774f1"
   },
   "src/RimUtinni/RustCathedralHum/Defs/IncidentDefs/RUT_DeepDrillCathedralResponse.xml": {
     "cleanCount": 1,
@@ -18058,10 +18058,10 @@
     "sha": "9c1bce648"
   },
   "src/RimUtinni/StructureInjectionsRUT/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "ff3fd521f8a2f66f39da4de20ba4f229c6653ba27ad025ad270330aa40701bc3",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "f7d23b8a62077e34d7226e989d1c20f243c81757451c025b448d8e556ea22dae",
+    "sha": "f869774f1"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/Ashfall/StructureLayoutDefs_Ashfall.xml": {
     "cleanCount": 1,
@@ -18628,10 +18628,10 @@
     "sha": "9c1bce648"
   },
   "src/RimUtinni/UtinniPatches/About/About.xml": {
-    "cleanCount": 9,
+    "cleanCount": 10,
     "date": "2026-09-24",
-    "hash": "9cf8f7404fe21666ebe2195229de6f979121e683674939b67e066512d7f7a3ba",
-    "sha": "5ad3a7af9"
+    "hash": "009cc7f2f4153f902c04a837c340d1ff414a0b99433fc744827e7ad3a28a6686",
+    "sha": "f869774f1"
   },
   "src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml": {
     "cleanCount": 1,
