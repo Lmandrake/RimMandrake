@@ -174,7 +174,7 @@
     <description>A smooth mineral concretion grown drop by drop in the spring throat itself, where the seep comes up through the stones -- the Weeping Stones in miniature, banded pale and dark the same way the cliffs above the pool are. Oasis-keepers set the best ones on the shrine at the water's edge; a lesser one is sold to a pilgrim as a keepsake of the truce.</description>
     <graphicData>
       <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <thingCategories>
       <li>ResourcesRaw</li>

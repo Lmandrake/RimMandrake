@@ -26,7 +26,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/RUT_Hardwood</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>75</stackLimit>
     <statBases>

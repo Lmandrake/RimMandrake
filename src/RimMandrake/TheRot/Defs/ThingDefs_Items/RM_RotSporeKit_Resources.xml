@@ -232,7 +232,7 @@
     <description>Cured plates of insectoid chitin, layered and bonded for armor. Light, tough, and faintly iridescent.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/SpiderHead/SpiderHead</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>75</stackLimit>
     <statBases>

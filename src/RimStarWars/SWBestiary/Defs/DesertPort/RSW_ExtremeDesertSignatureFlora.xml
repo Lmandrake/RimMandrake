@@ -176,7 +176,7 @@
       <!-- rswollimwood_v1 rendered + deployed 2026-09-24 (256x256, real alpha, facts
            PASS), replacing the vanilla-WoodLog placeholder. -->
       <texPath>Things/Item/Resource/RSW_OllimWood</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Wood_Drop</soundInteract>
     <soundDrop>Wood_Drop</soundDrop>

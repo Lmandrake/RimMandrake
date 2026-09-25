@@ -122,6 +122,7 @@
     <description>A stacked mineral wafer, salt-white and dark by turns, pried off a drazz that has already spent its charge — or found loose on a pool floor, which is the same thing a season later. It still holds a whisper of charge; touch two together in the dark and they spark. Traders who buy oddities want it.</description>
     <graphicData>
       <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <thingCategories>
       <li>ResourcesRaw</li>

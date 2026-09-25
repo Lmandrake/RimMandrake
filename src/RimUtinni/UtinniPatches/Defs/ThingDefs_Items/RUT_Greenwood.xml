@@ -22,7 +22,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/RUT_Greenwood</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>75</stackLimit>
     <statBases>

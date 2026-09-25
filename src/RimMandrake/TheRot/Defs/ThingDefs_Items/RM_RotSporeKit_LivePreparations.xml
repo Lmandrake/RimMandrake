@@ -64,7 +64,7 @@
     <description>A thin, faintly warm liquor pressed from ageless cap flesh within minutes of cutting it. Drunk fresh, it unpicks years of accumulated damage in a single afternoon — and then the body is saturated, and will take nothing more from it for a year. Nobody has ever managed to carry a cup home.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_A</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <tickerType>Rare</tickerType>
     <stackLimit>5</stackLimit>
@@ -120,7 +120,7 @@
     <description>Veil tissue steeped just short of boiling, so the cells survive the cup. For a few days afterward the drinker's body treats every old injury as new work in progress, and finishes it properly.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_B</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <tickerType>Rare</tickerType>
     <stackLimit>5</stackLimit>
@@ -232,7 +232,7 @@
     <description>A palm-sized fold of living tissue, warm and slightly mobile. Swallowed, it finds the underside of the skin and settles in for good, rebuilding damage faster than any human body manages — on an appetite to match.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/MushroomLog/MushroomLog_b</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <tickerType>Rare</tickerType>
     <stackLimit>5</stackLimit>
@@ -283,7 +283,7 @@
     <description>A pale, slow-moving thread coiled in a leaf of veil tissue. It wants the base of a skull, and once it has one its host will never sleep again — nor be entirely predictable again either.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_A</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <tickerType>Rare</tickerType>
     <stackLimit>5</stackLimit>
@@ -341,7 +341,7 @@
     <description>A bead of the Rot's own reproductive tissue, kept alive in a drop of its own sleet. Swallowing it is the formal act of giving up: the Sheen stops treating the host as material. The sun, which the Rot has never met, is a different matter.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_B</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <tickerType>Rare</tickerType>
     <stackLimit>5</stackLimit>
@@ -402,7 +402,7 @@
     <description>A dense grey button of gut-wall fungus, bred for a job that has nothing to do with this biome. It is worth what it is worth because of somewhere else — a place where being digested is the local weather.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/MushroomLog/MushroomlLog_a</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <tickerType>Rare</tickerType>
     <stackLimit>5</stackLimit>
@@ -463,7 +463,7 @@
     <description>A loaded gut-bladder of something the grove makes when it is being spiteful, kept alive because dead it is merely unpleasant. What it is actually for is not a question this biome answers.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_A</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <tickerType>Rare</tickerType>
     <stackLimit>5</stackLimit>

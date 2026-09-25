@@ -219,7 +219,7 @@
     <description>A fist of clear hydrocarbon-mineral crystal grown in the lake bed over a very long time, aurora-green when held up and lit from behind — not kyber, and not warm, and not anything a blade could be built from; the resemblance is entirely visual and every dealer on the shore says so before you ask. It is worth having anyway. Frostmites will not touch it and the cold never leaves it, even indoors.</description>
     <graphicData>
       <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <thingCategories>
       <li>ResourcesRaw</li>

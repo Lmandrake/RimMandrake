@@ -26,9 +26,13 @@
   Art: no item-scale icon exists yet (the SeaBeasts art in art/SeaBeasts/final/
   and the deployed Textures/Things/Pawn/Animal/SeaBeasts/ are the 4-directional
   live-pawn body sprites, not a stack icon) — texPath reuses each species' own
-  south-facing body sprite as a placeholder single icon (Graphic_StackCount,
-  inherited from FishBase, renders one texture fine with no multi-frame set).
-  Dedicated item-scale art is follow-up work, not this mechanism fix.
+  south-facing body sprite as a placeholder single icon. FishBase's inherited
+  graphicClass is Graphic_StackCount, which reads texPath as a FOLDER of
+  numbered variants and throws "Collection cannot init" / red-X on a single
+  file (STACKCOUNT_FILEPATH_REDX_SWEEP_1, live-measured 2026-09-25) — it does
+  NOT gracefully render one texture, contrary to what this comment used to
+  say. graphicClass is overridden to Graphic_Single below for exactly that
+  reason. Dedicated item-scale art is still follow-up work, not this fix.
 -->
 <Defs>
 
@@ -38,6 +42,7 @@
     <description>A silver-blue schooling scalefish with a single line of bioluminescent dots along the flank, netted whole. The bulk protein of every river that has them.</description>
     <graphicData>
       <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee_south</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
   </ThingDef>
 
@@ -47,6 +52,7 @@
     <description>The gold-olive scalefish — "faynaa" to the Gungans — netted whole. Fast, small-mouthed and predatory in the water; middling eating out of it.</description>
     <graphicData>
       <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa_south</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
   </ThingDef>
 
@@ -56,6 +62,7 @@
     <description>The big ornate scalefish, striped and streamer-finned, netted whole. Prized on every table that can get one; hard to net for the same reason it is hard to eat.</description>
     <graphicData>
       <texPath>Things/Pawn/Animal/SeaBeasts/Laa/Laa_south</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>9</MarketValue>

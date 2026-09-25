@@ -25,6 +25,7 @@
     <description>A salt-white, flat-bodied scraper the size of a thumb, living on the mineral beds under the brine and grazing the crust the drazz lay down. It carries a charge — a small one; picking one up bare-handed is a tingle and a lesson. They swarm on a carcass in the pool and strip it, and on a drazz that has spent its charge, which is how the pool's owner eventually dies. Edible after a long soak.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_Tekk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.20</Nutrition>

@@ -42,7 +42,7 @@
     <description>Freshly cut flesh from an ageless cap, still faintly warm. It has to reach a brewing vessel fast, or it's worthless.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/MushroomLog/MushroomlLog_a</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>10</stackLimit>
     <healthAffectsPrice>false</healthAffectsPrice>
@@ -85,7 +85,7 @@
     <description>A cut strip of living veil tissue, still faintly pulsing. It has to reach a brewing vessel fast, or it's worthless.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_A</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>10</stackLimit>
     <healthAffectsPrice>false</healthAffectsPrice>
@@ -128,7 +128,7 @@
     <description>A whole cap cut from a euphoric crown, still faintly luminous. It has to reach a brewing vessel fast, or it's worthless.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/ThrumbungusShroom/ThrumbungusShroom</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>10</stackLimit>
     <healthAffectsPrice>false</healthAffectsPrice>

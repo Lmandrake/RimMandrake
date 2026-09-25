@@ -49,7 +49,7 @@
     <graphicData>
       <texPath>swresource/AbsorbedEggs/RSW_InsectEgg</texPath>
       <!-- PLACEHOLDER — see header. -->
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
   </ThingDef>
 
@@ -60,7 +60,7 @@
     <graphicData>
       <texPath>swresource/Trophies/BanthaHorn</texPath>
       <!-- PLACEHOLDER — see header. -->
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <thingCategories>
       <li>ResourcesRaw</li>
