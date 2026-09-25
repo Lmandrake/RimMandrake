@@ -6,6 +6,19 @@
        the crown as-is; also add an Aurebesh/Imperial-cog RSW-tier variant
        alongside it"). Pure content: ParentName from the RM tier's own
        abstract def, no new C#. -->
+  <!-- DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 76: this def was authored
+       alongside Crown's wave-1 (ungated) shape and never picked up wave 2's
+       requiresHostileToFactionDef=Empire gate that ThingDefs_Graffiti.xml
+       added to RM_Graffiti_Stencil_Crown the same day - this About.xml's own
+       description calls it "the same anti-authority defiance mark ... in
+       the setting's own alphabet and insignia instead of the generic
+       crown", and the mark's own description text below says the same
+       ("defiance in the occupier's own alphabet"), so an Imperial-aligned
+       pawn painting it (ungated) contradicted the "hostile social act"
+       premise both sibling marks share. Added the same gate here so the
+       two stay in lockstep; the field is null-safe/opens-on-no-match per
+       GraffitiPool.HostilityGateAllows, so this is a no-op on any mod list
+       without Royalty. -->
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RSW_Graffiti_Stencil_ImperialCog</defName>
     <label>crossed-out cog stencil</label>
@@ -32,6 +45,7 @@
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
+        <requiresHostileToFactionDef>Empire</requiresHostileToFactionDef>
       </li>
     </modExtensions>
   </ThingDef>
