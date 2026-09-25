@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T23:08:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T23:14:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -801,6 +801,15 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
+## LONGSHADE_RM_MOD_BUILD_1 Phase A: build RM_LongShade as its own RimMandrake mod (mandrake.rm.longshade) — the Long Shade (the livable desert)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
+prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
+
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing
 row:      unassigned
@@ -1285,6 +1294,16 @@ blocked:  Owner ruled 2026-09-18: no race def is patched until BMT_FAUNA_ABSORPT
 summary:  (no items/ROT_FAUNA_KIN_WIRING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
+## REBOOT_BREAKGLASS_VERIFY_1 Verify the break-glass path survives a Windows reboot: WSL Keepalive must bring tailscaled back before login, and the fleet may need a hand
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     chore
+blocked:  needs a deliberate Windows reboot + owner's phone over cellular, at a moment he chooses to lose the fleet for 10 min -- not now, owner is actively at the bench
+summary:  Do this at the desk, on a day when losing the fleet for ten minutes is fine.
+prose:    infrastructure/state/items/REBOOT_BREAKGLASS_VERIFY_1.md
+
 ## DONOR_DEFS_PORT_TO_OURS_1 Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 262 of ~330 borrowed biome-roster entries alone
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -1326,16 +1345,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## REBOOT_BREAKGLASS_VERIFY_1 Verify the break-glass path survives a Windows reboot: WSL Keepalive must bring tailscaled back before login, and the fleet may need a hand
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     chore
-thin:     no ## criteria
-summary:  Do this at the desk, on a day when losing the fleet for ten minutes is fine.
-prose:    infrastructure/state/items/REBOOT_BREAKGLASS_VERIFY_1.md
 
 ## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
 state:    proposed
@@ -1386,16 +1395,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/STILLSAND_RM_MOD_BUILD_1.md
-
-## LONGSHADE_RM_MOD_BUILD_1 Phase A: build RM_LongShade as its own RimMandrake mod (mandrake.rm.longshade) — the Long Shade (the livable desert)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
 ## THEROT_RM_MOD_BUILD_1 Phase A: build RM_TheRot as its own RimMandrake mod (mandrake.rm.therot) — the Rot - absorbs mandrake.rut.rotsporekit (151 files)
 state:    proposed
