@@ -173,7 +173,7 @@ Read aloud: izzai, ekkrai, rovvai — and beside them his own flamefang and syth
 
 *Canopy grazers and their small patient predators, in ambivalent harmony.* The September roster
 (`fever_wood_fauna_roster_2026-09-23.md`) adds eleven invented `RM_` creatures in a ruled register —
-glavoth, ollareth, drommath, brathek, mulleth, silloch, chellow, sarveth, thavrik, skellick — and
+vaulm, ollareth, drommath, brathek, lommerel, silloch, chellow, murrelith, thavrik, skellick — and
 these three donor/ported rows join it (rule 10). ⚠️ All three sit in bands that roster fills with
 `RM_` rows; their dispositions belong to the Fever Wood sitting, and the names exist so that
 whichever survives is not nameless.
@@ -182,7 +182,7 @@ whichever survives is not nameless.
 |---|---|---|---|---|---|
 | `VFEI2_Megathrips` | megathrips | bs 0.35 engineered worker-caste thrips of the VFE Insectoids 2 geneline; mandibles + acid glands; fills the wood-borer band at 0.5 | **narrith** | gemmeth | *narr-* the rasp of mandibles in wood, *-ith* the Fever register. "Thrips" is the Earth insect with "mega" in front. ⚠️ **Scope flag 4** — a framework mod's hive caste, the swarmling question again. |
 | `RSW_AcidSlug` | acid slug | bs 4.0, spd 1.5 combat-designed acid predator that melts prey to the bone inside its own flesh; trace, "the ground is for the brave" (0.05) | **quollith** | vrollith | The slowest word in the wood: *quoll-* a wet weight, *-ith*. "Acid" and "slug" are both Earth words; the description carries the acid. |
-| `RSW_JewelBeetle` | jewel beetle | bs 2.45, spd 3.1 slow bark-working beetle with a shell "valuable for its looks"; crown-grazer import at 0.2 | **jemmock** | cammock | *jemm-* a bright hard shell, *-ock* the register's beetle ending (brunnock, wollick). ⚠️ RULED CUT in the **Webwork** (→ `RM_Quarrok`, card 2026-09-24) — alive here; a sheet's cut is scoped to its biome. `RM_Mulleth` is proposed in this band; if the sitting supersedes it, the name retires with the row. |
+| `RSW_JewelBeetle` | jewel beetle | bs 2.45, spd 3.1 slow bark-working beetle with a shell "valuable for its looks"; crown-grazer import at 0.2 | **jemmock** | cammock | *jemm-* a bright hard shell, *-ock* the register's beetle ending (brunnock, wollick). ⚠️ RULED CUT in the **Webwork** (→ `RM_Quarrok`, card 2026-09-24) — alive here; a sheet's cut is scoped to its biome. `RM_Lommerel` is proposed in this band; if the sitting supersedes it, the name retires with the row. |
 
 **Not drafted:** `RSW_GlowSlug` *glowbulb* — ruled. `AA_SmallButterfly` — named in the Greentide
 below (one name, two homes by the owner's own placement). Canon kept: Convor, Fambaa, Gelagrub,
@@ -310,7 +310,7 @@ default.
    batch 1's Appendix A/B and batch 2's flag 5 in this commit. The census now has **zero**
    UNCERTAIN rows.
 7. **The Fever Wood's three drafts may be short-lived.** All three sit in bands the September roster
-   fills with `RM_` creatures (wood-borer → brathek, crown-grazer → mulleth, ground-slow → nothing yet);
+   fills with `RM_` creatures (wood-borer → brathek, crown-grazer → lommerel, ground-slow → nothing yet);
    if the Fever Wood sitting supersedes a donor row, its name retires with it. Drafting them costs a
    line each; leaving them nameless would have left the census open.
 

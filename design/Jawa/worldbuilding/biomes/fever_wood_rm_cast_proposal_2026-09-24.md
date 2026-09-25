@@ -31,7 +31,7 @@ commonalities (the roster's own numbers were "slots, not values").
 ## Proposed fauna — 10 rows: 5 NEW, 5 adopted (†) from `fever_wood_fauna_roster_2026-09-23.md`
 
 † = already drafted in the 2026-09-23 roster; listed here so every mechanic slot is visibly
-covered, not re-proposed. The roster's other six rows (glavoth, ollareth, drommath, sarveth,
+covered, not re-proposed. The roster's other six rows (vaulm, ollareth, drommath, murrelith,
 thavrik, skellick) are adopted with it. Names follow the Fever Wood register (§6o: -eth/-ith/
 -ock/-el endings, doubled ll/mm/rr, wetter and slower than the Greentide).
 
@@ -43,9 +43,9 @@ thavrik, skellick) are adopted with it. Names follow the Fever Wood register (§
 | **grolth** (NEW, `RM_Grolth`) | 1 | medium (bs ~0.8) | ground-slow carrion-dissolver working the causeway margins; waits, never chases (ban 3) | none — fills `RSW_AcidSlug`'s trace slot | carrion | 0.05 | a wet dark hummock of a body, no visible head, a pale dissolving-slick under its front edge |
 | **nemmel** (NEW, `RM_Nemmel`) | 2 | small (bs ~0.3) | ground grazer of the causeway edges — the floor's one honest meal animal | none — fills `Nuna`'s slot | herbivore | 0.4 | plump short-legged mud-brown grazer, oversized splay feet that read as mud-shoes |
 | thornbug † (`RM_Thornbug`) | 2 (owner's word) | small (bs ~0.5) | the nectar-beast; yields only while calm (hard ban 6) | **F8** — `RM_CompGatherableCalmGated`, nectar product `RM_ThornbugNectar` | sap (ossagrel host) | 0.6 | great thorn-shaped insect clamped flush to bark — a thorn on the tree |
-| mulleth † (`RM_Mulleth`) | 2 | medium (bs ~1.0) | crown grazer slung UNDER the boughs | canopy | herbivore (verrow gourds) | 0.4 | soft-bodied grazer hanging upside-down beneath a bough, mossy back |
+| lommerel † (`RM_Lommerel`) | 2 | medium (bs ~1.0) | crown grazer slung UNDER the boughs | canopy | herbivore (verrow gourds) | 0.4 | soft-bodied grazer hanging upside-down beneath a bough, mossy back |
 | silloch † (`RM_Silloch`) | 2 | small (bs ~0.6) | the crown's patient wait-ambusher (never chases, ban 3) | canopy | carnivore | 0.3 | flat mottled wedge folded motionless against bark — reads as bark |
-| chellow † (`RM_Chellow`) | 2 | small (bs ~0.25) | tameable chorus bird; with sarveth/thavrik/skellick † it makes the emergent cacophony (§6k) and its silence is the Sekkulaath alarm | canopy / boughway | omnivore | 0.4 (fliers total ~1.1 across four) | squat bird, bare wrinkled head, veined translucent throat-fan — a lamp with a bellows, never a parrot |
+| chellow † (`RM_Chellow`) | 2 | small (bs ~0.25) | tameable chorus bird; with murrelith/thavrik/skellick † it makes the emergent cacophony (§6k) and its silence is the Sekkulaath alarm | canopy / boughway | omnivore | 0.4 (fliers total ~1.1 across four) | squat bird, bare wrinkled head, veined translucent throat-fan — a lamp with a bellows, never a parrot |
 | brathek † (`RM_Brathek`) | 2 | medium (bs ~0.9) | the wood-borer that keeps digging (§6q); living excavation tool | boughway / bore-caves | wood pulp | 0.5 (beside kept `VFEI2_Megathrips`) | pale ringed grub, dark rasping head-plate wider than its body — a drill bit |
 
 **Pyramid check (fact 5):** of the full adopted-plus-new cast, only gorrameth and skreth
@@ -53,7 +53,7 @@ exceed bs 2, and both are trace/off-map — small creatures dominate, matching t
 distribution (biggest leaver `Fambaa` was 0.02) and `ECOSYSTEM_PYRAMID_LAW_1`'s 80.7%.
 **Every fact-4 slot is covered:** F8 = thornbug; F9 = kurreth + skreth; Tenant-prey =
 gorrameth (staple is the mud, per §6e — prey is the visible bonus); canopy/boughway =
-mulleth, silloch, four birds, brathek; dominant tree below.
+lommerel, silloch, four birds, brathek; dominant tree below.
 
 ## Proposed flora — 5 rows, all adopted from `fever_wood_flora_roster_2026-09-23.md`; zero new names
 

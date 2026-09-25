@@ -33,8 +33,8 @@ work falls on silhouette**, which is why §6 is the acceptance test.
 
 | the sap-drinker guild (4) | the wood (1) | the crown (2) | the birds (4) |
 |---|---|---|---|
-| **thornbug** — the nectar contract, already in the sheet | **brathek** — digs your walls, slowly and visibly | **mulleth** — the crown's grazer | **chellow** — the chorus you can keep |
-| **glavoth** — seals itself in its own sap | | **silloch** — the small patient predator | **sarveth** — plumage worth money |
+| **thornbug** — the nectar contract, already in the sheet | **brathek** — digs your walls, slowly and visibly | **lommerel** — the crown's grazer | **chellow** — the chorus you can keep |
+| **vaulm** — seals itself in its own sap | | **silloch** — the small patient predator | **murrelith** — plumage worth money |
 | **ollareth** — screams, and the crown comes | | | **thavrik** — nests worth raiding |
 | **drommath** — swells so it cannot be pulled off | | | **skellick** — ⭐ steals your things |
 
@@ -60,7 +60,7 @@ a new idea bolted on.
 | # | defName | label | silhouette FORM | the refusal | what it yields | band |
 |---|---|---|---|---|---|---|
 | 1 | `RM_Thornbug` | thornbug | **great thorn-shaped insect clamped flush to bark** | 🔴 **the contract** — yields only while it feels safe; a frightened herd dries up for days (hard ban 6, *never yields under fear*) | **nectar** — sweet and nourishing; the dairy the arboreal cantons run on | sap-drinker |
-| 2 | `RM_Glavoth` | glavoth | **a smooth swollen bead of amber on the bark, no limbs visible** | **seals itself in hardened sap.** Bothered, it floods its own shell and sets; it must be cracked open to reach | ⭐ **lacquer** — a usable material, and the reason to bother with a sealed one | sap-drinker |
+| 2 | `RM_Vaulm` | vaulm | **a smooth swollen bead of amber on the bark, no limbs visible** | **seals itself in hardened sap.** Bothered, it floods its own shell and sets; it must be cracked open to reach | ⭐ **lacquer** — a usable material, and the reason to bother with a sealed one | sap-drinker |
 | 3 | `RM_Ollareth` | ollareth | **flat, wide, and ringed with open spiracles** | **screams for help** — sets the chorus off and pulls the crown's predators toward whatever is bothering it | nothing directly. 🔑 **Its value is that it makes the crown fight for it** | sap-drinker |
 | 4 | `RM_Drommath` | drommath | **a taut grey sac, visibly inflating** | **swells until it cannot be detached.** Handled, it inflates rather than yield | a **large one-time payout** if burst — which destroys a renewable source | sap-drinker |
 
@@ -114,7 +114,7 @@ reason anything is dry."*
 
 | # | defName | label | silhouette FORM | what it looks like | job | band |
 |---|---|---|---|---|---|---|
-| 6 | `RM_Mulleth` | mulleth | **low broad body slung UNDER the branch it feeds on** | A soft-bodied grazer that hangs beneath a bough rather than standing on it, gripping with short hooked limbs, its back permanently silted and mossy from the crown's own debris. Reads upside-down, which nothing else in the crown does. | **The crown's grazer** — the herd that eats `RM_Verrow`'s gourds and the bough-soil's cover, and the reason the small predators have anything to wait for. Meat and hide at crown level, reachable from a boughway. | crown-grazer |
+| 6 | `RM_Lommerel` | lommerel | **low broad body slung UNDER the branch it feeds on** | A soft-bodied grazer that hangs beneath a bough rather than standing on it, gripping with short hooked limbs, its back permanently silted and mossy from the crown's own debris. Reads upside-down, which nothing else in the crown does. | **The crown's grazer** — the herd that eats `RM_Verrow`'s gourds and the bough-soil's cover, and the reason the small predators have anything to wait for. Meat and hide at crown level, reachable from a boughway. | crown-grazer |
 | 7 | `RM_Silloch` | silloch | **a still, flattened wedge pressed into bark, legs folded under** | Almost nothing to see: a flat mottled wedge the colour of wet bark, folded utterly motionless against a trunk, with only a pair of forward limbs held cocked. It does not stalk. It waits, sometimes for days, and then it is simply attached to something. | 🔑 **The crown's patient predator** — and the sheet's ban on native chase predators is exactly why it must be an ambusher. It is the reason `RM_Maulith`'s ribbon curtains are dangerous, since concealment is the biome's only ambush mechanism. | wait-ambush |
 
 🔑 **Together they make the crown an ecology rather than a larder.** The grazer is drawn by the
@@ -148,7 +148,7 @@ on the fire hawk and reversed.
 | # | defName | label | silhouette FORM | what is ALIEN about it | role | band |
 |---|---|---|---|---|---|---|
 | 8 | `RM_Chellow` | chellow | **squat, round, with a wide membranous throat-fan** | No feathers on the head at all — bare wrinkled skin and a translucent throat-fan it inflates to call, veined and lit from behind | ⭐ **Tameable** — a private chorus you cultivate near the base | crown-flier |
-| 9 | `RM_Sarveth` | sarveth | **long-tailed, with flat ribbon plumes instead of a fan** | Its tail "feathers" are **flat translucent ribbons**, not vaned quills — they hang and twist rather than spread, and they are what is worth money | **Plumage** — a real trade good. 🔑 The temptation is set directly against the alarm: selling feathers means shooting your own early-warning system | crown-flier |
+| 9 | `RM_Murrelith` | murrelith | **long-tailed, with flat ribbon plumes instead of a fan** | Its tail "feathers" are **flat translucent ribbons**, not vaned quills — they hang and twist rather than spread, and they are what is worth money | **Plumage** — a real trade good. 🔑 The temptation is set directly against the alarm: selling feathers means shooting your own early-warning system | crown-flier |
 | 10 | `RM_Thavrik` | thavrik | **heavy-bodied, short-winged, with hairy pelt-like covering** | Covered in coarse **hair rather than feathers** except on the flight surfaces, so it reads as a furred thing that flies | **Nests** — eggs and nest material high in the crown, guarded by the adults. A reason to climb | crown-flier |
 | 11 | `RM_Skellick` | skellick | **small, long-limbed, with asymmetric crumpled plumes** | Plumes that look **damaged on purpose** — crumpled, unequal, sticking out at wrong angles; the untidiest silhouette in the crown | ⭐ **Thief** — it steals items. Gated `MayRequire="mandrake.rm.property"` | crown-flier |
 
@@ -174,21 +174,21 @@ most.
 | form | row | reads as |
 |---|---|---|
 | great thorn clamped flush to bark | thornbug | a thorn on the tree |
-| smooth amber bead, no limbs | glavoth | a drop of resin |
+| smooth amber bead, no limbs | vaulm | a drop of resin |
 | flat and wide, ringed with open spiracles | ollareth | a vent, or a grille |
 | taut grey sac, visibly inflating | drommath | something about to burst |
 | long cylinder, head plate wider than the body | brathek | a drill bit |
-| broad body slung UNDER the branch | mulleth | **upside-down — the only row that is** |
+| broad body slung UNDER the branch | lommerel | **upside-down — the only row that is** |
 | flat wedge folded motionless on bark | silloch | **bark, which is the point** |
 | bare head, inflated membranous throat-fan | chellow | a lamp with a bellows |
-| flat translucent ribbon tail-plumes | sarveth | torn cloth |
+| flat translucent ribbon tail-plumes | murrelith | torn cloth |
 | hairy pelt, short wings | thavrik | a furred thing that should not fly |
 | crumpled asymmetric plumes | skellick | something that has been in a fight |
 
 🔑 **The four sap-drinkers are differentiated by state, not by body** — a thorn, a resin drop, a
 grille and a swelling sac. That is deliberate: they are one guild, and a player should read
 "another sap-sucker" and then "which one". ⚠️ **`RM_Silloch` must read as bark** and
-`RM_Mulleth` must read as upside-down; an art pass that "corrects" either has broken the design.
+`RM_Lommerel` must read as upside-down; an art pass that "corrects" either has broken the design.
 
 ---
 
