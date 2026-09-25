@@ -115,6 +115,8 @@
     <Compile Include="RM_CompParentalEnrage.cs" />
     <Compile Include="RM_DirectedAssaultExtension.cs" />
     <Compile Include="RM_JobGiver_DirectedAssault.cs" />
+    <Compile Include="RM_HediffCompProperties_SeedPassage.cs" />
+    <Compile Include="RM_HediffComp_SeedPassage.cs" />
   </ItemGroup>
 
   <ItemGroup>
