@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T02:50:19Z",
+  "drawsize": 3.5,
+  "facing": null,
+  "facings": [],
+  "id": "feverwood_plant_thulvane",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, top-down view, painterly vanilla-RimWorld flora art style: a colossal grey-green fused column tree, the trunk a tower of merged boles, crown permanently out of frame, bark in wet black-grooved plates. Single specimen, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and major internal linework, thick enough to read at standard RimWorld zoom.",
+  "reference": null,
+  "rimflow_item_id": "FEVERWOOD_RM_MOD_BUILD_1",
+  "style_notes": ""
+}

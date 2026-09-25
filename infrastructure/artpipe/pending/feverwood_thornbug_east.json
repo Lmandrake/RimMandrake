@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T02:50:18Z",
+  "drawsize": 1.2,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "feverwood_thornbug_east",
+  "priority": 50,
+  "prompt": "A great thorn-shaped alien insect clamped flush to tree bark, its whole body a single hooked thorn of dark lacquered chitin, short gripping legs tucked beneath, reads as a thorn on the tree until noticed. Wet dim swamp-forest palette, grey-green and amber, painterly game-art style, not photorealistic, heavy clean black outline around the silhouette.",
+  "reference": null,
+  "rimflow_item_id": "FEVERWOOD_RM_MOD_BUILD_1",
+  "style_notes": ""
+}

@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T02:50:18Z",
+  "drawsize": 0.9,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "feverwood_nemmel_north",
+  "priority": 100,
+  "prompt": "A plump short-legged mud-brown alien grazer the size of a hare, oversized splayed feet that read as mud-shoes, harmless round body, the forest floor's one honest meal animal. Wet dim swamp-forest palette, painterly game-art style, not photorealistic, heavy clean black outline.",
+  "reference": null,
+  "rimflow_item_id": "FEVERWOOD_RM_MOD_BUILD_1",
+  "style_notes": ""
+}

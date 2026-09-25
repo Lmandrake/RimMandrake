@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T02:50:19Z",
+  "drawsize": 1.1,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "feverwood_ollareth_south",
+  "priority": 100,
+  "prompt": "A flat wide alien sap-drinker insect ringed with open spiracle vents around its rim, low domed body pressed to bark, vents flared as if mid-scream. Wet dim swamp-forest palette, grey-green and amber, painterly game-art style, not photorealistic, heavy clean black outline.",
+  "reference": null,
+  "rimflow_item_id": "FEVERWOOD_RM_MOD_BUILD_1",
+  "style_notes": ""
+}

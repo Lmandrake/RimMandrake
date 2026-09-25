@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T02:50:19Z",
+  "drawsize": 0.8,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "feverwood_chellow_north",
+  "priority": 100,
+  "prompt": "A squat alien chorus bird with a bare wrinkled head and a veined translucent throat-fan, like a lamp with a bellows, short wings, never a parrot, a tameable songster whose silence means danger. Wet dim swamp-forest palette with a faint warm glow in the throat-fan, painterly game-art style, not photorealistic, heavy clean black outline.",
+  "reference": null,
+  "rimflow_item_id": "FEVERWOOD_RM_MOD_BUILD_1",
+  "style_notes": ""
+}
