@@ -42,6 +42,34 @@
   "radiothermal"/"living furnace" first — clean). Three facing jobs filed
   this pass (south/east/north; west mirrors east) — rutradiothermal_v1_
   {south,east,north}.json, provenance WASTELAND_RADIOTHERMAL_SOLITARY_1.
+
+  WASTELAND_RADIOTHERMAL_SOLITARY_1 closed both halves this item's own
+  "Still owed" section named:
+
+  1. Heat emission — "a tamed one is a living furnace that heats a shelter
+     all winter." RimSage-verified (RimWorld 1.6 decompile, Source/Verse/
+     CompHeatPusher.cs): the vanilla comp reads only Thing-level members
+     (SpawnedOrAnyParentSpawned, AmbientTemperature, PositionHeld, MapHeld)
+     with no Building-only assumption, so it attaches cleanly to a Pawn
+     ThingDef as-is. Wired directly below via CompProperties_HeatPusher,
+     compClass pointed at RimMandrake.CreatureBehaviors.
+     RM_CompHeatPusherGated (a thin subclass that adds this kit's mod
+     settings gate — ambientHeatPusherEnabled — on top of the same vanilla
+     tick/temperature logic Campfire itself uses; numbers calibrated off
+     Campfire's own heatPerSecond=21/heatPushMaxTemperature=28).
+  2. Same-species spacing law — "keep distance from their own kind or cook
+     each other." Genuinely new C#, both halves in
+     RimMandrake.CreatureBehaviors: RM_JobGiver_AvoidOwnKind (inserted
+     globally via RM_ThinkTree_VerminBehaviors, insertTag Animal_PreMain —
+     a no-op for every other animal in the game) steers this pawn away from
+     the nearest other RUT_Radiothermal once one comes within
+     avoidRadiusCells; RM_CompHeatCook (via RM_CompProperties_
+     SpeciesSpacingCook below) is the "or cook each other" consequence —
+     self-inflicted heat damage every cookIntervalTicks while another
+     RUT_Radiothermal is still within the tighter cookRadiusCells (a pen, a
+     cage, a cornered map — avoidance is meant to prevent this, not
+     guarantee it never happens). Both halves read their tuning from the
+     single RM_SpeciesSpacingExtension below.
 -->
 <Defs>
 
@@ -137,6 +165,24 @@
     <tradeTags>
       <li>AnimalExotic</li>
     </tradeTags>
+
+    <comps>
+      <li Class="CompProperties_HeatPusher">
+        <compClass>RimMandrake.CreatureBehaviors.RM_CompHeatPusherGated</compClass>
+        <heatPerSecond>30</heatPerSecond>
+        <heatPushMaxTemperature>24</heatPushMaxTemperature>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SpeciesSpacingCook" />
+    </comps>
+
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SpeciesSpacingExtension">
+        <avoidRadiusCells>8</avoidRadiusCells>
+        <cookRadiusCells>3</cookRadiusCells>
+        <cookDamagePerInterval>4</cookDamagePerInterval>
+        <cookIntervalTicks>250</cookIntervalTicks>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">

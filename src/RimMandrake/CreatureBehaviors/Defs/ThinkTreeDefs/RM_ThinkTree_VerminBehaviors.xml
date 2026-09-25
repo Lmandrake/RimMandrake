@@ -17,7 +17,13 @@
      purpose - a vermin already mid-gnaw or mid-forage keeps that job, and
      filter-feeding is only reached when nothing more specific wanted the
      tick. It gates on the food need first, so an un-hungry carrier costs one
-     float compare. -->
+     float compare.
+
+     WASTELAND_RADIOTHERMAL_SOLITARY_1 added RM_JobGiver_AvoidOwnKind at the
+     front of this list: same no-op-without-the-extension shape as
+     everything else here, but self-preservation (keep distance from your
+     own kind before you cook) outranks gnawing/foraging/shade for whichever
+     creature actually carries RM_SpeciesSpacingExtension. -->
 <Defs>
 
   <ThinkTreeDef>
@@ -25,6 +31,7 @@
     <insertTag>Animal_PreMain</insertTag>
     <thinkRoot Class="ThinkNode_Priority">
       <subNodes>
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_AvoidOwnKind" />
         <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_GnawTargets" />
         <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_SeekMarkedTerrain" />
         <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_SeekShade" />
