@@ -293,3 +293,10 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"MIASMA_KARRATHIL_POLLINATION_GATE_1 live verify: quicktest load + def check","ts":"2026-09-25T05:57:03Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-25T05:58:31Z"}
 {"seat":"FOUNDRY","event":"close","id":"MIASMA_KARRATHIL_POLLINATION_GATE_1","sha":"1521b90acb545c5f33b3988b2ec8ca4889f56b0a","reason":"Pollination gate built and offline-validated; live/quicktest confirmation named as owed gap","ts":"2026-09-25T05:59:33Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY: full-modlist restart + 5-item live-verify batch (fish/sump/bacta-x2/liquid-bottle)","ts":"2026-09-25T06:04:50Z"}
+{"seat":"FOUNDRY","event":"claim","id":"THEY_MOD_REPLICATION_1","ts":"2026-09-25T07:04:23Z"}
+{"seat":"FOUNDRY","event":"start","id":"THEY_MOD_REPLICATION_1","ts":"2026-09-25T07:04:27Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ROSTER_DEAD_BMT_NAMES_SWEEP_1","ts":"2026-09-25T07:09:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"ROSTER_DEAD_BMT_NAMES_SWEEP_1","ts":"2026-09-25T07:09:49Z"}
+{"seat":"FOUNDRY","event":"note","id":"STONEBACK_BOKKA_ART_STANDARD_1","text":"Found while closing ROSTER_DEAD_BMT_NAMES_SWEEP_1 (2026-09-25): desert.json's live bokka fauna row still keys as \"def\": \"RSW_Stoneback\" (law text and RUT_Desert.xml both correctly say RSW_Bokka) — a NONCANON_BEAST_RENAME_1 rename-cleanup miss. Same stale key sits in 3 eviction-only rows (arid_shrubland.json, wasteland.json, dune_sea_deep_desert.json), lower stakes since nothing reads an eviction row as live wiring. Not fixed here — out of that item's scope.","ts":"2026-09-25T07:10:22Z"}
+{"seat":"FOUNDRY","event":"close","id":"ROSTER_DEAD_BMT_NAMES_SWEEP_1","sha":"0e7e47af7b84cc1ca09983a31409ebbe5cbafda7","ts":"2026-09-25T07:11:33Z"}
