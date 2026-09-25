@@ -276,3 +276,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1","ts":"2026-09-25T05:21:13Z"}
 {"seat":"FOUNDRY","event":"start","id":"FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1","ts":"2026-09-25T05:21:17Z"}
 {"seat":"FOUNDRY","event":"needs","id":"PYRELANDS_BURROWER_GRAZER_1","to":"owner","reason":"item's own work-owed step 1 and verify section require an owner ruling (Orray sufficient for 'burrowers' family vs. a dedicated pure-grazer species) before any new species/C# is authored; filed needs=offline was a metadata mismatch with its own body","ts":"2026-09-25T05:21:22Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PROPANE_LAKE_PIPE_MECHANICS_1","ts":"2026-09-25T05:23:26Z"}
+{"seat":"FOUNDRY","event":"start","id":"PROPANE_LAKE_PIPE_MECHANICS_1","ts":"2026-09-25T05:23:31Z"}
+{"seat":"FOUNDRY","event":"block","id":"FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1","reason":"Blocked on FALL_LINE_ARRIVAL_MECHANISM_1's Band B flee/lurker think-tree insert, which has not landed (still unclaimed, 0 code); duplicating it here is explicitly not preferred per this item's own spec. Capture-to-slave hook confirmed (GenGuest.TryEnslavePrisoner) and recorded on the item for whoever resumes.","on":"FALL_LINE_ARRIVAL_MECHANISM_1","ts":"2026-09-25T05:23:56Z"}

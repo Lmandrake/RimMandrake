@@ -88,3 +88,44 @@ converted to a slave carrying a permanent (non-memwipeable) mental-scar hediff, 
 arrives on the Fall Line by the same wreck-arrival route Band B uses — built, or a
 further owner ruling recorded if the design proves ambiguous once (1)-(4) above are
 actually investigated.
+
+## FOUNDRY investigation, 2026-09-24 — blocked, not built
+
+Claimed, started, investigated, blocked (not closed) this pass. Findings, so the next
+picker-up doesn't re-derive them:
+
+- **`FALL_LINE_ARRIVAL_MECHANISM_1` has not landed** — still `state: file`, unclaimed,
+  0 history events beyond its own filing. `grep -r "JobGiver_FeralFlee\|JobGiver_
+  FeralLurk\|RUT_FeralDroidInsert" src/ design/` returns only the spec doc
+  (`design/RimUtinni/fall_line_arrival_mechanism_spec.md`) — no C# exists.
+- **The droid contrast case this item's spec leans on doesn't exist either.**
+  `RUT_Hediff_Feral` (cited throughout this item and the arrival-mechanism item as the
+  already-built "clean memwipe" path to contrast against) is NOT in `src/` — it appears
+  only in two design docs (`fever_wood_kit_spec.md`,
+  `fall_line_arrival_mechanism_spec.md`), never authored. RimSage's def index (live
+  connection confirmed this session) also returns nothing for a `Feral` `HediffDef`.
+  So there is no existing "clean" path to contrast the permanent scar against yet —
+  both halves of the §8b beat are unbuilt.
+- **Capture→slave hook, confirmed via RimSage against decompiled source** (item's step
+  4, previously UNMEASURED): the vanilla enslavement path is
+  `GenGuest.TryEnslavePrisoner(Pawn warden, Pawn prisoner)` in
+  `Source/RimWorld/GenGuest.cs`, reached from `InteractionWorker_EnslaveAttempt` (the
+  warden interaction) and `Toils_Interpersonal.TryEnslave`/`JobDriver_
+  EnslaveOrReduceWillPrisoner` (the `WorkGiver_Warden_Enslave` job). A Harmony postfix
+  on `GenGuest.TryEnslavePrisoner` is the correct hook to apply the mental-scar hediff
+  at the moment of conversion — it fires exactly once, on the actual state transition,
+  regardless of which of the two callers triggered it.
+- **Per this item's own "why re-filed" section**, building the crash-survivor's
+  flee-then-fight behaviour now means either (a) waiting on (1), which is unclaimed and
+  itself carries open, undecided design shape ("wreck incident vs subregion landmark vs
+  generator-driven equivalent" — not ruled), or (b) forking a duplicate mini think-tree
+  insert, which the item explicitly says is "not preferred." Building the PawnKindDef,
+  spawn route, or think-tree insert now would be exactly the fork this item warns
+  against, so those steps were not built this pass.
+- **Not blocked on the HediffDef or hook design in isolation** — those are recorded
+  above as unblocked, real progress, ready to consume the moment (1) lands or is
+  overridden. No C# was written this pass because the PawnKindDef/spawn-route half
+  (which the HediffDef must be wired to for the criteria to be met) cannot land without
+  the same prerequisite.
+
+Blocking on `FALL_LINE_ARRIVAL_MECHANISM_1` rather than closing or forcing a fork.
