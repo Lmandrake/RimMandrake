@@ -136,3 +136,73 @@ roster doc (done). Steps 2/rest-of-5: not started. Step 4's live-game
 liveness (deploy + Player.log check) is unverified — this pass only wrote
 and offline-validated the patch; it has not been deployed to the Mods
 folder or loaded in-game.
+
+## done this session (2026-09-25) — step 1 tag-index/live-dump close-out, step 2 verify, step 4 deploy proof
+Live `cherrypicker.py --source live --is-cut` re-run against the CURRENT
+CherryPicker config (2133 keys now, up from 1972 — other work has landed
+cuts since 2026-09-13): all 9 keys from step 1 (`AbilityDef` and `GeneDef`
+of `VQEA_Levitation`/`VQEA_Invisibility`/`VQEA_InfernoSpew`/
+`VQEA_HellsphereBlast`, plus `ThingDef/VQEA_Bullet_HellsphereCannonGun`)
+still read `CUT`. `GeneDef/VQEA_Herculean` and `GeneDef/VQEA_Prowess`
+(step 2) both read `present` — never cut, confirmed rather than assumed.
+
+**Live def dump cross-check** (freshest capture,
+`.../DefDump/captures/2026-09-24T22-19-22Z`, `defs.sqlite` same
+timestamp — both from a load that happened without me touching the
+bridge, most likely the other agent's restart+verify batch mentioned in
+this pass's brief; manifest `modCount` 621 vs live `ModsConfig.xml` 627,
+so treat this as *a* recent live state, not a guaranteed exact match to
+right-now — noted per the modlist-gate rule, not hidden):
+- The 4 `GeneDef`s are **absent** from the dump — Cherry Picker actually
+  deletes GeneDefs from the DefDatabase (not just references to them).
+- The 4 `AbilityDef`s and the bullet `ThingDef` are **still present** —
+  consistent with Cherry Picker's own About.xml wording ("defs remain...
+  but all references to them are cut so they do not show up anywhere"):
+  it deletes genes outright but only strips *references* to abilities/
+  items, leaving the orphaned def in the DefDatabase. This is expected
+  behaviour for this mod, not a repeat of the known FactionDef no-op trap
+  — the thing that actually matters (nothing can grant these abilities
+  any more) is proven by the reference sweep below, not by the AbilityDef
+  vanishing.
+- **Tag→surviving-item index**: `GeneDef`/`AbilityDef` in this engine
+  carry no `tags`/`weaponTags`-equivalent pool field (checked the dump's
+  own field list for `VQEA_Prowess` — no `tags` key exists on `GeneDef`
+  at all), so the literal weapon/apparel tag-index rebuild from
+  `rimworld-content-moderation` has no analog here. Ran the equivalent,
+  stronger check instead: `rg -F -l` for all 5 cut defNames across
+  **every one of the 540 captured def-type JSON files**. Only
+  `AbilityDef.json` (self), `HediffDef.json`, `PawnColumnDef.json` and
+  `ThingDef.json` contain any of the 5 strings anywhere in the live def
+  set — zero hits in `XenotypeDef.json`, `QuestScriptDef.json`,
+  `RecipeDef.json`, `TraderKindDef.json`, `IncidentDef.json`, etc.
+  - `HediffDef.json`: the paired `VQEA_Levitation`/`VQEA_Invisibility`
+    hediffs (same defName as the cut genes, a different def TYPE — the
+    "one defName, two def types" trap) — already known from the prior
+    session's donor-XML read, now confirmed absent from the live
+    reference graph too: nothing else grants these hediffs, so they're
+    dead weight, not silently-broken.
+  - `PawnColumnDef.json`: 4 auto-generated dev-mode "Numbers_..." debug
+    columns Cherry Picker/RimWorld itself churns out per AbilityDef —
+    harmless, not gameplay content.
+  - `ThingDef.json`: only the bullet's own self-reference plus its
+    granting `AbilityDef/VQEA_HellsphereBlast` (expected pair).
+  - **Conclusion: no def anywhere in the live set silently lost its only
+    remaining reference target because of this cut.** Nothing to fix.
+
+**Step 4 live-game proof (was the outstanding gap):** the patch is
+deployed byte-identical at
+`.../RimWorld/Mods/UtinniPatches/Patches/VQEQuestText_AreForsaken.xml`
+(diffed against the repo copy — identical). The newest `Player.log`
+(2026-09-25 00:14) has zero mentions of `AreForsaken`/`VQEQuestText`
+(expected — RimWorld logs nothing on a successful patch) and zero
+`PatchOperation...failed` lines naming anything in this file or the VQE
+quest defs (the 2 unrelated patch failures in that log are `BMT_GreyLady`/
+`BMT_Thrumbungus`, a different mod's content). Deployed, loaded, silent
+— the correct signature of a clean apply.
+
+## NOT done — rest of step 5 only
+The day-118 site-tile-biome check remains the one genuine live-game gap:
+current campaign tick is still far short of when `VQE_AncientLabComplex`
+self-fires. Not chaseable this pass (bridge held elsewhere for a
+restart+verify batch; even if free, the campaign clock hasn't reached
+day ~118). Left as an outstanding live-verify, not invented or faked.
