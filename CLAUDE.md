@@ -217,7 +217,8 @@ MEASURED about the live world — the live system is the only instrument for "ri
   `RM_EatCleanableExtension` and `RM_ParentalEnrageExtension` with one axis widened each; their breeding is
   `RM_CompVerminBreeder` + `RM_MapComponent_VerminPopulation` + its alert; and the mining thresholds need no
   new tracking because `BoleRecord.footprint`/`timers` are already Scribed. **Four of six mechanisms already
-  built.** ⇒ Same for CONTENT: the flora roster had already named the wasps' hosts, the ant hive's farmed
+  built.** Again 2026-09-25: `SEA_SHORE_TILE_MUTATOR_1` was filed and sent to design while
+  `mandrake.rm.seashores` — the exact mutator — had shipped two days earlier. ⇒ Search `src/` before FILING, not only before building. ⇒ Same for CONTENT: the flora roster had already named the wasps' hosts, the ant hive's farmed
   species and the sealant's toxic plant. ⛔ A design pass that invents before it reads will re-invent.
 - 🔴 **Say which greatbole you mean, every time — the species is THREE defs.** `RM_Greatbole` is the mature
   fellable giant (roster row 22); `RUT_GreatboleHeartwood` is the mineable `RockBase` blob a player actually
