@@ -7821,6 +7821,114 @@
     "hash": "6e6a91e344279a99ff1b8fe5a239c3202970003a2f50e060c4a2aa6d82a164ed",
     "sha": "db60da8bc"
   },
+  "src/RimMandrake/WeepingStones/Defs/JobDefs/RM_StockedPoolJobs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "edd78d3d365aae98c94dc3b2209eb60290d193d4c55ac95a71b6db3e4474cec3",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingDefs_Items/RM_PoolBreedingStock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ae7e109de622b54a0eeeeb44a637ae82a60057d3c26cd822d0f3ea1b4a6fbfee",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Defs/WorkGiverDefs/RM_StockedPoolWorkGivers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d575a41d9bfd14ed817b4131f067aa6dc912d3ca835a284c9de0921cc4bf0a03",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Patches/RM_PoolPenZoneOrdersPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bce0d799dff4aa28aed1299c96b546d904531937089ef6619415af74bfe4ad46",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_BiomeWorker_WeepingStones.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "59b53be25e6c59ea9ada522a2b5249da8af8734840b3565e95aefa411d743e87",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_Designator_ZoneAdd_PoolPen.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0ad26d7e943d2b6eb871924e09f7bc75d7d6e5343bae40174af3beacbf597df7",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_JobDriver_FeedPoolPen.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "be906bdc2d8f2b82ea71741738ca507c152c2f4b752501acda0a60aad8fdacae",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_JobDriver_NetPoolBreeder.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f61c0712fdb6c5d63f18a373c273f14028eb963336fc8fdbbfae367b1cd71786",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_JobDriver_StockPoolPen.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "61320565c345b186fa271b481313d85ba9335b7b1c2de0076f62444033e41280",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_MapComponent_PoolStock.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5dc845b637e7bddb1b00a5c18180950eed5143be0bb77983f2856be0f0a8f160",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_PoolBody.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b276f43ca9c2e75123ca4235e244c65b36f49183282301305b49fa3a3c3fe91d",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_PoolBreederUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8861a19c34a516b8b354b9b4996d367ea239f18959dfc556537fc754a1c6454e",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_PoolStockDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ec167b7d68bbc6ac9edf2b7c98f45b2e042c5af797ae363ca93afbc74e1b5d88",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_WeepingStonesSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "218ff0f248ce8547c85dab454aeac453da139b9d775791971c7e302002a65143",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_WorkGiver_FeedPoolPen.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1aa02e76ab479ca1c2d66f6e0a978cd7b7cf2b10c45b0910c41c1d9b6e1be9d2",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_WorkGiver_NetPoolBreeder.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "1240499703c44349121ca71a14d2af0bb2783aebd2f2917b50c7a1915cbedda2",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_WorkGiver_StockPoolPen.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "65bc78daebfde180b2fb54b2fe7e0d541b0332e1067c33abd414d26ecad07640",
+    "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_Zone_PoolPen.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0a3fa5061d06ed5ad04881f50372aa09e86d6d90f7ac4f5c8bb15ac0001af8ad",
+    "sha": "b4a1f8f14"
+  },
   "src/RimMandrake/WreckedMachines/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-17",
