@@ -7821,17 +7821,89 @@
     "hash": "6e6a91e344279a99ff1b8fe5a239c3202970003a2f50e060c4a2aa6d82a164ed",
     "sha": "db60da8bc"
   },
+  "src/RimMandrake/WeepingStones/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bd873f79301e6a364a9104173f523d8dcf0e70675ab3999502450ab839d73aad",
+    "sha": "aaab8b466"
+  },
+  "src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ab6a8a5ca1ab24873402472c18c53a3fd319d153439ec86c5844c3a9cb8b015b",
+    "sha": "aaab8b466"
+  },
   "src/RimMandrake/WeepingStones/Defs/JobDefs/RM_StockedPoolJobs.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "edd78d3d365aae98c94dc3b2209eb60290d193d4c55ac95a71b6db3e4474cec3",
     "sha": "b4a1f8f14"
   },
+  "src/RimMandrake/WeepingStones/Defs/RecipeDefs/RM_StockedPoolRecipes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "715c2da9c9b536a4096778aecd35c75c057e884d7dcd4ea0dff54c1b03043f48",
+    "sha": "aaab8b466"
+  },
   "src/RimMandrake/WeepingStones/Defs/ThingDefs_Items/RM_PoolBreedingStock.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "ae7e109de622b54a0eeeeb44a637ae82a60057d3c26cd822d0f3ea1b4a6fbfee",
     "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingDefs_Items/RM_StockedPoolCatchItems.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0dccb08de6d5b744dad07386c81d7d5eac43d40c8b86a71635e3ae05d6817297",
+    "sha": "aaab8b466"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingDefs_Items/RM_StockedPoolCuisine.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "dbc9577f1be4f2480d229b6dcd43dc6ebdfd8cdf4af4c25da0d56040ffb83fcf",
+    "sha": "aaab8b466"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingDefs_Items/RM_StockedPoolMeats.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0e56ae6d6fed8fcdf1aff1c2d613e36b791807aaaa06011323485be0d48b9f09",
+    "sha": "aaab8b466"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingDefs_Items/RM_WeepingStonesFish_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c0ca3d4a2aa57ff94de9415a7c22cdca18d3d53e8e91674ce1200f85722d993a",
+    "sha": "aaab8b466"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingDefs_Items/RM_WeepingStonesNativeFlora_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f48aa0f29c9494ca9e9349cb495d7689ea494ae8a3d20d0ca8b92d666a9bd61a",
+    "sha": "aaab8b466"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingDefs_Plants/RM_WeepingStonesNativeFlora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a023b28c1367648d145a378cb4a4497d8ac61ea8cab8f2a48911974c619b75b4",
+    "sha": "aaab8b466"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingDefs_Races/RM_Gorrask.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c5b1204d08f1d8123bb7cdbf14f29269595028ed1987eca97a3327034cad3c08",
+    "sha": "aaab8b466"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThingSetMakerDefs/RM_RareOasisCatches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b8f5fc73d53d49ee2c9c6ed28f785708becb74c0f3389e5fc30b3160ee261ccb",
+    "sha": "aaab8b466"
+  },
+  "src/RimMandrake/WeepingStones/Defs/ThoughtDefs/RM_StockedPoolThoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5339e41c8c9ab50375c4ed985461ad4789198f2f63468188179911e1cabadbd0",
+    "sha": "aaab8b466"
   },
   "src/RimMandrake/WeepingStones/Defs/WorkGiverDefs/RM_StockedPoolWorkGivers.xml": {
     "cleanCount": 1,
@@ -7844,6 +7916,12 @@
     "date": "2026-09-24",
     "hash": "bce0d799dff4aa28aed1299c96b546d904531937089ef6619415af74bfe4ad46",
     "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Patches/RM_StockedPoolRecipeWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "bf855ba40151be5c099bf27aaa925b4d378d472b80b976a5bc64b5ff80e5e927",
+    "sha": "aaab8b466"
   },
   "src/RimMandrake/WeepingStones/Source/RM_BiomeWorker_WeepingStones.cs": {
     "cleanCount": 1,
@@ -19208,6 +19286,12 @@
     "date": "2026-09-18",
     "hash": "83f70262b1f78dd33e59748c7097483b28fd8ae4e73135fe2b6ede74c9e9513f",
     "sha": "4de0abdce"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WeepingStonesFish_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "198b72b791cf6fb5ba32a13c309e0fe3e7bcbbf73618f82d409d54085802d193",
+    "sha": "aaab8b466"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WickStem.xml": {
     "cleanCount": 1,
