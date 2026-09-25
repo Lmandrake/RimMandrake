@@ -1841,6 +1841,12 @@
     "hash": "f01523044bc8326027b71e2ada1706a0306080bac4fcaff789d2eb98e5e1d28a",
     "sha": "b1a2aa399"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "e5ac3b9a780b092596ec8b4fc82d6bff825930cbc0a6455eb3604b24bf72f4f3",
+    "sha": "d0dfad868"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_LivingBoles.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -2092,6 +2098,12 @@
     "date": "2026-09-14",
     "hash": "19ca77a4ac192498dbbee1a4edad387523d8782f3c1d6dd6ea33c8612b02e774",
     "sha": "07118c4e6"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_RoilVortexSpawner.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "ff6f6f608a62d6fffca6541d172995cbb3f23ad2b54fed458d84c53b1a93ff38",
+    "sha": "d0dfad868"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_StrandingPools.cs": {
     "cleanCount": 1,
@@ -8186,6 +8198,12 @@
     "date": "2026-09-24",
     "hash": "218ff0f248ce8547c85dab454aeac453da139b9d775791971c7e302002a65143",
     "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_WorkGiver_CullVhorrin.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "216a021d6c427607d8cfc5058c68c3a7d7684b3bbcb0528c581f2f436e1eebef",
+    "sha": "d0dfad868"
   },
   "src/RimMandrake/WeepingStones/Source/RM_WorkGiver_FeedPoolPen.cs": {
     "cleanCount": 1,
