@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T18:09:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T18:13:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -819,15 +819,6 @@ kind:     task
 summary:  1. Build the event object, the shared budget and the spawn response under the wasps
 prose:    infrastructure/state/items/REACTION_MECHANISM_GENERALISE_1.md
 
-## GREATBOLE_BARK_EDGE_ART_1 The greatbole blob reads as bark at its edge and wood inside, and its real art is owed
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Answer the three questions above on the Desktop. ⛔ Nothing authored or commissioned first.
-prose:    infrastructure/state/items/GREATBOLE_BARK_EDGE_ART_1.md
-
 ## FEVERWOOD_BOUGH_SOIL_TERRAIN_1 The crown cannot grow anything: boughway is fertility 0, so bough-soil is owed
 state:    doing
 row:      unassigned
@@ -908,15 +899,6 @@ target:   v1
 kind:     build
 summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
 prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
-
-## STACKCOUNT_FILEPATH_REDX_SWEEP_1 228 live 'Collection cannot init' errors: defs pointing a Graphic_StackCount/Random/Collection texPath at a FILE, not a folder, render red-X (RUT_Greenwood, RUT_Hardwood, VaultRoot, RM_Venomvine, GlowGoo, JawaClaimRumour, many plants). TerminalBiomes fixed at 860b9e0f9 as the pattern: owned art into a folder, borrowed placeholder overrides graphicClass to Graphic_Single. Census from Player.log, grep 'Collection cannot init'.
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/STACKCOUNT_FILEPATH_REDX_SWEEP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/STACKCOUNT_FILEPATH_REDX_SWEEP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
