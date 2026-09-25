@@ -33,7 +33,9 @@
        RUT_Contagion  (10 plants, authored in its own def)
        RUT_CrackedLands  (6 plants, authored in its own def)
        RUT_Desert  (9 plants, authored in its own def)
-       RUT_ExtremeDesert  (3 plants, authored in its own def)
+       RUT_ExtremeDesert  (3 plants, authored in its own def; FROZEN 2026-09-24,
+         STILLSAND_RM_MOD_BUILD_1 — content now lives in mandrake.rm.stillsand's
+         RM_Stillsand, wired by WildAnimals_Stillsand.xml, not here)
        RUT_FeverWood  (7 plants, authored in its own def)
        RUT_ForsakenCrags  (8 plants, authored in its own def)
        RUT_Greentide  (11 plants, authored in its own def)

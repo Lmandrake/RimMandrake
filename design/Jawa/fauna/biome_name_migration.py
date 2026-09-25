@@ -36,7 +36,9 @@ OLD_TO_NEW_BIOME = {
     'BiomeCypreJungle': 'RUT_Greentide',
     'COMIGO_GreaterSwamp_Tropical': 'RUT_FeverWood',
     'Desert': 'RUT_Desert',
-    'ExtremeDesert': 'RUT_ExtremeDesert',
+    'ExtremeDesert': 'RM_Stillsand',  # RUT_ExtremeDesert frozen 2026-09-24,
+                                       # STILLSAND_RM_MOD_BUILD_1 (same pattern as
+                                       # AB_MycoticJungle -> RM_TheRot above)
     'LavaField': 'RUT_TheForge',
     'PoisonForest': 'RUT_PoisonForest',
     'Scarlands': 'RUT_Scarlands',
