@@ -17289,11 +17289,23 @@
     "hash": "dbb50db40784be5e8c25f6980d12e6aaa2df6ec6056382031a6f13576868372c",
     "sha": "211b2f0c8"
   },
+  "src/RimUtinni/RotSporeKit/Defs/HediffDefs/RUT_RotSporeKit_GuardianGroves_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f6dfeb34b78d3283178efdc87994e97c66ffb8673e6228e24a3122d162671dae",
+    "sha": "d8016dd57"
+  },
   "src/RimUtinni/RotSporeKit/Defs/HediffDefs/RUT_RotSporeKit_Hediffs.xml": {
     "cleanCount": 2,
     "date": "2026-09-20",
     "hash": "adf4e10981e29b8e92525a1e8b5245ce2b8e3960347bcec4fa7958ad5a56703f",
     "sha": "d4559b984"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/HediffDefs/RUT_RotSporeKit_LivePrepHediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "fd2823c4e509174804b5c105c5041c3fe84fc41c0105ad324fbc758ca11e0f0c",
+    "sha": "d8016dd57"
   },
   "src/RimUtinni/RotSporeKit/Defs/HediffDefs/RUT_RotSporeKit_SheenHediffs.xml": {
     "cleanCount": 1,
@@ -17301,11 +17313,23 @@
     "hash": "475c547b4aa868b676a6b6597b14f65657fec94b5d36a99ecfd7c040d917b7c0",
     "sha": "562ae2718"
   },
+  "src/RimUtinni/RotSporeKit/Defs/Misc/RUT_RotSporeKit_TreasureConscience.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "10f035423698641eb56742aa0a7d6bb9762f8a5ae14fc33c240b6a00e554366e",
+    "sha": "d8016dd57"
+  },
   "src/RimUtinni/RotSporeKit/Defs/PlantBases/RUT_RotSporeKit_PlantBases.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "a007adec2498062a97e1ce93f5d92f7a5d220fae7f8119792624a58e73ed1ac0",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/RecipeDefs/RUT_RotSporeKit_LivePrepRecipes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "cc0bc5e50e10904e676c9cd08670d0b3738fbbbab6f40148a6fe6fb96b0f6403",
+    "sha": "d8016dd57"
   },
   "src/RimUtinni/RotSporeKit/Defs/RecipeDefs/RUT_RotSporeKit_Recipes.xml": {
     "cleanCount": 1,
@@ -17343,6 +17367,12 @@
     "hash": "169b4251ecc491e2ae094f85fefc2686637c9ba8555b365c0fe10cb11a3fce5c",
     "sha": "785100e16"
   },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Buildings/RUT_RotSporeKit_BrewingVessel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b1e94fff946cf1c2e3c26d7b5abcf904f3d087c1421209a81b2c480f4571fe53",
+    "sha": "d8016dd57"
+  },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Buildings/RUT_RotSporeKit_Buildings.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -17360,6 +17390,18 @@
     "date": "2026-09-24",
     "hash": "bb849bdeaeb20aec9a7e3a2b18ff7e07c5cd587f110b4a06a4d4a8e1364f207a",
     "sha": "5f531aed7"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_GuardianGroves_Ingredients.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "49b4e7d100783d3728c27eff4f80f1d6d02d0d8b204312815bed16fc62fa9f83",
+    "sha": "d8016dd57"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_LivePreparations.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "408bf82eefd8a7220440314d1abe1f5af4c04d1b3c207617a3ede4138760f723",
+    "sha": "d8016dd57"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_Resources.xml": {
     "cleanCount": 1,
@@ -17385,6 +17427,12 @@
     "hash": "57d43389ac3ecce13474e3cbc94af25cef045cc8dccddffeb543475ab9221e6a",
     "sha": "5f531aed7"
   },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_GuardianGroves.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "987bf61e30d9e38322c42543e33d09da099884052f9ffebec46c7ab9d3d56b7e",
+    "sha": "d8016dd57"
+  },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Weapons/RUT_RotSporeKit_MantisScythe.xml": {
     "cleanCount": 3,
     "date": "2026-09-11",
@@ -17397,11 +17445,29 @@
     "hash": "53da16716f9695cba3d9436482d70071f9b7222a33d3ae19958e53f818c6c034",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/RotSporeKit/Defs/ThoughtDefs/RUT_RotSporeKit_LivePrepThoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "5d0b9332f13881afc599d30e78edaecedb12f59172163a619594ea16b5e09e39",
+    "sha": "d8016dd57"
+  },
   "src/RimUtinni/RotSporeKit/Defs/WeatherDefs/RUT_RotSporeKit_SheenWeathers.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
     "hash": "75b62f06fb80b37bf62e88a6f7f0a6335ef76191a26bf90cdb76e9c037149b4d",
     "sha": "211b2f0c8"
+  },
+  "src/RimUtinni/RotSporeKit/build_review_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "36d016b99340b657cae3863c6e92cb4c8428a8c565c0a0f736a6f0e09aece05e",
+    "sha": "d8016dd57"
+  },
+  "src/RimUtinni/RotSporeKit/selftest_live_prep.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "9868848941a8ecea1c49a55bd4e349642795903b9b9272ed3f57abb9a5395ecc",
+    "sha": "d8016dd57"
   },
   "src/RimUtinni/RustCathedralHum/About/About.xml": {
     "cleanCount": 1,
