@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  🔴 FROZEN 2026-09-24 — carrying the world until the terminal paint; content lives in
+  `mandrake.rm.feverwood`; do not edit here.
+
+  Phase A step 3 of design/RimMandrake/biome_mod_architecture.md (item
+  FEVERWOOD_RM_MOD_BUILD_1). This def is what the player's saved world actually carries
+  until Phase B repaints the planet onto `RM_FeverWood`; deleting it before then destroys
+  the save, so it stays as it is. From this moment every CONTENT fix for the Fever Wood
+  lands in `mandrake.rm.feverwood` only, never here. What the twin got wrong, now fixed
+  only in the RM_ copy: `workerClass` named the donor `ReGrowthCore.UniversalBiomeWorker`
+  (RM_FeverWood carries its own `RM_BiomeWorker_FeverWood` instead), and 10 of its 11
+  `wildAnimals` rows plus 3 of its 7 `wildPlants` rows are Star-Wars-canon/RSW_ names that
+  belong behind the Utinni patch layer (Q11a), not inline on an RM_-tier def — see
+  `src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml`.
+-->
 <Defs>
 
   <!--
