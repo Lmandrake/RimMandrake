@@ -1,81 +1,81 @@
 {
- "generatedAt": "2026-09-24T02:11:00Z",
+ "generatedAt": "2026-09-25T17:45:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 739992,
-  "sha256_12": "bd6497bc83b9"
+  "bytes": 804247,
+  "sha256_12": "7c6ba79ebdec"
  },
- "head": "9f3ecb17f",
+ "head": "a2b5fe5c0",
  "counts": {
-  "red": 4,
-  "blue": 894,
-  "green": 1799,
-  "grey": 611,
+  "red": 3,
+  "blue": 1387,
+  "green": 1810,
+  "grey": 387,
   "unmeasured": 0,
-  "total": 3308
+  "total": 3587
  },
  "loc": {
-  "red": 1406,
-  "blue": 350899,
-  "green": 568217,
-  "grey": 158776,
+  "red": 1382,
+  "blue": 474761,
+  "green": 547486,
+  "grey": 91597,
   "unmeasured": 0,
-  "total": 1079298
+  "total": 1115226
  },
- "reviewEntries": 2950,
+ "reviewEntries": 3476,
  "recidivists": [
   {
-   "path": "src/RimUtinni/UtinniPatches/About/About.xml",
-   "loc": 125,
-   "cycles": 7
+   "path": "src/RimUtinni/Doctrine/About/About.xml",
+   "loc": 119,
+   "cycles": 6
   },
   {
-   "path": "src/RimMandrake/Utils/artpipe/selftest_artpipe.py",
-   "loc": 2959,
-   "cycles": 5
-  },
-  {
-   "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml",
-   "loc": 160,
-   "cycles": 4
-  },
-  {
-   "path": "src/RimStarWars/SWBestiary/About/About.xml",
-   "loc": 93,
-   "cycles": 4
-  },
-  {
-   "path": "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
-   "loc": 534,
+   "path": "src/RimUtinni/ShipShields/About/About.xml",
+   "loc": 91,
    "cycles": 3
   },
   {
-   "path": "src/RimMandrake/Utils/modcheck/cli.py",
-   "loc": 323,
+   "path": "src/RimStarWars/StarWarsPatches/About/About.xml",
+   "loc": 67,
    "cycles": 3
   },
   {
-   "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml",
-   "loc": 156,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml",
-   "loc": 154,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimMandrake/CreatureBehaviors/About/About.xml",
-   "loc": 120,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml",
-   "loc": 6770,
+   "path": "src/RimMandrake/Greentide/Defs/HediffDefs/RM_Greentide_Hediffs.xml",
+   "loc": 137,
    "cycles": 2
+  },
+  {
+   "path": "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/WarLabCraterMutation.cs",
+   "loc": 129,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Patches/AncientDangerGenSteps_AmbientDoctrine.xml",
+   "loc": 371,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Patches/MechClusterBiomes_AmbientDoctrine.xml",
+   "loc": 158,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FeverTrunkCore.xml",
+   "loc": 91,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimMandrake/SacredGraffiti/Defs/SacredMarks.xml",
+   "loc": 81,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimUtinni/ShipShields/Defs/ResearchProjectDefs/RUT_ShieldGenerator_Research.xml",
+   "loc": 25,
+   "cycles": 1
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 3308 files (1799 clean, 611 dirty, 0 unmeasured)."
+ "headline": "OK: measured 3587 files (1810 clean, 387 dirty, 0 unmeasured)."
 }
