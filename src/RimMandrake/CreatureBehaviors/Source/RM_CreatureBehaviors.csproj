@@ -91,6 +91,8 @@
     <Compile Include="RM_CompProximityPsychicStun.cs" />
     <Compile Include="RM_CompProperties_ShardArmor.cs" />
     <Compile Include="RM_CompShardArmor.cs" />
+    <Compile Include="RM_CompProperties_DefensiveDischarge.cs" />
+    <Compile Include="RM_CompDefensiveDischarge.cs" />
     <Compile Include="RM_CompProperties_TameSootheAura.cs" />
     <Compile Include="RM_CompTameSootheAura.cs" />
     <Compile Include="RM_MapComponent_ShadeGrid.cs" />
