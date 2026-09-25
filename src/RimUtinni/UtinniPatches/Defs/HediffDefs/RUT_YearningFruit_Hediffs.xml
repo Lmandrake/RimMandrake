@@ -10,10 +10,17 @@
   Verse.Hediff carries no comps at all, so a comps block on an unstated
   class loads clean and silently does nothing).
 
-  The "passes seed quickly, filth follows, the ground sprouts" half stays
-  OUT of this file on purpose — see RUT_YearningFruit.xml's own header and
-  GREENTIDE_YEARNING_FRUIT_FILTH_1 (filed this pass) for the deferred
-  filth/germinate comp.
+  GREENTIDE_YEARNING_FRUIT_FILTH_1 (built this pass) closes the "passes seed
+  quickly, filth follows, the ground sprouts" half: RM_HediffComp_SeedPassage
+  (mandrake.rm.creaturebehaviors, same shape as RM_HediffComp_ShadeStagger,
+  DESERT_STAGGERSEED_BUILD_1, but firing on the hediff's own natural end
+  rather than on the carrier's death) drops filth and rolls a chance to
+  germinate a fresh RUT_YearningFruit seedling wherever the eater happens to
+  be standing when the accelerant runs its course — colonist or wild grazer
+  alike. Filth_AnimalFilth is vanilla (confirmed elsewhere in this repo,
+  e.g. Ikee_Tuning.xml, RSW_BeastLairs_Buildings.xml) and reads as manure/
+  droppings, which is exactly the "seed-rich droppings" flavor this wants —
+  no new art needed.
 -->
 <Defs>
 
@@ -34,6 +41,17 @@
       <li Class="HediffCompProperties_SeverityPerDay">
         <severityPerDay>-6.0</severityPerDay>
         <showHoursToRecover>true</showHoursToRecover>
+      </li>
+      <!-- GREENTIDE_YEARNING_FRUIT_FILTH_1: fires once, when severity decays
+           to 0 and the hediff is naturally removed. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_SeedPassage" MayRequire="mandrake.rm.creaturebehaviors">
+        <filthDef>Filth_AnimalFilth</filthDef>
+        <filthCount>1</filthCount>
+        <germinateThingDef>RUT_YearningFruit</germinateThingDef>
+        <germinateChance>0.5</germinateChance>
+        <germinateCount>1~2</germinateCount>
+        <germinateRadius>2.5</germinateRadius>
+        <germinateGrowth>0.05</germinateGrowth>
       </li>
     </comps>
     <stages>

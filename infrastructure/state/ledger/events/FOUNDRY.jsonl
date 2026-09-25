@@ -321,3 +321,6 @@
 {"seat":"FOUNDRY","event":"block","id":"BACTA_REVIVAL_MECHANIC_1","reason":"live: toggle/window/laws pass, but heart-destroyed corpse revives into re-death (design call) and WorkGiver never auto-fired","ts":"2026-09-25T08:24:09Z"}
 {"seat":"FOUNDRY","event":"block","id":"LIQUID_BOTTLE_LOOP_1","reason":"live: fill job never produces a filled bottle (4 tries, 3 pawns); revert/rot timers unbuilt so verify bar cannot pass","ts":"2026-09-25T08:24:10Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-25T08:24:17Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_YEARNING_FRUIT_FILTH_1","ts":"2026-09-25T14:44:02Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREENTIDE_YEARNING_FRUIT_FILTH_1","ts":"2026-09-25T14:44:04Z"}
+{"seat":"FOUNDRY","event":"close","id":"GREENTIDE_YEARNING_FRUIT_FILTH_1","sha":"e399e17ca","reason":"built RM_HediffComp_SeedPassage: filth+seedling payload on RUT_DigestiveAccelerant end","ts":"2026-09-25T14:50:55Z"}
