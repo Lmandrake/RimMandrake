@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_YearningFruit.xml                  UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `the_greentide:digestive-accelerant-fruit-the-fruit-that-yearns`
+  (design/Jawa/worldbuilding/biomes/the_greentide.md §4: "The fruit yearns
+  to be eaten (owner): huge, sweet, everywhere, loaded with digestive
+  accelerants so the eater digests fast and passes seed quickly — free
+  calories with a tax (hunger returns fast, filth follows, a brief waddle).
+  The ground is carpeted in filth and sprouts, which is the strategy
+  *working*"; roster's own `new_defs` entry, rosters/the_greentide.json,
+  mechanic_load "C#: eat-fast/pass-seed hediff + filth").
+
+  This is a NEW def, not a reskin of the sheet's existing Jogan/Muja fruit
+  rows (Plant_JoganTree_Wild, Plant_MujaFruit_Wild, already wired and
+  unmodified) — the roster's own new_defs entry is a separate line item
+  because those two donor fruits carry no mechanic at all; this slug asks
+  for the mechanic itself to exist somewhere, and inventing a THIRD wild
+  fruit to carry it (rather than bolting new behaviour onto the two donor
+  rows) keeps their existing wiring untouched.
+
+  Mechanism, same "ships now, hooks later" posture RUT_BloomCrop (wave 10)
+  and RUT_VaultRoot/RUT_DosimeterLawn (this wave) used: the "digests fast /
+  hunger returns" half ships for real today via ordinary vanilla stats
+  (HungerRateMultiplier + a temporary MoveSpeed factor for "a brief
+  waddle") on the hediff below — ingredients this codebase already has, no
+  new C# needed for that half. The "passes seed quickly, filth follows, the
+  ground sprouts" half is the same shape as RUT_VorrelBrood's own
+  germinate-on-dispersal comp (RM_HediffComp_ShadeStagger,
+  DESERT_STAGGERSEED_BUILD_1) but for filth-and-seedling rather than
+  shade-and-germinate — genuinely new C#, so it is NOT guessed at inline.
+  Filed as a dedicated follow-on item, `GREENTIDE_YEARNING_FRUIT_FILTH_1`,
+  same posture CRACKED_LANDS_SEALED_WAKE_MECHANISM_1/
+  WASTELAND_BRINE_BATTERY_DISCHARGE_1 used for a genuinely-new, non-trivial
+  comp; `GREENTIDE_YEARNING_FRUIT_1` (already filed) stays open tracking
+  that piece rather than being closed on this def alone.
+
+  Checked cast_assignment.csv first (per this item's own "watch out"): no
+  existing greentide fruit row carries any ingestible mechanic at all, so
+  there is no double-booking risk reskinning would otherwise create.
+
+  Art: genuinely new (checked infrastructure/artpipe/{done,pending,
+  registry.jsonl} for "yearningfruit"/"yearning fruit"/"fruit that yearns"
+  first — clean). One job filed this pass — rutyearningfruit_v1.json —
+  same "one job for a Graphic_Random plant" posture RUT_DarkCrust/RUT_Fuzz
+  used, not per-facing (a plant, not a creature).
+-->
+<Defs>
+
+  <!-- ============== The plant (eaten wild, off the bush) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_YearningFruit</defName>
+    <label>yearning fruit</label>
+    <description>A heavy-fruiting bush, absurdly generous with itself — huge, glossy, sickly-sweet fruit hangs everywhere on it, all season. The sweetness is real, but so is the trick: every fruit is loaded with digestive accelerants, so whatever eats it digests fast, is hungry again within hours, and leaves the seed behind in a fresh patch of its own fertilizer a short walk from where it ate. The ground under a healthy stand is carpeted in filth and new sprouts in equal measure, which is not neglect. It is the plan working.</description>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Nutrition>0.5</Nutrition>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- Job rutyearningfruit_v1, filed this pass. Pending until the daemon lands it. -->
+      <texPath>Things/Plant/RUT_YearningFruit</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.5, 0.3, 0.2)</volume>
+        <offset>(0,0,-0.25)</offset>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <fillPercent>0.25</fillPercent>
+    <pathCost>15</pathCost>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <preferability>RawTasty</preferability>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RUT_DigestiveAccelerant</hediffDef>
+          <severity>1.0</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.25</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>7</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.6~1.0</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RUT_YearningFruitHarvested</harvestedThingDef>
+      <harvestYield>10</harvestYield>
+      <harvestWork>200</harvestWork>
+      <harvestAfterGrowth>0.3</harvestAfterGrowth>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Harvested fruit (same mechanism, bagged) ============== -->
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RUT_YearningFruitHarvested</defName>
+    <label>yearning fruit</label>
+    <description>Picked off the bush before it could give itself away to something else. Just as sweet, just as loaded with digestive accelerant as the one still hanging — eating it is still free calories with the same tax: fast digestion, a quick return of hunger, and a body that will want to sit down for a minute afterward.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Plant/RUT_YearningFruitHarvested</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.6</MarketValue>
+      <Mass>0.05</Mass>
+      <Nutrition>0.12</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <preferability>RawTasty</preferability>
+      <tasteThought>AteRawFood</tasteThought>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RUT_DigestiveAccelerant</hediffDef>
+          <severity>1.0</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

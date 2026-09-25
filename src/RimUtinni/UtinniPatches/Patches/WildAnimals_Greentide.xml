@@ -18,18 +18,26 @@
   patch in place by then, the Greentide would lose its entire cast on the live
   world. WildAnimals_Pyrelands.xml is the shape this copies.
 
-  🔑 SOURCE OF TRUTH: every weight below is copied verbatim from
-  Defs/BiomeDefs/RUT_Greentide.xml's own wildAnimals block (frozen 2026-09-22),
-  which is the roster the world runs on today. Nothing is rescaled or added.
+  🔑 SOURCE OF TRUTH (AT AUTHORING, 2026-09-22): every weight below started as
+  a verbatim copy of Defs/BiomeDefs/RUT_Greentide.xml's own wildAnimals block
+  (frozen 2026-09-22, the roster the world runs on today). Nothing was
+  rescaled at that time. 🔴 This is NO LONGER a byte-for-byte mirror — see the
+  RSW_CanopySwinger row below (COMMISSION_LEDGER_CLEANUP_1, 2026-09-25): new
+  campaign fauna for the Greentide is added HERE from now on, never to the
+  frozen RUT_Greentide.xml, so this file and that one WILL diverge going
+  forward and that is correct, not drift to reconcile.
 
   🔴 ONE ROW WAS DROPPED FROM BOTH, DELIBERATELY: the dianoga. Owner ruling
   2026-09-23, verbatim: "It's a mistake to have dianoga in the GreenTime. It
   belongs only in tank prisons and the Fever Wood. Create something new and
   terrifying for the Green Tide."
 
-  ⇒ MEASURED after that removal: this file and RUT_Greentide.xml each carry
-  26 rows summing to 9.168, so the verbatim correspondence still holds. Any doc
-  still quoting 27 rows / 9.318 is quoting the pre-ruling value. ⛔ Do not
+  ⇒ MEASURED after that removal and before the addition below: this file and
+  RUT_Greentide.xml each carried 26 rows summing to 9.168. This file now
+  carries 27 (RSW_CanopySwinger fills the vacated slot) summing to 9.468;
+  RUT_Greentide.xml stays at 26/9.168 by design (frozen). Any doc still
+  quoting 26/26 parity, or 27 rows / 9.318 from before the dianoga ruling, is
+  stale. ⛔ Do not
   "restore parity" by adding the dianoga back to either file.
 
   ✅ An earlier owner review had already ordered it out of the Greentide
@@ -164,6 +172,17 @@
         <RSW_Hssiss>0.18</RSW_Hssiss>
         <!-- RSW_Dianoga 0.15 REMOVED 2026-09-23 — owner ruling, see the header.
              ⛔ Do not restore it. The slot is reserved for a new creature. -->
+        <!-- RSW_CanopySwinger fills that reserved slot — COMMISSION_LEDGER_CLEANUP_1
+             (2026-09-25), ledger slug the_greentide:canopy-swinger, the_greentide.md
+             §4's "the Swingers" — a genuinely NEW creature (reuses RSW_KowakianMonkeyLizard's
+             body/art asset only, not the species itself; see RSW_CanopySwinger.xml's own
+             header), never a neighbour's. This is the first row ADDED beyond this file's
+             original verbatim mirror of RUT_Greentide.xml (that file is FROZEN, do not edit —
+             see its own banner — so new campaign fauna for the Greentide is wired HERE from
+             now on, not there). RUT_Greentide.xml itself does not carry this row and must
+             not: the live world still runs on that frozen def until Phase B's repaint, and
+             this row only reaches players once RM_Greentide takes the tiles. -->
+        <RSW_CanopySwinger>0.3</RSW_CanopySwinger>
         <RSW_Dragonsnake>0.12</RSW_Dragonsnake>
         <RSW_Lylek>0.05</RSW_Lylek>
         <RSW_Beldon>0.008</RSW_Beldon>

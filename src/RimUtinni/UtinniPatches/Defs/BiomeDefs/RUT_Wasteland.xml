@@ -153,6 +153,8 @@
       <AA_Terramorph MayRequire="sarg.alphaanimals">0.2</AA_Terramorph>  <!-- terramorph - extremophile-odd, keep -->
       <VAEWaste_Megatardi>0.18</VAEWaste_Megatardi>  <!-- megatardi - extremophile-odd, import; STAT_NORM_WAVE2_RETIRE_1 absorbed this def natively into UtinniPatches itself (Defs/Absorbed_VAEWasteMegatardi/), so it needs no MayRequire on the retired donor mod at all. The old gate on vanillaexpanded.vaewaste (not in the live mod list) was silently dropping this animal from the roster every load (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave) -->
       <AA_AcanthamoebaGiganteaSmall MayRequire="sarg.alphaanimals">0.1</AA_AcanthamoebaGiganteaSmall>  <!-- acanthamoeba gigantea, small - wretched-small, import -->
+      <RSW_Excretor MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Excretor>  <!-- excretor - refiner-herd, new-def (COMMISSION_LEDGER_CLEANUP_1) -->
+      <RUT_BrineBattery>0.1</RUT_BrineBattery>  <!-- brine battery - pool owner, new-def (COMMISSION_LEDGER_CLEANUP_1); discharge mechanic split to WASTELAND_BRINE_BATTERY_DISCHARGE_1 -->
     </wildAnimals>
     <coastalWildAnimals />
     <!-- wildPlants: transplanted from rosters/wasteland.json "flora" by
@@ -178,8 +180,10 @@
       <RUT_ScorchedStars>0.3</RUT_ScorchedStars>  <!-- scorched stars -->
       <AB_WeepingToxberry>0.2</AB_WeepingToxberry>  <!-- weeping toxberry - tree -->
       <Plant_Toxipotato>0.2</Plant_Toxipotato>  <!-- toxipotato -->
+      <RUT_DosimeterLawn>0.15</RUT_DosimeterLawn>  <!-- dosimeter lawn - COMMISSION_LEDGER_CLEANUP_1 wave 11, radiotroph flora, growth marks the hottest ground (dose-correlated growth is deferred C#, wasteland.md's own "dose/geiger layer" scope) -->
       <AB_ToxiBulb>0.1</AB_ToxiBulb>  <!-- toxibulb -->
       <Plant_TreePolux>0.1</Plant_TreePolux>  <!-- polux tree - tree -->
+      <RUT_VaultRoot>0.08</RUT_VaultRoot>  <!-- vault-root tree - COMMISSION_LEDGER_CLEANUP_1 wave 11, sequestration tree; ships as a plain wood-yield tree now, "vault ore" mining mechanic deferred to the same dose/geiger layer scope -->
       <VRE_PoluxBush>0.08</VRE_PoluxBush>  <!-- polux bush -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>

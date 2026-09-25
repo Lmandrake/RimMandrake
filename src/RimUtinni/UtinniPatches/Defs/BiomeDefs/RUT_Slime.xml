@@ -90,6 +90,7 @@
       <GR_Chickenrabbit MayRequire="vanillaexpanded.vgeneticse">0.005</GR_Chickenrabbit>  <!-- chickenrabbit - trace-tail, import -->
       <GR_Manbear MayRequire="vanillaexpanded.vgeneticse">0.002</GR_Manbear>  <!-- manbear - trace-tail, import -->
       <RM_Titanoslime MayRequire="mandrake.rm.gelatinousslime">0.12</RM_Titanoslime>  <!-- titanoslime - apex-native, new-def (TITANOSLIME_SLIME_BIOME_1) -->
+      <RUT_SlimeGrazer>0.5</RUT_SlimeGrazer>  <!-- slime grazer - filter-feeder line, new-def (COMMISSION_LEDGER_CLEANUP_1) -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

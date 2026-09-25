@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T04:26:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T04:42:42Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -2116,16 +2116,6 @@ thin:     no ## spec
 summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
 prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
 
-## WASTELAND_EXCRETOR_BEZOAR_1 Excretor herd creature + metal-salt bezoar product def: reskin a body-donor not already placed in RUT_Wasteland, add a vanilla CompHasGatherableBodyResource-family comp (CompMilkable precedent, zero new C#) yielding a new bezoar ResourceBase item
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WASTELAND_EXCRETOR_BEZOAR_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WASTELAND_EXCRETOR_BEZOAR_1.md
-
 ## WASTELAND_RADIOTHERMAL_SOLITARY_1 Radiothermal solitary: living-furnace creature, NEW C# heat-emission + same-species spacing law (no donor emits heat per _assignment_prep.md 4.4 -- new art/def needed)
 state:    proposed
 row:      unassigned
@@ -2133,18 +2123,8 @@ needs:    offline
 target:   v1
 kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WASTELAND_RADIOTHERMAL_SOLITARY_1.md yet — write one when you have something to say)
+summary:  WASTELANDRADIOTHERMALSOLITARY1 — radiothermal solitary: def built, heat + spacing C owed
 prose:    infrastructure/state/items/WASTELAND_RADIOTHERMAL_SOLITARY_1.md
-
-## WASTELAND_BRINE_BATTERY_CREATURE_1 Brine-battery pool owner: ion-gradient discharge creature, identify and reuse an existing donor EMP/zap comp (AA goo family read closest per _assignment_prep.md 4.4) rather than inventing new C#, new art/def
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WASTELAND_BRINE_BATTERY_CREATURE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WASTELAND_BRINE_BATTERY_CREATURE_1.md
 
 ## GREENTIDE_YEARNING_FRUIT_1 Digestive-accelerant fruit (the fruit that yearns): plant def + eat-fast/pass-seed hediff + filth C#
 state:    proposed
@@ -2153,7 +2133,7 @@ needs:    offline
 target:   v1
 kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREENTIDE_YEARNING_FRUIT_1.md yet — write one when you have something to say)
+summary:  GREENTIDEYEARNINGFRUIT1 — digestive-accelerant fruit: def + hediff built, filth C split out
 prose:    infrastructure/state/items/GREENTIDE_YEARNING_FRUIT_1.md
 
 ## CONTAGION_UNFINISHED_SPAWNER_1 The Unfinished: random-stat short-lived chimera spawner (random Hediff_AddedPart limbs, days-long life, dissolves to goo)
@@ -2173,5 +2153,15 @@ needs:    offline
 target:   v1
 kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WASTELAND_BRINE_BATTERY_DISCHARGE_1.md yet — write one when you have something to say)
+summary:  WASTELANDBRINEBATTERYDISCHARGE1 — brine battery's ion-gradient discharge
 prose:    infrastructure/state/items/WASTELAND_BRINE_BATTERY_DISCHARGE_1.md
+
+## GREENTIDE_YEARNING_FRUIT_FILTH_1 Yearning fruit's filth/seed-dispersal comp: pass-seed + filth on digestion, same shape as RM_HediffComp_ShadeStagger
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  GREENTIDEYEARNINGFRUITFILTH1 — the fruit's filth/seed-dispersal mechanic
+prose:    infrastructure/state/items/GREENTIDE_YEARNING_FRUIT_FILTH_1.md

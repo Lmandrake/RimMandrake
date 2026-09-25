@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T04:17:28Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rutyearningfruit_v1",
+  "priority": 100,
+  "prompt": "RimWorld top-down plant sprite, painterly vanilla-RimWorld flora art style: a lush, heavily-fruiting bush or small tree hung with huge, oversized, glossy fruit -- deliberately too appealing, almost gaudy with ripeness. Palette: deep jungle green foliage with fruit in a warm saturated orange-red, high contrast against the leaves so it reads as bait. Centered, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "GREENTIDE_YEARNING_FRUIT_1",
+  "style_notes": "RUT_YearningFruit (COMMISSION_LEDGER_CLEANUP_1 the_greentide sheet slug 'digestive-accelerant-fruit-the-fruit-that-yearns', GREENTIDE_YEARNING_FRUIT_1). the_greentide.md: 'The fruit yearns to be eaten: huge, sweet, everywhere, loaded with digestive accelerants.' Working name only, folded into a future greentide shipping-names card."
+}
