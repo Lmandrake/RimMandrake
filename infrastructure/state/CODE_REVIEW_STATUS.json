@@ -15897,6 +15897,18 @@
     "hash": "5e5f55e99dd26668eb3f6ec36f5b806c1aad5ceda1fee2e27f2a61e1aed62c69",
     "sha": "c8047b0ff"
   },
+  "src/RimUtinni/LanternDeeps/Defs/ThingDefs_Plants/RUT_LanternstoneSowable.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "8371f3b880a5ee4b6af59417a698b75f33d29b54de29db678b0e6f7a8e77f325",
+    "sha": "e817ad35d"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/Weather/RUT_DeepCalm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "78ff8389a897a1daf482e040a79636b210b36a8132fdb5c79689acc5ed71e686",
+    "sha": "e817ad35d"
+  },
   "src/RimUtinni/LanternDeeps/LICENSE": {
     "cleanCount": 1,
     "date": "2026-09-10",
@@ -15933,6 +15945,12 @@
     "hash": "871253eb4902422674ed58a6ab18f1dce2867c21c163f8d4b76c34cf6d4badca",
     "sha": "1dc7382d"
   },
+  "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepIncidentSuppression.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "be17672a61380c4568b5384c8d7a1afb50bd992681eaed2899724965fe7752a9",
+    "sha": "e817ad35d"
+  },
   "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepMineshaft_MapGenPatch.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -15944,6 +15962,12 @@
     "date": "2026-09-10",
     "hash": "09dacaf2198c44a292b1ec1cf2721faf07f7ad97eaf6e7264c1ab406f02e6dee",
     "sha": "1dc7382d"
+  },
+  "src/RimUtinni/LanternDeeps/Patches/RUT_LanternstoneKotorCrystals.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "a4650305d0408f6f782650b2da8d1d825e6bbadac669db13562fe821e5deee5d",
+    "sha": "e817ad35d"
   },
   "src/RimUtinni/LanternDeeps/Source/DeepFloraPlanter.cs": {
     "cleanCount": 1,
@@ -16011,11 +16035,35 @@
     "hash": "170bc217ab9d2eb832826307be41dbd031d9062a227a336aca02c9ca988de2f5",
     "sha": "b3c315579"
   },
+  "src/RimUtinni/LanternDeeps/build_art_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "ec09c08854b77f5e6be92f24568263650d8f1ab6bf2376478ace1e22eef1348b",
+    "sha": "e817ad35d"
+  },
+  "src/RimUtinni/LanternDeeps/build_species_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "99e615a171abba58a198830ec0fe2e09e73c6cfc71ad226a1d3cc7339d6cff59",
+    "sha": "e817ad35d"
+  },
+  "src/RimUtinni/LanternDeeps/tint_organics.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2890217a53224df4848ca89b4e891f008cbd93e98ca91303791ad83eaadb3af3",
+    "sha": "e817ad35d"
+  },
   "src/RimUtinni/LanternDeeps/validation.py": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "8ac76415af6ca0de546bc337360daf2d3c8c933330b82f2be64d1300725178fa",
     "sha": "5ae0191cc"
+  },
+  "src/RimUtinni/LanternDeeps/wire_art.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4dd79fd1162e0cd6812f6bd6f8c932b8471a0751f0a095c9dbb0d7d2cfc5fe20",
+    "sha": "e817ad35d"
   },
   "src/RimUtinni/LongHunger/About/About.xml": {
     "cleanCount": 1,
