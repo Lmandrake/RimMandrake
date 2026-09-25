@@ -1061,6 +1061,12 @@
     "hash": "01e1623cc6fbbb77d5a100b875d3e9b14738eaa176ff924fcd48958491a6683d",
     "sha": "d2c598667"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ReactionSource.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "1b4b02ad42f8eb3b5b618f981cf4cd197d81edc62b96e552d15b049a8975f7f1",
+    "sha": "042d41c8f"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ShardArmor.cs": {
     "cleanCount": 1,
     "date": "2026-09-19",
@@ -1084,6 +1090,12 @@
     "date": "2026-09-24",
     "hash": "dcba19785a5bd77079323914f9671e2e082c80666cd5303b05ed0e9384aea1c7",
     "sha": "d2c598667"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompReactionSource.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "9525bd1e4cf74daf8b0dcc65b57c93c261f02da40600800bb951a5bc92f5dc1f",
+    "sha": "042d41c8f"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompSenseWebNode.cs": {
     "cleanCount": 1,
@@ -1319,6 +1331,12 @@
     "hash": "b4e262432ebd858a9b9120c24920041f0bad6992cc0080ec167dfce0236eae54",
     "sha": "81f3fa561"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_MentalState_ScopedAggression.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "3015e5183368afd7ebdf00daf53faf14aa6bfaebf91419cc9d5ad8ee5cc1fb8d",
+    "sha": "042d41c8f"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_ParentalEnrageExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-23",
@@ -1330,6 +1348,30 @@
     "date": "2026-09-24",
     "hash": "f7a5766c37d55936b349c104ee20972a66cdb8a0ab8250ccdc555ada00bd8ed0",
     "sha": "39ad7169b"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionEvent.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "815b5b73ec283ba6a0c0637e82775b71d1eafe0296a6deb7937cbb2ccc88c132",
+    "sha": "042d41c8f"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionPropagationRule.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "1448e06f4bffa418bf3e5bfa30a6108e64e2e86afc35ccbf9ba562254814b6e3",
+    "sha": "042d41c8f"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionResponseRule.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "9942779b1bdbb5f3c97e9ad8ebe5c745a655f835aa4ebd17bf95a78e65aed9bd",
+    "sha": "042d41c8f"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionResponseRule_SpawnPawns.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "bf54e92556e36a2477814be385b573607a902203f74c604ea7b97496bf348980",
+    "sha": "042d41c8f"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_SeekShadeExtension.cs": {
     "cleanCount": 1,
