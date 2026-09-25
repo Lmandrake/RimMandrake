@@ -7269,6 +7269,12 @@
     "hash": "b001833a2aea25905c666c3e5587de9173ee32b77f247c13ea0a9386ca6b0c5f",
     "sha": "cbef8404e"
   },
+  "src/RimMandrake/Utils/selftest_flowworks_stock.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "b4c6a3fbf81e85d44e6ea3e090bf9d21304455bc109ec4347937e01d27d628af",
+    "sha": "bedbf3940"
+  },
   "src/RimMandrake/Utils/selftest_frozen_dumps.py": {
     "cleanCount": 2,
     "date": "2026-09-04",
@@ -7280,6 +7286,12 @@
     "date": "2026-09-20",
     "hash": "3a74d545f8da831412056fe421f85140f2fc0a7c6862134d672387477ba8b0e7",
     "sha": "1135036ce"
+  },
+  "src/RimMandrake/Utils/selftest_import_founders.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "c04193ad5f04787486ae030d8f1f7dc8cd9cf11c8e8e06066f5450bdff0afcf3",
+    "sha": "bedbf3940"
   },
   "src/RimMandrake/Utils/selftest_label_collision_check.py": {
     "cleanCount": 1,
@@ -7294,10 +7306,16 @@
     "sha": "61dd3f0e3"
   },
   "src/RimMandrake/Utils/selftest_no_duplicate_defs.py": {
+    "cleanCount": 2,
+    "date": "2026-09-24",
+    "hash": "039c49bf2da2b0120dc020f81a2e15a84bc47218ec37b754659b18b54ed314de",
+    "sha": "bedbf3940"
+  },
+  "src/RimMandrake/Utils/selftest_no_patch_under_defs.py": {
     "cleanCount": 1,
     "date": "2026-09-24",
-    "hash": "e641981f68e15b4d27b9c85c8f9a48f4c9b7452c616bad9a4f28f81db194a2d5",
-    "sha": "bf7b07033"
+    "hash": "ec805eface4ca321738980c6845521294b7ac1d4b1be7e770bd3fc03d0b4c01a",
+    "sha": "bedbf3940"
   },
   "src/RimMandrake/Utils/selftest_one_path_seam.py": {
     "cleanCount": 1,
@@ -7346,6 +7364,18 @@
     "date": "2026-09-08",
     "hash": "2adedf7a9219336cd03b9900a2de56ee50dcea6e29ba9e8f33c21f8b0060f003",
     "sha": "e3212aae"
+  },
+  "src/RimMandrake/Utils/selftest_run_selftests.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d2c9cebe5d2264693a4991fc9ba38f7f1142e564658d3d3ee2631c986e2f69e9",
+    "sha": "bedbf3940"
+  },
+  "src/RimMandrake/Utils/selftest_seashores.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2199bded02abee7a8957684fc92619a91709e5d52165ec60c22935b9dcba1b81",
+    "sha": "bedbf3940"
   },
   "src/RimMandrake/Utils/selftest_sound_paths.py": {
     "cleanCount": 3,
@@ -8272,10 +8302,10 @@
     "sha": "1fb0888b"
   },
   "src/RimMandrake/bridgetools/prove_noncolonist_ability.py": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-24",
-    "hash": "780ee3150ba0a2aace523978003415813e80ee96ac15cba4bbe9a5db4e091e13",
-    "sha": "bf7b07033"
+    "hash": "97a9ea5a056b3dcf5567e4775a9eb7d72e166c4c5873c209e08b6c8159effe42",
+    "sha": "bedbf3940"
   },
   "src/RimMandrake/bridgetools/prove_river_water.py": {
     "cleanCount": 1,
@@ -13900,16 +13930,16 @@
     "sha": "8d9252d24"
   },
   "src/RimStarWars/SWBestiary/Source/BeastMechanics/CompInnateAbility.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-24",
-    "hash": "0e01bc4369c6670636f7d758ddced63044284b61c21e3dcf6de445a0d1dd6555",
-    "sha": "8d9252d24"
+    "hash": "74c3d1ddf04e31f4d13c148dba9b7ca4f48267c3581f6fa361c2807b1522fcf4",
+    "sha": "bedbf3940"
   },
   "src/RimStarWars/SWBestiary/Source/BeastMechanics/CompMetalEater.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-24",
-    "hash": "80481718abf5f7950ebdcb95bb463d1b241972d51f862f75ce18f33925322551",
-    "sha": "4ac66bfeb"
+    "hash": "fee71f59b1c993710df2e89acacbbf75c02e4f3a2fc86ed326d288de4f773a73",
+    "sha": "bedbf3940"
   },
   "src/RimStarWars/SWBestiary/Source/BeastMechanics/CompScrapHoarder.cs": {
     "cleanCount": 1,
@@ -19420,10 +19450,10 @@
     "sha": "59173f610"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_VaporDrifter_AerofleetWiring.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "b544f58562da22f06fd35e2e28659aebdb03612b1720c7064cba0506683a3a5e",
-    "sha": "59173f610"
+    "cleanCount": 3,
+    "date": "2026-09-24",
+    "hash": "be65f079406313a43d8fa9271381937b19d49ca3288c16831e533c452ae4cbf9",
+    "sha": "bedbf3940"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_VentForge_RecipeWiring.xml": {
     "cleanCount": 2,
