@@ -8,6 +8,16 @@
 events Mo'Events (mlie.moevents) offered, ported behavior-not-bugs from a
 decompile of MoreIncidents.dll (see infrastructure/state/items/
 RUT_SCAVENGEREVENTS_BUILD_1.md for the mechanism reference this was built
-from). Own letter text, own defNames, own baseChance settings. Retires
-mlie.moevents once all eight land.</description>
+from). Own letter text, own defNames, own baseChance settings. Scope is 7 of
+the original 8 mechanisms (RescueTraitor CUT by owner ruling 2026-09-11 --
+its real mechanism was a half-decompiled body-horror mimicry/reveal, not a
+plain rescue). Retires mlie.moevents once the 7 are proven-fires.
+
+MoreIncidents.dll ships under the MIT License (Copyright (c) 2020 Mlie,
+verified against the donor's own LICENSE.md/About.xml, 2026-09-25) --
+permissive, no separate continuation-license restriction found. This mod's
+IncidentWorkers are re-authored C# (own class/field names, own guessed API
+signatures confirmed against Assembly-CSharp.dll) built from a read of the
+decompiled IL's behavior, not copied source; MIT attribution is recorded
+here regardless, per the license's own notice requirement.</description>
 </ModMetaData>

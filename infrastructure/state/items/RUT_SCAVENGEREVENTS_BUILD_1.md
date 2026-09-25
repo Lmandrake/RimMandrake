@@ -145,7 +145,7 @@ IncidentWorker classes total. Every one of them:
   spawned things/pawns. This is the next concrete step for this item, before
   touching RescueTraitor.
 
-## RescueTraitor: NOT a simple port, held back on purpose
+## RescueTraitor: CUT (owner ruling 2026-09-11) — kept for record, not owed
 See the mechanism reference above — decompiling this one properly (rather
 than trusting an earlier, WRONG "the class doesn't exist" finding from this
 same session) turned up a half-decompiled body-horror mimicry/reveal
@@ -156,17 +156,62 @@ any C# gets written. This is the one mechanism of the 8 that is genuinely
 NOT ready to build.
 
 ## still owed
-- Proven-fires bridge test for all 7 built workers (biggest remaining gap).
-- The rest of `Ticker_RTWorker.Tick()` + the design call on RescueTraitor.
+- Proven-fires bridge test for all 7 built workers (biggest remaining gap) —
+  needs the live bridge, which is held by another agent's restart+verify
+  batch as of 2026-09-25. Not waited for or forced; see below.
+- RescueTraitor is CUT (owner ruling 2026-09-11, see history) — no further
+  work owed on it.
 - Salvage-economy loot substitution for ShipBreak/Thanksgiving/SurvivalPod's
-  fixed item lists (all three currently use the donor's own item choices
-  verbatim — a deliberate placeholder, not yet salvage-economy-integrated).
-- The Mlie continuation-license check, the interim MO_ baseChance zeroing,
-  and the final `mlie.moevents` retirement + `animal_census.csv`
-  MO_AbominationRace row deletion — none of these can happen before the 7
-  built workers are proven-fires AND a RescueTraitor decision lands.
+  fixed item lists — **checked 2026-09-25, genuinely not buildable yet**:
+  there is no campaign-wide "salvage economy" ThingSetMaker/loot-table def
+  to point these three workers at. Every existing economy-flavored def in
+  `src/RimUtinni` is biome-specific catch/resource content
+  (`RUT_Rare*Catches.xml`, `RUT_*Fish_Items.xml`, biome flora); the one
+  other pass that named this exact gap
+  (`src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/
+  RUT_FoundrySalvageCache.xml`) explicitly shipped a shell and declined to
+  invent salvage-economy content as out of its own scope. Inventing one now
+  would be exactly the kind of unscoped design invention this project's own
+  lessons warn against (a design pass that invents before it reads
+  re-invents) — this needs its own items/design pass with a real salvage
+  loot table def, not a FOUNDRY-improvised list. Left as donor-verbatim
+  placeholder, unchanged this session.
+- `mlie.moevents` retirement + full save-freeze sequencing — still gated on
+  proven-fires (per spec: retire BEFORE save freeze, after proof).
+
+## done this session (2026-09-25, FOUNDRY)
+- **Mlie continuation-license check — CLEAR.** `MoreIncidents.dll`'s
+  installed workshop copy ships `LICENSE.md` (MIT, Copyright (c) 2020 Mlie)
+  and `About.xml` confirms current maintainer `ilawz`/`emipa606` continuing
+  it as "Mo'Events (Continued)" — no separate continuation restriction
+  found. MIT is permissive (use/copy/modify/distribute/sublicense freely,
+  attribution-notice requirement only). Our 7 workers are re-authored C#
+  (own class/field names, own verified API calls) built from a *read* of
+  the decompiled IL's behavior, not copied source, but MIT attribution was
+  added to `src/RimUtinni/ScavengerEvents/About/About.xml`'s description
+  anyway to satisfy the notice requirement regardless.
+- Corrected `About.xml`'s stale "all eight" line — scope has been 7/8 since
+  the owner's 2026-09-11 RescueTraitor-cut ruling; also credited that ruling
+  inline so a future reader doesn't re-open RescueTraitor as owed. Deployed
+  (`deploy_custom_mods.py --mod ScavengerEvents --apply`, verified in sync).
+- Deleted the stale `MO_AbominationRace` row from
+  `design/Jawa/fauna/animal_census.csv` (line was the Mo'Events Abomination
+  incident's pawn kind — that incident (`MO_RescueTraitor`'s ticker) is CUT
+  and its baseChance already zeroed; row served no purpose).
+- Re-verified (did not just trust the prior session's claim): all 7 source
+  files still present in `src/RimUtinni/ScavengerEvents/Source/`,
+  `mandrake.rut.scavengerevents` still sits in the live `ModsConfig.xml`
+  right after `mlie.moevents`, and `MoEventsChancesZeroed_RuledCut.xml` is
+  present in the deployed `UtinniPatches/Patches/` — the interim 10-incident
+  MO_ baseChance zeroing (item's own interim step) was ALREADY DONE in an
+  earlier session (2026-09-13, `MODLIST_RULED_CUTS_1`) and is still live;
+  nothing was stale or needed redoing.
+- `validate_patch.py --live` (2026-09-24T22-19-22Z capture): both
+  `ScavengerEvents_IncidentDefs.xml` and `ScavengerEvents_ThoughtDefs.xml`,
+  and `MoEventsChancesZeroed_RuledCut.xml`, all OK — 0 errors, 0 warnings.
 
 ## verify
-All 7 built workers: build clean (done), deploy clean (done), proven-fires
-bridge test (owed, blocked on a restart — the owner was mid-session all
-session). RescueTraitor: mechanism only half-understood, not started.
+All 7 built workers: build clean (done, prior session), deploy clean (done,
+prior + this session), defs validate clean against the live dump (this
+session). Proven-fires bridge test: still owed, blocked on bridge
+availability — do not force. RescueTraitor: CUT, no longer owed.
