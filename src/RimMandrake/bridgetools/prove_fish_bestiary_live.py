@@ -134,7 +134,7 @@ def try_tile(call, label, biome, tile, mode):
             return {"tile": tile, "water": False}
 
         if mode == "brine":
-            things = call("jawa/list_things", mapId=map_id)
+            things = call("jawa/list_things", limit=100000)
             all_things = things.get("things") or things.get("items") or []
             deposits = [t for t in all_things
                         if isinstance(t, dict) and str(t.get("defName", "")).startswith("RUT_BrineDeposit_")]
@@ -154,11 +154,11 @@ def try_tile(call, label, biome, tile, mode):
         for name, (x, z, w, h) in target_pool[:5]:
             rw, rh = min(w, 3), min(h, 3)
             r = call("rimworld/apply_architect_designator",
-                     designatorId=FISHING_DESIGNATOR, mapId=map_id,
+                     designatorId=FISHING_DESIGNATOR,
                      x=x, z=z, width=rw, height=rh, keepSelected=False)
             ok = bool(r.get("success"))
             print(f"    Fishing-zone attempt on {name} @({x},{z},{rw}x{rh}): "
-                  f"{'OK' if ok else 'REJECTED'} {'' if ok else json.dumps(r)[:200]}")
+                  f"{'OK' if ok else 'REJECTED'} {'' if ok else (r.get('message') or r.get('error') or json.dumps(r)[-300:])}")
             if ok:
                 placed = True
                 break
@@ -177,8 +177,9 @@ def check_biome_defs(call):
     r = call("jawa/get_defs", defs=";".join("BiomeDef/" + n for n in names),
               fields="defName,maxFishPopulation,fishTypes", limit=len(names) + 5)
     for d in r.get("defs", []):
-        print(f"  {d.get('defName')}: maxFishPopulation={d.get('maxFishPopulation')} "
-              f"fishTypes={'set' if d.get('fishTypes') else 'EMPTY/unset'}")
+        f = d.get("fields") or {}
+        print(f"  {d.get('defName')}: maxFishPopulation={f.get('maxFishPopulation')} "
+              f"fishTypes={'set' if f.get('fishTypes') else 'EMPTY/unset'}")
     return r
 
 
@@ -186,7 +187,10 @@ def main():
     call = make_caller(connect())
     check_biome_defs(call)
     results = {}
+    only = set(sys.argv[1:])  # optional: run just these labels
     for label, biome, tiles, mode in WATERS:
+        if only and label not in only:
+            continue
         print(f"\n=== {label} ({biome}, mode={mode}) ===")
         result = None
         for tile in tiles:
