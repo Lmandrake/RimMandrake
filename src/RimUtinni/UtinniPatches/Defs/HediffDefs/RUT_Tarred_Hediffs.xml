@@ -77,10 +77,7 @@
           </li>
         </capMods>
         <statFactors>
-          <li>
-            <stat>WorkSpeedGlobal</stat>
-            <factor>0.95</factor>
-          </li>
+          <WorkSpeedGlobal>0.95</WorkSpeedGlobal>
         </statFactors>
       </li>
       <li>
@@ -93,16 +90,10 @@
           </li>
         </capMods>
         <statFactors>
-          <li>
-            <stat>WorkSpeedGlobal</stat>
-            <factor>0.85</factor>
-          </li>
+          <WorkSpeedGlobal>0.85</WorkSpeedGlobal>
         </statFactors>
         <statOffsets>
-          <li>
-            <stat>Flammability</stat>
-            <offset>0.25</offset>
-          </li>
+          <Flammability>0.25</Flammability>
         </statOffsets>
       </li>
       <li>
@@ -115,16 +106,10 @@
           </li>
         </capMods>
         <statFactors>
-          <li>
-            <stat>WorkSpeedGlobal</stat>
-            <factor>0.7</factor>
-          </li>
+          <WorkSpeedGlobal>0.7</WorkSpeedGlobal>
         </statFactors>
         <statOffsets>
-          <li>
-            <stat>Flammability</stat>
-            <offset>0.5</offset>
-          </li>
+          <Flammability>0.5</Flammability>
         </statOffsets>
       </li>
     </stages>
