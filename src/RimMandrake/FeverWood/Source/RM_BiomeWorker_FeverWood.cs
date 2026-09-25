@@ -36,7 +36,7 @@ namespace RimMandrake.FeverWood
 
 		public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
 		{
-			if (!RM_FeverWoodMod.settings.naturalPlacementEnabled)
+			if (!RM_FeverWoodSettings.naturalPlacementEnabled)
 			{
 				return 0f;
 			}
