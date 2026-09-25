@@ -49,6 +49,7 @@ namespace RimMandrake.Greentide
     // clear as an actual visibility mechanic) has no verified vanilla hook
     // — the spec's own M4 text already named this ❓/deferred and this pass
     // does not reopen it.
+    [StaticConstructorOnStartup]
     public class RM_WeatherOverlay_GreentideRoil : WeatherOverlayDualPanner
     {
         // MatLoader.LoadMat reads only Unity Resources/, which no mod can ship to: a mod path
