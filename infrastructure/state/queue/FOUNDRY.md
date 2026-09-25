@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T00:24:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T00:29:56Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -827,15 +827,6 @@ target:   v1
 kind:     build
 summary:  CUTFALLOUTGENERATEDDATA1 — Load C fallout from the Caverns + Polluted Lands cuts
 prose:    infrastructure/state/items/CUT_FALLOUT_GENERATED_DATA_1.md
-
-## SYSTECH_ELECTRIC_BOLT_1 The Systech Static Blaster lost its distinctive electric projectile when kotorcore retired
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  The Systech Static Blaster lost its distinctive electric projectile
-prose:    infrastructure/state/items/SYSTECH_ELECTRIC_BOLT_1.md
 
 ## DEEPS_FAUNA_MECHANICS_1 Deeps creature mechanics from the fauna verdicts: Grabber hold-and-crush, Soulchime psychic stun + tamed soothe aura, Drinker fluid sacks + dies on warm-iron blood
 state:    doing
