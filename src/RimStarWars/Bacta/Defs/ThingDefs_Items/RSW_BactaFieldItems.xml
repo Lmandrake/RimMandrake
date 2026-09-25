@@ -63,7 +63,7 @@
         <useDuration>180</useDuration>
         <showUseGizmo>true</showUseGizmo>
       </li>
-      <li Class="CompProperties_UseEffect_BactaHeal">
+      <li Class="RimMandrake.StarWars.Bacta.CompProperties_UseEffect_BactaHeal">
         <woundHealAmount>6</woundHealAmount>
         <tendQuality>0.65</tendQuality>
       </li>
@@ -98,7 +98,7 @@
         <useDuration>240</useDuration>
         <showUseGizmo>true</showUseGizmo>
       </li>
-      <li Class="CompProperties_UseEffect_BactaHeal">
+      <li Class="RimMandrake.StarWars.Bacta.CompProperties_UseEffect_BactaHeal">
         <woundHealAmount>10</woundHealAmount>
         <tendQuality>0.8</tendQuality>
         <immunityGainAmount>0.05</immunityGainAmount>

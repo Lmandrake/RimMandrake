@@ -30,7 +30,7 @@
   passed.
 
   Mechanism: "digests the preserved dead" needs no bespoke C# — ordinary
-  foodType Carnivore + predator=false is the same vanilla combination
+  foodType CarnivoreAnimal + predator=false is the same vanilla combination
   RimWorld's own scavenger-type wildlife (non-hunting carrion eaters) already
   uses; nothing in the sheet's own "engine feasibility pass owed" list names
   this creature, matching the roster's own "none blocking" tag exactly.
@@ -104,7 +104,7 @@
       <baseBodySize>2.2</baseBodySize>
       <baseHealthScale>1.3</baseHealthScale>
       <baseHungerRate>0.55</baseHungerRate>
-      <foodType>Carnivore</foodType>
+      <foodType>CarnivoreAnimal</foodType>
       <leatherDef>Leather_Heavy</leatherDef>
       <herdAnimal>false</herdAnimal>
       <roamMtbDays>6</roamMtbDays>

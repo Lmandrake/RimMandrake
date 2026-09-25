@@ -80,7 +80,7 @@
       <baseBodySize>0.7</baseBodySize>
       <baseHealthScale>0.9</baseHealthScale>
       <baseHungerRate>0.2</baseHungerRate>
-      <foodType>VegetarianRoughAnimal, VegetarianEater</foodType>
+      <foodType>VegetarianRoughAnimal</foodType>
       <leatherDef>Leather_Heavy</leatherDef>
       <herdAnimal>false</herdAnimal>
       <roamMtbDays>10</roamMtbDays>
