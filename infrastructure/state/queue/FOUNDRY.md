@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T03:09:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T03:16:33Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2095,3 +2095,13 @@ kind:     build
 thin:     no ## spec
 summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
 prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
+
+## CRACKED_LANDS_SEALED_WAKE_MECHANISM_1 Sealed sleeper: water-trigger wake comp + gather-crack-wax-after-wake job
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CRACKED_LANDS_SEALED_WAKE_MECHANISM_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CRACKED_LANDS_SEALED_WAKE_MECHANISM_1.md
