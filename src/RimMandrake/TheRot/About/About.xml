@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.therot</packageId>
+  <name>RimMandrake: The Rot</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards</displayName>
+      <steamWorkshopUrl />
+    </li>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <steamWorkshopUrl />
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>mandrake.rm.environmentalhazards</li>
+    <li>mandrake.rm.creaturebehaviors</li>
+    <li>sarg.alphabiomes</li>
+    <li>sarg.alphaanimals</li>
+    <li>vanillaexpanded.vplantsemore</li>
+  </loadAfter>
+  <description>THEROT_RM_MOD_BUILD_1 — absorbs mandrake.rut.rotsporekit (151 files, the Rot's
+biome mechanics kit) and the RUT_TheRot BiomeDef into their own standalone RimMandrake-tier
+mod: a pale fungal night-side biome, fully generalized so it names no campaign or franchise
+and is playable on any generated RimWorld planet. The frozen campaign world's own RUT_TheRot
+instance is unaffected and unrelated; this is a new sibling biome for everyone else's worlds.
+
+RM tier: nothing here knows what campaign or planet uses it. All Star Wars fauna (the 11
+`RSW_` rows the twin's roster carries) ride a Utinni campaign patch
+(`WildAnimals_TheRot.xml`) instead of this def, per owner ruling Q12/Q11a
+(`design/RimMandrake/biome_mod_architecture.md` §7) — a `RM_` biome mod may never hard-name
+a Star Wars IP creature.
+
+Ships the nine kit mechanics already built and shipped in mandrake.rm.environmentalhazards /
+mandrake.rm.creaturebehaviors, wired onto this biome's own defs: the Sheen exposure weather
+ladder, accelerated rot/decay, warm living ground, living food-preparation heat, health
+sharing between kin, guardian groves (defended tea-source mushrooms), the pale tree door-ajar
+spawn, and the spore-cloud incident. Two terrains (`RM_TheRotGrass`, `RM_TheRotSoilRich`) are
+this mod's own — donor Alpha Biomes terrains are no longer referenced for the natural ground.
+Two allergy diseases and thirteen flora stay MayRequire'd on `sarg.alphabiomes` per the Q9
+donor-content shape (porting them to our own tier rides `DONOR_DEFS_PORT_TO_OURS_1`, not this
+build); eight fauna rows stay MayRequire'd on `sarg.alphaanimals` for the same reason.
+
+Live proof is OWED at publish time — see the item's own step 5.</description>
+</ModMetaData>
