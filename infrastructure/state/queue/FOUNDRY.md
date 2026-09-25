@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T23:37:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T23:42:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1403,26 +1403,6 @@ kind:     build
 thin:     no ## verify
 summary:  - New biome def: RMWarscar, label Warscar (no article — deliberate, per the
 prose:    infrastructure/state/items/SCARLANDS_STANDALONE_MOD_1.md
-
-## STILLSAND_RM_MOD_BUILD_1 Phase A: build RM_Stillsand as its own RimMandrake mod (mandrake.rm.stillsand) — the Stillsand (extreme desert; campaign label "the Dune Sea" stays a Utinni patch)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/STILLSAND_RM_MOD_BUILD_1.md
-
-## THEROT_RM_MOD_BUILD_1 Phase A: build RM_TheRot as its own RimMandrake mod (mandrake.rm.therot) — the Rot - absorbs mandrake.rut.rotsporekit (151 files)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/THEROT_RM_MOD_BUILD_1.md
 
 ## NIGHTSIDEICE_RM_MOD_BUILD_1 Phase A: build RM_NightsideIce as its own RimMandrake mod (mandrake.rm.nightsideice) — the Nightside Ice - thin by design, but a Lantern Deeps host surface
 state:    proposed
