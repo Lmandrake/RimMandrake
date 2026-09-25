@@ -439,3 +439,66 @@ bar in `## criteria` is not met and was not attempted beyond confirming its
 exact scope. `rimflow block` reason names precisely this: HorrorWastes has
 zero cast rows and populating it is a content decision, not a mechanical
 gap.
+
+## 2026-09-25 (FOUNDRY) — re-verified offline, still correctly blocked; the open question got HARDER, not easier
+
+Bridge held by another FOUNDRY window (full-modlist restart + a 5-item
+live-verify batch, idle at claim time) — correctly did not take it or wait on
+it, per this pass's own briefing. All work this pass is offline
+re-verification plus one new fact that changes the shape of the remaining
+decision.
+
+**Nothing regressed.** `mandrake.rsw.swbestiary` still active (`ModsConfig.xml`
+parsed directly: 627 active mods total, flag present). `Races_Tellurox.xml`
+unchanged since 2026-09-09: `Wildness 0.3`, `butcherProducts` correct
+element-form (`<RSW_TelluroxShell>6</RSW_TelluroxShell>`), `Graphic_Single` on
+all 3 lifeStages, `Tellurox.png` still deployed. `HELIX_TELLUROX_SHELL_LOAD_CRASH_1`
+re-confirmed **closed** (`4c7cec49...`, `rimflow show`) — no outstanding action
+there.
+
+**`validate_patch.py` re-run with a FULLER defs root than any prior pass used**
+(`--defs Data --defs Mods --defs steamapps/workshop/content/294100` — the
+Workshop content root, which prior passes never pointed at, hence their
+"502 mods have no folder" / partial-visibility runs): **load set now 627 of
+627 active mods found on disk, 8,862 def files.** Result: **0 ERRORs, 4
+WARNs** — the same 4 reused-vanilla-path findings (`Leather_Plain`,
+3x `Dessicated_Muffalo`) demoted from the ERROR class every prior pass logged
+to WARN now that the tool can see the full mod set. Independent
+re-confirmation of the false-positive call, not just a repeat of the old log.
+
+**The HorrorWastes/BlueDesert cast question — re-checked, and now a
+bigger ask than it was in September.** `cast_assignment.csv`: still 0 rows
+for `HorrorWastes`, still 0 rows for `RUT_BlueDesert` (unchanged from
+2026-09-12) — **and now also 0 rows for `RM_BlueDesert`**, which answers a
+question the 2026-09-12 entry hadn't checked: `RUT_BlueDesert`'s actual wild
+roster (`RM_Vekkit` 0.8, `RM_Dorrak` 0.5, `RM_Krissek` 0.35 — read directly
+from `BLUEDESERT_RM_MOD_BUILD_1.md`'s own MEASURED section, which itself read
+`RUT_BlueDesert.xml`) was authored by **hand-editing the BiomeDef XML
+directly**, not through the `cast_assignment.csv` → `allocate_cast.py`
+pipeline at all. That work closed as `BLUE_DESERT_LIFE_AUTHORING_1`,
+2026-09-21, `4299f9262` — 9 days before this pass, and after this item's own
+last entry.
+
+That closure changes what "add Tellurox to this biome" now means. On
+2026-09-12 the ask was "populate an empty biome's cast," which this item
+correctly declined to improvise solo. Today the ask is **"add a 4th species to
+an already-authored, already-CLOSED, owner-ruled biome sitting"** —
+`BLUEDESERT_RM_MOD_BUILD_1.md` §9 explicitly lists this item's own
+cross-reference and rules only that it "does not block" the mod-split work,
+taking no position on whether Tellurox belongs in that roster. Modifying a
+closed sitting's roster is the harder case, not the easier one: it is exactly
+the shape the owner stopped doctrine-driven eviction/addition sweeps over
+(`BIOME_SPECIFIC_FAUNA_LAW_1` — "I don't think we should be having rules
+here. This is a human review process issue," "biome sheets are a conversation
+loop, one biome at a time with him"). There is also a live question this pass
+did not resolve either way: Tellurox is Helix-**engineered livestock**
+(`Wildness 0.3`, same order as Muffalo), not a wild-evolved species like its
+three BlueDesert neighbours — whether it belongs on a `<wildAnimals>` roster
+at all, versus being Helix-settlement/trade-only stock with no wild spawn, is
+itself an unasked design question, not something to default either way.
+
+**Left `doing (BLOCKED)`, same reason class as 2026-09-12, now sharper: the
+remaining gap is a human review-sheet decision on an already-closed roster,
+not a mechanical CSV edit and not FOUNDRY's to invent.** Everything else the
+item's `## criteria` can measure offline (defs, mechanism, art, validator)
+remains done and re-confirmed clean this pass.
