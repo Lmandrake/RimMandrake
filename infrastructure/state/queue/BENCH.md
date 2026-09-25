@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T19:40:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T22:14:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -728,3 +728,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/JAWA_SWIM_HOOD_KEEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/JAWA_SWIM_HOOD_KEEP_1.md
+
+## DEEPFIRE_PIGMENT_MOD_1 Deepfire: new RM mod LuminousPigment — expensive glowing pigment (colour from the dye it's mixed with, pigment supplies a dim glow); +1 quality on art items / +beauty on others; paints walls/floors/furniture; extra coats only brighten; personal items light the pawn but make them easier to target in the dark; harvested from rare ocean bacterial mats (Utinni: the Scald); GlowTank grows it slowly; fresh mat decays very fast until refined; RimCuisine uses; god reactions; status via the purple engine; all Mod Settings
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEEPFIRE_PIGMENT_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEPFIRE_PIGMENT_MOD_1.md
