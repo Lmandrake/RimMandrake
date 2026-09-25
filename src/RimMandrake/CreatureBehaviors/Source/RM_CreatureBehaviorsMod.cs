@@ -190,6 +190,17 @@ namespace RimMandrake.CreatureBehaviors
     //      (or not) as any other animal. The dial scales only the cook-tick
     //      damage amount (never the avoid/cook radii or the check interval,
     //      which stay whatever the race's own extension says).
+    //  34. reactionSourceSpawnEnabled / reactionSourceBudgetMultiplier —
+    //      RM_CompReactionSource + RM_ReactionResponseRule_SpawnPawns
+    //      (REACTION_MECHANISM_GENERALISE_1 step 1, GREENTIDE_WASP_SWARM_1).
+    //      Off: a disturbed reaction source (a skerrel gall, and any future
+    //      consumer wired the same way) never builds a reaction event at all
+    //      — nothing spawns, same as guardianAlarmEnabled for the shipped
+    //      alarm. The dial scales the SHARED event budget only (never the
+    //      response's own per-map population ceiling, which stays whatever
+    //      that response's own config says) — 0 disables spawning entirely
+    //      without touching the toggle, which is the same "a number is the
+    //      experience" shape as breedRateMultiplier.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -242,6 +253,8 @@ namespace RimMandrake.CreatureBehaviors
         public static bool ambientHeatPusherEnabled = true;
         public static bool speciesSpacingEnabled = true;
         public static float speciesSpacingCookDamageMultiplier = 1f;
+        public static bool reactionSourceSpawnEnabled = true;
+        public static float reactionSourceBudgetMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -295,6 +308,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref ambientHeatPusherEnabled, "ambientHeatPusherEnabled", true);
             Scribe_Values.Look(ref speciesSpacingEnabled, "speciesSpacingEnabled", true);
             Scribe_Values.Look(ref speciesSpacingCookDamageMultiplier, "speciesSpacingCookDamageMultiplier", 1f);
+            Scribe_Values.Look(ref reactionSourceSpawnEnabled, "reactionSourceSpawnEnabled", true);
+            Scribe_Values.Look(ref reactionSourceBudgetMultiplier, "reactionSourceBudgetMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -487,6 +502,14 @@ namespace RimMandrake.CreatureBehaviors
               + "avoids nor cooks its own kind, same as any other animal.");
             list.Label("Cook-damage rate: " + speciesSpacingCookDamageMultiplier.ToString("0.00") + "x");
             speciesSpacingCookDamageMultiplier = list.Slider(speciesSpacingCookDamageMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Reaction sources (hive/gall spawn response)", ref reactionSourceSpawnEnabled,
+                "On: disturbing a reaction source (a skerrel gall, and any future consumer wired the same "
+              + "way) spawns a bounded batch of hostile creatures nearby. Off: disturbing it does nothing "
+              + "at all — no spawn, no budget spent.");
+            list.Label("Reaction spawn budget: " + reactionSourceBudgetMultiplier.ToString("0.00") + "x");
+            reactionSourceBudgetMultiplier = list.Slider(reactionSourceBudgetMultiplier, 0f, 3f);
 
             list.End();
         }
