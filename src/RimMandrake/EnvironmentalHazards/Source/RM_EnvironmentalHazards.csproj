@@ -188,6 +188,8 @@
     <Compile Include="RM_MentalState_WaterTruceRetribution.cs" />
     <Compile Include="RM_MapComponent_WaterTruce.cs" />
     <Compile Include="RM_WaterTruceDamagePatches.cs" />
+    <Compile Include="RM_PollinationGateExtension.cs" />
+    <Compile Include="RM_Patch_PollinationGate.cs" />
   </ItemGroup>
 
   <ItemGroup>
