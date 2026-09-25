@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T05:19:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T05:21:22Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -31,6 +31,15 @@ target:   v1
 kind:     task
 summary:  Work species-by-species, in this order, because the first two shrink the list without any
 prose:    infrastructure/state/items/ROSTER_DEAD_BMT_NAMES_SWEEP_1.md
+
+## VANILLA_BEAST_EXCISION_1 No vanilla beasts in the Utinni scenario: cut every vanilla/DLC animal at the scenario layer, biome by biome as each biome's own cast is ready — never rename, never edit vanilla defs; close manhunter/quest/trade/pack-animal routes too
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Census every vanilla/DLC animal reachable in the Utinni scenario: biome
+prose:    infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md
 
 # IN PROGRESS
 
@@ -890,6 +899,15 @@ target:   v1
 kind:     build
 summary:  A gene (or trait) on the Jawa xenotype suppressing filth/squalor/mess-derived
 prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md
+
+## FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
+prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -2057,16 +2075,6 @@ thin:     spec, verify and criteria all present
 summary:  The vanilla psychic event family — psychic drone (the planetary/map condition
 prose:    infrastructure/state/items/FORCE_DISTURBANCE_REFLAVOR_1.md
 
-## VANILLA_BEAST_EXCISION_1 No vanilla beasts in the Utinni scenario: cut every vanilla/DLC animal at the scenario layer, biome by biome as each biome's own cast is ready — never rename, never edit vanilla defs; close manhunter/quest/trade/pack-animal routes too
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Census every vanilla/DLC animal reachable in the Utinni scenario: biome
-prose:    infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md
-
 ## THEY_MOD_REPLICATION_1 Replicate They! (Giant Ants) in our own tier and retire the dependency — 1 race/2 kinds/hidden raid faction/carapace stuff+wall trivial XML, one small JobGiver in C#, new art+name; ~a day
 state:    proposed
 row:      unassigned
@@ -2120,22 +2128,12 @@ prose:    infrastructure/state/items/MIASMA_SHIPPING_NAMES_1.md
 ## PYRELANDS_BURROWER_GRAZER_1 Author a dedicated burrower-grazer creature for the Pyrelands' 'three families' fire-web (owner-ruled, all-ruled §4) -- new C# burrow-on-fire behavior, no clean donor body
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     build
 thin:     no ## spec, no ## criteria
 summary:  PYRELANDSBURROWERGRAZER1 — dedicated burrower-grazer for the Pyrelands' fire-web
 prose:    infrastructure/state/items/PYRELANDS_BURROWER_GRAZER_1.md
-
-## FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec
-summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
-prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
 
 ## WASTELAND_RADIOTHERMAL_SOLITARY_1 Radiothermal solitary: living-furnace creature, NEW C# heat-emission + same-species spacing law (no donor emits heat per _assignment_prep.md 4.4 -- new art/def needed)
 state:    proposed
