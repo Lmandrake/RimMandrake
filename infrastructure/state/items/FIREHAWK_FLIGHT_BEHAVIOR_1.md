@@ -194,17 +194,21 @@ to an actual takeoff, not a standing screenshot") is not yet met. The
 mechanism and art are shipped and validated; only the positive live sighting
 is outstanding.
 
-**NEXT** for whoever picks this back up: on the `firehawk` quicktest tier
-(rebuild with the snippet above, or add it to `modset_builder.py.TIERS` for
-real), either (a) sample much more densely for a short burst — `ticks: 5-10`
-between checks over a couple hundred iterations right after a detected
-position-delta, since flight duration is likely short, or (b) get the pawn
-genuinely hungry first (`step_game_ticks` a full day, ~60000 ticks, before
-introducing wild prey) so a sustained hunt-chase job gives a much longer
-flight window to catch, or (c) if a companion tool is ever added for another
-reason, a debug `[Tool]` that reads `Pawn_FlightTracker`'s current state
-directly would make this deterministic instead of probabilistic for every
-future flyer verification, not just this one.
+### 🔴 owner ruling, told to FOUNDRY this session — stop trying to screenshot flight
+Verbatim: *"Don't try to capture images of flight. It doesn't work."* Said
+directly to a FOUNDRY window while this item's bridge-holder was mid-attempt at
+exactly this (25 screenshots over ~35 minutes, no catch — see above). ⛔ (a) and
+(b) below are screenshot-hunting strategies and are RULED OUT by this — do not
+spend more bridge time trying to photograph a mid-air frame, however the
+sampling is tuned. **(c) is now the required approach**, not a nice-to-have.
+
+**NEXT** for whoever picks this back up: (c) add a debug `[Tool]` (see
+`rimbridge-companion` skill) that reads `Pawn_FlightTracker`'s current state on
+a pawn directly — `CanEverFly`/whatever field indicates "airborne now" — making
+verification a deterministic state read instead of a probabilistic screenshot
+hunt, for this and every future flyer. ~~(a) sample much more densely...~~ and
+~~(b) get the pawn genuinely hungry first...~~ are superseded by the ruling
+above — do not pursue either.
 
 `RUT_FireWasp` is unchanged this pass — still next-wave, same "flies, no
 animation frames yet" state as before.
