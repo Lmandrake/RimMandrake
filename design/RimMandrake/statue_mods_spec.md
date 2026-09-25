@@ -318,3 +318,69 @@ Every ruling below is already folded into §§0–3; this list is the provenance
 | R5 | **Sh'kaar is the first flaming idol.** Ohm's and Rekko's grands are not flame-variant candidates until he says so. | Decision taken by question card, 2026-09-25 (old Q4). |
 | R6 | The fuel routes, in preference order: Sump gas, Helixien gas (if present instead or in addition), manual refuel otherwise. | Typed in the filing, 2026-09-25: *"Then we'd tie that in to the Sump mod, the Helixian gas mod (if that's present instead or in addition), or manual refueling if not."* |
 | R7 | The Steel Flame statuary art is a placeholder to replace. | Filing title, 2026-09-25. |
+
+## 5. Art queue — the 13 subjects
+
+Thirteen artpipe jobs, **not yet queued** (this is the brief, `fill_queue.py` files them at
+build step 2). Common job shape, per `infrastructure/artpipe/README.md`: `rimflow_item_id`
+`STATUE_ART_EXPANSION_1`; `reference` **null** (new art — a `reference` would trigger
+reskin-validate and always fail); `facing` `south` only (statues are `rotatable false`, one
+texture); `background` `transparent`; `channel` codex; `priority` 40. Canvas per the
+README's heuristic, erring generous: **small 256, large 512, grand 1024** (drawSize×128 rounded
+up to a power of two; the enhanced-zoom stack voids the old 256 ceiling). Grand subjects sit in
+the central ~75% of the canvas so a 2×2 footprint never overhangs past the drawSize box.
+
+**Common prompt head (every job):** *"RimWorld building sprite, top-down-oblique vanilla
+building angle, painterly vanilla-RimWorld art style: a carved stone statue on a low plinth,
+desert sandstone and bone-pale stone reading as CARVED — a statue of the figure, not the
+figure. Hooded and robed Jawa figure, hood up, face a black void with two inlaid amber-glass
+eyes as the only lit feature, over-sized gnarled five-fingered hands from deep sleeves. [MOTIF].
+[ACCENT] as a mineral vein or inlaid metal, never paint. No fire, no glow, no ground shadow, no
+background scenery. Heavy, clean black outline around the whole silhouette and all major
+internal linework, thick enough to read clearly at standard RimWorld zoom and below."*
+Votives and the Crawler drop the hooded-figure clause. Art is authored grey-warm and
+desaturated so stuff colour can tint it (`useIngredientsForColor`).
+
+**Search done 2026-09-25 before briefing** (`infrastructure/artpipe/done/`, `_artsrc/` (1,407
+entries), `registry.jsonl` (5,980 lines), `Transient/*.decisions.json`): **no statue, idol or
+votive art exists for any of the 13.** Name-matches were all false positives — `graffiti_tally_*`
+is the prisoner tally-mark graffiti icon (`GRAFFITI_VARIANT_COUNTS_1`), `scald_noohm_*` is a
+Scald jelly creature, `rot_thozzik*` a Rot insect, `rutmortuarycrawler_*` a creature. The only
+usable inputs are the god PAINTINGS (`design/Jawa/art/gods/god<N>_<name>.png` for all nine,
+busts for all nine in `busts/`, full-figure for Ishko/Mob'Unloo/Ohm/Oomo only in `fullfigure/`)
+— style references for pose and motif, never a `reference` field — and, for the Crawler, the
+Armoury's `CrustySandcrawlerHull.png` / `Sandcrawler1x1DoorA.png` wall and door tiles as hull
+texture reference.
+
+| # | Job id | Def | Canvas | Visual brief (the `[MOTIF]` / `[ACCENT]` slots) | Existing art |
+|---|---|---|---|---|---|
+| 1 | `rut_idol_ishko_v1` | `RUT_Idol_Ishko` (large, 512) | 512 | The watcher half-sunk: the figure emerges only from the chest up out of the plinth, as if rising through a hatch; the robe's lower folds dissolve into the plinth's own stone so no hemline exists. Hood pulled low, the two eyes set LOW and small, the dimmest of the nine — barely-lit amber, watching. Hands flat on the hatch rim either side, fingers splayed. Accent near-black: a vein of obsidian running down the hood. The whole read is patience and ambush. | none; `god1_ishko.png`, `ishko_bust.png`, `ishko_fullfigure.png` as pose refs |
+| 2 | `rut_idol_ohm_v1` | `RUT_Idol_Ohm` (large, 512) | 512 | Both arms raised high, too-long gnarled hands open and reaching upward as if toward hands he lost; the sleeves fall back to the elbow. At the plinth base a dormant droid head lies on its side, carved in the same stone, one eye-socket empty. Eyes warm and confident, wide. Accent arc-blue: a thin inlaid copper-blue line arcing from fingertip to fingertip across the hood. Also the base for #2g. | none; `god2_ohm.png`, `ohm_bust_A/B.png`, `ohm_fullfigure.png` |
+| 2g | `rut_idol_ohm_grand_v1` | `RUT_Idol_Ohm_Grand` (grand, 1024) | 1024 | Same figure as #2 at 2×2, but the base widens into a heap of three dormant droids in carved stone leaning against the plinth as pilgrims; a cable-relief runs from the heap up the robe's back. A distinct carving, not a resize. | none |
+| 3 | `rut_idol_oomo_v1` | `RUT_Idol_Oomo` (large, 512) | 512 | Hunched, shoulders forward, both cupped hands held close to the chest holding one single carved droplet the size of a fist; the hem of the robe sags and darkens (a darker stone band) as if damp. Eyes anxious, angled inward. Accent water-silver: the droplet is inlaid pale silver-grey stone, polished, the only smooth surface on the statue. | none; `god3_oomo.png`, `oomo_bust.png`, `oomo_fullfigure.png` |
+| 4 | `rut_idol_mobunloo_v1` | `RUT_Idol_MobUnloo` (large, 512) | 512 | Seated on a squat ledger-stone, a hand-scale (two pans on a beam) held up in one hand, the other hand resting on a stack of scavenged tokens; five-bar tally scratches carved down the front of the robe in rows. Eyes level and appraising. Accent copper/green: the scale pans inlaid verdigris copper. | none; `god4_mobunloo.png`, `mobunloo_bust.png`, `mobunloo_fullfigure.raw.png` |
+| 5 | `rut_idol_rekko_v1` | `RUT_Idol_Rekko` (large, 512) | 512 | Kneeling, a broken droid cradled across his lap, one hand inside its open chest cavity mending; the robe is carved as a patchwork of salvaged plates and stitched panels. Eyes the gentlest of the nine, half-closed, looking down at the droid. Accent salvage-bronze: the patch-seams inlaid dull bronze. Also the base for #5g. | none; `god5_rekko.png`, `rekko_bust.png` |
+| 5g | `rut_idol_rekko_grand_v1` | `RUT_Idol_Rekko_Grand` (grand, 1024) | 1024 | Same figure at 2×2, the plinth now a workbench-slab strewn with carved parts (a limb, a head, coiled cable) and a second, already-mended droid standing at his shoulder with one hand raised. A distinct carving, not a resize. | none |
+| 6 | `rut_idol_tabaa_v1` | `RUT_Idol_TaBaa` (large, 512) | 512 | Mid-stride, one foot already off the plinth's edge, the robe blown hard sideways as if wind-caught (carved folds streaming to one side), face turned away from the viewer toward the empty side of the plinth so only one eye is visible in profile. Accent wind-grey/gold: a thin gold line along the streaming hem. The plinth edge crumbles under the leading foot. | none; `god6_tabaa.png`, `tabaa_bust.png` |
+| 7 | `rut_idol_zizzik_v1` | `RUT_Idol_Zizzik` (large, 512) | 512 | Crouched low on the balls of the feet, one hand pressed flat on a cracked machine part (a split housing with a coil spilling out), the other hand raised with two fingers pinched as if about to flick something. Eyes slanted upward in delight — the only smiling eyes among the nine. Accent spark-green: the crack in the housing inlaid pale green stone. | none; `god7_zizzik.png`, `zizzik_bust.png` |
+| 8 | `rut_idol_shkaar_v1` | `RUT_Idol_Shkaar` (large, 512) | 512 | Tall, rigid, arms straight down and palms turned forward. **The one exception to hood-up:** the hood is thrown back and merges into a carved sun-disc behind the head, rays cut into the stone; the face is a void with the widest, hottest eyes of the nine, set high. Accent white-gold: the sun-disc's rays inlaid pale gold. Reads cruel and exposing, never heroic. | none; `god8_shkaar.png`, `shkaar_bust.png` |
+| 8g | `rut_idol_shkaar_grand_v1` | `RUT_Idol_Shkaar_Grand` (grand, 1024) — **the flame idol, R5** | 1024 | Same figure at 2×2, but arms raised to shoulder height with **both palms cupped upward and open** and the sun-disc crown carved as a shallow **bowl** at its apex — three cold vents (§2.6 law: blackened, soot-fanned openings, no fire drawn) that the engine will light. The plinth is a carved ring of fire-pit stones. Silhouette must leave the two palms and the crown bowl unobstructed; §2.5's `points` are measured from this PNG. | none |
+| 9 | `rut_idol_ozzik_v1` | `RUT_Idol_Ozzik` (large, 512) | 512 | Standing in a grand robe with a long trailing hem, but the robe is torn open down one side and a great rent crosses the chest; on the head, over the hood, a broken salvaged crown (a bent scrap-metal circlet missing a third of its ring). Eyes proud and grieving at once — wide but downcast. Accent purple/gold: the crown's surviving points inlaid gold, the tear's edges a dull purple vein. | none; `god9_ozzik.png`, `ozzik_bust.png` |
+| 10 | `rut_votive_bandolier_v1` | `RUT_Votive_Bandolier` (small, 256) | 256 | No figure. A votive stone: a rough sandstone block, on top of it a carved bandolier strap coiled twice with its heavy square buckle centred and upright, the clan's mark scratched into the buckle face. Dull bronze inlay on the buckle only. | none (`KotORBandolierNorthFix` is apparel, unrelated) |
+| 11 | `rut_votive_droplet_v1` | `RUT_Votive_Droplet` (small, 256) | 256 | No figure. A shallow carved dish, cracked across, on a sandstone block; in the dish's centre one single carved droplet, polished pale silver-grey, the only smooth surface — Oomo's tithe. The crack runs under the droplet and stops. | none |
+| 12 | `rut_votive_tally_v1` | `RUT_Votive_Tally` (small, 256) | 256 | No figure. A stack of scavenged tokens (mismatched discs, washers, a bent coin) under a slab of scratched stone; five-bar tally marks cover the slab's face, several crossed out — Mob'Unloo's ledger. Verdigris copper on two of the tokens. | none (`graffiti_tally_*` is the prisoner-graffiti icon; motif reference only) |
+| 13 | `rut_relief_crawler_v1` | `RUT_Relief_Crawler` (grand, 1024) | 1024 | No figure. A 2×2 relief-block: a sand crawler carved in high relief on a slab lying flat-ish on its plinth, seen from the oblique building angle — the wedge hull, the row of rusted plates, the great treads along both sides, the ramp lowered at the front. The clan's ark before the ship. Rust-red vein along the hull plates; hull texture after the Armoury's `CrustySandcrawlerHull.png`. | none; wall/door tiles above as hull texture refs only |
+
+Sixteen jobs (13 subjects + 3 grands). The three Mod 2 flame statues (§2.6) are a separate,
+later wave and are not briefed here.
+
+## 6. Open questions (yes/no, for the owner)
+
+- **O1.** Sixteen separate idols in one build-menu dropdown — is that acceptable, or do you want
+  the single picker-gizmo object instead (§1.3's alternative)?
+- **O2.** Should Ohm and Rekko also get grand-size (cold, non-flaming) idols in wave one, or do
+  only Sh'kaar's grand and the Crawler ship at grand size?
+- **O3.** Should the idols be buildable by ANY colony that has Mod 1, or only by colonies whose
+  ideoligion carries the Utinni culture?
+- **O4.** Does the Sh'kaar flame idol need to burn (Sumpgas refuel + flame) in Mod 1's first
+  release, or is a cold Sh'kaar acceptable until Mod 2's flame comp exists?
