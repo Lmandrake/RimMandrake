@@ -142,7 +142,15 @@
     <makesAlert>false</makesAlert>
     <scenarioCanAdd>true</scenarioCanAdd>
     <comps>
-      <!-- ~12 game hours from a full 1.0 dose. -->
+      <!-- ~20 game hours from a full 1.0 dose (the outcomeDoer below always
+           applies severity=1.0, overriding this def's own initialSeverity=0.6
+           per IngestionOutcomeDoer_GiveHediff.DoIngestionOutcomeSpecial), not
+           the ~12 hours an earlier draft of this comment claimed: that
+           figure came from dividing the dead initialSeverity=0.6 by
+           severityPerDay instead of the severity actually applied.
+           HediffComp_SeverityPerDay.CompLabelInBracketsExtra's own formula
+           (severity / |severityPerDay| * 24) is what the game displays via
+           showHoursToRecover below, and 1.0 / 1.2 * 24 = 20. -->
       <li Class="HediffCompProperties_SeverityPerDay">
         <severityPerDay>-1.2</severityPerDay>
         <showHoursToRecover>true</showHoursToRecover>
