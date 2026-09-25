@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScarlandsFlora.xml                 UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `the_scarlands:the-glowers-black-radiotrophic-crust-flora-crater-bowl-varni`
+  (design/Jawa/worldbuilding/biomes/the_scarlands.md §4: "The Glowers —
+  black-hued mosses and lichens along the ground, eating the radiation itself
+  ... glassy dark varnish painting crater bowls and hotspots, thickening for
+  centuries. The only flora. Harvestable as radiogenic fuel and pigment —
+  with everything that implies"; roster's own new_defs entry,
+  rosters/the_scarlands.json, mechanic_load "none blocking for the def;
+  glower-fuel harvest rides SCARLANDS_MECHANICS_1"). RUT_Scarlands.xml's own
+  header already flags this exact gap: "SS4's only flora are the Glowers
+  ... even though the actual Glower PlantDef is not authored here (roster's
+  own call)" — this file is that landing.
+
+  🔑 The name is NOT provisional here. "The Glowers" is the owner's own
+  proper noun, used capitalized in the sheet's own prose (§4/§7) — same
+  "owner's own name stands" posture as the arid_shrubland sheet's
+  Ultracactus (COMMISSION_LEDGER_CLEANUP_1 wave 1). No naming card filed for
+  this def.
+
+  Checked first (per this item's own "watch out"): infrastructure/artpipe/
+  {done,pending,registry.jsonl} for "glower"/"mortuary" — clean, nothing
+  exists. No open item names this slug (grepped infrastructure/state/items/
+  for "glower"). RUT_Scarlands.xml is NOT migrated to a standalone mod
+  (unlike RUT_Greentide.xml/RUT_WeepingStones.xml, the only two BiomeDefs in
+  this folder carrying a "do not edit here" banner) — SCARLANDS_STANDALONE_MOD_1
+  is still `proposed`, never claimed, so this content lands here as the live
+  owner, same posture the_forge/poison_forest waves used on their own
+  not-yet-split biomes.
+
+  Shape: closest existing precedent in this same mod family is RUT_DarkCrust
+  (poison_forest wave, RUT_PollutedFlora.xml) — a thin phototrophic film
+  groundcover on rock/bark. The Glowers are the same silhouette (a crust/
+  varnish, not an upright plant) so this def copies that shape: PlantBase,
+  non-selectable, no wind exposure, low fertility requirement (crater floors
+  and hotspots, not soil). ban 3 ("No green — the flora palette is black,
+  glass and rust") is met directly: Beauty left at 0 (not a decorative
+  plant), no green-toned art, description matches the sheet's own "glassy
+  dark varnish" language.
+
+  Harvest: harvestedThingDef points at RUT_GlowerCrust (RUT_ScarlandsItems.xml,
+  same file family posture as RUT_Vorrel/RUT_VorrelFruit) — a plain raw
+  resource landing now. The bespoke "glower-fuel harvest" GAMEPLAY LOOP
+  (radiation-dose-vs-yield tradeoff the roster's own mechanic_load names) is
+  real C# still owed to SCARLANDS_MECHANICS_2 (the live successor to the
+  closed SCARLANDS_MECHANICS_1 spec) — same "def lands first, behaviour
+  comp follows" precedent DESERT_SHADE_WHALE_FILTERFEED_1/
+  SHRUBLAND_GIANT_ENRAGE_1 already used this item. Not filed as a fresh item
+  here: SCARLANDS_MECHANICS_2 already exists, is open, and its own spec text
+  covers "pre-sprung danger dressing" from the same sheet section — adding
+  the glower-fuel harvest loop to its scope (rather than a duplicate item) is
+  a note, not a new filing.
+
+  Art: genuinely new, no existing render found. One job filed this pass,
+  rutglower_v1 (infrastructure/artpipe/pending/rutglower_v1.json).
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Glower</defName>
+    <label>the Glowers</label>
+    <description>A glassy black varnish of moss and lichen, spread thick over crater bowls and hotspots wherever the ground still runs hot — it eats the radiation itself, the same trick Old Earth's own radiotrophic molds are said to have known. It thickens for centuries undisturbed. Scraped up, it burns crude and hot, and its ash makes a pigment nothing else on the planet can match.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0.1</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- Job rutglower_v1, filed this pass. Pending until the daemon lands it. -->
+      <texPath>Things/Plant/RUT_Glower</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <selectable>false</selectable>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <plant>
+      <fertilityMin>0.02</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>3</maxMeshCount>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RUT_GlowerCrust</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <harvestWork>220</harvestWork>
+      <harvestAfterGrowth>0.4</harvestAfterGrowth>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>

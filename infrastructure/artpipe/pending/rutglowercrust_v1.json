@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 128,
+    "width": 128
+  },
+  "channel": "codex",
+  "created": "2026-09-25T01:51:49Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rutglowercrust_v1",
+  "priority": 100,
+  "prompt": "RimWorld raw-material item icon, painterly vanilla-RimWorld resource art style: a fist-sized scraped-up chunk of glassy black radiotrophic crust/varnish, a few flakes of deep purple and dried-blood red showing at the broken edges where it cracked off the ground. A stackable raw resource icon, not a plant -- reads like a chunk of matte black glass-slag, faintly warm at the core. Centered, isolated on a transparent background, a short soft ground shadow beneath it, no scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld inventory-icon size.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "RUT_GlowerCrust (COMMISSION_LEDGER_CLEANUP_1 the_scarlands sheet, harvested product of RUT_Glower, mandrake.rut.patches, ThingDefs_Items/RUT_ScarlandsItems.xml). the_scarlands.md §4/§7: 'harvestable as radiogenic fuel and pigment.' Same ban 3 (no green) as the parent plant's own job, rutglower_v1."
+}
