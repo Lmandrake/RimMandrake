@@ -359,3 +359,6 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FIREHAWK_FLIGHT_BEHAVIOR_1 joint live-verify with owner present","ts":"2026-09-25T18:45:13Z"}
 {"seat":"FOUNDRY","event":"claim","id":"SCALD_WATER_AGITATION_FLECKS_1","ts":"2026-09-25T19:16:09Z"}
 {"seat":"FOUNDRY","event":"start","id":"SCALD_WATER_AGITATION_FLECKS_1","ts":"2026-09-25T19:16:11Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-25T19:18:15Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"check second map biome for RIVER_STEAM_ANIMATION_1 candidacy","ts":"2026-09-25T19:22:56Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-25T19:40:52Z"}
