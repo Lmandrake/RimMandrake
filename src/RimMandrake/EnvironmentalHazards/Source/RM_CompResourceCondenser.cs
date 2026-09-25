@@ -77,13 +77,24 @@ namespace RimMandrake.EnvironmentalHazards
                     return false;
                 }
                 Thing thing = map.thingGrid.ThingAt(parent.Position, Props.requiredThingAtPosition);
-                return thing != null;
+                // A vent whose own def is gated off (e.g. the Scald's S4 vent
+                // fields) is dormant: present, but not breathing.
+                return thing != null && RM_MechanicGates.Enabled(thing.def);
             }
         }
+
+        // False when the owning mod's settings switched this condenser's own
+        // mechanic off (RM_MechanicGateExtension on the building's def, e.g.
+        // the Scald's S2 steam-catch). Ungated defs are always enabled.
+        public bool MechanicEnabled => RM_MechanicGates.Enabled(parent.def);
 
         public override void CompTick()
         {
             base.CompTick();
+            if (!MechanicEnabled)
+            {
+                return; // progress is kept, not banked: resumes where it stopped when re-enabled
+            }
             if (!OnRequiredVent)
             {
                 ticksSinceCycleStart = 0; // no free progress banked while off-vent
@@ -113,6 +124,10 @@ namespace RimMandrake.EnvironmentalHazards
 
         public override string CompInspectStringExtra()
         {
+            if (!MechanicEnabled)
+            {
+                return "RM_MechanicDisabledInSettings".Translate();
+            }
             if (!OnRequiredVent)
             {
                 return "RM_CondenserOffVent".Translate();

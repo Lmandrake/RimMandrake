@@ -77,6 +77,10 @@
         <burstDurationMinutesRange>720~1440</burstDurationMinutesRange>
         <flashWindowHoursAfterBurstStart>1</flashWindowHoursAfterBurstStart>
       </li>
+      <!-- Mod Settings gate: Terminal Biomes' S1 steam-sky toggle. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>Scald.S1</gateKey>
+      </li>
     </modExtensions>
   </GameConditionDef>
 

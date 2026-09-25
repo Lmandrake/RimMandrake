@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using RimMandrake.EnvironmentalHazards;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,27 +14,36 @@ namespace RimMandrake.TerminalBiomes
     // kit spec names (S1/S2/S4/S5/S6 — S3 is unbuilt, so it gets no toggle),
     // plus a cross-biome block matching Greentide's own shape.
     //
-    // 🔴 HONEST LIMIT, stated rather than hidden: this mod ships NO kit C#
-    // of its own (§6 of the item: every kit class the moved content names
-    // already lives in mandrake.rm.environmentalhazards, a SHARED assembly
-    // serving Greentide/Forge/Scald alike). That shared assembly's classes
-    // do not read this mod's settings — there is no hook for them to do so
-    // without new shared-library C#, which is out of this item's scope. So
-    // every toggle below is REAL, PERSISTED STATE — a future consumer (a
-    // hook added to mandrake.rm.environmentalhazards, or a later pass on
-    // this assembly) can read it — but in THIS build nothing except the
-    // biome on/off pair actually changes what loads: turning a Scald
-    // mechanic off here does not yet stop its GameConditionDef/IncidentDef
-    // from running. Flagged here rather than shipped silently inert, same
-    // convention WeatherPulseExtension's own flashWindowHours field already
-    // uses in this codebase.
+    // The five Scald sub-toggles are LIVE. Each is read as
+    // masterEnabled && scaldEnabled && its own flag (the Scald*Active
+    // properties below) and reaches its mechanic one of two ways:
+    //   - Mechanics whose C# lives in the SHARED mandrake.rm.environmental
+    //     hazards assembly (it serves Greentide/Forge/Scald alike and loads
+    //     BEFORE this mod, so it cannot reference us): the constructor
+    //     registers each toggle as a key in that assembly's RM_MechanicGates,
+    //     and the Scald's own defs carry an RM_MechanicGateExtension naming
+    //     the key. Only defs carrying the extension are gated; every other
+    //     biome's use of the same classes is untouched.
+    //       Scald.S1 -> RUT_ScaldSteamLock (RM_GameCondition_WeatherPulse)
+    //       Scald.S2 -> RUT_SteamCatch (RM_CompResourceCondenser)
+    //       Scald.S4 -> RUT_ScaldVent, as the condenser sees it
+    //       Scald.S5 -> RUT_WalkerSurfacing, RUT_GenStep_ScaldSailScatterer
+    //   - Mechanics whose engine class was vanilla (the vent's
+    //     Building_SteamGeyser, the wrecks' GenStep_ScatterThings): thin
+    //     subclasses in RM_TerminalBiomesScaldKit.cs read these settings
+    //     directly.
+    // Every gate acts at its comp/condition/incident/GenStep entry point,
+    // never by removing a def, so a flip takes effect on the next tick (or,
+    // for the two scatter GenSteps, on the next NEW map) and flipping back
+    // restores the mechanic. The shared assembly is loadAfter, not a hard
+    // dependency: registration is skipped when it is not active.
     //
-    // The per-biome toggles are themselves the same shape: nothing on the
-    // world is painted to any RM_* biome yet (BIOME_PAINT_ONCE_AT_THE_END_1
-    // — the planet repaints once, at the end), so "biome off" cannot yet
-    // remove a biome from a generated planet either. What IS real today:
-    // ExposeData persistence and the DoWindowContents screen itself, which
-    // is the shippable deliverable this pass owes.
+    // The per-biome toggles are narrower: nothing on the world is painted
+    // to any RM_* biome yet (BIOME_PAINT_ONCE_AT_THE_END_1 — the planet
+    // repaints once, at the end), so "biome off" cannot remove a biome from
+    // a generated planet. scaldEnabled does switch off the whole Scald kit
+    // (via the Active properties); the other three biome toggles are
+    // persisted state with no consumer yet.
     // ════════════════════════════════════════════════════════════════════
     public class RM_TerminalBiomesSettings : ModSettings
     {
@@ -51,6 +62,16 @@ namespace RimMandrake.TerminalBiomes
         public static bool scaldS4VentFieldsEnabled = true;
         public static bool scaldS5SailWalkerEnabled = true;
         public static bool scaldS6WreckSalvageEnabled = true;
+
+        // Effective state: a sub-toggle only counts while the mod and the
+        // Scald are both on. Everything that gates reads these, never the
+        // raw fields.
+        private static bool ScaldActive => masterEnabled && scaldEnabled;
+        public static bool ScaldS1SteamSkyActive => ScaldActive && scaldS1SteamSkyEnabled;
+        public static bool ScaldS2SteamCatchActive => ScaldActive && scaldS2SteamCatchEnabled;
+        public static bool ScaldS4VentFieldsActive => ScaldActive && scaldS4VentFieldsEnabled;
+        public static bool ScaldS5SailWalkerActive => ScaldActive && scaldS5SailWalkerEnabled;
+        public static bool ScaldS6WreckSalvageActive => ScaldActive && scaldS6WreckSalvageEnabled;
 
         // ── Cross-biome opt-in (Greentide's own shape; WORLDGEN-AFFECTING) ─
         public static bool crossBiomeEnabled = false;
@@ -111,9 +132,9 @@ namespace RimMandrake.TerminalBiomes
             list.GapLine();
 
             list.Label("THE SCALD'S KIT");
-            list.Label("Off leaves the biome and its terrain in place; only the named "
-                       + "mechanic's own def stops applying once a future pass wires this "
-                       + "toggle into it.");
+            list.Label("Off leaves the biome, its terrain and every def in place; only the "
+                       + "named mechanic stops acting. Wreck and set-piece scatter changes "
+                       + "apply to newly generated maps.");
             list.CheckboxLabeled("S1 — standing steam sky", ref scaldS1SteamSkyEnabled,
                 "The permanent boil's-breath weather lock and its rare still days.");
             list.CheckboxLabeled("S2 — steam-catch condenser", ref scaldS2SteamCatchEnabled,
@@ -157,6 +178,22 @@ namespace RimMandrake.TerminalBiomes
         public RM_TerminalBiomesMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_TerminalBiomesSettings>();
+            if (ModsConfig.IsActive("mandrake.rm.environmentalhazards"))
+            {
+                RegisterMechanicGates();
+            }
+        }
+
+        // Kept in its own non-inlined method so the JIT only resolves the
+        // shared assembly's types when that mod is actually active.
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void RegisterMechanicGates()
+        {
+            RM_MechanicGates.Register("Scald.S1", () => RM_TerminalBiomesSettings.ScaldS1SteamSkyActive);
+            RM_MechanicGates.Register("Scald.S2", () => RM_TerminalBiomesSettings.ScaldS2SteamCatchActive);
+            RM_MechanicGates.Register("Scald.S4", () => RM_TerminalBiomesSettings.ScaldS4VentFieldsActive);
+            RM_MechanicGates.Register("Scald.S5", () => RM_TerminalBiomesSettings.ScaldS5SailWalkerActive);
+            RM_MechanicGates.Register("Scald.S6", () => RM_TerminalBiomesSettings.ScaldS6WreckSalvageActive);
         }
 
         public override string SettingsCategory()

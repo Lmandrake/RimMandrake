@@ -66,6 +66,16 @@ namespace RimMandrake.EnvironmentalHazards
         // independent of other GenSteps' RNG streams).
         public override int SeedPart => 1953847201;
 
+        // Per-GenStepDef settings gate: only a GenStepDef carrying an
+        // RM_MechanicGateExtension (e.g. the Scald's sail scatterer, S5) can
+        // be switched off; every other kit's use of this class is untouched.
+        // Skipping here places nothing on NEW maps; maps already generated
+        // keep what they have.
+        protected override bool ShouldSkipMap(Map map)
+        {
+            return base.ShouldSkipMap(map) || !RM_MechanicGates.Enabled(def);
+        }
+
         protected override void ScatterAt(IntVec3 loc, Map map, GenStepParams parms, int count = 1)
         {
             if (elements.NullOrEmpty())

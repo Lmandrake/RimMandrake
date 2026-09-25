@@ -63,6 +63,19 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
+            if (!RM_MechanicGates.Enabled(def))
+            {
+                // Owning mod's settings switched this condition off (e.g. the
+                // Scald's S1 steam sky): no bursts, no damage, and
+                // ForcedWeather() below stops forcing, so the map's own
+                // weather decider takes over. An in-flight burst is dropped.
+                if (inBurst)
+                {
+                    EndBurst();
+                }
+                return;
+            }
+
             if (inBurst)
             {
                 if (Find.TickManager.TicksGame >= burstWeatherEndTick)
@@ -201,7 +214,7 @@ namespace RimMandrake.EnvironmentalHazards
         public override WeatherDef ForcedWeather()
         {
             WeatherPulseExtension ext = ExtensionInt;
-            if (ext == null)
+            if (ext == null || !RM_MechanicGates.Enabled(def))
             {
                 return null;
             }

@@ -10,11 +10,20 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony, and no kit C# at all: the item's own §6 finding is that every
-    kit class the moved content names (RUT_IncidentWorker_SteamDevil,
-    RM_GenStep_PlacedSetPieces, CompProperties_ResourceCondenser, etc.)
-    already lives in mandrake.rm.environmentalhazards, reached via loadAfter.
-    This assembly is Mod + ModSettings only.
+    No Harmony. The kit classes the Scald's content names
+    (RM_GenStep_PlacedSetPieces, CompProperties_ResourceCondenser,
+    RM_GameCondition_WeatherPulse, RUT_IncidentWorker_WalkerSurfacing ...)
+    live in mandrake.rm.environmentalhazards, reached via loadAfter. This
+    assembly holds Mod + ModSettings, the settings-gate registration into
+    that assembly's RM_MechanicGates, and two thin vanilla subclasses
+    (RM_TerminalBiomesScaldKit.cs) for the pieces whose engine class was
+    vanilla.
+
+    References RimMandrake.EnvironmentalHazards.dll (Private=false: never
+    copied here). That mod is loadAfter, not a hard dependency, so every
+    touch of its types sits behind a ModsConfig.IsActive check in a
+    NoInlining method — see RM_TerminalBiomesMod's constructor. Build
+    EnvironmentalHazards first.
   -->
 
   <PropertyGroup>
@@ -42,6 +51,7 @@
 
   <ItemGroup>
     <Compile Include="RM_TerminalBiomesMod.cs" />
+    <Compile Include="RM_TerminalBiomesScaldKit.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +69,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

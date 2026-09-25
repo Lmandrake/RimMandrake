@@ -62,7 +62,16 @@
     <minRefireDays>14</minRefireDays>
     <allowedBiomes>
       <li>RM_TheScald</li>
+      <!-- The world-carrying frozen twin keeps this incident until the
+           terminal repaint; gated so a standalone install never dangles. -->
+      <li MayRequire="mandrake.rut.patches">RUT_TheScald</li>
     </allowedBiomes>
+    <modExtensions>
+      <!-- Mod Settings gate: Terminal Biomes' S5 sail + walker toggle. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>Scald.S5</gateKey>
+      </li>
+    </modExtensions>
   </IncidentDef>
 
 </Defs>
