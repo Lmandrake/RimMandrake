@@ -32,6 +32,12 @@
           },
           {
             "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_dll_source_mismatch.py\" 2>/dev/null || true",
+            "timeout": 30,
+            "statusMessage": "Checking pushed DLLs against their committed source"
+          },
+          {
+            "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_unclosed_queue_item.py\"",
             "timeout": 10,
             "statusMessage": "Checking for a Closes: trailer"
