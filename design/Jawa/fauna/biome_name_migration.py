@@ -24,7 +24,7 @@ OLD_TO_NEW_BIOME = {
     'AB_GelatinousSuperorganism': 'RUT_Slime',
     'AB_MechanoidIntrusion': 'RUT_RustCathedral',
     'AB_MiasmicMangrove': 'RUT_Miasma',
-    'AB_MycoticJungle': 'RUT_TheRot',
+    'AB_MycoticJungle': 'RM_TheRot',
     'AB_OcularForest': 'RUT_Contagion',
     'AB_PropaneLakes': 'RUT_FuelSnows',  # renamed from RUT_Umbra 2026-09-21,
                                           # UMBRA_IS_A_REGION_NOT_A_BIOME_1 (Umbra

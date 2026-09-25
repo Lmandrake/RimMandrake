@@ -62,7 +62,7 @@ plan that is not mostly about `mlie.starwarsanimalcollection` and
 | `RUT_Contagion` | 1 | 0 | 10 | 10 | alphaanimals:10 |
 | `RUT_Slime` | 0 | 0 | 9 | 6 | alphaanimals:7, vgeneticse:2 |
 | `RUT_WeepingStones` | 0 | 1 | 9 | 4 | swanimals:8 |
-| `RUT_TheRot` | 21 | 0 | 8 | 13 | alphaanimals:7 |
+| `RM_TheRot` | 21 | 0 | 8 | 13 | alphaanimals:7 |
 | `RUT_CrackedLands` | 3 | 0 | 7 | 6 | swanimals:5, alphaanimals:2 |
 | `RUT_NightsideIce` | 0 | 0 | 7 | 0 | alphaanimals:7 |
 | `RUT_Scarlands` | 1 | 0 | 7 | 1 | isopodageneline:3, alphaanimals:2 |
@@ -75,7 +75,7 @@ plan that is not mostly about `mlie.starwarsanimalcollection` and
 | `RUT_TwilightSea` | 1 | 0 | 1 | 0 | alphaanimals:1 |
 | `RUT_TheScald` | 4 | 0 | 0 | 0 | — |
 
-🔑 **`RUT_TheRot` is the only biome where we own more than we borrow** (21 ours vs
+🔑 **`RM_TheRot` is the only biome where we own more than we borrow** (21 ours vs
 8 third-party) — that is what a finished verdict pass looks like, and it is the
 before/after benchmark for every biome below it.
 

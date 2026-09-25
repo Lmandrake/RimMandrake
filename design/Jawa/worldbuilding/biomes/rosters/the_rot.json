@@ -33,18 +33,18 @@
     }
   ],
   "defNames": [
-    "RUT_TheRot"
+    "RM_TheRot"
   ],
   "evictions": [
     {
       "def": "BMT_GlowBat",
       "disposition": "cut-for-real",
-      "reason": "ROT_ROSTER_DEAD_DONOR_NAMES_1: owner ruling 2026-09-10 sitting — CUT, all flying bats (\"the violescent/bioluminescent bat\"), decisions_propagated.json fauna:the_rot:BMT_GlowBat decision=out. Never wired in RUT_TheRot.xml; removed from the fauna list 2026-09-21."
+      "reason": "ROT_ROSTER_DEAD_DONOR_NAMES_1: owner ruling 2026-09-10 sitting — CUT, all flying bats (\"the violescent/bioluminescent bat\"), decisions_propagated.json fauna:the_rot:BMT_GlowBat decision=out. Never wired in RM_TheRot.xml; removed from the fauna list 2026-09-21."
     },
     {
       "def": "BMT_BovineBeetle",
       "disposition": "moved",
-      "reason": "ROT_ROSTER_DEAD_DONOR_NAMES_1: ROT_FLORA_FAUNA_VERDICTS_1 TASK 2 (2026-09-19) moved this species to the Lantern Deeps as its Grabber (RSW_BovineBeetle, RUT_LanternDeeps.xml) and removed it from RUT_TheRot.xml's wildAnimals. This roster row was stale (still listed here under the dead donor name after the move); removed 2026-09-21."
+      "reason": "ROT_ROSTER_DEAD_DONOR_NAMES_1: ROT_FLORA_FAUNA_VERDICTS_1 TASK 2 (2026-09-19) moved this species to the Lantern Deeps as its Grabber (RSW_BovineBeetle, RUT_LanternDeeps.xml) and removed it from RM_TheRot.xml's wildAnimals. This roster row was stale (still listed here under the dead donor name after the move); removed 2026-09-21."
     },
     {
       "def": "BMT_Megakrill",

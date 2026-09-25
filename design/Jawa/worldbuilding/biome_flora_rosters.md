@@ -179,7 +179,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.05 | **bloddle plant** |  | `RSW_Plant_Bloddle` · RimMandrake: SW — Bestiary |
 | 0.01 | **ollim** | 🌳 | `RSW_Ollim` · RimMandrake: SW — Bestiary |
 
-### `RUT_TheRot` — 2,204 tiles · -42 … 24 °C (median -19) · plantDensity 0.6
+### `RM_TheRot` — 2,204 tiles · -42 … 24 °C (median -19) · plantDensity 0.6
 
 *was 34 inherited plants → now **30** assigned*
 
