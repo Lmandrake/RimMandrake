@@ -269,13 +269,20 @@ FAMILIES = {
  },
 
  'C. contamination': {
-  'RUT_Wasteland': {   # 1,853 tiles · 9 plants — 11 Polluted-Lands filler rows cut
-                        # 2026-09-18 (POLLUTED_LANDS_FLORA_PORT_1); toxic-ground identity
+  'RM_Wasteland': {   # RUT_Wasteland frozen 2026-09-24 (WASTELAND_RM_MOD_BUILD_1) —
+                        # keyed to the RM_ name so `owned_flora()` (scoped to
+                        # src/RimUtinni/UtinniPatches/Defs/BiomeDefs only) no longer
+                        # matches it, same pattern as RM_TheRot above: this dict stops
+                        # emitting a patch onto the frozen def. 1,853 tiles · 9 plants
+                        # at authoring — 11 Polluted-Lands filler rows cut 2026-09-18
+                        # (POLLUTED_LANDS_FLORA_PORT_1); toxic-ground identity
                         # already carried by the vanilla/AB_ poison flora below.
                         # AB_ToxiGrass/PoisonPlantTallGrass -> the_blue_desert, PoisonShrub
                         # -> the_propane_lakes, AB_GiantToxicFlower -> poison_forest (all
                         # moved), PoisonPlantBush purged outright (all SHEET_ORPHAN_
-                        # CONSUMPTION_1, owner ruling 2026-09-20)
+                        # CONSUMPTION_1, owner ruling 2026-09-20). ⚠️ Stale vs. the live
+                        # def by 2 rows (RUT_DosimeterLawn/RUT_VaultRoot, wave 11) — not
+                        # reconciled here, out of this retarget's scope.
     'RG_Plant_ToxiGrass': 1.2, 'RG_Plant_TallToxiGrass': 0.8,
     'Plant_GrayGrass': 0.35, 'RUT_ScorchedStars': 0.3,
     'AB_WeepingToxberry': 0.2,
@@ -366,7 +373,13 @@ PLANTLESS = {'RUT_NightsideIce', 'RM_NightsideIce', 'RUT_RustCathedral',
 # is a named exception list, never a sweep.
 DENSITY = {
   # biome: (new, shipped, why)
-  'RUT_Wasteland': (0.12, 0.0099,
+  'RM_Wasteland': (0.12, 0.0099,  # RUT_Wasteland frozen 2026-09-24 (WASTELAND_RM_MOD_BUILD_1);
+                                   # RM_Wasteland's own def already authors plantDensity 0.12
+                                   # directly (same value), so a regen of this entry emits a
+                                   # redundant-but-harmless PatchOperation rather than the
+                                   # "already authored" comment-only branch below — `ours` is
+                                   # scoped to src/RimUtinni/UtinniPatches only and does not see
+                                   # the new mod's def.
      "1,721 tiles of CONTAMINATION-class ground carrying a nine-plant toxic roster - "
      "toxigrass, gutter plantain, twisted dandelion, scorched stars - that exists to say "
      "THIS GROUND IS POISONED. At 0.0099 it says nothing. Poisoned ground reads more "

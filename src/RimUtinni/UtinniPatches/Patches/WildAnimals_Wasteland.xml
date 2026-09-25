@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_Wasteland.xml                 UtinniPatches — new file 2026-09-24
+  ============================================================================
+
+  Puts the campaign's Star Wars / Utinni-native Wasteland fauna onto
+  RM_Wasteland, replacing the deliberate donor-free roster that
+  src/RimMandrake/Wasteland/Defs/BiomeDefs/RM_Wasteland_Biome.xml ships (8
+  non-Star-Wars donor rows only). The campaign wiring lives HERE, never in
+  the Wasteland mod itself — that mod must stay standalone.
+
+  WHY THIS FILE HAS TO EXIST. §7 Q11/Q12: "RimMandrake should not name star
+  wars ever," and Q12's own carve-out for invented-name RSW_ ports still
+  routes them here until their biome's own sitting decides a rename. At
+  Phase B of design/RimMandrake/biome_mod_architecture.md the RUT_Wasteland
+  def that currently carries this cast dies and RM_Wasteland takes the
+  tiles. Without this patch in place by then, the Wasteland would lose 9 of
+  its 17 live fauna rows on the live world. WildAnimals_Pyrelands.xml /
+  WildAnimals_Greentide.xml are the shape this copies.
+
+  🔑 SOURCE OF TRUTH (AT AUTHORING, 2026-09-24): every weight below is a
+  verbatim copy of Defs/BiomeDefs/RUT_Wasteland.xml's own wildAnimals block
+  (frozen this same pass, 192 lines) for the rows that do NOT stay in
+  RM_Wasteland's own def — WASTELAND_RM_MOD_BUILD_1's own §3 forensics table,
+  re-measured against the live file (which had grown 2 rows since that table
+  was written — RSW_Excretor and RUT_BrineBattery, both COMMISSION_LEDGER_
+  CLEANUP_1 additions already built and already wired).
+
+  ⚠️ ONE ROW MOVED HERE THAT THE ITEM'S OWN TABLE DID NOT FLAG:
+  VAEWaste_Megatardi carries no RSW_/SW_/RUT_ prefix (so a naive prefix read
+  of Q12 would leave it in RM_Wasteland), but its ThingDef/PawnKindDef ships
+  ONLY inside src/RimUtinni/UtinniPatches/Defs/Absorbed_VAEWasteMegatardi/ —
+  it has no Core/DLC/third-party source at all (STAT_NORM_WAVE2_RETIRE_1
+  absorbed it natively into this mod). Left in RM_Wasteland it would be a
+  silently dangling cross-reference on any standalone load. Routed here
+  instead, unconditional (needs no MayRequire — always loads with this mod).
+
+  🔴 THREE EVICTED ROWS DROPPED, NOT CARRIED FORWARD: AA_Eyeling,
+  SW_Electrictick, AA_AcanthamoebaGiganteaSmall each carry an already-ruled,
+  never-executed "move:*" disposition in the roster's round-2 mapping
+  (WASTELAND_RM_MOD_BUILD_1 §3). Neither this file nor RM_Wasteland's own
+  wildAnimals carries them — this is the execution of that ruling, not an
+  oversight.
+
+  ============================================================================
+  STRUCTURE AND VERIFICATION
+  ============================================================================
+
+  Shorthand-dictionary form throughout, the only form
+  BiomeAnimalRecord.LoadDataFromXmlCustom reads (same as every sibling
+  WildAnimals_*.xml). Op 1 REPLACES the node (dropping the 8-row donor-only
+  roster) with the two always-loaded rows this mod's own UtinniPatches ships
+  (RSW_Excretor's swbestiary MayRequire and RUT_BrineBattery need no gate
+  here since they're each cast in their own Operation below); ops 2-3 then
+  Add onto the now-existing node behind the gate for each cast's home mod.
+  Every op is wrapped in a PatchOperationConditional on the target node, so
+  the whole file is a silent no-op if mandrake.rm.wasteland is ever not
+  loaded.
+
+  ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional
+  returns true on no match, and an unmatched PatchOperationAdd is silent. A
+  clean validate_patch.py run is NOT proof a row landed. 🔴 UNVERIFIED
+  AGAINST A LOAD: authored on the Mac laptop, where there is no def dump and
+  no game (WASTELAND_RM_MOD_BUILD_1 step 5 is owed). Confirm all 9 rows
+  from a post-load def dump on the Desktop before believing this file works.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Drop RM_Wasteland's donor-only roster and seat this mod's own always-
+       loaded defs (RUT_BrineBattery and VAEWaste_Megatardi both ship inside
+       UtinniPatches itself, so they are always present whenever this file
+       is). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/BiomeDef[defName="RM_Wasteland"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <RUT_BrineBattery>0.1</RUT_BrineBattery>  <!-- brine battery - pool owner, new-def (COMMISSION_LEDGER_CLEANUP_1); discharge mechanic split to WASTELAND_BRINE_BATTERY_DISCHARGE_1 -->
+          <VAEWaste_Megatardi>0.18</VAEWaste_Megatardi>  <!-- megatardi - extremophile-odd; absorbed natively into UtinniPatches (STAT_NORM_WAVE2_RETIRE_1), no third-party MayRequire needed -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- The Star Wars cast, all as OUR OWN RSW_ ports plus the one Mlie bare
+       defName Q12's own carve-out still permits pre-sitting. Weights
+       verbatim from RUT_Wasteland.xml. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Wasteland"]/wildAnimals</xpath>
+      <value>
+        <RSW_FleeceSpider>0.7</RSW_FleeceSpider>  <!-- fleece spider - wretched-small, keep -->
+        <RSW_Sacapillar>0.5</RSW_Sacapillar>  <!-- sacapillar (bodySize 2.40) - placed by the homeless-disposition sitting (frozen 2026-09-10); see RUT_Wasteland.xml's own row comment for the pyramid-law bound this weight sits inside -->
+        <RSW_BloodletterPetrel>0.7</RSW_BloodletterPetrel>  <!-- bloodletter petrel - wretched-small, keep -->
+        <RSW_Maligoat>0.4</RSW_Maligoat>  <!-- maligoat - wretched-herd, keep -->
+        <!-- MULTI-HOMED ON PURPOSE - owner approved 2026-09-22 (BIOME_SPECIFIC_FAUNA_LAW_1):
+             the screecher is a real flier (MaxFlightTime 35.0) that MIGRATES in from the
+             wetter RUT_PoisonForest to lay in the heat. Do not "fix" it by cutting either
+             home. -->
+        <RSW_Screecher>0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import; hot end of the migration -->
+        <RSW_Excretor>0.15</RSW_Excretor>  <!-- excretor - refiner-herd, new-def (COMMISSION_LEDGER_CLEANUP_1 / WASTELAND_EXCRETOR_BEZOAR_1) -->
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Mlie Star Wars Animal Collection: Borcatu carries no RSW_/SW_ prefix
+       but routes here by MayRequire per SW_FAUNA_NEVER_IN_RM_TIER_1's
+       routing rule (a bare-donor-name row is still Star Wars content). -->
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
+    <xpath>Defs/BiomeDef[defName="RM_Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Wasteland"]/wildAnimals</xpath>
+      <value>
+        <Borcatu>0.7</Borcatu>  <!-- Borcatu - wretched-small, keep -->
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
