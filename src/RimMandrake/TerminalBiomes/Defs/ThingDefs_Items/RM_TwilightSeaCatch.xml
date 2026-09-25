@@ -20,6 +20,7 @@
     <description>A netful of dull silver slivers, hauled up from beneath the Twilight Sea's mat-roof — never one alone, always a shoal.</description>
     <graphicData>
       <texPath>Things/Item/ToxicMeat/ToxicMeat_c</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.1</Nutrition>
@@ -45,6 +46,7 @@
     <description>A rounded, felt-textured shell netted off the Twilight Sea's floor, still smelling faintly of the mat-fall it was picking through. Uncommon.</description>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaD</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.14</Nutrition>

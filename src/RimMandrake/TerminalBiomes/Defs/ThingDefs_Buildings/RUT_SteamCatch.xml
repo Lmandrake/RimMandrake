@@ -40,7 +40,7 @@
   GeothermalGenerator's 6x6 — simplest safe placement shape, not a
   from-source-verified vanilla convention.
 
-  Texture OWED to the art pipeline, same posture as RUT_ScaldVent.xml.
+  Texture: its own art (artpipe job scald_steamcatchbuilding_v1).
   ============================================================================
 -->
 <Defs>

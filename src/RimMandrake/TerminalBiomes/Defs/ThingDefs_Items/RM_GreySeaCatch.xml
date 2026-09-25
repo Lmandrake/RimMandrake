@@ -26,6 +26,7 @@
     <description>A finless, bone-white ribbon netted from the Grey Sea's brine — eyeless, salt-rimed, and the one catch here that isn't shy about the open murk. The Grey's most reliable line.</description>
     <graphicData>
       <texPath>Things/Item/ToxicMeat/ToxicMeat_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.15</Nutrition>
@@ -51,6 +52,7 @@
     <description>A fist-sized, mineral-caked shell dredged from a Grey Sea pool margin — the pillar-rasp snail, still trailing a crust of the sea's own chemistry. Uncommon; most stay on their columns.</description>
     <graphicData>
       <texPath>Things/Item/ToxicMeat/ToxicMeat_b</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.12</Nutrition>

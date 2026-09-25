@@ -62,12 +62,7 @@
   override terrainAffordanceNeeded to Walkable below, the one affordance
   every RUT_ScaldWater*Shallow terrain actually carries.
 
-  Art: OWED. texPath below names a path under UtinniPatches/Textures/ that
-  does not exist yet — same posture as RUT_ScaldVent.xml/RUT_SteamCatch.xml
-  this same item. Held via src/DEPLOY_HOLD.txt, together with the scatter
-  GenStepDefs and registration patch that key on these defNames (a
-  GenStepDef shipped without its thingDef deployed is a dangling
-  cross-reference, not a smaller failure).
+  Art: one Graphic_Random variant each (_A), artpipe jobs scald_wreck{hull,tank,frame}_v1.
   ============================================================================
 -->
 <Defs>
