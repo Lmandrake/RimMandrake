@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    ROT_GUARDIAN_GROVES_1. The three RM_LiveIngredient_* harvested from
+    src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RM_RotSporeKit_GuardianGroves.xml's
+    guarded mushrooms — now carrying the live-prep pair.
+
+    ROT_LIVE_PREPARATIONS_1 (ticket 5, M4) decorated all three with
+    CompTemperatureRuinable (minSafeTemperature 8 C — a fridge ruins them)
+    and CompLifespan (150000 ticks = 2.5 in-game days), plus tickerType
+    Rare, without which neither comp ticks at all. Ban 4 therefore reaches
+    the INGREDIENTS too: even raw cut flesh dies if delayed or
+    refrigerated, so a grove harvest cannot be warehoused and brewed at
+    leisure back home. Both comps are VANILLA on purpose — they hold on any
+    install, with or without mandrake.rm.environmentalhazards.
+
+    Both modExtensions are ticket 5's as well: RM_LivePrepExtension is the
+    tag src/RimUtinni/RotSporeKit/selftest_live_prep.py enforces both comps
+    against, and RM_TreasureMarkerExtension makes an ingredient one of the
+    Rot's treasures for owner card 6's sale conscience. Each is MayRequire'd
+    on its own <li> — an ungated modExtension whose class cannot resolve
+    discards the WHOLE def.
+
+    The recipes that turn these into teas and symbionts are
+    Defs/RecipeDefs/RM_RotSporeKit_LivePrepRecipes.xml. These three
+    defNames are a handoff contract — do not rename them.
+
+    No ingestible block on purpose: these are brewing ingredients, not food
+    a colonist should eat raw off the shelf (same posture RM_ChitinPlating
+    already takes in RM_RotSporeKit_Resources.xml). Low stackLimit and low
+    MarketValue-per-unit but nonzero, matching card 1/M6's "keep yields low,
+    darned hard to obtain" ruling — the plant's own harvestYield (3) is the
+    real scarcity lever, this is just "don't let it stack into a warehouse".
+
+    Placeholder texPaths only, reused from already-shipped RotSporeKit item
+    art. Owed to the art pipeline: bespoke sprites for all three.
+  -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_LiveIngredient_AgelessCap</defName>
+    <label>orlath cap flesh</label>
+    <description>Freshly cut flesh from an ageless cap, still faintly warm. It has to reach a brewing vessel fast, or it's worthless.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/MushroomLog/MushroomlLog_a</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>0.1</Mass>
+      <Beauty>2</Beauty>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <tickerType>Rare</tickerType>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_LiveIngredient_RegenerantVeil</defName>
+    <label>mirrash veil tissue</label>
+    <description>A cut strip of living veil tissue, still faintly pulsing. It has to reach a brewing vessel fast, or it's worthless.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_A</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>0.1</Mass>
+      <Beauty>2</Beauty>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <tickerType>Rare</tickerType>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_LiveIngredient_EuphoricCrown</defName>
+    <label>lussa crown cap</label>
+    <description>A whole cap cut from a euphoric crown, still faintly luminous. It has to reach a brewing vessel fast, or it's worthless.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/ThrumbungusShroom/ThrumbungusShroom</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>0.1</Mass>
+      <Beauty>3</Beauty>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <tickerType>Rare</tickerType>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_TheRot_Biome.xml    RimMandrake: The Rot
+
+    THEROT_RM_MOD_BUILD_1 step 2. Derived from the frozen campaign twin
+    (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml) with:
+      - own workerClass (RimMandrake.TheRot.RM_BiomeWorker_TheRot, not the
+        donor AlphaBiomes.BiomeWorker_MycoticJungle) plus an own
+        RM_TheRotBiomeRanges modExtension so the biome can win tiles on any
+        generated planet, same idiom as RM_Greentide/RM_Pyrelands;
+      - own worldmap texture (World/Biomes/RM_TheRot, a flat-tone placeholder
+        — see the texture file's own note; not filed as an artpipe job per
+        this ticket's brief);
+      - RM_-renamed Sheen weather/exposure defs, MayRequire dropped now that
+        they are same-mod;
+      - own natural ground terrains (RM_TheRotGrass/RM_TheRotSoilRich)
+        replacing the donor AB_Mycotic* pair;
+      - all 30 wildPlants rows carried over (17 RM_-renamed kit flora + 13
+        AB_ donor rows, Q9 shape — MayRequire'd on sarg.alphabiomes where the
+        def dump needs it), PLUS 5 rows folded in as NATIVE entries from the
+        two RotPaleTree_WildSpawn.xml / RotGuardianGroves_WildSpawn.xml
+        patches (those patch files existed only to avoid two agents editing
+        this def at once — no longer needed once the content lives here);
+      - wildAnimals holds ONLY the 8 Alpha Animals donor rows (Q9 stays
+        inline, MayRequire sarg.alphaanimals). The 11 RSW_ rows + Snoruuk the
+        twin also carries are Q12/Q11a Star Wars content and ride the
+        campaign Utinni patch instead — see
+        src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheRot.xml — never
+        this def (an RM_-tier biome mod may not hard-name Star Wars IP);
+      - the two EnvironmentalHazards modExtensions carried over unchanged,
+        their warmTerrains list updated to the renamed RM_MycelialSoil/
+        RM_MycelialMatting kit terrains.
+
+    diseases, diseaseMtbDays, animalDensity, plantDensity, forageability,
+    movementDifficulty, wildPlantRegrowDays, foragedFood and allow* flags are
+    copied verbatim from the twin — this is a MOVE of content, not a
+    re-balance. plantDensity 0.6 is still an interim value per the twin's own
+    header (a quicktest tune is owed, not by this ticket).
+  -->
+
+  <BiomeDef>
+    <defName>RM_TheRot</defName>
+    <label>the Rot</label>
+    <description>A pale fungal continent on the night shoulder of the stormwall: bone-white and lilac towers under a black sky, a glow-moss floor warm to lie on while the air above it would kill you, milky ponds that are not water. Nothing here is a plant. Nothing here is quite an animal. Everything is connected, everything is warm from the inside, and everything -- including what you take away with you -- is still alive.</description>
+    <workerClass>RimMandrake.TheRot.RM_BiomeWorker_TheRot</workerClass>
+    <foragedFood>RawFungus</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.9</animalDensity>
+    <plantDensity>0.6</plantDensity>
+    <forageability>0.5</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>World/Biomes/RM_TheRot</texture>
+    <diseaseMtbDays>35</diseaseMtbDays>
+    <diseases>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_SporesAllergy</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_AnimalSporesAllergy</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>RM_TheRotGrass</terrain>
+        <min>-999</min>
+        <max>0.87</max>
+      </li>
+      <li>
+        <terrain>RM_TheRotSoilRich</terrain>
+        <min>0.87</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>8</Clear>
+      <RM_SheenFall>10</RM_SheenFall>
+      <DryThunderstorm>1</DryThunderstorm>
+      <RM_SheenStorm>10</RM_SheenStorm>
+      <RM_SheenMist>10</RM_SheenMist>
+    </baseWeatherCommonalities>
+    <biomeMapConditions>
+      <li MayRequire="mandrake.rm.environmentalhazards">RM_SheenExposureLock</li>
+    </biomeMapConditions>
+    <wildAnimals>
+      <AA_Swarmling MayRequire="sarg.alphaanimals">0.3</AA_Swarmling>  <!-- swarmling - hybrid-vermin -->
+      <AA_Agaripod MayRequire="sarg.alphaanimals">0.25</AA_Agaripod>  <!-- agaripod - hybrid-native -->
+      <AA_MycoidColossus MayRequire="sarg.alphaanimals">0.25</AA_MycoidColossus>  <!-- mycoid colossus - hybrid-giant -->
+      <AA_Agaripawn MayRequire="sarg.alphaanimals">0.2</AA_Agaripawn>  <!-- agaripawn - hybrid-native -->
+      <AA_Wildpawn MayRequire="sarg.alphaanimals">0.2</AA_Wildpawn>  <!-- wildpawn - hybrid-native -->
+      <AA_Wildpod MayRequire="sarg.alphaanimals">0.2</AA_Wildpod>  <!-- wildpod - hybrid-native -->
+      <AA_AngelMoth MayRequire="sarg.alphaanimals">0.5</AA_AngelMoth>  <!-- angel moth - small -->
+      <AA_AnimaColossus MayRequire="sarg.alphaanimals">0.5</AA_AnimaColossus>  <!-- anima colossus - titan -->
+      <!-- The 11 RSW_ rows + Snoruuk the twin also carries are Star Wars
+           content (Q12/Q11a) and are wired in by the campaign patch
+           src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheRot.xml, never
+           here. -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_Bryolux>10</AB_Bryolux>  <!-- bryolux -->
+      <AB_Glowstool>3</AB_Glowstool>  <!-- glowstool -->
+      <AB_Agarilux>2</AB_Agarilux>  <!-- agarilux -->
+      <AB_GiantAgarilux>2</AB_GiantAgarilux>  <!-- giant agarilux -->
+      <AB_GlowingAgarilux>1</AB_GlowingAgarilux>  <!-- glowing agarilux -->
+      <AB_LilacBeacon>0.5</AB_LilacBeacon>  <!-- lilac beacon -->
+      <AB_WitchesOyster>0.5</AB_WitchesOyster>  <!-- witches' oyster -->
+      <RM_Dewshrooms>0.5</RM_Dewshrooms>  <!-- dewshrooms -->
+      <RM_FruitingBodies>0.5</RM_FruitingBodies>  <!-- mold fruiting bodies -->
+      <RM_Nuitae>0.5</RM_Nuitae>  <!-- nuitae -->
+      <RM_Wrinklecap>0.5</RM_Wrinklecap>  <!-- wrinklecap -->
+      <RM_Arpeau>0.4</RM_Arpeau>  <!-- arpeau - tree -->
+      <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia>  <!-- recurved stropharia -->
+      <RM_FlakespireFungus>0.3</RM_FlakespireFungus>  <!-- flakespire fungus - tree -->
+      <RM_Pusmelon>0.3</RM_Pusmelon>  <!-- pusmelon -->
+      <RM_Sagecrust>0.3</RM_Sagecrust>  <!-- sagecrust -->
+      <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza>  <!-- arbuscular mycorrhiza -->
+      <AB_SlimyPholiota>0.2</AB_SlimyPholiota>  <!-- slimy pholiota -->
+      <RM_BleedingTooth>0.2</RM_BleedingTooth>  <!-- bleeding tooth -->
+      <RM_Brightbell>0.2</RM_Brightbell>  <!-- shinebell -->
+      <RM_CrimsonCap>0.2</RM_CrimsonCap>  <!-- crimson cap -->
+      <RM_GreyLady>0.2</RM_GreyLady>  <!-- Grey Lady -->
+      <RM_Shinecap>0.2</RM_Shinecap>  <!-- shine cap - tree -->
+      <RM_VioletWimple>0.2</RM_VioletWimple>  <!-- violet wimple -->
+      <RM_MortalMorelPlant>0.15</RM_MortalMorelPlant>  <!-- mortal morel -->
+      <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap>  <!-- agaricus domecap -->
+      <AB_DribblingCap>0.1</AB_DribblingCap>  <!-- dribbling cap -->
+      <RM_Skulltop>0.1</RM_Skulltop>  <!-- skulltop - tree -->
+      <RM_BlastpodShroom>0.05</RM_BlastpodShroom>  <!-- blastpod shroom - wild-only per owner ruling, no sow tags -->
+      <AB_AgariluxPrime>0.01</AB_AgariluxPrime>  <!-- Agarilux Prime -->
+      <!-- ROT_GUARDIAN_GROVES_1 / ROT_PALE_TREE_1: folded in as NATIVE rows
+           (previously two separate patches, RotPaleTree_WildSpawn.xml and
+           RotGuardianGroves_WildSpawn.xml, that existed only so another agent
+           didn't have to hand-edit this def concurrently — no longer needed
+           now the content lives in the same mod). -->
+      <RM_AgelessCap>0.03</RM_AgelessCap>  <!-- guardian: spore gas -->
+      <RM_RegenerantVeil>0.03</RM_RegenerantVeil>  <!-- guardian: network alarm -->
+      <RM_EuphoricCrown>0.02</RM_EuphoricCrown>  <!-- guardian: ringed by false fruit, below -->
+      <RM_FalseFruit>0.05</RM_FalseFruit>  <!-- the lure ring itself -->
+      <RM_PaleTree MayRequire="Ludeon.RimWorld.Royalty">0.01</RM_PaleTree>  <!-- the pale tree - rare, a door ajar -->
+    </wildPlants>
+    <wildPlantRegrowDays>25</wildPlantRegrowDays>
+    <modExtensions>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_AcceleratedRotExtension" />
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_WarmGroundExtension">
+        <warmTerrains>
+          <li>RM_TheRotGrass</li>
+          <li>RM_TheRotSoilRich</li>
+          <li>RM_MycelialSoil</li>
+          <li>RM_MycelialMatting</li>
+        </warmTerrains>
+      </li>
+      <li Class="RimMandrake.TheRot.RM_TheRotBiomeRanges" />
+    </modExtensions>
+  </BiomeDef>
+
+</Defs>

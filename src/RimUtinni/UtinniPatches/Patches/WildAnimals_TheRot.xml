@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_TheRot.xml                 UtinniPatches — new file, THEROT_RM_MOD_BUILD_1
+  ============================================================================
+
+  Wires the campaign's Star Wars fauna onto RM_TheRot, on top of the 8 Alpha
+  Animals rows that mod ships natively. Owner ruling Q12 (design/RimMandrake/
+  biome_mod_architecture.md §7, applying Q11a "the tier line is IP, not
+  flavour" to this biome): all 11 `RSW_` rows the RUT_TheRot twin carries are
+  genuine Star Wars content (10 are `BMT_`->`RSW_` Biomes! Team ports per
+  RSW_BiomesTeamPort_Races.xml's own header, `RSW_ShiroTrap` is a canon Shiro
+  variant) and may not be hard-named inside an RM_-tier def. Same shape as
+  WildAnimals_Pyrelands.xml: RM_TheRot's own wildAnimals block already carries
+  real content (not a placeholder to replace), so every row here is a plain
+  PatchOperationAdd, gated per-row on the owning mod.
+
+  🔑 SOURCE OF TRUTH: every defName and commonality below is copied verbatim
+  from RUT_TheRot.xml's own <wildAnimals> block (frozen by this same build),
+  which is the roster the campaign world runs on today.
+
+  ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional
+  returns true on no match, and an unmatched PatchOperationAdd is silent. A
+  clean validate_patch.py run is NOT proof a row landed. 🔴 UNVERIFIED AGAINST
+  A LOAD: authored on the Mac laptop, where there is no def dump and no game
+  (THEROT_RM_MOD_BUILD_1 step 5 is owed). Confirm all 12 rows from a
+  post-load def dump on the Desktop before believing this file works.
+-->
+<Patch>
+
+  <!-- The 10 Biomes! Team-ported rows + RSW_ShiroTrap, all 11 as OUR OWN RSW_
+       defs (never the donor's bare/BMT_ names). -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_TheRot"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_TheRot"]/wildAnimals</xpath>
+      <value>
+        <RSW_ColonyPustuleHornet>0.5</RSW_ColonyPustuleHornet>
+        <RSW_PustuleHornet>0.5</RSW_PustuleHornet>
+        <RSW_SmogMoth>0.5</RSW_SmogMoth>
+        <RSW_Thrumbungus>0.5</RSW_Thrumbungus>
+        <RSW_Yooka>0.5</RSW_Yooka>
+        <RSW_ShiroTrap>0.5</RSW_ShiroTrap>
+        <RSW_FungalWeevil>0.4</RSW_FungalWeevil>
+        <RSW_PustuleHornetQueen>0.3</RSW_PustuleHornetQueen>
+        <RSW_ColonyPustuleHornetQueen>0.2</RSW_ColonyPustuleHornetQueen>
+        <RSW_PustuleHornetSpawned>0.2</RSW_PustuleHornetSpawned>
+        <RSW_FungalMantis>0.15</RSW_FungalMantis>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Snoruuk: Star Wars Animal Collection (Continued) donor, unambiguous
+       exile per the item's own §3 forensics (mlie.starwarsanimalcollection,
+       never this repo's own def). -->
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
+    <xpath>Defs/BiomeDef[defName="RM_TheRot"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_TheRot"]/wildAnimals</xpath>
+      <value>
+        <Snoruuk>0.5</Snoruuk>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
