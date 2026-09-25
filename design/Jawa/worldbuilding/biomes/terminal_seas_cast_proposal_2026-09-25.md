@@ -1,8 +1,16 @@
 # Terminal seas cast proposal — 2026-09-25
 
-**Status: PROPOSAL, complete — awaiting the owner's sitting. Nothing here is ruled; nothing here has been built.**
+**Status: RULED — owner sitting 2026-09-25 (BENCH question cards, five decisions + one typed clarification). Wiring is owed, not yet built.**
 
-For the owner to rule at a bench sitting. Scope: floor-resident fauna + catchable fish for the four terminal seas, plus the Propane Lake two-biome structure question. Everything proposed here is invented, RM_-tier, franchise-free.
+Verdicts:
+1. **All 14 creatures APPROVED** as proposed (decision taken by question card).
+2. **Grey Sea catch: the newer sea law wins** — the Grey's catch is brine chemistry-life, essarn common + sorruth uncommon (card). FISH_BY_BIOME_1's no-fish ruling for the Grey is superseded.
+3. **Propane Lake is fishable** — heemin common + oovanam uncommon dredge become the propane catch (card).
+4. **There is NO two-biome Propane structure — no new shelf def, no change.** Owner, typed, verbatim: *"No. There is body of liquid called the propane lake. Then there was an alpha biome called propane lakes that we are redoing. That's not. No change. Just confusing words."* The section below is kept only as the record of a dissolved question; hoolen lives on `RM_PropaneLake`'s `wildAnimals` beside the existing flyer placements. The donor-terrain replacement (`RM_PropaneLakeDeep`/`RM_SolidPropane` for the `AB_*` terrains) remains BENCH's standing reading of the donor rulings — unconfirmed by this sitting, applied as build detail.
+5. **Fish retier: YES** — the invented `RUT_` fish names (Eesh…Ekkel, Niim…Tikkarr) move to `RM_` defNames as their files move into `mandrake.rm.terminalbiomes` (card).
+6. **noohm stands** — a gel-bodied jelly-analog counts as a slime for the naming law (card).
+
+Scope: floor-resident fauna + catchable fish for the four terminal seas. Everything proposed here is invented, RM_-tier, franchise-free.
 
 ## Framing
 
@@ -218,20 +226,7 @@ shipped fish register's shape (short, vowel-heavy, doubled letters).
 Across all 14 proposed names: **3 one-syllable (fessk, loohn, noohm) · 8 two-syllable · 3
 three-syllable = 21% / 57% / 21%** — on the owner's 2026-09-24 fifth/half/quarter target.
 
-## Open questions for the owner
+## Open questions
 
-- **Grey Sea catch:** FISH_BY_BIOME_1 ruled the Grey no-fish (2026-09-09); the 2026-09-21
-  two-def sea law appears to supersede it. Proposed: it does, and the Grey's catch is brine
-  chemistry-life (essarn, sorruth). Confirm, or the Grey ships `fishTypes` absent, documented.
-- **Propane fishing:** is a shore catch wanted at −79 °C liquid propane (heemin/oovanam rows),
-  or is the Propane Lake the one sea allowed a documented `fishTypes` exception, floor cast
-  only?
-- **Propane structure:** Option A confirmed (shelf def + lake def, floor staying on the lake
-  def)? And the donor-terrain replacement (`RM_PropaneLakeDeep`/`RM_SolidPropane` in place of
-  `AB_*`) — BENCH's standing reading, your word makes it a ruling.
-- **Fish retier:** move the invented `RUT_` fish names (Eesh…Ekkel, Niim…Tikkarr) to `RM_`
-  defNames as their files move into `mandrake.rm.terminalbiomes`, or keep the defNames stable
-  and accept invented content on `RUT_` ids?
-- **Slime-law scope:** does a gel-bodied jelly-analog count as a slime (noohm drafted as a
-  long-vowel monosyllable on that reading)? If no, it can take a two-syllable Scald-register
-  name instead.
+None — all five were answered at the 2026-09-25 sitting; the verdicts are in the Status
+block at the top of this document.
