@@ -186,9 +186,13 @@ each hit read):
   the raid-back QuestScriptDef — confirmed absent by `grep -rl`.
 
 ⇒ **What moves now**: the 6 spiked/shipped mechanics' XML + their compiling C#, repackaged per
-the "content to move" section above. **What must NOT be waited on**: F4's dormant creature
-content, F8's thornbug content defs, F9's faction/quest wiring — all explicitly unbuilt by
-design or by budget, not blocking this ticket's steps 1–5. `FEVERWOOD_ANT_HIVE_DUNGEON_1`
+the "content to move" section above. 🔑 **Wave-1 scope RULED — decision taken by question card,
+2026-09-24 (BENCH sitting):** wave 1 is the split **plus F8's content defs plus F9's war wiring**
+— thornbug creature + nectar, the two raider species (`RM_Kurreth` ant-swarm, `RM_Skreth` brood
+predator — names proposed, not yet ratified), factions, lord wiring, raid-back quest. Only
+**F4's dormant creature content stays unbuilt by design**. Cast source:
+`design/Jawa/worldbuilding/biomes/fever_wood_rm_cast_proposal_2026-09-24.md` (pending owner
+ratification of names/rosters). `FEVERWOOD_ANT_HIVE_DUNGEON_1`
 (proposed) additionally reserves the ants' hive-as-dungeon behaviour for a later pass reusing
 `RM_CompPlantAlarm`'s propagation pattern — also not a blocker here.
 

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T02:23:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T02:33:05Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2055,3 +2055,23 @@ kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  PROPANELAKESSHIPPINGNAMES1 — owner card: propane lakes working names
 prose:    infrastructure/state/items/PROPANELAKES_SHIPPING_NAMES_1.md
+
+## MIASMA_KARRATHIL_POLLINATION_GATE_1 Gate the mangals' flowering reproduction on karrathil presence, once the plant-reproduction engine question is answered
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  MIASMAKARRATHILPOLLINATIONGATE1
+prose:    infrastructure/state/items/MIASMA_KARRATHIL_POLLINATION_GATE_1.md
+
+## MIASMA_SHIPPING_NAMES_1 Owner card: the_miasma working names (karrobel, karrathil, stranded deformation)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  MIASMASHIPPINGNAMES1 — owner card: themiasma working names
+prose:    infrastructure/state/items/MIASMA_SHIPPING_NAMES_1.md
