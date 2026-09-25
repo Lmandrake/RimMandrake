@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BrineShock.xml                       RimMandrake: Wasteland
+
+  WASTELAND_RM_MOD_BUILD_1 step 2 — renamed copy of
+  src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_BrineShock.xml, RUT_ -> RM_.
+  Not named in the item's own §6 five-file list (that enumeration covers the
+  terrain/building/item/mapgen/patch family only) but RM_Drazz's own
+  ingestible outcomeDoer names this hediffDef directly — without it, this
+  mod's own item would carry a dangling cross-reference on a standalone
+  load. Field values unchanged.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_BrineShock</defName>
+    <label>brine shock</label>
+    <description>A jolt from a drazz eaten raw — the charge it kept for its own defense, working on you instead. It passes.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+        <painFactor>1.2</painFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.3</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-6</severityPerDay>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WastelandBrine_Items.xml             RimMandrake: Wasteland
+
+  WASTELAND_RM_MOD_BUILD_1 step 2 — renamed copy of
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WastelandBrine_Items.xml
+  (FISH_BESTIARY_BUILD_1 waves 1-2), RUT_ -> RM_. Field values unchanged; see
+  that file's own header for the mining-not-fishing design history.
+
+  ⚠️ RM_Tekk's texPath is repointed to this mod's own copied texture
+  (Textures/Things/Item/Resource/RM_Tekk.png, copied byte-for-byte from
+  RUT_Hardwood.png — the source ThingDef reused a sibling Utinni mod's own
+  resource icon, which would not resolve on a standalone load). RM_Drazz and
+  RM_BrinePlate still point at Things/Plants/AB_CrystalHorn/AB_CrystalHornA
+  (an Alpha Biomes donor texture, reused unguarded in the source content too)
+  — NOT fixed here, flagged in the build's own REMAINS note: this predates
+  the mod split and needs an art-lane decision, not an invented placeholder.
+-->
+<Defs>
+
+  <!-- tekk — crustacean, common. "plate-scraper." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Tekk</defName>
+    <label>tekk</label>
+    <description>A salt-white, flat-bodied scraper the size of a thumb, living on the mineral beds under the brine and grazing the crust the drazz lay down. It carries a charge — a small one; picking one up bare-handed is a tingle and a lesson. They swarm on a carcass in the pool and strip it, and on a drazz that has spent its charge, which is how the pool's owner eventually dies. Edible after a long soak.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Tekk</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.6</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_Drazz — the brine-battery, the pool's owner. Optional raw-shock
+       hediff on raw ingestion only. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Drazz</defName>
+    <label>drazz</label>
+    <description>The owner. A forearm-long, plated, sea-cucumber-shaped thing whose body is a stack of living electrode wafers, salt-white and mineral-dark by turns, lying on the bed of a hypersaline pool and running on the ion gradient between the brine and the metal beneath it. It discharges as defense. The pool you want to mine has one, and it is a capacitor, and it does not want you there. Landed — carefully, on a dry line, by people who have done it before — it goes on discharging for an hour. Cooked, it is meat. Raw, it is a lesson.</description>
+    <graphicData>
+      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>9</MarketValue>
+      <Mass>0.8</Mass>
+      <MaxHitPoints>100</MaxHitPoints>
+      <FoodPoisonChanceFixedHuman>0.03</FoodPoisonChanceFixedHuman>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RM_BrineShock</hediffDef>
+          <severity>1.0</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <stackLimit>10</stackLimit>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <!-- RM_BrinePlate — a spent electrode plate, standalone tradeable/craftable
+       resource. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_BrinePlate</defName>
+    <label>brine plate</label>
+    <description>A stacked mineral wafer, salt-white and dark by turns, pried off a drazz that has already spent its charge — or found loose on a pool floor, which is the same thing a season later. It still holds a whisper of charge; touch two together in the dark and they spark. Traders who buy oddities want it.</description>
+    <graphicData>
+      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>28</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>2</Beauty>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>25</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>
