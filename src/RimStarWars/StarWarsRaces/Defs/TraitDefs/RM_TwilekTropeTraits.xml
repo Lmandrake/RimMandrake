@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       TWILEK_TROPE_GENES_MOVE_1, wave 2.
+
+       Wave 1 (fc16d5507, 2026-09-17) removed Turn_Gene_AgressionSubmissive,
+       Libido_High and Beauty_Beautiful from RSW_RimMandrakeTwilek's endogene
+       list; the slavery-trope stereotype is no longer a species-wide
+       guarantee. This file is the other half: making each trope a fact that
+       can be true of any INDIVIDUAL pawn, any race, rather than a fact about
+       a race.
+
+       Route taken, and why: vanilla's normal trait-generation system already
+       rolls TraitDefs onto every humanlike pawn independent of xenotype;
+       no Harmony hook needed, unlike forcing a GENE onto an arbitrary pawn
+       (which the wave-1 note correctly identified as needing a real Harmony
+       postfix against the Biotech gene API; that stays owed, see below).
+
+       Per-gene disposition, checked against the real GeneDef/TraitDef XML via
+       RimSage before writing anything here (2026-09-24):
+
+       * Beauty_Beautiful: NOTHING BUILT. Vanilla Core already ships a
+         "Beauty" TraitDef whose degree 2 ("beautiful") carries the identical
+         <statOffsets><PawnBeauty>2</PawnBeauty></statOffsets> the gene gave,
+         rolled individually for any pawn of any race by the ordinary trait
+         generator. The architecture goal is already satisfied for this one;
+         building a second beauty mechanism would just be a duplicate.
+
+       * Turn_Gene_AgressionSubmissive: RM_Submissive below. The donor gene
+         (Integrated Genes, turnovus.biotech.integratedgenes) carries exactly
+         two behavioural stat effects: socialFightChanceFactor 0.25 and a
+         SlaveSuppressionFallRate factor of 0.5 (both confirmed live fields on
+         the real GeneDef via RimSage). TraitDegreeData supports the same two
+         fields directly, so this is a faithful, not approximate, port;
+         just individually rolled instead of racially guaranteed.
+
+       * Libido_High: RM_Amorous below. The donor gene's only field is
+         lovinMTBFactor 0.5 (RimSage-confirmed), which JobDriver_Lovin reads
+         off Pawn.genes and off any Hediff carrying
+         HediffComp_GiveLovinMTBFactor, CONFIRMED (Source/RimWorld/
+         JobDriver_Lovin.cs, GenerateRandomMinTicksToNextLovin). TraitDegreeData
+         (Source/RimWorld/TraitDegreeData.cs) has no field that reaches either
+         path, and BackstoryDef (Source/RimWorld/BackstoryDef.cs) can only
+         force other TRAITS, never a gene or a hediff; so a trait cannot
+         replicate the lovin'-frequency multiplier itself without a Harmony
+         postfix on GenerateRandomMinTicksToNextLovin or on trait-add. That
+         narrow piece is OWED, same as wave 1 already flagged for the gene
+         route, now scoped to exactly this one mechanic, not to all three
+         genes. RM_Amorous instead uses a real, verifiable field
+         (disallowedThoughts) to give a forward, thick-skinned-about-rejection
+         personality a genuine in-game consequence without guessing at an
+         unreachable stat.
+
+       Both TraitDefs are RM_-tier (NAMING_SCHEME_PLAN.md): nothing about a
+       "submissive" or "amorous" personality is Star-Wars-specific, and tier
+       is about what the CONTENT is, not which mod folder ships it first.
+  ======================================================================== -->
+
+  <TraitDef>
+    <defName>RM_Submissive</defName>
+    <commonality>3</commonality>
+    <conflictingTraits>
+      <li>Bloodlust</li>
+    </conflictingTraits>
+    <degreeDatas>
+      <li>
+        <label>submissive</label>
+        <description>{PAWN_nameDef} finds a real sense of comfort in following someone else's lead, and rarely picks a fight. If {PAWN_pronoun} ever ends up enslaved, {PAWN_pronoun} settles into it more easily than most.</description>
+        <degree>0</degree>
+        <socialFightChanceFactor>0.25</socialFightChanceFactor>
+        <statFactors>
+          <SlaveSuppressionFallRate>0.5</SlaveSuppressionFallRate>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>RM_Amorous</defName>
+    <commonality>3</commonality>
+    <degreeDatas>
+      <li>
+        <label>amorous</label>
+        <description>{PAWN_nameDef} pursues romance eagerly and openly, and a rebuff barely slows {PAWN_objective} down.</description>
+        <degree>0</degree>
+        <disallowedThoughts>
+          <li>RebuffedMyRomanceAttempt</li>
+          <li>FailedRomanceAttemptOnMe</li>
+          <li>FailedRomanceAttemptOnMeLowOpinionMood</li>
+        </disallowedThoughts>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+</Defs>
