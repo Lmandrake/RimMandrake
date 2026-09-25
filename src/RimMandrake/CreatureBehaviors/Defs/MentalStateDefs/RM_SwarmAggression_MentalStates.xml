@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  REACTION_MECHANISM_GENERALISE_1 step 1 / GREENTIDE_WASP_SWARM_1. The mental
+  state a reaction source's spawned pawns (skerrels, and any future spawn
+  response wired the same way) start in: hostile to the one pawn that
+  disturbed the source, never a map-wide manhunter flip, and self-ending once
+  that pawn is far enough from the disturbance — see
+  RM_MentalState_ScopedAggression's own header for why (it is this assembly's
+  RM_MentalState_ParentalEnrage shape, generalised from "anchored on a pawn"
+  to "anchored on a cell").
+
+  RM tier: names no species. RM_ReactionResponseRule_SpawnPawns.startMentalState
+  points at this def from a content mod's own CompProperties_ReactionSource XML;
+  nothing here knows what a skerrel is.
+
+  Same reasoning as RM_ParentalEnrage_MentalStates.xml for shape and timing:
+  stateClass derives from vanilla MentalState_Manhunter so
+  ThinkNode_ConditionalMentalStateClass's instance check (not a def-identity
+  check) routes it through JobGiver_Manhunter's whole chase-and-melee behaviour
+  with no think-tree patch (MEASURED 2026-09-20, same engine read). No
+  ParentName, for the same reason: minTicksBeforeRecovery/recoveryMtbDays both
+  need overriding to be SHORT anyway. No beginLetter: a boiling gall is its own
+  notification, and "no warning" reads the same way here as it does for the
+  guardian rage.
+
+  Timing kept SHORTER than RM_ParentalEnrage's own 600/0.05: a wasp is meant to
+  be outrun in a handful of seconds once its target backs off, not to hold a
+  grudge for a quarter hour. RM_MentalState_ScopedAggression's own disengage
+  check (distance from the disturbance) ends it long before either floor is
+  reached in the ordinary case; these are the backstop for a target that never
+  leaves range.
+-->
+<Defs>
+
+  <MentalStateDef>
+    <defName>RM_SwarmAggression</defName>
+    <label>swarming</label>
+    <stateClass>RimMandrake.CreatureBehaviors.RM_MentalState_ScopedAggression</stateClass>
+    <category>Aggro</category>
+    <baseInspectLine>Swarming the disturbance</baseInspectLine>
+    <recoveryMessage>{0} has stopped swarming.</recoveryMessage>
+    <nameColor>(0.85,0.7,0.15)</nameColor>
+    <minTicksBeforeRecovery>60</minTicksBeforeRecovery>
+    <recoveryMtbDays>0.2</recoveryMtbDays>
+    <stopsJobs>true</stopsJobs>
+    <recoverFromDowned>true</recoverFromDowned>
+    <recoverFromSleep>true</recoverFromSleep>
+    <inCaravanCanDo>false</inCaravanCanDo>
+  </MentalStateDef>
+
+</Defs>
