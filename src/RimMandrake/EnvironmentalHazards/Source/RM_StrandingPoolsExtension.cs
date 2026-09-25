@@ -90,6 +90,29 @@ namespace RimMandrake.EnvironmentalHazards
         // target terrain instead of depending on M1's unrelated gating.
         public TerrainDef dryTerrain;
 
+        // COMMISSION_LEDGER_CLEANUP_1 the_miasma sheet, slug
+        // `the-stranded-transitional-orphan-forms-2-3-species`. Optional —
+        // null means "no deformation, same as before this field existed"
+        // (fail-safe pattern this file already documents for every other
+        // field). When set, a fraction of freshly-spawned stranded pawns
+        // (strandedDeformationChance, rolled once per pawn in
+        // SpawnStrandedInto) receive this Hediff — the sheet's "gills going
+        // leathery, fins splaying into feet that don't quite work," read as
+        // a mechanical condition rather than a new species. Carrying the
+        // Hediff is also what RM_JobGiver_ReturnToWater reads to SUPPRESS
+        // its own return-to-water pathing for that pawn (roster's own
+        // miasma_fauna_roster_2026-09-23.md §5: "it cannot return to water,
+        // and it does not thrive" — the deformed minority of the stranded,
+        // not the ordinary majority the JobGiver already rescues today).
+        public HediffDef strandedDeformationHediff;
+
+        // INVENTED-BUILD, no figure named by the roster (§5 only says "the
+        // pay-off... occasionally survives into something that works," i.e.
+        // deformation is the minority outcome, not the default). Picked
+        // low enough that most stranded pawns still get the JobGiver's
+        // existing rescue-by-pathing behaviour.
+        public float strandedDeformationChance = 0.25f;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string err in base.ConfigErrors())
@@ -120,6 +143,11 @@ namespace RimMandrake.EnvironmentalHazards
             if (searchRadius <= 0f)
             {
                 yield return "RM_StrandingPoolsExtension.searchRadius must be > 0.";
+            }
+
+            if (strandedDeformationChance < 0f || strandedDeformationChance > 1f)
+            {
+                yield return "RM_StrandingPoolsExtension.strandedDeformationChance must be between 0 and 1.";
             }
         }
     }

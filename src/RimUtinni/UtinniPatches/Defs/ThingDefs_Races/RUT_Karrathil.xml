@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Karrathil.xml                      UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves the creature half of ledger slug
+  `the_miasma:karr-fever-swarm-vector-pollinator-one-swarm`
+  (design/Jawa/worldbuilding/biomes/the_miasma.md §4: "the disease vector
+  and the mangals' only pollinator, one and the same swarm. You cannot have
+  the trees without the fever"; miasma_fauna_roster_2026-09-23.md §3, row 5,
+  RM_Karrathil: "a loose airborne cloud with no single body to fix on...
+  thickest over flowering mangals at the heat of the day... the green-gold
+  breath the biome is named for, seen close up").
+
+  🔴 Working name only (roster's own naming register, not an owner ruling) —
+  folded into MIASMA_SHIPPING_NAMES_1 (filed this pass, see RUT_Karrobel.xml
+  header for the same posture). RUT_-tiered for the same reason as
+  RUT_Karrobel (this pass, same file): RUT_Miasma.xml has not migrated to a
+  standalone mod, so new content lands in the tier of the file it is wired
+  into, not the roster doc's prospective RM_ naming.
+
+  🔴 WHAT THIS PASS BUILDS vs. WHAT IT DEFERS, read the roster's own §3/§7
+  cautions first: "must not become a mere pest" and "whether a Plant's
+  reproduction can be gated on a nearby animal at all is an engine
+  question, UNMEASURABLE on the Mac... check it on the Desktop before this
+  row's mechanics are specified." This pass ships the CREATURE (a real
+  PawnKindDef/ThingDef, flying, swarm-sized, wired into wildAnimals) and
+  the VECTOR half needs no new mechanism at all — MIASMA_MECHANICS_1's own
+  M4 spec is explicit that "the real diseases stay vanilla's, priced by
+  diseaseMtbDays... no new disease system," and RUT_Miasma.xml already
+  ships a <diseases> list (Malaria/SleepingSickness/Flu/Plague/etc., this
+  same file). Karrathil is the biome's own fictional explanation for that
+  already-working mechanism, not a new bite/contact transmission comp — no
+  C# owed for the vector half.
+
+  The POLLINATION half (gating a flowering plant's reproduction on
+  Karrathil's presence) is genuinely new engine territory and explicitly
+  gated on a Desktop check per the roster's own words above — filed as its
+  own item, MIASMA_KARRATHIL_POLLINATION_GATE_1, rather than guessed at
+  here. (Checked this session: mcp__rimsage tools DID connect and answer
+  from this environment, unlike the Mac laptop this repo's other notes
+  describe — but a source search for "pollinat"/Plant reproduction found no
+  existing engine hook to gate on, confirming this is new territory, not a
+  quick lookup; the Desktop check the roster asks for is still owed, not a
+  laptop-only limitation this time.)
+
+  Body/flight: cloned from vanilla Locust (BeetleLike, MEASURED via
+  get_def_details this pass) — the exact worked precedent CLAUDE.md's own
+  flight law names for a small flying insect: MaxFlightTime/FlightCooldown
+  statBases, flightStartChanceOnJobStart/flightSpeedFactor/canFlyIntoMap
+  race fields. No flying-animation frames yet (not blocking, per that same
+  law) — flavor-only for now.
+
+  "Loose airborne cloud with no single body to fix on" / "must work as a
+  swarm, not a hero sprite": read as a HIGH wildGroupSize (12~30, INVENTED)
+  on an otherwise ordinary small-insect PawnKindDef, same idiom this
+  roster's own §7 uses for karravel/karrimeth's "carpet"/"mass" framing —
+  no new C# needed for "reads as a haze in numbers."
+
+  Combat: predator false, trivial tools, very low wildness/combatPower —
+  the sheet frames this purely as atmosphere and mechanism carrier, never a
+  threat in its own right (unlike a locust swarm's own vanilla manhunter
+  framing, deliberately NOT copied here).
+
+  ComfyTemperature 20/60: the_miasma.md's own measured median (42.8 C),
+  same posture as RUT_Karrobel.xml this pass.
+
+  Art: genuinely new, no existing render found (checked infrastructure/
+  artpipe/{done,pending,registry.jsonl} for "karrathil"/"fever swarm"/
+  "swarm haze" first — clean). One facing job filed this pass
+  (rutkarrathil_v1_south) — the roster's own brief frames this as a haze
+  effect over a single ground pose, not a multi-facing portrait; east/north
+  deferred for the same reason RUT_Karrobel's were.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_Karrathil</defName>
+    <label>karrathil</label>
+    <description>Individually a fingernail-length, wet-winged thing, gold-dusted and easy to miss. Karrathil are never seen alone — only as a slow-drifting haze of them, thickest over flowering mangals at the heat of the day. That haze is the green-gold breath the Miasma is named for, seen up close: the same swarm that carries the biome's fevers from pawn to pawn is the only thing that carries pollen between its flowers. You cannot have the trees without the fever.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <Mass>0.02</Mass>
+      <MarketValue>8</MarketValue>
+      <Wildness>0.15</Wildness>
+      <ComfyTemperatureMin>20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
+    </statBases>
+    <uiIconScale>0.8</uiIconScale>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <predator>false</predator>
+      <baseBodySize>0.05</baseBodySize>
+      <baseHealthScale>0.2</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <meatColor>(160,168,139)</meatColor>
+      <meatMarketValue>0.1</meatMarketValue>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>2</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>2</lifeExpectancy>
+      <gestationPeriodDays>2</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(3, 1.8)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>EusocialInsectLarva</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectJuvenile</def>
+          <minAge>0.02</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectAdult</def>
+          <minAge>0.15</minAge>
+        </li>
+      </lifeStageAges>
+      <flightStartChanceOnJobStart>0.3</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_Karrathil</defName>
+    <label>karrathil</label>
+    <race>RUT_Karrathil</race>
+    <combatPower>2</combatPower>
+    <wildGroupSize>12~30</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Karrathil/RUT_Karrathil</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Karrathil/RUT_Karrathil</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Karrathil/RUT_Karrathil</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

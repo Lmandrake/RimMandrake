@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 128,
+    "width": 128
+  },
+  "channel": "codex",
+  "created": "2026-09-25T02:30:00Z",
+  "drawsize": 0.35,
+  "facing": "south",
+  "facings": ["south"],
+  "id": "rutkarrathil_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld top-down animal sprite, painterly vanilla-RimWorld creature art style: a loose drifting haze/cloud of tiny fingernail-length wet-winged insects, gold-dusted, with no single body to fix on -- the cloud itself should read as faintly luminous green-gold, thickest at the center and thinning toward soft, indistinct edges. Not a single bug portrait: a small swarm cluster, like a mote-filled haze hanging low over ground. Palette: warm gold and pale green-gold against a soft translucent haze, no hard body outlines within the swarm itself. Viewed from directly above at a slight isometric RimWorld camera angle, centered, a very faint soft shadow beneath the densest part of the cloud, no background scenery. A light overall silhouette outline around the whole cloud shape so it still reads at standard RimWorld zoom and below, even though the interior is soft and hazy.",
+  "reference": null,
+  "rimflow_item_id": "COMMISSION_LEDGER_CLEANUP_1",
+  "style_notes": "RUT_Karrathil (COMMISSION_LEDGER_CLEANUP_1 the_miasma sheet slug 'karr-fever-swarm-vector-pollinator-one-swarm', mandrake.rut.patches, ThingDefs_Races/RUT_Karrathil.xml). miasma_fauna_roster_2026-09-23.md row 5: 'a loose airborne cloud with no single body to fix on... the haze itself is faintly luminous gold -- it IS the green-gold breath the biome is named for, seen close up.' Explicitly framed by that same roster row as 'closer to weather than to a pawn' -- this brief asks for a haze/cloud reading, not a hero insect portrait. Working name only -- folded into MIASMA_SHIPPING_NAMES_1. Single south facing only, matching the 'haze, not a portrait' framing."
+}

@@ -19,4 +19,9 @@
   <RUT_MotherDreamedLetterLabel>Fever-dream</RUT_MotherDreamedLetterLabel>
   <RUT_MotherDreamedLetterText>[PAWN_nameDef] has fallen into a day-long fever-dream, harmless but vivid.</RUT_MotherDreamedLetterText>
 
+  <!-- COMMISSION_LEDGER_CLEANUP_1 the_miasma sheet, slug
+       delta-loam-composter-castings-producer: RM_CompGatherableGas's
+       inspect-string label, attached to RUT_Karrobel.xml this pass. -->
+  <RUT_DeltaLoamCastings>castings</RUT_DeltaLoamCastings>
+
 </LanguageData>

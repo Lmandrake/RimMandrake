@@ -52,6 +52,19 @@ namespace RimMandrake.EnvironmentalHazards
                 return null; // pool still healthy — no rush yet (or config missing entirely)
             }
 
+            // COMMISSION_LEDGER_CLEANUP_1 the_miasma sheet, slug
+            // `the-stranded-transitional-orphan-forms-2-3-species`. The
+            // roster's own table (miasma_fauna_roster_2026-09-23.md §5):
+            // "it cannot return to water, and it does not thrive" — a
+            // deformed stranded pawn is precisely the one this JobGiver
+            // must NOT rescue. The tell (per that same table) is an animal
+            // stuck trying to reach water it can no longer use — i.e. this
+            // JobGiver's job for everyone ELSE, deliberately withheld here.
+            if (ext.strandedDeformationHediff != null && pawn.health.hediffSet.HasHediff(ext.strandedDeformationHediff))
+            {
+                return null;
+            }
+
             if (!pools.TryFindNearestChannelCell(pawn, ext.searchRadius, out IntVec3 target))
             {
                 return null; // no reachable channel within range — the decay-side despawn fallback covers this

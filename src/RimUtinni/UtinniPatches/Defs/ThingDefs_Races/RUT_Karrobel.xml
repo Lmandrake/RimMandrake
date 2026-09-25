@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Karrobel.xml                       UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug `the_miasma:delta-loam-composter-castings-producer`
+  (design/Jawa/worldbuilding/biomes/the_miasma.md §4 "the composters" / §7
+  "delta loam"; miasma_fauna_roster_2026-09-23.md row 2, the roster's own
+  fully-specified brief: "deep wedge body, front end armoured into a blade
+  ... thicker than it is wide, tapering to a hardened wedge-shaped head it
+  drives into the muck. Mostly seen half-buried, with only the rear plates
+  and a churned ring of castings showing. Plates banded black and rust,
+  always caked ... The delta loam is its castings").
+
+  🔴 Working name only, per that roster document's own naming register (not
+  an owner ruling) — folded into MIASMA_SHIPPING_NAMES_1, filed this pass,
+  same posture as POISONFOREST_SHIPPING_NAMES_1/SCARLANDS_SHIPPING_NAMES_1/
+  PROPANELAKES_SHIPPING_NAMES_1 from prior waves of this same item.
+  RUT_-tiered (not the roster doc's own prospective RM_Karrobel) because
+  this def is wired into RUT_Miasma.xml, which has NOT migrated to a
+  standalone mod (checked this pass — no RM_Miasma/mandrake.rm.miasma
+  BiomeDef or mod folder exists anywhere in src/), matching the
+  RUT_MortuaryCrawler/RUT_FleetFlier precedent from the two prior waves of
+  this item: new invented content lands in the tier of the file it is
+  wired into, not the tier a design doc prospectively names for a future
+  split.
+
+  Body BeetleLikeWithClaw (same body RUT_Emberscythe/RUT_PyrelandsPortedFauna
+  already use in this mod set) for the "front end armoured into a blade"
+  brief — HeadClaw carries the wedge/blade tool below, Mouth a minor bite,
+  no HeadAttackTool needed (this is a composter, not a fighter).
+
+  🔑 Castings mechanism: reuses RM_CompGatherableGas
+  (src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableGas.cs,
+  already built and compiling for FORGE_MECHANICS_1's tibanna tap) rather
+  than any new C# — that comp is a generic CompHasGatherableBodyResource
+  subclass (gatherIntervalDays/gatherAmount/gatherDef/fullnessLabelKey, all
+  it needs), and "an animal periodically yields a harvestable resource" is
+  exactly what "its castings are the loam" describes. Attached directly in
+  this ThingDef's own <comps> (not a separate patch, unlike RUT_TibannaTap_
+  BeldonWiring.xml's PatchOperationFindMod) because RUT_Karrobel is a new
+  def this pass owns outright, not a donor def being patched.
+
+  Combat/behaviour: predator false, minimal tools, low wildness, low
+  combatPower — the roster's own text never frames this as prey or threat,
+  only as a background muck-worker "mostly seen half-buried." foodType
+  OmnivoreRoughAnimal (detritivore digesting the sin-soup per the sheet's
+  §4 "burrowing muck-workers digesting the sin-soup," not a hunter, not a
+  pure herbivore).
+
+  ComfyTemperature 15/55: the_miasma.md's own measured median (42.8 C,
+  header §0) plus headroom either side, matching how RUT_MortuaryCrawler/
+  RUT_PyrelandsFauna each set their own biome-measured range rather than a
+  generic default.
+
+  Population: NOT wired to RM_CompVerminBreeder/RM_VerminPressureExtension
+  — that pairing is the arthropod FLOOR's shared mechanism
+  (miasma_fauna_roster_2026-09-23.md §2, "one population, four draws on
+  it"), covering all four karr- clade scuttlers together; this ledger slug
+  owns only the composter (karrobel), not karravel/karrimeth/karrolun, so
+  wiring the population comp here alone would half-build a mechanism this
+  item was never asked to finish. Ordinary wildAnimals-commonality
+  population instead, same as every other wildlife row in this biome.
+
+  Art: genuinely new, no existing render found (checked infrastructure/
+  artpipe/{done,pending,registry.jsonl} for "karrobel"/"composter"/
+  "delta loam" first — clean). One facing job filed this pass
+  (rutkarrobel_v1_south — the roster's own brief: "mostly seen half-buried,"
+  a single low-profile ground pose covers every practical view; east/north
+  deferred as optional per that same "mostly buried" framing, same posture
+  RUT_Karravel-style mass/carpet creatures in this roster get per §7's own
+  "must not be briefed as hero sprites" caution, even though Karrobel
+  itself isn't a mass creature — a burrowed animal is rarely seen from
+  multiple angles either).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_Karrobel</defName>
+    <label>karrobel</label>
+    <description>A thick, wedge-bodied scuttler, tapering to a hardened blade of a head it drives into the muck. Rarely seen whole — mostly it is a churned ring of castings and a pair of banded, mud-caked plates breaking the surface. Where it has worked, the ground turns rich: clean delta loam, cast up from whatever the Miasma's sin-soup was before.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <Mass>6</Mass>
+      <MarketValue>45</MarketValue>
+      <Wildness>0.25</Wildness>
+      <ComfyTemperatureMin>15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>wedge head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <predator>false</predator>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <meatColor>(150,140,120)</meatColor>
+      <meatMarketValue>0.3</meatMarketValue>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>4</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <lifeExpectancy>8</lifeExpectancy>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.2)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas" MayRequire="mandrake.rm.environmentalhazards">
+        <gatherIntervalDays>3</gatherIntervalDays>
+        <gatherAmount>8</gatherAmount>
+        <gatherDef>RUT_DeltaLoam</gatherDef>
+        <fullnessLabelKey>RUT_DeltaLoamCastings</fullnessLabelKey>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_Karrobel</defName>
+    <label>karrobel</label>
+    <race>RUT_Karrobel</race>
+    <combatPower>12</combatPower>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Karrobel/RUT_Karrobel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Karrobel/RUT_Karrobel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Karrobel/RUT_Karrobel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
