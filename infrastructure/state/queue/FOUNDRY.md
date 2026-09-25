@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T18:15:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T18:24:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -854,15 +854,6 @@ target:   v1
 kind:     build
 summary:  1. The reaction: tar + acid → green gas (Helixien-compatible). One acid, three
 prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
-
-## JAWA_MESS_IMMUNITY_1 Jawa are immune from messes (owner-ruled 2026-09-24): no filth/squalor mood penalties for the Jawa xenotype; other factions just live with it and suffer
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  A gene (or trait) on the Jawa xenotype suppressing filth/squalor/mess-derived
-prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md
 
 ## FORCE_DISTURBANCE_REFLAVOR_1 Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
 state:    doing
