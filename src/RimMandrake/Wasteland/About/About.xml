@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.wasteland</packageId>
+  <name>RimMandrake: Wasteland</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>WASTELAND_RM_MOD_BUILD_1 (Phase A row 4 of design/RimMandrake/biome_mod_architecture.md,
+parent BIOME_MOD_SPLIT_EXECUTION_1). A bone-dry, radiologically-live wasteland
+biome, generalized: it names no other franchise or campaign and is playable
+standalone on any generated RimWorld planet. A separate frozen campaign
+world's own Wasteland instance (RUT_Wasteland, src/RimUtinni) is unaffected
+and unrelated; this is a new sibling biome for everyone else's worlds, not a
+rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+Ships:
+
+  1. RM_Wasteland, a BiomeDef whose own workerClass (RM_BiomeWorker_Wasteland)
+     is this mod's, never a donor's — a Core+DLC-only wildAnimals/wildPlants
+     roster (the campaign's Star Wars and RUT_-native cast rides a separate
+     Utinni patch, never this def — RimMandrake never names Star Wars).
+  2. The brine-battery mining archetype: RM_WastelandBrine{Deep,MovingChestDeep,
+     Shallow,MovingShallow} terrain (Odyssey-gated ToxicWater* family), three
+     mineable deposit buildings (tekk/drazz/spent-electrode beds), the
+     RM_Tekk/RM_Drazz/RM_BrinePlate items they yield, RM_BrineShock (the
+     raw-drazz ingestion hediff), and the GenStepDefs + Base_Player
+     registration that scatter the deposits into any RM_WastelandBrineShallow
+     water a generated map carries.
+
+NOT in this mod (out of scope for this build, not deferred sub rosa): the
+dose/geiger radiological layer, the three storm WeatherDefs (ash, radiation
+halo, plasma), the family mutator/injection palette, and three FOUNDRY
+creature items (WASTELAND_EXCRETOR_BEZOAR_1, WASTELAND_RADIOTHERMAL_SOLITARY_1,
+WASTELAND_BRINE_BATTERY_CREATURE_1) whose already-built creatures ride the
+campaign's Utinni patch, not this def, per Q12 (RSW_/SW_/RUT_-prefixed and
+donor bare-name rows never live in the RM_ tier).
+
+Live proof is OWED at publish time — see the item's own verify record.</description>
+</ModMetaData>

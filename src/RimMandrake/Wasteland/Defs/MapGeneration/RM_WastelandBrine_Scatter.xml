@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WastelandBrine_Scatter.xml           RimMandrake: Wasteland
+
+  WASTELAND_RM_MOD_BUILD_1 step 2 — renamed copy of
+  src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_WastelandBrineScatter.xml
+  (FISH_BESTIARY_BUILD_1 wave 2), RUT_ -> RM_ throughout (defNames, the
+  thingDef each GenStepDef scatters, and the terrain tag it validates
+  against). Field values (order/minSpacing/countPer10kCellsRange/
+  terrainValidationRadius) unchanged; see that file's own header for the
+  tuning rationale.
+-->
+<Defs>
+
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_ScatterWastelandBrineTekk</defName>
+    <order>971</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_BrineDeposit_Tekk</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>4</minSpacing>
+      <countPer10kCellsRange>1.2~1.8</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_WastelandBrineShallow</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_ScatterWastelandBrineDrazz</defName>
+    <order>972</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_BrineDeposit_Drazz</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>5</minSpacing>
+      <countPer10kCellsRange>0.4~0.6</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_WastelandBrineShallow</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_ScatterWastelandBrinePlate</defName>
+    <order>973</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_BrineDeposit_BrinePlate</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>6</minSpacing>
+      <countPer10kCellsRange>0.15~0.25</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_WastelandBrineShallow</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

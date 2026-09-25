@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WastelandBrine_ScatterRegister.xml   RimMandrake: Wasteland
+
+  WASTELAND_RM_MOD_BUILD_1 step 2 — renamed copy of
+  src/RimUtinni/UtinniPatches/Patches/RUT_WastelandBrineScatter_Register.xml
+  (FISH_BESTIARY_BUILD_1 wave 2), RUT_ -> RM_. Registers this mod's own three
+  GenStepDefs onto Base_Player; franchise-free and campaign-free, so it moves
+  unchanged into this mod rather than needing a second Utinni-side op (unlike
+  the world-live constants named in the item's §7). See the source file's own
+  header for why the Tekk/Drazz half needs its own MayRequire="Ludeon.RimWorld.
+  Odyssey" Operation, separate from BrinePlate's unconditional one.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li>RM_ScatterWastelandBrineTekk</li>
+        <li>RM_ScatterWastelandBrineDrazz</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li>RM_ScatterWastelandBrinePlate</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

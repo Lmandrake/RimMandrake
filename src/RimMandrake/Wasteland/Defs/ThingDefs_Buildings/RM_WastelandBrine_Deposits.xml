@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WastelandBrine_Deposits.xml          RimMandrake: Wasteland
+
+  WASTELAND_RM_MOD_BUILD_1 step 2 — renamed copy of
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_WastelandBrineDeposits.xml
+  (FISH_BESTIARY_BUILD_1 wave 2), RUT_ -> RM_, mineableThing retargeted onto
+  this mod's own RM_Tekk/RM_Drazz/RM_BrinePlate. Field values unchanged; see
+  that file's own header for the RockBase-not-vein-mineable crib and the
+  terrainAffordanceNeeded finding.
+-->
+<Defs>
+
+  <ThingDef ParentName="RockBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_BrineDeposit_Tekk</defName>
+    <label>tekk bed</label>
+    <description>A crust of salt-white mineral over a shallow shelf, crawling with plate-scrapers just under the surface. Break the crust and they scatter for the taking.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Rock</li>
+        <li>MapEdge</li>
+      </linkFlags>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(214,209,196)</color>
+      <colorTwo>(168,160,138)</colorTwo>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+    </statBases>
+    <building>
+      <isNaturalRock>false</isNaturalRock>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_Tekk</mineableThing>
+      <mineableYield>3</mineableYield>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_BrineDeposit_Drazz</defName>
+    <label>drazz bed</label>
+    <description>A stack of mineral wafers half-buried in the pool floor, salt-white and dark by turns — the owner, dormant and heavy, waiting under the crust. Mining it out is the only way anyone gets one without a dry line and a lot of patience.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Rock</li>
+        <li>MapEdge</li>
+      </linkFlags>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(120,120,128)</color>
+      <colorTwo>(70,74,86)</colorTwo>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+    </statBases>
+    <building>
+      <isNaturalRock>false</isNaturalRock>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_Drazz</mineableThing>
+      <mineableYield>1</mineableYield>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_BrineDeposit_BrinePlate</defName>
+    <label>spent electrode bed</label>
+    <description>A drazz's discarded plates, gone still and cold, pressed into the mineral crust by seasons of brine. Rarer than a living bed and worth the extra digging.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Rock</li>
+        <li>MapEdge</li>
+      </linkFlags>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(96,100,112)</color>
+      <colorTwo>(58,150,196)</colorTwo>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+    </statBases>
+    <building>
+      <isNaturalRock>false</isNaturalRock>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_BrinePlate</mineableThing>
+      <mineableYield>2</mineableYield>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+</Defs>

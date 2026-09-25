@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WASTELAND_RM_MOD_BUILD_1. Generic sibling of a frozen campaign world's own
+  biome instance (RUT_Wasteland, src/RimUtinni) — same fictional idea (a
+  bone-dry, radiologically-live wasteland where nothing recycles), rebuilt
+  with zero campaign-specific content so it can generate on any player's own
+  world. Content copied from RUT_Wasteland.xml's own values (188-line def,
+  measured 2026-09-23) with three changes:
+    1. workerClass is this mod's own RM_BiomeWorker_Wasteland, never the
+       donor's BiomesPlus.BiomeWorker_Wasteland.
+    2. Every RSW_/SW_/mlie-prefixed row (Q12) and VAEWaste_Megatardi (whose
+       ThingDef only ships inside src/RimUtinni's own "Absorbed" folder, so
+       it would dangle a cross-reference on a standalone load despite
+       carrying no RSW_/SW_/RUT_ prefix) is OUT of wildAnimals here and rides
+       src/RimUtinni/UtinniPatches/Patches/WildAnimals_Wasteland.xml instead.
+    3. Three fauna rows the owner's round-2 eviction mapping already moved
+       elsewhere (AA_Eyeling, SW_Electrictick, AA_AcanthamoebaGiganteaSmall —
+       all "move:*" in the roster, never executed in the defs) are dropped
+       here rather than carried forward stale.
+
+  ⚠️ terrainsByFertility (VolcanoSoil/WastelandAsphalt) is copied UNCHANGED
+  from the donor-sourced twin — these are donor terrain defNames (used
+  elsewhere in this repo's own Volcano biome too, design/Jawa/fauna/
+  biome_palette.json) with no MayRequire in the source content and no
+  packageId findable offline on this pass (no def dump, no RimSage on this
+  machine). Left as-is rather than inventing a guard — see the build's own
+  REMAINS note. A standalone load with neither that donor mod nor the
+  originating biome pack active will render these two terrain rows as pink/
+  magenta, not fail to load (RimWorld degrades an unresolved TerrainDef
+  reference to the error-material terrain, not a hard crash).
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_Wasteland</defName>
+    <generatesNaturally>false</generatesNaturally>
+    <label>the wasteland</label>
+    <description>Where rivers die, everything they carried is concentrated into salt and brine; where the sky's exhaust falls, nothing ever washes it away. Nothing here recycles -- water doesn't leave, fallout doesn't wash, history doesn't decay. The wildlife is wretched and mutated as the rule, extremophile-odd as the exception; the danger is the ground, the air and the water, never the creatures. They merely adapt, struggle, and mostly fail.</description>
+    <workerClass>RimMandrake.Wasteland.RM_BiomeWorker_Wasteland</workerClass>
+    <texture>Biomes/Wasteland</texture>
+    <lakeBeachTerrain>Gravel</lakeBeachTerrain>
+    <mudTerrain>MarshyTerrain</mudTerrain>
+    <riverbankTerrain>MarshyTerrain</riverbankTerrain>
+    <waterShallowTerrain MayRequire="Ludeon.RimWorld.Odyssey">RM_WastelandBrineShallow</waterShallowTerrain>
+    <waterDeepTerrain MayRequire="Ludeon.RimWorld.Odyssey">RM_WastelandBrineDeep</waterDeepTerrain>
+    <waterMovingShallowTerrain MayRequire="Ludeon.RimWorld.Odyssey">RM_WastelandBrineMovingShallow</waterMovingShallowTerrain>
+    <waterMovingChestDeepTerrain MayRequire="Ludeon.RimWorld.Odyssey">RM_WastelandBrineMovingChestDeep</waterMovingChestDeepTerrain>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>0.1</animalDensity>
+    <plantDensity>0.12</plantDensity>
+    <forageability>1.0</forageability>
+    <movementDifficulty>2</movementDifficulty>
+    <diseaseMtbDays>90</diseaseMtbDays>
+
+    <modExtensions>
+      <li Class="RimMandrake.Wasteland.RM_WastelandBiomeRanges">
+        <temperature>-35~30</temperature>
+        <rainfall>0~500</rainfall>
+        <elevation>0~600</elevation>
+        <baseScore>28</baseScore>
+        <degreeWeight>1.0</degreeWeight>
+        <rainfallDivisor>150</rainfallDivisor>
+      </li>
+    </modExtensions>
+
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+    </diseases>
+
+    <terrainsByFertility>
+      <li>
+        <terrain>VolcanoSoil</terrain>
+        <min>-999</min>
+        <max>0.5</max>
+      </li>
+      <li>
+        <terrain>WastelandAsphalt</terrain>
+        <min>0.5</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <baseWeatherCommonalities>
+      <Clear>30</Clear>
+      <DryThunderstorm>1</DryThunderstorm>
+      <SnowGentle>1.5</SnowGentle>
+      <SnowHard>1</SnowHard>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
+      <ToxRain MayRequire="Ludeon.RimWorld.Biotech">4</ToxRain>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+    </baseWeatherCommonalities>
+
+    <!-- Non-Star-Wars, non-Utinni-exclusive donor rows only — every RSW_/SW_/
+         mlie row and VAEWaste_Megatardi rides WildAnimals_Wasteland.xml in
+         UtinniPatches instead (see this file's header). -->
+    <wildAnimals>
+      <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- beetlefleet - wretched-small, keep -->
+      <GR_ParagonRat MayRequire="vanillaexpanded.vgeneticse">0.7</GR_ParagonRat>  <!-- rodent paragon - wretched-small, keep -->
+      <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.6</VFEI2_Swarmling>  <!-- swarmlings - wretched-small, adjust-keep -->
+      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.6</VFEI2_BlackSwarmling>  <!-- black swarmlings - wretched-small, adjust-keep (MayRequire verbatim from source: this defName's own donor gate points at Alpha Animals, not VFE Insectoids 2) -->
+      <Toxalope MayRequire="Ludeon.RimWorld.Biotech">0.4</Toxalope>  <!-- toxalope - wretched-herd, import; vanilla Biotech animal -->
+      <GR_Molebear MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Molebear>  <!-- molebear - wretched-medium, keep -->
+      <GR_Spidercat MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Spidercat>  <!-- spidercat - wretched-medium, keep -->
+      <AA_Terramorph MayRequire="sarg.alphaanimals">0.2</AA_Terramorph>  <!-- terramorph - extremophile-odd, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+
+    <wildPlants>
+      <RG_Plant_ToxiGrass>1.2</RG_Plant_ToxiGrass>  <!-- toxigrass -->
+      <RG_Plant_TallToxiGrass>0.8</RG_Plant_TallToxiGrass>  <!-- tall toxigrass -->
+      <Plant_GrayGrass>0.35</Plant_GrayGrass>  <!-- gray grass -->
+      <RM_WastelandScorchedStars>0.3</RM_WastelandScorchedStars>  <!-- scorched stars — this mod's own duplicate of RUT_ScorchedStars, per §7 Q13 (DUPLICATE, THEN DIVERGE); see RM_WastelandFlora.xml -->
+      <AB_WeepingToxberry>0.2</AB_WeepingToxberry>  <!-- weeping toxberry - tree -->
+      <Plant_Toxipotato>0.2</Plant_Toxipotato>  <!-- toxipotato -->
+      <RM_DosimeterLawn>0.15</RM_DosimeterLawn>  <!-- dosimeter lawn - radiotroph flora -->
+      <AB_ToxiBulb>0.1</AB_ToxiBulb>  <!-- toxibulb -->
+      <Plant_TreePolux>0.1</Plant_TreePolux>  <!-- polux tree - tree -->
+      <RM_VaultRoot>0.08</RM_VaultRoot>  <!-- vault-root tree - sequestration tree -->
+      <VRE_PoluxBush>0.08</VRE_PoluxBush>  <!-- polux bush -->
+    </wildPlants>
+    <wildPlantRegrowDays>15</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

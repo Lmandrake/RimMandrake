@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WastelandBrine_Terrains.xml          RimMandrake: Wasteland
+
+  WASTELAND_RM_MOD_BUILD_1 step 2 — renamed copy of
+  src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_WastelandBrineWater.xml
+  (FISH_BESTIARY_BUILD_1 wave 2), RUT_ -> RM_, retargeted onto this mod's own
+  BiomeDef. Content and field values unchanged; see that file's own header
+  for the full design history (why ToxicWater*Base over vanilla WaterBase,
+  why the RUT_WastelandBrineShallow-equivalent tag lives only on the two
+  shallow variants). MayRequire="Ludeon.RimWorld.Odyssey" throughout,
+  unchanged from the source.
+-->
+<Defs>
+
+  <TerrainDef ParentName="ToxicWaterDeepBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_WastelandBrineDeep</defName>
+    <label>hypersaline deep water</label>
+    <description>Deep brine, dead-river salt and old contamination concentrated past any use. Nothing swims here that was not built for it.</description>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="ToxicWaterChestDeepBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_WastelandBrineMovingChestDeep</defName>
+    <label>hypersaline chest-deep water</label>
+    <description>Fast, chest-deep brine feeding one of the dead rivers' last stretches before the salt takes it. Corrosive at length, not on contact.</description>
+    <renderPrecedence>399</renderPrecedence>
+    <affordances>
+      <li>Bridgeable</li>
+      <li>Walkable</li>
+      <li>MovingFluid</li>
+    </affordances>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <waterDepthShaderParameters>
+      <_UseWaterOffset>1</_UseWaterOffset>
+    </waterDepthShaderParameters>
+    <tags>
+      <li>Water</li>
+      <li>River</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="ToxicWaterShallowBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_WastelandBrineShallow</defName>
+    <label>hypersaline shallow water</label>
+    <description>The margin of a brine pool, salt-crusted at the edge, mineral beds visible through the shallows. Something living may share the pool with you.</description>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>RM_WastelandBrineShallow</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="ToxicWaterShallowBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_WastelandBrineMovingShallow</defName>
+    <label>hypersaline shallow moving water</label>
+    <description>A dying river's last shallow reach, running slower with every tile toward the pool it feeds. Salt-crusted at the margin, mineral beds visible underneath.</description>
+    <renderPrecedence>398</renderPrecedence>
+    <affordances>
+      <li>ShallowWater</li>
+      <li>WaterproofConduitable</li>
+      <li>Bridgeable</li>
+      <li>Walkable</li>
+      <li>MovingFluid</li>
+    </affordances>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <waterDepthShaderParameters>
+      <_UseWaterOffset>1</_UseWaterOffset>
+    </waterDepthShaderParameters>
+    <tags>
+      <li>Water</li>
+      <li>River</li>
+      <li>RM_WastelandBrineShallow</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>

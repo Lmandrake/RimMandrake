@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WastelandFlora.xml                   RimMandrake: Wasteland
+
+  WASTELAND_RM_MOD_BUILD_1 step 2 — renamed copy of
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_WastelandFlora.xml
+  (COMMISSION_LEDGER_CLEANUP_1 wave 11), RUT_ -> RM_. These two rows are
+  Wasteland-exclusive (MEASURED: no other biome file references either
+  defName), so this is a plain move, not a Q13 duplicate-then-diverge case.
+  Field values unchanged — including both texPaths, which resolve to no
+  existing PNG anywhere in this repo (the source content shipped the same
+  gap; not introduced by this move, not fixed here — see the build's own
+  REMAINS note).
+-->
+<Defs>
+
+  <!-- ============== Dosimeter lawn (ground cover) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_DosimeterLawn</defName>
+    <label>dosimeter lawn</label>
+    <description>A low mat of sickly, unnervingly vivid moss-lichen. It grows thickest over the hottest ground -- locals read its color and density as a rough gauge of what's buried beneath, and camp where it refuses to grow at all.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <Nutrition>0.35</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/DosimeterLawn</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.1</drawSize>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <selectable>false</selectable>
+    <plant>
+      <growDays>3</growDays>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.4~0.7</visualSizeRange>
+      <topWindExposure>0.35</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Vault-root tree ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_VaultRoot</defName>
+    <label>vault-root tree</label>
+    <description>A squat, gnarled tree whose swollen trunk is seamed with dull metallic veins -- it has spent decades sequestering what it drinks out of the ground into itself. Prospectors call felling one "opening the vault," and know exactly what that name is warning them about.</description>
+    <minifiedDef IsNull="True" />
+    <statBases>
+      <MaxHitPoints>190</MaxHitPoints>
+      <Nutrition>1.6</Nutrition>
+      <Mass>90</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/VaultRoot</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.22, 0.28, 0.15)</volume>
+        <offset>(0,0,-0.36)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.32</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>45</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>18</growDays>
+      <harvestWork>220</harvestWork>
+      <harvestYield>22</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.06</topWindExposure>
+      <visualSizeRange>1.2~2.6</visualSizeRange>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Scorched stars — Q13 DUPLICATE, THEN DIVERGE ==============
+       RUT_ScorchedStars (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/
+       RUT_PollutedFlora.xml:217) is wired into BOTH RUT_Wasteland and
+       RUT_Scarlands, with no commons library per §7 Q13 (owner, 2026-09-23:
+       "We duplicated and then regenerate one of them into its own variant.").
+       This is this mod's own copy under its own defName, so RM_Warscar's
+       (SCARLANDS_STANDALONE_MOD_1) copy of the same source cannot collide
+       with it. Content is the unmodified source verbatim — the divergent
+       regen (art + identity) Q13 calls for is OWED, not done in this build. -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_WastelandScorchedStars</defName>
+    <label>scorched stars</label>
+    <description>Rounder cacti covered in sharp spines. They are often said to look like a burnt star.</description>
+    <graphicData>
+      <texPath>Things/Plant/ScorchedStars</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.15</drawSize>
+      <shadowData>
+        <volume>(0.55, 0.2, 0.2)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>115</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <uiIconScale>0.85</uiIconScale>
+    <plant>
+      <growDays>5</growDays>
+      <fertilityMin>0.10</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+</Defs>
