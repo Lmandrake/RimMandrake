@@ -1,4 +1,9 @@
-<!-- status: design brief — nothing here is built -->
+<!-- status: BUILT 2026-09-25 (FOUNDRY) — ThingDef+PawnKindDef in
+     src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Vhessk.xml, per every
+     ruling in S6 below. Art queued (rut_vhessk_{south,east,north}), pending
+     render — see that file's own header for the placeholder texture in the
+     meantime. This doc's brief text below is left as written; it is the
+     record of what was specified, not a status line. -->
 # The vhessk — GOO_BOOM_COMMISSION_1, the one boom creature that replaces the family
 
 _Design brief, 2026-09-10, Fable pass (backgrounded from BENCH per

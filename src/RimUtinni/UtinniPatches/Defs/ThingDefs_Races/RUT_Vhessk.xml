@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Vhessk.xml                          UtinniPatches · GOO_BOOM_COMMISSION_1
+
+  The one commissioned boom creature that replaces the whole cut boom family
+  (Boomalope, Boomrat, VFEI2_Boomtick, 12 Vanilla Genetics Expanded GR_* boom
+  hybrids — BOOM_FAMILY_CUT_1/BOOMFAMILY_PAWNKIND_CUTS_1/
+  BOOMALOPE_CUT_EVERYWHERE_1/BOOMSNAKE_CUT_CONFLICT_1, all closed, all
+  live-verified CUT before this file was written). Owner, 2026-09-10: "Keep
+  one big reskin boom creature for the assailant dungeon, but redo it to be
+  fleshy-based with sacks of explosive goo, and be done with them."
+
+  Full design brief (every number here traces to it, 8 open calls all RULED
+  by owner card 2026-09-10, recommendations accepted):
+  design/Jawa/worldbuilding/creatures/goo_boom_commission.md
+
+  ⛔ DUNGEON-GUARDIAN ONLY, NEVER A BIOME SPAWN. This def carries no
+  wildAnimals entry anywhere and the PawnKindDef has no wildSpawn tag — that
+  absence from every biome cast IS the guarantee (brief S4). Roster row:
+  design/Jawa/worldbuilding/review/round2/reserved_groups_draft.md S1
+  dungeon-guardians, Assailant row. Actual placement (a pawn symbol in
+  ASSAILANT_DUNGEON_BUILD_1's layout generator, spawn-on-activation
+  preferred) is that dungeon item's own work — HELD FOR THE OWNER
+  (creative lock-in) — and this build does not wait on it, per the brief's
+  own S6 ruling #8.
+
+  Sibling of the flesh-mutant dungeon-guardian register already on that
+  roster (GR_AberrantFleshbeast/FleshGrowth/FleshMonstrosity,
+  VQEA_Spliceling/-hulk/-fiend/-toot) — NOT "Boomalope but fleshy": no
+  hump-backed cow silhouette in the fiction, no milking, no chemfuel economy.
+
+  body: QuadrupedAnimalWithHoovesAndHump reused from Boomalope (brief S6
+  ruling #6, "reuse Boomalope's body, Hump = goo sac, targeting semantics
+  correct") — Core's own body, not a donor's; no ported BodyDef needed.
+
+  deathAction: DeathActionWorker_BigExplosion, the SAME vanilla worker
+  Boomalope used (Core RimWorld/DeathActionWorker_BigExplosion.cs) — v1
+  zero-C# per brief S3c/S6 ruling #1. 🔴 THE TRAP THE BRIEF FLAGS (S3b): that
+  worker picks its blast radius by LIFE-STAGE INDEX, not adulthood — a def
+  with one lifeStageAges entry detonates at the baby radius (1.9) instead of
+  the adult radius (4.9), silently. Three lifeStageAges below (0 / 0.01 / 0.02)
+  exist ONLY to dodge that trap — every spawn older than a week reads as
+  adult regardless of placement age. Adult blast: radius 4.9, Flame 10 dmg,
+  fires start across the blast (unchanged vanilla Boomalope behaviour, judged
+  the right flavour for a flesh-and-fuel dungeon gallery per brief S3c).
+  ⚠️ VERIFY OWED: a quicktest kill + scorched-cell count (brief S3b: 4.9 ≈ 75
+  cells, 1.9 ≈ 12 — cannot be mistaken by looking) is not chased this pass —
+  the bridge is held by another agent's restart+verify batch this session.
+
+  Stats (brief S2b, S6 rulings #2-5, RATIFIED as briefed):
+    baseBodySize 3.0 / baseHealthScale 2.0 — deliberately BELOW the doctrine's
+    health-proportional-to-mass reading (~3) so "pop it from range" stays the
+    counterplay, same shape as Boomalope's own 0.65 scaled to guardian class.
+    combatPower 200 (between Fleshbeast 50 and FleshMonstrosity/Splicehulk
+    240-250 — a one-shot hazard, not a sustained fighter). MoveSpeed 2.6 (a
+    slab on short legs, slower than Boomalope's 3.4 — slow is the other half
+    of the counterplay). MeatAmount 0, no leatherDef, no MarketValue set
+    (never traded, brief S6 rulings #4-5) — nothing of value comes off it.
+
+  Melee (brief S2b Law 3 band): body slam links HeadAttackTool with
+  ensureLinkedBodyPartsGroupAlwaysUsable (Boomalope's own head-tool pattern);
+  maw links Teeth for the chip damage between slams.
+
+  Art: no prior render found for this subject (checked infrastructure/
+  artpipe/done/, _artsrc/, registry.jsonl for "vhessk"/"lampgut"/"boom" —
+  clean; the only "boom" hits are the unrelated pyrelands_boomsnake_v* jobs,
+  a different creature). Real art queued this pass, 3 facings at 512x512 per
+  brief S5 (art_lists/goo_boom_commission.csv -> pending/rut_vhessk_{south,
+  east,north}.json) — PENDING RENDER, not landed. Placeholder below reuses
+  Thrumbo's own shipped texture (same "recolored placeholder, no new art yet"
+  idiom RM_Dorrak/RM_Krissek use in RM_BlueDesertFauna.xml) tinted dark
+  maroon-flesh, so the def loads and renders something coherent (a large,
+  dark, faceless-enough silhouette) until the queued job lands. Swap
+  bodyGraphicData/dessicatedBodyGraphicData's texPath to
+  Things/Pawn/Animal/Vhessk/Vhessk (brief S5) and drop the <color> once the
+  three PNGs are validated and placed.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_Vhessk</defName>
+    <label>vhessk</label>
+    <description>A low, wide slab of wet muscle that walks on too many short legs, its back and flanks hung with translucent sacs that swell and slacken as it breathes. The stuff inside the sacs glows faintly and stinks of fuel; salvage crews who have seen one burst call the thing a lampgut, and they say it from a long way off. It was found in the flesh-galleries of the deep nightside, standing guard over things that are older than it is, and it does not leave them. Nobody has kept one alive long enough to learn whether it eats.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <MeatAmount>0</MeatAmount>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>body slam</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>40</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>maw</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHump</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHealthScale>2.0</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <herdAnimal>false</herdAnimal>
+      <trainability>None</trainability>
+      <intelligence>Animal</intelligence>
+      <lifeExpectancy>30</lifeExpectancy>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+      <!-- GOO_BOOM_COMMISSION_1 S3b: three stages exist only so
+           CurLifeStageIndex is never 0 at death — dodges the
+           DeathActionWorker_BigExplosion baby-radius (1.9) trap. Every real
+           spawn is placed already past a week old and reads fully adult. -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.01</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.02</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <!-- GOO_BOOM_COMMISSION_1 S3c / S6 ruling #1: v1 ships the bare vanilla
+           worker Boomalope used, unwrapped — no C#. Radius/damage are NOT
+           XML knobs on this worker (DeathActionProperties carries only
+           workerClass); the adult radius (4.9, Flame 10) is the direct
+           consequence of the three lifeStageAges above. -->
+      <deathAction>
+        <workerClass>DeathActionWorker_BigExplosion</workerClass>
+      </deathAction>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_Vhessk</defName>
+    <label>vhessk</label>
+    <race>RUT_Vhessk</race>
+    <combatPower>200</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <!-- No wildGroupSize/ecoSystemWeight: this kind is never placed via
+         wildAnimals commonality (dungeon-guardian only, brief S4). -->
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.0</drawSize>
+          <color>(90,50,50)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.0</drawSize>
+          <color>(90,50,50)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.0</drawSize>
+          <color>(90,50,50)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

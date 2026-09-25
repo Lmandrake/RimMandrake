@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-25T07:13:50Z",
+  "drawsize": 3.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rut_vhessk_south",
+  "priority": 100,
+  "prompt": "Top-down game sprite of an alien flesh creature, RimWorld art style, flat matte shading with a hard near-black outline, plain white background. A low, wide slab of wet dark-maroon muscle (colours #402020 to #705050 with salmon #c06060 highlights) seen from directly above, longer than wide, with six to eight short thick uneven legs along each flank and a lipless toothed cleft at the front, no eyes, no face. Along its back and upper flanks bud five to seven taut translucent bladder-like sacs of different sizes, the two largest on the spine, one over-inflated; each sac is a pale membrane-pink skin over a glowing sick amber-green fluid with a bright specular highlight and darker fluid pooled at its base, thin dark veins across the membrane. Sacs lighter than the body. Asymmetric, diseased, organic-wrong; nothing that resembles a cow, goat or any Earth animal. Centered, filling most of the frame, no shadow, no text.",
+  "reference": null,
+  "rimflow_item_id": "GOO_BOOM_COMMISSION_1",
+  "style_notes": "GOO_BOOM_COMMISSION_1 (RUT_Vhessk) -- low broad slab body, 2:1 length:width from above, six-to-eight short uneven legs, faceless frontal toothed cleft, no eyes; five-to-seven translucent sacs on back/flanks (largest dorsal, one visibly over-inflated), sacs must be LIGHTER than body so it reads as 'the one with the bladders' at 3 cells; body palette #402020-#705050 with #c06060 salmon highlights (flesh-mutant family, sits beside GR_FleshGrowth/GR_AberrantFleshbeast); sac membrane desaturated pink #c08080 over sick amber-green fill, near-white specular; no cow/goat/hoof cues, no desert-tan/scavenger-rust; dungeon guardian, not Jawa kit. Brief: design/Jawa/worldbuilding/creatures/goo_boom_commission.md"
+}
