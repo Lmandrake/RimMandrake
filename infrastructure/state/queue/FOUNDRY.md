@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T08:24:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T14:51:35Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2086,16 +2086,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CONTAGION_UNFINISHED_SPAWNER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CONTAGION_UNFINISHED_SPAWNER_1.md
-
-## WASTELAND_BRINE_BATTERY_DISCHARGE_1 Brine battery ion-gradient discharge: EMP/zap defense comp on RUT_BrineBattery
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  WASTELANDBRINEBATTERYDISCHARGE1 — brine battery's ion-gradient discharge
-prose:    infrastructure/state/items/WASTELAND_BRINE_BATTERY_DISCHARGE_1.md
 
 ## GREENTIDE_YEARNING_FRUIT_FILTH_1 Yearning fruit's filth/seed-dispersal comp: pass-seed + filth on digestion, same shape as RM_HediffComp_ShadeStagger
 state:    proposed
