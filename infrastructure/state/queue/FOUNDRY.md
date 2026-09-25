@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T00:39:25Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T00:45:37Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -845,15 +845,6 @@ target:   v1
 kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
-
-## EXTREME_DESERT_SIGNATURE_FLORA_1 Author glass-nub light-pipe and silverbole flora for RUT_ExtremeDesert
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  EXTREMEDESERTSIGNATUREFLORA1 — author the extreme desert's own signature flora
-prose:    infrastructure/state/items/EXTREME_DESERT_SIGNATURE_FLORA_1.md
 
 ## COMMISSION_LEDGER_CLEANUP_1 85 genuinely-owed new-art/def commissions from the 118-row ledger
 state:    doing
