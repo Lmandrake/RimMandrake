@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T04:26:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T04:37:18Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -619,3 +619,43 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Per biome at its sitting: name the contribution(s), make the relevant defs
 prose:    infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md
+
+## SCALD_FLOOR_PASS_1 Whole individual pass for the Scald floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SCALD_FLOOR_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_FLOOR_PASS_1.md
+
+## GREYSEA_FLOOR_PASS_1 Whole individual pass for the Grey Sea floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREYSEA_FLOOR_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_FLOOR_PASS_1.md
+
+## TWILIGHTSEA_FLOOR_PASS_1 Whole individual pass for the Twilight Sea floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TWILIGHTSEA_FLOOR_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TWILIGHTSEA_FLOOR_PASS_1.md
+
+## PROPANELAKE_FLOOR_PASS_1 Whole individual pass for the Propane Lake floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PROPANELAKE_FLOOR_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PROPANELAKE_FLOOR_PASS_1.md
