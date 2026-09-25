@@ -20,7 +20,11 @@
     <label>shulla</label>
     <description>A hot-white sliver netted from between the Scald's vent plumes, a heat-shimmer still playing off its edge as it cools in the pail. Always comes up in company.</description>
     <graphicData>
-      <texPath>Things/Item/Special/JawaClaimRumour</texPath>
+      <!-- SCALD_FLOOR_PASS_1: interim OWNED texture (was Things/Item/Special/
+           JawaClaimRumour, which only exists under RimUtinni/UtinniPatches
+           and pinked a standalone install). Real art queued to the artpipe
+           as scald_shullacatch_v1 (priority 45). -->
+      <texPath>Things/Item/Resource/RM_ScaldCatchGeneric/RM_ScaldCatchGeneric</texPath>
     </graphicData>
     <statBases>
       <Nutrition>0.1</Nutrition>
