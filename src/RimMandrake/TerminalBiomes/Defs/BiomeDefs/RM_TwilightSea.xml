@@ -42,9 +42,15 @@
     </modExtensions>
 
     <!-- Lanternwhale (endemic giant, Star Wars) moved to
-         WildAnimals_TwilightSea.xml. AA_Aerofleet (Alpha Animals) stays. -->
+         WildAnimals_TwilightSea.xml. AA_Aerofleet (Alpha Animals) stays.
+         TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
+         verdict 1: the four ruled floor residents (RM_TwilightSeaFauna.xml). -->
     <wildAnimals>
       <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>
+      <RM_Noolim>0.8</RM_Noolim>
+      <RM_Loohn>0.01</RM_Loohn>
+      <RM_Weloon>0.4</RM_Weloon>
+      <RM_Lunoowa>0.3</RM_Lunoowa>
     </wildAnimals>
     <animalDensity>0.1</animalDensity>
     <coastalWildAnimals />
