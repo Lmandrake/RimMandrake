@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  COMMISSION_LEDGER_CLEANUP_1 (poison_forest sheet slug
+  `eyeless-vibration-sensing-ambusher-the-signature`).
+  poison_forest.md §4 "Seeing in permanent dusk": "No eyes worth the name —
+  and instead ground-sense: the vents make the substrate hum constantly, so
+  vibration is a richer channel here than light is. Feathered feet, drumming
+  limbs, bodies pressed flat to listen." §5.4's own IMPORT note for this slug:
+  "NEW ART/DEF NEEDED — no donor is vibration-themed; nearest body: Biomes!
+  Caverns blind fauna." No such donor is ported into this repo, so the body
+  reuse actually taken is the already-ported `RSW_Kinrath` (checked first,
+  same discipline as the tunnel-snake near-miss): Kinrath's own donor
+  description is "blind... could sense heat which allowed them to navigate" —
+  already an eyeless ambusher, already carries the poisonous-appendage body
+  group this biome's "everything is either sealed or poisoned" law (§4) wants
+  anyway. Re-themed heat-sense to ground-vibration-sense in the flavor text
+  only; no stat says "heat" so nothing mechanical needed changing.
+
+  `design/Jawa/fauna/cast_assignment.csv` checked before reusing anything:
+  RSW_Kinrath itself is cast to RUT_Greentide ("canopy-ambush", row 184,
+  status keep). This def does NOT place Kinrath in a second biome — same
+  asset-reuse-without-species-reuse pattern RSW_TunnelSnake used on
+  RSW_Klorslug and RSW_ShadeWhale used on RSW_Horax: new defName, a retint,
+  zero new PNGs (both `kinrath_v1` and `canon_kinrath_v1` artpipe jobs
+  confirm the donor texPath already carries real generated art, not a
+  placeholder), no double-booked species identity.
+
+  Body/tools/resources/comps kept close to the Kinrath donor def (bs 1.2,
+  toxic-appendage tool, CanBeDormant/WakeUpDormant ambush pair — a ground-
+  sense hunter that lies still until the vents' hum carries something close
+  enough) rather than rescaled, since nothing here crosses a stated size-band
+  ban (unlike TUNNELSNAKE_VIOLATES_SIZE_LADDER_1, which is why that one
+  needed correcting and this one does not). Dropped Kinrath's own
+  Odyssey-gated SW_WebShot ability and egg-layer comp for a plain live-birth
+  profile — simplification precedent from RSW_TunnelSnake, which dropped the
+  same donor's ability/reproduction extras when reskinning Klorslug.
+  ComfyTemperature reset to poison_forest.md §0's own measured extremes
+  (−10.0 / +41.3 °C, median +11.4) with a small buffer, replacing Kinrath's
+  donor-biome range (Tropical/Boreal −10/60).
+
+  Working name only ("vent stalker") — folded into a new owner card,
+  `POISONFOREST_SHIPPING_NAMES_1`, alongside the crust flora below and the
+  biome's own still-open weather-name naming gap noted in poison_forest.md
+  §4b's ratified table (names are ratified there; this creature's name is
+  not covered by that ruling and needs its own pass).
+
+  mechanic_load for this slug reads "none blocking (prep §12)" in the
+  roster's own new_defs entry — a pure art/def commission, built whole this
+  pass (art reused wholesale, zero new PNGs), no companion mechanics item.
+-->
+<Defs>
+
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_VentStalker</defName>
+    <label>vent stalker</label>
+    <description>A low, blind ambusher that presses itself flat against a slick trunk and waits, reading the ground's constant chemical hum through its own splayed feet. It has no eyes worth the name — there is nothing here worth seeing, only worth feeling — and it does not move until the hum under something warm-blooded gets close enough to touch. Its stinger carries the same metal-tainted poison as everything else that lives here; it does not manufacture the toxin so much as fail to get rid of it, same as the trees.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <MarketValue>500</MarketValue>
+      <ArmorRating_Blunt>0.18</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.27</ArmorRating_Sharp>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>poisonous stinger appendage</label>
+        <capacities>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWToxicAppendage</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_CanBeDormant" />
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+    </comps>
+    <receivesSignals>true</receivesSignals>
+    <race>
+      <body>RSW_Kinrath</body>
+      <baseHungerRate>0.35</baseHungerRate>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHealthScale>2.5</baseHealthScale>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <leatherDef>RSW_Leather_Insectine</leatherDef>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>1.5</maxPreyBodySize>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>10</lifeExpectancy>
+      <wildBiomes>
+        <RUT_PoisonForest>0.05</RUT_PoisonForest>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.02</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>RSW_Pawn_Kinrath_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Kinrath_Death</soundDeath>
+          <soundCall>RSW_Pawn_Kinrath_Call</soundCall>
+          <soundAngry>RSW_Pawn_Kinrath_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_VentStalker</defName>
+    <label>vent stalker</label>
+    <race>RSW_VentStalker</race>
+    <combatPower>175</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath</texPath>
+          <color>(60, 55, 65)</color> <!-- dark slate-purple, reskin over the shared Kinrath art: reads as pressed flat against a wet-black trunk in scatter-dusk, zero new PNGs -->
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath</texPath>
+          <color>(60, 55, 65)</color>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath</texPath>
+          <color>(60, 55, 65)</color>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.6, 0.33)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

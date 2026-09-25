@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  COMMISSION_LEDGER_CLEANUP_1 (poison_forest sheet slug
+  `toxic-prized-meat-def-property-on-the-4-flagged-keepers-neeb`).
+  poison_forest.md §7 "Uniquely available": "Toxic exotic meat. Every animal
+  here is poisonous and a delicacy: these are the prestige ingredients for
+  the Star Wars cuisine chain, the things a cook brags about surviving.
+  Danger and value in the same carcass." rosters/poison_forest.json's own
+  fauna list flags exactly four keepers `toxic-prized-meat carrier`: Neebray
+  (small-flier, donor `mlie.starwarsanimalcollection`), RSW_Screecher
+  (medium-pred, ours — ROSTER_DEAD_BMT_NAMES_SWEEP_1 renamed this row from
+  the slug's own stale `BMT_Screecher`), Visceral (medium-pred, donor
+  `mlie.horrors`), AA_Helixien (giant, donor `sarg.alphaanimals`).
+
+  mechanic_load reads "meat hediff def, no C#" — matched exactly: the toxic
+  half reuses `VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic`, a
+  donor C# class already absorbed wholesale into this mod's own Assemblies/
+  (Absorbed_VAEWasteMegatardi_Defs.xml's own header explains the carry-
+  forward), already live in this exact mod for VAEWaste_ToxicMeat — zero new
+  C#. The prized half is `preferability RawTasty` (rather than the vanilla
+  meat generator's default RawBad) plus a positive taste thought
+  (RUT_PoisonForestMeatThoughts.xml) and an above-market MarketValue,
+  instead of the VAEWaste precedent's negative "disgusting" thought — this
+  biome's meat is a bragging-rights delicacy, not a last resort.
+
+  Engine mechanism verified before authoring: `ThingDefGenerator_Meat`
+  (RimWorld/ThingDefGenerator_Meat.cs) only auto-generates a race's meat def
+  when `race.specificMeatDef == null` — so a hand-authored meat ThingDef plus
+  `<race><specificMeatDef>` on the race (see
+  Patches/PoisonForest_ToxicPrizedMeat.xml, same folder) is the only route;
+  patching a "Meat_Neebray"-style node directly would silently do nothing,
+  because no such XML node exists to patch (RimWorld generates it at
+  load time, after patches resolve). Shape follows this mod family's own
+  precedent for a hand-authored specificMeatDef target,
+  RM_StockedPoolMeats.xml (ParentName="OrganicProductBase", explicit
+  ingestible/comps/thingCategories rather than a nonexistent "MeatBase"
+  parent) and VAEWaste_ToxicMeat's outcomeDoer wiring above it.
+
+  Placeholder art: vanilla meat stack textures (Meat_Small/Meat_Big by body
+  size, same convention ThingDefGenerator_Meat itself and RM_StockedPoolMeats
+  both use), retinted per species — no new PNGs, no artpipe job needed.
+-->
+<Defs>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RUT_NeebrayMeat</defName>
+    <label>neebray meat</label>
+    <description>Thin, silica-veined meat off a neebray, carrying the same metal-rich tailings the whole biome sweats out. Nobody eats it plain — a cook works it the way you'd work a fish that could kill you, and the reputation for surviving the dish travels further than the dish itself does.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(70, 60, 75)</color>
+    </graphicData>
+    <thingCategories>
+      <li>MeatRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>9</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>6</DeteriorationRate>
+      <Nutrition>0.05</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>RawMeat_Eat</ingestSound>
+      <specialThoughtDirect>RUT_AtePoisonForestMeatDirect</specialThoughtDirect>
+      <specialThoughtAsIngredient>RUT_AtePoisonForestMeatAsIngredient</specialThoughtAsIngredient>
+      <outcomeDoers>
+        <li Class="VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic">
+          <severity>0.05</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <tickerType>Rare</tickerType>
+  </ThingDef>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RUT_ScreecherMeat</defName>
+    <label>screecher meat</label>
+    <description>Dark, stringy meat off a poison forest screecher, still faintly acrid from whatever it last stunned and ate. The toxin is real; so is the reputation the dish carries when it's cooked right.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Big</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(55, 50, 60)</color>
+    </graphicData>
+    <thingCategories>
+      <li>MeatRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>10</MarketValue>
+      <Mass>0.025</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>6</DeteriorationRate>
+      <Nutrition>0.055</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>RawMeat_Eat</ingestSound>
+      <specialThoughtDirect>RUT_AtePoisonForestMeatDirect</specialThoughtDirect>
+      <specialThoughtAsIngredient>RUT_AtePoisonForestMeatAsIngredient</specialThoughtAsIngredient>
+      <outcomeDoers>
+        <li Class="VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic">
+          <severity>0.05</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <tickerType>Rare</tickerType>
+  </ThingDef>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RUT_VisceralMeat</defName>
+    <label>visceral meat</label>
+    <description>Dense insectoid meat off a visceral, the biome's sealed-horror predator. It carries the same bio-accumulated metal load every other carcass here does, cooked out just enough to be a delicacy instead of a coroner's report.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Big</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(80, 40, 45)</color>
+    </graphicData>
+    <thingCategories>
+      <li>MeatRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>11</MarketValue>
+      <Mass>0.025</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>6</DeteriorationRate>
+      <Nutrition>0.055</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>RawMeat_Eat</ingestSound>
+      <specialThoughtDirect>RUT_AtePoisonForestMeatDirect</specialThoughtDirect>
+      <specialThoughtAsIngredient>RUT_AtePoisonForestMeatAsIngredient</specialThoughtAsIngredient>
+      <outcomeDoers>
+        <li Class="VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic">
+          <severity>0.05</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <tickerType>Rare</tickerType>
+  </ThingDef>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RUT_HelixienMeat</defName>
+    <label>helixien meat</label>
+    <description>A whole haul of thick, marbled meat off a helixien, the biome's giant. One carcass carries a metal load worth talking about for a year, and a cut of it cooked right is the closest thing this forest has to a feast dish.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Big</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(90, 70, 55)</color>
+    </graphicData>
+    <thingCategories>
+      <li>MeatRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>13</MarketValue>
+      <Mass>0.03</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>6</DeteriorationRate>
+      <Nutrition>0.06</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>RawMeat_Eat</ingestSound>
+      <specialThoughtDirect>RUT_AtePoisonForestMeatDirect</specialThoughtDirect>
+      <specialThoughtAsIngredient>RUT_AtePoisonForestMeatAsIngredient</specialThoughtAsIngredient>
+      <outcomeDoers>
+        <li Class="VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic">
+          <severity>0.05</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <tickerType>Rare</tickerType>
+  </ThingDef>
+
+</Defs>
