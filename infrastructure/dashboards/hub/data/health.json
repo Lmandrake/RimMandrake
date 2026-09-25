@@ -1,26 +1,26 @@
 {
- "generatedAt": "2026-09-25T18:19:00Z",
+ "generatedAt": "2026-09-25T19:11:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 805781,
-  "sha256_12": "5558ea6c1e2b"
+  "bytes": 805456,
+  "sha256_12": "79fa0cffe133"
  },
- "head": "304e32407",
+ "head": "a43721583",
  "counts": {
   "red": 3,
-  "blue": 1403,
+  "blue": 1397,
   "green": 1806,
-  "grey": 380,
+  "grey": 385,
   "unmeasured": 0,
-  "total": 3592
+  "total": 3591
  },
  "loc": {
   "red": 1382,
-  "blue": 476253,
-  "green": 546815,
-  "grey": 91623,
+  "blue": 474796,
+  "green": 546338,
+  "grey": 91567,
   "unmeasured": 0,
-  "total": 1116073
+  "total": 1114083
  },
  "reviewEntries": 3483,
  "recidivists": [
@@ -55,6 +55,11 @@
    "cycles": 2
   },
   {
+   "path": "src/RimStarWars/JawaRules/Source/JawaRules.csproj",
+   "loc": 77,
+   "cycles": 2
+  },
+  {
    "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs",
    "loc": 446,
    "cycles": 1
@@ -68,14 +73,9 @@
    "path": "src/RimUtinni/UtinniPatches/Patches/MechClusterBiomes_AmbientDoctrine.xml",
    "loc": 158,
    "cycles": 1
-  },
-  {
-   "path": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FeverTrunkCore.xml",
-   "loc": 91,
-   "cycles": 1
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 3592 files (1806 clean, 380 dirty, 0 unmeasured)."
+ "headline": "OK: measured 3591 files (1806 clean, 385 dirty, 0 unmeasured)."
 }
