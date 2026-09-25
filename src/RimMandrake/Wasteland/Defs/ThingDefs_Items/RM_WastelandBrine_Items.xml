@@ -47,6 +47,7 @@
     <description>The owner. A forearm-long, plated, sea-cucumber-shaped thing whose body is a stack of living electrode wafers, salt-white and mineral-dark by turns, lying on the bed of a hypersaline pool and running on the ion gradient between the brine and the metal beneath it. It discharges as defense. The pool you want to mine has one, and it is a capacitor, and it does not want you there. Landed — carefully, on a dry line, by people who have done it before — it goes on discharging for an hour. Cooked, it is meat. Raw, it is a lesson.</description>
     <graphicData>
       <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.15</Nutrition>
@@ -85,6 +86,7 @@
     <description>A stacked mineral wafer, salt-white and dark by turns, pried off a drazz that has already spent its charge — or found loose on a pool floor, which is the same thing a season later. It still holds a whisper of charge; touch two together in the dark and they spark. Traders who buy oddities want it.</description>
     <graphicData>
       <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <thingCategories>
       <li>ResourcesRaw</li>
