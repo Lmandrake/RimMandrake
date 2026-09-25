@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_RotSporeKit_SheenWeathers.xml       RotSporeKit - ROT_SHEEN_WEATHER_1 build pass
+
+  rot_kit_spec.md M1 ("The Sheen"), ticket 2: three RM_ WeatherDefs cloning
+  the donor rows RM_TheRot's baseWeatherCommonalities already used (Rain,
+  RainyThunderstorm, FoggyRain) - full field set copied verbatim from the
+  live vanilla WeatherDefs (mcp__rimsage__get_def_details, raw/unmerged, this
+  pass), edited ONLY on <label>/<description>. This fixes the live ban-3 text
+  violation the_rot.md's own header flagged: "a water-rain weather def here
+  is a violation... renaming the WeatherDefs themselves is separate, un-owed
+  content" - that content lands here.
+
+  rainRate KEPT at 1 on all three (spec: "Keep rainRate behavior so fires
+  still douse - the Sheen is wet, it just isn't water"). snowRate/sandRate
+  were already absent/0 on all three donors, so nothing to change there.
+
+  String-field sweep for surviving "rain" text (spec's own ❓, closed here):
+  - label/description: rewritten below, no "rain" left.
+  - weatherThought (SoakingWet): its own label/description read "soaking
+    wet" only - no "rain" text, and the Sheen is explicitly wet (spec:
+    "it just isn't water"), so this thought stays correct unedited.
+  - ambientSounds (Ambient_Rain, Ambient_Wind_Storm, Ambient_Wind_Fog) and
+    overlayClasses (WeatherOverlay_Rain, WeatherOverlay_Fog): defName/class
+    references only, never surfaced as player-visible text.
+  - commonalityRainfallFactor: a numeric curve keyed by map rainfall stat,
+    not a string - irrelevant to the sweep.
+  No other field on any of the three donors carries free text.
+
+  RM_SheenExposureLock (GameConditionDefs/, UtinniPatches) is the mechanism
+  that actually applies RM_SheenCoating - these three defs are the reskin
+  half only, exactly as ruled ("a RESKIN, not a removal").
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RM_SheenFall</defName>
+    <label>Sheen-fall</label>
+    <description>The Rot's own reproductive sleet, cloying and glossy, falling in place of rain. It slicks every surface and douses open flame same as any downpour — it is wet, it is simply never water. Anything left uncovered beneath it comes away coated.</description>
+    <temperatureRange>0~100</temperatureRange>
+    <windSpeedFactor>1.5</windSpeedFactor>
+    <accuracyMultiplier>0.8</accuracyMultiplier>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <weatherThought>SoakingWet</weatherThought>
+    <rainRate>1</rainRate>
+    <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
+    <ambientSounds>
+      <li>Ambient_Rain</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Rain</li>
+    </overlayClasses>
+    <commonalityRainfallFactor>
+      <points>
+        <li>(0, 0)</li>
+        <li>(1300, 1)</li>
+        <li>(4000, 3.0)</li>
+      </points>
+    </commonalityRainfallFactor>
+    <skyColorsDay>
+      <sky>(0.8,0.8,0.8)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.7,0.7)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_SheenStorm</defName>
+    <label>Sheen tempest</label>
+    <isBad>true</isBad>
+    <description>Lightning splits the black sky while the Sheen falls in sheets thick enough to matter — a downpour of spores and fluid that drowns fire as fast as the bolts can start it. Nothing dry survives this uncovered.</description>
+    <temperatureRange>0~999</temperatureRange>
+    <windSpeedFactor>1.5</windSpeedFactor>
+    <windSpeedOffset>1.25</windSpeedOffset>
+    <favorability>Bad</favorability>
+    <perceivePriority>2</perceivePriority>
+    <weatherThought>SoakingWet</weatherThought>
+    <accuracyMultiplier>0.8</accuracyMultiplier>
+    <rainRate>1</rainRate>
+    <moveSpeedMultiplier>0.8</moveSpeedMultiplier>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+      <li>Ambient_Rain</li>
+    </ambientSounds>
+    <durationRange>15000~40000</durationRange>
+    <eventMakers>
+      <li>
+        <averageInterval>1200</averageInterval>
+        <eventClass>WeatherEvent_LightningFlash</eventClass>
+      </li>
+      <li>
+        <averageInterval>1200</averageInterval>
+        <eventClass>WeatherEvent_LightningStrike</eventClass>
+      </li>
+    </eventMakers>
+    <overlayClasses>
+      <li>WeatherOverlay_Rain</li>
+    </overlayClasses>
+    <commonalityRainfallFactor>
+      <points>
+        <li>(0, 0)</li>
+        <li>(1300, 1)</li>
+        <li>(4000, 2.0)</li>
+      </points>
+    </commonalityRainfallFactor>
+    <skyColorsDay>
+      <sky>(0.8,0.8,0.8)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.7,0.7)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_SheenMist</defName>
+    <label>Sheen mist</label>
+    <isBad>true</isBad>
+    <description>A heavy, glossy mist of settling Sheen hangs at head height, thick enough to blur aim and slow every step. It beads on skin and gear alike.</description>
+    <temperatureRange>0~999</temperatureRange>
+    <windSpeedFactor>1.5</windSpeedFactor>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <weatherThought>SoakingWet</weatherThought>
+    <accuracyMultiplier>0.5</accuracyMultiplier>
+    <rainRate>1</rainRate>
+    <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+      <li>Ambient_Rain</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+      <li>WeatherOverlay_Rain</li>
+    </overlayClasses>
+    <commonalityRainfallFactor>
+      <points>
+        <li>(0, 0)</li>
+        <li>(1300, 1)</li>
+      </points>
+    </commonalityRainfallFactor>
+    <skyColorsDay>
+      <sky>(0.8,0.8,0.8)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.7,0.7)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

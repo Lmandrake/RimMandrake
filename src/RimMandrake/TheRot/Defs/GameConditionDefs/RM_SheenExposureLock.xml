@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SheenExposureLock.xml    RimMandrake: The Rot - relocated from
+  src/RimUtinni/UtinniPatches (RUT_SheenExposureLock.xml, dissolved
+  mandrake.rut.rotsporekit) by THEROT_RM_MOD_BUILD_1.
+
+  rot_kit_spec.md M1 ("The Sheen"), ticket 2: "reuse RC4 as a permanent
+  condition (RUT_SheenExposureLock, attached via the BiomeDef's own
+  <biomeMapConditions>, exactly the shipped RUT_MiasmaWeatherLock.xml shape -
+  pure XML, no weather forcing, no damage fields)." Shape copied directly
+  from that file (GameConditionDefs/RUT_MiasmaWeatherLock.xml).
+
+  No forcedWeather: unlike Miasma (which forces one permanent haze), the Rot
+  keeps a natural weather ROTATION between Clear/DryThunderstorm and the
+  three reskinned Sheen weathers (RM_TheRot_Biome.xml's own
+  baseWeatherCommonalities) - the exposure clock is meant to pause between
+  Sheen-falls, not run every tick.
+
+  No damageDef/hediffToApply set, same as Miasma's own "no damage fields":
+  this condition's only job is to bootstrap RM_SheenCoating onto every
+  eligible pawn on the map (carrierHediff/carrierHediffSeverity,
+  EnsureCarrierHediff in GameCondition_EnvironmentalWeather.cs - NOT gated
+  by onlyUnroofed, so a roofed pawn also carries the hediff and its own comp
+  can decay it via severityPerDayUnexposed). RM_SheenCoating's own comp
+  (HediffCompProperties_SheenExposure, RimMandrake.EnvironmentalHazards -
+  RM_RotSporeKit_SheenHediffs.xml) does the actual weather-gated,
+  gear-slowed, symbiont-immune severity math.
+
+  damageIntervalTicks 2500 (~1 in-game hour) matches RUT_MiasmaWeatherLock's
+  own bootstrap cadence exactly - carried over, not re-invented.
+
+  MayRequire is load-bearing: conditionClass/modExtension Class live in
+  mandrake.rm.environmentalhazards; carrierHediff (RM_SheenCoating) now
+  lives in this same mod (mandrake.rm.therot), so the former
+  "mandrake.rut.rotsporekit" half of the MayRequire is dropped — same-mod,
+  never MayRequire's-self.
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_SheenExposureLock</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
+    <label>the Sheen's breath</label>
+    <description>The Rot's own reproductive cycle never truly pauses here — even between Sheen-falls, its spores hang thin in the air, ready to seed anyone who lingers unroofed too long.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
+        <carrierHediff>RM_SheenCoating</carrierHediff>
+        <carrierHediffSeverity>0.0001</carrierHediffSeverity>
+        <damageIntervalTicks>2500</damageIntervalTicks>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>

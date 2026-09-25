@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ROT_LIVE_PREPARATIONS_1 — M4's hediffs: what the three teas leave behind
+    and what the four symbionts ARE.
+
+    MayRequire ON EVERY CROSS-MOD <li>, never on a def or a patch Operation
+    (kit law; measured 2026-09-17 that MayRequire on an Operation is INERT
+    and killed a cold load). Every comp whose Class lives in
+    mandrake.rm.environmentalhazards carries
+    MayRequire="mandrake.rm.environmentalhazards" on the <li> itself — the
+    same shape RM_RotSporeKit_SheenHediffs.xml already ships. Without that
+    mod the comp drops and the hediff survives as an inert marker, which is
+    the correct degradation; an ungated <li Class="..."> would have thrown
+    at load.
+
+    TUNING MARKED INVENTED-BUILD is this pass's own: the spec and the cards
+    fix the BARGAINS (card 1's five years / once a year; Quickflesh's
+    hungerRateFactor 2.2; Nightwake's RestFall x0) and nothing else.
+  -->
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       CARD 1's RATE LIMIT. Duration is 3,600,000 ticks = 60,000 ticks/day x
+       60 days = one in-game YEAR, exactly the number card 1 names. The
+       doer (RM_IngestionOutcomeDoer_AgeReversal) both READS this hediff to
+       refuse a second cup and WRITES its duration via SetDuration, so the
+       figure below and the doer's satedDurationTicks must stay equal — the
+       doer's value is the authority if they ever drift.
+       ══════════════════════════════════════════════════════════════════ -->
+  <HediffDef>
+    <defName>RM_AgeReversalSated</defName>
+    <label>ageless-brew saturation</label>
+    <description>The body is still full of the ageless cap's machinery and has no room for more. Another cup this year would be wasted — poured on tissue that is already doing all the rebuilding it can.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <defaultLabelColor>(0.75, 0.90, 0.75)</defaultLabelColor>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>3600000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>saturated</label>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       THE BIOREGENERATION TEA'S EFFECT. 5 days (300,000 ticks), healing one
+       permanent wound or chronic condition per day (daysBetweenHeals 1,
+       healOnGain true) — so a cup is worth roughly five scars, with the
+       first paid immediately so the drinker can see it worked.
+
+       VERIFIED THIS PASS and the reason this is not the vanilla comp:
+       Verse.HediffComp_HealPermanentWounds hardcodes its interval as
+       Rand.Range(15, 30) * 60000 with no Props field, i.e. 15-30 DAYS. On a
+       5-day hediff it would have had a zero chance of ever firing. The RM_
+       comp is that comp with the interval as a field; the healing itself is
+       vanilla's own public static TryHealRandomPermanentWound, unchanged.
+       ══════════════════════════════════════════════════════════════════ -->
+  <HediffDef>
+    <defName>RM_Bioregenerating</defName>
+    <label>bioregenerating</label>
+    <description>Regenerant veil tissue is loose in the bloodstream, finding old damage and rebuilding it properly this time. Scars close, old breaks reset, long-standing conditions unpick themselves. It lasts while the tissue lives — a few days — and then it is simply gone.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <defaultLabelColor>(0.70, 0.95, 0.85)</defaultLabelColor>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HediffCompProperties_HealPermanentWounds" MayRequire="mandrake.rm.environmentalhazards">
+        <daysBetweenHeals>1</daysBetweenHeals>
+        <healOnGain>true</healOnGain>
+      </li>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>300000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>regenerating</label>
+        <naturalHealingFactor>2.0</naturalHealingFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SYMBIONT 1 — QUICKFLESH. Ratified bargain, exactly as the sheet
+       states it: accelerated healing / hunger rate x2.2. naturalHealingFactor
+       3.0 is INVENTED-BUILD (the sheet says "accelerated", not a number);
+       hungerRateFactor 2.2 is the ratified figure and must not drift.
+       Permanent: no Disappears comp, isBad false, and a pawn who takes it is
+       signing up for the food bill forever.
+       ══════════════════════════════════════════════════════════════════ -->
+  <HediffDef>
+    <defName>RM_Sym_Quickflesh</defName>
+    <label>quickflesh symbiont</label>
+    <description>A sheet of fungal tissue living along the inside of the skin, rebuilding damage as fast as the body can supply material for it. The supply is the catch: a quickflesh host eats like two people and is hungry between meals, forever.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <defaultLabelColor>(0.95, 0.80, 0.70)</defaultLabelColor>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <scenarioCanAdd>true</scenarioCanAdd>
+    <stages>
+      <li>
+        <label>symbiotic</label>
+        <naturalHealingFactor>3.0</naturalHealingFactor>
+        <hungerRateFactor>2.2</hungerRateFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SYMBIONT 2 — NIGHTWAKE. Ratified bargain: RestFallRateFactor x0 /
+       permanently lowered mental-break threshold + occasional mental states.
+
+       restFallFactor 0 is the HediffStage FIELD (verified this pass,
+       Verse/HediffStage.cs:`public float restFallFactor = 1f`) — the same
+       shape Anomaly's own x0 user takes. The host's rest need simply stops
+       falling: they never sleep and never need to.
+
+       "Lowered break threshold" is expressed as a POSITIVE offset to the
+       MentalBreakThreshold stat, which is the direction that makes breaks
+       EASIER (the stat is the mood level at which a break becomes possible,
+       so raising it means breaking at a mood that would otherwise be fine).
+       +0.12 is INVENTED-BUILD. The mentalStateGivers mtbDays are
+       INVENTED-BUILD too: Wander_Psychotic every ~45 days and Binging_Food
+       every ~90 — always a little psychotic, in vanilla vocabulary, never a
+       colony-ender on its own.
+       ══════════════════════════════════════════════════════════════════ -->
+  <HediffDef>
+    <defName>RM_Sym_Nightwake</defName>
+    <label>nightwake symbiont</label>
+    <description>A pale thread grown up the spine and into the base of the skull, doing the housekeeping sleep used to do. The host does not sleep again. Neither, quite, does the part of them that decides what is reasonable — nightwake hosts are known for going quietly odd at intervals for the rest of their lives.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <defaultLabelColor>(0.70, 0.70, 0.95)</defaultLabelColor>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <scenarioCanAdd>true</scenarioCanAdd>
+    <stages>
+      <li>
+        <label>symbiotic</label>
+        <restFallFactor>0</restFallFactor>
+        <statOffsets>
+          <MentalBreakThreshold>0.12</MentalBreakThreshold>
+        </statOffsets>
+        <mentalStateGivers>
+          <li>
+            <mentalState>Wander_Psychotic</mentalState>
+            <mtbDays>45</mtbDays>
+          </li>
+          <li>
+            <mentalState>Binging_Food</mentalState>
+            <mtbDays>90</mtbDays>
+          </li>
+        </mentalStateGivers>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SYMBIONT 3 — SHEENBLOOD. Ratified bargain: grants RM_SheenSymbiosis
+       (ticket 2's def — card 5's ONLY true immunity to the Sheen) /
+       sunlight scald.
+
+       TWO HEDIFFS, not one, because the immunity half is a def ticket 2
+       already ships and other mechanisms already read (RM_SheenCoating's
+       immunityHediff points at it). The item's outcomeDoers give BOTH.
+
+       The scald half is RM_HediffComp_SunlightScald rather than
+       mandrake.rm.creaturebehaviors' RM_Hediff_SunScald: that one is a
+       HEDIFF CLASS, and <hediffClass> is a plain def field with no
+       MayRequire, so naming it would make this whole def evaporate on an
+       install without creaturebehaviors. Same primitive either way
+       (IntVec3.InSunlight — unroofed AND CurSkyGlow > 0.1; a lamp is never
+       the sun).
+
+       Severity 1.0/day in sun, -2.0/day shaded (INVENTED-BUILD): a host
+       working a full bright day reaches the painful stage, and one night or
+       one roofed shift clears it. Stages cap at pain and slowed movement —
+       never a capacity floor of zero, matching the owner's standing
+       "cripple, never down" ruling for sun-scald consumers.
+       ══════════════════════════════════════════════════════════════════ -->
+  <HediffDef>
+    <defName>RM_Sym_Sheenblood</defName>
+    <label>sheenblood symbiont</label>
+    <description>The Rot's own reproductive tissue, invited in and living in the blood. Sheen-fall passes through the host like weather through an open window — they have joined the thing that was trying to digest them. In exchange their skin now belongs to a creature that has never once been in direct sunlight, and it reacts accordingly.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <defaultLabelColor>(0.85, 0.75, 1.0)</defaultLabelColor>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>0.01</initialSeverity>
+    <scenarioCanAdd>true</scenarioCanAdd>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HediffCompProperties_SunlightScald" MayRequire="mandrake.rm.environmentalhazards">
+        <severityPerDayInSunlight>1.0</severityPerDayInSunlight>
+        <severityPerDayShaded>-2.0</severityPerDayShaded>
+        <maxSeverity>1.0</maxSeverity>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>symbiotic</label>
+      </li>
+      <li>
+        <label>scalding</label>
+        <minSeverity>0.35</minSeverity>
+        <painOffset>0.10</painOffset>
+      </li>
+      <li>
+        <label>badly scalded</label>
+        <minSeverity>0.70</minSeverity>
+        <painOffset>0.25</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.75</postFactor>
+          </li>
+          <li>
+            <capacity>Sight</capacity>
+            <postFactor>0.80</postFactor>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SYMBIONT 4 — MYCOID. The Slime's export (the_slime.md): an INERT
+       marker here by design. This kit ships the hediff and the item that
+       grants it; the slimification-resistance EFFECT is read by the Slime's
+       own kit and is explicitly v2/other-ticket work ("ship the items, let
+       the Slime kit wire the effects"). No comps, no stat effects — adding
+       any here would be building the Slime's half of a mechanic nobody has
+       ruled on.
+       ══════════════════════════════════════════════════════════════════ -->
+  <HediffDef>
+    <defName>RM_Sym_Mycoid</defName>
+    <label>mycoid symbiont</label>
+    <description>A dense fungal mat colonizing the gut wall, grown specifically to be unpalatable to the things that dissolve people. Off the Rot it does nothing at all worth noticing; the trouble it is for is somewhere else entirely.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <defaultLabelColor>(0.80, 0.95, 0.70)</defaultLabelColor>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <scenarioCanAdd>true</scenarioCanAdd>
+    <stages>
+      <li>
+        <label>symbiotic</label>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

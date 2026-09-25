@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    ROT_PALE_TREE_1 — M8, "the pale tree" (design/Jawa/worldbuilding/biomes/kits/
+    rot_kit_spec.md §M8, ticket 8, owner card 4). A Royalty anima-tree reskin,
+    almost entirely XML: `RM_PaleTree` clones `Plant_TreeAnima`'s comp stack
+    (verified field-for-field via mcp__rimsage__get_def_details/read_csharp_symbol
+    2026-09-17 — no guessing) so a colonist can meditate at it and eventually link
+    a psylink from it. `RM_PaleMoss` is the tree's own glowing subplant (the
+    biome's law: biological light, not player-built lamps).
+
+    Card 4 RULED 2026-09-17 (reverses the M8 draft's one-entry/cap-1 list):
+    `requiredSubplantCountPerPsylinkLevel` is a TWO-entry list here, so the tree
+    caps a pawn's psylink at level 2 forever — "a real minor kit... not just a
+    door ajar." No power whitelist: declined by the same card, needs C#, not
+    built. Vanilla `Plant_TreeAnima` ships a SIX-entry list (level 6 cap); this
+    def differs from vanilla ONLY in that list's length, the subplant def, and
+    flavor text/graphics-reuse — every other field is the verified vanilla value.
+
+    Royalty-dependent content: both ThingDefs below carry
+    `MayRequire="Ludeon.RimWorld.Royalty"` directly on the def node (the standing,
+    working gate for an ordinary Defs XML entry — never `MayRequire` on a Patch
+    `<Operation>`, which is inert and was measured to kill a load 2026-09-17).
+    Loose without Royalty active, these two defs are simply skipped by the
+    loader; nothing else in RotSporeKit references them.
+
+    Wildsteam flavor is lore text only — no faction identifiers in the defNames
+    (naming law, design/NAMING_SCHEME_PLAN.md).
+
+    Art landed 2026-09-20: PaleMoss is rot_palemoss_v2, PaleTree is
+    rot_paletree_v3 (both ROT_FLORA_FAUNA_VERDICTS_1) — rot_paletree_v2 was
+    rejected on quality (flat achromatic render, no color fill) and
+    rut_paletree_v1 (ROT_ART_WAVE_1) stood in as the interim until v3 cleared
+    review. Neither texPath reuses the vanilla Royalty TreeAnima/Grass_Anima
+    art any more.
+
+    The vanilla `CompProperties_MeditationFocus` building-bonus block
+    (`FocusStrengthOffset_BuildingDefs` naming `NatureShrine_Small`/
+    `NatureShrine_Large`) is DROPPED here on purpose — those are Ideology
+    ideoBuilding defNames, and a defName lookup against a DLC this mod does not
+    require would be a load-order gamble. `focusTypes: Natural` alone (ticket's
+    "Natural unless a cloned focus def is clearly cheap — cosmetic call") is kept;
+    everything else about the anima tree's meditation math (statDef
+    MeditationFocusStrength, radius-based ArtificialBuildings offset) still
+    applies via the shared `MeditationFocusStrength` StatDef on this def's
+    statBases, unaffected by dropping the buildings sub-offset.
+  -->
+
+  <!-- ============== The pale tree — Wildsteam's Force door ============== -->
+  <ThingDef ParentName="TreeBase" MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>RM_PaleTree</defName>
+    <label>quellan tree</label>
+    <description>A bone-white tower of fungus grown in the shape of a tree, humming faintly at dusk, sacred to a wandering creed of the wild. Meditate long enough in its shade and you leave with a faint, tugging sense of the Force — and the unshakable feeling that you should find someone who actually knows what this is.</description>
+    <altitudeLayer>Building</altitudeLayer>
+    <blockWind>true</blockWind>
+    <canScatterOver>false</canScatterOver>
+    <category>Plant</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>True</drawGUIOverlay>
+    <fillPercent>0.25</fillPercent>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <shadowData>
+        <volume>(0.2,0.35,0.13)</volume>
+        <offset>(0,0,-0.25)</offset>
+      </shadowData>
+      <texPath>RotSporeKit/Things/Plant/PaleTree</texPath>
+    </graphicData>
+    <minifiedDef IsNull="True" />
+    <neverMultiSelect>True</neverMultiSelect>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <pathCostIgnoreRepeat>false</pathCostIgnoreRepeat>
+    <plant>
+      <fertilityMin>0.08</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <sowWork>4000</sowWork>
+      <harvestWork>800</harvestWork>
+      <visualSizeRange>4.32~6</visualSizeRange>
+      <topWindExposure>0.25</topWindExposure>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <sowMinSkill>0</sowMinSkill>
+      <sowResearchPrerequisites Inherit="False" />
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestYield>25</harvestYield>
+      <harvestTag>Wood</harvestTag>
+      <harvestMinGrowth>0.4</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <burnedThingDef>BurnedTree</burnedThingDef>
+      <choppedThingDef>ChoppedStump_Anima</choppedThingDef>
+      <smashedThingDef>SmashedStump_Anima</smashedThingDef>
+      <treeCategory>Super</treeCategory>
+      <sowTags Inherit="False" />
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>24</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <interferesWithRoof>true</interferesWithRoof>
+      <destroyedByFlooding>false</destroyedByFlooding>
+      <growDays>25</growDays>
+      <dieIfNoSunlight>False</dieIfNoSunlight>
+      <dieFromToxicFallout>False</dieFromToxicFallout>
+      <allowAutoCut>false</allowAutoCut>
+      <warnIfMarkedForCut>true</warnIfMarkedForCut>
+      <immatureGraphicPath>Things/Plant/TreeAnima_Immature</immatureGraphicPath>
+      <snowOverlayGraphicPath>Things/Plant/TreeAnima_Snowy</snowOverlayGraphicPath>
+      <immatureSnowOverlayGraphicPath>Things/Plant/TreeAnima_ImmatureSnowy</immatureSnowOverlayGraphicPath>
+    </plant>
+    <preventSkyfallersLandingOn>true</preventSkyfallersLandingOn>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <statBases>
+      <Flammability>0</Flammability>
+      <BeautyOutdoors>5</BeautyOutdoors>
+      <MaxHitPoints>400</MaxHitPoints>
+      <Nutrition>2</Nutrition>
+      <Mass>150</Mass>
+      <Beauty>5</Beauty>
+      <MeditationFocusStrength>0.28</MeditationFocusStrength>
+      <MeditationPlantGrowthOffset>0</MeditationPlantGrowthOffset>
+    </statBases>
+    <thingClass>Plant</thingClass>
+    <tickerType>Long</tickerType>
+    <useHitPoints>True</useHitPoints>
+    <comps>
+      <li Class="CompProperties_MeditationFocus">
+        <statDef>MeditationFocusStrength</statDef>
+        <focusTypes>
+          <li>Natural</li>
+        </focusTypes>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3.75</glowRadius>
+        <glowColor>(110,116,125,0)</glowColor>
+      </li>
+      <li Class="CompProperties_SpawnSubplant">
+        <!-- compClass is REQUIRED here: CompProperties_SpawnSubplant does not set it
+             in its ctor, so omitting it instantiates bare Verse.ThingComp and the
+             InitializeComps catch silently kills EVERY comp on the tree. -->
+        <compClass>CompSpawnSubplant</compClass>
+        <subplant>RM_PaleMoss</subplant>
+        <spawnSound>AnimaTreeProgress</spawnSound>
+      </li>
+      <li Class="CompProperties_Psylinkable">
+        <!-- Card 4 RULED 2026-09-17: TWO entries, caps psylink at level 2. -->
+        <requiredSubplantCountPerPsylinkLevel>
+          <li>20</li>
+          <li>20</li>
+        </requiredSubplantCountPerPsylinkLevel>
+        <requiredFocus>Natural</requiredFocus>
+        <linkSound>AnimaTreeLink</linkSound>
+        <enoughPlantsLetterLabel>The pale tree stirs</enoughPlantsLetterLabel>
+        <enoughPlantsLetterText>The pale moss around this tree has grown thick enough. A pawn who meditates here for long enough may sense the tree reaching back, and gain a faint psychic link to it.</enoughPlantsLetterText>
+      </li>
+      <li Class="CompProperties_GiveThoughtToAllMapPawnsOnDestroy">
+        <thought>AnimaScream</thought>
+        <message>The pale tree has died. Everyone on the map felt something break.</message>
+      </li>
+      <li Class="CompProperties_PlaySoundOnDestroy">
+        <sound>AnimaTreeScream</sound>
+      </li>
+      <li Class="CompProperties_SelfhealHitpoints">
+        <ticksPerHeal>2000</ticksPerHeal>
+      </li>
+      <li Class="CompProperties_ToggleDrawAffectedMeditationFoci" />
+      <li Class="CompProperties_PlantPreventCutting" />
+    </comps>
+  </ThingDef>
+
+  <!-- ============== Pale moss — the tree's own biological light ============== -->
+  <ThingDef ParentName="PlantBaseNonEdible" MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>RM_PaleMoss</defName>
+    <label>lumma moss</label>
+    <description>A faintly glowing moss that only takes root beneath a quellan tree, fed by whatever the tree is doing underground. It gives off a soft, cold, white-green light of its own — the pale forest's usual answer to a lamp.</description>
+    <altitudeLayer>LowPlant</altitudeLayer>
+    <category>Plant</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <texPath>RotSporeKit/Things/Plant/PaleMoss</texPath>
+    </graphicData>
+    <neverMultiSelect>True</neverMultiSelect>
+    <pathCostIgnoreRepeat>false</pathCostIgnoreRepeat>
+    <plant>
+      <fertilityMin>0.08</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <soundHarvesting>Harvest_Standard</soundHarvesting>
+      <soundHarvestFinish>Harvest_Standard_Finish</soundHarvestFinish>
+      <sowWork>170</sowWork>
+      <harvestWork>40</harvestWork>
+      <visualSizeRange>0.3~0.45</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <sowMinSkill>0</sowMinSkill>
+      <growDays>1</growDays>
+      <lifespanDaysPerGrowDays>60</lifespanDaysPerGrowDays>
+      <maxMeshCount>9</maxMeshCount>
+      <wildOrder>1</wildOrder>
+      <dieFromToxicFallout>False</dieFromToxicFallout>
+      <allowAutoCut>false</allowAutoCut>
+    </plant>
+    <selectable>False</selectable>
+    <statBases>
+      <Flammability>1.3</Flammability>
+      <BeautyOutdoors>1</BeautyOutdoors>
+      <MaxHitPoints>85</MaxHitPoints>
+    </statBases>
+    <thingClass>Plant</thingClass>
+    <tickerType>Long</tickerType>
+    <useHitPoints>True</useHitPoints>
+    <comps>
+      <!-- The one deliberate divergence from vanilla Plant_GrassAnima (which has
+           no comps at all): the biome's law is biological light, so the
+           SUBPLANT glows here rather than only the tree. -->
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.9</glowRadius>
+        <glowColor>(200,230,205,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

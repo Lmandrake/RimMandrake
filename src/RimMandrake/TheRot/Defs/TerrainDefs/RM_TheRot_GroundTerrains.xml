@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    RM_TheRot_GroundTerrains.xml    RimMandrake: The Rot
+
+    THEROT_RM_MOD_BUILD_1 §6/§7: the biome's own NATURAL ground, replacing the
+    donor Alpha Biomes terrains (AB_MycoticGrass / AB_MycoticSoilRich) the
+    RUT_TheRot twin used in <terrainsByFertility>. Field values (pathCost,
+    fertility, affordances, statBases) are copied from the donor's own source
+    (vendor/mod_sources/AlphaBiomes_src/1.6/Defs/TerrainDefs/Terrain_MycoticJungle.xml,
+    AB_MycoticGrass/AB_MycoticSoilRich) — measured, not guessed — so the biome
+    plays identically to before. Only the texture differs: the donor's own
+    AB_MycoticGrass/AB_RichMycoticDirt art is not ours to ship, so these reuse
+    this same mod's RotSporeKit terrain textures (MycelialMatting/MycelialSoil)
+    as an interim placeholder — same spirit as the worldmap placeholder PNG,
+    thematically the closest thing already in this mod (living mycelial
+    ground). Real dedicated ground art is OWED, not this ticket.
+  -->
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_TheRotGrass</defName>
+    <label>mycotic grass</label>
+    <description>Rot-floor turned over almost entirely to pale, threadlike fungal growth — not grass in the plant sense, but it carpets the ground the same way. Warm underfoot, faintly luminous by night.</description>
+    <texturePath>RotSporeKit/Terrains/MycelialMatting</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>315</renderPrecedence>
+    <pathCost>3</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <fertility>1</fertility>
+    <takeFootprints>true</takeFootprints>
+    <avoidWander>false</avoidWander>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_TheRotSoilRich</defName>
+    <label>rich mycotic soil</label>
+    <description>Dense, blackened soil laced through with mycelium — the richest ground the Rot has to offer, and the hungriest.</description>
+    <texturePath>RotSporeKit/Terrains/MycelialSoil</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>335</renderPrecedence>
+    <pathCost>2</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>1.2</fertility>
+    <takeFootprints>true</takeFootprints>
+  </TerrainDef>
+
+</Defs>

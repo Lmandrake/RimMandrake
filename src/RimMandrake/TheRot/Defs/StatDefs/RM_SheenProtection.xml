@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SheenProtection.xml                RotSporeKit - ROT_SHEEN_WEATHER_1 build pass
+
+  Apparel-summed protection stat for RM_SheenCoating's exposure clock (owner
+  card 5, RULED 2026-09-17: "gear only slows the exposure clock, never full
+  immunity"). Shape cribbed directly from
+  src/RimMandrake/EnvironmentalHazards/Defs/StatDefs/RM_WetBulbProtection.xml
+  (ParentName="ArmorRatingBase", maxValue overridden to 1, no StatPart_Stuff
+  since no vendored Stuff in this repo grants it - apparel carries it via a
+  flat statBases entry, same reasoning that file gives).
+
+  Summed across worn apparel by HazardTargeting.SumApparelStat
+  (RimMandrake.EnvironmentalHazards) rather than read as a single pawn stat -
+  an "Apparel"-category StatDef has no vanilla per-pawn aggregation
+  (ArmorUtility is the only vanilla reader, and it reads per-apparel-item).
+
+  The ported chitin spider helmet (RM_Apparel_ChitinSpiderHelmet,
+  ThingDefs_Apparel/RM_RotSporeKit_ChitinSpiderHelmet.xml) is the only
+  carrier this pass, at 0.75 - exactly the ruled 4x slowdown
+  (1 - 0.75 = 0.25 = 1/4 rate). RM_HediffComp_SheenExposure's own
+  minDriveFactor (0.05) is the structural backstop against a future item
+  stacking this toward 1.0 and reaching full immunity, which card 5 rules
+  out permanently.
+-->
+<Defs>
+
+  <StatDef ParentName="ArmorRatingBase">
+    <defName>RM_SheenProtection</defName>
+    <label>Sheen protection</label>
+    <labelForFullStatList>Sheen protection (armor stat)</labelForFullStatList>
+    <description>How much this garment slows the Sheen's exposure clock — sealed or oiled gear built to shed the Rot's own glossy sleet, not ordinary insulation. Ordinary rain gear does nothing against it; only apparel carrying this stat helps.
+
+Summed across every garment worn at once, then capped. It only ever slows the clock — no amount of gear stops it outright; only the Rot's own symbiosis does that.</description>
+    <maxValue>1</maxValue>
+    <parts>
+      <li Class="StatPart_Quality">
+        <factorAwful>0.6</factorAwful>
+        <factorPoor>0.8</factorPoor>
+        <factorNormal>1</factorNormal>
+        <factorGood>1.15</factorGood>
+        <factorExcellent>1.3</factorExcellent>
+        <factorMasterwork>1.45</factorMasterwork>
+        <factorLegendary>1.8</factorLegendary>
+      </li>
+    </parts>
+  </StatDef>
+
+</Defs>

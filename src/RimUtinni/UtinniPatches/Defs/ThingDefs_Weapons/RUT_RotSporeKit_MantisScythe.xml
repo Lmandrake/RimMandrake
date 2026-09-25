@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    THEROT_RM_MOD_BUILD_1 §6 / §3b: relocated from src/RimUtinni/RotSporeKit
+    (dissolved into mandrake.rm.therot) — this is the ONE genuine IP line in
+    all 151 former kit files (its costList names an RSW_ Star Wars port), so
+    it stays Utinni-tier rather than moving into the RM_-tier mod. Everything
+    else it references (RM_MushroomLog, RM_ToxicSpores, RM_StunningSpores,
+    the FungalMantisScythe texture) now lives in mandrake.rm.therot, hence
+    the new MayRequire below — this def previously needed no MayRequire
+    because those three were same-mod (mandrake.rut.rotsporekit); they no
+    longer are.
+
+    Ported from BiomesCaverns_src 1.6/Defs/Items/BMT_MantisScythes.xml (fungal variant
+    only — the crystal-claw variant belongs to BMT_CrystalCaverns, a different donor
+    biome, out of scope). costList's claw ingredient was repointed by
+    BMT_FAUNA_ABSORPTION_1 (2026-09-11) from the donor's BMT_FungalMantisClaw onto our
+    own RSW_FungalMantisClaw (MayRequire mandrake.rsw.swbestiary, harvested from
+    RSW_BiomesTeamPort_Races.xml's mantis): fauna admission for the mantis creature
+    itself still rides BIOME_FAUNA_ASSIGNMENT_SITTING_1, out of this item's scope.
+  -->
+
+  <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality" MayRequire="mandrake.rm.therot">
+    <defName>RUT_FungalMantisScythe</defName>
+    <label>fungal mantis scythe</label>
+    <description>A chitinous weapon made from the claws of a giant mantis. It excels at slashing at enemies while injecting two types of fungal spores into them.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/FungalMantisClaw/FungalMantisScythe</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+    </graphicData>
+    <techLevel>Medieval</techLevel>
+    <weaponTags>
+      <li>MedievalMeleeAdvanced</li>
+    </weaponTags>
+    <thingSetMakerTags>
+      <li>RewardStandardQualitySuper</li>
+    </thingSetMakerTags>
+    <statBases>
+      <WorkToMake>3000</WorkToMake>
+      <Mass>2</Mass>
+    </statBases>
+    <relicChance>2</relicChance>
+    <equippedAngleOffset>-65</equippedAngleOffset>
+    <costList>
+      <RSW_FungalMantisClaw MayRequire="mandrake.rsw.swbestiary">1</RSW_FungalMantisClaw>
+      <RM_MushroomLog>15</RM_MushroomLog>
+    </costList>
+    <tools>
+      <li>
+        <label>handle</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <extraMeleeDamages>
+          <li>
+            <def>RM_ToxicSpores</def>
+            <amount>5</amount>
+            <chance>0.75</chance>
+          </li>
+        </extraMeleeDamages>
+      </li>
+      <li>
+        <label>edge</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2.6</cooldownTime>
+        <extraMeleeDamages>
+          <li>
+            <def>RM_StunningSpores</def>
+            <amount>7</amount>
+            <chance>0.75</chance>
+          </li>
+        </extraMeleeDamages>
+      </li>
+    </tools>
+    <recipeMaker>
+      <skillRequirements>
+        <Crafting>5</Crafting>
+      </skillRequirements>
+      <displayPriority>420</displayPriority>
+    </recipeMaker>
+  </ThingDef>
+</Defs>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ROT_LIVE_PREPARATIONS_1, OWNER CARD 6 (RULED 2026-09-17). The whole
+    content side of "selling a part of yourself" is this one def.
+
+    THE MECHANISM IS CONTENT-BLIND AND THIS IS THE DATA. The C#
+    (RM_Patch_TreasureSaleConscience, mandrake.rm.environmentalhazards)
+    names no tea, no symbiont and no thought; it reads
+    RM_TreasureMarkerExtension off whatever was sold, matches the tag
+    against every RM_TreasureConscienceDef in the load order, and gives that
+    def's thought to colonists holding any of ITS carrierHediffs. Adding a
+    fourth symbiont or a fifth treasure is an XML edit here and on the item,
+    never a code change.
+
+    THE MARKER IS A modExtension, NOT A thingCategory (the ticket left the
+    choice open). A thingCategory is also a storage filter and a bill
+    ingredient filter: giving the teas a shared category purely to tag them
+    would silently reshape every stockpile and recipe filter that matches
+    parent categories, and a player reorganizing a freezer would be editing
+    the conscience. A DefModExtension has exactly one reader.
+
+    WHY THE WHOLE MayRequire BLOCK. This def's TYPE lives in
+    environmentalhazards, so the entire <RimMandrake...RM_TreasureConscienceDef>
+    element cannot resolve without that mod. Unlike a comp <li>, a top-level
+    def element has no MayRequire — so this file ships the def unguarded and
+    the def simply fails to parse (logged, harmless) if the mod is absent,
+    exactly as any content def naming a missing type does. The ITEMS
+    themselves stay loadable either way because their marker is an <li>
+    inside <modExtensions> carrying its own MayRequire.
+
+    minCountSold 1: card 6 does not carve out small sales, and the
+    treasures come in units of one-to-three anyway.
+  -->
+
+  <RimMandrake.EnvironmentalHazards.RM_TreasureConscienceDef>
+    <defName>RM_RotTreasureConscience</defName>
+    <treasureTag>RotTreasure</treasureTag>
+    <thought>RM_SoldRotTreasureMemory</thought>
+    <minCountSold>1</minCountSold>
+    <affectsAllColonists>true</affectsAllColonists>
+    <carrierHediffs>
+      <li>RM_Sym_Quickflesh</li>
+      <li>RM_Sym_Nightwake</li>
+      <li>RM_Sym_Sheenblood</li>
+      <li>RM_Sym_Mycoid</li>
+      <li>RM_SheenSymbiosis</li>
+    </carrierHediffs>
+  </RimMandrake.EnvironmentalHazards.RM_TreasureConscienceDef>
+
+</Defs>
