@@ -32,9 +32,11 @@ namespace RimMandrake.SeaShores
                 return;
             }
 
+            PlanetLayer layer = world.grid.Surface;
             int healed = 0;
+            int replaced = 0;
             int already = 0;
-            foreach (Tile tile in world.grid.Surface.Tiles)
+            foreach (Tile tile in layer.Tiles)
             {
                 if (tile?.PrimaryBiome == null || !tile.PrimaryBiome.canBuildBase)
                 {
@@ -44,22 +46,35 @@ namespace RimMandrake.SeaShores
                 {
                     continue;
                 }
-                // Anything already wearing a Coast-category mutator — vanilla
-                // Coast, Lakeshore, or our own from a previous load — is left
-                // exactly as it is. This is what makes the pass idempotent.
-                if (HasCoastMutator(tile))
+                // Anything already wearing a Coast-category mutator — Lakeshore,
+                // our own from a previous load, or vanilla Coast beside a real
+                // vanilla ocean — is left exactly as it is. But a stale vanilla
+                // Coast with NO vanilla-Ocean neighbour is not "already coastal":
+                // TileMutatorWorker_Coast would ask CoastAngleAt(tile, Ocean),
+                // get null, and lay vanilla water on an arbitrary side. Heal
+                // that one too — AddMutator's priority rule removes it for us.
+                bool staleVanillaCoast = tile.Mutators.Contains(TileMutatorDefOf.Coast)
+                    && !RM_Patch_TryAddMutator.HasVanillaOceanNeighbour(tile.tile, layer);
+                if (HasCoastMutator(tile) && !staleVanillaCoast)
                 {
                     already++;
                     continue;
                 }
                 tile.AddMutator(RM_SeaShoresDefOf.RM_SeaCoast);
-                healed++;
+                if (staleVanillaCoast)
+                {
+                    replaced++;
+                }
+                else
+                {
+                    healed++;
+                }
             }
 
-            if (healed > 0 || already > 0)
+            if (healed > 0 || replaced > 0 || already > 0)
             {
-                Log.Message("[RM_SeaShores] healed " + healed + " tiles with RM_SeaCoast ("
-                          + already + " already coastal)");
+                Log.Message("[RM_SeaShores] healed " + healed + " tiles with RM_SeaCoast, replaced "
+                          + replaced + " stale vanilla Coast (" + already + " already coastal)");
             }
         }
 
