@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T04:09:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T04:09:48Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -883,7 +883,7 @@ summary:  1. Duckboards (early tier): cheap brindeth-wood plank path (RMBrindeth
 prose:    infrastructure/state/items/SUMP_WALKWAYS_1.md
 
 ## SUMP_GASLIGHT_1 Sump gaslight: tar+acid reaction makes green gas (Helixien integration OK), warbling lamp light, flame statuary, natural flames, discovery-unlocked techs
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1282,6 +1282,16 @@ kind:     build
 blocked:  Owner ruled 2026-09-18: no race def is patched until BMT_FAUNA_ABSORPTION_1 renames the BMT_ rows
 summary:  (no items/ROT_FAUNA_KIN_WIRING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
+
+## SUMP_GASLIGHT_1 Sump gaslight: tar+acid reaction makes green gas (Helixien integration OK), warbling lamp light, flame statuary, natural flames, discovery-unlocked techs
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  Live proof needs bridge; bridge held by another live FOUNDRY window (FireHawk flight verify, alive <45min) at time of resume. Pieces 1-4 offline-complete, DLL deployed 2026-09-25T01:56Z per prior note; only live-verify steps (glow warble, statue quality scaling, research gates, ScrubTarred->Sumpgas, bench recipe) remain, all requiring bridge access.
+summary:  1. The reaction: tar + acid → green gas (Helixien-compatible). One acid, three
+prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
