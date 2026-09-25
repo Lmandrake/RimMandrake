@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.longshade</packageId>
+  <name>RimMandrake: Long Shade</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.environmentalhazards</li>
+  </loadAfter>
+  <description>LONGSHADE_RM_MOD_BUILD_1, Phase A row 2 of design/RimMandrake/biome_mod_architecture.md
+(parent BIOME_MOD_SPLIT_EXECUTION_1, governed by BIOME_PAINT_ONCE_AT_THE_END_1). The
+Long Shade — RM_LongShade — is a dayside desert band at a sun so low every stone
+throws a shadow four times its own height: nothing lives in the light and nothing
+survives leaving shelter, so life here is a sprint between islands of shade. Name
+ruled 2026-09-21 (biome_mod_architecture.md §7 Q2, the owner's own recommended
+row): "the Long Shade", off `RUT_Desert`'s sheet identity, design/Jawa/worldbuilding/
+biomes/desert.md (FROZEN, BIOME_FREEZE_FABLE_REVIEW_1).
+
+RM tier: this def names no other franchise or campaign and is playable standalone
+on any generated RimWorld planet, terrain + two native creatures + native flora
+only. It ships its own native wild fauna (JOE_Landopus, JOE_Cephalope — absorbed
+non-Star-Wars donor fauna, own defs) and native flora (RM_Vorrel, the desert's
+cycle plant, moved and renamed here from mandrake.rut.ashkarrflora per §7 Q8 —
+working name, see RM_Vorrel.xml's own header). RM_Leachmoss and RM_Venomvine
+(mandrake.rm.environmentalhazards, MayRequire-guarded) and RSW_Ultracactus and
+five more Star Wars-tier wild plants (mandrake.rsw.swbestiary, MayRequire-guarded)
+stay wired inline at their existing weights, same shape as every other RimMandrake
+biome mod's still-open wildPlants MayRequire gap (§7, item 4 — no
+WildPlants_&lt;Biome&gt;.xml patch route exists anywhere yet).
+
+Every `RSW_`/`SW_`-tier and campaign-tier creature (51 rows) is OUT of this def by
+design (§7 Q11/Q12: RimMandrake never names Star Wars) and rides
+src/RimUtinni/UtinniPatches/Patches/WildAnimals_LongShade.xml as a
+PatchOperationAdd onto RM_LongShade, MayRequire="mandrake.rsw.swbestiary" — this
+mod alone, with nothing else loaded, keeps its own two native predators plus
+whatever the Mod Settings screen leaves enabled from the shared shade-grid /
+contact-venom kits (mandrake.rm.creaturebehaviors, mandrake.rm.environmentalhazards
+— loadAfter only, no hard dependency; both already ship their own global toggles
+for those mechanics, so this mod adds no duplicate gate).
+
+The `RUT_Desert` twin in mandrake.rut.patches is FROZEN, not deleted — it carries
+the player's saved campaign world until the terminal paint (BIOME_PAINT_ONCE_AT_THE_END_1).
+Every content fix for the Long Shade lands here from now on.</description>
+</ModMetaData>
