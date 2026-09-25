@@ -1384,7 +1384,7 @@ def _dump_collisions(raw):
 def check_value_shape(op: ET.Element, cls: str, path: str,
                       targets: list, f: Findings) -> None:
     """
-    Compare the shape of <value>'s children against the children the target node
+    Compare the shape of <value>'s children against the shape the target field
     ALREADY has in the real Defs.
 
     RimWorld has two different child shapes and they are not interchangeable:
@@ -1404,6 +1404,28 @@ def check_value_shape(op: ET.Element, cls: str, path: str,
 
     Comparing against the live node is better than a hardcoded field list,
     because it stays correct for modded fields nobody has enumerated.
+
+    🔴 `targets` means something DIFFERENT depending on `cls`, and this function
+    must read the shape signal at the matching level or it compares the wrong
+    thing entirely:
+
+      PatchOperationAdd     xpath targets the FIELD itself (<tools>), so the
+                            shape signal is the field's own CHILDREN — one level
+                            down from `targets`.
+      PatchOperationInsert  xpath targets an existing SIBLING to insert next to
+                            (patch-operations.md: "inserts as a sibling, default
+                            before the target") — the field itself is never
+                            matched at all. The shape signal here is the
+                            sibling's OWN TAG: "li" for a plain-list entry, or
+                            the defName-styled tag for a dictionary-keyed one.
+
+    Reading Insert with the Add-shaped one-level-down logic compared a list
+    item's INTERNAL FIELDS (label, capacities, power, ...) against <value>, so
+    every ordinary "insert a new <li> tool before this one" patch — the
+    documented use case for Insert — was reported as ERROR "target node is
+    DICTIONARY-KEYED ... DISCARD THE WHOLE PARENT DEF", which is false: nothing
+    here is dictionary-keyed, patch-operations.md's own example, reproduced and
+    confirmed 2026-09-24.
     """
     val = op.find("value")
     if val is None or not targets:
@@ -1412,7 +1434,10 @@ def check_value_shape(op: ET.Element, cls: str, path: str,
     if not value_kids:
         return
 
-    existing = [c.tag for t in targets for c in t]
+    if cls == "PatchOperationInsert":
+        existing = [t.tag for t in targets if isinstance(t.tag, str)]
+    else:
+        existing = [c.tag for t in targets for c in t]
     if not existing:
         return  # nothing to compare against; can't judge
 
@@ -1420,18 +1445,23 @@ def check_value_shape(op: ET.Element, cls: str, path: str,
     value_is_list = all(k == "li" for k in value_kids)
 
     if target_is_list and not value_is_list:
+        what = ("the sibling being targeted is itself <li>" if cls == "PatchOperationInsert"
+                else "the target node's existing children are all <li>")
         f.error(
-            f"{path} ({cls}): value shape mismatch. The target node's existing "
-            f"children are all <li> (a plain list), but <value> supplies "
-            f"{sorted(set(value_kids))}. Wrap each entry in <li>.")
+            f"{path} ({cls}): value shape mismatch. {what[0].upper()}{what[1:]} "
+            f"(a plain list), but <value> supplies {sorted(set(value_kids))}. "
+            f"Wrap each entry in <li>.")
     elif not target_is_list and value_is_list:
+        what = ("the sibling being targeted is itself named after a def "
+                f"({', '.join(sorted(set(existing))[:3])})" if cls == "PatchOperationInsert"
+                else "the target node's existing children are named after defs "
+                f"(e.g. {', '.join(sorted(set(existing))[:3])})")
         f.error(
-            f"{path} ({cls}): value shape mismatch. The target node is "
-            f"DICTIONARY-KEYED — its existing children are named after defs "
-            f"(e.g. {', '.join(sorted(set(existing))[:3])}) — but <value> uses "
-            f"<li>. RimWorld will look for a def literally named 'li', fail to "
-            f"resolve it, and DISCARD THE WHOLE PARENT DEF. Write "
-            f"<DefName>value</DefName> instead of <li>.")
+            f"{path} ({cls}): value shape mismatch. The target field is "
+            f"DICTIONARY-KEYED — {what} — but <value> uses <li>. RimWorld will "
+            f"look for a def literally named 'li', fail to resolve it, and "
+            f"DISCARD THE WHOLE PARENT DEF. Write <DefName>value</DefName> "
+            f"instead of <li>.")
 
 
 # --------------------------------------------------------------------------
