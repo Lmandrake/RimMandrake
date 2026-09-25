@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  🔴 FROZEN 2026-09-24 — carrying the world until the terminal paint; content lives in
+  `mandrake.rm.nightsideice`; do not edit here.
+
+  Phase A step 3 of design/RimMandrake/biome_mod_architecture.md (item
+  NIGHTSIDEICE_RM_MOD_BUILD_1). This def is what the player's saved world actually carries
+  until Phase B repaints the planet onto `RM_NightsideIce`; deleting it before then destroys
+  the save, so it stays as it is. From this moment every CONTENT fix for the Nightside Ice
+  lands in `mandrake.rm.nightsideice` only, never here. The Star Wars fauna row
+  (RSW_CaveLemming) this def still carries inline is untouched by design — this file is
+  frozen byte-for-byte below this banner, not re-authored to match the RM_ tier's Q11a split.
+-->
+<Defs>
+
+  <!--
+    RUT_NightsideIce                             UtinniPatches · authored 2026-09-07
+    NIGHTSIDE_ICE_DEF_1. Full sheet: design/Jawa/worldbuilding/biomes/nightside_ice.md.
+
+    Own def, not a patch (owner's ruling, §0 of the sheet). Vanilla IceSheet carries an
+    arctic zoo, coastal walrus/penguin, salmon/cod, snow at real commonality with
+    DLC-gated blizzards, and pond terrainPatchMakers — patching all of that out across
+    MayRequire branches is silent-failure territory, so this restates IceSheet's SHAPE
+    directly and overrides every list to empty, per §6's hard bans.
+
+    🔴 NOT ParentName="IceSheet". Verified against the real engine (ilprobe,
+    Verse.XmlInheritance.TryRegister/GetBestParentFor): a ParentName only resolves
+    against another def's Name="..." XML attribute, registered into a nodesByName
+    dictionary — never against defName as a fallback. Vanilla IceSheet's own tag
+    (Data/Core/Defs/BiomeDefs/Biomes_Cold.xml) has no Name= attribute at all, so
+    ParentName="IceSheet" would silently fail to resolve (GetBestParentFor finds
+    nothing in nodesByName for "IceSheet"). This is a real, engine-verified trap, not a
+    style choice — restating the shape below is the only way to actually inherit it.
+
+    Fields kept from vanilla IceSheet, verbatim: workerClass, allowFarmingCamps,
+    allowRoads, allowRivers, isExtremeBiome, plantDensity, hasVirtualPlants, forageability,
+    movementDifficulty, lakeBeachTerrain/mudTerrain, terrainsByFertility, texture
+    (placeholder — the sheet's "dirty ice, not blue" art is separate, unowed work).
+    Vanilla's own closing line survives as this def's epigraph (sheet §0: "Vanilla's one
+    line survives as this sheet's epigraph"), quoted verbatim in the description below.
+
+    Overridden to empty/zero, per §6's hard bans (no exceptions, no MayRequire branches
+    to carry across — there is simply nothing here):
+      wildAnimals, coastalWildAnimals, allowedPackAnimals — the arctic zoo is evicted
+        (⛔ "no icy dayside analogs", ⛔ "no ordinary animal silhouettes at all").
+      fishTypes, maxFishPopulation — ⛔ "no liquid water anywhere, in any form, ever".
+      terrainPatchMakers — DROPPED entirely (not just emptied): vanilla's block generates
+        WaterShallow ponds via perlin threshold, which is exactly the liquid-water ban.
+      animalDensity — was 0 while wildAnimals was empty by law; restored to the donor's
+        0.2 on 2026-09-09 now that the roster landed six residents (see the wildAnimals
+        block below). §6 bans the arctic ZOO, not density itself.
+      soundsAmbient — DROPPED (was Ambient_Wind_Desolate): §5/§6 rule the interior dead
+        still, wind only at the margins as drainage the ice sheet never feels; a wind
+        ambient loop on the interior contradicts its own sheet.
+      baseWeatherCommonalities — Clear only. ⛔ §6: "no precipitation on the interior" (no
+        snow, no blizzard, no rain, no thunderstorm) and ⛔ "no wind on the interior" (no
+        Windy). "Aurora" is the sheet's narrative gloss on Clear on this hemisphere, not a
+        distinct WeatherDef — none named "Aurora" exists in the live def dump. The margin
+        events this table can't express (ablation drift, rime-fall, reconnection storm,
+        thaw pulse) are separately owed as incident defs (sheet's Owed list).
+
+    diseases — judgment call, recorded (the item text's "disease list per the freeze
+    review" does not resolve to any file this pass could find — grepped design/Jawa for
+    "freeze review", no hits). Kept Disease_Flu/Disease_Plague/Disease_OrganDecay (human
+    conditions, not animal-vectored). Dropped Disease_AnimalFlu/Disease_AnimalPlague (no
+    animal population to originate them — wildAnimals is empty) and the two Anomaly
+    mechanite diseases (Fibrous/SensoryMechanites are shambler/Anomaly-lore diseases with
+    no established connection to this sheet). Flag for the owner if a different list was
+    meant.
+
+    Still owed, explicitly NOT this item's scope (sheet's own Owed list): the 802-tile
+    paint under HORRORWASTES_BIOME_DISSOLVE_1's mosaic (needs an owner-reviewed
+    worldview.py render first — NOT done here); registering the def with whatever world
+    tool needs an explicit biome list (C# bridge tools resolve BiomeDef by name via
+    DefDatabase lookup at paint time, no hardcoded engine list —
+    if a Python-side census/CSV needs this name added, that is part of the paint pass,
+    not this one); tunnelers/icy insects roster and art; the equivalence-table incident
+    defs (thaw pulse, calving delivery, the lost soul, rime-fall/ablation, the Dark
+    drifting over); savegame re-freeze.
+  -->
+
+  <BiomeDef>
+    <defName>RUT_NightsideIce</defName>
+    <label>the Nightside Ice</label>
+    <description>Dirty white ice, geologically young and impure, on the highest ground of the deep night. It flows, it fractures, and what it swallowed it eventually gives back. There is no soil for plants to grow in. The only animals here are migrating to somewhere else -- or badly lost.</description>
+    <workerClass>BiomeWorker_IceSheet</workerClass>
+    <settleWarning>The nightside ice is extremely inhospitable. There is no soil for plants, almost no animal life, and no warmth anywhere but what you bring. Long-term survival is a challenge.</settleWarning>
+    <!-- allowRoads TRUE by owner ruling 2026-09-07: "All of our biomes should allow roads." 91 authored road links crossed RUT_NightsideIce and were invisible - the links were structurally valid (asymmetric 0, nonAdjacent 0), the biome simply refused to draw them. -->
+    <allowRoads>true</allowRoads>
+    <allowRivers>false</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <isExtremeBiome>true</isExtremeBiome>
+    <!-- animalDensity 0 -> 0.2, DESIGNED interim (2026-09-09 fix wave,
+         BIOME_FAUNA_ASSIGNMENT_SITTING_1). At 0 the six landed residents could never
+         spawn however high their commonality. nightside_ice.md §4: "Animals and plants
+         are nearly nonexistent; the population is mostly corpses and dying things" —
+         near-empty is the doctrine, so this matches vanilla IceSheet's 0.2 (MEASURED
+         from the def dump) and no higher; the roster's own commonalities (0.002-0.004)
+         carry the scarcity. ⚠️ A quicktest tune is OWED: this number has never been
+         watched in play. Live scale for reference (MEASURED): IceSheet 0.2,
+         SeaIce 0.1, Desert 0.4, ExtremeDesert 0.1, AridShrubland 1.8. -->
+    <animalDensity>0.2</animalDensity>
+    <plantDensity>0</plantDensity>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <forageability>0</forageability>
+    <movementDifficulty>1.5</movementDifficulty>
+    <lakeBeachTerrain>Ice</lakeBeachTerrain>
+    <mudTerrain>Ice</mudTerrain>
+    <texture>World/Biomes/IceSheet</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Ice</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>100</Clear>
+      <Fog>0</Fog>
+      <Rain>0</Rain>
+      <DryThunderstorm>0</DryThunderstorm>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">0</GrayPall>
+      <Windy MayRequire="Ludeon.RimWorld.Odyssey">0</Windy>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
+      <Blizzard MayRequire="Ludeon.RimWorld.Odyssey">0</Blizzard>
+    </baseWeatherCommonalities>
+    <!-- WILD ANIMALS, landed 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1.
+         Source: design/Jawa/worldbuilding/biomes/rosters/nightside_ice.json (owner
+         cards 2026-09-09: "~87% eviction ACCEPTED, near-empty is correct"). Six
+         shelf keeps, every one a slow (spd < 2.0, MEASURED) landform body chosen
+         against §4/§6's no-eyes / no-glow / no-ordinary-silhouette bans. The comment
+         above that says this list ships EMPTY described the 2026-09-07 authoring
+         pass; the roster supersedes it.
+
+         🔴 THE NODE NAME IS THE ANIMAL, THE NODE TEXT IS THE COMMONALITY.
+         BiomeAnimalRecord.LoadDataFromXmlCustom reads xmlRoot.Name for the animal and
+         xmlRoot.FirstChild.Value for the number, so an <li> wrapper makes FirstChild
+         an ELEMENT whose .Value is null -> ArgumentNullException -> the WHOLE BiomeDef
+         is discarded, silently. That shipped once and cost 26 biomes.
+
+         ⚠️ animalDensity was 0 on this def (set by the 2026-09-07 pass, when the list
+         was empty by law), which meant these six could never spawn however high their
+         commonality. CLOSED 2026-09-09: set to 0.2 above as a DESIGNED interim, sized
+         to vanilla IceSheet, with a quicktest tune owed. -->
+    <wildAnimals>
+      <AA_BoulderMit MayRequire="sarg.alphaanimals">0.004</AA_BoulderMit>       <!-- boulder mit - giant, import -->
+      <AA_SummitCrab MayRequire="sarg.alphaanimals">0.004</AA_SummitCrab>       <!-- summit crab - landform-giant, import -->
+      <AA_RedGoo MayRequire="sarg.alphaanimals">0.003</AA_RedGoo>               <!-- red goo - small, import -->
+      <AA_Terramorph MayRequire="sarg.alphaanimals">0.003</AA_Terramorph>       <!-- terramorph - medium, import -->
+      <AA_Slurrypede MayRequire="sarg.alphaanimals">0.002</AA_Slurrypede>       <!-- slurrypede - medium, import -->
+      <AA_TetraSlug MayRequire="sarg.alphaanimals">0.002</AA_TetraSlug>         <!-- tetra slug - giant, import -->
+      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
+           16.7% small against five giant/medium imports. This addition is already an
+           OWNER-RULED "native visitor" in this exact biome's fauna list
+           (design/Jawa/worldbuilding/biomes/rosters/nightside_ice.json "fauna", band
+           "visitor", commonality 0.03) that was never wired — not invented. AA_ShockGoat
+           is bodySize 0.65, small. The roster's other three unwired visitors (Tauntaun
+           bodySize 1.0, Wampa bodySize 6, both LARGE) are left out on purpose: adding
+           them would move the ratio the wrong way.
+
+           🔴 AMENDED 2026-09-21 — the cave lemming below BREAKS that ratio ON PURPOSE, on
+           the owner's explicit ruling, and he was shown the cost before choosing.
+           RSW_CaveLemming is bodySize 1.0 (LARGE; its own description says "this big,
+           solitary herbivore", so the size is intended, not a porting error) — the same
+           size as the Tauntaun this comment excludes. At the roster's stated 0.03 it takes
+           this biome from ~69% to ~42% small-weighted commonality, below both the 50% and
+           the proposed 60% floor. He picked 0.03 over a compensating 0.003.
+           ⛔ So this is NOT a pyramid defect to fix: do not lower it, and do not remove it
+           to make ECOSYSTEM_PYRAMID_LAW_1 pass. The remedy runs the other way — this biome
+           has no small natives of its own, only giant imports, and owes some. -->
+      <AA_ShockGoat MayRequire="sarg.alphaanimals">0.03</AA_ShockGoat>  <!-- shock goat - small native visitor, ruled -->
+      <RSW_CaveLemming MayRequire="mandrake.rsw.swbestiary">0.03</RSW_CaveLemming>  <!-- mahllik - big hopper, LARGE, owner-ruled 2026-09-21; renamed 2026-09-24 (NONCANON_BEAST_RENAME_1 batch 3b) - thermal-only sensing refashion still owed -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <allowedPackAnimals />
+  </BiomeDef>
+
+</Defs>
