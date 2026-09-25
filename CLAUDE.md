@@ -636,6 +636,11 @@ and re-applies, and if a peer holds `index.lock` the re-apply fails — that era
 edits 2026-09-25 07:54 with nothing in the reflog. The same hook refuses whole-tree
 `reset --hard`/`checkout .`/`restore .`/pathless `stash`/`--autostash`/`clean -f` here.
 
+🔴 **A committed mod DLL carries a `.srchash` sidecar and must be pushed together with it**
+(`DLL_SOURCE_STAMP_GUARD_1`, `src/Directory.Build.targets` + `src/RimMandrake/Utils/dll_source_stamp.py`) —
+after any merge touching a mod's `Source/`, rebuild in the merge worktree; never pick a
+side's DLL. Enforced on `git push` by `.claude/hooks/block_dll_source_mismatch.py`.
+
 🔴 **A subagent that runs `git reset --hard HEAD` destroys THIS window's staged work** — one
 tree, one index. It ate 3 staged files 2026-09-18. Recovery: `git add` writes blobs before any
 commit, so `git fsck --unreachable` + `git cat-file -p <sha>` restores them byte-exact. Brief

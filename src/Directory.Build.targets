@@ -1,0 +1,104 @@
+<Project>
+
+  <!--
+    DLL_SOURCE_STAMP_GUARD_1 — see CLAUDE.md's Git section.
+
+    MSBuild auto-imports a Directory.Build.targets found by walking UP from a
+    project file's directory, stopping at the first one found. This file sits
+    at src/, so it reaches every .csproj below it at any depth (verified
+    2026-09-25: no other Directory.Build.props/.targets exists anywhere in the
+    repo). It is imported LAST, after the SDK's own targets, which is why
+    $(OutputPath)/$(TargetPath) are already resolved when this target runs.
+
+    WHY: 80 built DLLs are committed under src/**/Assemblies/. A DLL can't
+    merge, so a conflict is usually resolved by keeping one branch's DLL —
+    which silently drops the other branch's C# from the build (measured
+    2026-09-25: five merges that day each carried a stale/rebuilt
+    RimMandrake.CreatureBehaviors.dll). This target makes that divergence
+    detectable: after every Build, it hashes every @(Compile) item (SHA256,
+    via MSBuild's own GetFileHash task — no external hashing tool) and writes
+    $(TargetPath).srchash beside the DLL:
+
+        # project: <csproj path relative to src/, forward slashes>
+        <sha256-lower> <path relative to the project file, forward slashes>
+        ... (one line per Compile item, sorted)
+
+    src/RimMandrake/Utils/dll_source_stamp.py recomputes the same hashes from
+    a COMMITTED tree and compares; .claude/hooks/block_dll_source_mismatch.py
+    runs it on every `git push` over the commits being pushed.
+
+    SCOPE: only projects whose OutputPath lands under a folder literally named
+    "Assemblies" — measured 2026-09-25, that is every shipping mod project but
+    one. SelfTest projects (BaseOutputPath bin\, never Assemblies\) and
+    JawaBench.BridgeTools (OutputPath ..\artifacts\..., which
+    src/RimMandrake/bridgetools/artifacts/ .gitignores outright) never commit
+    a DLL, so they get no stamp — there is nothing for one to protect.
+  -->
+
+  <UsingTask TaskName="RimMandrakeWriteSourceHashStamp"
+             TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <StampPath ParameterType="System.String" Required="true" />
+      <ProjectRel ParameterType="System.String" Required="true" />
+      <Paths ParameterType="System.String[]" Required="true" />
+      <Hashes ParameterType="System.String[]" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var lines = new string[Paths.Length];
+        for (int i = 0; i < Paths.Length; i++)
+        {
+            var relPath = Paths[i].Replace('\\', '/');
+            var hash = Hashes[i].ToLowerInvariant();
+            lines[i] = hash + " " + relPath;
+        }
+        Array.Sort(lines, StringComparer.Ordinal);
+
+        var outLines = new string[lines.Length + 1];
+        outLines[0] = "# project: " + ProjectRel;
+        Array.Copy(lines, 0, outLines, 1, lines.Length);
+
+        File.WriteAllLines(StampPath, outLines);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="RimMandrakeWriteDllSourceHashStamp"
+          AfterTargets="Build"
+          Condition="$(OutputPath.Contains('Assemblies'))">
+
+    <!--
+      @(Compile) at this point also holds items MSBuild itself injected AFTER
+      the default-glob excludes ran — measured 2026-09-25 on Oracle.csproj (a
+      default-glob project): CoreGenerateAssemblyInfo adds
+      "obj\Release\...AssemblyAttributes.cs", a generated, uncommitted file.
+      Strip anything under the intermediate/output dirs before hashing, or
+      the stamp would name a file dll_source_stamp.py (which walks the
+      COMMITTED tree) can never find.
+    -->
+    <ItemGroup>
+      <_RimMandrakeCompileForHash Include="@(Compile)"
+          Condition="!$([System.String]::Copy('%(FullPath)').Replace('\', '/').ToLowerInvariant().Contains('/obj/'))
+                     and !$([System.String]::Copy('%(FullPath)').Replace('\', '/').ToLowerInvariant().Contains('/bin/'))" />
+    </ItemGroup>
+
+    <GetFileHash Files="@(_RimMandrakeCompileForHash)" Algorithm="SHA256">
+      <Output TaskParameter="Items" ItemName="_RimMandrakeSrcHashResult" />
+    </GetFileHash>
+
+    <PropertyGroup>
+      <_RimMandrakeSrcHashProjectRel>$([MSBuild]::MakeRelative('$(MSBuildThisFileDirectory)', '$(MSBuildProjectFullPath)').Replace('\', '/'))</_RimMandrakeSrcHashProjectRel>
+    </PropertyGroup>
+
+    <RimMandrakeWriteSourceHashStamp
+        StampPath="$(TargetPath).srchash"
+        ProjectRel="$(_RimMandrakeSrcHashProjectRel)"
+        Paths="@(_RimMandrakeSrcHashResult)"
+        Hashes="@(_RimMandrakeSrcHashResult->'%(FileHash)')" />
+
+  </Target>
+
+</Project>
