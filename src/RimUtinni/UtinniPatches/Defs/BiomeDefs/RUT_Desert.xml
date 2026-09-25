@@ -14,7 +14,7 @@
   UtinniPatches/Patches/WildAnimals_LongShade.xml, the way the Pyrelands and the
   Greentide already do it. `JOE_Landopus`/`JOE_Cephalope` (this file's own native rows)
   stay cast inline on the new def too, MayRequire-guarded there since they now cross a
-  mod boundary. `RUT_Vorrel` (the plant, below) moved and was renamed `RM_Vorrel` per
+  mod boundary. `RUT_Vorrel` (the plant; its row here dangled and was removed 2026-09-25) moved and was renamed `RM_Vorrel` per
   §7 Q8 — its own five files used to live in `mandrake.rut.ashkarrflora`, now in
   `mandrake.rm.longshade`.
 -->
@@ -296,7 +296,6 @@
     <wildPlants>
       <RM_Leachmoss MayRequire="mandrake.rm.environmentalhazards">1.5</RM_Leachmoss>  <!-- leachmoss: the fertile ground's fastest claimant, DESERT_LEACHMOSS_BUILD_1. Highest weight in this list on purpose (design §2b) — Gravel/Soil only (fertilityMin 0.5, never Sand), so it wins most rolls on ground it can take without ever competing with the ultracactus for sand. -->
       <RSW_Ultracactus MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Ultracactus>  <!-- ultracactus: the buried canopy holding the open ground, DESERT_SIGNATURE_FLORA_1 -->
-      <RUT_Vorrel MayRequire="mandrake.rut.ashkarrflora">0.1</RUT_Vorrel>  <!-- the cycle plant, DESERT_STAGGERSEED_BUILD_1. Lowest weight of the three desert plants on purpose: §4b puts it in "the protected water pockets" only, and its own fertilityMin 0.45 already keeps it off Sand, so this weight sets how thickly it fills the pockets it CAN take, not how far it spreads. Working name — see the header. -->
       <RM_Venomvine MayRequire="mandrake.rm.environmentalhazards">0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, §4b "the shade plants, which defend" — VENOMVINE_CONTACT_VENOM_BUILD_1. fertilityMin 0.5 already keeps it off Sand (the ultracactus's ground), so this weight sets how thickly it takes the patch ground it CAN reach, not how far it spreads. -->
       <RSW_SurraGrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_SurraGrass>  <!-- surra grass -->
       <RSW_Plant_Chakroot_Wild MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
