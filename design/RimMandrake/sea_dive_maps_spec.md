@@ -5,8 +5,9 @@ diving opens a small underwater map where each sea's floor cast (the BiomeDef's 
 actually spawns, one per sea, shared machinery across the four terminal seas (`RM_TheScald`,
 `RM_GreySea`, `RM_TwilightSea`, `RM_PropaneLake`, all in `src/RimMandrake/TerminalBiomes`).
 
-Status: RULED design, 2026-09-25 (§7), with the Scald floor worked in full (§7a rulings, §8
-design, §8.8 open choices). Nothing built. Engine claims are labelled **MEASURED** (read in the
+Status: RULED design, 2026-09-25 (§7), with the Scald floor worked in full (§7a/§7b rulings,
+§8 design; no open questions remain here — gear's are in `exposure_gear_matrix_spec.md` §6).
+Nothing built. Engine claims are labelled **MEASURED** (read in the
 1.6 decompiled source via RimSage this sitting, symbol cited) or **UNMEASURED**.
 
 ## 0. Read first — what already exists (do not re-invent)
@@ -270,9 +271,10 @@ hediff comp:
    Accrues while unroofed-in-the-murk, heals on the surface or under an air-bell (any sub-roof
    cell). Stages: pressure headache → nausea/consciousness → collapse; severity per day from
    `RM_DiveMapExtension.exposureDays` so the Twilight is long and the Propane short. The comp's
-   apparel-stat slowdown already exists: a **dive suit** apparel (one def, RM-tier, no franchise)
-   carries it — the only gear item this spec adds. ⛔ No item ever zeroes it (Scald ban 3, Grey
-   ban 1 spirit).
+   apparel-stat slowdown already exists; its `protectionStat` is the **liquid hook of the no-air
+   axis** in `exposure_gear_matrix_spec.md` §3 (§7b-24) — this spec adds **no gear def**; the
+   matrix's cheap/moderate/deluxe liquid cells are what slows the clock. ⛔ No item ever zeroes
+   it (Scald ban 3, Grey ban 1 spirit).
 2. **Temperature** — the pocket map's own `temperature` (§2.1): Scald 55 °C, Grey 4 °C, Twilight
    14 °C, Propane −79 °C. Heatstroke/hypothermia are vanilla and already scale with apparel.
 3. **Terrain** — Scald heat zones (`RM_ScaldFloorHot` 3 / `RM_ScaldFloorScalding` 8, §8.1) via
@@ -334,8 +336,8 @@ All-off degrades to today's shore-job-only diving. No worldgen-affecting toggle 
    the roofed edge?** If no, §2.5 is wrong and the mutator flag is the first suspect. Ships: a
    walkable, populated Scald floor. Same test proves the ascent: surface with a hauled item.
 3. **The clock.** `RM_DeepExposure`, four murk weathers + held condition (the Scald's carries
-   no visibility fields — §8.5), the dive suit (on the Scald the steam ladder's
-   `RM_ScaldProtection` is the suit stat — §8.6), per-sea temperatures. Ships: diving costs
+   no visibility fields — §8.5), the liquid-axis `protectionStat` and the matrix's cheap liquid
+   cell (`exposure_gear_matrix_spec.md` §5 step 1), per-sea temperatures. Ships: diving costs
    something.
 4. **Scald dressing** — expanded into **§8.7 S1–S9** (zones + chimneys, walkers + Crowncarpet
    trail, nodules, guardians + swarms, sando passage, wreckage, the Rakatan vessel, settings,
@@ -395,18 +397,44 @@ looking at the floor before the next. Art owed per step is filed as it appears �
     (Beskar, Doonium, Duranium) exist before choosing — **open**, and it belongs to
     `MINERALS_WHERE_THEY_BELONG_1`, not this spec.
 
-Open questions for the owner are in §8.8; everything else in this spec is ruled.
+#### 7b. The Scald floor, second sitting — owner, 2026-09-25 16:31–16:47 (`SEA_DIVE_MAPS_BUILD_1` notes)
+
+16. **Names** (typed: *"bottom walkers: The Mighty Vu'uul. The glowing swirl: Ullium. The
+    guardians: Askirath. The scalding swarm: Feen."*) — defNames in the `RM_` tier: `RM_Vuuul`
+    (label *vu'uul*, lore name *the Mighty Vu'uul*), `RM_Ullium`, `RM_Askirath`, `RM_Feen`.
+17. **Heat gate is SOFT** (card): zones burn, the gear decides how long you last. No hard wall
+    anywhere, including zone 3.
+18. **Chimney Iron smelts to steel only** (card) — not a stuff, not its own metal.
+19. **Floor droids** (card + typed): **unbranded ancient machines on every Scald floor** (free
+    tier), **Rakatan-branded only at the wreck**, **never hostile**. Typed rider: *"remember
+    droids are somewhat modern (check the canon for each)"* ⇒ every droid chassis used must be
+    era-plausible on Wookieepedia (§8.4 carries the check).
+20. **The wreck hex is hidden until the first dive, then becomes a named landmark** (card).
+21. **Wreck extras: a degraded shield emitter + a sealed archive** (card; no navigation core).
+    Turret + batteries stay.
+22. **Shimmer band AND marine snow are both v1** (card).
+23. **Scaldpearl = sale/beauty + jewellery via `kikohi.jewelry`** (card) — not a Deepfire catalyst.
+24. **Gear is a two-axis matrix** (typed, verbatim: *"There's vac/liquid (no air), extreme
+    heat/cold (temp threat). Those are the two axes. Space suits are well known. Locals make
+    their own. Vary them along that axis. Cheap tier, moderate tier, then delux set (all the way
+    to space)."*) — designed in **`exposure_gear_matrix_spec.md`**; it supersedes "the Scald ladder
+    IS the dive suit" and the one-def dive suit of §4.
+
+Everything in this spec is ruled. The gear matrix's own open questions live in
+`exposure_gear_matrix_spec.md` §6.
 
 ## 8. The Scald floor — the worked design
 
-Everything below is Scald-only. Rulings are §7a; engine claims carry the §2 MEASURED/UNMEASURED
-labels; names of new defs are **proposed** (invented words in the noohm/shulla register — free to
-live in the `RM_` tier by Q11a) and numbers are INVENTED until a live sitting tunes them. Tier
-line: the walker, its swirl, the guardians, the swarms, the chimneys, the nodules and every
-mineral name here are **invented → `RM_` (TerminalBiomes / the Scald's own mod)**. The Rakatan
-vessel, its turret and batteries, and the dormant droids are **canon IP → `RUT_` in a Utinni
-mod**, added to the floor by patch exactly as `WildAnimals_TheScald.xml` adds the sando today.
-The free Scald floor must read as complete without them (Q11a: *"rich enough to stand alone"*).
+Everything below is Scald-only. Rulings are §7a/§7b; engine claims carry the §2
+MEASURED/UNMEASURED labels; the four creature names are the owner's (§7b-16), other new def
+names are **proposed** (invented words — free to live in the `RM_` tier by Q11a) and numbers
+are INVENTED until a live sitting tunes them. Tier line: the walker, its swirl, the guardians,
+the swarms, the chimneys, the nodules, the unbranded ancient machines and every mineral name
+here are **invented → `RM_` (TerminalBiomes / the Scald's own mod)**. The Rakatan vessel, its
+turret, batteries, shield emitter and archive, and the Rakatan-branded droids are **canon IP →
+`RUT_` in a Utinni mod**, added to the floor by patch exactly as `WildAnimals_TheScald.xml` adds
+the sando today. The free Scald floor must read as complete without them (Q11a: *"rich enough
+to stand alone"*).
 
 ### 8.1 Floor layout and heat zones
 
@@ -433,13 +461,13 @@ heat disc: `RM_ThinkNode_SeekHeatEdge` (new, small) picks a random `RM_ScaldFloo
 adjacent to a Plain cell and wanders there; the herds therefore ring the fields, which is where
 the mats appear and where the guardians are. Nothing walks the cores but swarms.
 
-**How the zones gate on the suit (§7a-13, the card).** The gate is the numbers already ruled in
-`scald_steam_and_hazards_spec.md` §5: burn is vanilla `Burn` damage, `Burn` has `armorCategory
-Heat`, so **`ArmorRating_Heat` on worn apparel is the suit rating** — wrap 0.30 opens zone 2 as
-a dash, boil-suit 0.55 / vacsuit makes zone 2 workable and zone 3 a dash, Royal Rind sits between.
-No item zeroes it (Ban 3: the 8-damage core burns through everything). A hard wall ("cannot
-enter without rating ≥ X") is **not** built — it would be a rule where the terrain already is
-one — but see §8.8 Q2 if the owner meant a hard gate.
+**How the zones gate on the gear (§7a-13, §7b-17: SOFT — ruled).** Burn is vanilla `Burn`
+damage, `Burn` has `armorCategory Heat`, so **`ArmorRating_Heat` on worn apparel is the heat
+rating** — the temperature-axis "contact" hook of `exposure_gear_matrix_spec.md` §3. Cheap heat
+gear (the wrap, 0.30) opens zone 2 as a dash; moderate (boil-suit 0.55, rind 0.45) makes zone 2
+workable and zone 3 a dash; deluxe (vacsuit 0.66, MEASURED) makes zone 3 a short job. No item
+zeroes it (Ban 3: the 8-damage core burns through everything). No hard wall ("cannot enter
+without rating ≥ X") exists anywhere on the floor — the terrain is the rule.
 
 **Layout rule of thumb** (SOMA/"quiet dark seabed", `references.md` #25): the plain is mostly
 empty and dark; fields are rare, bright and loud. The surface line always lands on the plain,
@@ -449,14 +477,14 @@ add "terrain is Plain" to its validator).
 ### 8.2 Cast
 
 Existing residents stay as §1/§3.3 lists them (noohm, shulla, plus the Utinni-patched sando, faa,
-mee). New, all proposed names, all `RM_` unless marked:
+mee). New — names are the owner's (§7b-16), all `RM_` unless marked:
 
 | creature | proposed def | role | behaviour (mechanism) | tier | art |
 |---|---|---|---|---|---|
-| **Bottom-walker** — the centrepiece | `RM_Ullum` (*ullum*), `bodySize` 6+, `wildGroupSize` 2–4, herd, `MoveSpeed` ~0.9 (slow by ruling) | grazes the heat gradient; never attacks; **produces Crowncarpet** as it passes; the hunt drop is the already-shipped `RM_ScaldWalkerChitin` (DivingInteraction) | `RM_ThinkNode_SeekHeatEdge` (§8.1) for wandering; **`RM_CompMatLayer`** (new comp): every N ticks while moving, if the cell it just left is Plain and mat-free, spawn `RM_DeepfireMat` (Deepfire's Crowncarpet plant, §8.3) at low growth — the trail IS the mat source, so mats are found *behind herds*, not carpeting the floor. `manhunterOnDamageChance 0` and no attack verbs: a wounded walker walks away (ruling: never attacks; its guardians answer). `RM_OrganicScaldNative` hediffGiverSet so zone 2 does not burn it. Comfy range spans 55 °C (§2.2) | `RM_` | **owed** — nothing in `infrastructure/artpipe/done/` or `_artsrc/` (MEASURED 2026-09-25: only `gorewalker_*`, a different creature). Brief: a house-sized, spined, urchin-domed bottom-walker on many thick tube-legs, mat-fuzz on the spines, bands of temperature colour; 3 facings, `drawSize` ~5 |
-| **The swirl** | `RM_Tillik` (*tillik*), tiny, `wildGroupSize` 6–12, not huntable-worth (meat 1) | the "swirls of smaller life" feeding on walker excretion; pure spectacle, harmless | spawn only as **followers**: `RM_CompMatLayer` also spawns 1–3 tillik per herd at gen (`RM_SetPieceElement_AnchoredPawn` exists for anchoring); `ThinkNode` follow-nearest-walker within 4 cells; `CompGlower` faint cyan r 2 — the herd is lit by its own swirl | `RM_` | owed; brief: a fleck-cloud creature drawn as 5–7 glowing motes, 1 facing reused, `drawSize` 1.2 |
-| **Walker guardian** | `RM_Skerrak` (*skerrak*), `bodySize` 1.6, `wildGroupSize` 2–3 per herd, predator-class melee (serrated arm tips) | *"big leggy things like brittlestars gone wild. They think they're defending the Walker"* — hostile to any pawn within ~7 cells of a walker; otherwise ignore you | anchored to a herd at gen (`AnchoredPawn`); **`RM_ThinkNode_GuardAnchor`** (new): attack non-native pawns inside the guard radius of the nearest walker, break off when they leave it, return to the herd. Never hostile away from walkers (so the plain is safe if you keep your distance — the player learns the radius). Immune via `RM_OrganicScaldNative` | `RM_` | owed; brief: five to seven whip-thin armoured arms on a small central disc, arms as long as a man, pale and banded, one raised; 3 facings, `drawSize` 2.4 |
-| **Scalding swarm** | `RM_Feen` (*feen*), `bodySize` 0.15, `wildGroupSize` 8–16, insectoid-class, `manhunterOnTameFailChance` n/a — **always hostile** as a swarm | the MORE THREATENING creature of the fields: a boiling cloud of tiny stinging things that lives *in* zones 2–3 and pours out at whatever crosses | vanilla predator herd is wrong (they would hunt shulla); use `RM_ThinkNode_GuardAnchor` anchored to a **chimney** instead of a walker — swarms defend their chimney the way skerrak defend a herd. Damage = `Burn`-type stings (`RM_ScaldSting`, small, `armorCategory Heat`), so **the same suit that beats the zone beats the swarm** — one ladder. Nest = `RM_FeenNest` (1×1 building on a Scalding cell, `CompSpawner`-like respawn every ~2 days, destroyable) so a field can be *cleared* for a while — the loop that makes nodule runs a plan rather than a coin flip | `RM_` | owed; brief: a dense cloud of glowing orange-white sparks with a few visible barbed bodies; 1 facing, `drawSize` 1.6 (the swarm is one pawn each, drawn as a puff) |
+| **Bottom-walker** — the centrepiece | `RM_Vuuul` (label *vu'uul*; lore name *the Mighty Vu'uul* in description and letters), `bodySize` 6+, `wildGroupSize` 2–4, herd, `MoveSpeed` ~0.9 (slow by ruling) | grazes the heat gradient; never attacks; **produces Crowncarpet** as it passes; the hunt drop is the already-shipped `RM_ScaldWalkerChitin` (DivingInteraction) | `RM_ThinkNode_SeekHeatEdge` (§8.1) for wandering; **`RM_CompMatLayer`** (new comp): every N ticks while moving, if the cell it just left is Plain and mat-free, spawn `RM_DeepfireMat` (Deepfire's Crowncarpet plant, §8.3) at low growth — the trail IS the mat source, so mats are found *behind herds*, not carpeting the floor. `manhunterOnDamageChance 0` and no attack verbs: a wounded walker walks away (ruling: never attacks; its guardians answer). `RM_OrganicScaldNative` hediffGiverSet so zone 2 does not burn it. Comfy range spans 55 °C (§2.2) | `RM_` | **owed** — nothing in `infrastructure/artpipe/done/` or `_artsrc/` (MEASURED 2026-09-25: only `gorewalker_*`, a different creature). Brief: a house-sized, spined, urchin-domed bottom-walker on many thick tube-legs, mat-fuzz on the spines, bands of temperature colour; 3 facings, `drawSize` ~5 |
+| **The swirl** | `RM_Ullium` (*ullium*), tiny, `wildGroupSize` 6–12, not huntable-worth (meat 1) | the "swirls of smaller life" feeding on walker excretion; pure spectacle, harmless | spawn only as **followers**: `RM_CompMatLayer` also spawns 1–3 ullium per herd at gen (`RM_SetPieceElement_AnchoredPawn` exists for anchoring); `ThinkNode` follow-nearest-walker within 4 cells; `CompGlower` faint cyan r 2 — the herd is lit by its own swirl | `RM_` | owed; brief: a fleck-cloud creature drawn as 5–7 glowing motes, 1 facing reused, `drawSize` 1.2 |
+| **Walker guardian** | `RM_Askirath` (*askirath*), `bodySize` 1.6, `wildGroupSize` 2–3 per herd, predator-class melee (serrated arm tips) | *"big leggy things like brittlestars gone wild. They think they're defending the Walker"* — hostile to any pawn within ~7 cells of a walker; otherwise ignore you | anchored to a herd at gen (`AnchoredPawn`); **`RM_ThinkNode_GuardAnchor`** (new): attack non-native pawns inside the guard radius of the nearest walker, break off when they leave it, return to the herd. Never hostile away from walkers (so the plain is safe if you keep your distance — the player learns the radius). Immune via `RM_OrganicScaldNative` | `RM_` | owed; brief: five to seven whip-thin armoured arms on a small central disc, arms as long as a man, pale and banded, one raised; 3 facings, `drawSize` 2.4 |
+| **Scalding swarm** | `RM_Feen` (*feen*), `bodySize` 0.15, `wildGroupSize` 8–16, insectoid-class, `manhunterOnTameFailChance` n/a — **always hostile** as a swarm | the MORE THREATENING creature of the fields: a boiling cloud of tiny stinging things that lives *in* zones 2–3 and pours out at whatever crosses | vanilla predator herd is wrong (they would hunt shulla); use `RM_ThinkNode_GuardAnchor` anchored to a **chimney** instead of a walker — swarms defend their chimney the way askirath defend a herd. Damage = `Burn`-type stings (`RM_ScaldSting`, small, `armorCategory Heat`), so **the same suit that beats the zone beats the swarm** — one ladder. Nest = `RM_FeenNest` (1×1 building on a Scalding cell, `CompSpawner`-like respawn every ~2 days, destroyable) so a field can be *cleared* for a while — the loop that makes nodule runs a plan rather than a coin flip | `RM_` | owed; brief: a dense cloud of glowing orange-white sparks with a few visible barbed bodies; 1 facing, `drawSize` 1.6 (the swarm is one pawn each, drawn as a puff) |
 | **Sando passage** | reuse `RSW_SandoAquaMonster`/`RSW_ElderSando` **race**, new `PawnKindDef RSW_SandoAquaMonster_Passing` whose graphic is a **shadow silhouette** | the wonder (§8.5): a giant passes overhead, its shadow slides across the floor, it leaves | **`RUT_ScaldSandoPassage`** IncidentDef (Utinni mod, MayRequire swbestiary) on the floor map only, `IncidentWorker_HerdMigration` shape (MEASURED: it spawns a herd at one edge with a `LordJob` that crosses to the far edge and exits) with group size 1, rare (`baseChance` low). `drawSize` ~14, `AltitudeLayer` left at pawn (it draws over floor things — that is the dimming). Real pawn ⇒ attackable ⇒ vanilla animal retaliation (`manhunterOnDamageChance`) gives "never hostile unless attacked" for free. **Removed from floor `<wildAnimals>` spawn** by `excludeFromFloor` (§3.3) so it is only ever seen passing. Surface `wildAnimals` row untouched | `RSW_` race, `RUT_` incident | one shadow texture per race (2), top-down black silhouette with soft edge — check `SWBestiary` `_south.png` as the silhouette source before regenerating |
 
 Comfy-temperature pass (§2.2) covers the four new races. Faa/mee (Utinni-patched) are unaffected.
@@ -484,8 +512,8 @@ something, never a full reset (Raft's drift, `references.md` #28).
 | Gold | `RM_NoduleGold` — an item stack with a dark-lump `Graphic_Random`, `smeltProducts` → vanilla `Gold` at the smelter (nodules are crusted; cracking them is the smelter's job, same as Chimney Iron). Scattering raw `Gold` stacks is the fallback if the smelt step reads as friction in the sitting | 1 (rare), 2 | new `RM_NoduleGold` | `RM_` |
 | Silver | as gold, more common | 1, 2 | `RM_NoduleSilver` | `RM_` |
 | Uranium | as gold; only in the fields | 2 | `RM_NoduleUranium` | `RM_` |
-| **Chimney Iron** | `RM_ChimneyIronNodule` — dark, rust-crusted lump; picked up whole, **smelts** at the smelter to `Steel` ×N (a real reason to carry a smelter); also usable directly as a Stony-category **stuff** for ugly, heat-proof floors (INVENTED — §8.8 Q4) | 2 | new item + smelt recipe | `RM_` |
-| **Mother-of-Scaldpearl** | `RM_ScaldpearlGrowth` — a **`Plant`-class** def (grows, harvests, regrows) that spawns only on `RM_ScaldFloorScalding` cells adjacent to a chimney (`wildTerrainTags`), `harvestedThingDef RM_Scaldpearl`, `growDays` ~20, `harvestWork` high; `RM_Scaldpearl` MarketValue ~40 (INVENTED, "very valuable"), Beauty on display, a luxury stuff for jewellery if the jewellery mod is present (`MayRequire kikohi.jewelry`) | 3 only | new plant + item | `RM_` |
+| **Chimney Iron** | `RM_ChimneyIronNodule` — dark, rust-crusted lump; picked up whole, **smelts** at the smelter to `Steel` ×N (a real reason to carry a smelter). **Steel only** (§7b-18): not a stuff, not its own metal | 2 | new item + smelt recipe | `RM_` |
+| **Mother-of-Scaldpearl** | `RM_ScaldpearlGrowth` — a **`Plant`-class** def (grows, harvests, regrows) that spawns only on `RM_ScaldFloorScalding` cells adjacent to a chimney (`wildTerrainTags`), `harvestedThingDef RM_Scaldpearl`, `growDays` ~20, `harvestWork` high; `RM_Scaldpearl` MarketValue ~40 (INVENTED, "very valuable"), Beauty on display, and a **jewellery material via `kikohi.jewelry`** (§7b-23: a `PatchOperationAdd` `MayRequire="kikohi.jewelry"` registers it as that mod's gem-class stuff — read that mod's stuff category name before writing; nothing else uses it — no Deepfire role) | 3 only | new plant + item | `RM_` |
 | Magnetite crystal | `RM_MagnetiteCrystal` item stack (nodule rule, not a formation): a black faceted crystal, `smeltProducts` → small `Steel`, MarketValue above the steel it holds so keeping it is a choice | 2 | new item | `RM_` |
 | Uraninite crystal | `RM_UraniniteCrystal` item, yields `Uranium` + value; **glows faintly green** (`CompGlower` r 1.5 — the fields' second light) | 2–3 | new item | `RM_` |
 | Seep Salt | **`RM_SeepSalt` exists** (WeepingStones, *"scraped from the rim of a steamfrond vent"*) — scatter its stacks on the plain near field edges. Cross-mod: TerminalBiomes does not depend on WeepingStones, so the scatter is a `PatchOperationAdd` **`MayRequire="mandrake.rm.weepingstones"`** (check the packageId in its `About.xml` before writing) into the Scald generator's GenStep list | 1 | exists | `RM_` |
@@ -518,8 +546,17 @@ SeaFloorFeatures` checks `sourceMap.Tile` mutators and, if present, runs the wre
 **The tile is chosen at the final painting pass** (CLAUDE.md: the planet is painted once, at the
 end) — so this spec's deliverable is a **paint-list entry** (`BIOME_PAINT_ONCE_AT_THE_END_1`):
 *"`RUT_RakatanWreckBelow` on exactly one Scald-shore tile; prefer a tile the Ash'karr settlement
-map already names as a pilgrim shore"* — never a worldgen step, never a seed sweep. Whether the
-hex is marked on the world map before anyone dives is §8.8 Q6.
+map already names as a pilgrim shore"* — never a worldgen step, never a seed sweep.
+
+**Hidden until the first dive, then a named landmark (§7b-20).** The mutator has no label, no
+icon and no world-map tell. When `RM_JobDriver_DiveDown` first generates the floor of a tile
+carrying it, `RM_MapComponent_DiveSites` spawns a `WorldObjectDef RUT_RakatanWreckSite` on that
+tile — a map-less world object (the `WorldObject` shape with no `MapParent`, vanilla
+`WorldObjectMaker.MakeWorldObject` + `Find.WorldObjects.Add`) with a label, an icon and the
+description; it also fires a letter (*"The floor here is strewn with something older than the
+Republic"*). Using Odyssey's landmark system for the marker is **UNMEASURED** (whether a
+`Landmark` can be added to a tile at runtime) — the world object is the built route, and a
+landmark is a later polish if the API allows it.
 
 **The vessel.** A `RM_GenStep_PlacedSetPieces` layout (~18×30 footprint, straddling a field's
 edge so the stern lies in zone 2–3 and the bow on the plain):
@@ -538,22 +575,55 @@ edge so the stern lies in zone 2–3 and the bow on the plain):
 - **Inside:** `RUT_RakatanBattery` ×3–5 — a `Building_Battery` with 2–3× vanilla capacity that
   has **lost most of it** (`storedEnergyMax` scaled by a `RUT_RakatanDecay` comp; refurbish
   restores and then exceeds). Minifiable; that is the "batteries".
-- **More TBD:** none of the offered extras were picked (card 15:36). Nothing else is placed in
-  v1; §8.8 Q7 asks what else.
+- **Inside:** `RUT_RakatanShieldEmitter` (§7b-21) — a gravship shield emitter, minifiable,
+  **degraded** by the same `RUT_RakatanDecay` comp (radius and recharge halved until refurbished;
+  refurbished, it exceeds the modern one). Build it on the shape of the existing gravship shield
+  building in the mod set (`ShipShields` was named in the sitting — verify its packageId and the
+  building's defName before writing; if absent from the list, fall back to a `CompProjectileInterceptor`
+  building, vanilla, which is what a shield bubble is). One per game.
+- **Inside:** `RUT_RakatanArchive` (§7b-21) — a **sealed archive**: a `Book`-class item (core
+  since 1.5, MEASURED: `BookOutcomeProperties_GainResearch` → `ReadingOutcomeDoerGainResearch`)
+  whose reading grants `RUT_RakatanSalvage` research and carries the wreck's lore text. Anomaly-free.
+  One per game, in the hold, so reading it and studying the floor droids are two roads to the same
+  refurbish bills.
+- Nothing else is placed in v1 (the navigation core was declined, card 16:34).
 - The hold interior is `RM_ScaldFloorPlain` under the ship's own roof (`RoofDef` thin metal —
   an **air-bell**: the one place on the floor where deep exposure heals, §4). That is a design
   gift, not an accident: reaching the hold is the reward.
 
-**The dormant droids — on the floor, not in the ship (§7a-14).** `RUT_DormantRakatanDroid`, a
-`Building` (not a pawn) lying on the plain and field edges of the **wreck hex's floor only**
-(they fell with the ship — default; §8.8 Q5 asks whether the free tier should get an unbranded
-"ancient machine" on every floor). 4–7 per floor, `GenStep_ScatterThings`, never inside the hull
-footprint. Each is a WreckedMachines-style **study/refurbish** object (that mod's in-place repair
-+ `RAKATAN_ARCHOTECH_MACHINES_1`'s *"study the MACHINE itself as part of the research"*):
-studying one advances a `RUT_RakatanSalvage` research project that the turret and batteries'
-refurbish bills require. They do **not** wake hostile — the floor's threats are the swarm and the
-skerrak, and a droid ambush would be the vanilla dormant-mech cliché (§8.8 Q5 offers the
-alternative if he wants it). Deconstructing one instead yields components + `RUT_RakatanHullShard`.
+**The dormant machines — on the floor, not in the ship (§7a-14, §7b-19).** Two defs, one shape,
+never hostile:
+
+- **`RM_AncientSeaMachine`** (free tier, `RM_`) — an unbranded *ancient machine*: a
+  `Building` (not a pawn) lying half-buried on the plain and field edges of **every** Scald
+  floor, 2–4 per floor, `GenStep_ScatterThings`. Its art and text say only *old, alien, machine*:
+  a corroded ovoid on splayed struts, no maker, no chassis name — so no canon claim is made and
+  nothing needs a Wookieepedia check. Studying it (WreckedMachines' in-place study/repair shape)
+  advances a small `RM_SeaFloorSalvage` research that unlocks nothing but its own deconstruct
+  yield (components + steel); it is texture for the free floor and a research-tree curiosity.
+- **`RUT_DormantRakatanDroid`** (Utinni, `RUT_`) — the branded one, **wreck hex only**, 4–7 on
+  that floor, never inside the hull footprint (they fell with the ship). Same study/refurbish
+  shape; studying one advances `RUT_RakatanSalvage`, which the turret, batteries and shield
+  emitter's refurbish bills require (`RAKATAN_ARCHOTECH_MACHINES_1`'s *"study the MACHINE itself
+  as part of the research"*). Deconstructing instead yields components + `RUT_RakatanHullShard`.
+
+**Canon-era check (§7b-19 rider, MEASURED 2026-09-25 via the Wookieepedia search API, sanity
+probe `dianoga` returned 6 titles):** two Rakatan chassis exist, both **Legends** (`{{Top|leg}}`;
+no Canon-continuity page for either):
+- **Rakatan guardian droid** (*KOTOR*, Lehon/Dantooine): built at the height of the Infinite
+  Empire, ~25,000 years old and still functioning when Revan finds one — *"a testament to the
+  quality of its construction"*. This is the chassis for `RUT_DormantRakatanDroid`: a large,
+  squat guardian/overseer frame, which is exactly the "left active in case a Rakata should
+  return" fiction the floor wants.
+- **Rakatan droid** (*Dawn of the Jedi*): a floating two-armed servant model of the Infinite
+  Empire. Usable as a second, smaller variant if the sitting wants two silhouettes; not required.
+Neither is "somewhat modern" — both are the Rakata's own, older than the Republic, which is the
+plausibility the owner asked for. ⛔ No modern chassis (B1, astromech, protocol, KX, etc.) goes
+on this floor under any branding; the free machine is unbranded precisely so the era question
+never arises there.
+
+Neither def wakes hostile — the floor's threats are the feen and the askirath, and a droid
+ambush would be the vanilla dormant-mech cliché.
 
 **Scattered wreckage — a must (§7a-14).** On **every** Scald floor, not only the wreck hex:
 the three shipped `RUT_ScaldWreck{Hull,Tank,Frame}` (`ShipChunkBase` salvage buildings, real art
@@ -574,7 +644,7 @@ Each is one mechanism already named above; listed so FOUNDRY builds the *moment*
    gear** (Deepfire spec §3.4 — a worn item is a moving light and a target), **Crowncarpet**
    (`CompGlower` on the plant; if the Deepfire spec gives the mat none, add it here for the floor
    variant only), **chimneys** (orange, r 6), **uraninite** (green, r 1.5), and **glowing creatures**
-   (tillik cyan, feen orange-white, noohm's bubble line). A first dive with no Deepfire is a
+   (ullium cyan, feen orange-white, noohm's bubble line). A first dive with no Deepfire is a
    torch-lit stumble along a rope; a Deepfire-lit dive sees the herd before the herd's guardians
    see you. Visibility is the progression reward (`references.md` #24).
 2. **The herd.** A walker herd is lit by its own swirl and trails a fresh rainbow behind it. Seen
@@ -587,24 +657,35 @@ Each is one mechanism already named above; listed so FOUNDRY builds the *moment*
 5. **The vessel.** A mineral-crusted hull the size of a house, a bow on the plain and a stern in
    the boil, and the floor around it strewn with the fallen. Once per world.
 
-Not built: brine pools (the Grey's), any pure-visual shimmer band or marine-snow particle layer
-(desirable, `references.md` #7/#10, but a new weather-overlay class each — §8.8 Q8).
+6. **The layers (§7b-22, both v1).** *Marine snow*: `RM_ScaldMurk` carries a
+   `WeatherOverlay` — a subclass of `WeatherOverlayDualPanner` on the vanilla
+   `WeatherOverlay_SnowGentle` shape (MEASURED class), one sparse pale-fleck texture panning slowly
+   *down* — so the plain reads as drifting, not still. *Thermocline shimmer band*: a per-field
+   effect, not a weather (a weather is map-wide): each `RM_ScaldChimney` gets a second
+   `CompProperties_Effecter` emitting a low-alpha heat-haze fleck ring at the disc radius, so the
+   boundary between plain and field wavers. The vanilla heat-glow fleck is the texture to copy
+   (its defName is **UNMEASURED** here — FOUNDRY reads `Defs/Core/FleckDefs` before naming it).
+   Two textures, one small overlay class, no C# beyond the subclass. `references.md` #7/#10.
+
+Not built: brine pools (the Grey's).
 
 ### 8.6 Gear dependencies
 
-The Scald floor introduces **no new gear**. It depends on, and gives purpose to:
+The Scald floor introduces **no new gear of its own**. Every protective item a diver wears is a
+cell of the two-axis matrix in **`exposure_gear_matrix_spec.md`** (§7b-24), and the Scald is
+that spec's worked example (its §4). What the floor asks of the matrix:
 
-| gear | source | what it does on the floor |
+| threat on the floor | matrix axis / hook | which cells answer it |
 |---|---|---|
-| `RM_Apparel_ScaldWrap` (Neolithic, 12 `RM_ScaldWalkerChitin`) | `scald_steam_and_hazards_spec.md` §5, unbuilt | `ArmorRating_Heat 0.30`: opens zone 2 as a dash; its chitin cost is paid by hunting the walker — **the first walker hunt is the first suit** |
-| Royal Rind gear (Neolithic) | same, §5a; waits on the Greentide fruit item | `ArmorRating_Heat 0.45` + extreme insulation: the mid rung, and the one that makes the 55 °C ambient comfortable |
-| `RM_Apparel_BoilSuit` (Industrial, `RM_ScaldWorking`) | same, §5, unbuilt | `0.55`: zone 2 workable, zone 3 a dash, swarm stings blunted |
-| Odyssey vacsuit + helmet | same, §5 patch | the Spacer rung, same numbers as ruled there |
-| The dive suit (§4, `RM_DeepExposure` slowdown) | this spec | **collapse it into the ladder**: the deep-exposure comp's `protectionStat` is `RM_ScaldProtection` on the Scald floor, so the wrap/boil-suit/vacsuit slow the dive clock too and no separate "dive suit" def is needed for this sea (§8.8 Q3 for the other three seas) |
-| Deepfire-coated apparel/weapon | Deepfire spec §3.4 | the light you bring; also a target for skerrak/feen at range |
-| A smelter (or a colony with one) | vanilla | Chimney Iron → steel |
+| 55 °C ambient (heatstroke) | temperature axis — `Insulation_Heat` | any heat cell; rind makes it *comfortable* |
+| zone 2/3 contact burn, feen stings (`Burn`) | temperature axis — `ArmorRating_Heat` | cheap wrap → dash; moderate boil-suit/rind → work zone 2; deluxe vacsuit → zone 3 a short job |
+| the dive clock `RM_DeepExposure` (§4) | **no-air axis — liquid** | the liquid cells: cheap air-bladder, moderate rebreather, deluxe sealed suit; a sealed suit is a sealed suit (matrix §3) |
+| the dark | not gear-matrix work | Deepfire-coated apparel/weapon (Deepfire spec §3.4): the light you bring, and a target for askirath/feen at range |
+| Chimney Iron → steel | — | a smelter, vanilla |
 
-Nothing here reaches immunity; the 8-burn core and the 8% exposure floor hold Ban 3.
+The first walker hunt is still the first suit: the cheap heat cell (`RM_Apparel_ScaldWrap`) costs
+12 `RM_ScaldWalkerChitin`, the vu'uul's hunt drop. Nothing reaches immunity; the 8-burn core and
+the 8% exposure floor hold Ban 3.
 
 ### 8.7 Build steps for FOUNDRY (Scald floor only — these replace §6 step 4), each with its proof
 
@@ -613,43 +694,16 @@ Every step is XML-first and shippable alone; C# is named where it is unavoidable
 
 | # | step | new C# | proof |
 |---|---|---|---|
-| S1 | **Zones + chimneys.** `RM_ScaldFloorPlain/Hot/Scalding` terrains, `RM_ScaldChimney` building, Scald `RM_GenStep_SeaFloorFeatures` using `RM_GenStep_ScatterPools` with the terrain swap; surface-line validator "Plain only"; `RM_ScaldMurk` weather with **no** accuracy/fog fields | none | quicktest (minimal + TerminalBiomes + DivingInteraction): `jawa/list_things` counts 3–5 chimney clusters; `terrain_at` on a ring cell reads `RM_ScaldFloorHot`; a naked pawn placed on Hot takes `Burn` within 60 ticks (`HediffGiver_Terrain`), on Plain takes none; `GroundGlowAt` > 0 beside a chimney and 0 on the open plain |
-| S2 | **Walker + swirl + mat trail.** `RM_Ullum`, `RM_Tillik` races/kinds, `RM_CompMatLayer`, `RM_ThinkNode_SeekHeatEdge`, `RM_OrganicScaldNative` on both; comfy ranges; `<wildAnimals>` rows (ullum 0.15, tillik 0 — followers only) | `RM_CompMatLayer`, `RM_ThinkNode_SeekHeatEdge` (both small) | quicktest: spawn 3 ullum on the plain, `step_game_ticks` 5000: ≥1 `RM_DeepfireMat` exists on a cell an ullum occupied (compare `list_things` before/after); ullum positions cluster within 3 cells of a Hot/Plain boundary; damage one — it moves away, no attack job |
+| S1 | **Zones + chimneys.** `RM_ScaldFloorPlain/Hot/Scalding` terrains, `RM_ScaldChimney` building, Scald `RM_GenStep_SeaFloorFeatures` using `RM_GenStep_ScatterPools` with the terrain swap; surface-line validator "Plain only"; `RM_ScaldMurk` weather with **no** accuracy/fog fields but the **marine-snow overlay** (§8.5-6) and the chimney's **shimmer-band effecter** | the `WeatherOverlayDualPanner` subclass (tiny) | quicktest (minimal + TerminalBiomes + DivingInteraction): `jawa/list_things` counts 3–5 chimney clusters; `terrain_at` on a ring cell reads `RM_ScaldFloorHot`; a naked pawn placed on Hot takes `Burn` within 60 ticks (`HediffGiver_Terrain`), on Plain takes none; `GroundGlowAt` > 0 beside a chimney and 0 on the open plain |
+| S2 | **Walker + swirl + mat trail.** `RM_Vuuul`, `RM_Ullium` races/kinds, `RM_CompMatLayer`, `RM_ThinkNode_SeekHeatEdge`, `RM_OrganicScaldNative` on both; comfy ranges; `<wildAnimals>` rows (vu'uul 0.15, ullium 0 — followers only) | `RM_CompMatLayer`, `RM_ThinkNode_SeekHeatEdge` (both small) | quicktest: spawn 3 vu'uul on the plain, `step_game_ticks` 5000: ≥1 `RM_DeepfireMat` exists on a cell an vu'uul occupied (compare `list_things` before/after); vu'uul positions cluster within 3 cells of a Hot/Plain boundary; damage one — it moves away, no attack job |
 | S3 | **Nodules.** `RM_NoduleGold/Silver/Uranium`, `RM_ChimneyIronNodule` + smelt recipe, `RM_MagnetiteCrystal`, `RM_UraniniteCrystal` (glower), `RM_ScaldpearlGrowth` + `RM_Scaldpearl`; scatter GenSteps per zone; Seep Salt + Pyrinth `MayRequire` patches; `noduleRegrowth` in `RM_MapComponent_SeaFloor` | none (regrowth is ~20 lines in an existing component) | `validate_patch.py --live --defs` clean; quicktest: `list_things` shows every nodule def present, none on the wrong zone (`terrain_at` sample of 20); haul one gold nodule to the surface line and load → it is on the surface map; `refresh.py` + `measure count ThingDef` shows the 9 new defs |
-| S4 | **Guardians + swarms.** `RM_Skerrak`, `RM_Feen`, `RM_FeenNest`, `RM_ScaldSting` damage, `RM_ThinkNode_GuardAnchor`; anchored spawning of skerrak with herds and feen with chimneys | `RM_ThinkNode_GuardAnchor` (one class, two anchor kinds) | quicktest: a colonist 12 cells from a herd is ignored for 2000 ticks; at 5 cells a skerrak attacks within 300 ticks; step away to 12 — it disengages and returns; a colonist entering a field draws feen; destroy the nest — no feen respawn in 2 days; a boil-suited pawn takes measurably less sting damage than a naked one (same `hit` count) |
+| S4 | **Guardians + swarms.** `RM_Askirath`, `RM_Feen`, `RM_FeenNest`, `RM_ScaldSting` damage, `RM_ThinkNode_GuardAnchor`; anchored spawning of askirath with herds and feen with chimneys | `RM_ThinkNode_GuardAnchor` (one class, two anchor kinds) | quicktest: a colonist 12 cells from a herd is ignored for 2000 ticks; at 5 cells a askirath attacks within 300 ticks; step away to 12 — it disengages and returns; a colonist entering a field draws feen; destroy the nest — no feen respawn in 2 days; a boil-suited pawn takes measurably less sting damage than a naked one (same `hit` count) |
 | S5 | **Sando passage.** `RSW_SandoAquaMonster_Passing` kind + shadow textures, `RUT_ScaldSandoPassage` incident (Utinni, `MayRequire` swbestiary), `excludeFromFloor` for the sando races | none (vanilla `IncidentWorker_HerdMigration`) | quicktest with SWBestiary loaded: fire the incident via `debug/incident`: one passing kind spawns at an edge, crosses, exits (`list_things` count 1 → 0); it is never in a floor `Animals` GenStep spawn over 5 regenerations; shoot it once — it turns hostile (manhunter) |
-| S6 | **Wreckage everywhere.** Add `RM_ScaldFloorPlain` to the `RUT_ScaldWreck*` `terrainValidationAllowed` tag; scatter GenStep on the floor | none | quicktest: ≥6 wreck pieces on a fresh floor; deconstruct one — vanilla yield |
-| S7 | **The Rakatan vessel (Utinni).** New mod folder, `RUT_RakatanWreckBelow` mutator, hull crust `RockBase` blob layout, `RUT_RakatanTurret`, `RUT_RakatanBattery`, `RUT_RakatanDecay` comp, `RUT_RakatanHullShard`, `RUT_DormantRakatanDroid` + `RUT_RakatanSalvage` research hooked to WreckedMachines' study/repair; debris fan; **paint-list entry** filed on `BIOME_PAINT_ONCE_AT_THE_END_1` | `RUT_RakatanDecay` (small), the mutator check in the feature GenStep (3 lines) | quicktest with the mutator forced on the source tile (`jawa/world_*` set mutator, then dive): the hull outline is there, mining a crust cell yields from the 60/30/10 table, the turret is minifiable and reinstalls on a gravship substructure cell and fires; battery `storedEnergyMax` reads degraded; a droid is studyable and advances `RUT_RakatanSalvage`; **without** the mutator, 5 regenerations show no Rakatan def at all (the free floor stands alone) |
-| S8 | **Settings.** Add to §5's table: `Dive.Scald.Swarms`, `Dive.Scald.Guardians`, `Dive.Scald.SandoPassage`, `noduleRegrowth`, `Dive.Scald.Zone3Burn` (number) — all default shipped | none | toggle each off in a quicktest and confirm the absence (no feen spawn; no skerrak; incident refused; no regrowth after a quadrum) |
-| S9 | **Art** (may run in parallel from S2 on): ullum ×3 facings, skerrak ×3, feen ×1, tillik ×1, sando shadow ×2, chimney, 6 nodule/crystal items, Scaldpearl plant + item, 3 zone terrains, Rakatan hull crust, turret, battery, droid, hull shard | — | `fill_queue.py` only after the `done/` + `_artsrc/` search in each brief; `generating-rimworld-sprites` validator passes; then the live **bedazzle sitting** with the owner (`SCALD_REVIEW.rws` is staged for exactly this) |
+| S6 | **Wreckage and ancient machines everywhere.** Add `RM_ScaldFloorPlain` to the `RUT_ScaldWreck*` `terrainValidationAllowed` tag; scatter GenStep on the floor; `RM_AncientSeaMachine` + `RM_SeaFloorSalvage` research (§8.4), 2–4 per floor | none | quicktest: ≥6 wreck pieces and 2–4 machines on a fresh floor; deconstruct one of each — vanilla yield; study a machine — `RM_SeaFloorSalvage` progresses; no machine ever takes a hostile job over 5000 ticks |
+| S7 | **The Rakatan vessel (Utinni).** New mod folder, `RUT_RakatanWreckBelow` mutator, hull crust `RockBase` blob layout, `RUT_RakatanTurret`, `RUT_RakatanBattery`, `RUT_RakatanShieldEmitter`, `RUT_RakatanDecay` comp, `RUT_RakatanHullShard`, `RUT_RakatanArchive` (Book), `RUT_DormantRakatanDroid` + `RUT_RakatanSalvage` research hooked to WreckedMachines' study/repair; `RUT_RakatanWreckSite` world object spawned on first dive; debris fan; **paint-list entry** filed on `BIOME_PAINT_ONCE_AT_THE_END_1` | `RUT_RakatanDecay` (small), the mutator check in the feature GenStep (3 lines), the world-object spawn in `RM_MapComponent_DiveSites` (~10 lines) | quicktest with the mutator forced on the source tile (`jawa/world_*` set mutator, then dive): the world map shows **no** marker before the dive and `RUT_RakatanWreckSite` after it; the hull outline is there, mining a crust cell yields from the 60/30/10 table, the turret is minifiable and reinstalls on a gravship substructure cell and fires; battery `storedEnergyMax` and the emitter's radius read degraded; reading the archive and studying a droid each advance `RUT_RakatanSalvage`; **without** the mutator, 5 regenerations show no Rakatan def at all (the free floor stands alone) |
+| S8 | **Settings.** Add to §5's table: `Dive.Scald.Swarms`, `Dive.Scald.Guardians`, `Dive.Scald.SandoPassage`, `Dive.Scald.AncientMachines`, `Dive.Scald.Layers` (marine snow + shimmer, visual only), `noduleRegrowth`, `Dive.Scald.Zone3Burn` (number) — all default shipped | none | toggle each off in a quicktest and confirm the absence (no feen spawn; no askirath; incident refused; no machines; no overlay; no regrowth after a quadrum) |
+| S9 | **Art** (may run in parallel from S2 on): vu'uul ×3 facings, askirath ×3, feen ×1, ullium ×1, sando shadow ×2, chimney, 6 nodule/crystal items, Scaldpearl plant + item, 3 zone terrains, ancient machine, marine-snow + shimmer textures, Rakatan hull crust, turret, battery, shield emitter, archive, droid (guardian-droid silhouette — §8.4 canon check), hull shard | — | `fill_queue.py` only after the `done/` + `_artsrc/` search in each brief; `generating-rimworld-sprites` validator passes; then the live **bedazzle sitting** with the owner (`SCALD_REVIEW.rws` is staged for exactly this) |
 
 The bedazzle sitting is the acceptance test for S1–S6 together; S7 has its own sitting because it
 is a Utinni mod with a research chain.
 
-### 8.8 Open questions for the owner (choices, not rulings)
-
-1. **Names.** Ullum (walker) · tillik (swirl) · skerrak (guardian) · feen (swarm) — keep, or
-   rename in the same register? (Defs are cheap to rename before S2; expensive after art.)
-2. **Heat gate shape.** (a) *Soft* — zones burn, the suit's heat armour decides how long you last
-   (this spec's default; zero rules code, Ban 3 by construction). (b) *Hard* — a zone refuses
-   entry below a rating, with a message. (c) Both: soft burn plus a hard wall on zone 3 only.
-3. **The dive suit across seas.** (a) On the Scald, the ladder IS the dive suit (§8.6) and the
-   generic dive suit def is not built until another sea needs it. (b) Build the generic suit now
-   and let the Scald ladder stack on it.
-4. **Chimney Iron.** (a) Smelts to steel only. (b) Also a stuff (heat-proof, ugly floors and
-   walls, cheap). (c) Its own metal with its own stats (more work, more identity).
-5. **Dormant droids.** (a) Wreck hex only, Rakatan, study/refurbish, never hostile (default).
-   (b) Also an unbranded "ancient machine" on every free-tier floor. (c) Some wake hostile when
-   disturbed (the vanilla dormant-mech shape) — more threat, less wonder.
-6. **The wreck hex on the world map.** (a) Unmarked until first dive, then a named landmark.
-   (b) Marked from the start as a rumour ("pilgrims say something lies under the shore here").
-   (c) Never marked; the floor is the only tell.
-7. **More Rakatan goodies.** Turret + batteries are in; nothing else was picked. Candidates if he
-   wants a third: a degraded shield emitter for the gravship (`ShipShields` exists), a navigation
-   core that reveals one world region, a sealed archive (Anomaly-free lore item). Or nothing.
-8. **Pure-visual layers.** A thermocline shimmer band at each field's edge and a marine-snow
-   drift over the plain — each is a new weather-overlay class and two textures. Worth it for v1,
-   or later?
-9. **Scaldpearl's use.** (a) Sell/beauty only. (b) Jewellery stuff via `kikohi.jewelry` when
-   present. (c) A Deepfire press catalyst (ties the two Scald exports together). Nothing else is
-   assumed.

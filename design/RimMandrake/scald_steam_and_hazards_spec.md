@@ -240,6 +240,14 @@ but advanced vacsuit-types should be able to handle it too. And then there's the
 the fruit of the great Bole."* Three rungs, then: **Royal Rind gear** (§5a, biological, from the
 Greentide), the **boil-suit** (Industrial research), and **sealed vacsuit-types** (Spacer, patched).
 
+**This ladder is the heat column of the two-axis gear matrix** the owner ruled 2026-09-25
+(*"vac/liquid (no air), extreme heat/cold (temp threat). Those are the two axes… Cheap tier,
+moderate tier, then delux set (all the way to space)"*) — `exposure_gear_matrix_spec.md`, whose
+§4a places each rung in its cell and adds the liquid column (air bladder, rebreather) this ladder
+never had. The numbers below stand; the matrix cites them rather than restating them. The dive
+clock on the Scald floor is the matrix's `RM_DiveProtection`, a separate stat from
+`RM_ScaldProtection` (the steam clock) — the sealed items carry both.
+
 Every row has a price; none reaches immunity (Ban 3). Protection numbers are INVENTED and sum
 across worn apparel; the comp clamps to 1 and floors the clock at 8%.
 
@@ -286,8 +294,10 @@ by the Greentide build (`greatbole_harvest_spec.md` §9 items 4–5), not by thi
 - **`RM_Apparel_RindCoat`** — the one bespoke garment worth shipping: a full-coverage shell made
   only of rind, so a player who has fought the grubs once has a whole answer. **Neolithic**
   (ruled): tailoring bench, no research — the fight for the fruit is the whole gate. Table row above.
-- **The vacuum use** stays in `greatbole_harvest_spec.md` (Odyssey-gated via `MayRequire`; the
-  franchise-free protection must not depend on it — that ban is theirs and stands).
+- **The vacuum use** is the vacuum end of the matrix's no-air axis (`exposure_gear_matrix_spec.md`
+  §1; Odyssey-gated via `MayRequire`, and the franchise-free protection must not depend on it —
+  `greatbole_harvest_spec.md` §3b's ban stands). On the matrix rind fills **both** moderate
+  temperature cells (heat and cold) — ruling 7 below.
 - **Rind stacks with the other rungs** under the same clamp and 8% floor; rind + vacsuit helmet
   and rind + boil-suit both clamp at 1.0. Ban 3 holds: it is a fight to get and never zeroes
   the clock.
@@ -461,7 +471,9 @@ have any plans for that at this time"*:
 
 7. **Rind clothing protects the steam clock too, and grants extreme heat AND cold insulation** (§5a).
 8. **Rind gear is Neolithic** — tailoring bench, no research; the ladder reads rind → boil-suit →
-   vacsuit by tech level (§5).
+   vacsuit by tech level (§5) — on the gear matrix (`exposure_gear_matrix_spec.md` §4a) that is
+   moderate → moderate → deluxe: rind and the boil-suit share a tier and differ in which cells
+   they fill.
 9. **Deep boil water burns harder: `burnDamage 4` deep, 3 shallow** (§4).
 10. **A humanlike native would take a gene, not a race set — and none is planned.** A note in §6,
     not a build step.

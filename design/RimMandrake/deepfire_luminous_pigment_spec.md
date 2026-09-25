@@ -15,7 +15,7 @@ makes whatever colour the dye gives *glow* — a dim, steady, coloured light tha
 statue, a robe or a rifle gives off in the dark. It comes from the oldest life on any planet:
 **crowncarpet**, a rainbow bacterial mat that grows on ocean shores (rarely) and carpets the
 margins and the floor of a boiling sea (the Scald, in the Utinni campaign — where the great
-bottom-walkers lay it down behind them as they pass). A fresh mat dies within a day, and dies at once if chilled, so
+bottom-walkers, the Mighty Vu'uul, lay it down behind them as they pass). A fresh mat dies within a day, and dies at once if chilled, so
 the whole economy is a race from shore to press. A colony that masters it lights its halls with
 colour instead of fire, raises its art by one grade, dresses its notables in light — and marks
 every glowing pawn as a target on a dark night.
@@ -106,7 +106,8 @@ in the Scald"*; Scald floor sitting 2026-09-25 15:19, `SEA_DIVE_MAPS_BUILD_1`: t
 - **The Scald's shore margin:** the biome's `wildPlants` row carries the density; the
   `RUT_ScaldMarginMat` terrain tag does the placement — unchanged mechanism, moved authority.
 - **The Scald's floor (the dive map, `sea_dive_maps_spec.md`):** crowncarpet is **produced by the
-  bottom-walkers**. Each walker carries a `RM_CompMatLayer` (defined here, tagged onto the walker's
+  bottom-walkers** — `RM_Vuuul`, *the Mighty Vu'uul* (owner-named 2026-09-25). Each walker carries
+  a `RM_CompMatLayer` (defined here, tagged onto the `RM_Vuuul`
   PawnKind by the Scald's own patch under `MayRequire="mandrake.rm.luminouspigment"`): every
   `matLayIntervalTicks` (default 2500) while the walker is moving, it spawns one `RM_Crowncarpet`
   on a random cell it has just vacated if the cell carries the `RM_CrowncarpetBed` or
