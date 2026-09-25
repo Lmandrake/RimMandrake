@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  🔴 FROZEN 2026-09-24 — carrying the world until the terminal paint; content lives in
+  `mandrake.rm.longshade`; do not edit here.
+
+  Phase A step 3 of design/RimMandrake/biome_mod_architecture.md (item
+  LONGSHADE_RM_MOD_BUILD_1). This def is what the player's saved world actually carries
+  until Phase B repaints the planet onto `RM_LongShade`, "the Long Shade" (§7 Q2, RULED
+  2026-09-21 — this def's own old label "the Desert" is superseded there, not here);
+  deleting it before then destroys the save, so it stays as it is. From this moment every
+  CONTENT fix for the Long Shade lands in `mandrake.rm.longshade` only, never here.
+
+  Star Wars-tier fauna (51 rows) reaches `RM_LongShade` through
+  UtinniPatches/Patches/WildAnimals_LongShade.xml, the way the Pyrelands and the
+  Greentide already do it. `JOE_Landopus`/`JOE_Cephalope` (this file's own native rows)
+  stay cast inline on the new def too, MayRequire-guarded there since they now cross a
+  mod boundary. `RUT_Vorrel` (the plant, below) moved and was renamed `RM_Vorrel` per
+  §7 Q8 — its own five files used to live in `mandrake.rut.ashkarrflora`, now in
+  `mandrake.rm.longshade`.
+-->
 <Defs>
 
   <!--

@@ -18,7 +18,7 @@ ground**; the tile column sums to 21,872.
 
 | def | tiles | sheet | §10 "Bestiary sorts"? | wildAnimals owner |
 |---|---:|---|---|---|
-| `RUT_Desert` | 2390 | `desert.md` | no (§10 = "Implementation", not bestiary) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml` |
+| `RUT_Desert` | 2390 | `desert.md` | no (§10 = "Implementation", not bestiary) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml`, FROZEN 2026-09-24 (`LONGSHADE_RM_MOD_BUILD_1`) — carries the world until Phase B's repaint; content lives in `src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml` (`mandrake.rm.longshade`, "the Long Shade") now |
 | `RUT_ExtremeDesert` | 3969 | `dune_sea.md` + `deep_desert.md` (ONE merged roster, R22) | no (neither sheet) | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml` |
 | `RUT_Umbra` | 2531 | `the_propane_lakes.md` (the antistellar cap the sheet names "Umbra") | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml` |
 | `RM_TheRot` | 2204 | `the_rot.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RM_TheRot.xml` |

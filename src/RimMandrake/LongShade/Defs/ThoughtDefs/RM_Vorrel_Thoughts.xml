@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Vorrel_Thoughts.xml                  DESERT_STAGGERSEED_BUILD_1
+  RM_Vorrel_Thoughts.xml                   LONGSHADE_RM_MOD_BUILD_1 step 2
+
+  Moved and renamed from src/RimUtinni/AshkarrFlora/Defs/ThoughtDefs/
+  RUT_Staggerseed_Thoughts.xml (RUT_VorrelEuphoriaThought ->
+  RM_VorrelEuphoriaThought, hediff reference updated to RM_VorrelEuphoria),
+  per §7 Q8. Content unchanged.
 
   The euphoria half of desert.md §4b, as mood. Situational
   (ThoughtWorker_Hediff), not a memory: §4b's euphoria IS the hediff running
@@ -12,10 +17,10 @@
   🔴 STAGE COUNT IS LOAD-BEARING. ThoughtWorker_Hediff picks this def's stage
   by the HEDIFF's current stage index (MEASURED from the decompiled engine,
   RimWorld/ThoughtWorker_Hediff.cs: ActiveAtStage(min(hediff stage, hediff
-  stages-1, thought stages-1))). RUT_VorrelEuphoria has two stages, so
-  this has two, in the same order — "fading" first, "full" second. Add a
-  stage to one and you must add it to the other, or every dose silently
-  clamps to the last stage here.
+  stages-1, thought stages-1))). RM_VorrelEuphoria has two stages, so this
+  has two, in the same order — "fading" first, "full" second. Add a stage to
+  one and you must add it to the other, or every dose silently clamps to the
+  last stage here.
 
   +26 at full is INVENTED-BUILD and deliberately above vanilla ambrosia: the
   ingredient kills anyone who eats it wrong, grows only in the water pockets,
@@ -25,9 +30,9 @@
 <Defs>
 
   <ThoughtDef>
-    <defName>RUT_VorrelEuphoriaThought</defName>
+    <defName>RM_VorrelEuphoriaThought</defName>
     <workerClass>ThoughtWorker_Hediff</workerClass>
-    <hediff>RUT_VorrelEuphoria</hediff>
+    <hediff>RM_VorrelEuphoria</hediff>
     <validWhileDespawned>true</validWhileDespawned>
     <stages>
       <li>

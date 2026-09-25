@@ -116,6 +116,24 @@ FAMILIES = {
                      # / VENOMVINE_CONTACT_VENOM_BUILD_1), RSW_Ultracactus
                      # (DESERT_SIGNATURE_FLORA_1) and RUT_Vorrel
                      # (DESERT_STAGGERSEED_BUILD_1, working name).
+    # 🔴 LONGSHADE_RM_MOD_BUILD_1 (2026-09-24): the RUT_Desert def above is now
+    # FROZEN (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml's own
+    # header) and its content is duplicated, hand-authored, in a second OWNED
+    # def — src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml
+    # (mandrake.rm.longshade, "the Long Shade"), outside BIOMEDEFS above and
+    # so out of this generator's scan/check scope entirely: no dict entry, no
+    # emitted operation, same no-op treatment RUT_Desert gets, for the same
+    # reason (own def, own wildPlants block is the shipping truth). RUT_Vorrel
+    # below moved+renamed RM_Vorrel there too (§7 Q8) — this dict's own
+    # `RUT_Vorrel` key still names the FROZEN twin's copy, correctly.
+    # ⚠️ SEPARATELY MEASURED, not fixed here (this dict is roster-derived, "never
+    # this dict" per the module docstring): 'RSW_Dunegrass' and
+    # 'RSW_SweetbarkTree' two lines below do not exist as defs anywhere in the
+    # repo (MEASURED via grep, 2026-09-24). The live RUT_Desert.xml/RM_LongShade.xml
+    # wildPlants block casts 'RSW_SurraGrass' and 'RSW_DommoTree' instead — this
+    # dict and rosters/desert.json are stale by those two names. Real fix belongs
+    # in the roster + a regenerate, which needs defs.sqlite (UNMEASURED on this
+    # box); flagged, not silently patched around its own edit-here ban.
     'RM_Leachmoss': 1.5, 'RSW_Ultracactus': 0.8, 'RSW_Dunegrass': 0.6,
     'RSW_Plant_Chakroot_Wild': 0.3, 'RM_Venomvine': 0.25,
     'RSW_Plant_HubbaGourd_Wild': 0.2, 'RSW_VellaraBloom': 0.12,

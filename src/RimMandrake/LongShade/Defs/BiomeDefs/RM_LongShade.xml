@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_LongShade                                   LONGSHADE_RM_MOD_BUILD_1 step 2
+
+    Copied from src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml (frozen
+    the same pass this file was created, see that file's own header) — the source
+    of truth being copied, not corrected. Full authoring history (sheet SS0-SS10,
+    every ruling behind every field below) stays in that file; do not duplicate it
+    here, read it there.
+
+    Changed from the twin, and ONLY this:
+      - defName RUT_Desert -> RM_LongShade.
+      - label "the Desert" -> "the Long Shade" (biome_mod_architecture.md §7 Q2,
+        RULED 2026-09-21 — the owner's own recommended row; the twin keeps its old
+        label unchanged, frozen).
+      - wildAnimals: the 51 RSW_-tier rows are OUT of this def by design (§7
+        Q11/Q12 — RimMandrake never names Star Wars) and ride
+        UtinniPatches/Patches/WildAnimals_LongShade.xml as a PatchOperationAdd
+        instead, MayRequire="mandrake.rsw.swbestiary". JOE_Landopus and
+        JOE_Cephalope stay inline (this biome's own native, non-Star-Wars fauna,
+        §7 Q9) but now carry MayRequire="mandrake.rut.patches" that the twin's
+        copy did not need — those two defs live in
+        Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml, that mod's own
+        package, shared with RUT_ExtremeDesert (the Stillsand); this mod must
+        stay standalone-playable, so a cross-mod reference needs its own guard.
+        🔴 OPEN, not resolved by this build: that shared def-ownership between
+        the Long Shade and the Stillsand is unadjudicated (item's own MEASURED
+        STATE section 3) — flagged for FOUNDRY/BENCH, not decided here.
+      - wildPlants: RUT_Vorrel -> RM_Vorrel, MayRequire dropped (moved into this
+        mod's own Defs per §7 Q8 — see RM_Vorrel.xml's own header). RM_Leachmoss,
+        RM_Venomvine, RSW_Ultracactus and the other five RSW_-tier plants are
+        UNCHANGED, inline, MayRequire-guarded — same still-open wildPlants
+        MayRequire gap every other RimMandrake biome mod currently carries
+        (no WildPlants_<Biome>.xml patch route exists anywhere yet; item's own
+        MEASURED STATE section 4/Blockers).
+
+    Everything else below — terrain, weather, diseases, foragedFood,
+    allowedPackAnimals, wildPlantRegrowDays — is byte-for-byte the twin's own
+    values.
+  -->
+
+  <BiomeDef>
+    <defName>RM_LongShade</defName>
+    <label>the Long Shade</label>
+    <description>A dayside band of scattered rock at a sun so low every stone throws a shadow four times its own height. Nothing lives in the light and nothing survives leaving shelter, so life here is a sprint between islands of shade -- rest, dash, rest -- and the gaps between them are the only geography that matters. Cooler and steadier than the deep dune beyond it: the numbers are small, but they hold.</description>
+    <workerClass>RimWorld.BiomeWorker_Desert</workerClass>
+
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <animalDensity>0.4</animalDensity>
+    <plantDensity>0.05</plantDensity>
+    <forageability>0.25</forageability>
+    <foragedFood MayRequire="mandrake.rsw.swbestiary">RSW_RawHubbaGourd</foragedFood>
+    <wildPlantsCareAboutLocalFertility>false</wildPlantsCareAboutLocalFertility>
+    <lakeBeachTerrain>Sand</lakeBeachTerrain>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>World/Biomes/Desert</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>0.8</max>
+      </li>
+      <li>
+        <terrain>Soil</terrain>
+        <min>0.8</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>90</Clear>
+      <DryThunderstorm>4</DryThunderstorm>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
+      <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <JOE_Landopus MayRequire="mandrake.rut.patches">0.5</JOE_Landopus>  <!-- landopus - small ambush predator, this biome's own native fauna -->
+      <JOE_Cephalope MayRequire="mandrake.rut.patches">0.5</JOE_Cephalope>  <!-- cephalope - sand burrower & swimmer, this biome's own native fauna -->
+      <!-- The 51 RSW_-tier rows (§7 Q11/Q12) ride WildAnimals_LongShade.xml as a
+           PatchOperationAdd instead of living here — see this file's header. -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <RM_Leachmoss MayRequire="mandrake.rm.environmentalhazards">1.5</RM_Leachmoss>  <!-- leachmoss: the fertile ground's fastest claimant, DESERT_LEACHMOSS_BUILD_1. -->
+      <RSW_Ultracactus MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Ultracactus>  <!-- ultracactus: the buried canopy holding the open ground, DESERT_SIGNATURE_FLORA_1 -->
+      <RM_Vorrel>0.1</RM_Vorrel>  <!-- the cycle plant, moved+renamed from RUT_Vorrel per §7 Q8, this mod's own def now, no MayRequire needed. Working name, see RM_Vorrel.xml's own header. -->
+      <RM_Venomvine MayRequire="mandrake.rm.environmentalhazards">0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, VENOMVINE_CONTACT_VENOM_BUILD_1. -->
+      <RSW_SurraGrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_SurraGrass>  <!-- surra grass -->
+      <RSW_Plant_Chakroot_Wild MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
+      <RSW_Plant_HubbaGourd_Wild MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
+      <RSW_VellaraBloom MayRequire="mandrake.rsw.swbestiary">0.12</RSW_VellaraBloom>  <!-- vellara bloom -->
+      <RSW_DommoTree MayRequire="mandrake.rsw.swbestiary">0.06</RSW_DommoTree>  <!-- dommo tree - tree -->
+    </wildPlants>
+    <wildPlantRegrowDays>35</wildPlantRegrowDays>
+
+    <allowedPackAnimals>
+      <li MayRequire="mandrake.rsw.swbestiary">RSW_Bantha</li>
+      <li MayRequire="mandrake.rsw.swbestiary">RSW_Ronto</li>
+      <li MayRequire="mandrake.rsw.swbestiary">RSW_Eopie</li>
+      <li MayRequire="mandrake.rsw.swbestiary">RSW_Jamel</li>
+      <li MayRequire="mandrake.rsw.swbestiary">RSW_Falumpaset</li>
+    </allowedPackAnimals>
+  </BiomeDef>
+
+</Defs>

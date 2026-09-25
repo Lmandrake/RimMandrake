@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Vorrel.xml                           DESERT_STAGGERSEED_BUILD_1
+  RM_Vorrel.xml                             LONGSHADE_RM_MOD_BUILD_1 step 2
+
+  Moved and renamed from src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/
+  RUT_Staggerseed.xml (RUT_Vorrel -> RM_Vorrel), per biome_mod_architecture.md
+  §7 Q8: dissolve ashkarrflora's per-biome content, plants move into the
+  biome's own RM mod, renamed RM_. Content below is otherwise unchanged from
+  that file — full authoring history (DESERT_STAGGERSEED_BUILD_1, the ban
+  checks, the art-search record) stays there in git history, not repeated here.
 
   The desert's cycle plant. FROZEN sheet:
   design/Jawa/worldbuilding/biomes/desert.md (BIOME_FREEZE_FABLE_REVIEW_1),
@@ -17,10 +24,10 @@
 
   🔴 THE NAME IS NOT SETTLED. §4b marks it "(Name owner's pick. Working:
   vorrel.)" — the ultracactus's name already stands, this one's does
-  not. `RUT_Vorrel` is the INTERNAL working defName and every label
-  below is provisional; the owner card is
-  items/closed/STAGGERSEED_SHIPPING_NAME_1.md and DESERT_STAGGERSEED_BUILD_1 stays
-  open until it returns. Renaming is five files and one wildPlants line.
+  not. `RM_Vorrel` is the INTERNAL working defName and every label below is
+  provisional; the owner card is items/closed/STAGGERSEED_SHIPPING_NAME_1.md
+  and DESERT_STAGGERSEED_BUILD_1 stays open until it returns. Renaming is
+  five files and one wildPlants line, same as before the move.
 
   THE THREE DESERT PLANTS SORT BY FERTILITY, and that is the player's
   water-table instrument (the ruling behind it is SURRA_GRASS_FERTILITYMIN_1,
@@ -36,16 +43,17 @@
   ultracactus. Ban 8 (no lush) — visualSizeRange caps at 0.8 and the wild
   cluster is small and rare; this is never a green mass.
 
-  ART: checked infrastructure/artpipe/{done,_artsrc,registry.jsonl,
-  art_status.json} for "vorrel"/"cycle plant" on 2026-09-20, per
-  CLAUDE.md's "Check for existing regenerated art before queuing more" — 0
-  hits, nothing already generated and nothing already ruled on in a review
-  sheet. Two jobs filed this pass: `rutvorrel_v1` (the bush, and the
-  harvested fruit off it) and `rutvorreldish_v1` (the prepared dish).
-  The texPaths below are where those renders land, so validate_patch.py will
-  flag them as missing until the daemon works through its queue — expected,
-  same as RSW_Ultracactus one mod over. The art is deliberately name-free:
-  nothing about the render changes when the owner's name lands.
+  ART: no art has been generated for this plant under either name (checked
+  infrastructure/artpipe/{done,_artsrc,registry.jsonl} for "vorrel" at the
+  2026-09-24 move — zero hits under that name; two DONE jobs exist under the
+  OLD job names rutstaggerseed_v1/rutstaggerseeddish_v1,
+  infrastructure/artpipe/done/rutstaggerseed_v1.manifest.json +
+  rutstaggerseeddish_v1.manifest.json, rendered PNGs in
+  infrastructure/artpipe/_artsrc/rutstaggerseed_v1/ +
+  rutstaggerseeddish_v1/ — but never deployed to a Textures/ folder under
+  either the old or the new texPath. Not this pass's scope to deploy; flagged
+  in the build report). texPaths below point at this mod's own Textures/,
+  unchanged in shape from the old ones (RUT_Vorrel -> RM_Vorrel).
 
   🔑 The art brief's own hard requirement, which is a DESIGN constraint and
   not a style note: the bush must read as harmless and appetising. §4b's word
@@ -56,7 +64,7 @@
 
   <!-- ============== The plant ============== -->
   <ThingDef ParentName="PlantBase">
-    <defName>RUT_Vorrel</defName>
+    <defName>RM_Vorrel</defName>
     <label>vorrel</label>
     <description>A low, dense bush of the shaded water pockets, hung with fat pale fruit that looks like the most ordinary good luck on this planet. It is not. Each fruit is packed with live seed that takes root in the gut of whatever eats it, and a body full of them has hours, not days. What the plant wants from the arrangement is the walk: a dying animal here makes for the nearest shadow by instinct, and a shadow is the one ground a seed could never have reached on its own.</description>
     <statBases>
@@ -66,8 +74,8 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <!-- Job rutvorrel_v1, filed this pass. Pending until the daemon lands it. -->
-      <texPath>Things/Plant/RUT_Vorrel</texPath>
+      <!-- Art pending deploy — see this file's header. -->
+      <texPath>Things/Plant/RM_Vorrel</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.5, 0.2, 0.2)</volume>
@@ -83,16 +91,17 @@
          harvested fruit: Verse/Thing.cs Ingested runs def.ingestible.
          outcomeDoers for whatever is being eaten, and a grazing animal eats
          the PLANT, never the harvested item. MEASURED from the decompiled
-         engine this pass. Put the brood only on the fruit and the entire
-         corpse-dispersal cycle would exist on paper and never once fire in a
-         wild biome, because nothing wild harvests. Colonists get it from
-         either route: browsing the bush raw, or eating the raw fruit. -->
+         engine (unchanged from before the move). Put the brood only on the
+         fruit and the entire corpse-dispersal cycle would exist on paper and
+         never once fire in a wild biome, because nothing wild harvests.
+         Colonists get it from either route: browsing the bush raw, or eating
+         the raw fruit. -->
     <ingestible>
       <foodType>VegetableOrFruit</foodType>
       <preferability>RawTasty</preferability>
       <outcomeDoers>
         <li Class="IngestionOutcomeDoer_GiveHediff">
-          <hediffDef>RUT_VorrelBrood</hediffDef>
+          <hediffDef>RM_VorrelBrood</hediffDef>
           <severity>0.1</severity>
         </li>
       </outcomeDoers>
@@ -107,7 +116,7 @@
       <visualSizeRange>0.5~0.8</visualSizeRange>
       <topWindExposure>0.2</topWindExposure>
       <harvestTag>Standard</harvestTag>
-      <harvestedThingDef>RUT_VorrelFruit</harvestedThingDef>
+      <harvestedThingDef>RM_VorrelFruit</harvestedThingDef>
       <harvestYield>6</harvestYield>
       <harvestWork>220</harvestWork>
       <harvestAfterGrowth>0.4</harvestAfterGrowth>
