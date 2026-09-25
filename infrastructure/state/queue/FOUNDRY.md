@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T05:21:22Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-25T05:31:15Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -31,15 +31,6 @@ target:   v1
 kind:     task
 summary:  Work species-by-species, in this order, because the first two shrink the list without any
 prose:    infrastructure/state/items/ROSTER_DEAD_BMT_NAMES_SWEEP_1.md
-
-## VANILLA_BEAST_EXCISION_1 No vanilla beasts in the Utinni scenario: cut every vanilla/DLC animal at the scenario layer, biome by biome as each biome's own cast is ready — never rename, never edit vanilla defs; close manhunter/quest/trade/pack-animal routes too
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Census every vanilla/DLC animal reachable in the Utinni scenario: biome
-prose:    infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md
 
 # IN PROGRESS
 
@@ -900,8 +891,26 @@ kind:     build
 summary:  A gene (or trait) on the Jawa xenotype suppressing filth/squalor/mess-derived
 prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md
 
-## FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
+## VANILLA_BEAST_EXCISION_1 No vanilla beasts in the Utinni scenario: cut every vanilla/DLC animal at the scenario layer, biome by biome as each biome's own cast is ready — never rename, never edit vanilla defs; close manhunter/quest/trade/pack-animal routes too
 state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Census every vanilla/DLC animal reachable in the Utinni scenario: biome
+prose:    infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md
+
+## PROPANE_LAKE_PIPE_MECHANICS_1 Propane lake pipe network mechanics: gas vent, saturation tracker, pipe rupture, V-wake pump agitation
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  PROPANELAKEPIPEMECHANICS1 — the propane lake's pipe/vent/saturation build ladder
+prose:    infrastructure/state/items/PROPANE_LAKE_PIPE_MECHANICS_1.md
+
+## FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1342,6 +1351,16 @@ kind:     build
 blocked:  Live proof needs bridge; bridge held by another live FOUNDRY window (FireHawk flight verify, alive <45min) at time of resume. Pieces 1-4 offline-complete, DLL deployed 2026-09-25T01:56Z per prior note; only live-verify steps (glow warble, statue quality scaling, research gates, ScrubTarred->Sumpgas, bench recipe) remain, all requiring bridge access.
 summary:  1. The reaction: tar + acid → green gas (Helixien-compatible). One acid, three
 prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
+
+## FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  Blocked on FALL_LINE_ARRIVAL_MECHANISM_1's Band B flee/lurker think-tree insert, which has not landed (still unclaimed, 0 code); duplicating it here is explicitly not preferred per this item's own spec. Capture-to-slave hook confirmed (GenGuest.TryEnslavePrisoner) and recorded on the item for whoever resumes. (on FALL_LINE_ARRIVAL_MECHANISM_1)
+summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
+prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -2084,16 +2103,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Re-author the whole surface in our tier (race, 2 pawnkinds, hidden raid
 prose:    infrastructure/state/items/THEY_MOD_REPLICATION_1.md
-
-## PROPANE_LAKE_PIPE_MECHANICS_1 Propane lake pipe network mechanics: gas vent, saturation tracker, pipe rupture, V-wake pump agitation
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  PROPANELAKEPIPEMECHANICS1 — the propane lake's pipe/vent/saturation build ladder
-prose:    infrastructure/state/items/PROPANE_LAKE_PIPE_MECHANICS_1.md
 
 ## PROPANELAKES_SHIPPING_NAMES_1 Owner card: propane lakes working names (Burner Ascendant, V-Wake)
 state:    proposed
