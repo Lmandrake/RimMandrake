@@ -19095,6 +19095,12 @@
     "hash": "d19d8d9e2d71c270c08be60f062aa0f7b299383398b2a3092c5364ccc7051c2a",
     "sha": "ed416189"
   },
+  "src/RimUtinni/UtinniPatches/Patches/Contagion_Rename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "92692d319e8da0348925c1832aa7b350199c74964274528e2f08a3052a28902b",
+    "sha": "9335f6bc2"
+  },
   "src/RimUtinni/UtinniPatches/Patches/CreatureNames_Ashkarr.xml": {
     "cleanCount": 2,
     "date": "2026-09-06",
@@ -19148,6 +19154,12 @@
     "date": "2026-09-04",
     "hash": "4c023a79a3d05d74aceade397b75bd3161910c79f8cc667c624d7ef6f87637c4",
     "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/ForsakenCrags_Rename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "08ba6b6f42e917bbfdf91b90ed1a615bb9574b6164d95730ffa69cbb4cb70bec",
+    "sha": "9335f6bc2"
   },
   "src/RimUtinni/UtinniPatches/Patches/GalacticEmpire.xml": {
     "cleanCount": 2,
@@ -19286,6 +19298,12 @@
     "date": "2026-09-13",
     "hash": "776a4ac2f7bd51a4c30e7ba2b974e16ba951f02eeee776a9d197235dc1ed8f79",
     "sha": "4319dca4c"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/NightsideIce_Rename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "3ab9eb6d0faf5435058be8176a83d29907ea9c6c4548d760c6071897b07b2dc7",
+    "sha": "9335f6bc2"
   },
   "src/RimUtinni/UtinniPatches/Patches/OasisMutator_DesertOasis.xml": {
     "cleanCount": 1,
@@ -19509,6 +19527,12 @@
     "hash": "7b65015ed2657a4d2e87025954ed6fcd387a092b0c44529d5c791ddb5f86a162",
     "sha": "17c7dab1a"
   },
+  "src/RimUtinni/UtinniPatches/Patches/Slime_Rename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6f3b0a23ecdde41148438e39236d052a7e84048652fb5b38984f145519cc70de",
+    "sha": "9335f6bc2"
+  },
   "src/RimUtinni/UtinniPatches/Patches/StatNorm_CaravanAdventures_BossStatsNeutral.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -19568,6 +19592,12 @@
     "date": "2026-09-24",
     "hash": "51b9e31d1126a97867c2b598dc228a5980cf0a0de9650bafbf7b5bd82a3c0781",
     "sha": "17c7dab1a"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/WildAnimals_WeepingStones.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "87941b15c6c9a9e84e4c072d0533780fe5dc718df4bc8deeae5cd11af395dae5",
+    "sha": "9335f6bc2"
   },
   "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml": {
     "cleanCount": 3,
@@ -19640,6 +19670,12 @@
     "date": "2026-09-12",
     "hash": "b57597465f751a859c09999687879934a9b5f6d2743c31a333abca435ecd3168",
     "sha": "d8a0b9b7d"
+  },
+  "src/RimUtinni/UtinniPatches/build_desert_review_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "51bb5543b07801eaeaaf99807a163e886d6b7d9dbad6e8a8980e41994202cce3",
+    "sha": "9335f6bc2"
   },
   "src/RimUtinni/UtinniPatches/validation.py": {
     "cleanCount": 1,
