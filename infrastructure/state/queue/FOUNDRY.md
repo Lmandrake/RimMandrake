@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T01:28:49Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-25T01:33:25Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -540,15 +540,6 @@ kind:     task
 summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
 
-## LIQUID_REGISTRY_CORE_1 LiquidDef registry skeleton in LiquidTypes: property block + form slots, v1 rows adopting existing terrains, generator emits from rows
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  In LiquidTypes (growing into RimMandrake: Liquids): the new top-level def
-prose:    infrastructure/state/items/LIQUID_REGISTRY_CORE_1.md
-
 ## LIQUID_BOTTLE_LOOP_1 Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
 state:    doing
 row:      unassigned
@@ -586,7 +577,7 @@ summary:  Two halves. (1) AUTHORING: the planet's water tiles and named bodies c
 prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
 
 ## LIQUID_INDUSTRY_SETPIECES_1 Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    deploy
 target:   v1
@@ -1212,16 +1203,6 @@ kind:     task
 blocked:  Own spec's Watch-out: 'Depends on LIQUID_BOTTLE_LOOP_1.' Verified this session: LIQUID_REGISTRY_CORE_1 now has 10 v1 LiquidDef rows (RM_LiquidDefRegistry.xml) and the distillable flag (six water-family rows true, matches WRECKED_DISTILLATION_MODULE_1's list), but generate_liquid_suite.py has NO bottle-ThingDef emission function (only build_terrain_xml/build_compat_patch/build_liquiddef_xml exist) -- only Chemfuel's row sets a bottled{} slot, adopting the vanilla item; every water-family row's bottled slot is still null. So no RM_Bottle<Liquid> defName exists anywhere in the repo to register as a DBH drinkable, and this item's own DBH-registration patch would target nothing -- exactly the 'a patch that matches nothing logs nothing' trap its own Watch-out warns against, and its own verify text requires checking the landed LIVE def, which cannot exist. LIQUID_BOTTLE_LOOP_1 (blocked this session on the same root cause, 30880dca5) is upstream of me, not LIQUID_REGISTRY_CORE_1 directly -- rows exist now, bottles still do not. (on LIQUID_BOTTLE_LOOP_1)
 summary:  Conversion chain: crude (solar still, drip filter — slow, free, always
 prose:    infrastructure/state/items/LIQUID_THIRST_CHAIN_1.md
-
-## LIQUID_INDUSTRY_SETPIECES_1 Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-blocked:  Watch-out names two deps: RM_GENSTEP_PLACED_SETPIECES_1 (done, b47fe61a0 -- clear) and LIQUID_REGISTRY_CORE_1 (still doing this session, 30880dca5 -- LiquidDef C# skeleton only, v1 rows not authored, so the setpieces have no liquid identity to read/convert). Third named dep LIQUID_LOGISTICS_MOD_1 is itself superseded by FLOWWORKS_BUILD_PROGRAM_1 -- stale reference for whoever picks this up next. Also art-heavy and needs a live quicktest, neither in scope this pass (no bridge/restart). Left doing. (on LIQUID_REGISTRY_CORE_1)
-summary:  Set-pieces scattered via RMGENSTEPPLACEDSETPIECES1's shared scatterer:
-prose:    infrastructure/state/items/LIQUID_INDUSTRY_SETPIECES_1.md
 
 ## DEBUG_ACTION_ENUM_CRASH_1 search_debug_actions/list_debug_action_children(Actions) crash on any broad query (RitualSiegeWithSpecifics NREs in PrepareNode)
 state:    doing  (BLOCKED)
