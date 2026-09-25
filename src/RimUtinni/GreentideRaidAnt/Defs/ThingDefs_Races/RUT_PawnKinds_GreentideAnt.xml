@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- THEY_MOD_REPLICATION_1. Ports both of the donor's PawnKindDefs 1:1 for
+       fidelity. RUT_GreentideAnt is the one actually used by the faction's
+       pawnGroupMakers below (donor's own "GiantAnt" key); RUT_GreentideAntSoldier
+       mirrors donor's "GiantAnt_Soldier", which the donor mod itself never
+       wires into any pawnGroupMaker either — kept for parity, not because
+       anything spawns it yet. -->
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_GreentideAnt</defName>
+    <label>giant ant</label>
+    <race>RUT_GreentideAntRace</race>
+    <combatPower>160</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_GreentideAnt/RUT_GreentideAnt</texPath>
+          <drawSize>2.0</drawSize>
+          <color>(120, 110, 100)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_GreentideAnt/dessicated_RUT_GreentideAnt</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>RUT_GreentideAntSoldier</defName>
+    <label>giant ant soldier</label>
+    <race>RUT_GreentideAntRace</race>
+    <combatPower>150</combatPower>
+    <defaultFactionType>RUT_GreentideAntFaction</defaultFactionType>
+    <aiAvoidCover>true</aiAvoidCover>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_GreentideAnt/RUT_GreentideAnt</texPath>
+          <drawSize>2.5</drawSize>
+          <color>(80,80,80)</color>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

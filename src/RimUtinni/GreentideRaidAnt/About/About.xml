@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.greentideraidant</packageId>
+  <name>RimUtinni: Greentide Raid Ant</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <steamWorkshopUrl />
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.creaturebehaviors</li>
+  </loadAfter>
+  <description>THEY_MOD_REPLICATION_1. Replicates They! (Giant Ants)
+(Sapiently.TheyAtomicMonsters, workshop id 3620253282) in our own tier and
+retires the dependency: the race, its two pawn kinds, the hidden
+permanentEnemy raid faction, the carapace leather and the carapace wall, all
+re-authored from the donor's own plain-text XML (read directly off disk, not
+decompiled). The one piece of donor C# — MyAntMod.JobGiver_AntRaid, a
+directed off-map assault that bypasses the incident/Lord system — is
+replaced by RM_JobGiver_DirectedAssault + RM_DirectedAssaultExtension in
+mandrake.rm.creaturebehaviors, built from vanilla JobGiver patterns
+(AttackTargetFinder.BestAttackTarget, the same call JobGiver_AIFightEnemy
+makes) rather than reading the donor DLL's bytecode.
+
+Greentide raid-events-only per BIOME_FAUNA_ASSIGNMENT_SITTING_1 — this is not
+a wildlife roster addition.
+
+Owed before They! can actually leave the active mod list (tracked on
+THEY_MOD_REPLICATION_1, not repeated here): a coined pseudo-Star-Wars label
+carded per NONCANON_BEAST_RENAME_1's standard (this def currently ships with
+the donor's own plain-English "giant ant" label as a placeholder — defNames
+are internal and do not need the card, only what the player reads does); new
+art for the ant, its dessicated body, and the carapace wall (queued via
+artpipe, no reference= — new art, not a reskin); two short raid-call sound
+clips; and a full-list live-verify session with They! disabled.</description>
+</ModMetaData>

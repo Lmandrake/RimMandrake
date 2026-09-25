@@ -113,6 +113,8 @@
     <Compile Include="RM_MentalState_ParentalEnrage.cs" />
     <Compile Include="RM_CompProperties_ParentalEnrage.cs" />
     <Compile Include="RM_CompParentalEnrage.cs" />
+    <Compile Include="RM_DirectedAssaultExtension.cs" />
+    <Compile Include="RM_JobGiver_DirectedAssault.cs" />
   </ItemGroup>
 
   <ItemGroup>

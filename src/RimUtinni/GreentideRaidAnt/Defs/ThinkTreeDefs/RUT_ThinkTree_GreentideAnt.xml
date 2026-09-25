@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- THEY_MOD_REPLICATION_1. Same shape as donor's ThinkTree_GiantAnt.xml —
+       same subtree priority order — with MyAntMod.JobGiver_AntRaid (donor's
+       custom C#, not decompiled) replaced by
+       RimMandrake.CreatureBehaviors.RM_JobGiver_DirectedAssault, built from
+       vanilla JobGiver patterns instead. -->
+  <ThinkTreeDef>
+    <defName>RUT_ThinkTree_GreentideAnt</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>BurningResponse</treeDef>
+        </li>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>MentalStateCritical</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>MentalStateNonCritical</treeDef>
+        </li>
+
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_DirectedAssault" />
+
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="JobGiver_WanderAnywhere" />
+            <li Class="JobGiver_IdleError" />
+          </subNodes>
+        </li>
+
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

@@ -77,7 +77,14 @@ Load last.</description>
           bookkeeping the generator's own DOCTRINE_LOADAFTER_STALE_1 check
           cannot catch (it only asserts every emitted mod IS declared, not
           that every declared entry is still emitted). Never a live bug,
-          same silent-no-op class as the two entries above. -->
+          same silent-no-op class as the two entries above.
+        * Sapiently.TheyAtomicMonsters (They! (Giant Ants)) - REMOVED
+          2026-09-25 (THEY_MOD_REPLICATION_1): its MegafaunaYield.xml block
+          is gone, replaced by RUT_GreentideAntRace's own statBases in
+          src/RimUtinni/GreentideRaidAnt. The mod itself stays in
+          ModsConfig.xml until a full-list live-verify session confirms the
+          replacement raids correctly with it disabled — that session, and
+          the actual mod-list removal, are still owed. -->
   <loadAfter>
     <li>BiomesTeam.BiomesCore</li>                        <!-- Biomes! Core -->
     <li>BiomesTeam.BiomesPollutedLands</li>               <!-- Biomes! Polluted Lands -->
@@ -97,7 +104,6 @@ Load last.</description>
     <li>RedMattis.BetterPrerequisites</li>                <!-- Big and Small - Framework -->
     <li>RedMattis.BigSmall.Core</li>                      <!-- Big and Small - Genes &amp; More -->
     <li>ReGrowth.BOTR.Core</li>                           <!-- ReGrowth 2 -->
-    <li>Sapiently.TheyAtomicMonsters</li>                 <!-- They! (Giant Ants) -->
     <li>sarg.alphaanimals</li>                            <!-- Alpha Animals -->
     <li>sarg.alphabiomes</li>                             <!-- Alpha Biomes -->
     <li>sarg.alphagenes</li>                              <!-- Alpha Genes -->

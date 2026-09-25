@@ -159,6 +159,10 @@ namespace RimMandrake.CreatureBehaviors
     //      tools or manhunterOnDamageChance, which still answer for hurting
     //      one. A rage already running ends on its own timer; this switch
     //      only stops new ones starting.
+    //  29. directedAssaultBehaviorEnabled — RM_JobGiver_DirectedAssault
+    //      (THEY_MOD_REPLICATION_1). Off: a tagged race stops marching on the
+    //      colony when nothing is in sight — it still fights back at whatever
+    //      it happens to run into, it just never goes looking.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -203,6 +207,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool dungSeedingEnabled = true;
         public static float dungSeedingMultiplier = 1f;
         public static bool parentalEnrageEnabled = true;
+        public static bool directedAssaultBehaviorEnabled = true;
 
         public override void ExposeData()
         {
@@ -248,6 +253,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref dungSeedingEnabled, "dungSeedingEnabled", true);
             Scribe_Values.Look(ref dungSeedingMultiplier, "dungSeedingMultiplier", 1f);
             Scribe_Values.Look(ref parentalEnrageEnabled, "parentalEnrageEnabled", true);
+            Scribe_Values.Look(ref directedAssaultBehaviorEnabled, "directedAssaultBehaviorEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -407,6 +413,12 @@ namespace RimMandrake.CreatureBehaviors
               + "adult charge you, with no warning at all. It goes after whoever came close and "
               + "nobody else, and it calms down again once you back off. Off: their young are "
               + "not guarded, and you can walk right up to one.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Directed assault (march on the colony)", ref directedAssaultBehaviorEnabled,
+                "On: a tagged animal that has nothing to fight marches toward the colony instead of "
+              + "idling at the map edge. Off: it still fights back at whatever it happens to run into, "
+              + "it just never goes looking.");
 
             list.End();
         }
