@@ -1,58 +1,37 @@
-# Decision strings — load of 2026-09-20, BENCH
+# Biome load round — decision strings, written BEFORE launch 2026-09-25 (BENCH)
 
-Written BEFORE launch. A signature invented after reading the log is a story
-that fits, not evidence.
+Batch: loadsweep BASE-9 + 15 extras (`src/RimMandrake/Utils/loadsweep/biome_round_batch.txt`)
+= 24 mods. Purpose: prove the 8 new RM_ biome mods load clean (step 5 of their build items).
+Eight new assemblies ride this load under the standing name-attribution waiver — one
+signature each, below, written before the log exists.
 
-**Item riding the load:** `DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1` — deploy
-SWBestiary (defs + `RimMandrakeBeastMechanicsRSW.dll`), lift both biome-table
-holds, prove the 18 previously-dangling refs resolve.
+## Per-assembly failure signatures (any hit = that mod fails, others unaffected)
+- `TypeLoadException`/`ReflectionTypeLoadException` naming `RimMandrake.TheRot`
+- … naming `RimMandrake.FeverWood`
+- … naming `RimMandrake.TerminalBiomes`
+- … naming `RimMandrake.Greentide`
+- … naming `RimMandrake.NightsideIce`
+- … naming `RimMandrake.Stillsand`
+- … naming `RimMandrake.LongShade`
+- … naming `RimMandrake.Wasteland`
 
-**Tier:** `fish` (`modset_builder.py --tier fish`) — BRIDGE + `mandrake.rut.patches`
-+ `mandrake.rsw.swbestiary`, dependency-closed, all five DLC per the 2026-09-19
-ruling. Chosen because it is exactly the two mods whose interaction is in question.
+## FAIL strings (whole batch)
+- `Recovered from incompatible or corrupted mods` or `Caught exception while loading play data`
+- disk activeMods collapses to 6 (recovery reset)
+- `^Config error in` naming any `RM_` def
+- `Could not resolve cross-reference` naming `RM_`
+- `Patch operation` + `failed` naming a mandrake file
 
-**Baseline:** the pre-launch `Player.log` is copied to
-`Transient/Player.log.pre_swbestiary_deploy_2026-09-20`. Every count below is
-against that copy, not against memory.
-
-## EXPECTED ABSENT — any hit is a failure
-
-| string | means |
-|---|---|
-| `Could not resolve cross-reference` naming any of the 18 | the deploy did not fix it |
-| `RSW_Sandstrider`, `RSW_Cindermite`, `RSW_Spineroller`, `RSW_Sandhorn`, `RSW_Dunestalker`, `RSW_Ferroclaw`, `RSW_Sandmaw`, `RSW_Tuskcoil`, `RSW_Stareling`, `RSW_Voltmaw`, `RSW_Dunegrass`, `RSW_Plant_Chakroot_Wild`, `RSW_Plant_HubbaGourd_Wild`, `RSW_VellaraBloom`, `RSW_SweetbarkTree`, `RSW_Plant_Bloddle` — in ANY error line | the 18 names, verbatim |
-| `Recovered from incompatible or corrupted mods` | assembly load failed; see §10, relaunch via Steam |
-| `TypeLoadException` | the new DLL collides with a Harmony/VEF version |
-| `Could not find type` naming `RimMandrake.StarWars.SWBestiary.*` | the DLL did not deploy, or did not load |
-| `defined more than once` | the dedup regressed |
-
-## EXPECTED PRESENT — absence of these is ALSO a failure
-
-🔑 A no-op logs nothing, so "zero errors" alone does not prove the deploy landed.
-
-| string | means |
-|---|---|
-| `Bridge token:` | the load is up. **Poll THIS, never JawaBench's ready line** — that one is lazy and only appears on the first tool call |
-| `RimMandrakeBeastMechanicsRSW` in the loaded-assemblies lines | the new DLL is actually in the game |
-
-## POSITIVE CHECK — the thing the log cannot tell me
-
-Via the bridge once up, `jawa/get_defs` (or equivalent) for **all 18 names**.
-**All 18 must resolve.** This is the real verdict; the log only says nothing
-screamed.
-
-Second: `RSW_Ferroclaw`, `RSW_Voltmaw`, `RSW_Cindermite` must each still carry
-their comp from the new assembly. A missing comp type discards the whole def
-**silently** — so a def that resolves is not proof its comp did.
-
-## Ride-along, free (config class, no attribution risk)
-
-- `Config error in` sweep across the whole load — `Def.ConfigErrors()` catches
-  dead pawnkinds, bad `forcedMiss` and out-of-order thought stages that offline
-  `validate_patch.py` cannot see.
-- Full `harvest_log.py` pass, not just my own strings.
-
-## Restore
-
-🔴 `modset_builder.py --restore` before the owner plays. Leaving his machine on
-the `fish` tier is the one unacceptable outcome.
+## PASS positive (not silence)
+- `Bridge token:` present; disk_active_mods = 24
+- `jawa/get_defs` non-null for every sentinel:
+  BiomeDef: RM_TheRot · RM_FeverWood · RM_Greentide · RM_NightsideIce · RM_Stillsand ·
+  RM_LongShade · RM_Wasteland · RM_TheScald · RM_GreySea · RM_TwilightSea · RM_PropaneLake
+  ThingDef: RM_Vaunoom (VWake reconciliation) · RM_Fessk (cast wiring) · RM_Eesh (fish
+  retier) · RM_Vorrel (LongShade move) · RM_GiantLeaf (FeverWood Q13 dup)
+  TerrainDef: RM_TheRotGrass (TheRot own ground) · RM_SolidPropane (PropaneLake own terrain)
+- KNOWN-ACCEPTED, not failures: Wasteland's unguarded `VolcanoSoil`/`WastelandAsphalt`
+  terrainsByFertility resolve only because sarg.alphabiomes is in this batch — its true
+  standalone gap stays open on WASTELAND_RM_MOD_BUILD_1. Missing real art renders
+  placeholder silhouettes; pink squares on RM_DosimeterLawn/RM_VaultRoot (texPaths with no
+  PNG) are a recorded LongShade/Wasteland robustness-pass item, not a load failure.

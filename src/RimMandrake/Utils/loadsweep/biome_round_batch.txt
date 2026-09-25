@@ -1,0 +1,15 @@
+oskarpotocki.vanillafactionsexpanded.core
+sarg.alphabiomes
+sarg.alphaanimals
+mandrake.rm.creaturebehaviors
+mandrake.rm.environmentalhazards
+mandrake.rm.divinginteraction
+mandrake.rm.flowworks
+mandrake.rm.greentide
+mandrake.rm.therot
+mandrake.rm.feverwood
+mandrake.rm.terminalbiomes
+mandrake.rm.nightsideice
+mandrake.rm.stillsand
+mandrake.rm.longshade
+mandrake.rm.wasteland

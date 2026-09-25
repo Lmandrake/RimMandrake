@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T05:31:15Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-25T05:40:08Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -2203,3 +2203,13 @@ kind:     design
 thin:     no ## spec
 summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
 prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
+
+## FLOWWORKS_DONOR_AFFORDANCE_GAP_1 FlowWorks liquid terrains reference donor TerrainAffordanceDefs (BMT_DeepWaterBridgeable x38, TST_TerrainForMeditationStone x19) that break standalone - own affordances or MayRequire owed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLOWWORKS_DONOR_AFFORDANCE_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOWWORKS_DONOR_AFFORDANCE_GAP_1.md
