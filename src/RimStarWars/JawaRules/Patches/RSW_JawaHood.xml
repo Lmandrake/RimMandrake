@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JAWA_SWIM_HOOD_KEEP_1: the always-on hood node for RSW_Jawa_Head_Plain. It lives in
+     JawaRules, not StarWarsRaces, because its workerClass is in this assembly: named from
+     StarWarsRaces it would discard the whole gene whenever JawaRules is not loaded. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/GeneDef[defName="RSW_Jawa_Head_Plain"]/renderNodeProperties</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/GeneDef[defName="RSW_Jawa_Head_Plain"]</xpath>
+      <value>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties">
+        <debugLabel>Jawa hood (always-on fallback, minimal)</debugLabel>
+        <workerClass>RimMandrake.StarWars.JawaRules.PawnRenderNodeWorker_JawaHoodFallback</workerClass>
+        <texPath>SWApparel/Robes/jawa/hood</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh, Rotting, Dessicated</rotDrawMode>
+        <!-- Smaller than the real item (1.0) and layered BELOW normal
+             headgear (71/90) on purpose — see the header comment above:
+             any worn hat shows in front and hides this. -->
+        <drawSize>0.75</drawSize>
+        <baseLayer>65</baseLayer>
+      </li>
+    </renderNodeProperties>
+      </value>
+    </nomatch>
+  </Operation>
+</Patch>
