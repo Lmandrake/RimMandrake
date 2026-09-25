@@ -28,6 +28,7 @@ namespace RimMandrake.EnvironmentalHazards
     // looks (WeatherOverlay_Fog, _Rain, _Snow, ...), rather than presuming
     // to build and name the shared generic on greentide kit's behalf.
     //
+    [StaticConstructorOnStartup]
     public class RUT_WeatherOverlay_ScaldSteam : WeatherOverlayDualPanner
     {
         // MatLoader.LoadMat reads only Unity Resources/, which no mod can ship to: a mod path
