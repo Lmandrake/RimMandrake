@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T17:45:39Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-25T18:09:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -908,15 +908,6 @@ target:   v1
 kind:     build
 summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
 prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
-
-## ARTPIPE_QUOTA_RESET_WEDGE_1 artpiped cannot notice a Codex quota reset: idle meter refresh reads only stale rollouts, so it stays parked until something runs codex exec in a leased home
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/ARTPIPE_QUOTA_RESET_WEDGE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARTPIPE_QUOTA_RESET_WEDGE_1.md
 
 ## STACKCOUNT_FILEPATH_REDX_SWEEP_1 228 live 'Collection cannot init' errors: defs pointing a Graphic_StackCount/Random/Collection texPath at a FILE, not a folder, render red-X (RUT_Greenwood, RUT_Hardwood, VaultRoot, RM_Venomvine, GlowGoo, JawaClaimRumour, many plants). TerminalBiomes fixed at 860b9e0f9 as the pattern: owned art into a folder, borrowed placeholder overrides graphicClass to Graphic_Single. Census from Player.log, grep 'Collection cannot init'.
 state:    doing

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T17:45:39Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-25T18:09:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -709,16 +709,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SALVAGE_WRECKAGE_EVERYWHERE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SALVAGE_WRECKAGE_EVERYWHERE_1.md
 
-## SHULLA_INVISIBLE_RENDER_1 RM_Shulla renders invisible (selected, alive, empty selection box) and flickers with zoom; noohm on the same water renders. Diagnose: Graphic_Multi paths, drawSize 0.25-0.45, 1.6 water-depth pawn rendering, Real FoW.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SHULLA_INVISIBLE_RENDER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SHULLA_INVISIBLE_RENDER_1.md
-
 ## STATUE_ART_EXPANSION_1 Statue expansion: assess the statue-choice mod (patch vs own), RM statues with flame emergence points, Utinni god/culture statues, flame fuel via Sump / Helixian gas / manual refuel. The Steel Flame statuary art is a placeholder to replace.
 state:    proposed
 row:      unassigned
@@ -728,3 +718,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/STATUE_ART_EXPANSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/STATUE_ART_EXPANSION_1.md
+
+## JAWA_SWIM_HOOD_KEEP_1 URGENT (owner, chat 2026-09-25: Jawa must never be seen without a hood): swimming Jawa lose their hood because vanilla 1.6 swim rendering clears the Headgear/Clothes render flags (PawnRenderer.ParallelGetPreRenderResults, MEASURED). Harmony postfix restores headgear for Jawa only. Being built; deploy at next game-down.
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/JAWA_SWIM_HOOD_KEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/JAWA_SWIM_HOOD_KEEP_1.md
