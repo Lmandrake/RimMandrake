@@ -47,24 +47,29 @@
   `wakeUpOnThingConstructedRadius=6` (a Farmer building a cistern/vaporator
   square on top of a dowsing-rod cluster wakes it — a plausible reading of
   "the Farmers read them as living dowsing rods," even though it is a
-  construction trigger, not the sheet's own water-arrival trigger). The
-  genuinely-new piece — a small rare-tick comp that activates
-  CompWakeUpDormant when a nearby cell turns to real (non-boil) water
-  terrain, plus the "gather crack-wax off the flats after a wake" job —
-  is filed as its own dedicated item, `CRACKED_LANDS_SEALED_WAKE_MECHANISM_1`,
-  rather than guessed at inline (this item's own precedent for a
-  genuinely-new-C#, non-trivial piece: PYRELANDS_BURROWER_GRAZER_1,
-  MIASMA_KARRATHIL_POLLINATION_GATE_1). `receivesSignals=true` is set per
-  `CompProperties_CanBeDormant.ConfigErrors` (RimWorld/
-  CompProperties_CanBeDormant.cs, read this pass) — required whenever
-  `jobDormancy` is false, which it is here (a wild dormant state, not an
-  activity-driven one).
+  construction trigger, not the sheet's own water-arrival trigger).
+  `receivesSignals=true` is set per `CompProperties_CanBeDormant.ConfigErrors`
+  (RimWorld/CompProperties_CanBeDormant.cs, read this pass) — required
+  whenever `jobDormancy` is false, which it is here (a wild dormant state,
+  not an activity-driven one).
 
-  Crack-wax: wired as an interim `butcherProducts` yield (RUT_CrackWax,
-  this item's own companion file, RUT_CrackedLandsItems.xml) rather than
-  the sheet's actual "gathered off the flats after a wake" ground-drop —
-  that drop-on-wake behaviour is part of the same deferred mechanism item
-  above.
+  BUILT: `CRACKED_LANDS_SEALED_WAKE_MECHANISM_1` shipped the real
+  water-arrival trigger and the crack-wax ground-drop —
+  `RimMandrake.Utinni.UtinniPatches.CompWaterWakeTrigger`
+  (Source/RUT_CompWaterWakeTrigger.cs), a small comp checked once every
+  2000 ticks that scans a 3-cell radius for real (non-boil) water terrain
+  and, on the first hit, calls `CompCanBeDormant.WakeUp()` directly and
+  drops 1-3 RUT_CrackWax on the ground next to the sleeper — sitting
+  alongside the interim triggers above, not replacing them.
+
+  Crack-wax: still wired as a `butcherProducts` yield too (RUT_CrackWax,
+  this item's own companion file, RUT_CrackedLandsItems.xml) as a second,
+  always-available source; the sheet's actual "gathered off the flats
+  after a wake" ground-drop is now the wake comp's job, above. No bespoke
+  gather WorkGiver/JobDriver was written — RUT_CrackWax is
+  `ParentName="ResourceBase"`, already `alwaysHaulable` by inheritance, so
+  the vanilla hauling WorkGiver picks up the ground-dropped stack like any
+  other raw resource.
 
   Body: `QuadrupedAnimalWithPawsAndTail`, same body RUT_MortuaryCrawler
   (this item, the_scarlands wave) used for a squat, digging, armored
@@ -123,9 +128,19 @@
         <!-- INTERIM triggers, see header: no stock water-arrival trigger
              exists. wakeUpOnThingConstructedRadius INVENTED at 6 (a
              Farmer's cistern/vaporator built directly over a dowsing
-             cluster). -->
+             cluster). Kept alongside the real water trigger below as
+             extra, plausible ways to disturb a sleeper. -->
         <wakeUpOnDamage>true</wakeUpOnDamage>
         <wakeUpOnThingConstructedRadius>6</wakeUpOnThingConstructedRadius>
+      </li>
+      <li Class="RimMandrake.Utinni.UtinniPatches.CompProperties_WaterWakeTrigger">
+        <!-- CRACKED_LANDS_SEALED_WAKE_MECHANISM_1: the actual "water wakes
+             it" mechanic the sheet describes, plus the crack-wax
+             ground-drop a wake sheds. See the comp's own header. -->
+        <checkRadius>3</checkRadius>
+        <checkIntervalTicks>2000</checkIntervalTicks>
+        <crackWaxDef>RUT_CrackWax</crackWaxDef>
+        <crackWaxCountRange>1~3</crackWaxCountRange>
       </li>
     </comps>
     <race>
