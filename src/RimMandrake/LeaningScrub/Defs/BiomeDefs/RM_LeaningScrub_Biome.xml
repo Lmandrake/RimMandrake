@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_LeaningScrub_Biome.xml                  LEANINGSCRUB_RM_MOD_BUILD_1
+
+    Phase A row 9 of design/RimMandrake/biome_mod_architecture.md — the
+    RimMandrake-tier twin of the frozen src/RimUtinni/UtinniPatches/Defs/
+    BiomeDefs/RUT_AridShrubland.xml, generalized to zero campaign-specific
+    content per §3a's test. Full sheet (campaign-side):
+    design/Jawa/worldbuilding/biomes/arid_shrubland.md (FROZEN).
+
+    Copied from the frozen def, MEASURED 2026-09-25: terrain thresholds,
+    weather commonalities, disease table and animalDensity/plantDensity/
+    forageability/movementDifficulty/diseaseMtbDays/wildPlantRegrowDays are
+    all byte-identical to RUT_AridShrubland.xml's own values — nothing here
+    is re-derived. workerClass stays RimWorld.BiomeWorker_AridShrubland
+    (vanilla Core, confirmed via the installed game's own
+    Biomes_WarmArid.xml) — a donor type in workerClass would be a hard
+    dependency the RimMandrake tier may not assume, but this one is Core
+    itself, so no RM_BiomeWorker_LeaningScrub wrapper is owed.
+
+    <texture> is vanilla Core's own "World/Biomes/AridShrubland" (MEASURED
+    from Biomes_WarmArid.xml on the installed game), NOT the frozen twin's
+    "World/Biomes/AridShrubland1" — that suffixed variant belongs to a
+    Workshop donor mod (id 3546956014), and this mod ships standalone.
+
+    wildAnimals: every RSW_/SW_/donor-Star-Wars-name entry stays OUT (per
+    §7 Q11, "RimMandrake should not name star wars ever") and rides
+    src/RimUtinni/UtinniPatches/Patches/WildAnimals_LeaningScrub.xml
+    instead. Only the 5 non-Star-Wars rows the frozen def already carries
+    are inline here (Q9: non-Star-Wars donor fauna is acceptable inline).
+
+    wildPlants: the frozen def's own RUT_-prefixed plant defs (RUT_Fuzz,
+    RUT_Grellbush, RUT_Grellspine, RUT_WildHealroot, RUT_SweetlineTree,
+    formerly mandrake.rut.ashkarrflora) are renamed to this mod's RM_ tier
+    per §7 Q8 ("mandrake.rut.ashkarrflora: DISSOLVE IT. Each plant moves
+    into the RimMandrake mod of the biome whose wildPlants lists it,
+    renamed RM_"). 🔑 The ORIGINAL RUT_-prefixed defs are left standing,
+    UNTOUCHED, inside mandrake.rut.ashkarrflora: the frozen
+    RUT_AridShrubland.xml's own wildPlants block still names them under
+    MayRequire="mandrake.rut.ashkarrflora", and that mod carries the
+    player's live world until Phase B deletes RUT_AridShrubland.xml
+    outright (biome_mod_architecture.md §5's hazard section — a defName a
+    frozen def depends on cannot be pulled out from under it before then).
+    So mandrake.rut.ashkarrflora is not literally dissolved THIS pass; it
+    is frozen alongside its biome, exactly the same bounded-duplication
+    pattern §5 step 3 already uses for the biome def itself, and its real
+    deletion is scheduled for Phase B step 4 together with
+    RUT_AridShrubland.xml. This is the one deliberate deviation from the
+    item's literal "move" wording, made to avoid the exact hazard §5
+    documents for biome defs, applied one level down to a def a frozen
+    biome depends on.
+
+    RG_Plant_AridGrass / Plant_Nysyllin_Wild / RG_Plant_CreepStern /
+    RG_Plant_CrimsonCushion / RG_Plant_Dervish carry no MayRequire in the
+    frozen def either — copied byte-identical; fixing that donor-gating gap
+    is not this item's scope.
+
+    Art: RM_Fuzz/RM_Grellbush/RM_Grellspine/RM_WildHealroot have zero PNGs
+    anywhere (MEASURED, same as the frozen originals) — expected, not a
+    defect (CLAUDE.md, "prove art is missing before generating"; the
+    existing artpipe jobs target the OLD RUT_ texPaths inside
+    mandrake.rut.ashkarrflora and do not benefit these new RM_ defs — a
+    separate, later art-queue concern, not filed here). RM_SweetlineTree's
+    14-variant art is copied and renamed alongside its def (see
+    Textures/Things/Plant/RM_SweetlineTree/).
+  -->
+
+  <BiomeDef>
+    <defName>RM_LeaningScrub</defName>
+    <label>the leaning scrub</label>
+    <description>Knee-high silver-green fuzz at eerily even spacing, running unbroken to every horizon, all of it leaning the same way, all of it moving - because the wind never stops. Sightlines are gone under the fuzz-canopy and cover is everywhere, for everything smaller than a person, all the time.</description>
+    <workerClass>RimWorld.BiomeWorker_AridShrubland</workerClass>
+    <texture>World/Biomes/AridShrubland</texture>
+    <riverbankTerrain>Riverbank</riverbankTerrain>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <animalDensity>1.8</animalDensity>
+    <plantDensity>0.35</plantDensity>
+    <forageability>0.5</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <diseaseMtbDays>65</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>0.45</max>
+      </li>
+      <li>
+        <terrain>Soil</terrain>
+        <min>0.45</min>
+        <max>0.9</max>
+      </li>
+      <li>
+        <terrain>SoilRich</terrain>
+        <min>0.9</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>30</Clear>
+      <Fog>45</Fog>
+      <DryThunderstorm>1</DryThunderstorm>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">5</Overcast>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <Terrorworm MayRequire="mlie.horrors">0.7</Terrorworm>  <!-- terrorworm - non-Star-Wars donor, Q9 -->
+      <AA_Cactipine MayRequire="sarg.alphaanimals">0.25</AA_Cactipine>  <!-- cactipine - non-Star-Wars donor, Q9 -->
+      <AA_Needlepost MayRequire="sarg.alphaanimals">0.1</AA_Needlepost>  <!-- needlepost - non-Star-Wars donor, Q9 -->
+      <AA_Wildpawn MayRequire="sarg.alphaanimals">0.1</AA_Wildpawn>  <!-- wildpawn - non-Star-Wars donor, Q9 -->
+      <AA_Wildpod MayRequire="sarg.alphaanimals">0.025</AA_Wildpod>  <!-- wildpod - non-Star-Wars donor, Q9 -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <RM_Fuzz>0.9</RM_Fuzz>  <!-- LEANINGSCRUB_RM_MOD_BUILD_1: renamed from RUT_Fuzz, §7 Q8 -->
+      <RG_Plant_AridGrass>0.5</RG_Plant_AridGrass>  <!-- grass -->
+      <Plant_Brambles>0.3</Plant_Brambles>  <!-- brambles -->
+      <RM_Grellbush>0.3</RM_Grellbush>  <!-- renamed from RUT_Grellbush, §7 Q8 -->
+      <RM_Grellspine>0.3</RM_Grellspine>  <!-- renamed from RUT_Grellspine, §7 Q8 -->
+      <RM_WildHealroot>0.25</RM_WildHealroot>  <!-- renamed from RUT_WildHealroot, §7 Q8; label kept "wild healroot" -->
+      <Plant_Nysyllin_Wild>0.22</Plant_Nysyllin_Wild>  <!-- wild nysyllin plant; not IP per Q11a -->
+      <RG_Plant_CreepStern>0.2</RG_Plant_CreepStern>  <!-- creep stern -->
+      <RG_Plant_CrimsonCushion>0.2</RG_Plant_CrimsonCushion>  <!-- crimson cushion -->
+      <RG_Plant_Dervish>0.2</RG_Plant_Dervish>  <!-- dervish -->
+      <RM_VenomvineThicket MayRequire="mandrake.rm.environmentalhazards">0.15</RM_VenomvineThicket>  <!-- fortress flora, already RimMandrake-tier, no move -->
+    </wildPlants>
+    <!-- RM_SweetlineTree (renamed from RUT_SweetlineTree, §7 Q8) ships as its own
+         def in this mod (Defs/ThingDefs_Plants/RM_SweetlineTree.xml) but is
+         deliberately NOT added to wildPlants above: the frozen twin never wired
+         it into spawning either (0 references to it anywhere besides its own
+         file, MEASURED) and TREE_GRAPHICS_OWNERSHIP_1 is still open on how the
+         landmark tree should actually place (a hand-placed one-per-sweetline
+         "living surveyor's mark", not a random wildPlants scatter, per its own
+         design sheet). Inventing a commonality number here would be exactly the
+         kind of data decision that item, not this one, owns. -->
+    <wildPlantRegrowDays>27</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

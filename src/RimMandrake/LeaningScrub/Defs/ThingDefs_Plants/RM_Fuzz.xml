@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Fuzz.xml                                LEANINGSCRUB_RM_MOD_BUILD_1
+
+  Renamed from src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_Fuzz.xml
+  per biome_mod_architecture.md §7 Q8 ("mandrake.rut.ashkarrflora: DISSOLVE
+  IT. Each plant moves into the RimMandrake mod of the biome whose
+  wildPlants lists it, renamed RM_"). Byte-identical content otherwise — see
+  that file's own header for the full design account
+  (COMMISSION_LEDGER_CLEANUP_1, design/Jawa/worldbuilding/biomes/
+  arid_shrubland.md §4 "The giants").
+
+  🔑 The ORIGINAL RUT_Fuzz def is left standing in mandrake.rut.ashkarrflora,
+  untouched — the frozen RUT_AridShrubland.xml still names it under
+  MayRequire="mandrake.rut.ashkarrflora" and must keep resolving until Phase
+  B deletes that biome def outright. See RM_LeaningScrub_Biome.xml's own
+  header for the full reasoning.
+
+  Art: zero PNGs exist for this defName anywhere (MEASURED, same as the
+  original) — expected, not a defect. The existing artpipe job
+  (infrastructure/artpipe/pending/rutfuzz_v1.json) targets the OLD texPath
+  inside mandrake.rut.ashkarrflora and does not benefit this def; a fresh
+  art job for Things/Plant/RM_Fuzz is separate, later, unfiled work.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Fuzz</defName>
+    <label>the fuzz</label>
+    <description>A dense mat of fine silver-green fronds, never taller than the knee, combed permanently in one direction by a wind that never stops. Its growth crown sits below the soil line, so grazing and cutting alike only ever take the expendable leaves above - the fuzz and the giants that mow it are one equilibrium, and it is back within days.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0.15</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Fuzz</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.35, 0.15, 0.15)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <fillPercent>0.15</fillPercent>
+    <pathCost>8</pathCost>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.25</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>6</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.55~0.85</visualSizeRange>
+      <topWindExposure>1.0</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>2</harvestYield>
+      <harvestWork>40</harvestWork>
+      <harvestAfterGrowth>0.3</harvestAfterGrowth>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>60</wildClusterWeight>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>

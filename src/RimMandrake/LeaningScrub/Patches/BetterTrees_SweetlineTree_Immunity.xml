@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- TREE_GRAPHICS_OWNERSHIP_1 — defensive, not corrective. Retargeted from
+       src/RimUtinni/AshkarrFlora/Patches/BetterTrees_SweetlineTree_Immunity.xml
+       onto the renamed RM_SweetlineTree, per §7 Q8. See that file's own
+       header for the full account: the three subscribed "better trees" mods
+       key rescale/retexture lookups by exact defName, RM_SweetlineTree is
+       absent from every template they currently ship (already immune by
+       construction), and this patch is insurance against a future update
+       adding an entry for it — matches nothing today and therefore logs
+       nothing today (CLAUDE.md: "a patch that matches nothing logs
+       nothing" is expected here). The ORIGINAL file stays in
+       mandrake.rut.ashkarrflora targeting RUT_SweetlineTree, since that
+       defName is still live on the frozen twin. -->
+
+  <Operation Class="PatchOperationConditional" MayRequire="ChaoticEnrico.BetterTrees">
+    <xpath>/Defs/BetterTrees.TreeScaleTemplateDef/treeScales/li[defName="RM_SweetlineTree"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BetterTrees.TreeScaleTemplateDef/treeScales/li[defName="RM_SweetlineTree"]</xpath>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="ChaoticEnrico.BetterTrees">
+    <xpath>/Defs/BetterTrees.TreeTextureTemplateDef/treeTextures/li[key="RM_SweetlineTree"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BetterTrees.TreeTextureTemplateDef/treeTextures/li[key="RM_SweetlineTree"]</xpath>
+    </match>
+  </Operation>
+
+</Patch>

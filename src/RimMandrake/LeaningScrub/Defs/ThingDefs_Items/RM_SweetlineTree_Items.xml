@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SweetlineTree_Items.xml                 LEANINGSCRUB_RM_MOD_BUILD_1
+
+  Renamed from src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Items/
+  RUT_SweetlineTree_Items.xml per §7 Q8, riding with RM_SweetlineTree.
+  Byte-identical content (defName and texPath aside) — see that file's own
+  header for the full account (SWEETLINE_WOOL_HARVEST_1).
+
+  🔑 The ORIGINAL RUT_SweetlineWool def is left standing in
+  mandrake.rut.ashkarrflora, untouched, for the same reason as the rest of
+  this mod's moved content — see RM_LeaningScrub_Biome.xml's own header.
+
+  Art: none exists for either the old or the new defName (MEASURED, same as
+  the original) — expected, not a defect.
+-->
+<Defs>
+
+  <ThingDef ParentName="WoolBase">
+    <defName>RM_SweetlineWool</defName>
+    <label>giant-wool</label>
+    <description>Long, silver-grey hanks of wool, snagged and shed where the biome's giants have rubbed their flanks raw against a sweetline tree for longer than any settlement nearby has stood. Thick and oily with the animal that grew it — warmer than any sheared fleece, and taken only by whoever is willing to work in the giants' shadow.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_SweetlineWool</texPath>
+      <color>(196,193,186)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>5.5</MarketValue>
+      <StuffPower_Armor_Sharp>0.42</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Heat>1.3</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>36</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>14</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(196,193,186)</color>
+      <commonality>0.04</commonality>
+    </stuffProps>
+  </ThingDef>
+
+</Defs>

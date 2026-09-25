@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LeaningScrubVanillaReplacements.xml     LEANINGSCRUB_RM_MOD_BUILD_1
+
+  Renamed from src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/
+  RUT_AridShrublandVanillaReplacements.xml per biome_mod_architecture.md §7
+  Q8 ("mandrake.rut.ashkarrflora: DISSOLVE IT. Each plant moves into the
+  RimMandrake mod of the biome whose wildPlants lists it, renamed RM_").
+  Byte-identical content (defNames aside) — see that file's own header for
+  the full design account (DESERT_FAMILY_PORT_EXECUTION_1, owner ruling
+  2026-09-21).
+
+  🔑 The ORIGINAL RUT_Grellbush/RUT_Grellspine/RUT_WildHealroot defs are left
+  standing in mandrake.rut.ashkarrflora, untouched — the frozen
+  RUT_AridShrubland.xml still names them under
+  MayRequire="mandrake.rut.ashkarrflora" and must keep resolving until Phase
+  B deletes that biome def outright. See RM_LeaningScrub_Biome.xml's own
+  header for the full reasoning.
+
+  Art: zero PNGs exist for any of these three defNames anywhere (MEASURED,
+  same as the originals) — expected, not a defect. The three existing
+  artpipe jobs (rut_grellbush, rut_wildhealroot, rut_grellspine) target the
+  OLD texPaths inside mandrake.rut.ashkarrflora and do not benefit these
+  defs; fresh art jobs for the RM_ texPaths below are separate, later,
+  unfiled work.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Grellbush</defName>
+    <label>grellbush</label>
+    <description>A short, tough scrub shrub adapted to thin desert soil. Not much use for anything but it holds ground other plants can't.</description>
+    <statBases>
+      <Flammability>0</Flammability>
+      <BeautyOutdoors>1</BeautyOutdoors>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Grellbush</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <fillPercent>0.2</fillPercent>
+    <pathCost>10</pathCost>
+    <ingestible>
+      <foodType>Plant</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.7</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <minGrowthTemperature>-22.4</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-13.7</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>38.6</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>61.8</maxGrowthTemperature>
+      <growMinGlow>0.51</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.4~0.8</visualSizeRange>
+      <topWindExposure>0.2</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>0</harvestYield>
+      <harvestWork>200</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <allowAutoCut>true</allowAutoCut>
+      <sowWork>170</sowWork>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>5</wildClusterWeight>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_WildHealroot</defName>
+    <label>wild healroot</label>
+    <description>A slow-growing plant which yields herbal medicine when harvested.\n\nThis wild breed of healroot is hardier than domesticated healroot, but too difficult to cultivate. It is prized by tribespeople in colder climates.</description>
+    <statBases>
+      <Flammability>0</Flammability>
+      <BeautyOutdoors>1</BeautyOutdoors>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_WildHealroot</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <fillPercent>0.15</fillPercent>
+    <pathCost>8</pathCost>
+    <ingestible>
+      <foodType>Plant</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.7</fertilityMin>
+      <fertilitySensitivity>1</fertilitySensitivity>
+      <growDays>10</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <minGrowthTemperature>-22.4</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-13.7</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>38.6</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>61.8</maxGrowthTemperature>
+      <growMinGlow>0.51</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.3~0.8</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>MedicineHerbal</harvestedThingDef>
+      <harvestYield>1</harvestYield>
+      <harvestWork>400</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <allowAutoCut>false</allowAutoCut>
+      <sowWork>170</sowWork>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>80</wildClusterWeight>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Grellspine</defName>
+    <label>grellspine</label>
+    <description>A short toxin-adapted shrub, a dense tough tangle of thorny branches. Difficult to move through, it slows down anyone moving over it. It can only grow in polluted ground.</description>
+    <statBases>
+      <Flammability>0</Flammability>
+      <BeautyOutdoors>1</BeautyOutdoors>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Grellspine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <fillPercent>0.3</fillPercent>
+    <pathCost>14</pathCost>
+    <ingestible>
+      <foodType>Plant</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <minGrowthTemperature>-22.4</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-13.7</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>38.6</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>61.8</maxGrowthTemperature>
+      <growMinGlow>0.51</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.7~0.85</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>0</harvestYield>
+      <harvestWork>60</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <allowAutoCut>true</allowAutoCut>
+      <sowWork>170</sowWork>
+      <pollution MayRequire="Ludeon.RimWorld.Biotech">PollutedOnly</pollution>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SweetlineTree.xml                       LEANINGSCRUB_RM_MOD_BUILD_1
+
+  Renamed from src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/
+  RUT_AshkarrFlora_Plants.xml's RUT_SweetlineTree def per
+  biome_mod_architecture.md §7 Q8 ("mandrake.rut.ashkarrflora: DISSOLVE IT.
+  Each plant moves into the RimMandrake mod of the biome whose wildPlants
+  lists it, renamed RM_"). Byte-identical content (defName, texPath and
+  harvestedThingDef aside) — see that file's own header for the full design
+  account (TREE_GRAPHICS_OWNERSHIP_1, SWEETLINE_WOOL_HARVEST_1,
+  design/Jawa/worldbuilding/biomes/arid_shrubland.md §4 "The sweetline
+  trees").
+
+  🔑 The ORIGINAL RUT_SweetlineTree def is left standing in
+  mandrake.rut.ashkarrflora, untouched — mandrake.rut.ashkarrflora is frozen
+  alongside RUT_AridShrubland.xml (see RM_LeaningScrub_Biome.xml's own
+  header), and real deletion waits for Phase B.
+
+  ⚠️ NOT added to RM_LeaningScrub_Biome.xml's wildPlants — same as the
+  original, which never wired it into spawning either. See the biome def's
+  own comment for why.
+
+  Art: the 14-variant art (RUT_SweetlineTreeA.png..N.png) is copied and
+  renamed to RM_SweetlineTree*.png in this mod's own Textures folder —
+  Graphic_Random groups by filename prefix before the first "_", so the
+  bare-letter-suffix convention is preserved.
+-->
+<Defs>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_SweetlineTree</defName>
+    <label>sweetline tree</label>
+    <description>A single ancient giant, centuries old, growing only where the moisture-light trade balances exactly. Its trunk is scarred smooth in patches where the biome's giants have rubbed against it for longer than any settlement nearby has stood; the bark sheds their snagged wool in long silver hanks. Every sweetline tree has a name, and the roads of the shrubland are laid tree to tree along the line they mark.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_SweetlineTree</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.45, 0.6, 0.32)</volume>
+        <offset>(0,0,-0.46)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>650</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Mass>900</Mass>
+      <BeautyOutdoors>10</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <visualSizeRange>7.7~10.0</visualSizeRange>
+      <growDays>240</growDays>
+      <harvestWork>4200</harvestWork>
+      <harvestedThingDef>RM_SweetlineWool</harvestedThingDef>
+      <harvestYield>20</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.05</harvestAfterGrowth>
+      <forceIsTree>true</forceIsTree>
+      <wildClusterRadius>0</wildClusterRadius>
+      <wildClusterWeight>0.05</wildClusterWeight>
+      <wildOrder>4</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>

@@ -244,6 +244,19 @@
         <trappedMoveCost>450</trappedMoveCost>
       </li>
     </comps>
+    <!-- LEANINGSCRUB_RM_MOD_BUILD_1: lets mandrake.rm.leaningscrub's own Mod
+         Settings switch this def's body-size barrier off ON THAT BIOME
+         SPECIFICALLY, via the RM_MechanicGates seam (RM_MechanicGates.cs's
+         own header: "the seam that lets a biome mod's own Mod Settings
+         switch off a mechanic whose C# lives in THIS shared assembly").
+         An unregistered or absent gate always reads enabled, so this is a
+         no-op for every other consumer of this def (there are none today)
+         and does not change default behaviour here either. -->
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
   </ThingDef>
 
 </Defs>
