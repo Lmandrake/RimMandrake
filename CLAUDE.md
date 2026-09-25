@@ -631,6 +631,10 @@ file write to a commit, the write never happens either. Keep writes and commits 
 `block_shared_tree_merge.py`). Merge a branch in a private `git worktree add --detach`, push
 `HEAD:main` from there, then move this tree with `git pull --ff-only` or `--rebase`. A bare
 `git pull` is a merge here (`pull.rebase` is unset). Linked worktrees are exempt.
+⚠️ **A REFUSED merge is not harmless**: git's internal restore_state() stashes, hard-resets
+and re-applies, and if a peer holds `index.lock` the re-apply fails — that erased 215 files'
+edits 2026-09-25 07:54 with nothing in the reflog. The same hook refuses whole-tree
+`reset --hard`/`checkout .`/`restore .`/pathless `stash`/`--autostash`/`clean -f` here.
 
 🔴 **A subagent that runs `git reset --hard HEAD` destroys THIS window's staged work** — one
 tree, one index. It ate 3 staged files 2026-09-18. Recovery: `git add` writes blobs before any
