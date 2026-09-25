@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T17:11:52Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-25T17:38:12Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -668,3 +668,63 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SEA_DIVE_MAPS_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEA_DIVE_MAPS_BUILD_1.md
+
+## SCALD_ART_UPGRADE_WAVE_1 Scald art wave 2: high-res lush restyle of the Scald set, 2-3 stack variants per item; shulla catch as a small pile of fish; landspeeder wreck redone with pawn-scale seats; steam catch machinery not blue-tinted and the vent visibly CAPPED.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SCALD_ART_UPGRADE_WAVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_ART_UPGRADE_WAVE_1.md
+
+## SCALD_STEAM_WEATHER_DESIGN_1 Design: Scald steam weather beautiful + interesting + deadly without protective gear; the boiling water's danger and the player's protections; natives (noohm, shulla...) immune to their own water (today they burn: terrain burnDamage hits every pawn, no protection or immunity wired).
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SCALD_STEAM_WEATHER_DESIGN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_STEAM_WEATHER_DESIGN_1.md
+
+## SEA_SHORE_TILE_MUTATOR_1 Sea shores via a tile mutator: a land tile bordering a sea gets that sea's shore + water on its coast. Engine (MEASURED, RimSage): coast water comes from the LAND map biome's oceanDeep/ShallowTerrain, so today a map beside the Scald gets vanilla ocean. Tiles touching two seas need a pick rule (majority neighbour, or per-edge like TileMutatorWorker_MixedBiome's angle).
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SEA_SHORE_TILE_MUTATOR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEA_SHORE_TILE_MUTATOR_1.md
+
+## SALVAGE_WRECKAGE_EVERYWHERE_1 Salvage wreckage across the planet: wreck families (hulls, tanks, frames, speeders...) scattered in every biome, biome-appropriate weathering, deconstruct-for-salvage loot. Scald wrecks are the worked example.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SALVAGE_WRECKAGE_EVERYWHERE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SALVAGE_WRECKAGE_EVERYWHERE_1.md
+
+## SHULLA_INVISIBLE_RENDER_1 RM_Shulla renders invisible (selected, alive, empty selection box) and flickers with zoom; noohm on the same water renders. Diagnose: Graphic_Multi paths, drawSize 0.25-0.45, 1.6 water-depth pawn rendering, Real FoW.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SHULLA_INVISIBLE_RENDER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHULLA_INVISIBLE_RENDER_1.md
+
+## STATUE_ART_EXPANSION_1 Statue expansion: assess the statue-choice mod (patch vs own), RM statues with flame emergence points, Utinni god/culture statues, flame fuel via Sump / Helixian gas / manual refuel. The Steel Flame statuary art is a placeholder to replace.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STATUE_ART_EXPANSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STATUE_ART_EXPANSION_1.md

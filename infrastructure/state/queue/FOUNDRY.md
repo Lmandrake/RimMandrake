@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T17:11:52Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-25T17:38:12Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -818,6 +818,15 @@ target:   v1
 kind:     task
 summary:  1. Build the event object, the shared budget and the spawn response under the wasps
 prose:    infrastructure/state/items/REACTION_MECHANISM_GENERALISE_1.md
+
+## GREATBOLE_BARK_EDGE_ART_1 The greatbole blob reads as bark at its edge and wood inside, and its real art is owed
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Answer the three questions above on the Desktop. ⛔ Nothing authored or commissioned first.
+prose:    infrastructure/state/items/GREATBOLE_BARK_EDGE_ART_1.md
 
 ## FEVERWOOD_BOUGH_SOIL_TERRAIN_1 The crown cannot grow anything: boughway is fertility 0, so bough-soil is owed
 state:    doing
@@ -1735,16 +1744,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Design this as the shared reaction mechanism's first proof, in mandrake.rm.creaturebehaviors,
 prose:    infrastructure/state/items/GREENTIDE_WASP_SWARM_1.md
-
-## GREATBOLE_BARK_EDGE_ART_1 The greatbole blob reads as bark at its edge and wood inside, and its real art is owed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Answer the three questions above on the Desktop. ⛔ Nothing authored or commissioned first.
-prose:    infrastructure/state/items/GREATBOLE_BARK_EDGE_ART_1.md
 
 ## GREATBOLE_HARVEST_LADDER_1 The greatbole harvest: 40/60/70 thresholds, the fruit's three products, and the grubs that contest it
 state:    proposed
