@@ -54,11 +54,20 @@
     </modExtensions>
 
     <!-- Two floating/flying Alpha Animals residents + this mod's own V-wake
-         predator — none is RSW_/SW_, so none moves to a Utinni patch (§3b). -->
+         predator — none is RSW_/SW_, so none moves to a Utinni patch (§3b).
+         TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
+         verdict 1 + verdict 4: heemin/oovanam (lake) + hoolen (the SURFACE
+         face — no shelf biome, so it lives here too) from
+         RM_PropaneLakeFauna.xml. RUT_VWake already fills the "vaunoom"
+         V-wake role (COMMISSION_LEDGER_CLEANUP_1) — see that file's header
+         and this mod's own build report; RM_Vaunoom was not built. -->
     <wildAnimals>
       <AA_AuroraSylph MayRequire="sarg.alphaanimals">0.5</AA_AuroraSylph>
       <AA_Skyeel MayRequire="sarg.alphaanimals">0.5</AA_Skyeel>
       <RUT_VWake>0.04</RUT_VWake>
+      <RM_Heemin>0.7</RM_Heemin>
+      <RM_Oovanam>0.3</RM_Oovanam>
+      <RM_Hoolen>0.4</RM_Hoolen>
     </wildAnimals>
     <coastalWildAnimals />
 

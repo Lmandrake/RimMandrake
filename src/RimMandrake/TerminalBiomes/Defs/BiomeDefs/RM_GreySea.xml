@@ -36,9 +36,15 @@
     </modExtensions>
 
     <!-- Reefback (endemic giant, Star Wars) moved to
-         WildAnimals_GreySea.xml. AA_Aerofleet (Alpha Animals) stays. -->
+         WildAnimals_GreySea.xml. AA_Aerofleet (Alpha Animals) stays.
+         TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
+         verdict 1: the four ruled floor residents (RM_GreySeaFauna.xml). -->
     <wildAnimals>
       <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>
+      <RM_Fessk>0.01</RM_Fessk>
+      <RM_Sorruth>0.4</RM_Sorruth>
+      <RM_Essarn>0.6</RM_Essarn>
+      <RM_Otheska>0.2</RM_Otheska>
     </wildAnimals>
     <animalDensity>0.1</animalDensity>
     <coastalWildAnimals />

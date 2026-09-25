@@ -53,8 +53,13 @@
 
     <!-- Star Wars residents (sando pair, faa, mee) moved to
          WildAnimals_TheScald.xml (UtinniPatches), MayRequire
-         mandrake.rsw.swbestiary — item §3/§6. Empty here on purpose. -->
-    <wildAnimals />
+         mandrake.rsw.swbestiary — item §3/§6.
+         TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
+         verdict 1: the two ruled floor residents (RM_ScaldFauna.xml). -->
+    <wildAnimals>
+      <RM_Noohm>0.4</RM_Noohm>
+      <RM_Shulla>0.9</RM_Shulla>
+    </wildAnimals>
     <animalDensity>0.15</animalDensity>
     <coastalWildAnimals />
 
