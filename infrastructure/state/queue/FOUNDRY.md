@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T05:09:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T05:19:29Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -890,15 +890,6 @@ target:   v1
 kind:     build
 summary:  A gene (or trait) on the Jawa xenotype suppressing filth/squalor/mess-derived
 prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md
-
-## STOCKED_POOL_BUILD_1 Build the Stocked Pool kit: 8-row pool bestiary, husbandry loop (pen zones, PoolStock bookkeeping), doubt-meat mood economy, cuisine hooks - all rulings in the spec header
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  STOCKEDPOOLBUILD1 — build the Stocked Pool kit (Weeping Stones)
-prose:    infrastructure/state/items/STOCKED_POOL_BUILD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
