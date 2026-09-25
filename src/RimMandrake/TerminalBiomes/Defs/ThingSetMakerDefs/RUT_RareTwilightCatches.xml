@@ -3,7 +3,7 @@
   FISH_BESTIARY_BUILD_1, wave 5 — the Twilight Deep's rare-catch pool
   (fish_bestiary_commission_2026-09-10.md §2D.rare), parented on vanilla's
   own `RareFishingCatchesBase` the same way RUT_RareOasisCatches/
-  RUT_RareScaldCatches/RUT_RareGreentideCatches are — but, like the rest of
+  RM_RareScaldCatches/RUT_RareGreentideCatches are — but, like the rest of
   the Twilight table, this def is NOT yet plugged into any BiomeDef: it lands
   now (the doc's own "the eight defs land now" instruction covers the whole
   table, including the rare option) but its wiring rides the same
@@ -12,7 +12,7 @@
 
   All three of the doc's options ship: (weight 4) RUT_LampBlack x1-2, the
   kellu-ink dye-and-chart resource (sibling item, RUT_TwilightFish_Niim.xml);
-  (weight 2) RUT_Niim x8-12, "a net that hit the shoal"; (weight 1)
+  (weight 2) RM_Niim x8-12, "a net that hit the shoal"; (weight 1)
   Corpse_RSW_ColoClawFish (5-10 days rotted per the doc's own line — flavor
   only, no rot-progress override; same restraint this build already took on
   RUT_LungerFry's forward reference), "something in the dark between columns
@@ -28,7 +28,7 @@
 <Defs>
 
   <ThingSetMakerDef ParentName="RareFishingCatchesBase">
-    <defName>RUT_RareTwilightCatches</defName>
+    <defName>RM_RareTwilightCatches</defName>
     <root Class="ThingSetMaker_RandomOption">
       <options>
         <li>
@@ -50,7 +50,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_Niim</li>
+                  <li>RM_Niim</li>
                 </thingDefs>
               </filter>
               <countRange>8~12</countRange>
@@ -79,7 +79,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_Aluun</li>
+                  <li>RM_Aluun</li>
                 </thingDefs>
               </filter>
               <countRange>6~10</countRange>

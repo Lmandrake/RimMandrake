@@ -10,7 +10,7 @@
   not a replacement — that block predates this proposal and is out of this
   pass's scope; see this pass's own build report.
 
-  Item-only catch defs, no living pawn (same idiom as RUT_Eesh/RUT_Muddal
+  Item-only catch defs, no living pawn (same idiom as RM_Eesh/RM_Muddal
   etc. in RUT_ScaldFish.xml — essarn and sorruth's own floor-resident forms,
   RM_Essarn/RM_Sorruth, are the SEPARATE roster work in RM_GreySeaFauna.xml).
   Register stats follow RUT_ScaldFish.xml's own envelope, reusing textures

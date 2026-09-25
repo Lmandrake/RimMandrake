@@ -77,19 +77,19 @@
     <maxFishPopulation>40</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <freshwater_Common>
-        <RUT_Eesh>1.5</RUT_Eesh>
-        <RUT_Muddal>0.8</RUT_Muddal>
-        <RUT_Doss>0.7</RUT_Doss>
-        <RUT_Thuum>0.5</RUT_Thuum>
+        <RM_Eesh>1.5</RM_Eesh>
+        <RM_Muddal>0.8</RM_Muddal>
+        <RM_Doss>0.7</RM_Doss>
+        <RM_Thuum>0.5</RM_Thuum>
         <RM_ShullaCatch>0.6</RM_ShullaCatch>
       </freshwater_Common>
       <freshwater_Uncommon>
-        <RUT_Karrash>1</RUT_Karrash>
-        <RUT_Saal>0.5</RUT_Saal>
-        <RUT_BladderboilCatch>0.5</RUT_BladderboilCatch>
-        <RUT_Ekkel>0.4</RUT_Ekkel>
+        <RM_Karrash>1</RM_Karrash>
+        <RM_Saal>0.5</RM_Saal>
+        <RM_BladderboilCatch>0.5</RM_BladderboilCatch>
+        <RM_Ekkel>0.4</RM_Ekkel>
       </freshwater_Uncommon>
-      <rareCatchesSetMaker>RUT_RareScaldCatches</rareCatchesSetMaker>
+      <rareCatchesSetMaker>RM_RareScaldCatches</rareCatchesSetMaker>
     </fishTypes>
 
     <!-- GRAVTIDE SUPPORT (UNDERWATER_BIOME_SUPPORT_1) — the three fields a

@@ -3,7 +3,7 @@
   SEA_FLOOR_AND_CATCH_PASS_1 — the Grey Sea's rare-catch pool, per
   design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md's rare-catch
   table. Parented on vanilla's own RareFishingCatchesBase, same shape as
-  RUT_RareScaldCatches/RUT_RareTwilightCatches. No corpse option — the Grey
+  RM_RareScaldCatches/RM_RareTwilightCatches. No corpse option — the Grey
   has no predator that would leave one and the Grey's dead do not rot
   (ban 5, the_grey_deep.md).
 

@@ -9,11 +9,11 @@
   for the naming law — monosyllable, applied).
 
   noohm is the LIVING form of the "bubble-sailor" whose CATCH item
-  (RUT_Saal, this mod's Defs/ThingDefs_Items/RUT_ScaldFish.xml) already
+  (RM_Saal, this mod's Defs/ThingDefs_Items/RUT_ScaldFish.xml) already
   ships, with that file's own comment saying so: "the item face of the
   bubble-sailor creature; the creature def is separate roster work." This
   pass IS that separate roster work — noohm is not itself catchable (per
-  the proposal table), so RUT_Saal is left exactly as it is.
+  the proposal table), so RM_Saal is left exactly as it is.
 
   Mechanically plain, pattern copied from RSW_SandStalker.xml's placeholder
   idiom (Graphic_Single, three lifeStages). Placeholder art: flat dark
@@ -27,7 +27,7 @@
 
   <!-- =================================================================
        RM_Noohm — the bubble-sailor jelly-analog. Not caught (its catch
-       analog, saal/RUT_Saal, already ships separately).
+       analog, saal/RM_Saal, already ships separately).
        ================================================================= -->
 
   <ThingDef ParentName="AnimalThingBase">
