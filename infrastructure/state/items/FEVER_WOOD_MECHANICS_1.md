@@ -61,16 +61,33 @@ index) — see the spike pass section below.
       `JobDriver_GatherAnimalBodyResources` is the ONLY caller of
       `Gathered()` in vanilla, so this closes "regardless of caller" for
       every reachable path.
-- [ ] Pool terrains grant no buildable affordance; marsh grounds never carry
+- [x] Pool terrains grant no buildable affordance; marsh grounds never carry
       Heavy; `RUT_StiltPlatform` is the only Heavy route at ground level. —
-      engine seam confirmed (`Verse/BuildableDef.cs:52`,
-      `RimWorld/GenConstruct.cs:494`); XML audit + `RUT_StiltPlatform`
-      TerrainDef not authored this pass (F5 is XML-only, no C# to spike).
+      **closed by the F5 build pass (2026-09-24).** MEASURED this closing
+      pass, direct read of every terrain def in play:
+      `RUT_FeverWoodMirrorPool.xml` carries no `<affordances>` element at
+      all (inherits `WaterDeepBase`'s none); the ground-refusal GenStep
+      converts every remaining Soil/SoilRich cell to vanilla `MarshyTerrain`
+      (`Light`/`GrowSoil`/`Diggable`/`Bridgeable` only — MEASURED against
+      the shipped `Data/Core/Defs/TerrainDefs/Terrain_Natural.xml`, no
+      Medium/Heavy); `RUT_Boughway` (elevated) carries `Light`/`Medium`
+      only, no Heavy; `RUT_StiltPlatform` alone carries
+      `Light`/`Medium`/`Heavy`/`Walkable`. So Heavy is reachable at ground
+      level nowhere in this biome except the stilts, exactly as required.
+      Architecturally proven, not live/bridge-verified (no game access this
+      task, same posture as every other pass in this item).
 - [ ] Ant raid exits with living thornbugs → they are recoverable alive
-      (theft, not slaughter), once the raid-back quest ships. —
-      `RUT_HaulPawnAndExit` JobDriver built and compiles; the ants'
-      FactionDef, LordJob/LordToil wiring, thornbug victim-finder, and the
-      raid-back QuestScriptDef are not — see F9 below.
+      (theft, not slaughter), once the raid-back quest ships. — **not
+      closed by this item; ownership moved.** `RUT_HaulPawnAndExit`
+      JobDriver built and compiles (this item's own F9 spike); the
+      remainder — the ants'/Feralisks' hidden FactionDefs, LordJob/LordToil
+      wiring, thornbug/animal victim-finder, staggered paired-arrival
+      IncidentWorker, the lure building, and the raid-back quest — is now
+      explicitly owned by `FEVERWOOD_TWO_FRONT_LURE_1` (filed 2026-09-23,
+      cites this item's F9 spike as its own foundation) and
+      `FEVERWOOD_ANT_HIVE_DUNGEON_1` (the ants' hive-as-dungeon ruling).
+      Leaving this bar unchecked here is correct and permanent — it closes
+      under those items, not this one.
 
 ## criteria
 - [x] The three cards ruled at a card sitting before C# is spent on
@@ -603,3 +620,58 @@ Item stays in `doing`.
 - `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FeverWood_GroundRefusalGenStep.xml` (new)
 - `src/RimUtinni/UtinniPatches/Patches/RUT_FeverWood_GroundRefusalGenStep_Register.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml` (modExtensions: added `RM_GroundRefusalBiomeExtension`)
+
+## closing pass — 2026-09-24 (resumed after a reboot mid-work)
+
+Resumed this item cold (prior session's F5 build pass above was already
+committed and pushed at `a1ca38a04`, tree clean). Re-checked for newer work
+before doing anything, per this repo's own standing lesson that this project
+keeps having already built the thing being asked for: found F1's own pool-
+placement gap had *also* already been closed and live-fire PASS-verified in
+game (`921b9790f`, 2026-09-18/19 ledger notes on this item — pools confirmed
+appearing on a real generated map via `jawa/get_terrain_batch`), which this
+item's own body text above predates.
+
+**Verified verify-bar 3 for real** (see the checked box above) rather than
+leaving it as a stale 2026-09-13 "not authored this pass" note now that F5
+landed — MEASURED every terrain def in play, not re-asserted from memory.
+
+**Decided this item's own remaining scope is exhausted, not merely paused.**
+Of the two things left in this item's own "criteria"/"verify" sections and
+every pass's "owed after this pass" list:
+- F4's L-effort remainder (emerged mass, tentacle pawn wiring, art) — this
+  item's own 2026-09-13 note already scoped it to "the plot's own moment,"
+  and `FEVERWOOD_TENTACLE_BESTIARY_1`/`FEVERWOOD_DIANOGA_PRISON_1` (filed
+  2026-09-23) now own the deep-thing content build.
+- F9's full raid mechanism (hidden FactionDefs, LordJob/LordToil, victim-
+  finder, raid-back quest) — `FEVERWOOD_TWO_FRONT_LURE_1` (filed 2026-09-23)
+  explicitly cites this item's own F9 spike/corrections as its foundation
+  and owns the remainder; `FEVERWOOD_ANT_HIVE_DUNGEON_1` owns the ants'
+  hive-as-dungeon half.
+- F6's true edge-hugging boughway placement is a flagged, disproportionate-
+  effort refinement on top of an already-shipped, working approximation —
+  not a missing mechanism.
+- Thornbug/ant roster content (F8's stats/art) is `FEVERWOOD_FLORA_ROSTER_1`/
+  `FEVERWOOD_SAP_SUCKER_GUILD_1`/roster-pass territory, never this item's.
+
+So every remaining thread has a named, filed successor item that already
+claims it, cross-referencing this item's own spike work as its foundation —
+the same shape `GREENTIDE_MECHANICS_1`→`GREENTIDE_MECHANICS_2` used, not the
+"closed but nothing built" failure this item's own body text (above) warned
+against for that sibling: here the *engine kit* (all nine mechanics
+engine-mapped, six spiked+wired+build-verified, two XML-verified with no C#
+needed, one driver-only by design) is genuinely built and 0-warning/0-error
+compiling end to end, and only *content* (new PawnKindDefs, FactionDefs, a
+quest, art) remains — all of it now tracked elsewhere by name.
+
+**Build re-verified this pass**, no source changed:
+
+```
+"/mnt/c/Users/Mandrake/.dotnet/dotnet.exe" build "D:\Luke\dev\Rimworld\src\RimMandrake\EnvironmentalHazards\Source\RM_EnvironmentalHazards.csproj" -c Release
+```
+
+→ 0 warnings, 0 errors (unchanged from the last committed build).
+
+Closing this item now. No live/bridge/quicktest verification attempted this
+pass beyond re-reading the already-shipped terrain defs — no game access in
+this task.
