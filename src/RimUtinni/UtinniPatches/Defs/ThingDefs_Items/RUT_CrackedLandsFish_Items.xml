@@ -35,6 +35,7 @@
     <description>A Spender. A pea-sized gas-bladder animal that exists for the flood-weeks and nothing else: the first rise lifts a billion of them out of the clay, they feed, they breed, they die, and the carpet of them on the falling water is what the fliers commute in for. Between floods the water holds only stragglers. Cooked in a mass it is a paste; the Farmers call it flood-bread and are not joking.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RUT_Hardwood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.10</Nutrition>
@@ -57,6 +58,7 @@
     <description>A Sealed one. For the dry years it lies in a wax-lined cell under the cracked pan, banked to almost nothing — you have walked on thousands. Water wakes it; it rises through the softened clay into the canyon pools, feeds, breeds, and seals itself down again before the pan cracks. Its shed cell-lining is the crack-wax the Farmers trade. Landed, it is cool and dry and does not struggle, as if it has already decided to wait this out too.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RUT_Greenwood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <comps>
       <li Class="CompProperties_Rottable">
@@ -73,6 +75,7 @@
     <description>A Patient one. A ridged, rubbery, arm-long thing that wedges itself into the seep-cracks where the hidden water is and lies there, year-round, filtering. The shade-line's browsers step over it. It is armored where it faces the canyon and soft where it faces the rock, and it does not come out — you catch one by catching the crack it lives in. Chewy. The name is the sound it makes when pulled.</description>
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.20</Nutrition>
@@ -97,6 +100,7 @@
     <description>A Patient one, and the reason the canyon water has no truce. A pale slot-canyon squid that hangs in the roofed water with its arms laid flat along the rock wall like roots, invisible, and takes what comes down to drink. It has no need to hurry. Landed, it is mostly arm, and the arms keep working for a while. The Farmers say you have not caught one — it has let go of the wall to see what you are.</description>
     <graphicData>
       <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>6</MarketValue>

@@ -33,6 +33,7 @@
     <description>A thumb-sized crab-thing that never grew a shell of its own: it excretes the salt it cannot keep out and wears the crust, layer on layer, until it is a walking lump of the sea's own mineral with legs underneath. Touch the water and every sallik within reach pulls its legs in and becomes a pebble. Cracked open there is very little in it, and that little is salt-sweet and good. The crusts are kept by the shore-folk, who say no two are alike.</description>
     <graphicData>
       <texPath>Things/Plant/PincushionPlant/PincushionPlantB</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.15</Nutrition>
@@ -55,6 +56,7 @@
     <description>A slab-flat, palm-wide fish-thing that has given up swimming for lying still. The upper face grows a plate of pillar-mineral — the sea builds on anything that holds still long enough, and the karrud holds very still — so from above it is a chip of grey stone with a mouth-slit underneath. It moves only when the brine at the bottom gets too strong even for it, sliding uphill along the pillar bases a hand's width at a time. Beneath the plate the flesh is pale and soft and tastes faintly of rock.</description>
     <graphicData>
       <texPath>Things/Plant/SweetheartPlant/SweetheartPlantB</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <comps>
       <li Class="CompProperties_Rottable">
@@ -73,6 +75,7 @@
     <description>A bivalve-thing whose two shells are grown from the sea's crystal rather than from anything living, so a hessal bed reads as a patch of frost on the floor. It seals itself for years at a stretch when the brine thickens and reopens when the fog-season thins it, and nobody has seen one open. Prised apart it holds a knot of grey meat that keeps for a week in its own salt and tastes of nothing but the sea. The Homestead sites on the margin live on them.</description>
     <graphicData>
       <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.15</Nutrition>
@@ -96,6 +99,7 @@
     <description>A blind, arm-long brine-eel the colour of boiled paper, so translucent the salt-crust it has swallowed shows as a grey line down the middle of it. It lives in the silt at the pillar feet and does not come up; the shore-nets take it when the bottom-brine surges. It is always sick — every oomal carries lesions where the salt has got in — and it is never fast. Shore-folk eat it and say it is better than it looks, which is not a high bar.</description>
     <graphicData>
       <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
   </ThingDef>
 
@@ -106,6 +110,7 @@
     <description>A bell of grey jelly the size of two hands that has half turned to stone: the sea's crystal grows into it from the rim inward, and a maalu drifts with the weight of its own mineral edge pulling it down, sagging, tilting, never quite sinking. It is not luminous — nothing down here is — and it is not dangerous; it is barely alive. Netted, the crystal rim crumbles and the jelly inside is a mouthful of salt water. Some pilgrims eat it for the rim, which they say tastes of the pillars.</description>
     <graphicData>
       <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.08</Nutrition>
@@ -129,6 +134,7 @@
     <description>A finger-long, soft, eyeless fish-thing that lives inside the shells of dead hessal — it never grew any armour of its own and borrows the sea's. Lift a shell and it is there, curled, and it will not leave: shore-folk carry the shell home and shake it out over the pan. It is the most timid thing in the Grey and the only one with any colour, a faint sick pink under the skin. Sweet, small, and mostly bones.</description>
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>6</MarketValue>
@@ -149,6 +155,7 @@
     <description>Nobody agrees what a haarn is. It is a jacket of pillar-mineral the size of a helmet, closed all round, that moves — slowly, along the floor, from pillar to pillar, leaving a scrape-line in the silt like a very small version of the giant's. Cut open there is a soft thing inside with no eyes and a great many small hooks, and it dies at once in open air. It is the Grey's only true extremophile: it lives in the strongest brine at the bottom, where nothing else survives, and it has plainly been doing so for a very long time. Divers who find one do not report it, on the grounds that it seems to have been minding its own business.</description>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.20</Nutrition>
