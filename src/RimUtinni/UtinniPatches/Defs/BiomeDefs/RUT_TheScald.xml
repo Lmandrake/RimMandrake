@@ -140,22 +140,9 @@
     <animalDensity>0.15</animalDensity>
     <coastalWildAnimals />
 
-    <!-- COMMISSION_LEDGER_CLEANUP_1, the_scald sheet's "welcome blanket"
-         commission — the_scald.md §4/§7. RUT_WelcomeBlanket
-         (ThingDefs_Plants/RUT_WelcomeBlanket.xml) is gated by its own
-         `wildTerrainTags: [RUT_ScaldMarginMat]`, a tag that exists on
-         exactly ONE terrain, RUT_ScaldMargin — and RUT_ScaldMargin is not
-         yet placed on any live Scald tile (its own header: map-authoring,
-         not worldgen, still owed). So this entry is correct and inert
-         until that placement happens, same standing condition as this
-         def's own wildAnimals block above (sando pair, faa, mee) already
-         lived under before the fauna sitting wired real commonalities.
-         0.4: a coating, not a rarity — "coating everything in the depths"
-         (§4) — set well above the sando pair's 0.03/0.005 since this is
-         thin bacterial film, not megafauna. -->
-    <wildPlants>
-      <RUT_WelcomeBlanket>0.4</RUT_WelcomeBlanket>
-    </wildPlants>
+    <!-- The welcome blanket moved to mandrake.rm.terminalbiomes as RM_WelcomeBlanket
+         (2026-09-24); this frozen twin carries no wild plants. -->
+    <wildPlants />
 
     <!-- FISH_BESTIARY_BUILD_1, wave 1 (2026-09-18) — the margin harvest,
          fish_bestiary_commission_2026-09-10.md §2E. MEASURED, not the design
