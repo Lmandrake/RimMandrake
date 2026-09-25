@@ -36,6 +36,18 @@
   That is map-authoring (bridge), not worldgen, per the kit spec's own S3
   entry — this is just the terrain def, which parses and validates
   standalone exactly like RUT_ScaldWater.xml's six siblings.
+
+  RUT_ScaldMarginMat tag ADDED — COMMISSION_LEDGER_CLEANUP_1, the_scald
+  sheet's "welcome blanket" flora commission (RUT_WelcomeBlanket.xml,
+  ThingDefs_Plants/). A dedicated tag, not the generic `Water` every boil
+  terrain also carries: gating the plant on plain `Water` would let it wild-
+  spawn on open boiling Scald water too, which the biome's own §6 ban 4
+  ("nothing swims/grows the roiling surface layer but bubbles and sails")
+  forbids. `dbh_water` was considered and rejected for the same reason from
+  the other direction — it is shared with every FlowWorks liquid terrain
+  across the whole planet (RM_Tar, RM_Propane, RM_Coolant, ...), so gating
+  a Scald-specific plant on it would let the mat spawn on unrelated biomes'
+  liquids everywhere.
   ============================================================================
 -->
 <Defs>
@@ -56,6 +68,7 @@
     <tags>
       <li>Water</li>
       <li>dbh_water</li>
+      <li>RUT_ScaldMarginMat</li>
     </tags>
   </TerrainDef>
 
