@@ -75,6 +75,11 @@ disk.
   bulk. **Never commit a file over ~50 MB; hosts commonly hard-reject over 100 MB**,
   and an oversized file blocks everyone's push until it is rewritten out of
   history.
+- **A refused `git merge` still hard-resets the tree internally, so never merge in
+  a checkout other agents are editing.** After "local changes would be overwritten",
+  git stashes, resets `--hard` and re-applies; a peer holding `index.lock` makes the
+  re-apply fail and every uncommitted edit vanishes, with nothing in the reflog
+  (215 files, 2026-09-25). Merge in a private `git worktree` and push from there.
 - **Never invent a remote, and never blanket-stage to go faster.** Name the paths
   you are committing. If there is no upstream, say so plainly rather than
   silently leaving the work local.
