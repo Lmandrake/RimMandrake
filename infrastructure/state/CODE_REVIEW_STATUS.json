@@ -17733,6 +17733,36 @@
     "hash": "ff3fd521f8a2f66f39da4de20ba4f229c6653ba27ad025ad270330aa40701bc3",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/Ashfall/StructureLayoutDefs_Ashfall.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7ec1e249f37dc75dc0021ddaa05b9186b3dc7d29e651898b3649aa5afc3e7ca2",
+    "sha": "2568fc360"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/Ashfall/SymbolDefs_Ashfall.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "2008e5477bdc5758fd1b1125f51998463967a7964437be28339ec13a76ff5281",
+    "sha": "2568fc360"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/Ashfall/ThingDefs_Buildings/RUT_AshfallSpecimenCell.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7fb6d71c46e481df3220193483b18b4df1a2d663e77e00469775729cc8f6828a",
+    "sha": "2568fc360"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/Ashfall/ThingDefs_Buildings/RUT_SpireCommandConsole.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "93357ea38d1d24ddb94cee939ad912b39f5307211567de5178b1b7959434b69b",
+    "sha": "2568fc360"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/Ashfall/ThingDefs_Items/RUT_RakatanCommandCodes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "deaa67045e599860be7985bb6517cb276b2430f3f7c11c2956bd17bd9a688fb0",
+    "sha": "2568fc360"
+  },
   "src/RimUtinni/StructureInjectionsRUT/Defs/DarkTower/SitePartDefs_DarkTower.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -17787,6 +17817,18 @@
     "hash": "76467038c2ae68ff01e66f55b1c94f30851efd970cfc4acb7af560be4ee039b7",
     "sha": "e67f2cc0"
   },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch7.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d5db95280f1c8780b9b3f0b793dff7f5642c853d37ae470267140d889f667459",
+    "sha": "2568fc360"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch8.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "0849c435d1d45d4919c4af817ef7e0e4d297f8e8e4093fb79d8a2f973a2fd187",
+    "sha": "2568fc360"
+  },
   "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Homestead.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -17804,6 +17846,24 @@
     "date": "2026-09-12",
     "hash": "68f474c96dc6eab37438fe746b30a7b6b2f35d99016d9cfd302dc4fdbbda1ef9",
     "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Whisper_Batch2.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d9e211f401f9aaa359839824a1bc24d042076e5a491db1aaa189295c318dd0c9",
+    "sha": "2568fc360"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Whisper_Batch3.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6270cb208e06fd44686a559919911c55459827fd8f8545dc1c5078688ae97c1e",
+    "sha": "2568fc360"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Whisper_Batch4.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6bc88246bdec32c3fc2e1d59da034d0b81ba9db820bcc2ed14385fbd928b2a9f",
+    "sha": "2568fc360"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Batch3.xml": {
     "cleanCount": 1,
@@ -17828,6 +17888,12 @@
     "date": "2026-09-06",
     "hash": "07d146a1c81876c200b8ce1650f4784b203a71e6a88f3bbb0339f4e9d0340e02",
     "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Batch8.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "7fb5b6b5f53352337ec4f20ea4e39947e5f6ca7cc7274a49fae69be05ece3634",
+    "sha": "2568fc360"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Homestead.xml": {
     "cleanCount": 1,
@@ -17925,11 +17991,35 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "6e65d276"
   },
+  "src/RimUtinni/StructureInjectionsRUT/Patches/AshfallBattery.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "6f51adb209e402ebad497718167ea9f016534cc02878052399e42bc42978e7e6",
+    "sha": "2568fc360"
+  },
   "src/RimUtinni/StructureInjectionsRUT/Patches/WhisperBatch1.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
     "hash": "29cb3f95520b21ec13306b2bf42df04fe50dda015797a88a788366f898cd01af",
     "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Patches/WhisperBatch2.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "f35b88af1192aab55c240e9dcf4a578c16396044ac9921cb3ee8204badc1f764",
+    "sha": "2568fc360"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Patches/WhisperBatch3.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "d611cfdee0258b7ef464909ce801e710b82fd890991a00dbb92494a26ec536ad",
+    "sha": "2568fc360"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Patches/WhisperBatch4.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "4d5b8e2100095b2e6fbb44a5e831b7c7675f4a5c38c8ee120e2258edce2dc1a7",
+    "sha": "2568fc360"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/Ashfall/AshfallCommandCodesFlag.cs": {
     "cleanCount": 1,
@@ -17948,6 +18038,12 @@
     "date": "2026-09-24",
     "hash": "3de0d9157301d3a5cab71929f35b5180d4a8f5a4d33b7bc6c3681e870dbe79ff",
     "sha": "203bf0861"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/Ashfall/audit_ashfall_layout.py": {
+    "cleanCount": 1,
+    "date": "2026-09-24",
+    "hash": "41ac8a7c28878dc5e43b36c50369e58f1c5c4b67ee7b6ef59974853d31d4dc29",
+    "sha": "2568fc360"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/Ashfall/gen_ashfall_layout.py": {
     "cleanCount": 1,
