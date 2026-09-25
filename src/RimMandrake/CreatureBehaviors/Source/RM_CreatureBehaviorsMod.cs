@@ -178,6 +178,18 @@ namespace RimMandrake.CreatureBehaviors
     //      shocks the attacker back. The dial scales only the discharge
     //      strength (never the range or cooldown, which stay whatever the
     //      def says); at 0 a hit is simply never returned.
+    //  32. ambientHeatPusherEnabled — RM_CompHeatPusherGated
+    //      (WASTELAND_RADIOTHERMAL_SOLITARY_1). Off: a tagged pawn stops
+    //      pushing ambient heat into whatever cell/room it currently
+    //      occupies — a plain animal from then on, wild or tamed.
+    //  33. speciesSpacingEnabled / speciesSpacingCookDamageMultiplier —
+    //      RM_JobGiver_AvoidOwnKind + RM_CompHeatCook
+    //      (WASTELAND_RADIOTHERMAL_SOLITARY_1). Off: a tagged pawn stops
+    //      steering away from other members of its own kind and stops taking
+    //      cook-damage for standing too close to one — exactly as sociable
+    //      (or not) as any other animal. The dial scales only the cook-tick
+    //      damage amount (never the avoid/cook radii or the check interval,
+    //      which stay whatever the race's own extension says).
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -227,6 +239,9 @@ namespace RimMandrake.CreatureBehaviors
         public static float seedPassageGerminationMultiplier = 1f;
         public static bool brineBatteryDischargeEnabled = true;
         public static float brineBatteryDischargeMultiplier = 1f;
+        public static bool ambientHeatPusherEnabled = true;
+        public static bool speciesSpacingEnabled = true;
+        public static float speciesSpacingCookDamageMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -277,6 +292,9 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref seedPassageGerminationMultiplier, "seedPassageGerminationMultiplier", 1f);
             Scribe_Values.Look(ref brineBatteryDischargeEnabled, "brineBatteryDischargeEnabled", true);
             Scribe_Values.Look(ref brineBatteryDischargeMultiplier, "brineBatteryDischargeMultiplier", 1f);
+            Scribe_Values.Look(ref ambientHeatPusherEnabled, "ambientHeatPusherEnabled", true);
+            Scribe_Values.Look(ref speciesSpacingEnabled, "speciesSpacingEnabled", true);
+            Scribe_Values.Look(ref speciesSpacingCookDamageMultiplier, "speciesSpacingCookDamageMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -458,6 +476,17 @@ namespace RimMandrake.CreatureBehaviors
               + "wound). Off: a hit is simply never returned.");
             list.Label("Discharge strength: " + brineBatteryDischargeMultiplier.ToString("0.00") + "x");
             brineBatteryDischargeMultiplier = list.Slider(brineBatteryDischargeMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Ambient heat pushing", ref ambientHeatPusherEnabled,
+                "A tagged animal stops pushing ambient heat into whatever cell or room it currently "
+              + "occupies, wild or tamed.");
+            list.CheckboxLabeled("Species-spacing law", ref speciesSpacingEnabled,
+                "On: a tagged animal steers away from other members of its own kind, and takes heat "
+              + "damage every so often if it fails to keep even that much distance. Off: it neither "
+              + "avoids nor cooks its own kind, same as any other animal.");
+            list.Label("Cook-damage rate: " + speciesSpacingCookDamageMultiplier.ToString("0.00") + "x");
+            speciesSpacingCookDamageMultiplier = list.Slider(speciesSpacingCookDamageMultiplier, 0f, 3f);
 
             list.End();
         }
