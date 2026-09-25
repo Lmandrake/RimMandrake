@@ -41,8 +41,8 @@
     "tree that grows to cast shade" (final name, owner ruling this item; superseded
     the "Silverbole"/"Silverpan" working names) — are now authored
     (RSW_LightPipeNub, RSW_Ollim, RSW_ExtremeDesertSignatureFlora.xml) and wired
-    into wildPlants below. Their art is queued (fill_queue.py, this item), not yet
-    rendered.
+    into wildPlants below. Their art (plus RSW_OllimWood's) rendered and was
+    deployed 2026-09-24 — real, non-placeholder art on all three defs.
 
     NOT this pass's scope: the sarlacc (deep_desert.md Owed, its own item); the
     megafauna filter-feeders (both sheets' SS4/SS10, new-art owed); the
