@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_LeaningScrub.xml               UtinniPatches — new file 2026-09-25
+  ============================================================================
+
+  Wires the campaign's Star Wars fauna onto RM_LeaningScrub's wildAnimals,
+  layered on top of the 5 non-Star-Wars rows that mod ships inline
+  (Terrorworm, AA_Cactipine, AA_Needlepost, AA_Wildpawn, AA_Wildpod — Q9
+  permits those directly on a RM_ def). Per §7 Q11 ("RimMandrake should not
+  name star wars ever"), RM_LeaningScrub may not carry any Star Wars
+  creature by any route, so every one of the frozen RUT_AridShrubland.xml's
+  40 Star Wars rows rides HERE instead. Shape: WildAnimals_Pyrelands.xml /
+  WildAnimals_Greentide.xml.
+
+  🔑 SOURCE OF TRUTH: every defName and weight below is copied verbatim from
+  the LIVE RUT_AridShrubland.xml wildAnimals block, parsed 2026-09-25 (45
+  rows total, MEASURED via len(list(node)), not grep) — not from
+  arid_shrubland.json (stale, see LEANINGSCRUB_RM_MOD_BUILD_1's own §3,
+  which found the roster JSON undercounts the Star Wars rows 35 vs the
+  live def's 40).
+
+  ⚠️ Two ops here, not one, because the live def's Star Wars rows split
+  across TWO MayRequire values (DUPLICATE_CANON_DEFNAME_PAIRS_1's
+  2026-09-23 merge repointed 4 rows — Kreetle/Gizka/Nuna/Worrt — from the
+  donor's bare defName to our own RSW_ ports, moving them from
+  mlie.starwarsanimalcollection to mandrake.rsw.swbestiary):
+    31 rows MayRequire="mlie.starwarsanimalcollection" (donor bare defNames)
+     9 rows MayRequire="mandrake.rsw.swbestiary" (our own RSW_ ports)
+  = 40, matching the item's own count of "40 SW rows" even though the
+  35/5 split cited in an earlier pass (SW_FAUNA_NEVER_IN_RM_TIER_1,
+  2026-09-22) is now stale on the SUB-split, not the total.
+
+  No unconditional PatchOperationReplace op is needed here (unlike
+  Pyrelands/Greentide, which each REPLACE a vanilla-Core-only placeholder
+  roster): RM_LeaningScrub_Biome.xml already ships its own real 5-species
+  wildAnimals block inline, so both ops below are plain
+  PatchOperationConditional + PatchOperationAdd onto that existing node.
+
+  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
+  returns true on no match) — validated with
+  skills/rimworld-modding/scripts/validate_patch.py against the live def
+  dump and the full active mod set; an unmatched PatchOperationAdd is
+  silent, so a clean run there is not proof a row landed.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Star Wars Animal Collection (Continued), donor bare defNames — the 31
+       rows the 2026-09-23 duplicate-canon-pair merge did NOT touch. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
+    <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
+      <value>
+        <FrilledGorg>1.0</FrilledGorg>
+        <Gorg>1.0</Gorg>
+        <Iriaz>1.0</Iriaz>
+        <LongtailGorg>1.0</LongtailGorg>
+        <Eopie>0.8</Eopie>
+        <Lothcat>0.8</Lothcat>
+        <Mudhorn>0.8</Mudhorn>
+        <Ronto>0.8</Ronto>
+        <Scurrier>0.8</Scurrier>
+        <Sketto>0.8</Sketto>
+        <Igitz>0.7</Igitz>
+        <Urusai>0.7</Urusai>
+        <Kybuck>0.6</Kybuck>
+        <Massiff>0.6</Massiff>
+        <Bantha>0.5</Bantha>
+        <Pufferpig>0.5</Pufferpig>
+        <Anooba>0.4</Anooba>
+        <Corinathoth>0.4</Corinathoth>
+        <Grank>0.2</Grank>
+        <Qormot>0.2</Qormot>
+        <Strill>0.2</Strill>
+        <Cannok>0.16</Cannok>
+        <Whisperbird>0.15</Whisperbird>
+        <Pikobis>0.1</Pikobis>
+        <Convor>0.08</Convor>
+        <Skalder>0.08</Skalder>
+        <Vulptex>0.08</Vulptex>
+        <FeralNerf>0.04</FeralNerf>
+        <Porg>0.04</Porg>
+        <Voorpak>0.02</Voorpak>
+        <KowakianMonkeyLizard>0.01</KowakianMonkeyLizard>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Our own RSW_ ports, including the 4 rows DUPLICATE_CANON_DEFNAME_PAIRS_1
+       repointed off the donor's bare defName (Kreetle, Gizka, Nuna, Worrt) —
+       owner-ruled merge 2026-09-23. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
+      <value>
+        <RSW_Kreetle>0.8</RSW_Kreetle>
+        <RSW_ShrublandGiant>0.35</RSW_ShrublandGiant>
+        <RSW_TunnelSnake>0.5</RSW_TunnelSnake>
+        <RSW_ScrapNestBird>0.45</RSW_ScrapNestBird>
+        <RSW_ImperialToad>0.7</RSW_ImperialToad>
+        <RSW_Gizka>0.4</RSW_Gizka>
+        <RSW_Nuna>0.4</RSW_Nuna>
+        <RSW_Worrt>0.4</RSW_Worrt>
+        <RSW_MossBeetle>0.3</RSW_MossBeetle>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

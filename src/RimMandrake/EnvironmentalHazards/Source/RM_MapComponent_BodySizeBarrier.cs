@@ -174,6 +174,10 @@ namespace RimMandrake.EnvironmentalHazards
         }
 
         // True when a pawn of this size may not enter this cell at all.
+        // LEANINGSCRUB_RM_MOD_BUILD_1: also false when the occupying comp's
+        // def carries an RM_MechanicGateExtension whose gate is off (a def
+        // with no extension, or an unregistered/absent gate, always reads
+        // enabled — see RM_MechanicGates.cs).
         public bool Blocks(IntVec3 cell, float bodySize)
         {
             if (cells.Count == 0)
@@ -183,7 +187,8 @@ namespace RimMandrake.EnvironmentalHazards
 
             return cells.TryGetValue(cell, out RM_CompBodySizeBarrier comp)
                    && comp?.Props != null
-                   && bodySize > comp.Props.blockBodySize;
+                   && bodySize > comp.Props.blockBodySize
+                   && RM_MechanicGates.Enabled(comp.parent?.def);
         }
 
         // Per-cell MOVEMENT cost for a pawn of this size, or 0 for "no
@@ -200,6 +205,11 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             if (!cells.TryGetValue(cell, out RM_CompBodySizeBarrier comp) || comp?.Props == null)
+            {
+                return 0;
+            }
+
+            if (!RM_MechanicGates.Enabled(comp.parent?.def))
             {
                 return 0;
             }
@@ -312,6 +322,14 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 RM_CompProperties_BodySizeBarrier props = pair.Value?.Props;
                 if (props == null || props.blockBodySize > ceiling)
+                {
+                    continue;
+                }
+
+                // LEANINGSCRUB_RM_MOD_BUILD_1: a gated-off comp contributes no
+                // impassable cell to the offset grid either — see Blocks()'s
+                // own comment for the gate mechanism.
+                if (!RM_MechanicGates.Enabled(pair.Value?.parent?.def))
                 {
                     continue;
                 }

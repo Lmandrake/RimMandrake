@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.leaningscrub</packageId>
+  <name>RimMandrake: Leaning Scrub</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.environmentalhazards</li>
+  </loadAfter>
+  <description>LEANINGSCRUB_RM_MOD_BUILD_1 (Phase A row 9 of
+design/RimMandrake/biome_mod_architecture.md). A flat, wind-scoured plain
+under a low sun, running unbroken to every horizon under an eerily even
+canopy of knee-high fuzz — every stand leaning the same way, moving because
+the wind never stops. It generalizes the biome sketched for a frozen
+campaign world's own arid shrubland
+(design/Jawa/worldbuilding/biomes/arid_shrubland.md) with zero
+campaign-specific content: no named factions, no lore proper nouns, nothing
+that names the source campaign or any franchise.
+
+RM tier: nothing here knows what campaign or planet uses it. It ships its
+own signature flora — the fuzz that carpets the whole plain, the ancient
+sweetline trees that mark the roads between settlements, and the two
+desert-hardy scrub shrubs that hold the thin soil — plus a modest core of
+non-franchise wildlife. Franchise-specific fauna (Star Wars creatures) never
+appear in this def; a companion Utinni patch layers 40 of them on top for
+the campaign that wants the fuller cast, exactly as it does with every
+other RimMandrake biome mod.
+
+Ships one real behaviour switch, togglable in Mod Settings (default = shipped
+behavior, MOD_OPTIONS_RETROFIT_1 doctrine):
+
+  1. The master toggle: turns this mod's own settings-driven behaviour off
+     without touching the biome def itself — the plain, its plants and its
+     animals keep loading and playing exactly as before.
+  2. Venomvine thicket passability: whether the shrubland's fortress-flora
+     stands (RM_VenomvineThicket, shipped by the shared
+     RimMandrake: Environmental Hazards kit) block anything above the huge
+     body-size band from entering. Off restores plain pathfinding through
+     every stand on this biome specifically, without touching that kit's
+     own global switch for any other consumer of the same plant.
+
+NOT in this mod: the campaign's tree-guardian creature
+(SHRUBLAND_TREE_GUARDIAN_1), the Stall/Gale wind WeatherDefs, the vaporator
+desertification mechanic and the canopy-concealment stat — all unbuilt,
+named in the source sheet's own "Owed" section, and land here later when
+built.
+  </description>
+</ModMetaData>
