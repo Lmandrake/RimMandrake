@@ -50,21 +50,30 @@
     </statBases>
     <!-- GRAFFITI_FRAMEWORK_BUILD_1: wire this already-shipped mark into
          mandrake.rm.graffiti's engine now that the data layer exists.
-         category=Sacred, supportsQuality=false (fixed single-quality per
-         spec §1/§3 - "the marks ARE the livery, painted", no quality roll),
-         hasSubject=false (no named colonist), godSatiationHook="Ishko"
-         matches RimMandrake.Ninefold.God's own enum member name (Source/
-         God.cs) - the string a future Ninefold-aware bridge reads to call
-         GameComponent_Ninefold.ApplyDelta. viewerReactionThought left unset:
-         no content ThoughtDef exists yet (owner-voice work, tracked in the
-         item file) - ThoughtWorker_ViewedGraffitiMark simply finds nothing
-         to match until one does. -->
+         category=Devotional (GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 fork F9
+         renamed the enum member Sacred->Devotional; this literal was
+         missed by that rename - a stale "Sacred" string here no longer
+         matches any GraffitiCategory member and would silently parse to
+         the enum's default (None), which is why this pass corrects it on
+         sight per "correctness outranks seat ownership" rather than
+         leaving it for a future SacredGraffiti-owning pass), supportsQuality=false
+         (fixed single-quality per spec §1/§3 - "the marks ARE the livery,
+         painted", no quality roll), hasSubject=false (no named colonist),
+         godSatiationHook="Ishko" matches RimMandrake.Ninefold.God's own enum
+         member name (Source/God.cs) - the string a future Ninefold-aware
+         bridge reads to call GameComponent_Ninefold.ApplyDelta.
+         viewerReactionThought now points at RM_ViewedSacredMark_Ishko
+         (ThoughtDefs_SacredMarks.xml) - GRAFFITI_PUNK_IDEOLIGION_SCOPE_1
+         criterion 4's RM/RUT seam test: this RUT-owned content pack wires
+         a ThoughtDef onto the RM engine's own ThoughtWorker_ViewedGraffitiMark
+         with zero new RUT C#. -->
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
-        <category>Sacred</category>
+        <category>Devotional</category>
         <supportsQuality>false</supportsQuality>
         <hasSubject>false</hasSubject>
         <godSatiationHook>Ishko</godSatiationHook>
+        <viewerReactionThought>RM_ViewedSacredMark_Ishko</viewerReactionThought>
       </li>
     </modExtensions>
   </ThingDef>
