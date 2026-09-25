@@ -53,7 +53,7 @@ a donor class ⇒ **§5 step 2's `RM_BiomeWorker_<X>` clause does NOT fire for t
 | diseases | none | none | none | none |
 | `animalDensity` | 0.15 | (unset) | 0.1 | 0.1 |
 | `impassable` / `isBackgroundBiome` | true / true | true / true | true / true | true / true |
-| `fishTypes` on the def | ✅ `MayRequire="Ludeon.RimWorld.Odyssey"`, **5 species** (`RUT_Eesh` 1.5, `RUT_Muddal` 0.8 freshwater_Common; `RUT_Karrash` 1, `RUT_Saal` 0.5, `RUT_BladderboilCatch` 0.5 freshwater_Uncommon) + `rareCatchesSetMaker RUT_RareScaldCatches`; `maxFishPopulation` 30 | ⛔ absent | ⛔ absent **on the def** — but **8 species arrive by patch**, see below | ⛔ absent, nothing anywhere |
+| `fishTypes` on the def | ✅ `MayRequire="Ludeon.RimWorld.Odyssey"`, **8 species** (`RUT_Eesh`/`RUT_Muddal`/`RUT_Doss`/`RUT_Thuum` freshwater_Common; `RUT_Karrash`/`RUT_Saal`/`RUT_BladderboilCatch`/`RUT_Ekkel` freshwater_Uncommon — RE-MEASURED 2026-09-25 off the def, extended past this table by a later fish pass) + `rareCatchesSetMaker RUT_RareScaldCatches`; `maxFishPopulation` 30 | ⛔ absent | ⛔ absent **on the def** — but **10 species arrive by patch** (5+5, RE-MEASURED 2026-09-25), see below | ⛔ absent, nothing anywhere |
 | `wildAnimals` rows | 4 | 2 | 2 | 2 |
 
 🔴 **`AB_PropaneLake` / `AB_SolidPropane` are AlphaBiomes donor terrains — MEASURED: neither defName
@@ -277,8 +277,8 @@ after"*. Per-biome state, MEASURED here and matching that item:
 
 | sea | floor animals (`wildAnimals`) | catch (`fishTypes`) | dive-eligible terrain |
 |---|---:|---|---|
-| Scald | 4 | ✅ 5 species on the def + `RUT_RareScaldCatches` | ✅ 3 terrains tagged `RM_DiveEligible` |
-| Twilight Sea | 2 | ✅ 8 species **via `Patches/BiomeFishTypes_TwilightDeep.xml`**, hold lifted 2026-09-20 | ⛔ none — no shallow terrain def of any kind |
+| Scald | 4 | ✅ 8 species on the def + `RUT_RareScaldCatches` (RE-MEASURED 2026-09-25) | ✅ 3 terrains tagged `RM_DiveEligible` |
+| Twilight Sea | 2 | ✅ 10 species **via `Patches/BiomeFishTypes_TwilightDeep.xml`** (RE-MEASURED 2026-09-25), hold lifted 2026-09-20 | ⛔ none — no shallow terrain def of any kind |
 | Grey Sea | 2 | ⛔ none anywhere | ⛔ none |
 | Propane Lake | 2 | ⛔ none anywhere; roster rules **no fish possible** (liquid propane at ~−79 °C) | ⛔ none |
 
@@ -374,7 +374,7 @@ In the same step:
   `terrainsByFertility`/`waterDeepTerrain`/`waterShallowTerrain` off `AB_*` (§2).
 - give every `RM_` def its **own generic label + description** — `BiomeNames_Ashkarr.xml` and
   `BiomeDescriptions_Ashkarr.xml` carry no op for these four (§6/§7c), so nothing would supply them.
-- fold `Patches/BiomeFishTypes_TwilightDeep.xml`'s 8 species + `maxFishPopulation 700` into
+- fold `Patches/BiomeFishTypes_TwilightDeep.xml`'s 10 species + `maxFishPopulation 700` into
   `RM_TwilightSea`'s own def rather than shipping it as a patch.
 - ⛔ `workerClass` stays `BiomeWorker_Ocean` — no `RM_BiomeWorker_*` is owed (§2).
 
@@ -403,15 +403,15 @@ BENCH to fix; ⛔ not edited by this pass.
 1. **`src/RimUtinni/UtinniPatches/Patches/FishTypesStrip_NoFishBiomes.xml:50–51`** —
    *"the 5 `RUT_`-tier own-authored defs (RUT_TheScald/RUT_TwilightSea/RUT_GreySea/RUT_PropaneLake/
    RUT_NightsideIce) already ship `fishTypes` empty, documented, at authoring time."* **False on
-   three counts, MEASURED by parsing:** `RUT_TheScald` ships a **populated** `fishTypes` (5 species +
+   three counts, MEASURED by parsing:** `RUT_TheScald` ships a **populated** `fishTypes` (8 species +
    `rareCatchesSetMaker RUT_RareScaldCatches`, `maxFishPopulation 30`); `RUT_TwilightSea` receives a
-   populated one by patch (`BiomeFishTypes_TwilightDeep.xml`, 8 species, `maxFishPopulation 700`,
+   populated one by patch (`BiomeFishTypes_TwilightDeep.xml`, 10 species, `maxFishPopulation 700`,
    hold lifted 2026-09-20); and `RUT_GreySea`/`RUT_PropaneLake` ship **no `fishTypes` element at
    all** — absent, not "empty".
 2. **`design/Jawa/worldbuilding/biomes/rosters/the_twilight_sea.json`, `fish.ruling`** — *"no surface
    fish … the silver shoals exist ONLY beneath the mat-roof … ride the deferred diving-mods
    implementation."* **Superseded and now false:** owner ruled 2026-09-20 (`TWILIGHT_DEEP_WATER_LAYER_1`,
-   closed), verbatim *"Just make the surface fishable"*, and 8 species ship on the surface today.
+   closed), verbatim *"Just make the surface fishable"*, and 10 species ship on the surface today.
 3. **`design/Jawa/worldbuilding/biomes/rosters/the_propane_lakes.json`, `defNames`** — still lists
    `RUT_Umbra` beside `RUT_PropaneLake`; its 35 `evictions` rows and all 4 `flora` rows are Umbra-era
    snow/ice content. `UMBRA_IS_A_REGION_NOT_A_BIOME_1` (closed) ruled Umbra is not a biome; the roster

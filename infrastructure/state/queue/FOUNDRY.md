@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T03:42:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T03:46:50Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -675,6 +675,15 @@ kind:     build
 summary:  BACTAREVIVALMECHANIC1 — bacta revival of the recently dead
 prose:    infrastructure/state/items/BACTA_REVIVAL_MECHANIC_1.md
 
+## BACTA_TANK_ART_1 Bacta tank art from the ESB canon image (tall 2:1 cylinder, translucent pale-blue backlit fluid, bubbles, white clinical collar top+bottom): building sprite set, visible-pawn overlay layers per RECON findings, fluid item + patches/spray icons, droid sprite
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/BACTA_TANK_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BACTA_TANK_ART_1.md
+
 ## BACTA_SIDE_ITEMS_1 Bacta full-kit satellites: 2-1B-style medical droid linkable facility (KR pattern), bacta patch + bacta spray consumables (field heal items), trader-tag wiring for all bacta goods
 state:    doing
 row:      unassigned
@@ -1285,16 +1294,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BACTA_TANK_ART_1 Bacta tank art from the ESB canon image (tall 2:1 cylinder, translucent pale-blue backlit fluid, bubbles, white clinical collar top+bottom): building sprite set, visible-pawn overlay layers per RECON findings, fluid item + patches/spray icons, droid sprite
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BACTA_TANK_ART_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BACTA_TANK_ART_1.md
 
 ## REBOOT_BREAKGLASS_VERIFY_1 Verify the break-glass path survives a Windows reboot: WSL Keepalive must bring tailscaled back before login, and the fleet may need a hand
 state:    proposed
@@ -2145,3 +2144,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CONTAGION_UNFINISHED_SPAWNER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CONTAGION_UNFINISHED_SPAWNER_1.md
+
+## WASTELAND_BRINE_BATTERY_DISCHARGE_1 Brine battery ion-gradient discharge: EMP/zap defense comp on RUT_BrineBattery
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WASTELAND_BRINE_BATTERY_DISCHARGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WASTELAND_BRINE_BATTERY_DISCHARGE_1.md

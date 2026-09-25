@@ -105,8 +105,10 @@ swarms stay out of the Grey — anything that schools lives in the Twilight Deep
 
 1. 🔴 **No survivable brine-pool entry** — no def, gear, or story makes the
    pools swimmable; harvest happens at their shores.
-2. 🔴 **No schools, swarms, or added kinds** — three residents; a fourth is a
-   violation of the inherited roster cap.
+2. 🔴 **No schools or swarms** — anything that schools lives in the Twilight
+   Deep. (The "three residents, no more" cap this ban once carried was
+   released by owner ruling 2026-09-10 — §4 above; solitary added kinds are
+   legal.)
 3. 🔴 **The shrimp never attacks and is never tamed** — shy and evasive is
    its whole def; a combat or pet variant violates it.
 4. 🔴 **No light-source flora, no bioluminescent dressing** — the only glow
