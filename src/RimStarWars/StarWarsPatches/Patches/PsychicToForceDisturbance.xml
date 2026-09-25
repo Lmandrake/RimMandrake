@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  PsychicToForceDisturbance.xml          RimStarWars Patches - new file 2026-09-24
+  ============================================================================
+
+  FORCE_DISTURBANCE_REFLAVOR_1. Owner directive, typed 2026-09-24: "Make a
+  ticket in the background to convert the psychic assault storms event that
+  frequent rimworld sound be converted to disturbances in the force in rim
+  star wars."
+
+  🔴 DRAFT TEXT — NOT YET OWNER-APPROVED. Every label/description/letterText
+  below is FOUNDRY's first pass at the wording direction the item already
+  states (drone = "a disturbance in the Force" pressing on minds; soothe =
+  "the Force at peace"; the psychic ship = a dark-side artifact). Per the
+  item's own criteria this must go past the owner as a BENCH card BEFORE it
+  is deployed to the live Mods folder or the item is closed. This file is
+  committed to source only - do not deploy it with deploy_custom_mods.py
+  (apply mode) and do not close FORCE_DISTURBANCE_REFLAVOR_1 until he has
+  seen and approved this exact text.
+
+  LABELS AND FLAVOUR TEXT ONLY. Mechanics are untouched: same incident/
+  condition defs fire, same durations, same mood/stat effects. The one
+  exception on purpose: any sentence that names the "psychic sensitivity"
+  STAT (a real, unrenamed game mechanic - Royalty's suppression field, VRE
+  Archon's storm) keeps that literal phrase, per the item's own Watch-out -
+  this ticket is the storm/event family only, not the sensitivity stat.
+
+  Survey (live def dump 2026-09-24T22-19-22Z, full active mod list, 626
+  mods): every IncidentDef/GameConditionDef whose label or text contained
+  "psychic".
+
+    CORE (ludeon.rimworld) - patched below, Conditional-gated:
+      IncidentDef       PsychicDrone, PsychicSoothe, PsychicEmanatorShipPartCrash
+      GameConditionDef  PsychicDrone, PsychicSoothe, PsychicDroner
+
+    DLC (ludeon.rimworld.royalty) - patched below, Conditional-gated:
+      GameConditionDef  PsychicSuppression (mechanoid cluster defense field -
+        the DLC's own psychic-family map condition; not literally a "storm"
+        but the closest DLC member of this family. Flag to the owner card:
+        keep in scope or drop.)
+
+    DONOR (active in our list) - patched below, FindMod-gated:
+      Vanilla Events Expanded (vanillaexpanded.vee):
+        IncidentDef       VEE_PsychicStimulation, VEE_PsychicOverdrive,
+                           VEE_PsychicHum, VEE_PsychicBloom, VEE_PsychicRain
+        GameConditionDef  VEE_PsychicStimulation, VEE_PsychicOverdrive,
+                           VEE_PsychicHum, VEE_PsychicBloom, PsychicRain
+                           (this one's defName has no VEE_ prefix - donor's
+                           own inconsistency, not ours)
+      Vanilla Races Expanded - Archon (vanillaracesexpanded.archon):
+        IncidentDef       VREA_PsychicStorm
+        GameConditionDef  VREA_PsychicStorm
+
+    SURVEYED, LEFT OUT OF THIS DRAFT (Anomaly DLC - cult/ritual content, not
+    the ambient storm/mood family the item names; flag to owner if he wants
+    them folded in too):
+      IncidentDef       PsychicRitualSiege (Horax cult ritual siege)
+      GameConditionDef  HateChantDrone (label is "hate chanting" - only the
+                         description text says "psychically tuned"; renaming
+                         this touches established Anomaly cult flavour rather
+                         than the vanilla storm family)
+
+  ⛔ NOT TOUCHED, EVER, BY THIS FILE: the "Psychic Sensitivity" StatDef, any
+  "psychically deaf/dull/sensitive" hediff/trait label, Biotech genes, or any
+  Royalty psycast - those are named things this ticket does not cover.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ============ CORE — IncidentDef ============ -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/IncidentDef[defName="PsychicDrone"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/IncidentDef[defName="PsychicDrone"]/label</xpath>
+      <value><label>a disturbance in the Force</label></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/IncidentDef[defName="PsychicSoothe"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/IncidentDef[defName="PsychicSoothe"]/label</xpath>
+      <value><label>the Force at peace</label></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/label</xpath>
+      <value><label>ship part crash (dark side)</label></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/letterLabel</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/letterLabel</xpath>
+      <value><letterLabel>Dark-side artifact</letterLabel></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/letterText</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/letterText</xpath>
+      <value><letterText>A large piece of an ancient ship has crashed nearby.
+
+Your colonists can feel it in the back of their mind through the Force, exhorting unspeakable acts. It must have an onboard machine persona touched by the dark side. And this persona is not friendly.
+
+Destroy it as soon as possible. But beware - it will probably defend itself.</letterText></value>
+    </match>
+  </Operation>
+
+  <!-- ============ CORE — GameConditionDef ============ -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicDrone"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicDrone"]/label</xpath>
+      <value><label>a disturbance in the Force</label></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicDrone"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicDrone"]/description</xpath>
+      <value><description>A great disturbance ripples through the Force, pressing on minds and driving people towards insanity.</description></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicDrone"]/letterText</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicDrone"]/letterText</xpath>
+      <value><letterText>Every {0} colonist feels a wave of anxiety and anger!
+
+Some distant darkness in the Force is stirring. A disturbance presses on this site, tuned to only affect {0}s. For a few days, some people's mood will be quite a bit worse.
+
+The disturbance level is {1}.</letterText></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicDrone"]/endMessage</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicDrone"]/endMessage</xpath>
+      <value><endMessage>The disturbance in the Force is fading.</endMessage></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicSoothe"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicSoothe"]/label</xpath>
+      <value><label>the Force at peace</label></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicSoothe"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicSoothe"]/description</xpath>
+      <value><description>The Force settles into stillness over this site, calming minds and steadying hearts.</description></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicSoothe"]/letterText</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicSoothe"]/letterText</xpath>
+      <value><letterText>Every {0} colonist smiles with contentment!
+
+The Force is at peace over this site, tuned to only affect {0}s. For a few days, some people's mood will be quite a bit better.</letterText></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicSoothe"]/endMessage</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicSoothe"]/endMessage</xpath>
+      <value><endMessage>The Force's peace is fading.</endMessage></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicDroner"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicDroner"]/label</xpath>
+      <value><label>dark-side droner</label></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicDroner"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicDroner"]/description</xpath>
+      <value><description>A dark-side droner tuned to the {0} gender is driving {0}s mad.</description></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicDroner"]/letterText</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicDroner"]/letterText</xpath>
+      <value><letterText>A dark-side droner has begun affecting this region.</letterText></value>
+    </match>
+  </Operation>
+
+  <!-- ============ DLC Royalty — GameConditionDef ============ -->
+  <!-- "psychic sensitivity" is the real, unrenamed stat name and is kept
+       verbatim in both fields below - only the condition's own name and
+       framing device change. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/label</xpath>
+      <value><label>Force suppression field</label></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/description</xpath>
+      <value><description>A Force-suppression field is affecting {0}s and reducing their consciousness. The effect is modulated by an individual's psychic sensitivity.</description></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/letterText</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/letterText</xpath>
+      <value><letterText>A Force-suppression field has begun reducing the consciousness of {0}s across the whole region. The effect is modulated by an individual's psychic sensitivity.</letterText></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/endMessage</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/endMessage</xpath>
+      <value><endMessage>The Force-suppression field has dissipated.</endMessage></value>
+    </match>
+  </Operation>
+
+  <!-- ============ DONOR — Vanilla Events Expanded ============ -->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Events Expanded</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- IncidentDef labels -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/IncidentDef[defName="VEE_PsychicStimulation"]/label</xpath>
+          <value><label>a favorable stirring in the Force</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/IncidentDef[defName="VEE_PsychicOverdrive"]/label</xpath>
+          <value><label>the Force surges</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/IncidentDef[defName="VEE_PsychicHum"]/label</xpath>
+          <value><label>a discordant hum in the Force</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/IncidentDef[defName="VEE_PsychicBloom"]/label</xpath>
+          <value><label>a bloom in the Force</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/IncidentDef[defName="VEE_PsychicRain"]/label</xpath>
+          <value><label>Force rain</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/IncidentDef[defName="VEE_PsychicRain"]/letterLabel</xpath>
+          <value><letterLabel>Force rain</letterLabel></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/IncidentDef[defName="VEE_PsychicRain"]/letterText</xpath>
+          <value><letterText>A dangerous presence in the Force caused a disturbance on subatomic levels, resonating across all particles of the atmosphere.
+
+A seemingly endless supernatural rain has begun, altering the very composition of time. Any person or creature not under the roof will age significantly faster.
+
+It will last anywhere between a season to several years.</letterText></value>
+        </li>
+
+        <!-- GameConditionDef -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicStimulation"]/label</xpath>
+          <value><label>a favorable stirring in the Force</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicStimulation"]/description</xpath>
+          <value><description>Some distant joy in the Force sent ripples that washed over the region, specifically resonating with the minds of a particular demographic.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicStimulation"]/letterText</xpath>
+          <value><letterText>Every {0} colonist seems more joyful!
+
+Some distant joy in the Force sent ripples that washed over the region, specifically resonating with the minds of a particular demographic. Your colonists feel a deep, soothing calm as their minds are touched by the Force's energy. They are finding great relaxation in this mental state. For a few days, their recreation will be completely satisfied.</letterText></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicStimulation"]/endMessage</xpath>
+          <value><endMessage>The favorable stirring in the Force is ending.</endMessage></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicOverdrive"]/label</xpath>
+          <value><label>the Force surges</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicOverdrive"]/description</xpath>
+          <value><description>A wave of energy from the Force has washed over the colony, resonating specifically with the minds of some of your colonists!</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicOverdrive"]/letterText</xpath>
+          <value><letterText>Every {0} colonist focuses much more on their work!
+
+A wave of energy from the Force has washed over the colony, resonating specifically with the minds of some of your colonists!
+
+Their thoughts are racing, and their bodies are moving with newfound efficiency. For the next few days, their work speed will be significantly boosted by this surge from the Force.</letterText></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicOverdrive"]/endMessage</xpath>
+          <value><endMessage>The Force's surge is ending.</endMessage></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicHum"]/label</xpath>
+          <value><label>a discordant hum in the Force</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicHum"]/description</xpath>
+          <value><description>A weird, discordant hum in the Force is vibrating through the minds of some people, seemingly chosen at random.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicHum"]/letterText</xpath>
+          <value><letterText>A weird, discordant hum in the Force is vibrating through the minds of some people, seemingly chosen at random.
+
+They are unable to rest or find any relief, and their mental state is rapidly deteriorating as their exhaustion and need for recreation skyrocket.
+
+Colonists affected:
+
+{0}.</letterText></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicHum"]/endMessage</xpath>
+          <value><endMessage>The discordant hum in the Force is ending.</endMessage></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicBloom"]/label</xpath>
+          <value><label>a bloom in the Force</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicBloom"]/description</xpath>
+          <value><description>A dimensional rift tears through the sky, blanketing the world in a perpetual purple aurora while alien seedlings sprout and mutate local flora into Force-touched lotuses, forcing the world to manage rapidly growing, otherworldly vegetation and intensifying pressure from the Force.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VEE_PsychicBloom"]/endMessage</xpath>
+          <value><endMessage>The bloom in the Force is ending</endMessage></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="PsychicRain"]/label</xpath>
+          <value><label>Force rain</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="PsychicRain"]/description</xpath>
+          <value><description>A dangerous presence in the Force caused a disturbance on subatomic levels, resonating across all particles of the atmosphere.
+
+A seemingly endless supernatural rain has begun, altering the very composition of time. Any person or creature not under the roof will age significantly faster.
+
+It will last anywhere between a season to several years.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="PsychicRain"]/endMessage</xpath>
+          <value><endMessage>The Force rain is ending</endMessage></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ============ DONOR — Vanilla Races Expanded: Archon ============ -->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Races Expanded - Archon</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/IncidentDef[defName="VREA_PsychicStorm"]/label</xpath>
+          <value><label>Force storm</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/IncidentDef[defName="VREA_PsychicStorm"]/letterLabel</xpath>
+          <value><letterLabel>Force storm</letterLabel></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VREA_PsychicStorm"]/label</xpath>
+          <value><label>Force storm</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VREA_PsychicStorm"]/description</xpath>
+          <value><description>A supernatural disturbance in the Force is happening over this entire region. Energy will strike in random locations, damaging whatever is hit. Psychic sensitivity of everyone affected is doubled.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VREA_PsychicStorm"]/letterText</xpath>
+          <value><letterText>A supernatural presence causes a great disturbance in the Force over the area.
+
+Energy will strike at random, and every living being will have their psychic sensitivity doubled.
+
+It will last for anywhere between a few days to over a quadrum.</letterText></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VREA_PsychicStorm"]/endMessage</xpath>
+          <value><endMessage>The Force storm is ending.</endMessage></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
