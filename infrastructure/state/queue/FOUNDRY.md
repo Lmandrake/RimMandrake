@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T06:30:16Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-25T07:11:33Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -22,15 +22,6 @@ target:   v1
 kind:     build
 summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
 prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
-
-## ROSTER_DEAD_BMT_NAMES_SWEEP_1 14 ported-but-unwired BMT_ roster rows across 8 rosters: per-species wire-or-drop, never bulk-wire
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  Work species-by-species, in this order, because the first two shrink the list without any
-prose:    infrastructure/state/items/ROSTER_DEAD_BMT_NAMES_SWEEP_1.md
 
 # IN PROGRESS
 
@@ -908,6 +899,15 @@ target:   v1
 kind:     task
 summary:  1. Census every vanilla/DLC animal reachable in the Utinni scenario: biome
 prose:    infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md
+
+## THEY_MOD_REPLICATION_1 Replicate They! (Giant Ants) in our own tier and retire the dependency — 1 race/2 kinds/hidden raid faction/carapace stuff+wall trivial XML, one small JobGiver in C#, new art+name; ~a day
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Re-author the whole surface in our tier (race, 2 pawnkinds, hidden raid
+prose:    infrastructure/state/items/THEY_MOD_REPLICATION_1.md
 
 ## FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
 state:    doing  (BLOCKED)
@@ -2083,16 +2083,6 @@ kind:     build
 thin:     no ## spec
 summary:  SUMPTARHYDROLOGY1 — how the tar flows: the Sump on FlowWorks
 prose:    infrastructure/state/items/SUMP_TAR_HYDROLOGY_1.md
-
-## THEY_MOD_REPLICATION_1 Replicate They! (Giant Ants) in our own tier and retire the dependency — 1 race/2 kinds/hidden raid faction/carapace stuff+wall trivial XML, one small JobGiver in C#, new art+name; ~a day
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Re-author the whole surface in our tier (race, 2 pawnkinds, hidden raid
-prose:    infrastructure/state/items/THEY_MOD_REPLICATION_1.md
 
 ## PROPANELAKES_SHIPPING_NAMES_1 Owner card: propane lakes working names (Burner Ascendant, V-Wake)
 state:    proposed
