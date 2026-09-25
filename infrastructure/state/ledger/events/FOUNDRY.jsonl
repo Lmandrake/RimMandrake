@@ -323,4 +323,7 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-25T08:24:17Z"}
 {"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_YEARNING_FRUIT_FILTH_1","ts":"2026-09-25T14:44:02Z"}
 {"seat":"FOUNDRY","event":"start","id":"GREENTIDE_YEARNING_FRUIT_FILTH_1","ts":"2026-09-25T14:44:04Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WASTELAND_BRINE_BATTERY_DISCHARGE_1","ts":"2026-09-25T14:50:25Z"}
+{"seat":"FOUNDRY","event":"start","id":"WASTELAND_BRINE_BATTERY_DISCHARGE_1","ts":"2026-09-25T14:50:29Z"}
 {"seat":"FOUNDRY","event":"close","id":"GREENTIDE_YEARNING_FRUIT_FILTH_1","sha":"e399e17ca","reason":"built RM_HediffComp_SeedPassage: filth+seedling payload on RUT_DigestiveAccelerant end","ts":"2026-09-25T14:50:55Z"}
+{"seat":"FOUNDRY","event":"close","id":"WASTELAND_BRINE_BATTERY_DISCHARGE_1","sha":"50836e90f","reason":"built RM_CompDefensiveDischarge: defensive discharge on RUT_BrineBattery","ts":"2026-09-25T14:51:35Z"}
