@@ -272,3 +272,46 @@ one-species-three-rosters question; CaveLemming's owed rename/refashion) —
 **every offline-doable piece of this item is now done.** This item cannot
 `rimflow close` itself while those two owner questions are open, but nothing
 further is owed from an unattended pass.
+
+## FOUNDRY, 2026-09-25: both remaining owner-judgment calls landed elsewhere — closing
+
+**Both questions this item was waiting on have since been ruled, through their
+own item threads, and this item never had to be the vehicle:**
+
+- **Stoneback**: `STONEBACK_DEFNAME_COLLISION_1` (closed 2026-09-24) found `RSW_Stoneback`
+  was two colliding animals and the owner split them: the small one keeps the name
+  `RSW_Bokka` (arid, one home — `RUT_Desert` 0.5, per `BIOME_SPECIFIC_FAUNA_LAW_1`'s
+  one-arid-home ruling), the giant is `RSW_Korrum` (one home — `the_scarlands`, 0.05).
+  MEASURED just now: `arid_shrubland.json`, `wasteland.json` and `dune_sea_deep_desert.json`
+  all carry the bokka only as an **eviction** record (`disposition: one-home-elsewhere` /
+  `never-belonged-here`), never in `fauna`; `the_scarlands.json`'s fauna row for this
+  defName is the korrum, not the bokka, per its own `law` text citing the collision fix.
+  This item's step 3 ("does 'anywhere on the dayside' wire Stoneback into all three or stay
+  the Desert's alone") is answered: **stays the Desert's alone**, and it already is.
+- **CaveLemming**: renamed `BMT_CaveLemming` → `RSW_CaveLemming` and wired at 0.03 into
+  `RUT_NightsideIce.xml` (owner ruling 2026-09-21, deliberate pyramid break), then carried
+  into the RM-tier build via a Utinni patch onto `RM_NightsideIce`
+  (`NIGHTSIDEICE_RM_MOD_BUILD_1`, `0fb82444c`, 2026-09-24) — that item's own text names this
+  sweep as already resolved for this biome. The "thermal-only sensing" trait refashion noted
+  in the roster's `law` field is a separate creature-mechanics enhancement, not a defName or
+  wiring question, so it is **not** this item's criteria and is left where it is tracked
+  (`NIGHTSIDEICE_RM_MOD_BUILD_1` / the creature's own future work) rather than pulled in here.
+
+**Re-verified this item's own verify clause fresh, not trusted from the earlier note**:
+parsed all 31 roster JSONs' `fauna` arrays — **0 `BMT_` names** — and every one of the 14
+original rows now resolves to either a wired `RSW_` fauna row or an `evictions` row citing a
+real ruling (Megakrill/CrystalCrab evicted with their own laws; Polluwog + 3 MutatingTumorfish
+renamed, admitted, wiring correctly deferred to `TERMINALBIOMES_RM_MOD_BUILD_1`; SandPillar/
+MegaphoridLarva/CrystalFairyMole/Sacapillar wired; Stoneback×3 resolved as above; CaveLemming
+wired).
+
+⚠️ **Noted, not fixed here (out of this item's scope, flagged for whoever owns it):**
+`desert.json`'s live fauna row for the bokka still literally says `"def": "RSW_Stoneback"`
+in the JSON key even though its own `law` text and the live XML (`RUT_Desert.xml`) call it
+`RSW_Bokka` — a rename-cleanup miss from `NONCANON_BEAST_RENAME_1`, not a `BMT_` name, and
+not blocking this item's criteria. The three eviction-only rows for the same defName
+(`arid_shrubland.json`, `wasteland.json`, `dune_sea_deep_desert.json`) are lower stakes since
+nothing reads an eviction row as a live wiring.
+
+**Closing.** Every criterion in `## verify` and `## criteria` is met; no work remains that an
+unattended pass can do or that belongs to this item's scope.
