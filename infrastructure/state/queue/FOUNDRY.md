@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T07:13:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T07:15:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -350,15 +350,6 @@ target:   v1
 kind:     build
 summary:  Build RUTScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events
 prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
-
-## VQE_ANCIENTS_CURATION_1 Curate VQE Ancients per the ratified verdict: (1) CherryPicker-cut AbilityDefs Levitation/Invisibility/InfernoSpew + their granting GeneDefs + the hellsphere cannon (cut(deftype,name) never cut_name; prove by reading live config back; rebuild tag->surviving-item index after; validate live dump for silently-discarded defs referencing cut genes); (2) keep mid-tier stat genes (Herculean/Prowess) as scarce vault loot; (3) audit/strip its Empire FactionDef patch - nothing archite ships under our Galactic Empire reskin without a ruling; (4) string relabel pass: quest letters saying pre-collapse-human-civilization -> Forsaken/Assailant exonym register (same family as the six pawn-kind relabels); (5) keep all 6 quest chains; when VQE_AncientLabComplex fires (~day 118, self-scheduled in canonical save) verify the site tile lands in an ANCIENT-ALLOW biome (wasteland/desert), relocate via bridge if not; consider wiring later chain entries into vault_thaw_quest_family.md rather than VEF self-scheduling - decision point, flag when reached; (6) feed VQEA_Spliceling/Splicehulk/Splicefiend/Splicetoot into the dungeon-guardians draft roster, not biome fauna. Leave CookSpeed/dodge/disease/EnvironmentDark tweaks (note EnvironmentDark x permanent nightside - glance in play).
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Owner-said: "Keep-curated." Curate VQE Ancients per the ratified verdict —
-prose:    infrastructure/state/items/VQE_ANCIENTS_CURATION_1.md
 
 ## GOO_BOOM_COMMISSION_1 Commission ONE big Assailant-dungeon boom creature: fleshy-based, sacks of explosive goo, new def + new art - replaces the entire cut boom family (Boomalope, Boomrat, VFEI2_Boomtick, 12 GR_ boom creatures); lives on the dungeon-guardians roster, never a biome spawn
 state:    doing  (BLOCKED)
@@ -1091,16 +1082,6 @@ kind:     build
 blocked:  steps 2-3 of 5 done (harvest reference copied, both FindMod patches deleted, 0 validate_patch errors). Steps 1 (18-22 owned-art props), 4 (ModsConfig removal + cold load + resave) and 5 (owner fauna-sheet coordination) are separate passes - see item
 summary:  Owner-said: "Retire-after-harvest." Harvest then retire VQE Cryptoforge:
 prose:    infrastructure/state/items/CRYPTOFORGE_HARVEST_RETIRE_1.md
-
-## VQE_ANCIENTS_CURATION_1 Curate VQE Ancients per the ratified verdict: (1) CherryPicker-cut AbilityDefs Levitation/Invisibility/InfernoSpew + their granting GeneDefs + the hellsphere cannon (cut(deftype,name) never cut_name; prove by reading live config back; rebuild tag->surviving-item index after; validate live dump for silently-discarded defs referencing cut genes); (2) keep mid-tier stat genes (Herculean/Prowess) as scarce vault loot; (3) audit/strip its Empire FactionDef patch - nothing archite ships under our Galactic Empire reskin without a ruling; (4) string relabel pass: quest letters saying pre-collapse-human-civilization -> Forsaken/Assailant exonym register (same family as the six pawn-kind relabels); (5) keep all 6 quest chains; when VQE_AncientLabComplex fires (~day 118, self-scheduled in canonical save) verify the site tile lands in an ANCIENT-ALLOW biome (wasteland/desert), relocate via bridge if not; consider wiring later chain entries into vault_thaw_quest_family.md rather than VEF self-scheduling - decision point, flag when reached; (6) feed VQEA_Spliceling/Splicehulk/Splicefiend/Splicetoot into the dungeon-guardians draft roster, not biome fauna. Leave CookSpeed/dodge/disease/EnvironmentDark tweaks (note EnvironmentDark x permanent nightside - glance in play).
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-blocked:  steps 1/3/6 of 6 done and verified. Step 2 needs no action (never touched). Step 4 (string relabel) needs a dedicated pass - the owner's phrase is a paraphrase, not a quotable donor string, and the Forsaken/Assailant register needs care across 6 quest chains. Step 5 confirmed not-yet-fireable (ticksGame 109173, ~day 1.8, nowhere near day 30/118)
-summary:  Owner-said: "Keep-curated." Curate VQE Ancients per the ratified verdict —
-prose:    infrastructure/state/items/VQE_ANCIENTS_CURATION_1.md
 
 ## GOO_BOOM_COMMISSION_1 Commission ONE big Assailant-dungeon boom creature: fleshy-based, sacks of explosive goo, new def + new art - replaces the entire cut boom family (Boomalope, Boomrat, VFEI2_Boomtick, 12 GR_ boom creatures); lives on the dungeon-guardians roster, never a biome spawn
 state:    doing  (BLOCKED)
