@@ -55,6 +55,14 @@
     <li>mandrake.rm.shipvermin</li>                          <!-- WreckVerminNest_ShipChunk.xml: RM_CompProperties_VerminNest -->
     <li>mandrake.rm.gelatinousslime</li>                     <!-- SLIME_GENE_ARCHIVE_BUILD_1: RUT_SlimeGeneArchive.xml builds on
                                                                    RimMandrake.GelatinousSlime.GeneArchiveDef and its GeneDefs -->
+    <li>mandrake.rm.environmentalhazards</li>                <!-- DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 80: MayRequire'd by 83
+                                                                   files across this mod (GenStepDefs, TerrainDefs, HediffDefs,
+                                                                   GameConditionDefs, etc.) but never declared here — found via
+                                                                   the same "ungated cross-mod ref" sweep as wave 79's RotSporeKit
+                                                                   fix. Contradicts this file's own "after every mod it touches" -->
+    <li>mandrake.rm.greentide</li>                           <!-- DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 80: MayRequire'd by
+                                                                   RUT_ToxinSealant.xml (RM_ToxinSealant item, costList) and 5
+                                                                   others; same gap as above -->
 
 
     <!-- Added PATCHMODS_LOADAFTER_SWEEP_1 (2026-09-08): real MayRequire/FindMod
