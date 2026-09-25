@@ -22,6 +22,11 @@
   shulla is ALSO wired as a catchable fish, joining the Scald's existing
   eight-species freshwater table — see RM_TheScald.xml's own fishTypes
   block.
+
+  SCALD_STEAM_WEATHER_DESIGN_1 step 1: every Scald native takes
+  RM_OrganicScaldNative, not the inherited AnimalThingBase/OrganicStandard
+  set — it drops HediffGiver_Terrain so noohm and shulla don't burn in the
+  boiling water they live in.
 -->
 <Defs>
 
@@ -76,6 +81,9 @@
           <minAge>0.2</minAge>
         </li>
       </lifeStageAges>
+      <hediffGiverSets Inherit="False">
+        <li>RM_OrganicScaldNative</li>
+      </hediffGiverSets>
     </race>
     <tradeTags>
       <li>AnimalUncommon</li>
@@ -166,6 +174,9 @@
           <minAge>0.2</minAge>
         </li>
       </lifeStageAges>
+      <hediffGiverSets Inherit="False">
+        <li>RM_OrganicScaldNative</li>
+      </hediffGiverSets>
     </race>
     <tradeTags>
       <li>AnimalCommon</li>
