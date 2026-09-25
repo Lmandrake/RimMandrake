@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T23:14:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T23:18:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -738,3 +738,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEEPFIRE_PIGMENT_MOD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEEPFIRE_PIGMENT_MOD_1.md
+
+## MINERALS_WHERE_THEY_BELONG_1 Design (later): minerals where they belong — per-biome allocation of every mineral, gem and mineable material; specific forms (nodules, crystal clusters, not just rock veins); dungeons, custom locations, traders, and SALVAGE as a major source of advanced materials. No significant ore in random outcroppings except things like iron; fix vanilla's mineable components/plasteel. Canon SW metals (Beskar, Duranium, Doonium) almost certainly salvage-only.
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MINERALS_WHERE_THEY_BELONG_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MINERALS_WHERE_THEY_BELONG_1.md
