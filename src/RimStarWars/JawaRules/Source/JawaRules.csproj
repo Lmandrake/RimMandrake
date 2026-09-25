@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="JawaRules.cs" />
     <Compile Include="RSW_JawaRulesSettings.cs" />
+    <Compile Include="PawnRenderNodeWorker_JawaHoodFallback.cs" />
   </ItemGroup>
 
   <ItemGroup>
