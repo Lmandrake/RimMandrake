@@ -627,6 +627,11 @@ committing; rejected push → `git pull --rebase`, never `--force`. Never a file
 ⚠️ The hook is `PreToolUse`, so it refuses a **compound** command whole: if you chain a
 file write to a commit, the write never happens either. Keep writes and commits separate.
 
+🔴 **No real merge in the shared tree** (owner, 2026-09-25; hook-enforced by
+`block_shared_tree_merge.py`). Merge a branch in a private `git worktree add --detach`, push
+`HEAD:main` from there, then move this tree with `git pull --ff-only` or `--rebase`. A bare
+`git pull` is a merge here (`pull.rebase` is unset). Linked worktrees are exempt.
+
 🔴 **A subagent that runs `git reset --hard HEAD` destroys THIS window's staged work** — one
 tree, one index. It ate 3 staged files 2026-09-18. Recovery: `git add` writes blobs before any
 commit, so `git fsck --unreachable` + `git cat-file -p <sha>` restores them byte-exact. Brief
