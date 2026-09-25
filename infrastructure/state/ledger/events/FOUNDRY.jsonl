@@ -282,3 +282,10 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-25T05:27:46Z"}
 {"seat":"FOUNDRY","event":"start","id":"VANILLA_BEAST_EXCISION_1","ts":"2026-09-25T05:29:53Z"}
 {"seat":"FOUNDRY","event":"note","id":"VANILLA_BEAST_EXCISION_1","text":"Wave 1 (census): all 13 Utinni WildAnimals_*.xml biome-roster patches, all 15 RM_ BiomeDefs and all 30 RUT_ BiomeDefs checked comment-stripped against the 308-animal vanilla/DLC census from a fresh 623-mod defs.sqlite (2026-09-24T00:30:55Z) — zero vanilla defNames in any live wildAnimals wiring. Remaining gap: the vanilla ThingDefs themselves are not Cherry-Picker-cut (checked Muffalo/Warg/Toxalope/LavaSnail/StoneCrab/ColossusToad, none present in CherryPicker.SHIP.xml), so manhunter/wander-in/self-tame/quest-reward/trader-stock/pack-animal routes are still open and unaudited. Owned pack-animal substitutes already exist (RM_Tirbak/RM_Vellak free-tier, plus ~19 RSW_ canon beasts). Full writeup: design/RimUtinni/vanilla_beast_excision_census.md. Left in 'doing' — verify bar needs a live session and the non-roster routes, which is more than one sitting; not a one-day sweep per the item's own scope.","ts":"2026-09-25T05:31:15Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FISH_BESTIARY_BUILD_1 live verify","ts":"2026-09-25T05:42:13Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_KARRATHIL_POLLINATION_GATE_1","ts":"2026-09-25T05:42:35Z"}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_KARRATHIL_POLLINATION_GATE_1","ts":"2026-09-25T05:42:40Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FORCE_DISTURBANCE_REFLAVOR_1","ts":"2026-09-25T05:42:58Z"}
+{"seat":"FOUNDRY","event":"start","id":"FORCE_DISTURBANCE_REFLAVOR_1","ts":"2026-09-25T05:43:02Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-25T05:51:59Z"}
+{"seat":"FOUNDRY","event":"close","id":"PROPANE_LAKE_PIPE_MECHANICS_1","sha":"1f4d212710b14b2e05baad92f6d4cd667af00ca4","ts":"2026-09-25T05:52:45Z"}

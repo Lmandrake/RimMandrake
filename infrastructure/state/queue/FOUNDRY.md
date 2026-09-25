@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T05:40:08Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-25T05:52:45Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -891,6 +891,15 @@ kind:     build
 summary:  A gene (or trait) on the Jawa xenotype suppressing filth/squalor/mess-derived
 prose:    infrastructure/state/items/JAWA_MESS_IMMUNITY_1.md
 
+## FORCE_DISTURBANCE_REFLAVOR_1 Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  The vanilla psychic event family — psychic drone (the planetary/map condition
+prose:    infrastructure/state/items/FORCE_DISTURBANCE_REFLAVOR_1.md
+
 ## VANILLA_BEAST_EXCISION_1 No vanilla beasts in the Utinni scenario: cut every vanilla/DLC animal at the scenario layer, biome by biome as each biome's own cast is ready — never rename, never edit vanilla defs; close manhunter/quest/trade/pack-animal routes too
 state:    doing
 row:      unassigned
@@ -900,14 +909,14 @@ kind:     task
 summary:  1. Census every vanilla/DLC animal reachable in the Utinni scenario: biome
 prose:    infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md
 
-## PROPANE_LAKE_PIPE_MECHANICS_1 Propane lake pipe network mechanics: gas vent, saturation tracker, pipe rupture, V-wake pump agitation
+## MIASMA_KARRATHIL_POLLINATION_GATE_1 Gate the mangals' flowering reproduction on karrathil presence, once the plant-reproduction engine question is answered
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     build
-summary:  PROPANELAKEPIPEMECHANICS1 — the propane lake's pipe/vent/saturation build ladder
-prose:    infrastructure/state/items/PROPANE_LAKE_PIPE_MECHANICS_1.md
+summary:  MIASMAKARRATHILPOLLINATIONGATE1
+prose:    infrastructure/state/items/MIASMA_KARRATHIL_POLLINATION_GATE_1.md
 
 ## FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
 state:    doing  (BLOCKED)
@@ -2084,16 +2093,6 @@ thin:     no ## spec
 summary:  SUMPTARHYDROLOGY1 — how the tar flows: the Sump on FlowWorks
 prose:    infrastructure/state/items/SUMP_TAR_HYDROLOGY_1.md
 
-## FORCE_DISTURBANCE_REFLAVOR_1 Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  The vanilla psychic event family — psychic drone (the planetary/map condition
-prose:    infrastructure/state/items/FORCE_DISTURBANCE_REFLAVOR_1.md
-
 ## THEY_MOD_REPLICATION_1 Replicate They! (Giant Ants) in our own tier and retire the dependency — 1 race/2 kinds/hidden raid faction/carapace stuff+wall trivial XML, one small JobGiver in C#, new art+name; ~a day
 state:    proposed
 row:      unassigned
@@ -2113,16 +2112,6 @@ kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  PROPANELAKESSHIPPINGNAMES1 — owner card: propane lakes working names
 prose:    infrastructure/state/items/PROPANELAKES_SHIPPING_NAMES_1.md
-
-## MIASMA_KARRATHIL_POLLINATION_GATE_1 Gate the mangals' flowering reproduction on karrathil presence, once the plant-reproduction engine question is answered
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     build
-thin:     no ## spec
-summary:  MIASMAKARRATHILPOLLINATIONGATE1
-prose:    infrastructure/state/items/MIASMA_KARRATHIL_POLLINATION_GATE_1.md
 
 ## MIASMA_SHIPPING_NAMES_1 Owner card: the_miasma working names (karrobel, karrathil, stranded deformation)
 state:    proposed
