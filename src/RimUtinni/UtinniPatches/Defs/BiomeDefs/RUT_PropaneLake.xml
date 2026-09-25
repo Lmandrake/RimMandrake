@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+  🔴 FROZEN 2026-09-25 — carrying the world until the terminal paint; content lives in
+  `mandrake.rm.terminalbiomes`; do not edit here.
+
+  TERMINALBIOMES_RM_MOD_BUILD_1 step 3. This def is what the player's saved world
+  actually carries until Phase B repaints the planet onto `RM_PropaneLake`; deleting it
+  before then destroys the save, so it stays as it is, byte-for-byte, below. From this
+  moment every CONTENT fix for the Propane Lake lands in `mandrake.rm.terminalbiomes`
+  only, never here. `RM_PropaneLake` repoints its water terrains off the donor
+  `AB_PropaneLake`/`AB_SolidPropane` this def still carries onto its own
+  `RM_PropaneLakeDeep`/`RM_SolidPropane` — this def is NOT changed to match.
   ============================================================================
   RUT_PropaneLake.xml                    UtinniPatches · authored 2026-09-06
   ============================================================================
