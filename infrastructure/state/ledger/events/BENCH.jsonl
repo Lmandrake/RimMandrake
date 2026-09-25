@@ -189,3 +189,4 @@
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-25T17:30:08Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"SHULLA_INVISIBLE_RENDER_1 live A/B on scratch map","ts":"2026-09-25T17:37:06Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"SHULLA_INVISIBLE_RENDER_1 A/B reshoot","ts":"2026-09-25T17:38:12Z"}
+{"seat":"BENCH","event":"note","id":"STATUE_ART_EXPANSION_1","text":"Rulings by question card 2026-09-25 on design/RimMandrake/statue_mods_spec.md (a2b5fe5c0): wave one = all nine gods AND the four votives (13 subjects); flame statues burn Chemfuel only outside the campaign (Sump gas in it); Sh'kaar is the first flaming idol.","ts":"2026-09-25T17:47:29Z"}
