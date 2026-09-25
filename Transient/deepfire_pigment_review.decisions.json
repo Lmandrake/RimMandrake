@@ -1,0 +1,53 @@
+{
+  "posture": "whitelist",
+  "criterion": "existing renders pre-filled 'keep' as validated candidates; new variants left undecided — nothing has rendered yet",
+  "generatedBy": "deepfire art review task, 2026-09-25 (fill_queue.py + review-sheets skill)",
+  "reviewStatus": {
+    "state": "prefill",
+    "by": null,
+    "at": "2026-09-25",
+    "evidence": "agent pre-fill — nobody has reviewed this sheet yet"
+  },
+  "decisions": {
+    "scald2_rainbowpigment_a": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "scald2_rainbowpigment_b": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "scald2_rainbowpigment_c": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "rutwelcomeblanket_v1": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "deepfire_pigmentjar_a": {
+      "decision": "",
+      "prefill": "",
+      "note": "queued in artpipe pending/, not yet rendered"
+    },
+    "deepfire_pigmentjar_b": {
+      "decision": "",
+      "prefill": "",
+      "note": "queued in artpipe pending/, not yet rendered"
+    },
+    "deepfire_crowncarpet_a": {
+      "decision": "",
+      "prefill": "",
+      "note": "queued in artpipe pending/, not yet rendered"
+    },
+    "deepfire_crowncarpet_b": {
+      "decision": "",
+      "prefill": "",
+      "note": "queued in artpipe pending/, not yet rendered"
+    }
+  }
+}

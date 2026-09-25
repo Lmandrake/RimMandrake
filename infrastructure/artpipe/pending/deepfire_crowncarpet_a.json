@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T23:21:29Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "deepfire_crowncarpet_a",
+  "priority": 30,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a thin, fuzzy, low-pile living mat of bacterial/algal growth coating the ground in concentric iridescent rainbow bands -- deep violet-blue through green, gold, orange, to a warm red core -- with a faint self-luminous glow bleeding through the bands, like a bioluminescent thermal-gradient contour map rendered as living fuzz. No stems, no leaves, no flowers -- a flat encrusting sheet with a slightly raised, velvety nap, faintly damp-looking. Painted as a small low ground clump, viewed from directly above at a slight isometric RimWorld camera angle, centered, a short soft shadow beneath it, dark wet ground implied only by the shadow, no other background scenery. Heavy, clean black outline around the whole silhouette and all major internal band boundaries, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DEEPFIRE_PIGMENT_MOD_1",
+  "style_notes": "DEEPFIRE_PIGMENT_MOD_1 -- Crowncarpet (renamed from working name 'welcome blanket', owner ruling 2026-09-25 Q1). Match canvas/style of rutwelcomeblanket_v1 (existing mat art, done/). This variant leans on visible self-glow, the Deepfire art review Q9/Q12 card asked for fresh variants alongside the existing mat render."
+}
