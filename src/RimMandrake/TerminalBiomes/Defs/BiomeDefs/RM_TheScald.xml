@@ -63,11 +63,12 @@
     <animalDensity>0.15</animalDensity>
     <coastalWildAnimals />
 
-    <!-- RUT_WelcomeBlanket, the_scald.md §4/§7 commission — gated on its own
-         wildTerrainTags: [RUT_ScaldMarginMat], a tag that exists on exactly
-         one terrain (RUT_ScaldMargin), moved alongside this def. -->
+    <!-- RM_WelcomeBlanket (SCALD_FLOOR_PASS_1: moved from UtinniPatches, RUT_->RM_,
+         no MayRequire — invented franchise-free flora, native to this tier), gated
+         on its own wildTerrainTags: [RUT_ScaldMarginMat], a tag that exists on
+         exactly one terrain (RUT_ScaldMargin), already in this mod. -->
     <wildPlants>
-      <RUT_WelcomeBlanket MayRequire="mandrake.rut.patches">0.4</RUT_WelcomeBlanket>
+      <RM_WelcomeBlanket>0.4</RM_WelcomeBlanket>
     </wildPlants>
 
     <!-- FISH_BESTIARY_BUILD_1 / SEA_FLOOR_AND_CATCH_PASS_1 — the margin

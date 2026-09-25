@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_RainbowPigment.xml                  TerminalBiomes · moved 2026-09-24
+  ============================================================================
+  SCALD_FLOOR_PASS_1: moved from src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/
+  RUT_RainbowPigment.xml (defName RUT_RainbowPigment -> RM_RainbowPigment),
+  alongside its source plant (RM_WelcomeBlanket.xml, ThingDefs_Plants/, same
+  pass) — invented franchise-free content, not Star Wars IP, so it belongs
+  natively in the RM_ tier. harvestedThingDef reference in RM_WelcomeBlanket.xml
+  updated to this new defName in the same pass.
+
+  Original authorship, preserved from the pre-move file (COMMISSION_LEDGER_CLEANUP_1):
+  the_scald.md §7 "Uniquely available — Rainbow pigment: mat-harvest dyes; the
+  artistic economy's raw color (sibling to the Miasma's attar: one restores
+  beauty, one supplies it)." Plain resource good, no comps.
+
+  MarketValue 3.0 remains an explicit INVENTED PLACEHOLDER, unchanged by this
+  move — "items pass owns pricing" per this campaign's stated practice.
+
+  Texture moved with this def: Textures/Things/Item/Resource/RM_RainbowPigment/
+  RM_RainbowPigment.png (was .../RUT_RainbowPigment/RUT_RainbowPigment.png),
+  a procedurally-drawn placeholder jar-with-rainbow-bands icon (64x64 RGBA).
+  Real (hand-authored, reviewed) art is still owed.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_RainbowPigment</defName>
+    <label>rainbow pigment</label>
+    <description>A jar of thick, vividly banded dye rendered down from welcome-blanket mats. Each batch carries whatever hue the water was when the mat that made it grew — no two jars ever quite match, and dyers prize that as much as the color itself.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_RainbowPigment</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>3.0</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.05</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>
