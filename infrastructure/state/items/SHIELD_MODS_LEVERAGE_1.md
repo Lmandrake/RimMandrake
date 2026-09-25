@@ -1,4 +1,110 @@
-# SHIELD_MODS_LEVERAGE_1 — particulate screen finished, predictive-failure and landing-advisory built, offline-verified only (FOUNDRY, 2026-09-12)
+# SHIELD_MODS_LEVERAGE_1 — cryo envelope built (4th and last shd:-ruled field), all four shields now exist, offline-verified only (FOUNDRY, 2026-09-25)
+
+## 2026-09-25 (FOUNDRY) — cryo envelope (shd:cryo-envelope, v2→v1) built; the last unbuilt ruled row
+
+Read the ruling table at the top of `design/Jawa/proposals/
+ship_shields_deep_design.md` first, not just the 2026-09-12/18 sessions'
+prose. That table shows `cryo-envelope` was promoted **v2→v1** by the
+owner's own sitting note, alongside the three already-built fields
+(bubble/thermal/particulate) and the escalating-damage/lava-burst half
+built 2026-09-18. `ShieldFieldMode.cs` still carried a comment claiming
+cryo was "deliberately absent" (v2) — that was stale the moment the
+promotion landed and is corrected now, not left standing
+(Correctness-outranks-seat-ownership).
+
+**Built, all in `src/RimUtinni/ShipShields/Source/`:**
+- **`CompProperties_ShieldCryoEnvelope.cs` / `CompShieldCryoEnvelope.cs`
+  (new).** Mirrors `CompShieldThermalVeil`'s use of
+  `GenTemperature.ControlTemperatureTempChange` applied straight to
+  `Room.Temperature` (confirmed via rimsage: `ControlTemperatureTempChange`
+  itself returns `0f` for a null-or-outdoor room, so — like the existing
+  thermal veil code — no extra null-guard is needed around the correction
+  write). Reads the owner's own words literally: "the opposite of the
+  thermal rejection shield: thermal absorptivity... holding severe cold at
+  bay" is the same partial-correction idiom at a stronger factor (0.6 vs
+  thermal's 0.45); "pulls in heat in both directions... slowly decreases the
+  temperature within the ship" is a genuinely new element thermal veil does
+  not have — a small constant interior-heat drain applied every interval
+  regardless of correction direction, gated so it only ever touches a real
+  indoor room (`!room.UsesOutdoorTemperature`), never the map's own outdoor
+  temperature.
+- **`ShieldFieldMode.Cryo = 3`** added; the stale "deliberately absent"
+  comment corrected in place.
+- **`ShieldHazardUtility.HasColdHazard`** (new) — `GameConditionDefOf.
+  ColdSnap` (confirmed via rimsage) plus a fixed ambient-temperature
+  backstop (`ExtremeColdThreshold = -40f`), symmetric in role to the
+  existing `ExtremeHeatThreshold = 58f`/`HeatWave` pair. Unlike heat (where
+  the backstop is a rare fallback), the backstop is the PRIMARY signal here:
+  a standing nightside biome has no `ColdSnap` condition active — it's just
+  permanently cold ambient temperature, the same reason the 58° backstop
+  already had to carry the Pyrelands' standing burn.
+- **`ShieldLandingAdvisory`** now also warns on an unshielded cold hazard at
+  landing; its header comment corrected ("cryo/spore hazards aren't
+  evaluated because those shields don't exist" was true when written and is
+  false now that cryo exists — spore stays unevaluated because
+  shd:spore-membrane is CUT, not because of any gap).
+- **`ShieldHazardExposureTracker`** now tracks a third hazard
+  (`coldUnshieldedSinceTick`/`coldEscalationLetterSent`, Scribed) through
+  the exact same `TrackHazard` path heat and particulate already use — same
+  escalation-rate-doubling and second-letter behavior, no new mechanism
+  invented, just a third input into the generic one already built
+  2026-09-18.
+- **Defs**: `RUT_ShieldModule_Cryo` item (`RUT_ShieldModules.xml`, same
+  recipe/cost/stat shape as the other two modules), a
+  `CompProperties_ShieldCryoEnvelope` comp block and a `Cryo` module mapping
+  entry added to `RUT_ShieldGenerator.xml`, descriptions (building,
+  research, About.xml) updated to name four fields instead of three.
+  `CompShieldModuleSwitch`'s install/cycle gizmos needed **no changes** —
+  already fully generic over `Props.moduleMappings`.
+- **Mod Settings**: `cryoEnvelopeEnabled` toggle added (default on, matching
+  every other mechanism's default-on-toggleable-off convention).
+- **Also fixed in `About.xml`** (found while updating the same paragraph,
+  corrected on sight): the thermal-veil bullet claimed it uses
+  `GenTemperature.ControlTemperatureTempChange` **+ `PushHeat`** — false;
+  `CompShieldThermalVeil.cs`'s own comment says explicitly it does NOT use
+  `PushHeat` (that would double-divide by room size). Corrected to name only
+  the primitive actually used.
+
+**Not built**: the ruling's "shields... start glowing with red-orange black
+body radiation" visual. No existing vanilla comp/graphic primitive for a
+temperature-driven glow overlay was found (checked via rimsage, not
+guessed) — inventing new VFX/art is out of scope for a code pass and is the
+same class of gap as this whole mod's placeholder-texture status. Documented
+in `CompShieldCryoEnvelope.cs`'s own header and `About.xml`, not silently
+dropped.
+
+**shd: ruling-row status is now**: bubble-not-wall, thermal-veil,
+particulate-screen, loadout-tradeoff, shield-collapse-evacuate,
+no-hard-landing-gate (both halves), and cryo-envelope are ALL built.
+spore-membrane is CUT. **Every ruled row in the design doc's table now has a
+real build** — the shd: ledger this item has been tracking against is
+complete for the first time.
+
+**Verification performed**: `dotnet build` via the Windows-native
+`dotnet.exe` against the real `Assembly-CSharp.dll`/`0Harmony.dll` — 0
+warnings, 0 errors, first try after fixing one missing `using RimWorld;`
+(caught by the build itself, not guessed). `validate_patch.py --live`
+against the freshest live def dump capture
+(`2026-09-25T07-35-51Z`, 627 mods) — 0 errors; the only warnings are the
+same placeholder-texPath advisories the two pre-existing module items
+already carried (this mod's real art is owed regardless, tracked
+separately). `run_selftests.py` run this session (see note for result).
+**Still zero live/bridge verification of the cryo envelope specifically** —
+bridge was held by another live FOUNDRY window all session
+(`bridge who`: held since 2026-09-25T06:04:50Z for a full-modlist restart +
+5-item live-verify batch, alive/idle 1 min, not stale) — per this session's
+brief, not waited on or forced.
+
+**First live pass, cryo-specific** (added to the unchanged prior-session
+list): build `RUT_ShieldGenerator`, install the cryo module, cycle to Cryo
+mode on a cold/nightside map, confirm room temperature is held back from
+outdoor extreme cold while still slowly declining from the interior drain;
+confirm `ShieldLandingAdvisory` fires the cold-hazard warning on landing
+with no cryo configured, and that `ShieldHazardExposureTracker` treats an
+unshielded cold hazard identically to heat/particulate (damage rate
+doubling past ~6 hours, second letter). Deploy status unchanged from
+2026-09-18 (`needs=bridge`) — this session did not attempt a deploy or
+touch `ModsConfig.xml`.
 
 ## 2026-09-18 (FOUNDRY, belt mode, subagent) — escalating landing-hazard damage built
 

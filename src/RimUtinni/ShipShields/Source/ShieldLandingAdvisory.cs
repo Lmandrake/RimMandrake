@@ -16,12 +16,13 @@ namespace RimMandrake.Utinni.ShipShields
     // ShieldHazardUtility (moved, not duplicated, 2026-09-18) so this letter
     // and that tracker read identical signals.
     //
-    // v1 slice: evaluates only the two hazards THIS build's shields cover
-    // (thermal, particulate) against real vanilla signals, never a guessed
-    // modded defName -- cryo/spore hazards aren't evaluated because those
-    // shields don't exist. Fires from HarmonyPatches.cs's postfix on
-    // Scenario.PostGravshipLanded, a hook confirmed live this session
-    // (GIZKA_HOLD_HOOK_SPIKE_1).
+    // Evaluates every hazard a built shield mode covers (thermal,
+    // particulate, and cold since CompShieldCryoEnvelope landed 2026-09-25)
+    // against real vanilla signals, never a guessed modded defName --
+    // spore hazards aren't evaluated because that shield is CUT (owner:
+    // "spores aren't magical, just particulates"). Fires from
+    // HarmonyPatches.cs's postfix on Scenario.PostGravshipLanded, a hook
+    // confirmed live this session (GIZKA_HOLD_HOOK_SPIKE_1).
     public static class ShieldLandingAdvisory
     {
         public static void Evaluate(Map map)
@@ -45,6 +46,13 @@ namespace RimMandrake.Utinni.ShipShields
             {
                 warnings.Add("Airborne particulate or contamination detected. No particulate screen "
                     + "is configured and powered -- expect fouling and untreated exposure.");
+            }
+
+            bool coldHazard = ShieldHazardUtility.HasColdHazard(map);
+            if (coldHazard && !ShieldHazardUtility.IsHazardShielded(map, ShieldFieldMode.Cryo))
+            {
+                warnings.Add("Severe ambient cold detected outside the hull. No cryo envelope is "
+                    + "configured and powered -- exposed systems will cold-seize over time.");
             }
 
             if (warnings.Count == 0)

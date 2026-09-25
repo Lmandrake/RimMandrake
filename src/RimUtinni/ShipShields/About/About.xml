@@ -25,10 +25,20 @@ buildings:
     explosion (shd:bubble-not-wall's "prone to overheating or even explosion
     when forcibly collapsed").
   - Thermal veil (shd:thermal-veil, module-gated): partially rejects outdoor
-    temperature drift via `GenTemperature.ControlTemperatureTempChange` +
-    `PushHeat` (the same primitives vanilla heaters/coolers use), power-only,
-    never a full cancellation — the room still climbs toward extremes, just
-    far more slowly.
+    temperature drift via `GenTemperature.ControlTemperatureTempChange`
+    applied straight to `Room.Temperature` (the same primitive vanilla's own
+    `Building_Heater`/`Building_Cooler` use), power-only, never a full
+    cancellation — the room still climbs toward extremes, just far more
+    slowly.
+  - Cryo envelope (shd:cryo-envelope, module-gated): the mirror of the
+    thermal veil, holding back severe outside cold via the same
+    `ControlTemperatureTempChange` primitive at a stronger correction
+    factor, plus its own distinct cost — a small constant interior-heat
+    drain every interval, the honest reading of the ruling's "pulls in heat
+    in both directions... slowly decreases the temperature within the
+    ship." The ruled "glowing red-orange black body radiation" visual is not
+    built (no existing vanilla VFX primitive found for it; real art/VFX for
+    this whole mod remains owed).
   - Particulate screen (shd:particulate-screen, module-gated): clears
     weather-deposited filth in radius each interval, repels small wild
     animals out of radius (a real vanilla flee job), and negates the one
@@ -50,8 +60,8 @@ in-game hour, clearing once it recovers.
 
 Landing-hazard advisory (shd:no-hard-landing-gate): a Harmony postfix on the
 confirmed-live `Scenario.PostGravshipLanded` hook sends a single non-blocking
-letter if the landing map has an extreme-heat or airborne-particulate hazard
-with no matching shield configured and powered.
+letter if the landing map has an extreme-heat, airborne-particulate, or
+severe-cold hazard with no matching shield configured and powered.
 
 The design doc's other half of that same ruling row is now built too:
 `ShieldHazardExposureTracker` (a per-map `MapComponent`) applies periodic

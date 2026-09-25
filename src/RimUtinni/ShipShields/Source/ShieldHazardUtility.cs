@@ -19,12 +19,31 @@ namespace RimMandrake.Utinni.ShipShields
         // condition is flagging as a backstop.
         public const float ExtremeHeatThreshold = 58f;
 
+        // Symmetric backstop for cold, same role as ExtremeHeatThreshold: a
+        // standing nightside biome has no ColdSnap GameCondition active (that
+        // condition is a temporary weather event, confirmed via rimsage
+        // GameConditionDefOf.ColdSnap), so a fixed-ambient-temperature
+        // backstop is the PRIMARY signal for "permanently past the
+        // terminator," not just a rare fallback the way it is for heat.
+        public const float ExtremeColdThreshold = -40f;
+
         public static bool HasHeatHazard(Map map)
         {
             return map.mapTemperature.OutdoorTemp >= ExtremeHeatThreshold
                 || map.gameConditionManager.ConditionIsActive(GameConditionDefOf.HeatWave)
                 || (ModsConfig.OdysseyActive && GameConditionDefOf.LavaFlow != null
                     && map.gameConditionManager.ConditionIsActive(GameConditionDefOf.LavaFlow));
+        }
+
+        // shd:cryo-envelope gates the nightside and the propane sea (R-H6/
+        // R-H10) -- a standing biome condition, not a passing storm, so the
+        // ambient-temperature backstop is doing most of the real work here.
+        // ColdSnap is checked too for a temporary severe-cold event on an
+        // otherwise-survivable map.
+        public static bool HasColdHazard(Map map)
+        {
+            return map.mapTemperature.OutdoorTemp <= ExtremeColdThreshold
+                || map.gameConditionManager.ConditionIsActive(GameConditionDefOf.ColdSnap);
         }
 
         // sandRate is a real WeatherDef field (vanilla's own Sandstorm sets

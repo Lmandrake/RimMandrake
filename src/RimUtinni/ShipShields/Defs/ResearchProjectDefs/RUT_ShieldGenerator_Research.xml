@@ -13,7 +13,7 @@
   <ResearchProjectDef>
     <defName>RUT_ModulatedShieldFields</defName>
     <label>modulated shield fields</label>
-    <description>Building-scale plasma field projection: a single reconfigurable shield generator, and the modules that retune its field between kinetic deflection, thermal rejection, and a particulate screen.</description>
+    <description>Building-scale plasma field projection: a single reconfigurable shield generator, and the modules that retune its field between kinetic deflection, thermal rejection, a particulate screen, and a cryo envelope.</description>
     <baseCost>1600</baseCost>
     <techLevel>Spacer</techLevel>
     <prerequisites>

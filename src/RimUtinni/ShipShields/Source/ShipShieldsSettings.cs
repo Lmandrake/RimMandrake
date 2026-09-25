@@ -25,6 +25,8 @@ namespace RimMandrake.Utinni.ShipShields
     //   10. ShieldHazardExposureTracker's immediate lava-landing damage
     //      burst -- the ruling's named "worst case," unconditional on
     //      shield state.
+    //   11. CompShieldCryoEnvelope's per-interval room temperature nudge
+    //      plus its own constant interior heat drain (shd:cryo-envelope).
     // Each gets its own toggle; the collapse explosion, the escalating hull
     // damage and the lava burst also get a damage multiplier over their
     // def/const-configured amount.
@@ -37,6 +39,7 @@ namespace RimMandrake.Utinni.ShipShields
         public static bool particulateAnimalRepulsionEnabled = true;
         public static bool particulateWeatherDamageNegationEnabled = true;
         public static bool thermalVeilEnabled = true;
+        public static bool cryoEnvelopeEnabled = true;
         public static bool bubbleSlowPassThroughEnabled = true;
         public static bool landingAdvisoryEnabled = true;
         public static bool landingHazardExposureEnabled = true;
@@ -53,6 +56,7 @@ namespace RimMandrake.Utinni.ShipShields
             Scribe_Values.Look(ref particulateAnimalRepulsionEnabled, "particulateAnimalRepulsionEnabled", true);
             Scribe_Values.Look(ref particulateWeatherDamageNegationEnabled, "particulateWeatherDamageNegationEnabled", true);
             Scribe_Values.Look(ref thermalVeilEnabled, "thermalVeilEnabled", true);
+            Scribe_Values.Look(ref cryoEnvelopeEnabled, "cryoEnvelopeEnabled", true);
             Scribe_Values.Look(ref bubbleSlowPassThroughEnabled, "bubbleSlowPassThroughEnabled", true);
             Scribe_Values.Look(ref landingAdvisoryEnabled, "landingAdvisoryEnabled", true);
             Scribe_Values.Look(ref landingHazardExposureEnabled, "landingHazardExposureEnabled", true);
@@ -89,6 +93,9 @@ namespace RimMandrake.Utinni.ShipShields
               + "airborne Toxic Fallout exposure.");
             list.CheckboxLabeled("Thermal veil temperature control", ref thermalVeilEnabled,
                 "The thermal field mode nudges room temperature toward its comfort setpoint.");
+            list.CheckboxLabeled("Cryo envelope temperature control", ref cryoEnvelopeEnabled,
+                "The cryo field mode holds back severe outside cold, but continuously drains a small "
+              + "amount of interior heat while active as its own cost.");
             list.GapLine();
 
             list.CheckboxLabeled("Landing hazard advisory", ref landingAdvisoryEnabled,
