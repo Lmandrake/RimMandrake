@@ -73,9 +73,69 @@ namespace RimMandrake.CreatureBehaviors
 			RM_ReactionEvent evt = new RM_ReactionEvent(
 				parent, map, parent.Position, Props.tag, instigator, budget);
 
+			// Mark the origin itself activated before propagating: a
+			// same-kind-within-radius rule (REACTION_MECHANISM_GENERALISE_1
+			// step 2) recurses outward from each neighbour it wakes, and a
+			// dense enough cluster can find its way back to the origin from
+			// the far side. Without this the origin could be handed a
+			// second Respond() call from its own propagation, silently
+			// double-spending the event's shared budget on itself.
+			evt.TryMarkActivated(parent);
+
 			(Props.propagation ?? RM_ReactionPropagationRule_None.Instance).Propagate(evt, parent);
 
 			Props.response?.Respond(evt, parent);
+		}
+
+		/// <summary>
+		/// REACTION_MECHANISM_GENERALISE_1 step 2. Called by a propagation
+		/// rule (never by a trigger directly) to wake THIS source as part of
+		/// an event some other source already started — using the SAME
+		/// shared event, never a fresh one with its own full budget. That is
+		/// the difference between this and TriggerReaction: TriggerReaction
+		/// mints a brand-new event with a brand-new budget (right for an
+		/// independent disturbance), while this spends only what the caller
+		/// already drew from the event it was handed (right for "my
+		/// neighbour just woke and so do I").
+		///
+		/// Still respects this source's own cooldown and the mod's on/off
+		/// switch — a source mid-cooldown from its own recent trigger does
+		/// not re-fire just because a neighbour propagated into it — and
+		/// still cascades its own propagation/response in turn, which is
+		/// what lets a same-kind-within-radius rule actually spread the
+		/// swarm outward hop by hop rather than reaching only the first
+		/// source's own radius.
+		/// </summary>
+		/// <returns>true if this source actually activated (false: already handled this event, on cooldown, spawning disabled, or unspawned).</returns>
+		public bool TryActivateFromPropagation(RM_ReactionEvent evt)
+		{
+			if (!RM_CreatureBehaviorsSettings.reactionSourceSpawnEnabled)
+			{
+				return false;
+			}
+
+			if (!parent.Spawned || parent.Map != evt.Map)
+			{
+				return false;
+			}
+
+			if (!evt.TryMarkActivated(parent))
+			{
+				return false; // this event already reached this source by another path
+			}
+
+			int now = Find.TickManager.TicksGame;
+			if (now - lastTriggerTick < Props.cooldownTicks)
+			{
+				return false;
+			}
+			lastTriggerTick = now;
+
+			(Props.propagation ?? RM_ReactionPropagationRule_None.Instance).Propagate(evt, parent);
+
+			Props.response?.Respond(evt, parent);
+
+			return true;
 		}
 
 		public override void PostExposeData()

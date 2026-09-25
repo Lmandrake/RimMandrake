@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HOSTILE_MOBILE_PLANTS_1 / REACTION_MECHANISM_GENERALISE_1 step 2.
+
+     RM_Gallowroot — the smallest real animal def sufficient to host
+     RM_CompReactionSource's propagation rule as a second consumer
+     (GREENTIDE_WASP_SWARM_1's RM_Skerrel is the first). NOT the roster/art/
+     balance pass HOSTILE_MOBILE_PLANTS_1 still owes — see this mod's own
+     About.xml for the full list of what is deliberately not done here (the
+     rooted-idle read, a proximity trigger, real art, biome placement).
+
+     Race shape and tool block copied from RM_Skerrel_Race.xml's own proven
+     pattern (BeetleLike body, a Mouth-linked tool, Insectoid flesh/blood) —
+     that file already ships and compiles in this exact mod set, so reusing
+     its structure verbatim minimizes the chance of an invalid body-part-group
+     or flesh-type reference in a def this pass cannot live-verify (OFFLINE
+     work only, no bridge, no def dump on this machine this pass).
+
+     manhunterOnDamageChance is 0 deliberately: ALL of this creature's
+     aggression is routed through RM_CompReactionSource (damage triggers it,
+     RM_ReactionResponseRule_ActivateSelf starts RM_MentalState_ScopedAggression
+     scoped to whoever hurt it) rather than vanilla's own fight-back roll, so
+     the reaction mechanism is the only thing making it fight at all — a
+     direct, honest demonstration of the mechanism rather than two
+     independent aggression paths fighting each other.
+
+     Placeholder texPath: vanilla Tortoise sheet, tinted dark green-brown —
+     the same placeholder-reuse move RM_Gelatid already makes in
+     mandrake.rm.gelatinousslime for "a creature that needs to read as not-
+     quite-animal and has no bespoke art yet." Real art is owed. -->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gallowroot</defName>
+    <label>gallowroot</label>
+    <description>A squat knot of woody vine and thorn, near enough to the undergrowth around it that nothing gives it away at a glance. It does not hunt. It roots, and it waits, and it does not move again until something comes close enough to reach — then it does, all at once, and the neighbors that were rooted just as still a moment ago are not far behind it.</description>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <MarketValue>45</MarketValue>
+      <Flammability>1.5</Flammability>
+      <Wildness>1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>thorned lash</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>1.1</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <!-- All aggression routed through RM_CompReactionSource — see header. -->
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.99, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Insect_Ambient</soundWounded>
+          <soundDeath>Pawn_Insect_Ambient</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ReactionSource">
+        <cooldownTicks>1200</cooldownTicks>
+        <!-- Total shared budget ONE trigger grants (REACTION_MECHANISM_GENERALISE_1's
+             load-bearing decision: this is the TOTAL across the whole
+             propagation cascade AND this plant's own response — nothing here
+             or in the propagation/response rules below bounds itself
+             independently). INVENTED: 6 — a chosen gallowroot can wake a
+             small local cluster, not the whole choked biome at once. -->
+        <eventBudget>6</eventBudget>
+        <tag>Gallowroot</tag>
+        <propagation Class="RimMandrake.CreatureBehaviors.RM_ReactionPropagationRule_SameKindWithinRadius">
+          <!-- INVENTED: a squat, rooted ambusher's own reach, not a whole
+               clearing. -->
+          <radius>10</radius>
+          <budgetPerNeighbor>1</budgetPerNeighbor>
+        </propagation>
+        <response Class="RimMandrake.CreatureBehaviors.RM_ReactionResponseRule_ActivateSelf">
+          <mentalState>RM_SwarmAggression</mentalState>
+          <disengageRadius>15</disengageRadius>
+          <budgetCost>1</budgetCost>
+        </response>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gallowroot</defName>
+    <label>gallowroot</label>
+    <race>RM_Gallowroot</race>
+    <combatPower>35</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>0.8</drawSize>
+          <color>(64,84,42)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>1.0</drawSize>
+          <color>(64,84,42)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>1.2</drawSize>
+          <color>(64,84,42)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>1.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

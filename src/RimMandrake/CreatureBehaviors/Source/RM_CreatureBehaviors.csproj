@@ -126,8 +126,10 @@
     <Compile Include="RM_CompHeatPusherGated.cs" />
     <Compile Include="RM_ReactionEvent.cs" />
     <Compile Include="RM_ReactionPropagationRule.cs" />
+    <Compile Include="RM_ReactionPropagationRule_SameKindWithinRadius.cs" />
     <Compile Include="RM_ReactionResponseRule.cs" />
     <Compile Include="RM_ReactionResponseRule_SpawnPawns.cs" />
+    <Compile Include="RM_ReactionResponseRule_ActivateSelf.cs" />
     <Compile Include="RM_MentalState_ScopedAggression.cs" />
     <Compile Include="RM_CompProperties_ReactionSource.cs" />
     <Compile Include="RM_CompReactionSource.cs" />
