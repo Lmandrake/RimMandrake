@@ -182,7 +182,7 @@
     <description>A small creature — nobody can say which, or ever could — jacketed whole in pillar-mineral where it sank, the Grey's own statuary shrunk to a fist and made portable. Not carved: grown, the way everything else down there grows. A salt cameo does not rot and does not wear; it is exactly as it was found, and it will still be exactly that in a hundred years.</description>
     <graphicData>
       <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <thingCategories>
       <li>ResourcesRaw</li>

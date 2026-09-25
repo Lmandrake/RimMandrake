@@ -57,6 +57,7 @@
     <description>A massive deposit left by a shade whale — the megafauna's own fertiliser, and the visible mark of where it stopped.</description>
     <graphicData>
       <texPath>Things/Filth/RSW_WhaleDung</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(97,65,48,97)</color>
     </graphicData>
     <filth>

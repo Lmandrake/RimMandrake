@@ -26,7 +26,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_GiantLeaf/RM_GiantLeaf_a</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.1, 0.2, 0.1)</volume>
       </shadowData>

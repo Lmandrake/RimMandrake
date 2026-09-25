@@ -229,7 +229,7 @@
     <description>Thick, lightfast ink pressed from a kellu's own sac — black as the Grey, and the only black the Compact trusts for a chart that has to survive salt water and a decade in a tube. Dye-houses on the surface pay for it sight unseen; the deep's own dock kitchens will not touch a squid that hasn't already given its ink up.</description>
     <graphicData>
       <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <thingCategories>
       <li>ResourcesRaw</li>
