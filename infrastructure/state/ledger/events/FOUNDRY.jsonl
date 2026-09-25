@@ -330,3 +330,6 @@
 {"seat":"FOUNDRY","event":"close","id":"GREENTIDE_YEARNING_FRUIT_FILTH_1","sha":"e399e17ca","reason":"built RM_HediffComp_SeedPassage: filth+seedling payload on RUT_DigestiveAccelerant end","ts":"2026-09-25T14:50:55Z"}
 {"seat":"FOUNDRY","event":"close","id":"WASTELAND_BRINE_BATTERY_DISCHARGE_1","sha":"50836e90f","reason":"built RM_CompDefensiveDischarge: defensive discharge on RUT_BrineBattery","ts":"2026-09-25T14:51:35Z"}
 {"seat":"FOUNDRY","event":"close","id":"WASTELAND_RADIOTHERMAL_SOLITARY_1","sha":"7e262459a","reason":"Heat via RimSage-verified CompHeatPusher (gated subclass) + new spacing law (JobGiver avoidance + cook-damage comp), both halves built and compiled clean","ts":"2026-09-25T14:53:11Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREATBOLE_BARK_EDGE_ART_1","ts":"2026-09-25T16:52:19Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREATBOLE_BARK_EDGE_ART_1","ts":"2026-09-25T16:52:22Z"}
+{"seat":"FOUNDRY","event":"note","id":"GREATBOLE_BARK_EDGE_ART_1","text":"Marker rendering fix landed at 88f61d76d: RUT_GreatboleCore now drawerType=None (no more retinted DeepDrillPowered at 7x7). Bark-edge atlas art commission (4x4 Rock_Atlas-layout PNG + RUT_GreatboleHeartwood linkType/linkFlags wiring) is still owed.","ts":"2026-09-25T16:52:32Z"}
