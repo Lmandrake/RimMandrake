@@ -1,0 +1,93 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    RimWorld 1.6 runs Unity/Mono against a .NET Framework 4.7.2 profile, so
+    the mod DLL must target net472. Same shape as
+    src/RimUtinni/PyrelandsMechanics/Source/RimMandrake.Utinni.PyrelandsMechanics.csproj,
+    copy that file's own header if this one goes stale.
+
+    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\PropaneLakeMechanics\Source\RimMandrake.Utinni.PropaneLakeMechanics.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+
+    Harmony is referenced for exactly ONE rule: Patch_GasSaturationDeflagration
+    (a postfix on Verb_LaunchProjectile.TryCastShot — there is no other vanilla
+    extension point for "after a ranged shot resolves"). Every other mechanism
+    in this assembly rides a vanilla extension point (ThingComp, MapComponent,
+    IncidentWorker) and needs no patch. 0Harmony is <Private>false</Private>:
+    the game and brrainz.harmony supply it at runtime, it must never be copied
+    into ..\Assemblies\.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrake.Utinni.PropaneLakeMechanics</AssemblyName>
+    <RootNamespace>RimMandrake.Utinni.PropaneLakeMechanics</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <!-- Same path shape as src/RimUtinni/PyrelandsMechanics/Source/RimMandrake.Utinni.PyrelandsMechanics.csproj;
+       copy that file's if this one goes stale. -->
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="PropaneLakeMechanicsDefOf.cs" />
+    <Compile Include="PropaneLakeMechanicsSettings.cs" />
+    <Compile Include="PropaneLakeMechanicsMod.cs" />
+    <Compile Include="MapComponent_GasSaturationTracker.cs" />
+    <Compile Include="CompProperties_GasVent.cs" />
+    <Compile Include="CompGasVent.cs" />
+    <Compile Include="MapComponent_PipeNetworks.cs" />
+    <Compile Include="CompPipeNetwork.cs" />
+    <Compile Include="CompPipeValve.cs" />
+    <Compile Include="CompPipePump.cs" />
+    <Compile Include="CompProperties_PipeRupture.cs" />
+    <Compile Include="CompPipeRupture.cs" />
+    <Compile Include="CompVWakeAgitation.cs" />
+    <Compile Include="Patch_GasSaturationDeflagration.cs" />
+    <Compile Include="IncidentWorker_SaturationHeistRaid.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

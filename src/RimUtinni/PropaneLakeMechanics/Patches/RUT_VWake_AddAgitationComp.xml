@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_VWake_AddAgitationComp.xml         PropaneLakeMechanics · authored for PROPANE_LAKE_PIPE_MECHANICS_1
+  Wires CompVWakeAgitation onto RUT_VWake (src/RimUtinni/UtinniPatches/Defs/
+  ThingDefs_Races/RUT_PropaneLakeFauna.xml) WITHOUT touching that file — it
+  belongs to a different mod (mandrake.rut.patches) another agent may be
+  mid-editing, and this mod loads after it (About.xml loadAfter). RUT_VWake
+  carries no <comps> block today (verified by direct read), so this ADDs a
+  whole new element rather than inserting into an existing list.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimUtinni Patches (Jawa campaign)</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RUT_VWake"]</xpath>
+      <value>
+        <comps>
+          <li Class="RimMandrake.Utinni.PropaneLakeMechanics.CompProperties_VWakeAgitation" />
+        </comps>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

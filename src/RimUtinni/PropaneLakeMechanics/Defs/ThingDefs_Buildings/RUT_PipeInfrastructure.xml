@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_PipeInfrastructure.xml             PropaneLakeMechanics · authored for PROPANE_LAKE_PIPE_MECHANICS_1
+  ============================================================================
+  Build ladder row 3 (propane_gas_deep_design.md §4, §9): "CompPipeNetwork/
+  CompPipeRupture with the ruled on-map manual shutoff valves." Three
+  buildings joined into one network by CompPipeNetwork's own 4-way-adjacency
+  grouping (MapComponent_PipeNetworks): a segment that can rupture under fire
+  or explosive damage, a valve a colonist can walk up and close, and the pump
+  itself ("the pump is very far away" — the owner's own framing quote — is
+  represented by DISTANCE on the map, not by any special mechanic; the pump
+  can be built anywhere in the network, including deliberately far from a
+  likely rupture point).
+
+  Placeholder art only: PowerConduit's own atlas texture for the segment
+  (already reads as "a pipe on the ground"), the vanilla Vent's own texture
+  for the valve (already reads as "a thing you open/close"), GeothermalPlant's
+  for the pump (shared with RUT_VentPump — same "this is clearly a pump"
+  idiom). No new art commissioned this pass.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_PipeSegment</defName>
+    <label>propane pipe segment</label>
+    <description>A length of pressurized pipe carrying liquid propane across the site. It holds fine under normal wear, but fire or a blast can split it open — and once it's open, it does not stop on its own.</description>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.25</fillPercent>
+    <rotatable>false</rotatable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <size>(1,1)</size>
+    <constructEffect>ConstructMetal</constructEffect>
+    <designationCategory>Production</designationCategory>
+    <costList>
+      <Steel>5</Steel>
+    </costList>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>200</WorkToBuild>
+      <Flammability>1.0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Utinni.PropaneLakeMechanics.CompProperties_PipeNetwork" />
+      <li Class="RimMandrake.Utinni.PropaneLakeMechanics.CompProperties_PipeRupture" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_PipeValve</defName>
+    <label>propane shutoff valve</label>
+    <description>A manual valve set into the propane line. Closing it depressurizes the whole run it sits on — the only way to stop a jet fed from a segment further down the same pipe.</description>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.4</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <constructEffect>ConstructMetal</constructEffect>
+    <designationCategory>Production</designationCategory>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>800</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Misc/TempControl/Vent</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Utinni.PropaneLakeMechanics.CompProperties_PipeNetwork" />
+      <li Class="RimMandrake.Utinni.PropaneLakeMechanics.CompProperties_PipeValve" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_PipePump</defName>
+    <label>propane pump station</label>
+    <description>The pump that keeps the whole pipe run pressurized. It is usually built well away from anywhere a rupture is likely to happen — reaching it and shutting it down is the entire point of a rupture emergency.</description>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.8</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(2,2)</size>
+    <constructEffect>ConstructMetal</constructEffect>
+    <designationCategory>Production</designationCategory>
+    <costList>
+      <Steel>75</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>2500</WorkToBuild>
+      <Flammability>0.6</Flammability>
+      <Beauty>-6</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Power/GeothermalPlant</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Utinni.PropaneLakeMechanics.CompProperties_PipeNetwork" />
+      <li Class="RimMandrake.Utinni.PropaneLakeMechanics.CompProperties_PipePump" />
+    </comps>
+  </ThingDef>
+
+</Defs>

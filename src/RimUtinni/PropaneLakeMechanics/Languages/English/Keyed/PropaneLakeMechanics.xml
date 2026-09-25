@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <RUT_Settings_GasVentsEnabled>Gas vents</RUT_Settings_GasVentsEnabled>
+  <RUT_Settings_GasVentsEnabled_Desc>Propane vents self-ignite occasionally and release violently if their pump is torn out while still live.</RUT_Settings_GasVentsEnabled_Desc>
+  <RUT_Settings_PipeNetworksEnabled>Pipe rupture jets</RUT_Settings_PipeNetworksEnabled>
+  <RUT_Settings_PipeNetworksEnabled_Desc>Propane pipe segments can rupture into a standing jet that only stops when a reachable valve on the same network is closed.</RUT_Settings_PipeNetworksEnabled_Desc>
+  <RUT_Settings_VWakeAgitationEnabled>V-wake pump agitation</RUT_Settings_VWakeAgitationEnabled>
+  <RUT_Settings_VWakeAgitationEnabled_Desc>V-wakes move faster and more alertly while a propane pump is running nearby.</RUT_Settings_VWakeAgitationEnabled_Desc>
+  <RUT_Settings_SaturationHeistRaidEnabled>Saturation heist raids</RUT_Settings_SaturationHeistRaidEnabled>
+  <RUT_Settings_SaturationHeistRaidEnabled_Desc>Raids that arrive while your base is heavily gas-saturated re-equip their gunners with vibro/sonic weapons instead of guns.</RUT_Settings_SaturationHeistRaidEnabled_Desc>
+  <RUT_Settings_DeflagrationEnabled>Gas saturation deflagration</RUT_Settings_DeflagrationEnabled>
+  <RUT_Settings_DeflagrationEnabled_Desc>Firing a ranged weapon in a gas-saturated area risks igniting the air itself. This is the riskiest mechanic in this mod — turn it off if it misbehaves.</RUT_Settings_DeflagrationEnabled_Desc>
+  <RUT_Settings_DeflagrationIntensity>Deflagration chance multiplier: {0}</RUT_Settings_DeflagrationIntensity>
+
+  <RUT_Message_GasVentRelease>{0}'s pump was removed while it was still live — the vent lets go all at once!</RUT_Message_GasVentRelease>
+  <RUT_GasVent_Depleted>Vented dry</RUT_GasVent_Depleted>
+  <RUT_GasVent_Pumping>Being pumped ({0} left)</RUT_GasVent_Pumping>
+  <RUT_GasVent_Dormant>Seeping, unpumped</RUT_GasVent_Dormant>
+
+  <RUT_PipeValve_Toggle>Toggle valve</RUT_PipeValve_Toggle>
+  <RUT_PipeValve_ToggleDesc>Open or close this valve. Closing it depressurizes the whole pipe network it sits on.</RUT_PipeValve_ToggleDesc>
+  <RUT_PipeValve_Closed>Closed</RUT_PipeValve_Closed>
+  <RUT_PipeValve_Open>Open</RUT_PipeValve_Open>
+
+  <RUT_PipePump_Toggle>Toggle pump</RUT_PipePump_Toggle>
+  <RUT_PipePump_ToggleDesc>Start or stop this pump. A running pump pressurizes its whole network and agitates nearby propane-native creatures.</RUT_PipePump_ToggleDesc>
+  <RUT_PipePump_Running>Running</RUT_PipePump_Running>
+  <RUT_PipePump_Stopped>Stopped</RUT_PipePump_Stopped>
+
+  <RUT_Message_PipeRupture>{0} has ruptured! The jet will not stop on its own — close a valve on this network to shut it down.</RUT_Message_PipeRupture>
+  <RUT_PipeSegment_Ruptured>Ruptured — jet burning</RUT_PipeSegment_Ruptured>
+  <RUT_Message_PipeRuptureGoodwill>{0} is furious that a ruptured pipe on their territory was left burning.</RUT_Message_PipeRuptureGoodwill>
+
+  <RUT_Message_GasFlashover>Flashover! The saturated gas ignites all at once.</RUT_Message_GasFlashover>
+  <RUT_Message_Deflagration>The saturated air ignites at the muzzle!</RUT_Message_Deflagration>
+
+</LanguageData>
