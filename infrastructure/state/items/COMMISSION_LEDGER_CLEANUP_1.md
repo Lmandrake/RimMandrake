@@ -839,3 +839,66 @@ skipped. `dune_sea+deep_desert` is now fully closed out. 30 slugs across
 all avoided this wave for live concurrent-agent activity except
 `weeping_stones`, which was clean but not reached this pass; this item
 stays open.
+
+## Wave 13 (2026-09-25, FOUNDRY) — weeping_stones (8), all found ALREADY BUILT; other 6 groups re-confirmed still contended
+
+Checked `git status`/`git log` first, per this item's own concurrency
+warning. `weeping_stones` re-confirmed clean (no uncommitted work on any
+`*WeepingStones*` path); all 6 other remaining groups re-confirmed still
+under heavy live concurrent-agent activity, unchanged in kind from wave
+12's read: `nightside_ice` (untracked research docs + a fresh
+`Transient/artpipe_quota_failures/nightside_*` batch), `terminator_sea+
+the_grey_deep`/`+the_twilight_deep` (new untracked `infrastructure/
+artpipe/pending/greysea_*_v1_*`/`twilightsea_*_v1_*` jobs — a different,
+larger art batch than wave 12 saw, i.e. still actively being worked),
+`the_contagion` (new untracked `infrastructure/artpipe/done/contagion_*`
+renders), `the_fever_wood` (fresh `Transient/artpipe_quota_failures/
+feverwood_*` batch), `the_rot` (staged deletions of `RotSpecies` textures/
+patch under `UtinniPatches`, same mid-migration seen last wave, still
+unresolved). All 6 avoided again.
+
+**`weeping_stones`: turned out nothing was owed.** Read
+`design/Jawa/worldbuilding/biomes/rosters/weeping_stones.json` and
+`src/RimMandrake/WeepingStones/` before authoring anything, per this
+item's own "watch out" — found the entire sheet's cast and flora were
+already authored, committed and closed by `WEEPINGSTONES_RM_MOD_BUILD_1`
+wave 2 (`a472b82b7`, 2026-09-24, itself following
+`WEEPING_STONES_DESIGN_SITTING_1`'s ruling the same day) — a whole build
+pass this item never knew had run. All 8 slugs map 1:1 onto already-shipped
+defs, none touched this wave:
+
+- `blade-flora-with-bladder-fruit-forage-target-re-points-donor` →
+  `RM_Bladderquill` (`RM_WeepingStonesNativeFlora.xml`) — the bladder-fruit
+  harvest routes to `RM_BladderFruit` (`RM_WeepingStonesNativeFlora_Items.xml`).
+- `burrak-burradar-well-digger-claw-combs-elder-form` → `RM_Burrak`
+  (`RM_WeepingStonesNatives.xml`) — the def's own description states the
+  elder/"burradar" name is the same animal grown vast, not a second def,
+  matching the slug's own "elder form" framing exactly.
+- `mirrik-dew-smoke-swarm-dewsilk-cocoon-source` → `RM_Mirrik` — real
+  flight (`MaxFlightTime`/`FlightCooldown` + race flags), description names
+  its cocoons as the dewsilk source. ⚠️ **Small gap, not this item's to
+  close**: dewsilk itself has no ThingDef yet, only flavor-text prose — the
+  creature commission is built, the trade-good item is not. Not re-filed
+  solo; flagged here so a future flora/items pass on this mod doesn't miss
+  it.
+- `sillik-weep-face-licker-whisker-combs-prey-base` → `RM_Sillik`.
+- `ssurr-crest-fan-display-reptile-the-romance-ruling-made-anim` →
+  `RM_Ssurr` — crest-fan display doubles as courtship and dew-comb per its
+  description, matching "the romance ruling."
+- `tirbak-walking-cistern-caravan-colossus-dorsal-rain-fins` → `RM_Tirbak`.
+- `vhakk-the-warden-margin-apex-never-hunts-at-water-by-design` →
+  `RM_Vhakk` — description states verbatim "never hunts at water, by
+  design, not restraint."
+- `weep-mat-drip-garden-corduroy-mats-ridged-wind-square` → `RM_Weepmat`
+  — description: "ridged like corduroy, every ridge square to the
+  sea-wind."
+
+No defs authored, no art queued, no validation run this wave — nothing in
+the working tree changed except this item file. `weeping_stones` is now
+fully resolved/closed out for this item's purposes.
+
+22 slugs across 6 sheet groups remain (`nightside_ice` 6,
+`terminator_sea+the_grey_deep` 4, `terminator_sea+the_twilight_deep` 6,
+`the_contagion` 1, `the_fever_wood` 1, `the_rot` 4) — all under live
+concurrent-agent activity as of this wave, none reached; this item stays
+open.
