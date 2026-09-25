@@ -167,3 +167,61 @@ render-void trap (see traps.md's candidates — force a full `MapDrawer`
 regen, or reach the map via a real caravan arrival instead of `Change Map`),
 or just wait for a live human-observed session once the owner is actually
 playing near a Pyrelands river tile in the real campaign.
+
+## 2026-09-25 (FOUNDRY) — offline re-verify only; bridge unavailable this pass
+
+Bridge is held by a different live FOUNDRY window this session (`bridge who`:
+"held by FOUNDRY since 2026-09-25T06:04:50Z, for a full-modlist restart + 5-item
+live-verify batch, idle 2 min" — provably alive, not stale) — per this session's
+own instructions, not taken/forced. So the item's real remaining blocker (a
+live-observed steam fleck) is still not reachable this pass. Two things
+genuinely re-checked instead, both new evidence, not repeats:
+
+1. **Build re-confirmed clean on today's tree**:
+   `/mnt/c/Users/Mandrake/.dotnet/dotnet.exe build
+   'D:\Luke\dev\Rimworld\src\RimMandrake\FlowWorks\Source\RimMandrake_FlowWorks.csproj' -c Release`
+   → 0 Warning(s), 0 Error(s). `RiverSteamHook.cs`/`RiverSteamSettings.cs` unchanged
+   since the 2026-09-20 pass; still correct on read (biome-extension-gated,
+   `TerrainDef.IsRiver`, vanilla `Steam` fleck, no heat push).
+
+2. **`ManyWaters_RiverSteam_Ashkarr.xml` validated against the CURRENT live
+   627-mod set** with `validate_patch.py --defs <RimWorld/Data> --defs
+   <RimWorld/Mods> --defs <Steam workshop 294100> --defs src --mods-config
+   <live ModsConfig.xml>` — **this item's first real `--live` xpath check**,
+   not just a def-dump/RimSage read: "load set: 627 active mods, 627 found on
+   disk, 8,862 def files". Result: 0 errors, only the two expected
+   add-if-missing WARNs the patch's own comments already call out. Concretely,
+   against today's actual installed files:
+   - `ZBiome_Grasslands`'s `<modExtensions>` test matches 0 nodes (it has none
+     yet) → the `nomatch` branch fires and adds the extension. Confirmed
+     against `More Vanilla Biomes: ZBiome_Grasslands.xml`.
+   - `RM_Pyrelands`'s `<modExtensions>` test matches **1** node (it already has
+     a `<modExtensions>` block) → the `match` branch fires and appends into it.
+     Confirmed against `Pyrelands: Pyrelands.xml`.
+   So **both** conditional adds resolve to a real, non-silent branch on the
+   live install — neither operation is a dead no-op today. (Which of
+   `ZBiome_Grasslands`/`RM_Pyrelands` actually carries live world tiles is the
+   separate, deliberately-unresolved-until-the-repaint question from
+   `PYRELANDS_WRONG_BIOME_DEF_1`/`WORLD_REMAKE_FINAL_STEP_1` — not re-opened
+   here, per the standing "biome painted once at the end" rule.)
+   Also re-confirmed via `ModsConfig.xml` (ElementTree-parsed, 627 active):
+   `mandrake.rm.flowworks`, `mandrake.rut.patches` and `zylle.morevanillabiomes`
+   are all still active on today's list.
+
+**Net**: every offline-checkable precondition (compiles clean, patch resolves
+correctly on the real current install, correct mods active) is re-confirmed
+on today's tree/mod-set. The ONLY gap is still the one the 2026-09-19 passes
+already characterised in detail: no bridge route exists that reaches a
+generated map without hitting the render-void, and this session had no
+bridge access to retest whether `BRIDGE_MAPGEN_STALE_FINALIZE_1`'s
+(closed 2026-09-19, same day as this item's render-void discovery) unconditional
+`mapDrawer.RegenerateEverythingNow` fix — built for a *different* symptom
+(stale mesh on map reuse), not this one (pure-black first render) — happens to
+also cover this case. **That is now the single cheapest next check**: on a
+future bridge session, generate a fresh Pyrelands-river map via
+`jawa/world_tile_map_generate` (which now runs that finalize sequence
+unconditionally per `BRIDGE_MAPGEN_STALE_FINALIZE_1`) and screenshot it before
+trying anything else — it may already be fixed as a side effect of unrelated
+work landed the same day. Left `blocked` (same standing reason: needs a live
+bridge window not already committed to other work, or the owner glancing at a
+real Pyrelands river tile in the campaign).
