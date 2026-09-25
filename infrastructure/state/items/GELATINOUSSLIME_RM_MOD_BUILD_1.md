@@ -164,7 +164,17 @@ own sitting. The two MEASURED facts that stood against the merge, kept for the r
 1. `About.xml` promises, in shipped player-facing text: *"This mod ships standalone: nothing of Alpha Biomes is required, referenced or included, and every terrain, plant, creature, weather and building here is its own."* And it **keeps** that promise — zero `AB_`/`AA_`/`GR_`/`alphaanimals`/`alphabiomes` references across all 24 def files and all 12 `.cs` (only two explanatory *comments* name them).
 2. The def's own comment (`GelatinousSlime.xml:177-185`) rules the thin roster a **design**, not an omission: *"THE ROSTER IS DELIBERATELY THIN, AND THAT IS SPIKE C … SlimeVisitorSpawner pulls arrivals from the NEIGHBOURING world tiles' own biomes … A hand-written animal list would be a lie about a biome whose whole fiction is 'everything that ever touched it'."*
 
-⇒ ⛔ **FOUNDRY still must not merge donor rows or retarget `the_slime.json`'s donor defNames at the def** — that ban is now the ruling itself, not an open question. Everything in the plan below is unblocked. Open design offer (BENCH, 2026-09-24, pending the owner's word): a small map-generation seed pass spawning 3–5 pre-slimified neighbour visitors so the biome opens already showing its fiction, instead of gelatids-only for the first days.
+⇒ ⛔ **FOUNDRY still must not merge donor rows or retarget `the_slime.json`'s donor defNames at the def** — that ban is now the ruling itself, not an open question. Everything in the plan below is unblocked.
+
+✅ **RULED IN, owner 2026-09-24 (*"Yes, I think that's a good idea."* to BENCH's offer): a
+visitor SEED PASS at map generation.** On first generation of a Slime map, spawn **3–5**
+visitors drawn from `MapComponent_SlimeVisitors.BuildNeighbourRoster()` (same neighbour-tile
+read, same never-hostile filter), scattered mid-map, each carrying `Slimification` at the
+standard arrival severity (0.25–0.7) — so the biome opens already showing "everything that
+ever touched it" instead of gelatids-only for the first days. Implementation shape is
+FOUNDRY's call (`FinalizeInit` on virgin maps vs a GenStep); it must fire ONCE per map, never
+on load of an existing map, and must respect the `MaxVisitorsOnMap` cap. Ships in this mod's
+build wave alongside steps 1–4.
 
 ### 11. Concrete step plan
 
