@@ -93,21 +93,21 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Noohm/RM_Noohm</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.25</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Noohm/RM_Noohm</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.35</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Noohm/RM_Noohm</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>
         </bodyGraphicData>
       </li>
@@ -183,21 +183,21 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Shulla/RM_Shulla</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.25</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Shulla/RM_Shulla</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.35</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Shulla/RM_Shulla</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>
         </bodyGraphicData>
       </li>

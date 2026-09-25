@@ -23,6 +23,7 @@
     <description>A near-transparent sliver hauled off the Propane Lake's top layer, aurora colours still faintly refracting through it before it stiffens in the cold.</description>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaE</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.09</Nutrition>
@@ -44,6 +45,7 @@
     <description>A soot-dark, flattened crawler dredged off the solid-propane floor, still dusted pale with tholin ash. Uncommon.</description>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaF</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.13</Nutrition>

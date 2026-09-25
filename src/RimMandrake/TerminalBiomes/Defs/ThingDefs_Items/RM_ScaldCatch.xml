@@ -24,7 +24,7 @@
            JawaClaimRumour, which only exists under RimUtinni/UtinniPatches
            and pinked a standalone install). Real art queued to the artpipe
            as scald_shullacatch_v1 (priority 45). -->
-      <texPath>Things/Item/Resource/RM_ScaldCatchGeneric/RM_ScaldCatchGeneric</texPath>
+      <texPath>Things/Item/Resource/RM_ShullaCatch</texPath>
     </graphicData>
     <statBases>
       <Nutrition>0.1</Nutrition>

@@ -36,10 +36,9 @@
   same posture RUT_ScaldMargin.xml's own header already established for its
   terrain: "does not place itself on the map").
 
-  Texture: reuses vanilla's own path is NOT appropriate (a distinct def
-  should read as distinct on the shore) — "Things/Building/Natural/RUT_ScaldVent"
-  is OWED to the art pipeline; not shipped this pass. Missing-texture load
-  logs an error and shows a placeholder, it does not fail to load.
+  Texture: its own art at Things/Building/Natural/RUT_ScaldVent (artpipe
+  job scald_ventbuilding_v1), not a vanilla path — a distinct def should read
+  as distinct on the shore.
   ============================================================================
 -->
 <Defs>
