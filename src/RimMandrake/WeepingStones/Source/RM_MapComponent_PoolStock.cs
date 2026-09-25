@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.WeepingStones
@@ -27,11 +28,19 @@ namespace RimMandrake.WeepingStones
 	/// per-pulse chance of losing one resident (never a vhorrin — it IS the crash
 	/// state, not a victim of it).
 	///
-	/// Still owed (see the item's ledger note): HARVEST/OVERDRAW/CULL/RECAPTURE
-	/// jobs, the vhorrin EMERGENCE trigger (a live vhorrin is correctly detected;
-	/// nothing yet spawns one from a crashed pool), ring-density overlay ART (the
-	/// gauge is exposed via the zone's inspect string instead), and the vizhik
-	/// escape event.
+	/// Wave 4 adds: the vhorrin EMERGENCE trigger, from either of the spec's two
+	/// named paths (§2d/§3 OVERDRAW) — a crowded, unculled pen (population at or
+	/// above the pen's own cell count) or a crashed one (unfed past the decay
+	/// threshold) each carry a small per-pulse chance of converting one resident
+	/// into a live RM_Vhorrin; and the vizhik ESCAPE event (§2c/§3 RECAPTURE) — a
+	/// pen holding vizhik has a per-pulse chance of one pouring itself out onto
+	/// nearby open ground, where <see cref="RM_WorkGiver_NetPoolBreeder"/> (NET)
+	/// already knows how to catch it, same as any other wild stockable pawn. Both
+	/// HARVEST and CULL ship as their own jobs this wave
+	/// (<see cref="RM_JobDriver_HarvestPoolPen"/>/<see cref="RM_JobDriver_CullVhorrin"/>).
+	/// Ring-density overlay ART is still owed — the gauge is exposed via the
+	/// zone's inspect string in the meantime (a placeholder-art queue item, not a
+	/// mechanism gap).
 	/// </summary>
 	public class RM_MapComponent_PoolStock : MapComponent
 	{
@@ -233,6 +242,25 @@ namespace RimMandrake.WeepingStones
 
 		private const float UnfedDeathChancePerPulse = 0.03f;
 
+		/// <summary>Wave 4, vhorrin EMERGENCE (spec §2d/§3 OVERDRAW): "Any
+		/// stocked pool left crowded and unculled grows one" — population at
+		/// or above the pen's own cell count.</summary>
+		private const float VhorrinEmergenceChanceCrowded = 0.02f;
+
+		/// <summary>Wave 4, the OVERDRAW's other named path: "a stressed pool
+		/// turns nasty before it turns silent" — a pool already crashed
+		/// (unfed past <see cref="UnfedDecayDays"/>) carries a smaller but
+		/// real emergence chance too.</summary>
+		private const float VhorrinEmergenceChanceCrashed = 0.01f;
+
+		/// <summary>Wave 4, vizhik ESCAPE (spec §2c/§3 RECAPTURE): "At
+		/// wind-hour... a vizhik pours itself out of the pen." One pulse is
+		/// roughly a wind-hour's worth of game time at this component's pulse
+		/// interval, so this fires per pulse rather than per day.</summary>
+		private const float VizhikEscapeChance = 0.05f;
+
+		private const int VizhikEscapeSearchRadius = 8;
+
 		/// <summary>One census pass over every spawned pawn, bucketed by which
 		/// pen (if any) it stands in — cheaper than one full-map scan per body,
 		/// and the same "one owner, one pass" reasoning RM_LiquidStock.Pulse
@@ -252,6 +280,7 @@ namespace RimMandrake.WeepingStones
 			Dictionary<int, int> populationByZone = new Dictionary<int, int>();
 			Dictionary<int, int> vhorrinByZone = new Dictionary<int, int>();
 			Dictionary<int, List<Pawn>> starveCandidatesByZone = new Dictionary<int, List<Pawn>>();
+			Dictionary<int, List<Pawn>> vizhikByZone = new Dictionary<int, List<Pawn>>();
 			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
 			for (int i = 0; i < pawns.Count; i++)
 			{
@@ -279,6 +308,15 @@ namespace RimMandrake.WeepingStones
 					starveCandidatesByZone[zone.ID] = candidates;
 				}
 				candidates.Add(pawn);
+				if (pawn.def.defName == "RM_Vizhik")
+				{
+					if (!vizhikByZone.TryGetValue(zone.ID, out List<Pawn> vizhikList))
+					{
+						vizhikList = new List<Pawn>();
+						vizhikByZone[zone.ID] = vizhikList;
+					}
+					vizhikList.Add(pawn);
+				}
 			}
 
 			int currentTick = Find.TickManager.TicksGame;
@@ -295,9 +333,10 @@ namespace RimMandrake.WeepingStones
 				body.population = population;
 				body.state = ClassifyState(population, vhorrinCount, zone.CellCount, unfedDays);
 
+				starveCandidatesByZone.TryGetValue(body.zoneId, out List<Pawn> candidates);
+
 				if (unfedDays >= UnfedDecayDays
-					&& starveCandidatesByZone.TryGetValue(body.zoneId, out List<Pawn> candidates)
-					&& candidates.Count > 0
+					&& candidates != null && candidates.Count > 0
 					&& Rand.Chance(UnfedDeathChancePerPulse))
 				{
 					Pawn victim = candidates[Rand.Range(0, candidates.Count)];
@@ -306,6 +345,83 @@ namespace RimMandrake.WeepingStones
 						victim.Kill(null);
 					}
 				}
+
+				if (vhorrinCount <= 0 && candidates != null && candidates.Count > 0)
+				{
+					bool crowded = zone.CellCount > 0 && population >= zone.CellCount;
+					bool crashed = unfedDays >= UnfedDecayDays;
+					float emergenceChance = crowded ? VhorrinEmergenceChanceCrowded
+						: crashed ? VhorrinEmergenceChanceCrashed
+						: 0f;
+					if (emergenceChance > 0f && Rand.Chance(emergenceChance))
+					{
+						TrySpawnVhorrin(candidates);
+					}
+				}
+
+				if (vizhikByZone.TryGetValue(body.zoneId, out List<Pawn> vizhikCandidates)
+					&& vizhikCandidates.Count > 0
+					&& Rand.Chance(VizhikEscapeChance))
+				{
+					TryEscapeVizhik(vizhikCandidates[Rand.Range(0, vizhikCandidates.Count)]);
+				}
+			}
+		}
+
+		/// <summary>Converts one resident of a crowded or crashed pen into the
+		/// mismanagement state made flesh (spec §2d) — the murrin rings thin,
+		/// one wide slow ring starts doing all the surfacing. Never picks an
+		/// existing vhorrin (candidates never contains one; see the census
+		/// pass in <see cref="Pulse"/>).</summary>
+		private static void TrySpawnVhorrin(List<Pawn> candidates)
+		{
+			Pawn victim = candidates[Rand.Range(0, candidates.Count)];
+			if (!victim.Spawned)
+			{
+				return;
+			}
+			PawnKindDef vhorrinKind = DefDatabase<PawnKindDef>.GetNamedSilentFail("RM_Vhorrin");
+			if (vhorrinKind == null)
+			{
+				return;
+			}
+			IntVec3 spot = victim.Position;
+			Map victimMap = victim.Map;
+			victim.Destroy(DestroyMode.Vanish);
+			PawnGenerationRequest request = new PawnGenerationRequest(vhorrinKind, null, PawnGenerationContext.NonPlayer,
+				forceGenerateNewPawn: true, allowDowned: true, canGeneratePawnRelations: false);
+			Pawn vhorrin = PawnGenerator.GeneratePawn(request);
+			GenSpawn.Spawn(vhorrin, spot, victimMap);
+			if (Prefs.DevMode)
+			{
+				Log.Message("[RimMandrake.WeepingStones] a vhorrin has emerged at " + spot + " — the pool is turning nasty.");
+			}
+		}
+
+		/// <summary>Pours one vizhik out of its pen onto nearby open ground
+		/// (spec §2c: "crosses open rock on its gill-comb"). Despawn+respawn
+		/// is the vanilla-safe teleport idiom (no direct Position setter moves
+		/// a spawned pawn between map cells correctly). The destination is
+		/// deliberately allowed to be another RM_Zone_PoolPen — the spec's own
+		/// flavor text names "the next pool" as a legitimate destination.</summary>
+		private void TryEscapeVizhik(Pawn vizhik)
+		{
+			if (vizhik == null || !vizhik.Spawned)
+			{
+				return;
+			}
+			IntVec3 origin = vizhik.Position;
+			if (!CellFinder.TryFindRandomCellNear(origin, map, VizhikEscapeSearchRadius,
+				c => c.Standable(map) && !(map.zoneManager.ZoneAt(c) is RM_Zone_PoolPen) && c.Walkable(map),
+				out IntVec3 dest))
+			{
+				return;
+			}
+			vizhik.DeSpawn(DestroyMode.Vanish);
+			GenSpawn.Spawn(vizhik, dest, map);
+			if (Prefs.DevMode)
+			{
+				Log.Message("[RimMandrake.WeepingStones] a vizhik escaped its pen at " + origin + ", now traveling near " + dest + ".");
 			}
 		}
 

@@ -10,10 +10,11 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    Wave 1 shipped Mod Settings only. Wave 2 adds the pen-zone designator and
-    RM_MapComponent_PoolStock's per-pool bookkeeping (STOCKED_POOL_BUILD_1) —
-    jobs (STOCK/FEED/HARVEST/CULL/RECAPTURE), handler injuries and the vizhik
-    escape event are still owed and land in a following wave.
+    Wave 1 shipped Mod Settings only. Wave 2 added the pen-zone designator and
+    RM_MapComponent_PoolStock's per-pool bookkeeping. Wave 3 added the STOCK
+    and FEED jobs. Wave 4 adds HARVEST, CULL, the vhorrin emergence trigger
+    and the vizhik escape event (RECAPTURE reuses NET, no new job) — the
+    husbandry loop is now complete end to end (STOCKED_POOL_BUILD_1).
   -->
 
   <PropertyGroup>
@@ -54,6 +55,10 @@
     <Compile Include="RM_JobDriver_StockPoolPen.cs" />
     <Compile Include="RM_WorkGiver_FeedPoolPen.cs" />
     <Compile Include="RM_JobDriver_FeedPoolPen.cs" />
+    <Compile Include="RM_WorkGiver_HarvestPoolPen.cs" />
+    <Compile Include="RM_JobDriver_HarvestPoolPen.cs" />
+    <Compile Include="RM_WorkGiver_CullVhorrin.cs" />
+    <Compile Include="RM_JobDriver_CullVhorrin.cs" />
   </ItemGroup>
 
   <ItemGroup>

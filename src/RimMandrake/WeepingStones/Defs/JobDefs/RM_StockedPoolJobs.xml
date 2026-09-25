@@ -27,4 +27,26 @@
     <reportString>feeding a stocked pool.</reportString>
   </JobDef>
 
+  <!-- Wave 4: HARVEST (sustainable per-species catch, spec §3) and CULL
+       (the two-handler vhorrin set-piece, simplified to one handler for v1
+       — see RM_JobDriver_CullVhorrin's own doc comment). RECAPTURE has no
+       JobDef of its own: an escaped vizhik (RM_MapComponent_PoolStock.Pulse)
+       lands outside its pen, which is exactly what RM_NetPoolBreeder already
+       nets — the spec's own catch-method table calls this "picked off wet
+       stone, gloved", the same handling action as netting any other wild
+       stockable pawn. -->
+
+  <JobDef>
+    <defName>RM_HarvestPoolPen</defName>
+    <driverClass>RimMandrake.WeepingStones.RM_JobDriver_HarvestPoolPen</driverClass>
+    <reportString>harvesting TargetA from a stocked pool.</reportString>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_CullVhorrin</defName>
+    <driverClass>RimMandrake.WeepingStones.RM_JobDriver_CullVhorrin</driverClass>
+    <reportString>culling the vhorrin in TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
 </Defs>
