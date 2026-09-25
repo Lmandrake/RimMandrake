@@ -74,6 +74,8 @@ namespace RimMandrake.Graffiti
                 ModExtension_Graffiti ext = d.GetModExtension<ModExtension_Graffiti>();
                 if (ext == null || !filter(ext)) continue;
                 if (!MemeGateAllows(ext, placer)) continue;
+                if (!SkillGateAllows(ext, placer)) continue;
+                if (!HostilityGateAllows(ext, placer)) continue;
                 if (ext.poolWeight <= 0f) continue;
                 defs.Add(d);
                 weights.Add(ext.poolWeight);
@@ -104,6 +106,40 @@ namespace RimMandrake.Graffiti
                 if (ideo.HasMeme(meme)) return true;
             }
             return false;
+        }
+
+        // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 wave 2, design §1.2's
+        // "minArtistic int - designator/joy gating by skill": 0 (the field's
+        // default) is always allowed, so every mark shipped before this
+        // wave is unaffected. A pawn with no skills tracker (SkillsHandler)
+        // is treated as skill 0, never as an unconditional pass - a raider
+        // gang with no Artistic-trained member simply never offers a
+        // ThrowUp, exactly per the design's "a Scrawl from a wretch, a
+        // ThrowUp from an artist."
+        private static bool SkillGateAllows(ModExtension_Graffiti ext, Pawn placer)
+        {
+            if (ext.minArtistic <= 0) return true;
+            SkillRecord skill = placer?.skills?.GetSkill(SkillDefOf.Artistic);
+            if (skill == null) return false;
+            return skill.Level >= ext.minArtistic;
+        }
+
+        // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 wave 2, wiring design §2.2's
+        // "requiresHostile to Empire" for RM_Graffiti_Stencil_Crown. See
+        // ModExtension_Graffiti.requiresHostileToFactionDef's own comment
+        // for the open-on-either-lookup-miss rule - a Royalty-less mod list
+        // or a game with no Empire faction never has this gate close.
+        private static bool HostilityGateAllows(ModExtension_Graffiti ext, Pawn placer)
+        {
+            if (string.IsNullOrEmpty(ext.requiresHostileToFactionDef)) return true;
+            FactionDef targetDef = DefDatabase<FactionDef>.GetNamedSilentFail(ext.requiresHostileToFactionDef);
+            if (targetDef == null) return true;
+            Faction targetFaction = Find.FactionManager?.FirstFactionOfDef(targetDef);
+            if (targetFaction == null) return true;
+            Faction placerFaction = placer?.Faction;
+            if (placerFaction == null) return false;
+            if (placerFaction == targetFaction) return false;
+            return placerFaction.HostileTo(targetFaction);
         }
     }
 }

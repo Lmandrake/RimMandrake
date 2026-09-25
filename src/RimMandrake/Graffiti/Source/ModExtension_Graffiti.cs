@@ -53,6 +53,34 @@ namespace RimMandrake.Graffiti
         // its meme.
         public List<MemeDef> requiresAnyMeme;
 
+        // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 wave 2, design §1.2 ("minArtistic
+        // int - designator/joy gating by skill") and §3
+        // ("RM_Mark_ThrowUp_A/B ... Joy (skill >= 6)"): a mark's minimum
+        // Artistic skill for the placing pawn. 0 (default) = ungated - every
+        // mark shipped before this wave keeps behaving exactly as before.
+        // Read by GraffitiPool.SkillGateAllows against SkillDefOf.Artistic;
+        // a pawn with no skills tracker (most raiders/animals do carry one,
+        // but the check is null-safe) is treated as skill 0.
+        public int minArtistic;
+
+        // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 wave 2, design §2.2's own table
+        // entry for RM_Graffiti_Stencil_Crown ("requiresAnyMeme none;
+        // requiresHostile to Empire") - the half of that gate wave 1 shipped
+        // ungated. A FactionDef defName (string, not a FactionDef reference,
+        // for the same reason godSatiationHook below is a string: this mark
+        // must not hard cross-reference a DLC's FactionDef XML - a mod list
+        // without Royalty simply never resolves the def and the gate is a
+        // no-op). Null/empty = ungated (every mark before this field, and
+        // this mark itself on a Royalty-less mod list). Read by
+        // GraffitiPool.HostilityGateAllows: if the named FactionDef exists
+        // AND a Faction instance of it exists in the current game, the
+        // placing pawn's own faction must be HostileTo it, or the mark is
+        // not offered; if either lookup comes back empty (no Royalty, or
+        // Royalty active but no Empire spawned this game), the gate falls
+        // open rather than closed - the mark stays available exactly as
+        // wave 1 shipped it, never silently disappears from the pool.
+        public string requiresHostileToFactionDef;
+
         // Tier A (design §3.1): this mark's Graphic is built at runtime from
         // the placing pawn's Ideo.Icon tinted Ideo.Color, drawn over the
         // frame texture named below. Filth_Mark.SpawnSetup reads both.
