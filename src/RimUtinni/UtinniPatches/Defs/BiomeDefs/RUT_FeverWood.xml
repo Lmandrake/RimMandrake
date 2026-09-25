@@ -222,6 +222,28 @@
           </li>
         </additionalPasses>
       </li>
+      <!-- F5 point 1: ground building-refusal. FEVER_WOOD_MECHANICS_1's own
+           continuation pass (2026-09-13) flagged and declined to guess
+           through a real gap: hard ban 4 ("no heavy structures on the
+           ground") was not actually enforced anywhere, since Soil/SoilRich
+           (terrainsByFertility above) both carry Heavy. Fixed via a GenStep
+           sweep (RUT_FeverWood_GroundRefusalGenStep.xml, order 230 — after
+           F1/F6's pool/causeway/bough-soil painting, order 226/228) rather
+           than editing terrainsByFertility itself, per
+           FEVERWOOD_BOUGH_SOIL_TERRAIN_1's own same-day "Watch out": that
+           table is off-limits pending the terminal biome-paint pass. Reuses
+           vanilla MarshyTerrain (no Medium/Heavy affordance, MEASURED
+           against the shipped Core XML) rather than a bespoke terrain — no
+           MayRequire needed, no invented fertility/texture value. See
+           RM_GroundRefusalBiomeExtension.cs's own header for the full
+           account. -->
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GroundRefusalBiomeExtension">
+        <refusalTerrain>MarshyTerrain</refusalTerrain>
+        <convertFromTerrains>
+          <li>Soil</li>
+          <li>SoilRich</li>
+        </convertFromTerrains>
+      </li>
     </modExtensions>
     <baseWeatherCommonalities>
       <Clear>30</Clear>

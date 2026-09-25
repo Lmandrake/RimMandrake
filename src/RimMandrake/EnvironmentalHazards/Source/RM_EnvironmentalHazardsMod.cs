@@ -277,6 +277,14 @@ namespace RimMandrake.EnvironmentalHazards
     //      still built (cheap, terrain-only) but every retaliation check
     //      bails on this flag first. A retribution already under way on an
     //      affected animal is untouched — this only gates NEW triggers.
+    //  49. groundRefusalEnabled — RM_GenStep_GroundRefusal
+    //      (FEVER_WOOD_MECHANICS_1 F5). WORLDGEN-AFFECTING: off means a
+    //      biome built to refuse Heavy structures at ground level (the
+    //      Fever Wood's own hard ban 4) stops converting its remaining
+    //      buildable ground terrain to the refusal terrain on any map
+    //      generated while it is off — that ground stays ordinary
+    //      Heavy-capable soil instead. Maps already generated keep
+    //      whatever terrain they already have.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -329,6 +337,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool warblingGlowEnabled = true;
         public static float warblingGlowSpeedMultiplier = 1f;
         public static bool waterTruceRetributionEnabled = true;
+        public static bool groundRefusalEnabled = true;
 
         public override void ExposeData()
         {
@@ -382,19 +391,21 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref warblingGlowEnabled, "warblingGlowEnabled", true);
             Scribe_Values.Look(ref warblingGlowSpeedMultiplier, "warblingGlowSpeedMultiplier", 1f);
             Scribe_Values.Look(ref waterTruceRetributionEnabled, "waterTruceRetributionEnabled", true);
+            Scribe_Values.Look(ref groundRefusalEnabled, "groundRefusalEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
 
         public void DoWindowContents(Rect inRect)
         {
-            // 41 checkboxes (most with a two-line tooltip) plus eight labeled
+            // 42 checkboxes (most with a two-line tooltip) plus eight labeled
             // sliders — this is a FIXED view height, so content taller than it
             // is clipped rather than scrolled to. Same pattern as
             // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
             // the same edit as whoever adds the next toggle, or their block is
-            // invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4400f);
+            // invisible. Bumped 4400->4480 for setting #49
+            // (groundRefusalEnabled, FEVER_WOOD_MECHANICS_1 F5).
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4480f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -535,6 +546,11 @@ namespace RimMandrake.EnvironmentalHazards
                 "A biome built with a sacred water truce stops turning wildlife against whoever "
               + "lands the first guilty hit near the water. Defending yourself never counts as "
               + "guilty either way — this only gates the retaliation, never who started it.");
+            list.CheckboxLabeled("Ground building-refusal (WORLDGEN-AFFECTING)", ref groundRefusalEnabled,
+                "A biome built to refuse heavy structures at ground level stops converting its "
+              + "remaining buildable ground to the refusal terrain on any map generated while this "
+              + "is off — that ground stays ordinary Heavy-capable soil instead. Maps already "
+              + "generated keep whatever terrain they already have.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");

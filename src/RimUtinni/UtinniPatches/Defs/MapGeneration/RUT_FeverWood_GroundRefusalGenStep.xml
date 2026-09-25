@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FeverWood_GroundRefusalGenStep.xml   UtinniPatches - FEVER_WOOD_MECHANICS_1 F5 build pass
+
+  Declares the GenStepDef for RM_GenStep_GroundRefusal (this pass's own new
+  class — src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs).
+  Registration is the separate
+  Patches/RUT_FeverWood_GroundRefusalGenStep_Register.xml, same two-file
+  shape as RUT_FeverWood_ScatterPoolsGenStep.xml /
+  RUT_FeverWood_ScatterPoolsGenStep_Register.xml.
+
+  order 230: after RUT_GenStep_ScatterPools (226) and RUT_GenStep_RootCauseways
+  (228, which as of FEVERWOOD_BOUGH_SOIL_TERRAIN_1 also runs the bough-soil
+  pass at that same order) — every lane/pool/crown-soil cell those steps
+  paint is no longer Soil/SoilRich by the time this step runs, so this
+  step's "convert whatever is still in convertFromTerrains" sweep leaves
+  every earlier-painted cell alone. See RM_GenStep_GroundRefusal.cs's own
+  header for the full ordering rationale.
+
+  The class is a no-op on any biome without RM_GroundRefusalBiomeExtension
+  (only RUT_FeverWood carries it this pass), so registering globally on
+  Base_Player is safe for every other biome too — same posture as every
+  other biome-gated GenStep in this assembly.
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_GenStep_GroundRefusal</defName>
+    <order>230</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_GroundRefusal" />
+  </GenStepDef>
+
+</Defs>
