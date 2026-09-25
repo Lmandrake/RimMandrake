@@ -256,3 +256,4 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FireHawk flight live verify","ts":"2026-09-25T03:47:15Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-25T04:03:48Z"}
 {"seat":"FOUNDRY","event":"block","id":"SUMP_GASLIGHT_1","reason":"Live proof needs bridge; bridge held by another live FOUNDRY window (FireHawk flight verify, alive <45min) at time of resume. Pieces 1-4 offline-complete, DLL deployed 2026-09-25T01:56Z per prior note; only live-verify steps (glow warble, statue quality scaling, research gates, ScrubTarred->Sumpgas, bench recipe) remain, all requiring bridge access.","ts":"2026-09-25T04:09:48Z"}
+{"seat":"FOUNDRY","event":"close","id":"FEVER_WOOD_MECHANICS_1","sha":"2deb790184a27a3b5412d66c660caea075b1eccc","ts":"2026-09-25T04:15:06Z"}

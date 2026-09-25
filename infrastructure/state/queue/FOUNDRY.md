@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-25T04:09:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-25T04:15:06Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -269,15 +269,6 @@ target:   v1
 kind:     task
 summary:  MIASMAMECHANICS1 — the Miasma C kit
 prose:    infrastructure/state/items/MIASMA_MECHANICS_1.md
-
-## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  The authoritative brief is the FROZEN lore sheet
-prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
 
 ## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
 state:    doing
