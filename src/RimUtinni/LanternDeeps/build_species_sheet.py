@@ -100,25 +100,36 @@ FLORA = [
 ]
 
 # ---------------------------------------------------------------------------
-# FAUNA — RUT_LanternDeeps.wildAnimals, MEASURED from the same biome def. All
-# 16 are RSW_ ports living in one file:
+# FAUNA — RUT_LanternDeeps.wildAnimals, MEASURED from the same biome def
+# 2026-09-24 (re-measured; was 16 rows when this sheet last ran 2026-09-18).
+# DEEPS_FAUNA_VERDICTS_1 (closed be9f3b513, 2026-09-19) cut 8 of the original
+# 16 kinds from <wildAnimals> (AaroxisDendoria, AaroxisDendoriaLarvae,
+# BloodropLarvae, BovineBeetleLarvae, FacetMoth, MossBeetle, PodWorm,
+# RoyalRhino) and renamed 4 survivors (label+description only, defName
+# unchanged, edited in RSW_BiomesTeamPort_Races.xml): RSW_BloodropMoth ->
+# "drinker", RSW_BovineBeetle -> "grabber" (bodySize 2.45 -> 4), RSW_GlowSlug
+# -> "glowbulb", RSW_FacetMothLarvae -> "soulchime". 8 restyle art jobs were
+# FILED for the survivors but not yet wired — texPaths below still point at
+# the original donor art (confirmed still on disk 2026-09-24), so this is
+# accurate for "art the def renders with RIGHT NOW".
+# All 8 are RSW_ ports living in one file:
 # src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 # No LanternDeeps-owned race ThingDef and no other patch names this biome
-# anywhere else in src/ (grepped 2026-09-18) — this IS the complete cast.
+# anywhere else in src/ (re-grepped 2026-09-24) — this IS the complete cast.
 # Each: (defName, label, commonality, bodySize, description, texPath, art PNG path)
 # ---------------------------------------------------------------------------
 SWB_ANIM = SWB_TEX / "swanimals/BiomesTeam/BMT_Caverns/Things/Animal"
 FAUNA = [
-    ("RSW_BloodropMoth", "bloodrop moth", 0.25, 0.77,
-     "It flies near silently through cave systems in search of blood it can drain from prey using its razor sharp proboscis. Much like bats, they live in large groups.",
+    ("RSW_BloodropMoth", "drinker", 0.25, 0.77,
+     "A pale, near-silent flier that drains blood into swollen storage sacs beneath its carapace using a razor-sharp proboscis. Strangely, a meal from a warm-blooded surface creature poisons it — it dies rapidly afterward.",
      "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
      SWB_ANIM / "BloodropMoth/BloodropMoth_south.png"),
-    ("RSW_GlowSlug", "glowslug", 0.2, 0.4,
-     "This bioluminescent slug is easily spotted in any dark environment, both by its own species and by predators.",
+    ("RSW_GlowSlug", "glowbulb", 0.2, 0.4,
+     "A pale-blue slug of the deep voids, lit from within by the slow burn of its own hydrocarbon sap - the yellow fluid under its skin is a light oil, not blood, and it will not freeze however far the cave runs down. Easily spotted in any dark environment by that steady glow, and by whatever else is hunting in the dark.",
      "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowSlug/GlowSlug",
      SWB_ANIM / "GlowSlug/GlowSlug_south.png"),
-    ("RSW_BovineBeetle", "bovine beetle", 0.1, 2.45,
-     "A large beetle originally from Caveworlds, this bug is often kept in farms for its production of a milk-like substance and flakes of chitin.",
+    ("RSW_BovineBeetle", "grabber", 0.1, 4.0,
+     "A small room-sized blob of pale yellow substance under a glass-like carapace, moving on many small legs. Its single great pincer-ending arm can hold a victim fast and slowly crush them.",
      "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
      SWB_ANIM / "BovineBeetle/BovineBeetle_south.png"),
     ("RSW_Gembug", "gembug", 0.1, 0.335,
@@ -133,46 +144,14 @@ FAUNA = [
      "One of the most dangerous inhabitants of the crystal caves, the shatterjaw hunt with their large mandibles, crushing and cutting prey to pieces before feeding.",
      "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/ShatterjawBeetle/ShatterJaw",
      SWB_ANIM / "ShatterjawBeetle/ShatterJaw_south.png"),
-    ("RSW_MossBeetle", "moss beetle", 0.1, 0.45,
-     "A large beetle, commonly found in dark, damp places. It feeds off low underbrush in fungal forests.",
-     "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle",
-     SWB_ANIM / "MossBeetle/MossBeetle_south.png"),
     ("RSW_MossBeetleLarvae", "moss grub", 0.1, 0.7,
-     "A large beetle commonly found in dark, damp places, it feeds off low underbrush in caverns. Larval form of the moss beetle.",
+     "A large beetle commonly found in dark, damp places, it feeds off low underbrush in caverns. While not the best source of meat, it works when little else is available.",
      "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
      SWB_ANIM / "MossBeetle/MossGrub_south.png"),
-    ("RSW_AaroxisDendoria", "aaroxis dendoria", 0.05, 1.0,
-     "Uniquely engineered for life in an underground environment, this moth has been altered to produce silk even in adulthood, at the cost of remaining wingless.",
-     "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria",
-     SWB_ANIM / "AaroxisDendoria/AaroxisDendoria_south.png"),
-    ("RSW_AaroxisDendoriaLarvae", "cinnabar caterpillar", 0.05, 0.8,
-     "A unique species of moth larva with a spiraling body pattern rather than the normal segmented. The crimson-colored silk it produces is luxuriously soft.",
-     "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoriaLarvae",
-     SWB_ANIM / "AaroxisDendoria/AaroxisDendoriaLarvae_south.png"),
-    ("RSW_BovineBeetleLarvae", "bovine grub", 0.05, 0.9,
-     "A large grub originally from Caveworlds, this bug is often kept in farms for the milk-like substance it produces as an adult. Larval form of the bovine beetle.",
-     "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetleLarva",
-     SWB_ANIM / "BovineBeetle/BovineBeetleLarva_south.png"),
-    ("RSW_FacetMothLarvae", "crystalline caterpillar", 0.05, 0.7,
-     "The larval form of the facet moth. To deter predators, its body appears spiky and hard through a form of natural mimicry.",
+    ("RSW_FacetMothLarvae", "soulchime", 0.05, 0.7,
+     "A stubby larva-like creature that builds armor from crystal shards it gathers off the ground. It emits a powerful psychic stun on anyone who approaches too closely and alarms it, but a tamed one has a soothing effect on those nearby.",
      "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
      SWB_ANIM / "FacetMoth/Crystalpillar_south.png"),
-    ("RSW_FacetMoth", "facet moth", 0.05, 0.77,
-     "A large moth with wings that glimmer like the facets of crystal. It flits about in dark caverns and is often captured and kept as a pet for its beauty.",
-     "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/FacetMoth",
-     SWB_ANIM / "FacetMoth/FacetMoth_south.png"),
-    ("RSW_BloodropLarvae", "bloodrop larvae", 0.05, 0.7,
-     "The larval form of the bloodrop moth. It gains nutrients for growth by feeding on the blood of any large creature.",
-     "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMothLarvae",
-     SWB_ANIM / "BloodropMoth/BloodropMothLarvae_south.png"),
-    ("RSW_RoyalRhino", "royal rhino beetle", 0.025, 3.0,
-     "A gigantic type of rare beetle that is revered by certain underground cultures for its rarity and power. While normally gentle by nature, it is extremely dangerous when enraged.",
-     "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/RoyalRhinoBeetle/RoyalRhino",
-     SWB_ANIM / "RoyalRhinoBeetle/RoyalRhino_south.png"),
-    ("RSW_PodWorm", "pod worm", 0.0001, 4.0,
-     "Though large and intimidating, the appearance of this strange insectoid-like creature does not match with its otherwise passive nature.",
-     "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm",
-     SWB_ANIM / "GlowWorm/GlowWorm_south.png"),
 ]
 
 
@@ -344,7 +323,7 @@ def main():
         "invented": [
             "Two groups only: 'Deeps flora' (12 rows = every entry in RUT_LanternDeeps.wildPlants, "
             "which is also every non-abstract plant ThingDef under LanternDeeps/Defs/) and "
-            "'Deeps fauna' (16 rows = every entry in RUT_LanternDeeps.wildAnimals; no "
+            "'Deeps fauna' (8 rows = every entry in RUT_LanternDeeps.wildAnimals; no "
             "LanternDeeps-owned race ThingDef exists, and no patch elsewhere in src/ names "
             "this biome, so the wildAnimals list IS the complete cast).",
             "The four lanternstone rock formations (Small/Medium/Large/Huge) are EXCLUDED from "
