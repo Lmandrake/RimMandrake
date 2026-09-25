@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  COMMISSION_LEDGER_CLEANUP_1 (poison_forest sheet slug
+  `toxic-prized-meat-def-property-on-the-4-flagged-keepers-neeb`).
+
+  Points each of the 4 flagged keepers' `<race>` at the hand-authored meat
+  ThingDefs in RUT_PoisonForestPrizedMeats.xml (same mod, Defs/ThingDefs_Items).
+  Required because `ThingDefGenerator_Meat` only skips auto-generating
+  "Meat_<defName>" when `race.specificMeatDef` is already non-null at
+  load time — there is no XML node to Add/Replace on an engine-generated
+  def, so this is the only route (see that file's header for the full
+  mechanism note).
+
+  Three of the four keepers are foreign donor defs, so each is wrapped in
+  PatchOperationFindMod on the owning mod, same as this biome's own
+  wildAnimals wiring (RUT_PoisonForest.xml) and the same mod-name strings
+  already proven live in this repo's own MegafaunaYield.xml ("Alpha
+  Animals", "Horrors (Continued)", "Star Wars Animal Collection
+  (Continued)"). RSW_Screecher is ours (mandrake.rsw.swbestiary, always
+  loaded alongside this mod) so it patches unconditionally, wrapped only in
+  the usual "test before Add" Conditional.
+
+  Checked before writing: none of the four already sets `<specificMeatDef>`
+  (grepped each donor's raw XML / our own port) — Neebray/Visceral/
+  AA_Helixien all carry a direct `<race>` node on their own ThingDef (not
+  inherited only), confirmed against the live donor mod folders, so
+  PatchOperationAdd under that node resolves.
+-->
+<Patch>
+
+  <!-- Neebray (mlie.starwarsanimalcollection) -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars Animal Collection (Continued)</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="Neebray"]/race/specificMeatDef</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="Neebray"]/race</xpath>
+        <value>
+          <specificMeatDef>RUT_NeebrayMeat</specificMeatDef>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <!-- RSW_Screecher (ours, mandrake.rsw.swbestiary) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RSW_Screecher"]/race/specificMeatDef</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RSW_Screecher"]/race</xpath>
+      <value>
+        <specificMeatDef>RUT_ScreecherMeat</specificMeatDef>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <!-- Visceral (mlie.horrors) -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Horrors (Continued)</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="Visceral"]/race/specificMeatDef</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="Visceral"]/race</xpath>
+        <value>
+          <specificMeatDef>RUT_VisceralMeat</specificMeatDef>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <!-- AA_Helixien (sarg.alphaanimals) -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Animals</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="AA_Helixien"]/race/specificMeatDef</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="AA_Helixien"]/race</xpath>
+        <value>
+          <specificMeatDef>RUT_HelixienMeat</specificMeatDef>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+</Patch>

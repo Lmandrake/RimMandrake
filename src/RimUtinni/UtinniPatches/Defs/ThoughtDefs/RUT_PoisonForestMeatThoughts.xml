@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  COMMISSION_LEDGER_CLEANUP_1 (poison_forest sheet slug
+  `toxic-prized-meat-def-property-on-the-4-flagged-keepers-neeb`), companion
+  to RUT_PoisonForestPrizedMeats.xml (same folder tree).
+
+  One shared thought pair, not four bespoke ones: the slug's own title reads
+  "def PROPERTY on the 4 flagged keepers" — a single mechanical property
+  applied four times, matching how the meats themselves differ only in
+  flavor text/value, not in mechanism. Same donor precedent as the toxic
+  half (VAEWaste_AteToxicMeatDirect/AsIngredient in
+  Absorbed_VAEWasteMegatardi_Defs.xml, same mod) but net POSITIVE instead of
+  disgusted: poison_forest.md §7 calls this "the things a cook brags about
+  surviving," so eating it is a status marker, not a last resort.
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RUT_AtePoisonForestMeatDirect</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/Food</icon>
+    <durationDays>2</durationDays>
+    <stages>
+      <li>
+        <label>survived the delicacy</label>
+        <description>Poison forest game, cooked right. It's still carrying the metal tailings the biome sweats into everything alive out there, and I ate it anyway, and it was worth it.</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RUT_AtePoisonForestMeatAsIngredient</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/Food</icon>
+    <durationDays>1.5</durationDays>
+    <stages>
+      <li>
+        <label>tasted the poison forest</label>
+        <description>Something off the forest was in that dish. Not the whole story, but I could tell.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

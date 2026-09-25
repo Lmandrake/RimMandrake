@@ -154,6 +154,65 @@
     </plant>
   </ThingDef>
 
+  <!-- ============== Dark crust phototroph — RUT_PoisonForest ==============
+       COMMISSION_LEDGER_CLEANUP_1 (poison_forest sheet slug
+       `dark-crust-phototroph-flora-black-purple-red-films-on-starwa`).
+       poison_forest.md §4: "Photosynthesis is possible here — and it is
+       comprehensively beaten. The phototrophs are a tiny, marginal,
+       crowded-out minority, and crucially they are not green... black, deep
+       purple and blood-red — dark films and crusts on the starward faces of
+       trunks and stones, the ecological equivalent of moss on a north wall.
+       They are never the canopy. They are what grows ON the winners." §6
+       hard-bans green foliage and lush flora outright, which this clears by
+       construction (never green, never a canopy plant).
+
+       No donor exists for a bark/rock-face crust specifically (checked
+       artpipe done/pending/registry.jsonl by subject first, per this item's
+       own "watch out" — clean; `sagecrust_v1`/`rot_sagecrust_v2` are an
+       unrelated the_rot subject, different palette and biome). Modelled as a
+       PlantBase groundcover rather than the admitted AB_* flowering forms
+       already in this biome's roster (crystal flower, blood bouquet, raven
+       nettle, red bugloss) — those are upright growths; this is the doc's
+       own "moss on a north wall" comparison, a flat film, so it gets its own
+       low-lying def rather than reusing one of theirs. Low commonality
+       (0.25) matches §4's own "tiny, marginal, crowded-out minority" —
+       clearly subordinate to the dominant chemosynthetic trees (0.5-0.6) and
+       the established AB_* growths (0.3-0.5) above it.
+
+       Art: one job filed, `rutdarkcrust_v1`
+       (infrastructure/artpipe/pending/rutdarkcrust_v1.json) — mechanic_load
+       reads "none" in the roster's own new_defs entry, so no companion
+       mechanics item. Working name only; folded into
+       `POISONFOREST_SHIPPING_NAMES_1` alongside the vent stalker
+       (RSW_VentStalker.xml). ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_DarkCrust</defName>
+    <label>dark crust</label>
+    <description>A thin skin of phototrophic film, patched black, deep purple and blood-red, spread wherever a trunk or a stone faces the star's scattered light. It is not green because green is the wrong pigment for light this weak — it absorbs across the whole dim spectrum instead, and it is losing anyway. This is what grows on the things that actually won.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Nutrition>0.15</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RUT_DarkCrust</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <selectable>false</selectable>
+    <plant>
+      <growDays>6</growDays>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>3</maxMeshCount>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
   <!-- ============== Scorched stars — RUT_Wasteland, RUT_Scarlands ============== -->
   <ThingDef ParentName="BushBase">
     <defName>RUT_ScorchedStars</defName>

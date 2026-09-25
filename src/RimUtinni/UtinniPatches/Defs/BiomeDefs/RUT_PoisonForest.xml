@@ -29,8 +29,15 @@
     wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
     BiomeFlora_Ashkarr.xml against rosters/poison_forest.json.
 
-    NOT this pass's scope: the vent-gas WeatherDef itself (SS Owed); the toxic-meat
-    Star Wars cuisine chain; capped wellheads/gas-tap scaffold structures (SS8).
+    NOT this pass's scope: the vent-gas WeatherDef itself (SS Owed); capped
+    wellheads/gas-tap scaffold structures (SS8).
+
+    COMMISSION_LEDGER_CLEANUP_1 (2026-09-24/25): the toxic-meat Star Wars cuisine
+    chain landed (RUT_PoisonForestPrizedMeats.xml + Patches/
+    PoisonForest_ToxicPrizedMeat.xml, same mod) — the line above calling it
+    out-of-scope was true when written and is not true any more. Also added this
+    pass: RSW_VentStalker (the ground-sense ambusher) and RUT_DarkCrust (the
+    phototroph flora), both wired into wildAnimals/wildPlants below.
 
   -->
 
@@ -130,6 +137,10 @@
       <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - medium, keep -->
       <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - giant, keep -->
       <AA_Wildpod MayRequire="sarg.alphaanimals">0.05</AA_Wildpod>  <!-- wildpod - giant, keep -->
+      <!-- COMMISSION_LEDGER_CLEANUP_1: eyeless-vibration-sensing-ambusher-the-signature.
+           Body/art reskinned from the already-ported RSW_Kinrath (which stays placed at
+           RUT_Greentide, cast_assignment.csv row 184): new defName, zero new PNGs. -->
+      <RSW_VentStalker MayRequire="mandrake.rsw.swbestiary">0.25</RSW_VentStalker>  <!-- vent stalker - medium-pred, new -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
@@ -147,6 +158,9 @@
            and reached the game only through BiomeFlora_Ashkarr.xml's now-retired replace
            operation; transplanted here by BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
       <AB_GiantToxicFlower>0.08</AB_GiantToxicFlower>  <!-- giant toxic flower -->
+      <!-- COMMISSION_LEDGER_CLEANUP_1: dark-crust-phototroph-flora-black-purple-red-films-on-starwa.
+           Own new PlantDef (RUT_PollutedFlora.xml, same mod): no donor crust/lichen form exists. -->
+      <RUT_DarkCrust>0.25</RUT_DarkCrust>  <!-- dark crust - phototroph film, new -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>
