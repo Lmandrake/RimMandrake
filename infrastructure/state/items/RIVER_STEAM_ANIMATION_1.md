@@ -225,3 +225,93 @@ trying anything else — it may already be fixed as a side effect of unrelated
 work landed the same day. Left `blocked` (same standing reason: needs a live
 bridge window not already committed to other work, or the owner glancing at a
 real Pyrelands river tile in the campaign).
+
+## 2026-09-25 (FOUNDRY) — live-caught, owner-judged, reworked for shape
+
+**The render-void gap from 2026-09-19/07 is CLOSED** — confirmed live this
+session, no longer a mystery. `BRIDGE_MAPGEN_STALE_FINALIZE_1`'s finalize
+sequence does cover it: generated a scratch map on a real natural-river tile
+(world tile 6450, live-sampled, `riverCount: 2`; the campaign's own Pyrelands
+region tiles all read biome `TemperateForest` with `riverCount: 0` — the
+mid-migration state `BIOME_PAINT_ONCE_AT_THE_END_1` already documents, not a
+defect), forced its biome to `RM_Pyrelands` for the test only (reverted after,
+see below), generated the map (`mapDrawer.RegenerateEverythingNow` ran as
+part of `mapFinalize`, 0 failed steps), and it rendered clean — no black
+screen. `VEE_SwampyWaterMovingShallow`/`VEE_StagnantRiverWater` painted as
+real river terrain on the generated map, confirming the whole chain works
+(biome extension → `TerrainDef.IsRiver` cache → steam trigger).
+
+**First live sighting, and it's the wrong shape.** Owner watched it live and
+called it directly: *"The steam puffs are too rare and too opaque. They look
+like little choo-choo train round clouds. They should be oscillating,
+wavering distortions and thin ribons of rising structure"* (photo reference
+supplied: mist rising off a jungle river in several soft columns, not
+discrete blobs). Root cause: the v1 mechanism threw ONE round `Steam` fleck
+from a RANDOM river cell every 90-260 ticks — both the shape (vanilla's round
+`Things/Mote/Smoke` texture, uniform scale) and the cadence/placement (rare,
+anywhere) were wrong for "rising mist," which reads as a few dense, wavering,
+near-continuous columns.
+
+### Reworked, same session, no new art
+`RiverSteamHook.cs` rewritten:
+- **Shape**: `FleckCreationData.exactScale` (a real engine field, MEASURED via
+  RimSage before use) lets a fleck be stretched non-uniformly — each instance
+  is now a thin vertical sliver (`ribbonWidth` 0.12-0.22, `ribbonHeight`
+  1.0-1.7) instead of a round puff, at low opacity (`alpha` 0.30-0.50 via
+  `instanceColor`) so overlapping instances blend into haze rather than
+  stacking as visible blobs.
+- **Motion**: added `rotationRate` (`wobbleDegreesPerSec` 4-10, sign
+  randomized) for the "oscillating" sway as each ribbon rises; slowed
+  `velocitySpeed` (was 0.15-0.3, now 0.05-0.15) for a gentle standing rise
+  instead of a thrown puff.
+- **Reveal**: default `fleckDef` swapped `Steam` → `SmokeGrowing` (same
+  underlying texture, but a 6s slow swell instead of Steam's snappy 1.2s
+  reveal — softer entrance, still zero new art).
+- **Placement/cadence**: replaced "one random river cell, whole-map pool,
+  90-260 ticks" with `maxVents` (default 6) persistent vent cells spaced
+  evenly along the river, each firing independently every 20-50 ticks — reads
+  as a handful of standing, continuously-active columns (matching the
+  reference photo) instead of one puff hopping around rarely.
+- All new fields live on `RiverSteamBiomeExtension`, so any biome reusing
+  this hook can retune without touching C#; `RiverSteamSettings`'
+  enable-toggle and `puffRateMultiplier` are untouched and still apply on top.
+- Built clean (`dotnet build RimMandrake_FlowWorks.csproj -c Release`, 0/0).
+  `deploy_custom_mods.py --mod FlowWorks --apply`: the def/hash half deployed;
+  the DLL itself FAILED (locked by the running game, expected) — same
+  restart-owed state as `SCALD_WATER_AGITATION_FLECKS_1`'s two DLLs this
+  session. **Not yet seen live** — the shape/motion rework is un-verified
+  until the next restart.
+
+### Cleanup — the scratch test did NOT touch real world state, after a revert
+World tile 6450 was forced from its real biome (`RUT_Greentide`) to
+`RM_Pyrelands` for this test only. **Reverted and re-committed
+(`jawa/world_tile_set` + `jawa/world_commit`) before ending the session** —
+confirmed back to `RUT_Greentide` in the live world. The scratch map itself
+(mapId 10) is disposable per the standing "map state is disposable debug"
+rule and was left as-is, no cleanup owed.
+
+⚠️ **Side effect worth recording**: tile 6450 already belonged to a resident
+mechanoid faction ("Totharth Mechhive") before this test. Planting a
+`PlayerColony` colonist there (to stop the scratch map from being auto-culled
+per the known trap) and unpausing triggered a real raid from that faction —
+vanilla storyteller behaviour against an intruded hostile settlement, not a
+RiverSteam or scenario defect. Cost a few minutes of confusion (owner briefly
+read it as an uncontrolled mechanoid-assault problem in the live campaign)
+before the letter stack (`rimworld/list_letters`) showed both raid letters
+targeting the scratch map's `mapId`, not the real colony's. **Lesson for next
+time**: pick an unclaimed/wild tile for a scratch settlement-map test, or
+check the tile's existing faction before generating a `Settlement`-parented
+map on it.
+
+### owed
+- **Live-verify the reworked shape/motion at the next restart** — this is now
+  the item's whole remaining bar. Generate or find a river on a
+  `RiverSteamBiomeExtension`-carrying biome (pick an unclaimed tile this
+  time), watch it for at least one full `ticksBetweenPuffs` cycle per vent,
+  and get the owner's verdict against the reference photo before closing.
+- The render-void question this item carried since 2026-09-07/19 is now
+  answered (closed, not just "may be fixed") — safe to cite as resolved
+  anywhere else that references it.
+
+Left `doing` — a live look at the reworked mechanism, with the owner judging
+the shape/motion against the reference photo, is the only bar left standing.
