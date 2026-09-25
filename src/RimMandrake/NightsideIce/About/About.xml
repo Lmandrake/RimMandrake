@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.nightsideice</packageId>
+  <name>RimMandrake: Nightside Ice</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+  </loadAfter>
+  <description>NIGHTSIDEICE_RM_MOD_BUILD_1 (Phase A row 5 of
+design/RimMandrake/biome_mod_architecture.md; parent
+BIOME_MOD_SPLIT_EXECUTION_1). The Nightside Ice, fully generalized: it names
+no other franchise or campaign and is playable standalone on any generated
+RimWorld planet. A separate frozen campaign world's own instance is
+unaffected; this is a new sibling biome for everyone else's worlds, not a
+rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+Dirty white ice, geologically young and impure, on the highest ground of the
+deep night. There is no soil for plants to grow in, and almost no animal
+life — the entire biome is deliberately near-empty (§6 of the source sheet:
+no photosynthesis or photosynthetic tissue of any kind, no ordinary animal
+silhouettes). `workerClass` stays the vanilla Core `BiomeWorker_IceSheet` —
+the twin never used a donor type, so this mod owes no
+`RM_BiomeWorker_NightsideIce` of its own.
+
+This is the thinnest row in the biome-mod-split wave: no kit spec exists for
+this biome and no mechanic is shipped or owed here (the roster's unbuilt
+tunnelers, icy insects and landform catalysts are separate, not-yet-filed
+authoring work). Ships only the BiomeDef itself, unaltered from its twin
+except for the defName and the eviction of the one Star Wars canon row.
+
+⛔ Star Wars canon fauna does NOT ship here — Q11a (owner ruling, 2026-09-22):
+a genuinely canon name is IP and must route through the Utinni campaign patch
+layer, never the franchise-free RimMandrake tier. `RSW_CaveLemming` rides
+src/RimUtinni/UtinniPatches/Patches/WildAnimals_NightsideIce.xml instead;
+this def ships only the 7 non-Star-Wars `AA_*` rows (Alpha Animals,
+`sarg.alphaanimals`) the twin already carried.
+
+Live proof (step 5, a scratch-world quicktest with all five expansions) is
+Desktop-only and OWED — see the item's own verify record.</description>
+</ModMetaData>
