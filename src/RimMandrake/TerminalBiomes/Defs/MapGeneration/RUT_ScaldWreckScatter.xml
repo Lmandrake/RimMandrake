@@ -20,7 +20,9 @@
   sufficient on its own.
 
   Same crib shape as JawaScrapfields.xml (this same mod, V1 row 4): a plain
-  GenStepDef wrapping GenStep_ScatterThings, order/allowInWaterBiome/
+  GenStepDef wrapping GenStep_ScatterThings (via RM_GenStep_ScaldWreckScatter,
+  this mod's subclass that adds only the S6 Mod Settings gate: off, new maps
+  scatter no wrecks), order/allowInWaterBiome/
   minSpacing/countPer10kCellsRange fields copied from that shipped,
   working precedent rather than re-derived from nothing.
 
@@ -72,7 +74,7 @@
   <GenStepDef>
     <defName>RUT_Jawa_ScatterScaldWreckHull</defName>
     <order>965</order>
-    <genStep Class="GenStep_ScatterThings">
+    <genStep Class="RimMandrake.TerminalBiomes.RM_GenStep_ScaldWreckScatter">
       <thingDef>RUT_ScaldWreckHull</thingDef>
       <allowInWaterBiome>true</allowInWaterBiome>
       <minSpacing>6</minSpacing>
@@ -87,7 +89,7 @@
   <GenStepDef>
     <defName>RUT_Jawa_ScatterScaldWreckTank</defName>
     <order>966</order>
-    <genStep Class="GenStep_ScatterThings">
+    <genStep Class="RimMandrake.TerminalBiomes.RM_GenStep_ScaldWreckScatter">
       <thingDef>RUT_ScaldWreckTank</thingDef>
       <allowInWaterBiome>true</allowInWaterBiome>
       <minSpacing>6</minSpacing>
@@ -102,7 +104,7 @@
   <GenStepDef>
     <defName>RUT_Jawa_ScatterScaldWreckFrame</defName>
     <order>967</order>
-    <genStep Class="GenStep_ScatterThings">
+    <genStep Class="RimMandrake.TerminalBiomes.RM_GenStep_ScaldWreckScatter">
       <thingDef>RUT_ScaldWreckFrame</thingDef>
       <allowInWaterBiome>true</allowInWaterBiome>
       <minSpacing>6</minSpacing>

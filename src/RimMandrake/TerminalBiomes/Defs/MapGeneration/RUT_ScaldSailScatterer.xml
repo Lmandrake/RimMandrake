@@ -140,6 +140,13 @@
         </li>
       </elements>
     </genStep>
+    <modExtensions>
+      <!-- Mod Settings gate: Terminal Biomes' S5 sail + walker toggle
+           (read in RM_GenStep_PlacedSetPieces.ShouldSkipMap). -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>Scald.S5</gateKey>
+      </li>
+    </modExtensions>
   </GenStepDef>
 
 </Defs>

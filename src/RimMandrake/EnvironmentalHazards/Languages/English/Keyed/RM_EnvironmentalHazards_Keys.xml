@@ -41,4 +41,8 @@
   <RM_WaterTruceRetributionLetterLabel>The water answers</RM_WaterTruceRetributionLetterLabel>
   <RM_WaterTruceRetributionLetterText>Blood was spilled at the truce water, and {0} broke it. {1} nearby animals have turned on them.</RM_WaterTruceRetributionLetterText>
 
+  <!-- RM_MechanicGates (SCALD_FLOOR_PASS_1): inspect line on a building
+       whose mechanic its owning mod's settings have switched off. -->
+  <RM_MechanicDisabledInSettings>Dormant: switched off in mod settings.</RM_MechanicDisabledInSettings>
+
 </LanguageData>

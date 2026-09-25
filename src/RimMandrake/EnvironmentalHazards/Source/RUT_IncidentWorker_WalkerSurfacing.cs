@@ -26,6 +26,13 @@ namespace RimMandrake.EnvironmentalHazards
     {
         private const int SampleCells = 60; // bounded sample, not a full-map scan
 
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            // Owning mod's settings gate (the Scald's S5, via
+            // RM_MechanicGateExtension on the IncidentDef).
+            return base.CanFireNowSub(parms) && RM_MechanicGates.Enabled(def);
+        }
+
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             Map map = (Map)parms.target;

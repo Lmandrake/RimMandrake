@@ -85,6 +85,12 @@
     </placeWorkers>
     <designationCategory>Production</designationCategory>
     <constructEffect>ConstructMetal</constructEffect>
+    <modExtensions>
+      <!-- Mod Settings gate: Terminal Biomes' S2 steam-catch toggle. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>Scald.S2</gateKey>
+      </li>
+    </modExtensions>
   </ThingDef>
 
 </Defs>

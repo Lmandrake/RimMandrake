@@ -9,4 +9,8 @@
 
   <RUT_WalkerSurfacingSighting>Far out on the boil, something enormous breaks the surface — a back, wet and vast — and is gone before the wave from it reaches shore.</RUT_WalkerSurfacingSighting>
 
+  <!-- SCALD_FLOOR_PASS_1: inspect line on a scald vent while the S4 vent
+       fields toggle (Mod Settings) is off. -->
+  <RM_TerminalBiomes_VentDormant>Dormant: vent fields switched off in mod settings.</RM_TerminalBiomes_VentDormant>
+
 </LanguageData>
