@@ -90,16 +90,16 @@
     <maxFishPopulation>60</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <saltwater_Common>
-        <RUT_Fessu>1.2</RUT_Fessu>
-        <RUT_Krellik>1</RUT_Krellik>
-        <RUT_Oddu>0.8</RUT_Oddu>
-        <RUT_Oovu>0.6</RUT_Oovu>
+        <RUT_Fessu MayRequire="mandrake.rut.patches">1.2</RUT_Fessu>
+        <RUT_Krellik MayRequire="mandrake.rut.patches">1</RUT_Krellik>
+        <RUT_Oddu MayRequire="mandrake.rut.patches">0.8</RUT_Oddu>
+        <RUT_Oovu MayRequire="mandrake.rut.patches">0.6</RUT_Oovu>
         <RM_HeeminCatch>0.9</RM_HeeminCatch>
       </saltwater_Common>
       <saltwater_Uncommon>
-        <RUT_Iliss>1</RUT_Iliss>
-        <RUT_Tarnn>0.6</RUT_Tarnn>
-        <RUT_Zhiil>0.4</RUT_Zhiil>
+        <RUT_Iliss MayRequire="mandrake.rut.patches">1</RUT_Iliss>
+        <RUT_Tarnn MayRequire="mandrake.rut.patches">0.6</RUT_Tarnn>
+        <RUT_Zhiil MayRequire="mandrake.rut.patches">0.4</RUT_Zhiil>
         <RM_OovanamCatch>0.4</RM_OovanamCatch>
       </saltwater_Uncommon>
       <rareCatchesSetMaker>RUT_RarePropaneCatches</rareCatchesSetMaker>

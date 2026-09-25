@@ -70,16 +70,16 @@
     <maxFishPopulation>120</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <saltwater_Common>
-        <RUT_Sallik>1.2</RUT_Sallik>
-        <RUT_Karrud>1</RUT_Karrud>
-        <RUT_Hessal>1</RUT_Hessal>
-        <RUT_Oomal>0.6</RUT_Oomal>
+        <RUT_Sallik MayRequire="mandrake.rut.patches">1.2</RUT_Sallik>
+        <RUT_Karrud MayRequire="mandrake.rut.patches">1</RUT_Karrud>
+        <RUT_Hessal MayRequire="mandrake.rut.patches">1</RUT_Hessal>
+        <RUT_Oomal MayRequire="mandrake.rut.patches">0.6</RUT_Oomal>
         <RM_EssarnCatch>1</RM_EssarnCatch>
       </saltwater_Common>
       <saltwater_Uncommon>
-        <RUT_Maalu>1</RUT_Maalu>
-        <RUT_Immu>0.7</RUT_Immu>
-        <RUT_Haarn>0.4</RUT_Haarn>
+        <RUT_Maalu MayRequire="mandrake.rut.patches">1</RUT_Maalu>
+        <RUT_Immu MayRequire="mandrake.rut.patches">0.7</RUT_Immu>
+        <RUT_Haarn MayRequire="mandrake.rut.patches">0.4</RUT_Haarn>
         <RM_SorruthCatch>0.5</RM_SorruthCatch>
       </saltwater_Uncommon>
       <rareCatchesSetMaker>RUT_RareGreyCatches</rareCatchesSetMaker>
