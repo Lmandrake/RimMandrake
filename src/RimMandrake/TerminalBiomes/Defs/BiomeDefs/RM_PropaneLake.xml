@@ -84,7 +84,9 @@
       </li>
     </terrainsByFertility>
 
-    <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Propane Lake's catch table. -->
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Propane Lake's catch table.
+         terminal_seas_cast_proposal_2026-09-25.md verdict 3: heemin/oovanam
+         ADDED here (see RM_PropaneLakeCatch.xml's own header). -->
     <maxFishPopulation>60</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <saltwater_Common>
@@ -92,11 +94,13 @@
         <RUT_Krellik>1</RUT_Krellik>
         <RUT_Oddu>0.8</RUT_Oddu>
         <RUT_Oovu>0.6</RUT_Oovu>
+        <RM_HeeminCatch>0.9</RM_HeeminCatch>
       </saltwater_Common>
       <saltwater_Uncommon>
         <RUT_Iliss>1</RUT_Iliss>
         <RUT_Tarnn>0.6</RUT_Tarnn>
         <RUT_Zhiil>0.4</RUT_Zhiil>
+        <RM_OovanamCatch>0.4</RM_OovanamCatch>
       </saltwater_Uncommon>
       <rareCatchesSetMaker>RUT_RarePropaneCatches</rareCatchesSetMaker>
     </fishTypes>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TwilightSeaCatch.xml                TerminalBiomes — authored 2026-09-24
+  ==========================================================================
+  terminal_seas_cast_proposal_2026-09-25.md, the Twilight Sea section: noolim
+  and weloon join the existing ten-species surface catch as two ADDITIONAL
+  rows in RM_TwilightSea.xml's own fishTypes block — noolim common, weloon
+  uncommon.
+
+  Item-only catch defs (RM_Noolim/RM_Weloon's own floor-resident forms are
+  the SEPARATE roster work in RM_TwilightSeaFauna.xml). Register stats
+  follow RUT_ScaldFish.xml's own envelope.
+-->
+<Defs>
+
+  <!-- noolim — the silver-shoal analog, common. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_NoolimCatch</defName>
+    <label>noolim</label>
+    <description>A netful of dull silver slivers, hauled up from beneath the Twilight Sea's mat-roof — never one alone, always a shoal.</description>
+    <graphicData>
+      <texPath>Things/Item/ToxicMeat/ToxicMeat_c</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.1</Nutrition>
+      <MarketValue>4</MarketValue>
+      <Mass>0.25</Mass>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- weloon — soft-shelled floor crustacean, uncommon. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_WeloonCatch</defName>
+    <label>weloon</label>
+    <description>A rounded, felt-textured shell netted off the Twilight Sea's floor, still smelling faintly of the mat-fall it was picking through. Uncommon.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaD</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.14</Nutrition>
+      <MarketValue>6</MarketValue>
+      <Mass>0.4</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

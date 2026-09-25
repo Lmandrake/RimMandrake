@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GreySeaCatch.xml                    TerminalBiomes — authored 2026-09-24
+  ==========================================================================
+  terminal_seas_cast_proposal_2026-09-25.md verdict 2: the newer sea-floor-
+  and-catch law wins over the old no-fish ruling for the Grey Sea — essarn
+  common, sorruth uncommon become the catch. Added as two ADDITIONAL rows in
+  RM_GreySea.xml's own pre-existing fishTypes block (RUT_Sallik/Karrud/
+  Hessal/Oomal common + RUT_Maalu/Immu/Haarn uncommon, RUT_RareGreyCatches),
+  not a replacement — that block predates this proposal and is out of this
+  pass's scope; see this pass's own build report.
+
+  Item-only catch defs, no living pawn (same idiom as RUT_Eesh/RUT_Muddal
+  etc. in RUT_ScaldFish.xml — essarn and sorruth's own floor-resident forms,
+  RM_Essarn/RM_Sorruth, are the SEPARATE roster work in RM_GreySeaFauna.xml).
+  Register stats follow RUT_ScaldFish.xml's own envelope, reusing textures
+  already physically present via Core (ToxicMeat convention), no two rows
+  sharing one.
+-->
+<Defs>
+
+  <!-- essarn — the Grey Sea's common staple catch. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_EssarnCatch</defName>
+    <label>essarn</label>
+    <description>A finless, bone-white ribbon netted from the Grey Sea's brine — eyeless, salt-rimed, and the one catch here that isn't shy about the open murk. The Grey's most reliable line.</description>
+    <graphicData>
+      <texPath>Things/Item/ToxicMeat/ToxicMeat_a</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.3</Mass>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- sorruth — pillar-rasp snail, uncommon shore-dredge. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_SorruthCatch</defName>
+    <label>sorruth</label>
+    <description>A fist-sized, mineral-caked shell dredged from a Grey Sea pool margin — the pillar-rasp snail, still trailing a crust of the sea's own chemistry. Uncommon; most stay on their columns.</description>
+    <graphicData>
+      <texPath>Things/Item/ToxicMeat/ToxicMeat_b</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.12</Nutrition>
+      <MarketValue>6</MarketValue>
+      <Mass>0.35</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
