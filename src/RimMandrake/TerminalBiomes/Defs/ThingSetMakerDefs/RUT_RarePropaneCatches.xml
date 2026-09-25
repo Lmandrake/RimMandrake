@@ -3,7 +3,7 @@
   SEA_FLOOR_AND_CATCH_PASS_1 — the Propane Lake's rare-catch pool, per
   design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md's rare-catch
   table. Parented on vanilla's own RareFishingCatchesBase, same shape as
-  RUT_RareScaldCatches/RUT_RareTwilightCatches/RUT_RareGreyCatches.
+  RM_RareScaldCatches/RM_RareTwilightCatches/RUT_RareGreyCatches.
 
   Three options: weight 4 Chemfuel x10-20 ("a sac of pooled fuel, frozen
   round the line" — the tank's own catch, vanilla def); weight 2

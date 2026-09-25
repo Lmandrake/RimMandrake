@@ -31,7 +31,7 @@
   MapGeneratorDef + a way for a colonist to reach it), not a fish-item build
   — see this item's wave 5 section and the `TWILIGHT_DEEP_WATER_LAYER_1`
   block filed alongside it. The other 7 Twilight species
-  (pallu/tikkarr/nuudal/kellu/murrol/hollu/oobo) and `RUT_RareTwilightCatches`
+  (pallu/tikkarr/nuudal/kellu/murrol/hollu/oobo) and `RM_RareTwilightCatches`
   land THIS wave per the doc's own "the eight defs land now" instruction —
   only the `fishTypes` binding stays held. That binding is now authored too,
   as `Patches/BiomeFishTypes_TwilightDeep.xml`, held via `DEPLOY_HOLD.txt`
@@ -50,7 +50,7 @@
   Register stats per the commission's own §0 envelope table (floater 0.10/3/
   0.2/1d; crustacean 0.20/7/0.6/3d; cucumber 0.20/5/0.5/4d; squid 0.25/6/
   0.4/1.5d; jellyfish 0.08/4/0.3/1d + FoodPoisonChanceFixedHuman 0.05;
-  octopus 0.25/8/0.5/2d). `RUT_Murrol` (eel) carries NO statBases override —
+  octopus 0.25/8/0.5/2d). `RM_Murrol` (eel) carries NO statBases override —
   the eel register's own row is vanilla FishBase verbatim, same convention
   RUT_Zhurr/RUT_Ozhu/RUT_Lozh already used; niim itself (shoal) is the same
   case for the same reason (shoal IS the FishBase baseline).
@@ -58,7 +58,7 @@
 <Defs>
 
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_Niim</defName>
+    <defName>RM_Niim</defName>
     <label>niim</label>
     <description>The silver of the Twilight — the shoal fish, the ordinary fish, the fish that behaves like a fish, and the only one on the planet that does. Blue-white, hand-long, a dot-line of cold light along the flank, it schools in the light columns under the roof in crowds that make the column flash when they turn. The Compact's whole under-roof economy is a net dropped into a niim column. Hunted by the kellu in the dark between columns and by one fast ordinary thing nobody has a good name for. Tastes like fish. That is the point of it.</description>
     <graphicData>
@@ -68,7 +68,7 @@
 
   <!-- pallu — floater, common. "sun-cup." -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_Pallu</defName>
+    <defName>RM_Pallu</defName>
     <label>pallu</label>
     <description>A saucer-sized floater that lives only in the light columns, holding a green symbiont mat on its upper skin to the skylight like a face turned to the sun. A bright column is crowded with them, stacked in the water at every depth the light reaches, and a column the gardener lets close goes dark and the pallu sink out of it in a slow rain. The Compact counts them to price a skylight. Thin, green, slightly sweet.</description>
     <graphicData>
@@ -89,7 +89,7 @@
 
   <!-- tikkarr — crustacean, common. "kelp-cutter." -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_Tikkarr</defName>
+    <defName>RM_Tikkarr</defName>
     <label>tikkarr</label>
     <description>A long-legged, kelp-coloured crab-thing that lives up in the kelp forest, not on the floor — clinging, cutting, carrying fronds down to its holes. It is the sea-farm's pest and its pollinator both; cut kelp plots without tikkarr in them grow back slow. Armored, a good meal in the legs, and fond of nets.</description>
     <graphicData>
@@ -110,7 +110,7 @@
 
   <!-- nuudal — cucumber, common (weight 0.6). "the rain-eater." -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_Nuudal</defName>
+    <defName>RM_Nuudal</defName>
     <label>nuudal</label>
     <description>The ceiling gardens shed a constant detritus rain, and the floor is nuudal: long, soft, mottled, moving through the fall like cattle through a snowfall, eating it. The richest ground in the sea is the mud under a busy skylight, and nuudal are what turn it over. Every net in the columns comes up with a few. Filling, and nobody has ever asked for seconds.</description>
     <graphicData>
@@ -132,7 +132,7 @@
   <!-- kellu — squid, uncommon. "lamp-black." Its ink is RUT_LampBlack in the
        rare table below, not a butcher product. -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_Kellu</defName>
+    <defName>RM_Kellu</defName>
     <label>kellu</label>
     <description>The kelp squid: arm-long, forest-dark, hiding in the fronds by day and hunting the shoals in the dark between columns by night. Its ink is the thing — thick, lightfast, black as the Grey. The Compact's charts are drawn in it, and it is the black in every dye-house that trades with the deep. A kellu on the line is half a catch and half an inkwell.</description>
     <graphicData>
@@ -155,7 +155,7 @@
        (vanilla FishBase tier), no statBases override — same convention
        RUT_Zhurr/RUT_Ozhu/RUT_Lozh already used. -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_Murrol</defName>
+    <defName>RM_Murrol</defName>
     <label>murrol</label>
     <description>The mud channels' river-fauna made specific: a thick, blunt, near-blind eel that rides the invisible current along the channel banks, mouth open, fat on the nutrient-fed silt, so slow that bank-harvesters pick them up by hand. The deep's comfort food. Nothing about it is difficult, and the Compact's dock kitchens serve nothing else on a bad day.</description>
     <graphicData>
@@ -171,7 +171,7 @@
 
   <!-- hollu — jellyfish, uncommon. "roof-drip." -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_Hollu</defName>
+    <defName>RM_Hollu</defName>
     <label>hollu</label>
     <description>A bell that forms on the underside of the mat, in the ceiling gardens, and lets go — falling slowly through the whole column, pulsing, stinging what it passes, to lie on the floor and be eaten by nuudal. A big garden sheds them all night. Divers learn the fall pattern of their skylight the way farmers learn rain. Netted mid-fall it is a sting and a bell of salt water; cooked, it is a delicacy in exactly one dock.</description>
     <graphicData>
@@ -193,7 +193,7 @@
 
   <!-- oobo — octopus, uncommon (weight 0.4). "drop-hand." -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_Oobo</defName>
+    <defName>RM_Oobo</defName>
     <label>oobo</label>
     <description>Lives in the ceiling gardens, hanging from the roof among the filter-feeders, and hunts by letting go — a soft, wide-armed drop through the dark onto whatever is below, and a slow climb back up a kelp stem. The gardener tolerates it; the oobo groom the roof-underside as they go. Divers hate it with the specific hatred of people who have had one land on them. Very good eating.</description>
     <graphicData>
@@ -252,7 +252,7 @@
   <!-- aluun — shellfish, common (0.6). "the lamp-shell." Sessile, same
        floor-pairing shape as the Grey's hessal. -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_Aluun</defName>
+    <defName>RM_Aluun</defName>
     <label>aluun</label>
     <description>A fan-shaped shell-thing that grows on the kelp stems in the light columns, two thin translucent valves held open to the fall of detritus, and inside them a mantle that lights — a steady pale gold, the colour of the palette's lamps, bright enough that a kelp tower hung with aluun reads from the shore as a column of small windows. The Compact harvests them by the stem. The meat is a coin of sweet white flesh; the valves, dried, are the lantern-panes in every deep dock.</description>
     <graphicData>
@@ -276,7 +276,7 @@
        fish body, liiru a continuous line on a ribbon with no fish
        silhouette at all. -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_Liiru</defName>
+    <defName>RM_Liiru</defName>
     <label>liiru</label>
     <description>The Twilight's elegant thing: a ribbon-eel as long as an arm and no wider than a finger, that swims upright through the light columns in slow vertical S-curves, and carries along its whole length a single unbroken line of blue-white light. A column with liiru in it looks, from the bank, as if someone had drawn on the water. It eats what falls, it is eaten by the kellu, and it is not fast; it does not need to be, because nothing wants the trouble of a mouthful of ribbon. Netted, it is a long thin excellent meal and a light that takes a minute to go out.</description>
     <graphicData>

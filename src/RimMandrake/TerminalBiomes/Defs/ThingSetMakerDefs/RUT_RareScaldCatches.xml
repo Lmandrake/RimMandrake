@@ -5,7 +5,7 @@
   own `RareFishingCatchesBase` the same way RSW_RareSandCatches is, so it
   plugs straight into BiomeDef.fishTypes.rareCatchesSetMaker.
 
-  Only ONE of the doc's two options ships this wave: RUT_Karrash x2 (weight
+  Only ONE of the doc's two options ships this wave: RM_Karrash x2 (weight
   3). The second option — "a scrap of welcome-blanket... uses whatever
   pigment product def the mats' own roster entry ships" — is deliberately
   OMITTED, not invented: `design/Jawa/worldbuilding/biomes/rosters/
@@ -19,7 +19,7 @@
 <Defs>
 
   <ThingSetMakerDef ParentName="RareFishingCatchesBase">
-    <defName>RUT_RareScaldCatches</defName>
+    <defName>RM_RareScaldCatches</defName>
     <root Class="ThingSetMaker_RandomOption">
       <options>
         <li>
@@ -28,7 +28,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_Karrash</li>
+                  <li>RM_Karrash</li>
                 </thingDefs>
               </filter>
               <countRange>2~2</countRange>
@@ -48,7 +48,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_Ekkel</li>
+                  <li>RM_Ekkel</li>
                 </thingDefs>
               </filter>
               <countRange>2~3</countRange>
