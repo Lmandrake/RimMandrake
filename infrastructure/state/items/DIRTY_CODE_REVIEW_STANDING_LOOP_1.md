@@ -4270,3 +4270,49 @@ significant findings in any — all 3 marked CLEAN.
 
 Next wave: pick from the remaining ~253 UNTRACKED files (`code_review_status.py list
 --show-untracked`).
+
+## Wave 6 — 2026-09-25
+
+Reviewed 7 files, full-file, first-time review (`list --show-untracked` showed them
+NEVER ENTERED even though `git ls-files` confirms all 7 are already committed —
+consistent with wave 5's note that "untracked" here means untracked by the review
+tool, not by git). Picked the whole `REACTION_MECHANISM_GENERALISE_1` step-1 cluster
+in `CreatureBehaviors/Source/`, reviewed together deliberately (small files, one
+pipeline, cross-file bugs are the kind a single-file review misses):
+`RM_ReactionEvent.cs`, `RM_ReactionPropagationRule.cs`, `RM_ReactionResponseRule.cs`,
+`RM_ReactionResponseRule_SpawnPawns.cs`, `RM_CompReactionSource.cs`,
+`RM_CompProperties_ReactionSource.cs`, `RM_MentalState_ScopedAggression.cs`.
+
+Reachability: all 7 confirmed via live `<Compile Include>` entries in
+`RM_CreatureBehaviors.csproj` (lines 94, 118, 120-134). Also confirmed content-wired,
+not dead code sitting on a shelf: `RM_SkerrelGall.xml`
+(`src/RimMandrake/Greentide/Defs/ThingDefs/`) references both
+`RM_CompProperties_ReactionSource` and `RM_ReactionResponseRule_SpawnPawns` directly —
+this is GREENTIDE_WASP_SWARM_1's real first consumer, not just source waiting on a def.
+
+Traced the full flow end to end: damage/harvest trigger -> `RM_CompReactionSource.
+TriggerReaction` builds one `RM_ReactionEvent` with a shared spendable budget ->
+`Propagate` (no-op for this consumer) -> `Respond` (`SpawnPawns`) draws
+`min(mapPopulationCap - currentAlive, evt.RemainingBudget)` and spawns that many,
+each optionally started in `RM_MentalState_ScopedAggression` anchored on the
+disturbance cell. Cross-checked `TryStartMentalState`'s call shape (positional
+`reason`, then `forced/forceWake/causedByMood/otherPawn` named args) against the
+sibling `RM_CompParentalEnrage.cs`'s already-shipped call to the same API — identical
+shape, corroborating this compiles and behaves as intended (Mac has no RimSage to
+check the engine signature directly). No significant findings — no fixes needed. All
+7 marked CLEAN at `042d41c8f`.
+
+Re-measured after: `TALLY CLEAN 3342 DIRTY 84 ORPHANED 57 NEVER ENTERED 266` (was
+`CLEAN 3335 DIRTY 84 ORPHANED 57 NEVER ENTERED 273` at wave start).
+
+Next wave: pick from the remaining ~266 NEVER ENTERED files (`code_review_status.py
+list --show-untracked` from `src/RimMandrake/Utils`) — the CreatureBehaviors/Source
+cluster still has unreviewed siblings from the SAME `.csproj` worth picking next:
+`RM_CompDefensiveDischarge.cs` + `RM_CompProperties_DefensiveDischarge.cs` (a
+distinct, not-yet-reviewed pair), and separately `RM_CompHeatCook.cs` /
+`RM_CompHeatPusherGated.cs` / `RM_CompProperties_SpeciesSpacingCook.cs` /
+`RM_SpeciesSpacingExtension.cs` (a heat/spacing cluster, also untouched). Large
+unreviewed def-only (`.xml`) clusters also remain across `TerminalBiomes/`, `TheRot/`,
+`Wasteland/`, `UtinniPatches/Defs/` and `UtinniPatches/Patches/` — none of those were
+picked this wave since the `.cs` reaction cluster was the stronger reachability/
+cohesion candidate, but they are real backlog, not something ruled out.
