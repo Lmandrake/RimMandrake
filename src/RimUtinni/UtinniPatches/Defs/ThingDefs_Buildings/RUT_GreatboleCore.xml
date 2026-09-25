@@ -2,20 +2,23 @@
 <!-- GREENTIDE_MECHANICS_2 M12 build. The marker building
      RM_GenStep_LivingBoles spawns at the center of each heartwood blob —
      holds the bole's identity (RM_CompLivingBoleMarker registers/
-     deregisters it with RM_MapComponent_LivingRegrowth) and carries the
-     oversized visual the kit spec calls "RUT_GreatboleCrown". Per the kit
-     spec's own RESOLVED ❓ (greentide_kit_spec.md M12, GREENTIDE_MECHANICS_2's
-     spike pass 2026-09-13): "RUT_GreatboleCrown ships as an ordinary
-     GraphicData.drawSize override on the marker building, not a Skyfaller
-     subclass" — so the crown is THIS def's own graphic, not a second
-     ThingDef; RUT_GreatboleCrown names the graphic, not a separate defName.
+     deregisters it with RM_MapComponent_LivingRegrowth). Pure bookkeeping:
+     the blob around it (RUT_GreatboleHeartwood) is what the player is meant
+     to see and mine, so this def draws nothing (GREATBOLE_BARK_EDGE_ART_1).
 
      Impassable/not mineable itself — a player never digs out the core, only
      the heartwood blob around it (RUT_GreatboleHeartwood).
 
-     PLACEHOLDER ART: reuses a vanilla building silhouette, oversized via
-     drawSize to stand in for the crown's real multi-cell silhouette. Real
-     bespoke art is owed — DEPLOY_HOLD. -->
+     DRAWS NOTHING (drawerType None, no graphicData) — same idiom as
+     RM_SuperdeepPit and vanilla's DelayedEffecterSpawner: a bookkeeping
+     Thing whose cell's visual is already fully described by something else
+     (here, the heartwood blob), so a second sprite on top of it would be a
+     contradicting statement, not a placeholder. This def previously carried
+     a retinted vanilla DeepDrillPowered texture at drawSize (7,7), which
+     rendered a fake mining-drill sprite across the middle of the greatbole
+     blob — the real defect GREATBOLE_BARK_EDGE_ART_1 named. The bark-edge
+     atlas art commission for RUT_GreatboleHeartwood itself is separate and
+     still owed; this def was never that art's home. -->
 <Defs>
 
   <ThingDef ParentName="BuildingBase">
@@ -31,13 +34,7 @@
     <coversFloor>true</coversFloor>
     <holdsRoof>true</holdsRoof>
     <useHitPoints>true</useHitPoints>
-    <graphicData>
-      <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/Misc/DeepDrillPowered</texPath>
-      <shaderType>CutoutComplex</shaderType>
-      <color>(74,58,36)</color>
-      <drawSize>(7,7)</drawSize>
-    </graphicData>
+    <drawerType>None</drawerType>
     <altitudeLayer>Building</altitudeLayer>
     <statBases>
       <MaxHitPoints>1200</MaxHitPoints>
