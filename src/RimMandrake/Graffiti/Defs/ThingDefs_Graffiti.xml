@@ -295,6 +295,10 @@
         <form>ThrowUp</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <!-- GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 wave 2, design §3's own table
+             row for this def: "Joy (skill >= 6), RaidExit". Wired this wave
+             via GraffitiPool.SkillGateAllows. -->
+        <minArtistic>6</minArtistic>
       </li>
     </modExtensions>
   </ThingDef>
@@ -321,6 +325,7 @@
         <form>ThrowUp</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <minArtistic>6</minArtistic>
       </li>
     </modExtensions>
   </ThingDef>
@@ -352,13 +357,19 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- design §2.2: "requiresAnyMeme none; requiresHostile to Empire" -
-       the faction-hostility half of that gate is not built this pass
-       (GraffitiPool only gates on meme, not on which factions are on the
-       map) - the crown ships ungated (available to any raider/designator)
-       until a future pass adds a faction-aware gate. Owner ruling
+  <!-- design §2.2: "requiresAnyMeme none; requiresHostile to Empire" - wired
+       wave 2 (GRAFFITI_PUNK_IDEOLIGION_SCOPE_1) via
+       ModExtension_Graffiti.requiresHostileToFactionDef +
+       GraffitiPool.HostilityGateAllows: on a mod list carrying Royalty's
+       vanilla `Empire` FactionDef with an actual Faction instance in the
+       game, only a placer whose own faction is HostileTo the Empire is
+       offered this mark. On any other mod list (no Royalty, or Royalty
+       active but no Empire spawned this game) the gate opens - the crown
+       stays available exactly as wave 1 shipped it. Owner ruling
        2026-09-24: FEATURE, ship as-is; the anti-Imperial reading is
-       intentional (see this item's RSW Aurebesh/cog variant). -->
+       intentional (see this item's RSW Aurebesh/cog variant, and note the
+       campaign's own Galactic Empire IS this same vanilla Empire faction,
+       reskinned - galactic-empire-is-reskinned-vanilla). -->
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Stencil_Crown</defName>
     <label>crossed-out crown stencil</label>
@@ -385,6 +396,7 @@
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
+        <requiresHostileToFactionDef>Empire</requiresHostileToFactionDef>
       </li>
     </modExtensions>
   </ThingDef>

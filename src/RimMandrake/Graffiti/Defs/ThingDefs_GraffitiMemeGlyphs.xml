@@ -23,20 +23,26 @@
        NaturePrimacy), which conspicuously included none of the taste-
        boundary memes the ruling was actually about.
 
-       The remaining 19 memes (Raider, Blindsight, Darkness, Tunneler,
-       Rancher, AnimalPersonhood, NaturePrimacy, TreeConnection,
-       HumanPrimacy, Supremacist, Collectivist, Individualist,
-       Proselytizer, Transhumanist, FleshPurity, HighLife, Bloodfeeding,
-       Ritualist, Shipborn) have the mechanism available but no ThingDef
-       yet - owed work, not a gap in the engine. Collectivist/Individualist/
-       Shipborn are also among the five placeholder glyph-subject mappings
-       this item's open questions left for the owner to override.
+       Wave 2 (same item, this pass) ships the remaining 19: Raider,
+       Blindsight, Darkness, Tunneler, Rancher, AnimalPersonhood,
+       NaturePrimacy, TreeConnection, HumanPrimacy, Supremacist,
+       Collectivist, Individualist, Proselytizer, Transhumanist,
+       FleshPurity, HighLife, Bloodfeeding (Biotech), Ritualist (Anomaly),
+       Shipborn (Odyssey) - all 27 non-structure ludeon.* MemeDefs now carry
+       a glyph ThingDef.
 
        Glyph subjects are the design doc's own grounded readings (§3.2's
        table: each traced to the meme's description/style/precepts, not
        invented). Loyalist (banner) and Guilty (chain link) are explicitly
        PLACEHOLDER mappings per this item's open question 3 - flagged here,
-       not settled. -->
+       not settled. Wave 2 adds three more from that same open question:
+       Collectivist, Individualist and Shipborn are ALSO placeholder
+       subject mappings (linked rings / dot-in-ring / hull-and-star) -
+       override when the owner has an image. Rancher/AnimalPersonhood and
+       NaturePrimacy/TreeConnection were one table row apiece in the design
+       doc's own §3.2 (it grouped them for exposition); each still gets its
+       own single-meme ThingDef here so the 19-name accounting in this
+       file's own wave-1 comment above resolves 1:1, not 17:2. -->
 
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Cannibal</defName>
@@ -274,6 +280,584 @@
         <protectedFromAutoClean>true</protectedFromAutoClean>
         <requiresAnyMeme>
           <li>Guilty</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       Wave 2 (GRAFFITI_PUNK_IDEOLIGION_SCOPE_1): the remaining 19 memes.
+       Subjects and placement (category/eligibility/poolWeight) are read
+       from design §3.2's own table - see this file's header comment for
+       which three of these are placeholder subject mappings. -->
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Raider</defName>
+    <label>raider glyph</label>
+    <description>An open grabbing hand, closing over a broken box - what's yours is only yours until someone stronger wants it.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Raider</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Taunt</category>
+        <form>Glyph</form>
+        <poolWeight>3</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <requiresAnyMeme>
+          <li>Raider</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Blindsight</defName>
+    <label>blindsight glyph</label>
+    <description>An eye, struck clean through - only the blind perceive the true reality.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Blindsight</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>Blindsight</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Darkness</defName>
+    <label>darkness glyph</label>
+    <description>A lamp, snuffed - drawn by those who have made their peace with the dark.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Darkness</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>Darkness</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Tunneler</defName>
+    <label>tunneler glyph</label>
+    <description>A mountain, with an arrow driven straight into its side - the deep places are home.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Tunneler</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>Tunneler</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Rancher</defName>
+    <label>rancher glyph</label>
+    <description>A hoofprint, pressed deep and fresh - a wayfinding mark left near the pens.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Rancher</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Code</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <requiresAnyMeme>
+          <li>Rancher</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_AnimalPersonhood</defName>
+    <label>animal personhood glyph</label>
+    <description>A paw print beside an open hand, drawn the same size - a claim that the two are equals.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_AnimalPersonhood</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>AnimalPersonhood</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_NaturePrimacy</defName>
+    <label>nature primacy glyph</label>
+    <description>A leaf, splitting a rusted gear clean in half - nature outlasts every machine.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_NaturePrimacy</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>NaturePrimacy</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_TreeConnection</defName>
+    <label>tree connection glyph</label>
+    <description>Roots, linking two trees, drawn as a single unbroken line.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_TreeConnection</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>TreeConnection</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_HumanPrimacy</defName>
+    <label>human primacy glyph</label>
+    <description>A standing figure, drawn over a slumped beast - a taunt for any wall an Animalist ideo calls home.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_HumanPrimacy</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-4</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Taunt</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <requiresAnyMeme>
+          <li>HumanPrimacy</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Supremacist</defName>
+    <label>supremacist glyph</label>
+    <description>A boot, pressed down over a broken chain - a claim of rightful dominance, painted where it will be seen.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Supremacist</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Taunt</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <requiresAnyMeme>
+          <li>Supremacist</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- PLACEHOLDER mapping (this item's open question 3, unresolved) -
+       linked rings is the design doc's own guess, not an owner-confirmed
+       subject. Override when he has an image. -->
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Collectivist</defName>
+    <label>collectivist glyph</label>
+    <description>Linked rings, unbroken - a placeholder subject for Collectivist devotion, pending the owner's own reading.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Collectivist</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Code</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <raidExitEligible>true</raidExitEligible>
+        <requiresAnyMeme>
+          <li>Collectivist</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- PLACEHOLDER mapping (this item's open question 3, unresolved) -
+       a dot inside a ring is the design doc's own guess, not an
+       owner-confirmed subject. Override when he has an image. -->
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Individualist</defName>
+    <label>individualist glyph</label>
+    <description>A single dot, closed inside a ring - a placeholder subject for Individualist pride, pending the owner's own reading.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Individualist</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Jest</category>
+        <form>Glyph</form>
+        <poolWeight>2</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <raidExitEligible>true</raidExitEligible>
+        <requiresAnyMeme>
+          <li>Individualist</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Proselytizer</defName>
+    <label>proselytizer glyph</label>
+    <description>An open mouth, ringed by a radiating spiral - a message meant to spread.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Proselytizer</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-1</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Jest</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <requiresAnyMeme>
+          <li>Proselytizer</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_Transhumanist</defName>
+    <label>transhumanist glyph</label>
+    <description>A circuit trace, bent into a spiral - the body is only the first draft.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Transhumanist</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>Transhumanist</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_FleshPurity</defName>
+    <label>flesh purity glyph</label>
+    <description>A circuit, crossed clean out - a taunt for any wall a Techist ideo calls home.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_FleshPurity</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-4</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Taunt</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <requiresAnyMeme>
+          <li>FleshPurity</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RM_Graffiti_Glyph_HighLife</defName>
+    <label>high life glyph</label>
+    <description>A curling wisp of smoke, sketched loose and easy.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_HighLife</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-1</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Jest</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <requiresAnyMeme>
+          <li>HighLife</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Graffiti_Glyph_Bloodfeeding</defName>
+    <label>bloodfeeding glyph</label>
+    <description>A single drop, fanged - left where the night shift will see it first.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Bloodfeeding</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Taunt</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <requiresAnyMeme>
+          <li>Bloodfeeding</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Anomaly">
+    <defName>RM_Graffiti_Glyph_Ritualist</defName>
+    <label>ritualist glyph</label>
+    <description>A knife, laid across a closed circle - devotion, precisely observed.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Ritualist</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+        <requiresAnyMeme>
+          <li>Ritualist</li>
+        </requiresAnyMeme>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- PLACEHOLDER mapping (this item's open question 3, unresolved) -
+       hull-and-star is the design doc's own guess, not an owner-confirmed
+       subject. Override when he has an image. Never RaidExit per design
+       §3.2 ("Visitor pastes only") - the visitor placer itself is v2, so
+       in v1 this glyph is reachable only via spree/joy and the designator. -->
+  <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Graffiti_Glyph_Shipborn</defName>
+    <label>shipborn glyph</label>
+    <description>A hull plate, stamped with a single star - a placeholder subject for Shipborn pride, pending the owner's own reading.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Shipborn</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-1</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Jest</category>
+        <form>Glyph</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <requiresAnyMeme>
+          <li>Shipborn</li>
         </requiresAnyMeme>
       </li>
     </modExtensions>
