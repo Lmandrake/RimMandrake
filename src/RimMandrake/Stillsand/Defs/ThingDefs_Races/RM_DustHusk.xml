@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DustHusk.xml                        RimMandrake — COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `dune_sea+deep_desert:dormancy-trigger-dune-fauna-reskin-lane-107-live-vfei2-dorma`
+  (dune_sea.md SS4: "there is no circadian clock anywhere in this biome...
+  life here is event-driven. The default state of the dune sea is
+  dormancy... What ends dormancy is not a time of day; it is a trigger —
+  free water, a vibration, a temperature anomaly, blood."; deep_desert.md
+  SS4 "Anhydrobiosis: some things dry to dust and wait... and rehydrate."
+  roster's own new_defs entry (rosters/dune_sea_deep_desert.json):
+  mechanic_load "reskin, no new C#" — "reskin lane: 107 live VFEI2 dormant
+  rows carry the mechanic" (`_assignment_prep.md` SS1.4: "Dormancy-triggered
+  forms: donor mechanic EXISTS — 107 live rows carry 'lies dormant until
+  something wakes it' (mostly VFE-Insectoids 2) — candidates for reskin
+  into trigger-on-water/vibration dune fauna rather than new C#").
+
+  The "107 live rows" point at PRECEDENT, not a specific donor to graft
+  onto: the mechanic itself is the STOCK vanilla comp pair
+  (`CompProperties_CanBeDormant`/`CompProperties_WakeUpDormant`), the same
+  pair `RUT_SealedSleeper` (this item, the_cracked_lands wave) already
+  proved out and read in full from RimWorld/CompWakeUpDormant.cs — no
+  VFEI2 dependency is needed or taken (checked cast_assignment.csv/
+  animal_census.csv first: no VFEI2 species is cast to this biome and none
+  is absorbed into our own RSW_/RUT_ namespace, so grafting a live
+  ThingDef from that mod via ParentName would introduce a new, untested
+  cross-mod inheritance shape this item has never used elsewhere — the
+  stock-comp route is both cheaper and matches the roster's own "no new
+  C#" line exactly).
+
+  RM_-tier, not RUT_: this is invented content with no Star Wars flavor at
+  all, so per Q11a it belongs franchise-free in `mandrake.rm.stillsand`
+  directly (same reasoning as `RM_MirrorGiant`, authored this same pass) —
+  not routed through `WildAnimals_Stillsand.xml`, which exists only to
+  replay content copied off the frozen `RUT_ExtremeDesert.xml` twin.
+
+  `wakeUpOnDamage=true` only (blood — one of dune_sea.md's own three named
+  triggers, "free water, a vibration, a temperature anomaly, blood").
+  Vibration/water-specific waking is the SAME stock-class gap
+  `RUT_SealedSleeper`'s header already measured ("no water/terrain-type
+  targeting exists in the stock class") — that half is NOT invented here;
+  it stays real future C# if the owner wants it (parallel posture to
+  `CRACKED_LANDS_SEALED_WAKE_MECHANISM_1`, not re-filed as its own item
+  since dune_sea.md never singles out ONE specific wake-trigger species the
+  way the_cracked_lands.md's Sealed does — a plain damage-wake dormant
+  organism already satisfies this slug's own "reskin, no new C#" ask as
+  written).
+
+  Body: grain-scale per dune_sea.md SS4's bimodal law ("giants on the
+  surface, and grain-scale life below it, with a hard gap where every
+  ordinary animal would be") — bodySize 0.15, scaled off the census's own
+  VFEI2_Boomtick reference point (bs 0.18, the smallest unclaimed VFEI2 row
+  checked this pass, used only as a scale reference — no VFEI2 asset or
+  def reused, same "dormant-status/live-but-unabsorbed donor as scale
+  reference only" precedent this item has used repeatedly). Vanilla
+  QuadrupedAnimalWithPawsAndTail body, same body RUT_SealedSleeper used —
+  no new BodyDef, no external dependency.
+
+  Art: genuinely new, no existing render found for "dust husk"/
+  "dormant"/"husk" tied to this biome (checked infrastructure/artpipe/
+  {done,pending,registry.jsonl} this pass — clean, only unrelated hits).
+  Three facing jobs filed, rmdusthusk_v1_{south,east,north} — prompt
+  written per SS4's own pigment law ("bright white is the dayside's
+  pigment") and SS6's ban on shine/crystal look (desiccated, matte, dusty,
+  never glassy).
+
+  🔴 THE NAME IS NOT SETTLED — RM_DustHusk is the INTERNAL working
+  defName, same posture RUT_SealedSleeper/RUT_MortuaryCrawler used. Filed
+  STILLSAND_SHIPPING_NAMES_1 this pass to cover it, alongside RM_MirrorGiant.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_DustHusk</defName>
+    <label>dust husk</label>
+    <description>A grain-scale animal that spends most of its existence as dry, motionless dust wedged between sand grains — not dormant in the way a sleeper is dormant, but genuinely desiccated, its whole metabolism banked to nothing. A sandstorm can carry thousands of them aloft as an ordinary-looking dust cloud, and most of what looks like empty sand out here is actually a field of them, waiting. Only real damage rouses one; nothing else out here is worth the water it would cost to wake for.</description>
+    <receivesSignals>true</receivesSignals>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <Mass>0.4</Mass>
+      <MarketValue>12</MarketValue>
+      <Wildness>0.9</Wildness>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>999</ComfyTemperatureMax>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandible</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <!-- Stock comp pair (RUT_SealedSleeper precedent, this item). Only
+             "blood" (damage) is wired here — see header for why the
+             vibration/water triggers dune_sea.md also names stay
+             unbuilt-and-unclaimed rather than invented. -->
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>false</predator>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.05</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>60</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>15</lifeExpectancy>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 0.4)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_DustHusk</defName>
+    <label>dust husk</label>
+    <labelPlural>dust husks</labelPlural>
+    <race>RM_DustHusk</race>
+    <combatPower>4</combatPower>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DustHusk/RM_DustHusk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DustHusk/RM_DustHusk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DustHusk/RM_DustHusk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

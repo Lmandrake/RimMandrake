@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_MirrorGiant.xml                     RimMandrake — COMMISSION_LEDGER_CLEANUP_1
+
+  Resolves ledger slug
+  `dune_sea+deep_desert:mirror-plated-sun-axis-asymmetric-giant`
+  (dune_sea.md SS4: "every organism is polarised on the sun-axis... the
+  sun-face is mirror, ceramic, ablative armour... the shade-face carries
+  every opening the organism has"; SS4's own "Roster consequences" names
+  "mirror/ceramic-plated surface megafauna" and "sun-axis-asymmetric
+  bodies" as WANTED). roster's own new_defs entry (rosters/
+  dune_sea_deep_desert.json): "mirror-plated sun-axis asymmetric giant",
+  mechanic_load "none blocking" — a pure def/art commission, no C# owed
+  for the giant itself.
+
+  Design record: EXTREME_DESERT_GIANT_COMMENSALS_1 (closed) raised this
+  exact creature as an open question — "an existing RUT_ExtremeDesert
+  giant (reskin/verify) or a new mirror-plated chassis authored to the
+  letter of SS4's sun-face/shade-face split?" — and left it undecided.
+  Resolved here as a NEW chassis: none of the biome's three existing
+  giants (RSW_KraytDragon/RSW_GreaterKraytDragon/RSW_WarWyrm, all cast in
+  cast_assignment.csv to a DIFFERENT ecological read — "subsurface
+  strike"/"the giant" as ambush/bulk, never "surface-walking moving
+  shadow") carry the sun-face/shade-face asymmetry this slug asks for, and
+  that asymmetry is a property of the ART (a genuinely two-toned body,
+  mirror-bright dorsal / soft-and-dark ventral), not something a uniform
+  retint of an existing texture can express — so this is authored as a
+  new invented (non-canon) chassis rather than a reskin, and correctly
+  lives RM_-tier per Q11a (an invented name is not Star Wars IP) rather
+  than routed through the RSW_/Utinni patch layer.
+
+  Body: plain vanilla QuadrupedAnimalWithHooves (Elephant/Muffalo family)
+  at giant scale — "a hundred-tonne walker" (SS4) reads as slow, massive,
+  four-legged megafauna, no new BodyDef needed and no Star Wars body
+  dependency for an RM_-tier def. Herbivore/grazer, non-aggressive: SS4's
+  giants are described as load-bearing terrain features and shade-casters
+  for the ecology living in them, not predators — trainability None (same
+  "indifferent to the intelligent races" law this mod family already uses
+  for other extreme-biome giants).
+
+  Per RUT_ExtremeDesert.xml's own 2026-09-24 freeze banner ("every CONTENT
+  fix for the Extreme Desert lands in mandrake.rm.stillsand only, never
+  here"), this new species is authored directly in RM_Stillsand and wired
+  into RM_Stillsand_Biome.xml's own (until now empty) wildAnimals node —
+  not patched onto the frozen RUT_ twin, and not routed through
+  WildAnimals_Stillsand.xml (that file exists only to replay
+  ALREADY-EXISTING Star-Wars-named content copied off the frozen twin; a
+  brand new RM_-tier def owned by this mod needs no patch at all). The
+  live world (still running on frozen RUT_ExtremeDesert.xml until Phase
+  B's repaint) does not carry this giant yet, by design — same posture
+  wave 11's RUT_YearningFruit used for RUT_Greentide.
+
+  Commonality set below every existing giant's own (WarWyrm 0.2,
+  KraytDragon 0.15, GreaterKraytDragon 0.001) per dune_sea.md's own
+  "Population target: sparse to the point of discomfort... a correct dune
+  sea map is mostly nothing."
+
+  Art: no existing render found for "mirror giant"/"sun-axis giant"/
+  "mirrorplated" in infrastructure/artpipe/{done,pending,registry.jsonl}
+  (checked this pass). One 3-facing job filed, rmmirrorgiant_v1_{south,
+  east,north} — prompt written to require the sun-face/shade-face split
+  explicitly (mirror-white, hard-edged dorsal plating vs. dark, soft
+  ventral/shaded flank), the one property a reskin could never carry.
+
+  🔴 THE NAME IS NOT SETTLED — RM_MirrorGiant is the INTERNAL working
+  defName (same posture RUT_SealedSleeper/RUT_MortuaryCrawler used). No
+  Stillsand shipping-names card exists yet; filed
+  STILLSAND_SHIPPING_NAMES_1 this pass to cover it.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_MirrorGiant</defName>
+    <label>mirror giant</label>
+    <description>A walking mountain whose upper hide is a fused sheet of mirror-bright, ablative plate — nothing soft is ever turned toward the sun. Every opening it has, every soft fold of skin, every sense organ, lives instead on its lower, shaded flank, permanently turned away from the light. It moves at the pace of a shadow on a sundial, and the shade it throws is the coolest, busiest ground for a hundred kilometres in any direction. Nothing here has ever needed to chase anything; the giant simply keeps walking, and whatever needs shade learns to walk with it.</description>
+    <statBases>
+      <MoveSpeed>1.8</MoveSpeed>
+      <Mass>90000</Mass>
+      <MarketValue>4200</MarketValue>
+      <Wildness>0.9</Wildness>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>999</ComfyTemperatureMax>
+      <ArmorRating_Sharp>1.6</ArmorRating_Sharp>
+      <ArmorRating_Blunt>1.2</ArmorRating_Blunt>
+      <ArmorRating_Heat>3.5</ArmorRating_Heat>
+      <PainShockThreshold>1.0</PainShockThreshold>
+      <Flammability>0</Flammability>
+    </statBases>
+    <tools>
+      <li>
+        <label>plated foreleg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>plated foreleg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <predator>false</predator>
+      <herdAnimal>false</herdAnimal>
+      <baseBodySize>18.0</baseBodySize>
+      <baseHealthScale>20.0</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <trainability>None</trainability>
+      <wildness>0.9</wildness>
+      <roamMtbDays>40</roamMtbDays>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <lifeExpectancy>400</lifeExpectancy>
+      <gestationPeriodDays>90</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Muffalo_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_MirrorGiant</defName>
+    <label>mirror giant</label>
+    <labelPlural>mirror giants</labelPlural>
+    <race>RM_MirrorGiant</race>
+    <combatPower>900</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_MirrorGiant/RM_MirrorGiant</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_MirrorGiant/RM_MirrorGiant</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_MirrorGiant/RM_MirrorGiant</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
