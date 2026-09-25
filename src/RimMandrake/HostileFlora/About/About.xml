@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.hostileflora</packageId>
+  <name>RimMandrake: Hostile Flora</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <steamWorkshopUrl />
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.creaturebehaviors</li>
+  </loadAfter>
+  <description>HOSTILE_MOBILE_PLANTS_1 / REACTION_MECHANISM_GENERALISE_1 step 2 —
+owner ruling 2026-09-22, verbatim: "yes we should ALSO make some 'animals' that
+are hostile mobile plants too, that's cool." His quotation marks around
+"animals" are the design note: these are real ThingDef+race+PawnKindDef animal
+defs with real AI, never Plant defs — a RimWorld Plant cannot move or fight.
+
+RM tier per the item's own tiering ruling (Q11a): an INVENTED exotic name
+(gallowroot) is not Star Wars IP and lives here, franchise-free. Behaviour is
+NOT duplicated here — every reaction (waking hostile, waking same-kind
+neighbours) is the shared mandrake.rm.creaturebehaviors mechanism
+(RM_CompReactionSource + RM_ReactionPropagationRule_SameKindWithinRadius +
+RM_ReactionResponseRule_ActivateSelf); this mod supplies only the species def
+itself.
+
+⚠️ THIS IS A MINIMAL WAVE, NOT THE FULL BUILD HOSTILE_MOBILE_PLANTS_1 OWES.
+It exists to host REACTION_MECHANISM_GENERALISE_1 step 2 (same-kind-within-
+radius propagation spending a SHARED budget) as a real second consumer of the
+mechanism the wasps proved, not to answer that item's five still-open design
+questions. Specifically NOT done here, and still owed to HOSTILE_MOBILE_PLANTS_1
+proper:
+  - The design sitting on those five questions (which biome(s), how many/how
+    different, what makes it read as a plant rather than an animal, how
+    dangerous to whom, huntable/harvestable) — item explicitly says "author
+    nothing before that" for the ROSTER; this is one signature creature built
+    to prove the mechanism, not a roster.
+  - The "rooted and still, with an occasional leaf-twitch" idle read and its
+    UNDECIDED animation route — this def uses a plain animal MoveSpeed and
+    ordinary wander/idle AI. It does not yet read as a plant standing still;
+    that is real remaining work, flagged UNDECIDED in the item on purpose.
+  - A proximity trigger ("hostile to anything that comes close"). The shared
+    reaction mechanism's only trigger surfaces are damage
+    (PostPostApplyDamage) and an explicit TriggerReaction() call — there is no
+    "something walked within N cells" trigger yet. This def only reacts when
+    hurt (or when propagated into by a neighbour that was hurt); a colonist
+    can currently walk right up to an undisturbed one.
+  - Real art. bodyGraphicData below reuses the vanilla Tortoise sheet
+    (tinted), the same placeholder-reuse move RM_Gelatid already makes in
+    mandrake.rm.gelatinousslime — checked infrastructure/artpipe this pass,
+    no gallowroot job exists yet, queued or done.
+  - Biome roster placement. Not wired into any BiomeDef's wildAnimals —
+    placement is the owning biome's own review sitting per
+    BIOME_SPECIFIC_FAUNA_LAW_1, never a sweep, and no biome has been chosen.
+
+Mod Settings: reuses mandrake.rm.creaturebehaviors' existing
+reactionSourceSpawnEnabled / reactionSourceBudgetMultiplier — the shared event
+budget IS the one number the mechanism's own spec calls load-bearing, and it is
+already a toggle+dial there. No new setting is owed for this mod alone.</description>
+</ModMetaData>

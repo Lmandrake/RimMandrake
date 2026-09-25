@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -42,6 +43,19 @@ namespace RimMandrake.CreatureBehaviors
 
         public int RemainingBudget { get; private set; }
 
+        // REACTION_MECHANISM_GENERALISE_1 step 2 (HOSTILE_MOBILE_PLANTS_1).
+        // Every source a propagation rule has already woken within THIS
+        // event — not Scribed, not shared across events, discarded with the
+        // rest of the event when the trigger's call stack unwinds. Exists
+        // so a same-kind-within-radius propagation rule (which recurses
+        // outward from each newly-woken neighbour, letting the swarm
+        // actually spread rather than reaching only the origin's own
+        // radius) cannot re-activate a source it already reached by a
+        // different path and cannot loop forever chasing its own tail. The
+        // shared budget already bounds the TOTAL work an event can do; this
+        // set is what stops the SAME unit of work being paid for twice.
+        private HashSet<Thing> _activatedSources;
+
         public RM_ReactionEvent(Thing origin, Map map, IntVec3 originCell, string tag, Pawn instigator, int budget)
         {
             Origin = origin;
@@ -61,6 +75,18 @@ namespace RimMandrake.CreatureBehaviors
             int granted = Mathf.Clamp(amount, 0, RemainingBudget);
             RemainingBudget -= granted;
             return granted;
+        }
+
+        // Returns true the first time `source` is marked for this event
+        // (the caller should proceed), false on every later call for the
+        // same source (already handled — the caller must not act again).
+        public bool TryMarkActivated(Thing source)
+        {
+            if (_activatedSources == null)
+            {
+                _activatedSources = new HashSet<Thing>();
+            }
+            return _activatedSources.Add(source);
         }
     }
 }

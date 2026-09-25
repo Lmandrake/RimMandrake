@@ -192,15 +192,23 @@ namespace RimMandrake.CreatureBehaviors
     //      which stay whatever the race's own extension says).
     //  34. reactionSourceSpawnEnabled / reactionSourceBudgetMultiplier —
     //      RM_CompReactionSource + RM_ReactionResponseRule_SpawnPawns
-    //      (REACTION_MECHANISM_GENERALISE_1 step 1, GREENTIDE_WASP_SWARM_1).
-    //      Off: a disturbed reaction source (a skerrel gall, and any future
-    //      consumer wired the same way) never builds a reaction event at all
-    //      — nothing spawns, same as guardianAlarmEnabled for the shipped
-    //      alarm. The dial scales the SHARED event budget only (never the
-    //      response's own per-map population ceiling, which stays whatever
-    //      that response's own config says) — 0 disables spawning entirely
-    //      without touching the toggle, which is the same "a number is the
-    //      experience" shape as breedRateMultiplier.
+    //      (REACTION_MECHANISM_GENERALISE_1 step 1, GREENTIDE_WASP_SWARM_1)
+    //      and, since step 2 (HOSTILE_MOBILE_PLANTS_1),
+    //      RM_ReactionPropagationRule_SameKindWithinRadius +
+    //      RM_ReactionResponseRule_ActivateSelf (a gallowroot). Off: a
+    //      disturbed reaction source (a skerrel gall, a gallowroot, and any
+    //      future consumer wired the same way) never builds a reaction event
+    //      at all — nothing spawns and nothing wakes its own kind nearby,
+    //      same as guardianAlarmEnabled for the shipped alarm. The dial
+    //      scales the SHARED event budget only — the one total every
+    //      propagation hop and every response spends from — never a
+    //      response's own per-map population ceiling or a propagation rule's
+    //      own radius/per-neighbour cost, which stay whatever that rule's own
+    //      config says. 0 disables the whole family (spawning AND
+    //      propagation) without touching the toggle, the same "a number is
+    //      the experience" shape as breedRateMultiplier. No new setting is
+    //      owed for the plant swarm specifically: it shares this exact dial
+    //      because it shares the exact mechanism.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -504,10 +512,11 @@ namespace RimMandrake.CreatureBehaviors
             speciesSpacingCookDamageMultiplier = list.Slider(speciesSpacingCookDamageMultiplier, 0f, 3f);
             list.GapLine();
 
-            list.CheckboxLabeled("Reaction sources (hive/gall spawn response)", ref reactionSourceSpawnEnabled,
-                "On: disturbing a reaction source (a skerrel gall, and any future consumer wired the same "
-              + "way) spawns a bounded batch of hostile creatures nearby. Off: disturbing it does nothing "
-              + "at all — no spawn, no budget spent.");
+            list.CheckboxLabeled("Reaction sources (hive/gall spawn, plant swarm)", ref reactionSourceSpawnEnabled,
+                "On: disturbing a reaction source (a skerrel gall, a gallowroot, and any future consumer "
+              + "wired the same way) spawns a bounded batch of hostile creatures nearby and/or wakes its "
+              + "own kind within range. Off: disturbing it does nothing at all — no spawn, no swarm, no "
+              + "budget spent.");
             list.Label("Reaction spawn budget: " + reactionSourceBudgetMultiplier.ToString("0.00") + "x");
             reactionSourceBudgetMultiplier = list.Slider(reactionSourceBudgetMultiplier, 0f, 3f);
 
