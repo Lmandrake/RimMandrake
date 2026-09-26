@@ -82,12 +82,13 @@ yes/no, not a blank.
    person** (owner: *"Letters should come from the Narrator. They will speak of the
    droid in third person."*). Doc §1's first-person derivation is overturned and owes
    a rewrite.
-2. **Droid budget unit and number.** He rejected per-game-day for the gods; the
-   doc proposes a separate `droids` bucket at 2 per real-world hour. His number.
+2. **Droid budget — RULED 2026-09-25 by card: droids share the gods' budget**, one pool, no
+   separate `droids` bucket.
 3. **Latency — RULED 2026-09-25: a late letter is fine for now** (up to 2 × timeout,
    ≈2 min).
-4. **Register table (§2.2).** Eight one-line tone choices. The two that most need
-   his ear: Battle (comically bad threat assessment) and Power (the gonk syllable).
+4. **Register table (§2.2) — Battle RULED 2026-09-25: the tone varies across deadpan comedy,
+   plain report and per-personality** (owner: *"Varies across all these"*). Power (the gonk
+   syllable) and the other six rows are still his to hear.
 5. **Which of the four earn the LLM — RULED 2026-09-25 by card: all four live**, R included,
    accepting that a hallucinated past cannot be caught by the validator.
 6. **Programmable tier — RULED 2026-09-25 by card: programmable droids never fire.**
