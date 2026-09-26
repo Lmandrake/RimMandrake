@@ -111,7 +111,7 @@ namespace RimMandrake.Pyrelands
 
         // The warmth hediff's own disappearsAfterTicks (180 — re-stamped every aura
         // interval, so walking away from the herd loses it within a few seconds
-        // rather than lingering) is hardcoded directly on RUT_FurnaceWarmth's
+        // rather than lingering) is hardcoded directly on RM_FurnaceWarmth's
         // HediffCompProperties_Disappears in Defs/HediffDefs/RUT_PyrelandsHediffs.xml.
         // A C# copy of that number here was never read by anything — removed rather
         // than left as a second, driftable source of the same fact.
