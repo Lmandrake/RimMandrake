@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T00:11:55Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-26T02:33:38Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -810,6 +810,15 @@ kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
+## BLUEDESERT_RM_MOD_BUILD_1 Phase A: build RM_BlueDesert as its own RimMandrake mod (mandrake.rm.bluedesert) — the Blue Desert - BLUE_DESERT_LIFE_AUTHORING_1 builds INTO this mod
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
+prose:    infrastructure/state/items/BLUEDESERT_RM_MOD_BUILD_1.md
+
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing
 row:      unassigned
@@ -890,6 +899,15 @@ target:   v1
 kind:     build
 summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
 prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
+
+## WATERTRUCE_CTOR_BIOME_READ_1 RM_MapComponent_WaterTruce reads map.Biome in its constructor (line ~51): on save load TileInfo is not resolved yet, WorldGrid index throws, and the component fails to instantiate on EVERY map (Player.log 2026-09-25: 'Could not instantiate a MapComponent of type ...RM_MapComponent_WaterTruce', 4-9x per load, also in FOUNDRY's 09-24 log). Water truce is silently off on every loaded map. Move the biome read to FinalizeInit/lazy.
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/WATERTRUCE_CTOR_BIOME_READ_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WATERTRUCE_CTOR_BIOME_READ_1.md
 
 ## SCALD_WATER_AGITATION_FLECKS_1 Scald wreck shadowData fix + ambient water-agitation ripple mechanism (margin calm / shallow light / deep heavy)
 state:    doing
@@ -1385,26 +1403,6 @@ kind:     build
 thin:     no ## verify
 summary:  - New biome def: RMWarscar, label Warscar (no article — deliberate, per the
 prose:    infrastructure/state/items/SCARLANDS_STANDALONE_MOD_1.md
-
-## NIGHTSIDEICE_RM_MOD_BUILD_1 Phase A: build RM_NightsideIce as its own RimMandrake mod (mandrake.rm.nightsideice) — the Nightside Ice - thin by design, but a Lantern Deeps host surface
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/NIGHTSIDEICE_RM_MOD_BUILD_1.md
-
-## BLUEDESERT_RM_MOD_BUILD_1 Phase A: build RM_BlueDesert as its own RimMandrake mod (mandrake.rm.bluedesert) — the Blue Desert - BLUE_DESERT_LIFE_AUTHORING_1 builds INTO this mod
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/BLUEDESERT_RM_MOD_BUILD_1.md
 
 ## POISONFOREST_RM_MOD_BUILD_1 Phase A: build RM_PoisonForest as its own RimMandrake mod (mandrake.rm.poisonforest) — the Poison Forest
 state:    proposed
@@ -2045,13 +2043,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md
-
-## WATERTRUCE_CTOR_BIOME_READ_1 RM_MapComponent_WaterTruce reads map.Biome in its constructor (line ~51): on save load TileInfo is not resolved yet, WorldGrid index throws, and the component fails to instantiate on EVERY map (Player.log 2026-09-25: 'Could not instantiate a MapComponent of type ...RM_MapComponent_WaterTruce', 4-9x per load, also in FOUNDRY's 09-24 log). Water truce is silently off on every loaded map. Move the biome read to FinalizeInit/lazy.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WATERTRUCE_CTOR_BIOME_READ_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WATERTRUCE_CTOR_BIOME_READ_1.md
