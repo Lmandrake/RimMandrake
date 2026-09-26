@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T10:10:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T10:13:21Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -837,6 +837,15 @@ kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
+## GREENTIDE_RM_MOD_BUILD_1 Phase A: build RM_Greentide as its own RimMandrake mod (mandrake.rm.greentide) — the Greentide - twin pair, mod EXISTS (123 vs 287 lines)
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
+prose:    infrastructure/state/items/GREENTIDE_RM_MOD_BUILD_1.md
+
 ## STONEBACK_BOKKA_ART_STANDARD_1 Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)
 state:    doing
 row:      unassigned
@@ -1468,16 +1477,6 @@ thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
 
-## GREENTIDE_RM_MOD_BUILD_1 Phase A: build RM_Greentide as its own RimMandrake mod (mandrake.rm.greentide) — the Greentide - twin pair, mod EXISTS (123 vs 287 lines)
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/GREENTIDE_RM_MOD_BUILD_1.md
-
 ## GREENTIDE_JUNGLE_TREE_ROSTER_1 The Greentide gets ten-plus jungle trees of our own, plus its signature giant
 state:    proposed
 row:      unassigned
@@ -1687,16 +1686,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  WARDENMOTHERSUCCESSION1 — warden mother young: self-taming, water-scoped training, and succession on her death
 prose:    infrastructure/state/items/WARDEN_MOTHER_SUCCESSION_1.md
-
-## WEBWORK_EGG_RECKONING_QUEST_1 The Reckoning quest family: egg-assassination quest + plant/hatch C# verb (S5 rulings 2,3,6,7)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
-prose:    infrastructure/state/items/WEBWORK_EGG_RECKONING_QUEST_1.md
 
 ## DEEPFIRE_PAINT_LIVE_VERIFY_1 Deepfire painting + worn-glow darkness tradeoff (needs live bridge)
 state:    proposed
