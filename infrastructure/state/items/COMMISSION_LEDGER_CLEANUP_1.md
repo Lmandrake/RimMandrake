@@ -1082,3 +1082,57 @@ directly owed to this item's own remaining scope** (6 nightside_ice + the
 still-open fever_wood, which is not this item's to drop, only to defer
 past this session); the other 5 owed slugs now live under
 `TERMINAL_SEAS_FLOOR_DRESSING_1`. This item stays open (doing).
+
+## Wave 16 (2026-09-26, FOUNDRY, art-queuing pass) — re-verified both remaining
+groups; 0 jobs queued, both still blocked for reasons this pass's scope
+cannot resolve
+
+Scope this pass: find already-approved-but-unqueued art and file it via
+`fill_queue.py`, no new ThingDef/mechanic design. Re-ran wave 15's own
+concurrency check (`git status`, `git log --since` on the relevant paths, live
+`ps aux`) rather than trusting a ~7.5h-stale read, per this item's own
+standing "watch out."
+
+- **`the_fever_wood` (1 slug, ant-raider wiring)**: no live process or commit
+  touching FeverWood since wave 15; `DIRTY_CODE_REVIEW_STANDING_LOOP_1` (the
+  sibling wave 15 was avoiding) is still `doing` but not currently running.
+  **Still not queueable regardless of collision**: read `the_fever_wood.json`'s
+  own roster row — this slug is theft-hauling RAID-AI wiring on an off-map
+  raider (a resident feralisk is explicitly banned by §4/the two-front-war
+  design), i.e. a mechanics/behavior ask, not an art/def commission. No C#
+  exists for it (`grep -rli theft src/RimMandrake/FeverWood` — no matches).
+  There is no creature/plant art to brief without first deciding which
+  existing raider asset the wiring attaches to, which is exactly the
+  invented-design this pass is scoped to avoid. Left untouched, as wave 15
+  did, but for a mechanics reason now recorded rather than a collision alone.
+- **`nightside_ice` (6 slugs)**: confirmed still unauthored — no ThingDefs
+  under `src/RimMandrake/NightsideIce/`. Checked whether the two stale
+  pending-turned-done art batches wave 14 flagged (`nightside_mahllik_*`,
+  `nightside_zhissa_*`, 3 facings each) resolve any of the 6 slugs: both are
+  now in `infrastructure/artpipe/done/` (fully rendered), but nothing in
+  `src/` references either name and wave 15's own note explicitly left the
+  mahllik/zhissa-to-slug mapping as an open judgment call ("decide whether
+  ... their queued art still fits a slug, or start clean") — i.e. this
+  item's prior waves never actually confirmed those two renders were
+  authored FOR one of these 6 concepts (chemical frosts / sessile catalytic
+  sheets / icy insects / the one-move animal / blind thermal tunnelers /
+  thermal-sensing seam striker) rather than for some other, uncaptured
+  nightside creature idea. Assuming a mapping to queue a "matching" set of
+  facings for the other 4 would be exactly the invented-design judgment this
+  pass's scope excludes. **Left untouched.**
+
+**Net result: 0 jobs filed this pass.** Also re-checked
+`infrastructure/artpipe/pending/` (0), the closed flora `art:improve` channel
+(`Transient/sheet_orphan_flora_improve_channel_2026-09-20.md`: already fully
+accounted, 0 owed) and two named-anchor candidates outside this item
+(`SUUSH_CAULDRON_DRIFTER_1`: art already queued today at priority 20, 3
+facings, done; `GREYSEA_ANCHOR_CREATURES_1`: the ossuary shrimp/crusted giant
+anchors are already built, and the two genuinely unbuilt pieces — the
+pillar-mason and the Aerofleet replacement — both need a creature/structure
+concept decided before an art brief can be written, which is design work, not
+art-queuing) as possible fallback sources; neither yielded a queueable row
+either. **This item's own remaining 7 slugs cannot be advanced by an
+art-queuing-only pass** — the next pass against them needs to be a
+design-authoring pass (author the nightside_ice concepts, or rule
+mahllik/zhissa onto specific slugs) or wait for `the_fever_wood`'s raid-AI
+mechanic to be designed elsewhere. This item stays open (doing).
