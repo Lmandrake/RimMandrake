@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEBWORK_FLORA_ROSTER_1 build. Authority:
+     design/Jawa/worldbuilding/biomes/webwork_flora_roster_2026-09-23.md — 16
+     RM_-tier invented plants organised in four registers (the thicket, the
+     plumbing, the nightmare plants, the white half and the margin). These
+     replace the vanilla-Core placeholder wildPlants (Plant_TreeOak/
+     Plant_TreePoplar/Plant_Bush/Plant_TallGrass/Plant_Berry) that
+     WEBWORK_RM_MOD_BUILD_1 shipped on RM_Webwork_Biome.xml as an interim
+     "loads on Core alone" filler, per that item's own comment naming this
+     roster item as the follow-on that supplies the real cast.
+
+     🔴 The 7 donor rows this roster's own §7 disposes of
+     (AB_JungleTree/RG_Plant_TropicalChokevine/AB_TangleTea/AB_Gomphoeria/
+     AB_RedBugloss/AB_Aaklac cut; Plant_TookeTrap_Wild moved to the Utinni
+     layer, sitting record §6 rulings 8/9) live ONLY on the FROZEN
+     `RUT_Webwork.xml` twin, which this build does not touch (Phase A rule:
+     the frozen def is carried byte-for-byte until the terminal paint). They
+     were never copied into RM_Webwork, so there is nothing to physically cut
+     here — the disposition is satisfied by RM_Webwork simply never carrying
+     them and by `Plant_TookeTrap_Wild` arriving only through
+     UtinniPatches/Patches/WildPlants_Webwork.xml below.
+
+     No new C# — every mechanism the roster names (churn engine, snap-trigger,
+     needle-cast, scent-lure, front-creep, fresh/withered route-state) is
+     flagged OWED by the roster doc itself; these are plain wildPlants rows
+     wired to existing shipped systems where one already exists
+     (RM_MapComponent_FrontCreep for grennick's context) and otherwise scoped
+     as future build work, same precedent as FEVERWOOD_FLORA_ROSTER_1.
+
+     ART: infrastructure/artpipe/registry.jsonl, done/, _artsrc/ and pending/
+     were searched for all 16 names before this build — zero hits (MEASURED,
+     sanity-probed against korrum/stoneback/hawkbat which all returned real
+     counts). Every row below ships a flat-color placeholder PNG (same idiom
+     as RM_FeverWoodFlora.xml's placeholders: a filled ellipse + dark outline
+     on a transparent 256x256 canvas) and a fresh artpipe queue entry
+     (infrastructure/artpipe/pending/webwork_plant_<name>.json,
+     rimflow_item_id=WEBWORK_FLORA_ROSTER_1). -->
+<Defs>
+
+  <!-- ===================== THE THICKET — the green half (5 rows) ===================== -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Kollavane</defName>
+    <label>kollavane</label>
+    <description>Not one tree but a standing braid of dozens — pale green whips fused into a dark trunk, new shoots erupting from the base while the crown's older wood dies black. It is visibly several ages at once. The thicket's body: the young whip-masses are what the nest is woven from, and its churn-dead wood is the biome's only timber — nobody fells a living one, they salvage what the braid discarded.</description>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Kollavane/RM_Kollavane_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.5, 0.3)</volume>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>40</pathCost>
+    <plant>
+      <fertilityMin>0.4</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>35</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>50</harvestYield>
+      <harvestWork>800</harvestWork>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>2.2~3.2</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>50</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>true</interferesWithRoof>
+      <blockAdjacentSow>true</blockAdjacentSow>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Vessark</defName>
+    <label>vessark</label>
+    <description>A muscular grey-green cable as thick as a leg, coiled around kollavane braids and around its own kind, bark scarred where it constricts. Never freestanding — it is always on something. The churn made legible: where vessark wins, a braid dies and a gap opens; where it loses, a path closes.</description>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Vessark/RM_Vessark_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>15</pathCost>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>20</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>1.4~2.0</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>20</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Tavrosk</defName>
+    <label>tavrosk</label>
+    <description>A squat tree that is mostly trunk — a glossy, distended bole streaked with dried amber runs where old taps wept, under a mean little crown. It looks kept, like a barrel someone owns. Its sweet volatile sap is tapped as drink, trade good, and still-burner fuel.</description>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Tavrosk/RM_Tavrosk_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.25, 0.35, 0.25)</volume>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>25</pathCost>
+    <plant>
+      <fertilityMin>0.4</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>30</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>12</harvestYield>
+      <harvestWork>400</harvestWork>
+      <harvestedThingDef>RM_TavroskLiquor</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>1.6~2.2</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>15</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Dulloth</defName>
+    <label>dulloth</label>
+    <description>Broad rigid leaves the size of doors, held flat and level, meeting neighbouring dulloth pane-to-pane with almost no gap. From below it is a ceiling; from above, a sealed floor of dark green. The canopy sealer — the reason the gloom is total. Cutting dulloth is how a clearing is made.</description>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Dulloth/RM_Dulloth_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.4, 0.3)</volume>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>20</pathCost>
+    <plant>
+      <fertilityMin>0.4</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>25</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>2.0~2.6</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>35</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>true</interferesWithRoof>
+      <blockAdjacentSow>true</blockAdjacentSow>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Brimlock</defName>
+    <label>brimlock</label>
+    <description>A leaning trunk swollen into a drum-tight bladder, its skin stretched and traced with dark water-veins, faintly translucent where the sun ever reaches it. It audibly sloshes when struck. The drunk river, held in flesh — cut one and water runs out, the only water a traveller will find in this jungle.</description>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Brimlock/RM_Brimlock_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.25, 0.4, 0.25)</volume>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>20</pathCost>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>30</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>20</harvestYield>
+      <harvestWork>300</harvestWork>
+      <harvestedThingDef>RM_BrimlockWater</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>1.8~2.4</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ===================== THE PLUMBING — the stolen river (3 rows) ===================== -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Threllick</defName>
+    <label>threllick</label>
+    <description>A dense mat of interlaced surface roots, grey-brown and slick, running in visible strands between the thicket's trunks. It is the ground over most of the biome — you walk on it, and it is why walking is hard. The stolen river's first plumbing: every plant here is plumbed into it.</description>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Threllick/RM_Threllick_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.8~1.0</visualSizeRange>
+      <wildOrder>3</wildOrder>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>60</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Sellith</defName>
+    <label>sellith</label>
+    <description>A pale green weed that grows only along the silk irrigation gutters, rooted into the drip, hanging in neat fringes under the lines. Its shape is the web's shape — it never occurs except in runs. The gutter-weed: a sellith run overhead means a live gutter, means stolen water moving.</description>
+    <statBases>
+      <MaxHitPoints>15</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Sellith/RM_Sellith_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.7~1.0</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>15</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Varrisk</defName>
+    <label>varrisk</label>
+    <description>A dull green sedge standing in oddly even stands — spaced, aligned, unmistakably planted rather than grown. Dry-country foliage, waxed against the heat. The reach: the irrigated lowland cover at the end of the plumbing. Where varrisk stands, silk water reaches; where it stops, the desert has won.</description>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Varrisk/RM_Varrisk_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>3</pathCost>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>12</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>20</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ===================== THE NIGHTMARE PLANTS (3 rows) ===================== -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Kessaroth</defName>
+    <label>kessaroth</label>
+    <description>A low plant that is mostly trap: two ribbed, in-curved jaw-leaves held sprung and open, dull green outside, bone-pale within — the biome's palette in a mouth. A swallowed bulge shows in the stem of a fed one. The free tier's snap-trap; being held in this biome is the real danger. The snap-trigger/immobilize hazard mechanism is a follow-on build.</description>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Kessaroth/RM_Kessaroth_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Norrveth</defName>
+    <label>norrveth</label>
+    <description>A leafless dark wand, chest high, ringed at intervals with collars of translucent needle-spikes that shiver when anything passes. Spent collars leave bare rings — a norrveth's history is written on its stem. Disturbed, it flings a collar of glassy needles; the needle-cast fragmentation hazard is a follow-on build.</description>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Norrveth/RM_Norrveth_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>14</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>1.0~1.4</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Sorrivel</defName>
+    <label>sorrivel</label>
+    <description>A single heavy bell-flower, wine-dark and wet-looking, bowed to head height on a bent stalk, dripping a syrup whose sweetness carries absurdly far. Nothing about it is pale. The bait — the plantation's lure crop, sown by the spiders themselves. A sorrivel in bloom means you are standing in a larder. Deliberately deceptive: it must read as attractive, not valuable.</description>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Sorrivel/RM_Sorrivel_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>14</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.9~1.2</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ===================== THE WHITE HALF AND THE MARGIN (5 rows) ===================== -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Pellareth</defName>
+    <label>pellareth</label>
+    <description>Great strangely pale flowers on grey stalks, bone-white and slightly glowing in the gloom, growing in runs and arcs that are never random — the white traces the web. Withered heads go grey and papery but stand. Fresh blooms mean an active line; withered runs mean the safe path. The fresh/withered route-signal state machine is a follow-on build.</description>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Pellareth/RM_Pellareth_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>12</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>1.0~1.5</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Ruddreth</defName>
+    <label>ruddreth</label>
+    <description>A squat rosette of rust-red blooms — the only warm colour in the biome — growing in a ring on darkened, grease-stained ground. It is never anywhere clean. The nest-bloom: it grows only on hide-rot, so a ring of ruddreth is a nest read at a distance, before a single silk structure is seen. Information, not food — not edible, not valuable.</description>
+    <statBases>
+      <MaxHitPoints>15</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ruddreth/RM_Ruddreth_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>1</pathCost>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <wildOrder>3</wildOrder>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Fellome</defName>
+    <label>fellome</label>
+    <description>Strings of fat pale pods hanging from a modest scrambling vine, heaviest along the web-lines where the pollen-dusted owners pass. The pods are dusty with sticky pollen. The plantation's gleanings — the spiders sow as they hunt, and fellome is the accidental crop: good calories, everywhere, free. Foraging the Webwork is gleaning someone's fields.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Fellome/RM_Fellome_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>16</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>1.0~1.4</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>18</wildClusterWeight>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Grennick</defName>
+    <label>grennick</label>
+    <description>A dense dark turf whose leading edge is abrupt — a clean line of new green over burned or open ground, visibly further along every time you look. Behind the line, threllick and the thicket follow. The margin's advancing front as a plant, the groundcover of the shipped front-creep mechanism (RM_MapComponent_FrontCreep) — it regrows into an untrimmed light-moat.</description>
+    <statBases>
+      <MaxHitPoints>15</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Grennick/RM_Grennick_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>1</pathCost>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>8</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.8~1.0</visualSizeRange>
+      <wildOrder>3</wildOrder>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>25</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Brennoth</defName>
+    <label>brennoth</label>
+    <description>A knotted waist-high scrub of the margins and clearings, varnish-shiny with dry resin, always carrying dead grey wood among the live. It looks like kindling because it is. The margin's tinder: it burns hot, fast and clean — the fuel that makes a burn-ring cheap to cut and keep, and the reason a careless fire at the margin runs.</description>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0.9</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Brennoth/RM_Brennoth_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>12</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>15</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ===================== TAPPED RESOURCES ===================== -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_TavroskLiquor</defName>
+    <label>tavrosk liquor</label>
+    <description>Sweet volatile sap tapped from a tavrosk's bole. Drunk straight, traded, or burned in a Wildsteam still — one tapped item doing three jobs.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>1.2</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.8</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+      <foodType>VegetableOrFruit</foodType>
+      <nutrition>0.05</nutrition>
+    </ingestible>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_BrimlockWater</defName>
+    <label>brimlock water</label>
+    <description>Clear water drained from a cut brimlock bladder-trunk — the only water most travellers in this jungle ever see, since the thicket drank the river whole. Cutting one draws churn regrowth to the spill.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_BrimlockWater/RM_BrimlockWater</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>0.4</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>0.0</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>
