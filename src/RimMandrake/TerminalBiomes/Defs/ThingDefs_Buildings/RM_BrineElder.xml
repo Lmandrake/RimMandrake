@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_BrineElder.xml                   TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  GREYSEA_BRINE_ELDERS_1 — the organism. 🔴 THE ORGANISM ONLY.
+
+  🔴 THE AUTHORITY IS THE OWNER'S OWN PARAGRAPH, verbatim and entire, in
+  design/Jawa/worldbuilding/biomes/the_grey_deep_content_2026-09-26.md §7.1.
+  The sheet's §4e is the ruling-shaped digest of it. ⛔ Read §7.1 before
+  changing a word of this def; the digest is not the source.
+
+  ============================================================================
+  WHAT IS BUILT HERE, AND WHAT IS EXPLICITLY NOT
+  ============================================================================
+  BUILT: the body. "Colossal branching salt-crystal organisms, each rising
+  from the deepest ultra-dense brine pools as a trunk five to ten cells wide
+  before dividing into massive cubic and faceted limbs that climb upward into
+  the lighter saline ocean." A body of "living ionic lattices." Sessile —
+  "they cannot leave these abyssal pools" — so a multi-cell THING, never a
+  PawnKindDef: it has no locomotion and it trades from where it stands.
+  Placement is one per Grey Sea tile's deepest pool
+  (GenStep_GreySeaFloorDressing, mandrake.rm.divinginteraction).
+
+  🔴 NOT BUILT, AND DELIBERATELY NOT FAKED — all four need C#, and all four
+  are still open on GREYSEA_BRINE_ELDERS_1:
+    1. THE DISCHARGE. "Blinding area-wide discharges powerful enough to stun
+       living creatures, disable droids, collapse shields, and cripple nearby
+       ships." RULED 2026-09-26 (Q7): BOTH a defence when its pool is
+       disturbed AND a rare unprompted event, with a VISIBLE CHARGE BUILD-UP
+       on the limbs as the tell. ("Cripple nearby ships" is filed as its own
+       engine check, Q8, and blocks none of the other three.)
+    2. THE NOVELTY TRADE. "Each Elder keeps a set of what it has seen; the
+       first specimen of a category it has not seen is worth a great deal;
+       every later one is worth almost nothing." Not a TraderKindDef —
+       nothing in vanilla trades on novelty. The seen-set must persist PER
+       ELDER, and RULED 2026-09-26 (Q10) there is ONE PER GREY SEA TILE, so
+       the Grey's tiles are a distributed market and "travel to another Grey
+       tile" is a real reason to move. Valuation ignores market value and
+       tech level entirely: "technology fascinates them but is conceptually
+       opaque."
+    3. DISSOLVING ITS POOL. "Dissolving entire blocks of crystallized
+       seafloor to uncover ancient mummified bodies, wreckage, or artifacts,
+       or violently ejecting long-entombed objects upward from the brine as
+       part of an exchange." In engine terms: remove RM_BrineJacket cells, or
+       spawn a thing on the pool shore. Trivial once the trade exists.
+    4. THE RESONANT STORAGE CRYSTAL. "Growing a resonant storage crystal
+       that passively increases the effective capacity or charge retention of
+       all nearby batteries." MEASURED: no such comp exists anywhere in src/.
+       ⛔ It is NOT shipped as a def here on purpose — a building with no comp
+       is a decoration that lies about what it does, which is worse than
+       nothing. It ships with its comp or not at all.
+       (⚠️ RUT_BrineBattery is an ANIMAL and unrelated beyond the pun.)
+
+  ⇒ What a player meets today is an ancient thing that stands in its pool and
+  cannot be talked to. That is an honest partial, not a finished Elder.
+
+  ============================================================================
+  WHY A SECOND COLOSSAL ORGANISM DOES NOT BREAK "ONE ENDEMIC GIANT LINEAGE"
+  ============================================================================
+  RULED ADDITIVE 2026-09-26 (content doc §8.2 item 1, sheet §4). The Elder is
+  sessile, mineral and rooted — a formation that thinks, with no crèche, no
+  locomotion and no lineage. The giant law is about the fauna line bred at
+  the Miasma and returned here for its centuries (RM_Reefback). The Grey
+  still has one giant ANIMAL; it now also has a geological mind, and the two
+  never compete for the same niche or the same law.
+
+  ============================================================================
+  THE VOICE REGISTER, for whoever writes its text
+  ============================================================================
+  It "interprets history through chemistry, pressure, charge, mineral
+  deposition, biological composition, and disturbance rather than names,
+  politics, or technology." ⇒ An Elder reports WHAT CHANGED IN THE WATER,
+  never who did it or why. It remembers "the Reshapers" — RULED 2026-09-26
+  (Q9) to BE the Rakata, under the Elders' own exonym, not a new faction.
+  They are the only eyewitness on the planet to the arrival.
+
+  Trading with one should read as "negotiating with a geological intelligence
+  that has spent tens of thousands of years quietly collecting one specimen
+  of anything genuinely new" — not a price list. It is a strong candidate for
+  the standing `claude -p` LLM text consumer, since it only ever speaks in
+  chemistry.
+
+  ============================================================================
+  ENGINE NOTES
+  ============================================================================
+  size (7,7): the middle of his own "five to ten cells wide", and odd so the
+  genstep can centre it on a basin cell. rotatable false (a 7x7 natural thing
+  has no facings and no interaction cell).
+  destroyable false + useHitPoints false: "preserved through catastrophes
+  that erased younger civilizations" is not a hit-point total. An Elder is
+  not something a raid removes, and making it mineable would turn the
+  biome's mind into a salt quarry.
+  tickerType Rare: nothing ticks yet, but the discharge and the seen-set will
+  need one, and changing it later is a save-compat question best avoided.
+  drawSize (11,11) against a 7x7 footprint so the limbs read as climbing up
+  out of the trunk past its own base — his "limbs that climb upward into the
+  lighter saline ocean" on a top-down map.
+
+  PLACEHOLDER ART: the mod's own chimney placeholder, scaled up and tinted.
+  Real art is owed and the brief carries the owner's aesthetic rule for this
+  whole biome, verbatim: "marred slightly, don't make them too perfect or
+  they look manufactured."
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_BrineElder</defName>
+    <label>brine elder</label>
+    <description>A branching organism of grown salt, rising out of the deepest pool on this floor as a trunk wider than a house before it divides and divides again into faceted limbs that climb away upward into the lighter water. It is alive. Its body is a lattice of ordered ions, and it holds a charge off the brine that sustains it the way a battery holds one — you can feel the water go tight around it before anything happens.\n\nIt cannot leave. The ultra-brine is both where it lives and what it eats, and it has been in this basin since before anything now walking the planet existed. It remembers the arrival of the ones who remade this world, and it remembers it as a change in the chemistry: what went into the water, what stopped coming out of it, what precipitated afterward. It does not know their name and would not find the question interesting.\n\nWhat it wants is novelty. Show it something it has never encountered — a creature, a corpse, a tissue, a mineral, a material it cannot place — and it will pay extraordinarily, once. Show it the same thing again and it has already taken that chemistry into itself, and you have brought it nothing.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_SaltChimney</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(11,11)</drawSize>
+      <color>(226,230,236)</color>
+    </graphicData>
+    <uiIconScale>0.4</uiIconScale>
+    <size>(7,7)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <blockWind>true</blockWind>
+    <blockLight>true</blockLight>
+    <castEdgeShadows>true</castEdgeShadows>
+    <coversFloor>false</coversFloor>
+    <rotatable>false</rotatable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <tickerType>Rare</tickerType>
+    <canOverlapZones>false</canOverlapZones>
+    <neverOverlapFloors>true</neverOverlapFloors>
+    <blockPlants>true</blockPlants>
+    <saveCompressible>false</saveCompressible>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>40</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>true</isEdifice>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <isNaturalRock>false</isNaturalRock>
+      <canBuildNonEdificesUnder>false</canBuildNonEdificesUnder>
+      <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+    </building>
+  </ThingDef>
+
+</Defs>
