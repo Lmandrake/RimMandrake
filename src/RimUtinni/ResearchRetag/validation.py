@@ -173,9 +173,26 @@ def core_rows_retagged(t):
                         if expect_value not in got_list:
                             bad.append("%s.prerequisites: expected %r in %r"
                                        % (name, expect_value, got_list))
-                    elif str(got) != str(expect_value):
-                        bad.append("%s.%s: expected %r, got %r"
-                                   % (name, field, expect_value, got))
+                    else:
+                        # str(got) != str(expect_value) alone false-fails a
+                        # numeric field: the bridge returns baseCost as a
+                        # JSON float (700.0), CORE_RETAG_ROWS' expected
+                        # values are plain XML-verbatim strings ("700"), and
+                        # str(700.0) == "700.0" != "700" -- measured live
+                        # 2026-09-13 as a FAIL on every one of the five rows
+                        # despite every value actually matching. Compare
+                        # numerically when both sides parse as a number;
+                        # string-compare (techLevel/tab, already correct)
+                        # otherwise.
+                        match = str(got) == str(expect_value)
+                        if not match:
+                            try:
+                                match = float(got) == float(expect_value)
+                            except (TypeError, ValueError):
+                                match = False
+                        if not match:
+                            bad.append("%s.%s: expected %r, got %r"
+                                       % (name, field, expect_value, got))
             if bad:
                 raise ExpectationFailed(
                     "Core research rows do not match the retag/tab-assign patches: %s"
