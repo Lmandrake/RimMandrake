@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Miasma_MuckAndSilt.xml                          MIASMA_FLORA_ROSTER_1
+
+  The four muck-and-silt plants of miasma_flora_roster_2026-09-23.md §6.
+  RM_Immarel's root-bed is given the delta silt's attar precursor
+  (RM_DeltaSilt, this mod's own ThingDefs_Items/RM_Miasma_Goods.xml), per the
+  roster's own §6 authored decision — the sheet says "delta silt" (a terrain
+  property); this is the plant-route precedent the roster set (flagged for
+  the owner, §10.2) rather than a terrain mechanism. No refinery/still
+  recipe is built here — same posture as RM_ColdWax's parked refinery pass —
+  only the harvestable precursor.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Immarel</defName>
+    <label>immarel</label>
+    <description>Tight stands of hollow jointed reeds, all leaning downstream together, stems banded olive and rust with a greasy iridescent film where they leave the water. Tops bear a spent brown tassel. The mud in an immarel bed is black, fine and slick, and smells extraordinary — this is where the delta silt concentrates into a findable, workable bed, and the root of the luxury attar the whole biome is named for.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Immarel/RM_Immarel_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Nutrition>0.06</Nutrition>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.15</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>8</growDays>
+      <harvestWork>130</harvestWork>
+      <harvestYield>10</harvestYield>
+      <harvestedThingDef>RM_DeltaSilt</harvestedThingDef>
+      <harvestMinGrowth>0.3</harvestMinGrowth>
+      <visualSizeRange>0.8~1.4</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Thrannock</defName>
+    <label>thrannock</label>
+    <description>Almost no foliage — a sprawling tangle of stiff aerial roots spanning the water between two mangals, coarse as rope and hung with everything the current brought: rags, shell, splintered wood, salt-bleached plastic. The living root beneath is a dull purple-brown. Always visibly full of debris. This is the flotsam yard itself, the object the delta's salvage crews are sent to comb after every surge, and a freshly loaded thrannock means the water came up recently.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Thrannock/RM_Thrannock_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.3</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Nutrition>0.1</Nutrition>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <plant>
+      <!-- MIASMA_FLORA_ROSTER_1: no flotsam-combing job is wired here — that
+           is a scavenging mechanic on what the root catches, not a plant
+           harvest, and is owed as follow-on work once it has a design
+           (nearest built pattern for a custom biome workgiver:
+           RM_Greentide_WorkGivers.xml). -->
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>10</growDays>
+      <visualSizeRange>1.2~2.0</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>25</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Pallasheen</defName>
+    <label>pallasheen</label>
+    <description>One wide pale leaf pressed flat to the ground, thin enough that the soil colour shows through, edged in a fine pink line. It never stands up and never clumps. Pallasheen germinates only on composter castings, so wherever it grows the exportable delta loam is already underneath it — the loam prospector's tell, and a way to walk up to and dig what would otherwise be an invisible by-product.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Pallasheen/RM_Pallasheen_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.55</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Nutrition>0.02</Nutrition>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <plant>
+      <!-- MIASMA_FLORA_ROSTER_1: the "germinates only on composter castings"
+           tell is not mechanically enforced (it would need a custom scatter
+           validator keyed to RM_Karrobel's future castings, which does not
+           exist yet — MIASMA_FAUNA_FLOOR_ROSTER_1 owns that def). Ships as
+           an ordinary low-fertility groundcover row until that pairing
+           lands. -->
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>6</growDays>
+      <visualSizeRange>0.5~0.8</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Wessaline</defName>
+    <label>wessaline</label>
+    <description>A continuous white-and-grey skin lying over the salt pans, crazed into plates that lift at the edges and crunch underfoot. Barely reads as living; only a faint green bloom in the fissures gives it away. Worth almost nothing, deliberately — it is the ground cover that makes the brine end of the delta look terminal rather than unfinished, and it is exactly what it looks like: dried mud, harmless underfoot, never a trap.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Wessaline/RM_Wessaline_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>15</MaxHitPoints>
+      <Nutrition>0.01</Nutrition>
+      <Flammability>0</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>4</growDays>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>10</wildClusterRadius>
+      <wildClusterWeight>60</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+</Defs>

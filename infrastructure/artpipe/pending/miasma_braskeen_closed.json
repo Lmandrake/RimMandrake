@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 140,
+    "width": 140
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:14:20Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "miasma_braskeen_closed",
+  "priority": 110,
+  "prompt": "RimWorld top-down game plant sprite: braskeen, a flat whorl floating on the water surface, same layout as the open form, but each arm's hinged blade pair is now snapped CLOSED, a caught scuttler's outline just visible between the interlocking teeth.",
+  "reference": null,
+  "rimflow_item_id": "MIASMA_FLORA_ROSTER_1",
+  "style_notes": "Roster-wide law: strangely beautiful but also a little sick looking -- a flush, a crust, a weep or a blotch, and beautiful because of it, not despite it. No Earth-nameable plant name anywhere. MUST SHOW: same floating whorl layout as the open variant, but blades CLOSED with a catch showing between the teeth. Part of a matched open/closed pair with miasma_braskeen_open."
+}

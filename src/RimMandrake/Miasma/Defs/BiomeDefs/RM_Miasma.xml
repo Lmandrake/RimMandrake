@@ -41,12 +41,21 @@
     AA_BloodShrimp, AA_Plasmorph - see rosters/the_miasma.json's own evictions[])
     are dropped outright, not carried forward into either mod.
 
-    wildPlants: the three Alpha Biomes mangal rows now carry MayRequire=
-    "sarg.alphabiomes" (the twin's copy has none - 96.5% of this biome's flora
-    weight is this one donor family, a real dependency this mod is honest about
-    rather than silently assuming). RUT_Nogtyl (mandrake.rut.rotsporekit) is
-    left exactly as the twin has it - THEROT_RM_MOD_BUILD_1 owns updating that
-    MayRequire when Nogtyl's home mod is renamed, not this item.
+    wildPlants: MIASMA_FLORA_ROSTER_1 replaced the three donor Alpha Biomes
+    mangal rows (AB_MangroveTree/AB_ParasiticMangrove/AB_MangrovePalm,
+    sarg.alphabiomes, 96.5% of this biome's flora weight) with the roster's
+    own four RM_-tier mangals (RM_Thessamor/RM_Brelloch/RM_Quennath/
+    RM_Ilbareen, src/RimMandrake/Miasma/Defs/ThingDefs_Plants/
+    RM_Miasma_Mangals.xml) and added the roster's other 15 invented rows
+    (six rainbow blooms, five predators, four muck-and-silt plants) - see
+    that same folder's RM_Miasma_RainbowBlooms.xml/RM_Miasma_Predators.xml/
+    RM_Miasma_MuckAndSilt.xml. mandrake.rm.miasma now depends on ZERO donor
+    flora and needs no sarg.alphabiomes MayRequire on any wildPlants row.
+    RUT_Nogtyl (mandrake.rut.rotsporekit) is left exactly as the twin has
+    it - THEROT_RM_MOD_BUILD_1 owns updating that MayRequire when Nogtyl's
+    home mod is renamed, not this item. RM_IlbareenDead is a 20th plant def
+    that never appears in this list - see the RM_GradientAxisExtension
+    landRepaintKillPlant/landRepaintDeadPlant fields below.
 
     terrainsByFertility: AB_FertileMud gains the same MayRequire="sarg.alphabiomes"
     guard for the same reason.
@@ -110,6 +119,13 @@
           <li MayRequire="sarg.alphabiomes">AB_FertileMud</li>
         </landRepaintSource>
         <landTerrain>RUT_Jawa_SaltCrust</landTerrain>
+        <!-- MIASMA_FLORA_ROSTER_1: the salt-line gauge. The moment a cell
+             holding a living RM_Ilbareen repaints to landTerrain (brine has
+             just reached it), RM_GradientAxisRepaint kills it and spawns
+             RM_IlbareenDead in its place — a real, self-maintaining record
+             of the last surge's reach, not decoration. -->
+        <landRepaintKillPlant>RM_Ilbareen</landRepaintKillPlant>
+        <landRepaintDeadPlant>RM_IlbareenDead</landRepaintDeadPlant>
       </li>
       <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
         <incidentDef>RUT_Surge</incidentDef>
@@ -214,9 +230,29 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_MangroveTree MayRequire="sarg.alphabiomes">25</AB_MangroveTree>  <!-- mangrove tree - tree -->
-      <AB_ParasiticMangrove MayRequire="sarg.alphabiomes">8</AB_ParasiticMangrove>  <!-- parasitic mangrove -->
-      <AB_MangrovePalm MayRequire="sarg.alphabiomes">6</AB_MangrovePalm>  <!-- mangrove palm - tree -->
+      <!-- MIASMA_FLORA_ROSTER_1 - the four mangals (roster §3), replacing the donor trio -->
+      <RM_Thessamor>9</RM_Thessamor>  <!-- thessamor - the stilt-root maze itself -->
+      <RM_Brelloch>6</RM_Brelloch>  <!-- brelloch - the seaward salt-line marker -->
+      <RM_Quennath>3</RM_Quennath>  <!-- quennath - the parasite that never touches brine -->
+      <RM_Ilbareen>4</RM_Ilbareen>  <!-- ilbareen - the salt-line gauge; dies to RM_IlbareenDead, see landRepaintKillPlant above -->
+      <!-- the six rainbow blooms (roster §4), all bound by ban 2 - never a trap, never toxic -->
+      <RM_Ollamane>6</RM_Ollamane>  <!-- ollamane - the biome's signature fan silhouette -->
+      <RM_Vellamine>2</RM_Vellamine>  <!-- vellamine - colour along the veins -->
+      <RM_Ismerrow>1</RM_Ismerrow>  <!-- ismerrow - no two plants alike -->
+      <RM_Aphreen>2</RM_Aphreen>  <!-- aphreen - inflamed and perfectly healthy, most common bloom -->
+      <RM_Nyssolet>1</RM_Nyssolet>  <!-- nyssolet - the jewel-like growth, attar fixative -->
+      <RM_Sarrash>2</RM_Sarrash>  <!-- sarrash - the fever-crest plume -->
+      <!-- the five predators (roster §5) - a separate clade, NOT bound by ban 2, eats scuttlers only -->
+      <RM_Ullavess>2</RM_Ullavess>  <!-- ullavess - the standing pitcher -->
+      <RM_Nemreth>1</RM_Nemreth>  <!-- nemreth - the jewelled sticky mat -->
+      <RM_Velluric>1</RM_Velluric>  <!-- velluric - the trap is underwater -->
+      <RM_Braskeen>1</RM_Braskeen>  <!-- braskeen - the only plant that moves -->
+      <RM_Ommolyn>1</RM_Ommolyn>  <!-- ommolyn - the trap is buried -->
+      <!-- the muck and the silt (roster §6) -->
+      <RM_Immarel>2</RM_Immarel>  <!-- immarel - the attar's root-bed -->
+      <RM_Thrannock>4</RM_Thrannock>  <!-- thrannock - the flotsam yard itself -->
+      <RM_Pallasheen>1</RM_Pallasheen>  <!-- pallasheen - the loam prospector's tell -->
+      <RM_Wessaline>1</RM_Wessaline>  <!-- wessaline - the salt-pan skin -->
       <RUT_Nogtyl MayRequire="mandrake.rut.rotsporekit">0.4</RUT_Nogtyl>  <!-- nogtyl - cross-mod, THEROT_RM_MOD_BUILD_1 owns updating this MayRequire -->
     </wildPlants>
     <wildPlantRegrowDays>13</wildPlantRegrowDays>

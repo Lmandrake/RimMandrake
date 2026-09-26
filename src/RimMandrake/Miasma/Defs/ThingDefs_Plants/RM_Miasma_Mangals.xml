@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Miasma_Mangals.xml                              MIASMA_FLORA_ROSTER_1
+
+  The four mangal trees of design/Jawa/worldbuilding/biomes/
+  miasma_flora_roster_2026-09-23.md §3 — the biome's canopy and its terrain,
+  replacing the three donor AB_ mangal rows in RM_Miasma.xml's <wildPlants>
+  (AB_MangroveTree/AB_ParasiticMangrove/AB_MangrovePalm, all sarg.alphabiomes,
+  96.5% of the biome's flora weight). RUT_Nogtyl stays untouched — owned by
+  THEROT_RM_MOD_BUILD_1, not this item.
+
+  RM_Ilbareen is TWO defs, not one: the living gauge and RM_IlbareenDead, its
+  permanent bleached skeleton. RM_IlbareenDead is never wired into wildPlants
+  — it is spawned only by RM_GradientAxisRepaint.KillAndReplacePlant (see
+  RM_Miasma.xml's RM_GradientAxisExtension block, landRepaintKillPlant/
+  landRepaintDeadPlant) the moment a cell an ilbareen occupies repaints to
+  the biome's landTerrain (brine has reached it) — a real, self-maintaining
+  record of the salt line's last reach, not decoration with nothing driving
+  it. No art exists for any of these four yet (MEASURED against
+  infrastructure/artpipe/done, _artsrc, registry.jsonl, pending, active,
+  failed — zero hits on any of the 19 roster names).
+-->
+<Defs>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Thessamor</defName>
+    <label>thessamor</label>
+    <description>A mangal tree whose trunk never touches the water — it begins a full metre up, carried on a splayed cage of prop-roots you can see straight through. Below the tide-mark the bark is wet black and polished; above it, grey-green and furred with a white salt rime it has sweated out, which flakes when touched. The crown is broad, low and permanently dripping. This is the stilt-root maze itself: the biome's structural unit, its architecture, and the nursery cage of everything the Grey Sea still keeps.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Thessamor/RM_Thessamor_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.4, 0.55, 0.3)</volume>
+        <offset>(0,0,-0.42)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>260</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>150</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>25</growDays>
+      <harvestWork>280</harvestWork>
+      <harvestYield>22</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <visualSizeRange>1.8~3.4</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Brelloch</defName>
+    <label>brelloch</label>
+    <description>A low, heavy mangal that looks half-buried, its whole upper surface armoured in a crust of its own excreted salt an inch thick, grey-white and cracked like old glaze. Where the crust has flaked, the living bark beneath is a startling wet green. Leaves small, thick and rimed shut. Brelloch is the last living thing before the salt wins — a stand of it marks exactly where the fresh-to-brine gradient ends, and its crust is scraped for the cheapest salt in the biome.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Brelloch/RM_Brelloch_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.45, 0.35, 0.4)</volume>
+        <offset>(0,0,-0.3)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Nutrition>1.2</Nutrition>
+      <Mass>160</Mass>
+      <Flammability>0.05</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>20</growDays>
+      <harvestWork>200</harvestWork>
+      <harvestYield>12</harvestYield>
+      <harvestedThingDef>RM_DeltaSalt</harvestedThingDef>
+      <harvestMinGrowth>0.3</harvestMinGrowth>
+      <visualSizeRange>1.0~1.6</visualSizeRange>
+      <topWindExposure>0.02</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Quennath</defName>
+    <label>quennath</label>
+    <description>Quennath has no trunk of its own. A knotted mass clamped into a thessamor's prop-root cage sends up a slender stem and a crown that is visibly more colourful and healthier than its host's — because it is drinking water another plant already strained. Its leaves are the deepest green in the canopy, veined violet. It never touches the brine at all; it just takes from something that did.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Quennath/RM_Quennath_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.4, 0.22)</volume>
+        <offset>(0,0,-0.34)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Nutrition>0.9</Nutrition>
+      <Mass>60</Mass>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <plant>
+      <!-- MIASMA_FLORA_ROSTER_1: the roster's own watch-out — "must only
+           spawn adjacent to a thessamor, or it reads as an ordinary shrub" —
+           is NOT mechanically enforced here. Vanilla wild-plant seeding has
+           no adjacency-to-another-plant gate; enforcing it needs a custom
+           GenStep or scatterer validator (RM_ScattererValidator_NearThingDef
+           is the nearest built pattern) and is owed as a follow-on, not
+           blocking this content pass. -->
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>15</growDays>
+      <harvestWork>120</harvestWork>
+      <harvestYield>8</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <visualSizeRange>1.0~1.8</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Ilbareen</defName>
+    <label>ilbareen</label>
+    <description>A slim pale stem well above the mangal crowns, carrying one sparse fan of ribbon-leaves. Living ilbareen are yellow-green and translucent at the edges, and they cannot survive the brine — a stand of them only ever grows toward the fresh end of the gradient. When the salt line reaches one it dies where it stands, and stays standing: the biome's only readable record of how far the last surge pushed.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ilbareen/RM_Ilbareen_live</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.12, 0.4, 0.12)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Nutrition>0.15</Nutrition>
+      <Flammability>0.6</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.35</fertilityMin>
+      <fertilitySensitivity>0.6</fertilitySensitivity>
+      <growDays>10</growDays>
+      <visualSizeRange>1.3~2.0</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_IlbareenDead</defName>
+    <label>dead ilbareen</label>
+    <description>A bleached, dead-standing ilbareen — fan collapsed into a drooping rag, stem gone chalk-white. It died the moment the brine reached this ground and it will stand here for years. A line of these is the only place in the Miasma where a player can read, at a glance, exactly how far the last surge pushed.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ilbareen/RM_Ilbareen_dead</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.12, 0.4, 0.12)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Nutrition>0.02</Nutrition>
+      <Flammability>0.9</Flammability>
+    </statBases>
+    <plant>
+      <!-- Never sown, never a wildPlants row — RM_GradientAxisRepaint spawns
+           this directly onto a cell whose living RM_Ilbareen just died to
+           brine (see RM_Miasma.xml). fertilityMin 0 so it never itself dies
+           of the salt-crust ground it stands on. -->
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>1</growDays>
+      <harvestWork>40</harvestWork>
+      <harvestYield>2</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.05</harvestMinGrowth>
+      <visualSizeRange>1.3~2.0</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>0</wildClusterRadius>
+      <wildClusterWeight>0</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+</Defs>

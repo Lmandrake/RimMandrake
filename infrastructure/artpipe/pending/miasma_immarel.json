@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 170,
+    "width": 170
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:14:20Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "miasma_immarel",
+  "priority": 110,
+  "prompt": "RimWorld top-down game plant sprite: immarel, a tight stand of hollow jointed reeds all leaning downstream together, stems banded olive and rust with a greasy iridescent film where they leave the water, tops bearing a spent brown tassel, black slick mud visible at the base.",
+  "reference": null,
+  "rimflow_item_id": "MIASMA_FLORA_ROSTER_1",
+  "style_notes": "Roster-wide law: strangely beautiful but also a little sick looking -- a flush, a crust, a weep or a blotch, and beautiful because of it, not despite it. No Earth-nameable plant name anywhere. MUST SHOW: jointed reeds all leaning one direction (current), olive-and-rust banding, greasy iridescent sheen at the waterline, black slick mud."
+}

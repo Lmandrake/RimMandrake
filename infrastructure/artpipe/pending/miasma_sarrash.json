@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 160,
+    "width": 160
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:14:20Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "miasma_sarrash",
+  "priority": 110,
+  "prompt": "RimWorld top-down game plant sprite: sarrash, dense soft upright plumes of fine filaments in flame-orange and hot magenta, held in a group with the centre plume tallest so the outline is a ragged crest, filaments damp and slightly clumped, plume bases browned and spent.",
+  "reference": null,
+  "rimflow_item_id": "MIASMA_FLORA_ROSTER_1",
+  "style_notes": "Roster-wide law: strangely beautiful but also a little sick looking -- a flush, a crust, a weep or a blotch, and beautiful because of it, not despite it. No Earth-nameable plant name anywhere. MUST SHOW: upright feather-crest plumes, flame-orange and magenta colour, ragged crest outline with tallest plume centred, browned spent bases."
+}

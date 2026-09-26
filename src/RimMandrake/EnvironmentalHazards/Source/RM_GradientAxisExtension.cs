@@ -54,6 +54,18 @@ namespace RimMandrake.EnvironmentalHazards
         public List<TerrainDef> landRepaintSource = new List<TerrainDef>();
         public TerrainDef landTerrain;
 
+        // MIASMA_FLORA_ROSTER_1: optional — when a land cell repaints to
+        // landTerrain (the brine has just reached it) and it currently holds
+        // a living landRepaintKillPlant, that plant is destroyed and
+        // landRepaintDeadPlant is spawned in its place. This is what makes
+        // RM_Ilbareen's dead-standing skeletons a real, self-maintaining
+        // record of the salt line's last reach rather than art with nothing
+        // driving it — no new MapComponent, reusing M1's own throttled
+        // repaint walk. Both null (the default) is a no-op for every other
+        // biome using this extension.
+        public ThingDef landRepaintKillPlant;
+        public ThingDef landRepaintDeadPlant;
+
         // Perlin-noise wander added to the signed-distance axis before
         // banding (spec M1: "a signed-distance gradient with noise so the
         // salt line is a wandering front, not a ruler"). Amplitude is the

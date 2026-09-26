@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Miasma_Predators.xml                            MIASMA_FLORA_ROSTER_1
+
+  The five predatory plants of miasma_flora_roster_2026-09-23.md §5 — a
+  separate clade from the rainbow blooms, NOT bound by ban 2, honestly and
+  visibly predatory. Owner ruling: they take the arthropod-floor scuttlers,
+  never a colonist and never a tame animal.
+
+  🔴 No carnivory C# is built in this pass. The prey (the four scuttler defs,
+  RM_Karravel/RM_Karrobel/RM_Karrimeth/RM_Karrolun) do not exist yet — they
+  are MIASMA_FAUNA_FLOOR_ROSTER_1's own scope, still open at authoring time —
+  and the roster item's own text calls "whether a plant can consume a small
+  wild animal at all" an engine question needing a Desktop pass, precedent
+  RM_CompVerminBreeder + RM_MapComponent_VerminPopulation
+  (src/RimMandrake/CreatureBehaviors/Source/). Wiring real predation onto
+  these five is follow-on work once the scuttler roster lands, not invented
+  here against a prey list that doesn't exist. Each row's description still
+  carries its written "visible consequence" (too-clear water, scuttler-free
+  mud, closed blades) as the target for that future pass and for art.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Ullavess</defName>
+    <label>ullavess</label>
+    <description>A group of tall tapering vessels standing mouth-up, each half-full of clear fluid you can see into. The outer wall is veined maroon over yellow-green; the rim is a hard iridescent lip and the inside wall is glassy and visibly slick. Spent vessels below are brown and collapsed. Ullavess is the clade's anchor — the plant a player recognises as a predator on sight — and a cloudy vessel means it has fed recently.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ullavess/RM_Ullavess_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.1</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.1</Nutrition>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>9</growDays>
+      <visualSizeRange>0.8~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>25</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Nemreth</defName>
+    <label>nemreth</label>
+    <description>A low mat of hair-fine red stalks, each ending in a clear glistening bead that holds the light like dew and never dries. From a distance the whole mat glitters; close up, the beads are thick and drawn into threads, and older stalks are curled inward around what they caught. The most beautiful thing in the biome that is also a killer, and it never pretended otherwise — its adhesive is the luxury attar's binder.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Nemreth/RM_Nemreth_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Nutrition>0.04</Nutrition>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>5</growDays>
+      <visualSizeRange>0.4~0.7</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>15</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Velluric</defName>
+    <label>velluric</label>
+    <description>Above the channel, one small pale flower on a thin stalk, unremarkable. Everything else is submerged: a drifting mass of fine bladders, each with an inward trapdoor, invisible from the bank. The water above a velluric bed is very slightly clearer than the water beside it — the tell, and the only warning a small thing crossing it ever gets. ⚠️ Ships here as a shore/shallow plant, the same as any other wild plant; a true underwater growth habit is UNMEASURABLE without a Desktop pass against the RM_DiveEligible terrain work (mandrake.rm.divinginteraction) and is owed as a follow-on, not this pass.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Velluric/RM_Velluric_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.7</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Nutrition>0.03</Nutrition>
+      <Flammability>0.1</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.05</fertilitySensitivity>
+      <growDays>6</growDays>
+      <visualSizeRange>0.4~0.7</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Braskeen</defName>
+    <label>braskeen</label>
+    <description>A flat whorl lying on the surface, each arm ending in a pair of hinged blades held slightly open, fringed with stiff interlocking teeth. The blades close when something touches them and stay shut for a day with the catch showing between the teeth. Blade interiors are a raw wet pink. The only plant on the page with real motion — a channel of these snapping shut one after another as scuttlers cross is the biome's best ambient moment.</description>
+    <graphicData>
+      <!-- Graphic_Random over RM_BraskeenA (open) / RM_BraskeenB (closed) —
+           ambient variety of both states scattered across a bed. The actual
+           touch-triggered snap animation needs the same future predation
+           pass as this file's header notes; this ships the visual range
+           now rather than a single open sprite with none of the row's
+           motion. -->
+      <texPath>Things/Plant/RM_Braskeen/RM_Braskeen</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Nutrition>0.04</Nutrition>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.05</fertilitySensitivity>
+      <growDays>5</growDays>
+      <visualSizeRange>0.5~0.8</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Ommolyn</defName>
+    <label>ommolyn</label>
+    <description>Above the mud, a single modest cream flower on a short stalk and a few limp surface leaves. Below, a buried maze of forked hollow tubes lined with inward-pointing hairs that admit and never release. Nothing on the surface suggests it — but the mud within a tile or two is conspicuously free of scuttlers, and that absence is the tell. Its tube-fibre is the only cordage that survives the brine.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ommolyn/RM_Ommolyn_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.6</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Nutrition>0.03</Nutrition>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>6</growDays>
+      <harvestWork>60</harvestWork>
+      <harvestYield>4</harvestYield>
+      <harvestedThingDef>Cloth</harvestedThingDef>
+      <harvestMinGrowth>0.3</harvestMinGrowth>
+      <visualSizeRange>0.4~0.7</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+</Defs>
