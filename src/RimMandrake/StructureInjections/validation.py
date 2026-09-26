@@ -71,22 +71,28 @@ null`, each logging its own `Log.Error` and contributing 0 to
 `ApplyPlan`'s `byPriority` filter). `replay_moisture_farm_plan` below
 asserts `thingsSpawned` with that shortfall built in, not an exact match.
 
-A SEPARATE, GENUINE MOD DEFECT (found live 2026-09-13, diagnosed
-2026-09-26, filed as PRIMITIVEWELL_DEAD_DEFNAME_1 -- NOT an environment
-gap and NOT folded into the floor below): the plan's one `PrimitiveWell`
-THING line is not a real defName ANYWHERE -- zero hits, case-insensitive,
-across every `Defs/*.xml` in the entire live Mods folder plus every DLC's
-own `Data/` tree (checked directly against the installed game, not
-guessed). It resolves nowhere regardless of mod list or DLC, so this line
-silently drops on every single replay of this template, always, in any
-environment. That is why a first live run measured `thingsSpawned=92`
-against this file's own `floor=93` (99 - 6 KotOR) -- the 93 floor was
-short by exactly this one always-dead line, not by an under-counted
-KotOR shortfall. Left RED on purpose: raising the floor to 92 would
-launder a real content bug into a passing suite (criteria: "GREEN set
-grows honestly"). Fix the template (or author a real `PrimitiveWell`
-ThingDef) via PRIMITIVEWELL_DEAD_DEFNAME_1, THEN raise this floor back
-to the true full 93.
+A SECOND, SAME-SHAPE CROSS-MOD DEPENDENCY RISK, previously misdiagnosed
+as a dead defName (filed 2026-09-26 as PRIMITIVEWELL_DEAD_DEFNAME_1,
+DROPPED same day once checked properly -- see that item's closed prose
+for the correction): the plan's one `PrimitiveWell` THING line resolves
+to a real ThingDef shipped by `Dubs Bad Hygiene Lite`
+(`dubwise.dubsbadhygiene.lite`, `Defs/ThingDefs_Buildings/
+BuildingsB_Hygiene.xml`) -- confirmed both by reading that mod's own 1.6
+XML on disk and by two independent design docs that had already audited
+it (`infrastructure/state/items/TILE_STRUCTURE_DESIGNS_1.md`,
+`design/Jawa/worldbuilding/desert_world_design.md`). It IS active in the
+owner's live/full mod list. The item that filed this as "not a real
+defName anywhere" never searched the Steam workshop content root
+(`steamapps/workshop/content/294100/`) where third-party subscribed mods
+like this one actually live -- it only checked this repo's own `Mods`
+folder plus the DLC `Data/` trees, which is why it looked dead. Like the
+KotOR vaporators above, `dubwise.dubsbadhygiene.lite` is simply not part
+of this suite's minimal mod closure, so `GetNamedSilentFail` returns null
+here and only here. That is why a first live run measured
+`thingsSpawned=92` against the old `floor=93` (99 - 6 KotOR) -- the 93
+floor didn't account for this second, equally real environment gap.
+Folded into the floor below (`MOISTURE_HYGIENE_ITEMS`) so the suite goes
+GREEN honestly at the floor this minimal environment can actually reach.
 
 Still not proven / likely first-live-run corrections:
   1. Neither template plan actually contains a bound
@@ -139,6 +145,9 @@ MOISTURE_THINGS = 99
 MOISTURE_ROOF = 25
 MOISTURE_KOTOR_ITEMS = 6   # KotOR_MoistureVaporator_big lines -- Armoury-only def,
                            # not on a minimal modcheck run (see module docstring)
+MOISTURE_HYGIENE_ITEMS = 1   # PrimitiveWell -- real def, Dubs Bad Hygiene Lite-only,
+                             # not on a minimal modcheck run (see module docstring;
+                             # was misfiled as a dead defName, corrected 2026-09-26)
 
 
 def _run_plan(t, label, x, z):
@@ -200,8 +209,9 @@ def replay_moisture_farm_plan(t):
     differently-shaped plan than dwelling_test.txt -- proves the engine is
     genuinely plan-agnostic, not tuned to one shape) at the anchor.
     `thingsSpawned` is asserted with the Armoury-only vaporator shortfall
-    built in (module docstring's confirmed dependency risk), not as an
-    exact match."""
+    AND the Dubs Bad Hygiene Lite-only PrimitiveWell shortfall built in
+    (module docstring's confirmed dependency risks), not as an exact
+    match."""
     t.clear_area(size=50)
     x, z = t.anchor
     _run_plan(t, "moisture_farm_test.txt", x, z)
@@ -222,13 +232,15 @@ def replay_moisture_farm_plan(t):
             line = msgs[-1] if msgs else None
             m = re.search(r"thingsSpawned=(-?\d+)", line or "")
             spawned = int(m.group(1)) if m else None
-            floor = MOISTURE_THINGS - MOISTURE_KOTOR_ITEMS
+            floor = MOISTURE_THINGS - MOISTURE_KOTOR_ITEMS - MOISTURE_HYGIENE_ITEMS
             if spawned is None or spawned < floor:
                 raise ExpectationFailed(
                     "thingsSpawned expected >= %d (all %d plan things minus "
-                    "the %d Armoury-only KotOR_MoistureVaporator_big lines "
-                    "this minimal run cannot resolve), got %r (line=%r)"
-                    % (floor, MOISTURE_THINGS, MOISTURE_KOTOR_ITEMS, spawned, line))
+                    "the %d Armoury-only KotOR_MoistureVaporator_big lines and "
+                    "the %d Dubs Bad Hygiene Lite-only PrimitiveWell line this "
+                    "minimal run cannot resolve), got %r (line=%r)"
+                    % (floor, MOISTURE_THINGS, MOISTURE_KOTOR_ITEMS,
+                       MOISTURE_HYGIENE_ITEMS, spawned, line))
             # Spot check a plain-vanilla item the plan places once: plan
             # THING Door 110 108 -> (x+10, z+8).
             dx_, dz_ = x + 10, z + 8
