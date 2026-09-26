@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_ANT_HIVE_DUNGEON_1 / fever_wood_rm_cast_proposal_2026-09-24.md
+     row F9 ("kurreth", NEW, RM_Kurreth): "the ant-swarm — the raider from
+     the dry direction; steals nectar-beasts ALIVE; hive castes as
+     plain-modifier variants (kurreth queen)". Art brief: "glossy red-black
+     segmented worker, oversized carry-mandibles, always drawn mid-haul".
+
+     🔴 Never a `wildAnimals` row (roster's own ban: "0 — never a
+     wildAnimals row, off-map only") — these ThingDefs exist to populate the
+     ant hive dungeon (this item) and the off-map raiding faction
+     (FEVERWOOD_TWO_FRONT_LURE_1, not built by this pass). RM_ tier per
+     Q11a: kurreth is an INVENTED name, not Star Wars canon, so it lives
+     franchise-free and inline here rather than behind a Utinni patch.
+
+     Art: real generated renders (feverwood_kurreth_{south,east,north},
+     infrastructure/artpipe/_artsrc/, rimflow_item_id FEVERWOOD_RM_MOD_BUILD_1,
+     state generated/awaiting_verdict — not yet owner-ruled, but not a
+     placeholder either) copied into this mod's own Textures/. The queen
+     reuses the same three renders at a larger drawSize: no bespoke queen art
+     exists yet (queued as owed, not invented from nothing).
+
+     Ground-based, no flight — ants are not "airborne in the fiction", so
+     the standing flyer rule does not apply here.
+
+     ⛔ NOT built here: the reactive alarm/rally comp (REACTION_MECHANISM_
+     GENERALISE_1's own step 3, in-flight this session — do not add a second
+     alarm implementation), and the off-map theft-hauling lord/job
+     (FEVERWOOD_TWO_FRONT_LURE_1's F9 scope, "Ant theft-hauling: a
+     steal-the-herd lord"). Both castes below are the shared population these
+     defs owe either consumer, undecorated by either's behaviour. -->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Kurreth</defName>
+    <label>kurreth</label>
+    <description>A glossy red-black segmented ant the size of a large dog, oversized mandibles held forward as if perpetually mid-haul. Alone it is dangerous but not much of a threat; a whole hive of them is why nothing sensible digs where they have already dug.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+      <Wildness>1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.55</baseBodySize>
+      <baseHealthScale>0.85</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.99, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>3</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>Pawn_Insect_Ambient</soundWounded>
+          <soundDeath>Pawn_Insect_Ambient</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Kurreth</defName>
+    <label>kurreth</label>
+    <race>RM_Kurreth</race>
+    <combatPower>45</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The queen — "hive castes as plain-modifier variants" read as a
+       separate, bigger race rather than a PawnKindDef-only stat hack, since
+       PawnKindDef alone cannot change baseBodySize/health. No bespoke queen
+       art yet: reuses the worker's own renders at a larger drawSize
+       (INVENTED placeholder, flagged as owed real art). -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_KurrethQueen</defName>
+    <label>kurreth queen</label>
+    <description>Vastly larger than any worker, sluggish outside her chamber, and never alone — a kurreth hive's queen is found only in its deepest room, worker escort pressed close around her.</description>
+    <statBases>
+      <MoveSpeed>1.8</MoveSpeed>
+      <MarketValue>260</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.3</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <Wildness>1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>1.6</baseBodySize>
+      <baseHealthScale>2.4</baseHealthScale>
+      <baseHungerRate>0.7</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.99, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>6</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Insect_Ambient</soundWounded>
+          <soundDeath>Pawn_Insect_Ambient</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_KurrethQueen</defName>
+    <label>kurreth queen</label>
+    <race>RM_KurrethQueen</race>
+    <combatPower>90</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

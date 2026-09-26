@@ -61,6 +61,22 @@ namespace RimMandrake.FeverWood
         /// Default 1.0 — matches shipped behavior.</summary>
         public static float sekkulaathEscapeRiskMultiplier = 1f;
 
+        /// <summary>FEVERWOOD_ANT_HIVE_DUNGEON_1 master toggle. Off: the
+        /// procedural ant hive never generates on any Fever Wood map — a
+        /// WORLDGEN-AFFECTING switch, since it changes what a freshly
+        /// generated map can contain. Default ON — matches shipped
+        /// behavior. Only the v1 hive (layout + plain hostile workers/queen)
+        /// is gated here; the reactive alarm/rally mechanism and the three
+        /// symbiotic chambers are follow-on work, not yet built (see
+        /// RM_AntHiveBiomeExtension's header).</summary>
+        public static bool antHiveDungeonEnabled = true;
+
+        /// <summary>Multiplies RM_AntHiveBiomeExtension.hiveChance. INVENTED
+        /// default 1.0 (matches shipped behavior); exposed because the base
+        /// chance itself is an invented placeholder a play-test should be
+        /// able to retune without a rebuild.</summary>
+        public static float antHiveChanceMultiplier = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -69,6 +85,8 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref tentacleAmbientMtbHours, "tentacleAmbientMtbHours", 6f);
             Scribe_Values.Look(ref sekkulaathTankEnabled, "sekkulaathTankEnabled", true);
             Scribe_Values.Look(ref sekkulaathEscapeRiskMultiplier, "sekkulaathEscapeRiskMultiplier", 1f);
+            Scribe_Values.Look(ref antHiveDungeonEnabled, "antHiveDungeonEnabled", true);
+            Scribe_Values.Look(ref antHiveChanceMultiplier, "antHiveChanceMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -103,6 +121,15 @@ namespace RimMandrake.FeverWood
             list.Label("Escape risk multiplier (lower = more escape-prone): "
                 + sekkulaathEscapeRiskMultiplier.ToString("0.00"));
             sekkulaathEscapeRiskMultiplier = list.Slider(sekkulaathEscapeRiskMultiplier, 0.25f, 4f);
+            list.GapLine();
+            list.CheckboxLabeled("Ant hive dungeons", ref antHiveDungeonEnabled,
+                "A rare, procedurally-laid-out chain of dug tunnels and rooms, populated with kurreth "
+              + "workers and a queen in the deepest room. Off: no hive ever generates on a new map; an "
+              + "already-generated one is unaffected. The reactive alarm/rally behaviour and the farm/"
+              + "parasite/guard chambers are not built yet — this toggle only covers the v1 layout and "
+              + "its plain hostile defenders.");
+            list.Label("Hive frequency multiplier (lower = rarer): " + antHiveChanceMultiplier.ToString("0.00"));
+            antHiveChanceMultiplier = list.Slider(antHiveChanceMultiplier, 0f, 3f);
 
             list.End();
         }

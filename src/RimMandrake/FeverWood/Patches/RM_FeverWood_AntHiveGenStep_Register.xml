@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWood_AntHiveGenStep_Register.xml   FEVERWOOD_ANT_HIVE_DUNGEON_1
+
+  Registers RM_GenStep_AntHiveDungeon onto Base_Player, same target/shape as
+  RUT_FeverWood_ScatterPoolsGenStep_Register.xml (read directly before
+  writing this). The GenStep itself is a no-op on any biome without
+  RM_AntHiveBiomeExtension, so registering it globally on Base_Player is
+  safe and matches every sibling GenStep's own registration pattern.
+
+  Order 236: after RM_GenStep_RootCauseways (228, per that class's own
+  header) and RM_GenStep_ScatterPools, so the hive's water-avoidance check
+  (RUT_MapComponent_TheTenant.IsRegisteredWater) sees pools already painted
+  and registered, and so the hive's own roofed cells are carved after the
+  ground terrain/causeway network is already down rather than being
+  overwritten by it.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li MayRequire="mandrake.rm.feverwood">RM_GenStep_AntHiveDungeon</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
