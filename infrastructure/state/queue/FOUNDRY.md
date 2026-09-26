@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T23:55:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T23:58:45Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1053,6 +1053,15 @@ kind:     task
 summary:  (no items/GREYSEA_BRINE_ELDERS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GREYSEA_BRINE_ELDERS_1.md
 
+## ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1 Downscale the 1254x1254 worker output instead of failing size_mismatch
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  ARTPIPEDOWNSCALEINSTEADOFREJECT1
+prose:    infrastructure/state/items/ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1719,16 +1728,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  WARDENMOTHERTRAINABLEGATE1 — hard-exclude Rescue/general Haul from a self-tamed warden young's training tab
 prose:    infrastructure/state/items/WARDEN_MOTHER_TRAINABLE_GATE_1.md
 
-## TERMINAL_SEAS_FLOOR_DRESSING_1 5 owed terminal-seas floor/flora slugs: Grey pillar-mason, both salt-rimed-blade-flora variants, Twilight mold-mat-roof, Twilight condensate-drinker
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  TERMINALSEASFLOORDRESSING1 — 5 owed terminal-seas floor/flora slugs
-prose:    infrastructure/state/items/TERMINAL_SEAS_FLOOR_DRESSING_1.md
-
 ## BIOME_DEFNAME_MIGRATION_WAVE_1 Three biomes renamed 2026-09-26 carry defNames that no longer match their labels: RM_NightsideIce/RM_PoisonForest/RM_Wasteland move to Sleeping Ice, Cauldron, Wastes per the Pyrelands precedent
 state:    proposed
 row:      unassigned
@@ -1778,16 +1777,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOME_CONFIG_ERROR_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_CONFIG_ERROR_TRIAGE_1.md
-
-## ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1 Downscale the 1254x1254 worker output instead of failing size_mismatch
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  ARTPIPEDOWNSCALEINSTEADOFREJECT1
-prose:    infrastructure/state/items/ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1.md
 
 ## ARTPIPE_METER_WINDOW_REMAP_1 Detector.note_meters reads the wrong meter window since the plan upgrade — weekly backstop is dead
 state:    proposed
@@ -1898,3 +1887,13 @@ kind:     build
 thin:     no ## criteria
 summary:  Phase 1 — the layer, offline-provable, no content:
 prose:    infrastructure/state/items/SEABED_PLANET_LAYER_1.md
+
+## DIVING_STALE_DEPLOYED_FILES_1 Retired pawn-dive files are deleted from src/ but still live in the deployed DivingInteraction mod
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     fix
+thin:     no ## criteria
+summary:  - The patch is still tagging RUTScaldWaterShallow, RUTScaldWaterMovingShallow and
+prose:    infrastructure/state/items/DIVING_STALE_DEPLOYED_FILES_1.md
