@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.warscar</packageId>
+  <name>RimMandrake: Warscar</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>RimWorld - Odyssey</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>sarg.alphaanimals</li>
+    <li>regrowth.botr.core</li>
+  </loadAfter>
+  <description>SCARLANDS_STANDALONE_MOD_1 (Phase A row 20 of
+design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).
+A crater-scarred plateau of shattered megastructure floors and slag hills, still
+laid out like a defense nobody won -- bunkers, embankments, ruined turret rings
+and burnt shield emplacements all facing outward, poisoned ground that never
+clears, and machines still patrolling lines that lead nowhere. Fully generalized:
+it names no other franchise or campaign. A separate frozen campaign world's own
+Scarlands instance (RUT_Scarlands, src/RimUtinni/UtinniPatches, labelled
+"Warscar" per the owner's naming ruling) is unaffected and unrelated; this is a
+new sibling biome for everyone else's worlds, not a rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+Ships the biome, reusing Odyssey's own first-party `RimWorld.BiomeWorker_Scarlands`
+worldgen worker (not a donor-mod type, so no extra hard dependency beyond Odyssey
+itself, which every RimMandrake biome mod may now assume per the owner's
+2026-09-25 "always assume all the DLCs" ruling), plus two DUPLICATED flora
+defs -- `RM_Glower`/`RM_GlowerCrust` (this biome's only native flora; the black
+radiotrophic crust and its harvested product) and `RM_ScorchedStars` (a cactus
+shared with the frozen twin's own Wasteland sibling, duplicated rather than
+moved so neither twin gains a cross-mod dependency on the other). The frozen
+originals (`RUT_Glower`/`RUT_GlowerCrust`/`RUT_ScorchedStars`) are untouched and
+keep serving the campaign world exactly as before.
+
+Three donor wildlife rows ship inline (`AA_SpinedGow`, `AA_Helixien` --
+sarg.alphaanimals; `RG_Rimclaw` -- regrowth.botr.core), each individually
+MayRequire-gated. The remaining ten rows of the frozen twin's live roster --
+eight genuine Star Wars/donor-tier fauna (`Mynock`, `RSW_CrystalFairyMole`,
+`RSW_MegaphoridLarva`, `SW_Electrictick`, `RSW_FoundryBeetle`, `RSW_Korrum`,
+`SW_Electricgryllotalpa`, `SW_Juggernautbeetles`) plus two RimUtinni-owned
+campaign creatures (`RUT_ScarRoach`, the Scarlands sibling of the Rust
+Cathedral's cleaner roaches; `RUT_MortuaryCrawler`) are wired onto this biome
+from `mandrake.rut.patches`' own `WildAnimals_Warscar.xml` (`PatchOperationAdd`
+onto this def's `wildAnimals`) rather than referenced directly here, because an
+RM-tier def may not name RimUtinni- or RimStarWars-tier content directly
+(Q11a) -- same shape as every other split biome's Star-Wars-fauna routing.
+
+NOT absorbed here, on inspection: `mandrake.rut.scarlandsladder` (the reveal
+lore-stage table). Its own About.xml already states it correctly:
+"this mod is the RimUtinni half, per the engine/content rule in
+NAMING_SCHEME_PLAN.md Section 2" -- its `RM_LoreStageTableDef` hard-targets the
+frozen twin's own `RUT_Scarlands` defName by name, and even its placeholder
+stage-5 text already names an Ash'karr place (the Ashfall Road). Moving that
+content into a franchise/campaign-free RM mod would put campaign lore inside a
+mod whose whole contract is "nothing here knows what campaign or planet uses
+it." This item's own analysis (SCARLANDS_STANDALONE_MOD_1 Section 10(1)) flagged
+this as a genuine open question rather than settled scope; on inspection the
+mod's own tier is correct as shipped, so it stays exactly where it is, fully
+untouched -- same disposition the Rust Cathedral build gave `RUT_ScarRoach`.
+
+Also NOT absorbed: the frozen twin's own scaria-mark mechanic
+(`RUT_ScarlandsMark`/`RUT_ScarlandsMarkLock`/`RUT_ScariaOnsetArming`/
+`RUT_ScarlandsMarkThoughts`) and its pre-sprung ruin dressing
+(`RUT_ScarlandsSprungDangers`). This item's own `## spec` section says outright
+that these satellite defs "do NOT need renaming for this item's criteria...
+don't invent extra scope" -- so this mod's own `biomeMapConditions` and
+`extraGenSteps` omit them; they remain exactly where they are, still serving
+the frozen twin.
+
+Mod Settings: a worldgen-rarity master toggle (0 = never generates on a new
+planet) plus an honestly-disclosed reserved cross-biome section, matching every
+other split biome's shipped shape. Neither duplicated flora carries a bespoke
+mechanic yet (the frozen twin's own `RUT_Glower` harvest loop is still owed to
+`SCARLANDS_MECHANICS_2`), so there is no mechanic-specific toggle to add this
+pass.
+
+Live-tile safety: the frozen `RUT_Scarlands` keeps its 90 live tiles on the
+canonical save untouched -- this build changes nothing about it, matching the
+compatibility-duplicate half of the item's own spec (it is frozen with a header
+notice, never deleted or repointed).</description>
+</ModMetaData>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SCARLANDS_STANDALONE_MOD_1. mandrake.rm.warscar's own copy of the Scarlands
+  biome, generalized (franchise-free, campaign-free) per
+  biome_mod_architecture.md Section 5 Phase A, row 20. Source: the FROZEN
+  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml (unchanged,
+  still carrying the campaign world's own 90 tiles until the terminal repaint
+  — see its own header for the freeze notice).
+
+  Differences from the frozen twin, all deliberate:
+    - defName RM_Warscar, label "Warscar" (unchanged from the twin's own
+      already-renamed label, Q5 ruling: no article, unlike every other row's
+      "the Xxx").
+    - description/settleWarning rewritten to drop the twin's own "by every
+      Jawa's flat testimony" clause (campaign-specific) and its now-superseded
+      "Scarlands" wording (renamed to Warscar, Q5) — otherwise unchanged.
+    - workerClass kept as the twin's own RimWorld.BiomeWorker_Scarlands: this
+      is Odyssey's own first-party class (MEASURED via RimSage,
+      ./Source/RimWorld/BiomeWorker_Scarlands.cs), not a donor mod's type, and
+      Odyssey is already a hard modDependency here (its biomeMapConditions'
+      MayRequire and its Odyssey-only extraGenSteps both need it), so writing
+      a duplicate RM_BiomeWorker_Warscar buys nothing per the owner's
+      2026-09-25 "always assume all the DLCs" ruling superseding this item's
+      own earlier (pre-ruling) recommendation to write one.
+    - biomeMapConditions and RUT_ScarlandsSprungDangers (extraGenSteps) are
+      DROPPED, not carried over: this item's own `## spec` states outright
+      that the frozen twin's scaria-mark mechanic and pre-sprung ruin dressing
+      "do NOT need renaming for this item's criteria... don't invent extra
+      scope." They remain campaign-mechanic content living only in
+      UtinniPatches, referencing the frozen twin, never this mod. The other
+      six extraGenSteps (AncientRuins_Scarlands, the three Craters sizes, the
+      two ScarlandsJunk gensteps) are Odyssey's own first-party donor
+      gensteps, not campaign content, and carry over unchanged.
+    - wildAnimals: the three non-Star-Wars, non-RimUtinni donor rows
+      (AA_SpinedGow, RG_Rimclaw, AA_Helixien) carry over inline, each keeping
+      its own MayRequire. The other ten rows of the frozen twin's live roster
+      (Mynock, RSW_CrystalFairyMole, RSW_MegaphoridLarva, SW_Electrictick,
+      RSW_FoundryBeetle, RSW_Korrum, SW_Electricgryllotalpa,
+      SW_Juggernautbeetles, RUT_ScarRoach, RUT_MortuaryCrawler) are wired via
+      mandrake.rut.patches' own WildAnimals_Warscar.xml PatchOperationAdd —
+      an RM-tier def may not name RimStarWars- or RimUtinni-tier content
+      directly (Q11a). See that patch file for the full row-by-row reasoning.
+    - wildPlants: RM_Glower/RM_ScorchedStars are OWN DUPLICATES (own defNames,
+      Defs/ThingDefs_Plants/RM_WarscarFlora.xml) of the frozen twin's own
+      RUT_Glower and RUT_ScorchedStars — duplicated rather than moved because
+      RUT_ScorchedStars is also shared with the frozen twin's own RUT_Wasteland
+      sibling (moving it would make Wasteland depend on this mod) and
+      RUT_Glower must stay live for the frozen twin regardless. The frozen
+      originals are completely untouched.
+    - texture kept pointing at the same World/Biomes/Scarlands path the twin
+      uses (first-party Odyssey world-map icon, not a donor or campaign
+      asset) pending any future dedicated art commission.
+-->
+<Defs>
+
+  <BiomeDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Warscar</defName>
+    <label>Warscar</label>
+    <description>Crater fields and slag hills on shattered megastructure floors; bunkers, embankments, ruined turret rings and burnt shield emplacements that all tell the same story, still perfectly legible -- a defense, layered and desperate, facing outward. The ground is poisoned in a way that does not fade and never will, the wildlife is mad, and machines defend the place for reasons they do not give. Everyone who lives near it calls it cursed.</description>
+    <workerClass>RimWorld.BiomeWorker_Scarlands</workerClass>
+    <settleWarning>The Warscar is inhabited by dangerous insects and rogue mechanoids. Water is toxic and scaria runs rampant among the animals. The Forgotten Sentinels defend the ground; they do not pursue past their lines, and they do not explain.</settleWarning>
+    <lakeBeachTerrain>Gravel</lakeBeachTerrain>
+    <mudTerrain>MarshyTerrain</mudTerrain>
+    <riverbankTerrain>MarshyTerrain</riverbankTerrain>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.0</animalDensity>
+    <plantDensity>0.15</plantDensity>
+    <forageability>0.25</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <wildAnimalScariaChance>0.5</wildAnimalScariaChance>
+    <texture>World/Biomes/Scarlands</texture>
+    <extraGenSteps>
+      <li>AncientRuins_Scarlands</li>
+      <li>CratersLarge</li>
+      <li>CratersMedium</li>
+      <li>CratersSmall</li>
+      <li>ScarlandsJunkClusters</li>
+      <li>ScarlandsJunkPrefabs</li>
+    </extraGenSteps>
+    <diseaseMtbDays>50</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>AncientMegastructure</terrain>
+        <min>-999</min>
+        <max>0.5</max>
+      </li>
+      <li>
+        <terrain>Soil</terrain>
+        <min>0.5</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>50</Clear>
+      <Fog>1</Fog>
+      <DryThunderstorm>1</DryThunderstorm>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">10</GrayPall>
+      <ToxRain MayRequire="Ludeon.RimWorld.Biotech">10</ToxRain>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">6</Overcast>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <AA_SpinedGow MayRequire="sarg.alphaanimals">0.15</AA_SpinedGow>
+      <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>
+      <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <RM_ScorchedStars>0.25</RM_ScorchedStars>
+      <RM_Glower>1.2</RM_Glower>
+    </wildPlants>
+    <wildPlantRegrowDays>20</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>
