@@ -89,21 +89,29 @@ Building, `minifiedDef=MinifiedThing` => `Minifiable=true`, matching
 (category Item, Mass 0.44kg -- irrelevant here since bypassing
 `AnimalTheftUtility.FindStealTarget`'s mass gate is exactly what ordering
 the JobDef directly does); `Muffalo` (a real PawnKindDef); `Pirate`
-(FactionDef, `requiredCountAtGameStart=1` -- a Pirate Faction instance is
-guaranteed to exist in every generated world, so `faction="Pirate"` on
-`jawa/set_thing_props` always resolves to a real Faction).
+(FactionDef -- see "Still not proven" item 1 below: `requiredCountAtGameStart
+=1` does NOT guarantee a live instance the way this paragraph originally
+claimed).
 
 Still not proven / likely first-live-run corrections (per this suite's
 own register, same practice as Pits):
   1. MODCHECK_SUITE_CORRECTIONS_1 (2026-09-13): the first live wave DID
      abort here, exactly the risk this item flagged -- `set_thing_props`
      itself was never checked for its own `success`, only the independent
-     `list_things` read-back, so the abort's real cause (setter failure,
-     e.g. no Pirate FACTION INSTANCE in this test world despite the
-     FactionDef being real, vs. a genuine read-back desync) was never
-     known. Both are now checked and raised with distinct messages below;
-     which one actually fires is still unmeasured (no save/quicktest was
-     loaded when this correction was made).
+     `list_things` read-back. FIXED 2026-09-26: the abort's real cause is
+     now KNOWN, not merely distinguished. `jawa/faction_create`'s own C#
+     docstring names it -- Biotech's `PirateWaster` declares
+     `replacesFaction` at vanilla `Pirate` with `requiredCountAtGameStart`
+     above zero, so `FactionGenerator.InitializeFactions` skips generating
+     `Pirate` outright on any world generated with Biotech active, and
+     CLAUDE.md's own standing rule mandates all five expansions (Biotech
+     included) on every test list, no ablation. So `requiredCountAtGameStart
+     =1` never actually guarantees a live instance HERE -- it fails
+     identically every run, not intermittently. `t.ensure_faction("Pirate")`
+     (modcheck.suite, shared with Aftermath's identical fix) now creates it
+     via `jawa/faction_create` before the claim is set, so the two
+     `set_thing_props`/read-back checks below are exercised for real
+     instead of aborting on missing setup.
   2. Exact `wait_ticks` budgets (2400 for the uninstall+haul round trip,
      900 for the animal steal's goto+take+wander+drop) are estimates from
      reading `uninstallWork`/toil shapes, not measured against real tick
@@ -202,10 +210,12 @@ def theft_hauler_uninstall(t):
     # tell "the SET call itself failed" (JawaBenchStorytellerTools2.cs's
     # `SetThingProps` returns `success: false` with a specific message if
     # `Find.FactionManager.FirstFactionOfDef` finds no Pirate FACTION
-    # INSTANCE in this particular world -- possible on a quicktest/
-    # minimal-mod world even though the FactionDef itself is real) apart
-    # from "SET succeeded but the read-back disagrees". Both are now
-    # surfaced explicitly so the next live run is self-diagnosing.
+    # INSTANCE in this particular world -- GUARANTEED absent here, see
+    # module docstring item 1: Biotech's PirateWaster always pre-empts it)
+    # apart from "SET succeeded but the read-back disagrees". `t.ensure_
+    # faction` closes the real gap; both remaining checks are now surfaced
+    # explicitly so a genuine read-back desync is still self-diagnosing.
+    t.ensure_faction("Pirate")
     set_result = t.bridge_call("jawa/set_thing_props", thing=building_id, faction="Pirate")
     if t._guard() and not (set_result or {}).get("success"):
         raise ExpectationFailed(

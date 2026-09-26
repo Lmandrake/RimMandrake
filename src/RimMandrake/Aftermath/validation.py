@@ -66,14 +66,42 @@ Still not proven / likely first-live-run corrections:
      within `wait_ticks(200)` of the fire call returning -- drop-pod vs.
      edge-walk-in arrival timing for a 120-point RaidEnemy was not measured
      live before writing this file.
-  3. `jawa/harmony_patches`'s exact result shape (grouped by HarmonyId? by
-     target method? a flat list?) was read from its tool Description text,
-     not a live call -- `harmony_patches_registered` below does a
-     defensive substring search across `repr(result)` for that reason,
-     and will need tightening once the real shape is seen.
-  4. The Pirate FactionDef is assumed hostile-to-player and present on the
-     minimal mechanism list (it is vanilla Core, not a mod def) -- not
-     re-verified here.
+  3. FIXED 2026-09-26 (was: item point 3 as originally written). The suite
+     called `jawa/harmony_patches(harmonyId=HARMONY_ID)` -- that parameter
+     does not exist. Read against the tool's own C# source
+     (`JawaBenchHarmonyInspect.cs`): `typeName` is REQUIRED (case-
+     insensitive simple or full name), `methodName` is an optional exact
+     filter, and the tool is grouped BY TYPE, not by HarmonyId -- results
+     are `methods[].{prefixes,postfixes,transpilers,finalizers}[].owner`,
+     with `owner` being the HarmonyId string. There is no way to query
+     "every method any mod patches under HarmonyId X" directly; you query
+     per declaring TYPE and check `owner` on the rows that come back.
+     `harmony_patches_registered` below now calls once per (type, method)
+     seam (read from each Patch_*.cs's own `[HarmonyPatch(typeof(...),
+     nameof(...))]` attribute, not guessed) and asserts `HARMONY_ID`
+     appears as an `owner` on that exact method -- this was still an
+     UnknownParameterError first live run 2026-09-13 (`harmonyId` silently
+     discarded, tool ran on defaults and returned success on an
+     unfiltered/wrong-shaped result), not a mod defect.
+  4. FIXED 2026-09-26 (was: "the Pirate FactionDef is assumed ... present
+     on the minimal mechanism list ... not re-verified here"). It measured
+     ABSENT live 2026-09-13: `jawa/storyteller_fire(faction="Pirate")`
+     failed with "FactionDef 'Pirate' exists but no such faction is in
+     this world." This is not flaky and not minimal-list-specific --
+     `jawa/faction_create`'s own C# docstring names the exact, deterministic
+     cause: Biotech's `PirateWaster` declares `replacesFaction` at vanilla
+     `Pirate` with `requiredCountAtGameStart` above zero, so
+     `FactionGenerator.InitializeFactions` SKIPS generating a `Pirate`
+     instance on any world generated with Biotech active -- and
+     CLAUDE.md's own standing rule is that every test mod list carries ALL
+     FIVE expansions, Biotech included, with no ablation. So no quicktest
+     world this suite ever runs against will have a live `Pirate` faction,
+     ever, by construction -- the SAME root cause the item's own history
+     flagged for RimProperty's chain-setup abort ("no Pirate Faction
+     INSTANCE in this test world"), not a coincidence. `t.ensure_faction`
+     (modcheck.suite, shared -- this is not Aftermath-specific) creates it
+     via `jawa/faction_create` before firing the raid, tolerating "already
+     exists" as success rather than failure.
 """
 from modcheck import Suite, ExpectationFailed
 
@@ -85,10 +113,16 @@ HARMONY_ID = "mandrake.rm.aftermath"
 
 # The five real seams named in this mod's own Source headers
 # (Patch_RaidGenerated.cs, Patch_LordLifecycle.cs x2, Patch_ColonistCasualty.cs,
-# Patch_MentalBreakNearBattle.cs). Checked as method-name substrings against
-# whatever shape jawa/harmony_patches hands back -- see docstring point 3.
-PATCHED_METHODS = [
-    "TryGenerateRaidInfo", "MakeNewLord", "RemoveLord", "Kill", "TryStartMentalState",
+# Patch_MentalBreakNearBattle.cs), each read straight off that file's own
+# `[HarmonyPatch(typeof(X), nameof(X.Y))]` attribute -- not guessed. See
+# docstring point 3: jawa/harmony_patches is queried per (type, method),
+# never by HarmonyId (no such parameter exists).
+PATCHED_SEAMS = [
+    ("IncidentWorker_Raid", "TryGenerateRaidInfo"),
+    ("LordMaker", "MakeNewLord"),
+    ("LordManager", "RemoveLord"),
+    ("Pawn", "Kill"),
+    ("MentalStateHandler", "TryStartMentalState"),
 ]
 
 
@@ -101,13 +135,22 @@ def harmony_patches_registered(t):
     update silently drops just one Patch class while the others still
     apply and the boot log still reports success)."""
     with t.component("patches_applied", beyond_toggle=True):
-        r = t.bridge_call("jawa/harmony_patches", harmonyId=HARMONY_ID)
-        text = repr(r)
-        missing = [m for m in PATCHED_METHODS if m not in text]
+        missing = []
+        for type_name, method_name in PATCHED_SEAMS:
+            r = t.bridge_call("jawa/harmony_patches", typeName=type_name,
+                              methodName=method_name)
+            methods = (r or {}).get("methods") or []
+            row = next((m for m in methods if m.get("method") == method_name), None)
+            owners = []
+            if row:
+                for key in ("prefixes", "postfixes", "transpilers", "finalizers"):
+                    owners.extend(p.get("owner") for p in (row.get(key) or []))
+            if HARMONY_ID not in owners:
+                missing.append("%s.%s (owners seen: %r)" % (type_name, method_name, owners))
         if missing:
             raise ExpectationFailed(
-                "jawa/harmony_patches(harmonyId=%r) does not mention: %r -- raw result: %r"
-                % (HARMONY_ID, missing, r))
+                "jawa/harmony_patches does not show %r as the owner of: %s"
+                % (HARMONY_ID, "; ".join(missing)))
         t.screenshot()
 
 
@@ -127,6 +170,7 @@ def battle_lifecycle_repelled(t):
 
     with t.component("devmode_and_raid_fire", beyond_toggle=True):
         t.bridge_call("jawa/prefs", devMode=True)
+        t.ensure_faction("Pirate")
         r = t.bridge_call("jawa/storyteller_fire", incidentDef="RaidEnemy",
                           points=120, faction="Pirate", dryRun=False)
         if not (r or {}).get("fired"):
