@@ -62,6 +62,33 @@ name, sprouts, and a one-hour cloud zone where pawns without VacuumResistance �
 the Contagion's `RM_Unfinished*` limbs onto outside leaf parts. FLUSH: produce at the
 foot, plant survives, no spectacle.
 
+## Live verify 2026-09-26 (coordinator, 629-mod cold load) and the fix
+
+- ✅ MEASURED live: startup line `569 plant defs soak … roster rows resolved 111,
+  absent 24`; no crossref/configerror/patchfail naming the four touched mods;
+  `RUT_ExtremeDesert` refused soak (0 cells), an ice-biome map accepted it.
+- ❌ Found live: six soaked, Mature plants (one per top) sat at `charging=0` for
+  >6,000 ticks, so no top, tell, `Plant.Print` scale or hue patch was exercised.
+- **Cause (static trace, `537bc7d26`):** in the charge loop, `wet && GrowthRate > 0`
+  advanced and EVERYTHING else decayed. A dormant plant (vanilla `GrowthRate == 0`:
+  cold, zero fertility, out of season, blight) is wet but not growing, so it fell into
+  the decay branch: `StartCharge` set 0.0001, the same pass subtracted
+  250 / (15000 × 0.5) = 0.033, the charge hit ≤ 0 and was removed — every pass, so
+  `charging` always read 0 (and the ground tell re-fired each pass). An ice-biome map
+  makes every plant dormant. **Fix:** the clock is now a pure
+  `RM_MapComponent_ExplosiveGrowth.StepCharge` — wet+growing advances, wet+dormant
+  HOLDS, dry decays — and a plant only arms when `GrowthRate > 0`.
+  `RM_ChargeSelfTest` runs the three regimes at every startup and logs
+  `charge clock self-test PASS|FAIL`. The debug report now splits soaked plants into
+  immature / matureDormant / charging / topNone, so a zero can be explained live.
+- ⚠️ Consequence for the re-verify: on a cold map a frozen plant correctly does NOT
+  charge. Re-run on a map where plants grow (temperate/wet biome, daytime temp in
+  range, fertile soil) — Soak 5x5 here → wait > 250 ticks → Report should show
+  `charging > 0` and climb; ~60 passes (6 h) to the top at defaults, or use
+  "Charge all charging plants to 0.9". **Live re-verify is OWED** — the bridge was
+  held by BENCH (Scald round) when the fix landed; it was not taken.
+- Also still owed from that load: the ×10 wet-ambient band (needs a wet-biome map).
+
 ## Owed
 
 1. **The perf gate** (design doc §5) — TPS/frame-time on a jungle-density quicktest,
