@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T02:47:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T03:26:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -801,6 +801,15 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
+## WORLD_LABEL_SIZE_HIERARCHY_1 All 71 world features sit at the maxDrawSizeInTiles floor - owner ruled size the whole planet
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  1. Derive each feature's maxDrawSizeInTiles from its tile count — a curve, not a table,
+prose:    infrastructure/state/items/WORLD_LABEL_SIZE_HIERARCHY_1.md
+
 ## LONGSHADE_RM_MOD_BUILD_1 Phase A: build RM_LongShade as its own RimMandrake mod (mandrake.rm.longshade) — the Long Shade (the livable desert)
 state:    doing
 row:      unassigned
@@ -809,15 +818,6 @@ target:   v1
 kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
-
-## POISONFOREST_RM_MOD_BUILD_1 Phase A: build RM_PoisonForest as its own RimMandrake mod (mandrake.rm.poisonforest) — the Poison Forest
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/POISONFOREST_RM_MOD_BUILD_1.md
 
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing
@@ -906,7 +906,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md yet — write one when you have something to say)
+summary:  REGROWTHRECOLORMINEABLESNRE1
 prose:    infrastructure/state/items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md
 
 ## SCALD_WATER_AGITATION_FLECKS_1 Scald wreck shadowData fix + ambient water-agitation ripple mechanism (margin calm / shallow light / deep heavy)
@@ -1359,7 +1359,7 @@ needs:    offline
 target:   v1
 kind:     task
 blocked:  Real trace (Transient/Player.log.geneticrim_ctor_nre_2026-09-25 L11288-92, and 09-24 before_bacta_swap L14377-81): 'Exception from long event: System.NullReferenceException' at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>g__RecolorMineables|4, called via b__0, via LongEventHandler.UpdateCurrentSynchronousEvent -- only 2 frames, no field named (release DLL, no PDB). RimSage DID connect this session (contra the CLAUDE.md claim) but only indexes Defs/+Source/ for core RimWorld, not 3rd-party mod DLLs -- ReGrowthCore.dll is unindexed. Reverse-engineered the actual IL instead (dnfile+dncil via a throwaway venv, ReGrowthCore.dll 1.6): ProcessMap flood-fills Mineable things with building.isNaturalRock==true into a lumps dict (skipping any defName in ModSettings_PerspectiveOres.skippedMineableDefs), AssociateLumps assigns each lump a Color borrowed from an adjacent isNaturalRock&&!isResourceRock neighbour's DrawColor, then queues RecolorMineables (b__0) and a 2nd independent long-event action (b__1) separately -- so b__0 crashing does NOT stop b__1 or the rest of map load; blast radius is cosmetic-only (some mineables miss their recolor tint) and self-contained, matching the log (1x/load, no crash, no cascade). RecolorMineables throws when accessing thing.Graphic.data (a GraphicData) -- null there is the only NRE-shaped read in the method. Cross-checked EVERY isNaturalRock ThingDef in the current def dump (defs.sqlite, mods=623, captured 2026-09-24) against this exact criterion: 174 total across all mods, 52 of ours (RM_/RSW_/RUT_/mandrake.* -- KOTOR_/RUT_ rock+ore veins, GravTide_ variants) -- ALL 52 have graphicData present with populated texPath/graphicClass and a cachedGraphic whose .data is a valid self-reference (no null, no missing field). Zero anomalies found in ours or in any of the other 571 mods' defs. Caveat: the dump is a post-load snapshot, so a graphic that failed once during FinalizeInit but got rebuilt cleanly afterward by the normal render path would look healthy here too -- a static dump cannot rule that out. What would resolve it: a live Harmony postfix/breakpoint on RecolorMineables (or the exception handler) on the Desktop machine, logging the actual Thing/def whose Graphic.data was null at the moment of the throw -- needs a live debugger or an injected diagnostic DLL, not obtainable from Player.log or the def dump. No fixable defect found on our side; not closing/guessing.
-summary:  (no items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md yet — write one when you have something to say)
+summary:  REGROWTHRECOLORMINEABLESNRE1
 prose:    infrastructure/state/items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
@@ -1383,16 +1383,6 @@ kind:     design
 thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
-
-## WORLD_LABEL_SIZE_HIERARCHY_1 All 71 world features sit at the maxDrawSizeInTiles floor - owner ruled size the whole planet
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Derive each feature's maxDrawSizeInTiles from its tile count — a curve, not a table,
-prose:    infrastructure/state/items/WORLD_LABEL_SIZE_HIERARCHY_1.md
 
 ## FEATURE_DRAWCENTER_UNVERIFIED_1 Only 2 of 71 world features have a verified drawCenter, and growing labels make a wrong one worse
 state:    proposed
@@ -1433,16 +1423,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/GREENTIDE_RM_MOD_BUILD_1.md
-
-## PYRELANDS_RM_MOD_BUILD_1 Phase A: build RM_Pyrelands as its own RimMandrake mod (mandrake.rm.pyrelands) — the Pyrelands - twin pair, mod EXISTS; defName rename done at 84d42c63b, BUILT NOT DEPLOYED
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/PYRELANDS_RM_MOD_BUILD_1.md
 
 ## CONTAGION_RM_MOD_BUILD_1 Phase A: build RM_Contagion as its own RimMandrake mod (mandrake.rm.contagion) — the Contagion
 state:    proposed
@@ -1533,16 +1513,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LANTERNDEEPS_RM_MOD_BUILD_1.md
-
-## MIASMA_FEVERWOOD_GREENTIDE_BMT_1 Miasma/FeverWood/Greentide rosters carry live BMT_ (Biomes! Caverns) fauna rows, same defect as the Rot/Forge
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  For each of the 7 BMT names above, follow the exact method
-prose:    infrastructure/state/items/MIASMA_FEVERWOOD_GREENTIDE_BMT_1.md
 
 ## FURNACEBEAST_WORLD_MIGRATION_1 Furnace-beast world-scale thermal migration: herd crosses biomes off-map (world leg, split from FURNACEBEAST_THERMAL_CYCLE_1)
 state:    proposed
@@ -2023,13 +1993,3 @@ kind:     design
 thin:     no ## spec
 summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
 prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
-
-## FLOWWORKS_DONOR_AFFORDANCE_GAP_1 FlowWorks liquid terrains reference donor TerrainAffordanceDefs (BMT_DeepWaterBridgeable x38, TST_TerrainForMeditationStone x19) that break standalone - own affordances or MayRequire owed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FLOWWORKS_DONOR_AFFORDANCE_GAP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLOWWORKS_DONOR_AFFORDANCE_GAP_1.md
