@@ -103,19 +103,7 @@
              home. -->
         <RSW_Screecher>0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import; hot end of the migration -->
         <RSW_Excretor>0.15</RSW_Excretor>  <!-- excretor - refiner-herd, new-def (COMMISSION_LEDGER_CLEANUP_1 / WASTELAND_EXCRETOR_BEZOAR_1) -->
-      </value>
-    </match>
-  </Operation>
-
-  <!-- Mlie Star Wars Animal Collection: Borcatu carries no RSW_/SW_ prefix
-       but routes here by MayRequire per SW_FAUNA_NEVER_IN_RM_TIER_1's
-       routing rule (a bare-donor-name row is still Star Wars content). -->
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
-    <xpath>Defs/BiomeDef[defName="RM_Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_Wasteland"]/wildAnimals</xpath>
-      <value>
-        <Borcatu>0.7</Borcatu>  <!-- Borcatu - wretched-small, keep -->
+        <RSW_Borcatu>0.7</RSW_Borcatu>  <!-- Borcatu - wretched-small, keep; retargeted from the bare donor name to our own RSW_ port (MLIE_ABSORPTION_BIOME_WIRING_1, 2026-09-25) -->
       </value>
     </match>
   </Operation>

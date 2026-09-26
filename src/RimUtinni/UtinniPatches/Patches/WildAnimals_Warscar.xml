@@ -22,13 +22,10 @@
   ROSTER (all ten, MEASURED against the live RUT_Scarlands.xml, not the stale
   item analysis):
 
-  Star Wars Animal Collection (Continued) (mlie.starwarsanimalcollection):
-    Mynock                0.5   the donor's own bare defName. Item's own
-                                §5 flagged that our own RSW_Mynock clone
-                                already ships and should probably replace this
-                                row — that swap is DONOR_DEFS_PORT_TO_OURS_1's
-                                scope, not this item's; casting the donor row
-                                unchanged here is not a regression.
+  🔴 MLIE_ABSORPTION_BIOME_WIRING_1 (2026-09-25): the swap flagged below as
+  "not this item's scope" is now done — Mynock retargeted to our own
+  RSW_Mynock (mandrake.rsw.swbestiary), joining the other RSW_ ports below.
+  This file no longer casts any bare mlie.starwarsanimalcollection defName.
 
   who.vfee.isopodageneline (weapon-descendant insects):
     SW_Electrictick        0.3
@@ -71,16 +68,6 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
-    <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
-      <value>
-        <Mynock>0.5</Mynock>
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="who.vfee.isopodageneline">
     <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -98,6 +85,7 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
       <value>
+        <RSW_Mynock>0.5</RSW_Mynock>
         <RSW_CrystalFairyMole>0.5</RSW_CrystalFairyMole>
         <RSW_MegaphoridLarva>0.5</RSW_MegaphoridLarva>
         <RSW_FoundryBeetle>0.18</RSW_FoundryBeetle>

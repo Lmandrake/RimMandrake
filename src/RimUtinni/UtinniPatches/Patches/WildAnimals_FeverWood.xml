@@ -32,15 +32,22 @@
   this file follows the live def rather than the item's now-stale table. The
   routing verdict (Utinni patch, not inline) is unchanged either way.
 
-  10 wildAnimals rows split by donor mod:
+  10 wildAnimals rows, all cast as OUR OWN RSW_ ports (MLIE_ABSORPTION_BIOME_WIRING_1,
+  2026-09-25 — the six below were wrongly logged as "no port yet" when this file was
+  authored; RSW_Urusai/RSW_Gelagrub/RSW_Convor/RSW_LongtailGorg/RSW_Whisperbird/
+  RSW_Fambaa all already ship in src/RimStarWars/SWBestiary, each with both a ThingDef
+  and a PawnKindDef, so the bare-donor rows were a genuine wiring bug, not a real
+  dependency):
     mandrake.rsw.swbestiary (our own RSW_ ports):
-      RSW_GlowSlug 0.5, RSW_Nuna 0.4, RSW_JewelBeetle 0.2, RSW_AcidSlug 0.05
-    mlie.starwarsanimalcollection (SW canon, no port yet — DONOR_DEFS_PORT_TO_OURS_1):
-      Urusai 0.5, Gelagrub 0.4, Convor 0.3, LongtailGorg 0.3, Whisperbird 0.3,
-      Fambaa 0.02
+      RSW_GlowSlug 0.5, RSW_Urusai 0.5, RSW_Nuna 0.4, RSW_Gelagrub 0.4,
+      RSW_JewelBeetle 0.2, RSW_Convor 0.3, RSW_LongtailGorg 0.3, RSW_Whisperbird 0.3,
+      RSW_AcidSlug 0.05, RSW_Fambaa 0.02
 
-  3 wildPlants rows, all mlie.starwarsanimalcollection (SW canon, no port yet):
-    Plant_HydenockTree_Wild 1.5, Plant_JoganTree_Wild 0.6, Plant_Chakroot_Wild 0.4
+  3 wildPlants rows: RSW_Plant_Chakroot_Wild is also already ported (same fix, same
+  day) — the other two remain genuinely unported (DONOR_DEFS_PORT_TO_OURS_1):
+    mandrake.rsw.swbestiary: RSW_Plant_Chakroot_Wild 0.4
+    mlie.starwarsanimalcollection (SW canon, no port yet):
+      Plant_HydenockTree_Wild 1.5, Plant_JoganTree_Wild 0.6
     (hydenock/jogan/chak-root are Q11a's own worked canon examples.)
 
   ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional
@@ -65,30 +72,32 @@
       <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildAnimals</xpath>
       <value>
         <RSW_GlowSlug>0.5</RSW_GlowSlug>
+        <RSW_Urusai>0.5</RSW_Urusai>
         <RSW_Nuna>0.4</RSW_Nuna>
+        <RSW_Gelagrub>0.4</RSW_Gelagrub>
         <RSW_JewelBeetle>0.2</RSW_JewelBeetle>
+        <RSW_Convor>0.3</RSW_Convor>
+        <RSW_LongtailGorg>0.3</RSW_LongtailGorg>
+        <RSW_Whisperbird>0.3</RSW_Whisperbird>
         <RSW_AcidSlug>0.05</RSW_AcidSlug>
+        <RSW_Fambaa>0.02</RSW_Fambaa>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Star Wars canon wildPlants: RSW_Plant_Chakroot_Wild is our own port
+       (MLIE_ABSORPTION_BIOME_WIRING_1); the other two remain genuinely unported. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildPlants</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildPlants</xpath>
+      <value>
+        <RSW_Plant_Chakroot_Wild>0.4</RSW_Plant_Chakroot_Wild>
       </value>
     </match>
   </Operation>
 
   <!-- Star Wars canon, not yet ported to our own RSW_ defs (DONOR_DEFS_PORT_TO_OURS_1). -->
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
-    <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildAnimals</xpath>
-      <value>
-        <Urusai>0.5</Urusai>
-        <Gelagrub>0.4</Gelagrub>
-        <Convor>0.3</Convor>
-        <LongtailGorg>0.3</LongtailGorg>
-        <Whisperbird>0.3</Whisperbird>
-        <Fambaa>0.02</Fambaa>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- Star Wars canon wildPlants, same donor mod, not yet ported. -->
   <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
     <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildPlants</xpath>
     <match Class="PatchOperationAdd">
@@ -96,7 +105,6 @@
       <value>
         <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild>
         <Plant_JoganTree_Wild>0.6</Plant_JoganTree_Wild>
-        <Plant_Chakroot_Wild>0.4</Plant_Chakroot_Wild>
       </value>
     </match>
   </Operation>

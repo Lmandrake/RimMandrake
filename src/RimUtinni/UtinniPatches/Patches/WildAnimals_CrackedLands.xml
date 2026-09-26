@@ -12,6 +12,13 @@
   this file is what makes `RM_FloodedCanyon` behave identically for anyone
   running the Utinni campaign patches, per §5 step 4.
 
+  🔴 MLIE_ABSORPTION_BIOME_WIRING_1 (2026-09-25): the 5 mlie.starwarsanimalcollection
+  rows in Op 1 below (Gornt/Eopie/CanCell/Convor/Woolamander) all already have our own
+  RSW_ ports (RSW_Gornt/RSW_Eopie/RSW_CanCell/RSW_Convor/RSW_Woolamander, each with both
+  a ThingDef and a PawnKindDef) — retargeted to Op 2 (mandrake.rsw.swbestiary) below,
+  keeping their weights and comments. Only the two sarg.alphaanimals rows
+  (AA_Murkling/AA_SandSquid) remain in Op 1, which is otherwise unchanged.
+
   🔑 THE SPLIT, and why it is a REPLACE, not an ADD, unlike WildAnimals_Pyrelands.xml:
   `the_cracked_lands.md` (FROZEN) §0 and §6 ban 3 are explicit — "the vanilla
   roster (rat, iguana, dromedary, boomalope, boomrat, ostrich, donkey, fennec,
@@ -93,12 +100,7 @@
       <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <Gornt MayRequire="mlie.starwarsanimalcollection">0.3</Gornt>  <!-- gornt - the-Patient, keep -->
-          <Eopie MayRequire="mlie.starwarsanimalcollection">0.25</Eopie>  <!-- eopie - the-Patient, keep -->
-          <CanCell MayRequire="mlie.starwarsanimalcollection">0.2</CanCell>  <!-- can-cell - flier-commuter, keep -->
-          <Convor MayRequire="mlie.starwarsanimalcollection">0.2</Convor>  <!-- convor - flier-commuter, import -->
           <AA_Murkling MayRequire="sarg.alphaanimals">0.2</AA_Murkling>  <!-- murkling - the-Spenders, adjust-keep -->
-          <Woolamander MayRequire="mlie.starwarsanimalcollection">0.15</Woolamander>  <!-- woolamander - flier-commuter, import -->
           <AA_SandSquid MayRequire="sarg.alphaanimals">0.1</AA_SandSquid>  <!-- sand squid - the-Sealed, adjust-keep -->
         </wildAnimals>
       </value>
@@ -106,13 +108,21 @@
   </Operation>
 
   <!-- Op 2: OUR OWN RSW_ bestiary entries, gated on that mod per the item's
-       own step 2 instruction. -->
+       own step 2 instruction. The 5 Star Wars canon rows (Gornt/Eopie/CanCell/
+       Convor/Woolamander) moved here from Op 1's old donor-gated form,
+       MLIE_ABSORPTION_BIOME_WIRING_1 2026-09-25 — each already ships as a real
+       RSW_ port (ThingDef + PawnKindDef both present). -->
   <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
     <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildAnimals</xpath>
       <value>
+        <RSW_Gornt>0.3</RSW_Gornt>  <!-- gornt - the-Patient, keep -->
+        <RSW_Eopie>0.25</RSW_Eopie>  <!-- eopie - the-Patient, keep -->
+        <RSW_CanCell>0.2</RSW_CanCell>  <!-- can-cell - flier-commuter, keep -->
+        <RSW_Convor>0.2</RSW_Convor>  <!-- convor - flier-commuter, import -->
         <RSW_SandPillar>0.5</RSW_SandPillar>  <!-- sand pillar (bodySize 0.80) - placed by the round2 move mapping ("cracked land") and never wired until ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 4, 2026-09-23. ⛔ Deliberately wired HERE and not on RUT_CrackedLands: that twin is frozen (FLOODEDCANYON_RM_MOD_BUILD_1) and campaign fauna rides this Utinni patch onto the RM_ def. Small animal, so the roster's 0.5 raises the small share and cannot break ECOSYSTEM_PYRAMID_LAW_1. -->
+        <RSW_Woolamander>0.15</RSW_Woolamander>  <!-- woolamander - flier-commuter, import -->
         <RSW_MutagenicNorphea>0.4</RSW_MutagenicNorphea>  <!-- mutagenic norphea - the-Sealed, keep -->
         <RSW_SandLeaper>0.2</RSW_SandLeaper>  <!-- sand leaper - the-Spenders, adjust-keep -->
         <RSW_Creature_Mantrap>0.15</RSW_Creature_Mantrap>  <!-- mantrap - the-Patient, import -->
