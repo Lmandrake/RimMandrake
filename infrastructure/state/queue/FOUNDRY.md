@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T15:26:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T15:28:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -17,6 +17,15 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
+
+## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
+prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
 
 ## VAULT_DUNGEON_BUILD_1 Build the six Forsaken vaults: concentric grammar templates, LARGE maps, quicktest-proven
 state:    doing
@@ -1004,12 +1013,12 @@ prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
 
 ## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
-state:    ready  (BLOCKED)
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  creative lock-in owed with the owner (FUTURE_VECTORS.md line 22, item's own watch-out) — mechanical rulings landed 2026-09-01 but KCSG authoring/art/dialogue is a joint BENCH+owner session, not solo FOUNDRY build; skipping to next item
+blocked:  re-verified 2026-09-26: design/Jawa/reconciled_lore/FUTURE_VECTORS.md still states creative lock-in owed with the owner for the dungeons arc; KCSG authoring/turret art/reveal dialogue remain a joint BENCH+owner session, not solo offline FOUNDRY build. No change since 2026-09-06 block. Skipping to next item in lane.
 summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
 prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
 
