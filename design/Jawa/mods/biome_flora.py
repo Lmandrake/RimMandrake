@@ -258,6 +258,17 @@ FAMILIES = {
   'RUT_Slime': {   # 96 tiles · 5 plants — AB_SlimyPholiota removed as a duplicate listing
                     # (kept only at the_rot, its "elsewhere"; SHEET_ORPHAN_CONSUMPTION_1,
                     # owner ruling 2026-09-20)
+    # 🔴 GELATINOUSSLIME_RM_MOD_BUILD_1 (2026-09-25): RUT_Slime is now FROZEN, but this
+    # entry stays keyed here UNCHANGED — unlike most sibling RM_ biome mods, the survivor
+    # RM_GelatinousSlime (mandrake.rm.gelatinousslime, already built and richer than this
+    # twin) does NOT inherit these 5 donor plants. §10 ruled it OUT twice over (owner,
+    # 2026-09-24, verbatim: "We absolutely don't want patched donor stuff in there, we
+    # would remake") — RM_GelatinousSlime ships its own separate, original flora
+    # (RM_Plant_SlimeGrass/Bellows/Thumbstalk/Readerbloom, authored directly in its def,
+    # never through this roster pipeline) and is out of this generator's scan/check scope
+    # entirely, same no-op treatment as RM_LongShade/RUT_Desert above: no dict entry, no
+    # emitted operation, own def's own wildPlants is the shipping truth. Retargeting this
+    # key to RM_GelatinousSlime would misattribute donor rows §10 explicitly bans.
     'AB_TallSlimyGrass': 1.0, 'AB_SlimyFern': 0.5, 'AB_SlimyTree': 0.5,
     'AB_Slimecasia': 0.4, 'AB_LargeSlimyTree': 0.3},
   'RUT_TheForge': {   # 44 tiles · 10 plants — AB_PyroclasticConflagration (31),
