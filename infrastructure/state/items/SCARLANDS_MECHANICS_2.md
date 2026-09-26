@@ -466,3 +466,75 @@ owed.
 - `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll`
   (rebuilt, 0 warnings/errors — already committed by `c76fc40a0`, confirmed
   byte-identical to this pass's own rebuild; not re-committed here)
+
+## build pass continuation — 2026-09-26
+
+Picked the item back up cold: read this file, the frozen sheet, and
+`scarlands_kit_spec.md` in full, then checked what already existed on disk
+before authoring anything. Everything the spec's four mechanics call for
+(§2 mark, §3 scaria onset, §4 lord/duty, §5 pre-sprung dressing) was already
+shipped by the 2026-09-14 build pass above and committed at `52c8c982c` —
+confirmed present, unmodified, and clean of git status this pass. Nothing
+in that set was rebuilt.
+
+**Closed one genuinely still-owed piece: §4's own "OWED, NOT BUILT: faction
+assignment."** `RUT_SentinelGraveWard` existed but was never placed on any
+map by any GenStep, in either mod (`RUT_Scarlands` or `RM_Warscar`) — the
+whole Forgotten Sentinel defend-only AI (`RM_LordJob_DefendPerimeter`,
+`RUT_SentinelDefend`) was dead content end to end, not merely
+faction-less. New `RUT_GenStep_ScatterSentinelGraveWards` (plain `GenStep`,
+same shape as `RustCathedral`'s own `GenStep_ScatterSacredWalls`, same
+"Forgotten"/Cathedral lore family) places it on `RUT_Scarlands` only (never
+`RM_Warscar` — that mod's own header states this class of content stays
+UtinniPatches-only) and calls `.SetFaction(Faction.OfMechanoids)` at
+placement — the SAME faction `RUT_SacredWall_Conduit` already uses (vanilla
+`Mechanoid`, reskinned "the Forgotten Arsenal"), not a new one, exactly as
+the grave-ward's own header called "very likely the correct one." Wired via
+new `GenStepDef RUT_ScarlandsGraveWardScatter`, order 960 (just after the
+existing prefab/junk scatters), into `RUT_Scarlands.xml`'s own
+`extraGenSteps`. Gated on a new Mod Setting, `sentinelGraveWardsEnabled`
+(#54, `RM_EnvironmentalHazardsMod.cs`), WORLDGEN-AFFECTING, per
+`MOD_OPTIONS_RETROFIT_1`.
+
+**Build/validate.** `dotnet build RM_EnvironmentalHazards.csproj -c Release`
+— 0 warnings/0 errors, isolated from three other agents' concurrent
+uncommitted WIP in the same shared assembly this session (their `.cs`
+files and csproj lines were temporarily moved/reverted for a clean build,
+then restored byte-identical afterward — confirmed via `git status`).
+`validate_patch.py` — 0 errors on all 3 touched/new XML files; one
+pre-existing known-false-positive texPath WARN on `RUT_SentinelGraveWard.xml`
+(already documented above, unchanged).
+
+**Not built this pass, unchanged from before.** The real Forgotten Sentinel
+`PawnKindDef` — `RUT_SentinelGraveWard` still spawns placeholder vanilla
+`Mech_Pikeman`; this is roster/content-pass work explicitly outside this
+kit's own naming-section scope, not something this pass invented a shortcut
+around. Bespoke art for the grave-ward and the three §5 sprung-danger
+prefabs (art pipe owed). Live/quicktest verification of any of this item's
+mechanics — no bridge access this pass.
+
+**Housekeeping, not this item's to fix.** `RimMandrake.EnvironmentalHazards.dll.srchash`
+reads `STAMP_MISSING` against `origin/main` per `dll_source_stamp.py` —
+pre-existing drift from a concurrent window's own DLL-rebuild commit on this
+same shared assembly, not introduced by this pass (this pass's own commit,
+`f12a1387e`, touched neither the DLL nor its srchash).
+
+Commits this pass: `f12a1387e` (grave-ward placement + faction), `94c815127`
+(rimflow ledger note). Pushed via `shared_sync.py` both times — local history
+had gone stale against a sibling's own rebase mid-session.
+
+## files (2026-09-26 continuation)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RUT_GenStep_ScatterSentinelGraveWards.cs`
+  (new — committed separately by a concurrent window at `ef5f47f48` after
+  this pass's own csproj entry landed via `df03de34d`; content is this
+  pass's own work, unmodified)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScarlandsGraveWardScatter.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml` (modified:
+  `extraGenSteps` gains `RUT_ScarlandsGraveWardScatter`, header note)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_SentinelGraveWard.xml`
+  (modified: header note — faction assignment now built, no def change)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs`
+  (modified: setting #54 `sentinelGraveWardsEnabled` — committed by a
+  concurrent window at `df03de34d`, confirmed additive/non-colliding, not
+  re-committed here)
