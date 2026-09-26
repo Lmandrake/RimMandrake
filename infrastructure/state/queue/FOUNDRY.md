@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T15:30:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T15:31:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1195,7 +1195,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  steps 2-3 of 5 done (harvest reference copied, both FindMod patches deleted, 0 validate_patch errors). Steps 1 (18-22 owned-art props), 4 (ModsConfig removal + cold load + resave) and 5 (owner fauna-sheet coordination) are separate passes - see item
+blocked:  step 5 resolved this pass (commit 71f887e4e), steps 2-3 already done; steps 1 (21-sprite dedicated art pass) and 4 (needs cold-load restart) are still genuinely owed and out of this offline-only session's scope
 summary:  Owner-said: "Retire-after-harvest." Harvest then retire VQE Cryptoforge:
 prose:    infrastructure/state/items/CRYPTOFORGE_HARVEST_RETIRE_1.md
 
