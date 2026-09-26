@@ -27,11 +27,26 @@ namespace RimMandrake.DivingInteraction
         // About.xml's description of shipped default behavior.
         public static bool requireGravEngine = true;
 
+        // GREYSEA_BRINE_POOL_DEFENCE_1, 2026-09-26. The Grey Sea floor's
+        // crystallisation defence: touch a brine pool (or stand in a salt
+        // chimney's plume) and you are encased as an object that must be
+        // mined out — the owner's ruling Q1(b), 2026-09-26.
+        //
+        // It gets its own toggle rather than riding masterEnabled because it
+        // is the one mechanic in this mod that can take a colonist out of the
+        // player's hands without a fight, and MOD_OPTIONS_RETROFIT_1's rule
+        // is a toggle per major mechanic. Default ON = shipped behaviour.
+        // Off: the pools are merely slow water, and any jacket already on a
+        // saved map still exists and can still be mined out — turning the
+        // mechanic off never strands a pawn inside one.
+        public static bool greyPoolDefenceEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
             Scribe_Values.Look(ref requireGravEngine, "requireGravEngine", true);
+            Scribe_Values.Look(ref greyPoolDefenceEnabled, "greyPoolDefenceEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -50,6 +65,15 @@ namespace RimMandrake.DivingInteraction
                     "Shipped default: ON. The owner's ruling is that a gravship is the sole way "
                   + "to reach a sea floor — turning this off lets the hatch be built anywhere, for "
                   + "testing or a different ruleset, but that is not the shipped experience.");
+
+                list.Gap();
+                list.CheckboxLabeled("Grey Sea: brine pools crystallise intruders", ref greyPoolDefenceEnabled,
+                    "Shipped default: ON. On the Grey Sea's floor, touching a brine pool — or "
+                  + "standing in a salt chimney's plume — encases a colonist in salt. They are "
+                  + "not downed; they are an object, and another colonist has to MINE them out "
+                  + "before they smother. Off: the pools are merely slow water. Jackets already "
+                  + "on a saved map keep working either way, so switching this off never leaves "
+                  + "anyone sealed in.");
             }
 
             list.End();
