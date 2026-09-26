@@ -261,5 +261,83 @@ namespace RimMandrake.Pyrelands
         /// <summary>How far a hungry beast will walk for a thornvine patch.
         /// [INVENTED]</summary>
         public const float FurnaceThornvineScanRadius = 30f;
+
+        // ---------------------------------------------------------------
+        // FURNACEBEAST_WORLD_MIGRATION_1 — the world leg
+        // (WorldObject_RM_FurnaceHerd). Everything below is the route the
+        // owner named (2026-09-14): Deep Desert (charge) -> Pyrelands (charge
+        // harder) -> near terminator (bleed, feed) -> back.
+        //
+        // Biome defNames are READ off the frozen map's own vegetation-
+        // zonation doc (design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md
+        // §5), not guessed: the Deep Desert Tribes are scattered across
+        // `Desert`/`ExtremeDesert`; the Pyrelands leg reuses
+        // PyrelandsBiomeDefNames above (already read from the same source);
+        // and "the arable margin of the terminator" is the meridian green
+        // band that doc names explicitly — AB_MycoticJungle, PoisonForest and
+        // BMT_FungalForest, all measured there at arc > 82.
+        //
+        // 🔴 Desert, ExtremeDesert AND PoisonForest HAVE SINCE BEEN TIER-SPLIT
+        // (BIOME_MOD_SPLIT rulings, 2026-09-23), the same rename
+        // `PyrelandsBiomeDefNames` above already carries for Pyrelands
+        // itself: each bare donor name now also has a campaign
+        // `RUT_<Name>` (and, for PoisonForest, a franchise-free
+        // `RM_PoisonForest` too) live on disk — measured 2026-09-26 via
+        // `defName>RUT_Desert<` / `RUT_ExtremeDesert<` in
+        // Mods/UtinniPatches/Defs/BiomeDefs/, and `RM_PoisonForest.xml` /
+        // `RUT_PoisonForest.xml` under Mods/PoisonForest/ and
+        // Mods/UtinniPatches/. Which of a donor/RUT/RM trio actually carries
+        // live tiles on Ash'karr right now is a repaint-pass question this
+        // item does not answer (CLAUDE.md: a BiomeDef on 0 tiles
+        // mid-migration is expected, not a defect) — every plausible name is
+        // listed so the herd finds whichever one actually has tiles, and an
+        // absent name simply never matches. Do NOT reduce these lists to a
+        // single "correct" name without re-measuring the live world.
+        // AB_MycoticJungle and BMT_FungalForest carry no such rename
+        // (checked the same pass): still their original donor names only.
+        // ---------------------------------------------------------------
+        public static readonly string[] DeepDesertBiomeDefNames =
+            { "Desert", "RUT_Desert", "ExtremeDesert", "RUT_ExtremeDesert" };
+        public static readonly string[] NearTerminatorBiomeDefNames =
+        {
+            "AB_MycoticJungle", "BMT_FungalForest",
+            "PoisonForest", "RUT_PoisonForest", "RM_PoisonForest",
+        };
+
+        /// <summary>Same cadence as the map leg's own interval, so a herd's
+        /// off-map tick and an on-map beast's tick apply the identical
+        /// per-check step size with no rescaling.</summary>
+        public const int WorldHerdUpdateIntervalTicks = FurnaceChargeIntervalTicks;
+
+        /// <summary>How long a herd dwells in the Deep Desert before setting
+        /// out for the Pyrelands, regardless of charge — "basking for weeks"
+        /// is time-driven, not threshold-driven, because the Deep Desert leg
+        /// is the START of the charge, not its completion. 15 in-game days.
+        /// [INVENTED]</summary>
+        public const int WorldHerdDeepDesertDwellTicks = 900000;
+
+        /// <summary>Safety valve on the Pyrelands/Terminator legs, which are
+        /// otherwise gated on average herd charge crossing a threshold: if the
+        /// biome's ambient temperature can never cross that threshold (a
+        /// misconfigured or absent biome), the herd still moves on rather than
+        /// standing on one tile forever. 60 in-game days. [INVENTED]</summary>
+        public const int WorldHerdMaxLegDwellTicks = 3600000;
+
+        /// <summary>BFS ring cap when hunting the nearest tile of a target
+        /// biome from the herd's current position. Ash'karr holds 21,872 land
+        /// tiles total (CLAUDE.md); this is comfortably larger than any single
+        /// biome-to-biome hop should need and stops a runaway search on a
+        /// world where the target biome is absent.</summary>
+        public const int WorldHerdTileSearchCap = 4000;
+
+        /// <summary>Herds seeded once, at world start, by
+        /// WorldComponent_RM_FurnaceHerdSeeder. [INVENTED]</summary>
+        public const int WorldHerdDefaultCount = 2;
+
+        /// <summary>Matches RUT_FurnaceBeast's own PawnKindDef.wildGroupSize
+        /// (3~7) — read from RimUtinni/UtinniPatches/Defs/ThingDefs_Races/
+        /// RUT_PyrelandsFauna.xml, not re-invented here.</summary>
+        public const int WorldHerdMinSize = 3;
+        public const int WorldHerdMaxSize = 7;
     }
 }

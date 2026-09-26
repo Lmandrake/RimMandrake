@@ -91,7 +91,35 @@ namespace RimMandrake.Pyrelands
 
         private void UpdateCharge(Pawn beast)
         {
-            float ambient = beast.AmbientTemperature;
+            float step = ComputeChargeStep(beast.AmbientTemperature, AdjacentFireCount(beast) > 0);
+            charge = Mathf.Clamp01(charge + step);
+        }
+
+        /// <summary>
+        /// FURNACEBEAST_WORLD_MIGRATION_1 — the world leg's own entry point.
+        ///
+        /// 🔑 THIS IS THE SAME NUMBER, DRIVEN THE SAME WAY, not a second charge
+        /// model. WorldObject_RM_FurnaceHerd calls this once per its own tick
+        /// interval, on each member pawn's comp directly, while the pawn is
+        /// held off-map (unspawned, so <see cref="CompTickInterval"/> above
+        /// never runs for it — ThingComp.CompTickInterval only fires for a
+        /// spawned Thing). No "near fire" bonus off-map: the burn-line concept
+        /// (MapComponent_BurnLine) only exists once a Map does, so the
+        /// Pyrelands leg's extra pull is expressed purely through that biome's
+        /// own (hot) ambient temperature, not simulated fire-adjacency.
+        /// </summary>
+        public void ApplyWorldTick(float ambientAtTile)
+        {
+            charge = Mathf.Clamp01(charge + ComputeChargeStep(ambientAtTile, nearFire: false));
+        }
+
+        /// <summary>
+        /// The capacitor's step math, factored out so the on-map tick (fed a
+        /// real Thing.AmbientTemperature) and the off-map world tick (fed
+        /// GenTemperature.GetTemperatureAtTile) are provably the same formula.
+        /// </summary>
+        internal static float ComputeChargeStep(float ambient, bool nearFire)
+        {
             float step;
 
             if (ambient >= PyrelandsTuning.FurnaceChargeAmbientC)
@@ -125,12 +153,12 @@ namespace RimMandrake.Pyrelands
             // measured as temperature: AmbientTemperature at a burning cell is
             // already high, but a beast walking the EDGE of a front would
             // otherwise gain almost nothing.
-            if (AdjacentFireCount(beast) > 0)
+            if (nearFire)
             {
                 step += PyrelandsTuning.FurnaceChargePerCheckNearFire;
             }
 
-            charge = Mathf.Clamp01(charge + step);
+            return step;
         }
 
         private static int AdjacentFireCount(Pawn beast)

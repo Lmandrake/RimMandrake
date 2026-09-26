@@ -85,6 +85,15 @@ namespace RimMandrake.Pyrelands
         public static bool furnaceThermalEnabled = true;
         public static bool fireClockEnabled = true;
 
+        // FURNACEBEAST_WORLD_MIGRATION_1 — the world leg
+        // (WorldObject_RM_FurnaceHerd). Nested under furnaceThermalEnabled:
+        // this only matters while the thermal circuit itself is on. Off:
+        // no herd is ever seeded and any herd already on the world simply
+        // stops ticking and delivering/recalling (it is not destroyed —
+        // turning this back on lets an existing save's herds resume).
+        public static bool furnaceWorldMigrationEnabled = true;
+        public static int furnaceHerdCount = PyrelandsTuning.WorldHerdDefaultCount;
+
         // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
         // a NON-Pyrelands biome's map without importing the whole biome.
         // WORLDGEN-AFFECTING: applies once, right after a map generates; an
@@ -122,6 +131,8 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref fireHawkSpreadEnabled, "fireHawkSpreadEnabled", true);
             Scribe_Values.Look(ref furnaceThermalEnabled, "furnaceThermalEnabled", true);
             Scribe_Values.Look(ref fireClockEnabled, "fireClockEnabled", true);
+            Scribe_Values.Look(ref furnaceWorldMigrationEnabled, "furnaceWorldMigrationEnabled", true);
+            Scribe_Values.Look(ref furnaceHerdCount, "furnaceHerdCount", PyrelandsTuning.WorldHerdDefaultCount);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -269,6 +280,17 @@ namespace RimMandrake.Pyrelands
             list.CheckboxLabeled("Fire clock (flame harvest / fire raid / fire rite)", ref fireClockEnabled,
                 "The Deep Desert Tribes' incidents that answer the burn. Off: those incidents never "
               + "fire.");
+            list.CheckboxLabeled("Furnace-beast world migration", ref furnaceWorldMigrationEnabled,
+                "Off-map furnace-beast herds cycling the planet (Deep Desert -> Pyrelands -> near "
+              + "terminator -> back), delivering onto a player's map when their route reaches its "
+              + "tile and rejoining the world if that map is later abandoned. Off: no herd is ever "
+              + "seeded and an existing herd simply stops moving until this is back on — it is "
+              + "never destroyed.");
+            if (furnaceWorldMigrationEnabled)
+            {
+                list.Label("Herds seeded at world start: " + furnaceHerdCount);
+                furnaceHerdCount = (int)list.Slider(furnaceHerdCount, 0f, 8f);
+            }
             list.GapLine();
 
             list.Label("Cross-biome ash accumulation (WORLDGEN-AFFECTING — new maps only)");

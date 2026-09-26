@@ -67,6 +67,10 @@
     <Compile Include="CompFurnaceThermalCharge.cs" />
     <Compile Include="JobGiver_RUT_FurnaceThermalCycle.cs" />
     <Compile Include="Patch_FurnaceBeastHeatImmunity.cs" />
+    <!-- FURNACEBEAST_WORLD_MIGRATION_1 — the world leg. -->
+    <Compile Include="WorldObject_RM_FurnaceHerd.cs" />
+    <Compile Include="WorldComponent_RM_FurnaceHerdSeeder.cs" />
+    <Compile Include="Patch_FurnaceHerdMapRemoval.cs" />
   </ItemGroup>
 
   <ItemGroup>

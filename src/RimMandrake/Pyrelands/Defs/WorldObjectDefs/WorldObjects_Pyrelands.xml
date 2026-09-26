@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    FURNACEBEAST_WORLD_MIGRATION_1 — the world leg. A herd of furnace-beasts,
+    off-map, cycling Deep Desert -> Pyrelands -> near terminator -> back.
+
+    No <mapGenerator> and canHaveMap=false on purpose: this is a plain
+    WorldObject (see WorldObject_RM_FurnaceHerd's header), not a MapParent —
+    it never owns a map of its own. It either sits on the planet between
+    visits or hands its members onto whichever Map a player already has at
+    its tile.
+
+    Texture borrowed from vanilla's own Caravan icon rather than a fresh art
+    job — a moving group-of-animals icon reads correctly and no generated art
+    for a world-map glyph exists in infrastructure/artpipe/done/ to reuse
+    instead (checked before authoring this).
+  -->
+  <WorldObjectDef>
+    <defName>RM_FurnaceHerd</defName>
+    <label>furnace-beast herd</label>
+    <description>A herd of furnace-beasts, working their slow thermal capacitor cycle across the planet — basking in the Deep Desert, helping the Pyrelands burn, then bleeding their banked heat into the cold at the terminator before turning back.</description>
+    <worldObjectClass>RimMandrake.Pyrelands.WorldObject_RM_FurnaceHerd</worldObjectClass>
+    <texture>World/WorldObjects/Caravan</texture>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>15</expandingIconPriority>
+    <canHaveFaction>false</canHaveFaction>
+    <canHaveMap>false</canHaveMap>
+    <selectable>true</selectable>
+  </WorldObjectDef>
+
+</Defs>
