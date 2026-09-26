@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T23:49:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T23:50:48Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## GREYSEA_BRINE_ELDERS_1 The Brine Elders: colossal branching salt-crystal organisms with area discharges, geological memory, a novelty-only trade economy and one-of-each millennial treasures
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/GREYSEA_BRINE_ELDERS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_BRINE_ELDERS_1.md
 
 # IN PROGRESS
 
@@ -1769,16 +1778,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOME_CONFIG_ERROR_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_CONFIG_ERROR_TRIAGE_1.md
-
-## GREYSEA_BRINE_ELDERS_1 The Brine Elders: colossal branching salt-crystal organisms with area discharges, geological memory, a novelty-only trade economy and one-of-each millennial treasures
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREYSEA_BRINE_ELDERS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_BRINE_ELDERS_1.md
 
 ## ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1 Downscale the 1254x1254 worker output instead of failing size_mismatch
 state:    proposed
