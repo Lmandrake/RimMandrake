@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T04:44:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T05:24:13Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -819,15 +819,6 @@ kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
-## WEBWORK_RM_MOD_BUILD_1 Phase A: build RM_Webwork as its own RimMandrake mod (mandrake.rm.webwork) — the Webwork
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/WEBWORK_RM_MOD_BUILD_1.md
-
 ## STONEBACK_BOKKA_ART_STANDARD_1 Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)
 state:    doing
 row:      unassigned
@@ -836,15 +827,6 @@ target:   v1
 kind:     task
 summary:  1. Look at it against the newer creature art in the same mod, and against the bar the
 prose:    infrastructure/state/items/STONEBACK_BOKKA_ART_STANDARD_1.md
-
-## SW_FAUNA_NEVER_IN_RM_TIER_1 Route every Star Wars fauna row out of RM_-tier biome defs into the Utinni patch layer (97 rows, 12 biomes) — owner ruling Q11, taken by question card
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. This is not a standalone sweep — it is a rule each <BIOMERMMODBUILD1 obeys at its
-prose:    infrastructure/state/items/SW_FAUNA_NEVER_IN_RM_TIER_1.md
 
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing
@@ -863,6 +845,24 @@ target:   v1
 kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
+
+## WEBWORK_FLORA_ROSTER_1 Build the 16 invented Webwork flora defs (webwork_flora_roster doc) + Utinni tooke-trap patch (ruled kept-low); the 6 donor cuts stay PROPOSED pending owner
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/WEBWORK_FLORA_ROSTER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_FLORA_ROSTER_1.md
+
+## SUMP_FAUNA_ROSTER_1 Build the invented Sump fauna defs per sump_fauna_roster_2026-09-24.md (incl. the ruled spike-legged flier; wrissen deleted by ruling)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/SUMP_FAUNA_ROSTER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_FAUNA_ROSTER_1.md
 
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
@@ -1561,16 +1561,6 @@ thin:     spec, verify and criteria all present
 summary:  Follow the spec document. Order, because it front-loads what can fail:
 prose:    infrastructure/state/items/GREATBOLE_HARVEST_LADDER_1.md
 
-## FEVERWOOD_FLORA_ROSTER_1 The Fever Wood gets 18 invented plants of its own, replacing 7 donor placeholders
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  🔑 The roster document IS the spec:
-prose:    infrastructure/state/items/FEVERWOOD_FLORA_ROSTER_1.md
-
 ## FEVERWOOD_TENTACLE_BESTIARY_1 Six tentacle types, the drive-off ladder, and a severed limb you can harvest
 state:    proposed
 row:      unassigned
@@ -1641,16 +1631,6 @@ thin:     spec, verify and criteria all present
 summary:  1. Four scuttler defs — RMKarravel (the flat disc that carpets the mud film),
 prose:    infrastructure/state/items/MIASMA_FAUNA_FLOOR_ROSTER_1.md
 
-## MIASMA_FLORA_ROSTER_1 19 invented Miasma plants: the rainbow blooms, our own mangals, and a carnivorous clade
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. 19 RM-tier plant defs per the roster's four sections: four mangals (§3), six rainbow
-prose:    infrastructure/state/items/MIASMA_FLORA_ROSTER_1.md
-
 ## MLIE_ABSORPTION_BIOME_WIRING_1 98 live biome rows still name the bare donor for 73 creatures we already ported
 state:    proposed
 row:      unassigned
@@ -1680,16 +1660,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 The whole mechanism is the waterline. She goes anywhere the water goes and nowhere else. A
 prose:    infrastructure/state/items/WARDEN_MOTHER_BEFRIENDING_1.md
-
-## WEBWORK_FLORA_ROSTER_1 Build the 16 invented Webwork flora defs (webwork_flora_roster doc) + Utinni tooke-trap patch (ruled kept-low); the 6 donor cuts stay PROPOSED pending owner
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WEBWORK_FLORA_ROSTER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_FLORA_ROSTER_1.md
 
 ## WEBWORK_FAUNA_ROSTER_1 Build the 5 invented Webwork fauna defs (Quarrok/Vennick/Skennet/Cravvet/Sivvern, Sivvern flies for real) + execute the 3 ruled donor cuts; JewelBeetle disposition still owed
 state:    proposed
@@ -1770,26 +1740,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SUMP_TAR_BELCH_EVENT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUMP_TAR_BELCH_EVENT_1.md
-
-## SUMP_FLORA_ROSTER_1 Build the 10 invented Sump flora defs per sump_flora_roster_2026-09-24.md (dorvel slow-growing by ruling)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SUMP_FLORA_ROSTER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SUMP_FLORA_ROSTER_1.md
-
-## SUMP_FAUNA_ROSTER_1 Build the invented Sump fauna defs per sump_fauna_roster_2026-09-24.md (incl. the ruled spike-legged flier; wrissen deleted by ruling)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SUMP_FAUNA_ROSTER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SUMP_FAUNA_ROSTER_1.md
 
 ## SUMP_TAR_VAULT_1 Sump tar-vault: seal food/corpses/hides into tar for perfect preservation; extraction REQUIRES solvent or contents are useless (owner-ruled)
 state:    proposed
