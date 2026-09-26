@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T06:03:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T06:22:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -810,6 +810,15 @@ kind:     task
 summary:  1. Derive each feature's maxDrawSizeInTiles from its tile count — a curve, not a table,
 prose:    infrastructure/state/items/WORLD_LABEL_SIZE_HIERARCHY_1.md
 
+## FEATURE_DRAWCENTER_UNVERIFIED_1 Only 2 of 71 world features have a verified drawCenter, and growing labels make a wrong one worse
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  1. For each of the 71, check the drawCenter against the region's actual tiles.
+prose:    infrastructure/state/items/FEATURE_DRAWCENTER_UNVERIFIED_1.md
+
 ## LONGSHADE_RM_MOD_BUILD_1 Phase A: build RM_LongShade as its own RimMandrake mod (mandrake.rm.longshade) — the Long Shade (the livable desert)
 state:    doing
 row:      unassigned
@@ -846,14 +855,14 @@ kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
 
-## FEVERWOOD_TENTACLE_BESTIARY_1 Six tentacle types, the drive-off ladder, and a severed limb you can harvest
+## FEVERWOOD_DIANOGA_PRISON_1 A prison tank, not a pen: it teaches, it produces, and it can get out
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
-prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_BESTIARY_1.md
+summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6j, §6m.
+prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_PRISON_1.md
 
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
@@ -1402,16 +1411,6 @@ thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
 
-## FEATURE_DRAWCENTER_UNVERIFIED_1 Only 2 of 71 world features have a verified drawCenter, and growing labels make a wrong one worse
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. For each of the 71, check the drawCenter against the region's actual tiles.
-prose:    infrastructure/state/items/FEATURE_DRAWCENTER_UNVERIFIED_1.md
-
 ## GREENTIDE_RM_MOD_BUILD_1 Phase A: build RM_Greentide as its own RimMandrake mod (mandrake.rm.greentide) — the Greentide - twin pair, mod EXISTS (123 vs 287 lines)
 state:    proposed
 row:      unassigned
@@ -1581,16 +1580,6 @@ kind:     task
 thin:     no ## verify, no ## criteria
 summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §5, §6l.
 prose:    infrastructure/state/items/FEVERWOOD_TWO_FRONT_LURE_1.md
-
-## FEVERWOOD_DIANOGA_PRISON_1 A prison tank, not a pen: it teaches, it produces, and it can get out
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6j, §6m.
-prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_PRISON_1.md
 
 ## DEBUG_GAME_READY_WORLDUI_CRASH_1 start_debug_game_ready leaves the game in a broken world/map-UI NullReferenceException loop at 623 mods, distinct from the closed NINEFOLD_DEBUG_GAME_READY_CRASH_1 repro
 state:    proposed
@@ -1792,16 +1781,6 @@ thin:     no ## spec
 summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
 prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
 
-## SEA_DIVE_MAPS_BUILD_1 Dive maps for the four seas: diving opens a small underwater map where the sea-floor cast (wildAnimals) actually spawns. Decision taken by question card 2026-09-25 over 'surface in shallows' and 'decide later'. Today diving is only a shore job (DivingInteraction has no map generation), so every sea's floor cast is unreachable in play.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SEA_DIVE_MAPS_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SEA_DIVE_MAPS_BUILD_1.md
-
 ## MIASMA_SCUTTLER_PREDATION_1 Wire the five carnivorous plants to actually eat the arthropod-floor scuttlers
 state:    proposed
 row:      unassigned
@@ -1811,3 +1790,13 @@ kind:     build
 thin:     no ## spec
 summary:  MIASMASCUTTLERPREDATION1 — wire the five carnivorous plants to actually eat the arthropod floor
 prose:    infrastructure/state/items/MIASMA_SCUTTLER_PREDATION_1.md
+
+## FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 The eye set-piece's frequency and the poison/radioactive suppression route
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     mechanism
+thin:     no ## verify, no ## criteria
+summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
+prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
