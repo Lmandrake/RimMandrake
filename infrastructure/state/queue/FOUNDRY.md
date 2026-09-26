@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T05:59:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T06:03:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -935,15 +935,6 @@ target:   v1
 kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
-
-## UTINNIPATCHES_LOAD_ORDER_CYCLE_1 UtinniPatches loads before 6 of its loadAfter targets; cycle with RustCathedralRoaches
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/UTINNIPATCHES_LOAD_ORDER_CYCLE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/UTINNIPATCHES_LOAD_ORDER_CYCLE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
