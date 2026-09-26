@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- WEBWORK_RM_MOD_BUILD_1. Generic sibling of the frozen campaign world's own
-     biome instance (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml,
-     now FROZEN) — same fictional idea (a jungle so dense it drank its own
-     river), rebuilt with zero campaign-specific or third-party content so it
-     can generate on any player's own world. Native label/description are
-     carried over verbatim from the frozen twin — already franchise-free.
+<!-- WEBWORK_RM_MOD_BUILD_1 scaffolded this def; WEBWORK_FLORA_ROSTER_1 (this
+     build) replaces its interim vanilla-Core wildPlants placeholder with the
+     real 16-row invented flora roster
+     (design/Jawa/worldbuilding/biomes/webwork_flora_roster_2026-09-23.md,
+     defs in Defs/ThingDefs_Plants/RM_WebworkFlora.xml). wildAnimals is
+     unaffected by this item and stays the vanilla-Core placeholder pending
+     WEBWORK_FAUNA_ROSTER_1.
 
-     Terrain and wildAnimals/wildPlants are vanilla-only by design, same
-     pattern as the sibling Greentide/Pyrelands mods: the frozen twin's own
-     terrainsByFertility used Alpha Biomes' AB_DenseMud/AB_DenseGrass and its
-     wildAnimals/wildPlants were 4-for-4 Star Wars fauna / 7-for-7 Alpha
-     Biomes+ReGrowth flora — none of that may ship in a RimMandrake-tier def
-     (§7 Q11). The real Webwork-flavored roster is WEBWORK_FLORA_ROSTER_1 /
-     WEBWORK_FAUNA_ROSTER_1 (follow-on items, not this one); this ships the
-     biome functional on Core + DLCs alone in the meantime, same as
-     RM_Greentide's own "vanilla-core roster only" comment. -->
+     Terrain is still vanilla-only by design, same pattern as the sibling
+     Greentide/Pyrelands mods: the frozen twin's own terrainsByFertility used
+     Alpha Biomes' AB_DenseMud/AB_DenseGrass — none of that may ship in a
+     RimMandrake-tier def (§7 Q11). The genuine canon Star Wars
+     `Plant_TookeTrap_Wild` rides
+     UtinniPatches/Patches/WildPlants_Webwork.xml instead (sitting record §6
+     ruling 8, "kept low") — never this def. -->
 <Defs>
 
   <BiomeDef>
@@ -111,15 +110,30 @@
       <Megaspider>0.15</Megaspider>
     </wildAnimals>
     <coastalWildAnimals />
-    <!-- Vanilla-core roster only, same reasoning as wildAnimals above.
-         WEBWORK_FLORA_ROSTER_1 adds the invented RM-tier flora on top; the
-         frozen twin's Alpha Biomes/ReGrowth flora is not ported here. -->
+    <!-- WEBWORK_FLORA_ROSTER_1: 16 RM_-tier invented rows, organised in the
+         roster doc's four registers (thicket / plumbing / nightmare plants /
+         white half+margin). Replaces the vanilla-Core placeholder this def
+         shipped at scaffold time. The genuine canon `Plant_TookeTrap_Wild`
+         is NOT here — it rides the Utinni patch layer, additive and kept low
+         (sitting record §6 ruling 8), never this RM_-tier def (Q11). Every
+         commonality below is an engineering default, not an owner-set value. -->
     <wildPlants>
-      <Plant_TreeOak>1.1</Plant_TreeOak>
-      <Plant_TreePoplar>0.8</Plant_TreePoplar>
-      <Plant_Bush>1.0</Plant_Bush>
-      <Plant_TallGrass>0.6</Plant_TallGrass>
-      <Plant_Berry>0.3</Plant_Berry>
+      <RM_Kollavane>1.2</RM_Kollavane>  <!-- the thicket's body, THE canopy tree -->
+      <RM_Threllick>1.4</RM_Threllick>  <!-- the root-mat, the biome's ground -->
+      <RM_Dulloth>0.9</RM_Dulloth>  <!-- the canopy sealer -->
+      <RM_Grennick>0.7</RM_Grennick>  <!-- the advancing front's groundcover -->
+      <RM_Vessark>0.6</RM_Vessark>  <!-- the strangler cable -->
+      <RM_Varrisk>0.5</RM_Varrisk>  <!-- the irrigated reach -->
+      <RM_Pellareth>0.5</RM_Pellareth>  <!-- the pale route-flowers -->
+      <RM_Fellome>0.5</RM_Fellome>  <!-- the plantation's gleanings -->
+      <RM_Tavrosk>0.4</RM_Tavrosk>  <!-- the still-tree -->
+      <RM_Brennoth>0.4</RM_Brennoth>  <!-- the margin's tinder -->
+      <RM_Sellith>0.3</RM_Sellith>  <!-- the gutter-weed -->
+      <RM_Kessaroth>0.3</RM_Kessaroth>  <!-- the free tier's snap-trap -->
+      <RM_Norrveth>0.25</RM_Norrveth>  <!-- the needle-cast -->
+      <RM_Sorrivel>0.2</RM_Sorrivel>  <!-- the bait bloom -->
+      <RM_Brimlock>0.2</RM_Brimlock>  <!-- the river held in flesh -->
+      <RM_Ruddreth>0.15</RM_Ruddreth>  <!-- the nest-bloom -->
     </wildPlants>
   </BiomeDef>
 

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildPlants_Webwork.xml                    UtinniPatches — new file 2026-09-25
+  ============================================================================
+
+  WEBWORK_FLORA_ROSTER_1. Injects the genuine canon Star Wars plant
+  `Plant_TookeTrap_Wild` onto RM_Webwork's wildPlants, additively and kept at
+  low commonality, per the biome's own sitting record
+  (design/Jawa/worldbuilding/biomes/webwork_owner_and_nest_2026-09-23.md §6
+  ruling 8, 2026-09-24 question card): "`Plant_TookeTrap_Wild` is KEPT LOW via
+  a Utinni `WildPlants_Webwork` patch, with the invented `RM_Kessaroth` as the
+  free tier's snap-trap. Canon injects on top; the free mod stands whole."
+
+  WHY THIS FILE HAS TO EXIST. §7 Q11 (owner, 2026-09-22): a RM_-tier def may
+  never name Star Wars content, and "tooke-trap" is genuine canon IP (Q11a,
+  named in the tier law itself as the worked example) — it cannot sit in
+  RM_Webwork's own wildPlants, unlike the 16 invented rows in
+  RM_WebworkFlora.xml. `WildAnimals_Pyrelands.xml` / `WildAnimals_Webwork.xml`
+  are the shape this copies, applied here to a plant instead of an animal.
+
+  Commonality kept at 0.3 — the same value the frozen `RUT_Webwork.xml` twin
+  has always carried this row at (its own wildPlants block, unedited, frozen
+  2026-09-25) — matching the ruling's "kept low," not raised or lowered by
+  this patch. `RM_Kessaroth` (RM_WebworkFlora.xml) ships in RM_Webwork itself
+  as the free tier's own snap-trap; this canon row is a second, additive jaw
+  in the thicket for campaign players only, never a substitute (Q11a).
+
+  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
+  returns true on no match) — validate against the live def dump and the full
+  active mod set before trusting a clean run as proof the row landed.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Star Wars Animal Collection (Continued)'s own bare defName — same donor
+       mod as the Webwork's canon fauna cast (WildAnimals_Webwork.xml). -->
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
+    <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildPlants</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildPlants</xpath>
+      <value>
+        <Plant_TookeTrap_Wild>0.3</Plant_TookeTrap_Wild>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
