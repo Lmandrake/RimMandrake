@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T00:00:09Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-26T00:11:55Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -809,15 +809,6 @@ target:   v1
 kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
-
-## LEANINGSCRUB_RM_MOD_BUILD_1 Phase A: build RM_LeaningScrub as its own RimMandrake mod (mandrake.rm.leaningscrub) — the Leaning Scrub (was arid shrubland, a vanilla label)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/LEANINGSCRUB_RM_MOD_BUILD_1.md
 
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing

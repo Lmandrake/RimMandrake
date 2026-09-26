@@ -1,0 +1,51 @@
+{
+  "success": true,
+  "defName": "RM_LeaningScrub",
+  "defType": "BiomeDef",
+  "label": "the leaning scrub",
+  "description": "Knee-high silver-green fuzz at eerily even spacing, running unbroken to every horizon, all of it leaning the same way, all of it moving - because the wind never stops. Sightlines are gone under the fuzz-canopy and cover is everywhere, for everything smaller than a person, all the time.",
+  "modName": "RimMandrake: Leaning Scrub",
+  "packageId": "mandrake.rm.leaningscrub",
+  "statBases": null,
+  "comps": null,
+  "extra": {
+    "isBiome": true,
+    "terrainPatchMakers": [],
+    "patchMakerCount": 0,
+    "terrainsByFertility": [
+      {
+        "terrain": "Sand",
+        "min": -999.0,
+        "max": 0.45
+      },
+      {
+        "terrain": "Soil",
+        "min": 0.45,
+        "max": 0.9
+      },
+      {
+        "terrain": "SoilRich",
+        "min": 0.9,
+        "max": 999.0
+      }
+    ]
+  },
+  "extraModelled": true,
+  "extraNote": null,
+  "ticksGame": 1,
+  "operation": {
+    "OperationId": "op_1e52f210842a48268ef231774a0ceea3",
+    "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-def",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-09-26T00:07:07.0003369+00:00",
+    "CompletedAtUtc": "2026-09-26T00:07:07.0344397+00:00",
+    "DurationMs": 34,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}
