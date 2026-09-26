@@ -189,12 +189,17 @@ def apply(save_path: str, out_path: str, ordered):
     check_tree = ET.parse(out_path)
     check_root = check_tree.getroot()
     features_container = check_root.find(".//world/features")
-    by_name = {}
+    by_uid = {}
     for elem in features_container.iter("li"):
         md = elem.find("maxDrawSizeInTiles")
         if md is not None:
-            by_name[elem.find("name").text] = float(md.text)
-    mismatches = [f for f in ordered if by_name.get(f["name"]) != float(f["new"])]
+            by_uid[int(elem.find("uniqueID").text)] = float(md.text)
+    # Keyed by uid, not name: WorldFeature.name is not guaranteed unique (two
+    # features CAN share a display name), and keying by name would let a
+    # later same-named feature's value silently mask an earlier one's failed
+    # write. uid is the one field this module already proved is unique
+    # 1:1 with the tileFeatureDeflate grid (see module docstring).
+    mismatches = [f for f in ordered if by_uid.get(f["uid"]) != float(f["new"])]
     if mismatches:
         raise SystemExit(f"VERIFY FAILED: {len(mismatches)} feature(s) did not "
                           f"read back as written: {[f['name'] for f in mismatches]}")
