@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Greentide_UnderstoryRoster_Items.xml         GREENTIDE_UNDERSTORY_PLANT_ROSTER_1
+
+  Four raw-food resources harvested from the understory roster
+  (RM_Greentide_UnderstoryRoster.xml). Each carries its own deliberately set
+  Nutrition/MarketValue rather than an inherited vanilla figure — the item's
+  own spec step 3 calls this out explicitly for RM_BrakkelFruit (the
+  RawBerries replacement), and the same posture is applied to the other
+  three for consistency rather than leaving them as an afterthought.
+
+  PLACEHOLDER ART: this mod ships its own Textures/ namespace, so a vanilla
+  texPath reuse needs a real file under it to satisfy validate_patch.py's
+  ownership check — these four instead point directly at Core's own
+  PlantFoodRaw icons (a live vanilla path, not a copy), tinted per-resource
+  with <color>, the same "tinted vanilla icon for a small crafting/food
+  resource with no dedicated render" shortcut this mod already uses twice
+  (RM_SapResin/RM_ToxinSealant, RM_GorbelethToxin). No bespoke item-icon art
+  exists for any of the four (checked infrastructure/artpipe/done/,
+  _artsrc/, registry.jsonl this pass — no hits for any subject name plus
+  "fruit"/"gourd"/"sap"/"tuber").
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_BrakkelFruit</defName>
+    <label>brakkel fruit</label>
+    <description>Fruit pulled from the dark underside of a brakkel thicket, where it clusters out of sight of anything passing overhead. The Greentide's own foraged staple — richer than a stock berry, and the whole reason nobody in this biome forages for berries any more.</description>
+    <allowedArchonexusCount>200</allowedArchonexusCount>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <category>Item</category>
+    <comps>
+      <li Class="CompProperties_Forbiddable"></li>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>12</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Item/Resource/PlantFoodRaw/AgaveFruit</texPath>
+      <color>(150, 190, 90)</color>
+    </graphicData>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>RawVegetable_Eat</ingestSound>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <pathCost>14</pathCost>
+    <possessionCount>10</possessionCount>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>6</DeteriorationRate>
+      <Mass>0.03</Mass>
+      <Nutrition>0.07</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+      <MarketValue>1.6</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_TumbelGourd</defName>
+    <label>tumbel gourd</label>
+    <description>A leathery hollow vessel cut down whole from a tumbel runner. Edible on its own, and worth more to the Jawa as a container than as a meal — the shell keeps its shape long after the plant is gone.</description>
+    <allowedArchonexusCount>200</allowedArchonexusCount>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <category>Item</category>
+    <comps>
+      <li Class="CompProperties_Forbiddable"></li>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>18</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Item/Resource/PlantFoodRaw/Corn</texPath>
+      <color>(150, 130, 70)</color>
+    </graphicData>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>RawVegetable_Eat</ingestSound>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <pathCost>14</pathCost>
+    <possessionCount>10</possessionCount>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <stackLimit>50</stackLimit>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+      <Mass>0.35</Mass>
+      <Nutrition>0.09</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+      <MarketValue>1.3</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_SarquinSap</defName>
+    <label>sarquin sap</label>
+    <description>Clear sweet sap drained from a sarquin's drip-tentacles. Sugar-rich and mildly intoxicating raw — and the reason sarquin groves are never quiet, so a Jawa tapping one works fast.</description>
+    <allowedArchonexusCount>200</allowedArchonexusCount>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <category>Item</category>
+    <comps>
+      <li Class="CompProperties_Forbiddable"></li>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Item/Resource/PlantFoodRaw/Hops</texPath>
+      <color>(210, 175, 60)</color>
+    </graphicData>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>RawVegetable_Eat</ingestSound>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <pathCost>14</pathCost>
+    <possessionCount>10</possessionCount>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>7</DeteriorationRate>
+      <Mass>0.02</Mass>
+      <Nutrition>0.03</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.01</FoodPoisonChanceFixedHuman>
+      <MarketValue>2.2</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_WollickTuber</defName>
+    <label>wollick tuber</label>
+    <description>A deep starchy tuber dug from beneath a wollick rosette, the churnmud around it slumping as it comes free. Bulk carbohydrate — the Greentide's honest answer to a hungry colony, no catch attached.</description>
+    <allowedArchonexusCount>200</allowedArchonexusCount>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <category>Item</category>
+    <comps>
+      <li Class="CompProperties_Forbiddable"></li>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>20</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Item/Resource/PlantFoodRaw/Potatoes</texPath>
+      <color>(190, 165, 120)</color>
+    </graphicData>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>RawVegetable_Eat</ingestSound>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <pathCost>14</pathCost>
+    <possessionCount>10</possessionCount>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>3</DeteriorationRate>
+      <Mass>0.3</Mass>
+      <Nutrition>0.12</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+      <MarketValue>1.0</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+  </ThingDef>
+
+</Defs>

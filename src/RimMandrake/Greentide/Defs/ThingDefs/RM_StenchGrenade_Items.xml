@@ -11,23 +11,17 @@
      (BaseMakeableGrenade / BaseGrenadeProjectile / Verb_LaunchProjectile /
      CompProperties_Explosive), not invented from scratch.
 
-     🔴 Source-plant trace, and why it is NOT a live harvestedThingDef yet:
-     the item's own doc names "spore bladders that burst" (the 21-plant
-     roster's phorrik row, design/Jawa/worldbuilding/biomes/
-     greentide_tree_roster_2026-09-22.md row 18: "a spore plant... walking
-     through a patch fills the air. Interacts directly with movement
-     cost"). RM_Phorrik is NOT a shipped def — it is the understory
-     roster's own scope (GREENTIDE_UNDERSTORY_PLANT_ROSTER_1, confirmed
-     open this pass, its own header: "Owed by this item: rows 15-21").
-     Building RM_Phorrik here would be scope creep into a sibling item's
-     work. RM_StenchSporeExtract is therefore crafted from WoodLog (the
-     same "rendered out of green timber" shorthand this mod already uses
-     for RM_SapResin, RM_Greentide_Items.xml) as a placeholder feedstock,
-     with the trace recorded here and as a note filed on
-     GREENTIDE_UNDERSTORY_PLANT_ROSTER_1: once RM_Phorrik ships, give it
-     <harvestedThingDef>RM_StenchSporeExtract</harvestedThingDef> so the
-     roster becomes the grenade's real ammunition, same shape as
-     RM_Gorbeleth -> RM_GorbelethToxin (GREENTIDE_FRENZY_DISEASE_1).
+     ✅ Source-plant trace RESOLVED — GREENTIDE_UNDERSTORY_PLANT_ROSTER_1
+     (2026-09-26) shipped RM_Phorrik (RM_Greentide_UnderstoryRoster.xml)
+     with <harvestedThingDef>RM_StenchSporeExtract</harvestedThingDef>
+     directly — same shape as RM_Gorbeleth -> RM_GorbelethToxin
+     (GREENTIDE_FRENZY_DISEASE_1). The WoodLog-costed crafting recipe below
+     was the placeholder feedstock while RM_Phorrik did not exist; it is
+     removed outright (not superseded-in-place, per the repo's delete-
+     don't-supersede rule) now that the real plant source ships —
+     RM_StenchSporeExtract is a plain harvested resource from here on, the
+     same posture WoodLog itself has (chopped from a tree, never
+     manufactured from something else).
 
      No new art queued (per the standing rule — checked infrastructure/
      artpipe/done/, _artsrc/ and registry.jsonl this pass: only a failed,
@@ -40,7 +34,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RM_StenchSporeExtract</defName>
     <label>stench spore extract</label>
-    <description>A reeking green paste rendered out of crushed jungle spore-bladders and pulped green timber. Useless as food, and the whole point — nothing wants to be near it.</description>
+    <description>A reeking green paste rendered out of crushed jungle spore-bladders, harvested straight from a phorrik thicket. Useless as food, and the whole point — nothing wants to be near it.</description>
     <thingCategories>
       <li>PlantMatter</li>
     </thingCategories>
@@ -55,22 +49,9 @@
       <Mass>0.2</Mass>
       <Flammability>0.3</Flammability>
       <DeteriorationRate>3</DeteriorationRate>
-      <WorkToMake>220</WorkToMake>
     </statBases>
     <stackLimit>75</stackLimit>
     <techLevel>Neolithic</techLevel>
-    <recipeMaker>
-      <recipeUsers>
-        <li>TableMachining</li>
-      </recipeUsers>
-      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
-      <workSkill>Crafting</workSkill>
-      <displayPriority>420</displayPriority>
-      <productCount>3</productCount>
-    </recipeMaker>
-    <costList>
-      <WoodLog>8</WoodLog>
-    </costList>
   </ThingDef>
 
   <!-- Priced deliberately non-trivially: this grenade answers BOTH of the

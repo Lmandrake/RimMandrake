@@ -666,3 +666,6 @@
 {"seat":"FOUNDRY","event":"close","id":"CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1","sha":"f7436c156690264d89e71f97c65bcaa47114124a","reason":"Grown limbs (RM_GrownLeg/RM_GrownArm) via vanilla Recipe_InstallNaturalBodyPart (confirmed generic, not organ-specific) + install-match mood-thought bonus (Recipe_InstallGrownBodyPart) covering both limbs and the four vanilla organs. No new engine mechanism needed; no live bridge test performed.","ts":"2026-09-26T11:10:46Z"}
 {"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_UNDERSTORY_PLANT_ROSTER_1","ts":"2026-09-26T11:10:52Z"}
 {"seat":"FOUNDRY","event":"start","id":"GREENTIDE_UNDERSTORY_PLANT_ROSTER_1","ts":"2026-09-26T11:10:53Z"}
+{"seat":"FOUNDRY","event":"file","id":"GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1","title":"Make a Plant actually block line of sight (Harmony/comp), the owner's sight-blocking ruling has no def-only answer","kind":"engine","target":"v1","needs":"offline","caused_by":"GREENTIDE_UNDERSTORY_PLANT_ROSTER_1","for":"FOUNDRY","ts":"2026-09-26T11:14:26Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_DENSITY_SETTINGS_1","ts":"2026-09-26T11:14:50Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREENTIDE_DENSITY_SETTINGS_1","ts":"2026-09-26T11:14:52Z"}
