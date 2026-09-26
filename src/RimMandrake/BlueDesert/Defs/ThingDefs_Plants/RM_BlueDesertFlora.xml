@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BLUEDESERT_RM_MOD_BUILD_1: moved here unchanged from
+     src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RM_BlueDesertFlora.xml.
+     Every Class="RimMandrake.BlueDesert...." reference below still resolves —
+     namespace and class names are unchanged, only the assembly moved
+     (src/RimMandrake/BlueDesert/Source/BlueDesertLife.cs). -->
+<!--
+  BLUE_DESERT_LIFE_AUTHORING_1 (steps 2-5) — the transparent fractal flora,
+  per design/Jawa/worldbuilding/creatures/blue_desert_hydrocarbon_life.md §6.
+  Names and slots adopted from RUT_hydrocarbon_ecology_commission.md §6
+  (owner-ruled by card 2026-09-10); this file gives them the mechanical spec.
+  RM_ tier — see BlueDesertLife.cs's header for why this lives here for now.
+
+  §1a: completelyIgnoreFertility true on all three — Ice is fertility 0
+  everywhere in this biome, so without this flag `plantDensity` restoring to
+  0.33 changes nothing and the biome stays bare with a number that reads
+  healthy (WildPlantSpawner.CheckSpawnWildPlantAt/GetDesiredPlantsCountAt).
+
+  §1b: the whole growth-temperature band sits below the phase line (median
+  -42.6C); growMinGlow/growOptimalGlow 0 is the cave-plant idiom
+  (Plants_Cave.xml) for "needs no light", NOT cavePlant=true (that only spawns
+  under thick roof, wrong for an open plateau). dieIfNoSunlight false overrides
+  the (true) default that would otherwise kill an unlit transparent plant.
+
+  §1c: Flammability 0.05 is why "cold enough that starting them burning is
+  very hard" (the sheet's own line) is true in play — vanilla fire has no
+  concept of cold; this is authored, not free.
+
+  §2f/§6a: every card's ingestible.outcomeDoers gives RM_ButaneGut to any
+  ingester that is NOT a Blue Desert native (RM_HydrocarbonNativeExtension) —
+  ban 3, "no warm-safe hydrocarbon organic", extends to what eats it too.
+
+  §2b/§2d: CompProperties_PlantCharge (BlueDesertLife.cs) is the fuse — kills
+  the plant on 2 consecutive warm Long-ticks, and on a KillFinalize destroy
+  (damage, never eating/cutting — §1g) detonates 40 Flame at its own radius.
+  Every MaxHitPoints here is <= 40 (§2d) so one blast finishes the next ring.
+
+  6a's `detonateAbove` lives in Mod Settings instead of XML (one global slider,
+  UtinniPatchesSettings.warmDetonationThresholdC, default 5C) rather than a
+  per-card XML field — the brief's own cards all use the same number anyway,
+  and MOD_OPTIONS_RETROFIT_1 wants it player-tunable in one place, not three.
+
+  Art: NONE EXISTS YET (re-checked 2026-09-21: registry.jsonl/done/_artsrc/
+  art_status.json all empty for these subjects). texPaths below point at where
+  fill_queue.py's queued jobs (art_lists/blue_desert_life.csv) will land —
+  until the daemon renders them, these show as missing-texture placeholders in
+  game. Shipping the mechanic ahead of the art is this project's standing
+  practice, not an oversight. What a render must show: transparency (the ice
+  visible THROUGH the body) and fractal branching (§8) — no leaves, no solid
+  silhouette.
+
+  mandrake.rut.plantgrowth's x4 fast-growth multiplier is turned off for these
+  three via PlantGrowthSettingsDef.exemptPlants (JawaPlantGrowthSettings.xml) —
+  growDays below already assume vanilla rate (brief §6a note).
+-->
+<Defs>
+
+  <!-- ============== Palefloss (fuzzball, ground cover) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Palefloss</defName>
+    <label>palefloss</label>
+    <description>A fist of transparent filaments hugging the ice, refracting what little light reaches this plateau into faint rainbows at the edges. The Blue Desert's sparse "grass" — and every strand of it a charge of liquid butane.</description>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Nutrition>0.15</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>2</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Palefloss/RM_Palefloss</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>false</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>6</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ColdWax</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <harvestWork>40</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <visualSizeRange>0.35~0.55</visualSizeRange>
+      <maxMeshCount>9</maxMeshCount>
+      <wildOrder>1</wildOrder>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>1.1</radius>
+        <damage>40</damage>
+        <fireChance>0.2</fireChance>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============== Glassfern (fern, mid) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Glassfern</defName>
+    <label>glassfern</label>
+    <description>A hand-high fractal frond, all edge and refraction, branching into gas-exchange filaments in place of leaves. Staggeringly beautiful and stable only in the cold — warm it and it is a bomb with a growth ring.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Nutrition>0.3</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>4</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Glassfern/RM_Glassfern</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>9</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ColdWax</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <harvestWork>120</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>5</wildClusterWeight>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>1.9</radius>
+        <damage>40</damage>
+        <fireChance>0.2</fireChance>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============== Chimeglobe (dandelion-head, mid) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Chimeglobe</defName>
+    <label>chimeglobe</label>
+    <description>A clear stalk carrying one spherical lattice head that sheds glittering seed-lattices to the wind. The single most beautiful thing on the plateau, and the biggest single charge among the flora — a chimeglobe going up restarts the whole field.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Nutrition>0.35</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>5</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Chimeglobe/RM_Chimeglobe</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ColdWax</harvestedThingDef>
+      <harvestYield>5</harvestYield>
+      <harvestWork>160</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>2.9</radius>
+        <damage>40</damage>
+        <fireChance>0.2</fireChance>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

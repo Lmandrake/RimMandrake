@@ -79,14 +79,17 @@ plan that is not mostly about `mlie.starwarsanimalcollection` and
 8 third-party) — that is what a finished verdict pass looks like, and it is the
 before/after benchmark for every biome below it.
 
-### `RUT_BlueDesert` carries its commissioned hydrocarbon life (re-read 2026-09-23)
+### `RM_BlueDesert` carries its commissioned hydrocarbon life (moved 2026-09-25)
 
 `BLUE_DESERT_LIFE_AUTHORING_1` (FOUNDRY, done 2026-09-21) authored the Swallowers/Burners/Pickers
-cast and the transparent fractal flora into `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml`
-(163 lines): `animalDensity` 0.5, `plantDensity` 0.33, 3 `wildAnimals` rows, 6 `wildPlants` rows — MEASURED
-with `xml.etree`. The sheet is `design/Jawa/worldbuilding/biomes/the_blue_desert.md`; the roster JSON
-`rosters/the_blue_desert.json` still lists only 2 fauna (`Vapaad`, `AA_Thunderbeast`), both unwired — owed
-as `WildAnimals_BlueDesert.xml` at `BLUEDESERT_RM_MOD_BUILD_1` step 2, per that ticket's STATE section.
+cast and the transparent fractal flora; `BLUEDESERT_RM_MOD_BUILD_1` (FOUNDRY, done 2026-09-25) moved
+all of it into its own mod, `mandrake.rm.bluedesert` (`src/RimMandrake/BlueDesert`): `animalDensity`
+0.5, `plantDensity` 0.33, 4 `wildAnimals` rows (`RM_Vekkit`/`RM_Dorrak`/`RM_Krissek` plus the inline
+`AA_Thunderbeast` import), 6 `wildPlants` rows. `RUT_BlueDesert` is FROZEN in `UtinniPatches`,
+carrying the world unchanged until the terminal paint. The roster JSON's `Vapaad` (genuinely canon
+Star Wars) rides `WildAnimals_BlueDesert.xml` onto `RM_BlueDesert` instead — the roster's own
+"two Star Wars rows" framing was wrong: `AA_Thunderbeast` is a plain Alpha Animals import with no
+Star Wars content and ships inline on the RM_ def.
 
 ### Unguarded entries — no `MayRequire`, not one of our defs
 

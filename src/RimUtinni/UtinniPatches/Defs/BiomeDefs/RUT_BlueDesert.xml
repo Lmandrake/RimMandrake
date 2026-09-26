@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
+  <!-- FROZEN 2026-09-25 (BLUEDESERT_RM_MOD_BUILD_1) — carrying the world until the
+       terminal paint; content lives in mandrake.rm.bluedesert; do not edit here. -->
+
   <!--
     RUT_BlueDesert                                UtinniPatches · authored 2026-09-09
     Full sheet: design/Jawa/worldbuilding/biomes/the_blue_desert.md (FROZEN,

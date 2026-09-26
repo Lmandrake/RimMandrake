@@ -435,7 +435,8 @@ trait, and is **NOT yet ruled** — it was asked as a biome question and he redi
 deliberate exception the terminator gets (R-H2b)."* The design doc never mentions it.
 Mapping `deep_desert` → `RUT_ExtremeDesert` is by elimination: three desert sheets
 (`deep_desert`, `desert`, `the_blue_desert`) against three desert BiomeDefs
-(`RUT_ExtremeDesert`, `RUT_Desert`, `RUT_BlueDesert`); the sheet names no defName
+(`RUT_ExtremeDesert`, `RUT_Desert`, `RM_BlueDesert` — moved from `RUT_BlueDesert` by
+`BLUEDESERT_RM_MOD_BUILD_1`, 2026-09-25, twin now frozen); the sheet names no defName
 itself.
 
 ---

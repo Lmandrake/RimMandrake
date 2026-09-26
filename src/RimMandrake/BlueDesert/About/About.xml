@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.bluedesert</packageId>
+  <name>RimMandrake: Blue Desert</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>sarg.alphabiomes</li>
+    <li>sarg.alphaanimals</li>
+  </loadAfter>
+  <description>BLUEDESERT_RM_MOD_BUILD_1 (Phase A row 7 of
+design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).
+The Blue Desert, fully generalized: it names no other franchise or campaign and
+is playable standalone on any generated RimWorld planet. A separate frozen
+campaign world's own instance is unaffected; this is a new sibling biome for
+everyone else's worlds, not a rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+From orbit the bluest thing on the planet; underfoot, colorless. A plateau of
+hydrocarbon ice with no water-based life and no soil: everything native here is
+a fuel charge stable only in the cold, and warmth is detonation. `workerClass`
+stays the vanilla Core `BiomeWorker_IceSheet` — the twin never named a donor
+type, so this mod owes no `RM_BiomeWorker_BlueDesert` of its own.
+
+Ships the biome and its full resident cast, moved in unchanged from the frozen
+campaign twin: three hydrocarbon fauna (dorrak the Swallower, krissek the
+Burner, vekkit the Picker), three transparent fractal flora (palefloss,
+glassfern, chimeglobe), the shared cold-wax fuel product, their detonation-chain
+hediffs, and the krissek's blue-fire halo effecter — plus the mechanic C# that
+drives all of it (plant/fauna detonation, cold-wax warm-reactivity, the
+butane-gut ingestion penalty for foreign grazers). A Mod Settings screen gives a
+master toggle plus one switch per mechanic (native detonations, flora chain
+reactions, warm-reactive cold wax, butane gut, burner halo VFX) and the
+warm-detonation threshold slider, all defaulting to the shipped behavior
+(MOD_OPTIONS_RETROFIT_1).
+
+⚠️ Not entirely donor-free: three `wildPlants` rows (Alpha Biomes' `AB_ToxiGrass`/
+`AB_CrystalHorn`, and `PoisonPlantTallGrass`) are inherited unguarded from the
+frozen campaign twin, same shape as the twin's own authoring — that ban-1
+tension (this biome's own sheet forbids water-based flora) stays open for the
+owner and is not resolved by this build. `AA_Thunderbeast` (Alpha Animals,
+`sarg.alphaanimals`) ships inline, `MayRequire`-gated, matching how every other
+sibling RM_ biome mod ships its own non-Star-Wars donor rows directly (Q9).
+
+NOT in this mod: `Vapaad`, a genuinely canon Star Wars creature (Vaapad) the
+campaign roster also ratifies for this biome — that rides a Utinni patch onto
+this mod's own `RM_BlueDesert` def instead, per the Q11a naming-tier ruling.
+The def's own prior comment called both `Vapaad` and `AA_Thunderbeast` "Star
+Wars rows"; only `Vapaad` actually is (`AA_Thunderbeast` is a plain Alpha
+Animals import with no Star Wars IP content), so only `Vapaad` is routed
+through the patch layer — see `WildAnimals_BlueDesert.xml`.
+
+Live proof (step 5, a scratch-world quicktest with all five expansions) is
+Desktop-only and OWED — see the item's own verify record.</description>
+</ModMetaData>
