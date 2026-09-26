@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T23:43:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T23:49:06Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1036,7 +1036,7 @@ summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
 
 ## LANTERNDEEPS_TIER_COLLISION_1 Live mandrake.rut.lanterndeeps exists ONLY in the game folder with no repo copy, and the RM successor deploys to the same folder name - deploying it would delete a mod the canonical save references
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1044,14 +1044,14 @@ kind:     task
 summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
 prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
 
-## PRIMITIVEWELL_DEAD_DEFNAME_1 PrimitiveWell defName referenced by 4 Lua plan templates does not exist in any loaded mod or DLC
+## SHARED_SYNC_DROPS_PEER_COMMITS_1 shared_sync.py silently drops a peer commit made during its run: reset --keep moves HEAD past work that was never in its todo set, and origin/main..HEAD then reads clean
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     defect
-summary:  THING PrimitiveWell appears in 4 design/Jawa/templates/.lua source templates
-prose:    infrastructure/state/items/PRIMITIVEWELL_DEAD_DEFNAME_1.md
+kind:     bug
+summary:  (no items/SHARED_SYNC_DROPS_PEER_COMMITS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHARED_SYNC_DROPS_PEER_COMMITS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1517,6 +1517,16 @@ blocked:  Re-verified 2026-09-26: RM_Window_Bazaar is still an inert Dialog_Trad
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
 
+## LANTERNDEEPS_TIER_COLLISION_1 Live mandrake.rut.lanterndeeps exists ONLY in the game folder with no repo copy, and the RM successor deploys to the same folder name - deploying it would delete a mod the canonical save references
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Offline half done (d45ff841e): repo backup proven byte-exact in git history, save census done (no placed Things, no Deep map, 5 VTE price-history keys only), route decided = in-place swap with folder-move rollback, RM loadAfter cycle removed. Remaining = execute the 7-step swap in the item file, which moves the live Mods\LanternDeeps folder and edits ModsConfig.xml, so it needs game DOWN + bridge in a load round. Live Mods folder and ModsConfig untouched this pass.
+summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
+prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1779,16 +1789,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GREYSEA_BRINE_ELDERS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GREYSEA_BRINE_ELDERS_1.md
 
-## SHARED_SYNC_DROPS_PEER_COMMITS_1 shared_sync.py silently drops a peer commit made during its run: reset --keep moves HEAD past work that was never in its todo set, and origin/main..HEAD then reads clean
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SHARED_SYNC_DROPS_PEER_COMMITS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SHARED_SYNC_DROPS_PEER_COMMITS_1.md
-
 ## ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1 Downscale the 1254x1254 worker output instead of failing size_mismatch
 state:    proposed
 row:      unassigned
@@ -1898,3 +1898,23 @@ kind:     defect
 thin:     no ## verify
 summary:  1. When the RUT tier is retired/repainted onto RMPropaneLake
 prose:    infrastructure/state/items/RUT_PROPANELAKE_FROZEN_DENSITY_1.md
+
+## SEABED_PLANET_LAYER_1 Seabed planet layer: the sea floor as a geometric twin of the surface
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## criteria
+summary:  Phase 1 — the layer, offline-provable, no content:
+prose:    infrastructure/state/items/SEABED_PLANET_LAYER_1.md
+
+## DBH_LITE_UNDECLARED_DEPENDENCY_1 Declare dubwise.dubsbadhygiene.lite as a soft mod dependency
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     spec, verify and criteria all present
+summary:  StructureInjections, StructureInjectionsRUT and StructureInjectionsSW
+prose:    infrastructure/state/items/DBH_LITE_UNDECLARED_DEPENDENCY_1.md
