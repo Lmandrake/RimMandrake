@@ -17,19 +17,19 @@
   the mod that actually owns the defNames it adds - a patch gated on the
   wrong mod is a silent no-op waiting to happen.
 
-  mlie.starwarsanimalcollection (Star Wars Animal Collection (Continued)), 7
-  rows, bare defNames (that mod's own convention, not a naming defect - see
-  CLAUDE.md's "bare unprefixed defName in a design roster is the convention"
-  note):
-    Runyip      0.5   muck-forager
-    Shiro       0.4   arthropod-floor
-    Anooba      0.3   scavenger
-    Grank       0.3   channel-predator
-    Whisperbird 0.3   flier
-    Vornskyr    0.15  strange
-    Zakkeg      0.05  big-wanderer
+  🔴 MLIE_ABSORPTION_BIOME_WIRING_1 (2026-09-25): the 7 rows below all already
+  have our own RSW_ ports too (each with both a ThingDef and a PawnKindDef) —
+  retargeted to mandrake.rsw.swbestiary, so this file no longer casts any
+  bare mlie.starwarsanimalcollection defName. Former donor rows, now RSW_:
+    RSW_Runyip      0.5   muck-forager
+    RSW_Shiro       0.4   arthropod-floor
+    RSW_Anooba      0.3   scavenger
+    RSW_Grank       0.3   channel-predator
+    RSW_Whisperbird 0.3   flier
+    RSW_Vornskyr    0.15  strange
+    RSW_Zakkeg      0.05  big-wanderer
 
-  mandrake.rsw.swbestiary (this repo's own Star Wars ports), 10 rows:
+  mandrake.rsw.swbestiary (this repo's own Star Wars ports), 10 further rows:
     RSW_PodWorm          0.5   large grazer (bodySize 4, not a predator)
     RSW_CrestedDragon    0.4   channel-predator
     RSW_MeeJuv           0.4   nursery, juvenile-locked (MIASMA_NURSERY_KINDS_1)
@@ -49,27 +49,18 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.miasma,mlie.starwarsanimalcollection">
-    <xpath>Defs/BiomeDef[defName="RM_Miasma"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_Miasma"]/wildAnimals</xpath>
-      <value>
-        <Runyip>0.5</Runyip>
-        <Shiro>0.4</Shiro>
-        <Anooba>0.3</Anooba>
-        <Grank>0.3</Grank>
-        <Whisperbird>0.3</Whisperbird>
-        <Vornskyr>0.15</Vornskyr>
-        <Zakkeg>0.05</Zakkeg>
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.miasma,mandrake.rsw.swbestiary">
     <xpath>Defs/BiomeDef[defName="RM_Miasma"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Miasma"]/wildAnimals</xpath>
       <value>
+        <RSW_Runyip>0.5</RSW_Runyip>
+        <RSW_Shiro>0.4</RSW_Shiro>
+        <RSW_Anooba>0.3</RSW_Anooba>
+        <RSW_Grank>0.3</RSW_Grank>
+        <RSW_Whisperbird>0.3</RSW_Whisperbird>
+        <RSW_Vornskyr>0.15</RSW_Vornskyr>
+        <RSW_Zakkeg>0.05</RSW_Zakkeg>
         <RSW_PodWorm>0.5</RSW_PodWorm>
         <RSW_CrestedDragon>0.4</RSW_CrestedDragon>
         <RSW_MeeJuv>0.4</RSW_MeeJuv>

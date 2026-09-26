@@ -20,16 +20,13 @@
   which found the roster JSON undercounts the Star Wars rows 35 vs the
   live def's 40).
 
-  ⚠️ Two ops here, not one, because the live def's Star Wars rows split
-  across TWO MayRequire values (DUPLICATE_CANON_DEFNAME_PAIRS_1's
-  2026-09-23 merge repointed 4 rows — Kreetle/Gizka/Nuna/Worrt — from the
-  donor's bare defName to our own RSW_ ports, moving them from
-  mlie.starwarsanimalcollection to mandrake.rsw.swbestiary):
-    31 rows MayRequire="mlie.starwarsanimalcollection" (donor bare defNames)
-     9 rows MayRequire="mandrake.rsw.swbestiary" (our own RSW_ ports)
-  = 40, matching the item's own count of "40 SW rows" even though the
-  35/5 split cited in an earlier pass (SW_FAUNA_NEVER_IN_RM_TIER_1,
-  2026-09-22) is now stale on the SUB-split, not the total.
+  🔴 MLIE_ABSORPTION_BIOME_WIRING_1 (2026-09-25): the remaining 31 donor-bare
+  rows below ALL already have our own RSW_ ports too (each with both a
+  ThingDef and a PawnKindDef, verified against src/RimStarWars/SWBestiary) —
+  retargeted from mlie.starwarsanimalcollection to mandrake.rsw.swbestiary,
+  same as the 4 DUPLICATE_CANON_DEFNAME_PAIRS_1 rows already were. There is
+  now only ONE op (40 rows, all mandrake.rsw.swbestiary); the file no longer
+  has any Star Wars row gated on the donor mod.
 
   No unconditional PatchOperationReplace op is needed here (unlike
   Pyrelands/Greentide, which each REPLACE a vanilla-Core-only placeholder
@@ -46,56 +43,47 @@
 -->
 <Patch>
 
-  <!-- Star Wars Animal Collection (Continued), donor bare defNames — the 31
-       rows the 2026-09-23 duplicate-canon-pair merge did NOT touch. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
-    <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
-      <value>
-        <FrilledGorg>1.0</FrilledGorg>
-        <Gorg>1.0</Gorg>
-        <Iriaz>1.0</Iriaz>
-        <LongtailGorg>1.0</LongtailGorg>
-        <Eopie>0.8</Eopie>
-        <Lothcat>0.8</Lothcat>
-        <Mudhorn>0.8</Mudhorn>
-        <Ronto>0.8</Ronto>
-        <Scurrier>0.8</Scurrier>
-        <Sketto>0.8</Sketto>
-        <Igitz>0.7</Igitz>
-        <Urusai>0.7</Urusai>
-        <Kybuck>0.6</Kybuck>
-        <Massiff>0.6</Massiff>
-        <Bantha>0.5</Bantha>
-        <Pufferpig>0.5</Pufferpig>
-        <Anooba>0.4</Anooba>
-        <Corinathoth>0.4</Corinathoth>
-        <Grank>0.2</Grank>
-        <Qormot>0.2</Qormot>
-        <Strill>0.2</Strill>
-        <Cannok>0.16</Cannok>
-        <Whisperbird>0.15</Whisperbird>
-        <Pikobis>0.1</Pikobis>
-        <Convor>0.08</Convor>
-        <Skalder>0.08</Skalder>
-        <Vulptex>0.08</Vulptex>
-        <FeralNerf>0.04</FeralNerf>
-        <Porg>0.04</Porg>
-        <Voorpak>0.02</Voorpak>
-        <KowakianMonkeyLizard>0.01</KowakianMonkeyLizard>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- Our own RSW_ ports, including the 4 rows DUPLICATE_CANON_DEFNAME_PAIRS_1
-       repointed off the donor's bare defName (Kreetle, Gizka, Nuna, Worrt) —
-       owner-ruled merge 2026-09-23. -->
+  <!-- Our own RSW_ ports. The 4 rows DUPLICATE_CANON_DEFNAME_PAIRS_1 repointed
+       off the donor's bare defName (Kreetle, Gizka, Nuna, Worrt), owner-ruled
+       merge 2026-09-23, plus the 31 further rows MLIE_ABSORPTION_BIOME_WIRING_1
+       retargeted 2026-09-25 (all already shipped as real RSW_ ports; the donor
+       gate was a wiring bug, not a real dependency). -->
   <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
     <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
       <value>
+        <RSW_FrilledGorg>1.0</RSW_FrilledGorg>
+        <RSW_Gorg>1.0</RSW_Gorg>
+        <RSW_Iriaz>1.0</RSW_Iriaz>
+        <RSW_LongtailGorg>1.0</RSW_LongtailGorg>
+        <RSW_Eopie>0.8</RSW_Eopie>
+        <RSW_Lothcat>0.8</RSW_Lothcat>
+        <RSW_Mudhorn>0.8</RSW_Mudhorn>
+        <RSW_Ronto>0.8</RSW_Ronto>
+        <RSW_Scurrier>0.8</RSW_Scurrier>
+        <RSW_Sketto>0.8</RSW_Sketto>
+        <RSW_Igitz>0.7</RSW_Igitz>
+        <RSW_Urusai>0.7</RSW_Urusai>
+        <RSW_Kybuck>0.6</RSW_Kybuck>
+        <RSW_Massiff>0.6</RSW_Massiff>
+        <RSW_Bantha>0.5</RSW_Bantha>
+        <RSW_Pufferpig>0.5</RSW_Pufferpig>
+        <RSW_Anooba>0.4</RSW_Anooba>
+        <RSW_Corinathoth>0.4</RSW_Corinathoth>
+        <RSW_Grank>0.2</RSW_Grank>
+        <RSW_Qormot>0.2</RSW_Qormot>
+        <RSW_Strill>0.2</RSW_Strill>
+        <RSW_Cannok>0.16</RSW_Cannok>
+        <RSW_Whisperbird>0.15</RSW_Whisperbird>
+        <RSW_Pikobis>0.1</RSW_Pikobis>
+        <RSW_Convor>0.08</RSW_Convor>
+        <RSW_Skalder>0.08</RSW_Skalder>
+        <RSW_Vulptex>0.08</RSW_Vulptex>
+        <RSW_FeralNerf>0.04</RSW_FeralNerf>
+        <RSW_Porg>0.04</RSW_Porg>
+        <RSW_Voorpak>0.02</RSW_Voorpak>
+        <RSW_KowakianMonkeyLizard>0.01</RSW_KowakianMonkeyLizard>
         <RSW_Kreetle>0.8</RSW_Kreetle>
         <RSW_ShrublandGiant>0.35</RSW_ShrublandGiant>
         <RSW_TunnelSnake>0.5</RSW_TunnelSnake>

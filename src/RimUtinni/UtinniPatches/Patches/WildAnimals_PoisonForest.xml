@@ -19,11 +19,11 @@
   POISONFOREST_RM_MOD_BUILD_1 item table (written 2026-09-23, before
   RSW_VentStalker was added).
 
-  Two ops, split by MayRequire (same split reason as WildAnimals_LeaningScrub.xml):
-    3 rows MayRequire="mlie.starwarsanimalcollection" (donor bare defNames:
-      Neebray, Mynock, GraniteSlug)
-    2 rows MayRequire="mandrake.rsw.swbestiary" (our own RSW_ ports:
-      RSW_Screecher, RSW_VentStalker)
+  🔴 MLIE_ABSORPTION_BIOME_WIRING_1 (2026-09-25): the 3 rows once gated
+  mlie.starwarsanimalcollection (Neebray, Mynock, GraniteSlug) all already
+  have our own RSW_ ports too — retargeted into the single
+  mandrake.rsw.swbestiary op below, alongside RSW_Screecher/RSW_VentStalker.
+  There is now only ONE op (5 rows).
 
   RSW_Screecher is multi-homed on purpose (owner approved 2026-09-22,
   BIOME_SPECIFIC_FAUNA_LAW_1 — a real flier that migrates from this wetter
@@ -44,25 +44,15 @@
 -->
 <Patch>
 
-  <!-- Star Wars Animal Collection, donor bare defNames. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
-    <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <Neebray>0.8</Neebray>
-        <Mynock>0.2</Mynock>
-        <GraniteSlug>0.15</GraniteSlug>
-      </value>
-    </match>
-  </Operation>
-
   <!-- Our own RSW_ ports. -->
   <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
     <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
       <value>
+        <RSW_Neebray>0.8</RSW_Neebray>
+        <RSW_Mynock>0.2</RSW_Mynock>
+        <RSW_GraniteSlug>0.15</RSW_GraniteSlug>
         <!-- MULTI-HOMED ON PURPOSE - see file header. -->
         <RSW_Screecher>0.35</RSW_Screecher>
         <RSW_VentStalker>0.25</RSW_VentStalker>
