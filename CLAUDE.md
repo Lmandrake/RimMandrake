@@ -569,6 +569,10 @@ The `MaxFlightTime`/`FlightCooldown`/race-flag half of that work (and of the
 2026-09-19 fire wasp/fire hawk flight pass) is unaffected — those fields are
 correct and unrelated to the animation defect.
 
+🔑 **Design assumes every DLC is present** — owner, 2026-09-25, verbatim: *"Always assume all
+the dlcs."* No standalone-without-expansion fallback tier is owed (asked about the free mods'
+deluxe gear without Odyssey). `MayRequire` guards stay for load safety, not as a design axis.
+
 🔑 **ALL TEST MOD LISTS include ALL FIVE EXPANSIONS — no exceptions right
 now.** Owner ruling, 2026-09-19, verbatim: *"Was Odyssey even loaded for this
 test? ALL TEST MOD LISTS should include ALL THE EXPANSIONS; we're not trying
