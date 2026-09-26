@@ -57,3 +57,5 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-26T00:02:03Z"}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-26T00:03:37Z"}
 {"seat":"OWNER","event":"note","id":"SEA_DIVE_MAPS_BUILD_1","text":"Gear matrix §6 card (16:58): Q1 deluxe = Odyssey vacsuit, and DESIGN ASSUMES ALL DLCs (standing rule, CLAUDE.md); Q2 one RM_DiveProtection stat for all seas (card); Q3 separate RM_Apparel_Rebreather (card); Q4 Scald-only local sea gear in v1 (card). Q5 (KotOR flight suits dive or cosmetic) open.","ownerSaid":"Always assume all the dlcs.","ts":"2026-09-26T00:11:02Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-09-26T00:54:25Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-26T00:55:09Z"}
