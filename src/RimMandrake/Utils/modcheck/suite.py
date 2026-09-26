@@ -205,13 +205,65 @@ class TestContext(object):
         self._record("order_to %s -> %s" % (pawn_id, dest), r)
         return r
 
-    def wait_ticks(self, n):
+    def wait_ticks(self, n, _chunk=2000):
+        """Advance the game clock by `n` REAL ticks, verified.
+
+        🔴 `rimworld/step_game_ticks` silently truncates well below the ticks
+        requested under load -- measured 600-2800 ticks per call, degrading
+        with mod-list size, not a fixed constant
+        (skills/rimbridge/references/silent-failures.md). It still reports
+        outer `Success:true` and an inner "Advanced N game tick(s)" message
+        for whatever N it actually managed, which reads exactly like success
+        if the real clock isn't checked. A single un-looped call here (the
+        prior behavior) is exactly why several modcheck suites read RED
+        against a mechanism that never got the wall-clock time it needed --
+        `Antiquities.wait_ticks(95000)` and `ShipMemory`'s 600-tick wait were
+        both trusting this call's own report instead of the real clock.
+
+        Ground truth is `ticksGame`, read independently before/after each
+        call via `Session._ticks()` (the same instrument `paused()` verifies
+        with) -- never the call's own reported tick count or a running
+        Python counter. Loops in bounded chunks (each sized to complete
+        cleanly rather than truncate) until the real clock has advanced by
+        `n`, and raises rather than returning a result nothing after it can
+        trust if the clock stalls."""
         if not self._guard():
             return None
-        r = self.session.call("rimworld/step_game_ticks", ticks=n,
-                              pauseFirst=True)
-        self._record("wait_ticks(%d)" % n, r)
-        return r
+        start = self.session._ticks()
+        max_calls = max(30, (n // 300) + 20)
+        last = None
+        calls = 0
+        advanced = 0
+        while advanced < n and calls < max_calls:
+            step = min(_chunk, n - advanced)
+            r = self.session.call("rimworld/step_game_ticks", ticks=step,
+                                  pauseFirst=True)
+            calls += 1
+            last = r
+            now = self.session._ticks()
+            if start is None or now is None:
+                # Can't verify independently (e.g. off the map screen) --
+                # fall back to the old single-call, unverified behavior
+                # rather than looping blind.
+                self._record("wait_ticks(%d) [unverifiable clock]" % n, r)
+                return r
+            new_advanced = now - start
+            if new_advanced <= advanced:
+                # A call that reported completion but moved nothing is a
+                # stalled clock, not a slow one -- stop burning calls.
+                advanced = new_advanced
+                break
+            advanced = new_advanced
+        self._record("wait_ticks(%d) -> %d real tick(s) over %d call(s)"
+                     % (n, advanced, calls), last)
+        if advanced < n:
+            raise ExpectationFailed(
+                "wait_ticks(%d) only advanced %d real game tick(s) over %d "
+                "call(s) before giving up -- rimworld/step_game_ticks "
+                "silently truncates under load (silent-failures.md); the "
+                "game clock never reached the requested point, so nothing "
+                "checked after this call is meaningful evidence." % (n, advanced, calls))
+        return last
 
     def set_setting(self, type_name, values, persist=False):
         """Flip a mod's Mod Settings field(s) for the duration of THIS live
@@ -251,6 +303,35 @@ class TestContext(object):
                 "mod_settings_field(%s, %s) did not take -- read back %s"
                 % (type_name, values, settings))
         return ok
+
+    def ensure_faction(self, def_name):
+        """Make sure a live Faction instance of `def_name` exists in this
+        world, creating one via `jawa/faction_create` if not.
+
+        🔴 Several suites assumed a vanilla FactionDef with
+        `requiredCountAtGameStart > 0` (Pirate, most often) is therefore
+        GUARANTEED to have a live instance in any generated world -- false
+        on this project's own mandated all-DLC test environment.
+        `jawa/faction_create`'s own C# docstring names the deterministic
+        cause: Biotech's `PirateWaster` declares `replacesFaction` at
+        vanilla `Pirate` with `requiredCountAtGameStart` above zero, so
+        `FactionGenerator.InitializeFactions` skips generating `Pirate`
+        outright whenever Biotech is active -- and CLAUDE.md's standing
+        rule is that every test mod list carries all five expansions, no
+        ablation. So a quicktest world here never has a live `Pirate`
+        faction on its own, ever, by construction (measured live
+        2026-09-13 against both Aftermath's and RimProperty's suites,
+        independently, same failure). Tolerates the tool's "already
+        exists" refusal as success."""
+        if not self._guard():
+            return None
+        r = self.session.call("jawa/faction_create", defName=def_name, dryRun=False)
+        self._record("ensure_faction(%s)" % def_name, r)
+        if (r or {}).get("success") or (r or {}).get("existingCount"):
+            return r
+        raise ExpectationFailed(
+            "jawa/faction_create(defName=%r) could not ensure a live faction "
+            "instance exists: %r" % (def_name, r))
 
     def bridge_call(self, tool, **params):
         """The escape valve. A mutation through here still owes its own
