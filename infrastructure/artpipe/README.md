@@ -25,6 +25,11 @@ _artsrc/    staging for the PNGs a worker actually produces. Wiring a
 throughput.jsonl   one line per request (appended, never rewritten): wall
             clock, meter before/after, validator verdict. The calibration
             projection's raw data.
+logs/       per-run plain-text daemon logs (ARTPIPE_CONSOLE_REDESIGN_1) —
+            gitignored, pruned at startup (14d / newest 50 kept).
+status/     one live status JSON per running daemon, `artpiped_<pid>.json`
+            (ARTPIPE_CONSOLE_REDESIGN_1) — gitignored, read by
+            `artpiped.py --status`, removed on that daemon's clean exit.
 ```
 
 A job file is JSON: `id`, `rimflow_item_id`, `reference` (path to the sprite
