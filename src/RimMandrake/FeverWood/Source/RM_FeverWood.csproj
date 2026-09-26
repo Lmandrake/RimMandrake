@@ -59,6 +59,8 @@
     <Compile Include="RM_AntHiveBiomeExtension.cs" />
     <Compile Include="RM_MapComponent_AntHive.cs" />
     <Compile Include="RM_GenStep_AntHiveDungeon.cs" />
+    <Compile Include="RM_CompProperties_SapSuckerRefusal.cs" />
+    <Compile Include="RM_CompSapSuckerRefusal.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -87,6 +89,10 @@
          shape, not a new dependency. -->
     <Reference Include="RimMandrake.EnvironmentalHazards">
       <HintPath>..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="RimMandrake.CreatureBehaviors">
