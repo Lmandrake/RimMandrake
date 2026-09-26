@@ -47,16 +47,17 @@ namespace RimMandrake.EnvironmentalHazards
     //   </li>
     //
     // Content decision (the item's own words: "not pre-judged here"): wired
-    // this pass onto the two donor mangal ThingDefs the biome's flora roster
-    // (miasma_flora_roster_2026-09-23.md §3) calls "the mangals (the
-    // canopy)" and marks for eventual replacement by RM_Thessamor/
-    // RM_Quennath — `AB_MangroveTree`/`AB_ParasiticMangrove`, not
+    // originally onto the two donor mangal ThingDefs the biome's flora
+    // roster (miasma_flora_roster_2026-09-23.md §3) calls "the mangals (the
+    // canopy)" — `AB_MangroveTree`/`AB_ParasiticMangrove`, not
     // `AB_MangrovePalm` (roster's own RM_Ilbareen row recasts that species
     // around dying-in-place as a salt-line gauge, a different mechanism from
-    // the flowering bargain). MIASMA_FLORA_ROSTER_1, whenever it lands
-    // RM_Thessamor/RM_Quennath as real ThingDefs, should move this same
-    // modExtension onto their defNames rather than re-deciding this from
-    // scratch.
+    // the flowering bargain). 🔴 MIASMA_FAUNA_FLOOR_ROSTER_1 has since added
+    // the same modExtension onto RM_Thessamor/RM_Quennath (MIASMA_FLORA_ROSTER_1's
+    // real replacements for those two donor rows in mandrake.rm.miasma) —
+    // both pairs of operations now live in RUT_Miasma_PollinationGate.xml,
+    // the AB_ pair for the frozen campaign twin's still-live wildPlants and
+    // the RM_ pair for the franchise-free mod's own flora.
     public class RM_PollinationGateExtension : DefModExtension
     {
         public ThingDef pollinatorRace;

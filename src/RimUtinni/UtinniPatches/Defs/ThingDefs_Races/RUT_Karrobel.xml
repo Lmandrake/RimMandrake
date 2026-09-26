@@ -52,14 +52,16 @@
   RUT_PyrelandsFauna each set their own biome-measured range rather than a
   generic default.
 
-  Population: NOT wired to RM_CompVerminBreeder/RM_VerminPressureExtension
-  — that pairing is the arthropod FLOOR's shared mechanism
-  (miasma_fauna_roster_2026-09-23.md §2, "one population, four draws on
-  it"), covering all four karr- clade scuttlers together; this ledger slug
-  owns only the composter (karrobel), not karravel/karrimeth/karrolun, so
-  wiring the population comp here alone would half-build a mechanism this
-  item was never asked to finish. Ordinary wildAnimals-commonality
-  population instead, same as every other wildlife row in this biome.
+  Population: 🔴 CORRECTED by MIASMA_FAUNA_FLOOR_ROSTER_1, which built the
+  other three karr- clade scuttlers (RM_Karravel/RM_Karrimeth/RM_Karrolun,
+  src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_Miasma_ArthropodFloor.xml)
+  this pairing was originally deferred for. This def now carries
+  RM_CompVerminBreeder + RM_VerminPressureExtension on the same
+  populationGroupTag ("RM_MiasmaScuttlers") as all three, so the shared
+  RM_MapComponent_VerminPopulation actually tracks one pool across all four
+  scuttlers, per the roster's own "one population, four draws on it"
+  (miasma_fauna_roster_2026-09-23.md §2) — not three sharing a pool and a
+  fourth silently outside it.
 
   Art: genuinely new, no existing render found (checked infrastructure/
   artpipe/{done,pending,registry.jsonl} for "karrobel"/"composter"/
@@ -162,7 +164,18 @@
         <gatherDef>RUT_DeltaLoam</gatherDef>
         <fullnessLabelKey>RUT_DeltaLoamCastings</fullnessLabelKey>
       </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.creaturebehaviors">
+        <pawnSpawnIntervalDays>1.5~3</pawnSpawnIntervalDays>
+        <pawnSpawnRadius>3</pawnSpawnRadius>
+      </li>
     </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <populationSoftCap>40</populationSoftCap>
+        <populationHardCap>100</populationHardCap>
+        <populationGroupTag>RM_MiasmaScuttlers</populationGroupTag>
+      </li>
+    </modExtensions>
     <tradeTags>
       <li>AnimalExotic</li>
     </tradeTags>

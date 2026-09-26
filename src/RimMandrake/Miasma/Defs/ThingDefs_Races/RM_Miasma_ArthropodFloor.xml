@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Miasma_ArthropodFloor.xml                       MIASMA_FAUNA_FLOOR_ROSTER_1
+
+  The remaining three of the arthropod floor's four scuttlers
+  (miasma_fauna_roster_2026-09-23.md §2): RM_Karravel (the carpet),
+  RM_Karrimeth (the mass), RM_Karrolun (the harvest). The fourth,
+  the delta-loam composter, already ships as RUT_Karrobel
+  (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Karrobel.xml,
+  COMMISSION_LEDGER_CLEANUP_1) — built before this item claimed, from the
+  same roster document, and left in its existing RUT_ tier rather than
+  moved (renaming a def other art jobs already reference by name is out of
+  this item's scope). These three are new-this-pass and land directly in
+  RM_Miasma (this mod now exists, unlike when Karrobel/Karrathil shipped),
+  so they ship RM_-tier per Q11a from the start.
+
+  🔑 One population, four draws on it (roster §2's own load-bearing note):
+  all four scuttlers — these three plus RUT_Karrobel — share
+  RM_VerminPressureExtension's populationGroupTag "RM_MiasmaScuttlers" and
+  carry RM_CompProperties_VerminBreeder, so the shared
+  RM_MapComponent_VerminPopulation/RM_CompVerminBreeder pairing
+  (src/RimMandrake/CreatureBehaviors/Source/, mandrake.rm.creaturebehaviors)
+  tracks and replenishes them as one pool against predation by the five
+  RM_Miasma_Predators.xml plants, the nursery juveniles, refugee predators
+  and the RM_Karrolun harvest — exactly the mechanism the roster names
+  ("there is already a mechanism for exactly this") rather than inventing a
+  new one. RUT_Karrobel.xml is retrofitted with the same comp/extension in
+  this same pass so all four actually share one pool, not three sharing and
+  a fourth silently outside it.
+
+  Bodies reuse the two shapes this campaign's karr- clade already
+  established (RUT_Karrobel.xml/RUT_Karrathil.xml): BeetleLike for a small
+  ambient scuttler, BeetleLikeWithClaw where the roster calls for a bigger,
+  gripping/blade-bearing animal. No new BodyDef — none of the three
+  silhouettes (disc, mass-of-small, big-and-long-limbed) needs a bespoke
+  body, only distinct stats/graphics/wildGroupSize per the roster's own
+  "each one's silhouette follows its job, not its family."
+
+  🔑 Two of these three "must not be briefed as hero sprites" (roster §7):
+  RM_Karravel has to read as a carpet and RM_Karrimeth only ever as a mass.
+  No new C# for that — same idiom already used for RUT_Karrathil's swarm
+  ("a HIGH wildGroupSize on an otherwise ordinary small-insect PawnKindDef...
+  no new C# needed for reads as a haze in numbers"): both get deliberately
+  high, INVENTED wildGroupSize instead of a bespoke rendering mechanism.
+
+  Art: genuinely new, none exists — checked infrastructure/artpipe/
+  {done,pending,active,failed}, _artsrc, registry.jsonl by all three names
+  and by "scuttler"/"carpet"/"mass" first, clean. Flat-color placeholders
+  shipped this pass (south-facing only, matching the RUT_Karrobel/
+  RUT_Karrathil precedent of a single low ground pose for a "mostly seen as
+  a mass/carpet/half-buried" creature) so the mod loads clean; no fresh
+  fill_queue.py job filed this pass — a hero-sprite brief would deliver the
+  wrong thing for two of the three per the caution above, and the third
+  (Karrolun) is ordinary but not urgent enough on its own to file solo. Real
+  art is follow-on work, same posture RUT_Karrobel/RUT_Karrathil are
+  already sitting in (their own jobs FAILED and are unconsumed in
+  infrastructure/artpipe/pending — a pre-existing gap this item does not
+  own or attempt to fix).
+
+  Predation onto these three (and onto RUT_Karrobel) by the five
+  RM_Miasma_Predators.xml plants is NOT built here — that plant file's own
+  header already defers it as a genuine engine question ("can a plant
+  consume a small wild animal at all, and can it be restricted to one
+  species") UNMEASURABLE on the Mac, and this pass does not reason it out
+  from a doc either. The prey now exists; the predation comp is follow-on,
+  Desktop-gated work.
+-->
+<Defs>
+
+  <!-- ==================== RM_Karravel — the carpet ==================== -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Karravel</defName>
+    <label>karravel</label>
+    <description>A coin-flat armoured disc the size of a palm, dull olive with a fine salt bloom, its legs never showing beneath the shell. Alone it is nothing. In numbers — and karravel are never anything but numerous — they cover the mud film so completely the ground itself appears to be sliding. The Miasma's cheapest protein, and the bulk of everything that eats here.</description>
+    <statBases>
+      <MoveSpeed>1.9</MoveSpeed>
+      <Mass>0.4</Mass>
+      <MarketValue>6</MarketValue>
+      <Wildness>0.2</Wildness>
+      <ComfyTemperatureMin>18</ComfyTemperatureMin>
+      <ComfyTemperatureMax>58</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <predator>false</predator>
+      <baseBodySize>0.18</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <meatColor>(150,140,120)</meatColor>
+      <meatMarketValue>0.2</meatMarketValue>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>3</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.01</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <lifeExpectancy>3</lifeExpectancy>
+      <gestationPeriodDays>3</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1.4)</li>
+          <li>(2.5, 1.8)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.creaturebehaviors">
+        <pawnSpawnIntervalDays>0.5~1</pawnSpawnIntervalDays>
+        <pawnSpawnRadius>3</pawnSpawnRadius>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <populationSoftCap>40</populationSoftCap>
+        <populationHardCap>100</populationHardCap>
+        <populationGroupTag>RM_MiasmaScuttlers</populationGroupTag>
+      </li>
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Karravel</defName>
+    <label>karravel</label>
+    <race>RM_Karravel</race>
+    <combatPower>3</combatPower>
+    <wildGroupSize>8~24</wildGroupSize>
+    <ecoSystemWeight>0.9</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karravel/RM_Karravel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karravel/RM_Karravel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karravel/RM_Karravel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================== RM_Karrimeth — the mass ==================== -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Karrimeth</defName>
+    <label>karrimeth</label>
+    <description>Individually unremarkable — a thumb-sized humped shell, pale grey, salt-frosted. Karrimeth are never seen individually for long: they occur as a moving carpet thousands strong, flowing around obstacles as a single audibly clicking body. A lone karrimeth is a straggler, and stragglers do not last. A mass crossing a colony strips forage and fills traps rather than threatening anyone directly — the aftermath of a surge, made visible.</description>
+    <statBases>
+      <MoveSpeed>2.1</MoveSpeed>
+      <Mass>0.15</Mass>
+      <MarketValue>3</MarketValue>
+      <Wildness>0.25</Wildness>
+      <ComfyTemperatureMin>22</ComfyTemperatureMin>
+      <ComfyTemperatureMax>62</ComfyTemperatureMax>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>1.5</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <predator>false</predator>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <meatColor>(160,160,155)</meatColor>
+      <meatMarketValue>0.15</meatMarketValue>
+      <herdAnimal>true</herdAnimal>
+      <roamMtbDays>2</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.01</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <lifeExpectancy>2</lifeExpectancy>
+      <gestationPeriodDays>2.5</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1.6)</li>
+          <li>(3, 2.2)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.08</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.creaturebehaviors">
+        <pawnSpawnIntervalDays>1~2</pawnSpawnIntervalDays>
+        <pawnSpawnRadius>4</pawnSpawnRadius>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <populationSoftCap>40</populationSoftCap>
+        <populationHardCap>100</populationHardCap>
+        <populationGroupTag>RM_MiasmaScuttlers</populationGroupTag>
+      </li>
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Karrimeth</defName>
+    <label>karrimeth</label>
+    <race>RM_Karrimeth</race>
+    <combatPower>2</combatPower>
+    <!-- INVENTED, same idiom RUT_Karrathil's swarm already uses: "only ever
+         a moving mass" is delivered by a very high wildGroupSize on an
+         ordinary PawnKindDef, not new C#. -->
+    <wildGroupSize>40~90</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.32</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================== RM_Karrolun — the harvest ==================== -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Karrolun</defName>
+    <label>karrolun</label>
+    <description>A slow, long-legged scuttler the size of a spread hand — visibly the biggest of its kin, its shell a deep iridescent blue-green that fades to chalk when it dies. Faintly comic in its deliberateness, and the only one of the floor's four worth picking up by hand: the Miasma's ordinary meat, and the one thing that gives the arthropod harvest a real target instead of a chore spread across three other species.</description>
+    <statBases>
+      <MoveSpeed>1.5</MoveSpeed>
+      <Mass>3.5</Mass>
+      <MarketValue>22</MarketValue>
+      <Wildness>0.2</Wildness>
+      <ComfyTemperatureMin>16</ComfyTemperatureMin>
+      <ComfyTemperatureMax>56</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <predator>false</predator>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.45</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <meatColor>(140,150,145)</meatColor>
+      <meatMarketValue>0.3</meatMarketValue>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>5</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <lifeExpectancy>6</lifeExpectancy>
+      <gestationPeriodDays>5</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.creaturebehaviors">
+        <pawnSpawnIntervalDays>2~4</pawnSpawnIntervalDays>
+        <pawnSpawnRadius>3</pawnSpawnRadius>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <populationSoftCap>40</populationSoftCap>
+        <populationHardCap>100</populationHardCap>
+        <populationGroupTag>RM_MiasmaScuttlers</populationGroupTag>
+      </li>
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Karrolun</defName>
+    <label>karrolun</label>
+    <race>RM_Karrolun</race>
+    <combatPower>10</combatPower>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karrolun/RM_Karrolun</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karrolun/RM_Karrolun</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karrolun/RM_Karrolun</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.95</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
