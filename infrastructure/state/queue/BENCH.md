@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T05:34:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T05:48:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -143,15 +143,6 @@ target:   v1
 kind:     design
 summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
-
-## SCALD_FLOOR_PASS_1 Whole individual pass for the Scald floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  (no items/SCALD_FLOOR_PASS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCALD_FLOOR_PASS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -648,16 +639,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PROPANELAKE_FLOOR_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PROPANELAKE_FLOOR_PASS_1.md
-
-## SEA_DIVE_MAPS_BUILD_1 Dive maps for the four seas: diving opens a small underwater map where the sea-floor cast (wildAnimals) actually spawns. Decision taken by question card 2026-09-25 over 'surface in shallows' and 'decide later'. Today diving is only a shore job (DivingInteraction has no map generation), so every sea's floor cast is unreachable in play.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SEA_DIVE_MAPS_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SEA_DIVE_MAPS_BUILD_1.md
 
 ## SCALD_ART_UPGRADE_WAVE_1 Scald art wave 2: high-res lush restyle of the Scald set, 2-3 stack variants per item; shulla catch as a small pile of fish; landspeeder wreck redone with pawn-scale seats; steam catch machinery not blue-tinted and the vent visibly CAPPED.
 state:    proposed

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T05:38:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T05:48:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -846,6 +846,24 @@ kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
 
+## MLIE_ABSORPTION_BIOME_WIRING_1 98 live biome rows still name the bare donor for 73 creatures we already ported
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. For each of the 98 rows, decide and apply one of two outcomes — this is not a blanket
+prose:    infrastructure/state/items/MLIE_ABSORPTION_BIOME_WIRING_1.md
+
+## WEBWORK_FAUNA_ROSTER_1 Build the 5 invented Webwork fauna defs (Quarrok/Vennick/Skennet/Cravvet/Sivvern, Sivvern flies for real) + execute the 3 ruled donor cuts; JewelBeetle disposition still owed
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/WEBWORK_FAUNA_ROSTER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_FAUNA_ROSTER_1.md
+
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
 row:      unassigned
@@ -1603,16 +1621,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md
 
-## MLIE_ABSORPTION_BIOME_WIRING_1 98 live biome rows still name the bare donor for 73 creatures we already ported
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. For each of the 98 rows, decide and apply one of two outcomes — this is not a blanket
-prose:    infrastructure/state/items/MLIE_ABSORPTION_BIOME_WIRING_1.md
-
 ## SEA_BEASTS_TIER_RULING_1 11 of the 18 sea beasts are invented originals filed as Star Wars IP
 state:    proposed
 row:      unassigned
@@ -1632,16 +1640,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 The whole mechanism is the waterline. She goes anywhere the water goes and nowhere else. A
 prose:    infrastructure/state/items/WARDEN_MOTHER_BEFRIENDING_1.md
-
-## WEBWORK_FAUNA_ROSTER_1 Build the 5 invented Webwork fauna defs (Quarrok/Vennick/Skennet/Cravvet/Sivvern, Sivvern flies for real) + execute the 3 ruled donor cuts; JewelBeetle disposition still owed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WEBWORK_FAUNA_ROSTER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_FAUNA_ROSTER_1.md
 
 ## OLLATHRIX_OWNER_SPECIES_1 Build RM_Ollathrix (one race one kind, owner-and-nest doc S1) with mechanisms in mandrake.rm.webwork and the Wyyyschokk skin patch in mandrake.rsw.shokk (S6 rulings 1,6)
 state:    proposed
@@ -1812,6 +1810,16 @@ kind:     design
 thin:     no ## spec
 summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
 prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
+
+## SEA_DIVE_MAPS_BUILD_1 Dive maps for the four seas: diving opens a small underwater map where the sea-floor cast (wildAnimals) actually spawns. Decision taken by question card 2026-09-25 over 'surface in shallows' and 'decide later'. Today diving is only a shore job (DivingInteraction has no map generation), so every sea's floor cast is unreachable in play.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SEA_DIVE_MAPS_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEA_DIVE_MAPS_BUILD_1.md
 
 ## UTINNIPATCHES_LOAD_ORDER_CYCLE_1 UtinniPatches loads before 6 of its loadAfter targets; cycle with RustCathedralRoaches
 state:    proposed
