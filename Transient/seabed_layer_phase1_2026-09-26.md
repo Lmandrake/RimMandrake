@@ -280,11 +280,23 @@ Each is marked `PHASE n SEAM` in the source.
 
 ## 8. Commits
 
-| sha | what |
+All on `origin/main`, verified by content (`git hash-object` against
+`git rev-parse origin/main:<path>`) for every file, not by sha:
+
+| sha on `origin/main` | what |
 |---|---|
 | `2db33bf23` | the code, the defs, the `<Compile Include>` line |
 | `7ab7bfe81` | the rebuilt DLL and its `.srchash` sidecar |
-| *(below)* | this report, the two item files, the ledger shard |
+| `b91d868cb` | this report, the two item files, the `SEA_FLOOR_AND_CATCH_PASS_1` re-correction |
+| `efa7a0cba` | the BENCH ledger shard |
+
+⚠️ **The last two have different shas locally** (`bfd20a91b`, `d50f996b2`): `shared_sync.py`
+uses `git replay`, which rewrites commits onto `origin/main` and changes their hashes. The
+brief's prescribed check — `git merge-base --is-ancestor <sha> origin/main` — therefore
+reported both as **MISSING** when they had in fact landed. It also hit the tool's live peer
+race once, needing a second run. **Proof by sha is unsound after any `shared_sync.py` that
+actually replays; proof by content is not.** All 7 files verified byte-identical, all 3 of my
+ledger lines present, the re-correction present.
 
 **`run_selftests.py`: 75/78 passed, 2 skipped, 3 failed — all three pre-existing and outside
 this work**, each checked individually rather than assumed:
