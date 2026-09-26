@@ -513,3 +513,5 @@
 {"seat":"FOUNDRY","event":"start","id":"FEVERWOOD_TENTACLE_BESTIARY_1","ts":"2026-09-26T05:52:13Z"}
 {"seat":"FOUNDRY","event":"close","id":"MLIE_ABSORPTION_BIOME_WIRING_1","sha":"3abed6f36","reason":"55 genuine bare-donor rows retargeted to RSW_ ports across 7 Utinni patches; 3 remain no-port (canon plants, DONOR_DEFS_PORT_TO_OURS_1); Greentide/TheForge/WeepingStones already clean, Webwork retired concurrently","ts":"2026-09-26T05:55:09Z"}
 {"seat":"FOUNDRY","event":"seat","state":"idle","note":"MLIE_ABSORPTION_BIOME_WIRING_1 closed at 3abed6f36","ts":"2026-09-26T05:55:29Z"}
+{"seat":"FOUNDRY","event":"claim","id":"UTINNIPATCHES_LOAD_ORDER_CYCLE_1","ts":"2026-09-26T05:57:25Z"}
+{"seat":"FOUNDRY","event":"start","id":"UTINNIPATCHES_LOAD_ORDER_CYCLE_1","ts":"2026-09-26T05:57:26Z"}

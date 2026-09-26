@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- WEBWORK_RM_MOD_BUILD_1 scaffolded this def; WEBWORK_FLORA_ROSTER_1 (this
-     build) replaces its interim vanilla-Core wildPlants placeholder with the
-     real 16-row invented flora roster
+<!-- WEBWORK_RM_MOD_BUILD_1 scaffolded this def; WEBWORK_FLORA_ROSTER_1 replaced
+     its interim vanilla-Core wildPlants placeholder with the real 16-row
+     invented flora roster
      (design/Jawa/worldbuilding/biomes/webwork_flora_roster_2026-09-23.md,
-     defs in Defs/ThingDefs_Plants/RM_WebworkFlora.xml). wildAnimals is
-     unaffected by this item and stays the vanilla-Core placeholder pending
-     WEBWORK_FAUNA_ROSTER_1.
+     defs in Defs/ThingDefs_Plants/RM_WebworkFlora.xml). WEBWORK_FAUNA_ROSTER_1
+     (this build) replaces the vanilla-Core wildAnimals placeholder in turn
+     with the real 5-row invented fauna roster
+     (design/Jawa/worldbuilding/biomes/webwork_fauna_roster_2026-09-23.md,
+     defs in Defs/ThingDefs_Races/RM_WebworkFauna.xml) — quarrok, vennick,
+     skennet, cravvet, sivvern. This is the WHOLE cast, not an addition to the
+     5 vanilla rows: "5 rows, no filler... the near-emptiness IS the design"
+     (roster doc READ FIRST).
 
      Terrain is still vanilla-only by design, same pattern as the sibling
      Greentide/Pyrelands mods: the frozen twin's own terrainsByFertility used
@@ -96,18 +101,21 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
 
-    <!-- Vanilla-core roster only — no third-party or franchise-specific
-         fauna, no MayRequire on a third-party bestiary. Megaspider fits the
-         Webwork's own "shadow in the canopy" theme without naming anything.
-         WEBWORK_FAUNA_ROSTER_1 adds the invented RM-tier cast on top; the
-         frozen twin's Star Wars cast rides WildAnimals_Webwork.xml instead of
-         this def. -->
+    <!-- WEBWORK_FAUNA_ROSTER_1: 5 RM_-tier invented rows, the biome's whole
+         resident cast besides the Ollathrix (owned by
+         webwork_owner_and_nest_2026-09-23.md, not a wildAnimals row at all).
+         Replaces the vanilla-Core placeholder this def shipped at scaffold
+         time. The 4 donor Star Wars rows the frozen twin still carries
+         (Wyyyschokk/RSW_JewelBeetle/Kreetle/Shyrack) are RULED CUT (roster
+         doc §7) and do NOT ride WildAnimals_Webwork.xml going forward — see
+         that file's own header. Every commonality below is an engineering
+         default, not an owner-set value. -->
     <wildAnimals>
-      <Rat>0.8</Rat>
-      <Hare>0.5</Hare>
-      <Muffalo>0.2</Muffalo>
-      <Cobra>0.3</Cobra>
-      <Megaspider>0.15</Megaspider>
+      <RM_Quarrok>0.3</RM_Quarrok>  <!-- anchor war / corridor-cutter -->
+      <RM_Vennick>0.6</RM_Vennick>  <!-- egg war / living treasure map -->
+      <RM_Skennet>0.4</RM_Skennet>  <!-- trace prey — the crop, the chase -->
+      <RM_Cravvet>0.25</RM_Cravvet>  <!-- trace prey — the cleanup -->
+      <RM_Sivvern>0.2</RM_Sivvern>  <!-- trace flier, real flight -->
     </wildAnimals>
     <coastalWildAnimals />
     <!-- WEBWORK_FLORA_ROSTER_1: 16 RM_-tier invented rows, organised in the

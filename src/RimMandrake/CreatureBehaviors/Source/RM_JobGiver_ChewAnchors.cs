@@ -27,6 +27,17 @@ namespace RimMandrake.CreatureBehaviors
                 return null;
             }
 
+            // WEBWORK_FAUNA_ROSTER_1: this JobGiver rides the shared
+            // Animal_PreWander insertion tag (RM_ThinkTree_ChewAnchors.xml),
+            // which reaches every animal's ThinkTree — the consumer-race gate
+            // has to live here, not at the splice point. Only a race marked
+            // RM_ChewAnchorsConsumerExtension (RM_Quarrok, at authoring time)
+            // ever chews.
+            if (!pawn.def.HasModExtension<RM_ChewAnchorsConsumerExtension>())
+            {
+                return null;
+            }
+
             RM_MapComponent_SenseWeb senseWeb = pawn.Map?.GetComponent<RM_MapComponent_SenseWeb>();
             if (senseWeb == null || !senseWeb.AnyRegisteredCells)
             {
