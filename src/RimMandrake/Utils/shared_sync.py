@@ -74,6 +74,10 @@ def main():
 
     for attempt in range(3):
         git("fetch", "-q", REMOTE)
+        # HEAD as of this instant: what `todo` (and later, the catch-up reset) is computed
+        # against. If a peer commits directly into this shared tree before we reach the
+        # reset below, HEAD moves out from under us — checked just before that reset.
+        head_before = git("rev-parse", "HEAD").stdout.strip()
         # commits whose patch is not already upstream (a previous run may have pushed them)
         todo = git("rev-list", "--cherry-pick", "--right-only", "--no-merges",
                    "%s...HEAD" % UP).stdout.split()
@@ -111,6 +115,16 @@ def main():
     if a.dry_run:
         return 0
     git("fetch", "-q", REMOTE)
+    # A peer's commit landing on this shared tree between `todo` being computed and here
+    # would never have been in `todo` (so never pushed), and `reset --keep` below would
+    # silently move the branch pointer past it — no warning, recoverable only via reflog.
+    # Refuse rather than reset if that happened; a re-run will pick the peer commit up.
+    moved = git("rev-parse", "HEAD").stdout.strip()
+    if moved != head_before:
+        sys.exit("a peer committed to this shared tree during the sync (HEAD moved %s -> "
+                 "%s) — nothing was lost, but catching up now would drop that commit's "
+                 "branch pointer. Re-run shared_sync.py: the new commit was not part of "
+                 "this run and will be included fresh." % (head_before[:9], moved[:9]))
     upstream = set(git("diff", "--name-only", "HEAD", UP).stdout.split())
     dirty = set(git("diff", "--name-only", "HEAD").stdout.split())
     clash = upstream & dirty
