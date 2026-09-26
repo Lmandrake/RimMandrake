@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T07:48:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T08:05:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## FEVERWOOD_TWO_FRONT_LURE_TUNING_1 Two-front lure numbers, prey-quality gate, and a free-tier second raider
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     tuning
+summary:  1. Prey-quality gate — explicitly left UNSET by the design sheet
+prose:    infrastructure/state/items/FEVERWOOD_TWO_FRONT_LURE_TUNING_1.md
 
 # IN PROGRESS
 
@@ -873,15 +882,6 @@ kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
 
-## FEVERWOOD_TWO_FRONT_LURE_1 Staked living bait, and two raiders who arrive one after the other
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §5, §6l.
-prose:    infrastructure/state/items/FEVERWOOD_TWO_FRONT_LURE_1.md
-
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
 row:      unassigned
@@ -962,6 +962,15 @@ target:   v1
 kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
+
+## DEEPFIRE_PIGMENT_MOD_1 Deepfire: new RM mod LuminousPigment — expensive glowing pigment (colour from the dye it's mixed with, pigment supplies a dim glow); +1 quality on art items / +beauty on others; paints walls/floors/furniture; extra coats only brighten; personal items light the pawn but make them easier to target in the dark; harvested from rare ocean bacterial mats (Utinni: the Scald); GlowTank grows it slowly; fresh mat decays very fast until refined; RimCuisine uses; god reactions; status via the purple engine; all Mod Settings
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DEEPFIRE_PIGMENT_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEPFIRE_PIGMENT_MOD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1559,16 +1568,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md
 
-## WARDEN_MOTHER_BEFRIENDING_1 The warden mother: lumbers in water, cannot reach land, befriended by freeing the young she cannot
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 The whole mechanism is the waterline. She goes anywhere the water goes and nowhere else. A
-prose:    infrastructure/state/items/WARDEN_MOTHER_BEFRIENDING_1.md
-
 ## OLLATHRIX_OWNER_SPECIES_1 Build RM_Ollathrix (one race one kind, owner-and-nest doc S1) with mechanisms in mandrake.rm.webwork and the Wyyyschokk skin patch in mandrake.rsw.shokk (S6 rulings 1,6)
 state:    proposed
 row:      unassigned
@@ -1739,16 +1738,6 @@ thin:     no ## spec
 summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
 prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
 
-## DEEPFIRE_PIGMENT_MOD_1 Deepfire: new RM mod LuminousPigment — expensive glowing pigment (colour from the dye it's mixed with, pigment supplies a dim glow); +1 quality on art items / +beauty on others; paints walls/floors/furniture; extra coats only brighten; personal items light the pawn but make them easier to target in the dark; harvested from rare ocean bacterial mats (Utinni: the Scald); GlowTank grows it slowly; fresh mat decays very fast until refined; RimCuisine uses; god reactions; status via the purple engine; all Mod Settings
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEEPFIRE_PIGMENT_MOD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEPFIRE_PIGMENT_MOD_1.md
-
 ## MIASMA_SCUTTLER_PREDATION_1 Wire the five carnivorous plants to actually eat the arthropod-floor scuttlers
 state:    proposed
 row:      unassigned
@@ -1798,3 +1787,23 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Limbs. The owner's own words were "a plethora of organs and limbs." Vanilla RimWorld
 prose:    infrastructure/state/items/CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1.md
+
+## WARDEN_MOTHER_PATHFINDER_VERIFY_1 Live-verify the warden mother's water-only movement and load cleanly
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  WARDENMOTHERPATHFINDERVERIFY1 — live-verify the warden mother's water-only movement and load cleanly
+prose:    infrastructure/state/items/WARDEN_MOTHER_PATHFINDER_VERIFY_1.md
+
+## WARDEN_MOTHER_SUCCESSION_1 Warden mother young: self-taming, water-scoped training, and succession on her death
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  WARDENMOTHERSUCCESSION1 — warden mother young: self-taming, water-scoped training, and succession on her death
+prose:    infrastructure/state/items/WARDEN_MOTHER_SUCCESSION_1.md
