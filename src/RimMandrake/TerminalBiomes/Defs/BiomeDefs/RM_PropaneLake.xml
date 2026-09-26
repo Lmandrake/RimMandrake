@@ -69,6 +69,13 @@
       <RM_Oovanam>0.3</RM_Oovanam>
       <RM_Hoolen>0.4</RM_Hoolen>
     </wildAnimals>
+    <!-- PROPANELAKE_ANIMALDENSITY_ZERO_1, 2026-09-26 — animalDensity was UNSET (engine
+         default 0f), so WildAnimalSpawner.DesiredTotalAnimalWeight was 0 and the six
+         animals above could never spawn, at map-gen or ever (MEASURED from the
+         decompiled engine). 0.08 — a hair below the Grey Sea's 0.1 and the sparsest of
+         the four seas, matching the fiction: a black mirror of frozen liquid fuel,
+         "the stillness is older than anyone's records." -->
+    <animalDensity>0.08</animalDensity>
     <coastalWildAnimals />
 
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
