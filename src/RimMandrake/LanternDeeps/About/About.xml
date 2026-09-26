@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Lantern Deeps</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.lanterndeeps</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Ships the persistent underground "Lantern Deeps" cave-map dungeon layer (LANTERN_DEEPS_INJECTION_1, design/Jawa/worldbuilding/biomes/the_lantern_deeps.md): two entrance buildings - a natural lanternstone emergence and a ruined mineshaft - that appear on qualifying nightside/cold-biome maps and, when entered, generate a permanent pocket map.
+
+As of CAVERNS_PARITY_BUILD_1 the pocket map is entirely OURS: the RM_LanternDeeps biome, the RM_DeepCalm weather, the lanternstone floor and walls, the four lanternstone formation sizes with their own scatter GenStep, the sowable lanternstone line and eleven cave plants all ship here. Nothing is borrowed from Biomes! Caverns any more. Resident fauna points at the RSW_* ports in RimStarWars: Bestiary, which is a soft dependency - a Deep with Bestiary absent is empty of animals but otherwise whole.
+
+Also ships the darkness mechanic (carried light draws what lives down there) and a full Mod Settings screen: per-entrance toggles and rates, the darkness mechanic and its sensitivity, lanternstone formation density, and cave flora on/off.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>m00nl1ght.GeologicalLandforms</li>
+    <li>det.epochspyrinth</li>
+    <!-- LANTERNDEEPS_RM_MOD_BUILD_1 (2026-09-25): guy762.mm.kotorcore and
+         lee.theforce.lightsaber DROPPED from this list — both existed only for
+         the four Star Wars carve-out files (KotOR Stygium gate, KotOR crystal
+         scatter, kyber gate, kyber scatter), which moved to
+         src/RimUtinni/UtinniPatches/ with this tier move; that mod's own
+         About.xml now carries the ordering. -->
+    <!-- LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1: GenStep_ScatterCavePortal's host-biome
+         allowlist checks map.Biome.defName against RM_NightsideIce and RM_PropaneLake
+         (mandrake.rut.patches) and BiomeGRimond (grimterra.biomesmod, "GRiNDTerra
+         Biomes" - the_blue_desert.md's donor). Neither was declared here, so on most
+         lists neither host mod was guaranteed present/ordered relative to this one.
+         Soft loadAfter, not modDependencies: the GenStep already self-gates to a no-op
+         when a host biome is absent (see the .cs), so this mod stays fully loadable
+         without any of them - it just never scatters. -->
+    <li>mandrake.rut.patches</li>
+    <li>grimterra.biomesmod</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.ideology</li>
+  </loadAfter>
+</ModMetaData>

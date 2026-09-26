@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAVERNS_PARITY_BUILD_1 — registers lanternstone as one of the Deep's natural
+  rocks. order=190 is load-bearing: it must run AFTER MapGenerator has called
+  RockNoises.Init (which happens before any GenStep) and BEFORE
+  Underground_RocksFromGrid (order 200) reads the noise list. See the class
+  header for why BiomeDef.extraRockTypes cannot do this on a pocket map.
+-->
+<Defs>
+  <GenStepDef>
+    <defName>RM_LanternstoneRock</defName>
+    <order>190</order>
+    <genStep Class="RimMandrake.LanternDeeps.GenStep_LanternstoneRock" />
+  </GenStepDef>
+</Defs>
