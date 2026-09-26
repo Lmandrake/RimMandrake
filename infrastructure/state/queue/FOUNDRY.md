@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T10:54:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T11:02:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1485,16 +1485,6 @@ kind:     design
 thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
-
-## GREENTIDE_GRENADE_WEAPONS_1 Jungle grenades: stench, seeding and toxin
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Build the stench smoke only (ruled above). ⛔ Do not open the seeding grenade or either toxin
-prose:    infrastructure/state/items/GREENTIDE_GRENADE_WEAPONS_1.md
 
 ## GREENTIDE_WASP_SWARM_1 Jungle wasps: tiny, numerous, hives on plants, stings that stack
 state:    proposed
