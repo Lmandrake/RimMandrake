@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_SumptuaryThoughts.xml           LuminousPigment · DEEPFIRE_PAINT_STATUS_CUISINE_1
+  ============================================================================
+  Spec §4.1 — the "purple engine". Three of its five thoughts ship here
+  (worn-goods only, no room stat needed); RM_DeepfireBedroom and
+  RM_ImpressedByDeepfire need painted-furniture room scores (piece 1,
+  painting) and are deferred to DEEPFIRE_PAINT_LIVE_VERIFY_1 along with it.
+  Situational, workerClass-driven (Source/ThoughtWorkers_Sumptuary.cs);
+  moodScale is NOT applied here (a flat multiplier over hediff/thought stage
+  numbers would need its own hook — left for that follow-on to add
+  alongside the room-stat thoughts, rather than half-wire one setting now).
+  ============================================================================
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RM_WearingDeepfireTitled</defName>
+    <workerClass>RimMandrake.LuminousPigment.ThoughtWorker_DeepfireStatusTitled</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>wearing deepfire</label><description>My status shows, and it should.</description><baseMoodEffect>3</baseMoodEffect></li>
+      <li><label>wearing deepfire</label><description>My status shows, and it should.</description><baseMoodEffect>5</baseMoodEffect></li>
+      <li><label>wearing deepfire</label><description>My status shows, and it should.</description><baseMoodEffect>8</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_WearingDeepfireCommon</defName>
+    <workerClass>RimMandrake.LuminousPigment.ThoughtWorker_DeepfireStatusCommon</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>wearing deepfire</label><description>It looks good on me.</description><baseMoodEffect>1</baseMoodEffect></li>
+      <li><label>wearing deepfire</label><description>It looks good on me.</description><baseMoodEffect>2</baseMoodEffect></li>
+      <li><label>wearing deepfire</label><description>It looks good on me.</description><baseMoodEffect>3</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_WearsAboveStation</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>RimMandrake.LuminousPigment.ThoughtWorker_WearsAboveStation</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>wears above their station</label>
+        <description>They dress in deepfire as if they were somebody. It is not their place.</description>
+        <baseOpinionOffset>-15</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_SawCommonerInDeepfire</defName>
+    <workerClass>RimMandrake.LuminousPigment.ThoughtWorker_SawCommonerInDeepfire</workerClass>
+    <validWhileDespawned>false</validWhileDespawned>
+    <stages>
+      <li>
+        <label>a commoner in deepfire</label>
+        <description>Someone beneath me walks around glowing like a noble. It offends.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_RecipeDeepfireMeals.xml         LuminousPigment · DEEPFIRE_PAINT_STATUS_CUISINE_1
+  ============================================================================
+  Spec §6.2. All 15 recipes share the fine-meal shape (ParentName
+  CookMealFineBase, same ingredient counts) plus one fixed RM_Deepfire.
+  `RM_MealDeepfirePlain` rolls a random family (weighted, never the
+  vermilion) via RM_IngestionOutcomeDoer_SteeredFamily reading a null
+  intendedFamily. The 14 `RM_MealDeepfire_<key>` recipes each carry
+  RM_SteeredFamilyExtension so Patch_GenRecipe_WriteCookSkill (Source/
+  GenRecipePatch.cs) can stamp the cook's skill and intended family onto the
+  product at cook time (spec: "the worker is in scope there").
+
+  skillRequirements on the 14 steered recipes are re-applied at startup from
+  LuminousPigmentSettings.steerMinSkill / vermilionMinSkill
+  (LuminousPigmentMod.ApplySettings) — the numbers below are just the
+  shipped defaults (10 / 14, spec §7).
+  ============================================================================
+-->
+<Defs>
+
+  <RecipeDef Name="RM_CookDeepfireMealBase" ParentName="CookMealFineBase" Abstract="True">
+    <jobString>Cooking a deepfire dish.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs><li>RM_Deepfire</li></thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <customSummary>protein</customSummary>
+          <categories><li>MeatRaw</li><li>AnimalProductRaw</li></categories>
+        </filter>
+        <count>0.25</count>
+      </li>
+      <li>
+        <filter>
+          <categories><li>PlantFoodRaw</li></categories>
+        </filter>
+        <count>0.25</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories><li>FoodRaw</li></categories>
+      <specialFiltersToDisallow><li>AllowPlantFood</li></specialFiltersToDisallow>
+      <thingDefs><li>RM_Deepfire</li></thingDefs>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories><li>FoodRaw</li></categories>
+      <disallowedCategories><li>EggsFertilized</li></disallowedCategories>
+      <thingDefs><li>RM_Deepfire</li></thingDefs>
+    </defaultIngredientFilter>
+    <products>
+      <RM_MealDeepfire>1</RM_MealDeepfire>
+    </products>
+  </RecipeDef>
+
+  <!-- The plain dish: any Cooking level, random family (never the vermilion). -->
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfirePlain</defName>
+    <label>cook deepfire dish</label>
+    <description>Cook a fine meal finished with a spoonful of deepfire pigment. The glow-family it gives is left to chance.</description>
+    <displayPriority>205</displayPriority>
+  </RecipeDef>
+
+  <!-- The 14 steered dishes: name, family key, hediff (for reference/config lookup by the doer), min skill. -->
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Skin</defName>
+    <label>cook deepfire dish (skin-glow)</label>
+    <description>Cook a deepfire dish steered toward skin-glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>206</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>skin</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Eyes</defName>
+    <label>cook deepfire dish (eye-glow)</label>
+    <description>Cook a deepfire dish steered toward eye-glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>207</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>eyes</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Cranial</defName>
+    <label>cook deepfire dish (cranial glow)</label>
+    <description>Cook a deepfire dish steered toward cranial glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>208</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>cranial</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Neural</defName>
+    <label>cook deepfire dish (neural glow)</label>
+    <description>Cook a deepfire dish steered toward neural glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>209</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>neural</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Mouth</defName>
+    <label>cook deepfire dish (mouth-glow)</label>
+    <description>Cook a deepfire dish steered toward mouth-glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>210</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>mouth</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Products</defName>
+    <label>cook deepfire dish (body-products glow)</label>
+    <description>Cook a deepfire dish steered toward body-products glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>211</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>products</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Blood</defName>
+    <label>cook deepfire dish (blood-glow)</label>
+    <description>Cook a deepfire dish steered toward blood-glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>212</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>blood</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Marrow</defName>
+    <label>cook deepfire dish (marrow-glow)</label>
+    <description>Cook a deepfire dish steered toward marrow-glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>213</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>marrow</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Hair</defName>
+    <label>cook deepfire dish (hair-glow)</label>
+    <description>Cook a deepfire dish steered toward hair-glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>214</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>hair</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Gut</defName>
+    <label>cook deepfire dish (gut-glow)</label>
+    <description>Cook a deepfire dish steered toward gut-glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>215</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>gut</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Nerves</defName>
+    <label>cook deepfire dish (nerve-glow)</label>
+    <description>Cook a deepfire dish steered toward nerve-glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>216</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>nerves</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Pulse</defName>
+    <label>cook deepfire dish (pulse-glow)</label>
+    <description>Cook a deepfire dish steered toward pulse-glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>217</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>pulse</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Lungs</defName>
+    <label>cook deepfire dish (lung-glow)</label>
+    <description>Cook a deepfire dish steered toward lung-glow. A skilled chef lands it more often than not.</description>
+    <displayPriority>218</displayPriority>
+    <skillRequirements><Cooking>10</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>lungs</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+  <!-- The vermilion: master chefs only, never rolled by any other recipe. -->
+  <RecipeDef ParentName="RM_CookDeepfireMealBase">
+    <defName>RM_MealDeepfire_Vermilion</defName>
+    <label>cook deepfire dish (vermilion)</label>
+    <description>Cook the vermilion dish — whole-body glow. Only a master chef can steer this one, and it is never handed out by accident.</description>
+    <displayPriority>219</displayPriority>
+    <skillRequirements><Cooking>14</Cooking></skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.LuminousPigment.SteeredFamilyExtension"><family>vermilion</family></li>
+    </modExtensions>
+  </RecipeDef>
+
+</Defs>

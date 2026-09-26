@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_DeepfireHediffThoughts.xml      LuminousPigment · DEEPFIRE_PAINT_STATUS_CUISINE_1
+  ============================================================================
+  Vanilla's own pattern for "a hediff causes a mood swing" (e.g. Luciferium
+  high): a ThoughtDef with <hediff> pointing at the HediffDef and one stage
+  per hediff stage, mood-only, no workerClass needed (the engine matches
+  stage index to hediff stage index automatically for hediff-linked
+  thoughts). Spec §6.3: cranial glow (+4/+8/+12) and body-products glow
+  (-2/-5/-8). RM_AteDeepfire is the flat "tingles" taste thought every dish
+  gives regardless of family (spec §6.2).
+  ============================================================================
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RM_CranialGlowMood</defName>
+    <hediff>RM_Glow_Cranial</hediff>
+    <stages>
+      <li><label>cranial glow</label><description>A permanent, mounting euphoria.</description><baseMoodEffect>4</baseMoodEffect></li>
+      <li><label>cranial glow</label><description>A permanent, mounting euphoria.</description><baseMoodEffect>8</baseMoodEffect></li>
+      <li><label>cranial glow</label><description>A permanent, mounting euphoria.</description><baseMoodEffect>12</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_ProductsGlowMood</defName>
+    <hediff>RM_Glow_Products</hediff>
+    <stages>
+      <li><label>my leavings glow</label><description>Even my filth glows now.</description><baseMoodEffect>-2</baseMoodEffect></li>
+      <li><label>my leavings glow</label><description>Even my filth glows now.</description><baseMoodEffect>-5</baseMoodEffect></li>
+      <li><label>my leavings glow</label><description>Even my filth glows now.</description><baseMoodEffect>-8</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_AteDeepfire</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate deepfire</label>
+        <description>It tingles.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

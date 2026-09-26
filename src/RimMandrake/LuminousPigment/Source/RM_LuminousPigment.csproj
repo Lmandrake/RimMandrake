@@ -50,6 +50,19 @@
     <Compile Include="GenStep_ShoreMats.cs" />
     <Compile Include="Building_GlowTank.cs" />
     <Compile Include="HarmonyPatches.cs" />
+    <!-- DEEPFIRE_PAINT_STATUS_CUISINE_1: Cuisine, the Ninefold god bridge,
+         and the sumptuary status engine. Painting/worn-glow (piece 1/2) are
+         not here, deferred to DEEPFIRE_PAINT_LIVE_VERIFY_1. -->
+    <Compile Include="DeepfireFamilies.cs" />
+    <Compile Include="HediffComp_DeepfireGlow.cs" />
+    <Compile Include="CompSkillSteeredOutcome.cs" />
+    <Compile Include="SteeredFamilyExtension.cs" />
+    <Compile Include="GenRecipePatch.cs" />
+    <Compile Include="IngestionOutcomeDoer_SteeredFamily.cs" />
+    <Compile Include="NinefoldDeltaBridge.cs" />
+    <Compile Include="DeepfireGodExtension.cs" />
+    <Compile Include="SumptuaryEngine.cs" />
+    <Compile Include="ThoughtWorkers_Sumptuary.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_DeepfireGlowHediffs.xml         LuminousPigment · DEEPFIRE_PAINT_STATUS_CUISINE_1
+  ============================================================================
+  Spec §6.3's 14 glow-effect families, one HediffDef each with 3 severity
+  stages = tiers (I/II/III). Permanent: isBad false (not tended, not shown as
+  a health complaint needing care), tendable false, everCurableByItem false.
+  Severity climbs by whole steps only (RM_IngestionOutcomeDoer_SteeredFamily
+  bumps it +1 per repeat eating of the same family) — no natural decay.
+
+  Two named-UNMEASURED cells from the spec table ship with their own named
+  XML-only fallback, per the item's own instructions:
+    - Eye-glow's "no penalty from darkness" (a StatPart_Glow exemption) ->
+      fallback: Sight offset only, no exemption hook.
+    - Gut-glow III's "eats anything" (a robust-digestion-gene-like acceptance
+      change) -> fallback: pctConditionalThoughtsNullified, a real vanilla
+      HediffStage field that nullifies conditional mood thoughts (covers "no
+      ill effects from raw/rotten food thoughts").
+
+  Trimmed for this pass (flavour-only, no gameplay number attached, and each
+  would need its own new engine touchpoint the spec does not call load-bearing):
+    - Body-products glow's filth reskin (would need a Harmony postfix on
+      FilthMaker.TryMakeFilth to spawn glowing filth variants that do not
+      exist as art yet) — Beauty/mood numbers still ship.
+    - Lung-glow's breath-fleck emitter (pure visual) — Talking/Breathing/
+      ToxicEnvironmentResistance numbers still ship.
+    - Cranial glow's "rest can't exceed X%" caps and "lit dreams" wake-ups —
+      RestFallRate multiplier still ships.
+  These are cosmetic/flavour sub-details, not the family's mechanism.
+
+  The "glows" radius is real DATA on every stage (RM_HediffCompProperties_
+  DeepfireGlow.glowRadiusByStage) but the light itself is a soft, no-op-until-
+  present reflection binding to RM_MapComponent_DeepfireLights (piece 1,
+  painting — deferred, DEEPFIRE_PAINT_LIVE_VERIFY_1) — see
+  Source/HediffComp_DeepfireGlow.cs. Colour is fixed per family except
+  hair-glow (hair colour) and the vermilion (skin colour), read live from the
+  pawn each time the comp applies.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- 1. Skin-glow -->
+  <HediffDef>
+    <defName>RM_Glow_Skin</defName>
+    <label>skin-glow</label>
+    <description>A patch of skin gives off a faint, steady light — a mark left by deepfire cuisine.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
+        <glowColor>(0.6,1,1,0)</glowColor>
+        <glowRadiusByStage><li>1.0</li><li>1.5</li><li>2.5</li></glowRadiusByStage>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <statOffsets><li><stat>Beauty</stat><value>1</value></li></statOffsets>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <statOffsets><li><stat>Beauty</stat><value>2</value></li></statOffsets>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <statOffsets><li><stat>Beauty</stat><value>3</value></li></statOffsets>
+        <statFactors><li><stat>SocialImpact</stat><value>1.10</value></li></statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 2. Eye-glow -->
+  <HediffDef>
+    <defName>RM_Glow_Eyes</defName>
+    <label>eye-glow</label>
+    <description>The eyes give off a steady gold light. It costs sight — deepfire cuisine's one true curse.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
+        <glowColor>(1,0.85,0.2,0)</glowColor>
+        <glowRadiusByStage><li>0.5</li><li>0.8</li><li>1.2</li></glowRadiusByStage>
+      </li>
+    </comps>
+    <stages>
+      <!-- UNMEASURED cell (spec §6.3): night-work darkness exemption via a
+           StatPart_Glow hook is not built — Sight-only fallback, as named. -->
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <capMods><li><capacity>Sight</capacity><offset>-0.10</offset></li></capMods>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <capMods><li><capacity>Sight</capacity><offset>-0.35</offset></li></capMods>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <capMods><li><capacity>Sight</capacity><offset>-1.0</offset><setMax>0</setMax></li></capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 3. Cranial glow -->
+  <HediffDef>
+    <defName>RM_Glow_Cranial</defName>
+    <label>cranial glow</label>
+    <description>The skull gives off a dim violet light through the scalp. A permanent, mounting euphoria that eats into sleep.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
+        <glowColor>(0.55,0.25,0.85,0)</glowColor>
+        <glowRadiusByStage><li>0</li><li>0</li><li>0.6</li></glowRadiusByStage>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <restFallFactor>1.15</restFallFactor>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <restFallFactor>1.4</restFallFactor>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <restFallFactor>1.8</restFallFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 4. Neural glow -->
+  <HediffDef>
+    <defName>RM_Glow_Neural</defName>
+    <label>neural glow</label>
+    <description>A faint white tracery under the skin at its worst. Speeds the body, costs the hands.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
+        <glowColor>(0.9,0.95,1,0)</glowColor>
+        <glowRadiusByStage><li>0</li><li>0</li><li>0.8</li></glowRadiusByStage>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <statOffsets><li><stat>MoveSpeed</stat><value>0.1</value></li></statOffsets>
+        <capMods><li><capacity>Manipulation</capacity><offset>-0.04</offset></li></capMods>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <statOffsets><li><stat>MoveSpeed</stat><value>0.25</value></li></statOffsets>
+        <capMods><li><capacity>Manipulation</capacity><offset>-0.10</offset></li></capMods>
+        <restFallFactor>1.25</restFallFactor>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <statOffsets>
+          <li><stat>MoveSpeed</stat><value>0.4</value></li>
+          <li><stat>ShootingAccuracyPawn</stat><value>-0.05</value></li>
+        </statOffsets>
+        <capMods><li><capacity>Manipulation</capacity><offset>-0.20</offset></li></capMods>
+        <restFallFactor>1.5</restFallFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 5. Mouth-glow -->
+  <HediffDef>
+    <defName>RM_Glow_Mouth</defName>
+    <label>mouth-glow</label>
+    <description>Teeth and tongue give off a low orange light — an ugly mark that somehow makes people better at haggling.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
+        <glowColor>(1,0.55,0.1,0)</glowColor>
+        <glowRadiusByStage><li>0.5</li><li>0.7</li><li>1.0</li></glowRadiusByStage>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <statOffsets><li><stat>Beauty</stat><value>-1</value></li></statOffsets>
+        <statFactors><li><stat>NegotiationAbility</stat><value>1.10</value></li></statFactors>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <statOffsets><li><stat>Beauty</stat><value>-2</value></li></statOffsets>
+        <statFactors>
+          <li><stat>NegotiationAbility</stat><value>1.25</value></li>
+          <li><stat>TradePriceImprovement</stat><value>1.05</value></li>
+        </statFactors>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <statOffsets><li><stat>Beauty</stat><value>-3</value></li></statOffsets>
+        <statFactors>
+          <li><stat>NegotiationAbility</stat><value>1.40</value></li>
+          <li><stat>TradePriceImprovement</stat><value>1.10</value></li>
+          <li><stat>SocialImpact</stat><value>1.15</value></li>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 6. Body-products glow (the joke family) -->
+  <HediffDef>
+    <defName>RM_Glow_Products</defName>
+    <label>body-products glow</label>
+    <description>The pawn's own leavings glow faintly. Nobody asked for this. Deepfire cuisine's joke family, kept because it was named on purpose.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <!-- No glow comp: the light this family describes belongs to the FILTH
+         it leaves, not the pawn's own body, and the filth-reskin Harmony
+         hook (FilthMaker.TryMakeFilth) is a trimmed sub-detail (file header). -->
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <statOffsets><li><stat>Beauty</stat><value>-1</value></li></statOffsets>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <statOffsets><li><stat>Beauty</stat><value>-2</value></li></statOffsets>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <statOffsets><li><stat>Beauty</stat><value>-3</value></li></statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 7. Blood-glow -->
+  <HediffDef>
+    <defName>RM_Glow_Blood</defName>
+    <label>blood-glow</label>
+    <description>Open wounds and bleeding run red-bright. A surgeon sees everything — at the cost of bleeding faster.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <comps>
+      <!-- glowRadiusByStage is the CAP; HediffComp_DeepfireGlow only lights
+           this one while the pawn actually has a bleeding wound (spec: "any
+           bleeding wound"), matching "open wounds and bleeding". -->
+      <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
+        <glowColor>(1,0.15,0.1,0)</glowColor>
+        <glowRadiusByStage><li>0.8</li><li>0.8</li><li>1.5</li></glowRadiusByStage>
+        <onlyWhileBleeding>true</onlyWhileBleeding>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <statOffsets><li><stat>MedicalTendQualityOffset</stat><value>0.10</value></li></statOffsets>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <statOffsets><li><stat>MedicalTendQualityOffset</stat><value>0.20</value></li></statOffsets>
+        <totalBleedFactor>1.15</totalBleedFactor>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <statOffsets><li><stat>MedicalTendQualityOffset</stat><value>0.30</value></li></statOffsets>
+        <totalBleedFactor>1.4</totalBleedFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 8. Marrow-glow -->
+  <HediffDef>
+    <defName>RM_Glow_Marrow</defName>
+    <label>marrow-glow</label>
+    <description>Nothing shows — the bones themselves are alight. A gift paid for in food.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <!-- No glow comp — "none visible" at every tier (spec). -->
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <statFactors><li><stat>ImmunityGainSpeed</stat><value>1.10</value></li></statFactors>
+        <hungerRateFactor>1.1</hungerRateFactor>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <statFactors><li><stat>ImmunityGainSpeed</stat><value>1.25</value></li></statFactors>
+        <hungerRateFactor>1.25</hungerRateFactor>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <statFactors><li><stat>ImmunityGainSpeed</stat><value>1.45</value></li></statFactors>
+        <hungerRateFactor>1.5</hungerRateFactor>
+        <statOffsets><li><stat>ComfyTemperatureMin</stat><value>5</value></li></statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 9. Hair-glow -->
+  <HediffDef>
+    <defName>RM_Glow_Hair</defName>
+    <label>hair-glow</label>
+    <description>Hair (or fur) glows in the pawn's own hair colour — a cosmetic gift that turns into a combat curse in the dark.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
+        <useHairColor>true</useHairColor>
+        <glowRadiusByStage><li>0.8</li><li>1.2</li><li>1.8</li></glowRadiusByStage>
+        <!-- spec: "the hair is a beacon" — glowTargetFactorOverride is read
+             by piece 2's (deferred) darkness-targeting hook once it ships;
+             harmless data field until then. -->
+        <glowTargetFactorOverride>1.5</glowTargetFactorOverride>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <statOffsets><li><stat>Beauty</stat><value>1</value></li></statOffsets>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <statOffsets><li><stat>Beauty</stat><value>2</value></li></statOffsets>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <statOffsets><li><stat>Beauty</stat><value>2</value></li></statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 10. Gut-glow -->
+  <HediffDef>
+    <defName>RM_Glow_Gut</defName>
+    <label>gut-glow</label>
+    <description>The belly glows faintly green, visible through clothes once it takes hold fully — a scavenger's gift.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
+        <glowColor>(0.3,1,0.4,0)</glowColor>
+        <glowRadiusByStage><li>0</li><li>0</li><li>0.6</li></glowRadiusByStage>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <foodPoisoningChanceFactor>0.5</foodPoisoningChanceFactor>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <foodPoisoningChanceFactor>0</foodPoisoningChanceFactor>
+        <hungerRateFactor>1.15</hungerRateFactor>
+        <statOffsets><li><stat>Beauty</stat><value>-1</value></li></statOffsets>
+      </li>
+      <li>
+        <!-- UNMEASURED cell (spec §6.3): "eats anything" via a robust-
+             digestion-gene-like acceptance change is not built — the named
+             fallback ships instead: nullify conditional food-eaten mood
+             thoughts (a real HediffStage field), covering "no ill effects
+             from raw/rotten food thoughts". -->
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <foodPoisoningChanceFactor>0</foodPoisoningChanceFactor>
+        <pctConditionalThoughtsNullified>1</pctConditionalThoughtsNullified>
+        <hungerRateFactor>1.3</hungerRateFactor>
+        <statOffsets><li><stat>Beauty</stat><value>-2</value></li></statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 11. Nerve-glow -->
+  <HediffDef>
+    <defName>RM_Glow_Nerves</defName>
+    <label>nerve-glow</label>
+    <description>Nothing shows — the nerves themselves burn brighter. Every scratch is sharper; the mind runs a little clearer for it.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <!-- No glow comp — "none" at every tier (spec). -->
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <painFactor>1.15</painFactor>
+        <capMods><li><capacity>Consciousness</capacity><offset>0.03</offset></li></capMods>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <painFactor>1.35</painFactor>
+        <capMods><li><capacity>Consciousness</capacity><offset>0.06</offset></li></capMods>
+        <statOffsets><li><stat>MentalBreakThreshold</stat><value>0.03</value></li></statOffsets>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <painFactor>1.6</painFactor>
+        <capMods><li><capacity>Consciousness</capacity><offset>0.10</offset></li></capMods>
+        <statFactors><li><stat>WorkSpeedGlobal</stat><value>1.05</value></li></statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 12. Pulse-glow -->
+  <HediffDef>
+    <defName>RM_Glow_Pulse</defName>
+    <label>pulse-glow</label>
+    <description>The whole pawn glows dimly, pulsing with the heartbeat — the showpiece family, and a real cardiac risk at its worst.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
+        <glowColor>(1,0.7,0.75,0)</glowColor>
+        <glowRadiusByStage><li>0.8</li><li>1.2</li><li>1.8</li></glowRadiusByStage>
+        <!-- "pulsing at the heart rate" (RM_Comp_WarblingGlow's value-pulse
+             parameters) is a proxy-light behaviour and rides on
+             RM_MapComponent_DeepfireLights, deferred with piece 1; the flag
+             below is read by that component once it exists. -->
+        <pulsesWithHeartRate>true</pulsesWithHeartRate>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <capMods><li><capacity>BloodPumping</capacity><offset>0.05</offset></li></capMods>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <capMods><li><capacity>BloodPumping</capacity><offset>0.12</offset></li></capMods>
+        <statOffsets><li><stat>MoveSpeed</stat><value>0.05</value></li></statOffsets>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <capMods><li><capacity>BloodPumping</capacity><offset>0.20</offset></li></capMods>
+        <hediffGivers>
+          <li Class="HediffGiver_Random">
+            <hediff>HeartAttack</hediff>
+            <mtbDays>90</mtbDays>
+          </li>
+        </hediffGivers>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 13. Lung-glow -->
+  <HediffDef>
+    <defName>RM_Glow_Lungs</defName>
+    <label>lung-glow</label>
+    <description>The breath itself runs warm and amber in cold air. Talk comes easier; breath comes harder.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <!-- No glow comp: the visible tell is breath flecks in cold air, a
+         cosmetic-only fleck emitter trimmed for this pass (file header). -->
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <capMods><li><capacity>Talking</capacity><offset>0.10</offset></li></capMods>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <capMods>
+          <li><capacity>Talking</capacity><offset>0.20</offset></li>
+          <li><capacity>Breathing</capacity><offset>-0.08</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <capMods>
+          <li><capacity>Talking</capacity><offset>0.30</offset></li>
+          <li><capacity>Breathing</capacity><offset>-0.20</offset></li>
+        </capMods>
+        <statFactors><li><stat>ToxicEnvironmentResistance</stat><value>1.20</value></li></statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- 14. Whole-body glow — the vermilion. Steered-only, never rolled at
+       random (RM_IngestionOutcomeDoer_SteeredFamily excludes it from every
+       random and every re-roll pool); its recipe alone requires
+       vermilionMinSkill (default 14). Reaching tier III fires an Ishko
+       penalty via NinefoldDeltaBridge (HediffComp_DeepfireGlow). -->
+  <HediffDef>
+    <defName>RM_Glow_Whole</defName>
+    <label>whole-body glow</label>
+    <description>The entire pawn glows in their own skin colour — deepfire cuisine's prestige family, master chefs only. It cannot be hidden.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>2.999</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
+        <useSkinColor>true</useSkinColor>
+        <glowRadiusByStage><li>1.5</li><li>2.5</li><li>3.5</li></glowRadiusByStage>
+        <glowTargetFactorOverride>1.5</glowTargetFactorOverride>
+        <ishkoPenaltyOnStage3>true</ishkoPenaltyOnStage3>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>tier I</label>
+        <statOffsets><li><stat>Beauty</stat><value>3</value></li></statOffsets>
+      </li>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>tier II</label>
+        <statOffsets><li><stat>Beauty</stat><value>5</value></li></statOffsets>
+        <statFactors><li><stat>SocialImpact</stat><value>1.15</value></li></statFactors>
+        <restFallFactor>1.2</restFallFactor>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>tier III</label>
+        <statOffsets><li><stat>Beauty</stat><value>8</value></li></statOffsets>
+        <restFallFactor>1.4</restFallFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

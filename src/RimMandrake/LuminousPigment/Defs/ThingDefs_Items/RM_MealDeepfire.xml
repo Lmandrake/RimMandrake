@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_MealDeepfire.xml                LuminousPigment · DEEPFIRE_PAINT_STATUS_CUISINE_1
+  ============================================================================
+  Spec §6.2. One ThingDef for every deepfire dish — the plain roll and all
+  14 steered variants are RECIPES (RM_RecipeDeepfireMeals.xml) producing this
+  SAME meal; the recipe (via RM_SteeredFamilyExtension) is what tells
+  Patch_GenRecipe_WriteCookSkill which family, if any, the cook is aiming for.
+  Comp carries the steering data from cook time (kitchen) to eating time
+  (anywhere, anyone) — CompSkillSteeredOutcome.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="MealFineBase">
+    <defName>RM_MealDeepfire</defName>
+    <label>deepfire dish</label>
+    <description>A fine meal finished with a spoonful of deepfire pigment. It tingles going down, and it never wears off.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/Fine</texPath>
+      <graphicClass>Graphic_MealVariants</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>110</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Meal</foodType>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce>
+      <optimalityOffsetHumanlikes>16</optimalityOffsetHumanlikes>
+      <preferability>MealFine</preferability>
+      <tasteThought>AteFineMeal</tasteThought>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+      <optimalityOffsetFeedingAnimals>-75</optimalityOffsetFeedingAnimals>
+      <outcomeDoers>
+        <li Class="RimMandrake.LuminousPigment.IngestionOutcomeDoer_SteeredFamily" />
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.CompProperties_SkillSteeredOutcome" />
+    </comps>
+  </ThingDef>
+
+</Defs>
