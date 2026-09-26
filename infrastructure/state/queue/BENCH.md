@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T17:15:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T17:20:51Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## GREYSEA_FLOOR_PASS_1 Whole individual pass for the Grey Sea floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  (no items/GREYSEA_FLOOR_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_FLOOR_PASS_1.md
 
 ## BIOME_LOAD_PROOF_WAVE_1 Prove every biome mod loads clean standalone on a minimal list - the narrow donor-retirement sense of PROVEN, not full functionality
 state:    ready
@@ -618,16 +627,6 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Per biome at its sitting: name the contribution(s), make the relevant defs
 prose:    infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md
-
-## GREYSEA_FLOOR_PASS_1 Whole individual pass for the Grey Sea floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREYSEA_FLOOR_PASS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_FLOOR_PASS_1.md
 
 ## TWILIGHTSEA_FLOOR_PASS_1 Whole individual pass for the Twilight Sea floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robustness, ending in a live review sitting
 state:    proposed

@@ -83,7 +83,7 @@
   ],
   "fish": {
     "list": [],
-    "ruling": "no fish — the water is saturated brine going to saturated-plus at the bottom (the_grey_deep §3), the sea is a monoculture (terminator_sea §4), nothing schools in either layer, and the Grey Deep's roster is capped at three residents (ban 2). R2: the Grey Sea is salting — early on the salt road; its water is a chemistry, not a fishery. FISH_BY_BIOME_1: ruled no-fish, no analogs owed."
+    "ruling": "OVERTURNED 2026-09-26 by the owner at the bench, typed: \"There should be fish\" / \"But bizarre creatures of course\". The prior no-fish ruling (kept below for provenance) is DEAD. The Grey Sea is fishable and its catch must be BIZARRE - invented, strange creatures, never vanilla fish reskinned. NOTE the def already shipped fish before this ruling and contradicted the old one: RM_GreySea carries 9 entries (saltwater_Common RUT_Sallik/RUT_Karrud/RUT_Hessal/RUT_Oomal/RM_EssarnCatch; saltwater_Uncommon RUT_Maalu/RUT_Immu/RUT_Haarn/RM_SorruthCatch) with maxFishPopulation 120, all resolving. The *Catch rows pair a floor animal with its catchable form, which is the two-defs-per-sea-species rule already implemented. SUPERSEDED TEXT: no fish — the water is saturated brine going to saturated-plus at the bottom (the_grey_deep §3), the sea is a monoculture (terminator_sea §4), nothing schools in either layer, and the Grey Deep's roster is capped at three residents (ban 2). R2: the Grey Sea is salting — early on the salt road; its water is a chemistry, not a fishery. FISH_BY_BIOME_1: ruled no-fish, no analogs owed."
   },
   "flora": [],
   "flora_purged": [],
