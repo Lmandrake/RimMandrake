@@ -39,6 +39,10 @@
     pass: RSW_VentStalker (the ground-sense ambusher) and RUT_DarkCrust (the
     phototroph flora), both wired into wildAnimals/wildPlants below.
 
+    FROZEN 2026-09-25 (POISONFOREST_RM_MOD_BUILD_1) — carrying the world until
+    the terminal paint; content lives in mandrake.rm.poisonforest from here on;
+    do not edit here.
+
   -->
 
   <BiomeDef>

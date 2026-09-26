@@ -40,7 +40,9 @@ OLD_TO_NEW_BIOME = {
                                        # STILLSAND_RM_MOD_BUILD_1 (same pattern as
                                        # AB_MycoticJungle -> RM_TheRot above)
     'LavaField': 'RUT_TheForge',
-    'PoisonForest': 'RUT_PoisonForest',
+    'PoisonForest': 'RM_PoisonForest',  # RM_ mod built 2026-09-25, POISONFOREST_RM_MOD_BUILD_1
+                                          # (RUT_PoisonForest still frozen, world-carrying twin,
+                                          # identical content)
     'Scarlands': 'RUT_Scarlands',
     'Volcano': 'RUT_TheForge',
     'Wasteland': 'RM_Wasteland',  # RUT_Wasteland frozen 2026-09-24,

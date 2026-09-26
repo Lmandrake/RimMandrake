@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_PoisonForest.xml               UtinniPatches — new file 2026-09-25
+  ============================================================================
+
+  Wires the campaign's Star Wars fauna onto RM_PoisonForest's wildAnimals,
+  layered on top of the 13 non-Star-Wars rows that mod ships inline (Genetic
+  Rim/Alpha Animals/Alpha Memes/Horrors — Q9 permits those directly on a
+  RM_ def). Per §7 Q11 ("RimMandrake should not name star wars ever"),
+  RM_PoisonForest may not carry any Star Wars creature by any route, so
+  every one of the frozen RUT_PoisonForest.xml's 5 Star Wars/campaign-tier
+  rows rides HERE instead. Shape: WildAnimals_LeaningScrub.xml /
+  WildAnimals_Pyrelands.xml.
+
+  🔑 SOURCE OF TRUTH: every defName and weight below is copied verbatim from
+  the LIVE RUT_PoisonForest.xml wildAnimals block as of COMMISSION_LEDGER_
+  CLEANUP_1's 2026-09-24/25 pass (18 rows total) — not from the stale
+  POISONFOREST_RM_MOD_BUILD_1 item table (written 2026-09-23, before
+  RSW_VentStalker was added).
+
+  Two ops, split by MayRequire (same split reason as WildAnimals_LeaningScrub.xml):
+    3 rows MayRequire="mlie.starwarsanimalcollection" (donor bare defNames:
+      Neebray, Mynock, GraniteSlug)
+    2 rows MayRequire="mandrake.rsw.swbestiary" (our own RSW_ ports:
+      RSW_Screecher, RSW_VentStalker)
+
+  RSW_Screecher is multi-homed on purpose (owner approved 2026-09-22,
+  BIOME_SPECIFIC_FAUNA_LAW_1 — a real flier that migrates from this wetter
+  biome into the hot Wasteland to lay; the law's own carve-out, not a
+  violation. Do not "fix" it by cutting either home.
+
+  No unconditional PatchOperationReplace op is needed here: RM_PoisonForest's
+  own BiomeDef already ships a real 13-species wildAnimals block inline, so
+  both ops below are plain PatchOperationConditional + PatchOperationAdd
+  onto that existing node.
+
+  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
+  returns true on no match) — validated with
+  skills/rimworld-modding/scripts/validate_patch.py against the live def
+  dump and the full active mod set; an unmatched PatchOperationAdd is
+  silent, so a clean run there is not proof a row landed.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Star Wars Animal Collection, donor bare defNames. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
+    <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
+      <value>
+        <Neebray>0.8</Neebray>
+        <Mynock>0.2</Mynock>
+        <GraniteSlug>0.15</GraniteSlug>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Our own RSW_ ports. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
+      <value>
+        <!-- MULTI-HOMED ON PURPOSE - see file header. -->
+        <RSW_Screecher>0.35</RSW_Screecher>
+        <RSW_VentStalker>0.25</RSW_VentStalker>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

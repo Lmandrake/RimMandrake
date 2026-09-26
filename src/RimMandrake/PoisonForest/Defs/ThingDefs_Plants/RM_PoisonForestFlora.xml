@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    RM_PoisonForestFlora.xml    RimMandrake: Poison Forest
+
+    POISONFOREST_RM_MOD_BUILD_1: three renamed, duplicated copies of the
+    frozen twin's own flora, per biome_mod_architecture.md §7 Q13
+    ("content wired into TWO biome mods: DUPLICATE, THEN DIVERGE — each mod
+    carries its own copy under its own defName; the second copy is
+    regenerated later, art and identity, into a distinct variant").
+
+    - RM_TwistingThornwood: field-for-field copy of RUT_TwistingThornwood
+      (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_PollutedFlora.xml),
+      which is ALSO wired into RUT_CrackedLands and stays there, untouched,
+      byte-for-byte, serving both the live campaign world and that biome's
+      own future standalone build. This is this mod's own copy, not a move.
+    - RM_TreeMartyr: field-for-field copy of RUT_TreeMartyr, which the twin
+      wires only into PoisonForest — the frozen original stays in place too
+      (same file), since RUT_PoisonForest.xml is frozen byte-for-byte and
+      must keep resolving its own original defName.
+    - RM_DarkCrust: field-for-field copy of RUT_DarkCrust (label "vein
+      moss", ruled by owner card 2026-09-24, POISONFOREST_SHIPPING_NAMES_1),
+      wired only into PoisonForest. Art: the generated PNG already sitting at
+      infrastructure/artpipe/_artsrc/rutdarkcrust_v1/rutdarkcrust_v1.png
+      (COMMISSION_LEDGER_CLEANUP_1, done 2026-09-24) — the frozen twin's own
+      texPath (Things/Plant/RUT_DarkCrust) has never had an actual texture
+      file placed under it in UtinniPatches/Textures; that gap belongs to
+      whoever wires the twin, not this item. This mod's copy gets that art
+      for real, at its own texPath.
+
+    Art for TwistingThornwood/MartyrTree copied verbatim from
+    src/RimUtinni/UtinniPatches/Textures/Things/Plant/{TwistingThornwood,MartyrTree}/
+    into this mod's own Textures/Things/Plant/{RM_TwistingThornwood,RM_TreeMartyr}/,
+    same "art copied, renamed" precedent as RM_LeaningScrub's RM_SweetlineTree.
+  -->
+
+  <!-- ============== Twisting thornwood (tree) — duplicated from RUT_TwistingThornwood ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_TwistingThornwood</defName>
+    <label>twisting thornwood</label>
+    <description>A large species of tree found in polluted arid environments. It is one of three closely related species of plant, alongside the thornweed and thorngrass.</description>
+    <minifiedDef IsNull="True" />
+    <statBases>
+      <MaxHitPoints>210</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_TwistingThornwood</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>15</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>25</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <visualSizeRange>1.3~3.0</visualSizeRange>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Martyr tree — duplicated from RUT_TreeMartyr ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_TreeMartyr</defName>
+    <label>martyr tree</label>
+    <description>A large yucca-related plant adapted to poisoned soils. It yields a small amount of fibrous material that can be used like wood.</description>
+    <minifiedDef IsNull="True" />
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_TreeMartyr</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.10</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>10</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>15</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <visualSizeRange>1.3~3.0</visualSizeRange>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Vein moss (dark crust phototroph) — duplicated from RUT_DarkCrust ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_DarkCrust</defName>
+    <label>vein moss</label>
+    <description>A thin skin of phototrophic film, patched black, deep purple and blood-red, spread wherever a trunk or a stone faces the star's scattered light. It is not green because green is the wrong pigment for light this weak — it absorbs across the whole dim spectrum instead, and it is losing anyway. This is what grows on the things that actually won.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Nutrition>0.15</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_DarkCrust/RM_DarkCrust_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <selectable>false</selectable>
+    <plant>
+      <growDays>6</growDays>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>3</maxMeshCount>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+</Defs>

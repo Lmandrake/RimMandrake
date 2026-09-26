@@ -152,7 +152,9 @@ FAMILIES = {
     'AB_HardyGrass': 1.0, 'GRimMoss': 0.8, 'RUT_TwistingThorngrass': 0.5,
     'RUT_TwistingThornweed': 0.4, 'RUT_TwistingThornwood': 0.2,
     'AB_GargantuanLithops': 0.15},
-  'RUT_PoisonForest': {   # 546 tiles · 9 plants — AB_CrystalHorn moved out (owner review
+  'RM_PoisonForest': {   # RM_ mod built 2026-09-25, POISONFOREST_RM_MOD_BUILD_1 — was
+                          # RUT_PoisonForest (still frozen, world-carrying twin, identical
+                          # content). 546 tiles · 9 plants — AB_CrystalHorn moved out (owner review
                           # 2026-09-20: "propane lakes and blue desert only"); AB_GiantToxicFlower
                           # moved in (SHEET_ORPHAN_CONSUMPTION_1: wasteland -> here, "poison forest")
     'RUT_TwistingThornwood': 0.6, 'RUT_TreeMartyr': 0.5,
@@ -194,7 +196,7 @@ FAMILIES = {
                         # darkside hydrocarbon regime, not a water-metabolism plant) and
                         # AB_ToxiGrass/PoisonPlantTallGrass (wasteland -> here, "blue desert
                         # rare", owner's own words). Family A because AB_CrystalHorn is already
-                        # owned by RUT_FuelSnows/RUT_PoisonForest here — a shared plant can't split
+                        # owned by RUT_FuelSnows/RM_PoisonForest here — a shared plant can't split
                         # families. 🔴 If either toxic-grass def turns out to carry an ordinary
                         # water metabolism, that is a live conflict with the_blue_desert.md §6
                         # ban 1 ("no water-based plants") — not re-litigated by this pass, which
