@@ -195,6 +195,9 @@
     <Compile Include="RM_MapComponent_WaterAgitation.cs" />
     <Compile Include="RM_CompWaterLocked.cs" />
     <Compile Include="RM_HediffComp_LocatableCall.cs" />
+    <Compile Include="RM_BiomeArrivalLetterExtension.cs" />
+    <Compile Include="RM_GameComponent_BiomeArrivalLetters.cs" />
+    <Compile Include="RM_Patch_GravshipArrivalLetter.cs" />
   </ItemGroup>
 
   <ItemGroup>
