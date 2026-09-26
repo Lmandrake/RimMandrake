@@ -4858,3 +4858,111 @@ biome-split build is done. `FeverWood/Source`'s csproj-vs-XML mismatch
 (4 comp classes referenced from defs, absent from `<Compile Include>`) is
 not this loop's fix to make mid-build — flag it to whoever owns that item
 if it's still open when picked up again.
+
+## Wave 15 — 2026-09-26 (owner pause fully expired, resumed as FOUNDRY)
+
+Fresh `list --show-untracked` survey (`TALLY CLEAN 3135 DIRTY 213 ORPHANED
+211 NEVER ENTERED 691` at start). `FeverWood/Source` still had live
+untracked work mid-build (unrelated new files) — steered clear again, same
+as wave 14. `DivingInteraction` also now shows a concurrent agent adding
+`RM_SeabedLayer.cs` + `PlanetLayerDefs/` on top of last wave's clean mark —
+steered clear of it this pass too.
+
+Picked two clusters, both NEVER ENTERED, both git-clean at review time,
+both confirmed wired into their csproj's `<Compile Include>` list
+(`EnableDefaultCompileItems=false` convention) before reading:
+
+**Cluster A** — `src/RimUtinni/UtinniPatches/Source/` (4 files:
+`RUT_CompGreatboleHarvestLadder.cs`, `RUT_CompUseEffect_HolyFlame.cs`,
+`RUT_CompWaterWakeTrigger.cs`, `RUT_IncidentWorker_GreatboleFruitfall.cs`)
+plus `src/RimUtinni/WildsteamEggBounty/Source/RM_QuestNode_GetWildsteamSettlement.cs`.
+UtinniPatches is the shared campaign-patch layer, not one of the excluded
+per-biome mod folders, and `git status --porcelain` on both directories
+was empty before touching anything.
+
+Found **one real bug**, in `RUT_CompGreatboleHarvestLadder.cs`'s
+`Catastrophe()`: it spawned the dead-husk building
+(`GenSpawn.Spawn(husk, center, map)`, no explicit `WipeMode` → defaults to
+`WipeMode.Vanish`) BEFORE its own explicit
+`parent.Destroy(DestroyMode.KillFinalize)` call a few lines later.
+Dispatched a sonnet fork to confirm against the decompiled engine and the
+two defs rather than guessing: `RUT_GreatboleCore` and
+`RUT_GreatboleDeadHusk` are both `<size>(1,1)</size>`, and
+`RM_MapComponent_LivingRegrowth.GetBoleCenter` returns exactly the cell the
+marker/core Thing registered itself at (`parent.Position` at spawn), so
+`center == parent.Position` bit-for-bit. `GenSpawn.Spawn`'s 4-arg overload
+(`Verse/GenSpawn.cs`, read via rimsage) really does default to
+`WipeMode.Vanish`, which calls `WipeExistingThings(...,
+DestroyMode.Vanish)` on whatever blocks the target cell — i.e. the
+still-spawned core itself. So in the normal case the core was silently
+destroyed via `DestroyMode.Vanish` to make room for the husk, and the
+later `if (parent.Spawned) parent.Destroy(DestroyMode.KillFinalize);`
+check read false and never fired — dead code, and the deliberate destroy
+mode the file's own comments describe ("destroyed outright") never
+actually ran. (Checked the adjacent double-`DeregisterBole` question too:
+`RM_CompLivingBoleMarker.PostDeSpawn` also calls `DeregisterBole` on any
+despawn, so the manual call earlier in `Catastrophe()` plus this implicit
+one both fire — but `DeregisterBole` is a linear-scan-and-remove-if-found,
+harmless no-op on the second call, not a bug.) Fixed by moving the
+explicit `parent.Destroy(DestroyMode.KillFinalize)` call to run BEFORE the
+husk spawn, so the intended destroy mode actually executes and the husk
+then spawns onto an already-empty cell. Committed at `4b53e5569`.
+
+The other 4 files in this cluster: traced `RUT_CompUseEffect_HolyFlame`'s
+scoped-HistoryEventDef posture (deliberately avoids
+`HistoryEventDefOf.BuildSpecificDef`, which the file's own comment shows
+was checked against `PreceptComp_SelfTookMemoryThought.
+Notify_MemberTookAction`'s real filter logic), `RUT_CompWaterWakeTrigger`'s
+terrain-poll wake trigger (correct dry/real-water test, correctly Scribed
+`triggered` flag), `RUT_IncidentWorker_GreatboleFruitfall`'s small
+non-destructive fruit/grub drop (correct `CanFireNowSub`/`TryExecuteWorker`
+split, no bole = no fire), and `RM_QuestNode_GetWildsteamSettlement`'s
+nearest-Wildsteam-settlement finder (correct `TestRunInt`/`RunInt` split,
+correct `HasMap`/`ActiveRequest` exclusion, matches the vanilla
+`QuestNode_GetNearbySettlement` pattern it documents itself as filling a
+gap in). No bugs found in these 4; marked CLEAN alongside the fixed file.
+
+**Cluster B** — `src/RimMandrake/CreatureBehaviors/Source/`
+(`RM_ChewAnchorsConsumerExtension.cs`, `RM_CompAdhesiveSlick.cs`,
+`RM_CompProperties_AdhesiveSlick.cs`) and
+`src/RimMandrake/EnvironmentalHazards/Source/`'s biome-arrival-letters
+mechanism (`RM_BiomeArrivalLetterExtension.cs`,
+`RM_GameComponent_BiomeArrivalLetters.cs`,
+`RM_Patch_GravshipArrivalLetter.cs`, `RM_CompWaterLocked.cs`,
+`RM_HediffComp_LocatableCall.cs`) plus the two grazing-suppression files
+(`RM_Patch_GrazingSuppressionHook.cs`,
+`RM_ExplosiveGrowthSuppressionBridge.cs`) — 10 files total, both
+directories `git status --porcelain` clean (only the CreatureBehaviors
+built `.dll` was dirty, expected build output). Traced the
+biome-arrival-letter chain end to end (`GenStep_GravshipMarker.Generate`
+Harmony postfix → `RM_GameComponent_BiomeArrivalLetters.
+Notify_GravshipLanded` → per-save `HashSet<string>` keyed on
+`BiomeDef.defName`, correctly Scribed and re-initialized on
+`PostLoadInit` if null) and the grazing-suppression reflection bridge
+(`RM_ExplosiveGrowthSuppressionBridge.Resolve()` binds
+`ExplosiveGrowthAPI.Suppress(Map, IntVec3, int, int)` by
+`AccessTools.Method` string lookup — confirmed the target method's real
+signature is the sole overload and matches the delegate type exactly, so
+the `Delegate.CreateDelegate` cast cannot silently bind the wrong
+overload). `RM_CompWaterLocked`/`RM_HediffComp_LocatableCall`/
+`RM_CompAdhesiveSlick` all correctly gate on `Spawned`/`Map`/settings
+toggles before acting and Scribe their own tick-state. No bugs found in
+any of the 10; all marked CLEAN.
+
+Both mark-clean batches recorded at `3ca4093de` and `b17ca35f2`
+(`CODE_REVIEW_STATUS.json`, committed separately from the code fix per the
+"stage and commit close together" discipline — the status writes landed
+in two commits because a peer briefly held `index.lock` on the first
+attempt; retried after confirming the holder was a live process, not
+stale).
+
+Re-measured after: `TALLY CLEAN 3149 DIRTY 214 ORPHANED 211 NEVER ENTERED
+676` (concurrent biome-split/DivingInteraction agents still moving files
+across buckets independent of this pass; 15 files newly CLEAN this wave).
+
+Next wave: re-survey `list --show-untracked` fresh — no candidate cluster
+is carried forward from this wave. ⛔ Keep avoiding biome-specific mod
+folders (same list as wave 14, **plus `DivingInteraction`** — a concurrent
+agent is adding a seabed planet layer on top of wave 14's clean mark right
+now) and `biome_paint_list.md` until told the concurrent biome-split build
+is done.
