@@ -33,6 +33,18 @@
       <li>PoisonForest</li>
     </terminatorBiomes>
 
+    <!-- The wet-ambient roster (owner ruling 6, 2026-09-21): these biomes run the
+         x10 wet band INSTEAD of x4. The Rot is excluded by his word. The band's
+         numbers are Mod Settings sliders; only the list lives here. -->
+    <wetAmbientBiomes>
+      <li>RUT_Greentide</li>
+      <li>RM_Greentide</li>
+      <li>RUT_Miasma</li>
+      <li>RM_Miasma</li>
+      <li>RUT_FeverWood</li>
+      <li>RM_FeverWood</li>
+    </wetAmbientBiomes>
+
     <!-- Untouched in every biome. Their slowness is a mechanic, not a growth rate. -->
     <exemptPlants>
       <li>Plant_TreeAnima</li>      <!-- ritual pacing, not botany -->

@@ -8,10 +8,13 @@
   </supportedVersions>
   <description>Planetary fast growth. One Harmony postfix on Verse.Plant.GrowthRate multiplies the composite growth rate of every plant from every mod, so nothing has to be enumerated and any plant a mod adds later is caught automatically.
 
-Three bands, biome-aware:
+Four bands, biome-aware (exactly one applies per plant):
 - wild plants and crops x4.0
 - trees x2.5 (wood stays a decision)
 - plants on a terminator / poison-forest biome x0.4 (the one place on this world where growth has stalled)
+- plants in the three wet biomes (Greentide, Miasma, Fever Wood) x10, trees x6.25 — the always-on groaning growth of the wet jungles (owner ruling 2026-09-21; replaces the x4 band there, does not stack on it)
+
+The water-SOAK event multiplier (EXPLOSIVE_PLANT_GROWTH_1) is not here: it belongs to mandrake.rm.explosivegrowth and multiplies on top of whichever band applies.
 
 Every number, the terminator biome roster and the exempt plant list live in Defs/JawaPlantGrowthSettings.xml and are read at startup, so tuning does not need a rebuild. The compiled defaults in RimMandrake.Utinni.PlantGrowth.PlantGrowthConfig are used only if that def is missing.
 

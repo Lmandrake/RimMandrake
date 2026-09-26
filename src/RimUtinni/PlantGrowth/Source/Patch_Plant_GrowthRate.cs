@@ -23,13 +23,16 @@ namespace RimMandrake.Utinni.PlantGrowth
 
             Log.Message(string.Format(
                 "[RimMandrake.Utinni.PlantGrowth] scaling {0} plant defs (default x{1}, tree x{2}), " +
-                "{3} exempt, {4} terminator biome(s) at x{5}.",
+                "{3} exempt, {4} terminator biome(s) at x{5}, {6} wet-ambient biome(s) at x{7} (tree x{8}).",
                 PlantGrowthConfig.ScaledCount,
                 PlantGrowthConfig.DefaultMultiplier,
                 PlantGrowthConfig.TreeMultiplier,
                 PlantGrowthConfig.ExemptCount,
                 PlantGrowthConfig.TerminatorBiomeCount,
-                PlantGrowthConfig.TerminatorMultiplier));
+                PlantGrowthConfig.TerminatorMultiplier,
+                PlantGrowthConfig.WetAmbientBiomeCount,
+                PlantGrowthConfig.WetAmbientMultiplier,
+                PlantGrowthConfig.WetAmbientTreeMultiplier));
         }
     }
 
@@ -64,9 +67,19 @@ namespace RimMandrake.Utinni.PlantGrowth
             // __instance.Map twice or throwing.
             Map map = __instance.Map;
 
-            __result *= (map != null && PlantGrowthConfig.IsTerminatorBiome(map.Biome))
-                ? PlantGrowthConfig.TerminatorMultiplier
-                : PlantGrowthConfig.MultiplierFor(def);
+            // Three ambient bands, exactly one applies (they REPLACE each
+            // other, never stack): terminator x0.4, the three wet biomes x10
+            // (ruling 6, 2026-09-21), everywhere else x4. The explosive-growth
+            // SOAK multiplier is a separate event tier owned by
+            // mandrake.rm.explosivegrowth's own postfix and multiplies on top
+            // of whichever band this picks — do not fold it in here.
+            BiomeDef biome = map?.Biome;
+            if (biome != null && PlantGrowthConfig.IsTerminatorBiome(biome))
+                __result *= PlantGrowthConfig.TerminatorMultiplier;
+            else if (biome != null && PlantGrowthConfig.IsWetAmbientBiome(biome))
+                __result *= PlantGrowthConfig.WetAmbientMultiplierFor(def);
+            else
+                __result *= PlantGrowthConfig.MultiplierFor(def);
         }
     }
 }

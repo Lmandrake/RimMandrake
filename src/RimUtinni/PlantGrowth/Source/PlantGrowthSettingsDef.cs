@@ -17,6 +17,7 @@ namespace RimMandrake.Utinni.PlantGrowth
 
         public List<string> terminatorBiomes;
         public List<string> exemptPlants;
+        public List<string> wetAmbientBiomes;
 
         /// <summary>The single loaded instance, or null if the def file is missing.</summary>
         public static PlantGrowthSettingsDef Current
