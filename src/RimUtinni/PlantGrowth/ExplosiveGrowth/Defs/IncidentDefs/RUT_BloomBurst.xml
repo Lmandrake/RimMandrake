@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_BloomBurst — EXPLOSIVE_PLANT_GROWTH_1's half of the FLOOD_WITNESS_EVENT_1
+    contract (explosive_plant_growth_design.md §5 "The contract"): the map-scale
+    invocation. It soaks every floor cell the flood wetted, sows bloom-crop
+    sprouts on the fresh soil, and the engine runs soak → charge → top in carpet
+    synchrony over the following day. The quest passes nothing but the map.
+
+    baseChance 0: never fires on its own — only a quest (or dev mode) calls it.
+    The quest itself is FLOOD_WITNESS_EVENT_1's to build; this def is real now,
+    so that quest's stub-degrades-gracefully branch is simply never taken.
+    Worker: RimMandrake.ExplosiveGrowth.RM_IncidentWorker_BloomBurst (RM tier);
+    the campaign names the bloom plant (RUT_BloomCrop, a BURST plant).
+  -->
+  <IncidentDef>
+    <defName>RUT_BloomBurst</defName>
+    <label>bloom</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+      <li>Map_TempIncident</li>
+      <li>Map_Misc</li>
+    </targetTags>
+    <workerClass>RimMandrake.ExplosiveGrowth.RM_IncidentWorker_BloomBurst</workerClass>
+    <baseChance>0</baseChance>
+    <letterLabel>The bloom</letterLabel>
+    <letterText>The flood's ground is erupting in bloom crop. Every sprout on the wet floor rose at once, and they will ripen, swell and burst together over the coming hours — a valley going off like popcorn.\n\nHarvest early for a swollen crop, or stand well back from anything trembling.</letterText>
+    <letterDef>NeutralEvent</letterDef>
+    <modExtensions>
+      <li Class="RimMandrake.ExplosiveGrowth.RM_BloomBurstExtension">
+        <bloomPlant>RUT_BloomCrop</bloomPlant>
+        <sowChance>0.6</sowChance>
+        <soakHours>24</soakHours>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

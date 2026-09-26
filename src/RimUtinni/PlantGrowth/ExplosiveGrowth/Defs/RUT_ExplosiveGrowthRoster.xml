@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    EXPLOSIVE_PLANT_GROWTH_1 — the CAMPAIGN half of the roster: the RUT_ and
+    RSW_ plants and the Star Wars donor flora the frozen world rosters carry.
+    Loaded only when mandrake.rm.explosivegrowth is active (LoadFolders.xml),
+    so this mod never hard-depends on it. The RM-tier half (AB_/RG_/vanilla/RM_
+    rows) ships in that mod.
+
+    Source: design/RimUtinni/explosive_plant_growth_roster.md, regenerated
+    2026-09-21 against ruling 4 (water scarcity decides). CHURN is the default
+    and is not listed. Where the roster names a donor SW crop by its bare
+    donor name (Plant_*_Wild) AND our port carries an RSW_ twin, BOTH are listed
+    (the roster's own UNMEASURED note: which name the game loads is not known
+    offline) — an absent name is skipped silently.
+  -->
+  <RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
+    <defName>RUT_ExplosiveGrowthRoster_Campaign</defName>
+
+    <plants>
+      <!-- BURST — dry-adapted: one chance in years, spent all at once. -->
+      <li><plant>RUT_BloomCrop</plant><top>Burst</top></li>                 <!-- the flagship; RUT_BloomBurst's sprout -->
+      <li><plant>Plant_HubbaGourd_Wild</plant><top>Burst</top></li>         <!-- ruled 2026-09-21: bursts in the Greentide too -->
+      <li><plant>RSW_Plant_HubbaGourd_Wild</plant><top>Burst</top></li>
+      <li><plant>RSW_Scrubgrass</plant><top>Burst</top></li>
+      <li><plant>RUT_TwistingThornwood</plant><top>Burst</top></li>        <!-- hard call 4 -->
+      <li><plant>RUT_TwistingThornweed</plant><top>Burst</top></li>
+      <li><plant>RUT_TwistingThorngrass</plant><top>Burst</top></li>
+
+      <!-- FLUSH — the Fever Wood giant. -->
+      <li><plant>Plant_HydenockTree_Wild</plant><top>Flush</top></li>
+      <li><plant>RSW_Plant_HydenockTree_Wild</plant><top>Flush</top></li>
+
+      <!-- RUPTURE — the RustPuff under its old RUT_ name (RM_ row is in the RM roster). -->
+      <li><plant>RUT_RustPuff</plant><top>Rupture</top></li>
+
+      <!-- CHURN, heavy produce — former GLUT rows. 🄸 produceFactor 2.5. -->
+      <li><plant>Plant_MujaFruit_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>RSW_Plant_MujaFruit_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>Plant_JoganTree_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>RSW_Plant_JoganTree_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>RUT_GiantLeaf</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>Plant_FelucianGlowspore_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>Plant_Bubblespore_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>Plant_Chakroot_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>RSW_Plant_Chakroot_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+
+      <!-- NONE — the roster's deliberate exclusions, campaign-tier names. -->
+      <li><plant>RUT_PaleTree</plant><top>None</top></li>
+      <li><plant>RUT_PaleMoss</plant><top>None</top></li>
+      <li><plant>RUT_DyingCreep</plant><top>None</top></li>                 <!-- hard call 3 -->
+      <li><plant>RSW_Ollim</plant><top>None</top></li>
+      <li><plant>RSW_LightPipeNub</plant><top>None</top></li>
+      <li><plant>RUT_SweetlineTree</plant><top>None</top></li>
+      <li><plant>RUT_ScorchedStars</plant><top>None</top></li>              <!-- hoarder, hard call 1 -->
+      <li><plant>RUT_TreeMartyr</plant><top>None</top></li>
+      <li><plant>RUT_HeatsinkFungus</plant><top>None</top></li>
+      <li><plant>RUT_Plant_Wick</plant><top>None</top></li>
+      <li><plant>RUT_Placeholder_GreentideGiantTree</plant><top>None</top></li>
+      <li><plant>RUT_TwinkleSpikeTestPlant</plant><top>None</top></li>
+    </plants>
+
+    <!-- Soak carve-outs (design doc §3). The terminator never soaks (R-G3:
+         its water arrives as trace); the deep desert has HARD BAN 4, no fast
+         growth at all (deep_desert.md §6, mapped to RUT_ExtremeDesert by
+         elimination per design doc §8). A carve-out on the SOAK, never on the
+         top: a dry plant anywhere else still bursts. -->
+    <noSoakBiomes>
+      <li>PoisonForest</li>
+      <li>RM_PoisonForest</li>
+      <li>RUT_PoisonForest</li>
+      <li>RUT_ExtremeDesert</li>
+    </noSoakBiomes>
+  </RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
+
+</Defs>
