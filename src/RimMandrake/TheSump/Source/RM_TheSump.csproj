@@ -47,6 +47,7 @@
     <Compile Include="RM_TheSumpMod.cs" />
     <Compile Include="RM_TheSumpBiome.cs" />
     <Compile Include="RM_Comp_TarVaultSeal.cs" />
+    <Compile Include="RUT_GenStep_DeepBlackMere.cs" />
   </ItemGroup>
 
   <ItemGroup>

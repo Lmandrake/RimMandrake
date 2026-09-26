@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_GenStep_DeepBlackMere_Register.xml   RM_TheSump — SUMP_TAR_HYDROLOGY_1
+
+  Registers RUT_GenStep_DeepBlackMere onto Base_Player, the player's home-map
+  generator — same PatchOperationConditional/PatchOperationAdd shape as this
+  same folder's own precedent, RUT_SumpTarBeastGenStep_Register.xml (read
+  directly before writing this).
+
+  MayRequire on the added <li> itself, not on the GenStepDef's own
+  declaration (same reasoning as that precedent): the cross-reference cannot
+  dangle if mandrake.rm.thesump is absent from the active mod list.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li MayRequire="mandrake.rm.thesump">RUT_GenStep_DeepBlackMere</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
