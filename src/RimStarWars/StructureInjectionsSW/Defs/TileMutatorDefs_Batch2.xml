@@ -42,6 +42,7 @@
     <biomeWhitelist>
       <li>AridShrubland</li>
       <li>ZBiome_Grasslands</li>
+      <li>RM_Pyrelands</li>
     </biomeWhitelist>
     <extraGenSteps>
       <li>RSW_GenStep_HuntingLodge</li>
