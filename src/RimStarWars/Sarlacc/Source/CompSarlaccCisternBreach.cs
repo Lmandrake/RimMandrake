@@ -42,17 +42,23 @@ namespace RimMandrake.StarWars.Sarlacc
 
             if (RSW_SarlaccSettings.breachFloodVisualEnabled)
             {
-                ThingDef waterFilth = ThingDef.Named("Filth_Water");
-                foreach (IntVec3 cell in GenRadial.RadialCellsAround(pos, 4.5f, useCenter: true))
+                // Fork 6 (draft §8): "DBH thirst is in the shipped list, so the breach flood
+                // is fillable at launch." Real WaterShallow terrain (tags: Water), not
+                // Filth_Water — DBH's drink-from-ground job (and any other thirst system
+                // keyed off vanilla TerrainDef.IsWater) finds and uses it autonomously.
+                // Reverts on its own clock (MapComponent_SarlaccBreachFlood): the draft's
+                // own "three-day garden" line.
+                TerrainDef floodTerrain = TerrainDef.Named("WaterShallow");
+                MapComponent_SarlaccBreachFlood flood = map.GetComponent<MapComponent_SarlaccBreachFlood>();
+                if (flood == null)
                 {
-                    if (cell.InBounds(map) && cell.Standable(map))
-                    {
-                        FilthMaker.TryMakeFilth(cell, map, waterFilth);
-                    }
+                    flood = new MapComponent_SarlaccBreachFlood(map);
+                    map.components.Add(flood);
                 }
+                flood.Flood(pos, 4.5f, floodTerrain);
                 Messages.Message(
-                    "The struck well is exactly as big as the tanks you brought — this flood is"
-                  + " cosmetic pending real water-need integration (owed, see the item file).",
+                    "The struck well is exactly as big as the tanks you brought — the flood is"
+                  + " real water while it lasts, and the ground will be dry again within days.",
                     MessageTypeDefOf.NeutralEvent);
             }
 
