@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    CONTAGION_GENOME_ORGAN_GROWING_1. Adds CompProperties_GenomeMatched to
+    the four vanilla harvestable organ ThingDefs — a no-op on every organ
+    spawned anywhere else in the game (CompInspectStringExtra returns null
+    with no data set). Deliberately NOT new ThingDefs of our own: see
+    CompGenomeMatched.cs's header for why (vanilla's own "install kidney/
+    liver/lung/heart" recipes filter on the exact vanilla defName, so a new
+    def would not be installable through them).
+
+    PatchOperationConditional per organ rather than a bare PatchOperationAdd
+    onto "<comps>" — CLAUDE.md's own standing warning: "a patch that matches
+    nothing logs nothing," and whether these four ThingDefs already carry a
+    <comps> block is UNMEASURED from this session (no live def dump). Each
+    branch is safe regardless of which is true.
+  -->
+
+  <Operation Class="PatchOperationSequence">
+    <operations>
+
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="Kidney"]/comps</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="Kidney"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.Contagion.CompProperties_GenomeMatched" />
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="Kidney"]</xpath>
+          <value>
+            <comps>
+              <li Class="RimMandrake.Contagion.CompProperties_GenomeMatched" />
+            </comps>
+          </value>
+        </nomatch>
+      </li>
+
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="Liver"]/comps</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="Liver"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.Contagion.CompProperties_GenomeMatched" />
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="Liver"]</xpath>
+          <value>
+            <comps>
+              <li Class="RimMandrake.Contagion.CompProperties_GenomeMatched" />
+            </comps>
+          </value>
+        </nomatch>
+      </li>
+
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="Lung"]/comps</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="Lung"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.Contagion.CompProperties_GenomeMatched" />
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="Lung"]</xpath>
+          <value>
+            <comps>
+              <li Class="RimMandrake.Contagion.CompProperties_GenomeMatched" />
+            </comps>
+          </value>
+        </nomatch>
+      </li>
+
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="Heart"]/comps</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="Heart"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.Contagion.CompProperties_GenomeMatched" />
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="Heart"]</xpath>
+          <value>
+            <comps>
+              <li Class="RimMandrake.Contagion.CompProperties_GenomeMatched" />
+            </comps>
+          </value>
+        </nomatch>
+      </li>
+
+    </operations>
+  </Operation>
+
+</Patch>

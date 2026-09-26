@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GENOME_ORGAN_GROWING_1. A non-stacking sample item carrying
+    CompGenomeSample (WHO it was drawn from). Icon reuses Biotech's own
+    Genepack texture — ART CHECK: infrastructure/artpipe/done/, _artsrc/ and
+    registry.jsonl hold no genome-sample/vial art for this mod (grepped,
+    absent); this is a placeholder reuse of an existing shipped vanilla
+    texture, not a queued generation, consistent with "check before
+    generating" — a dedicated icon is a fair follow-on, not owed by this v1.
+  -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GenomeSample</defName>
+    <label>genome sample</label>
+    <description>A small tissue sample drawn from a colonist, ready to be injected into a Contagion amoeba host. The amoeba will use it to gestate a batch of organs matched to whoever it was drawn from.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>Things/Item/Special/Genepack</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.75, 0.75)</drawSize>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Mass>0.1</Mass>
+      <Flammability>0.5</Flammability>
+      <MarketValue>10</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.Contagion.CompProperties_GenomeSample" />
+    </comps>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JobDef>
+    <defName>RM_InjectGenomeSample</defName>
+    <driverClass>RimMandrake.Contagion.JobDriver_RM_InjectGenomeSample</driverClass>
+    <reportString>injecting a genome sample into TargetA.</reportString>
+  </JobDef>
+
+</Defs>
