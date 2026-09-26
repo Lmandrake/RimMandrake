@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaShoreScatter.xml          TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  GREYSEA_SHORE_MUTATOR_SPECIFICS_1, the above-water half.
+
+  Owner, at the bench 2026-09-26, typed:
+      "Make sure the shore mutator respects the specifics of the grey sea."
+  With reference art: design/Jawa/worldbuilding/reference/grey_sea/
+  02_crusted_white_shoreline.png.
+
+  RULED 2026-09-26 (Q4): the shore is the white crust TERRAIN **plus salt
+  domes scattered on it** (image 03, where the mounds break the surface) —
+  and **no harvestable shore salt**; the sea-floor salt stays the prize.
+
+  ============================================================================
+  🔑 THE ITEM'S DESIGN QUESTION IS ANSWERED (a), AND (a) WAS ALREADY BUILT
+  ============================================================================
+  The item asked to choose deliberately between (a) one mutator that reads
+  the bordering sea's biome, (b) one mutator per sea, (c) a shared base with
+  per-sea overrides.
+
+  MEASURED 2026-09-26, reading the code rather than guessing: **(a) is
+  already the shipped architecture.** RM_TileMutatorWorker_SeaCoast
+  (mandrake.rm.seashores) resolves mapSea = PrimarySeaFor(map.Tile) in Init
+  and overrides DeepWaterTerrainAt / ShallowWaterTerrainAt / BeachTerrainAt
+  to read that sea's RM_SeaShoreExtension. The per-sea seam exists; the Grey
+  simply never filled in any data, so it fell through to the vanilla ocean
+  pair. ⇒ The fix is DATA on RM_GreySea, not a new mutator, and (b) would
+  have been four defs solving a solved problem.
+
+  Recorded so nobody re-opens it: choosing (b) or (c) here would also have
+  had to re-establish the category/genOrder/priority behaviour
+  RM_SeaCoast.xml's own header explains, for no gain.
+
+  ============================================================================
+  THE SHORE DOME IS ITS OWN DEF, AND THAT IS THE RULING
+  ============================================================================
+  ⚠️ RM_SaltDomeShore is NOT RM_SaltDome. The floor dome yields RM_RawSalt
+  when mined; a shore dome that did the same would be exactly the
+  "harvestable shore salt" the owner ruled OUT. Same silhouette, same
+  colour, zero yield — the shore shows you what the sea is made of and makes
+  you dive for it.
+
+  SCOPE: registered globally onto Base_Player (the Scald wreck-scatter
+  pattern, RUT_ScaldWreckScatter_Register.xml — read its header), and scoped
+  by the terrain tag RM_GreySaltCrust, which only RM_SaltCrustShore carries
+  and which only the Grey Sea's own shore lays. A map beside any other sea
+  has no cell with that tag and the step is a silent no-op there, which is
+  the correct behaviour.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- The shore form of the dome: image 03's mounds where they break the
+       surface. Zero yield, per the ruling. -->
+  <ThingDef ParentName="RockBase">
+    <defName>RM_SaltDomeShore</defName>
+    <label>salt dome</label>
+    <description>A cream-white mound of beaded salt standing above the waterline, grown outward and upward until the cap overhangs its own base. The same thing that crowds the sea floor, caught by the sea getting smaller — these ones are in open air now, and drying, and going nowhere. There is nothing in them worth the work; the salt anyone wants is still under the water.</description>
+    <graphicData>
+      <color>(240,235,219)</color>
+      <colorTwo>(214,206,184)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <Beauty>3</Beauty>
+    </statBases>
+    <building>
+      <!-- No isResourceRock, no mineableThing, no yield: RULED, no
+           harvestable shore salt. -->
+      <mineableYield>0</mineableYield>
+      <mineableYieldWasteable>false</mineableYieldWasteable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+      <biomeSpecific>true</biomeSpecific>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+  <!-- order 968: after the Scald's own wreck steps (965-967), so the two
+       mods' shore scatters cannot interleave confusingly in a log, and
+       well after any terrain step, so RM_SaltCrustShore and its tag are on
+       the grid when this validator reads them.
+       🔴 Counts INVENTED — no source names a shore-dome density. Owed a
+       live look; do not cite as measured. -->
+  <GenStepDef>
+    <defName>RM_GreySeaScatterShoreDomes</defName>
+    <order>968</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_SaltDomeShore</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <clusterSize>4</clusterSize>
+      <minSpacing>5</minSpacing>
+      <countPer10kCellsRange>2.5~5</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_GreySaltCrust</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaShoreScatter_Register.xml  TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  GREYSEA_SHORE_MUTATOR_SPECIFICS_1 — the registration half.
+  RM_GreySeaShoreScatter.xml declares RM_GreySeaScatterShoreDomes; a
+  GenStepDef on its own runs on NO map. This file lists it.
+
+  Same three-file shape and the same target as this mod's
+  RUT_ScaldWreckScatter_Register.xml — read that header for the Core
+  citation (Core/Defs/MapGeneration/BasePlayerMapGenerator.xml,
+  MapGeneratorDef Name="Base_Player", <genSteps> a plain <li> list).
+
+  SCOPE is safe to be global because the step's OWN terrain validator
+  confines it: terrainValidationAllowed names RM_GreySaltCrust, a tag
+  carried by exactly one terrain in the load order (RM_SaltCrustShore,
+  RM_GreySeaTerrains.xml), which only the Grey Sea's shore ever lays. On
+  every other map the step finds no valid cell and does nothing.
+
+  ⛔ Do NOT also add this to the sea-dive generators. These are the domes
+  ABOVE the waterline; the floor's own domes are RM_SaltDome, placed by
+  RM_GreySeaScatterDomes, and the two are different defs on purpose (the
+  shore one yields nothing — RULED, no harvestable shore salt).
+
+  Conditional test xpath is IDENTICAL to the inner Add's xpath, this mod's
+  own discipline: if Core ever renames Base_Player or restructures the node
+  this becomes a silent no-op rather than a red error.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li>RM_GreySeaScatterShoreDomes</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
