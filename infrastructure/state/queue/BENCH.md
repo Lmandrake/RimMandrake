@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T19:09:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T21:51:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -747,3 +747,13 @@ kind:     design
 thin:     no ## spec, no ## verify
 summary:  DROIDMASSPRODUCTIONQUESTCHAIN1 — the tech one faction has and cannot use, and another needs and cannot get
 prose:    infrastructure/state/items/DROID_MASS_PRODUCTION_QUEST_CHAIN_1.md
+
+## SCALD_PLANTDENSITY_UNSET_1 RM_TheScald leaves plantDensity unset (0f) so its one wildPlants row can never spawn - crowncarpet has a GenStep route, so this needs a ruling not an edit
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  SCALDPLANTDENSITYUNSET1 — RMTheScald leaves plantDensity unset, so its one wildPlants row can never spawn
+prose:    infrastructure/state/items/SCALD_PLANTDENSITY_UNSET_1.md

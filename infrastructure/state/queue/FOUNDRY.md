@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T19:09:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T21:51:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1771,16 +1771,6 @@ thin:     no ## verify
 summary:  Per sea, per catch entry without a living counterpart:
 prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
 
-## GREYSEA_SHORE_MUTATOR_SPECIFICS_1 RM_SeaCoast is generic across all four seas - make the shore respect the Grey Sea's specifics, above all the crusted white salt shoreline the owner supplied reference for
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  GREYSEASHOREMUTATORSPECIFICS1 — the shore is generic; the Grey Sea's shore should not be
-prose:    infrastructure/state/items/GREYSEA_SHORE_MUTATOR_SPECIFICS_1.md
-
 ## BIOME_CONFIG_ERROR_TRIAGE_1 Triage the per-biome config errors the load-proof wave exposed against a zero baseline: floodedcanyon 53 distinct, webwork 30, thesump 14, contagion and therot 13 - real and attributable, not load failures
 state:    proposed
 row:      unassigned
@@ -1790,46 +1780,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOME_CONFIG_ERROR_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_CONFIG_ERROR_TRIAGE_1.md
-
-## GREYSEA_FLOOR_FORMATIONS_1 Grey Sea floor formations: salt chimneys venting super-brine, mushroom-like salt domes, and the pillar wonderland the sheet's navigation law depends on - all owner-referenced with images, none exist
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREYSEA_FLOOR_FORMATIONS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_FLOOR_FORMATIONS_1.md
-
-## GREYSEA_CRYSTAL_FLORA_1 Grey Sea crystalline flora: seven owner-specced plants (Glass Veil Kelp, Brine Crown Anemoflora, Mosaic Fan Palms, Salt Chimney Vines, Crucible Pods, cubic sculptures, spine-spheres) - the biome ships zero plants today
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREYSEA_CRYSTAL_FLORA_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_CRYSTAL_FLORA_1.md
-
-## GREYSEA_SALT_SNOW_WEATHER_1 Grey Sea floor weather: precipitating salt crystals like snow, plus the pre-existing defect that RM_GreySea carries vanilla Rain on a hypersaline dying sea
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREYSEA_SALT_SNOW_WEATHER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_SALT_SNOW_WEATHER_1.md
-
-## GREYSEA_BRINE_POOL_DEFENCE_1 Brine pools as the Grey's central mechanism: protein-shower crystallisation that freezes and may smother, triggered by touching a pool or by its creatures, making pool loot ultra-protected
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREYSEA_BRINE_POOL_DEFENCE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_BRINE_POOL_DEFENCE_1.md
 
 ## GREYSEA_BRINE_ELDERS_1 The Brine Elders: colossal branching salt-crystal organisms with area discharges, geological memory, a novelty-only trade economy and one-of-each millennial treasures
 state:    proposed
@@ -1841,22 +1791,92 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GREYSEA_BRINE_ELDERS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GREYSEA_BRINE_ELDERS_1.md
 
-## GREYSEA_SALT_CUISINE_1 Harvestable valuable sea-floor salt crystals in several colours as cooking ingredients - RimCuisine is NOT installed, so these ship RM_ with recipes MayRequire our own mandrake.rsw.cuisine
+## SHARED_SYNC_DROPS_PEER_COMMITS_1 shared_sync.py silently drops a peer commit made during its run: reset --keep moves HEAD past work that was never in its todo set, and origin/main..HEAD then reads clean
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     task
+kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREYSEA_SALT_CUISINE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_SALT_CUISINE_1.md
+summary:  (no items/SHARED_SYNC_DROPS_PEER_COMMITS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHARED_SYNC_DROPS_PEER_COMMITS_1.md
 
-## GREYSEA_SESSILE_LAYER_1 The Grey's sessile layer: abundant shrimp, clam and mussel equivalents picking through organic matter raining from the surface, among the formations
+## ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1 Downscale the 1254x1254 worker output instead of failing size_mismatch
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREYSEA_SESSILE_LAYER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_SESSILE_LAYER_1.md
+summary:  ARTPIPEDOWNSCALEINSTEADOFREJECT1
+prose:    infrastructure/state/items/ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1.md
+
+## ARTPIPE_METER_WINDOW_REMAP_1 Detector.note_meters reads the wrong meter window since the plan upgrade — weekly backstop is dead
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  ARTPIPEMETERWINDOWREMAP1
+prose:    infrastructure/state/items/ARTPIPE_METER_WINDOW_REMAP_1.md
+
+## ARTPIPE_WORKER_AUTH_STALENESS_1 Stale worker-home auth.json capped real artpipe concurrency at 3 via refresh-token races
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  ARTPIPEWORKERAUTHSTALENESS1
+prose:    infrastructure/state/items/ARTPIPE_WORKER_AUTH_STALENESS_1.md
+
+## SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1 One gravship can only ever visit ONE sea floor: MapPortal caches its pocket map, so the hatch's per-tile biome resolution runs once and every later dive re-enters the first sea
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
+
+## TERMINALBIOMES_EH_HARD_DEP_1 TerminalBiomes hard-references the EnvironmentalHazards assembly but declares it only as loadAfter, so proof_terminalbiomes builds a list that cannot load its DLL
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Move mandrake.rm.environmentalhazards into TerminalBiomes' <modDependencies.
+prose:    infrastructure/state/items/TERMINALBIOMES_EH_HARD_DEP_1.md
+
+## GREYSEA_SALTDOME_SCATTER_OOB_1 RM_SaltDomeShore fails its cluster-centre search and is followed by Got ThingsListAt out of bounds (-1000,-1000,-1000) at map-gen
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  GREYSEASALTDOMESCATTEROOB1 — RMSaltDomeShore's failed cluster-centre search reaches ThingsListAt as IntVec3.I…
+prose:    infrastructure/state/items/GREYSEA_SALTDOME_SCATTER_OOB_1.md
+
+## COLLECTION_GRAPHIC_ON_FLAT_PNG_1 Four defs use Graphic_StackCount or Graphic_Random over a single flat PNG so Collection cannot init fires; plus RM_Leachmoss and RM_Venomvine art is genuinely absent everywhere
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  COLLECTIONGRAPHICONFLATPNG1 — Collection graphic classes over single flat PNGs, and two textures absent entir…
+prose:    infrastructure/state/items/COLLECTION_GRAPHIC_ON_FLAT_PNG_1.md
+
+## ELDER_UNKNOWN_WEAPON_CONFIG_1 RM_ElderUnknownWeapon has a recipeMaker with no costList or costStuffCount, and borrows RM_SaltCrystalItem texPath as a placeholder
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  ELDERUNKNOWNWEAPONCONFIG1 — RMElderUnknownWeapon: recipeMaker with no cost, and a borrowed placeholder texPath
+prose:    infrastructure/state/items/ELDER_UNKNOWN_WEAPON_CONFIG_1.md
