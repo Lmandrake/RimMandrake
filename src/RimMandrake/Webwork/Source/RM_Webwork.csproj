@@ -11,7 +11,8 @@
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
     No Harmony: every class here is a plain engine extension point (BiomeWorker,
-    ModSettings).
+    ModSettings, ThingComp — RM_CompEmergentSpawnOnDestroy, moved in by
+    SHOKK_SKIN_SHRINK_1 from mandrake.rsw.shokk).
   -->
 
   <PropertyGroup>
@@ -40,6 +41,7 @@
   <ItemGroup>
     <Compile Include="RM_BiomeWorker_Webwork.cs" />
     <Compile Include="RM_WebworkMod.cs" />
+    <Compile Include="RM_CompEmergentSpawnOnDestroy.cs" />
   </ItemGroup>
 
   <ItemGroup>

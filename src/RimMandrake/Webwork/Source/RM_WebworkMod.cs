@@ -14,19 +14,25 @@ namespace RimMandrake.Webwork
 	// competes at all during world generation (WORLDGEN-AFFECTING, labeled as
 	// such; default ON, matching shipped behavior; off degrades gracefully —
 	// the worker just always returns 0, so the biome never wins a tile, no
-	// NREs). There is no other mechanic in this mod yet to gate: the
-	// front-creep margin extension is deferred to WEBWORK_WEB_STRUCTURES_1,
-	// which will add its own dial here rather than opening a new settings
-	// class.
+	// NREs).
+	//
+	// SHOKK_SKIN_SHRINK_1 (S6 ruling 1) adds the emergent-spawn dial, moved
+	// here verbatim from mandrake.rsw.shokk's RSW_ShokkSettings (SHOKK_RSW_MOD_1)
+	// along with the comp it gates (RM_CompEmergentSpawnOnDestroy.cs) — the
+	// mechanism is mechanism-not-IP and now lives in this free-tier mod.
 	// ════════════════════════════════════════════════════════════════════
 	public class RM_WebworkSettings : ModSettings
 	{
 		public static bool generateOnWorldgen = true;
+		public static bool emergentSpawnEnabled = true;
+		public static float emergentSpawnChanceMultiplier = 1f;
 
 		public override void ExposeData()
 		{
 			base.ExposeData();
 			Scribe_Values.Look(ref generateOnWorldgen, "generateOnWorldgen", true);
+			Scribe_Values.Look(ref emergentSpawnEnabled, "emergentSpawnEnabled", true);
+			Scribe_Values.Look(ref emergentSpawnChanceMultiplier, "emergentSpawnChanceMultiplier", 1f);
 		}
 
 		public void DoWindowContents(Rect inRect)
@@ -39,6 +45,19 @@ namespace RimMandrake.Webwork
 				"WORLDGEN-AFFECTING. On: RM_Webwork competes for tiles like any other biome when "
 			  + "a new planet is generated. Off: RM_Webwork never wins a tile — a currently "
 			  + "generated world is never retroactively changed either way.");
+
+			list.Gap();
+			list.Label("Emergent spawn");
+			list.CheckboxLabeled("Emergent ollathrix spawn enabled", ref emergentSpawnEnabled,
+				"Destroying a harvest-type Thing this is attached to (a creep-web node, a "
+			  + "gutter, …) has a chance to spawn a hostile, manhunter-forced ollathrix on the "
+			  + "spot. Off: destroying those things never spawns anything.");
+			if (emergentSpawnEnabled)
+			{
+				list.Label("  Spawn chance: " + emergentSpawnChanceMultiplier.ToString("0.00")
+					+ "x (each def's own base chance, e.g. the shipped default of 3%)");
+				emergentSpawnChanceMultiplier = list.Slider(emergentSpawnChanceMultiplier, 0f, 3f);
+			}
 
 			list.End();
 		}

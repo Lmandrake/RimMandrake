@@ -6,6 +6,12 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
+  </modDependencies>
   <loadAfter>
     <li>mandrake.rm.creaturebehaviors</li>
   </loadAfter>
@@ -25,14 +31,22 @@ Ships in v1:
     whether RM_Webwork competes to generate on a freshly generated planet at all — off degrades
     gracefully to "this biome simply never wins a tile," nothing else changes. Future per-
     mechanic dials (front-creep margin, once WEBWORK_WEB_STRUCTURES_1 wires it) land here too.
+  - RM_Ollathrix (OLLATHRIX_OWNER_SPECIES_1): the biome's own owner species, one race/one kind,
+    invented and franchise-free (Q11a); the Utinni layer overlays a Wyyyschokk skin on the same
+    defName via mandrake.rsw.shokk. SHOKK_SKIN_SHRINK_1 (S6 ruling 1) moved that species' own
+    mechanisms — the mouth-loom ranged spit (RM_Gun_LoomSpit/RM_Bullet_LoomSpit/
+    RM_Damage_LoomSpit), the loom-bound hediff (RM_LoomBound) and sun-scald
+    (RM_Webwork_SunScald, hediffClass in mandrake.rm.creaturebehaviors — now a hard
+    modDependency) inline onto this def, plus a general-purpose emergent-spawn ThingComp
+    (RM_CompEmergentSpawnOnDestroy, gated by a new RM_WebworkSettings dial) for future harvest
+    Things to attach — down from mandrake.rsw.shokk, which shrank to the skin patch alone.
 
 NOT in this mod (scoped to later items, not deferred sub rosa): the real Webwork-flavored
-flora and fauna roster (WEBWORK_FLORA_ROSTER_1, WEBWORK_FAUNA_ROSTER_1 — invented RM-tier
-species/plants, plus the disposition of the current Alpha Biomes/Star-Wars-donor rows),
-Ollathrix the owner species (OLLATHRIX_OWNER_SPECIES_1), the nest/egg economy
-(WEBWORK_NEST_EGG_ECONOMY_1, WEBWORK_EGG_BLACKMARKET_BUILD_1), the web structures kit
-(WEBWORK_WEB_STRUCTURES_1) and the soundscape (WEBWORK_SOUNDSCAPE_1). The Star Wars fauna
-cast that lives on the frozen campaign twin today rides its own Utinni patch
+flora and fauna roster besides the owner species (WEBWORK_FLORA_ROSTER_1, WEBWORK_FAUNA_ROSTER_1
+— invented RM-tier species/plants, plus the disposition of the current Alpha Biomes/Star-Wars-
+donor rows), the nest/egg economy (WEBWORK_NEST_EGG_ECONOMY_1, WEBWORK_EGG_BLACKMARKET_BUILD_1),
+the web structures kit (WEBWORK_WEB_STRUCTURES_1) and the soundscape (WEBWORK_SOUNDSCAPE_1). The
+Star Wars fauna cast that lives on the frozen campaign twin today rides its own Utinni patch
 (WildAnimals_Webwork.xml), never this def.
 
 Live proof is OWED at publish time — see the item's own verify record.</description>

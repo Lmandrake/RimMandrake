@@ -37,16 +37,22 @@
       CompWakeUpDormant.cs already read in full by that item) — wakes on
       damage or on a target approaching within wakeUpCheckRadius.
 
+  Mechanisms added by SHOKK_SKIN_SHRINK_1 (S6 ruling 1 — inverts the
+  2026-09-11 kit ruling 6 that first put these RSW-tier): the mouth-loom
+  ranged spit (CompProperties_TurretGun -> RM_Gun_LoomSpit, re-tokened from
+  RSW_Gun_ShokkSpit) and sun-scald (startingHediffs -> RM_Webwork_SunScald,
+  moved verbatim) are now inline on this def, no cross-mod patch needed —
+  this mod owns the race outright. mandrake.rsw.shokk shrank to the
+  Wyyyschokk skin patch alone (label/description/art only,
+  RSW_Shokk_OllathrixSkin.xml) and no longer carries any mechanism content.
+  The emergent-spawn comp (RM_CompEmergentSpawnOnDestroy, re-tokened from
+  RSW_CompEmergentSpawnOnDestroy, now in this mod's own assembly) is a
+  general-purpose ThingComp for harvest-type Things, not attached to the
+  race itself — it stays unwired pending SHOKKWEAVE_SOLE_SOURCE_1's own
+  creep-web harvest job, unchanged by this move.
+
   Deliberately NOT built here (owned by other items, per the design doc's
   own §1a/§5 table — do not duplicate):
-    - the mouth-loom ranged spit, the Shokk-bound hediff, sun-scald and the
-      emergent-spawn comp: these are RSW-tier mechanisms today
-      (mandrake.rsw.shokk, patched onto the donor Wyyyschokk) that
-      SHOKK_SKIN_SHRINK_1 is tasked to move onto this race and re-token
-      RM_ — wiring them here now would duplicate that item's own scope and
-      leave this race depending backward on an RSW-tier mod, which the tier
-      grammar forbids. Left off; SHOKK_SKIN_SHRINK_1 attaches them once it
-      moves the defs down.
     - web-sense convergence (RM_JobGiver_SenseWebConverge / the race's own
       ThinkTreeDef), the droid-priority scorer, and the nest's own mother
       guardian wiring: all WEBWORK_MECHANICS_1 / WEBWORK_NEST_EGG_ECONOMY_1
@@ -138,6 +144,13 @@
         <wakeUpCheckRadius>6</wakeUpCheckRadius>
         <wakeUpIfAnyTargetClose>true</wakeUpIfAnyTargetClose>
       </li>
+      <!-- Mouth-loom ranged spit (SHOKK_SKIN_SHRINK_1, S6 ruling 1) —
+           CompTurretGun already implements IAttackTargetSearcher and slots
+           into the vanilla combat AI for any pawn; no new C# combat code. -->
+      <li Class="CompProperties_TurretGun">
+        <turretDef>RM_Gun_LoomSpit</turretDef>
+        <autoAttack>true</autoAttack>
+      </li>
     </comps>
     <race>
       <body>BeetleLikeWithClaw</body>
@@ -209,6 +222,14 @@
          the nest's guaranteed mother — no wild grouping. -->
     <wildGroupSize>1~1</wildGroupSize>
     <ecoSystemWeight>0.1</ecoSystemWeight>
+    <!-- Light-moat, from birth (SHOKK_SKIN_SHRINK_1, S6 ruling 1, moved
+         verbatim from the RSW-tier PawnKindDef patch). -->
+    <startingHediffs>
+      <li>
+        <def>RM_Webwork_SunScald</def>
+        <severity>0.01</severity>
+      </li>
+    </startingHediffs>
     <lifeStages>
       <li>
         <bodyGraphicData>
