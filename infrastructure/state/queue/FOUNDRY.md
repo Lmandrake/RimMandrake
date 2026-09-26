@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T03:41:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T03:49:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -819,6 +819,24 @@ kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
+## GELATINOUSSLIME_RM_MOD_BUILD_1 Phase A: build RM_GelatinousSlime as its own RimMandrake mod (mandrake.rm.gelatinousslime) — the Slime - twin pair, mod EXISTS; TITANOSLIME_SLIME_BIOME_1 builds here
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
+prose:    infrastructure/state/items/GELATINOUSSLIME_RM_MOD_BUILD_1.md
+
+## LANTERNDEEPS_RM_MOD_BUILD_1 Phase A: build RM_LanternDeeps as its own RimMandrake mod (mandrake.rm.lanterndeeps) — the Lantern Deeps - an INJECTION layer, no RUT_ twin; skips Phase A step 3
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
+prose:    infrastructure/state/items/LANTERNDEEPS_RM_MOD_BUILD_1.md
+
 ## STONEBACK_BOKKA_ART_STANDARD_1 Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)
 state:    doing
 row:      unassigned
@@ -1443,26 +1461,6 @@ thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/WEBWORK_RM_MOD_BUILD_1.md
 
-## GELATINOUSSLIME_RM_MOD_BUILD_1 Phase A: build RM_GelatinousSlime as its own RimMandrake mod (mandrake.rm.gelatinousslime) — the Slime - twin pair, mod EXISTS; TITANOSLIME_SLIME_BIOME_1 builds here
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/GELATINOUSSLIME_RM_MOD_BUILD_1.md
-
-## MIASMA_RM_MOD_BUILD_1 Phase A: build RM_Miasma as its own RimMandrake mod (mandrake.rm.miasma) — the Miasma
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/MIASMA_RM_MOD_BUILD_1.md
-
 ## FEVERWOOD_RM_MOD_BUILD_1 Phase A: build RM_FeverWood as its own RimMandrake mod (mandrake.rm.feverwood) — the Fever Wood
 state:    proposed
 row:      unassigned
@@ -1492,16 +1490,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/TERMINALBIOMES_RM_MOD_BUILD_1.md
-
-## LANTERNDEEPS_RM_MOD_BUILD_1 Phase A: build RM_LanternDeeps as its own RimMandrake mod (mandrake.rm.lanterndeeps) — the Lantern Deeps - an INJECTION layer, no RUT_ twin; skips Phase A step 3
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/LANTERNDEEPS_RM_MOD_BUILD_1.md
 
 ## FURNACEBEAST_WORLD_MIGRATION_1 Furnace-beast world-scale thermal migration: herd crosses biomes off-map (world leg, split from FURNACEBEAST_THERMAL_CYCLE_1)
 state:    proposed

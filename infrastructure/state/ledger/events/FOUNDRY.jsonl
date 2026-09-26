@@ -453,3 +453,8 @@
 {"seat":"FOUNDRY","event":"close","id":"CONTAGION_RM_MOD_BUILD_1","sha":"33db46fed32bcca65f446f4da4294b4b06b73127","reason":"RM_Contagion scaffolded (About.xml, BiomeDef, own worker/settings C#, DLL+srchash), content moved in, RUT_Contagion twin frozen, references retargeted; step 5 (live proof) is Desktop-only and OWED, matching every sibling build's practice. Work landed at 7283c26b9/33db46fed after a concurrent shared_sync replay rewrote this branch mid-session and dropped this item's first close attempt (ledger events + item-file move) — redone here against current HEAD.","ts":"2026-09-26T03:39:38Z"}
 {"seat":"FOUNDRY","event":"claim","id":"STONEBACK_BOKKA_ART_STANDARD_1","ts":"2026-09-26T03:41:19Z"}
 {"seat":"FOUNDRY","event":"start","id":"STONEBACK_BOKKA_ART_STANDARD_1","ts":"2026-09-26T03:41:20Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LANTERNDEEPS_RM_MOD_BUILD_1","ts":"2026-09-26T03:44:02Z"}
+{"seat":"FOUNDRY","event":"start","id":"LANTERNDEEPS_RM_MOD_BUILD_1","ts":"2026-09-26T03:44:03Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_RM_MOD_BUILD_1","ts":"2026-09-26T03:49:18Z"}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_RM_MOD_BUILD_1","ts":"2026-09-26T03:49:19Z"}
+{"seat":"FOUNDRY","event":"close","id":"MIASMA_RM_MOD_BUILD_1","sha":"2438d54586a6191a74a6d71270b3fef02694f67d","reason":"Phase A steps 1-4 + docs/paint-list done; step 5 (Desktop-only live load) and enabling mandrake.rm.miasma in ModsConfig remain owed","ts":"2026-09-26T03:49:46Z"}
