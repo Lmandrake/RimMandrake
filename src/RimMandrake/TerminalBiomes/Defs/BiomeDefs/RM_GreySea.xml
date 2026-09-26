@@ -35,8 +35,30 @@
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
 
+    <!-- GREYSEA_SHORE_MUTATOR_SPECIFICS_1, 2026-09-26. Owner: "Make sure the
+         shore mutator respects the specifics of the grey sea", with the
+         crusted-white reference image.
+
+         🔑 The per-sea seam ALREADY EXISTED and was simply empty. MEASURED
+         2026-09-26 by reading RM_TileMutatorWorker_SeaCoast: it resolves the
+         bordering sea in Init and overrides DeepWaterTerrainAt /
+         ShallowWaterTerrainAt / BeachTerrainAt to read that sea's
+         RM_SeaShoreExtension. With all three fields unset the Grey fell
+         through to the VANILLA OCEAN pair — i.e. the Grey Sea's shore was
+         indistinguishable from any other sea's, and from the ocean.
+         That is the item's design question answered: route (a), one mutator
+         reading the sea, already built. This is data, not a new mutator.
+
+         ⚠️ The two water terrains are FlowWorks' (the Grey's own brine
+         suite, RM_Liquid_Brine), and this mod loadAfters flowworks rather
+         than hard-depending on it — hence MayRequire on those two fields.
+         beachTerrain is ours and needs no guard. -->
     <modExtensions>
-      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores" />
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores">
+        <deepTerrain MayRequire="mandrake.rm.flowworks">RM_WaterBrineDeep</deepTerrain>
+        <shallowTerrain MayRequire="mandrake.rm.flowworks">RM_WaterBrineShallow</shallowTerrain>
+        <beachTerrain>RM_SaltCrustShore</beachTerrain>
+      </li>
     </modExtensions>
 
     <!-- Reefback (endemic giant, INVENTED — see SEA_BEASTS_TIER_RULING_1)
