@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T11:02:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T11:18:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -972,14 +972,14 @@ kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
 
-## CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1 Grown limbs and an install-match bonus for the amoeba organ mechanic
+## WARDEN_MOTHER_SUCCESSION_1 Warden mother young: self-taming, water-scoped training, and succession on her death
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     task
-summary:  1. Limbs. The owner's own words were "a plethora of organs and limbs." Vanilla RimWorld
-prose:    infrastructure/state/items/CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1.md
+kind:     build
+summary:  WARDENMOTHERSUCCESSION1 — warden mother young: self-taming, water-scoped training, and succession on her death
+prose:    infrastructure/state/items/WARDEN_MOTHER_SUCCESSION_1.md
 
 ## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
 state:    doing  (BLOCKED)
@@ -989,6 +989,15 @@ target:   v1
 kind:     task
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
+
+## GREENTIDE_DENSITY_SETTINGS_1 Mod Settings sliders for Greentide plantDensity/movementDifficulty
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Add (or extend, if mandrake.rm.greentide already has a settings class) a ModGreentideSettings
+prose:    infrastructure/state/items/GREENTIDE_DENSITY_SETTINGS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1486,16 +1495,6 @@ thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
 
-## GREENTIDE_WASP_SWARM_1 Jungle wasps: tiny, numerous, hives on plants, stings that stack
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Design this as the shared reaction mechanism's first proof, in mandrake.rm.creaturebehaviors,
-prose:    infrastructure/state/items/GREENTIDE_WASP_SWARM_1.md
-
 ## DEBUG_GAME_READY_WORLDUI_CRASH_1 start_debug_game_ready leaves the game in a broken world/map-UI NullReferenceException loop at 623 mods, distinct from the closed NINEFOLD_DEBUG_GAME_READY_CRASH_1 repro
 state:    proposed
 row:      unassigned
@@ -1596,16 +1595,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  WARDENMOTHERPATHFINDERVERIFY1 — live-verify the warden mother's water-only movement and load cleanly
 prose:    infrastructure/state/items/WARDEN_MOTHER_PATHFINDER_VERIFY_1.md
 
-## WARDEN_MOTHER_SUCCESSION_1 Warden mother young: self-taming, water-scoped training, and succession on her death
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  WARDENMOTHERSUCCESSION1 — warden mother young: self-taming, water-scoped training, and succession on her death
-prose:    infrastructure/state/items/WARDEN_MOTHER_SUCCESSION_1.md
-
 ## DEEPFIRE_PAINT_LIVE_VERIFY_1 Deepfire painting + worn-glow darkness tradeoff (needs live bridge)
 state:    proposed
 row:      unassigned
@@ -1636,26 +1625,6 @@ thin:     no ## spec
 summary:  SUMPTARLIVINGSYSTEMS1 — living-map responders, and tar rain (mod vs scenario)
 prose:    infrastructure/state/items/SUMP_TAR_LIVING_SYSTEMS_1.md
 
-## GREENTIDE_UNDERSTORY_PLANT_ROSTER_1 the seven invented non-tree Greentide understory plants
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Confirm the sight-blocking mechanism on the Desktop (fillPercent/cover) before
-prose:    infrastructure/state/items/GREENTIDE_UNDERSTORY_PLANT_ROSTER_1.md
-
-## GREENTIDE_DENSITY_SETTINGS_1 Mod Settings sliders for Greentide plantDensity/movementDifficulty
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Add (or extend, if mandrake.rm.greentide already has a settings class) a ModGreentideSettings
-prose:    infrastructure/state/items/GREENTIDE_DENSITY_SETTINGS_1.md
-
 ## GREENTIDE_FEVER_SPECIALISTS_1 Survivors become specialists: Greentide fevers as a qualification, not just attrition
 state:    proposed
 row:      unassigned
@@ -1675,3 +1644,13 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  1. Design the creature concept as a card set first, per this project's standing practice for a new
 prose:    infrastructure/state/items/GREENTIDE_CANOPY_SWARM_1.md
+
+## GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1 Make a Plant actually block line of sight (Harmony/comp), the owner's sight-blocking ruling has no def-only answer
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     engine
+thin:     spec, verify and criteria all present
+summary:  1. Choose the mechanism — most likely a Harmony patch on GenGrid.CanBeSeenOver(IntVec3, Map)
+prose:    infrastructure/state/items/GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1.md
