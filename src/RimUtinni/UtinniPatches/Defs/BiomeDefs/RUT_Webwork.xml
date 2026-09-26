@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  🔴 FROZEN 2026-09-25 — carrying the world until the terminal paint; content lives in
+  `mandrake.rm.webwork`; do not edit here.
+
+  Phase A step 3 of design/RimMandrake/biome_mod_architecture.md (item
+  WEBWORK_RM_MOD_BUILD_1). This def is what the player's saved world actually carries until
+  Phase B repaints the planet onto `RM_Webwork`; deleting it before then destroys the save, so
+  it stays as it is, byte-for-byte, below. From this moment every CONTENT fix for the Webwork
+  lands in `mandrake.rm.webwork` only, never here.
+
+  ⛔ Do NOT "merge" this body into RM_Webwork. RM_Webwork is a finished generic twin authored
+  campaign-free on purpose: its terrain is vanilla Mud/Soil/SoilRich (not this def's Alpha
+  Biomes `AB_DenseMud`/`AB_DenseGrass`), its `workerClass` is its own
+  `RimMandrake.Webwork.RM_BiomeWorker_Webwork` (not this def's donor
+  `AlphaBiomes.BiomeWorker_FeraliskInfestedJungle`), and its wildAnimals/wildPlants are a
+  Core-only placeholder (not this def's 4 Star Wars fauna rows and 7 Alpha Biomes/ReGrowth
+  flora rows) — copying this file over it would reintroduce three hard third-party
+  dependencies into a RimMandrake-tier mod, which §7 Q11 forbids outright. The Star Wars cast
+  reaches `RM_Webwork` through `UtinniPatches/Patches/WildAnimals_Webwork.xml`, the way the
+  Pyrelands and Greentide already do; the flora roster (including this def's own
+  `Plant_TookeTrap_Wild` canon question) is WEBWORK_FLORA_ROSTER_1's scope, not this item's.
+
+  -->
 <Defs>
 
   <!--
