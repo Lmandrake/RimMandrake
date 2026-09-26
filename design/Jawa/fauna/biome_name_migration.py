@@ -32,7 +32,8 @@ OLD_TO_NEW_BIOME = {
                                           # now names the region, not this biome)
     'AB_PyroclasticConflagration': 'RUT_TheForge',
     'AB_RockyCrags': 'RM_ForsakenCrags',  # RM_ mod built 2026-09-25, FORSAKENCRAGS_RM_MOD_BUILD_1
-    'AB_TarPits': 'RUT_Sump',
+    'AB_TarPits': 'RM_TheSump',  # RM_ mod built 2026-09-25, THESUMP_RM_MOD_BUILD_1
+                                  # (RUT_Sump frozen, world-carrying twin, identical content)
     'AridShrubland': 'RUT_AridShrubland',
     'BiomeCypreJungle': 'RUT_Greentide',
     'COMIGO_GreaterSwamp_Tropical': 'RUT_FeverWood',

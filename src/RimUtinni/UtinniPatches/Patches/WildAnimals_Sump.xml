@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_Sump.xml                      UtinniPatches — new file 2026-09-25
+  ============================================================================
+  Wires the biome's one seated canon Star Wars beast — RSW_Hssiss — onto
+  RM_TheSump's own wildAnimals, per Q11a: a genuine canon name is IP and must
+  route through the Utinni patch layer, never live inline in the franchise-
+  free RM_ tier def. THESUMP_RM_MOD_BUILD_1 §3/§5 and SUMP_UTINNI_LAYER_1 §3
+  both name this exact file/weight.
+
+  🔑 SOURCE OF TRUTH: design/Jawa/worldbuilding/biomes/rosters/the_sump.json's
+  "fauna" array — Hssiss, commonality 0.18, action "import", ruled 2026-09-10
+  ("the Sump move STANDS — tar-sleeper, partial-remains register; Miasma
+  reading rejected"). Already ported and used live at this exact weight in
+  WildAnimals_Greentide.xml:172 (src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
+  RSW_Hssiss.xml is the real def) — this file follows that exact precedent
+  (WildAnimals_Pyrelands.xml's own RSW_ block, read in full before writing
+  this), same shorthand-dictionary form RM_TheSump_Biome.xml's own wildAnimals
+  already uses.
+
+  Gate: PatchOperationConditional (silent no-op if RM_TheSump is ever absent)
+  wrapping a PatchOperationAdd, MayRequire="mandrake.rsw.swbestiary" on the
+  whole Operation — the real source mod for RSW_Hssiss, not the donor
+  "Star Wars Animal Collection (Continued)" (Anooba/Iriaz/etc.'s own mod);
+  Hssiss is one of THIS repo's own SWBestiary ports, so the gate is our own
+  packageId, matching every other RSW_-tier reference in this repo.
+
+  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
+  returns true on no match) — validate with
+  skills/rimworld-modding/scripts/validate_patch.py against the live def dump
+  once mandrake.rm.thesump is deployed and active.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_TheSump"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_TheSump"]/wildAnimals</xpath>
+      <value>
+        <RSW_Hssiss>0.18</RSW_Hssiss>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
