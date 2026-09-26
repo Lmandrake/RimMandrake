@@ -297,7 +297,11 @@ namespace RimMandrake.ExplosiveGrowth
                         if (reprint) Dirty(c);
                         continue;
                     }
-                    if (!charges.ContainsKey(c)) StartCharge(c, plant, prof);
+                    // Only a plant that can grow RIGHT NOW arms. A dormant one
+                    // (frozen, out of season, no fertility, blighted: vanilla
+                    // GrowthRate == 0) waits, soaked, until it can — and does
+                    // not re-fire the ground tell every pass while it waits.
+                    if (!charges.ContainsKey(c) && plant.GrowthRate > 0f) StartCharge(c, plant, prof);
                 }
             }
 
@@ -326,16 +330,7 @@ namespace RimMandrake.ExplosiveGrowth
                     }
 
                     bool wet = soakUntil.TryGetValue(c, out int until) && now < until && !IsSuppressed(c, now);
-                    if (wet && plant.GrowthRate > 0f)
-                    {
-                        rec.charge += dt / (chargeTicks * rec.clockFactor);
-                    }
-                    else
-                    {
-                        // Drying out defuses (SURVIVE: "keep ground dry").
-                        // 🄸 INVENTED: relaxes twice as fast as it charged.
-                        rec.charge -= dt / (chargeTicks * 0.5f);
-                    }
+                    rec.charge = StepCharge(rec.charge, wet, plant.GrowthRate > 0f, dt, chargeTicks, rec.clockFactor);
 
                     if (rec.charge <= 0f)
                     {
@@ -359,6 +354,27 @@ namespace RimMandrake.ExplosiveGrowth
 
             // 3. Rupture clouds.
             if (ruptures.Count > 0) TickRuptures(now);
+        }
+
+        /// <summary>
+        /// One pass of the charge clock, pure so it can be self-tested
+        /// (RM_ChargeSelfTest runs at startup).
+        ///   wet + growing   advances: 1.0 after chargeTicks*clockFactor ticks.
+        ///   wet + dormant   HOLDS. A soaked plant that cannot grow this moment
+        ///                   (cold, night-dormant season, no fertility) keeps its
+        ///                   charge; it is still loaded, just paused.
+        ///   dry             decays — drying out defuses (SURVIVE: "keep ground
+        ///                   dry"). 🄸 INVENTED: twice as fast as it charged.
+        /// 2026-09-26 live-found defect: dormant used to fall into the decay
+        /// branch, so on a cold map a freshly started charge (0.0001) lost
+        /// 250/7500 = 0.033 in the SAME pass that created it and was removed —
+        /// every pass, forever: charging read 0 on a soaked, mature plant.
+        /// </summary>
+        public static float StepCharge(float charge, bool wet, bool growing, int dt, float chargeTicks, float clockFactor)
+        {
+            if (wet && growing) return charge + dt / (chargeTicks * clockFactor);
+            if (wet) return charge;
+            return charge - dt / (chargeTicks * 0.5f);
         }
 
         private void StartCharge(IntVec3 c, Plant plant, RM_PlantProfile prof)
@@ -447,6 +463,26 @@ namespace RimMandrake.ExplosiveGrowth
         }
 
         public string DebugReport()
+        {
+            // Why a soaked plant is NOT charging, counted live — the question the
+            // 2026-09-26 verify could not answer from "charging=0" alone.
+            int immature = 0, dormant = 0, noSoakTop = 0, armed = 0;
+            foreach (IntVec3 c in soakUntil.Keys)
+            {
+                Plant p = c.GetPlant(map);
+                if (p == null) continue;
+                RM_PlantProfile prof = RM_ExplosiveGrowthRegistry.For(p.def);
+                if (prof == null || !prof.Soaks) noSoakTop++;
+                else if (p.Growth < MatureGrowth) immature++;
+                else if (charges.ContainsKey(c)) armed++;
+                else if (p.GrowthRate <= 0f) dormant++;
+            }
+            string why = string.Format(" | soaked plants: immature={0} matureDormant(GrowthRate 0)={1} charging={2} topNone/exempt={3}",
+                immature, dormant, armed, noSoakTop);
+            return Report() + why;
+        }
+
+        private string Report()
         {
             return string.Format("soaked={0} charging={1} suppressed={2} ruptures={3} biomeRefusesSoak={4} registry: soaking={5} none={6} rosterRows resolved={7} missing={8}",
                 soakUntil.Count, charges.Count, suppressedUntil.Count, ruptures.Count,

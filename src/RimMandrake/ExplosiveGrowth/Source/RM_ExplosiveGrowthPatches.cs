@@ -24,6 +24,10 @@ namespace RimMandrake.ExplosiveGrowth
 
             new Harmony("mandrake.rm.explosivegrowth").PatchAll();
 
+            string selfTest = RM_ChargeSelfTest.Run();
+            if (selfTest.Contains("FAIL")) Log.Error("[RM ExplosiveGrowth] " + selfTest);
+            else Log.Message("[RM ExplosiveGrowth] " + selfTest);
+
             int[] t = RM_ExplosiveGrowthRegistry.CountByTop;
             Log.Message(string.Format(
                 "[RM ExplosiveGrowth] {0} plant defs soak (churn {1}, burst {2}, slime {3}, tinder {4}, rupture {5}, flush {6}), {7} never soak; " +
