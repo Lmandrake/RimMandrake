@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T06:48:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T06:55:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -846,6 +846,15 @@ kind:     task
 summary:  1. Design sitting first: answer the five questions above as a card set for him. ⛔ Author nothing
 prose:    infrastructure/state/items/HOSTILE_MOBILE_PLANTS_1.md
 
+## FEVERWOOD_ANT_HIVE_DUNGEON_1 Ant hives are reactive procedural dungeons
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Read the Fever Wood doc's Ant material in full and the third-party ant mod it names, before
+prose:    infrastructure/state/items/FEVERWOOD_ANT_HIVE_DUNGEON_1.md
+
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing
 row:      unassigned
@@ -854,15 +863,6 @@ target:   v1
 kind:     task
 summary:  1. Build the event object, the shared budget and the spawn response under the wasps
 prose:    infrastructure/state/items/REACTION_MECHANISM_GENERALISE_1.md
-
-## GREATBOLE_HARVEST_LADDER_1 The greatbole harvest: 40/60/70 thresholds, the fruit's three products, and the grubs that contest it
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Follow the spec document. Order, because it front-loads what can fail:
-prose:    infrastructure/state/items/GREATBOLE_HARVEST_LADDER_1.md
 
 ## FEVERWOOD_BOUGH_SOIL_TERRAIN_1 The crown cannot grow anything: boughway is fertility 0, so bough-soil is owed
 state:    doing
@@ -1538,16 +1538,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Read the Contagion's roster and design doc first and propose the host creature. ⛔ No new
 prose:    infrastructure/state/items/CONTAGION_GENOME_ORGAN_GROWING_1.md
-
-## FEVERWOOD_ANT_HIVE_DUNGEON_1 Ant hives are reactive procedural dungeons
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Read the Fever Wood doc's Ant material in full and the third-party ant mod it names, before
-prose:    infrastructure/state/items/FEVERWOOD_ANT_HIVE_DUNGEON_1.md
 
 ## GREENTIDE_WASP_SWARM_1 Jungle wasps: tiny, numerous, hives on plants, stings that stack
 state:    proposed
