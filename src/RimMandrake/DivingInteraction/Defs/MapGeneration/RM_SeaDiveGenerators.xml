@@ -123,12 +123,16 @@
         <li>RM_SeaFloorHabitat</li>
       </tileMutators>
     </pocketMapProperties>
+    <!-- TERMINAL_SEAS_FLOOR_DRESSING_1, 2026-09-26: Plants ADDED — this
+         biome had no flora and no Plants genstep before this wave (see
+         RM_TwilightSeaFlora.xml / RM_TwilightSea.xml's own new headers). -->
     <genSteps>
       <li>ElevationFertility</li>
       <li>RM_SeaFloorTerrain</li>
       <li>RM_PlaceSeaDiveExit</li>
       <li>RM_SeaFloorFauna</li>
       <li>Animals</li>
+      <li>Plants</li>
       <li>RockChunks</li>
       <li>Fog</li>
     </genSteps>

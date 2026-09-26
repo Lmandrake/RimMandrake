@@ -152,6 +152,10 @@
       <RM_BrineCrown>0.15</RM_BrineCrown>
       <RM_GlassVeilKelp>2.0</RM_GlassVeilKelp>
       <RM_SaltChimneyVine>2.0</RM_SaltChimneyVine>
+      <!-- TERMINAL_SEAS_FLOOR_DRESSING_1, 2026-09-26: terminator_sea.md §4/§9's
+           "planar salt-rimed blade flora … hundreds of metres apart" — the
+           sparsest thing on this floor by design, see RM_GreySeaSaltBlade.xml. -->
+      <RM_SaltBladeGrey>0.03</RM_SaltBladeGrey>
     </wildPlants>
 
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>

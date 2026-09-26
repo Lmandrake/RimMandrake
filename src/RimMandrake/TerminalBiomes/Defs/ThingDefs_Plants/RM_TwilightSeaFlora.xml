@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightSeaFlora.xml             TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  TERMINAL_SEAS_FLOOR_DRESSING_1 — slugs 3 and 4 of 4 named for the Twilight
+  Sea (pillar-mason and one blade variant were the Grey's; condensate-drinker
+  is explicitly OUT, see RM_TwilightSeaFauna.xml's own header — the owner
+  ruled the cast closed at exactly four species and this was never among
+  them). First flora ever authored for RM_TwilightSea: MEASURED 2026-09-26,
+  the BiomeDef shipped no plantDensity (defaults to 0f) and no <wildPlants>
+  block at all, so nothing here spawns without both being added in the same
+  commit (RM_TwilightSea.xml) — same silent-zero trap RM_GreySeaFlora.xml's
+  header already documented for the Grey.
+
+  ============================================================================
+  THE MAT-ROOF, AUTHORED HONESTLY AND SCOPED NARROWLY
+  ============================================================================
+  🔴 HIS/THE SHEET'S TEXT — the_twilight_deep.md §0/§1, terminator_sea.md §4:
+      "A vast, dim, living cavern the size of a sea: the mold-mat overhead as
+       a permanent ceiling, pierced by skylights … The mat-roof is the
+       mechanism of everything: it blocks the drying wind … damps the
+       salinity … and shelters water." "moldy from shore to shore with one
+       mat organism that has never had to share it" (RM_TwilightSea.xml's own
+       description). "a single mat/film organism per sea" (terminator_sea.md
+       roster consequences).
+
+  🔑 MECHANICALLY THE MAT IS A CEILING, NOT FLOOR DRESSING — and the full
+  ceiling system (skylights as golden light-wells, the kelp forest that
+  reaches for them, ceiling-garden encrusters) is the_twilight_deep.md's own
+  explicit DEFERRAL to the diving mods' later content pass (roster json
+  new_defs: "the Twilight Deep set, DEFERRED to diving mods") and now overlaps
+  SEABED_PLANET_LAYER_1's later phases (phase 3 "the floor as a habitable
+  place", phase 4 "biomes and content per sea"). Building a real roof/
+  skylight system here would be re-doing that deferred work out of order and
+  inventing mechanism the owner never asked this item to build.
+
+  ⇒ SCOPED TO: give the organism a real def, matching exactly how the Grey's
+  pillar-mason was resolved (GREYSEA_ANCHOR_CREATURES_1: the mason is the
+  crystal-binding film, RM_SaltPillar is its visible WORK — no PawnKindDef).
+  RM_MoldMatRoof is that same shape: the mat itself, made real as the
+  dominant floor-anchored growth of the one organism the whole sea is built
+  from, at the highest commonality on this floor (the "shore to shore"
+  monoculture is HERE, in the number, exactly how GREYSEA_SESSILE_LAYER_1's
+  header put "abundant" into commonality rather than group size). It is what
+  RM_Weloon's "mat-fall" rains off, what RM_Lunoowa mimics, and what RM_Noolim
+  schools beneath — every one of those descriptions stops being flavor text
+  about nothing, same as the four Grey descriptions the pillar settled.
+  ⛔ The skylight/light-well/kelp-forest richness stays owed to the deferred
+  Twilight Deep pass — do not build it here, and do not read this def as
+  having closed that door.
+
+  ============================================================================
+  THE BLADE — TWILIGHT VARIANT
+  ============================================================================
+  See RM_GreySeaSaltBlade.xml's header for the shared judgement call (shore
+  flora, shipped sparse on this sea's own floor pocket map rather than an
+  unrelated land biome). terminator_sea.md §9's own line for THIS sea's image
+  — "one black sail on a white pan" — is the direct quote; the Grey's variant
+  uses the same base sheet but is a distinct def per the roster's endemism
+  note (do not share one def between the two seas).
+
+  ============================================================================
+  THE THREE ENGINE FACTS (RM_GreySeaFlora.xml's header, restated here because
+  this file has no Grey base class to inherit them from)
+  ============================================================================
+  1. completelyIgnoreFertility TRUE — RM_SeaFloorGround is fertility 0;
+     WildPlantSpawner.CheckSpawnWildPlantAt bails without this flag on at
+     least one plant in the biome.
+  2. RM_TwilightSea.plantDensity set in the same commit (RM_TwilightSea.xml)
+     — GetDesiredPlantsCountAt multiplies by it and it was unset (0f).
+  3. The vanilla `Plants` GenStepDef added to RM_SeaDiveGenerator_TwilightSea
+     (RM_SeaDiveGenerators.xml, same commit) — it was entirely absent, so
+     this biome's floor has never grown a plant of any kind before this wave.
+
+  growMinGlow/growOptimalGlow 0, cavePlant false — same reasoning as the
+  Grey's blind, unroofed pocket floor.
+
+  PLACEHOLDER ART: Things/Plant/Echeveria/EcheveriaA for the mat-roof (dark-
+  tinted; confirmed physically present, already in use by RM_BrineCrown in
+  the Grey's own file) and Things/Plant/SnakePlant/SnakePlantA for the blade
+  (same texPath the Grey's blade and the Grey's kelp both already use,
+  distinguished everywhere by <color> alone). Real art queued via artpipe
+  fill_queue.py; subject checked against done/_artsrc first (none found).
+  ============================================================================
+-->
+<Defs>
+
+  <!-- Shared shape for this file's two defs: everything true of a Twilight
+       floor plant and nothing that distinguishes one from the other. -->
+  <ThingDef Name="RM_TwilightFloorFloraBase" ParentName="PlantBaseNonEdible" Abstract="True">
+    <statBases>
+      <Flammability>0</Flammability>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>-20</minGrowthTemperature>
+      <maxGrowthTemperature>55</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>0</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>32</maxOptimalGrowthTemperature>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <interferesWithRoof>false</interferesWithRoof>
+      <topWindExposure>0.05</topWindExposure>
+      <purpose>Misc</purpose>
+      <allowAutoCut>false</allowAutoCut>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       THE MOLD-MAT-ROOF — the Twilight's monoculture made real.
+       Dominant by commonality, not by group size (this sea's own bans
+       hold: RM_Noolim alone carries herdAnimal, nothing else schools).
+       ================================================================== -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_MoldMatRoof</defName>
+    <label>mold-mat roof</label>
+    <description>The one organism this whole sea belongs to: a living mat that has never had to share a floor or a ceiling with anything else in a geological age. What anchors down here is the same tissue that hangs overhead for a hundred kilometres in every direction — mould-pale where it is thin, near-black where it has thickened for a century undisturbed, felted and slow and completely unhurried. Everything else in the Twilight Sea lives off it one way or another: the mat-fall raining from above, the shade it keeps, the shape it gives things to hide inside.</description>
+    <statBases>
+      <MaxHitPoints>260</MaxHitPoints>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(74,84,66)</color>
+      <colorTwo>(46,52,44)</colorTwo>
+      <drawSize>(2.2,2.2)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>26</growDays>
+      <harvestWork>240</harvestWork>
+      <maxMeshCount>2</maxMeshCount>
+      <visualSizeRange>1.4~2.2</visualSizeRange>
+      <!-- Dominant: "shore to shore," never contested. -->
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>26</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       THE BLADE — Twilight variant, "one black sail on a white pan."
+       Distinct def from RM_SaltBladeGrey per the roster's endemism note.
+       ================================================================== -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_SaltBladeTwilight</defName>
+    <label>salt-rimed blade</label>
+    <description>One black sail standing alone on a white floor, dark almost to nothing at the core and rimed white at the edge where a lifetime of excreted salt has built up and flaked away and built up again. It is the only vertical thing in whatever direction you are facing when you find one, and the next is far enough off that the murk takes it before it takes the shape of another blade.</description>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Beauty>8</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(20,22,24)</color>
+      <colorTwo>(232,232,228)</colorTwo>
+      <drawSize>(1.4,1.4)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>30</growDays>
+      <harvestWork>360</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>1.1~1.8</visualSizeRange>
+      <wildClusterRadius>14</wildClusterRadius>
+      <wildClusterWeight>1</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>
