@@ -135,8 +135,18 @@ franchise IP). 21 real-art jobs filed; placeholders ship meanwhile.
 4. **`RM_Deepfire`'s art is waiting on the owner, not on work.** Three finished
    `scald2_rainbowpigment_*` jar renders sit unruled in `_artsrc/`; that def's own file says
    the owner has not picked one. Not rewired here on purpose.
-5. **`scald2_shullacatch_a` produced no PNG** — the one genuinely missing render in the art
-   wave. Refiled as `scald3_shullacatch_a`.
+5. ~~`scald2_shullacatch_a` produced no PNG~~ — refiled as `scald3_shullacatch_a`, came
+   back clean the same session and is installed. Closed.
+5b. 🔴 **The two steam-overlay tiles came back and are NOT installed, deliberately.**
+   `scaldsteam_overlay_a` MEASURES a mean alpha of 138/255 (54%) and `_b` 59/255 (23%);
+   layered by the dual panner that is roughly 65% average coverage before the material's
+   own colour and the sky's alpha modulate it. The spec's own target is *"never a grey
+   blind"*, and I have no vanilla `FogOverlayWorld` alpha to compare against (no UnityPy on
+   this machine, no cached extraction). The class falls back to vanilla fog with the files
+   absent, so the Scald keeps today's known-acceptable sky. **This wants a look, not a
+   build**: install the two files, load, and judge — or re-queue thinner. Files are at
+   `D:\Luke\dev\Rimworld\infrastructure\artpipe\_artsrc\scaldsteam_overlay_a\scaldsteam_overlay_a.png`
+   and the `_b` sibling.
 6. **A seat-resolution oddity, flagged not fixed**: `rimflow note` from this window wrote to
    `infrastructure/state/ledger/events/BENCH.jsonl`, not `FOUNDRY.jsonl`, although this pass
    ran as FOUNDRY-style work on FOUNDRY-owned items. The notes are correct and committed;
@@ -160,6 +170,7 @@ franchise IP). 21 real-art jobs filed; placeholders ship meanwhile.
 2. **The owner's eye on the boil.** The ripple/steam change exists to answer his walk
    verdict; only he can say whether it now reads as boiling. The density slider is there so
    the answer can be "more" without another build.
-3. The 23 artpipe jobs filed here (21 creature facings + 2 overlay tiles + 1 shulla refile)
-   land in `_artsrc/` on the daemon's own schedule and need installing and wiring.
+3. ~~The 23 artpipe jobs filed here~~ — all 24 came back within the session. The 21 creature
+   facings and the shulla refile are installed and committed (`2b6ec6a30`, `0c3af95ed`).
+   The two overlay tiles are NOT installed; see gap 5b.
 4. `SCALD_MECHANICS_1`'s live bar — the only thing left on that item, and it needs a map.
