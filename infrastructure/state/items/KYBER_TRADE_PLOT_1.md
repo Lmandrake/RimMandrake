@@ -97,3 +97,35 @@ QuestScriptDefs re-validated after the edit (`validate_quest.py --dir
 src/RimUtinni/KyberTradePlot/Defs/QuestScriptDefs` — 0 errors, 0 warnings).
 No change to the BLOCKED status or to anything above — this only closes the
 Mod Settings gap.
+
+## Correction 2026-09-26 (FOUNDRY) — the 2026-09-11 block premise is now false
+
+The 2026-09-11 BLOCKED note above says the external GM blackboard "does not
+exist as buildable infrastructure" and that a repo grep found none. **That is
+no longer true and should not be relied on.** `GM_BLACKBOARD_SHADOW_M4_1`
+(filed and built 2026-09-13, `bdc930b32`) shipped exactly that blackboard —
+`src/RimMandrake/Utils/gm_blackboard_shadow.py`, a read-only Python state
+machine polling the live bridge that computes Heat, Hutt Interest, Cathedral
+Regard and an orbital-detection timer, proven against a real live session
+(shadow log evidence in that item's own file). `CATHEDRAL_REGARD_BLACKBOARD_1`
+extended it further (Regard/stage/exposure), and `CATHEDRAL_EXPOSURE_COMPLETION_1`
+(2026-09-17) independently re-confirmed its Hutt-Interest number as "genuinely
+live and shadow-tested." So the *shape* of the sale-detection/Heat/Hutt-Interest
+infra this item's verify clause depends on now exists.
+
+**What is still actually missing, and why this item stays BLOCKED rather than
+closing:** both blackboard items were deliberately left `doing`, not closed,
+because neither built the **live injection flip** — build_plan.md's own M4
+spec sequence is "shadow mode... then flip injection... then for real," and
+only the shadow half has shipped. Nothing yet reads the blackboard's Heat/
+Hutt-Interest numbers and actually fires `RUT_GiveQuest_KyberHomesteadVisit`/
+`RUT_GiveQuest_KyberDonationSmuggle` or bumps Hutt goodwill in a live game —
+that live-fire mechanism is GM_BLACKBOARD_SHADOW_M4_1's own next-half scope
+(the architecture keeps GM state outside the game on purpose, per
+build_plan.md §2 — "Put all GM state outside the game" — so this is that
+script's job, not a new parallel mechanism inside the Kyber mod), and it
+needs live bridge access to build and prove safely. This FOUNDRY pass had no
+bridge access (reserved for concurrent agents) and was scoped to offline
+authoring only, so it did not attempt that build. Re-blocking `--on
+GM_BLACKBOARD_SHADOW_M4_1` to reflect the real, current dependency instead of
+the stale "no infra exists" reason.
