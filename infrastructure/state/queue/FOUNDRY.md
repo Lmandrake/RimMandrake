@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T17:33:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T17:35:18Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1750,3 +1750,13 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  GREYSEAANCHORCREATURES1 — build the two anchors the Grey Deep is actually about, plus the Aerofleet replaceme…
 prose:    infrastructure/state/items/GREYSEA_ANCHOR_CREATURES_1.md
+
+## SUUSH_CAULDRON_DRIFTER_1 The Suush: a docile tamable floating sphere with gathering tentacles that feeds on the Cauldron's roiling chemistry and detonates when shot
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUUSH_CAULDRON_DRIFTER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUUSH_CAULDRON_DRIFTER_1.md
