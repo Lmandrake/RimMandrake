@@ -4538,3 +4538,86 @@ never-entered), `CreatureBehaviors/Source/` loose files
 `Contagion`, `Pyrelands`) and `biome_paint_list.md` until told the concurrent
 biome-split build is done. Re-survey `list --show-untracked` fresh rather than
 trusting any carried-forward count.
+
+## Wave 11 — 2026-09-26
+
+Same concurrent-biome-build session as waves 9-10 — again steered clear of every
+biome-specific mod folder and `biome_paint_list.md` (fresh survey still showed
+untracked files under several of them, none picked), and instead took wave 10's
+"natural next pick": the remaining gas-vent/saturation/incident half of
+`PropaneLakeMechanics/Source/` (a RUT-tier mechanics mod, not a biome) — all 9
+files: `CompGasVent.cs`, `CompProperties_GasVent.cs`,
+`MapComponent_GasSaturationTracker.cs`, `Patch_GasSaturationDeflagration.cs`,
+`CompVWakeAgitation.cs`, `IncidentWorker_SaturationHeistRaid.cs`,
+`PropaneLakeMechanicsDefOf.cs`, `PropaneLakeMechanicsMod.cs`,
+`PropaneLakeMechanicsSettings.cs`. This completes the whole
+`PropaneLakeMechanics/Source/` assembly (the pipe-network half was already
+marked CLEAN in wave 10).
+
+Confirmed all 9 NEVER ENTERED via fresh `list --show-untracked`, and all 9
+reachable via live `<Compile Include>` entries in
+`RimMandrake.Utinni.PropaneLakeMechanics.csproj`. Content-wired, not shelf code:
+every `[DefOf]` field on `PropaneLakeMechanicsDefOf` (`RUT_GasVent`,
+`RUT_VentPump`, `RUT_PipeSegment`, `RUT_PipeValve`, `RUT_PipePump`,
+`RUT_PropaneAgitation`, `RUT_SaturationHeistRaid`) resolves to a live defName in
+`Defs/ThingDefs_Buildings/RUT_GasVent.xml`, `RUT_PipeInfrastructure.xml`,
+`Defs/HediffDefs/RUT_PropaneAgitation.xml` and
+`Defs/IncidentDefs/RUT_SaturationHeistRaid.xml` — a missing one would throw at
+game start, so this doubled as a load-safety check, not just a reachability one.
+
+Traced the mechanism end to end against `propane_gas_deep_design.md` §3/§5/§9
+rows 1/2/5/6 (cited inline in the code's own doc comments): `CompGasVent`'s
+self-ignition roll runs regardless of pump state while its yield-depletion roll
+only runs while actively pumped, and the violent-release trigger fires only on
+the `wasPumped && !isPumped && !depleted` edge (checked the state machine
+against a settings-toggle-mid-game edge case: disabling gas vents while pumped
+freezes `wasPumped` stale, but re-enabling later just re-evaluates from current
+state — no double-fire, no missed depletion). `MapComponent_GasSaturationTracker`
+was the highest-risk file (0-100 float field, ambient surge, perpetual floor,
+flood-fill flashover): confirmed `DecayTick` snapshots `perCell.Keys.ToList()`
+before mutating the dict inside the loop (correct — avoids the classic
+modify-during-enumerate crash), confirmed `TriggerFlashover`'s flood-fill origin
+always already satisfies its own `>=80%` predicate because `flashoverTier` is
+only ever true when `DeflagrationChanceAt` already measured that same cell at
+>=80%, and confirmed the post-flashover cleanup zeroes only `perCell` (not
+`perpetualFloor`) — matching the doc comment that perpetual (authored-cavern)
+saturation should survive a flashover while transient saturation is consumed.
+Cross-checked `CompVWakeAgitation`'s pump-detection target: it watches
+`RUT_PipePump` (the pipe-network pump, row 3), not `CompGasVent`'s own
+`RUT_VentPump` (row 1) — confirmed intentional, not a wrong-def bug, against
+both the design doc ("agitated by pump noise", row 5, dwelling in the lake the
+pipe network drains) and the shipped Keyed string on the pipe pump's own toggle
+("A running pump ... agitates nearby propane-native creatures"). Verified all 5
+mod-setting toggles (`gasVentsEnabled`, `pipeNetworksEnabled`,
+`saturationDeflagrationEnabled`, `vWakeAgitationEnabled`,
+`saturationHeistRaidEnabled`) plus the `deflagrationIntensity` slider have
+defaults, Scribe persistence and a settings-UI row, and that every Keyed string
+referenced by the 9 files (`RUT_Message_GasVentRelease`,
+`RUT_GasVent_Depleted/Pumping/Dormant`, `RUT_Message_GasFlashover`,
+`RUT_Message_Deflagration`, the 5 `RUT_Settings_*` pairs) exists in
+`PropaneLakeMechanics.xml`. No significant findings — no fixes needed. All 9
+marked CLEAN at commit following this note.
+
+Re-measured after: `TALLY CLEAN 3232 DIRTY 146 ORPHANED 134 NEVER ENTERED 373`
+(was `CLEAN 3223 DIRTY 146 ORPHANED 134 NEVER ENTERED 338` at wave start — CLEAN
++9 as expected; NEVER ENTERED net rose by 35 despite 9 leaving it, i.e. ~44 new
+untracked files appeared from concurrent agents' work this wave, expected with
+the biome-split build in flight; only the 9 files this wave touched are
+attributable to this pass).
+
+Next wave: `ShipShields/Source/CompProperties_ShieldCryoEnvelope.cs` +
+`CompShieldCryoEnvelope.cs` (a NEVER-ENTERED pair, confirmed still in
+`RimMandrake.Utinni.ShipShields.csproj`'s `<Compile Include>` this wave —
+small, worth pairing with another small cluster) and `CreatureBehaviors/Source/`
+loose files (`RM_DamageWorker_StingAccumulate.cs`,
+`RM_DirectedAssaultExtension.cs` — `RM_JobGiver_AvoidOwnKind.cs` is already
+CLEAN per wave 7's note) are both still untouched. The `modcheck/` Python tools
+and the `validation.py` sampling pass named in every wave since wave 3 remain
+the oldest unpicked candidate — worth taking next if no comparably cohesive
+`.cs` cluster surfaces. ⛔ Keep avoiding biome-specific mod folders (`BlueDesert`,
+`FeverWood`, `ForsakenCrags`, `LeaningScrub`, `LongShade`, `NightsideIce`,
+`PoisonForest`, `Stillsand`, `TerminalBiomes`, `TheForge`, `TheRot`, `Wasteland`,
+`Miasma`, `Contagion`, `Pyrelands`, `GelatinousSlime`, `LanternDeeps`) and
+`biome_paint_list.md` until told the concurrent biome-split build is done.
+Re-survey `list --show-untracked` fresh rather than trusting any carried-forward
+count.
