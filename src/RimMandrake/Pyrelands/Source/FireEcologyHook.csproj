@@ -50,6 +50,23 @@
     <Compile Include="RM_PyrelandsMod.cs" />
     <Compile Include="RM_PyrelandsDensityEnforcer.cs" />
     <Compile Include="WildPlantAllowlist.cs" />
+    <!-- PYRELANDS_RM_MOD_BUILD_1 §6 — absorbed from
+         mandrake.rut.pyrelandsmechanics; the campaign-specific remainder
+         (fire rite, Tribes factions, arson-justice, flame harvest) stays
+         there. -->
+    <Compile Include="PyrelandsTuning.cs" />
+    <Compile Include="PyrelandsMechanicsDefOf.cs" />
+    <Compile Include="PyrelandsFireRiteHook.cs" />
+    <Compile Include="MapComponent_BurnLine.cs" />
+    <Compile Include="PyrelandsFireFront.cs" />
+    <Compile Include="CompFireHawkSpread.cs" />
+    <Compile Include="JobGiver_RUT_FireHawkCarryEmber.cs" />
+    <Compile Include="JobDriver_RUT_FireHawkCarryEmber.cs" />
+    <Compile Include="CompFurnaceWarmthAura.cs" />
+    <Compile Include="CompFurnaceBedIgnition.cs" />
+    <Compile Include="CompFurnaceThermalCharge.cs" />
+    <Compile Include="JobGiver_RUT_FurnaceThermalCycle.cs" />
+    <Compile Include="Patch_FurnaceBeastHeatImmunity.cs" />
   </ItemGroup>
 
   <ItemGroup>

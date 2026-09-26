@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- PYRELANDS_FIRE_CADENCE_1, absorbed from mandrake.rut.pyrelandsmechanics
+       (PYRELANDS_RM_MOD_BUILD_1 §6). No {0}: the front is nobody's, and naming
+       an instigator would contradict the null instigator it is actually lit
+       with. Keys renamed RUT_ -> RM_ at the move. -->
+  <RM_FireFrontLetterLabel>The grass has gone up</RM_FireFrontLetterLabel>
+  <RM_FireFrontLetterText>A line of ember-grass has caught somewhere out in the open, and it is walking.\n\nThis is the biome, not an attack. It happens every few days here and it is why the Tribes plant firebreaks instead of fences. Decide now whether it comes anywhere near you — a burn-line is far cheaper to steer than to stop.</RM_FireFrontLetterText>
+
+  <!-- FURNACEBEAST_THERMAL_CYCLE_1. Inspect-pane label for the capacitor. -->
+  <RM_FurnaceHeatCharge>Heat charge</RM_FurnaceHeatCharge>
+
+</LanguageData>

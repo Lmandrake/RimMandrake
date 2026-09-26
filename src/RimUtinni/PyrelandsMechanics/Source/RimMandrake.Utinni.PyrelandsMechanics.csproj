@@ -11,12 +11,15 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    Harmony is referenced for exactly ONE rule and must stay that way:
-    Patch_FurnaceBeastHeatImmunity (FURNACEBEAST_THERMAL_CYCLE_1). Every other
-    mechanism in this assembly rides a vanilla extension point (MapComponent,
-    ThingComp, ThinkNode_JobGiver, JobDriver, IncidentWorker) and needs no
-    patch. 0Harmony is <Private>false</Private>: the game and brrainz.harmony
-    supply it at runtime, it must never be copied into ..\Assemblies\.
+    PYRELANDS_RM_MOD_BUILD_1 §6 absorbed the franchise-free two-thirds of this
+    kit (burn-line, fire clock, fire-hawk, furnace-beast thermal circuit —
+    along with its one Harmony rule, Patch_FurnaceBeastHeatImmunity) into
+    mandrake.rm.pyrelands. What remains here names the Deep Desert Tribes and
+    needs no Harmony at all — every mechanism left rides a vanilla extension
+    point (ThinkNode_JobGiver, LordJob, IncidentWorker). This assembly now
+    REFERENCES mandrake.rm.pyrelands's own FireEcologyHook.dll (built first;
+    both mods load in the same AppDomain, and this one already loadAfter's
+    it) for MapComponent_BurnLine, PyrelandsTuning and PyrelandsFireRiteHook.
   -->
 
   <PropertyGroup>
@@ -42,29 +45,12 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
-  <!-- Same path shape as src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj;
-       copy that file's if this one goes stale. -->
-  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
-    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
-  </PropertyGroup>
-
   <ItemGroup>
-    <Compile Include="PyrelandsTuning.cs" />
     <Compile Include="PyrelandsMechanicsDefOf.cs" />
     <Compile Include="PyrelandsFactions.cs" />
-    <Compile Include="MapComponent_BurnLine.cs" />
-    <Compile Include="PyrelandsFireFront.cs" />
     <Compile Include="PyrelandsFireRite.cs" />
     <Compile Include="LordJob_RUT_FireRite.cs" />
     <Compile Include="JobGiver_RUT_HarvestScorchFruit.cs" />
-    <Compile Include="CompFireHawkSpread.cs" />
-    <Compile Include="JobGiver_RUT_FireHawkCarryEmber.cs" />
-    <Compile Include="JobDriver_RUT_FireHawkCarryEmber.cs" />
-    <Compile Include="CompFurnaceWarmthAura.cs" />
-    <Compile Include="CompFurnaceBedIgnition.cs" />
-    <Compile Include="CompFurnaceThermalCharge.cs" />
-    <Compile Include="JobGiver_RUT_FurnaceThermalCycle.cs" />
-    <Compile Include="Patch_FurnaceBeastHeatImmunity.cs" />
     <Compile Include="IncidentWorker_FlameHarvest.cs" />
     <Compile Include="IncidentWorker_FireRaid.cs" />
     <Compile Include="PyrelandsMechanicsMod.cs" />
@@ -79,16 +65,20 @@
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="0Harmony">
-      <HintPath>$(HarmonyDll)</HintPath>
-      <Private>false</Private>
-    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- mandrake.rm.pyrelands — MapComponent_BurnLine, PyrelandsTuning,
+         PyrelandsFireRiteHook. Not copied local: both DLLs sit in the game's
+         Mods folder side by side and the runtime resolves it there; a copy
+         here would be a second, driftable binary. -->
+    <Reference Include="FireEcologyHook">
+      <HintPath>..\..\..\RimMandrake\Pyrelands\Assemblies\FireEcologyHook.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

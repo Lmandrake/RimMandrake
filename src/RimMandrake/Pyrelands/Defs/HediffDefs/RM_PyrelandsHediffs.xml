@@ -33,7 +33,7 @@
        suddenly sweating.
   ======================================================================== -->
   <HediffDef>
-    <defName>RUT_FurnaceWarmth</defName>
+    <defName>RM_FurnaceWarmth</defName>
     <label>furnace-warmed</label>
     <description>Standing close enough to a furnace-beast to feel the heat coming off its hide. It is a considerable comfort in the cold and an active liability in the sun.</description>
     <hediffClass>HediffWithComps</hediffClass>

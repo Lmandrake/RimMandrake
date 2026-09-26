@@ -62,7 +62,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                         ThingRequest.ForDef(yieldDef),
                         PathEndMode.ClosestTouch,
                         TraverseParms.For(pawn),
-                        PyrelandsTuning.FireRiteHarvestRadius,
+                        RimMandrake.Pyrelands.PyrelandsTuning.FireRiteHarvestRadius,
                         t => Reachable(pawn, t));
 
                     if (loose != null)
@@ -85,7 +85,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 ThingRequest.ForDef(plantDef),
                 PathEndMode.Touch,
                 TraverseParms.For(pawn),
-                PyrelandsTuning.FireRiteHarvestRadius,
+                RimMandrake.Pyrelands.PyrelandsTuning.FireRiteHarvestRadius,
                 t => t is Plant plant && plant.HarvestableNow && Reachable(pawn, t));
 
             return pod == null ? null : JobMaker.MakeJob(JobDefOf.Harvest, pod);

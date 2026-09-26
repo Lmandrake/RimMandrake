@@ -3,7 +3,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace RimMandrake.Utinni.PyrelandsMechanics
+namespace RimMandrake.Pyrelands
 {
     /// <summary>
     /// FURNACEBEAST_THERMAL_CYCLE_1, part 3 — the LOCAL half of the cycle, and
@@ -83,7 +83,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         private static Job TryGrazeThornvine(Pawn pawn)
         {
-            if (!PyrelandsMechanicsSettings.furnaceThornvineDietEnabled)
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 return null;
             }
@@ -121,7 +121,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         private static Job TryWorkTheBurn(Pawn pawn, CompFurnaceThermalCharge charge)
         {
-            if (!PyrelandsMechanicsSettings.furnaceFireSeekingEnabled)
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 return null;
             }

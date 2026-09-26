@@ -3,7 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.Utinni.PyrelandsMechanics
+namespace RimMandrake.Pyrelands
 {
     /// <summary>
     /// PYRELANDS_MECHANICS_1, mechanisms 1 and 2 — "the burn-line as a persistent
@@ -114,7 +114,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// harvest party is standing, attributed to them. The fire front is
         /// private to this component so "where the biome may light" stays stated
         /// once; this is the one door through it.</summary>
-        internal int IgniteRiteFront(IntVec3 origin, Thing instigator)
+        public int IgniteRiteFront(IntVec3 origin, Thing instigator)
         {
             return fireFront.IgniteAt(origin, instigator);
         }
@@ -146,9 +146,21 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 return;
             }
 
-            Measure();
-            AccrueArsonDebt();
-            KeepTheBurnAlive();
+            if (!RM_PyrelandsSettings.pyrelandsEnabled)
+            {
+                return;
+            }
+
+            // MOD_OPTIONS_RETROFIT_1: burnLineEnabled and fireClockEnabled are
+            // independent switches (§6a) — off on one leaves the other running.
+            // fireFront.Tick() self-gates on fireClockEnabled (and re-arms its
+            // own clock when the toggle flips), so it is always called here.
+            if (RM_PyrelandsSettings.burnLineEnabled)
+            {
+                Measure();
+                AccrueArsonDebt();
+                KeepTheBurnAlive();
+            }
             fireFront.Tick();
         }
 
@@ -220,10 +232,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         private void KeepTheBurnAlive()
         {
-            if (!PyrelandsMechanicsSettings.standingBurnReseedEnabled)
-            {
-                return;
-            }
+            // Gated by the caller (burnLineEnabled) — no inner check here.
             if (fireCount > 0)
             {
                 ticksSinceAnyFire = 0;

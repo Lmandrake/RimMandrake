@@ -43,7 +43,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 return false;
             }
 
-            MapComponent_BurnLine watch = MapComponent_BurnLine.For(map);
+            RimMandrake.Pyrelands.MapComponent_BurnLine watch = RimMandrake.Pyrelands.MapComponent_BurnLine.For(map);
             if (watch == null || !watch.IsPyrelandsMap)
             {
                 return false;
@@ -85,7 +85,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
                 tribes.TryAffectGoodwillWith(
                     Faction.OfPlayer,
-                    PyrelandsTuning.FireRaidGoodwillHit,
+                    RimMandrake.Pyrelands.PyrelandsTuning.FireRaidGoodwillHit,
                     canSendMessage: true,
                     canSendHostilityLetter: true);
 
@@ -106,8 +106,8 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 parms.points = StorytellerUtility.DefaultThreatPointsNow(parms.target);
             }
             parms.points = Mathf.Max(
-                PyrelandsTuning.FireRaidPointsMin,
-                parms.points * PyrelandsTuning.FireRaidPointsFactor);
+                RimMandrake.Pyrelands.PyrelandsTuning.FireRaidPointsMin,
+                parms.points * RimMandrake.Pyrelands.PyrelandsTuning.FireRaidPointsFactor);
 
             if (!base.TryExecuteWorker(parms))
             {
@@ -115,7 +115,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             }
 
             // The debt has been collected. The next raid needs a new burn.
-            MapComponent_BurnLine.For(map)?.ClearArsonDebt();
+            RimMandrake.Pyrelands.MapComponent_BurnLine.For(map)?.ClearArsonDebt();
             return true;
         }
 

@@ -84,7 +84,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
             Transition arrived = new Transition(travel, rite);
             arrived.AddTrigger(new Trigger_Memo("TravelArrived"));
-            arrived.AddTrigger(new Trigger_TicksPassed(PyrelandsTuning.FireRiteTravelTimeoutTicks));
+            arrived.AddTrigger(new Trigger_TicksPassed(RimMandrake.Pyrelands.PyrelandsTuning.FireRiteTravelTimeoutTicks));
             arrived.AddPostAction(new TransitionAction_EndAllJobs());
             graph.AddTransition(arrived);
 
@@ -161,7 +161,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             }
             job.MarkIgnited();
 
-            MapComponent_BurnLine watch = MapComponent_BurnLine.For(Map);
+            RimMandrake.Pyrelands.MapComponent_BurnLine watch = RimMandrake.Pyrelands.MapComponent_BurnLine.For(Map);
             if (watch == null)
             {
                 return;
@@ -193,8 +193,8 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 PawnDuty duty = new PawnDuty(PyrelandsMechanicsDefOf.RUT_RiteHarvest, riteOrigin)
                 {
                     focusSecond = riteOrigin,
-                    radius = PyrelandsTuning.FireRiteHarvestRadius,
-                    wanderRadius = PyrelandsTuning.FireRiteWanderRadius,
+                    radius = RimMandrake.Pyrelands.PyrelandsTuning.FireRiteHarvestRadius,
+                    wanderRadius = RimMandrake.Pyrelands.PyrelandsTuning.FireRiteWanderRadius,
                 };
                 pawn.mindState.duty = duty;
             }

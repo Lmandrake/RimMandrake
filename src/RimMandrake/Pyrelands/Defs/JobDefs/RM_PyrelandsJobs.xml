@@ -3,7 +3,7 @@
 
   <!-- ========================================================================
        PYRELANDS_MECHANICS_1, mechanism 3 — the fire-hawk's twig.
-       Driver: RimMandrake.Utinni.PyrelandsMechanics.JobDriver_RUT_FireHawkCarryEmber.
+       Driver: RimMandrake.Pyrelands.JobDriver_RUT_FireHawkCarryEmber.
        Dispatched only by JobGiver_RUT_FireHawkCarryEmber, which will not issue
        it unless a fire is ALREADY burning in scan range (the spread-only law,
        RUT_ruled_commissions_wave2.md §7c, RATIFIED owner 2026-09-10).
@@ -13,10 +13,14 @@
        suspendable false, matching RM_AnimalSteal (this repo's own animal-job
        precedent): a half-flown sortie that resumes days later with the source
        fire long out is worse than one that simply ends.
+
+       PYRELANDS_RM_MOD_BUILD_1 §6: defName renamed RUT_ -> RM_ at the move
+       into mandrake.rm.pyrelands. The C# class names (JobDriver_RUT_..., a
+       data field, not a def) were left as-is — only defNames were renamed.
   ======================================================================== -->
   <JobDef>
-    <defName>RUT_FireHawkCarryEmber</defName>
-    <driverClass>RimMandrake.Utinni.PyrelandsMechanics.JobDriver_RUT_FireHawkCarryEmber</driverClass>
+    <defName>RM_FireHawkCarryEmber</defName>
+    <driverClass>RimMandrake.Pyrelands.JobDriver_RUT_FireHawkCarryEmber</driverClass>
     <reportString>carrying an ember from TargetA.</reportString>
     <suspendable>false</suspendable>
   </JobDef>

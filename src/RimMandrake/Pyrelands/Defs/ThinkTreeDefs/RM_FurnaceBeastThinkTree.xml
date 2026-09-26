@@ -25,13 +25,13 @@
        not contend for a number, and above RimProperty's theft nodes (50).
   ======================================================================== -->
   <ThinkTreeDef>
-    <defName>RUT_FurnaceBeast_ThermalCycle</defName>
+    <defName>RM_FurnaceBeast_ThermalCycle</defName>
     <insertTag>Animal_PreWander</insertTag>
     <insertPriority>54</insertPriority>
     <thinkRoot Class="ThinkNode_Tagger">
       <tagToGive>Misc</tagToGive>
       <subNodes>
-        <li Class="RimMandrake.Utinni.PyrelandsMechanics.JobGiver_RUT_FurnaceThermalCycle" />
+        <li Class="RimMandrake.Pyrelands.JobGiver_RUT_FurnaceThermalCycle" />
       </subNodes>
     </thinkRoot>
   </ThinkTreeDef>

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.Utinni.PyrelandsMechanics
+namespace RimMandrake.Pyrelands
 {
     /// <summary>
     /// PYRELANDS_MECHANICS_1, mechanism 4a — the open-field "walking hearth"
@@ -49,7 +49,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         {
             base.CompTickInterval(delta);
 
-            if (!PyrelandsMechanicsSettings.furnaceWarmthAuraEnabled)
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 return;
             }
@@ -69,11 +69,11 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             // mechanism vanish, and with the charge comp absent or switched off
             // the radius is the full shipped value, unchanged.
             CompFurnaceThermalCharge charge = beast.TryGetComp<CompFurnaceThermalCharge>();
-            float scale = (charge != null && PyrelandsMechanicsSettings.furnaceThermalChargeEnabled)
+            float scale = (charge != null && RM_PyrelandsSettings.furnaceThermalEnabled)
                 ? Mathf.Lerp(MinAuraFraction, 1f, charge.Charge)
                 : 1f;
 
-            float radius = PyrelandsMechanicsSettings.furnaceAuraRadius * scale;
+            float radius = PyrelandsTuning.FurnaceAuraRadius * scale;
             float radiusSq = radius * radius;
             IReadOnlyList<Pawn> pawns = beast.Map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < pawns.Count; i++)
@@ -94,7 +94,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         private static void ApplyOrRefreshWarmth(Pawn p)
         {
-            HediffDef def = PyrelandsMechanicsDefOf.RUT_FurnaceWarmth;
+            HediffDef def = PyrelandsMechanicsDefOf.RM_FurnaceWarmth;
             Hediff hediff = p.health.hediffSet.GetFirstHediffOfDef(def);
             if (hediff == null)
             {
