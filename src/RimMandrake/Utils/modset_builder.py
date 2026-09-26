@@ -335,6 +335,29 @@ TIERS = {
         ],
         "dlc": True,
     },
+    "leaningscrub": {
+        "why": "LEANINGSCRUB_RM_MOD_BUILD_1's own quicktest load-proof: does "
+               "mandrake.rm.leaningscrub load clean, does its RM_LeaningScrub "
+               "BiomeDef carry its 5 inline non-Star-Wars fauna rows plus its "
+               "renamed RM_ plant defs, and does WildAnimals_LeaningScrub.xml "
+               "(UtinniPatches) land its 40 Star Wars PatchOperationAdd rows onto "
+               "it. mlie.horrors is named explicitly for Terrorworm, which "
+               "SWBestiary/BiomeCast do not carry — closure only walks "
+               "<modDependencies>, and this biome's def MayRequire's it "
+               "directly.",
+        "want": [
+            BRIDGE,
+            "mandrake.rm.leaningscrub",
+            "mandrake.rsw.swbestiary",
+            "mandrake.rm.environmentalhazards",
+            "mandrake.rut.patches",
+            "mandrake.rut.ashkarrflora",
+            "sarg.alphaanimals",
+            "mlie.starwarsanimalcollection",
+            "mlie.horrors",
+        ],
+        "dlc": True,
+    },
 }
 
 
