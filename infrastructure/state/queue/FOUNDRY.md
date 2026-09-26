@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T09:38:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T09:48:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -909,14 +909,14 @@ kind:     build
 summary:  1. The reaction: tar + acid → green gas (Helixien-compatible). One acid, three
 prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
 
-## SUMP_UTINNI_LAYER_1 Sump campaign layer: rename the gas Sumpgas, flame-statue holy act to the evil sun god (ideoligion patch), Hssiss WildAnimals_Sump patch
+## SUMP_TAR_HYDROLOGY_1 Sump tar hydrology on FlowWorks: belch floods with glass fronts, full canal-work, network fire with gate firebreaks, outflow seams, the Deep Black mere, living-map responders, tar rain (mod, not this scenario)
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-summary:  1. Sumpgas rename: the campaign renames the green gas to Sumpgas — owner,
-prose:    infrastructure/state/items/SUMP_UTINNI_LAYER_1.md
+summary:  SUMPTARHYDROLOGY1 — how the tar flows: the Sump on FlowWorks
+prose:    infrastructure/state/items/SUMP_TAR_HYDROLOGY_1.md
 
 ## FORCE_DISTURBANCE_REFLAVOR_1 Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
 state:    doing
@@ -971,6 +971,15 @@ target:   v1
 kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
+
+## DEEPFIRE_PAINT_STATUS_CUISINE_1 Deepfire: painting mechanic (comp/designator/beauty+quality), worn-item glow+darkness-targeting tradeoff, the purple-engine sumptuary status system, Ninefold god reactions, and Cuisine glow-hediff families -- deferred from DEEPFIRE_PIGMENT_MOD_1's chain build
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  DEEPFIREPAINTSTATUSCUISINE1
+prose:    infrastructure/state/items/DEEPFIRE_PAINT_STATUS_CUISINE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1558,16 +1567,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md
 
-## SUMP_TAR_HYDROLOGY_1 Sump tar hydrology on FlowWorks: belch floods with glass fronts, full canal-work, network fire with gate firebreaks, outflow seams, the Deep Black mere, living-map responders, tar rain (mod, not this scenario)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec
-summary:  SUMPTARHYDROLOGY1 — how the tar flows: the Sump on FlowWorks
-prose:    infrastructure/state/items/SUMP_TAR_HYDROLOGY_1.md
-
 ## PROPANELAKES_SHIPPING_NAMES_1 Owner card: propane lakes working names (Burner Ascendant, V-Wake)
 state:    proposed
 row:      unassigned
@@ -1687,16 +1686,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  WARDENMOTHERSUCCESSION1 — warden mother young: self-taming, water-scoped training, and succession on her death
 prose:    infrastructure/state/items/WARDEN_MOTHER_SUCCESSION_1.md
-
-## DEEPFIRE_PAINT_STATUS_CUISINE_1 Deepfire: painting mechanic (comp/designator/beauty+quality), worn-item glow+darkness-targeting tradeoff, the purple-engine sumptuary status system, Ninefold god reactions, and Cuisine glow-hediff families -- deferred from DEEPFIRE_PIGMENT_MOD_1's chain build
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  DEEPFIREPAINTSTATUSCUISINE1
-prose:    infrastructure/state/items/DEEPFIRE_PAINT_STATUS_CUISINE_1.md
 
 ## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
 state:    proposed
