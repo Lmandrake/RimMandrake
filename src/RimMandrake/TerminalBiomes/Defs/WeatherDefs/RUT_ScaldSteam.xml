@@ -21,8 +21,11 @@
   RM_GameCondition_EnvironmentalWeather (the lock, RUT_ScaldSteamLock.xml)
   both live in mandrake.rm.environmentalhazards.
 
-  accuracyMultiplier 0.9: INVENTED, deliberately milder than Fog's 0.5 — this
-  is standing steam over calm water, not a blind. moveSpeedMultiplier 1.0
+  accuracyMultiplier 0.75 + maxRangeCap 24: INVENTED, and RAISED from the
+  original 0.9/uncapped by SCALD_STEAM_WEATHER_DESIGN_1 §3.3 (built
+  2026-09-26) — still well clear of Fog's 0.5, but thick enough that a
+  fight in the steam is a different fight, which the original values were
+  not. Both are native WeatherDef fields (MEASURED). moveSpeedMultiplier 1.0
   (unset/default): the sheet's only traversal penalty is the water's own
   burn, never the air above it. rainRate/snowRate explicit 0: the steam
   layer is presentation, not the R-B rain family (FORGE_MECHANICS_1's own
@@ -48,7 +51,8 @@
     <description>Standing white steam over the Scald's cyan boil — the lake's own exhale, thick enough to soften a shot but never enough to slow a step.</description>
     <repeatable>true</repeatable>
     <windSpeedFactor>0.3</windSpeedFactor>
-    <accuracyMultiplier>0.9</accuracyMultiplier>
+    <accuracyMultiplier>0.75</accuracyMultiplier>
+    <maxRangeCap>24</maxRangeCap>
     <rainRate>0</rainRate>
     <snowRate>0</snowRate>
     <favorability>Neutral</favorability>

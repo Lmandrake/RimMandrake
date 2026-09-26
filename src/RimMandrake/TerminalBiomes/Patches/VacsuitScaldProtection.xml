@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  VacsuitScaldProtection.xml             TerminalBiomes
+  ==========================================================================
+  SCALD_STEAM_WEATHER_DESIGN_1 step 5, built 2026-09-26. Owner ruling by
+  question card, 2026-09-25: *advanced vacsuit-types protect.* His typed
+  line was "advanced vacsuit-types should be able to handle it too" — a
+  sealed suit is a sealed suit, and it would be absurd for a vacuum-rated
+  garment to be useless against standing steam.
+
+  Values INVENTED, from the spec's §5 table: 0.35 on the suit, 0.30 on the
+  helmet, so the pair reaches 0.65 — below the boil-suit's own 0.85, which
+  is the point: the purpose-built Industrial garment stays the best answer
+  and the Spacer suit is the "I already had one" answer. RM_ArmorRating_Scald
+  0.4 additionally blunts a steam devil.
+
+  Any later sealed suit of that class (a donor's hardsuit, a Spacer
+  pressure suit) takes this same patch shape — that is what "any later
+  advanced vacsuit-type" means in the ruling.
+
+  ⚠️ Gated by a PatchOperationConditional on the TARGET's own existence,
+  not by MayRequire: MayRequire on an <Operation> is INERT (MEASURED
+  2026-09-17 — ModContentPack.LoadPatches never reads the attribute). With
+  Odyssey absent the def is absent, the xpath matches nothing, and the
+  conditional is a clean no-op. Doctrine assumes every DLC is present
+  anyway; this is load safety, not a DLC-absent design path.
+
+  Apparel_VacsuitChildren is deliberately NOT patched: a child in a
+  vacsuit on the Scald shore is not a case this ladder is designed around,
+  and adding it silently would be inventing a ruling.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Apparel_Vacsuit"]/statBases</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Apparel_Vacsuit"]/statBases</xpath>
+      <value>
+        <RM_ScaldProtection>0.35</RM_ScaldProtection>
+        <RM_ArmorRating_Scald>0.4</RM_ArmorRating_Scald>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Apparel_VacsuitHelmet"]/statBases</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Apparel_VacsuitHelmet"]/statBases</xpath>
+      <value>
+        <RM_ScaldProtection>0.30</RM_ScaldProtection>
+        <RM_ArmorRating_Scald>0.4</RM_ArmorRating_Scald>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

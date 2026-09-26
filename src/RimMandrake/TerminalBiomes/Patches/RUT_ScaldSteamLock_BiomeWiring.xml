@@ -23,6 +23,14 @@
   wildAnimals/baseWeatherCommonalities/terrainsByFertility), so this adds
   the whole element rather than appending an <li> to an existing one.
 
+  SCALD_STEAM_WEATHER_DESIGN_1 step 4, 2026-09-26: a SECOND permanent
+  condition rides the same patch — RUT_ScaldSteamCarrier, the grant half of
+  the steam exposure clock. It is a separate GameConditionDef rather than a
+  field on the lock because the lock's class (RM_GameCondition_WeatherPulse)
+  has no carrierHediff and the class that does has no periodic lapse; see
+  RUT_ScaldSteamCarrier.xml's own header for why neither was extended. The
+  two cannot fight: the carrier sets no forcedWeather.
+
   TERMINALBIOMES_RM_MOD_BUILD_1 step 2, 2026-09-25: moved into this mod from
   UtinniPatches (frozen twin, same folder there). xpath retargeted
   RUT_TheScald -> RM_TheScald per the item's own §7(a) instruction — this
@@ -36,14 +44,27 @@
     </mods>
     <match Class="PatchOperationConditional">
       <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/biomeMapConditions</xpath>
+      <!-- Element absent (the shipped state): add it with BOTH permanent
+           conditions at once. -->
       <nomatch Class="PatchOperationAdd">
         <xpath>/Defs/BiomeDef[defName="RM_TheScald"]</xpath>
         <value>
           <biomeMapConditions>
             <li>RUT_ScaldSteamLock</li>
+            <li>RUT_ScaldSteamCarrier</li>
           </biomeMapConditions>
         </value>
       </nomatch>
+      <!-- Element already present (some other mod or a future direct edit
+           put it there): append only the carrier, which is the entry this
+           2026-09-26 pass adds. Appending the lock too would risk a
+           duplicate; the nomatch branch above is the one that ships. -->
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/biomeMapConditions</xpath>
+        <value>
+          <li>RUT_ScaldSteamCarrier</li>
+        </value>
+      </match>
     </match>
   </Operation>
 

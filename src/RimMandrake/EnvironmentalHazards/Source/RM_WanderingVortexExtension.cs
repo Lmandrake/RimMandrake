@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -76,5 +77,28 @@ namespace RimMandrake.EnvironmentalHazards
         /// non-giant tree (tagged non-giant, or untagged) always fells
         /// regardless of this fraction; only giants are health-gated.</summary>
         public float giantTreeFellHealthFraction = 0.5f;
+
+        /// <summary>Races this vortex never damages, and the PawnKindDefs
+        /// likewise. SCALD_STEAM_WEATHER_DESIGN_1 step 3, 2026-09-26.
+        ///
+        /// The spec's own finding: RUT_SteamDevil scalded the Scald's own
+        /// natives exactly as hard as a colonist, because DamageCell hit
+        /// every Thing in the cell with no species check and this extension
+        /// carried no immune list at all. The water half of native immunity
+        /// (the RM_OrganicScaldNative HediffGiverSetDef) could never have
+        /// covered it — that only removes HediffGiver_Terrain, and a vortex
+        /// is a direct TakeDamage, not terrain.
+        ///
+        /// Read through HazardTargeting.Affects, the same helper every other
+        /// hazard in this assembly uses, so "immune" means the same thing
+        /// everywhere. Both lists empty (the default) is the old behaviour
+        /// exactly: every other consumer of this class is unchanged.</summary>
+        public List<ThingDef> immuneThingDefs;
+
+        public List<PawnKindDef> immunePawnKinds;
+
+        /// <summary>Which pawns the vortex can hit at all. Defaults to
+        /// Flesh, matching every other hazard's own default.</summary>
+        public PawnTargetKind affects = PawnTargetKind.Flesh;
     }
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ScaldProtection.xml                 EnvironmentalHazards
+  ==========================================================================
+  SCALD_STEAM_WEATHER_DESIGN_1 step 4, built 2026-09-26. The apparel stat
+  RM_HediffComp_EnvironmentalExposure reads through its own `protectionStat`
+  field and sums across worn apparel (HazardTargeting.SumApparelStat — an
+  "Apparel"-category StatDef has no vanilla auto-aggregation onto a pawn
+  stat; the comp does the summing itself).
+
+  Cribbed from RM_WetBulbProtection.xml in this same folder, field for
+  field — that spec section says so outright ("cribbing RM_WetBulbProtection
+  exactly"). Same abstract base, same 0..1 clamp, same quality part.
+
+  ⚠️ TWO SCALD STATS, TWO JOBS, both meant to sit on the same garments —
+  do not merge them and do not substitute one for the other:
+    RM_ScaldProtection   — THIS one. Slows the standing-steam exposure
+                           clock (RUT_ScaldExposure). Read only by the
+                           exposure comp.
+    RM_ArmorRating_Scald — the DAMAGE stat, for RUT_Scald hits (the steam
+                           devil's vortex). Read by the armor system.
+  Ordinary ArmorRating_Heat is the third, separate thing: it is what
+  reduces the terrain's own wading burn, and it is plain vanilla.
+
+  Ban 3 of the frozen sheet ("no boiling-immune traversal for free") is not
+  enforced here but by the comp's own `minDriveFactor` floor: this stat is
+  clamped to 1 and the clock still runs at 8% of rate at full protection.
+  A garment may therefore safely carry a large value; nothing wearable
+  reaches immunity.
+-->
+<Defs>
+
+  <StatDef ParentName="ArmorRatingBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_ScaldProtection</defName>
+    <label>scald-steam protection</label>
+    <labelForFullStatList>Scald-steam protection (armor stat)</labelForFullStatList>
+    <description>How much this garment slows the scald-steam exposure clock — sealed or heavily waxed gear built to keep live steam off skin and out of lungs. Ordinary insulation does nothing against standing steam; only apparel carrying this stat helps.
+
+Summed across every garment worn at once, then capped. Nothing reaches immunity: fully protected, the clock still runs, slowly.</description>
+    <maxValue>1</maxValue>
+    <parts>
+      <li Class="StatPart_Quality">
+        <factorAwful>0.6</factorAwful>
+        <factorPoor>0.8</factorPoor>
+        <factorNormal>1</factorNormal>
+        <factorGood>1.15</factorGood>
+        <factorExcellent>1.3</factorExcellent>
+        <factorMasterwork>1.45</factorMasterwork>
+        <factorLegendary>1.8</factorLegendary>
+      </li>
+    </parts>
+  </StatDef>
+
+</Defs>

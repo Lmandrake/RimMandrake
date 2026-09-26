@@ -72,6 +72,18 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
+            // SCALD_STEAM_WEATHER_DESIGN_1 step 4: honour RM_MechanicGateExtension,
+            // the same way RM_GameCondition_WeatherPulse already does. A def
+            // carrying no gate extension is never gated (RM_MechanicGates.Enabled
+            // returns true for an empty or unregistered key), so every existing
+            // consumer — the Miasma lock, the Rot's sheen lock, the Sump's dusk —
+            // behaves exactly as before. Without this, a biome's Mod Settings
+            // toggle cannot stop a carrier condition from granting its hediff.
+            if (!RM_MechanicGates.Enabled(def))
+            {
+                return;
+            }
+
             if (--ticksUntilDamage > 0)
             {
                 return;
@@ -175,7 +187,7 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             EnvironmentalWeatherExtension ext = ExtensionInt;
-            if (ext == null)
+            if (ext == null || !RM_MechanicGates.Enabled(def))
             {
                 return;
             }
