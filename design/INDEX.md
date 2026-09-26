@@ -628,7 +628,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `bridge_library_design.md` | rimdrive — the reusable Python bridge library (design) | — |
 | `coastal_mesa_rationale.md` | Coastal Mesa — LLM-authored map improvement |  |
 | `codex_receiving_agent_design.md` | A receiving agent inside Codex — accelerating graphics generation | — |
-| `droid_oracle_voice_design.md` | Droid voice through the Oracle — four consumers, dormant | ? design, dormant — droid_oracle_voice_design_1, fable pass 2026-09-08, for owner
+| `droid_oracle_voice_design.md` | Droid voice through the Oracle — four consumers, live; Narrator third person | ? design, ruled live 2026-09-25/26 — droid_oracle_voice_design_1, fable pass 2026-09-08, rulings folded 2026-09-26, for owner
      review. ruled into existence by droid_unified_framework_design.md §0 card 14 ("droid voice
      via the oracle |
 | `faction_authoring_mechanism.md` | faction_authoring_mechanism.md — How we make rich, differentiated factions |  |
