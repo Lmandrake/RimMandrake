@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TheForge_Flora.xml                  THEFORGE_RM_MOD_BUILD_1
+
+  The Forge's own franchise-free flora, moved out of
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_CavernsFlora.xml
+  (BMT_FLORA_ABSORPTION_1 port) per biome_mod_architecture.md §7 Q8's
+  "each plant moves into the RimMandrake mod of the biome whose wildPlants
+  lists it, renamed RM_" — applied here even though these three never lived
+  under mandrake.rut.ashkarrflora specifically (Q8's literal target), because
+  the same "no campaign flora pack ships a biome's own signature plant"
+  reasoning applies identically.
+
+  RM_FireLavender / RM_HeatsinkFungus: fields and art copied byte-identical
+  from RUT_FireLavender / RUT_HeatsinkFungus (only reference in the repo was
+  RUT_TheForge.xml's own wildPlants, confirmed via grep before this move —
+  no other biome shares them, so a straight rename is correct).
+
+  RM_CinderCrust: NOT a straight rename of RUT_Sagecrust. That def is SHARED
+  between two biomes (RUT_TheForge.xml AND RUT_TheRot.xml both list it), and
+  THEROT_RM_MOD_BUILD_1 already claimed the straight-rename copy as
+  RM_Sagecrust (src/RimMandrake/TheRot/Defs/ThingDefs_Plants/
+  RM_RotSporeKit_Flora.xml) — a second ThingDef with the same defName
+  RM_Sagecrust in a second mod that loads alongside it would be a duplicate-
+  defName collision. Per biome_mod_architecture.md §7 Q13 ("content wired
+  into TWO biome mods: DUPLICATE, THEN DIVERGE... each mod carries its own
+  copy under its own defName; the second copy is regenerated — art and
+  identity — into a distinct variant"), this is the SECOND biome's copy:
+  same mechanical shape as RUT_Sagecrust/RM_Sagecrust, distinct identity
+  (label/description reflecting the Forge's own heat rather than the Rot's
+  cold-and-dark), and no art yet (0 PNGs, same expected mid-migration state
+  as RM_Fuzz/RM_Grellbush in LEANINGSCRUB_RM_MOD_BUILD_1 — the "regenerated"
+  art half of Q13 is separate, unowed work, not invented here).
+-->
+<Defs>
+
+  <!-- ============== Fire lavender ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_FireLavender</defName>
+    <label>fire lavender</label>
+    <description>A lavender that has adapted to survive off the glow of magma, thriving in heat that would kill any ordinary flower. Well loved for its beauty despite — or because of — the furnace it grows in.</description>
+    <graphicData>
+      <texPath>Things/Plant/FireLavender</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <Flammability>0.0</Flammability>
+    </statBases>
+    <ingestible/>
+    <plant>
+      <growMinGlow>0.5</growMinGlow>
+      <growOptimalGlow>0.5</growOptimalGlow>
+      <minGrowthTemperature>50</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>50</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>2.3</glowRadius>
+        <glowColor>(252,187,113,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============== Heatsink fungus ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_HeatsinkFungus</defName>
+    <label>heatsink fungus</label>
+    <description>Using a complex mix of chemical reactions, this fungus draws in heat to fuel its own growth. Settlers build around it, or move it indoors, to take the edge off a scorching room.</description>
+    <graphicData>
+      <texPath>Things/Plant/HeatsinkFungus</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Flammability>0.0</Flammability>
+      <Nutrition>1</Nutrition>
+    </statBases>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <minGrowthTemperature>50</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>50</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <growDays>5.5</growDays>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.25~0.6</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Cinder crust — the Forge's own variant of the shared
+       crust-fungus (Q13), NOT RM_Sagecrust ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_CinderCrust</defName>
+    <label>cinder crust</label>
+    <description>A tough, ash-grey crust-fungus that clings to cooling rock at the skirts of the massif, baked hard by radiant heat rather than any light it drinks. Nothing much eats it and nothing much kills it; it is the first thing to grow back after a boiling-rain burst scalds a slope bare.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_CinderCrust</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.15</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>40</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>45</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <fertilitySensitivity>0.0</fertilitySensitivity>
+      <growDays>3.5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.2~0.5</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+</Defs>

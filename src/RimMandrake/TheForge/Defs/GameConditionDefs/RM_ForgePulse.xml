@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ForgePulse.xml                      THEFORGE_RM_MOD_BUILD_1
+
+  Moved out of src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/
+  RUT_ForgePulse.xml (FORGE_MECHANICS_1 F1), fields byte-identical, defName
+  and its two weather references renamed to this mod's own RM_ForgeStill/
+  RM_BoilingRain. Referenced directly in RM_TheForge_Biome.xml's own
+  <biomeMapConditions> (no PatchOperationAdd wrapper needed - the guarding
+  reason the original patch existed was that RUT_ForgePulse only exists when
+  mandrake.rm.environmentalhazards is active; that mod is a hard
+  modDependency of THIS mod, declared in About.xml, so the cross-reference
+  can never dangle).
+
+  scaldDamageDef still points at RUT_Scald
+  (src/RimUtinni/UtinniPatches/Defs/DamageDefs/RUT_Scald.xml) - a shared
+  cross-biome damage type ALREADY reused this way by RM_Greentide (confirmed
+  by THEFORGE_RM_MOD_BUILD_1's own analysis, §6), so this is not a new
+  cross-mod dependency pattern, just the existing one. Whether RUT_Scald
+  itself should move to a shared RM_ tier is flagged UNCERTAIN in this
+  item's own analysis and is not this build's call to resolve unilaterally.
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_ForgePulse</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_WeatherPulse</conditionClass>
+    <label>the mountain's breath</label>
+    <description>The Forge rains on itself: long still heat, broken by sudden violent bursts of scalding rain that flash back to steam off the hot rock within seconds.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>true</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.WeatherPulseExtension">
+        <baseWeather>RM_ForgeStill</baseWeather>
+        <burstWeather>RM_BoilingRain</burstWeather>
+        <burstMtbHours>10</burstMtbHours>
+        <burstDurationMinutesRange>20~40</burstDurationMinutesRange>
+        <flashWindowHoursAfterBurstStart>2</flashWindowHoursAfterBurstStart>
+        <scaldDamageDef>RUT_Scald</scaldDamageDef>
+        <scaldDamageAmount>4</scaldDamageAmount>
+        <scaldDamageIntervalTicks>60</scaldDamageIntervalTicks>
+        <onlyUnroofed>true</onlyUnroofed>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>

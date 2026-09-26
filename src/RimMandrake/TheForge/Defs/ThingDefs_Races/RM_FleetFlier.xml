@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FleetFlier.xml                      THEFORGE_RM_MOD_BUILD_1
+
+  Moved out of src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/
+  RUT_FleetFlier.xml, fields byte-identical, defName/label renamed only.
+  A genuinely new, franchise-free creature authored by COMMISSION_LEDGER_CLEANUP_1
+  with no donor/MayRequire at all — same "invented name is not IP" reasoning
+  (biome_mod_architecture.md §7 Q9/Q11a) that keeps AA_Aerofleet/LavaSnail/
+  AA_Metallovore/AA_CrescendoAnole inline on this def, applies more strongly
+  here since this species is entirely ours, not even a non-Star-Wars donor
+  import. No other biome references it (grep-checked before this move), so
+  this is a straight rename, not a Q13 shared-content duplication.
+
+  CompProperties_VaporDrifter is RimMandrake.EnvironmentalHazards' own class
+  (FORGE_MECHANICS_1 F3, already shipped in that shared assembly this mod
+  loadAfters) — referenced bare, matching the original file's own precedent
+  of not MayRequire-gating the class reference.
+
+  No art yet (0 PNGs) — same as the original RUT_FleetFlier.xml, which never
+  had any either (COMMISSION_LEDGER_CLEANUP_1's own header: "genuinely new,
+  no existing render found"; three artpipe jobs filed but not yet realized).
+  Not a defect, not this build's job (CLAUDE.md "prove art missing before
+  generating").
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_FleetFlier</defName>
+    <label>fleet flier</label>
+    <description>A small, quick-winged creature that darts into the Forge's vapor columns to graze on fireweed before the heat catches up with it. It never lingers - a fleet flier on the open ground is a fleet flier running out of time.</description>
+    <statBases>
+      <MoveSpeed>4.2</MoveSpeed>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>38</ComfyTemperatureMax>
+      <MarketValue>55</MarketValue>
+      <Wildness>0.9</Wildness>
+      <MaxFlightTime>15</MaxFlightTime>
+      <FlightCooldown>4</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>1.5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_VaporDrifter">
+        <forageRadiusBeyondColumns>12</forageRadiusBeyondColumns>
+        <groundHazardImmune>true</groundHazardImmune>
+      </li>
+    </comps>
+    <race>
+      <body>Bird</body>
+      <predator>false</predator>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHungerRate>0.4</baseHungerRate>
+      <baseHealthScale>0.3</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <herdAnimal>true</herdAnimal>
+      <roamMtbDays>3</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <lifeExpectancy>5</lifeExpectancy>
+      <gestationPeriodDays>3</gestationPeriodDays>
+      <flightStartChanceOnJobStart>0.4</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.7</leaveMapOnFleeChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.2)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_FleetFlier</defName>
+    <label>fleet flier</label>
+    <race>RM_FleetFlier</race>
+    <combatPower>12</combatPower>
+    <wildGroupSize>3~8</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

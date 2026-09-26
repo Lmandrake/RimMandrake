@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_TheForge_Biome.xml                      THEFORGE_RM_MOD_BUILD_1
+
+    Phase A row 21 of design/RimMandrake/biome_mod_architecture.md — the
+    RimMandrake-tier twin of the frozen src/RimUtinni/UtinniPatches/Defs/
+    BiomeDefs/RUT_TheForge.xml, generalized to zero campaign-specific content
+    per §3a's test. Full sheet (campaign-side):
+    design/Jawa/worldbuilding/biomes/the_forge.md (FROZEN).
+
+    Copied from the frozen def, MEASURED 2026-09-25: diseases, terrain
+    thresholds, animalDensity/plantDensity/forageability/movementDifficulty/
+    diseaseMtbDays/wildPlantRegrowDays are all byte-identical to
+    RUT_TheForge.xml's own values — nothing here is re-derived except the
+    three fields the item's own analysis flagged as owing a change:
+
+      - workerClass: the frozen twin's AlphaBiomes.BiomeWorker_PyroclasticConflagration
+        is a donor type, which the RimMandrake tier may not assume as a hard
+        dependency. Own RM_BiomeWorker_TheForge (Source/
+        RM_BiomeWorker_TheForge.cs), scored from the massif's own MEASURED
+        stats (the_forge.md §0: temps 42-56 C, elevation median 1,382-2,010 m,
+        max 2,266 m) so RM_TheForge can also generate naturally on any OTHER
+        player's world, the same shape as RM_BiomeWorker_TheRot.
+
+      - texture: the frozen twin's "Biomes/AB_PyroclasticConflagration" is an
+        Alpha Biomes donor texture. Reused vanilla Core's own
+        "World/Biomes/ExtremeDesert" instead — same placeholder choice
+        FloodedCanyon/Wasteland/Pyrelands already make for a hot/arid RM_
+        biome with no closer vanilla equivalent (no lava/volcanic world
+        texture ships in vanilla Core) — not invented art, a documented
+        stand-in.
+
+      - foragedFood: the frozen twin's "AB_RawBrownBarrelCactus" is an Alpha
+        Biomes donor-only ThingDef. Reused vanilla "RawAgave" instead — the
+        same vanilla-safe substitute ForsakenCrags/FloodedCanyon/Pyrelands
+        already use for a hot/arid RM_ biome's foraging.
+
+    terrainsByFertility keeps the frozen twin's three AB_ terrain bands
+    inline, unguarded — RM_FloodedCanyon_Biome.xml already sets this exact
+    precedent (AB_FineForsakenSand inline, no MayRequire) for a donor terrain
+    family in an RM_-tier def; terrainsByFertility's own <li> does not carry
+    a MayRequire field in the engine anyway.
+
+    wildAnimals: every RSW_/SW_/donor-Star-Wars-name entry stays OUT (per
+    §7 Q11, "RimMandrake should not name star wars ever") and rides
+    src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheForge.xml instead —
+    casting the OWNED RSW_LavaFlea/RSW_Beldon ports rather than the donor's
+    bare LavaFlea/Beldon defNames the frozen twin uses, which also fixes a
+    latent defName mismatch: FORGE_MECHANICS_1's own tibanna-tap patch
+    (RUT_TibannaTap_BeldonWiring.xml) has always targeted RSW_Beldon, a
+    defName that has never actually spawned on the frozen RUT_TheForge (its
+    own wildAnimals spawns only the donor's bare Beldon). This mod is the
+    first place the tap's real target actually lives in a Forge wildAnimals
+    list. Only the 4 non-Star-Wars donor rows the frozen def already carries
+    (Q9) plus RM_FleetFlier (COMMISSION_LEDGER_CLEANUP_1's own from-scratch,
+    zero-donor creature — an even stronger Q9/Q11a case than a donor import)
+    are inline here.
+
+    wildPlants: the frozen def's RUT_FireLavender/RUT_HeatsinkFungus are
+    renamed RM_FireLavender/RM_HeatsinkFungus (§7 Q8's "each plant moves into
+    the RimMandrake mod... renamed RM_", applied one biome sitting late).
+    RUT_Sagecrust is NOT renamed to RM_Sagecrust here — that defName is
+    already claimed by THEROT_RM_MOD_BUILD_1 for the SAME shared donor plant
+    (RUT_Sagecrust is wired into both RUT_TheRot.xml and RUT_TheForge.xml).
+    Per biome_mod_architecture.md §7 Q13 ("content wired into TWO biome
+    mods: DUPLICATE, THEN DIVERGE... each mod carries its own copy under its
+    own defName"), this biome's copy is RM_CinderCrust — same mechanical
+    shape, a distinct identity, and no art yet (Q13's "regenerated" art half
+    is separate, unowed work). See Defs/ThingDefs_Plants/RM_TheForge_Flora.xml
+    for the full reasoning.
+
+    biomeMapConditions/baseWeatherCommonalities: FORGE_MECHANICS_1's F1
+    weather-pulse cycle (RM_ForgeStill/RM_BoilingRain/RM_ForgePulse) is
+    authored natively in this mod (Defs/WeatherDefs/, Defs/GameConditionDefs/)
+    rather than left as a second PatchOperationAdd op — the original patch
+    (RUT_ForgePulse_BiomeWiring.xml) existed only because RUT_ForgePulse is a
+    MayRequire-gated def that could dangle if injected directly into an
+    always-loaded BiomeDef; here the condition ships IN this mod, so a
+    direct <biomeMapConditions> reference cannot dangle. The frozen twin's
+    RSW_SW_RedFog baseWeatherCommonalities entry is replaced with this mod's
+    own RM_RedFog (owner ruling 2026-09-24, "make our own version and drop
+    the SW label... it came from Alpha Biomes" - see RM_RedFog.xml's own
+    header) at the same commonality (8).
+
+    NOT this pass's scope, per this item's own §6/§9: the tibanna gas item
+    and gather mechanism (F2, campaign plot - TIBANNA_EMBARGO_PLOT_1), the
+    vapor-column ThinkTree wiring (F3, placeholder-only today), the foundry
+    tower dungeon shell (F4, campaign plot), the Contagion die-off ring (F5,
+    campaign lore), and the vent-industry buildings RUT_VentSmelter/VentForge/
+    VentKiln (F6 - XML-only, freestanding production buildings with no
+    BiomeDef field reference, left for FORGE_MECHANICS_1's own remaining
+    move/rename pass rather than folded into this build). All are unaffected
+    by this split; none blocks it.
+  -->
+
+  <BiomeDef>
+    <defName>RM_TheForge</defName>
+    <label>the Forge</label>
+    <description>One mountain, three zones, and the only vertical skyline for a hundred kilometres: tall, dark foundry towers rising defiantly against the sun, streaming vent-steam like banners. Below them the red seams and the flows; around them the ash skirts; above them, improbably, herds -- vast placid gas-grazers drifting in the vapor columns. The mountain rains on itself in scalding bursts, and mosses drink in the seconds between fall and flash.</description>
+    <workerClass>RimMandrake.TheForge.RM_BiomeWorker_TheForge</workerClass>
+    <texture>World/Biomes/ExtremeDesert</texture>
+    <foragedFood>RawAgave</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>false</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.2</animalDensity>
+    <plantDensity>0.4</plantDensity>
+    <forageability>0.5</forageability>
+    <movementDifficulty>1.5</movementDifficulty>
+    <diseaseMtbDays>65</diseaseMtbDays>
+    <modExtensions>
+      <li Class="RimMandrake.TheForge.RM_TheForgeBiomeRanges" />
+    </modExtensions>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>AB_BlackPebbles</terrain>
+        <min>-999</min>
+        <max>0.7</max>
+      </li>
+      <li>
+        <terrain>AB_HardenedGrass</terrain>
+        <min>0.7</min>
+        <max>0.9</max>
+      </li>
+      <li>
+        <terrain>AB_HardenedGrassFertile</terrain>
+        <min>0.9</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>40</Clear>
+      <AB_VolcanicAsh MayRequire="sarg.alphabiomes">20</AB_VolcanicAsh>
+      <AB_VolcanicAshRain MayRequire="sarg.alphabiomes">6</AB_VolcanicAshRain>
+      <RM_RedFog>8</RM_RedFog>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <biomeMapConditions>
+      <li>RM_ForgePulse</li>
+    </biomeMapConditions>
+    <wildAnimals>
+      <AA_Aerofleet MayRequire="sarg.alphaanimals">0.4</AA_Aerofleet>  <!-- aerofleet - sky -->
+      <LavaSnail MayRequire="sarg.alphabiomes">0.35</LavaSnail>  <!-- lava snail - ground-slow -->
+      <AA_Metallovore MayRequire="sarg.alphaanimals">0.15</AA_Metallovore>  <!-- metallovore - ground-slow -->
+      <AA_CrescendoAnole MayRequire="sarg.alphaanimals">0.5</AA_CrescendoAnole>  <!-- crescendo anole - small, ECOSYSTEM_PYRAMID_LAW_1 -->
+      <RM_FleetFlier>0.45</RM_FleetFlier>  <!-- fleet flier - small sky, from-scratch, renamed from RUT_FleetFlier -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <Plant_Fireweed>0.9</Plant_Fireweed>  <!-- fireweed -->
+      <Plant_MagmaCactus>0.7</Plant_MagmaCactus>  <!-- magma cactus -->
+      <RM_FireLavender>0.6</RM_FireLavender>  <!-- renamed from RUT_FireLavender -->
+      <RM_CinderCrust>0.4</RM_CinderCrust>  <!-- this biome's own variant of the shared crust-fungus, §7 Q13 -->
+      <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
+      <AB_TinkleGrass>0.3</AB_TinkleGrass>  <!-- tinkle grass -->
+      <IronScruff_PrimordialTallGrass>0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
+      <IronScruff_Bindweed>0.25</IronScruff_Bindweed>  <!-- bindweed -->
+      <AB_FirevineTree>0.2</AB_FirevineTree>  <!-- firevine tree - tree -->
+      <RM_HeatsinkFungus>0.2</RM_HeatsinkFungus>  <!-- renamed from RUT_HeatsinkFungus, tree -->
+    </wildPlants>
+    <wildPlantRegrowDays>27</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

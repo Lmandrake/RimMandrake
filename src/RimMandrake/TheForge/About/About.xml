@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.theforge</packageId>
+  <name>RimMandrake: The Forge</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.environmentalhazards</li>
+  </loadAfter>
+  <description>THEFORGE_RM_MOD_BUILD_1 (Phase A row 21 of
+design/RimMandrake/biome_mod_architecture.md). One mountain, three zones, and
+the only vertical skyline for a hundred kilometres: tall foundry towers
+streaming vent-steam, red lava seams and ash skirts below them, and vast
+placid herds drifting in the vapor columns above. The mountain rains on
+itself in scalding, closed bursts, and mosses drink in the seconds between
+fall and flash. It generalizes the biome sketched for a frozen campaign
+world's own volcanic massif (design/Jawa/worldbuilding/biomes/the_forge.md)
+with zero campaign-specific content: no named factions, no lore proper
+nouns, nothing that names the source campaign or any franchise.
+
+RM tier: nothing here knows what campaign or planet uses it. It ships its
+own signature flora (fire lavender, heatsink fungus, and a heat-hardened
+crust-fungus distinct from any other biome's own variant per
+biome_mod_architecture.md §7 Q13), its own closed boiling-rain weather
+cycle, its own red haze weather, and a modest core of non-franchise
+wildlife including a from-scratch fleet flier. Franchise-specific fauna
+(Star Wars creatures) never appear in this def; a companion Utinni patch
+layers three of them on top for the campaign that wants the fuller cast,
+exactly as it does with every other RimMandrake biome mod — and fixes a
+defName mismatch the frozen twin never had a chance to: the campaign's
+tibanna-tap mechanism targets the ported RSW_Beldon, but the twin's own
+wildAnimals spawned only the bare donor Beldon, so the tap's target never
+actually lived on this biome. This mod casts RSW_Beldon in the campaign
+patch instead.
+
+Ships one real behaviour switch, togglable in Mod Settings (default =
+shipped behavior, MOD_OPTIONS_RETROFIT_1 doctrine):
+
+  1. The master toggle: turns this mod's own settings-driven behaviour off
+     without touching the biome def itself — the massif, its plants and its
+     animals keep loading and playing exactly as before.
+
+The remaining toggles (weather-pulse bursts, tibanna-tap rate, vapor-column
+immunity, tower scatter count, die-off ring density, vent work-speed bonus)
+are scaffolding for FORGE_MECHANICS_1's shared mechanics, matching
+RM_TheRotSettings' own precedent: declared, exposed and shown in this
+screen, but not yet wired to change behaviour — that consolidation is owed
+alongside FORGE_MECHANICS_1's own remaining work, not this build.
+
+NOT in this mod: the foundry tower dungeon shell, the Contagion die-off
+ring, the tibanna gas item and its gather mechanism, and the vent-industry
+buildings (RUT_VentSmelter/VentForge/VentKiln) — all named campaign plot or
+tracked separately under FORGE_MECHANICS_1, and land here later if that
+item's own split decides to move them.
+  </description>
+</ModMetaData>
