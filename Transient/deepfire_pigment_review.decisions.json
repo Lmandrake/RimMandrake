@@ -1,53 +1,67 @@
 {
-  "posture": "whitelist",
-  "criterion": "existing renders pre-filled 'keep' as validated candidates; new variants left undecided — nothing has rendered yet",
-  "generatedBy": "deepfire art review task, 2026-09-25 (fill_queue.py + review-sheets skill)",
-  "reviewStatus": {
-    "state": "prefill",
-    "by": null,
-    "at": "2026-09-25",
-    "evidence": "agent pre-fill — nobody has reviewed this sheet yet"
+ "criterion": "Pairs ranked by game-scale legibility + whether the render shows the pigment's iridescence \u2014 which ranks readability, not taste; overrule freely on the contested pairs.",
+ "decidedCount": 8,
+ "decisions": {
+  "deepfire_crowncarpet_a": {
+   "at": "2026-09-26T06:43:19.906Z",
+   "decision": "cut",
+   "note": "",
+   "prefill": "keep"
   },
-  "decisions": {
-    "scald2_rainbowpigment_a": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "scald2_rainbowpigment_b": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "scald2_rainbowpigment_c": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "rutwelcomeblanket_v1": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "deepfire_pigmentjar_a": {
-      "decision": "",
-      "prefill": "",
-      "note": "queued in artpipe pending/, not yet rendered"
-    },
-    "deepfire_pigmentjar_b": {
-      "decision": "",
-      "prefill": "",
-      "note": "queued in artpipe pending/, not yet rendered"
-    },
-    "deepfire_crowncarpet_a": {
-      "decision": "",
-      "prefill": "",
-      "note": "queued in artpipe pending/, not yet rendered"
-    },
-    "deepfire_crowncarpet_b": {
-      "decision": "",
-      "prefill": "",
-      "note": "queued in artpipe pending/, not yet rendered"
-    }
+  "deepfire_crowncarpet_b": {
+   "at": "2026-09-26T06:43:42.637Z",
+   "decision": "keep",
+   "note": "Needs to be much more sedate in coloration and more organic looking. Seems cartoonish and not gross enough.",
+   "prefill": "cut"
+  },
+  "deepfire_pigmentjar_a": {
+   "decision": "cut",
+   "note": "CONTESTED pair with _b: a's contents read plain white (mayonnaise); the pigment's iridescence is the whole product.",
+   "prefill": "cut"
+  },
+  "deepfire_pigmentjar_b": {
+   "at": "2026-09-26T06:42:13.450Z",
+   "decision": "keep",
+   "note": "This is what it should look like, along with the multiples for stacking as you indicated above",
+   "prefill": "keep"
+  },
+  "rutwelcomeblanket_v1": {
+   "at": "2026-09-26T06:43:20.554Z",
+   "decision": "cut",
+   "note": "",
+   "prefill": "keep"
+  },
+  "scald2_rainbowpigment_a": {
+   "at": "2026-09-26T06:41:50.345Z",
+   "decision": "cut",
+   "note": "",
+   "prefill": "keep"
+  },
+  "scald2_rainbowpigment_b": {
+   "at": "2026-09-26T06:41:51.068Z",
+   "decision": "cut",
+   "note": "",
+   "prefill": "keep"
+  },
+  "scald2_rainbowpigment_c": {
+   "at": "2026-09-26T06:41:51.632Z",
+   "decision": "cut",
+   "note": "",
+   "prefill": "keep"
   }
+ },
+ "generatedBy": "deepfire art review task, 2026-09-25 (fill_queue.py + review-sheets skill)",
+ "posture": "whitelist",
+ "reviewStatus": {
+  "state": "ruled",
+  "by": "owner",
+  "at": "2026-09-25T23:43:43-0700",
+  "evidence": "sidecar session, writeCount 14, 6 overrides of 8 rows; owner said 'Review sheet done' in chat 2026-09-26"
+ },
+ "savedAt": "2026-09-25T23:43:43-0700",
+ "savedBy": "review-sheet-sidecar",
+ "writeCount": 14,
+ "frozen": true,
+ "frozenAt": "2026-09-26",
+ "frozenMeaning": "owner's ruling is final for this wave: keeps = crowncarpet_b (regen base, see its note) + pigmentjar_b; all rainbow-loud renders cut"
 }
