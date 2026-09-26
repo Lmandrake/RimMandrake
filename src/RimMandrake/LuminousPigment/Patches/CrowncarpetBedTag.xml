@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  CrowncarpetBedTag.xml                  LuminousPigment · DEEPFIRE_PIGMENT_MOD_1
+  ============================================================================
+  Spec §2.2: crowncarpet's wild-spawn terrain tag, added to vanilla
+  WaterOceanShallow (verified via RimSage: it already carries a <tags> node
+  with Water/Ocean, so a plain PatchOperationAdd is safe). This is the tag
+  RM_GenStep_ShoreMats' scatter and RM_Crowncarpet's own wildTerrainTags rely
+  on — it is what makes "any ocean shore, rarely" true without depending on
+  the Scald at all.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Core</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TerrainDef[defName="WaterOceanShallow"]/tags</xpath>
+      <value>
+        <li>RM_CrowncarpetBed</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

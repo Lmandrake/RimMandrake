@@ -202,7 +202,7 @@ Kinds: 1 shoal fish, 1 eel, 2 crustaceans, 1 jellyfish, 1 floater, 1 cucumber, 1
 Stats: crustacean envelope, Nutrition 0.15, MarketValue 5 (the cheap catch), Mass 0.4, rot 3 d; `preferability RawTasty` (comes up cooked — the muddal's register-break, justified by the same water). Sensory hook: thermophile, the dung economy at hand scale. ⚑ Not a swarm creature on the floor: single pairing; the *eesh* is this sea's one swarm.
 
 **thuum** — eel, common (0.5). *blanket-eel.*
-> An eel that lives *under* the welcome blankets — between the rainbow mat and the rock, in the thin hot film where the mat is thickest — and takes the pigment into its skin the way the muddal does, so a thuum is banded down its whole length in the mat's own colours, and a pilgrim who lifts a mat-edge at the baths sometimes finds one lying there like a strip of the Scald's oldest truth that has learned to move. It comes up cooked, and it is the margin's best eating after the eesh — richer, and the bands hold in the pan.
+> An eel that lives *under* the crowncarpet mats — between the rainbow mat and the rock, in the thin hot film where the mat is thickest — and takes the pigment into its skin the way the muddal does, so a thuum is banded down its whole length in the mat's own colours, and a pilgrim who lifts a mat-edge at the baths sometimes finds one lying there like a strip of the Scald's oldest truth that has learned to move. It comes up cooked, and it is the margin's best eating after the eesh — richer, and the bands hold in the pan.
 
 Stats: eel envelope (vanilla FishBase tier), rot 1 d (cooked flesh, keeps worse — the eesh's precedent), `preferability RawTasty`. Sensory hook: the thermophile rainbow on an animal; the pigment harvest's living neighbour.
 

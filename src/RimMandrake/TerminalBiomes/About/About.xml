@@ -6,10 +6,25 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <!-- DEEPFIRE_PIGMENT_MOD_1 spec §2.1: crowncarpet and Deepfire itself
+           moved out to LuminousPigment (RM_WelcomeBlanket -> RM_Crowncarpet,
+           RM_RainbowPigment -> RM_Deepfire). The Scald's own wildPlants row
+           names RM_Crowncarpet, so this dependency is hard, not loadAfter-only. -->
+      <packageId>mandrake.rm.luminouspigment</packageId>
+      <displayName>RimMandrake: Luminous Pigment</displayName>
+    </li>
+  </modDependencies>
   <loadAfter>
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rm.divinginteraction</li>
     <li>mandrake.rm.flowworks</li>
+    <li>mandrake.rm.luminouspigment</li>
   </loadAfter>
   <description>TERMINALBIOMES_RM_MOD_BUILD_1 (owner ruling, 2026-09-21, §7 Q1: four
 biomes, one mod, four independent toggles). Four terminal water biomes, fully

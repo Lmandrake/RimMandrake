@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GenStep_ShoreMats.xml               LuminousPigment · DEEPFIRE_PIGMENT_MOD_1
+
+  Spec §2.2, first bullet: wild crowncarpet on ANY ocean shore, standalone,
+  rare — this is what keeps the mod franchise-free and functional with the
+  Scald absent. Order 760: after Core's own terrain (so WaterOceanShallow
+  cells + the RM_CrowncarpetBed tag from Patches/CrowncarpetBedTag.xml are
+  already on the map) and after wildlife (750), so it reads as part of the
+  same population wave. Self-gates on shoreMatsEnabled and on there being at
+  least one qualifying cell; harmless on a map with no ocean shore.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_GenStep_ShoreMats</defName>
+    <order>760</order>
+    <genStep Class="RimMandrake.LuminousPigment.GenStep_ShoreMats" />
+  </GenStepDef>
+
+</Defs>

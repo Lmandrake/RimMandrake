@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.luminouspigment</packageId>
+  <name>RimMandrake: Luminous Pigment</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <!-- No mandrake.* engine belongs in modDependencies (soft-hook convention):
+       FlowWorks, Ninefold and the Utinni statues mod are all reflection-only
+       soft bindings, absent from this build's Phase 1 anyway (see below). -->
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mandrake.rm.flowworks</li>
+    <li>mandrake.rm.ninefold</li>
+  </loadAfter>
+  <description>DEEPFIRE_PIGMENT_MOD_1 (design/RimMandrake/deepfire_luminous_pigment_spec.md, fully
+ruled 2026-09-25/26). RimMandrake tier — every name here is invented, nothing is Star Wars IP
+(Q11a). Deepfire is a luminous pigment carried by no colour of its own: mixed with an ordinary
+dye it makes whatever colour the dye gives glow. It comes from crowncarpet, a rainbow bacterial
+mat found rarely on any ocean shore.
+
+THIS BUILD (Phase 1 — the chain, spec §2): crowncarpet (wild shore spawn on any ocean, a
+GenStepDef scatter at low commonality), the one-day fresh-mat clock (dies fast, dies at once if
+chilled — CompMatVitality), the Deepfire press (a screw press and an alchemical retort welded
+together, powered only, gated by a research project hidden until a mat is first seen), the
+refining recipe, Deepfire itself (a resource that glows faintly in a stockpile), and the
+GlowTank (a slow, low-yield cultured source). Every number is a Mod Settings toggle; the whole
+gate can be turned to Buildable or Unbuildable instead of Research.
+
+NOT YET IN THIS BUILD — filed as DEEPFIRE_PAINT_STATUS_CUISINE_1: painting Deepfire onto walls,
+floors, furniture, art, apparel and weapons (the designator/comp/beauty-and-quality mechanism);
+worn Deepfire's moving light and its darkness-targeting tradeoff; the sumptuary status engine
+("the purple engine"); the Ninefold god reactions; and the Cuisine glow-hediff families. Those
+five mechanisms each need Harmony postfixes into engine internals the spec itself flags
+UNMEASURED (BeautyUtility.CellBeauty, ShotReport.HitReportFor, GenRecipe.MakeRecipeProducts, the
+styling-station dialog) plus the live bridge quicktests the spec's own §10 build plan requires
+before anything else may depend on them — real, separately-buildable work, not owner-blocked, but
+too large to force into one unverified pass with the chain above.
+
+The Scald's Utinni-tier sourcing (the bottom-walkers laying crowncarpet as they pass, and the
+Stillfluid/Thornwillow fixative recipe) is a patch in the Utinni layer, not this mod — this mod
+is francise-free and fully functional (wild shore spawn) with the Scald absent.</description>
+</ModMetaData>

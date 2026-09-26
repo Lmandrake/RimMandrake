@@ -515,7 +515,7 @@ doc's proposal (uncommon); §6.8 asks whether it rides this build or its own.
 
 **muddal** — cucumber, common. *mat-mouse.*
 > The bottom-walkers' small cousin: a hand-long, armored, heat-glossed thing that
-> grazes the welcome blankets at the margins where the boil gentles, moving along
+> grazes the crowncarpet mats at the margins where the boil gentles, moving along
 > the rainbow bands and taking the pigment into its skin, so a muddal is banded
 > too — a little strip of the Scald's oldest truth. Pilgrims gather them at the
 > baths with a cloth. Cooked the moment it leaves the water, which is to say
