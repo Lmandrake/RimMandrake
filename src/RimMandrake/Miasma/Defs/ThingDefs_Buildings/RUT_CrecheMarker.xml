@@ -47,6 +47,21 @@
   added to a Languages/ folder — same owed shape this item's own M4/M5
   build passes already flagged for their own letter keys (.Translate()
   falls back to the raw key rather than erroring; does not block anything).
+
+  WARDEN_MOTHER_SUCCESSION_1: also carries RM_CompCrecheYoungLedger
+  (RimMandrake.Miasma, this mod's own assembly — no MayRequire needed),
+  a sibling to RM_CompCrecheMarker's despoiled-memory comp above, not a
+  replacement for it. Tracks which stranded young belong to this crèche,
+  whether the player's record against them is clean (self-taming, piece 1),
+  and promotes a self-tamed survivor when the warden mother dies (piece 3).
+  See that class's own header (Source/RM_WardenMotherSuccession.cs) for why
+  it detects her death by polling rather than via IRM_AnchorDeathListener.
+
+  tickerType flips Never -> Normal for that same reason: polling needs a
+  real tick. RM_CompCrecheMarker's own despoiled-memory comp is event-driven
+  (IRM_AnchorDeathListener) and never needed one, which is why Never was
+  correct before this item; drawerType/useHitPoints/destroyable/rotatable
+  are all unaffected and remain exactly as reasoned above.
   ============================================================================
 -->
 <Defs>
@@ -68,7 +83,7 @@
     <useHitPoints>false</useHitPoints>
     <destroyable>false</destroyable>
     <neverMultiSelect>true</neverMultiSelect>
-    <tickerType>Never</tickerType>
+    <tickerType>Normal</tickerType>
     <statBases>
       <Flammability>0</Flammability>
       <Beauty>0</Beauty>
@@ -77,6 +92,10 @@
       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_CrecheMarker">
         <despoiledManhunterFactorDurationDays>10</despoiledManhunterFactorDurationDays>
         <despoiledManhunterChanceFactor>1.5</despoiledManhunterChanceFactor>
+      </li>
+      <li Class="RimMandrake.Miasma.CompProperties_CrecheYoungLedger">
+        <pollIntervalTicks>600</pollIntervalTicks>
+        <motherSearchRadius>20</motherSearchRadius>
       </li>
     </comps>
   </ThingDef>

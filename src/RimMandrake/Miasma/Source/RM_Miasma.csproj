@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="RM_MiasmaMod.cs" />
     <Compile Include="RM_MiasmaBiome.cs" />
+    <Compile Include="RM_WardenMotherSuccession.cs" />
   </ItemGroup>
 
   <ItemGroup>

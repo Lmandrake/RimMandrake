@@ -24,4 +24,11 @@
        inspect-string label, attached to RUT_Karrobel.xml this pass. -->
   <RUT_DeltaLoamCastings>castings</RUT_DeltaLoamCastings>
 
+  <!-- WARDEN_MOTHER_SUCCESSION_1: RM_HediffComp_SelfTameOnRecord and
+       RM_CompCrecheYoungLedger's own messages/inspect string
+       (Source/RM_WardenMotherSuccession.cs). -->
+  <RUT_WardenYoungSelfTamed>{0} has stopped fleeing you. Freed from a drying pool once, it will not run again.</RUT_WardenYoungSelfTamed>
+  <RUT_WardenSuccessionMessage>The warden mother is gone, but {0} remains — the sea's memory, dying in its lifeboat, endures a little longer.</RUT_WardenSuccessionMessage>
+  <RUT_CrecheMarkerHeir>Warden's heir: {0}</RUT_CrecheMarkerHeir>
+
 </LanguageData>
