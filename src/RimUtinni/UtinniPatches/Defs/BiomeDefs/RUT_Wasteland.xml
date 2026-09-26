@@ -60,7 +60,7 @@
   <BiomeDef>
     <defName>RUT_Wasteland</defName>
     <generatesNaturally>false</generatesNaturally>
-    <label>the Wasteland</label>
+    <label>the Wastes</label>
     <description>Where rivers die, everything they carried is concentrated into salt and brine; where the sky's exhaust falls, nothing ever washes it away. Nothing here recycles -- water doesn't leave, fallout doesn't wash, history doesn't decay. The wildlife is wretched and mutated as the rule, extremophile-odd as the exception; the danger is the ground, the air and the water, never the creatures. They merely adapt, struggle, and mostly fail.</description>
     <workerClass>BiomesPlus.BiomeWorker_Wasteland</workerClass>
     <lakeBeachTerrain>Gravel</lakeBeachTerrain>

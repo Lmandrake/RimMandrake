@@ -10,7 +10,7 @@
 
   <BiomeDef>
     <defName>RM_FloodedCanyon</defName>
-    <label>flooded canyon</label>
+    <label>the Cracked Lands</label>
     <description>Dry, cracked, shadowed canyon country under a hard sun — most of the time. Rarely and without warning, the water comes down: a wall tearing through the canyon floor that drowns whatever stands in it and leaves real soil behind once it drains. Warning chimes ring ahead of the flood for anyone who knows to listen.</description>
     <workerClass>RimMandrake.FloodedCanyon.RM_BiomeWorker_FloodedCanyon</workerClass>
     <texture>World/Biomes/ExtremeDesert</texture>

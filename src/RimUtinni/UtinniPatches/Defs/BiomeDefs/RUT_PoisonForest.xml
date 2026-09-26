@@ -48,7 +48,7 @@
   <BiomeDef>
     <defName>RUT_PoisonForest</defName>
     <generatesNaturally>false</generatesNaturally>
-    <label>the Poison Forest</label>
+    <label>the Cauldron</label>
     <description>A low, wet-black forest standing in permanent dusk over ground that breathes. The light never changes and casts nothing you could call a shadow; trunks weep a grey metallic sweat that hardens into scabs and crystal fans. Nearly everything alive here is either sealed against the vented metal-rich gas or has processed the load and become toxic itself -- and nothing is fast, because a chemosynthetic budget is thin.</description>
     <workerClass>BiomesPlus.BiomeWorker_PoisonForest</workerClass>
     <lakeBeachTerrain>Marsh</lakeBeachTerrain>

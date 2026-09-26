@@ -58,3 +58,6 @@ twin-pair migration — the same weight of work Pyrelands and GelatinousSlime go
 items, not a rename-item afterthought. Filed as `SCARLANDS_STANDALONE_MOD_1`.
 
 Criteria met for the immediate collision (label no longer duplicates vanilla's); closing.
+
+
+🔴 **REVERSED 2026-09-26 — the label is now `the Warscar`.** The owner ruled by question card that the house `the Xxx` form applies to every biome with no exceptions, overturning the article-dropping call recorded above. All 27 RM-tier biome labels now carry the article (MEASURED 2026-09-26). The live authority is `design/RimMandrake/biome_mod_architecture.md` §7 Q5. This item stays closed; only the article changed, not the name.

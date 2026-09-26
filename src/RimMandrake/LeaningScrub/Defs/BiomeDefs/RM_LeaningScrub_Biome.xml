@@ -69,7 +69,7 @@
 
   <BiomeDef>
     <defName>RM_LeaningScrub</defName>
-    <label>the leaning scrub</label>
+    <label>the Leaning Scrub</label>
     <description>Knee-high silver-green fuzz at eerily even spacing, running unbroken to every horizon, all of it leaning the same way, all of it moving - because the wind never stops. Sightlines are gone under the fuzz-canopy and cover is everywhere, for everything smaller than a person, all the time.</description>
     <workerClass>RimWorld.BiomeWorker_AridShrubland</workerClass>
     <texture>World/Biomes/AridShrubland</texture>

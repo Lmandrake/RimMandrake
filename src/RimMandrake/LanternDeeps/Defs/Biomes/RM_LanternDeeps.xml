@@ -25,7 +25,7 @@
 
   <BiomeDef>
     <defName>RM_LanternDeeps</defName>
-    <label>lantern deeps</label>
+    <label>the Lantern Deeps</label>
     <description>Voids grown by slow, cold crystallisation under the thickest crust on the planet. Enclosed, warm by comparison to the surface above, and humming. The only ambient light is lanternstone — the blue native crystal that carries light — and the glow-fungi pastured beneath it. Nothing reaches this place without excellent technology, which is why the caverns are full of it.</description>
 
     <animalDensity>2.5</animalDensity>
