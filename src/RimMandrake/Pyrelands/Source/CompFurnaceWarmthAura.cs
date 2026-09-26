@@ -21,7 +21,7 @@ namespace RimMandrake.Pyrelands
     ///
     /// The hediff does two things, both of them the sheet's own words (§5): a
     /// furnace-beast is "welcome company in the cold and terrible company in the
-    /// dry". So RUT_FurnaceWarmth widens cold tolerance AND narrows heat
+    /// dry". So RM_FurnaceWarmth widens cold tolerance AND narrows heat
     /// tolerance. Standing next to a stove in the Pyrelands sun is a mistake.
     ///
     /// Expiry is handled by the hediff's own HediffComp_Disappears, re-stamped
