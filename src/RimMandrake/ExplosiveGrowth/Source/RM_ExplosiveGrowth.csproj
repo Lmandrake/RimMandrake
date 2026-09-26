@@ -50,6 +50,7 @@
     <Compile Include="RM_SoakSources.cs" />
     <Compile Include="RM_TopResolver.cs" />
     <Compile Include="RM_ExplosiveGrowthPatches.cs" />
+    <Compile Include="RM_ChargeSelfTest.cs" />
     <Compile Include="RM_IncidentWorker_BloomBurst.cs" />
     <Compile Include="Debug\RM_ExplosiveGrowthDebugActions.cs" />
   </ItemGroup>
