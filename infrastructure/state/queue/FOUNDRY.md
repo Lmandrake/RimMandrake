@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T23:24:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T23:43:27Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1035,6 +1035,24 @@ kind:     task
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
 
+## LANTERNDEEPS_TIER_COLLISION_1 Live mandrake.rut.lanterndeeps exists ONLY in the game folder with no repo copy, and the RM successor deploys to the same folder name - deploying it would delete a mod the canonical save references
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
+prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
+
+## PRIMITIVEWELL_DEAD_DEFNAME_1 PrimitiveWell defName referenced by 4 Lua plan templates does not exist in any loaded mod or DLC
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  THING PrimitiveWell appears in 4 design/Jawa/templates/.lua source templates
+prose:    infrastructure/state/items/PRIMITIVEWELL_DEAD_DEFNAME_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1701,26 +1719,6 @@ thin:     no ## spec
 summary:  TERMINALSEASFLOORDRESSING1 — 5 owed terminal-seas floor/flora slugs
 prose:    infrastructure/state/items/TERMINAL_SEAS_FLOOR_DRESSING_1.md
 
-## LANTERNDEEPS_TIER_COLLISION_1 Live mandrake.rut.lanterndeeps exists ONLY in the game folder with no repo copy, and the RM successor deploys to the same folder name - deploying it would delete a mod the canonical save references
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
-prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
-
-## PRIMITIVEWELL_DEAD_DEFNAME_1 PrimitiveWell defName referenced by 4 Lua plan templates does not exist in any loaded mod or DLC
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     spec, verify and criteria all present
-summary:  THING PrimitiveWell appears in 4 design/Jawa/templates/.lua source templates
-prose:    infrastructure/state/items/PRIMITIVEWELL_DEAD_DEFNAME_1.md
-
 ## BIOME_DEFNAME_MIGRATION_WAVE_1 Three biomes renamed 2026-09-26 carry defNames that no longer match their labels: RM_NightsideIce/RM_PoisonForest/RM_Wasteland move to Sleeping Ice, Cauldron, Wastes per the Pyrelands precedent
 state:    proposed
 row:      unassigned
@@ -1730,16 +1728,6 @@ kind:     task
 thin:     no ## verify
 summary:  Per biome, following 84d42c63b:
 prose:    infrastructure/state/items/BIOME_DEFNAME_MIGRATION_WAVE_1.md
-
-## PROPANELAKE_ANIMALDENSITY_ZERO_1 RM_PropaneLake and RUT_PropaneLake leave animalDensity UNSET so it defaults to 0f - their 6-animal floor roster can never spawn, proven from the decompiled WildAnimalSpawner
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  PROPANELAKEANIMALDENSITYZERO1 — six authored animals that can never spawn
-prose:    infrastructure/state/items/PROPANELAKE_ANIMALDENSITY_ZERO_1.md
 
 ## GREYSEA_ANCHOR_CREATURES_1 Grey Deep's two unbuilt anchors (pillar-mason, ossuary shrimp) plus the AA_Aerofleet replacement - the sheet's whole image rests on creatures that have no defs
 state:    proposed
@@ -1900,3 +1888,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1.md
+
+## RUT_PROPANELAKE_FROZEN_DENSITY_1 RUT_PropaneLake still leaves animalDensity unset (frozen); sweep other biomes for the same defect
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## verify
+summary:  1. When the RUT tier is retired/repainted onto RMPropaneLake
+prose:    infrastructure/state/items/RUT_PROPANELAKE_FROZEN_DENSITY_1.md
