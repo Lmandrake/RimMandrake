@@ -1,7 +1,11 @@
 # The Greentide as an exchange — audit, progression, and new reward categories
 
-**Date:** 2026-09-22 · **Seat:** design pass for `GREENTIDE_RISK_REWARD_EXCHANGE_1`
-**Status:** DRAFT — design only. No def, XML or art authored here.
+**Date:** 2026-09-22, card rulings added 2026-09-26 · **Seat:** design pass for
+`GREENTIDE_RISK_REWARD_EXCHANGE_1`
+**Status:** Q1, Q2, Q3 and Q4 of §5 are RULED (see each card) — home items:
+`GREENTIDE_FEVER_SPECIALISTS_1`, `GREENTIDE_FRENZY_DISEASE_1`, `GREENTIDE_CANOPY_SWARM_1`. Q5–Q7
+remain open, owned by whichever item builds R3 (cuisine) / R4 (regrowth) when their turn comes. No
+def, XML or art authored here.
 
 > Owner's direction, 2026-09-22 (relayed, see the item's provenance note): *"The jungle should be
 > filled with really intimidating dangers in terms of plants, beasts, diseases, and insects. That
@@ -617,6 +621,11 @@ fourth" is a valid answer on every card.
 
 ### Q1 — Which new payoff do we build first? *(the widest card)*
 
+✅ **RULED — owner decision by question card, 2026-09-25 20:47.** He chose **A: survivors become
+specialists** (R1, immunological capital) — recorded on `GREENTIDE_RISK_REWARD_EXCHANGE_1`'s ledger:
+*"payoff category = survivors become specialists (jungle illnesses leave lasting skills/resistances,
+reusing the illness system)."* Home item: `GREENTIDE_FEVER_SPECIALISTS_1`.
+
 *Why you are being asked:* the jungle now has ten distinct kinds of reward designed, which is far
 more than can be built at once. They are not variations — each one changes a different thing about
 the colony, and whichever comes first sets what the jungle *means* for a long time. All three of
@@ -656,6 +665,11 @@ your named rewards are covered in every option; this is about what goes in besid
 
 ### Q2 — Do we write our own jungle diseases, or take some away?
 
+✅ **RULED — owner, 2026-09-22, same conversation as `GREENTIDE_FRENZY_DISEASE_1`.** He chose **A:
+replace, don't add** — cut `Disease_Flu` and `Disease_Malaria`, write one jungle disease of ours,
+"The Frenzy" (a self-inflictable work-frenzy-then-coma illness). Home item:
+`GREENTIDE_FRENZY_DISEASE_1` (open, spec authored, defs not yet built).
+
 *Why you are being asked:* the jungle currently carries **seven** illnesses and all seven are the base
 game's. Two of them appear on more than twenty of our other regions, so they say nothing about this
 place. Writing one of our own would be the first disease this project has ever authored, which is a
@@ -684,6 +698,12 @@ making people sick becomes tedious rather than frightening.
   differently, in which case the work bought nothing.
 
 ### Q3 — Are the insects their own kind of threat, or just more animals?
+
+✅ **RULED — owner decision by question card, 2026-09-25 20:47.** He chose the canopy-layer shape of
+**A**, refined: *"Canopy-hazard insects = a NEW canopy swarm layer (new creature + art + behaviour),
+not folded into the existing cast."* — recorded on `GREENTIDE_RISK_REWARD_EXCHANGE_1`'s ledger. A
+new creature, not a reuse of the 27-row cast and not the Skerrel/gall wasps of
+`GREENTIDE_WASP_SWARM_1` (a separate, already-designed insect). Home item: `GREENTIDE_CANOPY_SWARM_1`.
 
 *Why you are being asked:* of the four dangers you named, insects turned out to be the genuinely
 empty one — and empty in a lucky way. The machinery for a huge insect that chews trees down is
@@ -716,6 +736,11 @@ placeholder squirrel standing in until someone makes it. So the cheap option her
   either lands hard or becomes an annoyance that ends colonies without a story.
 
 ### Q4 — Does the jungle get harder as the player gets better?
+
+✅ **RULED — owner decision by question card, 2026-09-25 20:38.** He chose **A (recommended): danger
+stays flat as the player masters the jungle** — recorded on `GREENTIDE_RISK_REWARD_EXCHANGE_1`'s
+ledger: *"danger stays FLAT as players master the jungle; the player improves, the jungle does not
+scale."* §3b's table and the anti-exponential stance in §4c already assumed this outcome.
 
 *Why you are being asked:* this decides whether learning the jungle is a real reward or a treadmill,
 and it has to be decided before the payoffs are tuned, because it changes what they are compensating

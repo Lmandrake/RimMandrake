@@ -1,5 +1,37 @@
 # GREENTIDE_RISK_REWARD_EXCHANGE_1 — the jungle is terrifying, and pays accordingly
 
+## ✅ CLOSED 2026-09-26 — the frame is complete, homes exist for every axis and the first reward
+
+**The design pass this item commissioned is done**
+(`design/Jawa/worldbuilding/biomes/greentide_risk_reward_2026-09-22.md`, 875 lines): the audit of both
+sides, the exchange written as a three-phase progression (§3), ten new reward categories ranked (§4),
+and seven owner card sets (§5). Four of those cards are now RULED (synced into the design doc this
+session): **Q1** (build R1, "survivors become specialists", first) · **Q2** (replace two vanilla
+diseases with one of ours, "The Frenzy") · **Q3** (insects get their own new canopy-hazard creature,
+not folded into the existing cast) · **Q4** (danger stays flat as the player improves — recommended
+option taken).
+
+**Every one of the four danger axes now has a named home:**
+
+| axis | home item(s) |
+|---|---|
+| plants | `HOSTILE_MOBILE_PLANTS_1` (blocked on `REACTION_MECHANISM_GENERALISE_1`, not this item's blocker) + the closed `GREENTIDE_JUNGLE_TREE_ROSTER_1` |
+| beasts | the 27-row roster + `GREENTIDE_TERROR_REPLACEMENT_1` + `MIASMA_FEVERWOOD_GREENTIDE_BMT_1` |
+| diseases | `GREENTIDE_FRENZY_DISEASE_1` |
+| insects | `GREENTIDE_WASP_SWARM_1` (Skerrel gall wasps) + **`GREENTIDE_CANOPY_SWARM_1`** (new, filed this session, for Q3's ruling) |
+
+**The first reward category is homed:** `GREENTIDE_FEVER_SPECIALISTS_1` (new, filed this session, for
+Q1's ruling — R1, immunological capital). R2–R10 remain designed and ranked in §4b, deliberately not
+individually filed yet: the ranking table itself is the "recorded decision" that they are sequenced,
+not in scope now. `GREENTIDE_DENSITY_SETTINGS_1` already homes this item's Mod Settings ask (spec §4).
+Q5–Q7 (cuisine mechanism specifics, clock hardness, regrowth depth) remain genuinely open owner
+questions, correctly deferred to whichever item builds R3/R4 when their turn comes — Q1 did not select
+R4 (option B), so Q7 does not currently gate anything.
+
+⇒ **This frame item does not share `HOSTILE_MOBILE_PLANTS_1`'s blocker.** That item is blocked on
+`REACTION_MECHANISM_GENERALISE_1`'s swarm-propagation mechanism specifically; this item's own scope
+(coherence + homes, never content) had no dependency on that mechanism and is now discharged.
+
 ## the ruling
 
 **Owner's ruling — BINDING, confirmed 2026-09-22.** His wording:
