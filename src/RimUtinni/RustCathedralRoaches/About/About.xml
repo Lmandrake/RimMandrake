@@ -89,8 +89,15 @@ organic/synthetic biome split).</description>
     </li>
   </modDependencies>
   <loadAfter>
+    <!-- mandrake.rut.patches removed UTINNIPATCHES_LOAD_ORDER_CYCLE_1 (2026-09-25):
+         formed a direct load-order CYCLE with UtinniPatches' own loadAfter
+         mandrake.rut.rustcathedralroaches (RUT_RustCathedral.xml's wildAnimals
+         MayRequire="mandrake.rut.rustcathedralroaches" entry for RUT_CathedralRoach).
+         Checked this whole mod for any actual mechanism needing UtinniPatches loaded
+         first — no ParentName, no xpath, no MayRequire referencing UtinniPatches or
+         any of its content anywhere in this mod's Defs. Nothing here depends on the
+         patch layer; the entry was boilerplate, not backed by a real dependency. -->
     <li>Ludeon.RimWorld</li>
     <li>mandrake.rm.creaturebehaviors</li>
-    <li>mandrake.rut.patches</li>
   </loadAfter>
 </ModMetaData>
