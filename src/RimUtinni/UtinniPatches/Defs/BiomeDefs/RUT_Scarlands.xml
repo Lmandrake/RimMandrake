@@ -73,6 +73,21 @@
     wildAnimals alongside (not replacing) the AA_Helixien interim — same
     "wired alongside" precedent RSW_ShadeWhale/RSW_WraidAlpha used.
 
+    SCARLANDS_MECHANICS_2 build pass continuation (2026-09-26):
+    extraGenSteps gains RUT_ScarlandsGraveWardScatter, closing the "OWED,
+    NOT BUILT: faction assignment" gap RUT_SentinelGraveWard.xml's own
+    header flagged, without a placement GenStep the grave-ward building
+    was never spawned on any real map at all, so the whole section 4
+    Sentinel mechanic was dead content end to end. See that GenStepDef's
+    own file (Defs/MapGeneration/RUT_ScarlandsGraveWardScatter.xml) and
+    RUT_GenStep_ScatterSentinelGraveWards.cs for the mechanism.
+
+    The FROZEN note above still applies to the general biome content this
+    file authors (description, flora/fauna, densities, weather); this
+    edit is campaign-mechanic content, the same class RUT_ScarlandsSprungDangers
+    and biomeMapConditions already are, which RM_Warscar's own header states
+    outright stays UtinniPatches-only and is never carried into that mod.
+
   -->
 
   <BiomeDef MayRequire="Ludeon.RimWorld.Odyssey">
@@ -102,6 +117,7 @@
       <li>ScarlandsJunkClusters</li>
       <li>ScarlandsJunkPrefabs</li>
       <li>RUT_ScarlandsSprungDangers</li>
+      <li>RUT_ScarlandsGraveWardScatter</li>
     </extraGenSteps>
     <biomeMapConditions>
       <li MayRequire="mandrake.rm.environmentalhazards">RUT_ScarlandsMarkLock</li>
