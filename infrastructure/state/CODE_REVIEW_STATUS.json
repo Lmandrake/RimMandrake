@@ -16311,6 +16311,12 @@
     "hash": "297ec0335270c50892ead879064d3705c6c1a807c954ccbb1cc7c597c52508b8",
     "sha": "e758283f4"
   },
+  "src/RimUtinni/EggReckoning/Source/EggReckoningSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "3af2783ec086460dfac93aeff4423cfad9219a0079515c81e1a588afc14a1a93",
+    "sha": "ee388bcd9"
+  },
   "src/RimUtinni/EmpirePursuit/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -18748,10 +18754,16 @@
     "sha": "5040448b5"
   },
   "src/RimUtinni/ShokkweaveEconomy/Source/GenStep_ScatterWebworkSilk.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "d06763a19abebf201e81fcfe2d02d7c88dc407c31d811d3c471c67f5f199dfc3",
+    "sha": "ee388bcd9"
+  },
+  "src/RimUtinni/ShokkweaveEconomy/Source/ShokkweaveEconomySettings.cs": {
     "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "9a1067826c3338b2cb2ef17ce2ff470a7fe53f4bc925cceec453ba8a82f87860",
-    "sha": "18e1ab1b6"
+    "date": "2026-09-26",
+    "hash": "4ddcb2110c401efedba0da5505c1258ed5176609a552b618c56bc72d0a9c5f00",
+    "sha": "ee388bcd9"
   },
   "src/RimUtinni/SpidercatArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -21152,5 +21164,11 @@
     "date": "2026-09-24",
     "hash": "db618cec3690bcaa734f15402d3d9daad9895a26105119ee593b70369841aae8",
     "sha": "9c1bce648"
+  },
+  "src/RimUtinni/WildsteamEggBounty/Source/WildsteamEggBountySettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "7d6a0a0858d12d0b09ab54652043d09a4242df0a786b2e7a0acb00c797c94947",
+    "sha": "ee388bcd9"
   }
 }
