@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaSessileCatch.xml          TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  GREYSEA_SESSILE_LAYER_1, the catch half. The three sessile species ruled
+  new at the bench 2026-09-26 (a shrimp, a clam and a mussel equivalent) are
+  all catchable, so each owes a *Catch item beside its floor resident —
+  the standing two-defs-per-sea-species law, precedent RM_Essarn <->
+  RM_EssarnCatch.
+
+  Floor residents: Defs/ThingDefs_Races/RM_GreySeaSessile.xml.
+  Catch rows: RM_GreySea's own <fishTypes>, saltwater_Common.
+
+  These are the cheap end of the Grey's catch table on purpose. The sheet's
+  §7 "the sessile catch" calls them what the shore camps actually live on,
+  against the seven older rows which are the strange stuff. Nutrition follows
+  the shellfish register RUT_GreySeaFish_Items.xml's own header sets out
+  (0.15/5/0.7/5d), with the shrimp below it because it is small.
+
+  PLACEHOLDER ART: vanilla's own Things/Item/Resource/Jade, separated by
+  <color>. ⚠️ Deliberately NOT the Things/Item/ToxicMeat/ToxicMeat_* paths
+  that RM_GreySeaCatch.xml uses: those come from a DONOR mod
+  (VAEWaste_ToxicMeat), so how many lettered variants exist is UNMEASURED
+  and a guessed _d or _e would render magenta. Jade's path was read straight
+  off the vanilla def this pass and is certain.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- nissik — the litter picker. Common, small, everywhere. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_NissikCatch</defName>
+    <label>nissik</label>
+    <description>A double handful of glass-bodied pickers strained out of the bottom water, still faintly twitching. Individually they are nothing; by the netful they are the most reliable food this sea gives up, and the shore camps eat them boiled whole, shells and all.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Jade</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(216,218,206)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>3</MarketValue>
+      <Mass>0.25</Mass>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- thollim — the sediment clam. Keeps well; the staple. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_ThollimCatch</defName>
+    <label>thollim</label>
+    <description>Thick grey valves dredged out of the floor sediment, still shut and still heavy. A thollim keeps a fortnight in its own brine without any help, which on a coast with no cold and no rain is most of the reason anybody settles there.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Jade</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(150,152,148)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.16</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.75</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>7</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- grusk — the pillar mussel. Strong-tasting; argued about. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_GruskCatch</defName>
+    <label>grusk</label>
+    <description>Blue-black wedges knocked off a pillar face with the mineral foot still attached, so every one comes up wearing a chip of the column it grew on. The meat inside is dark and tastes of the whole sea at once. People are divided.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Jade</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(62,66,84)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.14</Nutrition>
+      <MarketValue>6</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>4</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

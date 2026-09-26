@@ -58,6 +58,37 @@
       <RM_Sorruth>0.4</RM_Sorruth>
       <RM_Essarn>0.6</RM_Essarn>
       <RM_Otheska>0.2</RM_Otheska>
+      <!-- GREYSEA_SESSILE_LAYER_1, 2026-09-26. The owner's "abundant
+           shrimp, clam and mussel equivalents", RULED all three NEW at the
+           bench (this overrode BENCH's own position that RM_Fessk already
+           covered "shrimp"; the new one is hand-sized and is authored so it
+           cannot read as a second ossuary shrimp).
+           🔑 The abundance is HERE, in commonality — the highest three
+           numbers on this sea — and NOT in wildGroupSize, which stays at 1
+           (1~4 for the pillar-clustering grusk, the placement the sheet
+           explicitly permits). That is precisely how "abundant" satisfies
+           ban 2's "no herds, flocks, schools, packs or swarms."
+           Defs: Defs/ThingDefs_Races/RM_GreySeaSessile.xml. -->
+      <RM_Nissik>0.9</RM_Nissik>
+      <RM_Grusk>0.8</RM_Grusk>
+      <RM_Thollim>0.7</RM_Thollim>
+      <!-- SEA_FISHABLES_ALIVE_IN_DEPTHS_1, 2026-09-26 (Grey portion). Owner:
+           "All the fishables should also be alive and moving around in the
+           depths (this is true for ALL seas)." These seven are the living
+           counterparts of the seven catch-only rows in <fishTypes> below,
+           authored from those items' own existing descriptions rather than
+           invented fresh. Defs: RM_GreySeaFloorLife.xml.
+           ⚠️ The catch items they pair with are RUT_-tier and MayRequire-
+           gated; these are RM_ and inline, so the free mod's floor stands
+           alone. The tier mismatch on the CATCH side is recorded as owed
+           in RM_GreySeaFloorLife.xml's header. -->
+      <RM_Sallik>0.5</RM_Sallik>
+      <RM_Karrud>0.45</RM_Karrud>
+      <RM_Hessal>0.55</RM_Hessal>
+      <RM_Oomal>0.35</RM_Oomal>
+      <RM_Maalu>0.3</RM_Maalu>
+      <RM_Immu>0.3</RM_Immu>
+      <RM_Haarn>0.08</RM_Haarn>
     </wildAnimals>
     <animalDensity>0.1</animalDensity>
     <coastalWildAnimals />
@@ -132,6 +163,14 @@
         <RUT_Hessal MayRequire="mandrake.rut.patches">1</RUT_Hessal>
         <RUT_Oomal MayRequire="mandrake.rut.patches">0.6</RUT_Oomal>
         <RM_EssarnCatch>1</RM_EssarnCatch>
+        <!-- GREYSEA_SESSILE_LAYER_1: the sessile layer is catchable, so
+             each of the three owes a row here beside its floor resident
+             (the standing two-defs-per-species law). These are the cheap,
+             reliable end of the table — sheet §7's "the sessile catch",
+             what the shore camps actually live on. -->
+        <RM_NissikCatch>1.3</RM_NissikCatch>
+        <RM_ThollimCatch>1.1</RM_ThollimCatch>
+        <RM_GruskCatch>0.9</RM_GruskCatch>
       </saltwater_Common>
       <saltwater_Uncommon>
         <RUT_Maalu MayRequire="mandrake.rut.patches">1</RUT_Maalu>
