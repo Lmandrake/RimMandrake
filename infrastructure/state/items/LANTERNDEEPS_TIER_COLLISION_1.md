@@ -9,7 +9,7 @@ deployed for this mod; the hazard was caught before `--apply`.
 |---|---|
 | Live mod list | **628 active** (parsed from `activeMods`, not grepped) and it contains `mandrake.rut.lanterndeeps` |
 | That mod's files | exist **only** at `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\LanternDeeps` |
-| Its repo copy | **THERE IS NONE.** `grep -rl mandrake.rut.lanterndeeps --include=About.xml src/` returns nothing |
+| Its repo copy | None in the current tree, but **all 82 files are in git history, byte-exact** (MEASURED 2026-09-26, FOUNDRY): 81 at `8a2b2364b:src/RimUtinni/LanternDeeps` (the tree `1f1c368f7` deleted when it built the RM mod, plus its C# source and csproj), the DLL as blob `73566ff39` in `6ce1ccf9c` (on origin/main). The 28 non-art files are also committed at `infrastructure/state/rescued/LanternDeeps_RUT/` |
 | The successor | `mandrake.rm.lanterndeeps`, in the repo at `src/RimMandrake/LanternDeeps` — 96 tracked files, its own 51 textures under `Textures/RM_LanternDeeps/` |
 | Its deploy target | `Mods\LanternDeeps` — **the same folder name** |
 | Is the successor active? | No. `mandrake.rm.lanterndeeps` is absent from `ModsConfig.xml` |
@@ -52,20 +52,77 @@ to the session scratchpad. `git status src/RimMandrake/LanternDeeps` is clean.
 
 ⚠️ **Whoever takes this item: do not re-run `--pull` on this mod.**
 
+## what the canonical save holds (MEASURED 2026-09-26, FOUNDRY)
+
+`Saves\CANONICAL_ASHKARR_START_2026-09-12.rws` (canon.yml `planet.start_savegame`),
+parsed with `ElementTree.iterparse` against every defName in both tiers (39 RUT, 38 RM);
+sanity probe `Steel` 917, `Human` 864 hits.
+
+| reference | count |
+|---|---|
+| `<def>` of any RUT or RM LanternDeeps defName (placed Things, plants, buildings) | **0** |
+| `RUT_LanternDeepGenerator` anywhere (a generated Deep pocket map) | **0** — no Deep has ever been entered in this save |
+| `Class=` naming either assembly's types (MapComponents, GenSteps) | **0** |
+| `savegame/meta/modIds` → `mandrake.rut.lanterndeeps` | 1 |
+| VanillaTradingExpanded `TradingManager.priceHistoryRecorders` keys+values: `RUT_Lanternstone`, `RUT_PufferTendrils`, `RUT_SmoothedLanternstoneWall`, `RUT_BuiltLanternstoneWall`, `RUT_BuiltSmoothedLanternstoneWall` | 5 + 5 |
+| `RUT_LanternDeeps` biome on world tiles | UNMEASURED (shortHash); the def is pocket-map-only, reached solely through the generator |
+
+⇒ **The save's hold on the RUT mod is price-history bookkeeping only.** After a swap
+those 5 keys fail to resolve; the engine's `Scribe_Collections` dictionary loader logs
+`Null key while loading dictionary` and `continue`s (read from decompiled
+`Verse/Scribe_Collections.cs` ~L400) — assuming VTE saves it through that loader, which
+is the ordinary pattern but UNMEASURED. Plus the usual mod-mismatch prompt on load.
+
+## what else was found
+
+- 🔴 **Coexistence (the earlier guess) is the WORSE route.** Both tiers active at once:
+  RM still defines a SoundDef named `RUT_DeepHum` — same defName as the RUT mod's — and
+  both scatter entrances on the same RUT_ host biomes (`aa9ef0947`), so every qualifying
+  map would get two sets. It would also need the RM src folder renamed to dodge the
+  shared `LanternDeeps` deploy folder.
+- ⚠️ **Already live today:** `RUT_LanternDeepKyberScatter` is defined twice in the
+  running game — by the deployed `UtinniPatches` (`mandrake.rut.patches`) and by the RUT
+  LanternDeeps mod. The swap removes the second definition.
+- ✅ **Fixed this pass:** RM `About.xml` declared `loadAfter mandrake.rut.patches` while
+  `mandrake.rut.patches` declares `loadAfter mandrake.rm.lanterndeeps` — a cycle. RM's
+  side was unnecessary (the host-biome check is a runtime defName compare) and is gone.
+- The live DLL carries every class of the 10 source files at `8a2b2364b`, including
+  `LanternDeepsHarmony` / `Patch_MapPlantGrowthRateCalculator_BuildFor` (the classes in
+  `Patch_PocketMapGrowthRate.cs` — a filename, not a class name).
+
+## migration plan — in-place swap with a folder-move rollback (one cold load)
+
+Needs: game DOWN, bridge held, owner's list otherwise untouched.
+
+1. Back up `ModsConfig.xml` (`modlists/` snapshot) and stat it.
+2. **Move, never delete**, `…\RimWorld\Mods\LanternDeeps` → `…\RimWorld\Mods_retired\LanternDeeps_RUT_<date>`
+   (outside `Mods`, so the game cannot see it). Stat both sides: 82 files.
+3. `deploy_custom_mods.py --mod LanternDeeps` — the plan must be all `+` into an empty
+   folder, zero `-` lines — then `--apply`. ⛔ Never `--pull`.
+4. In `ModsConfig.xml`, remove `mandrake.rut.lanterndeeps` (index 574 of 630 today) and
+   insert `mandrake.rm.lanterndeeps` **before** `mandrake.rut.patches` (index 572), which
+   declares loadAfter it. Parse the file; never grep it.
+5. Cold load. Decide in advance: PASS = the only log lines naming `RUT_Lantern*` /
+   `RUT_PufferTendrils` / `RUT_*LanternstoneWall` are the 5 price-history resolve
+   failures; the canonical save loads; `RM_LanternDeepEmergence`/`Mineshaft` resolve;
+   no duplicate-def error naming `RUT_LanternDeepKyberScatter` or `RUT_DeepHum`.
+6. **Rollback** (any FAIL): delete the deployed RM folder, move `Mods_retired\LanternDeeps_RUT_<date>`
+   back to `Mods\LanternDeeps`, restore the `ModsConfig.xml` backup. Byte-exact fallback
+   if the moved folder is lost: `git archive 8a2b2364b src/RimUtinni/LanternDeeps` +
+   the DLL blob from `6ce1ccf9c`.
+7. On PASS, resave only on the owner's word (the canonical save is frozen); retire the
+   `Mods_retired` copy after that.
+
 ## what is owed
 
-- [ ] Decide the migration route. The likely shape, not yet ruled: give the RM mod its
-      own folder name so the two can coexist through one cold load, enable it, confirm
-      the save resolves, then retire the RUT folder — rather than an in-place swap that
-      has no rollback.
-- [ ] Establish what the canonical save actually holds. A grep of the `.rws` for
-      `RUT_LanternDeeps` is **not** the instrument for the biome — `tileBiome` is
-      shortHash-encoded. Placed Things (the two entrance buildings, lanternstone walls,
-      cave plants) grep normally as `<def>NAME</def>` and are the reachable half.
-- [ ] Get `mandrake.rut.lanterndeeps` into the repo, or prove it is fully superseded
-      file-for-file by the RM version. Right now a disk failure loses a live mod
-      outright, which is true of nothing else we ship.
+- [x] Decide the migration route — above.
+- [x] Establish what the canonical save actually holds — above.
+- [x] Get `mandrake.rut.lanterndeeps` into the repo — it is, byte-exact, in history.
+- [ ] Execute the swap (steps 1–7) in a load round. Not done unattended: it rewrites
+      the live Mods folder and `ModsConfig.xml`.
 - [ ] Only then: `LanternDeeps` joins `BIOME_LOAD_PROOF_WAVE_1`.
+- Observation, not owed here: RM still ships a `RUT_`-prefixed defName (`RUT_DeepHum`,
+  referenced by `RM_DeepCalm`) — a tier-prefix leftover.
 
 ## what is NOT owed
 - No worldmap repaint. A biome of ours on zero tiles is the expected mid-migration

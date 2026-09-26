@@ -1,7 +1,11 @@
 # Rescued: mandrake.rut.lanterndeeps (2026-09-26)
 
-This directory holds the only surviving copy of the **live, active** mod
-`mandrake.rut.lanterndeeps` outside the game folder. Before this rescue it
+Byte-exact recovery of the whole 82-file mod does not need this directory:
+81 files are at `8a2b2364b:src/RimUtinni/LanternDeeps` (the tree `1f1c368f7`
+removed, with its C# source) and the DLL is blob `73566ff39` in `6ce1ccf9c`
+(MEASURED 2026-09-26, sha256 against the game folder). This directory is the
+convenience copy of the 28 non-art files of the **live, active** mod
+`mandrake.rut.lanterndeeps`. Before this rescue its current tree
 existed in exactly one place on the machine: `C:\Program Files (x86)\Steam\
 steamapps\common\RimWorld\Mods\LanternDeeps` (WSL:
 `/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/LanternDeeps`)
