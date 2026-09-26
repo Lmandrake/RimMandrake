@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    EXPLOSIVE_PLANT_GROWTH_1 — the sound half of the tell ladder and the tops.
+    No new audio: vanilla's own tree clip folders (verified via RimSage against
+    SoundDefs Harvest_Tree / Harvest_Tree_Finish: Interact/Work/Construct/Trees/
+    Tree_Chop and Tree_Felled), re-pitched. The creak is low and slow (strain),
+    the split a muffled fell, the pop a high sharp one. Bespoke audio is owed
+    if the owner wants it; these are placeholders that ship.
+  -->
+
+  <SoundDef>
+    <defName>RM_EG_Creak</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>3</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Interact/Work/Construct/Trees/Tree_Chop</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>7~9</volumeRange>
+        <pitchRange>0.42~0.52</pitchRange>
+        <repeatMode>NeverTwice</repeatMode>
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_EG_Split</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>4</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Interact/Work/Construct/Trees/Tree_Felled</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>9~12</volumeRange>
+        <pitchRange>0.7~0.85</pitchRange>
+        <repeatMode>NeverTwice</repeatMode>
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_EG_Pop</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>4</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Interact/Work/Construct/Trees/Tree_Felled</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>18~22</volumeRange>
+        <pitchRange>1.5~1.8</pitchRange>
+        <repeatMode>NeverTwice</repeatMode>
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_EG_Rupture</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Interact/Work/Construct/Trees/Tree_Felled</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>14~16</volumeRange>
+        <pitchRange>0.35~0.45</pitchRange>
+        <repeatMode>NeverTwice</repeatMode>
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>
