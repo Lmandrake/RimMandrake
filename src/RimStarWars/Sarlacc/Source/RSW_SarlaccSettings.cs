@@ -39,7 +39,8 @@ namespace RimMandrake.StarWars.Sarlacc
         /// <summary>Chance a survivor is granted a SECOND hediff on top of the first ("usually one, sometimes two").</summary>
         public static float secondHediffChance = 0.2f;
 
-        /// <summary>Stage III: the breach flood's cosmetic puddle radius around a breached cistern.</summary>
+        /// <summary>Stage III: the breach flood's real (DBH-thirst-fillable, self-reverting)
+        /// water terrain around a breached cistern. See MapComponent_SarlaccBreachFlood.</summary>
         public static bool breachFloodVisualEnabled = true;
 
         public override void ExposeData()
@@ -88,9 +89,10 @@ namespace RimMandrake.StarWars.Sarlacc
             list.GapLine();
 
             list.Label("Stage III — breaching a cistern");
-            list.CheckboxLabeled("Show the breach flood puddle", ref breachFloodVisualEnabled,
-                "Breaching a cistern leaves a temporary spread of water puddles at the surface. "
-              + "Off: the breach still ends the cistern, without the cosmetic flood.");
+            list.CheckboxLabeled("Flood the surface on breach", ref breachFloodVisualEnabled,
+                "Breaching a cistern turns the surrounding sand into real shallow water for a few "
+              + "days — a genuine, drinkable source while it lasts, then dry again. Off: the "
+              + "breach still ends the cistern, without the flood.");
 
             list.End();
         }

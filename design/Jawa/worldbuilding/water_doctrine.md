@@ -98,7 +98,7 @@ here blocks the current worldgen.
 | layer | what water is |
 |---|---|
 | **fiction** | the reason every faction is where it is, and the thing wars are about |
-| **v1 engine** | **nothing. It is not implemented and does not need to be.** |
+| **v1 engine** | **nothing, with one named exception.** `dubwise.dubsbadhygiene.lite` + `.thirst` are active in the shipped `ModsConfig.xml` (confirmed 2026-09-26), so the Sarlacc's breach flood (`SARLACC_HABITAT_BUILD_1`, Fork 6) is real, fillable `WaterShallow` terrain for its own three-day clock — not a fiction-layer claim, a built mechanism. Nothing else in v1 reads water as a resource. |
 | **v2 engine** | differential need · defended sources · purification tech · bottles as currency |
 
 ⛔ **Do not let the fiction layer's confidence leak into build talk.** "Water is

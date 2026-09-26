@@ -41,6 +41,7 @@
     <Compile Include="CompSarlaccSwimmer.cs" />
     <Compile Include="CompSarlaccAnchoredMouth.cs" />
     <Compile Include="CompSarlaccCisternBreach.cs" />
+    <Compile Include="MapComponent_SarlaccBreachFlood.cs" />
   </ItemGroup>
 
   <ItemGroup>

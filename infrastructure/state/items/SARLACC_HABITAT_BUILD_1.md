@@ -141,5 +141,47 @@ clean):
    to amend it at build (DBH thirst is shipped); not done this pass, folded
    into item 4 above.
 
+### done this session — FOUNDRY, 2026-09-26 — items 4 and 7 of the Owed list
+
+- **Item 4 (DBH thirst integration) and item 7 (`water_doctrine.md` amendment),
+  both done.** Verified (not guessed) against the actual mods on disk and the
+  decompiled engine, not by assuming the numbers: `dubwise.dubsbadhygiene.lite`
+  ships a real `NeedDef` (`defName="DBHThirst"`, `needClass=
+  "DubsBadHygiene.Need_Thirst"`, `Defs/NeedDefs/Needs_Misc.xml`) and a
+  `DubsBadHygiene.JobDriver_DrinkFromGround` driven by
+  `DubsBadHygiene.JobGiver_DrinkWater`; both key off vanilla
+  `Verse.TerrainDef.IsWater` (`=> HasTag("Water")`), confirmed from the
+  decompiled `Source/Verse/TerrainDef.cs`, not off any DBH-specific list. So
+  `CompSarlaccCisternBreach.Breach()` now paints real `WaterShallow` terrain
+  (tags Water/WaterFreshShallow/WaterFreshShallowStill) over the breach
+  radius via a new `MapComponent_SarlaccBreachFlood`, instead of the old
+  cosmetic `Filth_Water` spread — DBH (or anything else reading vanilla
+  water tags) finds and drinks it autonomously, with **no assembly reference
+  to DBH at all**, so this mod stays correct whether or not DBH is loaded.
+  The flood self-reverts to each cell's original terrain after
+  `GenDate.TicksPerDay * 3` — the draft's own worked number, "a three-day
+  garden" (§4.4 point 2) — tracked/scribed per-map, save-safe. Builds clean
+  (`dotnet build … Release`, 0 errors); `Sarlacc.dll` + `.srchash` rebuilt
+  and committed together per `DLL_SOURCE_STAMP_GUARD_1`.
+  `water_doctrine.md`'s "v1 engine = nothing" line is amended to name this
+  one exception, citing the live `ModsConfig.xml` fact and the mechanism.
+  `deep_desert.md` ban 5's own carve-out was already written in (prior
+  session) — nothing to do there.
+- Settings text for `breachFloodVisualEnabled` updated to stop calling the
+  flood "cosmetic" now that it is not.
+- **Still not attempted, still genuinely owed** (unchanged from the prior
+  block): item 1 (live verification — needs bridge, out of scope this pass),
+  item 2 (the pocket-map dungeon interior — the draft's own §0 places this
+  ladder out of its scope; a separate build, not this item's criteria), item
+  3 (world placement — correctly `SARLACC_WORLDMAP_RELOCATE_1`, not
+  duplicated here), item 5 (real sprite art), item 6 (the RimUtinni Sun-Debt
+  sacred/unclean patch for `RSW_TakenAndReturned` — the item's own text
+  already says this is its own follow-up item, not this item's scope; not
+  filed as a fresh item this pass because it needs the ideoligion skill's
+  actual mechanism (there is no `FactionDef.requiredPrecepts` field — a
+  custom `PreceptDef`/`ThoughtWorker_Precept` pair would need designing, not
+  guessing), better done by whoever picks up ideoligion work with that skill
+  loaded).
+
 Commit(s): see git log for `SARLACC_HABITAT_BUILD_1` (not closed — no
 `Closes:` trailer).
