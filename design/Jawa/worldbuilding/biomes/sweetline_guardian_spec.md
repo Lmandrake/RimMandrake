@@ -18,12 +18,12 @@ generic `PawnKindDef` that spawns near any sweetline tree and guards it.
   walks a strayed guardian home. **Needs C#** — three small classes in
   `mandrake.rm.creaturebehaviors`, each a generalisation of code already in that assembly. No
   Harmony, no patch of any vanilla def (§2).
-- **Tier:** species def `RSW_` in SWBestiary (the `RSW_ShrublandGiant` / `RSW_TunnelSnake`
-  precedent); mechanism `RM_` in the kit; the binding (the roost comp on the tree and the
-  biome wiring) `RUT_` in AshkarrFlora / UtinniPatches (§7).
-- **Recommended names:** defName `RSW_TreeWarden`; player label **"kessrik"** (§7).
-- **Owner questions:** §11 — the tier call, the name, and the fact that the wool harvest the
-  guardian exists to protect is not itself built yet.
+- **Tier (RULED, card 2026-09-25 + Q11a):** species def `RM_Barkwarden` in the Arid
+  Shrubland's own `RM_` biome mod; mechanism `RM_` in the kit; the binding (the roost comp on
+  the tree and the biome wiring) `RUT_` in AshkarrFlora / UtinniPatches (§7).
+- **Names (RULED, card 2026-09-25):** defName `RM_Barkwarden`; player label **"bark-warden"** (§7).
+- **Owner questions:** §11 — the wool-harvest pace reconciliation and the tunnel-snake
+  body-size flag; tier and name are ruled.
 
 ## 1. What the creature is
 
@@ -321,38 +321,17 @@ mod may not straddle." So this is three tiers, one each, and none of them stradd
 | layer | tier | where | why |
 |---|---|---|---|
 | mechanism (extension, comps, rage state, roost, leash JobGiver) | **RM_** | `mandrake.rm.creaturebehaviors` | names no species, no tree, no biome — "guard a Thing" would serve a medieval-tribe player's own mod unchanged (the RM test). Same call the enrage kit made. |
-| the species (ThingDef + PawnKindDef + art) | **RSW_** | `mandrake.rsw.swbestiary` | the exact precedent: `RSW_ShrublandGiant` and `RSW_TunnelSnake` are invented shrubland fauna and shipped RSW. The RSW test — would a Tatooine campaign want it unchanged? — passes: a canopy warden of any great lone tree is Star-Wars-register fauna, not Ash'karr lore. Its def names no tree: it guards whatever roost spawned it. |
-| the binding (roost comp + PlantAlarm on `RUT_SweetlineTree`; anything in `RUT_AridShrubland`) | **RUT_** | `mandrake.rut.ashkarrflora` / `mandrake.rut.utinnipatches` | this is where the campaign says WHICH tree carries WHICH guardian. `RUT` depends on `RSW` depends on `RM` — downward only, which is the grammar. |
+| the species (ThingDef + PawnKindDef + art) | **RM_** | the Arid Shrubland's own `RM_` biome mod (staged with the biome kit until that mod exists at its sitting) | **Q11a** (`design/RimMandrake/biome_mod_architecture.md` §7, owner 2026-09-22): an invented name is not Star Wars IP, so it does not route through the franchise layer — and the free `RM_` biome mod must carry its full cast, never a thinned fallback. The def names no tree and no campaign lore: it guards whatever roost spawned it, so nothing about it is Utinni-specific either. Ruled by card 2026-09-25 (name = Bark-warden; tier by the Q11a test). |
+| the binding (roost comp + PlantAlarm on `RUT_SweetlineTree`; anything in the campaign's shrubland wiring) | **RUT_** | `mandrake.rut.ashkarrflora` / `mandrake.rut.utinnipatches` | this is where the campaign says WHICH tree carries WHICH guardian. `RUT` depends on `RM` — downward only, which is the grammar. |
 
-The one honest counter-argument is that the creature's whole design is the sweetline tree,
-which is Ash'karr's — an owner who reads it as "this clan's fauna" would put it in RUT. §11
-asks; the recommendation is RSW by precedent.
+(`RSW_ShrublandGiant` / `RSW_TunnelSnake` were this spec's original tier precedent; they predate
+Q11a and are themselves due `RSW_`→`RM_` at the shrubland's biome sitting per the split rulings of
+2026-09-23, so they no longer argue for `RSW_` here.)
 
-**defName — plain English, three options.** The defName is reused for ThingDef and
-PawnKindDef (the siblings' convention) and never carries the label.
-
-1. **`RSW_TreeWarden`** — RECOMMENDED. Says what it is without naming the tree, which keeps
-   the RSW claim honest (the RUT binding is what makes it a SWEETLINE warden).
-2. `RSW_SweetlineWarden` — most specific; but it writes a campaign word into an RSW def.
-3. `RSW_CanopyGuardian` — accurate, but "guardian" is the kit's own vocabulary
-   (`RM_AlarmResponderExtension` "RotGroveGuardian") and reads as the mechanism, not the animal.
-
-**Label — the word the player reads, three options.** The in-register words already in this
-biome's rosters split two ways: alien coinage (`nysyllin`) and evocative English compound
-(`creep stern`, `dervish`). Both registers are offered; the owner reacts.
-
-1. **kessrik** (plural kessriks) — RECOMMENDED. Alien coinage in the `nysyllin` register;
-   two hard consonants and a hiss, which is what it sounds like when it lands on you. The
-   description carries the Jawa gloss so the player learns the word once: *"the kessrik — the
-   bark-warden, the thing in the crown."*
-2. **bark-warden** — English compound in the `creep stern` register. Reads instantly on a
-   hover; loses the alien.
-3. **hank-rook** — compound naming the harvest (a hank of wool) and the crow-like roost;
-   most flavourful, most opaque.
-
-Working label until the owner picks: `kessrik`. This joins `ARIDSHRUBLAND_SHIPPING_NAMES_1`
-alongside the fuzz, the giant and the snake — as those three show, the rename is cheap and
-blocks nothing.
+**Names — RULED by card, 2026-09-25.** defName **`RM_Barkwarden`** (reused for ThingDef and
+PawnKindDef, the siblings' convention); player label **"bark-warden"**. The rename joins
+`ARIDSHRUBLAND_SHIPPING_NAMES_1` only if the sitting later changes the word — the label is his
+pick, not a working placeholder.
 
 ## 8. Flight
 
@@ -443,11 +422,10 @@ and the reskin is the reference image.
 
 ## 11. Open questions for the owner
 
-1. **Tier of the species def — RSW (recommended, by the giant/snake precedent) or RUT?** The
-   mechanism is RM either way and the binding is RUT either way; only the creature's own
-   folder moves.
-2. **The label.** `kessrik` / `bark-warden` / `hank-rook`, or his own word. Working label is
-   `kessrik` until then; folds into `ARIDSHRUBLAND_SHIPPING_NAMES_1`.
+1. ✅ **RULED (card 2026-09-25 + Q11a test): species def is `RM_Barkwarden`, `RM_` tier**, in
+   the shrubland's own biome mod — invented name, no IP, nothing campaign-specific in the def
+   (§7). Mechanism RM, binding RUT, unchanged.
+2. ✅ **RULED (card 2026-09-25): the label is "bark-warden".**
 3. ✅ **BUILT, `SWEETLINE_WOOL_HARVEST_1` (2026-09-21).** `RUT_SweetlineTree` now ships
    `harvestedThingDef` RUT_SweetlineWool (`RUT_SweetlineTree_Items.xml`, ParentName WoolBase)
    and `harvestAfterGrowth` 0.05, so `HarvestDestroys` is false and both the Harvest and Cut
