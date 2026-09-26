@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T10:07:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T10:10:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -963,6 +963,15 @@ kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
 
+## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
+prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1427,6 +1436,16 @@ blocked:  Real trace (Transient/Player.log.geneticrim_ctor_nre_2026-09-25 L11288
 summary:  REGROWTHRECOLORMINEABLESNRE1
 prose:    infrastructure/state/items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md
 
+## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Re-verified 2026-09-26: RM_Window_Bazaar is still an inert Dialog_Trade subclass with no WindowStack.Add Harmony intercept and RM_BazaarTabDef has zero concrete instances/workers. BAZAAR_WINDOW_GRID_1 (the item that owns wiring the intercept in) is still doing, unfinished, last touched 2026-09-17 -- its own note names a real architectural hazard (naive Add-prefix replacement double-calls TradeSession.SetupWith and can double-fire the cannot-sell message) that is genuinely BAZAAR_WINDOW_GRID_1's scope to solve, not a one-line wiring fix. Not building the tab framework here -- that is scope creep into an item already filed and claimed. No new follow-on item needed; BAZAAR_WINDOW_GRID_1 already is the precisely-scoped 'wire Bazaar tabs to open' item. This item stays blocked until it (or a successor) ships a tab-worker slice with a real tab drawing content. (on BAZAAR_WINDOW_GRID_1)
+summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
+prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1668,16 +1687,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  WARDENMOTHERSUCCESSION1 — warden mother young: self-taming, water-scoped training, and succession on her death
 prose:    infrastructure/state/items/WARDEN_MOTHER_SUCCESSION_1.md
-
-## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
-prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
 
 ## WEBWORK_EGG_RECKONING_QUEST_1 The Reckoning quest family: egg-assassination quest + plant/hatch C# verb (S5 rulings 2,3,6,7)
 state:    proposed
