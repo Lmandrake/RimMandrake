@@ -26,6 +26,13 @@
     <disableCallAid>true</disableCallAid>
     <isUnderground>true</isUnderground>
     <pocketMapProperties>
+      <!-- Defaults to TRUE. Game.cs destroys every pocket map whose sourceMap is an
+           abandoned map, and a gravship takeoff from an unanchored tile calls
+           GravshipUtility.AbandonMap - so with the default the sea floor is destroyed
+           AT TAKEOFF, before the ship lands. MEASURED from the decompiled engine
+           2026-09-26 (PocketMapProperties.cs, Game.cs, WorldComponent_GravshipController).
+           SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1. -->
+      <destroyOnParentMapAbandoned>false</destroyOnParentMapAbandoned>
       <biome>RM_TheScald</biome>
       <temperature>55</temperature>
       <canBeCleaned>true</canBeCleaned>
@@ -50,6 +57,13 @@
     <disableCallAid>true</disableCallAid>
     <isUnderground>true</isUnderground>
     <pocketMapProperties>
+      <!-- Defaults to TRUE. Game.cs destroys every pocket map whose sourceMap is an
+           abandoned map, and a gravship takeoff from an unanchored tile calls
+           GravshipUtility.AbandonMap - so with the default the sea floor is destroyed
+           AT TAKEOFF, before the ship lands. MEASURED from the decompiled engine
+           2026-09-26 (PocketMapProperties.cs, Game.cs, WorldComponent_GravshipController).
+           SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1. -->
+      <destroyOnParentMapAbandoned>false</destroyOnParentMapAbandoned>
       <biome>RM_GreySea</biome>
       <temperature>12</temperature>
       <canBeCleaned>true</canBeCleaned>
@@ -95,6 +109,13 @@
     <disableCallAid>true</disableCallAid>
     <isUnderground>true</isUnderground>
     <pocketMapProperties>
+      <!-- Defaults to TRUE. Game.cs destroys every pocket map whose sourceMap is an
+           abandoned map, and a gravship takeoff from an unanchored tile calls
+           GravshipUtility.AbandonMap - so with the default the sea floor is destroyed
+           AT TAKEOFF, before the ship lands. MEASURED from the decompiled engine
+           2026-09-26 (PocketMapProperties.cs, Game.cs, WorldComponent_GravshipController).
+           SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1. -->
+      <destroyOnParentMapAbandoned>false</destroyOnParentMapAbandoned>
       <biome>RM_TwilightSea</biome>
       <temperature>8</temperature>
       <canBeCleaned>true</canBeCleaned>
@@ -119,6 +140,13 @@
     <disableCallAid>true</disableCallAid>
     <isUnderground>true</isUnderground>
     <pocketMapProperties>
+      <!-- Defaults to TRUE. Game.cs destroys every pocket map whose sourceMap is an
+           abandoned map, and a gravship takeoff from an unanchored tile calls
+           GravshipUtility.AbandonMap - so with the default the sea floor is destroyed
+           AT TAKEOFF, before the ship lands. MEASURED from the decompiled engine
+           2026-09-26 (PocketMapProperties.cs, Game.cs, WorldComponent_GravshipController).
+           SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1. -->
+      <destroyOnParentMapAbandoned>false</destroyOnParentMapAbandoned>
       <biome>RM_PropaneLake</biome>
       <temperature>-55</temperature>
       <canBeCleaned>true</canBeCleaned>
