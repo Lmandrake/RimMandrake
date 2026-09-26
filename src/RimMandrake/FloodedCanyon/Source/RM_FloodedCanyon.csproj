@@ -54,7 +54,7 @@
     <Compile Include="RM_FloodedCanyonMod.cs" />
     <Compile Include="RM_BiomeWorker_FloodedCanyon.cs" />
     <Compile Include="RM_MapComponent_CanyonFlood.cs" />
-    <Compile Include="RM_Patch_Plant_GrowthRate.cs" />
+    <Compile Include="RM_ExplosiveGrowthBridge.cs" />
     <Compile Include="Debug\RM_FloodedCanyonDebugActions.cs" />
   </ItemGroup>
 

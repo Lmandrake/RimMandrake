@@ -15,7 +15,9 @@ namespace RimMandrake.FloodedCanyon
     // wiring needed, same as the sibling Greentide mod's own map
     // components).
     //
-    // This mod owns the biome, the phase clock, the chime and the soak. It
+    // This mod owns the biome, the phase clock and the chime. The SOAK the
+    // flood leaves is owned by mandrake.rm.explosivegrowth (see StartFlood);
+    // this mod only reports which cells the water reached. It
     // does NOT own what an excavated cell looks like — FlowWorks does
     // (flowworks_mod_definition.md §15 ruling 8: one engine, per-driver
     // recede policy, and this mod is the flood driver). Two owners for one
@@ -61,10 +63,6 @@ namespace RimMandrake.FloodedCanyon
         private int nextFloodTick = -1;
         private int floodEndTick = -1;
 
-        // Cell -> tick its soak-driven growth bonus expires. Read by
-        // RM_Patch_Plant_GrowthRate every plant tick; written only here.
-        private Dictionary<IntVec3, int> soakUntilTick = new Dictionary<IntVec3, int>();
-
         // Cells this cycle's flood is currently standing on, to convert
         // back to soil at recede time (only if still ours — see header).
         // NON-EXCAVATED cells only: an excavated one is never written here.
@@ -78,9 +76,6 @@ namespace RimMandrake.FloodedCanyon
         private List<IntVec3> raisedFillCells = new List<IntVec3>();
         private List<int> raisedFillPrior = new List<int>();
 
-        private List<IntVec3> tmpKeys = new List<IntVec3>();
-        private List<int> tmpValues = new List<int>();
-
         public RM_MapComponent_CanyonFlood(Map map) : base(map)
         {
         }
@@ -88,20 +83,6 @@ namespace RimMandrake.FloodedCanyon
         private bool Active =>
             RM_FloodedCanyonSettings.floodCycleEnabled
             && (map.Biome == RM_FloodedCanyonDefOf.RM_FloodedCanyon || RM_FloodedCanyonSettings.featureInOtherBiomes);
-
-        // Public for RM_Patch_Plant_GrowthRate. Never allocates.
-        public float SoakFactorAt(IntVec3 cell, int nowTick)
-        {
-            if (!RM_FloodedCanyonSettings.growthCouplingEnabled)
-            {
-                return 1f;
-            }
-            if (soakUntilTick.TryGetValue(cell, out int until) && nowTick < until)
-            {
-                return System.Math.Max(1f, RM_FloodedCanyonSettings.growthMultiplier);
-            }
-            return 1f;
-        }
 
         // Test surface for RM_FloodedCanyonDebugActions — schedules the
         // chime to ring on the very next tick, so the full sequence (chime
@@ -124,10 +105,11 @@ namespace RimMandrake.FloodedCanyon
         {
             return string.Format(
                 "phase={0} nextFloodTick={1} floodEndTick={2} nowTick={3} activeFloodCells={4} "
-                + "raisedFillCells={5} soakedCells={6} active={7} flowWorksEngine={8}",
+                + "raisedFillCells={5} active={6} flowWorksEngine={7} explosiveGrowth={8}",
                 phase, nextFloodTick, floodEndTick, Find.TickManager.TicksGame,
-                activeFloodCells.Count, raisedFillCells.Count, soakUntilTick.Count, Active,
-                Excavation != null ? "present" : "ABSENT");
+                activeFloodCells.Count, raisedFillCells.Count, Active,
+                Excavation != null ? "present" : "ABSENT",
+                RM_ExplosiveGrowthBridge.Available ? "present" : "ABSENT (flood soaks nothing)");
         }
 
         public override void FinalizeInit()
@@ -215,14 +197,17 @@ namespace RimMandrake.FloodedCanyon
 
         private void StartFlood(int now)
         {
-            PruneSoak(now);
-
             int target = UnityEngine.Mathf.Clamp(map.Area / 20, 40, 400);
             List<IntVec3> cells = ComputeFloodCells(target);
 
             int durationTicks = HoursToTicks(RM_FloodedCanyonSettings.floodDurationHours);
             floodEndTick = now + durationTicks;
-            int soakUntil = floodEndTick + DaysToTicks(RM_FloodedCanyonSettings.soakDecayDays);
+            // crack_flood — "the canonical soak" (explosive_plant_growth_design.md
+            // §1). The flood no longer keeps a soak map of its own: it hands
+            // every cell it wets to mandrake.rm.explosivegrowth, which owns the
+            // SOAKED state, the growth multiplier and everything after. Soaked
+            // for the flood's duration plus the decay days.
+            int soakTicks = (floodEndTick - now) + DaysToTicks(RM_FloodedCanyonSettings.soakDecayDays);
 
             TerrainDef floodTerrain = TerrainDefOf.WaterMovingShallow;
             RM_MapComponent_Excavation excavation = Excavation;
@@ -251,12 +236,15 @@ namespace RimMandrake.FloodedCanyon
                     // invariant, not the raise succeeding: falling through to
                     // SetTerrain here would put the flood's terrain back on an
                     // excavated cell, which is the whole defect.
-                    soakUntilTick[c] = soakUntil;
                     continue;
                 }
                 map.terrainGrid.SetTerrain(c, floodTerrain);
                 activeFloodCells.Add(c);
-                soakUntilTick[c] = soakUntil;
+            }
+
+            if (RM_FloodedCanyonSettings.growthCouplingEnabled)
+            {
+                RM_ExplosiveGrowthBridge.SoakCells(map, cells, soakTicks);
             }
 
             if (RM_FloodedCanyonSettings.floodDamageEnabled)
@@ -409,42 +397,17 @@ namespace RimMandrake.FloodedCanyon
             }
         }
 
-        private void PruneSoak(int now)
-        {
-            if (soakUntilTick.Count == 0)
-            {
-                return;
-            }
-            List<IntVec3> stale = null;
-            foreach (KeyValuePair<IntVec3, int> kv in soakUntilTick)
-            {
-                if (kv.Value <= now)
-                {
-                    (stale ?? (stale = new List<IntVec3>())).Add(kv.Key);
-                }
-            }
-            if (stale != null)
-            {
-                for (int i = 0; i < stale.Count; i++)
-                {
-                    soakUntilTick.Remove(stale[i]);
-                }
-            }
-        }
-
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref phase, "phase", Phase.Dry);
             Scribe_Values.Look(ref nextFloodTick, "nextFloodTick", -1);
             Scribe_Values.Look(ref floodEndTick, "floodEndTick", -1);
-            Scribe_Collections.Look(ref soakUntilTick, "soakUntilTick", LookMode.Value, LookMode.Value, ref tmpKeys, ref tmpValues);
             Scribe_Collections.Look(ref activeFloodCells, "activeFloodCells", LookMode.Value);
             Scribe_Collections.Look(ref raisedFillCells, "raisedFillCells", LookMode.Value);
             Scribe_Collections.Look(ref raisedFillPrior, "raisedFillPrior", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                if (soakUntilTick == null) soakUntilTick = new Dictionary<IntVec3, int>();
                 if (activeFloodCells == null) activeFloodCells = new List<IntVec3>();
                 if (raisedFillCells == null) raisedFillCells = new List<IntVec3>();
                 if (raisedFillPrior == null) raisedFillPrior = new List<int>();
