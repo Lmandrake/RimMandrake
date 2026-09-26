@@ -133,3 +133,58 @@ same biome inside the Utinni scenario is unchanged from today.
   Mlie's Star Wars rows carry bare names (`Gizka`, `Bantha`, `Convor`, `Nuna`) with no prefix
   at all, which is exactly how 22 of them got read as "vanilla" in the first place. Bucket by
   `MayRequire`, never by name.
+
+## AUDIT — 2026-09-25, FOUNDRY
+
+Audited every `RM_`-tier BiomeDef XML on disk (24 files across the 23 biome-mod-build items
+closed this session: BlueDesert, Contagion, FeverWood, FloodedCanyon, ForsakenCrags,
+GelatinousSlime, Greentide, LeaningScrub, LongShade, Miasma, NightsideIce, PoisonForest,
+Pyrelands, RustCathedral, Scarlands/Warscar, Stillsand, TerminalBiomes×4 (GreySea/PropaneLake/
+TheScald/TwilightSea), TheForge, TheRot, TheSump, Wasteland, Webwork, WeepingStones) — parsed
+`wildAnimals`/`wildPlants`/`fishTypes` in both the verbose `<li>` form and the shorthand
+dictionary form (including `fishTypes`' nested category wrapper, e.g.
+`<freshwater_Common><DefName>N</DefName></freshwater_Common>`), bucketed every row by
+`MayRequire` first, defName prefix second, and cross-checked bare names against the 205
+Star-Wars-tagged names measured off the frozen `RUT_` defs.
+
+**One real violation found and fixed:** `RM_LongShade.xml`'s `wildPlants` carried 6 RSW_-tier
+rows inline (`RSW_Ultracactus`, `RSW_SurraGrass`, `RSW_Plant_Chakroot_Wild`,
+`RSW_Plant_HubbaGourd_Wild`, `RSW_VellaraBloom`, `RSW_DommoTree`) — moved to
+`UtinniPatches/Patches/WildAnimals_LongShade.xml` as a `PatchOperationAdd`, same shape as its
+existing wildAnimals op. That file's own header claimed this was "the same still-open
+WildPlants gap every other RimMandrake biome mod carries" — **false**, every other biome's
+wildPlants list was already clean; corrected in the same commit (correctness-outranks-seat
+rule).
+
+**Everything else audited clean** — all 23 other files had zero Star Wars rows inline in any
+of the three blocks. `wildAnimals` and `wildPlants` are fully routed everywhere they carry
+content today.
+
+**The one named "no precedent" gap (`fishTypes`) is now closed for Greentide**, the case the
+item's own text used as the example. `RM_Greentide` ships no `fishTypes` at all (a Core-only
+deferred block, per `WildAnimals_Greentide.xml`'s own header); added the whole nested block
+via `PatchOperationAdd` onto the `BiomeDef` itself (no existing node to Replace) — the exact
+shape `SandFishing_CrackedLands.xml`'s already-shipped `RM_FloodedCanyon` op used, which means
+the item's "no existing `WildAnimals_*.xml` routes one" claim was already stale before this
+fix, just not yet applied to Greentide. `RSW_MeeCatch`/`FaaCatch`/`LaaCatch` already have real
+`RSW_` ports, so unlike Greentide's wildPlants gap (blocked on `DONOR_DEFS_PORT_TO_OURS_1`
+porting 6 of 8 plants) there was no blocking dependency.
+
+**Still open, correctly deferred, not touched:** `RM_Greentide`'s `wildPlants` — 6 of 8 Star
+Wars plant rows have no `RSW_` port yet (`DONOR_DEFS_PORT_TO_OURS_1`), so the whole block stays
+off `RM_Greentide` rather than shipping half a flora roster or reaching for donor defNames.
+This is a real dependency, not an oversight — do not "fix" it by casting donor bare names.
+
+**Out of this item's scope, not touched:** `RM_LongShade`'s `foragedFood`
+(`MayRequire="mandrake.rsw.swbestiary"` on `RSW_RawHubbaGourd`) and `allowedPackAnimals` (5
+RSW_ rows) are Star-Wars-tagged fields on a `RM_` def too, but the item's own spec section
+scopes the routing rule to `wildAnimals`/`wildPlants`/`fishTypes` specifically. Flagging for a
+future item rather than expanding scope here.
+
+Both changed/created XML files validated 0 errors/0 warnings via
+`skills/rimworld-modding/scripts/validate_patch.py` against the real game install
+(`/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld`), workshop content, and the live
+`ModsConfig.xml` (628/628 mods resolved) — every xpath hit exactly once, confirming the target
+nodes exist in the deployed defs.
+
+Fix commit: `9252f5e2d`.
