@@ -17409,6 +17409,12 @@
     "hash": "f4e963f7a809eebe369205d4f5c32422ef17b097e6a50c58e4d479b2692c42c2",
     "sha": "1fc63ee14"
   },
+  "src/RimUtinni/PropaneLakeMechanics/Source/CompGasVent.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "083b934583c114787cc2c656214804726ae19666ef3f33a75941119ed2de662c",
+    "sha": "c06d4b891"
+  },
   "src/RimUtinni/PropaneLakeMechanics/Source/CompPipeNetwork.cs": {
     "cleanCount": 1,
     "date": "2026-09-25",
@@ -17433,17 +17439,65 @@
     "hash": "0cab13f4e3eb483a4aba510fe0bb41a1c451330f61fcf32ab3bcbcb8b720248c",
     "sha": "01c8932b7"
   },
+  "src/RimUtinni/PropaneLakeMechanics/Source/CompProperties_GasVent.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "034d4e9cc7af300d06f9b1b6bbd85d93e13b14db408abad276c3cff9887433ca",
+    "sha": "c06d4b891"
+  },
   "src/RimUtinni/PropaneLakeMechanics/Source/CompProperties_PipeRupture.cs": {
     "cleanCount": 1,
     "date": "2026-09-25",
     "hash": "3e13d1f13572de61eb5f361d21659b0366643724fdbc76bd12e7e9f69da8b21c",
     "sha": "01c8932b7"
   },
+  "src/RimUtinni/PropaneLakeMechanics/Source/CompVWakeAgitation.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "1077e0f4b47c9b18b2711e6d7728f5c0da362ee3a35526830bcecd30bb401f26",
+    "sha": "c06d4b891"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Source/IncidentWorker_SaturationHeistRaid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "6987aa162b504fb2accb2622a63bf21d5e3a749e7ea28f020d03f7129e5ebfa3",
+    "sha": "c06d4b891"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Source/MapComponent_GasSaturationTracker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "cc65381df2eb82e33369c7c1b2c401b73fb305123a1d14bcdbd66fae1f2ff9b7",
+    "sha": "c06d4b891"
+  },
   "src/RimUtinni/PropaneLakeMechanics/Source/MapComponent_PipeNetworks.cs": {
     "cleanCount": 1,
     "date": "2026-09-25",
     "hash": "230e8c60290567bf7e8954d5f87842c83c42fda6637f3a7eb452f631564a94da",
     "sha": "01c8932b7"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Source/Patch_GasSaturationDeflagration.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "df62e74ae1a1b6fa6f57bb8cb912c3d8757e9bc0065975d3dd55b94d354ca7aa",
+    "sha": "c06d4b891"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Source/PropaneLakeMechanicsDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "bbbd72e64a8d3e9cc3ad2f61f87094ff8cdeebbd09e70c65d28b54694def6e54",
+    "sha": "c06d4b891"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Source/PropaneLakeMechanicsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "3a2ddc119d8537720c63d79017d437c16032e40aae9ccdcf7af1f0d29ca501f9",
+    "sha": "c06d4b891"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Source/PropaneLakeMechanicsSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "631d2f2d68e2b663251f81944ff6a8734bfcdfa73146ff49281d4f17b79914e6",
+    "sha": "c06d4b891"
   },
   "src/RimUtinni/PyrelandsMechanics/About/About.xml": {
     "cleanCount": 3,
