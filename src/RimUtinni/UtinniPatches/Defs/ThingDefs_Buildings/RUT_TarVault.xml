@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_TarVault.xml                      UtinniPatches — SUMP_TAR_VAULT_1
+
+  Owner ruling 2026-09-24, typed on the question card, verbatim: "I love
+  this, but it requires solvents to extract things or else they are
+  rendered useless. So extraction is a solvent based economic need.
+  Interesting. Never seen that mechanic before."
+
+  Item spec: "a buildable tar-pit store (pit or sunk barrel-rack). Anything
+  sealed in it is perfectly preserved — food, corpses, hides never rot.
+  Sealing is cheap; the tar does the work... retrieving an item without
+  solvent yields it tarred/ruined (useless). Cleaning it out costs solvent
+  per item — the same acid as SUMP_GASLIGHT_1's reaction (one acid, three
+  uses)... rot-stop is a container comp (vanilla-adjacent); the gate is an
+  extraction bill/job consuming solvent, else the tarred variant comes out."
+
+  Base chosen: ParentName="StorageShelfBase" (Data/Core/Defs/Core/
+  ThingDefs_Buildings/Buildings_Furniture.xml, read in full this pass via
+  RimSage) — a real, already-proven vanilla storage-furniture chain
+  (thingClass Building_Storage, ITab_Storage, StorageSettings) rather than a
+  hand-rolled container. "Sealing is cheap" needs no bespoke seal action at
+  all: ordinary vanilla hauling AI already carries a matching item into any
+  Building_Storage's cells the moment its filter allows it — the comp below
+  starts sealing the instant that happens.
+
+  Comp: RimMandrake.TheSump.CompProperties_TarVaultSeal (this item's own new
+  C#, mandrake.rm.thesump — see that file's header for why it lives in
+  TheSump's own assembly rather than the shared mandrake.rm.
+  environmentalhazards one this Sump kit otherwise concentrates generic
+  mechanisms in: EnvironmentalHazards is a sibling FOUNDRY pass's contended
+  file today, and this mechanism is Sump-specific — a single building type,
+  not a cross-biome primitive like RM_TarCoatingUtility). CompRottable.
+  disabled (a real public field, confirmed via RimSage against RimWorld/
+  CompRottable.cs) is vanilla's own "this thing does not rot right now"
+  switch — no RotProgress bookkeeping needed. Extraction is a Gizmo command
+  (CompGetGizmosExtra), NOT a WorkGiver/JobDriver pair: a full haul-to-
+  container job pair needs live verification this pass had no bridge access
+  for (no unattended guessing at a RimWorld API per CLAUDE.md), and an
+  administrative Gizmo interaction is itself a real, provable mechanism
+  (the same "immediate command, not a walked job" shape CompRefuelable's own
+  manual reload commands and Building_Storage's own per-item select gizmos
+  already use in vanilla).
+
+  Storage filter: default narrowed to Foods/Corpses/Leathers (the item's own
+  "food/corpses/hides"), replacing StorageShelfBase's broader default list —
+  a full <categories> redeclare, which RimWorld's XML inheritance treats as
+  a full replace of that one list field, same as Shelf's own
+  relatedBuildCommands redeclare demonstrates for a different list on the
+  same base chain. fixedStorageSettings (the hard cap, which excludes large
+  corpses via specialFiltersToDisallow) is left INHERITED, unmodified — a
+  known, flagged limitation (a giant creature's corpse cannot be vaulted)
+  rather than a guess at loosening a filter this pass could not live-test.
+
+  storageGroupTag repointed to its own tag so vaults link/rename as their
+  own group, distinct from ordinary Shelf furniture.
+
+  Research: RUT_TarRendering — SUMP_GASLIGHT_1's own build note flagged this
+  ResearchProjectDef as "defined but deliberately left UNWIRED to anything
+  ... a future pass wiring the discovery comp decides what 'first meeting
+  tar' should gate, if anything beyond flavor." This pass wires it for real,
+  as ordinary manually-completable research (not the discovery-trigger
+  mechanism, which stays INDIGENOUS_TECH_REVISIT_1's own gated scope) — "the
+  Sump's tar gives up more than it takes, once someone works out how to
+  handle it... waterproofing, adhesive, road-metal, fuel" is a genuine
+  thematic fit for "how to seal things in it so they keep."
+
+  Cost: Bitumen (the tar's own reward material, SUMP_TAR_NASTINESS_1 §4)
+  alongside stuff-costed structure, on the same "the tar does the work"
+  logic RUT_GaslightLamp.xml already costs its Sumpgas-burning fixture in
+  Bitumen too.
+
+  Texture: gen_tarvault_placeholder.py, same flat-fill-plus-outline posture
+  every sibling placeholder in this pass uses — checked infrastructure/
+  artpipe/done, _artsrc and registry.jsonl for "tarvault"/"tar vault"/
+  "larder" first (0 hits) per CLAUDE.md's "check for existing regenerated
+  art before queuing more". Real (hand-authored, reviewed) art is owed.
+-->
+<Defs>
+
+  <ThingDef ParentName="StorageShelfBase" MayRequire="mandrake.rm.thesump">
+    <defName>RUT_TarVault</defName>
+    <label>tar vault</label>
+    <description>A sunk barrel-rack packed in black Sump tar. Anything lowered into it stops aging the moment the tar closes over it — food stays fresh, a corpse stays whole, a hide stays supple, for as long as it sits sealed. The tar does not let go easily: pulling something back out clean takes a solvent to cut the seal, or it comes up ruined, fused uselessly into the tar that kept it.</description>
+    <graphicData>
+      <texPath>Things/Building/RUT_TarVault/RUT_TarVault</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,1)</drawSize>
+    </graphicData>
+    <size>(2,1)</size>
+    <rotatable>false</rotatable>
+    <costStuffCount>16</costStuffCount>
+    <costList>
+      <RUT_Bitumen>10</RUT_Bitumen>
+    </costList>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Mass>10</Mass>
+      <WorkToBuild>800</WorkToBuild>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <building>
+      <storageGroupTag>RUT_TarVault</storageGroupTag>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <categories>
+            <li>Foods</li>
+            <li>Corpses</li>
+            <li>Leathers</li>
+          </categories>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="CompProperties_Styleable" />
+      <li Class="RimMandrake.TheSump.CompProperties_TarVaultSeal">
+        <scanIntervalTicks>60</scanIntervalTicks>
+      </li>
+    </comps>
+    <researchPrerequisites>
+      <li>RUT_TarRendering</li>
+    </researchPrerequisites>
+    <techLevel>Neolithic</techLevel>
+    <designationCategory>Furniture</designationCategory>
+  </ThingDef>
+
+</Defs>
