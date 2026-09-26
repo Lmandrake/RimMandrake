@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T06:55:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T07:30:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -847,7 +847,7 @@ summary:  1. Design sitting first: answer the five questions above as a card set
 prose:    infrastructure/state/items/HOSTILE_MOBILE_PLANTS_1.md
 
 ## FEVERWOOD_ANT_HIVE_DUNGEON_1 Ant hives are reactive procedural dungeons
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -872,15 +872,6 @@ target:   v1
 kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
-
-## FEVERWOOD_SAP_SUCKER_GUILD_1 Three sap-suckers, three defences, and the host plant that feeds them
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6.
-prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_GUILD_1.md
 
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
@@ -1387,6 +1378,16 @@ blocked:  Item's own spec (step 1) says design sitting first, author nothing bef
 summary:  1. Design sitting first: answer the five questions above as a card set for him. ⛔ Author nothing
 prose:    infrastructure/state/items/HOSTILE_MOBILE_PLANTS_1.md
 
+## FEVERWOOD_ANT_HIVE_DUNGEON_1 Ant hives are reactive procedural dungeons
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  v1 landed (fc0fbc89e): procedural hive layout (RM_GenStep_AntHiveDungeon), RM_Kurreth workers/queen with real art, wired into RM_FeverWood. What makes this a DUNGEON per the owner's ruling rather than a nest to clear -- the reactive alarm/rally/seal/hunt behaviour -- is REACTION_MECHANISM_GENERALISE_1's own step 3, in-flight concurrently this session (steps 1-2 already landed). Building a second alarm implementation here now would duplicate/race that item, the exact failure mode it and HOSTILE_MOBILE_PLANTS_1's own block already avoided. Remaining after that mechanism lands: wire it onto RM_Kurreth, and place the farm (RM_Thornbug now exists, FEVERWOOD_SAP_SUCKER_GUILD_1 landed concurrently)/parasite/guard chambers (parasite+guard need two new creatures, not yet invented). (on REACTION_MECHANISM_GENERALISE_1)
+summary:  1. Read the Fever Wood doc's Ant material in full and the third-party ant mod it names, before
+prose:    infrastructure/state/items/FEVERWOOD_ANT_HIVE_DUNGEON_1.md
+
 ## SUMP_GASLIGHT_1 Sump gaslight: tar+acid reaction makes green gas (Helixien integration OK), warbling lamp light, flame statuary, natural flames, discovery-unlocked techs
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1548,16 +1549,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Design this as the shared reaction mechanism's first proof, in mandrake.rm.creaturebehaviors,
 prose:    infrastructure/state/items/GREENTIDE_WASP_SWARM_1.md
-
-## FEVERWOOD_ALIEN_BIRD_CHORUS_1 Alien birds whose chorus falls silent only for the water, and some of them steal
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
-prose:    infrastructure/state/items/FEVERWOOD_ALIEN_BIRD_CHORUS_1.md
 
 ## FEVERWOOD_TWO_FRONT_LURE_1 Staked living bait, and two raiders who arrive one after the other
 state:    proposed
@@ -1798,3 +1789,13 @@ kind:     task
 thin:     no ## verify, no ## criteria
 summary:  Authority: FEVERWOODDIANOGAPRISON1 (build), design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
 prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_TANK_TUNING_1.md
+
+## FEVERWOOD_SAP_SUCKER_TUNING_1 Real numbers and the mishandling trigger for the sap-sucker guild
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     mechanism
+thin:     no ## verify, no ## criteria
+summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
+prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
