@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_HUMMING_GROVE_1 — the three hum layers for RM_Thalquith
+  ("thalquith"), the aquamarine lattice-tree whose own description says "The
+  lattice hums in moving air, constantly — the hum stopping is the tell."
+
+  Consumed by RM_MapComponent_ProximitySoundscape (mandrake.rm.creaturebehaviors)
+  via RM_ProximitySoundscapeExtension on RM_Thalquith
+  (RM_Greentide_TreeRoster.xml) — TrySpawnSustainer(SoundInfo.OnCamera(
+  MaintenanceType.PerTick)) exactly as RUT_HumLayers.xml is consumed by
+  RM_MapComponent_BiomeAttitude. Shape copied from that file (read in full):
+  context MapOnly, sustain true, sustainLoop true, one AudioGrain_Clip per
+  layer. "Different frequencies" (the owner's own phrase, GREENTIDE_HUMMING_
+  GROVE_1) is these three separately-authored SoundDefs at three different
+  pitchRanges, never runtime pitch manipulation on one clip.
+
+  🔴 PLACEHOLDER AUDIO, same convention as RUT_HumLayers.xml and
+  RM_WebworkSoundscape.xml: no audio pipeline exists in this repo, so all
+  three reuse an existing shipped clip rather than inventing new audio
+  content. Clip paths below are the three Anomaly-DLC Obelisk ambience grains
+  (RimSage-verified against ObeliskAmbientStageOne/Two/Three, read in full
+  before writing this file) — a wordless, tonal hum already built for an
+  eerie/otherworldly reading, distinct in timbre from RUT_HumLayers'
+  mechanoid-relay clips and RM_WebworkSoundscape's undercave/void-node clips.
+  Design assumes every DLC is present (owner ruling 2026-09-25), so no
+  MayRequire is needed on the clip reference itself.
+-->
+<Defs>
+
+  <SoundDef>
+    <defName>RM_Hum_Thalquith_Low</defName>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <sustain>true</sustain>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Building/Obelisks/Ambience/Obelisk_Amb_Stage2_A_01</clipPath>
+          </li>
+        </grains>
+        <volumeRange>22</volumeRange>
+        <pitchRange>0.75~0.85</pitchRange>
+        <sustainLoop>true</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_Hum_Thalquith_Mid</defName>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <sustain>true</sustain>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Building/Obelisks/Ambience/Obelisk_Amb_Stage3_A_01</clipPath>
+          </li>
+        </grains>
+        <volumeRange>26</volumeRange>
+        <pitchRange>0.95~1.05</pitchRange>
+        <sustainLoop>true</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_Hum_Thalquith_High</defName>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <sustain>true</sustain>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Building/Obelisks/Ambience/Obelisk_Amb_Stage4_A_01</clipPath>
+          </li>
+        </grains>
+        <volumeRange>26</volumeRange>
+        <pitchRange>1.15~1.25</pitchRange>
+        <sustainLoop>true</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>

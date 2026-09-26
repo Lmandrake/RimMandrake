@@ -152,6 +152,44 @@ not *working* until he has heard it.
   CreatureBehaviors` dry run shows exactly one drift line, the DLL; run it with `--apply` at the next shutdown window,
   then the `## verify` walk (he has to HEAR it) is the remaining owed work.
 
+## ✅ Content built 2026-09-26 — spec items 1-5 all now landed; deploy + listen still owed
+
+The C# mechanism (`RM_MapComponent_ProximitySoundscape` / `RM_ProximitySoundscapeExtension`) was
+already built, compiled and committed on 2026-09-23 (sections above). What remained was the content
+side per spec item 3 and the actual wiring per the worked example already written into the
+extension's own doc comment:
+
+- **`src/RimMandrake/Greentide/Defs/SoundDefs/RM_GreentideHummingGrove.xml`** — three `SoundDef`s,
+  `RM_Hum_Thalquith_{Low,Mid,High}`, each `sustain=true`/`sustainLoop=true` exactly like
+  `RUT_HumLayers.xml` (the file `TrySpawnSustainer(SoundInfo.OnCamera(...))` is proven against), each
+  pointing at a different Anomaly-DLC Obelisk-ambience clip (`Obelisk_Amb_Stage{2,3,4}_A_01`,
+  RimSage-verified) at a rising `pitchRange` (0.75-0.85 / 0.95-1.05 / 1.15-1.25) — "different
+  frequencies" as three authored defs, per the item's own ruling, never runtime pitch manipulation.
+  Deliberately NOT the Cathedral's mechanoid clips or Webwork's undercave/void-node clips — a
+  distinct timbre for a distinct biome.
+- **`RM_Thalquith`** (`RM_Greentide_TreeRoster.xml`) now carries `<modExtensions>` tagging it with
+  `RM_ProximitySoundscapeExtension`, `groupKey=GreentideHummingGrove`, the three `humLayers` above;
+  `radius`/`thingsPerLayer`/etc. left at the extension's own tuned defaults (22 / 3). The roster's
+  prior comment deferring the hum to this item is removed — it is no longer true.
+- `validate_patch.py --live <2026-09-26T01-08-12Z capture> --defs Data --defs Workshop --defs Mods`
+  on both files: **0 errors**. One advisory WARN is expected and not a defect: "no def in the load
+  set uses that class" for `RM_ProximitySoundscapeExtension` on `RM_Thalquith` — the rebuilt DLL
+  carrying that class is still undeployed (below), so today's live dump was captured against the
+  OLD deployed assembly. This is the same "not deployed yet" fact already recorded above, seen from
+  a second instrument.
+
+⛔ **Still genuinely blocked, not guessed past:**
+1. **Deploy** — `deploy_custom_mods.py --mod CreatureBehaviors` still shows the DLL/`.srchash` drift
+   (RimWorld is running right now, PID confirmed live); the companion DLL cannot be written while
+   the game is open. Apply at the next shutdown window.
+2. **The listen test** — per `## verify` below, nothing here may be reported as working, smooth, or
+   even audible until the owner has heard it in a walked session; that needs the deployed DLL AND
+   the owner present, the same posture as a flyer's live-visual check. Ship it as a savegame he can
+   walk once deployed, per the standing rule for anything judged by experience.
+
+`needs` moved to `deploy` to reflect that the remaining gate is the shutdown-window deploy, not
+further offline work.
+
 ## spec
 
 1. **Copy `RM_MapComponent_BiomeAttitude`'s shape** — plain `MapComponent`, per-tick layer decision,
