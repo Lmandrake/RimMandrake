@@ -171,7 +171,12 @@ FAMILIES = {
   'ZBiome_Grasslands': {   # 222 tiles · 1 plant — roster redesigned since 2026-09-09,
                            # was a 3-plant grass mix, now a single grass at higher weight
     'RM_FE_Plant_Quickgrass': 4.0},
-  'RUT_Contagion': {   # 179 tiles · 10 plants — AB_EyeGrass purged (SHEET_ORPHAN_
+  'RM_Contagion': {   # RUT_Contagion frozen 2026-09-25 (CONTAGION_RM_MOD_BUILD_1) —
+                       # keyed to the RM_ name so `owned_flora()` (scoped to
+                       # src/RimUtinni/UtinniPatches/Defs/BiomeDefs only) no longer
+                       # matches it, same pattern as RM_TheRot/RM_Wasteland above: this
+                       # dict stops emitting a patch onto the frozen def. 179 tiles ·
+                       # 10 plants at authoring — AB_EyeGrass purged (SHEET_ORPHAN_
                        # CONSUMPTION_1, owner ruling 2026-09-20, no successor authored);
                        # RUT_RustPuff moved in (owner review 2026-09-20 (move); the_rot ->
                        # here; "The Contagion... and hatches occular creature when damaged")
