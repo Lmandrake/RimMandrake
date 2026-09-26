@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- WEBWORK_RM_MOD_BUILD_1. Generic sibling of the frozen campaign world's own
+     biome instance (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml,
+     now FROZEN) — same fictional idea (a jungle so dense it drank its own
+     river), rebuilt with zero campaign-specific or third-party content so it
+     can generate on any player's own world. Native label/description are
+     carried over verbatim from the frozen twin — already franchise-free.
+
+     Terrain and wildAnimals/wildPlants are vanilla-only by design, same
+     pattern as the sibling Greentide/Pyrelands mods: the frozen twin's own
+     terrainsByFertility used Alpha Biomes' AB_DenseMud/AB_DenseGrass and its
+     wildAnimals/wildPlants were 4-for-4 Star Wars fauna / 7-for-7 Alpha
+     Biomes+ReGrowth flora — none of that may ship in a RimMandrake-tier def
+     (§7 Q11). The real Webwork-flavored roster is WEBWORK_FLORA_ROSTER_1 /
+     WEBWORK_FAUNA_ROSTER_1 (follow-on items, not this one); this ships the
+     biome functional on Core + DLCs alone in the meantime, same as
+     RM_Greentide's own "vanilla-core roster only" comment. -->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_Webwork</defName>
+    <!-- No modExtensions in Phase A: the frozen twin's RM_FrontCreepExtension
+         names RUT_Webwork_Anchor/_Web/_Gutter, Utinni-tier structures not
+         ported here (WEBWORK_WEB_STRUCTURES_1's scope) — an extension naming
+         no front things would do nothing, so it is left off until that item
+         builds the structures and can wire it for real. -->
+    <label>the Webwork</label>
+    <description>The place where the plants grew so dense and thick that they drank their entire river -- soaked it up into a thicket of terrible, nightmare plants ever churning against itself. The map shows a jungle with no water because the water is inside. It is eerily silent -- most of the animals have been eaten, and few will enter. Those who do frequently discover a shadow, seconds before it lands upon them, and know nothing more.</description>
+    <workerClass>RimMandrake.Webwork.RM_BiomeWorker_Webwork</workerClass>
+    <texture>World/Biomes/TropicalRainforest</texture>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.0</animalDensity>
+    <plantDensity>0.9</plantDensity>
+    <forageability>1.0</forageability>
+    <movementDifficulty>2</movementDifficulty>
+    <wildPlantRegrowDays>15</wildPlantRegrowDays>
+    <diseaseMtbDays>35</diseaseMtbDays>
+
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>160</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SleepingSickness</diseaseInc>
+        <commonality>140</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+    </diseases>
+
+    <!-- Vanilla-only, unlike the frozen twin's AB_DenseMud/AB_DenseGrass —
+         same fertility breakpoints, Core terrain names. -->
+    <terrainsByFertility>
+      <li>
+        <terrain>Mud</terrain>
+        <min>-999</min>
+        <max>0.35</max>
+      </li>
+      <li>
+        <terrain>Soil</terrain>
+        <min>0.35</min>
+        <max>0.87</max>
+      </li>
+      <li>
+        <terrain>SoilRich</terrain>
+        <min>0.87</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <baseWeatherCommonalities>
+      <Clear>50</Clear>
+      <Fog>5</Fog>
+      <Rain>5</Rain>
+      <DryThunderstorm>1</DryThunderstorm>
+      <RainyThunderstorm>5</RainyThunderstorm>
+      <FoggyRain>3</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+
+    <!-- Vanilla-core roster only — no third-party or franchise-specific
+         fauna, no MayRequire on a third-party bestiary. Megaspider fits the
+         Webwork's own "shadow in the canopy" theme without naming anything.
+         WEBWORK_FAUNA_ROSTER_1 adds the invented RM-tier cast on top; the
+         frozen twin's Star Wars cast rides WildAnimals_Webwork.xml instead of
+         this def. -->
+    <wildAnimals>
+      <Rat>0.8</Rat>
+      <Hare>0.5</Hare>
+      <Muffalo>0.2</Muffalo>
+      <Cobra>0.3</Cobra>
+      <Megaspider>0.15</Megaspider>
+    </wildAnimals>
+    <coastalWildAnimals />
+    <!-- Vanilla-core roster only, same reasoning as wildAnimals above.
+         WEBWORK_FLORA_ROSTER_1 adds the invented RM-tier flora on top; the
+         frozen twin's Alpha Biomes/ReGrowth flora is not ported here. -->
+    <wildPlants>
+      <Plant_TreeOak>1.1</Plant_TreeOak>
+      <Plant_TreePoplar>0.8</Plant_TreePoplar>
+      <Plant_Bush>1.0</Plant_Bush>
+      <Plant_TallGrass>0.6</Plant_TallGrass>
+      <Plant_Berry>0.3</Plant_Berry>
+    </wildPlants>
+  </BiomeDef>
+
+</Defs>

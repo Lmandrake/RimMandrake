@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.webwork</packageId>
+  <name>RimMandrake: Webwork</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>mandrake.rm.creaturebehaviors</li>
+  </loadAfter>
+  <description>WEBWORK_RM_MOD_BUILD_1 (Phase A of design/RimMandrake/biome_mod_architecture.md,
+row 17). A jungle biome that drank its own river: everything grows dense and fast enough to
+watch, the water is inside the plants rather than on the map, and something large and patient
+waits in the canopy. RM tier: nothing here knows what campaign or planet uses it, and it is
+playable standalone on any generated RimWorld planet with nothing else loaded.
+
+Ships in v1:
+  - RM_Webwork BiomeDef: native label/description carried over verbatim (already
+    franchise-free), workerClass RM_BiomeWorker_Webwork (tile-range scoring, same shape as
+    the sibling Greentide/Pyrelands biome workers), vanilla-only terrain/weather/disease
+    tables, and a Core-only wildAnimals/wildPlants roster (Rat/Hare/Muffalo/Megaspider/Cobra
+    and Oak/Poplar/Bush/Grass/TallGrass/Berry) so the mod is functional on Core + DLCs alone.
+  - RM_WebworkSettings : ModSettings with a worldgen-affecting master toggle (default ON) for
+    whether RM_Webwork competes to generate on a freshly generated planet at all — off degrades
+    gracefully to "this biome simply never wins a tile," nothing else changes. Future per-
+    mechanic dials (front-creep margin, once WEBWORK_WEB_STRUCTURES_1 wires it) land here too.
+
+NOT in this mod (scoped to later items, not deferred sub rosa): the real Webwork-flavored
+flora and fauna roster (WEBWORK_FLORA_ROSTER_1, WEBWORK_FAUNA_ROSTER_1 — invented RM-tier
+species/plants, plus the disposition of the current Alpha Biomes/Star-Wars-donor rows),
+Ollathrix the owner species (OLLATHRIX_OWNER_SPECIES_1), the nest/egg economy
+(WEBWORK_NEST_EGG_ECONOMY_1, WEBWORK_EGG_BLACKMARKET_BUILD_1), the web structures kit
+(WEBWORK_WEB_STRUCTURES_1) and the soundscape (WEBWORK_SOUNDSCAPE_1). The Star Wars fauna
+cast that lives on the frozen campaign twin today rides its own Utinni patch
+(WildAnimals_Webwork.xml), never this def.
+
+Live proof is OWED at publish time — see the item's own verify record.</description>
+</ModMetaData>
