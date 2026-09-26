@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_FLORA_ROSTER_1 build. Authority:
+     design/Jawa/worldbuilding/biomes/fever_wood_flora_roster_2026-09-23.md
+     — 18 RM_-tier invented plants, organised by height above the water
+     (3 towers, 8 crown, 4 pool margin, 3 ground). Replaces the 3 AB_*
+     donor rows (`AB_KeeningCordax`/`AB_Iashiphus`/`AB_Gomphoeria`) that
+     shipped inline on RM_FeverWood.xml — cut per the roster's own §6
+     disposition table. RM_GiantLeaf (already RM_-tier, invented, not a
+     donor placeholder) is untouched; it was never one of the rows this
+     roster replaces. The 3 genuine canon Star Wars rows
+     (Plant_HydenockTree_Wild/Plant_JoganTree_Wild/Plant_Chakroot_Wild)
+     already ride the Utinni patch layer (WildAnimals_FeverWood.xml) per
+     Q11a and are untouched by this build — they are additive canon
+     flavour, kept at existing low commonality, not part of the 18.
+
+     🔴 Every commonality and growDays value below is an ENGINEERING
+     DEFAULT, not an owner ruling — the roster doc's own §8 says outright
+     "every number here is a slot, not a value." Same disclosure shape as
+     RUT_BoughSoil.xml's fertility figure. Flag for live tuning.
+
+     ⛔ No row here falls, is fellable, or carries RM_FellableTreeExtension/
+     RM_CompCrackFall — the item's own "no row falls" ruling (owner,
+     verbatim: mine right through, nothing here can fall). All 18 use
+     ParentName="PlantBase", never a Tree parent, so no auto-fell job is
+     generated.
+
+     CROWN LAYER FERTILITY GATING: the 8 crown rows (Plennith/Ossagrel/
+     Cistrel/Maulith/Verrow/Nubrith/Halquin/Ammeth) set fertilityMin 1.0 —
+     high enough that ordinary ground (measured Soil fertility 1.0 at the
+     margin, this biome's Soil/SoilRich terrainsByFertility split at 0.9)
+     does not reliably clear it, while RUT_BoughSoil (fertility 1.4,
+     FEVERWOOD_BOUGH_SOIL_TERRAIN_1, built+deployed this session, offline-
+     verified, live bough-soil-paints-and-plants-root check still owed) and
+     any natural SoilRich comfortably do. This is the same "no new C#, gate
+     on the existing fertility field" mechanism that item's own header
+     names as the fitting shape — not a new dependency edge. It is looser
+     than "only on RUT_BoughSoil" (any natural SoilRich patch qualifies
+     too), an accepted engineering looseness, not an owner ruling.
+
+     ART: RM_Ossagrel ships REAL finished art, copied from
+     infrastructure/artpipe/_artsrc/feverwood_plant_ossagrel/ (validated
+     PASS, MEASURED 256x256 RGBA) — found by searching artpipe/done before
+     queuing anything, per the item's own "before queueing any art"
+     section. RM_Thulvane/RM_Skethral/RM_Verrow/RM_Tullick already have
+     PENDING artpipe jobs (also found by that search, tagged
+     FEVERWOOD_RM_MOD_BUILD_1, generated-but-validated-fail, awaiting a
+     daemon retry) — not re-queued here. The other 13 rows get a genuine
+     flat-color placeholder PNG (same idiom as RM_FeverWood.png/
+     RUT_FeverTrunkHeartwood.png: just enough to load, not a regen, not an
+     artpipe job) and a fresh queue entry filed by this build (see
+     infrastructure/artpipe/pending/feverwood_plant_<name>.json,
+     rimflow_item_id=FEVERWOOD_FLORA_ROSTER_1). -->
+<Defs>
+
+  <!-- ===================== THE GIANTS — 3 towers, none falls =====================
+       Rare, huge-canvas flavour trees distinct from the mineable body
+       (RUT_FeverTrunkHeartwood/RUT_FeverTrunkCore, spawned separately by
+       RM_LivingBoleBiomeExtension's own genstep). These are ordinary
+       wildPlants entries at very low commonality — matching the 1~2
+       boles per map the biome extension already spawns — not fellable,
+       not mineable, not wired into that extension's spawn table. Wiring
+       a per-species heartwood choice into RM_LivingBoleBiomeExtension's
+       C# is a follow-on, out of this item's own def-authoring scope. -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Thulvane</defName>
+    <label>thulvane</label>
+    <description>A colossal fused column of a tree, its base so broad it reads as several trunks grown together, rising past sight so its crown is simply a permanent green ceiling. Bark in wet vertical plates, black in the grooves, permanently damp. The biome's structural unit — the ceiling, the interlock that keeps anything from falling, and the body colonists mine rooms into.</description>
+    <statBases>
+      <MaxHitPoints>160</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Thulvane/RM_Thulvane_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.5, 0.3)</volume>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>50</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>40</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>2.6~3.5</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>true</interferesWithRoof>
+      <blockAdjacentSow>true</blockAdjacentSow>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Skethral</defName>
+    <label>skethral</label>
+    <description>Shorter and wider than a thulvane, and visibly reaching: its heavy limbs grow horizontally toward its neighbours and fuse where they meet, so two skethrals read as one arch. Bark smooth and pale at the joins, scarred where limbs have knitted. This is the tree that grows the boughway roads — the in-fiction reason the crown is interlocked at all.</description>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Skethral/RM_Skethral_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.4, 0.3)</volume>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>40</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>35</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>2.2~3.0</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>5</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>true</interferesWithRoof>
+      <blockAdjacentSow>true</blockAdjacentSow>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Varnoth</defName>
+    <label>varnoth</label>
+    <description>Rooted in a mirror pool itself, on a tripod of prop-roots clear of the surface, its trunk leaning out over the water. Its lower bark is stained and polished to a wet black by the pool. Nothing grows beneath it. Its timber is the best in the biome — and it stands inside the reach, so reward and hazard are the same object.</description>
+    <statBases>
+      <MaxHitPoints>110</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Varnoth/RM_Varnoth_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.25, 0.4, 0.25)</volume>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>30</pathCost>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>30</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>60</harvestYield>
+      <harvestWork>900</harvestWork>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>1.8~2.5</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>true</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ===================== THE CROWN — 8 plants, on bough-soil ===================== -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Plennith</defName>
+    <label>plennith</label>
+    <description>A dense low mat of overlapping grey-green scales lying directly along bark and bough, thickening into a spongy bed that visibly holds silt and rot. Reads as a surface, never as a plant. This is what makes the bough-soil — the crown's fertility is biological, not geological, and where plennith has run, other things can grow.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Plennith/RM_Plennith_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <plant>
+      <fertilityMin>1.0</fertilityMin>
+      <fertilitySensitivity>0.6</fertilitySensitivity>
+      <growDays>6</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <wildOrder>3</wildOrder>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>60</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Ossagrel</defName>
+    <label>ossagrel</label>
+    <description>A thick segmented cane clamped along a bough, each joint swollen and split, weeping clear syrup that glazes and crusts below it. The whole plant looks over-full, and the bark under it is sugared and crawling. The host the crown's sap-suckers drink from, and the sugar line for stills and nectar-liquor.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ossagrel/RM_Ossagrel_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>4</pathCost>
+    <plant>
+      <fertilityMin>1.0</fertilityMin>
+      <fertilitySensitivity>0.6</fertilitySensitivity>
+      <growDays>14</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>10</harvestYield>
+      <harvestWork>300</harvestWork>
+      <harvestedThingDef>RM_OssagrelSap</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>0.9~1.4</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>25</wildClusterWeight>
+      <purpose>Food</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_OssagrelSap</defName>
+    <label>ossagrel sap</label>
+    <description>Sugar-thick syrup wept from ossagrel canes. Distills into a rough liquor or ferments into nectar; the crown's own sap-suckers drink it straight from the plant.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>1.1</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.6</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>12</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+      <foodType>VegetableOrFruit</foodType>
+      <nutrition>0.05</nutrition>
+    </ingestible>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Cistrel</defName>
+    <label>cistrel</label>
+    <description>A tight rosette of stiff waxy leaves forming a cup at chest height, holding clear standing water you can see into — the only water on this map that is not black. Outer leaves rust-red, inner pale. The only safe water in the Fever Wood, where people and tame animals drink.</description>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Cistrel/RM_Cistrel_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>3</pathCost>
+    <plant>
+      <fertilityMin>1.0</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>16</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.8~1.2</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>15</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Maulith</defName>
+    <label>maulith</label>
+    <description>A crossbeam of stiff branches carrying a dense curtain of flat ribbon-leaves that falls to the walkway below, so the plant is a room with walls. Leaves olive above, silver-backed and always moving slightly. The concealment plant of the crown, and the boughway's privacy screen. Ribbon-leaf is cordage.</description>
+    <statBases>
+      <MaxHitPoints>55</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Maulith/RM_Maulith_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>5</pathCost>
+    <plant>
+      <fertilityMin>1.0</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>18</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>8</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestedThingDef>Cloth</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>1.3~1.9</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>14</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Verrow</defName>
+    <label>verrow</label>
+    <description>Few fronds, held high and thin, with heavy dull-skinned gourds hanging well below them on long stalks — the fruit is the visual mass, not the leaves. The crown's staple food, reachable from a boughway without climbing. Free calories that draw the crown's grazers, and then the things that wait for grazers.</description>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Verrow/RM_Verrow_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>3</pathCost>
+    <ingestible/>
+    <plant>
+      <fertilityMin>1.0</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>15</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestYield>14</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestedThingDef>RawBerries</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>1.1~1.6</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>30</wildClusterWeight>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Nubrith</defName>
+    <label>nubrith</label>
+    <description>A low leathery dome on a squat stalk, glowing a steady warm amber downward onto the deck. The only natural light in the crown — deliberately warm, sitting beside the Wildsteam's steam-lamp gold rather than fighting it. A leaf that glows, not a mushroom.</description>
+    <statBases>
+      <MaxHitPoints>35</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Nubrith/RM_Nubrith_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>6</glowRadius>
+        <glowColor>(255,210,140,0)</glowColor>
+      </li>
+    </comps>
+    <plant>
+      <fertilityMin>1.0</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>13</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.7~1.0</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Halquin</defName>
+    <label>halquin</label>
+    <description>Two broad blade-leaves lying flat and opposite against the trunk like a pressed specimen, dark and leathery, with a swollen joint between them that beads resin. The medicine — the resin is the biome's herbal medicine line, gathered by scraping, a safe patient crown-side income.</description>
+    <statBases>
+      <MaxHitPoints>35</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Halquin/RM_Halquin_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <plant>
+      <fertilityMin>1.0</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>20</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>4</harvestYield>
+      <harvestWork>400</harvestWork>
+      <harvestedThingDef>MedicineHerbal</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>0.7~1.0</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Ammeth</defName>
+    <label>ammeth</label>
+    <description>One stiff flat fan of fused leaf held in a single plane from a short base, so it reads as a panel from one side and a line edge-on — the only plant here whose silhouette changes with facing. Waxy, rain-shedding, pale underneath. Roofing and decking; the cheapest building material in the biome, cut but never felled.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ammeth/RM_Ammeth_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>3</pathCost>
+    <plant>
+      <fertilityMin>1.0</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>17</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>10</harvestYield>
+      <harvestWork>300</harvestWork>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>0.9~1.4</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>18</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ===================== THE POOL MARGIN — 4 plants ===================== -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Claithe</defName>
+    <label>claithe</label>
+    <description>A flat rosette of blunt grey leaves over a broad pale root-plate that lifts clear of the mud, caked in grey clay it has bound out of the water. The potter's clay is harvested from its root-plate — a raw-terrain resource turned into a plant you can find, judge and farm at the water's edge.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Claithe/RM_Claithe_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>3</pathCost>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>14</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>12</harvestYield>
+      <harvestWork>300</harvestWork>
+      <harvestedThingDef>RM_PottersClay</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>0.8~1.2</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>16</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_PottersClay</defName>
+    <label>potter's clay</label>
+    <description>Grey river clay, bound and lifted clear of the mud by a claithe's own root-plate. Workable straight from the plant.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_PottersClay/RM_PottersClay</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>0.6</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Corvath</defName>
+    <label>corvath</label>
+    <description>A single thick dark-purple spike standing alone out of the mud, glossy and swollen, obviously better fed than anything around it. Always solitary — never more than a few at one pool. It grows only where the thing below has fed. A pool ringed with corvath is an occupied pool: the botanical tell that makes the pools readable. Worthless by design — its whole value is as information.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Corvath/RM_Corvath_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>1</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Sodderel</defName>
+    <label>sodderel</label>
+    <description>A lopsided spar of a tree, half its limbs already dead and black with water, leaning permanently toward the pool. Living growth only on the high side. It looks like a wreck and is not one — this is the biome's ordinary construction wood, since the towers cannot be felled and varnoth is lethal to reach. It reads as naturally half-dead, not diseased.</description>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Sodderel/RM_Sodderel_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>6</pathCost>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>22</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>18</harvestYield>
+      <harvestWork>400</harvestWork>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>1.4~2.0</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Seepril</defName>
+    <label>seepril</label>
+    <description>A low dull barrel of a stem sitting in its own iridescent slick, the rainbow film spreading a cell or two around its base. Leafless above; just the barrel and the sheen. The seep-oils gather around it — perfume, lubricant, fuel. Its rainbow is the planet's honest register: just oil, just useful.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Seepril/RM_Seepril_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>3</pathCost>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>16</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>8</harvestYield>
+      <harvestWork>300</harvestWork>
+      <harvestedThingDef>RM_SeepOil</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>0.7~1.0</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- RESOLVED 2026-09-23 (roster doc §4): RM_Seepril owns the seep-oils as a
+       harvested plant resource, not a terrain feature and not
+       LIQUID_TYPES_MOD_1 — that pointer in the frozen sheet's cross-flow
+       ledger is superseded. Real LiquidDef/FlowWorks integration, if wanted
+       later, is a follow-on outside this item's scope; this ships as a
+       plain bottleable resource item so the plant is functional now. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SeepOil</defName>
+    <label>seep oil</label>
+    <description>Iridescent oil gathered from around a seepril's base. Perfume, lubricant or fuel, depending on who wants it.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_SeepOil/RM_SeepOil</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>1.4</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- ===================== THE GROUND — 3 plants, thinness is the point ===================== -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Skimmel</defName>
+    <label>skimmel</label>
+    <description>A continuous pale-green film lying perfectly flat over the mud, indistinguishable from firm ground until it is stepped on. Its only tell is that it is too even — no texture, no debris, and it never grows on ground that is actually solid. Disguises the sink-mud beneath it. ⚠️ Deliberately deceptive to the eye — do not "fix" this into looking safer or less like ground.</description>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Skimmel/RM_Skimmel_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>1</pathCost>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>8</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.9~1.0</visualSizeRange>
+      <wildOrder>3</wildOrder>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>20</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Wanlith</defName>
+    <label>wanlith</label>
+    <description>Sparse colourless stalks a knee high, translucent and unbranched, standing in loose groups. Almost no biomass. Reads as absence — the visual proof that the floor is starved of light. The ground's baseline cover, deliberately worth almost nothing.</description>
+    <statBases>
+      <MaxHitPoints>15</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Wanlith/RM_Wanlith_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>1</pathCost>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>7</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.5~0.8</visualSizeRange>
+      <wildOrder>3</wildOrder>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>18</wildClusterWeight>
+      <purpose>None</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Tullick</defName>
+    <label>tullick</label>
+    <description>A tight low whorl of dull ribbed leaves with the ground visibly domed beneath it by the tuber below. The ground's one real reward — a bulk starch for the people working the causeway. Digging it churns the mud around it, an honest small cost.</description>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Tullick/RM_Tullick_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>16</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestedThingDef>RawPotatoes</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>14</wildClusterWeight>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+</Defs>
