@@ -245,6 +245,9 @@ namespace RimMandrake.EnvironmentalHazards
         // SUMP_MECHANICS_1 S2 build pass — see RM_WorkGiver_WorkLottery.cs.
         public static JobDef RM_WorkLottery;
 
+        // SUMP_MECHANICS_1 owner card 2 — see RM_WorkGiver_DisarmLotteryTrap.cs.
+        public static JobDef RM_DisarmLotteryTrap;
+
         static RM_EnvironmentalHazardsJobDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_EnvironmentalHazardsJobDefOf));

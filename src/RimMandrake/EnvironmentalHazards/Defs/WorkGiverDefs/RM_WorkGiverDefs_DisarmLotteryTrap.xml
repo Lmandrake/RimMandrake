@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SUMP_MECHANICS_1 owner card 2. Generic WorkGiverDef for
+     RM_WorkGiver_DisarmLotteryTrap — reachable by any ThingDef carrying
+     RM_CompWorkedLottery whose trap is currently armed, not Sump-specific.
+     Shape cribbed from this mod's own RM_WorkGiverDefs_WorkLottery.xml.
+     priorityInType higher than that sibling's own 50 — an armed, ticking
+     find is more urgent than routine digging once one exists. -->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_DisarmLotteryTrap</defName>
+    <label>disarm lottery trap</label>
+    <giverClass>RimMandrake.EnvironmentalHazards.RM_WorkGiver_DisarmLotteryTrap</giverClass>
+    <workType>Mining</workType>
+    <priorityInType>60</priorityInType>
+    <verb>disarm</verb>
+    <gerund>disarming</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <canBeDoneByMechs>false</canBeDoneByMechs>
+  </WorkGiverDef>
+
+</Defs>

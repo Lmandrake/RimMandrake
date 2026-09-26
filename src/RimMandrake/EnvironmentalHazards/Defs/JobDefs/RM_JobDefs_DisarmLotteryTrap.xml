@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SUMP_MECHANICS_1 owner card 2 (RULED 2026-09-12): "era traps are
+     disarmable — high skill gate, failure detonates." The JobDef
+     RM_JobDriver_DisarmLotteryTrap needs, requested by
+     RM_WorkGiver_DisarmLotteryTrap for any Thing carrying
+     RM_CompWorkedLottery whose trap is currently armed. Generic, not
+     Sump-specific, same posture as its sibling RM_WorkLottery JobDef. -->
+<Defs>
+
+  <JobDef>
+    <defName>RM_DisarmLotteryTrap</defName>
+    <driverClass>RimMandrake.EnvironmentalHazards.RM_JobDriver_DisarmLotteryTrap</driverClass>
+    <reportString>disarming the trap at TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+</Defs>
