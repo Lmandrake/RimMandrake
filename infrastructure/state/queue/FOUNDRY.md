@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T11:21:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T15:25:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## FEVERWOOD_TWO_FRONT_LURE_TUNING_1 Two-front lure numbers, prey-quality gate, and a free-tier second raider
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     tuning
-summary:  1. Prey-quality gate — explicitly left UNSET by the design sheet
-prose:    infrastructure/state/items/FEVERWOOD_TWO_FRONT_LURE_TUNING_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -180,6 +171,15 @@ kind:     task
 summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
 prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
 
+## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
+prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
+
 ## COLD_LOAD_RUN_SHEET_4 Run sheet for the next full-list load: three readings owed from the 2026-09-06 offline wave
 state:    doing
 row:      unassigned
@@ -188,15 +188,6 @@ target:   v1
 kind:     task
 summary:  Six entries, each a reading that could not be taken offline. See history for
 prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_4.md
-
-## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  Design (LIVE — the owner's 2026-09-25/26 card sitting un-parked it: all four
-prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
 
 ## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
 state:    doing
@@ -368,6 +359,15 @@ target:   v1
 kind:     task
 summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
 prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
+
+## SARLACC_HABITAT_BUILD_1 Build the accepted sarlacc design (sarlacc_native_habitat_draft.md, ACCEPTED + all forks RULED 2026-09-12): RSW-tier mod, Devourer-modeled swimmer, rooting-in-play, 2-4 deep-desert cisterns (relocate tile 2920 off the Weeping Stones oasis), breach-only kill, 7 changed-return hediffs, tribal stage labels for owner yes
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  SARLACCHABITATBUILD1 — build the accepted sarlacc design
+prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
 
 ## BIOME_WORLD_SWITCH_WAVE_1 World-switch every donor/vanilla-painted tile to its owned RUT_ successor: MEASURED 2026-09-12 live export, 17,889 of 21,872 tiles (82%) still on 23 donor/vanilla defs (ExtremeDesert 3969, AB_PropaneLakes 2531, Desert 2390, AB_MycoticJungle 2204, Wasteland 1853 ...) — BIOME_OWNERSHIP_WAVE_1 closed on def authoring only, the tile switch was never filed
 state:    doing
@@ -972,6 +972,15 @@ kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
 
+## FEVERWOOD_TWO_FRONT_LURE_TUNING_1 Two-front lure numbers, prey-quality gate, and a free-tier second raider
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     tuning
+summary:  1. Prey-quality gate — explicitly left UNSET by the design sheet
+prose:    infrastructure/state/items/FEVERWOOD_TWO_FRONT_LURE_TUNING_1.md
+
 ## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1086,24 +1095,14 @@ summary:  Each round:
 prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
 
 ## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
-state:    ready  (BLOCKED)
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  quest content built (Homestead visit + donation/smuggle), Heat/Hutt-Interest GM blackboard (M4) unbuilt — cannot meet verify's sale-raises-heat clause without inventing parallel infra
+blocked:  stale premise fixed: GM_BLACKBOARD_SHADOW_M4_1/CATHEDRAL_REGARD_BLACKBOARD_1 built the external Heat/Hutt-Interest blackboard 2026-09-13+ (shadow mode, live-proven); real remaining blocker is that item's own unbuilt live-injection flip, which needs bridge access this pass did not have. See item file Correction 2026-09-26. (on GM_BLACKBOARD_SHADOW_M4_1)
 summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
 prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
-
-## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-blocked:  dormant design per owner card 14 (design now, do not build); nothing closes it but the owner's read of droid_oracle_voice_design.md
-summary:  Design (LIVE — the owner's 2026-09-25/26 card sitting un-parked it: all four
-prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    doing  (BLOCKED)
@@ -1176,7 +1175,7 @@ summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
 prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
 
 ## SARLACC_HABITAT_BUILD_1 Build the accepted sarlacc design (sarlacc_native_habitat_draft.md, ACCEPTED + all forks RULED 2026-09-12): RSW-tier mod, Devourer-modeled swimmer, rooting-in-play, 2-4 deep-desert cisterns (relocate tile 2920 off the Weeping Stones oasis), breach-only kill, 7 changed-return hediffs, tribal stage labels for owner yes
-state:    ready  (BLOCKED)
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
