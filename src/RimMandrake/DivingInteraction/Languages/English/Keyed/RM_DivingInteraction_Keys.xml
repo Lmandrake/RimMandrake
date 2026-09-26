@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <RM_FloatMenu_DiveHunt>Dive to hunt the deep (burns risked)</RM_FloatMenu_DiveHunt>
-  <RM_FloatMenu_DiveCommune>Dive to commune with the deep (burns risked)</RM_FloatMenu_DiveCommune>
-  <RM_DiveOnCooldown>the deep is still settled from the last dive ({0})</RM_DiveOnCooldown>
-
-  <RM_DiveHuntSuccess>{0} surfaces from the deep with {1} pieces of walker chitin.</RM_DiveHuntSuccess>
-  <RM_DiveHuntLashback>{0} found nothing below — and the water did not let them leave unmarked.</RM_DiveHuntLashback>
-  <RM_DiveHuntNothing>{0} surfaces empty-handed. The deep kept its own today.</RM_DiveHuntNothing>
-  <RM_DiveCommuneComplete>{0} sits with the deep a while, and comes back changed.</RM_DiveCommuneComplete>
+  <!-- SEA_DIVE_MAPS_BUILD_1. Vanilla's own "EnterPortal"/"ExitPortal"/
+       "CommandEnterPortalDesc" etc. (MapPortal.cs, PocketMapExit.cs) cover
+       the enter/exit gizmo strings — this mod only needs its own refusal
+       reasons. -->
+  <RM_SeaDiveDisabled>sea diving is disabled in Mod Settings</RM_SeaDiveDisabled>
+  <RM_SeaDiveNotAtSea>this hatch is not currently over open water</RM_SeaDiveNotAtSea>
+  <RM_SeaDiveHatchNeedsGravEngine>needs a working grav engine somewhere on this ship</RM_SeaDiveHatchNeedsGravEngine>
 
 </LanguageData>

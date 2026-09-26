@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SEA_DIVE_MAPS_BUILD_1 — one pocket-map generator per terminal sea, each
+  naming that sea's own BiomeDef (mandrake.rm.terminalbiomes,
+  TERMINALBIOMES_RM_MOD_BUILD_1) so its wildAnimals cast is the cast this
+  generator's own map carries — GenStep_SeaFloorFauna reads it straight off
+  map.Biome, no per-sea C# needed.
+
+  Pattern: src/RimMandrake/LanternDeeps/Defs/MapGeneration/
+  RM_LanternDeepGenerator.xml. RM_SeaFloorTerrain replaces the vanilla
+  Terrain step (see GenStep_SeaFloorTerrain.cs); RM_PlaceSeaDiveExit and
+  RM_SeaFloorFauna are this item's other two GenSteps
+  (RM_SeaDiveGenStepDefs.xml). RockChunks/Fog/ElevationFertility are
+  vanilla-shipped and unmodified.
+
+  Temperatures are a placeholder read of each sea's own description (the
+  Scald boils, the Propane Lake is "cold here is total") — the real heat/
+  cold GEAR GATE (two-axis matrix: no-air x temperature, this item's
+  ledger) is follow-on content, not this mechanism.
+-->
+<Defs>
+
+  <MapGeneratorDef MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RM_SeaDiveGenerator_TheScald</defName>
+    <label>the Scald floor</label>
+    <disableCallAid>true</disableCallAid>
+    <isUnderground>true</isUnderground>
+    <pocketMapProperties>
+      <biome>RM_TheScald</biome>
+      <temperature>55</temperature>
+      <canBeCleaned>true</canBeCleaned>
+      <tileMutators>
+        <li>RM_SeaFloorHabitat</li>
+      </tileMutators>
+    </pocketMapProperties>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>RM_SeaFloorTerrain</li>
+      <li>RM_PlaceSeaDiveExit</li>
+      <li>RM_SeaFloorFauna</li>
+      <li>Animals</li>
+      <li>RockChunks</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <MapGeneratorDef MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RM_SeaDiveGenerator_GreySea</defName>
+    <label>the Grey Sea floor</label>
+    <disableCallAid>true</disableCallAid>
+    <isUnderground>true</isUnderground>
+    <pocketMapProperties>
+      <biome>RM_GreySea</biome>
+      <temperature>12</temperature>
+      <canBeCleaned>true</canBeCleaned>
+      <tileMutators>
+        <li>RM_SeaFloorHabitat</li>
+      </tileMutators>
+    </pocketMapProperties>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>RM_SeaFloorTerrain</li>
+      <li>RM_PlaceSeaDiveExit</li>
+      <li>RM_SeaFloorFauna</li>
+      <li>Animals</li>
+      <li>RockChunks</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <MapGeneratorDef MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RM_SeaDiveGenerator_TwilightSea</defName>
+    <label>the Twilight Sea floor</label>
+    <disableCallAid>true</disableCallAid>
+    <isUnderground>true</isUnderground>
+    <pocketMapProperties>
+      <biome>RM_TwilightSea</biome>
+      <temperature>8</temperature>
+      <canBeCleaned>true</canBeCleaned>
+      <tileMutators>
+        <li>RM_SeaFloorHabitat</li>
+      </tileMutators>
+    </pocketMapProperties>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>RM_SeaFloorTerrain</li>
+      <li>RM_PlaceSeaDiveExit</li>
+      <li>RM_SeaFloorFauna</li>
+      <li>Animals</li>
+      <li>RockChunks</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <MapGeneratorDef MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RM_SeaDiveGenerator_PropaneLake</defName>
+    <label>the Propane Lake floor</label>
+    <disableCallAid>true</disableCallAid>
+    <isUnderground>true</isUnderground>
+    <pocketMapProperties>
+      <biome>RM_PropaneLake</biome>
+      <temperature>-55</temperature>
+      <canBeCleaned>true</canBeCleaned>
+      <tileMutators>
+        <li>RM_SeaFloorHabitat</li>
+      </tileMutators>
+    </pocketMapProperties>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>RM_SeaFloorTerrain</li>
+      <li>RM_PlaceSeaDiveExit</li>
+      <li>RM_SeaFloorFauna</li>
+      <li>Animals</li>
+      <li>RockChunks</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+</Defs>

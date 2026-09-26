@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    SCALD_DIVING_MOD_1. Same recipe as
+    SEA_DIVE_MAPS_BUILD_1 (was SCALD_DIVING_MOD_1 — the shore "dive to hunt/
+    commune" mechanic is retired per the SHIP-ONLY ACCESS ruling, 2026-09-26;
+    see RM_DivingSettings.cs and RM_SeaDiveHatch.cs headers). Same recipe as
     src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviors.csproj —
     copy that header if this one goes stale.
 
@@ -10,10 +12,11 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: RM_FloatMenuOptionProvider_Dive is auto-discovered by
-    FloatMenuMakerMap.Init() (AllSubclassesNonAbstract reflection, verified
-    this session against Source/RimWorld/FloatMenuMakerMap.cs) — every other
-    class is a plain JobDriver/MapComponent/ModSettings/Thought_Memory.
+    No Harmony: every class here is a plain ModSettings/Mod, a
+    MapPortal/PlaceWorker/GenStep subclass wired by defName from XML
+    (thingClass, placeWorkers, genStep Class=) — no reflection
+    auto-discovery is relied on any more (the old float-menu provider that
+    needed FloatMenuMakerMap.Init() reflection is gone).
   -->
 
   <PropertyGroup>
@@ -41,14 +44,11 @@
 
   <ItemGroup>
     <Compile Include="RM_DivingSettings.cs" />
-    <Compile Include="RM_DiveUtility.cs" />
-    <Compile Include="RM_DivingDefOf.cs" />
-    <Compile Include="RM_MapComponent_DiveSites.cs" />
-    <Compile Include="RM_Thought_CommunedWithDeep.cs" />
-    <Compile Include="RM_JobDriver_DiveBase.cs" />
-    <Compile Include="RM_JobDriver_DiveHunt.cs" />
-    <Compile Include="RM_JobDriver_DiveCommune.cs" />
-    <Compile Include="RM_FloatMenuOptionProvider_Dive.cs" />
+    <Compile Include="RM_SeaDiveHatch.cs" />
+    <Compile Include="PlaceWorker_NeedsGravEngine.cs" />
+    <Compile Include="GenStep_SeaFloorTerrain.cs" />
+    <Compile Include="GenStep_SeaFloorFauna.cs" />
+    <Compile Include="GenStep_PlaceSeaDiveExit.cs" />
   </ItemGroup>
 
   <ItemGroup>

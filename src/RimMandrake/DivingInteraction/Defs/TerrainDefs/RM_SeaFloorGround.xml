@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SEA_DIVE_MAPS_BUILD_1 — the one Standable seafloor terrain shared by all
+  four sea-dive pocket maps (RM-tier, franchise-free, never named a biome).
+
+  Why one shared terrain and not four: a vanilla sea BiomeDef's own
+  terrainsByFertility paints a single Impassable deep-water terrain across
+  the whole map (correct for the SURFACE tile, wrong for a floor a
+  weighted-belt diver is meant to walk — see GenStep_SeaFloorTerrain.cs).
+  Per-sea floor dressing (Scald chimney-field silt, Propane Lake frozen
+  crust, etc.) is follow-on content, not this mechanism.
+
+  PLACEHOLDER ART: reusing vanilla's own Sand texture (Terrain/Surfaces/Sand)
+  as sediment — same posture as LanternDeepEmergence reusing CaveEntranceA.
+  Real seafloor-silt art is owed alongside the per-sea dressing pass.
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_SeaFloorGround</defName>
+    <label>sea floor sediment</label>
+    <description>Fine sediment settled on the bottom, compacted enough under a weighted belt to walk on. Above, the whole weight of the sea.</description>
+    <texturePath>Terrain/Surfaces/Sand</texturePath>
+    <isPaintable>false</isPaintable>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <pathCost>6</pathCost>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <BeautyOutdoors>-2</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <tags>
+      <li>RM_SeaFloorGround</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>

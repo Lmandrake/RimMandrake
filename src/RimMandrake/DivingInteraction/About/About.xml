@@ -6,56 +6,61 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>SCALD_DIVING_MOD_1 (owner ruling, 2026-09-12, on the Scald kit's
-open card 3, verbatim: "Diving interaction, and make the diving mod v1
-content now!!"). `scald_kit_spec.md` S5 ruled: "the bottom-walkers do not
-stay a visual: a diving mechanic (hunt/commune at the deep center, priced in
-burns) ships as v1 content, as its own RimMandrake-tier mod." Ban 4 in
-`the_scald.md` ("no macro-life in the boil itself") is superseded exactly
-this far: the DEEP interaction exists; the boiling SURFACE remains strictly
-no-swim — this mod never lets a pawn stand where the boil ban applies.
+  <description>SEA_DIVE_MAPS_BUILD_1 (question card 2026-09-25: dive opens a small
+dedicated underwater pocket map — not "surface in shallows," not "decide
+later"). Retires this mod's original v1 content, SCALD_DIVING_MOD_1's shore
+"dive to hunt/commune" terrain-standing interaction, per the owner's
+SHIP-ONLY ACCESS ruling (2026-09-26, verbatim, mid-turn): "the gravship is
+the sole dive/resurface mechanism... don't let the players walk from tile to
+tile on the worldmap... remove any dive options from shore." That shore
+mechanism (RM_DiveEligible tag, its float-menu provider, both JobDrivers) is
+gone from this mod entirely — a sea tile stays worldmap-impassable, and the
+only way down is a ship.
 
 **The generic mechanism (this mod's actual surface, RM-tier because it names
-no biome, no clan, no planet):** any TerrainDef tagged `RM_DiveEligible` and
-Standable becomes a place a colonist can be sent to dive. Right-click such a
-cell for "Dive to hunt" or "Dive to commune" — the pawn walks there and
-holds position for a tunable duration. No new damage system: the pawn pays
-in burns because RimWorld's own `HediffGiver_Terrain` already fires on any
-pawn standing on a `burnDamage`-carrying terrain (Core's
-`HediffGiverSets.xml`) — this mod's only job is getting a colonist to stand
-there on purpose and paying out an outcome afterward. A medieval-tribe
-player could tag a lava-adjacent tile and use this alone; it does not know
-the Scald exists.
+no sea, no clan, no planet):** `RM_SeaDiveHatch` is a buildable
+`MapPortal` — right-click "Enter" to descend to a real pocket map generated
+fresh each time, using whichever sea biome the parent map's tile currently
+carries. One ThingDef, one C# class (`RM_SeaDiveHatch`); the pocket-map
+generator is chosen at generate time from `Map.Biome`, not baked into four
+separate hatch defs. A `PocketMapExit`-derived ascent line (`RM_SeaDiveExit`)
+returns colonists to the ship automatically — vanilla's own
+`PocketMapExit.SpawnSetup` links it back to whichever hatch generated the
+map, no bespoke plumbing needed.
 
-**Why a dive SITE, not a bottom-walker pawn:** `scald_kit_spec.md` S5 ships
-v1 walkers only as a non-resident surfacing set-piece
-(`RUT_WalkerSurfacing`/`RUT_IncidentWorker_WalkerSurfacing`, elsewhere) —
-`measure`/RimSage confirm ZERO bottom-walker PawnKindDef or ThingDef exists
-in the live def set. Simulating a full swimming, huntable pawn AI for a
-creature that has no def, no art, and an explicit "not a resident pawn"
-ruling would invent lore this mod is not chartered to invent. The dive-site
-interaction point delivers the ruled player experience (reach the deep
-center, risk the burn, come back with something or someone changed) without
-that invention; the roster/bestiary pass can attach a real pawnkind to the
-same cells later without touching this mod.
+**Why the pocket map has to seed its own cast:** MEASURED live 2026-09-26
+(this item's ledger) — a sea BiomeDef's wildAnimals list never spawns at a
+standable cell on a re-tiled sea tile, because the vanilla spawn chooser
+reads the map's per-cell blended biome and a sea's only cells are its own
+unstandable water. `GenStep_SeaFloorFauna` (one class, reused by all four
+sea generators, parameterized purely by `map.Biome`) explicitly spawns each
+sea's own wildAnimals rows onto its pocket map instead of trusting ambient
+spawning to do it.
 
-**Wiring to the Scald (data only, this mod owns no Scald lore):** a single
-PatchOperationAdd, gated `MayRequire="mandrake.rut.patches"`, adds the
-`RM_DiveEligible` tag to `RUT_ScaldWaterMovingChestDeep` and
-`RUT_ScaldWaterShallow`/`RUT_ScaldWaterMovingShallow` (Standable boiling
-terrain at the crater's edge — `RUT_ScaldWaterDeep`/`OceanDeep` are
-Impassable to walking pawns and carry no tag, so the interaction can never
-place a colonist ON the boiling surface itself; ban 4 holds). Absent that
-mod, this mod ships inert but complete.
+**Ship-only, enforced at construction, not at use:** `RM_SeaDiveHatch` can
+only be built on a map that already carries a real, existing ThingDef —
+`GravEngine` (Odyssey) — via `PlaceWorker_NeedsGravEngine`. This is a
+concrete, checkable-offline stand-in for "somewhere inside a gravship"; it
+does not model or assume anything about whether a gravship can legally
+travel to or land at an impassable sea tile in the first place — that is a
+separate, open engine question for a future item, not settled here.
 
-**Mod Settings** (MOD_OPTIONS_RETROFIT_1 doctrine): master on/off, hunt/commune
-on/off independently, dive duration (the actual burn-exposure dial — it
-multiplies how many of the terrain's own burnIntervalTicks the pawn eats),
-per-cell cooldown, hunt success/lashback chances, hunt yield range, and the
-commune mood value. Every default matches this description's shipped
-numbers.</description>
+**Deliberately NOT in this build** (see SEA_DIVE_MAPS_BUILD_1's close
+report for the full list): the weighted-belt apparel item itself, the
+two-axis (no-air / temperature) dive-gear matrix, per-sea floor dressing
+(chimney-iron ore, floor droids, the Scald's Rakatan wreck, named
+bottom-walker fauna), and heat-gated hazard zones. The mechanism this mod
+now ships is the map-generation and floor-cast half only — every named
+species already on each sea's own BiomeDef will spawn once its hatch is
+built and entered; nothing about its ART or LOOT is new here.
+
+**Mod Settings** (MOD_OPTIONS_RETROFIT_1 doctrine): master on/off (no hatch
+anywhere is enterable when off), and a "require a grav engine" toggle
+(shipped default ON, matching the ruling above; off exists only for testing
+or a different ruleset, never the shipped experience).</description>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
-    <li>mandrake.rut.patches</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mandrake.rm.terminalbiomes</li>
   </loadAfter>
 </ModMetaData>
