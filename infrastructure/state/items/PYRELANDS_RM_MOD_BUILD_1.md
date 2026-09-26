@@ -397,6 +397,74 @@ fauna ride a Utinni patch rather than the RimMandrake def; one commit, explicit 
 message naming what the twin got wrong; and the mod is appended to
 `WORLD_REMAKE_FINAL_STEP_1`'s paint list.
 
+## 🔑 STATE — MEASURED 2026-09-25, FOUNDRY (session close)
+
+**All owed work is DONE except step 5 (Desktop-only, out of scope for this pass).**
+Re-verified every 2026-09-23 row against current disk/repo state before acting; two
+rows were already stale in the OWNER'S favor (fixed by an earlier same-day pass,
+`2f9c32dca`) and are noted below.
+
+| step | this session |
+|---|---|
+| texture | ✅ **Already fixed before this session** — `2f9c32dca` (2026-09-23) had already `git mv`'d `RM_FE_Pyrelands.png` → `RM_Pyrelands.png`. The item's own header still called this a live trap; false, corrected by that same commit's own prose (not touched again here) |
+| paint-list | ✅ **Already fixed before this session** — same commit updated `biome_paint_list.md`'s Pyrelands row to key on `RM_Pyrelands`. Re-verified fresh (`grep -n RM_FE_Pyrelands infrastructure/state/facts/biome_paint_list.md` → empty) before concluding nothing was owed here |
+| namespace fossil | ✅ **DONE this session** (`0f2db57dd`) — `RimMandrake.StarWars.FireEcology` → `RimMandrake.Pyrelands` across all 5 original `.cs` files and 4 XML Class=/workerClass/thingClass strings. The `RM_FE_` infix on the OTHER 21 defs (terrain/plant/weather defNames) was left untouched — the item's own concrete step plan (§11 step 2) never asked for that rename, only the namespace; do not read "21 of 22 defs carry RM_FE_" as still-owed work |
+| Mod Settings master toggle + cross-biome | ✅ **DONE this session** (`b14c5bd47`) — `pyrelandsEnabled` wired into every existing mechanic gate; cross-biome opt-in (`crossBiomeEnabled`/`Everywhere`/`BiomeList`/`Coverage` + `AppliesToBiome`) added, same shape as `RM_GreentideSettings`, wired into the ash-accumulation MapComponent as an ambient-rate mechanic on an opted-in foreign biome |
+| §7a 2-file retarget | ✅ **DONE this session** (`f4bcf3db8`) — `TileMutatorDefs_Batch2.xml`'s `RSW_HuntingLodge` whitelist gained `RM_Pyrelands` beside the donor; `StructureInjectionsSW/validation.py:79` updated to match |
+| §6 absorption | ✅ **DONE this session** (`88befae5c`, comment fix `b7c0acf9b`) — see below |
+
+### §6 absorption — what actually happened, corrections to the item's own MOVES table
+
+**One file the item listed as MOVE stays in Utinni, on purpose:**
+`JobGiver_RUT_HarvestScorchFruit.cs`. Reading it (not just its name) showed its
+entire job is serving the `RUT_RiteHarvest` DutyDef — the Deep Tribes rite
+harvester's job-giver — referencing `PyrelandsMechanicsSettings.fireRiteCarryPerPawn`
+directly. It has no purpose without the rite. Moving it would have forced either a
+franchise-leak (Deep-Tribes-specific tuning as `RM_Pyrelands` settings) or an
+awkward cross-assembly settings reference for no benefit. Left in Utinni; the
+`RUT_PyrelandsDuties.xml` Class= reference is unaffected (same assembly, same
+namespace, untouched).
+
+**Two seams the item's table didn't surface, both resolved:**
+1. **The fire rite is called FROM the moved fire-clock code** (`PyrelandsFireFront.
+   TryRunRite`), but RM_Pyrelands must never depend on Utinni (§3a). Added
+   `PyrelandsFireRiteHook` — a public nullable `Func<Map,IntVec3,bool>` on the RM
+   side; Utinni's `PyrelandsMechanicsMod` constructor fills it in
+   (`PyrelandsFireRiteHook.TrySend = PyrelandsFireRite.TrySend`). Null on a
+   franchise-free world → the front falls straight through to its own plain
+   firing, unchanged from before.
+2. **The rite's own `LordToil` calls INTO the moved `MapComponent_BurnLine`**
+   (`IgniteRiteFront`, made `public`). Utinni's `.csproj` now carries a direct
+   `<Reference>` to `FireEcologyHook.dll` (it already `loadAfter`s that mod) —
+   every other Utinni file needing `PyrelandsTuning`/`MapComponent_BurnLine` was
+   fully-qualified (`RimMandrake.Pyrelands.X`) rather than given a `using`, to
+   avoid a same-name-different-namespace ambiguity with Utinni's own (trimmed)
+   `PyrelandsMechanicsDefOf`.
+
+**A real, documented simplification, not a bug:** the item's step plan (§11 step 1)
+asks for exactly four new umbrella toggles (`burnLineEnabled`, `fireHawkSpreadEnabled`,
+`furnaceThermalEnabled`, `fireClockEnabled`) where the absorbed content actually
+shipped ~12 granular toggles plus several tuning sliders (furnace aura radius,
+bed-ignition chance, fire-hawk cooldown, fire-front cadence/width). Followed the
+item literally: the four umbrella bools gate everything (defaults unchanged,
+so day-one behavior is identical), and the granular sliders collapsed to fixed
+`PyrelandsTuning` constants at their shipped values — no longer player-tunable.
+If finer control is wanted later, it's a small follow-on, not a defect.
+
+**Verification done:** both assemblies (`FireEcologyHook.dll`,
+`RimMandrake.Utinni.PyrelandsMechanics.dll`) rebuilt via
+`"/mnt/c/Users/Mandrake/.dotnet/dotnet.exe" build … -c Release` — 0 errors, 0
+warnings, each time a change landed. Both `.srchash` sidecars present (one had
+never been committed before this pass). `validate_patch.py` static pass on both
+mod trees: 0 errors. `deploy_custom_mods.py --mod Pyrelands` / `--mod
+PyrelandsMechanics` dry runs both show exactly the expected drift (new files to
+push, old moved-out files flagged for eventual `--prune`/`--pull`) — **not
+applied**, deploy is left for whoever runs step 5 on the Desktop, matching
+`2f9c32dca`'s own precedent of deferring deploy to "the mod's next deploy."
+
+**Not done, correctly out of scope:** step 5 (prove it loads) — Windows-Desktop-only,
+per this task's own instruction. Nothing else from the item's step table is owed.
+
 ## Watch out
 
 - ⛔ **Do not paint, and do not cite a tile count as evidence about this biome.** The planet
