@@ -33,6 +33,25 @@ namespace RimMandrake.EnvironmentalHazards
         // with no Thing for a death-listener comp to be found on.
         public ThingDef anchorMarkerDef;
 
+        // WARDEN_MOTHER_BEFRIENDING_1 spec, §6 owner ruling verbatim: "when
+        // it spawns, so do some stranded young (sometimes)" — the item's own
+        // text on why this is load-bearing rather than flavour: without it
+        // the whole relationship waits on an irregular, storm-driven surge,
+        // which the biome's own hard ban 4 forbids making predictable, so a
+        // colony could play a full game and never be offered the chance.
+        // Kept generic and optional (default 0 = off, fully backward
+        // compatible with every other GenStepDef already using this class,
+        // e.g. TheSump's own tar-beast placement) rather than warden-
+        // specific — any future anchored set-piece pawn that wants an
+        // optional companion spawned alongside it gets this for free.
+        public float youngSpawnChance = 0f;
+
+        public List<PawnKindDef> youngKinds;
+
+        public HediffDef youngDeformationHediff;
+
+        public IntRange youngSpawnRadius = new IntRange(1, 3);
+
         public override void SpawnAt(IntVec3 loc, Map map, GenStepParams parms)
         {
             if (pawnKind == null)
@@ -84,6 +103,39 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             anchorComp.SetAnchor(anchorTarget);
+
+            TrySpawnYoung(loc, map);
+        }
+
+        private void TrySpawnYoung(IntVec3 loc, Map map)
+        {
+            if (youngKinds.NullOrEmpty() || youngSpawnChance <= 0f || !Rand.Chance(youngSpawnChance))
+            {
+                return;
+            }
+
+            PawnKindDef youngKind = youngKinds.RandomElement();
+            if (!CellFinder.TryFindRandomCellNear(loc, map, youngSpawnRadius.RandomInRange,
+                (IntVec3 c) => c.InBounds(map) && c.Standable(map), out IntVec3 youngCell))
+            {
+                youngCell = loc;
+            }
+
+            PawnGenerationRequest youngRequest = new PawnGenerationRequest(
+                youngKind,
+                null,
+                PawnGenerationContext.NonPlayer,
+                forceGenerateNewPawn: true,
+                canGeneratePawnRelations: false);
+            Pawn young = PawnGenerator.GeneratePawn(youngRequest);
+            GenSpawn.Spawn(young, youngCell, map);
+
+            if (youngDeformationHediff != null && young.health != null
+                && young.health.hediffSet.GetFirstHediffOfDef(youngDeformationHediff) == null)
+            {
+                Hediff hediff = HediffMaker.MakeHediff(youngDeformationHediff, young);
+                young.health.AddHediff(hediff);
+            }
         }
     }
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- WARDEN_MOTHER_BEFRIENDING_1 build. insertTag="Animal_PreMain" is
+     vanilla's own extension point (Verse.AI.ThinkNode_SubtreesByTag) — every
+     ThinkTreeDef sharing this insertTag is tried, in insertPriority order,
+     for EVERY animal in the game whose think tree includes the tag, which
+     the vanilla "Animal" tree does unconditionally. Exact same pattern this
+     folder's own RM_ThinkTree_StrandingBehaviors.xml already uses and
+     already proved safe, and required for the identical reason: this
+     closes THE TRAP RM_AnchorGuard.xml's own comment names — "assigning
+     this DutyDef requires the pawn's own ThinkTreeDef to actually consult
+     mindState.duty; vanilla's plain Animal tree does not" — by never
+     depending on the pawn's own ThinkTreeDef at all. RM_JobGiver_
+     AnchorDefense / RM_JobGiver_AnchorWander (RM_CompTerritorialAnchor.cs)
+     both guard their own TryGiveJob to no-op instantly for any pawn without
+     an active RM_CompTerritorialAnchor, so this is safe to insert globally
+     — the overwhelming majority of animals in the game never carry that
+     comp. -->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_AnchorBehaviors</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+
+        <li Class="RimMandrake.EnvironmentalHazards.RM_JobGiver_AnchorDefense" />
+
+        <li Class="RimMandrake.EnvironmentalHazards.RM_JobGiver_AnchorWander" />
+
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

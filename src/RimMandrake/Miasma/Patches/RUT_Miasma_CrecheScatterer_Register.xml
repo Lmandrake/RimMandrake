@@ -8,8 +8,14 @@
   RUT_Miasma_GradientAxis_Register.xml (PatchOperationConditional/
   PatchOperationAdd onto MapGeneratorDef[Base_Player]/genSteps, MayRequire
   on the added <li> itself so the cross-reference cannot dangle if either
-  mandrake.rm.environmentalhazards or mandrake.rsw.swbestiary is absent
+  mandrake.rm.environmentalhazards or mandrake.rm.terminalbiomes is absent
   from the active mod list).
+
+  🔴 WARDEN_MOTHER_BEFRIENDING_1: MayRequire updated from
+  mandrake.rsw.swbestiary to mandrake.rm.terminalbiomes — the GenStepDef
+  this registers now spawns RM_WardenMother (mandrake.rm.miasma) and her
+  young from mandrake.rm.terminalbiomes juveniles, not the retired
+  RSW_OpeeSeaKiller wiring placeholder.
 
   Global registration is deliberate and safe, mirroring that same file's
   own reasoning: RM_ScattererValidator_BrineShallowWater rejects every
@@ -27,7 +33,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
       <value>
-        <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rsw.swbestiary">RUT_GenStep_CrecheScatterer</li>
+        <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.terminalbiomes">RUT_GenStep_CrecheScatterer</li>
       </value>
     </match>
   </Operation>

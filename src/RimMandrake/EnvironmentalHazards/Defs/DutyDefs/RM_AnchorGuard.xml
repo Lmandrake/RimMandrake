@@ -18,14 +18,24 @@
     pawn.mindState.duty.focus/radius for whatever Thing
     RM_CompTerritorialAnchor.SetAnchor() was given, not a hardcoded Hive.
 
-    NOT wired to any PawnKindDef here: assigning this DutyDef to a pawn
-    requires that pawn's own ThinkTreeDef to actually consult
-    mindState.duty (vanilla's plain Animal ThinkTreeDef does not; only
-    Insect-shaped trees do, per RimWorld/JobGiver_HiveDefense.cs's own
-    Hive-only callers). That ThinkTreeDef assignment is the roster pass's
-    own content decision for RUT_WardenMother
-    (miasma_kit_spec.md M6's own already-flagged gap), explicitly out of
-    this item's scope.
+    🔴 CORRECTED by WARDEN_MOTHER_BEFRIENDING_1 (this file's own comment was
+    accurate but the gap it named is now closed, not merely flagged): a
+    plain vanilla Animal ThinkTreeDef genuinely never consults
+    mindState.duty on its own, so this DutyDef's own <thinkNode> above is
+    never reached by dispatch through a pawn's assigned ThinkTreeDef.
+    RM_WardenMother's PawnKindDef does NOT need — and does not use — an
+    Insect-shaped ThinkTreeDef to make this work. Instead
+    RM_JobGiver_AnchorDefense / RM_JobGiver_AnchorWander are inserted
+    directly, GLOBALLY, via RM_ThinkTree_AnchorBehaviors's
+    insertTag="Animal_PreMain" (Defs/ThinkTreeDefs/, same folder), which
+    runs for every animal regardless of its own ThinkTreeDef — the two
+    JobGivers still read pawn.mindState.duty.focus/radius exactly as this
+    DutyDef sets it via RM_CompTerritorialAnchor.SetAnchor(), just reached
+    by a different dispatch path than the <thinkNode> below. This DutyDef
+    stays as the PawnDuty.def marker RM_CompTerritorialAnchor.ApplyDuty()
+    constructs a PawnDuty from; its own <thinkNode> XML is now inert
+    (nothing ever runs it) and is kept only because removing the DutyDef
+    entirely would break that constructor call.
   -->
   <DutyDef>
     <defName>RM_AnchorGuard</defName>

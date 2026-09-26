@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_StrandedDeformation.xml   UtinniPatches - MIASMA_FAUNA_FLOOR_ROSTER_1 /
+  WARDEN_MOTHER_BEFRIENDING_1
+
+  🔴 Fixes a dangling reference: RM_Miasma.xml's own RM_StrandingPoolsExtension
+  block already names <strandedDeformationHediff>RUT_StrandedDeformation</strandedDeformationHediff>
+  and RM_JobGiver_ReturnToWater.cs already reads it, but MEASURED this pass —
+  the def itself was never authored anywhere in the repo. Correctness
+  outranks seat ownership (CLAUDE.md): fixed on sight rather than filed.
+
+  miasma_fauna_roster_2026-09-23.md §5: "gills going leathery, fins splaying
+  into feet that don't quite work." Read as a mechanical condition on an
+  ordinary nursery juvenile, per the owner's ruling that the stranded are the
+  nursery's failures rather than their own species — never a bespoke
+  creature. ⛔ Altering the juvenile's own SPRITE per that same section's
+  "the look" row is NOT attempted here: how much a hediff can change an
+  animal's rendered appearance is an engine question the roster's own text
+  flags UNMEASURABLE on the Mac. This hediff is mechanical only (movement,
+  survivability) — a visual pass is owed separately once that question has a
+  Desktop answer.
+
+  Permanent (initialSeverity == maxSeverity, not tendable, no immunity) —
+  "does not thrive" per the roster, and the roster's own §5 table says the
+  mechanism it replaces (RM_JobGiver_ReturnToWater) is deliberately
+  SUPPRESSED for a carrier of this hediff, so there is no recovery path for
+  this to represent.
+
+  Move-speed and pain-threshold offsets are this pass's own INVENTED tuning,
+  same magnitude class as RUT_FeverForged_Painworn (same folder) — "a
+  half-working gait" as a real handicap without being an automatic death
+  sentence, since roster §5 also says a stranded animal "occasionally
+  survives into something that works."
+
+  Carries RM_HediffCompProperties_LocatableCall (mandrake.rm.environmentalhazards)
+  for the roster's "the young CALLS. Audible, locatable, and it does not
+  stop" — kept generic on the hediff so every deformed stranded animal
+  calls, regardless of which mechanism stranded it.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_StrandedDeformation</defName>
+    <label>stranded deformation</label>
+    <description>Gills gone leathery, fins splaying into feet that don't quite work. Whatever this creature was built to be, the muck had other ideas — it cannot return to open water, and it does not thrive there on land either. It calls, and it does not stop.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <MoveSpeed>-0.9</MoveSpeed>
+          <PainShockThreshold>-0.1</PainShockThreshold>
+        </statOffsets>
+      </li>
+    </stages>
+    <comps>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_HediffCompProperties_LocatableCall">
+        <callSound>Pawn_Frog_Call</callSound>
+        <callIntervalTicksRange>900~1500</callIntervalTicksRange>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>
