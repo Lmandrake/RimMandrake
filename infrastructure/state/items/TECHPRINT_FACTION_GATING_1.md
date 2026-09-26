@@ -19,10 +19,23 @@ goods; drugs/chemfuel/infrastructure split between Imperial and Junker by how
 advanced the item is. The Empire is a permanent enemy, so its tech arrives by
 loot and theft rather than trade.
 
-The full map is being written to
-`design/Jawa/worldbuilding/faction_tech_alignment.md` (Fable design pass,
-spawned 2026-09-26). Row assignment in the manifest is the build step and is NOT
-this item's.
+The full map is WRITTEN: `design/Jawa/worldbuilding/faction_tech_alignment.md`
+(438 lines, committed `38c2b91dc`). All 12 factions carry holdings — 56 rows,
+~40 SOURCED to a cited doc and ~12 PROPOSED; 11 NORMALIZED (critical path) vs
+24 SIDE-QUEST. **Its §6 holds 15 open questions for the owner, each with a
+position taken so his answer is a yes/no.** Row assignment in the manifest is
+the build step and is NOT this item's.
+
+🔴 **Two more stale claims in this file, found by that pass (2026-09-26):**
+1. The manifest **already carries `access` and `holder` columns with real
+   assignments** — Free Droid Enclaves 27 rows, Ascendant Helix 8, Junkers 7,
+   Geonosian Hive 4, Hutt Cartel 1, plus non-faction `Rakata` 5 and
+   `RustCathedralDroids` 2. So "no mapping exists" was wrong twice over: the
+   roster held the evidence AND the manifest held partial assignments.
+2. This file and `faction_locked_trees.md` both cite **dead FactionDef paths**.
+   The live defs are `src/RimUtinni/UtinniPatches/Defs/FactionDefs/RUT_Jawa_*.xml`.
+   Blackstar's `Pirate` vessel carries **no `categoryTag`**, so it can hold
+   nothing at all until one is added — a real blocker on any Blackstar holding.
 
 No CSV rows were touched by the mechanism pass (see "what was NOT written" below)
 — the manifest's `source_gate` column is untouched beyond the 3 `memory_core` rows
