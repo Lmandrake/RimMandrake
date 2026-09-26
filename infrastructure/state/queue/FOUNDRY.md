@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T23:49:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T23:49:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1043,15 +1043,6 @@ target:   v1
 kind:     task
 summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
 prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
-
-## SHARED_SYNC_DROPS_PEER_COMMITS_1 shared_sync.py silently drops a peer commit made during its run: reset --keep moves HEAD past work that was never in its todo set, and origin/main..HEAD then reads clean
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/SHARED_SYNC_DROPS_PEER_COMMITS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SHARED_SYNC_DROPS_PEER_COMMITS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
