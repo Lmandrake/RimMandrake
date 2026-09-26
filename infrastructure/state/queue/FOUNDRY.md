@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T03:26:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T03:31:23Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1464,16 +1464,6 @@ thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/MIASMA_RM_MOD_BUILD_1.md
 
-## THEFORGE_RM_MOD_BUILD_1 Phase A: build RM_TheForge as its own RimMandrake mod (mandrake.rm.theforge) — the Forge
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/THEFORGE_RM_MOD_BUILD_1.md
-
 ## FEVERWOOD_RM_MOD_BUILD_1 Phase A: build RM_FeverWood as its own RimMandrake mod (mandrake.rm.feverwood) — the Fever Wood
 state:    proposed
 row:      unassigned
@@ -1993,3 +1983,13 @@ kind:     design
 thin:     no ## spec
 summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
 prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
+
+## UTINNIPATCHES_LOAD_ORDER_CYCLE_1 UtinniPatches loads before 6 of its loadAfter targets; cycle with RustCathedralRoaches
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/UTINNIPATCHES_LOAD_ORDER_CYCLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/UTINNIPATCHES_LOAD_ORDER_CYCLE_1.md
