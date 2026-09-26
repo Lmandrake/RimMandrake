@@ -540,3 +540,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"FEVERWOOD_SAP_SUCKER_GUILD_1","ts":"2026-09-26T06:43:25Z"}
 {"seat":"FOUNDRY","event":"start","id":"FEVERWOOD_SAP_SUCKER_GUILD_1","ts":"2026-09-26T06:43:26Z"}
 {"seat":"FOUNDRY","event":"close","id":"SEA_BEASTS_TIER_RULING_1","sha":"099966fd1b921fd183e6b613ee21f7725ae2ffb0","ts":"2026-09-26T06:48:32Z"}
+{"seat":"FOUNDRY","event":"close","id":"GREATBOLE_HARVEST_LADDER_1","sha":"018801d35ef98a79282fb4c18c9fb7782d8e931c","reason":"Threshold ladder, fruit economy and grubs built and shipped; song/thermal/pilgrims/anima-servant crossovers and seed-growth deferred (blocked on GREENTIDE_JUNGLE_TREE_ROSTER_1 and scald_steam_and_hazards_spec.md's own unbuilt work)","ts":"2026-09-26T06:55:23Z"}
+{"seat":"FOUNDRY","event":"file","id":"GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1","title":"The greatbole's song, thermal sanctuary, pilgrims, and the two opt-in crossovers","kind":"task","target":"v1","needs":"offline","spec":"design/Jawa/worldbuilding/biomes/kits/greatbole_harvest_spec.md","caused_by":"GREATBOLE_HARVEST_LADDER_1","for":"BENCH","ts":"2026-09-26T06:55:32Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FEVERWOOD_ANT_HIVE_DUNGEON_1","ts":"2026-09-26T06:55:39Z"}
+{"seat":"FOUNDRY","event":"start","id":"FEVERWOOD_ANT_HIVE_DUNGEON_1","ts":"2026-09-26T06:55:40Z"}
