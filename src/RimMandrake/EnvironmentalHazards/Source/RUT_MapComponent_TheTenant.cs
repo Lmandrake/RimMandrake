@@ -72,6 +72,21 @@ namespace RimMandrake.EnvironmentalHazards
         private float[] agitation;
         private int[] agitationExpiryTick;
 
+        // FEVERWOOD_DIANOGA_PRISON_1: "teaches" — set once the prison
+        // tank's RM_CompCapturedSpecimen produces successfully for the
+        // first time ("seeing it names the creature... hearing the hum up
+        // close is how a player learns to recognise the real warning before
+        // it kills them", design sheet §6j). A real, small mechanical
+        // payoff rather than pure flavour text: taught colonists/tamed
+        // pawns are struck less often at registered water (see
+        // ScanExposure). INVENTED multiplier, flagged there.
+        private bool taughtWarning;
+
+        public void Notify_Taught()
+        {
+            taughtWarning = true;
+        }
+
         // Reused every draw frame to avoid per-frame List<IntVec3> churn.
         private readonly List<IntVec3> flaggedCellsBuffer = new List<IntVec3>();
 
@@ -214,6 +229,16 @@ namespace RimMandrake.EnvironmentalHazards
 
                 float bodySizeFactor = pawn.BodySize > 0f ? pawn.BodySize : 1f;
                 float mtb = StrikeMtbExposureHours / bodySizeFactor; // bigger drinkers die first, §4
+                bool colonistOrTamedForTeach = pawn.Faction != null && (pawn.IsColonist || pawn.Faction.IsPlayer);
+                if (taughtWarning && colonistOrTamedForTeach)
+                {
+                    // FEVERWOOD_DIANOGA_PRISON_1 "teaches": INVENTED 2x —
+                    // half as likely to be struck once the colony has
+                    // learned to recognise the warning hum. Not ruled by
+                    // the design sheet; a real mechanical stand-in for the
+                    // lore payoff it describes.
+                    mtb *= 2f;
+                }
                 if (!Rand.MTBEventOccurs(mtb, MtbUnitTicks, ExposureCheckIntervalTicks))
                 {
                     continue;
@@ -326,6 +351,7 @@ namespace RimMandrake.EnvironmentalHazards
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref taughtWarning, "taughtWarning", false);
             // SPIKE SCOPE: the per-cell agitation grid itself is not yet
             // Scribed (TerrainGrid.ExposeTerrainGrid's per-cell array
             // pattern, Verse/TerrainGrid.cs:671, is the model to crib —

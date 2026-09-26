@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Sekkulaath_Juvenile.xml                       FEVERWOOD_DIANOGA_PRISON_1
+
+  The prison tank's occupant/escapee — "one species at two scales, exactly
+  the dianoga's own relation: the tank holds a juvenile, and the adult is
+  the thing below the Fever Wood" (item, "tier — and the free-tier occupant
+  is the SEKKULAATH"). The adult itself is deliberately never a Pawn
+  (FEVERWOOD_TENTACLE_BESTIARY_1: only tentacles, modelled as stationary
+  Buildings, are ever drawn) — this is the ONLY renderable, tameable form
+  the species has, which is exactly what a display-tank captive needs to
+  be.
+
+  Franchise-free RM tier (Q11a) — this def must not reference anything
+  Star Wars. The campaign-layer swap ("Swap[s] the Dianoga in, replacing the
+  Sekkulaath, when RimMandrake.StarWars is present", owner verbatim) is a
+  PatchOperationReplace shipped from the OTHER side instead:
+  src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml,
+  MayRequire="mandrake.rm.feverwood", retargets
+  RM_CompProperties_CapturedSpecimen.occupantKindDefName on the tank's own
+  ThingDef from RM_Sekkulaath_Juvenile to RSW_Dianoga — so this def never
+  needs to know Star Wars content exists, and the swap is genuinely "swap,
+  not add" (one def-slot, never both).
+
+  Body: "Snake" (vanilla Core BodyDef) — verified in-repo use, not guessed;
+  every RM_/RSW_ small aquatic/serpentine creature already shipped in this
+  codebase uses it (RM_PropaneLakeFauna, RM_ScaldFauna, RM_TwilightSeaFauna,
+  RM_GreySeaFauna, RM_StockedPoolFauna). Not tentacle-accurate at the
+  body-part level, but body parts here only gate damage/health, not the
+  sprite — the actual silhouette is the texture, flagged placeholder below.
+
+  Ruling 3 (owner, 2026-09-23), verbatim: "It should have advanced training,
+  but you would have to train it by releasing it from the tanks... Advanced
+  training is fine, but it should have large wildness, be very challenging
+  to tame, and have a high chance of attacking if you fail." trainability
+  Advanced is the ruled value; Wildness/manhunterOnTameFailChance/
+  manhunterOnDamageChance below are INVENTED placeholders standing in for
+  numbers the owner explicitly said not to guess — see
+  FEVERWOOD_DIANOGA_TANK_TUNING_1 for the real pass. waterSeeker=true is the
+  built-in vanilla lever for "makes for the nearest water" (§6m stage 1);
+  it is an approximation (a race flag, not a custom beeline JobGiver) and is
+  documented as such in that item.
+
+  specificMeatDef repoints to RM_SeveredTentacleFlesh (already shipped by
+  FEVERWOOD_TENTACLE_BESTIARY_1) rather than a new meat resource — the same
+  "renewable source of the animal's body" the severed-limb harvest already
+  is, so a butchered escapee and a fed tank's meat output are one material,
+  not two.
+
+  PLACEHOLDER ART: one flat-color 128x128 PNG (Graphic_Single, not the usual
+  3-directional Graphic_Multi — a deliberate scope cut to avoid three
+  placeholder files for a creature real art will replace outright), deep
+  purple per the canon-confirmed colour ruling ("deep purple skin",
+  FEVERWOOD_DIANOGA_PRISON_1). Searched infrastructure/artpipe/done +
+  registry.jsonl for "sekkulaath"/"dianoga" first (standing rule) — found
+  canon_dianoga_v1_* (the SEPARATE Star Wars-tier art, not reusable here per
+  Q11a) and nothing for a franchise-free juvenile. Real bespoke art is owed.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sekkulaath_Juvenile</defName>
+    <label>sekkulaath</label>
+    <description>A small, dark, tentacled thing, kept in tanks because nothing else keeps it. It is not the elder being beneath the Fever Wood's pools — not yet — but it is unmistakably kin to it, and everyone who has heard it hum up close swears they will never mistake the sound again.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <MarketValue>420</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.08</ArmorRating_Blunt>
+      <FilthRate>10</FilthRate>
+      <!-- INVENTED placeholder — owner ruled "large", not a number. -->
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tentacle</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_EscapedCaptive" />
+    </comps>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>1.1</baseHealthScale>
+      <baseHungerRate>0.8</baseHungerRate>
+      <foodType>CarnivoreAnimal, OmnivoreAnimal, AnimalProduct</foodType>
+      <predator>false</predator>
+      <specificMeatDef>RM_SeveredTentacleFlesh</specificMeatDef>
+      <bloodDef>Filth_Slime</bloodDef>
+      <leatherDef>Leather_Light</leatherDef>
+      <trainability>Advanced</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+      <!-- INVENTED placeholders — direction ruled (owner: "very
+           challenging to tame", "high chance of attacking if you fail"),
+           values not. FEVERWOOD_DIANOGA_TANK_TUNING_1. -->
+      <manhunterOnTameFailChance>0.55</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.85</manhunterOnDamageChance>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundCall>Pawn_Cobra_Call</soundCall>
+          <soundWounded>Pawn_Cobra_Wounded</soundWounded>
+          <soundDeath>Pawn_Cobra_Death</soundDeath>
+          <soundAngry>Pawn_Cobra_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sekkulaath_Juvenile</defName>
+    <label>sekkulaath</label>
+    <race>RM_Sekkulaath_Juvenile</race>
+    <combatPower>60</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <!-- ecoSystemWeight 0: never a wild-roster spawn (RM_FeverWood's own
+         <wildAnimals> does not carry this def) — the only ways one exists
+         are the tank's initial occupant and Escape(). -->
+    <lifeStages>
+      <li>
+        <label>sekkulaath hatchling</label>
+        <labelPlural>sekkulaath hatchlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sekkulaath_Juvenile/RM_Sekkulaath_Juvenile</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sekkulaath_Juvenile/RM_Sekkulaath_Juvenile</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sekkulaath_Juvenile/RM_Sekkulaath_Juvenile</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

@@ -45,12 +45,30 @@ namespace RimMandrake.FeverWood
         /// hardcoded so a play-test can retune it without a rebuild.</summary>
         public static float tentacleAmbientMtbHours = 6f;
 
+        /// <summary>FEVERWOOD_DIANOGA_PRISON_1 master toggle. Off: the
+        /// prison tank still exists as a plain inert building (buildable,
+        /// deconstructible) but its RM_CompCapturedSpecimen never produces,
+        /// never teaches, and never escapes — the safest "all-off degrades
+        /// gracefully" reading, since silently disabling the BUILDING would
+        /// strand a colony's already-placed tank. Default ON.</summary>
+        public static bool sekkulaathTankEnabled = true;
+
+        /// <summary>Global multiplier on both escape triggers (neglect MTB
+        /// and damage-threshold per-hit chance) — lower is MORE escape-prone.
+        /// Exposed because every one of those numbers is this build's own
+        /// INVENTED placeholder (see FEVERWOOD_DIANOGA_TANK_TUNING_1), and a
+        /// play-test should be able to retune risk without a rebuild.
+        /// Default 1.0 — matches shipped behavior.</summary>
+        public static float sekkulaathEscapeRiskMultiplier = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref naturalPlacementEnabled, "naturalPlacementEnabled", true);
             Scribe_Values.Look(ref tentacleBestiaryEnabled, "tentacleBestiaryEnabled", true);
             Scribe_Values.Look(ref tentacleAmbientMtbHours, "tentacleAmbientMtbHours", 6f);
+            Scribe_Values.Look(ref sekkulaathTankEnabled, "sekkulaathTankEnabled", true);
+            Scribe_Values.Look(ref sekkulaathEscapeRiskMultiplier, "sekkulaathEscapeRiskMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -77,6 +95,14 @@ namespace RimMandrake.FeverWood
             list.Label("Ambient sighting frequency (mean hours, lower = more often): "
                 + tentacleAmbientMtbHours.ToString("0.0"));
             tentacleAmbientMtbHours = list.Slider(tentacleAmbientMtbHours, 1f, 24f);
+            list.GapLine();
+            list.CheckboxLabeled("Sekkulaath prison tank", ref sekkulaathTankEnabled,
+                "A buildable containment cell that teaches, produces, and can get out. Off: the "
+              + "tank can still be built, but it never produces, never teaches, and its occupant "
+              + "never escapes — an inert box, not a working feature.");
+            list.Label("Escape risk multiplier (lower = more escape-prone): "
+                + sekkulaathEscapeRiskMultiplier.ToString("0.00"));
+            sekkulaathEscapeRiskMultiplier = list.Slider(sekkulaathEscapeRiskMultiplier, 0.25f, 4f);
 
             list.End();
         }

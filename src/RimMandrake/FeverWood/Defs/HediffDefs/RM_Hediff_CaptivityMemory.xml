@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Hediff_CaptivityMemory.xml                    FEVERWOOD_DIANOGA_PRISON_1
+
+  Owner ruling 3, verbatim: "It remembers the tank... [a released one] should
+  have large wildness, be very challenging to tame, and have a high chance of
+  attacking if you fail." Ruled in SPIRIT, mechanism deliberately left open —
+  "Whether that is a hediff, a per-pawn tame-chance penalty, a manhunter bias
+  on failed taming, or a memory of the specific colony is open... Do not
+  implement a generic wildness bump and call this delivered; the flavour he
+  is naming is grudge, not difficulty."
+
+  This is the DATA half of that call, not the numeric half: applied by
+  RM_CompCapturedSpecimen.Escape() to every escapee, permanent, zero
+  statOffsets/capMods. It exists so the animal genuinely carries "I was held"
+  as a fact the game can query (Pawn.health.hediffSet.HasHediff), and so a
+  later pass can hang the real grudge mechanism (a tame-chance penalty
+  specifically against the colony that held it, a manhunter bias, whichever
+  the follow-on item rules) off THIS marker rather than re-deriving "was this
+  animal ever captive" from scratch. ⛔ Its own tame-chance/manhunter effect
+  is UNSET — do not read this hediff's mere presence as "the grudge is
+  built"; see FEVERWOOD_DIANOGA_TANK_TUNING_1.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_CaptivityMemory</defName>
+    <hediffClass>Hediff</hediffClass>
+    <label>captivity memory</label>
+    <description>This animal was once held in a prison tank and broke free. Whatever the encounter is meant to cost it in the wild — its willingness to ever trust a hand again — is not yet tuned; the fact of it is remembered here.</description>
+    <defaultLabelColor>(0.55, 0.35, 0.6)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <maxSeverity>1.0</maxSeverity>
+    <initialSeverity>1.0</initialSeverity>
+  </HediffDef>
+
+</Defs>

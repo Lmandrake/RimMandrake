@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SekkulaathProducts.xml                        FEVERWOOD_DIANOGA_PRISON_1
+
+  The two RAW ingredients the prison tank yields that are not already
+  covered by an existing item — "fed corpses or meat, it yields the canon
+  product line — meat for pie, spleen chemicals for the narcotic tea, cream"
+  (§6j). The MEAT half of that line is RM_SeveredTentacleFlesh, already
+  shipped by FEVERWOOD_TENTACLE_BESTIARY_1 (same animal's body, same
+  material) — not duplicated here.
+
+  These are raw reagents, not dishes: the pie/tea/cream RECIPES are Cuisine
+  mod territory (this item's own note, quoting the owner's 2026-09-14
+  ruling) — mandrake.rsw.cuisine, high_cuisine_deep_design.md §4a/§5. This
+  file's job stops at "the tank hands you a chemical and a dairy-like
+  product"; what gets cooked from them is a separate build.
+
+  PLACEHOLDER ART: two flat-color 128x128 PNGs, this mod's own texture
+  ownership (searched artpipe done/registry.jsonl for "spleen"/"cream"/
+  "sekkulaath" first — nothing found). Purple for the chemical (canon-
+  confirmed dianoga colour, "purple-staining tea"), pale cream for the
+  cream — colour is not IP.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SekkulaathSpleenChemicals</defName>
+    <label>sekkulaath spleen chemicals</label>
+    <description>A vial of thick, faintly luminous fluid drained from a captive sekkulaath's spleen. Brewed, it makes a narcotic tea that stains everything it touches purple — a canon dianoga product, in the tradition this creature stands in for.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>22</MarketValue>
+      <Mass>0.1</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SekkulaathCream</defName>
+    <label>sekkulaath cream</label>
+    <description>A pale, rich secretion harvested from a fed captive sekkulaath — the base of the cream-filled donut line canon dianoga trade is known for. It spoils quickly, same as any dairy off any animal.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>10</MarketValue>
+      <Mass>0.15</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>3</DeteriorationRate>
+    </statBases>
+    <stackLimit>50</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

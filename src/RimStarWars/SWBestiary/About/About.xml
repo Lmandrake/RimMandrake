@@ -80,6 +80,7 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer`, `RSW_Groundrunn
     <li>brrainz.harmony</li>
     <li>mandrake.rm.proximityhatch</li>  <!-- Patches/ProximityHatch - supplies CompProperties_ProximityHatch, EGG_PROXIMITY_HATCH_TRIGGER_1 -->
     <li>mandrake.rm.creaturebehaviors</li>  <!-- supplies RM_CompProperties_FluidSacs/ProximityPsychicStun/ShardArmor/TameSootheAura + RM_Grappled/RM_Drained hediffs, DEEPS_FAUNA_MECHANICS_1 -->
+    <li>mandrake.rm.feverwood</li>  <!-- FEVERWOOD_DIANOGA_PRISON_1: RSW_SekkulaathTank_DianogaSwap.xml (MayRequire) targets RM_SekkulaathTank and references RM_CompProperties_EscapedCaptive -->
     <li>biomesteam.biomespollutedlands</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->
     <li>van.beasts</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->
     <li>zylle.morevanillabiomes</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->
