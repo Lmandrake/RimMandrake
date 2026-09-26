@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1. ParentName mirrors vanilla's own
+    InstallNaturalKidney/Heart/Lung/Liver exactly (ParentName=
+    "SurgeryInstallBodyPartNaturalBase", Defs/Core/HediffDefs/BodyParts/
+    Hediffs_BodyParts_Base.xml) — so the inherited 2x Medicine ingredient
+    and Medicine-category fixedIngredientFilter merge in the same way theirs
+    do; we only need to declare the limb-specific ingredient. The one real
+    difference from vanilla's own natural-organ recipes: workerClass points
+    at RimMandrake.Contagion.Recipe_InstallGrownBodyPart (a thin subclass of
+    vanilla Recipe_InstallNaturalBodyPart), which adds the install-match
+    bonus check on top of the unchanged vanilla restoration.
+  -->
+
+  <RecipeDef ParentName="SurgeryInstallBodyPartNaturalBase">
+    <defName>RM_InstallGrownLeg</defName>
+    <label>install grown leg</label>
+    <description>Install a biological leg gestated inside a Contagion amoeba. It is not a device -- it restores the limb itself.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_GrownLeg</ThingDef>
+    </descriptionHyperlinks>
+    <jobString>Installing grown leg.</jobString>
+    <workerClass>RimMandrake.Contagion.Recipe_InstallGrownBodyPart</workerClass>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_GrownLeg</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_GrownLeg</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <appliedOnFixedBodyParts>
+      <li>Leg</li>
+    </appliedOnFixedBodyParts>
+  </RecipeDef>
+
+  <RecipeDef ParentName="SurgeryInstallBodyPartNaturalBase">
+    <defName>RM_InstallGrownArm</defName>
+    <label>install grown arm</label>
+    <description>Install a biological arm gestated inside a Contagion amoeba. It is not a device -- it restores the limb itself.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_GrownArm</ThingDef>
+    </descriptionHyperlinks>
+    <jobString>Installing grown arm.</jobString>
+    <workerClass>RimMandrake.Contagion.Recipe_InstallGrownBodyPart</workerClass>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_GrownArm</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_GrownArm</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <appliedOnFixedBodyParts>
+      <li>Arm</li>
+    </appliedOnFixedBodyParts>
+  </RecipeDef>
+
+</Defs>
