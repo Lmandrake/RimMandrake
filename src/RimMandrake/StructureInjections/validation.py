@@ -71,6 +71,23 @@ null`, each logging its own `Log.Error` and contributing 0 to
 `ApplyPlan`'s `byPriority` filter). `replay_moisture_farm_plan` below
 asserts `thingsSpawned` with that shortfall built in, not an exact match.
 
+A SEPARATE, GENUINE MOD DEFECT (found live 2026-09-13, diagnosed
+2026-09-26, filed as PRIMITIVEWELL_DEAD_DEFNAME_1 -- NOT an environment
+gap and NOT folded into the floor below): the plan's one `PrimitiveWell`
+THING line is not a real defName ANYWHERE -- zero hits, case-insensitive,
+across every `Defs/*.xml` in the entire live Mods folder plus every DLC's
+own `Data/` tree (checked directly against the installed game, not
+guessed). It resolves nowhere regardless of mod list or DLC, so this line
+silently drops on every single replay of this template, always, in any
+environment. That is why a first live run measured `thingsSpawned=92`
+against this file's own `floor=93` (99 - 6 KotOR) -- the 93 floor was
+short by exactly this one always-dead line, not by an under-counted
+KotOR shortfall. Left RED on purpose: raising the floor to 92 would
+launder a real content bug into a passing suite (criteria: "GREEN set
+grows honestly"). Fix the template (or author a real `PrimitiveWell`
+ThingDef) via PRIMITIVEWELL_DEAD_DEFNAME_1, THEN raise this floor back
+to the true full 93.
+
 Still not proven / likely first-live-run corrections:
   1. Neither template plan actually contains a bound
      transmitter+connector pair (the ordering guarantee `ApplyPlan`'s own
