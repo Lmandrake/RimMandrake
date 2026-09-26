@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_Ollathrix.xml              RM_Webwork · OLLATHRIX_OWNER_SPECIES_1
+  ============================================================================
+  The Webwork's owner species, per
+  design/Jawa/worldbuilding/biomes/webwork_owner_and_nest_2026-09-23.md §1
+  (S0 rulings 1-3, S1). ONE ThingDef, ONE PawnKindDef, both RM_Ollathrix, cast
+  inline in RM_Webwork's own wildAnimals — no castes, no guild, no juvenile
+  kind (S0 ruling 2: nettik/chirrik/rothrik are dead). The dormant ambusher
+  and the roaming hunter are the SAME PawnKindDef in two states
+  (CompCanBeDormant startsDormant=true — vanilla wakes it on damage or
+  approach; there is no second kind for "ambusher").
+
+  Register and look — ours, and deliberately NOT the canon Wyyyschokk in any
+  of the five marks the design doc's table lists (body colour, abdomen mark,
+  bristles, legs, eyes): bone-white/dead-silk-cream body with no marking,
+  hairless glossy chitin with a matte silk-dust bloom, pale legs with a dark
+  blade-edge, one pale ring of small colourless eyes (reads blind — it hunts
+  by web-sense, not sight). The Utinni-layer skin patch
+  (src/RimStarWars/Shokk/Patches/RSW_Shokk_OllathrixSkin.xml,
+  SHOKK_RSW_MOD_1 successor) overlays the canon Wyyyschokk identity onto this
+  SAME defName when mandrake.rsw.shokk is loaded — same shape as the Fever
+  Wood's Sekkulaath -> dianoga (Q11a: an invented name is not IP, so the
+  free biome carries its own owner species and the campaign layer overlays a
+  skin, never a second def).
+
+  Mechanisms built here (self-contained, no cross-mod dependency — the free
+  mod must be whole per Q11a):
+    - mandible bite + leg-blade slash (armour-penetration benchmark), venom
+      on the bite (RM_Damage_OllathrixVenom, additionalHediffs ->
+      RM_OllathrixVenom, same shape as RM_Damages_ContactVenom.xml).
+    - untameable: wildness 1.0 + trainability None (ban 1: no tamed, traded
+      or negotiated Ollathrix), same convention as RM_Kurreth/RM_DustHusk.
+    - ambush burst: CompProperties_CanBeDormant/CompProperties_WakeUpDormant
+      on the race ThingDef itself (RM_DustHusk precedent, RimWorld/
+      CompWakeUpDormant.cs already read in full by that item) — wakes on
+      damage or on a target approaching within wakeUpCheckRadius.
+
+  Deliberately NOT built here (owned by other items, per the design doc's
+  own §1a/§5 table — do not duplicate):
+    - the mouth-loom ranged spit, the Shokk-bound hediff, sun-scald and the
+      emergent-spawn comp: these are RSW-tier mechanisms today
+      (mandrake.rsw.shokk, patched onto the donor Wyyyschokk) that
+      SHOKK_SKIN_SHRINK_1 is tasked to move onto this race and re-token
+      RM_ — wiring them here now would duplicate that item's own scope and
+      leave this race depending backward on an RSW-tier mod, which the tier
+      grammar forbids. Left off; SHOKK_SKIN_SHRINK_1 attaches them once it
+      moves the defs down.
+    - web-sense convergence (RM_JobGiver_SenseWebConverge / the race's own
+      ThinkTreeDef), the droid-priority scorer, and the nest's own mother
+      guardian wiring: all WEBWORK_MECHANICS_1 / WEBWORK_NEST_EGG_ECONOMY_1
+      scope, unbuilt today per the design doc's own mechanism table.
+    - the egg economy, the nest cluster, the carried-eggs mark: all
+      WEBWORK_NEST_EGG_ECONOMY_1, a sibling item, not this one.
+
+  Body: BeetleLikeWithClaw (same body RM_Kurreth/RM_Quarrok already use in
+  this repo) — six InsectLeg parts plus a HeadClaw group on the head part,
+  which the leg-blade tool links to (the same body's only clawed attack
+  group; "leg-blade" is the tool's flavour name, not a claim that
+  BeetleLikeWithClaw has a bespoke leg-mounted blade part).
+
+  Art: 0 hits for "ollathrix" in infrastructure/artpipe/registry.jsonl (6588
+  lines; sanity-probed against "graniteslug"/"webwork", both 30 hits, so the
+  search itself is live). No existing render anywhere. Flat-colour
+  placeholder generated this pass (art/Fauna/gen_ollathrix_placeholder.py,
+  same shape as WEBWORK_FAUNA_ROSTER_1's own placeholder script) so it never
+  renders magenta; real art queued
+  (infrastructure/artpipe/art_lists/webwork_fauna.csv, RM_Ollathrix_v1 row).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Ollathrix</defName>
+    <label>ollathrix</label>
+    <labelPlural>ollathrix</labelPlural>
+    <description>A spider the size of an elephant, weight for weight closer to a horse — mostly a mass of nimble, sharp legs under a low, wide, bone-white body. Its abdomen carries no mark of any kind, faintly translucent, the darker gut showing through the empty silk-cream chitin. It does not seem to see you; a raised ring of small, colourless eyes reads blind, and it hunts by feel alone, through the web that reaches every part of the thicket it owns. Those who enter the Webwork frequently discover a shadow, seconds before it lands on them, and know nothing more.</description>
+    <statBases>
+      <MoveSpeed>3.4</MoveSpeed>
+      <MarketValue>420</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+      <!-- Ban 1 (no tamed, traded or negotiated Ollathrix): wildness 1.0
+           alone makes taming chance effectively zero; trainability None
+           below closes the rest, same paired convention RM_Kurreth and
+           RM_DustHusk already use in this repo. -->
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>1</chanceFactor>
+        <!-- Venom on the bite, per §1a: "venom on bite for large prey" —
+             carried as a bespoke bite DamageDef rather than the generic
+             Bite capacity, same shape RM_Damages_ContactVenom.xml already
+             uses for a scratch. -->
+        <extraMeleeDamages>
+          <li>
+            <def>RM_Damage_OllathrixVenom</def>
+            <amount>1</amount>
+          </li>
+        </extraMeleeDamages>
+      </li>
+      <li>
+        <label>leg-blade</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>13</power>
+        <armorPenetration>0.35</armorPenetration>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+        <chanceFactor>1</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <!-- Ambush burst (§1a): the dormant ambusher and the roaming hunter
+           are the SAME PawnKindDef in two states — every wild Ollathrix
+           spawns lurking and wakes on damage or on a target closing to
+           wakeUpCheckRadius, RM_DustHusk's own stock-comp precedent
+           (RimWorld/CompWakeUpDormant.cs read in full by that item). No
+           second kind, no concealment Thing (that half stays deferred,
+           WEBWORK_MECHANICS_1 scope). -->
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+        <wakeUpCheckRadius>6</wakeUpCheckRadius>
+        <wakeUpIfAnyTargetClose>true</wakeUpIfAnyTargetClose>
+      </li>
+    </comps>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <predator>true</predator>
+      <maxPreyBodySize>2.0</maxPreyBodySize>
+      <herdAnimal>false</herdAnimal>
+      <baseBodySize>2.6</baseBodySize>
+      <baseHealthScale>2.2</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <!-- manhunterOnDamageChance 1.0: hit it and it is now hunting you —
+           the closest stock-field approximation of ban 2's "hostile to
+           everything, including each other, no truce" without new C#
+           faction wiring (deferred, WEBWORK_MECHANICS_1). -->
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>14</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <!-- Reproduction here is ordinary-animal flavour only: the "1,000
+           eggs a year"/fecund-and-self-predating mechanic (S0 ruling 6, §4)
+           is expressed by the nest's own RM_Webwork_EggClutch economy, a
+           sibling item (WEBWORK_NEST_EGG_ECONOMY_1) — not by this race's
+           litter. -->
+      <litterSizeCurve>
+        <points>
+          <li>(0.99, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Insect_Ambient</soundWounded>
+          <soundDeath>Pawn_Insect_Ambient</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ollathrix</defName>
+    <label>ollathrix</label>
+    <labelPlural>ollathrix</labelPlural>
+    <race>RM_Ollathrix</race>
+    <combatPower>160</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <!-- Solitary: §3a's own "every other one on the map is a roll" besides
+         the nest's guaranteed mother — no wild grouping. -->
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.2</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

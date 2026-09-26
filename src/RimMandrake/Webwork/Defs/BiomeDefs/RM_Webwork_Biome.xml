@@ -101,16 +101,19 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
 
-    <!-- WEBWORK_FAUNA_ROSTER_1: 5 RM_-tier invented rows, the biome's whole
-         resident cast besides the Ollathrix (owned by
-         webwork_owner_and_nest_2026-09-23.md, not a wildAnimals row at all).
-         Replaces the vanilla-Core placeholder this def shipped at scaffold
-         time. The 4 donor Star Wars rows the frozen twin still carries
+    <!-- WEBWORK_FAUNA_ROSTER_1: 5 RM_-tier invented rows, the biome's thin
+         resident cast. OLLATHRIX_OWNER_SPECIES_1 adds the owner species
+         itself (webwork_owner_and_nest_2026-09-23.md §1) — solitary,
+         ecoSystemWeight 0.1, a low commonality read as "rare, and every
+         encounter matters" rather than a common predator. Replaces the
+         vanilla-Core placeholder this def shipped at scaffold time. The 4
+         donor Star Wars rows the frozen twin still carries
          (Wyyyschokk/RSW_JewelBeetle/Kreetle/Shyrack) are RULED CUT (roster
          doc §7) and do NOT ride WildAnimals_Webwork.xml going forward — see
          that file's own header. Every commonality below is an engineering
          default, not an owner-set value. -->
     <wildAnimals>
+      <RM_Ollathrix>0.15</RM_Ollathrix>  <!-- the owner species — solitary ambush predator -->
       <RM_Quarrok>0.3</RM_Quarrok>  <!-- anchor war / corridor-cutter -->
       <RM_Vennick>0.6</RM_Vennick>  <!-- egg war / living treasure map -->
       <RM_Skennet>0.4</RM_Skennet>  <!-- trace prey — the crop, the chase -->

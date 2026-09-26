@@ -68,6 +68,19 @@ species by patch, exactly as BeastNorm/MegafaunaYield already do:
      comp belongs to `SHOKKWEAVE_SOLE_SOURCE_1`, unbuilt as of this mod's
      creation — this ships the mechanism the Utinni layer will consume.
 
+  6. `RSW_Shokk_OllathrixSkin.xml` (OLLATHRIX_OWNER_SPECIES_1, added
+     2026-09-26, S6 rulings 1/6) — the free-tier biome mod
+     `mandrake.rm.webwork` now ships its own owner species, `RM_Ollathrix`
+     (an invented spider, franchise-free per Q11a). This patch overlays the
+     canon Wyyyschokk identity (label, description, art) onto that SAME
+     defName when this mod is loaded — one def, two skins, never a second
+     race. It does not touch mechanics: RM_Ollathrix's stats/tools/comps are
+     unchanged by it. This is separate from items 1-4 above, which still
+     patch the third-party donor `Wyyyschokk` today; SHOKK_SKIN_SHRINK_1 is
+     the item that retargets those four onto `RM_Ollathrix` and moves their
+     defs down into `mandrake.rm.webwork`, at which point this mod shrinks
+     to the skin patch alone.
+
 **What stayed RUT_/Utinni** (per the same ruling): the web-sense
 MapComponent's biome gating, creep-web terrain, the sole-source boundary, and
 every other webwork_kit_spec.md mechanic not named above. The Utinni layer
@@ -87,6 +100,10 @@ only this mod's Shokk slice has, against a forced-biome quicktest map.</descript
       <displayName>RimMandrake: Creature Behaviors</displayName>
     </li>
     <li>
+      <packageId>mandrake.rm.webwork</packageId>
+      <displayName>RimMandrake: the Webwork</displayName>
+    </li>
+    <li>
       <packageId>mlie.starwarsanimalcollection</packageId>
       <displayName>Star Wars Animal Collection (Continued)</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/3497316713</steamWorkshopUrl>
@@ -95,6 +112,7 @@ only this mod's Shokk slice has, against a forced-biome quicktest map.</descript
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.webwork</li>
     <li>mlie.starwarsanimalcollection</li>
   </loadAfter>
 </ModMetaData>
