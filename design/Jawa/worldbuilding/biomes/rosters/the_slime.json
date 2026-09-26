@@ -20,6 +20,11 @@
       "claim": "GR_Chickenrabbit and GR_Manbear restored to the trace tail — VGE chimeras are the Slime’s own experiment idiom",
       "status": "RESOLVED",
       "why": "GR_ prefix correction pass 2026-09-09: GRim*=Grindterra homeless; GR_*=VGE chimeras judged per sheet law (RETEXTURED_EARTH_FAUNA_BANNED_1: leave chimeras)"
+    },
+    {
+      "claim": "defNames should retarget to RM_GelatinousSlime now that GELATINOUSSLIME_RM_MOD_BUILD_1's survivor decision is ruled",
+      "status": "REJECTED",
+      "why": "§10 (owner, 2026-09-24, verbatim: 'We absolutely don't want patched donor stuff in there, we would remake') — RM_GelatinousSlime does NOT inherit this roster's donor fauna/flora rows, no merge, twice over. defNames stays RUT_Slime: that frozen def is still the accurate home of every row below. A future Slime sitting fills RM_GelatinousSlime's own roster with new creatures, not these."
     }
   ],
   "defNames": [
