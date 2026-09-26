@@ -638,3 +638,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_HUMMING_GROVE_1","ts":"2026-09-26T10:28:21Z"}
 {"seat":"FOUNDRY","event":"start","id":"GREENTIDE_HUMMING_GROVE_1","ts":"2026-09-26T10:28:22Z"}
 {"seat":"FOUNDRY","event":"file","id":"GREENTIDE_UNDERSTORY_PLANT_ROSTER_1","title":"the seven invented non-tree Greentide understory plants","kind":"task","target":"v1","needs":"offline","caused_by":"GREENTIDE_JUNGLE_TREE_ROSTER_1","for":"FOUNDRY","ts":"2026-09-26T10:32:14Z"}
+{"seat":"FOUNDRY","event":"close","id":"GREENTIDE_JUNGLE_TREE_ROSTER_1","sha":"f521c0c7939e1b21cbd1a83ce72d457f1fcdc3c2","ts":"2026-09-26T10:33:01Z"}
