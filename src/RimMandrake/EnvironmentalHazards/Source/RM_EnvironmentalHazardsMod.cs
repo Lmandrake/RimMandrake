@@ -304,6 +304,21 @@ namespace RimMandrake.EnvironmentalHazards
     //      ambience entirely; the map's own pools are still tracked (cheap,
     //      terrain-only) so turning this back on resumes immediately with no
     //      rescan delay. Purely cosmetic either way — no gameplay effect.
+    //  52. tarBelchEnabled — RUT_IncidentWorker_TarPitBelch
+    //      (SUMP_TAR_BELCH_EVENT_1). Off: the occasional "a tar pit belches"
+    //      incident never fires (CanFireNowSub refuses outright); this is
+    //      the scenario-scoped terrain-coating version of the belch, not the
+    //      full FlowWorks flood-pulse/glass-front system SUMP_TAR_HYDROLOGY_1
+    //      owns separately.
+    //  52a. tarBelchRadius — the SAME incident's coating radius in cells
+    //      around the tar pit it picks. Never changes how often it fires or
+    //      how thick the coat is, only how far it reaches.
+    //  53. biomeArrivalLettersEnabled — RM_GameComponent_BiomeArrivalLetters
+    //      (BIOME_ARRIVAL_NARRATION_1). Off: the first gravship landing in a
+    //      biome carrying RM_BiomeArrivalLetterExtension never fires its
+    //      survival-reads letter, and nothing is marked "seen" while off, so
+    //      turning it back on still introduces every biome the player has
+    //      not yet landed in. A letter already delivered is never recalled.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -366,6 +381,9 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool groundRefusalEnabled = true;
         public static bool pollinationGateEnabled = true;
         public static bool waterAgitationEnabled = true;
+        public static bool tarBelchEnabled = true;
+        public static float tarBelchRadius = 9f;
+        public static bool biomeArrivalLettersEnabled = true;
 
         public override void ExposeData()
         {
@@ -423,6 +441,9 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref groundRefusalEnabled, "groundRefusalEnabled", true);
             Scribe_Values.Look(ref pollinationGateEnabled, "pollinationGateEnabled", true);
             Scribe_Values.Look(ref waterAgitationEnabled, "waterAgitationEnabled", true);
+            Scribe_Values.Look(ref tarBelchEnabled, "tarBelchEnabled", true);
+            Scribe_Values.Look(ref tarBelchRadius, "tarBelchRadius", 9f);
+            Scribe_Values.Look(ref biomeArrivalLettersEnabled, "biomeArrivalLettersEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -439,7 +460,9 @@ namespace RimMandrake.EnvironmentalHazards
             // 4480->4540 for setting #50 (pollinationGateEnabled,
             // MIASMA_KARRATHIL_POLLINATION_GATE_1).
             // Bumped 4540->4600 for setting #51 (waterAgitationEnabled).
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4600f);
+            // Bumped 4600->4680 for setting #52 (tarBelchEnabled + radius slider).
+            // Bumped 4680->4740 for setting #53 (biomeArrivalLettersEnabled).
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4740f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -595,6 +618,14 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Ambient water agitation ripples", ref waterAgitationEnabled,
                 "Water tagged as agitated (a biome's boiling or roiling surface) stops showing the "
               + "ambient ripple disturbance across it. Purely cosmetic — no gameplay effect either way.");
+            list.CheckboxLabeled("Tar pit belch event", ref tarBelchEnabled,
+                "The Sump's occasional \"a tar pit belches\" event stops occurring — an existing tar "
+              + "pit stops erupting and coating the ground around it in tar.");
+            list.CheckboxLabeled("Biome arrival letters", ref biomeArrivalLettersEnabled,
+                "The first gravship landing in a biome carrying a survival-reads letter stops "
+              + "announcing it. A letter already delivered this save is never recalled, and nothing "
+              + "is marked as seen while this is off, so turning it back on still introduces every "
+              + "biome not yet landed in.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
@@ -634,6 +665,11 @@ namespace RimMandrake.EnvironmentalHazards
             list.Label("How fast a warbling lamp or statue's color and radius dance. Never changes "
                      + "how far they wander, only how quickly.");
             warblingGlowSpeedMultiplier = list.Slider(warblingGlowSpeedMultiplier, 0.1f, 3f);
+
+            list.Label("Tar pit belch radius: " + tarBelchRadius.ToString("0") + " cells");
+            list.Label("How far a belching tar pit's coating reaches. Never changes how often it "
+                     + "fires or how thick the coat lands, only how wide.");
+            tarBelchRadius = list.Slider(tarBelchRadius, 3f, 20f);
 
             list.End();
             Widgets.EndScrollView();
