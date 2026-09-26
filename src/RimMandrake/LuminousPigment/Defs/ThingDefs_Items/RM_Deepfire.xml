@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_Deepfire.xml                        LuminousPigment · DEEPFIRE_PIGMENT_MOD_1
+  ============================================================================
+  Spec §2.4. Replaces TerminalBiomes' RM_RainbowPigment (deleted there, moved
+  here as RM_Deepfire — nothing else referenced the old defName besides the
+  plant, this mod's own showcase script and the frozen RUT_TheScald.xml twin,
+  which already waits on the terminal repaint per its own header).
+
+  Refined Deepfire keeps forever (no rot, no clock) — that is the whole point
+  of racing fresh mat to the press. It carries a real CompGlower so a
+  stockpile itself glows faintly in a dark room (spec: "the mod's first
+  tell"). MarketValue and the glow toggle are Mod Settings
+  (deepfireMarketValue, deepfireStackGlows), applied at startup.
+
+  Placeholder-only art (the pigment jar moved from RM_RainbowPigment's own
+  procedural placeholder) — real art is owed via the review sheet named in
+  spec §9 (three existing unruled `_artsrc/scald2_rainbowpigment_*` jar
+  renders are candidates, per CLAUDE.md's "check for existing regenerated
+  art" rule — not wired here because the owner has not picked one).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Deepfire</defName>
+    <thingClass>ThingWithComps</thingClass>
+    <label>deepfire</label>
+    <description>A jar of pale, faintly glowing pigment pressed from fresh crowncarpet. It carries no colour of its own — mixed into an ordinary dye, it makes whatever colour the dye gives glow, dim and steady, in the dark. Expensive: a whole plant's harvest, refined at real cost, makes only two jars.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Deepfire/RM_Deepfire</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>50</stackLimit>
+    <statBases>
+      <MarketValue>90</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.05</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeTags>
+      <li>RM_Deepfire</li>
+    </tradeTags>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.5</glowRadius>
+        <glowColor>(255,240,200,0)</glowColor>
+        <overlightRadius>0</overlightRadius>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

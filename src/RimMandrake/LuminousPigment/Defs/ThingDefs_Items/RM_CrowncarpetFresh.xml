@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_CrowncarpetFresh.xml / RM_CrowncarpetDead.xml     LuminousPigment
+  ============================================================================
+  Spec §2.2. Fresh crowncarpet dies fast (matLifeDays, default 1.0 — a real
+  day, not a game concept) and dies AT ONCE if refrigerated (the ruling is the
+  inverse of vanilla rot, which slows in the cold) — CompMatVitality
+  (Source/CompMatVitality.cs) implements both clocks and swaps the stack for
+  RM_CrowncarpetDead when either fires. No CompRottable: this is not rot.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CrowncarpetFresh</defName>
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Rare</tickerType>
+    <label>fresh crowncarpet</label>
+    <description>A folded sheet of freshly harvested crowncarpet, still faintly warm and banded rainbow. It will not keep — it dies of its own accord within a day, and it dies at once if it gets cold. Press it soon.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Deepfire/RM_CrowncarpetFresh</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>12</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.2</Mass>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>None</tradeability>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.CompProperties_MatVitality" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CrowncarpetDead</defName>
+    <label>dead crowncarpet</label>
+    <description>A grey, slumped sheet of crowncarpet that died before it reached the press. Worthless as pigment; it exists so a colonist can see what happened to a stack rather than watching it vanish.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Deepfire/RM_CrowncarpetDead</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>0.5</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.2</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>4.0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>None</tradeability>
+    <alwaysHaulable>true</alwaysHaulable>
+  </ThingDef>
+
+</Defs>

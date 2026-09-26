@@ -44,7 +44,7 @@ A crater sea that boils. Volcanic heat rises under it and the substellar sun
 stands over it, and between the two the water never rests — a roiling,
 steaming, mineral-fouled expanse ringed by geysered shores, its steam
 climbing forever to the border peaks. In its depths, rainbow sheets of
-bacteria and algae coat everything in oddly fuzzy welcome blankets; huge
+bacteria and algae coat everything in oddly fuzzy crowncarpet mats; huge
 creatures walk the bottom munching the mats; silver shoals dart above them;
 and jellyfish-analogs sail the bubble-lines like little solar sails. **A
 place of roiling wonder** (owner) — and the reason anything on the dayside
@@ -80,7 +80,7 @@ mountains fence it. The heart of the dayside's hydrology (§3).
 **The admission test: thrives in heat that kills everything else, and joins
 the dung-and-mat economy.**
 
-- **The welcome blankets** (owner): rainbow sheets of thermophile bacteria
+- **The crowncarpet mats** (owner): rainbow sheets of thermophile bacteria
   and algae coating everything in the depths, oddly fuzzy, banded by
   temperature — one of the planet's rainbow registers:
   the Scarlands' rainbow lies, the Miasma's hopes, the Scald's is the

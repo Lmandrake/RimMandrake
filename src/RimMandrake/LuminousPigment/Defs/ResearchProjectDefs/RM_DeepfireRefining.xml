@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_DeepfireRefining.xml                LuminousPigment · DEEPFIRE_PIGMENT_MOD_1
+  ============================================================================
+  Spec §2.3. Hidden until a crowncarpet mat has been seen
+  (RM_CompMatDiscovery on the plant sets GameComponent_Deepfire.matSeen; a
+  Harmony postfix on ResearchProjectDef.CanStartNow keeps it un-startable
+  until then). The spec flags a SECOND hook (hiding the entry from the
+  research tab's draw) as engine-UNMEASURED and names its own documented
+  fallback: "a visible-but-locked project with a red 'needs a mat sighting'
+  line in its description" — that fallback is what ships here
+  (HarmonyPatches.cs appends the line live, once, the first time the project
+  is drawn locked).
+  ============================================================================
+-->
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RM_DeepfireRefining</defName>
+    <label>deepfire refining</label>
+    <description>Press fresh crowncarpet, a rare rainbow bacterial mat found on ocean shores, into deepfire — a pigment that glows. Locked until a colonist has actually seen crowncarpet growing somewhere.</description>
+    <baseCost>800</baseCost>
+    <techLevel>Industrial</techLevel>
+    <researchViewX>5</researchViewX>
+    <researchViewY>9</researchViewY>
+    <prerequisites>
+      <li>Electricity</li>
+    </prerequisites>
+    <tab>Main</tab>
+  </ResearchProjectDef>
+
+</Defs>

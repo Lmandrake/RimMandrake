@@ -70,7 +70,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Muddal</defName>
     <label>muddal</label>
-    <description>The bottom-walkers' small cousin: a hand-long, armored, heat-glossed thing that grazes the welcome blankets at the margins where the boil gentles, moving along the rainbow bands and taking the pigment into its skin, so a muddal is banded too — a little strip of the Scald's oldest truth. Pilgrims gather them at the baths with a cloth. Cooked the moment it leaves the water, which is to say already.</description>
+    <description>The bottom-walkers' small cousin: a hand-long, armored, heat-glossed thing that grazes the crowncarpet mats at the margins where the boil gentles, moving along the rainbow bands and taking the pigment into its skin, so a muddal is banded too — a little strip of the Scald's oldest truth. Pilgrims gather them at the baths with a cloth. Cooked the moment it leaves the water, which is to say already.</description>
     <graphicData>
       <texPath>Things/Item/ToxicMeat/ToxicMeat_b</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -205,7 +205,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Thuum</defName>
     <label>thuum</label>
-    <description>An eel that lives under the welcome blankets — between the rainbow mat and the rock, in the thin hot film where the mat is thickest — and takes the pigment into its skin the way the muddal does, so a thuum is banded down its whole length in the mat's own colours, and a pilgrim who lifts a mat-edge at the baths sometimes finds one lying there like a strip of the Scald's oldest truth that has learned to move. It comes up cooked, and it is the margin's best eating after the eesh — richer, and the bands hold in the pan.</description>
+    <description>An eel that lives under the crowncarpet mats — between the rainbow mat and the rock, in the thin hot film where the mat is thickest — and takes the pigment into its skin the way the muddal does, so a thuum is banded down its whole length in the mat's own colours, and a pilgrim who lifts a mat-edge at the baths sometimes finds one lying there like a strip of the Scald's oldest truth that has learned to move. It comes up cooked, and it is the margin's best eating after the eesh — richer, and the bands hold in the pan.</description>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaE</texPath>
       <graphicClass>Graphic_Single</graphicClass>

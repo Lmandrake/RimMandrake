@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_DeepfirePress.xml                   LuminousPigment · DEEPFIRE_PIGMENT_MOD_1
+  ============================================================================
+  Spec §2.3. "A press and an alchemical setup welded together" (owner, typed).
+  BenchBase-derived (RimSage-verified against FueledSmithy — there is no
+  "WorkTableBase"), 3x1, powered only (card ruling 2026-09-25 15:42) —
+  there is no hand-cranked variant. pressGate (Mod Settings: Research /
+  Buildable / Unbuildable) is applied at startup by
+  LuminousPigmentStartup.ApplyPressGate (Source/LuminousPigmentMod.cs).
+  Placeholder art: a temporary flat panel (see Textures/ header note) —
+  real art (screw press + retort/coil, painterly) is owed via the review
+  sheet in spec §9.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RM_DeepfirePress</defName>
+    <label>deepfire press</label>
+    <description>A screw press welded to an alchemical retort-and-coil rig on one iron bed — half mechanical, half chemistry set. Fresh crowncarpet goes in one side and comes out the other as deepfire, the glowing pigment. It draws real power and runs no bill without it; there is no hand-cranked version.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/RM_DeepfirePress</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,1)</drawSize>
+    </graphicData>
+    <size>(3,1)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>3000</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <costList>
+      <Steel>90</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <WoodLog>30</WoodLog>
+    </costList>
+    <researchPrerequisites>
+      <li>RM_DeepfireRefining</li>
+    </researchPrerequisites>
+    <designationCategory>Production</designationCategory>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>150</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+  </ThingDef>
+
+</Defs>

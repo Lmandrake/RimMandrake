@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_Crowncarpet.xml                     LuminousPigment · DEEPFIRE_PIGMENT_MOD_1
+  ============================================================================
+  Moved from TerminalBiomes (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Plants/
+  RM_WelcomeBlanket.xml, defName RM_WelcomeBlanket -> RM_Crowncarpet, label
+  "welcome blanket" -> "crowncarpet") per spec §2.1: this is invented, generic
+  ocean-shore content, so it belongs in the mod that owns the whole
+  mat->press->pigment chain, not in the biome that merely hosts one dense
+  population of it. The Scald keeps only its own `wildPlants` row naming this
+  defName (RM_TheScald.xml) and the `RUT_ScaldMarginMat` terrain tag.
+
+  Generalised beyond the Scald (spec §2.2): wild spawn now also happens on any
+  ocean shore anywhere via RM_GenStep_ShoreMats (rare) — the `RM_CrowncarpetBed`
+  tag added to vanilla WaterOceanShallow by Patches/CrowncarpetBedTag.xml makes
+  that legal. Description generalised to match: shore life on any hot-enough
+  ocean, thickest in a boiling one.
+
+  maxGrowthTemperature 90 (engine default 58): needed for the Scald's own
+  ambient heat; harmless everywhere cooler.
+  Harvests RM_CrowncarpetFresh now, not a pigment directly (spec §2.2) — the
+  raw mat needs the press.
+  Placeholder-only art (Core's own Ambrosia texPath, inherited from the
+  pre-move def) — real art is owed via the review sheet named in spec §9,
+  DEEPFIRE_PAINT_STATUS_CUISINE_1.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Crowncarpet</defName>
+    <label>crowncarpet</label>
+    <description>A fuzzy, rainbow-banded sheet of thermophile bacteria and algae that carpets the margins of any ocean warm enough to host it — rare on an ordinary shore, thick and unbroken where the water boils. It is some of the oldest life on any planet, wearing the loudest colors: the shore's one truth that never lies about the heat. Pressed while still fresh, it yields Deepfire, a pigment that glows.</description>
+    <graphicData>
+      <texPath>Things/Plant/Ambrosia</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>8</pathCost>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_CrowncarpetBed</li>
+        <!-- string tag, no cross-reference: matches whichever mod's copy of
+             the Scald's bathing margin is active, harmless when absent. -->
+        <li>RUT_ScaldMarginMat</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>0</minGrowthTemperature>
+      <maxGrowthTemperature>90</maxGrowthTemperature>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_CrowncarpetFresh</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <harvestWork>120</harvestWork>
+      <growDays>3</growDays>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.LuminousPigment.CompProperties_MatDiscovery" />
+    </comps>
+  </ThingDef>
+
+  <!-- The GlowTank's cultured crop (spec §2.5): same plant, tank-tuned
+       numbers, never wild-spawned. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_CrowncarpetCultured</defName>
+    <label>cultured crowncarpet</label>
+    <description>Crowncarpet grown under glass in a GlowTank from a seed culture of fresh mat. Slower and thinner than the wild sheet, but it does not need a shore.</description>
+    <graphicData>
+      <texPath>Things/Plant/Ambrosia</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>0.7</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <sowTags>
+        <li>RM_GlowTank</li>
+      </sowTags>
+      <sowMinSkill>6</sowMinSkill>
+      <sowResearchPrerequisites>
+        <li>RM_DeepfireRefining</li>
+      </sowResearchPrerequisites>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_CrowncarpetFresh</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <harvestWork>150</harvestWork>
+      <growDays>12</growDays>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>

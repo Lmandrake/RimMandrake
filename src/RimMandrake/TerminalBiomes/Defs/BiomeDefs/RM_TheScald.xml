@@ -70,12 +70,13 @@
     <animalDensity>0.15</animalDensity>
     <coastalWildAnimals />
 
-    <!-- RM_WelcomeBlanket (SCALD_FLOOR_PASS_1: moved from UtinniPatches, RUT_->RM_,
-         no MayRequire — invented franchise-free flora, native to this tier), gated
-         on its own wildTerrainTags: [RUT_ScaldMarginMat], a tag that exists on
+    <!-- RM_Crowncarpet (DEEPFIRE_PIGMENT_MOD_1: moved again, this time to the
+         LuminousPigment mod — RM_WelcomeBlanket renamed RM_Crowncarpet,
+         mandrake.rm.luminouspigment now required — spec §2.1), gated on its
+         own wildTerrainTags: [RUT_ScaldMarginMat], a tag that exists on
          exactly one terrain (RUT_ScaldMargin), already in this mod. -->
     <wildPlants>
-      <RM_WelcomeBlanket>0.4</RM_WelcomeBlanket>
+      <RM_Crowncarpet>0.4</RM_Crowncarpet>
     </wildPlants>
 
     <!-- FISH_BESTIARY_BUILD_1 / SEA_FLOOR_AND_CATCH_PASS_1 — the margin

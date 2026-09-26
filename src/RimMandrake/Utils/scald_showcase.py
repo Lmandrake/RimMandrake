@@ -5,7 +5,7 @@ paints a shore-to-deep strip of Scald terrain on whatever map is loaded (a
 scratch save, never the campaign) and lays the kit out along it for a walk-
 through review:
 
-    margin  (RUT_ScaldMargin)     catch items in a labelled row + welcome blanket
+    margin  (RUT_ScaldMargin)     catch items in a labelled row + crowncarpet
     shallows(RUT_ScaldWaterShallow) vents, a steam-catch on one vent, three wrecks,
                                   the floor cast (noohm, shulla) spawned wild
     deep    (RUT_ScaldWaterDeep / OceanDeep)  visual only
@@ -31,7 +31,7 @@ from stage_review import connect, pause, kill_hostiles, face, shoot, save_game
 
 W, H = 44, 28
 CATCH = ["RM_Saal", "RM_ShullaCatch", "RM_BladderboilCatch", "RM_Eesh", "RM_Muddal",
-         "RM_Karrash", "RM_Doss", "RM_Thuum", "RM_Ekkel", "RM_RainbowPigment"]
+         "RM_Karrash", "RM_Doss", "RM_Thuum", "RM_Ekkel", "RM_Deepfire"]
 CAST = [("RM_Noohm", 3), ("RM_Shulla", 3)]
 
 
@@ -84,9 +84,9 @@ def place(rb, x0, z0):
         except Exception as e:
             out.append((d, x, z, "ERR " + str(e)[:80]))
     for i, d in enumerate(CATCH):
-        spawn(d, x0 + 3 + i * 4, z0 + 3, 10 if d == "RM_RainbowPigment" else 5)
+        spawn(d, x0 + 3 + i * 4, z0 + 3, 10 if d == "RM_Deepfire" else 5)
     for i in range(6):
-        spawn("RM_WelcomeBlanket", x0 + 4 + i * 6, z0 + 6)
+        spawn("RM_Crowncarpet", x0 + 4 + i * 6, z0 + 6)
     spawn("RUT_ScaldVent", x0 + 6, z0 + 12)
     spawn("RUT_ScaldVent", x0 + 14, z0 + 12)
     spawn("RUT_SteamCatch", x0 + 14, z0 + 12)
@@ -143,7 +143,7 @@ def main():
             print("  place", row)
         print("face:", face(rb, "south"))
         got = census(rb, x0, z0)
-        want = set(CATCH) | {"RM_WelcomeBlanket", "RUT_ScaldVent", "RUT_SteamCatch", "RUT_ScaldWreckHull",
+        want = set(CATCH) | {"RM_Crowncarpet", "RUT_ScaldVent", "RUT_SteamCatch", "RUT_ScaldWreckHull",
                              "RUT_ScaldWreckTank", "RUT_ScaldWreckFrame", "RM_Noohm", "RM_Shulla"}
         print("census:", {d: got.get(d, 0) for d in sorted(want)})
         tk = rb.call("rimworld/get_game_info", {}).get("ticksGame")

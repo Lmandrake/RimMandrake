@@ -38,7 +38,7 @@
   standalone exactly like RUT_ScaldWater.xml's six siblings.
 
   RUT_ScaldMarginMat tag ADDED — COMMISSION_LEDGER_CLEANUP_1, the_scald
-  sheet's "welcome blanket" flora commission (now RM_WelcomeBlanket.xml,
+  sheet's "crowncarpet" flora commission (now RM_Crowncarpet.xml,
   TerminalBiomes/Defs/ThingDefs_Plants/, moved from UtinniPatches by
   SCALD_FLOOR_PASS_1). A dedicated tag, not the generic `Water` every boil
   terrain also carries: gating the plant on plain `Water` would let it wild-

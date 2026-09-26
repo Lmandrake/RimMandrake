@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_RefineDeepfire.xml                  LuminousPigment · DEEPFIRE_PIGMENT_MOD_1
+  ============================================================================
+  Spec §2.3. 4 fresh crowncarpet + 1 Neutroamine (the fixative — vanilla's own
+  "you cannot make this" reagent, which puts the exotic-trader pressure the
+  ruling wants on the base game) + 2 Chemfuel (the solvent bath) -> 2 Deepfire.
+  pressYield is a Mod Settings number applied at startup
+  (LuminousPigmentStartup.ApplyPressYield).
+
+  The campaign (Utinni) variant swapping Stillfluid for Neutroamine+Chemfuel
+  at a better yield is a patch in src/RimUtinni/UtinniPatches, not this mod
+  (spec §2.3) — filed under DEEPFIRE_PAINT_STATUS_CUISINE_1 alongside the
+  Poison Forest's own Stillfluid/Thornwillow defs, neither of which exist yet.
+  ============================================================================
+-->
+<Defs>
+
+  <RecipeDef>
+    <defName>RM_RefineDeepfire</defName>
+    <label>refine deepfire</label>
+    <description>Press fresh crowncarpet into deepfire pigment.</description>
+    <jobString>Refining deepfire.</jobString>
+    <workAmount>1800</workAmount>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workSkill>Crafting</workSkill>
+    <workSkillLearnFactor>1.0</workSkillLearnFactor>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_CrowncarpetFresh</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Neutroamine</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_CrowncarpetFresh</li>
+        <li>Neutroamine</li>
+        <li>Chemfuel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_Deepfire>2</RM_Deepfire>
+    </products>
+    <recipeUsers>
+      <li>RM_DeepfirePress</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>
