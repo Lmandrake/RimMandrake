@@ -88,11 +88,9 @@ yes/no, not a blank.
    ≈2 min).
 4. **Register table (§2.2).** Eight one-line tone choices. The two that most need
    his ear: Battle (comically bad threat assessment) and Power (the gonk syllable).
-5. **Which of the four earn the LLM at all.** R is the only consumer allowed a
-   past and the only one whose worst failure (a hallucinated life) no regex can
-   catch. Ship W/B/O live and keep R prescribed-only, or all four.
-6. **Programmable tier.** Doc fires the consumer in a flat status register with
-   one crack. Simpler alternative: programmable never fires. His call.
+5. **Which of the four earn the LLM — RULED 2026-09-25 by card: all four live**, R included,
+   accepting that a hallucinated past cannot be caught by the validator.
+6. **Programmable tier — RULED 2026-09-25 by card: programmable droids never fire.**
 7. **Prescribed lines now — RULED 2026-09-25 by card: yes.** W and B's three
    fallback lines each ship now as plain letters with no Oracle involvement, in the
    Narrator's third person per Q1.
