@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T09:37:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T09:38:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -881,15 +881,6 @@ target:   v1
 kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
-
-## WEBWORK_NEST_EGG_ECONOMY_1 Build the Webwork nest + egg economy: nest on EVERY map, re-lay 20-30d while mother lives, RM_OllathrixEgg, Wildsteam egg bounty (S6 rulings 2,3,4)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/WEBWORK_NEST_EGG_ECONOMY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_NEST_EGG_ECONOMY_1.md
 
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
