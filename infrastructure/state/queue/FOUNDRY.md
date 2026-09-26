@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T09:48:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T10:07:52Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -909,15 +909,6 @@ kind:     build
 summary:  1. The reaction: tar + acid → green gas (Helixien-compatible). One acid, three
 prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
 
-## SUMP_TAR_HYDROLOGY_1 Sump tar hydrology on FlowWorks: belch floods with glass fronts, full canal-work, network fire with gate firebreaks, outflow seams, the Deep Black mere, living-map responders, tar rain (mod, not this scenario)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  SUMPTARHYDROLOGY1 — how the tar flows: the Sump on FlowWorks
-prose:    infrastructure/state/items/SUMP_TAR_HYDROLOGY_1.md
-
 ## FORCE_DISTURBANCE_REFLAVOR_1 Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
 state:    doing
 row:      unassigned
@@ -971,15 +962,6 @@ target:   v1
 kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
-
-## DEEPFIRE_PAINT_STATUS_CUISINE_1 Deepfire: painting mechanic (comp/designator/beauty+quality), worn-item glow+darkness-targeting tradeoff, the purple-engine sumptuary status system, Ninefold god reactions, and Cuisine glow-hediff families -- deferred from DEEPFIRE_PIGMENT_MOD_1's chain build
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  DEEPFIREPAINTSTATUSCUISINE1
-prose:    infrastructure/state/items/DEEPFIRE_PAINT_STATUS_CUISINE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1706,3 +1688,33 @@ kind:     task
 thin:     no ## criteria
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_RECKONING_QUEST_1.md
+
+## DEEPFIRE_PAINT_LIVE_VERIFY_1 Deepfire painting + worn-glow darkness tradeoff (needs live bridge)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  DEEPFIREPAINTLIVEVERIFY1
+prose:    infrastructure/state/items/DEEPFIRE_PAINT_LIVE_VERIFY_1.md
+
+## SUMP_TAR_FIRE_NETWORK_1 Network fire with gate firebreaks; wire belch to glass-cooling
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  SUMPTARFIRENETWORK1 — network fire with gate firebreaks, and wiring the belch to glass-front cooling
+prose:    infrastructure/state/items/SUMP_TAR_FIRE_NETWORK_1.md
+
+## SUMP_TAR_LIVING_SYSTEMS_1 Living-map responders; tar rain mod-vs-scenario split
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec
+summary:  SUMPTARLIVINGSYSTEMS1 — living-map responders, and tar rain (mod vs scenario)
+prose:    infrastructure/state/items/SUMP_TAR_LIVING_SYSTEMS_1.md
