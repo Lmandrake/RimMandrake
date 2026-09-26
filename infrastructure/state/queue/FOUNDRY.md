@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T11:18:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T11:21:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -972,15 +972,6 @@ kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
 
-## WARDEN_MOTHER_SUCCESSION_1 Warden mother young: self-taming, water-scoped training, and succession on her death
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  WARDENMOTHERSUCCESSION1 — warden mother young: self-taming, water-scoped training, and succession on her death
-prose:    infrastructure/state/items/WARDEN_MOTHER_SUCCESSION_1.md
-
 ## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -989,15 +980,6 @@ target:   v1
 kind:     task
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
-
-## GREENTIDE_DENSITY_SETTINGS_1 Mod Settings sliders for Greentide plantDensity/movementDifficulty
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Add (or extend, if mandrake.rm.greentide already has a settings class) a ModGreentideSettings
-prose:    infrastructure/state/items/GREENTIDE_DENSITY_SETTINGS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1654,3 +1636,13 @@ kind:     engine
 thin:     spec, verify and criteria all present
 summary:  1. Choose the mechanism — most likely a Harmony patch on GenGrid.CanBeSeenOver(IntVec3, Map)
 prose:    infrastructure/state/items/GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1.md
+
+## WARDEN_MOTHER_TRAINABLE_GATE_1 Hard-exclude Rescue/general Haul from a self-tamed warden young's training tab
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     followup
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  WARDENMOTHERTRAINABLEGATE1 — hard-exclude Rescue/general Haul from a self-tamed warden young's training tab
+prose:    infrastructure/state/items/WARDEN_MOTHER_TRAINABLE_GATE_1.md
