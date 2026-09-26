@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.contagion</packageId>
+  <name>RimMandrake: The Contagion</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>sarg.alphabiomes</li>
+    <li>sarg.alphaanimals</li>
+    <li>mandrake.rut.rotsporekit</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+  <description>CONTAGION_RM_MOD_BUILD_1 (Phase A row 16 of
+design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).
+The Contagion, fully generalized: it names no other franchise or campaign and is
+playable standalone on any generated RimWorld planet. A separate frozen campaign
+world's own instance is unaffected; this is a new sibling biome for everyone
+else's worlds, not a rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+A red valley on a scalded mountain, roofed by a thunderstorm that has never been
+known to stop: an open-throttle bioweapon mutation engine, running unchecked
+because it is the one place on the dayside where heat and water are both
+unlimited. Under the cloud everything is wet, warm and unfinished; when the
+cloud tears, the clear sky is the killer. Ships the biome (own worldgen
+placement worker, `RM_BiomeWorker_Contagion`, replacing the donor Alpha Biomes
+`BiomeWorker_OcularForest` — a donor type in `workerClass` is a hard dependency
+the RimMandrake tier may not assume), its full resident roster transplanted
+wholesale from the frozen campaign twin (11 `wildAnimals` rows, 10 `wildPlants`
+rows, Alpha Biomes' weather and Alpha Biomes/vanilla disease suite), and a Mod
+Settings screen with the standard worldgen-rarity master toggle
+(MOD_OPTIONS_RETROFIT_1 doctrine — default = shipped behavior, 0 = never
+generates). No mechanics kit exists for this biome yet — the Burn/Bloom weather
+mechanic, the Unfinished's random-mutation spawner and Contagion-touched are all
+unbuilt design work (`CONTAGION_UNFINISHED_SPAWNER_1`,
+`CONTAGION_GENOME_ORGAN_GROWING_1`) and land here later, at any point, with no
+dependency direction.
+
+Zero Star Wars content lives in this biome's roster at all — the twin's own
+`wildAnimals` carries no `RSW_`/`SW_`/`mlie.*` row, so no Utinni patch is needed
+for fauna (unlike most sibling RM_ biome mods, there is no `WildAnimals_Contagion.xml`).
+
+⚠️ One row is neither ours-standalone nor Star Wars: `RUT_Sytheclaw`, a
+RimMandrake-tier creature the frozen campaign shares inline across three biomes
+(Pyrelands, Greentide, here) whose ThingDef/PawnKindDef still live in the
+RimUtinni tier (`RUT_PyrelandsPortedFauna.xml`). Wiring it inline here would be
+a live cross-tier dependency (a franchise-free def needing a campaign-tier def
+to resolve), so it ships `MayRequire="mandrake.rut.patches"` — same caution
+`WildAnimals_Greentide.xml` already records for this same creature. It is one
+of 52 species `BIOME_SPECIFIC_FAUNA_LAW_1` lists as multi-homed and
+unadjudicated; multi-home evictions are stopped by owner ruling, so it is not
+moved or renamed here.
+
+⚠️ Not entirely donor-free: all ten `wildPlants` rows and the terrain/texture
+fields carry no `MayRequire`, inherited unguarded from the frozen campaign twin
+(pre-existing gap, not introduced by this build). The eleven `wildAnimals` rows
+keep their original `MayRequire="sarg.alphaanimals"` gates (bar `RUT_Sytheclaw`,
+above) and degrade gracefully without it. `RUT_RustPuff` is a real cross-mod
+dependency on `mandrake.rut.rotsporekit`, kept as the twin had it, pending that
+kit's eventual absorption into `mandrake.rm.therot`.
+
+NOT in this mod: the Ashfall Research Base and every other campaign plot hook
+(`OCULAR_OVERDRIVE_SITE_1`); F5, "the Contagion die-off ring," which is a
+mechanic of the neighboring Forge biome despite the name and already ships in
+`RimMandrake.EnvironmentalHazards` — its defs stay in RimUtinni pending
+`THEFORGE_RM_MOD_BUILD_1`, not this build.
+
+Live proof (step 5, a scratch-world quicktest with all five expansions) is
+Desktop-only and OWED — see the item's own verify record.</description>
+</ModMetaData>
