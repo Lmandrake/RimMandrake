@@ -312,17 +312,11 @@ def check_range(cat, a, b, repo):
         # namespace) makes git see the OLD path's DLL as a plain delete, not
         # a rename — its bytes changed too much (different namespace/
         # assembly name baked into the IL) to pass git's own similarity
-        # heuristic at the default threshold. If that DLL predates
-        # DLL_SOURCE_STAMP_GUARD_1 and never had a .srchash sidecar in `a`
-        # either, its retirement drops no provenance claim — there was never
-        # a stamp asserting it matched its source, so nothing is being
-        # silently hidden (the exact failure this guard exists to catch).
-        # Only flag it if it still exists at `b` (a live DLL with no stamp
-        # update is the real risk) or if `a` already had a stamp for it (a
-        # stamped DLL disappearing without its stamp is a real provenance
-        # loss, e.g. an unpaired revert).
-        if not ls_tree(b, dll, repo) and not ls_tree(a, stamp, repo):
-            continue
+        # heuristic at the default threshold. That case is already excluded
+        # above: `changed_dlls` only contains paths that still exist at `b`,
+        # so a DLL retired by such a rename (gone at `b`) never reaches this
+        # loop at all — its retirement drops no provenance claim, since there
+        # was never a stamp asserting it matched its source.
         print("STAMP_MISSING %s" % dll)
         print("    DLL changed in %s..%s but %s did not — rebuild and "
               "commit them together" % (a, b, os.path.basename(stamp)))
