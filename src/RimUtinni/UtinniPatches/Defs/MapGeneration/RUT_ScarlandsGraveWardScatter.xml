@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScarlandsGraveWardScatter.xml   UtinniPatches - SCARLANDS_MECHANICS_2 build pass continuation
+
+  Places RUT_SentinelGraveWard on the map and closes the "OWED, NOT BUILT:
+  faction assignment" gap that ThingDef's own header flagged — see
+  RUT_GenStep_ScatterSentinelGraveWards.cs (src/RimMandrake/EnvironmentalHazards/
+  Source/) for the full mechanism note. Without this GenStepDef the grave-ward
+  was never placed on any real map at all: the building def existed, and
+  RUT_LordJob_SentinelDefend/RUT_SentinelDefend existed, but nothing ever
+  spawned the building, so the whole §4 Sentinel mechanic was dead content.
+
+  order 960: just after RUT_ScarlandsSprungDangers' own 955 (dressing scatter)
+  and ScarlandsJunkPrefabs' donor 950 — a grave-ward is a real building
+  (needs a clear, standable, unoccupied cell, same CanPlaceAt gate
+  GenStep_ScatterSacredWalls uses), so it runs after the dressing/junk
+  scatters that could otherwise claim its cell first.
+
+  A plain GenStepDef, not a Patch: campaign-mechanic content wired directly
+  onto the frozen RUT_Scarlands twin, same precedent RUT_ScarlandsSprungDangers
+  already set in this same folder. Not wired into RM_Warscar
+  (SCARLANDS_STANDALONE_MOD_1's franchise-free mod) — that mod's own header
+  states this class of content stays UtinniPatches-only.
+
+  Wired into RUT_Scarlands.xml's own extraGenSteps by this pass — see that
+  file's own header for the added <li>.
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ScarlandsGraveWardScatter</defName>
+    <order>960</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RUT_GenStep_ScatterSentinelGraveWards">
+      <thingDef>RUT_SentinelGraveWard</thingDef>
+      <chancePerMap>0.15</chancePerMap>
+      <countRange>1~1</countRange>
+      <minEdgeDistance>8</minEdgeDistance>
+    </genStep>
+  </GenStepDef>
+
+</Defs>
