@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T05:48:41Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-26T05:59:51Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -846,23 +846,14 @@ kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
 
-## MLIE_ABSORPTION_BIOME_WIRING_1 98 live biome rows still name the bare donor for 73 creatures we already ported
+## FEVERWOOD_TENTACLE_BESTIARY_1 Six tentacle types, the drive-off ladder, and a severed limb you can harvest
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  1. For each of the 98 rows, decide and apply one of two outcomes — this is not a blanket
-prose:    infrastructure/state/items/MLIE_ABSORPTION_BIOME_WIRING_1.md
-
-## WEBWORK_FAUNA_ROSTER_1 Build the 5 invented Webwork fauna defs (Quarrok/Vennick/Skennet/Cravvet/Sivvern, Sivvern flies for real) + execute the 3 ruled donor cuts; JewelBeetle disposition still owed
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/WEBWORK_FAUNA_ROSTER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_FAUNA_ROSTER_1.md
+summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
+prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_BESTIARY_1.md
 
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
@@ -944,6 +935,15 @@ target:   v1
 kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
+
+## UTINNIPATCHES_LOAD_ORDER_CYCLE_1 UtinniPatches loads before 6 of its loadAfter targets; cycle with RustCathedralRoaches
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/UTINNIPATCHES_LOAD_ORDER_CYCLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/UTINNIPATCHES_LOAD_ORDER_CYCLE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1561,16 +1561,6 @@ thin:     spec, verify and criteria all present
 summary:  Follow the spec document. Order, because it front-loads what can fail:
 prose:    infrastructure/state/items/GREATBOLE_HARVEST_LADDER_1.md
 
-## FEVERWOOD_TENTACLE_BESTIARY_1 Six tentacle types, the drive-off ladder, and a severed limb you can harvest
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
-prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_BESTIARY_1.md
-
 ## FEVERWOOD_SAP_SUCKER_GUILD_1 Three sap-suckers, three defences, and the host plant that feeds them
 state:    proposed
 row:      unassigned
@@ -1820,16 +1810,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SEA_DIVE_MAPS_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEA_DIVE_MAPS_BUILD_1.md
-
-## UTINNIPATCHES_LOAD_ORDER_CYCLE_1 UtinniPatches loads before 6 of its loadAfter targets; cycle with RustCathedralRoaches
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/UTINNIPATCHES_LOAD_ORDER_CYCLE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/UTINNIPATCHES_LOAD_ORDER_CYCLE_1.md
 
 ## MIASMA_SCUTTLER_PREDATION_1 Wire the five carnivorous plants to actually eat the arthropod-floor scuttlers
 state:    proposed
