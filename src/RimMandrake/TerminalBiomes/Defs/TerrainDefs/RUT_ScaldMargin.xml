@@ -65,6 +65,21 @@
     <glowColor>(2,154,229)</glowColor>
     <glowRadius>1</glowRadius>
     <burnDamage>0</burnDamage>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1, 2026-09-26: the margin is the calm
+         end of the owner's three-way split (margin calm / shallow a bit /
+         deep constant), but it is still the Scald — a faint breath, well
+         under Odyssey HotSpring's own 0.25 and an order below the boil's
+         0.75. It carries neither RM_WaterAgitation tag, so it throws no
+         ripples at all; this puff is the only thing it does. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.05~0.25</velocitySpeedRange>
+      <velocityAngleRange>-45~45</velocityAngleRange>
+      <rotationSpeedRange>-15~15</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1~2</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.08</throwFleckChance>
     <traversedThought>HotSpring</traversedThought>
     <tags>
       <li>Water</li>

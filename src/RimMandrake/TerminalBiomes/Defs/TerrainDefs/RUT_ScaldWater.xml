@@ -52,11 +52,20 @@
   R-B4a's boiling-lift values, applied verbatim:
     glowColor (2,154,229), glowRadius 2         — the donor's cyan, the one
                                                    thing worth keeping.
-    burnDamage 1 / burnIntervalTicks 300        — shallow + moving variants.
-    burnDamage 2 / burnIntervalTicks 240        — deep + chest-deep variants.
-      Bracketed by Odyssey's own HotSpring (0/0) and LavaShallow (3/120,
-      Data/Odyssey/Defs/TerrainDefs/Terrain_Water.xml) — "near-boiling" has
-      to sit between the two or the word means nothing.
+    burnDamage 3 / burnIntervalTicks 300        — shallow + moving variants.
+    burnDamage 4 / burnIntervalTicks 240        — deep + chest-deep variants.
+      REVISED 2026-09-26 from R-B4a's authored 1/2. Two reasons, both
+      measured or ruled, neither a rebalance:
+      (a) HediffGiver_Terrain applies Mathf.Max(burnDamage, 3) — MEASURED in
+          the decompile (Verse/HediffGiver_Terrain.cs) — so the authored 1
+          and 2 were BOTH silently 3 in play and the defs did not say what
+          they did. Only the interval ever differed.
+      (b) Owner ruling 2026-09-25 (scald_steam_and_hazards_spec.md §9 ruling
+          9), typed: deep water should burn harder. 4 deep / 3 shallow is
+          that ruling stated honestly rather than hidden under the floor.
+      Still bracketed by Odyssey's HotSpring (0/0) and LavaShallow (3/120,
+      Data/Odyssey/Defs/TerrainDefs/Terrain_Water.xml): the Scald now bites
+      as hard as lava per hit but a half to a third as often.
     traversedThought HotSpring                  — Odyssey's own ThoughtDef,
       already loaded (Ludeon.RimWorld.Odyssey is active), reused rather than
       SoakingWet.
@@ -114,8 +123,28 @@
     <gravshipReplacementTerrain>RUT_ScaldWaterShallow</gravshipReplacementTerrain>
     <glowColor>(2,154,229)</glowColor>
     <glowRadius>2</glowRadius>
-    <burnDamage>2</burnDamage>
+    <burnDamage>4</burnDamage>
     <burnIntervalTicks>240</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1 / scald_steam_and_hazards_spec.md
+         §3.1 step 2, 2026-09-26: steam standing off the boil, zero C#.
+         SteadyEnvironmentEffects visits ceil(area*0.0006) cells per tick
+         (MEASURED in the decompile) and rolls throwFleckChance on each, so
+         every cell is offered a puff about once per 1667 ticks; at 0.75 a
+         deep cell breathes roughly every 35 s and a screenful of open boil
+         carries a steady haze. Shape copied from Odyssey's own HotSpring
+         block (fleck AirPuff, solidTicksRange 1~3), but angled upward
+         (-30~30, not -90~90) and larger, because this water is boiling
+         rather than merely warm, and set far above HotSpring's 0.25 on the
+         owner's walk verdict that the Scald read nearly flat. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.2~0.6</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>2~4</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.75</throwFleckChance>
     <traversedThought>HotSpring</traversedThought>
     <avoidWander>true</avoidWander>
     <tags>
@@ -135,8 +164,28 @@
     <gravshipReplacementTerrain>RUT_ScaldWaterOceanShallow</gravshipReplacementTerrain>
     <glowColor>(2,154,229)</glowColor>
     <glowRadius>2</glowRadius>
-    <burnDamage>2</burnDamage>
+    <burnDamage>4</burnDamage>
     <burnIntervalTicks>240</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1 / scald_steam_and_hazards_spec.md
+         §3.1 step 2, 2026-09-26: steam standing off the boil, zero C#.
+         SteadyEnvironmentEffects visits ceil(area*0.0006) cells per tick
+         (MEASURED in the decompile) and rolls throwFleckChance on each, so
+         every cell is offered a puff about once per 1667 ticks; at 0.75 a
+         deep cell breathes roughly every 35 s and a screenful of open boil
+         carries a steady haze. Shape copied from Odyssey's own HotSpring
+         block (fleck AirPuff, solidTicksRange 1~3), but angled upward
+         (-30~30, not -90~90) and larger, because this water is boiling
+         rather than merely warm, and set far above HotSpring's 0.25 on the
+         owner's walk verdict that the Scald read nearly flat. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.2~0.6</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>2~4</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.75</throwFleckChance>
     <traversedThought>HotSpring</traversedThought>
     <avoidWander>true</avoidWander>
     <tags>
@@ -162,8 +211,28 @@
     </waterDepthShaderParameters>
     <glowColor>(2,154,229)</glowColor>
     <glowRadius>2</glowRadius>
-    <burnDamage>2</burnDamage>
+    <burnDamage>4</burnDamage>
     <burnIntervalTicks>240</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1 / scald_steam_and_hazards_spec.md
+         §3.1 step 2, 2026-09-26: steam standing off the boil, zero C#.
+         SteadyEnvironmentEffects visits ceil(area*0.0006) cells per tick
+         (MEASURED in the decompile) and rolls throwFleckChance on each, so
+         every cell is offered a puff about once per 1667 ticks; at 0.75 a
+         deep cell breathes roughly every 35 s and a screenful of open boil
+         carries a steady haze. Shape copied from Odyssey's own HotSpring
+         block (fleck AirPuff, solidTicksRange 1~3), but angled upward
+         (-30~30, not -90~90) and larger, because this water is boiling
+         rather than merely warm, and set far above HotSpring's 0.25 on the
+         owner's walk verdict that the Scald read nearly flat. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.2~0.6</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>2~4</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.75</throwFleckChance>
     <traversedThought>HotSpring</traversedThought>
     <avoidWander>true</avoidWander>
     <tags>
@@ -184,8 +253,20 @@
     <driesTo>Gravel</driesTo>
     <glowColor>(2,154,229)</glowColor>
     <glowRadius>2</glowRadius>
-    <burnDamage>1</burnDamage>
+    <burnDamage>3</burnDamage>
     <burnIntervalTicks>300</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1, 2026-09-26 — see
+         RUT_ScaldWaterDeep for the rate derivation. Shallow breathes less
+         hard than deep: same puff, smaller and less often. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.15~0.45</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.45</throwFleckChance>
     <traversedThought>HotSpring</traversedThought>
     <avoidWander>true</avoidWander>
     <tags>
@@ -208,8 +289,20 @@
     <waterBodyType>Saltwater</waterBodyType>
     <glowColor>(2,154,229)</glowColor>
     <glowRadius>2</glowRadius>
-    <burnDamage>1</burnDamage>
+    <burnDamage>3</burnDamage>
     <burnIntervalTicks>300</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1, 2026-09-26 — see
+         RUT_ScaldWaterDeep for the rate derivation. Shallow breathes less
+         hard than deep: same puff, smaller and less often. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.15~0.45</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.45</throwFleckChance>
     <traversedThought>HotSpring</traversedThought>
     <avoidWander>true</avoidWander>
     <tags>
@@ -236,8 +329,20 @@
     </waterDepthShaderParameters>
     <glowColor>(2,154,229)</glowColor>
     <glowRadius>2</glowRadius>
-    <burnDamage>1</burnDamage>
+    <burnDamage>3</burnDamage>
     <burnIntervalTicks>300</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1, 2026-09-26 — see
+         RUT_ScaldWaterDeep for the rate derivation. Shallow breathes less
+         hard than deep: same puff, smaller and less often. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.15~0.45</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.45</throwFleckChance>
     <traversedThought>HotSpring</traversedThought>
     <avoidWander>true</avoidWander>
     <tags>

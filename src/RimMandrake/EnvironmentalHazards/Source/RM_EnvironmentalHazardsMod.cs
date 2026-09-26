@@ -304,6 +304,12 @@ namespace RimMandrake.EnvironmentalHazards
     //      ambience entirely; the map's own pools are still tracked (cheap,
     //      terrain-only) so turning this back on resumes immediately with no
     //      rescan delay. Purely cosmetic either way — no gameplay effect.
+    //  51a. waterAgitationDensity — the SAME mechanism's density dial
+    //      (owner walk verdict 2026-09-26: "the boiling should have WAY
+    //      MORE ripples"). Multiplies how many ripples a screenful of
+    //      agitated water carries at once. 1.00x is the shipped read; the
+    //      slider exists because the owner gave a direction, not a figure.
+    //      At 0 nothing spawns, same as the toggle above.
     //  52. tarBelchEnabled — RUT_IncidentWorker_TarPitBelch
     //      (SUMP_TAR_BELCH_EVENT_1). Off: the occasional "a tar pit belches"
     //      incident never fires (CanFireNowSub refuses outright); this is
@@ -402,6 +408,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool groundRefusalEnabled = true;
         public static bool pollinationGateEnabled = true;
         public static bool waterAgitationEnabled = true;
+        public static float waterAgitationDensity = 1f;
         public static bool tarBelchEnabled = true;
         public static float tarBelchRadius = 9f;
         public static bool biomeArrivalLettersEnabled = true;
@@ -465,6 +472,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref groundRefusalEnabled, "groundRefusalEnabled", true);
             Scribe_Values.Look(ref pollinationGateEnabled, "pollinationGateEnabled", true);
             Scribe_Values.Look(ref waterAgitationEnabled, "waterAgitationEnabled", true);
+            Scribe_Values.Look(ref waterAgitationDensity, "waterAgitationDensity", 1f);
             Scribe_Values.Look(ref tarBelchEnabled, "tarBelchEnabled", true);
             Scribe_Values.Look(ref tarBelchRadius, "tarBelchRadius", 9f);
             Scribe_Values.Look(ref biomeArrivalLettersEnabled, "biomeArrivalLettersEnabled", true);
@@ -492,7 +500,8 @@ namespace RimMandrake.EnvironmentalHazards
             // Bumped 4740->4800 for setting #54 (sentinelGraveWardsEnabled).
             // Bumped 4800->4860 for setting #55 (gradientSurgeEnabled).
             // Bumped 4860->4920 for setting #56 (grazingSuppressionHookEnabled).
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4920f);
+            // Bumped 4920->4990 for setting #51a (waterAgitationDensity slider).
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4990f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -648,6 +657,11 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Ambient water agitation ripples", ref waterAgitationEnabled,
                 "Water tagged as agitated (a biome's boiling or roiling surface) stops showing the "
               + "ambient ripple disturbance across it. Purely cosmetic — no gameplay effect either way.");
+            list.Label("Water agitation density: " + waterAgitationDensity.ToString("0.00") + "x");
+            list.Label("How hard a screenful of boiling water churns — higher means more ripples "
+                     + "breaking at once. Never changes where the effect appears, only how busy it "
+                     + "reads. Purely cosmetic.");
+            waterAgitationDensity = list.Slider(waterAgitationDensity, 0f, 4f);
             list.CheckboxLabeled("Tar pit belch event", ref tarBelchEnabled,
                 "The Sump's occasional \"a tar pit belches\" event stops occurring — an existing tar "
               + "pit stops erupting and coating the ground around it in tar.");
