@@ -732,12 +732,17 @@ class GeminiBudget:
         self.ledger_skipped = skipped
         if skipped:
             if not self._warned_skip:
+                # §9 (owner ruling 2, 2026-09-26): reworded without naming
+                # the channel or the flag (both literally contain "gemini")
+                # — the figure itself (a torn-line count) is not a gemini
+                # SPEND figure, so it stays on the console as an ordinary
+                # warn, just without the word.
                 if self._warn is not None:
                     self._warn(f"throughput.jsonl has {skipped} unparseable "
                               f"line(s) — a torn row makes the ledger's true spend "
                               f"UNKNOWN, never LOWER than what's readable"
-                              + (" — refusing gemini admission until a human looks "
-                                 "(--gemini-ledger-strict)" if self.ledger_strict else ""))
+                              + (" — refusing admission on the affected channel "
+                                 "until a human looks" if self.ledger_strict else ""))
                 self._warned_skip = True
         else:
             self._warned_skip = False  # a later clean read can warn again if it recurs
@@ -2071,7 +2076,10 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
     # internal-only key.
     deferred_note = result.pop("_console_note", None)
     if deferred_note and console_obj is not None:
-        console_obj.warn(deferred_note)
+        # §9 (owner ruling 2, 2026-09-26): demoted to log-only — an
+        # unrecognised gemini model is a gemini billing figure, and the
+        # console/status-file/status-line surface no longer shows any.
+        console_obj.note(deferred_note)
 
     # Throughput FIRST, before the manifest write or the job-file move: a
     # crash in between those two steps used to lose the cost row entirely
@@ -2577,10 +2585,14 @@ def main(argv=None) -> int:
     if gemini_skipped_at_start:
         console_obj.warn(f"throughput.jsonl has {gemini_skipped_at_start} "
                          f"unparseable line(s) at startup")
-    if gemini_budget.hard_stop:
-        console_obj.warn(f"gemini channel already at/over its ${args.gemini_budget_usd:.2f} "
-                         f"budget (${gemini_spent:.2f} spent, per throughput.jsonl) — gemini "
-                         f"jobs will not be claimed this run")
+    # §9 (owner ruling 2, 2026-09-26): the "gemini channel already at/over
+    # its budget" startup line is REMOVED from the console outright, not
+    # reworded — the channel-disabled FACT still governs admission exactly
+    # as before (gemini_budget.hard_stop is unchanged and still gates every
+    # claim); a seat that wants to know why gemini jobs never claim sees the
+    # channel sit blocked with nothing to explain it, same as any other
+    # quiet channel. GeminiBudget/read_gemini_spend/process_gemini_job and
+    # the --gemini-* flags are unaffected — this is reporting only.
 
     # CODEX_UAC_STORM_1: one fingerprint check, before ANY worker home is
     # leased — never per-slot, never per-job. A stale/missing seed template
@@ -2680,7 +2692,12 @@ def main(argv=None) -> int:
                                         os.rename(job_path, dest)
                                     except FileNotFoundError:
                                         pass
-                                console_obj.warn(
+                                # §9 (owner ruling 2, 2026-09-26): log-only —
+                                # the daemon's operator cannot act on a
+                                # transient cross-process race, and this is
+                                # the same family as the gemini budget-
+                                # exceeded line removed above.
+                                console_obj.note(
                                     f"claimed {job_path.name} as gemini but the "
                                     f"reservation was refused moments later (a fresh "
                                     f"cross-process spend landed in between) — returned "

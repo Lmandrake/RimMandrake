@@ -1598,8 +1598,14 @@ def test_gemini_budget_is_durable_across_restarts():
         ok("gemini-restart: second (fresh) run exits nonzero — already over budget",
            proc2.returncode != 0, proc2.stdout + proc2.stderr)
         ok("gemini-restart: second job never claimed", (q.pending / "restart2.json").is_file())
-        ok("gemini-restart: the refusal is logged before any claim attempt",
-           "already at/over its $0.10 budget" in proc2.stdout, proc2.stdout)
+        # ARTPIPE_CONSOLE_REDESIGN_1 §9 (owner ruling 2, 2026-09-26): the
+        # "gemini channel already at/over its budget" startup line is
+        # REMOVED from the console outright, not reworded — the refusal
+        # itself is already proven above (never claimed); what's left to
+        # prove is ruling 2's own requirement that no gemini dollar figure
+        # leaks onto the console surface at all.
+        ok("gemini-restart: no gemini dollar figure leaks onto the console (ruling 2, §9)",
+           "budget" not in proc2.stdout and "$" not in proc2.stdout, proc2.stdout)
 
 
 def test_gemini_default_budget_is_zero_and_refuses_the_channel():
@@ -1617,8 +1623,10 @@ def test_gemini_default_budget_is_zero_and_refuses_the_channel():
            proc.returncode != 0, proc.stdout + proc.stderr)
         ok("gemini-default: job was never claimed — still in pending/",
            (q.pending / "defaultblocked.json").is_file())
-        ok("gemini-default: the refusal names the $0.00 budget",
-           "$0.00 budget" in proc.stdout, proc.stdout)
+        # ARTPIPE_CONSOLE_REDESIGN_1 §9: same removal as the restart test
+        # above — no gemini dollar figure on the console at all any more.
+        ok("gemini-default: no gemini dollar figure leaks onto the console (ruling 2, §9)",
+           "budget" not in proc.stdout and "$" not in proc.stdout, proc.stdout)
 
 
 def test_gemini_never_touches_codex_homes():
