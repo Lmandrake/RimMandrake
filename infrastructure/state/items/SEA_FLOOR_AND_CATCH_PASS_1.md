@@ -116,12 +116,21 @@ answer.
 
 > 🔴 **CORRECTED 2026-09-26 (BENCH).** This section previously claimed all three Scald
 > terrains were "already tagged `RM_DiveEligible`" by
-> `src/RimMandrake/DivingInteraction/Patches/RM_ScaldDiveEligibleTerrain.xml`. **That file
-> does not exist and never did — `DivingInteraction` has no `Patches/` directory at all.**
+> `src/RimMandrake/DivingInteraction/Patches/RM_ScaldDiveEligibleTerrain.xml`. **That file is
+> gone from `src/` — `DivingInteraction` has no `Patches/` directory in the repo.**
 > The `RM_DiveEligible` tag itself is retired: the shore pawn-dive mechanism was deleted from
 > `src/` under the owner's SHIP-ONLY ruling. Diving is by gravship and nothing else. The
 > tagging claims are removed here rather than struck through, per the standing rule that
 > inaccurate material is deleted, not superseded in place.
+>
+> 🔴 **RE-CORRECTED 2026-09-26.** The sentence above previously read "does not exist and never
+> did". It did exist, and it is **still live in the DEPLOYED mod**, which is what the game
+> loads: `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\DivingInteraction\Patches\RM_ScaldDiveEligibleTerrain.xml`,
+> dated 2026-09-24, still tagging three `RUT_ScaldWater*` terrains `RM_DiveEligible`. Two more
+> deleted-from-repo files are live there too — `Defs/JobDefs/RM_DivingJobDefs.xml` and
+> `Defs/ThoughtDefs/RM_DivingThoughtDefs.xml`. Deleting a file from `src/` does not remove it
+> from the game folder; that needs `deploy_custom_mods.py --prune`. Item:
+> `DIVING_STALE_DEPLOYED_FILES_1`.
 
 ### ⛔ And one thing step 1 must not do: scatter the margin procedurally
 
