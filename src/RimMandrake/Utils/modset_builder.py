@@ -658,8 +658,15 @@ def main():
         return 0
     if game_running():
         print("\n  REFUSING TO WRITE: RimWorld looks live (Player.log touched "
-              "in the last 3 minutes).\n  The game rewrites ModsConfig on exit, "
-              "so this edit would be silently lost.\n  Exit the game, then re-run.")
+              "in the last 3 minutes).\n  A running game holds its mod list in "
+              "memory, and if the list is changed IN-GAME the engine writes "
+              "ModsConfig\n  itself and clobbers this edit; the running game "
+              "would also ignore it regardless.\n  Exit the game, then re-run."
+              "\n  (This refusal used to say 'the game rewrites ModsConfig on "
+              "exit'. That is FALSE -- measured\n  2026-08-13: at a clean exit "
+              "the config's mtime was OLDER than the exit. RimWorld rewrites it "
+              "only\n  when the list changes in-game. The guard is still right, "
+              "for the reason above.)")
         return 1
 
     os.makedirs(BACKUPS, exist_ok=True)
