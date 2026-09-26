@@ -8,11 +8,13 @@
   same folder) — see that file's own header for the full authorship history.
 
   Two changes from the twin:
-  1. The one `RSW_` wildAnimals row (RSW_Lanternwhale) is stripped out — it
-     lands on this defName via
-     src/RimUtinni/UtinniPatches/Patches/WildAnimals_TwilightSea.xml,
-     MayRequire="mandrake.rsw.swbestiary" (item §3/§6). AA_Aerofleet (Alpha
-     Animals, not Star Wars) stays.
+  1. The one `RSW_` wildAnimals row (RSW_Lanternwhale) is no longer patched
+     in via src/RimUtinni/UtinniPatches/Patches/WildAnimals_TwilightSea.xml —
+     SEA_BEASTS_TIER_RULING_1 found the lanternwhale is one of the 11
+     INVENTED sea beasts (verified 2026-09-25, no Wookieepedia canon hit), so
+     it ships inline below as `RM_Lanternwhale` (RM_SeaBeasts_Invented.xml,
+     same mod, no MayRequire). AA_Aerofleet (Alpha Animals, not Star Wars)
+     stays.
   2. `fishTypes`/`maxFishPopulation` are FOLDED IN from
      src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_TwilightDeep.xml
      (a PatchOperationAdd onto RUT_TwilightSea, hold lifted 2026-09-20) per
@@ -41,12 +43,14 @@
       <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores" />
     </modExtensions>
 
-    <!-- Lanternwhale (endemic giant, Star Wars) moved to
-         WildAnimals_TwilightSea.xml. AA_Aerofleet (Alpha Animals) stays.
+    <!-- Lanternwhale (endemic giant, INVENTED — see SEA_BEASTS_TIER_RULING_1)
+         ships inline, franchise-free, at the same commonality the Utinni
+         patch used to add it at. AA_Aerofleet (Alpha Animals) stays.
          TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
          verdict 1: the four ruled floor residents (RM_TwilightSeaFauna.xml). -->
     <wildAnimals>
       <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>
+      <RM_Lanternwhale>0.005</RM_Lanternwhale>
       <RM_Noolim>0.8</RM_Noolim>
       <RM_Loohn>0.01</RM_Loohn>
       <RM_Weloon>0.4</RM_Weloon>

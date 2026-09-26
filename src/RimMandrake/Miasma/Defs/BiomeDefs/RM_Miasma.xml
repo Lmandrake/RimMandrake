@@ -40,9 +40,13 @@
         All four scuttlers share one population pool via
         RM_VerminPressureExtension's "RM_MiasmaScuttlers" group tag - see
         RM_Miasma_ArthropodFloor.xml and the retrofit on RUT_Karrobel.xml.
-    The 17 genuine Star Wars rows the twin also carries do NOT ship here - they
+    The 15 genuine Star Wars rows the twin also carries do NOT ship here - they
     ride Utinni's WildAnimals_Miasma.xml as a PatchOperationAdd onto this def,
     MayRequire-gated per row's real source mod, per the Q11a naming-tier ruling.
+    Two more of the twin's rows (RSW_RustNipperJuv/RSW_SiltLampreyJuv) were
+    ALSO on that patch until SEA_BEASTS_TIER_RULING_1 (2026-09-25) found their
+    parents (rust nipper, silt lamprey) are INVENTED, not canon - they ship
+    inline above instead, as RM_RustNipperJuv/RM_SiltLampreyJuv.
     The 5 rows the roster itself evicted (Kreetle, Yobshrimp, RSW_Gembug,
     AA_BloodShrimp, AA_Plasmorph - see rosters/the_miasma.json's own evictions[])
     are dropped outright, not carried forward into either mod.
@@ -143,10 +147,16 @@
         <residualFraction>0.15</residualFraction>
       </li>
       <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_StrandingPoolsExtension">
+        <!-- SEA_BEASTS_TIER_RULING_1 (2026-09-25): RSW_SiltLampreyJuv's parent
+             (silt lamprey) is one of the roster's 11 INVENTED sea beasts, so
+             this row moved to the RM_ tier (RM_SeaBeasts_Invented.xml,
+             mandrake.rm.terminalbiomes). RSW_MeeJuv/RSW_YobshrimpJuv's
+             parents (mee scalefish, pale yobshrimp) are genuine canon and
+             stay RSW_. -->
         <strandedSpawnList>
           <li MayRequire="mandrake.rsw.swbestiary">RSW_MeeJuv</li>
           <li MayRequire="mandrake.rsw.swbestiary">RSW_YobshrimpJuv</li>
-          <li MayRequire="mandrake.rsw.swbestiary">RSW_SiltLampreyJuv</li>
+          <li MayRequire="mandrake.rm.terminalbiomes">RM_SiltLampreyJuv</li>
         </strandedSpawnList>
         <emptyWeight>40</emptyWeight>
         <smallWeight>50</smallWeight>
@@ -224,6 +234,15 @@
     <wildAnimals>
       <RUT_Karrobel MayRequire="mandrake.rut.patches">0.6</RUT_Karrobel>  <!-- karrobel - delta-loam composter, this campaign's own invented species, still authored in mandrake.rut.patches -->
       <RUT_Karrathil MayRequire="mandrake.rut.patches">0.9</RUT_Karrathil>  <!-- karrathil - fever-swarm vector/pollinator, same as above -->
+      <!-- SEA_BEASTS_TIER_RULING_1 (2026-09-25): two of the Miasma nursery's seven
+           juveniles whose parents are INVENTED sea beasts, not genuine Star Wars IP
+           (verified via Wookieepedia's search API: no canon hit for either name) —
+           moved off the mandrake.rsw.swbestiary-gated WildAnimals_Miasma.xml patch
+           and shipped here instead, so a franchise-free install still gets a real
+           nursery. Parent adults (RM_RustNipper/RM_SiltLamprey) live in
+           mandrake.rm.terminalbiomes (RM_SeaBeasts_Invented.xml). -->
+      <RM_RustNipperJuv MayRequire="mandrake.rm.terminalbiomes">0.25</RM_RustNipperJuv>
+      <RM_SiltLampreyJuv MayRequire="mandrake.rm.terminalbiomes">0.25</RM_SiltLampreyJuv>
       <!-- MIASMA_FAUNA_FLOOR_ROSTER_1 - the other three arthropod-floor scuttlers, native RM_ tier -->
       <RM_Karravel>3.5</RM_Karravel>  <!-- karravel - the carpet; the bulk of the floor, cheap protein for everything -->
       <RM_Karrimeth>0.8</RM_Karrimeth>  <!-- karrimeth - the mass; an event, not background, wildGroupSize carries the "carpet crossing" read -->

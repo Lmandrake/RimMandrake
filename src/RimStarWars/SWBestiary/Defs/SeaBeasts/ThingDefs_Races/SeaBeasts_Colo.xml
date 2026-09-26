@@ -3,7 +3,18 @@
      QuadrupedAnimalWithClawsTailAndJowl (Core, Bodies_Animal_Quadruped.xml —
      the Alligator body). Numbers per sea_beasts_def_spec.md §5.2. Thick-hide
      register: NO for this family — no ArmorRating_Heat authored (vanilla
-     default 0). -->
+     default 0).
+
+     🔴 SEA_BEASTS_TIER_RULING_1 (2026-09-25): RSW_AbyssalColo and
+     RSW_ThornbackColo are INVENTED, not canon (verified via Wookieepedia's
+     search API: no hit for either name) — they now also ship under the
+     franchise-free RM_ tier as RM_AbyssalColo/RM_ThornbackColo
+     (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/
+     RM_SeaBeasts_Invented.xml). The RSW_ pair below is left UNTOUCHED rather
+     than renamed: MegafaunaYield.xml (Doctrine/Patches, generated) keys its
+     meat/bone yield tuning to these exact defNames, so renaming would
+     silently orphan that tuning rather than move it. RSW_ColoClawFish (this
+     file's other creature) is genuine canon and is untouched/unmoved. -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">

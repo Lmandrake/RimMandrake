@@ -7,12 +7,16 @@
   src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml (now frozen,
   same folder) — see that file's own header for the full authorship history.
 
-  ONE substantive change: the one `RSW_` wildAnimals row (RSW_Reefback) is
-  stripped out — it lands on this defName via
-  src/RimUtinni/UtinniPatches/Patches/WildAnimals_GreySea.xml,
-  MayRequire="mandrake.rsw.swbestiary" (item §3/§6). AA_Aerofleet (Alpha
-  Animals, not Star Wars) stays. Everything else — terrain, weather,
-  fishTypes, GravTide support — is byte-identical to the twin.
+  ONE substantive change from the original build: the one `RSW_` wildAnimals
+  row (RSW_Reefback) is no longer patched in via
+  src/RimUtinni/UtinniPatches/Patches/WildAnimals_GreySea.xml — the Reefback
+  is one of SEA_BEASTS_TIER_RULING_1's 11 INVENTED sea beasts (verified
+  2026-09-25 against Wookieepedia's search API: no canon hit), so it ships
+  inline below as `RM_Reefback` (RM_SeaBeasts_Invented.xml, same mod,
+  no MayRequire) instead of behind a mandrake.rsw.swbestiary gate.
+  AA_Aerofleet (Alpha Animals, not Star Wars) stays. Everything else —
+  terrain, weather, fishTypes, GravTide support — is byte-identical to the
+  twin.
   ============================================================================
 -->
 <Defs>
@@ -35,12 +39,14 @@
       <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores" />
     </modExtensions>
 
-    <!-- Reefback (endemic giant, Star Wars) moved to
-         WildAnimals_GreySea.xml. AA_Aerofleet (Alpha Animals) stays.
+    <!-- Reefback (endemic giant, INVENTED — see SEA_BEASTS_TIER_RULING_1)
+         ships inline, franchise-free, at the same commonality the Utinni
+         patch used to add it at. AA_Aerofleet (Alpha Animals) stays.
          TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
          verdict 1: the four ruled floor residents (RM_GreySeaFauna.xml). -->
     <wildAnimals>
       <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>
+      <RM_Reefback>0.005</RM_Reefback>
       <RM_Fessk>0.01</RM_Fessk>
       <RM_Sorruth>0.4</RM_Sorruth>
       <RM_Essarn>0.6</RM_Essarn>

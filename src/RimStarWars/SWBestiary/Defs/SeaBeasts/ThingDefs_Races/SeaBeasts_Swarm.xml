@@ -3,7 +3,21 @@
      sea_beasts_def_spec.md §5.5. Label RENAMED by the owner 2026-09-02:
      "pale yobshrimp" (not "yobshrimp") — SWAC's mlie.starwarsanimalcollection
      Yobshrimp (bs 0.4) stays; ours (RSW_Yobshrimp, bs 0.2) is a different
-     animal under a different label, no Cherry Picker cut needed. -->
+     animal under a different label, no Cherry Picker cut needed.
+
+     🔴 SEA_BEASTS_TIER_RULING_1 (2026-09-25): RSW_SiltLamprey and
+     RSW_RustNipper (with their SeaBeasts_NurseryJuveniles.xml juveniles) are
+     INVENTED, not canon (verified via Wookieepedia's search API: no hit for
+     either name) — they now also ship under the franchise-free RM_ tier as
+     RM_SiltLamprey/RM_RustNipper (+ RM_SiltLampreyJuv/RM_RustNipperJuv),
+     src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/
+     RM_SeaBeasts_Invented.xml, wired into RM_Miasma.xml's own wildAnimals
+     and RM_StrandingPoolsExtension. The RSW_ pair below is left UNTOUCHED
+     rather than renamed: AnimalTolerances_Ashkarr.xml (UtinniPatches,
+     generated, thousands of lines) still keys its ComfyTemperature pins to
+     these exact defNames (both adult and juvenile), so renaming would
+     silently orphan that tuning rather than move it. RSW_Yobshrimp (this
+     file's other creature) is genuine canon and is untouched/unmoved. -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase" Name="RSW_Yobshrimp">

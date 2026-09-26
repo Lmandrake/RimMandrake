@@ -10,16 +10,21 @@
   SEA_FLOOR_AND_CATCH_PASS_1, GRAVTIDE SUPPORT, ECOSYSTEM_PYRAMID_LAW_1) and
   this file's own frozen twin for the "carrying the world" note.
 
-  ONE substantive change from the twin: the four `RSW_` wildAnimals rows
-  (RSW_SandoAquaMonster, RSW_ElderSando, RSW_Faa, RSW_Mee) are stripped out —
-  Star Wars creatures ride a Utinni-tier patch, never the RimMandrake def
-  (item §3/§6, criteria). They land on THIS defName via
+  Four `RSW_` wildAnimals rows originally shipped only via a Utinni-tier
+  patch (Star Wars creatures never the RimMandrake def, item §3/§6,
+  criteria): RSW_SandoAquaMonster, RSW_ElderSando, RSW_Faa, RSW_Mee. Of
+  those, SEA_BEASTS_TIER_RULING_1 found RSW_ElderSando is one of the 11
+  INVENTED sea beasts (verified 2026-09-25, no Wookieepedia canon hit) —
+  it now ships inline below as `RM_ElderSando` (RM_SeaBeasts_Invented.xml,
+  same mod, no MayRequire). The three genuine canon rows
+  (RSW_SandoAquaMonster/RSW_Faa/RSW_Mee) still land on THIS defName via
   src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheScald.xml,
   MayRequire="mandrake.rsw.swbestiary", so a franchise-free install of this
   mod still gets a real biome (terrain, weather, fishing, welcome-blanket
-  flora) — only the four Star Wars residents are absent. Everything else
-  below — terrain, weather, fishTypes, wildPlants, GravTide support — is
-  byte-identical content, this mod's own tier.
+  flora, and now the elder sando too) — only the three genuine Star Wars
+  residents are absent. Everything else below — terrain, weather, fishTypes,
+  wildPlants, GravTide support — is byte-identical content, this mod's own
+  tier.
   ============================================================================
 -->
 <Defs>
@@ -51,12 +56,14 @@
       </li>
     </modExtensions>
 
-    <!-- Star Wars residents (sando pair, faa, mee) moved to
+    <!-- Genuine canon Star Wars residents (sando aqua monster, faa, mee) ride
          WildAnimals_TheScald.xml (UtinniPatches), MayRequire
-         mandrake.rsw.swbestiary — item §3/§6.
+         mandrake.rsw.swbestiary — item §3/§6. The invented elder sando ships
+         inline here instead (SEA_BEASTS_TIER_RULING_1).
          TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
          verdict 1: the two ruled floor residents (RM_ScaldFauna.xml). -->
     <wildAnimals>
+      <RM_ElderSando>0.005</RM_ElderSando>
       <RM_Noohm>0.4</RM_Noohm>
       <RM_Shulla>0.9</RM_Shulla>
     </wildAnimals>

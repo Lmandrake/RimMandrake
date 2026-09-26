@@ -5,7 +5,20 @@
      (Data/Odyssey/Defs/Bodies/Bodies_Animal_Crab.xml — Odyssey DLC),
      tool/lifeStage shape from Alligator (Data/Odyssey/.../Races_Animal.xml)
      and StoneCrab/HermitCrab (Data/Odyssey/.../Races_Animal_Coastal.xml).
-     Numbers per design/Jawa/worldbuilding/sea_beasts_def_spec.md §5.1. -->
+     Numbers per design/Jawa/worldbuilding/sea_beasts_def_spec.md §5.1.
+
+     🔴 SEA_BEASTS_TIER_RULING_1 (2026-09-25): RSW_CrimsonOpee and
+     RSW_ShaleGorger are INVENTED, not canon (verified via Wookieepedia's
+     search API: no hit for either name) — they now also ship under the
+     franchise-free RM_ tier as RM_CrimsonOpee/RM_ShaleGorger
+     (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/
+     RM_SeaBeasts_Invented.xml). The RSW_ pair below is left UNTOUCHED
+     rather than renamed: it is still referenced by neither GreySea nor
+     TheScald's own wildAnimals directly, but MegafaunaYield.xml and
+     AnimalTolerances_Ashkarr.xml (Doctrine/Patches, thousands of lines,
+     generated) still key their tuning to these exact defNames, so renaming
+     would silently orphan that tuning rather than move it. RSW_OpeeSeaKiller
+     (this file's other creature) is genuine canon and is untouched/unmoved. -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase" Name="RSW_OpeeSeaKiller">
