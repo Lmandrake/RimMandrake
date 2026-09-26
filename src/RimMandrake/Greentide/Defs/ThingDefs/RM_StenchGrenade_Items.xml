@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_GRENADE_WEAPONS_1 — the stench smoke grenade, the only one of
+     the jungle's three named grenades this item builds (owner ruled the
+     other two, seeding and toxin, stay designed-but-unbuilt behind this
+     proof — see the item file, infrastructure/state/items/
+     GREENTIDE_GRENADE_WEAPONS_1.md, "SCOPE RULED").
+
+     Structure copied directly from vanilla's own Weapon_GrenadeTox /
+     Proj_GrenadeTox (Defs/Core/ThingDefs_Items/Items_Weapons_Grenade*.xml,
+     RimSage-verified this pass) — a real thrown-weapon base class
+     (BaseMakeableGrenade / BaseGrenadeProjectile / Verb_LaunchProjectile /
+     CompProperties_Explosive), not invented from scratch.
+
+     🔴 Source-plant trace, and why it is NOT a live harvestedThingDef yet:
+     the item's own doc names "spore bladders that burst" (the 21-plant
+     roster's phorrik row, design/Jawa/worldbuilding/biomes/
+     greentide_tree_roster_2026-09-22.md row 18: "a spore plant... walking
+     through a patch fills the air. Interacts directly with movement
+     cost"). RM_Phorrik is NOT a shipped def — it is the understory
+     roster's own scope (GREENTIDE_UNDERSTORY_PLANT_ROSTER_1, confirmed
+     open this pass, its own header: "Owed by this item: rows 15-21").
+     Building RM_Phorrik here would be scope creep into a sibling item's
+     work. RM_StenchSporeExtract is therefore crafted from WoodLog (the
+     same "rendered out of green timber" shorthand this mod already uses
+     for RM_SapResin, RM_Greentide_Items.xml) as a placeholder feedstock,
+     with the trace recorded here and as a note filed on
+     GREENTIDE_UNDERSTORY_PLANT_ROSTER_1: once RM_Phorrik ships, give it
+     <harvestedThingDef>RM_StenchSporeExtract</harvestedThingDef> so the
+     roster becomes the grenade's real ammunition, same shape as
+     RM_Gorbeleth -> RM_GorbelethToxin (GREENTIDE_FRENZY_DISEASE_1).
+
+     No new art queued (per the standing rule — checked infrastructure/
+     artpipe/done/, _artsrc/ and registry.jsonl this pass: only a failed,
+     unrelated rm_phorrik PLANT art job exists, nothing for a grenade or
+     "stench"). Tinted vanilla icons instead, same shortcut this mod
+     already uses twice for a small crafting resource with no dedicated
+     render (RM_SapResin/RM_ToxinSealant, RM_GorbelethToxin). -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_StenchSporeExtract</defName>
+    <label>stench spore extract</label>
+    <description>A reeking green paste rendered out of crushed jungle spore-bladders and pulped green timber. Useless as food, and the whole point — nothing wants to be near it.</description>
+    <thingCategories>
+      <li>PlantMatter</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/PlantFoodRaw/PsychoidLeaves</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120, 145, 40)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>1.4</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>3</DeteriorationRate>
+      <WorkToMake>220</WorkToMake>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <displayPriority>420</displayPriority>
+      <productCount>3</productCount>
+    </recipeMaker>
+    <costList>
+      <WoodLog>8</WoodLog>
+    </costList>
+  </ThingDef>
+
+  <!-- Priced deliberately non-trivially: this grenade answers BOTH of the
+       biome's animal threats at once (owner ruling — the wasps count too),
+       which the item's own Watch-out flags as load-bearing ("if smoke is
+       cheap and stackable... two danger axes quietly close"). Steel cost
+       and WorkToMake sit close to vanilla's own tox grenade rather than
+       below it. -->
+  <ThingDef ParentName="BaseMakeableGrenade">
+    <defName>RM_Grenade_StenchSmoke</defName>
+    <label>stench smoke grenades</label>
+    <description>Grenades packed with rendered jungle spore paste. On landing they burst into a thick, reeking green cloud that no animal will stand in — beast or biting swarm alike.\n\nThe reek is not harmless to breathe. Anyone lingering in it, colonist or captive animal, risks the same lung damage anyone caught in rot-stink would.</description>
+    <allowedArchonexusCount>1</allowedArchonexusCount>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <category>Item</category>
+    <comps>
+      <li Class="CompProperties_Forbiddable"></li>
+      <li>
+        <compClass>CompEquippable</compClass>
+      </li>
+      <li Class="CompProperties_Styleable"></li>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>3.6</explosiveRadius>
+        <explosiveDamageType>RM_StenchGas</explosiveDamageType>
+        <requiredDamageTypeToExplode>Flame</requiredDamageTypeToExplode>
+        <postExplosionGasType>RotStink</postExplosionGasType>
+      </li>
+    </comps>
+    <costList>
+      <Steel>6</Steel>
+      <RM_StenchSporeExtract>4</RM_StenchSporeExtract>
+    </costList>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <equipmentType>Primary</equipmentType>
+    <graphicData>
+      <onGroundRandomRotateAngle>35</onGroundRandomRotateAngle>
+      <texPath>Things/Item/Equipment/WeaponRanged/ToxGrenades</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(140, 191, 64)</color>
+    </graphicData>
+    <pathCost>14</pathCost>
+    <possessionCount>1</possessionCount>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+      <displayPriority>500</displayPriority>
+    </recipeMaker>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <smeltable>true</smeltable>
+    <soundInteract>Interact_Grenade</soundInteract>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Beauty>-3</Beauty>
+      <SellPriceFactor>0.2</SellPriceFactor>
+      <Mass>1</Mass>
+      <RangedWeapon_Cooldown>2.66</RangedWeapon_Cooldown>
+      <WorkToMake>18000</WorkToMake>
+    </statBases>
+    <techLevel>Neolithic</techLevel>
+    <thingCategories>
+      <li>Grenades</li>
+    </thingCategories>
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Normal</tickerType>
+    <tradeTags>
+      <li>WeaponRanged</li>
+    </tradeTags>
+    <uiIconScale>1.3</uiIconScale>
+    <useHitPoints>true</useHitPoints>
+    <verbs>
+      <li>
+        <label>throw stench grenade</label>
+        <verbClass>Verb_LaunchProjectile</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <range>12.9</range>
+        <forcedMissRadius>1.9</forcedMissRadius>
+        <warmupTime>1.5</warmupTime>
+        <noiseRadius>4</noiseRadius>
+        <ai_IsBuildingDestroyer>false</ai_IsBuildingDestroyer>
+        <soundCast>ThrowGrenade</soundCast>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+        <defaultProjectile>RM_Proj_GrenadeStenchSmoke</defaultProjectile>
+        <rangedFireRulepack>Combat_RangedFire_Thrown</rangedFireRulepack>
+      </li>
+    </verbs>
+    <weaponClasses>
+      <li>Ranged</li>
+    </weaponClasses>
+    <weaponTags>
+      <li>RM_GrenadeStenchSmoke</li>
+    </weaponTags>
+  </ThingDef>
+
+  <!-- thingClass is the mod's own RM_Proj_GrenadeStenchSmoke (Source/
+       RM_Proj_GrenadeStenchSmoke.cs), a thin Projectile_Explosive override
+       that is the ENTIRE Mod Settings gate for this weapon — see that
+       file's header for why (Explode() is the only overridable hook that
+       sits before the vanilla explosion pipeline runs; CompExplosive's
+       customExplosiveRadius does not apply to a thrown projectile's own
+       impact, only to the item detonating from damage on the ground). -->
+  <ThingDef ParentName="BaseGrenadeProjectile">
+    <defName>RM_Proj_GrenadeStenchSmoke</defName>
+    <label>stench grenade</label>
+    <altitudeLayer>Projectile</altitudeLayer>
+    <category>Projectile</category>
+    <graphicData>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Projectile/ToxGrenadeThrown</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(140, 191, 64)</color>
+    </graphicData>
+    <neverMultiSelect>True</neverMultiSelect>
+    <projectile>
+      <speed>12</speed>
+      <arcHeightFactor>2</arcHeightFactor>
+      <shadowSize>0.4</shadowSize>
+      <damageDef>RM_StenchGas</damageDef>
+      <explosionDelay>100</explosionDelay>
+      <explosionRadius>3.6</explosionRadius>
+      <explosionRadiusDisplayPadding>2</explosionRadiusDisplayPadding>
+      <postExplosionGasType>RotStink</postExplosionGasType>
+      <screenShakeFactor>0.5</screenShakeFactor>
+    </projectile>
+    <thingClass>RimMandrake.Greentide.RM_Proj_GrenadeStenchSmoke</thingClass>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>False</useHitPoints>
+  </ThingDef>
+
+</Defs>
