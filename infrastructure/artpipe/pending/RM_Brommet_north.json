@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:32:34Z",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Brommet_north",
+  "priority": 100,
+  "prompt": "RimWorld top-down game animal sprite: the brommet, a knee-high, wool-mantled edge-grazer under a grey mantle, head down cropping rosette scrub, ordinary and calm.",
+  "reference": null,
+  "rimflow_item_id": "SUMP_FAUNA_ROSTER_1",
+  "style_notes": "small round-backed grazer under a grey wool mantle; head-down grazing posture; painterly vanilla-RimWorld animal art style"
+}

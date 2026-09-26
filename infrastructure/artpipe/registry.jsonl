@@ -6228,3 +6228,111 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "miasma_pallasheen", "notes": "", "target": "miasma_pallasheen", "ts": 1790399660.8016868}
 {"by": "fill_queue", "event": "registered", "source": "MIASMA_FLORA_ROSTER_1", "target": "miasma_wessaline", "ts": 1790399660.8141594}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "miasma_wessaline", "notes": "", "target": "miasma_wessaline", "ts": 1790399660.8322408}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_summouse/south", "ts": 1790400685.6432965}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_summouse_south", "notes": "", "target": "sumpfauna_summouse/south", "ts": 1790400685.6629367}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_summouse/east", "ts": 1790400685.6746664}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_summouse_east", "notes": "", "target": "sumpfauna_summouse/east", "ts": 1790400685.6941817}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_summouse/north", "ts": 1790400685.7055285}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_summouse_north", "notes": "", "target": "sumpfauna_summouse/north", "ts": 1790400685.7241127}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_gulveth/south", "ts": 1790400685.7366874}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_gulveth_south", "notes": "", "target": "sumpfauna_gulveth/south", "ts": 1790400685.7552602}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_gulveth/east", "ts": 1790400685.7742214}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_gulveth_east", "notes": "", "target": "sumpfauna_gulveth/east", "ts": 1790400685.7952096}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_gulveth/north", "ts": 1790400685.8067262}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_gulveth_north", "notes": "", "target": "sumpfauna_gulveth/north", "ts": 1790400685.8249335}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_thrummel/south", "ts": 1790400685.836549}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_thrummel_south", "notes": "", "target": "sumpfauna_thrummel/south", "ts": 1790400685.8553576}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_thrummel/east", "ts": 1790400685.8679793}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_thrummel_east", "notes": "", "target": "sumpfauna_thrummel/east", "ts": 1790400685.8879898}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_thrummel/north", "ts": 1790400685.9001498}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_thrummel_north", "notes": "", "target": "sumpfauna_thrummel/north", "ts": 1790400685.9184659}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_thrummelwarden/south", "ts": 1790400685.929987}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_thrummelwarden_south", "notes": "", "target": "sumpfauna_thrummelwarden/south", "ts": 1790400685.9471202}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_thrummelwarden/east", "ts": 1790400685.9593232}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_thrummelwarden_east", "notes": "", "target": "sumpfauna_thrummelwarden/east", "ts": 1790400685.976828}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_thrummelwarden/north", "ts": 1790400685.988484}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_thrummelwarden_north", "notes": "", "target": "sumpfauna_thrummelwarden/north", "ts": 1790400686.005733}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_thrummelbroodmother/south", "ts": 1790400686.0182023}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_thrummelbroodmother_south", "notes": "", "target": "sumpfauna_thrummelbroodmother/south", "ts": 1790400686.0363493}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_thrummelbroodmother/east", "ts": 1790400686.0476801}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_thrummelbroodmother_east", "notes": "", "target": "sumpfauna_thrummelbroodmother/east", "ts": 1790400686.0678618}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_thrummelbroodmother/north", "ts": 1790400686.079476}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_thrummelbroodmother_north", "notes": "", "target": "sumpfauna_thrummelbroodmother/north", "ts": 1790400686.0998695}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_brommet/south", "ts": 1790400686.1068585}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_brommet_south", "notes": "", "target": "sumpfauna_brommet/south", "ts": 1790400686.1259694}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_brommet/east", "ts": 1790400686.1336172}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_brommet_east", "notes": "", "target": "sumpfauna_brommet/east", "ts": 1790400686.1496174}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_brommet/north", "ts": 1790400686.156697}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_brommet_north", "notes": "", "target": "sumpfauna_brommet/north", "ts": 1790400686.1730194}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_dredgel/south", "ts": 1790400686.180004}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_dredgel_south", "notes": "", "target": "sumpfauna_dredgel/south", "ts": 1790400686.1953726}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_dredgel/east", "ts": 1790400686.2028463}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_dredgel_east", "notes": "", "target": "sumpfauna_dredgel/east", "ts": 1790400686.2184198}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_dredgel/north", "ts": 1790400686.2266574}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_dredgel_north", "notes": "", "target": "sumpfauna_dredgel/north", "ts": 1790400686.243544}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_skarrid/south", "ts": 1790400686.250823}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_skarrid_south", "notes": "", "target": "sumpfauna_skarrid/south", "ts": 1790400686.266985}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_skarrid/east", "ts": 1790400686.2746394}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_skarrid_east", "notes": "", "target": "sumpfauna_skarrid/east", "ts": 1790400686.2911115}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_skarrid/north", "ts": 1790400686.2980595}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_skarrid_north", "notes": "", "target": "sumpfauna_skarrid/north", "ts": 1790400686.3138855}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_skellarn_ground/south", "ts": 1790400686.3210888}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_skellarn_ground_south", "notes": "", "target": "sumpfauna_skellarn_ground/south", "ts": 1790400686.3383832}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_skellarn_ground/east", "ts": 1790400686.3459742}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_skellarn_ground_east", "notes": "", "target": "sumpfauna_skellarn_ground/east", "ts": 1790400686.3661654}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "sumpfauna_skellarn_ground/north", "ts": 1790400686.373837}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sumpfauna_skellarn_ground_north", "notes": "", "target": "sumpfauna_skellarn_ground/north", "ts": 1790400686.3907144}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_SumpMouse/south", "ts": 1790400753.9270806}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_SumpMouse_south", "notes": "", "target": "RM_SumpMouse/south", "ts": 1790400753.9501262}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_SumpMouse/east", "ts": 1790400753.9612541}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_SumpMouse_east", "notes": "", "target": "RM_SumpMouse/east", "ts": 1790400753.979997}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_SumpMouse/north", "ts": 1790400753.9906292}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_SumpMouse_north", "notes": "", "target": "RM_SumpMouse/north", "ts": 1790400754.0087354}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Gulveth/south", "ts": 1790400754.0191607}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Gulveth_south", "notes": "", "target": "RM_Gulveth/south", "ts": 1790400754.036874}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Gulveth/east", "ts": 1790400754.043574}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Gulveth_east", "notes": "", "target": "RM_Gulveth/east", "ts": 1790400754.062821}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Gulveth/north", "ts": 1790400754.0696614}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Gulveth_north", "notes": "", "target": "RM_Gulveth/north", "ts": 1790400754.0868967}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Thrummel/south", "ts": 1790400754.0936143}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Thrummel_south", "notes": "", "target": "RM_Thrummel/south", "ts": 1790400754.110713}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Thrummel/east", "ts": 1790400754.1179218}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Thrummel_east", "notes": "", "target": "RM_Thrummel/east", "ts": 1790400754.1360703}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Thrummel/north", "ts": 1790400754.1426618}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Thrummel_north", "notes": "", "target": "RM_Thrummel/north", "ts": 1790400754.1599689}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_ThrummelWarden/south", "ts": 1790400754.1675365}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_ThrummelWarden_south", "notes": "", "target": "RM_ThrummelWarden/south", "ts": 1790400754.18489}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_ThrummelWarden/east", "ts": 1790400754.1914227}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_ThrummelWarden_east", "notes": "", "target": "RM_ThrummelWarden/east", "ts": 1790400754.2089014}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_ThrummelWarden/north", "ts": 1790400754.2160594}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_ThrummelWarden_north", "notes": "", "target": "RM_ThrummelWarden/north", "ts": 1790400754.2323768}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_ThrummelBroodmother/south", "ts": 1790400754.2392313}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_ThrummelBroodmother_south", "notes": "", "target": "RM_ThrummelBroodmother/south", "ts": 1790400754.2596755}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_ThrummelBroodmother/east", "ts": 1790400754.2666001}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_ThrummelBroodmother_east", "notes": "", "target": "RM_ThrummelBroodmother/east", "ts": 1790400754.283332}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_ThrummelBroodmother/north", "ts": 1790400754.2892504}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_ThrummelBroodmother_north", "notes": "", "target": "RM_ThrummelBroodmother/north", "ts": 1790400754.3058176}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Brommet/south", "ts": 1790400754.3126953}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Brommet_south", "notes": "", "target": "RM_Brommet/south", "ts": 1790400754.33054}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Brommet/east", "ts": 1790400754.337551}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Brommet_east", "notes": "", "target": "RM_Brommet/east", "ts": 1790400754.3550286}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Brommet/north", "ts": 1790400754.3625073}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Brommet_north", "notes": "", "target": "RM_Brommet/north", "ts": 1790400754.3792365}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Dredgel/south", "ts": 1790400754.385598}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Dredgel_south", "notes": "", "target": "RM_Dredgel/south", "ts": 1790400754.4049032}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Dredgel/east", "ts": 1790400754.4122117}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Dredgel_east", "notes": "", "target": "RM_Dredgel/east", "ts": 1790400754.4282973}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Dredgel/north", "ts": 1790400754.4344807}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Dredgel_north", "notes": "", "target": "RM_Dredgel/north", "ts": 1790400754.4509003}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Skarrid/south", "ts": 1790400754.457297}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Skarrid_south", "notes": "", "target": "RM_Skarrid/south", "ts": 1790400754.4733403}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Skarrid/east", "ts": 1790400754.4799323}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Skarrid_east", "notes": "", "target": "RM_Skarrid/east", "ts": 1790400754.4968665}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Skarrid/north", "ts": 1790400754.503664}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Skarrid_north", "notes": "", "target": "RM_Skarrid/north", "ts": 1790400754.5204132}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Skellarn/south", "ts": 1790400754.5271192}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Skellarn_south", "notes": "", "target": "RM_Skellarn/south", "ts": 1790400754.543284}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Skellarn/east", "ts": 1790400754.5496414}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Skellarn_east", "notes": "", "target": "RM_Skellarn/east", "ts": 1790400754.56577}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FAUNA_ROSTER_1", "target": "RM_Skellarn/north", "ts": 1790400754.5718458}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Skellarn_north", "notes": "", "target": "RM_Skellarn/north", "ts": 1790400754.5891201}

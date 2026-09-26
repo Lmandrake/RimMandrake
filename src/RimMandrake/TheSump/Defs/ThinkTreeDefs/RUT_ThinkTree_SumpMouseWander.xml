@@ -10,8 +10,10 @@
   established in this repo, read in full before writing this file. Safe
   because RM_JobGiver_DreadAvoidWander.TryGiveJob's own first line returns
   null for any pawn whose race lacks RM_DreadAvoidWanderExtension — every
-  animal that is not RUT_Placeholder_SumpMouseRace (ThingDefs_Races/, this
-  same pass) falls through to its own ordinary wander node, same tick, with
+  animal that is not RM_SumpMouse (ThingDefs_Races/RM_SumpFauna.xml,
+  SUMP_FAUNA_ROSTER_1 — the real def that replaced the placeholder this
+  file's own name still recalls) falls through to its own ordinary wander
+  node, same tick, with
   zero behavior change. A SEPARATE ThinkTreeDef from RM_ThinkTree_
   VerminBehaviors, not an addition to its subNodes — that file belongs to
   SHIP_VERMIN_MOD_1, and ThinkNode_SubtreesByTag (Verse.AI, read in full)

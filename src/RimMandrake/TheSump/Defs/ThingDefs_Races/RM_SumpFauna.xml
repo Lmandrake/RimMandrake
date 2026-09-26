@@ -1,0 +1,1044 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_SumpFauna.xml                          RM_TheSump · SUMP_FAUNA_ROSTER_1
+  ============================================================================
+  The nine invented Sump fauna rows per
+  design/Jawa/worldbuilding/biomes/sump_fauna_roster_2026-09-24.md: sump-mouse
+  (row 1, real def replacing RUT_Placeholder_SumpMouseRace/RUT_Placeholder_
+  SumpMouse — both retired, this file's row is now the real content), gulveth,
+  the thrummel family (thrummel/warden/broodmother), brommet, dredgel,
+  skarrid, and skellarn (the ruled real-flight stilt-legged flier).
+
+  🔴 Eviction scope, per the design doc's own §7 and the owner's standing
+  "evictions are stopped" ruling (2026-09-22): the doc marks replacing today's
+  4 donor Alpha Animals rows (AA_TarGuzzler/AA_Bumbledrone/
+  AA_BumbledroneHierophant/AA_BumbledroneQueen) with gulveth/thrummel/warden/
+  broodmother as **PROPOSED for the Sump's own sitting, executed by nobody
+  here**. This pass builds all four defs in full but does NOT touch
+  RM_TheSump_Biome.xml's existing donor wildAnimals rows — only rows with no
+  existing donor slot to evict (mouse, brommet, dredgel, skarrid, skellarn)
+  are wired into wildAnimals this pass. Whoever runs the Sump's biome sitting
+  rules on the other four.
+
+  Sump-mouse is the one exception to "no existing slot": its placeholder was
+  never wired into wildAnimals at all (its own header: "NOT added to RUT_
+  Sump's own wildAnimals list") and was explicitly built as a mechanism stub
+  awaiting "the roster pass" (same header) — replacing it is this item's own
+  named job, not an eviction of anything live.
+
+  Mechanism scope — deferred, per the roster doc's own status column (mirrors
+  SUMP_FLORA_ROSTER_1's precedent of deferring NEW/PARTIAL placement and
+  behaviour mechanisms out of a roster-def item): mouse/skellarn free tar-
+  crossing on landing (one shared implementation, UNMEASURED which is
+  cheapest), thrummel mound + defend-radius comp (vanilla Hive/
+  CompSpawnerPawn reskin feasibility UNMEASURED), skarrid's mobile dread-field
+  registration (dread field itself already exists), and dredgel's dig-site
+  attract-mode wander bias. All four are content-complete as ordinary wild
+  animals now; their bespoke behaviours are follow-on Sump-mechanics work.
+
+  Bodies: mouse/QuadrupedAnimalWithPawsAndTail (kept from the placeholder);
+  gulveth/QuadrupedAnimalWithHoovesAndHump (barge-back register, same body
+  family this repo's own big placid grazers use); thrummel family/
+  QuadrupedAnimalWithPaws (round, furred, per the roster's own "furred
+  bumbler" flavour text, not an insectoid body); brommet/
+  QuadrupedAnimalWithHooves (small wool grazer); dredgel/Crab (long, low,
+  many-legged sifter — the closest vanilla body to the roster's own
+  silhouette brief); skarrid/TurtleLike (flat armoured ambusher); skellarn/
+  Bird (the biome's one flier).
+
+  Art: none of the nine has existing generated art anywhere (registry.jsonl/
+  done/_artsrc searched this pass, 0 hits on all nine names — sanity-probed
+  against "graniteslug", 30 hits, so the search itself is live). All nine
+  reference bespoke texPaths under TheSump/Textures/Things/Pawn/Animal/ that
+  do not exist yet; DEPLOY_HOLD'd, fill_queue.py jobs filed
+  (infrastructure/artpipe/art_lists/sump_fauna.csv), south/east/north facings
+  per generating-rimworld-sprites. No dessicatedBodyGraphicData on any of the
+  nine — same posture this mod's own RM_FleetFlier/RM_Skerrel (Greentide/
+  TheForge) already ship for bespoke-pending-art creatures.
+
+  Flight (RM_Skellarn only): real flight per the standing rule (owner,
+  2026-09-19) — MaxFlightTime/FlightCooldown are the CORE stat pair
+  (Pawn_FlightTracker.CanEverFly), not a bool. canLeaveMapFlying deliberately
+  OMITTED: the doc's own one-home note says it lairs in the outer ring's
+  brindeth scrub, no migration mechanism claimed. No
+  flyingAnimationFramePathPrefix/-FrameCount: frames are OWED later (roster
+  doc's own art row) and must never block flight — GetBestFlyAnimation
+  returns null with none set and it flies plainly, which is correct at this
+  stage. Numbers (~10 MaxFlightTime, ~5 FlightCooldown, ~2.2
+  flightSpeedFactor) are the roster doc's own "❓" estimates, landed as real
+  values since a def field cannot ship a question mark.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- =================================================================
+       SUMP-MOUSE — the instrument (row 1)
+       Real def replacing RUT_Placeholder_SumpMouseRace/
+       RUT_Placeholder_SumpMouse (both retired, this same pass).
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_SumpMouse</defName>
+    <label>sump-mouse</label>
+    <description>A palm-sized silver-grey mouse on absurdly broad, splayed snowshoe feet, its coat beaded with shed oil. A sump-mouse is never alone and never wandering — they move in lines, and the lines are the map: a stretch of black no line crosses is something's back, an unbroken pale crust no line touches is a lie. Junkers read them the way sailors read water. Cheap to keep and eager to be kept — a caged line of them is a living tar-detector.</description>
+    <statBases>
+      <MoveSpeed>5.6</MoveSpeed>
+      <MarketValue>15</MarketValue>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <Wildness>0.25</Wildness>
+      <!-- RULED, question card 2026-09-24: tameable, cheap and easy. Low
+           Wildness is what TameUtility actually reads for tame difficulty. -->
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.2</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <gestationPeriodDays>5.661</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.8, 1)</li>
+          <li>(2.4, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>3</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.11</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Rodent_Eat</soundEating>
+      <headPosPerRotation>
+        <li>(0.0, 0, 0.17)</li>
+        <li>(0.2, 0, 0)</li>
+        <li>(0.0, 0, -0.15)</li>
+        <li>(-0.2, 0, 0)</li>
+      </headPosPerRotation>
+    </race>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail" MayRequire="mandrake.rm.environmentalhazards">
+        <filthDef>RUT_Filth_MouseTrack</filthDef>
+        <validTerrains>
+          <li>RM_TarShallow</li>
+        </validTerrains>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_DreadAvoidWanderExtension" MayRequire="mandrake.rm.environmentalhazards" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_SumpMouse</defName>
+    <label>sump-mouse</label>
+    <race>RM_SumpMouse</race>
+    <combatPower>6</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>4~10</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       GULVETH — the tar's own grazer (row 2)
+       PROPOSED replacement for AA_TarGuzzler — NOT wired to wildAnimals
+       this pass (see header). Def is content-complete either way.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gulveth</defName>
+    <label>gulveth</label>
+    <description>A sofa-sized, tar-slick grazer that wades the shallows like a barge, its low glossy black back half-sunk, skimming the black with a wide, squared dredge-mouth. It is the only big living thing you will ever see touching the pools — placid unless provoked, unbothered by a liquid that kills anything else. Its fat renders dense and its hide cures waterproof, the Sump's own coat.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <Mass>180</Mass>
+      <MarketValue>260</MarketValue>
+      <Flammability>0.4</Flammability>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>30</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>dredge-mouth</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>tail</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Tail</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHump</body>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHealthScale>1.4</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>false</predator>
+      <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>16</lifeExpectancy>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+      <leatherDef>RM_Leather_TarCured</leatherDef>
+      <soundMeleeHitPawn>Pawn_Melee_MediumBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_MediumBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_MediumBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gulveth</defName>
+    <label>gulveth</label>
+    <race>RM_Gulveth</race>
+    <combatPower>70</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.45</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gulveth/RM_Gulveth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gulveth/RM_Gulveth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gulveth/RM_Gulveth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.2</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       THRUMMEL FAMILY — the under-layer (rows 3-5)
+       PROPOSED replacements for AA_Bumbledrone/AA_BumbledroneHierophant/
+       AA_BumbledroneQueen — NOT wired to wildAnimals this pass (see
+       header). Mound/defend-radius comp deferred (roster's own "NEW small,
+       UNMEASURED" mechanism note).
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Thrummel</defName>
+    <label>thrummel</label>
+    <description>A fist-and-a-half of dense-furred, soot-dark burrower, comically round, forever hurrying between mound and dark. Thrummels tunnel beneath the tar's own insulating lid, where the ground stays warm year round — a second "something beneath" in miniature. Harmless alone; the comb they work provisions the whole colony in chitin and seepwax.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed>
+      <MarketValue>40</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.35</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+        </li>
+      </lifeStageAges>
+      <butcherProducts>
+        <RM_ThrummelChitin>2</RM_ThrummelChitin>
+      </butcherProducts>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Thrummel</defName>
+    <label>thrummel</label>
+    <race>RM_Thrummel</race>
+    <combatPower>10</combatPower>
+    <wildGroupSize>2~5</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thrummel/RM_Thrummel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thrummel/RM_Thrummel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thrummel/RM_Thrummel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_ThrummelWarden</defName>
+    <label>thrummel warden</label>
+    <description>A thrummel built into a wedge — plated brow, heavier jaws, standing sentry in a mound-mouth. The mound's temper made flesh: dangerous at the entrance it guards, indifferent a step away. Mound-raiding is a deliberate, priced choice.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <MarketValue>70</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>jaws</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>0.7</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <manhunterOnDamageChance>0.4</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>7</lifeExpectancy>
+      <gestationPeriodDays>7</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.35</minAge>
+        </li>
+      </lifeStageAges>
+      <butcherProducts>
+        <RM_ThrummelChitin>4</RM_ThrummelChitin>
+      </butcherProducts>
+      <soundMeleeHitPawn>Pawn_Melee_SmallBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_ThrummelWarden</defName>
+    <label>thrummel warden</label>
+    <race>RM_ThrummelWarden</race>
+    <combatPower>26</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.95</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_ThrummelBroodmother</defName>
+    <label>thrummel broodmother</label>
+    <description>A pale, wax-sheened matriarch the size of a dog, her swollen abdomen dragging a small fore-body, glistening like her own comb. She rarely surfaces. Kill or capture her and the hive beneath her mound is finished — the jackpot raid, and the moral of it.</description>
+    <statBases>
+      <MoveSpeed>1.0</MoveSpeed>
+      <MarketValue>220</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <Wildness>0.65</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>1.3</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <manhunterOnDamageChance>0.3</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>20</lifeExpectancy>
+      <gestationPeriodDays>20</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+        </li>
+      </lifeStageAges>
+      <butcherProducts>
+        <RM_ThrummelChitin>10</RM_ThrummelChitin>
+        <RM_Seepwax>6</RM_Seepwax>
+      </butcherProducts>
+      <soundMeleeHitPawn>Pawn_Melee_MediumBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_MediumBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_MediumBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_ThrummelBroodmother</defName>
+    <label>thrummel broodmother</label>
+    <race>RM_ThrummelBroodmother</race>
+    <combatPower>40</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       BROMMET — the margin ring's herbivore (row 6)
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Brommet</defName>
+    <label>brommet</label>
+    <description>A knee-high, wool-mantled edge-grazer the colour of the margin scrub, cropping skelver rosettes in twos and threes. Its gut runs on chemotroph wax-flora found nowhere else on the planet — the ring is its only pasture. Modest meat, modest wool, and the Sump's only ordinary dinner.</description>
+    <statBases>
+      <MoveSpeed>3.4</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>headbutt</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>0.45</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>9</lifeExpectancy>
+      <gestationPeriodDays>7</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallBash_Miss</soundMeleeMiss>
+    </race>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RM_BrommetWool</woolDef>
+        <shearIntervalDays>18</shearIntervalDays>
+        <woolAmount>15</woolAmount>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Brommet</defName>
+    <label>brommet</label>
+    <race>RM_Brommet</race>
+    <combatPower>16</combatPower>
+    <wildGroupSize>2~3</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Brommet/RM_Brommet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Brommet/RM_Brommet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Brommet/RM_Brommet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.95</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       DREDGEL — the archive's janitor (row 7)
+       Dig-site attract-mode wander bias deferred (roster's own "NEW
+       small" note — the shipped RM_JobGiver_DreadAvoidWander is the
+       avoid-mode cousin this needs an attract-mode sibling of).
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Dredgel</defName>
+    <label>dredgel</label>
+    <description>A forearm-long armoured sifter, tail-dragging, that combs opened digs and old shafts with wire-thin fore-limbs, feeling through spoil for the organic fringe of whatever was exposed. A dredgel parked on flat ground means broken tar below, an old shaft, someone's abandoned claim — the Sump's own free prospecting hint. Harmless; chitin if shot.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <MarketValue>50</MarketValue>
+      <ComfyTemperatureMin>-35</ComfyTemperatureMin>
+      <ArmorRating_Sharp>0.1</ArmorRating_Sharp>
+      <Wildness>0.55</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>sifting limb</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Crab</body>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>10</lifeExpectancy>
+      <gestationPeriodDays>8</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+      <butcherProducts>
+        <RM_DredgelChitin>3</RM_DredgelChitin>
+      </butcherProducts>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Dredgel</defName>
+    <label>dredgel</label>
+    <race>RM_Dredgel</race>
+    <combatPower>12</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dredgel/RM_Dredgel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dredgel/RM_Dredgel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dredgel/RM_Dredgel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       SKARRID — the still hunter (row 8)
+       Mobile dread-field registration deferred (roster's own "PARTIAL"
+       note — RM_MapComponent_DreadField already exists; registering a
+       mobile source is small NEW, not this pass).
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Skarrid</defName>
+    <label>skarrid</label>
+    <description>A flattened, glass-smooth ambusher that lies half-sunk at the glass-reach margins, a bulge slightly too small to be the thing everyone fears it might be — until the seam along its back opens. It takes sump-mice, and the unwary hand, by stillness alone; it never chases far off the black. Genuinely dangerous to a lone pawn. Its glassy hide is a prized black leather.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <MarketValue>150</MarketValue>
+      <ComfyTemperatureMin>-35</ComfyTemperatureMin>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>jaws</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>TurtleLike</body>
+      <baseBodySize>0.75</baseBodySize>
+      <baseHealthScale>0.85</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>0.6</maxPreyBodySize>
+      <manhunterOnDamageChance>0.6</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>14</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <leatherDef>RM_SkarridHide</leatherDef>
+      <soundMeleeHitPawn>Pawn_Melee_MediumBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_MediumBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_MediumBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Skarrid</defName>
+    <label>skarrid</label>
+    <race>RM_Skarrid</race>
+    <combatPower>60</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.25</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skarrid/RM_Skarrid</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.85</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skarrid/RM_Skarrid</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skarrid/RM_Skarrid</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.35</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       SKELLARN — the sky (row 9, ruled 2026-09-24)
+       The biome's one flier. Real flight per the standing rule; tar-
+       walking-on-landing mechanism deferred (same open question as the
+       sump-mouse's tar-crossing exemption, one implementation should
+       serve both — roster's own note).
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Skellarn</defName>
+    <label>skellarn</label>
+    <description>A crane-sized twilight flier, soot-dark with a horizon-amber throat, that folds out of the sky onto four absurd spike-tipped stilt-legs and simply keeps walking — out across the open tar, where nothing else its size can follow. The spikes pierce the tar's skin to the firm layer beneath, so landing never mires it. It stalks the black for sump-mice and gulveth leavings; wary of pawns, dangerous only if cornered. Its spine-legs' chitin is prized for awls and fuse-post spikes.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>
+      <MarketValue>120</MarketValue>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <Wildness>0.8</Wildness>
+      <!-- Flight, per the owner's standing rule 2026-09-19 and his own
+           typed ruling on this creature: "really long spikey legs so when
+           it lands it can still move through the tar." Numbers are the
+           roster doc's own "~" estimates. -->
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>stilt-spike</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <baseBodySize>0.7</baseBodySize>
+      <baseHealthScale>0.7</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>0.3</maxPreyBodySize>
+      <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <gestationPeriodDays>9</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+      <butcherProducts>
+        <RM_SkellarnChitin>3</RM_SkellarnChitin>
+      </butcherProducts>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+
+      <flightStartChanceOnJobStart>0.12</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.2</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <!-- canLeaveMapFlying deliberately OMITTED: it lairs in the outer
+           ring's brindeth scrub (one-home note, roster doc) — no
+           migration mechanism claimed. -->
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Skellarn</defName>
+    <label>skellarn</label>
+    <race>RM_Skellarn</race>
+    <combatPower>45</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <!-- No flyingAnimationFramePathPrefix/-FrameCount: the flip-book frame
+         set is OWED later (roster doc's own art row). GetBestFlyAnimation
+         returns null with none set and it flies plainly — never block
+         flight waiting on frames. -->
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skellarn/RM_Skellarn</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skellarn/RM_Skellarn</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skellarn/RM_Skellarn</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

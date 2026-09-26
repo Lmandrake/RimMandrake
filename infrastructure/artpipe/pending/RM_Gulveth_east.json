@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:32:34Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Gulveth_east",
+  "priority": 100,
+  "prompt": "RimWorld top-down game animal sprite: the gulveth, a sofa-sized, tar-slick grazer with a low glossy black barge-back and a wide, squared dredging head, half-sunk wading profile. Slow, placid, heavy.",
+  "reference": null,
+  "rimflow_item_id": "SUMP_FAUNA_ROSTER_1",
+  "style_notes": "low glossy black barge-back silhouette; wide squared dredge-mouth head; half-sunk wading posture; painterly vanilla-RimWorld animal art style"
+}
