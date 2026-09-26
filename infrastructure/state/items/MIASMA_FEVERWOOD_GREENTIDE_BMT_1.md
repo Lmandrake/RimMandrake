@@ -114,6 +114,42 @@ or fish, exactly as `the_fever_wood.json`'s own confidence block says of `GiantA
 ("it wires as an off-map raider (ban 3), never a `wildAnimals` resident"). Do not bulk-wire
 them; that is the trap this item's own spec warns about.
 
+## ✅ Second clause CLOSED — FOUNDRY 2026-09-25, resolution check run from a WSL2 session
+
+**`measure` IS runnable from this session** (`python3 ~/.claude/skills/measuring-large-artifacts/scripts/measure/cli.py`,
+against `defs.sqlite` at `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite`)
+— this WSL2 window has `/mnt/c/...` access to the same Windows machine's Steam/RimWorld
+install and def dump that the "Desktop" tooling uses, contradicting CLAUDE.md's current
+"RimSage/measure answer on the Windows Desktop ONLY" framing insofar as it implies every
+WSL/laptop-style session is cut off — this one plainly is not. (Not re-tested: RimSage
+specifically, only `measure`/the sqlite dump. Left for whoever owns that CLAUDE.md section
+to reconcile — not edited here.)
+
+**Method**: parsed the live `<wildAnimals>`/`<fishTypes>` blocks of `RUT_Miasma.xml`,
+`RUT_FeverWood.xml`, `RUT_Greentide.xml` directly (not the roster JSONs), cross-checked each
+row's `MayRequire` against the live `ModsConfig.xml` (628 active mods) to confirm the gating
+mod is actually active, then ran `measure get <defName>` on every name whose gate is active
+(all of them — every `MayRequire` on these three files targets a currently-active mod).
+
+**Result**: 72 of 74 checked names (61 wildAnimals across the three biomes + 11 Greentide
+`fishTypes` catches + `RUT_RareGreentideCatches`) resolve `MEASURED` cleanly. The 2 misses —
+`RUT_Karrobel`, `RUT_Karrathil` (both own-tier Miasma defs, no `MayRequire`) — are
+`UNMEASURED`, **not** dangling: both are deployed byte-identical to source at
+`.../Mods/UtinniPatches/Defs/ThingDefs_Races/RUT_Karr{obel,athil}.xml` (`diff` clean), each a
+correctly-paired `ThingDef`+`PawnKindDef`, deployed 2026-09-24 19:29 -0700 — **after** this
+dump's own capture stamp (`captured=2026-09-24T00:30:55Z`, `mods=623` vs the live list's 628).
+This is the def dump being a few hours stale relative to the two newest deploys, not a
+genuine broken reference; rebuilding `defs.sqlite` needs a full game load
+(`refresh.py`'s own docs: ~23 min), which this check does not warrant forcing on a shared
+machine for two defs already confirmed correct by direct file inspection.
+
+**Verify clause is satisfied**: every species each of the three rosters' live `<wildAnimals>`
+(and Greentide's `<fishTypes>`) admits resolves against the active mod list — the two
+apparent misses are a dump-freshness artifact, independently confirmed correct by deploy-file
+inspection. No genuine dangling reference found; nothing renamed or rewired this pass. The
+11 admitted-but-unwired roster names above were deliberately left untouched, per this item's
+own spec.
+
 ### Noted, deliberately NOT filed as a defect
 
 94 distinct `BMT_` defNames are still targeted by xpath across 12 of our patch files (42 in
