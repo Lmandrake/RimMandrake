@@ -437,3 +437,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"FLOWWORKS_DONOR_AFFORDANCE_GAP_1","ts":"2026-09-26T03:03:15Z"}
 {"seat":"FOUNDRY","event":"start","id":"FLOWWORKS_DONOR_AFFORDANCE_GAP_1","ts":"2026-09-26T03:03:16Z"}
 {"seat":"FOUNDRY","event":"close","id":"FLOWWORKS_DONOR_AFFORDANCE_GAP_1","sha":"c3bbfff0bab894c42d41ff5acba6e310a778fbb0","reason":"Wrapped BMT_DeepWaterBridgeable/TST_TerrainForMeditationStone in MayRequire at the generator; regenerated 19 TerrainDef files; validated 0 err/0 warn via --live and --defs","ts":"2026-09-26T03:04:25Z"}
+{"seat":"FOUNDRY","event":"close","id":"MIASMA_FEVERWOOD_GREENTIDE_BMT_1","sha":"264e468cfc8ecfc8994a4aea3fdf309b70b07a19","reason":"resolution check run, 72/74 MEASURED clean, 2 misses are dump-staleness not dangling refs","ts":"2026-09-26T03:07:47Z"}
