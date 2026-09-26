@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T03:49:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T04:02:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -819,14 +819,14 @@ kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
-## GELATINOUSSLIME_RM_MOD_BUILD_1 Phase A: build RM_GelatinousSlime as its own RimMandrake mod (mandrake.rm.gelatinousslime) — the Slime - twin pair, mod EXISTS; TITANOSLIME_SLIME_BIOME_1 builds here
+## RUSTCATHEDRAL_RM_MOD_BUILD_1 Phase A: build RM_RustCathedral as its own RimMandrake mod (mandrake.rm.rustcathedral) — the Rust Cathedral - absorbs rustcathedralhum/roaches/walls
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/GELATINOUSSLIME_RM_MOD_BUILD_1.md
+prose:    infrastructure/state/items/RUSTCATHEDRAL_RM_MOD_BUILD_1.md
 
 ## LANTERNDEEPS_RM_MOD_BUILD_1 Phase A: build RM_LanternDeeps as its own RimMandrake mod (mandrake.rm.lanterndeeps) — the Lantern Deeps - an INJECTION layer, no RUT_ twin; skips Phase A step 3
 state:    doing
@@ -1430,16 +1430,6 @@ kind:     build
 thin:     no ## verify
 summary:  - New biome def: RMWarscar, label Warscar (no article — deliberate, per the
 prose:    infrastructure/state/items/SCARLANDS_STANDALONE_MOD_1.md
-
-## RUSTCATHEDRAL_RM_MOD_BUILD_1 Phase A: build RM_RustCathedral as its own RimMandrake mod (mandrake.rm.rustcathedral) — the Rust Cathedral - absorbs rustcathedralhum/roaches/walls
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/RUSTCATHEDRAL_RM_MOD_BUILD_1.md
 
 ## GREENTIDE_RM_MOD_BUILD_1 Phase A: build RM_Greentide as its own RimMandrake mod (mandrake.rm.greentide) — the Greentide - twin pair, mod EXISTS (123 vs 287 lines)
 state:    proposed
