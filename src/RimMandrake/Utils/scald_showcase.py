@@ -30,8 +30,8 @@ import time
 from stage_review import connect, pause, kill_hostiles, face, shoot, save_game
 
 W, H = 44, 28
-CATCH = ["RM_Saal", "RM_ShullaCatch", "RM_BladderboilCatch", "RM_Eesh", "RM_Muddal",
-         "RM_Karrash", "RM_Doss", "RM_Thuum", "RM_Ekkel", "RM_Deepfire"]
+CATCH = ["RM_Saal", "RM_ShullaCatch", "RM_BladderboilCatch", "RM_EeshCatch", "RM_MuddalCatch",
+         "RM_KarrashCatch", "RM_DossCatch", "RM_ThuumCatch", "RM_EkkelCatch", "RM_Deepfire"]
 CAST = [("RM_Noohm", 3), ("RM_Shulla", 3)]
 
 
