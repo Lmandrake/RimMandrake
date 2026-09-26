@@ -971,6 +971,12 @@
     "hash": "d15125b00f2ccce8dca747b80a2efe666dbb0e64275d01939fea3d21170969c6",
     "sha": "3bcf80ccf"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompDefensiveDischarge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "d0f8ac3ad859b41cabbd00fa88715de6f87bb557cf0747737478f85ce26d574a",
+    "sha": "b14c5bd47"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompDrumLure.cs": {
     "cleanCount": 1,
     "date": "2026-09-23",
@@ -1024,6 +1030,12 @@
     "date": "2026-09-18",
     "hash": "b0bcdca296fc9d7e0a39e3f2f76705f96576c284f5eee598a84bf49dfcaed4b7",
     "sha": "009b887ef"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_DefensiveDischarge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "7cf12b5454400962a0aa563c0ec8d9afe4f4adadac36d7440e4a8c68afc76bc9",
+    "sha": "b14c5bd47"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_DrumLure.cs": {
     "cleanCount": 1,
@@ -1175,6 +1187,12 @@
     "hash": "f00769718018d6d0de7c77d2b1710b248475bade40c2b797f2a78bd75599c8d7",
     "sha": "31e9db1cd"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_HediffCompProperties_SeedPassage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "4d939131ff31f6a680fa0956b0f7c68067e4ac0c689a3e449becb1674ccb78aa",
+    "sha": "b14c5bd47"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_HediffCompProperties_ShadeDrivenSeverity.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -1192,6 +1210,12 @@
     "date": "2026-09-18",
     "hash": "9342b3330f3f541d5116b726895cbc61a3fcd8bd71a56ab2e8ee1c0f0a6f1cc3",
     "sha": "504ead829"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_SeedPassage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "e5aee2eeb3460d6c3c1e079f4f1690bfcb192e908f6dc5aa43b5a0b4defd28e3",
+    "sha": "b14c5bd47"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_ShadeDrivenSeverity.cs": {
     "cleanCount": 1,
@@ -1379,11 +1403,23 @@
     "hash": "1448e06f4bffa418bf3e5bfa30a6108e64e2e86afc35ccbf9ba562254814b6e3",
     "sha": "042d41c8f"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionPropagationRule_SameKindWithinRadius.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "8abc6b4dbfced98585016f2687a8ca587c89f40e0ff0782b1172685c0543d28e",
+    "sha": "b14c5bd47"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionResponseRule.cs": {
     "cleanCount": 1,
     "date": "2026-09-25",
     "hash": "9942779b1bdbb5f3c97e9ad8ebe5c745a655f835aa4ebd17bf95a78e65aed9bd",
     "sha": "042d41c8f"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionResponseRule_ActivateSelf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "e3875c5a55b6366e842b01b04476fc15822df24b6c9b50a19cabaf82ee687d01",
+    "sha": "b14c5bd47"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionResponseRule_SpawnPawns.cs": {
     "cleanCount": 1,

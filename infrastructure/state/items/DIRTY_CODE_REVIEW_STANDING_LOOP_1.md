@@ -4365,3 +4365,56 @@ candidate. Re-survey `list --show-untracked` fresh rather than trusting any
 carried-forward count — this file's own wave 62 note is the standing warning about
 that.
 cohesion candidate, but they are real backlog, not something ruled out.
+
+## Wave 8 — 2026-09-25
+
+Re-surveyed fresh per protocol rather than trusting wave 7's carried-forward note:
+`TALLY CLEAN 3313 DIRTY 114 ORPHANED 60 NEVER ENTERED 302` at wave start — the
+named `RM_CompDefensiveDischarge.cs`/`RM_CompProperties_DefensiveDischarge.cs` pair
+was confirmed still NEVER ENTERED, so kept it, and extended it to a 6-file cohesive
+cluster in `CreatureBehaviors/Source/` rather than reviewing just the pair alone:
+
+- `RM_CompDefensiveDischarge.cs` + `RM_CompProperties_DefensiveDischarge.cs`
+  (`WASTELAND_BRINE_BATTERY_DISCHARGE_1` — a `PostPostApplyDamage` shock-back comp)
+- `RM_HediffCompProperties_SeedPassage.cs` + `RM_HediffComp_SeedPassage.cs`
+  (`GREENTIDE_YEARNING_FRUIT_FILTH_1` — a `CompPostPostRemoved` filth/germinate payoff)
+- `RM_ReactionPropagationRule_SameKindWithinRadius.cs` +
+  `RM_ReactionResponseRule_ActivateSelf.cs` (`REACTION_MECHANISM_GENERALISE_1` step 2 /
+  `HOSTILE_MOBILE_PLANTS_1` — the two subclasses that plug into wave 6's already-CLEAN
+  `RM_ReactionEvent`/`RM_CompReactionSource` pipeline; picked specifically to check the
+  new subclasses against the base pipeline for cross-file mismatches wave 6 couldn't see
+  since these two didn't exist as reviewed files yet)
+
+Reachability: all 6 confirmed via live `<Compile Include>` entries in
+`RM_CreatureBehaviors.csproj` (lines 94-95, 120-121, 129, 132). Content-wired, not
+shelf code: `RUT_BrineBattery.xml` carries `RM_CompProperties_DefensiveDischarge` in
+its `<comps>`, `RUT_YearningFruit_Hediffs.xml` carries
+`RM_HediffCompProperties_SeedPassage`, and `RM_Gallowroot.xml` carries both
+`RM_ReactionPropagationRule_SameKindWithinRadius` and
+`RM_ReactionResponseRule_ActivateSelf` in its `<propagation>`/`<response>` blocks.
+
+Traced: both mod-settings gates (`brineBatteryDischargeEnabled`/
+`brineBatteryDischargeMultiplier`, `seedPassageEnabled`/
+`seedPassageGerminationMultiplier`) exist with defaults, Scribe persistence and a
+Mod Settings UI row in `RM_CreatureBehaviorsMod.cs` — no orphaned flag either comp
+reads. Checked the `RM_ReactionEvent` API surface
+(`Spend`/`RemainingBudget`/`TryMarkActivated`/`Instigator`/`Map`) the two new
+subclasses call against its actual declaration — all match, and
+`RM_CompReactionSource.TryActivateFromPropagation` does call `evt.TryMarkActivated`
+before recursing exactly as `SameKindWithinRadius`'s own comment claims. Checked
+`RM_ReactionResponseRule_ActivateSelf`'s `state.anchorCell`/`state.disengageRadius`
+writes against `RM_MentalState_ScopedAggression`'s actual field names/types — match.
+`RM_HediffComp_SeedPassage`'s germinate loop guards `InBounds`/`GetPlant(map) !=
+null`/`CanEverPlantAt` before `GenSpawn.Spawn`, and its filth drop guards
+`InBounds` before `FilthMaker.TryMakeFilth` — no missing-guard gap found in either
+path. No significant findings in any of the 6; no fixes needed this wave. All 6
+marked CLEAN at `b14c5bd47`.
+
+Re-measured after: `TALLY CLEAN 3319 DIRTY 114 ORPHANED 60 NEVER ENTERED 296`.
+
+Next wave: pick from the remaining ~296 NEVER ENTERED files (`code_review_status.py
+list --show-untracked`) — re-survey fresh, don't trust this count. Large unreviewed
+def-only (`.xml`) clusters still remain across `TerminalBiomes/`, `TheRot/`,
+`Wasteland/`, `UtinniPatches/Defs/` and `UtinniPatches/Patches/`; the `modcheck/`
+Python tools and the `validation.py` sampling pass named in earlier waves are also
+still untouched and worth picking if no comparably cohesive `.cs` cluster surfaces.
