@@ -27,12 +27,20 @@ namespace RimMandrake.Webwork
 		public static bool emergentSpawnEnabled = true;
 		public static float emergentSpawnChanceMultiplier = 1f;
 
+		// WEBWORK_NEST_EGG_ECONOMY_1 (S6 rulings 3/4): the guaranteed nest
+		// cluster RM_GenStep_WebworkNest places on every map, and the tuning
+		// dial on how fast a living nest re-lays (RM_CompEggClutchRelay).
+		public static bool nestEnabled = true;
+		public static float eggRelayIntervalMultiplier = 1f;
+
 		public override void ExposeData()
 		{
 			base.ExposeData();
 			Scribe_Values.Look(ref generateOnWorldgen, "generateOnWorldgen", true);
 			Scribe_Values.Look(ref emergentSpawnEnabled, "emergentSpawnEnabled", true);
 			Scribe_Values.Look(ref emergentSpawnChanceMultiplier, "emergentSpawnChanceMultiplier", 1f);
+			Scribe_Values.Look(ref nestEnabled, "nestEnabled", true);
+			Scribe_Values.Look(ref eggRelayIntervalMultiplier, "eggRelayIntervalMultiplier", 1f);
 		}
 
 		public void DoWindowContents(Rect inRect)
@@ -57,6 +65,20 @@ namespace RimMandrake.Webwork
 				list.Label("  Spawn chance: " + emergentSpawnChanceMultiplier.ToString("0.00")
 					+ "x (each def's own base chance, e.g. the shipped default of 3%)");
 				emergentSpawnChanceMultiplier = list.Slider(emergentSpawnChanceMultiplier, 0f, 3f);
+			}
+
+			list.Gap();
+			list.Label("Nest + egg economy");
+			list.CheckboxLabeled("Guaranteed nest on new maps", ref nestEnabled,
+				"MAP-GENERATION-AFFECTING. On: every new RM_Webwork map gets one nest cluster "
+			  + "(a guardian ollathrix and a harvestable egg clutch), per S6 ruling 3. Off: no "
+			  + "nest ever generates; a currently generated map is never retroactively changed "
+			  + "either way.");
+			if (nestEnabled)
+			{
+				list.Label("  Egg re-lay speed: " + eggRelayIntervalMultiplier.ToString("0.00")
+					+ "x (lower = faster; shipped default re-lays every 20-30 days)");
+				eggRelayIntervalMultiplier = list.Slider(eggRelayIntervalMultiplier, 0.1f, 3f);
 			}
 
 			list.End();

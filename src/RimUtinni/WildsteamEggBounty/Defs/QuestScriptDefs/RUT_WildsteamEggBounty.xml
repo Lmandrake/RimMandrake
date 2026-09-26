@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_NEST_EGG_ECONOMY_1, S6 ruling 2 + the 2026-09-24 blackmarket
+  sitting's §1e/§1f pricing table. Built on vanilla's own
+  QuestNode_TradeRequest_Initiate/TradeRequestComp system, the exact same
+  machinery Core's Script_TradeRequest.xml and this repo's own
+  RUT_FungalSoilTradeRequest.xml (FungalSoilTrade) already use — copy that
+  quest's own header comment if this one goes stale. The one departure:
+  RM_QuestNode_GetWildsteamSettlement (this mod's own Source/) replaces
+  QuestNode_GetNearbySettlement so the request always comes specifically from
+  a RUT_Jawa_WildsteamClan settlement, never a random nearby one — see that
+  class's own header for why vanilla's node cannot do this.
+
+  requestedThing is named explicitly (RM_OllathrixEgg), same "convertTo
+  ThingDef IS REQUIRED" reasoning RUT_FungalSoilTradeRequest.xml documents in
+  full: vanilla's own random-thing picker only ever requests player-craftable
+  goods, and an ollathrix egg is never crafted.
+
+  Reward is goodwill-plus-silver (sitting §1e: "paid as goodwill-plus-silver")
+  at market value x0.5-0.7 (❓ INVENTED exact factor within that ruled range,
+  same disclosure posture every other number in this family carries) —
+  deliberately the lower-paying LEGAL outlet, well below the free tier's
+  x1.0 orbital sale and far below the (unbuilt) black market's x1.5 buy
+  premium, per §1e's own ranking ("virtue pays less").
+
+  requestedThingCount is small (1-3): this is a bounty on a rare, heavy,
+  perishable jackpot item, not a bulk trade request like fungal soil's
+  12-28.
+-->
+<Defs>
+
+  <QuestScriptDef>
+    <defName>RUT_WildsteamEggBounty</defName>
+    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <rootMinProgressScore>0</rootMinProgressScore>
+    <minRefireDays>6</minRefireDays>
+    <expireDaysRange>4~8</expireDaysRange>
+    <defaultChallengeRating>1</defaultChallengeRating>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Green Oath's bounty</li>
+        <li>questName->[settlement_label] wants eggs destroyed</li>
+        <li>questName->A Wildsteam bounty</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->[settlement_label] has heard you deal with the Webwork, and they want ollathrix eggs kept out of the wrong hands. They are asking for:
+\n  [requestedThingCount]x [requestedThing_label] (worth [requestedThingMarketValue_money])
+\nThey pay less than a smuggler would, and openly — the Green Oath does not deal in secrets. Bring the eggs by caravan before the offer lapses; they will be destroyed the moment they arrive. The estimated travel time is [estimatedTravelTime_duration].</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap">
+          <canBeSpace>true</canBeSpace>
+        </li>
+
+        <li Class="RimMandrake.Utinni.WildsteamEggBounty.RM_QuestNode_GetWildsteamSettlement">
+          <maxTileDistance>80</maxTileDistance>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>faction.BecameHostileToPlayer</inSignal>
+          <label TKey="LetterLabelQuestFailed">Quest failed: [resolvedQuestName]</label>
+          <text TKey="LetterTextQuestFailed">[faction_name] became hostile to you.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>faction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+        <li Class="QuestNode_TradeRequest_RandomOfferDuration">
+          <settlement>$settlement</settlement>
+          <storeAs>timeout</storeAs>
+          <storeEstimatedTravelTimeAs>estimatedTravelTime</storeEstimatedTravelTimeAs>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>requestedThing</name>
+          <value>RM_OllathrixEgg</value>
+          <convertTo>ThingDef</convertTo>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>requestedThingCount</name>
+          <value>$(randInt(1,3))</value>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>requestedThingMarketValue</name>
+          <value>$($requestedThingCount * 400)</value>
+        </li>
+
+        <li Class="QuestNode_TradeRequest_Initiate">
+          <settlement>$settlement</settlement>
+          <requestedThingDef>$requestedThing</requestedThingDef>
+          <requestedThingCount>$requestedThingCount</requestedThingCount>
+          <duration>$timeout</duration>
+        </li>
+
+        <!-- Sitting §1e: market value x0.5-0.7, "the lower-paying legal
+             outlet" — deliberately below the free tier's plain x1.0 orbital
+             sale, so raiding a nest and selling to any trader always beats
+             waiting for this bounty; this exists for the goodwill and the
+             "clean hands" choice, not as the best payout. INVENTED exact
+             factor (0.6) within the ruled range. -->
+        <li Class="QuestNode_Set">
+          <name>rewardValue</name>
+          <value>$($requestedThingMarketValue * 0.6 * randFloat(0.9, 1.1))</value>
+        </li>
+
+        <li Class="QuestNode_GiveRewards">
+          <inSignal>settlement.TradeRequestFulfilled</inSignal>
+          <parms>
+            <allowGoodwill>true</allowGoodwill>
+            <giveToCaravan>true</giveToCaravan>
+            <disallowedThingDefs>
+              <li>$requestedThing</li>
+            </disallowedThingDefs>
+          </parms>
+          <useDifficultyFactor>false</useDifficultyFactor>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$timeout</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <outSignalComplete>TradeRequestTimeout</outSignalComplete>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>settlement.TradeRequestFulfilled</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>TradeRequestTimeout</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

@@ -40,14 +40,29 @@ Ships in v1:
     modDependency) inline onto this def, plus a general-purpose emergent-spawn ThingComp
     (RM_CompEmergentSpawnOnDestroy, gated by a new RM_WebworkSettings dial) for future harvest
     Things to attach — down from mandrake.rsw.shokk, which shrank to the skin patch alone.
+  - The real Webwork-flavored flora and fauna roster (WEBWORK_FLORA_ROSTER_1,
+    WEBWORK_FAUNA_ROSTER_1): 16 invented plants (Defs/ThingDefs_Plants/RM_WebworkFlora.xml) and
+    5 invented animals — quarrok, vennick, skennet, cravvet, sivvern
+    (Defs/ThingDefs_Races/RM_WebworkFauna.xml) — replacing the interim vanilla-Core placeholder
+    roster entirely.
+  - The nest + egg economy (WEBWORK_NEST_EGG_ECONOMY_1, S6 rulings 2/3/4): RM_GenStep_WebworkNest
+    guarantees one nest cluster (RM_Webwork_NestWall, the mother's dormant guardian spawner, plus
+    2-3 RM_Webwork_EggClutch mineable resource nodes) on every RM_Webwork map — no density roll,
+    no empty-map outcome. RM_CompEggClutchRelay re-seeds a mined-out clutch every 20-30 days
+    while any RM_Ollathrix is alive on the map. RM_OllathrixEgg is the harvested item: inert
+    cargo (no CompHatcher, ban 1), Sellable in the free tier, RM_Contraband-tagged and
+    tradeability-explicit so the campaign's later black-market patch has a node to match. The
+    Wildsteam Clan's own legal bounty for destroying delivered eggs (S6 ruling 2) ships as a
+    separate small mod, mandrake.rut.wildsteameggbounty (campaign-tier: it hard-depends on
+    RUT_Jawa_WildsteamClan, so it cannot live in this franchise-free mod).
 
-NOT in this mod (scoped to later items, not deferred sub rosa): the real Webwork-flavored
-flora and fauna roster besides the owner species (WEBWORK_FLORA_ROSTER_1, WEBWORK_FAUNA_ROSTER_1
-— invented RM-tier species/plants, plus the disposition of the current Alpha Biomes/Star-Wars-
-donor rows), the nest/egg economy (WEBWORK_NEST_EGG_ECONOMY_1, WEBWORK_EGG_BLACKMARKET_BUILD_1),
-the web structures kit (WEBWORK_WEB_STRUCTURES_1) and the soundscape (WEBWORK_SOUNDSCAPE_1). The
-Star Wars fauna cast that lives on the frozen campaign twin today rides its own Utinni patch
-(WildAnimals_Webwork.xml), never this def.
+NOT in this mod (scoped to later items, not deferred sub rosa): the black-market Cartel
+trader/quest layer and tradeability-All patch (WEBWORK_EGG_BLACKMARKET_BUILD_1, S5 rulings), the
+nest's flavour-only hide-mass/flower-ring/mite-trail (owed to WEBWORK_WEB_STRUCTURES_1), the
+web-sense convergence AI and ThinkTree (WEBWORK_MECHANICS_1), the web structures kit
+(WEBWORK_WEB_STRUCTURES_1) and the soundscape (WEBWORK_SOUNDSCAPE_1). The Star Wars fauna cast
+that lives on the frozen campaign twin today rides its own Utinni patch (WildAnimals_Webwork.xml),
+never this def.
 
 Live proof is OWED at publish time — see the item's own verify record.</description>
 </ModMetaData>

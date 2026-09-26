@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Webwork_Nest.xml                WEBWORK_NEST_EGG_ECONOMY_1
+  ============================================================================
+  design/Jawa/worldbuilding/biomes/webwork_owner_and_nest_2026-09-23.md §3
+  ("The nest as a place") and §6 rulings 3/4. Two of the §3a table's five
+  parts are built here — the mother's guardian wall and the harvestable
+  clutch; the hide-mass, the flower ring and the mite-trail JobGiver are
+  flavour/decoration, not required for the mechanic this item is scoped to,
+  and are left owed to WEBWORK_WEB_STRUCTURES_1/WEBWORK_MECHANICS_1, same
+  split RM_Ollathrix.xml's own header already draws for "web-sense
+  convergence". RM_GenStep_WebworkNest.cs places one wall + 2-3 clutches as a
+  cluster on every RM_Webwork map (S6 ruling 3).
+
+  RM_Webwork_NestWall: the mother's guardian spawner. Same
+  CompProperties_CanBeDormant/WakeUpDormant/SpawnerPawn combination
+  RUT_Webwork_Nest (src/RimUtinni/ShokkweaveEconomy) already ships, re-tokened
+  to spawn RM_Ollathrix directly and with NO MayRequire — this mod owns the
+  race outright (OLLATHRIX_OWNER_SPECIES_1), unlike the Utinni def which
+  gated on the donor mod for its Wyyyschokk guardian. Also carries
+  RM_CompEggClutchRelay (S6 ruling 4): while a RM_Ollathrix is alive
+  anywhere on the map, the wall re-seeds a nearby RM_Webwork_EggClutch every
+  20-30 days if none currently stands within its search radius — "a living
+  nest re-lays". thingClass is plain Building, not Hive, for the identical
+  reason RUT_Webwork_Nest's own comment gives: Hive's C# class carries
+  insect-specific overrides (auto-wake-when-unfogged, hive quest signalling)
+  this def does not want, and a null thingClass on a def with no explicit one
+  NREs ReadingPolicyDatabase.GenerateStartingPolicies() for every Game on the
+  whole mod list (found live 2026-09-12, same bug three RUT_Webwork_* defs
+  hit before this comment existed).
+
+  RM_Webwork_EggClutch: the harvestable resource. ParentName="RockBase", the
+  exact same mineable-vein shape RUT_Webwork_SilkKnot already uses (RimSage-
+  verified raw def, ShokkweaveEconomy's own comment) — mineableThing
+  RM_OllathrixEgg, mineableYield 4 (INVENTED midpoint of §3a's "×3-6 per
+  clutch" range, expects the same live-balance pass every other number in
+  this family carries). Mined out (or destroyed) it is simply gone; the wall's
+  relay comp is what brings a fresh one back, never this def itself — no
+  timer lives here.
+
+  Both defs are placeholder-art (Hive/RockFlecked_Atlas texture paths,
+  bone-white/dead-silk-cream tinted, same reuse-and-flag posture
+  ShokkweaveHarvestNodes.xml already used for its own two nodes). Real bespoke
+  nest art is owed, infrastructure/artpipe/art_lists/webwork_nest.csv.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_Webwork_NestWall</defName>
+    <label>webwork nest</label>
+    <description>The heart of an ollathrix's territory: old kills and stolen river packed and hardened with silk into something like a wall. Breaking it open is a fight, and a fortune — the mother does not leave her nest undefended, and as long as she lives, it keeps producing.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_Webwork_NestWall/RM_Webwork_NestWall</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.8</drawSize>
+      <color>(226, 219, 200)</color>
+    </graphicData>
+    <uiIconScale>0.65</uiIconScale>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <fillPercent>0.5</fillPercent>
+    <statBases>
+      <!-- INVENTED, same order of magnitude as RUT_Webwork_Nest's 260. -->
+      <MaxHitPoints>260</MaxHitPoints>
+      <Flammability>1</Flammability>
+    </statBases>
+    <pathCost>42</pathCost>
+    <receivesSignals>true</receivesSignals>
+    <blockWind>true</blockWind>
+    <tickerType>Normal</tickerType>
+    <passability>PassThroughOnly</passability>
+    <!-- Deliberate raid or otherwise, matching how vanilla lairs already
+         behave (Hive's own InsectJelly 30) — INVENTED, expects a
+         live-balance pass. -->
+    <killedLeavings>
+      <RM_OllathrixEgg>2</RM_OllathrixEgg>
+    </killedLeavings>
+    <comps>
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+        <canWakeUpFogged>false</canWakeUpFogged>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpCheckRadius>10</wakeUpCheckRadius>
+        <wakeUpIfAnyTargetClose>true</wakeUpIfAnyTargetClose>
+      </li>
+      <li Class="CompProperties_SpawnerPawn">
+        <spawnablePawnKinds>
+          <li>RM_Ollathrix</li>
+        </spawnablePawnKinds>
+        <lordJob>LordJob_DefendAndExpandHive</lordJob>
+        <!-- RM_Ollathrix PawnKindDef combatPower is 160; a fixed budget of
+             320 spawns one guardian with room for a second reinforcement,
+             the same shape RUT_Webwork_Nest used against Wyyyschokk's 600.
+             INVENTED point budget, not a balance ruling. -->
+        <initialPawnsPoints>320</initialPawnsPoints>
+        <maxSpawnedPawnsPoints>640</maxSpawnedPawnsPoints>
+        <lordJoinRadius>10</lordJoinRadius>
+      </li>
+      <li Class="RimMandrake.Webwork.RM_CompProperties_EggClutchRelay">
+        <relayIntervalDays>20~30</relayIntervalDays>
+        <clutchesPerRelay>1~2</clutchesPerRelay>
+        <clutchSearchRadius>4</clutchSearchRadius>
+        <eggClutchDefName>RM_Webwork_EggClutch</eggClutchDefName>
+        <motherRaceDefName>RM_Ollathrix</motherRaceDefName>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_Webwork_EggClutch</defName>
+    <label>egg clutch</label>
+    <description>A pale mass of leathery eggs, packed in silk on the nest floor. Bone-white, not the tan of an ordinary egg sac — these belong to something much larger. Cutting a clutch free is quick, quiet work, right up until the mother notices.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(232, 225, 208)</color>
+      <colorTwo>(214, 205, 182)</colorTwo>
+    </graphicData>
+    <statBases>
+      <!-- INVENTED: softer than a rock vein — a mass of eggs and silk, not
+           stone. Meant to be a quick cut. -->
+      <MaxHitPoints>60</MaxHitPoints>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_OllathrixEgg</mineableThing>
+      <!-- INVENTED: midpoint of §3a's own "x3-6 per clutch" range. -->
+      <mineableYield>4</mineableYield>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineableScatterLumpSizeRange>1~1</mineableScatterLumpSizeRange>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Wildsteam Egg Bounty</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.wildsteameggbounty</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>WEBWORK_NEST_EGG_ECONOMY_1, S6 ruling 2 (owner, question card, 2026-09-24):
+"the Wildsteam pay an egg BOUNTY — they pay to destroy eggs, the same shape as the mandible
+bounty. A second, lower-paying legal outlet beside the smugglers' jackpot." Per the follow-up
+2026-09-24 sitting (webwork_egg_blackmarket_2026-09-24.md §1e/§1f): the Wildsteam route pays
+market value x0.5-0.7 as goodwill-plus-silver, deliberately below the black market's premium —
+"virtue pays less."
+
+Ships one QuestScriptDef (RUT_WildsteamEggBounty), built on the exact same vanilla
+QuestNode_TradeRequest_Initiate/TradeRequestComp machinery Core's own TradeRequest quest and
+this repo's own RUT_FungalSoilTradeRequest already use (see that quest's own header for the
+pattern this one copies) — the Wildsteam "buy" the delivered eggs at a below-market price and
+the fiction is that they destroy them; mechanically this is an ordinary settlement trade
+request, the same as every other one in the campaign.
+
+THE ONE DEPARTURE FROM THAT PATTERN: vanilla's own QuestNode_GetNearbySettlement has no
+faction-filter field (the same open question RUT_FungalSoilTradeRequest.xml already flags for
+its own Moisture Farmer case) — this quest is specifically the Wildsteam Clan's own bounty, not
+a random nearby settlement's, so a small custom QuestNode
+(RM_QuestNode_GetWildsteamSettlement.cs) finds the nearest live settlement belonging
+specifically to RUT_Jawa_WildsteamClan via Find.FactionManager.FirstFactionOfDef (verified
+live in this repo, src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFactions.cs) and
+Find.WorldObjects.SettlementBases, standard RimWorld.Planet API.
+
+Depends on mandrake.rm.webwork (RM_OllathrixEgg, the requested item) and mandrake.rut.patches
+(RUT_Jawa_WildsteamClan, the FactionDef this quest is scoped to).
+
+NOT built here (WEBWORK_EGG_BLACKMARKET_BUILD_1's own scope, S5 rulings, a separate sitting):
+the Cartel black-market trader/caravan kind, the Bazaar broker channel, the tradeability-All
+patch, and The Reckoning assassination quest family. Those consume the same RM_OllathrixEgg
+item this mod's quest also prices against, but neither item's build touches the other's files.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rm.webwork</packageId>
+      <displayName>RimMandrake: Webwork</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rut.patches</packageId>
+      <displayName>RimUtinni: Patches</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.webwork</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+</ModMetaData>
