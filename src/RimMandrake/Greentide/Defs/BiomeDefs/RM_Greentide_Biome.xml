@@ -110,10 +110,33 @@
       <Rat>1.0</Rat>
       <Hare>0.6</Hare>
     </wildAnimals>
+    <!-- GREENTIDE_JUNGLE_TREE_ROSTER_1 (2026-09-26): replaces the two
+         rejected temperate-forest trees and the generic bush with the
+         biome's own 14 invented jungle trees plus its signature giant —
+         design/Jawa/worldbuilding/biomes/greentide_tree_roster_2026-09-22.md
+         §3a/3b/3c, §3a0 and §6b. Commonalities are the design doc's own
+         proposed relative weights (§6b), flavour rather than a tuned
+         balance pass per that section's own framing. The three ground-cover
+         rows (Plant_Grass/Plant_TallGrass/Plant_Berry) are kept as generic
+         floor filler — the design doc leaves this a build-seat call, not a
+         card. RM_Greatbole is deliberately rare and solitary (see its own
+         def) rather than a normal canopy weight. -->
     <wildPlants>
-      <Plant_TreeOak>2.0</Plant_TreeOak>
-      <Plant_TreePoplar>1.2</Plant_TreePoplar>
-      <Plant_Bush>1.5</Plant_Bush>
+      <RM_Veluthar>1.60</RM_Veluthar>
+      <RM_Kaddrath>1.00</RM_Kaddrath>
+      <RM_Mourvel>0.80</RM_Mourvel>
+      <RM_Sarnstilt>0.70</RM_Sarnstilt>
+      <RM_Ghemmel>1.50</RM_Ghemmel>
+      <RM_Nemmer>1.20</RM_Nemmer>
+      <RM_Mirrelbole>0.90</RM_Mirrelbole>
+      <RM_Zhorrel>0.50</RM_Zhorrel>
+      <RM_Brunnock>0.20</RM_Brunnock>
+      <RM_Vurmeloth>0.12</RM_Vurmeloth>
+      <RM_Quathis>1.30</RM_Quathis>
+      <RM_Cundral>0.50</RM_Cundral>
+      <RM_Thalquith>0.45</RM_Thalquith>
+      <RM_Gorbeleth>0.30</RM_Gorbeleth>
+      <RM_Greatbole>0.03</RM_Greatbole>
       <Plant_Grass>2.0</Plant_Grass>
       <Plant_TallGrass>1.0</Plant_TallGrass>
       <Plant_Berry>0.6</Plant_Berry>

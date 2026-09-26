@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Greentide_TreeRoster_Items.xml                  GREENTIDE_JUNGLE_TREE_ROSTER_1
+
+  RM_GreatboleHardwood: the RM_ tier (franchise-free) true-hardwood resource
+  RM_Greatbole (RM_Greatbole.xml) drops when felled — the roster's own "the
+  wood economy has two grades" ruling, greenwood in bulk from ordinary
+  trees, true hardwood only from a fallen giant. Deliberately a NEW resource
+  rather than a reference to the campaign-tier RUT_Hardwood
+  (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_Hardwood.xml) — an
+  RM_ tier def must not depend on the Utinni patch layer, so this mirrors
+  RUT_Hardwood's own fiction and stats as a parallel resource rather than
+  crossing the tier line, the same "duplicate, don't cross-reference"
+  posture the 2026-09-23 biome-mod-split rulings already set for shared
+  content between an RM_ mod and its campaign twin.
+
+  PLACEHOLDER ART: this mod ships its own Textures/ namespace, so a
+  vanilla-path reuse would fail validate_patch.py's ownership check. No
+  bespoke item art exists for this subject yet (checked
+  infrastructure/artpipe/done/, _artsrc/, registry.jsonl this pass — no
+  "hardwood"/"greatbole" item-icon hits). Points at where the render will
+  land; reads as missing until a job is filed. DEPLOY_HOLD.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GreatboleHardwood</defName>
+    <label>heartwood</label>
+    <description>A dense, dark-grained timber cut from the living heart of a felled greatbole. It never fully stops growing, even off the tree — a plank of it will slowly warp true again if left alone. Worth real money, for exactly that reason.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_GreatboleHardwood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>7.5</MarketValue>
+      <Mass>1.2</Mass>
+      <Flammability>0.9</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <burnableByRecipe>true</burnableByRecipe>
+  </ThingDef>
+
+</Defs>

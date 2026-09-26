@@ -151,17 +151,14 @@
     <stackLimit>10</stackLimit>
     <!-- GREATBOLE_HARVEST_LADDER_1 §3c: planting this to grow a fast
          RM_Greatbole is DEFERRED, not built here. RM_Greatbole itself (the
-         mature fellable giant, roster row 22) is still OWED by
-         GREENTIDE_JUNGLE_TREE_ROSTER_1 — checked this pass, that def does
-         not exist anywhere in src/ yet, only a flat-color mechanism-proof
-         placeholder (RUT_Placeholder_GreentideGiantTree). Wiring this seed
-         to plant a real greatbole, including the water-adjacency growth-rate
-         override the spec's own §10 answer already proved buildable (a
-         Plant subclass overriding the virtual GrowthRate), is real content
-         work owed once that tree ships — it would either target the wrong
-         (placeholder) tree or duplicate the roster item's own job today. The
-         seed exists as a real, tradeable product of the recipe below so the
-         fruit's third product is not simply missing. -->
+         mature fellable giant, roster row 22) now ships —
+         GREENTIDE_JUNGLE_TREE_ROSTER_1, RM_Greatbole.xml — but wiring THIS
+         seed to actually plant one, including the water-adjacency
+         growth-rate override the spec's own §10 answer already proved
+         buildable (a Plant subclass overriding the virtual GrowthRate), is
+         still separate content work, owed as a follow-on rather than
+         duplicated here. The seed exists as a real, tradeable product of the
+         recipe below so the fruit's third product is not simply missing. -->
   </ThingDef>
 
   <ThingDef ParentName="ApparelMakeableBase">

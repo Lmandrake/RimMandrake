@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Greatbole.xml                                   GREENTIDE_JUNGLE_TREE_ROSTER_1
+
+  The signature giant — design doc §3a0, row 22. Ruled 2026-09-22: the
+  LANDMARK (RUT_GreatboleCore/RUT_GreatboleHeartwood, campaign-tier,
+  mandrake.rm.environmentalhazards + UtinniPatches, unfellable) and this
+  FELLABLE giant are the SAME SPECIES at different life stages — the
+  landmark is what a greatbole becomes after centuries, this is the mature
+  tree a player actually fells. They share a visual family (leaf, bark
+  plating, fluting — never a silhouette, since one is a tree and the other
+  is a mineable cross-section too vast to draw as one) and NOTHING ELSE:
+  no shared def, no shared comp, no growth path between them (his own
+  ruling: "the game will not actually simulate that growth ... the
+  relationship is fiction, and the description carrying it IS the
+  implementation" — do not build one).
+
+  This def was explicitly OWED by three other closed items before this pass:
+  RM_GreatboleHarvest_Items.xml's own header ("checked this pass, that def
+  does not exist anywhere in src/ yet"), GREATBOLE_HARVEST_LADDER_1's own
+  Watch-out ("say which greatbole def you mean"), and this mod's own
+  About.xml ("a franchise-free source ... is owed separately"). It retires
+  RUT_Placeholder_GreentideGiantTree.xml, the mechanism-proof stub that
+  existed only so RM_TreeFallUtility/RM_CompCrackFall/RM_FellableTreeExtension
+  were provably wired end-to-end — this is the real roster giant that
+  placeholder's own header said would eventually replace it.
+
+  Tier: RM_ (franchise-free), per the 2026-09-22 "no canon trees" ruling —
+  "greatbole" is existing project vocabulary (MEASURED in 20 files under
+  src/, checked again for this defName specifically: zero collisions) but is
+  not itself Star Wars IP, so nothing about it needs to live behind the
+  campaign layer. This closes the tier gap the design doc flagged as "not
+  mine to decide": the free mod now gets its OWN mature giant (this def)
+  rather than only ever meeting the campaign-tier landmark it can never
+  encounter.
+
+  Interface with the harvest-ladder work (GREATBOLE_HARVEST_LADDER_1): this
+  def does NOT carry RUT_CompGreatboleHarvestLadder — that comp is the
+  LANDMARK's own threshold ladder (40/60/70% mined-away events) and is
+  Utinni/RUT_ tier by construction (its own header: "attach this alongside
+  ... on RUT_GreatboleCore"), unreachable from an RM_ tier def without
+  crossing the tier line. This tree's own "interface" with that work is
+  fictional continuity only (same species) plus the ALREADY-GENERIC
+  mechanism the harvest-ladder item itself relies on and that this roster
+  was built to finally give real content: RM_FellableTreeExtension +
+  RM_TreeFallUtility.FellTree (RimMandrake.EnvironmentalHazards,
+  def-agnostic, MEASURED by RM_TreeFallUtility.cs:67's own
+  GetModExtension<RM_FellableTreeExtension>() ?? Default fallback). Setting
+  isGiantClass=true here is what GREATBOLE_HARVEST_LADDER_1's own design doc
+  §4a calls "what closes Q1" (true hardwood by felling).
+
+  hardwoodDef points at RM_GreatboleHardwood (RM_Greentide_TreeRoster_Items.
+  xml), a NEW RM-tier parallel to the campaign-tier RUT_Hardwood — not a
+  reference to RUT_Hardwood itself, which would make this RM_ tier def
+  depend on the Utinni campaign patch layer. Same "duplicate rather than
+  cross-reference" posture the 2026-09-23 biome-mod-split rulings already
+  established for shared content between an RM_ mod and its campaign twin.
+
+  Art: OWED, and the largest canvas on the roster page (2048x2048 at the
+  128px/cell canvas law, 16 cells) — no existing artpipe subject matches a
+  colossal fluted-column-under-a-leaf-raft giant tree (checked
+  infrastructure/artpipe/done/, _artsrc/, registry.jsonl this pass, per §3f
+  of the design doc; the four transferable subjects all key to ordinary
+  canopy/mid rows, not the giant). Placeholder texPath points at the owed
+  location; do not deploy against a donor texture — this tree's whole
+  narrative point is that it visually announces the landmark it will
+  become, which no existing art was built to do.
+-->
+<Defs>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Greatbole</defName>
+    <label>greatbole</label>
+    <description>A single grey-brown column so broad at the base that its fluting reads as separate trunks fused together, rising far past every other crown before opening into one horizontal raft of paddle leaves. Bark in long vertical plates that shed. Nothing grows in its shadow, so it stands in a clearing of its own making. Given centuries and left uncut, a greatbole like this one becomes something else entirely — a trunk too vast to still be called a tree.</description>
+    <graphicData>
+      <!-- OWED, largest canvas on the page (2048x2048, 16 cells). See header. -->
+      <texPath>Things/Plant/RM_Greatbole/RM_Greatbole_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.8, 1.1, 0.6)</volume>
+        <offset>(0,0,-0.6)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1400</MaxHitPoints>
+      <!-- "Very low", the roster-wide fire ruling — lower even than the
+           ordinary trees' neighbourhood, matching a trunk too wet and too
+           vast to readily burn at all. -->
+      <Flammability>0.05</Flammability>
+      <Nutrition>3.0</Nutrition>
+      <Mass>3000</Mass>
+      <BeautyOutdoors>6</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <!-- "Well past 10" per the owner's own ruling on where the boldness
+           goes (above the range, not into the mid-storey). Veluthar (10) is
+           the largest ordinary canopy tree; 16 puts this ~60% past it. -->
+      <growDays>220</growDays>
+      <harvestWork>10000</harvestWork>
+      <harvestYield>150</harvestYield>
+      <visualSizeRange>12.0~16.0</visualSizeRange>
+      <!-- Rare and solitary by design — the signature specimen, not a
+           common canopy tree. Wide radius, very low weight. -->
+      <wildClusterRadius>14</wildClusterRadius>
+      <wildClusterWeight>1.5</wildClusterWeight>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+    <modExtensions>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_FellableTreeExtension">
+        <isGiantClass>true</isGiantClass>
+        <fellLength>16</fellLength>
+        <fallDamageRange>150~260</fallDamageRange>
+        <heartRadius>2</heartRadius>
+        <hardwoodDropRange>8~14</hardwoodDropRange>
+        <greenwoodStackRange>30~60</greenwoodStackRange>
+        <greenwoodDropChancePerCell>0.8</greenwoodDropChancePerCell>
+        <greenwoodDef>WoodLog</greenwoodDef>
+        <hardwoodDef>RM_GreatboleHardwood</hardwoodDef>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
