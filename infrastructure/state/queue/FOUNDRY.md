@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T17:35:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T17:36:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1757,6 +1757,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SUUSH_CAULDRON_DRIFTER_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## verify
+summary:  SUUSHCAULDRONDRIFTER1 — the Suush
 prose:    infrastructure/state/items/SUUSH_CAULDRON_DRIFTER_1.md
