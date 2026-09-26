@@ -1835,6 +1835,12 @@
     "hash": "3ddbe3083b2238a9064aea288281428ccdcdf27d01c5960aff105525bf683faf",
     "sha": "113ad7131"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_BiomeArrivalLetterExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e5ef32583641d5207870c5b90f3396ed1f5a143ad97a339850e4acef091f784c",
+    "sha": "3ca4093de"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_BodySizeBarrierPatches.cs": {
     "cleanCount": 1,
     "date": "2026-09-23",
@@ -1991,11 +1997,23 @@
     "hash": "6e045c806ede10499060d3d145a82b2a73d5c7654948dbcd9c244d1878c26ad6",
     "sha": "06e9ecab9"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_ExplosiveGrowthSuppressionBridge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "f1dcd9b5d0dce0a4f0dd9f8d953cbd81c8692acb9f5ed6895f85be870bc5e8f3",
+    "sha": "3ca4093de"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_FellableTreeExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
     "hash": "41d1adbf1c654f180e42363c3d2379063a55f832f25645a5551c437f55b82f44",
     "sha": "0dedc6cfa"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GameComponent_BiomeArrivalLetters.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "bc4c7846f26d21b4958e71e1e3d413146134236a170589188cd564b81eca21dd",
+    "sha": "3ca4093de"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_GradientSurge.cs": {
     "cleanCount": 1,
@@ -2368,6 +2386,18 @@
     "date": "2026-09-13",
     "hash": "a8f59a4f457c4bea541aa7f92eda6681d458c79036c96e9223ef9fb2793550a6",
     "sha": "ce17e0865"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_GravshipArrivalLetter.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "eb0fb7fb5edabbc6bde20cc9165fd4bff8ed800450a5e8f2dc3b6ebc9f891853",
+    "sha": "3ca4093de"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_GrazingSuppressionHook.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e8582e9d19d78837b884162f2710a9f40502ba7cc94d8cfa1e195bb91700d13b",
+    "sha": "3ca4093de"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_LeachmossWildSpawnGate.cs": {
     "cleanCount": 2,
