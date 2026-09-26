@@ -45,10 +45,20 @@ namespace RimMandrake.TheSump
         // 1 = the shipped default.
         public static float biomeRarityFactor = 1f;
 
+        // SUMP_TAR_VAULT_1 — RM_Comp_TarVaultSeal reads this static field
+        // directly (same "static field, no Mod instance needed" idiom this
+        // settings class already documents above for biomeRarityFactor,
+        // since a comp's CompTick has no guaranteed settings-instance
+        // handy either). All-off degrades gracefully: a disabled vault's
+        // stored contents simply rot normally, same as any other shelf —
+        // no half-sealed state is possible.
+        public static bool tarVaultEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
+            Scribe_Values.Look(ref tarVaultEnabled, "tarVaultEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -62,6 +72,11 @@ namespace RimMandrake.TheSump
                        + "basins. Affects planets generated afterwards, never one "
                        + "that already exists.");
             biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Tar vault seals contents (no rot; extraction needs solvent)", ref tarVaultEnabled,
+                "The tar vault (RUT_TarVault) freezes rot on anything sealed inside it. "
+              + "Off: it behaves like an ordinary shelf, no sealing, no solvent gate.");
             list.GapLine();
 
             list.Label("This biome's own mechanics — the poured tar moat and fuse-"

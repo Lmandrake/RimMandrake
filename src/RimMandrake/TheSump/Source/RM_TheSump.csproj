@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="RM_TheSumpMod.cs" />
     <Compile Include="RM_TheSumpBiome.cs" />
+    <Compile Include="RM_Comp_TarVaultSeal.cs" />
   </ItemGroup>
 
   <ItemGroup>

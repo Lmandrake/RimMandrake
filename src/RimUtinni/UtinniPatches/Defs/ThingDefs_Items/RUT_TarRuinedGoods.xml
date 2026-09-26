@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_TarRuinedGoods.xml                UtinniPatches — SUMP_TAR_VAULT_1
+
+  The "tarred variant" the item's own spec names — what comes out of
+  RUT_TarVault when RM_Comp_TarVaultSeal.ExtractOne finds no
+  RUT_WeakTarSolvent/RUT_StrongTarSolvent anywhere on the map. One uniform
+  ruined stand-in for ALL sealed content (food, corpse or hide alike) rather
+  than a per-category spoiled variant of each: the spec gives no per-type
+  ruin economics to build against, and food/corpse/hide each "ruin"
+  differently in vanilla terms (nutrition loss, identity loss, quality
+  loss) — a single, honestly-worthless junk resource is a real, provable
+  "useless" outcome without guessing at three separate mechanics.
+
+  Non-rottable (no CompRottable) on purpose: it is ALREADY the ruined end
+  state, not something that decays further — the loss already happened at
+  the moment of failed extraction.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_TarRuinedGoods</defName>
+    <label>tar-ruined goods</label>
+    <description>Whatever this was — food, flesh, hide — the tar did not let go clean. It came up as a single fused black lump, worthless for anything but burning.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_TarRuinedGoods/RUT_TarRuinedGoods</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(40, 34, 28)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>0.1</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0.9</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+</Defs>
