@@ -1908,10 +1908,10 @@
     "sha": "1ae30640a"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompStationEater.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "665f9722e4edbc3af2c193cf21cbfe0f5284b8965d05982640e875faa7078da0",
-    "sha": "71afa1c0d"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "0b00cc31d34549790e4277417fd55f2092b52862ff712199e18a37c625b1e53d",
+    "sha": "d91e092c4"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs": {
     "cleanCount": 1,
@@ -1938,10 +1938,10 @@
     "sha": "0cdbc22b8"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompWorkedLottery.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "c20b4d9dd7901fe544ea976f624e66609cfe5d361d8449259d11b5357f8f5fd5",
-    "sha": "c1ae25eaa"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "b82362efb0eadfaafe20391dc15f7433120afd55c589c9abf492ea3da4780e52",
+    "sha": "d91e092c4"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_Comp_TarCoatingSource.cs": {
     "cleanCount": 1,
@@ -2134,6 +2134,12 @@
     "date": "2026-09-23",
     "hash": "4ec38cd85ddcc2a73a45f89ed25a03a7328b1186ca8a962f44f06bd8995ded1e",
     "sha": "b71a46130"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_DisarmLotteryTrap.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "55fc57c544b69a7bc34b1aaafe24da249213539117b284cc6454a11aad6a8039",
+    "sha": "d91e092c4"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_GnawTreeBase.cs": {
     "cleanCount": 1,
@@ -2482,6 +2488,12 @@
     "date": "2026-09-14",
     "hash": "b2d163c1468678bfa1152dc0015ad84d6ca37d6f029e51c52a115e530d8de640",
     "sha": "6f7f5ff61"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_WorkGiver_DisarmLotteryTrap.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a96d310797ad5d8e874c58dbb8d9f52fe742ebcb8397726376995340090a8be3",
+    "sha": "d91e092c4"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_WorkGiver_WorkLottery.cs": {
     "cleanCount": 1,
