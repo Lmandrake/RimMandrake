@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
+  <!-- THEFORGE_RM_MOD_BUILD_1, 2026-09-25: carrying the world until the
+       terminal paint; content lives in mandrake.rm.theforge; do not edit
+       here. -->
+
   <!--
     RUT_TheForge                                   UtinniPatches - authored 2026-09-09
     BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/

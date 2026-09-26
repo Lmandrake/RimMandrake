@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_TheForge.xml                   UtinniPatches — new file
+  ============================================================================
+  THEFORGE_RM_MOD_BUILD_1. Wires the campaign's Star Wars fauna onto
+  RM_TheForge's wildAnimals, layered on top of the 5 non-Star-Wars/from-
+  scratch rows that mod ships inline (AA_Aerofleet, LavaSnail, AA_Metallovore,
+  AA_CrescendoAnole, RM_FleetFlier). Per §7 Q11 ("RimMandrake should not name
+  star wars ever"), RM_TheForge may not carry any Star Wars creature by any
+  route, so every Star Wars row the frozen RUT_TheForge.xml carries rides
+  HERE instead. Shape: WildAnimals_Pyrelands.xml / WildAnimals_LeaningScrub.xml.
+
+  🔑 SOURCE OF TRUTH: defNames and weights copied verbatim from the LIVE
+  RUT_TheForge.xml wildAnimals block (read directly, not from
+  rosters/the_forge.json, which THEFORGE_RM_MOD_BUILD_1's own analysis
+  already found stale/incomplete against the live def).
+
+  🔴 Two rows cast their OWNED RSW_ port, not the donor's bare defName —
+  fixing a live mismatch, not merely following convention:
+    - LavaFlea (mlie.starwarsanimalcollection, 0.25) -> cast as RSW_LavaFlea
+    - Beldon (mlie.starwarsanimalcollection, 0.08) -> cast as RSW_Beldon.
+      FORGE_MECHANICS_1's own tibanna-tap patch
+      (Patches/RUT_TibannaTap_BeldonWiring.xml) has ALWAYS targeted
+      RSW_Beldon, a defName that has never actually spawned on the frozen
+      RUT_TheForge (whose own wildAnimals lists only the donor's bare
+      Beldon). This op is the first place the tap's real target actually
+      lives in a Forge wildAnimals list.
+  RSW_Maguana (mandrake.rsw.swbestiary, 0.5) is already RSW_-tier and just
+  needs the file - unchanged.
+
+  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
+  returns true on no match) - validated with
+  skills/rimworld-modding/scripts/validate_patch.py against the live def
+  dump and the full active mod set; an unmatched PatchOperationAdd is
+  silent, so a clean run there is not proof a row landed.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_TheForge"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_TheForge"]/wildAnimals</xpath>
+      <value>
+        <RSW_LavaFlea MayRequire="mandrake.rsw.swbestiary">0.25</RSW_LavaFlea>
+        <RSW_Beldon MayRequire="mandrake.rsw.swbestiary">0.08</RSW_Beldon>
+        <RSW_Maguana MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Maguana>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
