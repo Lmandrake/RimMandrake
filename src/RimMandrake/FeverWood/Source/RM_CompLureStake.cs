@@ -52,6 +52,18 @@ namespace RimMandrake.FeverWood
                 bait.health.AddHediff(stakedDef);
             }
             wasLiveLastTick = true;
+            // The "stake as lure" designation's job is done now that the bait
+            // is actually staked — clear it. Left in place, it would fire
+            // RM_WorkGiver_StunForStaking/RM_WorkGiver_HaulToStake again on
+            // this same pawn the next time it goes Downed for any unrelated
+            // reason (a fight, an illness), including after ReleaseBait has
+            // already freed it — ReleaseBait removes the hediff, not this
+            // designation, so nothing else ever clears it.
+            Designation stakeDesignation = parent.Map.designationManager.DesignationOn(bait, RM_TwoFrontLureDefOf.RM_Designation_StakeLure);
+            if (stakeDesignation != null)
+            {
+                parent.Map.designationManager.RemoveDesignation(stakeDesignation);
+            }
             parent.Map.GetComponent<RM_MapComponent_TwoFrontLure>()?.Notify_LureStaked(this);
         }
 
