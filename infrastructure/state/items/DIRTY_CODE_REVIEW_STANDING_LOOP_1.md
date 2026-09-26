@@ -4621,3 +4621,79 @@ the oldest unpicked candidate — worth taking next if no comparably cohesive
 `biome_paint_list.md` until told the concurrent biome-split build is done.
 Re-survey `list --show-untracked` fresh rather than trusting any carried-forward
 count.
+
+## Wave 12 — 2026-09-25
+
+Same concurrent-biome-build session as waves 9-11 — again steered clear of
+every biome-specific mod folder and `biome_paint_list.md`. Picked up exactly
+wave 11's "next wave" pointer, both small clusters together (5 files):
+`CreatureBehaviors/Source/RM_DamageWorker_StingAccumulate.cs`,
+`RM_DirectedAssaultExtension.cs`, `RM_JobGiver_AvoidOwnKind.cs` (RM tier, not
+biome-specific) plus `ShipShields/Source/CompProperties_ShieldCryoEnvelope.cs`
++ `CompShieldCryoEnvelope.cs` (RUT tier, not biome-specific).
+
+Correction to wave 7's note: `RM_JobGiver_AvoidOwnKind.cs` was **not** already
+CLEAN — a fresh `check` on all three CreatureBehaviors candidates showed all
+three `(never marked clean)`, i.e. genuinely NEVER ENTERED, matching this
+wave's own `list --show-untracked` survey. Also: the `modcheck/` Python tools
+named as "the oldest unpicked candidate" in every wave since wave 3 turn out
+to be **already fully CLEAN** (all 17 files in `src/RimMandrake/Utils/modcheck/`
+— `cli.py`, `doctor.py`, `floor.py`, `judge.py`, `northstar.py`,
+`readline_registry.py`, `report.py`, `runner.py`, `selftest*.py`, `status.py`,
+`suite.py`, `walklint.py`, `__init__.py` — read CLEAN in this wave's survey).
+Whoever named it in waves 3-11 was carrying forward a stale pointer without
+re-checking; dropping it as a candidate from here on.
+
+Confirmed all 5 files reachable: the 3 CreatureBehaviors files have live
+`<Compile Include>` entries in `RM_CreatureBehaviors.csproj`, the 2 ShipShields
+files in `RimMandrake.Utinni.ShipShields.csproj`. Confirmed content-wired, not
+shelf code: `RM_DamageWorker_StingAccumulate` is `RM_SkerrelSting`
+(`DamageDef`)'s live `workerClass` in
+`Greentide/Defs/DamageDefs/RM_Skerrel_Combat.xml` (Greentide is not one of the
+excluded biome folders — read only, not edited);
+`RM_DirectedAssaultExtension`'s `huntRadius`/`arrivalDistance` fields are both
+read by `RM_JobGiver_DirectedAssault.cs`; `RM_JobGiver_AvoidOwnKind` is a live
+`<li Class="...">` entry in `RM_ThinkTree_VerminBehaviors.xml`.
+
+Traced each for real bugs:
+- `RM_DamageWorker_StingAccumulate`: finds the pawn's existing hediff of the
+  DamageDef's hediff and adds severity to it instead of `AddHediff`-ing a new
+  instance every sting (the documented fix for `DamageWorker_AddGlobal`'s
+  own N-instances behavior) — clamps to `maxSeverity` on both the
+  new-hediff and existing-hediff paths, null-checks `thing is Pawn`,
+  `pawn.health`, and `dinfo.Def.hediff` before touching anything. No bug.
+- `RM_DirectedAssaultExtension`: pure `DefModExtension` data holder, no logic.
+- `RM_JobGiver_AvoidOwnKind`: seeds `nearestDistSq` at `avoidRadiusSq` so only
+  same-kindDef pawns strictly inside the avoid radius are considered (correct,
+  not an off-by-one), checks `other.Dead`/`pawn.Downed`/`pawn.Map` before
+  scanning, and only issues a `Goto` once `CellFinder.TryFindRandomCellNear`
+  finds a reachable cell — no job on failure. No bug.
+- `CompShieldCryoEnvelope`: shares its temperature-control call shape with the
+  already-CLEAN `CompShieldThermalVeil` (`GenTemperature.ControlTemperatureTempChange`
+  applied straight to `Room.Temperature`, confirmed byte-for-byte identical
+  guard structure by diffing the two files side by side) and adds one new
+  piece, the constant `interiorDriftPerInterval` drain — gated on its own
+  `room != null && !room.UsesOutdoorTemperature` check so it never writes to
+  an outdoor/null room. No bug.
+- `CompProperties_ShieldCryoEnvelope`: pure `CompProperties` data holder
+  (`insulationFactor`, `comfortTemperature`, `interiorDriftPerInterval`,
+  `intervalTicks`), no logic.
+
+No significant findings — no fixes needed. All 5 marked CLEAN at commit
+`0600bd884`.
+
+Re-measured after: `TALLY CLEAN 3203 DIRTY 147 ORPHANED 167 NEVER ENTERED 371`
+(was `CLEAN 3199 DIRTY 146 ORPHANED 167 NEVER ENTERED 376` at wave start —
+concurrent biome-split agents are still moving files in and out of every
+bucket each wave, same as waves 9-11 noted; only the 5 files this wave touched
+are attributable to this pass).
+
+Next wave: the `modcheck/` candidate is now retired (see correction above —
+it was already fully CLEAN). Re-survey `list --show-untracked` fresh for the
+next cohesive cluster rather than reusing any prior wave's named candidates,
+since both small clusters named by wave 11 are now done. ⛔ Keep avoiding
+biome-specific mod folders (`BlueDesert`, `FeverWood`, `ForsakenCrags`,
+`LeaningScrub`, `LongShade`, `NightsideIce`, `PoisonForest`, `Stillsand`,
+`TerminalBiomes`, `TheForge`, `TheRot`, `Wasteland`, `Miasma`, `Contagion`,
+`Pyrelands`, `GelatinousSlime`, `LanternDeeps`, `RustCathedral`) and
+`biome_paint_list.md` until told the concurrent biome-split build is done.

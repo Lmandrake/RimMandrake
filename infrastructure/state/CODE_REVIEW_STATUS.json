@@ -1163,6 +1163,18 @@
     "hash": "28cd4cc56189aca7ac4379054cc209bc43a0051b5a9c25e9bac2ff22cee6d606",
     "sha": "e05f7e0f8"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_DamageWorker_StingAccumulate.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "de3344a94561f8df3f8e1ce4342088e9afc4b22001e238d01f18f5d45c82f27a",
+    "sha": "0600bd884"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_DirectedAssaultExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "3a4d7b36154e6c9c5bd163bb7b61498475cc9a8218f34e2fa756ac1c1c9b1fc8",
+    "sha": "0600bd884"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_EatCleanableExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -1288,6 +1300,12 @@
     "date": "2026-09-14",
     "hash": "c0b5a6423ecd2c4aea88283af4c5370fdad82c4cb357c3f1d88d028b2073d021",
     "sha": "3bcf80ccf"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_AvoidOwnKind.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "78dd6e5a19ede5dc1c4ebdd1d1a345852529b2a3f4bbfa1bbe25e1ee96a5a358",
+    "sha": "0600bd884"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_ChewAnchors.cs": {
     "cleanCount": 1,
@@ -18519,6 +18537,12 @@
     "hash": "dab4c7cc13b4f2cf269e51d34681f7f7976d67d2ac79d5928d30fd4bec38294e",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/ShipShields/Source/CompProperties_ShieldCryoEnvelope.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "dbf2510747a40e7018ed4e4dea7e356e52c7ed8ad2a7e8c710722ee5d6a03582",
+    "sha": "0600bd884"
+  },
   "src/RimUtinni/ShipShields/Source/CompProperties_ShieldGenerator.cs": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -18542,6 +18566,12 @@
     "date": "2026-09-09",
     "hash": "7ea3901320748d3cb291313d1804c7199da3795d873520109de0100e96b09dba",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/CompShieldCryoEnvelope.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "f002ec80fbe8039b6cfeedf0b97be7aaf3486fb7e85fd2c5922571f0fab35e97",
+    "sha": "0600bd884"
   },
   "src/RimUtinni/ShipShields/Source/CompShieldGenerator.cs": {
     "cleanCount": 3,
