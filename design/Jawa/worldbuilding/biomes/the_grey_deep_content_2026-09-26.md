@@ -21,6 +21,15 @@ where the drop and the sheet may disagree, for him to settle at a sitting._
 inside a **BENCH NOTE**, it is connective prose written by BENCH from his words and
 carries no more authority than a BENCH NOTE does. When in doubt, the quote wins.
 
+**Sitting, 2026-09-26 (same day, after this capture was written).** The owner read the
+capture at the bench and ruled on it. On the merge: *"Merge them into the sheet. It
+doesn't overwrite it, it adds to it"* — so the frozen sheet was extended additively
+(its sections marked `[+2026-09-26]`, new §4a–§4e) and this document is now the
+verbatim SOURCE behind those sections, not a pending amendment. Every flag in §8.2 and
+every question in §9 below carries a **RULED 2026-09-26** line with his answer; the
+reasoning is kept so a reader sees what was asked and what was decided. Where a ruling
+overrode a BENCH position, the line says so.
+
 **Where the Grey Sea stands in the build, MEASURED by BENCH 2026-09-26** (do not
 re-derive):
 
@@ -631,6 +640,7 @@ candidate for the Oracle-style text-only consumer, since it *only* speaks in che
 add detail, never change a ruling; the unfreeze is his call at a sitting. Read against
 every section of the sheet and of `terminator_sea.md` (inherited), the drop sorts as
 follows. **BENCH does not resolve any FLAG below — that is the sitting's job.**
+*(The sitting happened, 2026-09-26 — see the RULED lines in §8.2.)*
 
 ### 8.1 Additive — lands under the sheet as written
 
@@ -655,31 +665,46 @@ follows. **BENCH does not resolve any FLAG below — that is the sitting's job.*
    that thinks, not a second giant *animal*, and the sheet's "lineage" language is about
    the fauna. But it IS a new apex presence in a biome whose whole law is solitude, so he
    should say so in a sitting.
+   **RULED 2026-09-26: ADDITIVE — merges in.** "One endemic giant lineage" stands; the
+   Elders stand beside it. Sheet §4 carries the non-contradiction sentence (sessile,
+   mineral, no crèche, no lineage — a formation that thinks, not a second giant animal).
 2. **"Abundant" vs no-schools/no-swarms.** §3's *"abundant shrimp, clam and mussel
    equivalents"* against `the_grey_deep.md` §6 ban 2 and `terminator_sea.md` §6 *"no herds,
    flocks, schools, packs or swarms … fauna are single-spawn and low-density by def."*
    **BENCH position:** abundance by many *individually spawned* sessile things (a mussel
    equivalent at commonality 0.6, `wildGroupSize 1`) satisfies both; a schooling or
    clustered def does not. Build to that and no ruling moves.
+   **RULED 2026-09-26: ADDITIVE — merges in.** Ban 2 stands; the layer is many
+   individual spawns of sessile or slow things, and a mussel cluster on a pillar is a
+   placement, not a moving group (sheet §4). ⚠️ The same sitting also ruled the layer's
+   membership — see Q5: **all three are new**, including a small shrimp.
 3. **Membranes that retract / fans that rotate** vs `terminator_sea.md` §6 *"no
    heliotropism, no sun-tracking, no plants that open and close."* The Brine Crown (§4.3)
    retracts on *salinity shift* and the Fan Palm (§4.4) rotates panes. **BENCH position:**
    the ban's target is sun-driven diurnal behaviour on a world with no day; a
    chemistry-driven defensive retraction is not that. But it is *"plants that open and
    close"* by the plain words, and the sheet inherits it — flagged.
+   **RULED 2026-09-26: ADDITIVE — merges in.** The inherited ban stands (its object is a
+   plant keeping a day on a world with none); the Crown moves on a chemical cue and the
+   palm's panes track nothing. Sheet §4a carries the sentence.
 4. **Salt snow vs "no snow, no ice".** `terminator_sea.md` §6. **BENCH position:** that
    ban is about water weather on the surface (its own reason: *"at +14 °C with no lift, the
    only water delivery is thin fog"*); the drop's weather is salt, on the floor. Additive.
    ⚠️ The def's existing vanilla `Rain 4` IS against the ban and is a pre-existing defect.
+   **RULED 2026-09-26: ADDITIVE — merges in.** "No snow" stands for the surface; salt
+   falling out of supersaturated brine onto the floor is not weather-snow (sheet §4c).
 5. **Chemosynthetic symbionts** (Salt Chimney Vines, §4.5) vs `terminator_sea.md` §6 *"no
    cold gas vents … those belong to the poison forest."* **BENCH position:** warm mineral
    seeps ≠ cold gas vents; the chimneys vent *brine*, not gas. Additive.
+   **RULED 2026-09-26: ADDITIVE — merges in.** "No cold gas vents" stands; warm salt
+   seeps are not cold gas (sheet §4a).
 6. **Star Wars canon inside a franchise-free sea.** The Elder's treasure list names a
    lightsaber, the Rakatan era, a pre-Republic navcore and a droid brain. Per Q11a these are
    IP and live in the `RSW_`/`RUT_` layer — the `RM_` Elder ships with the three invented
    treasures and the canon three are patched on. Not a sheet contradiction; a tier rule.
 7. **The Reshapers** — a new proper noun for a ruled people (§7.2). Not a contradiction;
    a naming question (Q9), and the legacy index's drift rule applies.
+   **RULED 2026-09-26: the Reshapers ARE the Rakata** — the Elders' own exonym; see Q9.
 
 ### 8.3 Roster consequences
 
@@ -697,6 +722,13 @@ to diving mods"` — the diving mod shipped, so that deferral has expired (as
 Each with a BENCH position, so a sitting can say "yes" or "no" rather than design from
 scratch. None is blocking for the smallest build steps in §10.
 
+**All ten were RULED at the bench, 2026-09-26** — each carries its answer below. Two
+rulings went further than the BENCH position (Q5: a new small shrimp too; Q10: one Elder
+per Grey tile). What remains open after the sitting is listed in the sheet's Owed
+section under *"Still open"*: the unnamed squirting pool creatures, the charge tell's
+rendering against ban 4, a plot home for the useless artifact, the salt palette
+inference, and the unassigned liquid/jacket defNames.
+
 - **Q1 — The frozen pawn: hediff or jacket-thing?** Vanilla has no pawn-freezing hediff
   (MEASURED, §6). Two honest shapes: (a) a hediff of ours — Moving 0, a smothering
   severity ramp, removed by a chisel job on the pawn's cell; (b) the pawn is *encased*:
@@ -707,52 +739,89 @@ scratch. None is blocking for the smallest build steps in §10.
   war's vehicles is the sheet's image exactly. It is also the more dangerous of the two
   (a downed pawn can be rescued; an encased one must be dug), which is what *"ultra-
   protected"* asks for.
+  **RULED 2026-09-26: (b).** A crystallised pawn is ENCASED AS AN OBJECT that must be
+  mined out — not a hediff. One mechanism for living and dead, matching the statuary
+  and Odyssey's `SolidIce_Loot` shape. Sheet §4d.
 - **Q2 — Do the salt chimneys carry the crystallisation defence?** He gave the defence to
   pools and to "creatures near them"; chimneys vent the same super-brine. **Position:**
   yes, at reduced range — a chimney's plume is a small standing hazard cell-cluster that
   jackets anything that walks into it, which makes chimneys the *visible* teacher of a
   mechanism the pools deliver invisibly. Costs one shared comp.
+  **RULED 2026-09-26: yes.** Salt chimneys also crystallise, at shorter range; the plume
+  is a standing hazard cluster; chimneys are the visible teacher. Sheet §4b.
 - **Q3 — Brine rivers.** Glass Veil Kelp grows *"over trenches and brine rivers"*; the
   pocket map has no river genstep and the surface sea has `allowRivers false`.
   **Position:** a floor "brine channel" terrain strip from a chimney field down to a pool
   (the super-brine flows downhill into the basin), generated as a terrain line, no
   vanilla river machinery. It gives the kelp its home and gives the floor a legible
   gradient toward the danger.
+  **RULED 2026-09-26: yes.** Brine rivers = a brine CHANNEL TERRAIN STRIP generated from
+  the chimney field downhill into a pool; no vanilla river machinery. Sheet §4b.
 - **Q4 — How far does "every shoreline carries the crusty whiteness" reach?** Texture only
   (a Grey shore terrain), or also image 03's domes breaking the surface as shore things?
   **Position:** both — the terrain is the rule ("every"), the domes are scatter on it. The
   shore is the one part of the Grey a non-diving player ever sees, so it carries the whole
   biome's identity above water.
+  **RULED 2026-09-26: both.** The shore = the white crust TERRAIN plus salt domes scattered
+  on it. **No harvestable shore salt** — the sea-floor salt stays the prize. Sheet §4b;
+  item `GREYSEA_SHORE_MUTATOR_SPECIFICS_1`.
 - **Q5 — Shrimp/clam/mussel equivalents: new defs, or sorruth + otheska already?** The
   Grey has two shelled floor-crawlers; his sentence names three groups. **Position:** two
   new sessile defs (a "mussel" that clusters on pillars and domes and a "clam" that sits in
   sediment), both catchable (floor + `*Catch`), and *no* new shrimp — `RM_Fessk` is the
   shrimp, and a small shrimp would read as a second of the same kind in a biome whose law
   is "do we already have one?".
+  **RULED 2026-09-26: ALL THREE ARE NEW — a shrimp, a clam and a mussel.** ⚠️ This
+  OVERRODE the BENCH position above that `RM_Fessk` covers shrimp. The new shrimp must
+  be SMALL and authored so it does not read as a duplicate of the man-sized ossuary
+  shrimp. Mussel clusters on pillars and domes; clam sits in sediment. All three
+  catchable (floor animal + `*Catch`). Sheet §4; item `GREYSEA_SESSILE_LAYER_1`. (§10
+  step 9's "two sessile defs" is therefore three; §8.2 item 2's "no schools" reading is
+  unchanged.)
 - **Q6 — Sphere-plant "weaponry": contact damage?** *"both armour and weaponry."*
   **Position:** yes, low — a `RM_Venomvine`-style touch injury, so the floor has two plants
   that hurt (Brine Crown, sphere) and five that do not, and a diver learns to read the
   crystal by shape.
+  **RULED 2026-09-26: yes, low contact damage.** Sheet §4a form 2.
 - **Q7 — The Elder's discharge: defence, event, or both?** **Position:** both, on a clear
   tell. It fires *defensively* when the pool is disturbed (harvest at the shore is fine;
   mining the jacket at the pool's edge is a disturbance), and *rarely* on its own as an
   incident — the biome's one "weather" that is not weather, with a visible charge build-up
   on the limbs so an observant diver leaves before it lands. The sheet's own principle:
   *"the tell that lets the observant survive."*
+  **RULED 2026-09-26: BOTH** — a defence when its pool is disturbed AND a rare unprompted
+  event, with a visible charge build-up on the limbs as the tell. Sheet §4e. (Still open
+  there: how the tell renders against the sheet's ban 4, "the only glow is the giant's
+  mark" — the discharge is an event, not dressing; the tell should read as motion and
+  crackle rather than a standing light.)
 - **Q8 — "Cripple nearby ships."** What does an Elder discharge do to a gravship
   (Odyssey)? UNMEASURED in engine terms — gravship damage/disable surfaces were not
   investigated in this pass. **Position:** file it as a bar on the Elder item, resolved by
   a Desktop RimSage read, and do not let it gate the Elder's other three effects.
+  **RULED 2026-09-26: as positioned.** "Cripple nearby ships" is filed as its own engine
+  check on `GREYSEA_BRINE_ELDERS_1` and does not block stun, droid-disable or shield
+  collapse. Sheet §4e.
 - **Q9 — Are "the Reshapers" the Rakata?** (§7.2.) **Position:** yes — it is the Elders'
   own word for the people who terramanufactured the world, and it should be *recorded as
   their exonym* in `rakatan_legacy_index.md` (a row: "the Elders' memory — the only
   eyewitness to the arrival") rather than introduced as a new faction. If he means a
   *different* people — earlier than the Rakata — that is a new lore thread and needs its
   own sitting before anything is written.
+  **RULED 2026-09-26: yes — "the Reshapers" ARE the Rakata**, the Elders' own exonym for
+  the people who terramanufactured the world. Recorded as their word, not a new faction.
+  `rakatan_legacy_index.md` owes the eyewitness row (sheet Owed). Sheet §4e.
 - **Q10 — Is the whole Elder a Grey-Sea-only thing, or do other seas get one?** *"scattered
   deep basins"* is plural. **Position:** Grey only, for now — the Grey is the planet's
   chemical works and the only sea with the super-brine substrate; the Twilight Deep's law
   is mat-and-placid and the Scald boils. Anything else is a later drop.
+  **RULED 2026-09-26: Grey Sea ONLY — and ONE PER GREY SEA TILE.** Owner, verbatim:
+  *"ONLY grey sea, but there's one per grey sea tile"*. ⚠️ This is more than the BENCH
+  position: "scattered deep basins" (§7.2) resolves to every Grey tile having its
+  deepest pool and its Elder. Mechanical consequence, written into sheet §4e: an Elder
+  values a novelty ONCE, so a specimen already traded to one tile's Elder is still novel
+  to the next tile's — the Grey's tiles are a distributed market, and "travel to another
+  Grey tile" becomes a real reason to move. The per-Elder seen-set must persist per
+  tile.
 
 ## 10. Build-order suggestion, smallest first
 
