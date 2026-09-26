@@ -368,4 +368,63 @@
     </match>
   </Operation>
 
+  <!-- POISONFOREST_RM_MOD_BUILD_1, 2026-09-25: the "Advanced Biomes (Continued)"
+       block above targets that donor mod's OWN bare "PoisonForest" biome def,
+       which no tile on this world has ever carried (tiles carry RUT_PoisonForest,
+       our own def, since BIOME_WORLD_SWITCH_WAVE_1). That makes the donor block
+       permanently inert here — a real functional gap the item's own §7 found.
+       These two unconditional ops (no PatchOperationFindMod gate needed — both
+       targets are our own defs, always present once their mod is active) give
+       RUT_PoisonForest and its RimMandrake successor RM_PoisonForest the same
+       ScatterShrines suppression/replacement every other Ash'karr biome gets,
+       per biome_mod_architecture.md §5 step 4 ("anything that must keep working
+       on the live world gets a second op for RM_<Biome> beside the RUT_ one"). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]/preventGenSteps</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]</xpath>
+      <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]/preventGenSteps</xpath>
+      <value><li>ScatterShrines</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]/extraGenSteps</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]</xpath>
+      <value><extraGenSteps><li>RUT_ScatterShrinesRare</li></extraGenSteps></value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]/extraGenSteps</xpath>
+      <value><li>RUT_ScatterShrinesRare</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]/preventGenSteps</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]</xpath>
+      <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]/preventGenSteps</xpath>
+      <value><li>ScatterShrines</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]/extraGenSteps</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]</xpath>
+      <value><extraGenSteps><li>RUT_ScatterShrinesRare</li></extraGenSteps></value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]/extraGenSteps</xpath>
+      <value><li>RUT_ScatterShrinesRare</li></value>
+    </match>
+  </Operation>
+
 </Patch>

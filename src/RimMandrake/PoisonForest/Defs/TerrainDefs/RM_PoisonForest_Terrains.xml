@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    RM_PoisonForest_Terrains.xml    RimMandrake: Poison Forest
+
+    POISONFOREST_RM_MOD_BUILD_1: the biome's own NATURAL ground, replacing the
+    donor BiomesPlus terrains (PoisonSoil / PoisonSoilRich) the RUT_PoisonForest
+    twin used in <terrainsByFertility> with no def backing them anywhere in
+    this repo (BiomesPlus's own source is not in vendor/mod_sources — net-new
+    content, not a field-for-field port, per the item's own §6). Same shape
+    as RM_TheRotGrass/RM_TheRotSoilRich (src/RimMandrake/TheRot/Defs/TerrainDefs/
+    RM_TheRot_GroundTerrains.xml): NaturalTerrainBase parent, reuses vanilla
+    Core's own Soil/SoilRich texturePaths so this mod ships zero new terrain
+    art and zero new terrain dependency.
+  -->
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_PoisonSoil</defName>
+    <label>poison soil</label>
+    <description>Ground laced through with the cold, metal-rich exhalations of the forest floor. Plantable, but nothing that grows here does so quickly.</description>
+    <texturePath>Terrain/Surfaces/Soil</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>315</renderPrecedence>
+    <pathCost>3</pathCost>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <fertility>0.85</fertility>
+    <takeFootprints>true</takeFootprints>
+    <avoidWander>false</avoidWander>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_PoisonSoilRich</defName>
+    <label>rich poison soil</label>
+    <description>Dense, blackened ground where the vented gas has settled longest — the richest soil the Poison Forest has to offer, and the most saturated.</description>
+    <texturePath>Terrain/Surfaces/SoilRich</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>335</renderPrecedence>
+    <pathCost>2</pathCost>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <fertility>1.2</fertility>
+    <takeFootprints>true</takeFootprints>
+  </TerrainDef>
+
+</Defs>

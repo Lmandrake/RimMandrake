@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_PoisonForest                    POISONFOREST_RM_MOD_BUILD_1, new 2026-09-25
+
+    Copied from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
+    RUT_PoisonForest.xml (authored 2026-09-09, most recently updated by
+    COMMISSION_LEDGER_CLEANUP_1 2026-09-24/25) per
+    design/RimMandrake/biome_mod_architecture.md §5 Phase A step 2. Every
+    field below is the twin's own content, unchanged, EXCEPT:
+
+      - generatesNaturally: the twin sets this false (it is placed only by
+        hand on the frozen campaign world, never by vanilla worldgen scoring).
+        Dropped here (defaults true) so this mod's own worker can actually
+        place the biome on OTHER, generated planets — same as every sibling
+        RM_ biome mod.
+      - workerClass: the donor BiomesPlus.BiomeWorker_PoisonForest becomes
+        this mod's own RimMandrake.PoisonForest.RM_BiomeWorker_PoisonForest
+        (§5 step 2 — a donor type in workerClass is a hard dependency the
+        RimMandrake tier may not assume). [INVENTED] placement ranges, same
+        footing as every sibling worker's own ranges — see RM_PoisonForestBiome.cs.
+      - terrainsByFertility: the donor terrain names PoisonSoil/PoisonSoilRich
+        (BiomesPlus, MEASURED absent from this repo's own src/ tree — an
+        undeclared hard dependency in the twin) become this mod's own
+        RM_PoisonSoil/RM_PoisonSoilRich (net-new TerrainDefs, this mod's
+        Defs/TerrainDefs/RM_PoisonForest_Terrains.xml).
+      - wildAnimals: the 5 Star Wars/campaign-tier rows (Neebray, Mynock,
+        GraniteSlug — mlie.starwarsanimalcollection; RSW_Screecher,
+        RSW_VentStalker — mandrake.rsw.swbestiary) are OUT, per §7 Q11
+        ("RimMandrake should not name star wars ever"). They ride
+        src/RimUtinni/UtinniPatches/Patches/WildAnimals_PoisonForest.xml as
+        PatchOperationAdd onto this def instead. The other 13 rows (Genetic
+        Rim, Alpha Animals, Alpha Memes, Horrors — none Star Wars, Q9) stay
+        inline unchanged.
+      - wildPlants: RUT_TwistingThornwood, RUT_TreeMartyr and RUT_DarkCrust
+        are renamed+duplicated as RM_TwistingThornwood/RM_TreeMartyr/
+        RM_DarkCrust (this mod's own Defs/ThingDefs_Plants/
+        RM_PoisonForestFlora.xml) per §7 Q13 ("content wired into two biome
+        mods: duplicate, then diverge" — RM_TwistingThornwood's species is
+        also wired into RUT_CrackedLands, which keeps using the frozen
+        original). The 7 Alpha Biomes rows stay inline unchanged.
+
+    Everything else — texture, terrain (Marsh/Riverbank), weather, diseases —
+    is the twin's content unchanged.
+
+    ⚠️ NOT donor-free: texture (Biomes/PoisonForest, BiomesPlus) and the 7
+    remaining wildPlants rows (Alpha Biomes) carry no MayRequire, inherited
+    unchanged from the frozen campaign twin — not this build's scope to fix,
+    see About.xml for the disclosure. The 13 wildAnimals rows keep their
+    original MayRequire gates and degrade gracefully without them.
+  -->
+
+  <BiomeDef>
+    <defName>RM_PoisonForest</defName>
+    <label>the Poison Forest</label>
+    <description>A low, wet-black forest standing in permanent dusk over ground that breathes. The light never changes and casts nothing you could call a shadow; trunks weep a grey metallic sweat that hardens into scabs and crystal fans. Nearly everything alive here is either sealed against the vented metal-rich gas or has processed the load and become toxic itself -- and nothing is fast, because a chemosynthetic budget is thin.</description>
+    <workerClass>RimMandrake.PoisonForest.RM_BiomeWorker_PoisonForest</workerClass>
+    <lakeBeachTerrain>Marsh</lakeBeachTerrain>
+    <mudTerrain>Marsh</mudTerrain>
+    <riverbankTerrain>Riverbank</riverbankTerrain>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>0.8</animalDensity>
+    <plantDensity>0.5</plantDensity>
+    <forageability>1.0</forageability>
+    <movementDifficulty>2</movementDifficulty>
+    <texture>Biomes/PoisonForest</texture>
+    <diseaseMtbDays>30</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>160</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SleepingSickness</diseaseInc>
+        <commonality>140</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>RM_PoisonSoil</terrain>
+        <min>-999</min>
+        <max>0.87</max>
+      </li>
+      <li>
+        <terrain>RM_PoisonSoilRich</terrain>
+        <min>0.87</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Fog>90</Fog>
+      <Clear>0</Clear>
+      <DryThunderstorm>1</DryThunderstorm>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- beetlefleet - small-shelled, keep -->
+      <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - small, keep -->
+      <AA_OcularJelly MayRequire="sarg.alphaanimals">0.5</AA_OcularJelly>  <!-- ocular jelly - small, keep -->
+      <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- corruptor dryad - small, keep -->
+      <AM_Dryad_Ocular MayRequire="sarg.alphamemes">0.4</AM_Dryad_Ocular>  <!-- ocular dryad - small, keep -->
+      <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- tumorous dryad - small, keep -->
+      <Visceral MayRequire="mlie.horrors">0.35</Visceral>  <!-- visceral - medium-pred, keep -->
+      <AA_BedBug MayRequire="sarg.alphaanimals">0.3</AA_BedBug>  <!-- bedbug - small-pred, keep -->
+      <AA_CrystalMit MayRequire="sarg.alphaanimals">0.15</AA_CrystalMit>  <!-- crystalmit - small, keep -->
+      <AA_GiantCrownedSilkie MayRequire="sarg.alphaanimals">0.15</AA_GiantCrownedSilkie>  <!-- giant crowned silkie - medium, keep -->
+      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - medium, keep -->
+      <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - giant, keep -->
+      <AA_Wildpod MayRequire="sarg.alphaanimals">0.05</AA_Wildpod>  <!-- wildpod - giant, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <RM_TwistingThornwood>0.6</RM_TwistingThornwood>  <!-- twisting thornwood - tree -->
+      <AB_CrystalFlower>0.5</AB_CrystalFlower>  <!-- crystal flower -->
+      <RM_TreeMartyr>0.5</RM_TreeMartyr>  <!-- martyr tree - tree -->
+      <AB_BloodBouquet>0.4</AB_BloodBouquet>  <!-- blood bouquet -->
+      <AB_RavenNettle>0.4</AB_RavenNettle>  <!-- raven nettle -->
+      <AB_GiantAgariTox>0.3</AB_GiantAgariTox>  <!-- agaritox - tree -->
+      <AB_RedBugloss>0.3</AB_RedBugloss>  <!-- red bugloss -->
+      <AB_KeeningCordax>0.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
+      <AB_GiantToxicFlower>0.08</AB_GiantToxicFlower>  <!-- giant toxic flower -->
+      <RM_DarkCrust>0.25</RM_DarkCrust>  <!-- vein moss - phototroph film -->
+    </wildPlants>
+    <wildPlantRegrowDays>15</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>
