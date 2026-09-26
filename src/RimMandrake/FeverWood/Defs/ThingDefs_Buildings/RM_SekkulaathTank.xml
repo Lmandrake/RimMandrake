@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SekkulaathTank.xml                            FEVERWOOD_DIANOGA_PRISON_1
+
+  "A prison tank, not a pen: it teaches, it produces, and it can get out"
+  (design sheet §6j/§6m, owner rulings 2026-09-23). 🔴 It is a CELL, not a
+  pen — the occupant is a prisoner, not livestock ("Do not write, name or
+  art this as animal husbandry"). Everything below is written to that: no
+  "feed your animal" language, no husbandry flavour.
+
+  RM_LivingCapturePodBase is the GENERIC abstraction the item's own `open`
+  list asked this build to decide ("what the generic abstraction actually
+  is... it is the first real decision of the build"): one abstract Building
+  ThingDef + one parameterised comp (RM_CompProperties_CapturedSpecimen),
+  never a bespoke class per captive species. 4a's own named candidates
+  (venom creature, egg-layer, blood donor, nectar-drinker) are meant to
+  ParentName off THIS base with a different occupant/product set, not a new
+  ThingDef hierarchy.
+
+  Feeding rides vanilla CompRefuelable (fuelFilter: any MeatRaw item) rather
+  than new hauling/UI code — WorkGiver_Refuel already delivers meat to any
+  refuelable building with no bespoke job. "Fed corpses or meat" (§6j):
+  corpses are deliberately NOT wired as fuel here (CompRefuelable's fuel
+  value model does not fit a Corpse Thing cleanly) — a documented scope cut,
+  not an open design question; meat alone already satisfies "fed... it
+  yields the product line."
+
+  Escape triggers (RM_CompCapturedSpecimen): sustained neglect (empty fuel
+  past a threshold, then an MTB roll) OR damage past a threshold fraction
+  (a flat per-hit chance) — "a neglected OR damaged tank releases it" (§6j).
+  Tank materials, feed rate, and the damage threshold are INVENTED
+  placeholders (flagged per-field on the comp) — FEVERWOOD_DIANOGA_TANK_TUNING_1
+  owes the real numbers, same posture as the tentacle bestiary's own
+  FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.
+
+  No researchPrerequisites: the design doc names none for the tank, and
+  none was invented.
+
+  PLACEHOLDER ART: one flat-color 128x128 PNG. Searched artpipe done/
+  registry.jsonl for "tank"/"prison"/"sekkulaath"/"dianoga" first (standing
+  rule) — nothing for a containment vessel exists; canon_dianoga_v1_* is the
+  Star Wars-tier creature art, a different asset for a different tier.
+-->
+<Defs>
+
+  <ThingDef Name="RM_LivingCapturePodBase" ParentName="BuildingBase" Abstract="true">
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <passability>Impassable</passability>
+    <fillPercent>1.0</fillPercent>
+    <coversFloor>false</coversFloor>
+    <useHitPoints>true</useHitPoints>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <designationCategory>Production</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <!-- INVENTED tank-materials placeholders — see file header. -->
+      <WorkToBuild>2200</WorkToBuild>
+      <MaxHitPoints>260</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Beauty>-6</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <costList>
+      <Steel>90</Steel>
+      <WoodLog>40</WoodLog>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <building>
+      <claimable>true</claimable>
+      <deconstructible>true</deconstructible>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_LivingCapturePodBase">
+    <defName>RM_SekkulaathTank</defName>
+    <label>sekkulaath prison tank</label>
+    <description>A sealed, waterlogged cell, not a pen. Whatever is inside it did not agree to be there and is strong enough that it never has to — the tank holds because it is built to, not because the occupant tolerates it. Fed, it will produce; neglected or breached, it will not stay.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_SekkulaathTank/RM_SekkulaathTank</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <!-- INVENTED feed-rate placeholders — see file header. -->
+        <fuelConsumptionRate>3</fuelConsumptionRate>
+        <fuelCapacity>15</fuelCapacity>
+        <initialFuelPercent>0.5</initialFuelPercent>
+        <fuelFilter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </fuelFilter>
+        <destroyOnNoFuel>false</destroyOnNoFuel>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <fuelGizmoLabel>Occupant fed</fuelGizmoLabel>
+        <fuelLabel>meat stock</fuelLabel>
+        <targetFuelLevelConfigurable>false</targetFuelLevelConfigurable>
+      </li>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_CapturedSpecimen">
+        <occupantKindDefName>RM_Sekkulaath_Juvenile</occupantKindDefName>
+        <neglectDaysBeforeEscapeRisk>3</neglectDaysBeforeEscapeRisk>
+        <neglectEscapeMtbDays>4</neglectEscapeMtbDays>
+        <damageEscapeThresholdFraction>0.5</damageEscapeThresholdFraction>
+        <damageEscapeChancePerHit>0.35</damageEscapeChancePerHit>
+        <teachesColonyWarning>true</teachesColonyWarning>
+        <products>
+          <li>
+            <thing>RM_SeveredTentacleFlesh</thing>
+            <mtbDays>3</mtbDays>
+            <countRange>1~2</countRange>
+          </li>
+          <li>
+            <thing>RM_SekkulaathSpleenChemicals</thing>
+            <mtbDays>5</mtbDays>
+            <countRange>1~2</countRange>
+          </li>
+          <li>
+            <thing>RM_SekkulaathCream</thing>
+            <mtbDays>4</mtbDays>
+            <countRange>1~3</countRange>
+          </li>
+        </products>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

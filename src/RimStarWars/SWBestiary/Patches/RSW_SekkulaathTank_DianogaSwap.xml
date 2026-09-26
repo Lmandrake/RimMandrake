@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_SekkulaathTank_DianogaSwap.xml               FEVERWOOD_DIANOGA_PRISON_1
+
+  "Swap[s] the Dianoga in, replacing the Sekkulaath, when RimMandrake.StarWars
+  is present" (owner, 2026-09-23, ruling 2). "Note the gate he named: the
+  StarWars tier, not the campaign layer... the swap is
+  MayRequire='mandrake.rsw.swbestiary'" (item's own text) — RSW_Dianoga
+  already ships from THIS mod (mandrake.rsw.swbestiary), so the patch lives
+  here rather than inside the franchise-free mandrake.rm.feverwood, keeping
+  that RM-tier mod free of any Star Wars reference at all. MayRequire is
+  gated the other way round here (on mandrake.rm.feverwood, checked on each
+  Operation below) — same practical effect the ruling asks for, the swap
+  only happens when BOTH mods are present — chosen so this mod, which
+  already knows about Dianoga, owns the cross-reference instead of teaching
+  the RM tier about Star Wars.
+
+  One def-slot, never both ("Do not spawn both"): the occupant string is
+  REPLACED, not added to. RSW_Dianoga also gets RM_CompProperties_EscapedCaptive
+  added to its own (currently empty) <comps/>, so an escaped/installed
+  dianoga runs the same §6m stage-2 "reaches a pool" check the free-tier
+  Sekkulaath does — without this, the swap would silently drop that half of
+  the mechanic for the campaign-layer creature.
+
+  Whether a true PATCH-based swap or a runtime substitution was the right
+  call was this item's own explicit "implementation choice, not yet made" —
+  this build picks the patch, because the occupant field is a plain string
+  (RM_CompProperties_CapturedSpecimen.occupantKindDefName) built specifically
+  to be retargeted this way, needing no C# on either side.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.feverwood">
+    <xpath>/Defs/ThingDef[defName="RM_SekkulaathTank"]/comps/li[occupantKindDefName="RM_Sekkulaath_Juvenile"]/occupantKindDefName</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_SekkulaathTank"]/comps/li[occupantKindDefName="RM_Sekkulaath_Juvenile"]/occupantKindDefName</xpath>
+      <value>
+        <occupantKindDefName>RSW_Dianoga</occupantKindDefName>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.feverwood">
+    <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.FeverWood.RM_CompProperties_EscapedCaptive" />
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

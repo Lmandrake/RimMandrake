@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T06:22:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T06:35:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -846,6 +846,15 @@ kind:     task
 summary:  1. Build the event object, the shared budget and the spawn response under the wasps
 prose:    infrastructure/state/items/REACTION_MECHANISM_GENERALISE_1.md
 
+## GREATBOLE_HARVEST_LADDER_1 The greatbole harvest: 40/60/70 thresholds, the fruit's three products, and the grubs that contest it
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Follow the spec document. Order, because it front-loads what can fail:
+prose:    infrastructure/state/items/GREATBOLE_HARVEST_LADDER_1.md
+
 ## FEVERWOOD_BOUGH_SOIL_TERRAIN_1 The crown cannot grow anything: boughway is fertility 0, so bough-soil is owed
 state:    doing
 row:      unassigned
@@ -863,6 +872,15 @@ target:   v1
 kind:     task
 summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6j, §6m.
 prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_PRISON_1.md
+
+## SEA_BEASTS_TIER_RULING_1 11 of the 18 sea beasts are invented originals filed as Star Wars IP
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Rename the 11 ThingDefs / PawnKindDefs and their juveniles from RSW to RM, with the C
+prose:    infrastructure/state/items/SEA_BEASTS_TIER_RULING_1.md
 
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
@@ -1541,16 +1559,6 @@ thin:     spec, verify and criteria all present
 summary:  1. Design this as the shared reaction mechanism's first proof, in mandrake.rm.creaturebehaviors,
 prose:    infrastructure/state/items/GREENTIDE_WASP_SWARM_1.md
 
-## GREATBOLE_HARVEST_LADDER_1 The greatbole harvest: 40/60/70 thresholds, the fruit's three products, and the grubs that contest it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Follow the spec document. Order, because it front-loads what can fail:
-prose:    infrastructure/state/items/GREATBOLE_HARVEST_LADDER_1.md
-
 ## FEVERWOOD_SAP_SUCKER_GUILD_1 Three sap-suckers, three defences, and the host plant that feeds them
 state:    proposed
 row:      unassigned
@@ -1590,16 +1598,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md
-
-## SEA_BEASTS_TIER_RULING_1 11 of the 18 sea beasts are invented originals filed as Star Wars IP
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Rename the 11 ThingDefs / PawnKindDefs and their juveniles from RSW to RM, with the C
-prose:    infrastructure/state/items/SEA_BEASTS_TIER_RULING_1.md
 
 ## WARDEN_MOTHER_BEFRIENDING_1 The warden mother: lumbers in water, cannot reach land, befriended by freeing the young she cannot
 state:    proposed
@@ -1800,3 +1798,13 @@ kind:     mechanism
 thin:     no ## verify, no ## criteria
 summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
 prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
+
+## FEVERWOOD_DIANOGA_TANK_TUNING_1 Sekkulaath prison tank — real numbers, not placeholders
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## verify, no ## criteria
+summary:  Authority: FEVERWOODDIANOGAPRISON1 (build), design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
+prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_TANK_TUNING_1.md

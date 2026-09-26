@@ -528,3 +528,8 @@
 {"seat":"FOUNDRY","event":"start","id":"FEVERWOOD_DIANOGA_PRISON_1","ts":"2026-09-26T06:22:01Z"}
 {"seat":"FOUNDRY","event":"needs","id":"FEATURE_DRAWCENTER_UNVERIFIED_1","to":"owner","reason":"52 single-piece drawCenter fixes staged to a new save slot; 8 multi-piece regions rendered with 3 candidates each -- both decisions (commit the fixes, pick the multi-piece placement) are his, a looking call","ts":"2026-09-26T06:22:07Z"}
 {"seat":"FOUNDRY","event":"note","id":"FEATURE_DRAWCENTER_UNVERIFIED_1","text":"Ready for his look: Transient/world_drawcenter_audit/drawcenter_overview.png (whole planet, 52 wrong single-piece labels marked red->star) and drawcenter_multipiece_<Name>.png x8 (candidates per scattered region). Fix applied offline to ASHKARR_LABELSIZES_DRAWCENTERFIX_2026-09-26.rws in the live Saves folder, layered on top of the still-pending WORLD_LABEL_SIZE_HIERARCHY_1 slot. Canonical save confirmed byte-unchanged by SHA-256 (98b8ef82...).","ts":"2026-09-26T06:22:10Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SEA_BEASTS_TIER_RULING_1","ts":"2026-09-26T06:31:16Z"}
+{"seat":"FOUNDRY","event":"start","id":"SEA_BEASTS_TIER_RULING_1","ts":"2026-09-26T06:31:18Z"}
+{"seat":"FOUNDRY","event":"file","id":"FEVERWOOD_DIANOGA_TANK_TUNING_1","title":"Sekkulaath prison tank — real numbers, not placeholders","kind":"task","target":"v1","needs":"owner","caused_by":"FEVERWOOD_DIANOGA_PRISON_1","for":"FOUNDRY","ts":"2026-09-26T06:32:06Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREATBOLE_HARVEST_LADDER_1","ts":"2026-09-26T06:32:34Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREATBOLE_HARVEST_LADDER_1","ts":"2026-09-26T06:32:40Z"}

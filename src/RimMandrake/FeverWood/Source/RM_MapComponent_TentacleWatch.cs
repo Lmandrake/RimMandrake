@@ -244,6 +244,17 @@ namespace RimMandrake.FeverWood
                 new TargetInfo(map.Center, map), MessageTypeDefOf.ThreatBig);
         }
 
+        // FEVERWOOD_DIANOGA_PRISON_1: called by RM_CompEscapedCaptive when
+        // an escaped tank occupant reaches registered water (§6m stage 2,
+        // "if it reaches a pool it establishes"). Un-sets a prior permanent
+        // kill on this map — the elder-being ambient system is guaranteed
+        // live here again. See that class's own header for what this
+        // deliberately does NOT build (a timed stage-3 maturation).
+        public void Notify_SekkulaathInstalled()
+        {
+            permanentlyKilled = false;
+        }
+
         public void KillPermanentlyOnThisMap()
         {
             DespawnAllLimbs();
