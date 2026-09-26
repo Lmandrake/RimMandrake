@@ -196,6 +196,14 @@
         <filthDef>RM_Filth_Tar</filthDef>
         <hediffDef>RUT_Tarred</hediffDef>
       </li>
+      <!-- BIOME_ARRIVAL_NARRATION_1: RM tier, plain reads, no character. The
+           Utinni layer (src/RimUtinni/UtinniPatches/Patches/
+           BiomeArrivalLetters_TheSump.xml) replaces both fields below with
+           the campaign Narrator's own voice via PatchOperationReplace. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <letterLabel>The Sump</letterLabel>
+        <letterText>The tar keeps whatever slips into it, so read the surface before you cross it. Watch the mice: where their lines bend, the crust underneath has gone thin. An unbroken pale crust that no line ever touches is not solid ground, it is a lie. And wherever soffeth grows in a ring, there is gas rising through the tar below.</letterText>
+      </li>
     </modExtensions>
   </BiomeDef>
 

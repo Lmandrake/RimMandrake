@@ -45,6 +45,12 @@ content def in any mod opts in through XML alone.
      within its radius of standing water turns wild animals in that radius against
      the aggressor's faction, via RM_MentalState_WaterTruceRetribution (a
      MentalState_Manhunter subclass narrowed to one faction). WATER_TRUCE_RETRIBUTION_1.
+  8. RM_BiomeArrivalLetterExtension / RM_GameComponent_BiomeArrivalLetters — a
+     DefModExtension any BiomeDef opts into: the first gravship landing on that biome
+     (GenStep_GravshipMarker.Generate, the same detection RimMandrake.GravshipLanding
+     already proves) fires one plain survival-reads letter, once per save. The Utinni
+     layer replaces the letter's label/text wholesale to speak in the campaign
+     Narrator's voice instead — flavor only, no new machinery. BIOME_ARRIVAL_NARRATION_1.
 
 Live proof is OWED: this mod has not yet been loaded in a running game.
 

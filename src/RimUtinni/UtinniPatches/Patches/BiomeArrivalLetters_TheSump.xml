@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BiomeArrivalLetters_TheSump.xml            UtinniPatches — new file 2026-09-26
+  ============================================================================
+  BIOME_ARRIVAL_NARRATION_1. The Utinni "narrator voice" half: RM_TheSump ships
+  a plain, franchise-free arrival letter
+  (src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml's own
+  RM_BiomeArrivalLetterExtension) so the mod works standalone. This patch
+  replaces both fields of that SAME modExtension in place, wholesale, with the
+  campaign Narrator's voice (infrastructure/state/canon.yml `narrator`: the
+  ship-mind, speaking of the Jawa crew in the third person, dry and half
+  outside the story it is telling): flavor replacement, not new machinery,
+  exactly as the item's spec calls for. No new letter, no new mechanism: the
+  RM tier's RM_GameComponent_BiomeArrivalLetters still fires it once, at the
+  first gravship landing on this biome; only the words it delivers change.
+
+  Guarded on the target node existing at all (PatchOperationConditional on the
+  li itself), so removing UtinniPatches or the Sump mod degrades to a silent
+  no-op rather than a red launch error; a patch that matches nothing logs
+  nothing (CLAUDE.md), so this was validated against the live def dump and
+  the full active mod set rather than trusted on a clean log.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_TheSump"]/modExtensions/li[@Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension"]/letterLabel</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/BiomeDef[defName="RM_TheSump"]/modExtensions/li[@Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension"]/letterLabel</xpath>
+      <value>
+        <letterLabel>The Ship Remembers the Sump</letterLabel>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_TheSump"]/modExtensions/li[@Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension"]/letterText</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/BiomeDef[defName="RM_TheSump"]/modExtensions/li[@Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension"]/letterText</xpath>
+      <value>
+        <letterText>The ship has watched others sink here before these scavengers ever set foot in the black, and it offers what it always offers. Watch where the mice bend their trails: the tar remembers where it has worn thin, even when nothing else does. A crust no mouse will cross is no crust at all, only the tar's own lie, dressed up pale and waiting. And wherever the soffeth grows itself into a ring, something old is still breathing underneath, one slow bubble at a time.</letterText>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
