@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_HolyFlamePrecepts.xml          UtinniPatches — SUMP_UTINNI_LAYER_1 §2
+
+  "The holy act": flame statuary as worship of the evil sun god, Sh'kaar the
+  All-Searing (design/Jawa/divine_satiation_engine.md §8). Statues/worship
+  split ruled by card: statues RM-tier secular (RM_FlameStatuary,
+  SUMP_GASLIGHT_1); the ritual/holy meaning is this Utinni-tier precept.
+
+  Shape copied from this repo's own RUT_FungusEating.xml precedent (issue/
+  label/description/impact/displayOrderInIssue, plus a PreceptComp_
+  SelfTookMemoryThought comp — real vanilla class, RimWorld/PreceptComp_
+  SelfTookMemoryThought.cs decompiled and read in full). eventDef/thought
+  reference RUT_HolyFlameEvents.xml/RUT_HolyFlameThoughts.xml, both defined
+  alongside this file under the same MayRequire, so there is no cross-mod
+  resolve risk.
+
+  🔑 REACHABILITY: a PreceptDef is only ever selectable if some MemeDef's
+  <requireOne> names it (RimWorld/MemeDef.cs: requireOne is a
+  List<List<PreceptDef>> — there is no issue-level "just show every precept
+  under this issue" fallback, confirmed reading the class). Shipping this
+  PreceptDef alone would be silently unreachable content — the exact "zero
+  rows is a failure, not a footnote" trap. Patches/HolyFlame_
+  RitualistWiring.xml appends a new requireOne GROUP containing this one
+  precept onto the vanilla Anomaly meme `Ritualist` (thematically the closest
+  fit: an ideoligion that cares about ritual observance), making this precept
+  selectable by ANY ideoligion — player-authored or NPC-generated — that
+  picks that meme. It is NOT wired into the campaign's own saved ideoligion
+  ("The Salvation", src/Jawa/ideoligion/The Salvation.rid): a saved .rid is
+  Scribe output baked at world creation, and the only way to add a precept to
+  an ALREADY-BAKED live Ideo is the in-game dev-mode ideo editor — a live,
+  manual action outside this item's offline/no-bridge scope. Flagged, not
+  guessed.
+
+  No "don't care" neutral position authored (unlike FungusEating's 2-3
+  positions): this is a brand new issue with exactly one meaningful stance,
+  not a rebalance of a multi-position vanilla issue.
+-->
+<Defs>
+
+  <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RUT_HolyFlame_Revered</defName>
+    <issue>RUT_HolyFlame</issue>
+    <label>revered</label>
+    <description>The flame that issues from carved stone is Sh'kaar's own signature: worked stone the sun agreed to speak through. Standing before it and giving it its due is the holy act.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>1</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>RUT_PerformedHolyFlameAct</eventDef>
+        <thought>RUT_PerformedHolyFlameAct</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+</Defs>

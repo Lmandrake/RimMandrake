@@ -34,6 +34,14 @@ namespace RimMandrake.Utinni.UtinniPatches
         public static float geothermalMountainFalloffDeg = 20f;
         public static bool utinniWorldIconEnabled = true;
 
+        // SUMP_UTINNI_LAYER_1 §2 — "the holy act": gates the flame statue's
+        // "perform the sun-rite" Use interaction (Patches/
+        // FlameStatuary_HolyAct.xml, via PatchOperationSettingGate). Off:
+        // RM_FlameStatuary stays exactly the plain secular art piece
+        // SUMP_GASLIGHT_1 shipped. Takes effect on the next game start (the
+        // def is already built by the time a settings change is read).
+        public static bool holyFlameActEnabled = true;
+
         // GREATBOLE_HARVEST_LADDER_1 — "a number is the experience" case for
         // all three of the greatbole's own thresholds (RUT_
         // CompGreatboleHarvestLadder reads these instead of hardcoding
@@ -56,6 +64,7 @@ namespace RimMandrake.Utinni.UtinniPatches
             Scribe_Values.Look(ref geothermalDensityFieldEnabled, "geothermalDensityFieldEnabled", true);
             Scribe_Values.Look(ref geothermalMountainFalloffDeg, "geothermalMountainFalloffDeg", 20f);
             Scribe_Values.Look(ref utinniWorldIconEnabled, "utinniWorldIconEnabled", true);
+            Scribe_Values.Look(ref holyFlameActEnabled, "holyFlameActEnabled", true);
             Scribe_Values.Look(ref greatboleShakingThreshold, "greatboleShakingThreshold", 0.40f);
             Scribe_Values.Look(ref greatboleHealingThreshold, "greatboleHealingThreshold", 0.60f);
             Scribe_Values.Look(ref greatboleCatastropheThreshold, "greatboleCatastropheThreshold", 0.70f);
@@ -87,6 +96,13 @@ namespace RimMandrake.Utinni.UtinniPatches
                 "Draws the Utinni's own ring hull on the planet map while the gravship is in "
               + "flight, at both zoom levels, instead of vanilla's generic grav-engine glyph. "
               + "Off: the vanilla gravship sprite is used. Takes effect on the next game start.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Flame statue holy act", ref holyFlameActEnabled,
+                "A colonist can perform the sun-rite at a flame statue, honoring Sh'kaar the "
+              + "All-Searing — an ideoligion with the Ritualist meme can hold this as a "
+              + "precept. Off: the flame statue stays a plain secular art piece. Takes effect "
+              + "on the next game start.");
 
             // Blue Desert hydrocarbon life settings (dorrak/krissek/vekkit, the fractal
             // flora, cold wax) moved to the Blue Desert mod's own settings screen —

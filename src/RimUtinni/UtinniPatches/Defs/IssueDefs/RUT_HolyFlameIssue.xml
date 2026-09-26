@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_HolyFlameIssue.xml             UtinniPatches — SUMP_UTINNI_LAYER_1 §2
+
+  A brand new IssueDef rather than reusing an existing one: the "holy act to
+  the evil sun god" is Utinni-campaign-specific doctrine tied to a specific
+  building (the flame statue), not a general life-stance issue any existing
+  vanilla/Alpha Memes/VIE-Memes issue already covers (checked against
+  design/Jawa/worldbuilding/data/ideology_palette.md's issue list before
+  authoring a new one — none fit).
+
+  IssueDef itself takes no fields beyond Def's own (defName/label/description)
+  plus allowMultiplePrecepts/iconPath, per RimWorld/IssueDef.cs (decompiled,
+  read in full) — no icon authored this pass (placeholder-art posture matches
+  every other new-content def in this build wave).
+-->
+<Defs>
+
+  <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RUT_HolyFlame</defName>
+    <label>the holy flame</label>
+  </IssueDef>
+
+</Defs>
