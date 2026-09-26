@@ -37,5 +37,15 @@ Absorbed RimUtinni: Vault Dungeons (mandrake.rut.injections).</description>
     <li>mandrake.rm.inhabited</li>
     <li>mlie.advancedbiomes</li>
     <li>sarg.alphabiomes</li>
+      <!-- DBH_LITE_UNDECLARED_DEPENDENCY_1 (2026-09-26): cistern.txt,
+           homestead_compound.txt, moisture_cistern_head.txt,
+           moisture_walled_compound.txt and oasis_shrine.txt place a PrimitiveWell
+           THING, a real ThingDef shipped only by Dubs Bad Hygiene Lite
+           (dubwise.dubsbadhygiene.lite). Soft dependency, not <modDependencies>: the
+           well is optional decorative content and mandrake.rm.injections' engine
+           already degrades gracefully without it (one THING line skipped, logged,
+           rest of the plan still places); see mandrake.rm.injections' About.xml for
+           the full rationale. -->
+    <li>dubwise.dubsbadhygiene.lite</li>
   </loadAfter>
 </ModMetaData>

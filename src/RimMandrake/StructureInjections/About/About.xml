@@ -16,5 +16,16 @@ Content packs (RimStarWars, RimUtinni) reference this engine's GenStepDef and su
     <li>Ludeon.RimWorld</li>
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>ludeon.rimworld.odyssey</li>
+      <!-- DBH_LITE_UNDECLARED_DEPENDENCY_1 (2026-09-26): compiled Templates/*.txt plans
+           (this mod's own moisture_farm_test.txt, plus content packs riding this
+           engine's GenStep_RimplacePlan) place a PrimitiveWell THING, a real ThingDef
+           shipped only by Dubs Bad Hygiene Lite (dubwise.dubsbadhygiene.lite). NOT a
+           <modDependencies> entry on purpose: the well is optional decorative content,
+           and GenStep_RimplacePlan already degrades gracefully when it is absent (the
+           one THING line is skipped, logged, everything else still places), a hard
+           dependency would nag every load for a missing decoration, same trade
+           Armoury's About.xml documents for its own optional-compat loadAfter entries.
+           This entry is the recorded, documented soft dependency the item asked for. -->
+    <li>dubwise.dubsbadhygiene.lite</li>
   </loadAfter>
 </ModMetaData>
