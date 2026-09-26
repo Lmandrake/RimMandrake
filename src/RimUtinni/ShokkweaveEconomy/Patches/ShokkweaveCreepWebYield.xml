@@ -32,8 +32,10 @@
 
   🔴 NOT done here, and NOT safe to bolt on casually - the ruling's other
   half ("a small chance of spawning an emergent Shokk"):
-  RSW_CompProperties_EmergentSpawnOnDestroy (src/RimStarWars/Shokk/Source/
-  RSW_CompEmergentSpawnOnDestroy.cs, built by SHOKK_RSW_MOD_1, MayRequire
+  RM_CompProperties_EmergentSpawnOnDestroy (src/RimMandrake/Webwork/Source/
+  RM_CompEmergentSpawnOnDestroy.cs — moved here from mandrake.rsw.shokk by
+  SHOKK_SKIN_SHRINK_1, 2026-09-26, S6 ruling 1; originally built by
+  SHOKK_RSW_MOD_1 as RSW_CompEmergentSpawnOnDestroy, MayRequire
   mandrake.rsw.shokk) exists and is exactly the mechanism the ruling wants -
   but its PostDestroy explicitly gates on `mode == DestroyMode.Vanish` and
   says so in its own comment: "never fires on Kill/Refund/etc." Combat

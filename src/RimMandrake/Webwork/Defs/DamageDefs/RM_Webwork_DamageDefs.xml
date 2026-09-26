@@ -17,8 +17,29 @@
   body size outright (flagged UNCERTAIN in the design doc itself, ❓), so
   this ships the closest stock-field shape rather than inventing new C# for
   a threshold this pass does not need.
+
+  RM_Damage_LoomSpit added by SHOKK_SKIN_SHRINK_1 (S6 ruling 1) — moved
+  verbatim from RSW_Damage_ShokkSpit (src/RimStarWars/Shokk/Defs/DamageDefs/
+  RSW_Shokk_DamageDefs.xml, SHOKK_RSW_MOD_1), re-tokened. Near-zero direct
+  damage — the point of the spit is additionalHediffs -> RM_LoomBound, not
+  the hit itself. Sole-source guard (webwork_kit_spec.md §3, unchanged):
+  this def yields nothing and creates no thrixweave/Shokkweave.
 -->
 <Defs>
+
+  <DamageDef ParentName="Bullet">
+    <defName>RM_Damage_LoomSpit</defName>
+    <label>loom spit</label>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <additionalHediffs>
+      <li>
+        <hediff>RM_LoomBound</hediff>
+        <severityPerDamageDealt>0.25</severityPerDamageDealt>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Bullet</impactSoundType>
+  </DamageDef>
 
   <DamageDef ParentName="Bite">
     <defName>RM_Damage_OllathrixVenom</defName>

@@ -18,8 +18,7 @@
   current home in RSW_Shokk_Wyyyschokk.xml; NOT duplicated here).
 
   Every operation below is wrapped in PatchOperationConditional with match
-  only (no nomatch) — same posture as the sibling RSW_Shokk_Wyyyschokk.xml
-  in this mod: a patch that matches nothing logs nothing, so a player
+  only (no nomatch) — a patch that matches nothing logs nothing, so a player
   running this mod without mandrake.rm.webwork's def present (should not
   happen — it is a hard modDependency/loadAfter, About.xml) gets a quiet
   no-op instead of a red error on every launch.
@@ -30,21 +29,30 @@
   donor mod `mlie.starwarsanimalcollection` (already a modDependency of
   this mod) and/or `mandrake.rsw.wyyyschokkartoverride`.
 
-  🔴 NOTE FOR WHOEVER TOUCHES THIS NEXT: the owner-and-nest doc's §1c
-  premise ("there is no RUT_-owned Wyyyschokk def anywhere in this repo to
-  relocate") was true when the Shokk mod's own About.xml was written
-  (2026-09-11) but is STALE now — MLIE_FAUNA_ABSORPTION_1 Wave C
-  (2026-09-18, 609daf5ad) separately ported the donor's Wyyyschokk in full
-  as `RSW_Wyyyschokk` (its own BodyDef, egg-laying, ability, TrophyCraft
-  fang-drop recipe — src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
-  RSW_Wyyyschokk.xml), landing 5 days before this doc. That absorbed port
-  is a SEPARATE, independent def not currently wired into any biome's
-  wildAnimals — this patch does not touch it, reference it, or retire it.
-  The two "wyyyschokk"s that will now exist in a full campaign install (the
-  absorbed RSW_Wyyyschokk race, still homeless, and RM_Ollathrix wearing the
-  same look under this patch) is a real open question, flagged rather than
-  resolved here — this item's scope is the skin patch only, not adjudicating
-  the absorption.
+  UPDATE, SHOKK_SKIN_SHRINK_1 (2026-09-26): the mechanism move this file's
+  own header once deferred is DONE — RM_Ollathrix now carries the mouth-loom
+  spit, loom-bound and sun-scald mechanisms inline in mandrake.rm.webwork
+  (RM_Ollathrix.xml), and this mod's own former RSW_Shokk_Wyyyschokk.xml
+  (the patch that put them on the third-party donor) is retired. This file
+  is now the WHOLE of this mod's mechanical content besides
+  RSW_Shokk_FeraliskBrood.xml (a different item's content, untouched).
+
+  🔴 STILL OPEN, not resolved by this move: MLIE_FAUNA_ABSORPTION_1
+  (2026-09-18) separately ported the donor's Wyyyschokk in full as its own
+  def, `RSW_Wyyyschokk` (src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
+  RSW_Wyyyschokk.xml — its own BodyDef, egg-laying, shearable wool,
+  TrophyCraft fang-drop recipe, tameable, combatPower 600, wildBiomes
+  weighted to TropicalRainforest/TropicalSwamp). That port is mechanically
+  unrelated to RM_Ollathrix (untameable, ambush-hunting, combatPower 160,
+  bespoke body) and is not wired into any biome's wildAnimals — it is a
+  SEPARATE, independent def this patch does not touch, reference or retire.
+  A full campaign install therefore carries two things labelled
+  "wyyyschokk": RSW_Wyyyschokk (homeless) and RM_Ollathrix wearing this
+  patch's skin. Not a defName collision (both load fine) but a genuine
+  identity/label collision — SHOKK_SKIN_SHRINK_1's scope was the mechanism
+  move only; this needs an owner decision (retire/rename/re-wire
+  RSW_Wyyyschokk, or accept two "wyyyschokk"s existing side by side) and is
+  not adjudicated here.
 -->
 <Patch>
 

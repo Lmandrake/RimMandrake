@@ -137,7 +137,11 @@ don't trust the comment" doctrine), and it holds up:
 - **The "spawns an emergent Shokk" half is genuinely NOT satisfiable by a
   patch, confirmed independently via source (not just trusting the file's
   own comment)**: `RSW_CompEmergentSpawnOnDestroy.PostDestroy`
-  (`src/RimStarWars/Shokk/Source/RSW_CompEmergentSpawnOnDestroy.cs`) requires
+  (`src/RimStarWars/Shokk/Source/RSW_CompEmergentSpawnOnDestroy.cs` — this
+  path is STALE since SHOKK_SKIN_SHRINK_1, 2026-09-26: the same class,
+  renamed `RM_CompEmergentSpawnOnDestroy`, now lives at
+  `src/RimMandrake/Webwork/Source/RM_CompEmergentSpawnOnDestroy.cs`; the
+  logic described below is unchanged by the move) requires
   `mode == DestroyMode.Vanish` and explicitly returns on anything else —
   attaching that comp to these three Things (whose only destroy route is
   combat `KillFinalize`) would ship a comp that can structurally never fire.

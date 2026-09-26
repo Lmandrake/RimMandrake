@@ -6,98 +6,63 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>SHOKK_RSW_MOD_1 (owner ruling, 2026-09-11, on the webwork
-kit-placement card, verbatim: "The Shokk feels like it's becoming its own
-MandrakeStarWars level mod, with the rest of the mechanics in this biome
-party of the Utinni scenario.") — the Wyyyschokk's own behavior, generalized
-so any Star Wars scenario can use it, extracted out of
-`design/Jawa/worldbuilding/biomes/kits/webwork_kit_spec.md`
-(WEBWORK_MECHANICS_1, never itself built — this mod is that spec's Shokk
-slice, built for the first time here).
+  <description>SHOKK_SKIN_SHRINK_1 (2026-09-26, S6 ruling 1 — inverts the
+2026-09-11 kit ruling 6 that first put the Wyyyschokk's mechanisms here) shrank
+this mod to a single skin patch. History: `SHOKK_RSW_MOD_1` (2026-09-11)
+originally built this mod's mechanisms against the third-party donor
+`Wyyyschokk` (`mlie.starwarsanimalcollection`) — the loom-bound hediff, the
+mouth-loom ranged spit, sun-scald, and an emergent-spawn comp.
+`OLLATHRIX_OWNER_SPECIES_1` (2026-09-26) then gave the free-tier biome mod
+`mandrake.rm.webwork` its own owner species, `RM_Ollathrix` (one race, one
+kind, invented and franchise-free per Q11a), and the owner ruled the same
+sitting that those mechanisms are mechanism-not-IP: they belong in
+`mandrake.rm.webwork` too, attached directly to `RM_Ollathrix`'s own def, not
+patched onto the third-party donor. `SHOKK_SKIN_SHRINK_1` carried that out —
+`RM_LoomBound`/`RM_Damage_LoomSpit`/`RM_Bullet_LoomSpit`/`RM_Gun_LoomSpit`/
+`RM_Webwork_SunScald`/`RM_CompEmergentSpawnOnDestroy` all now live in
+`mandrake.rm.webwork`, and `RSW_Shokk_Wyyyschokk.xml` (the patch onto the
+donor) is retired — the donor's own `Wyyyschokk` no longer gets any of this
+mod's mechanics.
 
-**Species ownership note**: the Wyyyschokk ThingDef/PawnKindDef itself is NOT
-ours to move — it is a live def inside the third-party Workshop mod
-`mlie.starwarsanimalcollection` (Star Wars Animal Collection), confirmed by
-direct search of this repo: every existing reference (BeastNorm_Law3.xml's
-Law-3 damage patch, MegafaunaYield.xml's yield-stat patch, RUT_Webwork.xml's
-wildAnimals entry) is a PatchOperation targeting `ThingDef[defName="Wyyyschokk"]`
-in that external mod, never a def declaration of our own. The item's premise
-("find its current def... and MOVE it") does not hold: there is no RUT_-owned
-Wyyyschokk def anywhere in this repo to relocate; it has never been absorbed
-the way Bantha/Jerba were. What ships here instead is everything that IS ours
-to own — new content authored fresh against the spec, applied to the external
-species by patch, exactly as BeastNorm/MegafaunaYield already do:
+**What ships here now, and only this:**
 
-  1. `RSW_ShokkBound` (HediffDef) — re-tokened RSW_ from the spec's
-     provisional RUT_ name. The mouth-loom's bind: near-immobilizes rather
-     than wounds (capMods, no direct damage), decays slowly untended,
-     resolves fast under a doctor's tend (HediffCompProperties_TendDuration).
-  2. `RSW_Damage_ShokkSpit` (DamageDef, ParentName="Bullet") — near-zero
-     direct damage; its whole purpose is `additionalHediffs` → RSW_ShokkBound.
-  3. `RSW_Bullet_ShokkSpit` + `RSW_Gun_ShokkSpit` — the projectile and the
-     turret-gun wrapper (RimWorld.CompTurretGun, the same mechanism vanilla's
-     heavy mechanoids use to give a PAWN a ranged attack) that the Wyyyschokk
-     patch attaches, giving the spider a genuine ranged "spit" without any
-     new C# combat code — `CompTurretGun` already implements
-     `IAttackTargetSearcher` and slots into the vanilla combat AI for any
-     pawn, mechanoid or animal.
-  4. `RSW_Webwork_SunScald` (HediffDef) — the light-moat, RULED 2026-09-11:
-     cripples (MoveSpeed postFactor down to ~0.3, "crawl for shade"), NEVER
-     downs — every stage uses postFactor, never a capacity floor, so Moving
-     can shrink but never hit zero. Its hediffClass,
-     `RimMandrake.CreatureBehaviors.RM_Hediff_SunScald`, is generic (any
-     species, any planet) and lives in the shared
-     `mandrake.rm.creaturebehaviors` assembly per the owner's ruling that the
-     RM_ mechanics kit's classes belong there, not in a per-biome DLL — this
-     mod supplies only the tuned XML HediffDef and the patch that attaches it
-     via PawnKindDef.startingHediffs. The class is keyed to
-     `RimWorld.SanguophageUtility.InSunlight` (unroofed + sky glow, the same
-     primitive the vanilla UV-sensitivity gene uses) — canon note, 2026-09-11:
-     there is no night on Ash'karr's dayside and no lamp ever substitutes for
-     the sun there, but on any OTHER planet the identical primitive already
-     turns this off at night on its own; nothing here special-cases Ash'karr.
-  5. `RSW_CompEmergentSpawnOnDestroy` — the emergent-Shokk spawn hook (RULED
-     2026-09-11, owner-verbatim on the sole-source boundary card: "it has a
-     small chance of SPAWNING an emergent Shokk to get you"). A small,
-     reusable ThingComp: attach it (via `RSW_CompProperties_EmergentSpawnOnDestroy`)
-     to any Thing whose destruction represents a harvest, and on a
-     `DestroyMode.Vanish` it rolls a configurable chance to spawn a hostile
-     Wyyyschokk (soft `DefDatabase&lt;PawnKindDef&gt;` lookup by name — inert,
-     never errors, if the species mod is absent) at the spot, manhunter-forced.
-     Not yet wired to any recipe: the creep-web harvest that will attach this
-     comp belongs to `SHOKKWEAVE_SOLE_SOURCE_1`, unbuilt as of this mod's
-     creation — this ships the mechanism the Utinni layer will consume.
+  `RSW_Shokk_OllathrixSkin.xml` (`OLLATHRIX_OWNER_SPECIES_1`, S6 ruling 6 —
+  "the skin patch lives RSW, tier-correct for a Star Wars creature's LOOK,
+  usable by any Star Wars scenario"). Overlays the canon Wyyyschokk identity
+  (label, labelPlural, description, all three lifeStages' bodyGraphicData
+  texPath) onto `RM_Ollathrix`'s SAME defName when this mod is loaded — one
+  def, two skins, never a second race. It never touches mechanics.
 
-  6. `RSW_Shokk_OllathrixSkin.xml` (OLLATHRIX_OWNER_SPECIES_1, added
-     2026-09-26, S6 rulings 1/6) — the free-tier biome mod
-     `mandrake.rm.webwork` now ships its own owner species, `RM_Ollathrix`
-     (an invented spider, franchise-free per Q11a). This patch overlays the
-     canon Wyyyschokk identity (label, description, art) onto that SAME
-     defName when this mod is loaded — one def, two skins, never a second
-     race. It does not touch mechanics: RM_Ollathrix's stats/tools/comps are
-     unchanged by it. This is separate from items 1-4 above, which still
-     patch the third-party donor `Wyyyschokk` today; SHOKK_SKIN_SHRINK_1 is
-     the item that retargets those four onto `RM_Ollathrix` and moves their
-     defs down into `mandrake.rm.webwork`, at which point this mod shrinks
-     to the skin patch alone.
+  `RSW_Shokk_FeraliskBrood.xml` (a DIFFERENT item, `FEVERWOOD_TWO_FRONT_LURE_1`
+  — see that file's own header) — a hidden FactionDef the Fever Wood's
+  `RM_MapComponent_TwoFrontLure` looks up by defName for its second raid
+  front. It lives in this mod, not `RM_FeverWood`, because it references the
+  donor `Wyyyschokk` PawnKindDef directly (genuine Star Wars IP, routed
+  through this RSW-tier mod per Q11a) — unrelated to the skin/mechanism split
+  above and untouched by `SHOKK_SKIN_SHRINK_1`.
 
-**What stayed RUT_/Utinni** (per the same ruling): the web-sense
-MapComponent's biome gating, creep-web terrain, the sole-source boundary, and
-every other webwork_kit_spec.md mechanic not named above. The Utinni layer
-(`UtinniPatches`) is a CONSUMER of this mod — it references RSW_ defs across
-the mod boundary — never the owner of Shokk-specific content.
+**⚠️ Open naming question, flagged not resolved (`SHOKK_SKIN_SHRINK_1`
+close report has the full analysis):** `MLIE_FAUNA_ABSORPTION_1` (2026-09-18)
+separately ported the donor's Wyyyschokk in full as its own def,
+`RSW_Wyyyschokk` (`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
+RSW_Wyyyschokk.xml`) — a tameable, egg-laying, shearable, `TropicalRainforest`/
+`TropicalSwamp`-weighted generic bestiary entry with `combatPower 600`,
+unrelated in every mechanical respect to `RM_Ollathrix` (untameable,
+ambush-hunting, `combatPower 160`, its own invented body/mechanics). Once
+this mod is loaded, a full campaign install carries TWO things labelled
+"wyyyschokk" — `RSW_Wyyyschokk` (its own defName, homeless, not wired into
+any biome's wildAnimals) and `RM_Ollathrix` wearing this mod's skin patch.
+Not a defName collision (the game loads both fine) but a genuine identity
+collision this item did not adjudicate. See the design doc's own §1c note
+and this item's close report.
 
-Live proof is OWED beyond this build's own quicktest verification: the full
-webwork biome kit (web-sense, ambush, margin creep) has never been built —
-only this mod's Shokk slice has, against a forced-biome quicktest map.</description>
+Live proof is OWED beyond this mod's own prior quicktest verification of the
+mechanisms this description now says moved out — nothing left here to
+verify beyond the skin patch's static xpath match.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
       <displayName>RimWorld</displayName>
-    </li>
-    <li>
-      <packageId>mandrake.rm.creaturebehaviors</packageId>
-      <displayName>RimMandrake: Creature Behaviors</displayName>
     </li>
     <li>
       <packageId>mandrake.rm.webwork</packageId>
@@ -111,7 +76,6 @@ only this mod's Shokk slice has, against a forced-biome quicktest map.</descript
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
-    <li>mandrake.rm.creaturebehaviors</li>
     <li>mandrake.rm.webwork</li>
     <li>mlie.starwarsanimalcollection</li>
   </loadAfter>
