@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<loadFolders>
+  <!-- ExplosiveGrowth/ holds content typed by mandrake.rm.explosivegrowth (the
+       campaign roster and RUT_BloomBurst). Loaded only when that mod is active,
+       so this mod never hard-depends on it. -->
+  <v1.6>
+    <li>/</li>
+    <li IfModActive="mandrake.rm.explosivegrowth">ExplosiveGrowth</li>
+  </v1.6>
+</loadFolders>

@@ -49,6 +49,93 @@
       <li><plant>RM_RustPuff</plant><top>Rupture</top></li>
       <li><plant>RUT_RustPuff</plant><top>Rupture</top></li>
 
+      <!-- BURST — dry-adapted (roster §BURST; ruling 4). -->
+      <li><plant>RG_Plant_AridGrass</plant><top>Burst</top></li>
+      <!-- FLUSH — the giants (roster §FLUSH). -->
+      <li><plant>AB_KeeningCordax</plant><top>Flush</top></li>
+      <!-- CHURN, heavy produce — the former GLUT rows (roster §CHURN). produceFactor 2.5
+           is 🄸 INVENTED: "a crop-scale dump, not a single plant's harvest" (the number is build's). -->
+      <li><plant>AB_SugarFamewort</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>AB_JungleTree</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>AB_MangroveTree</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>AB_MangrovePalm</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>AB_ParasiticMangrove</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>Plant_Reeds</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <!-- NONE — roster "plants that deliberately do NOT": fungal, crystal, terminator phototrophs,
+           chemotrophs, and the hoarders (🄸 hard call 1, the roster's stated default, unruled). -->
+      <li><plant>RM_PaleMoss</plant><top>None</top></li>
+      <li><plant>RM_SweetlineTree</plant><top>None</top></li>
+      <li><plant>RM_ScorchedStars</plant><top>None</top></li>
+      <li><plant>RM_WastelandScorchedStars</plant><top>None</top></li>
+      <li><plant>RM_TreeMartyr</plant><top>None</top></li>
+      <li><plant>RM_Skulltop</plant><top>None</top></li>
+      <li><plant>RM_Dewshrooms</plant><top>None</top></li>
+      <li><plant>RM_FruitingBodies</plant><top>None</top></li>
+      <li><plant>RM_Nuitae</plant><top>None</top></li>
+      <li><plant>RM_NuitaeMarsh</plant><top>None</top></li>
+      <li><plant>RM_Wrinklecap</plant><top>None</top></li>
+      <li><plant>RM_WrinklecapMarsh</plant><top>None</top></li>
+      <li><plant>RM_Arpeau</plant><top>None</top></li>
+      <li><plant>RM_GreenArpeau</plant><top>None</top></li>
+      <li><plant>RM_Nogtyl</plant><top>None</top></li>
+      <li><plant>RM_NogtylMarsh</plant><top>None</top></li>
+      <li><plant>RM_FlakespireFungus</plant><top>None</top></li>
+      <li><plant>RM_Pusmelon</plant><top>None</top></li>
+      <li><plant>RM_Sagecrust</plant><top>None</top></li>
+      <li><plant>RM_BleedingTooth</plant><top>None</top></li>
+      <li><plant>RM_CrimsonCap</plant><top>None</top></li>
+      <li><plant>RM_GreyLady</plant><top>None</top></li>
+      <li><plant>RM_Shinecap</plant><top>None</top></li>
+      <li><plant>RM_Brightbell</plant><top>None</top></li>
+      <li><plant>RM_VioletWimple</plant><top>None</top></li>
+      <li><plant>RM_MortalMorelPlant</plant><top>None</top></li>
+      <li><plant>RM_MortalMorelPlantGrowable</plant><top>None</top></li>
+      <li><plant>RM_MoonlessStripesPlant</plant><top>None</top></li>
+      <li><plant>RM_DulcisPlant</plant><top>None</top></li>
+      <li><plant>RM_BlastpodShroom</plant><top>None</top></li>
+      <li><plant>RM_FurnaceCap</plant><top>None</top></li>
+      <li><plant>RM_AgelessCap</plant><top>None</top></li>
+      <li><plant>RM_RegenerantVeil</plant><top>None</top></li>
+      <li><plant>RM_EuphoricCrown</plant><top>None</top></li>
+      <li><plant>RM_FalseFruit</plant><top>None</top></li>
+      <li><plant>RM_DeepMycelium</plant><top>None</top></li>
+      <li><plant>RM_ZivvitTaper</plant><top>None</top></li>
+      <li><plant>RM_QuorrFern</plant><top>None</top></li>
+      <li><plant>RM_OsskBramble</plant><top>None</top></li>
+      <li><plant>RM_BrellikBulb</plant><top>None</top></li>
+      <li><plant>RM_TwitchingPuffer</plant><top>None</top></li>
+      <li><plant>RM_ThrakkCap</plant><top>None</top></li>
+      <li><plant>RM_PrennaLace</plant><top>None</top></li>
+      <li><plant>RM_VellokReed</plant><top>None</top></li>
+      <li><plant>RM_KuvraSpout</plant><top>None</top></li>
+      <li><plant>RM_NurrikGill</plant><top>None</top></li>
+      <li><plant>RM_Lanternstone_Sowable</plant><top>None</top></li>
+      <li><plant>RM_HeatsinkFungus</plant><top>None</top></li>
+      <li><plant>AB_GiantStikehr</plant><top>None</top></li>
+      <li><plant>AB_GargantuanLithops</plant><top>None</top></li>
+      <li><plant>RG_Plant_CrimsonCushion</plant><top>None</top></li>
+      <li><plant>AB_CrystalHorn</plant><top>None</top></li>
+      <li><plant>AB_CrystalFlower</plant><top>None</top></li>
+      <li><plant>AB_FrostLeaf</plant><top>None</top></li>
+      <li><plant>AB_RimeNodules</plant><top>None</top></li>
+      <li><plant>AB_RavenNettle</plant><top>None</top></li>
+      <li><plant>AB_RedBugloss</plant><top>None</top></li>
+      <li><plant>AB_GiantToxicFlower</plant><top>None</top></li>
+      <li><plant>AB_GiantAgariTox</plant><top>None</top></li>
+      <li><plant>AB_AgaricusDomeCap</plant><top>None</top></li>
+      <li><plant>AB_Agarilux</plant><top>None</top></li>
+      <li><plant>AB_AgariluxPrime</plant><top>None</top></li>
+      <li><plant>AB_GiantAgarilux</plant><top>None</top></li>
+      <li><plant>AB_GlowingAgarilux</plant><top>None</top></li>
+      <li><plant>AB_ArbuscularMycorrhiza</plant><top>None</top></li>
+      <li><plant>AB_Bryolux</plant><top>None</top></li>
+      <li><plant>AB_DribblingCap</plant><top>None</top></li>
+      <li><plant>AB_Glowstool</plant><top>None</top></li>
+      <li><plant>AB_LilacBeacon</plant><top>None</top></li>
+      <li><plant>AB_RecurvedStropharia</plant><top>None</top></li>
+      <li><plant>AB_SlimyPholiota</plant><top>None</top></li>
+      <li><plant>AB_WitchesOyster</plant><top>None</top></li>
+      <li><plant>AB_TarPuddle</plant><top>None</top></li>
       <!-- NONE — RM-tier and vanilla/DLC plants the roster excludes. -->
       <li><plant>RM_PaleTree</plant><top>None</top></li>
       <li><plant>Plant_MagmaCactus</plant><top>None</top></li>   <!-- hoarder, hard call 1 (INVENTED, unruled) -->
