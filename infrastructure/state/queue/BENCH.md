@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T06:55:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T07:30:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -717,5 +717,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1.md yet — write one when you have something to say)
+summary:  GREATBOLEATMOSPHEREANDCROSSOVERS1 — the greatbole's song, thermal sanctuary, pilgrims, and the two opt-in cro…
 prose:    infrastructure/state/items/GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1.md
