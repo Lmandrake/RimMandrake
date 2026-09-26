@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_SumpFloraItems.xml                     RM_TheSump · SUMP_FLORA_ROSTER_1
+  ============================================================================
+  Harvested goods for the two farmed/foraged flora rows in
+  ../ThingDefs_Plants/RM_SumpFlora.xml (RM_Dorvel, RM_Skelver) plus the
+  bitumen nodule RM_Korveth accumulates. RM_Brindeth's wood harvest reuses
+  vanilla WoodLog directly and needs no def here.
+
+  Patterns copied from this same mod's existing RUT_WickStem.xml (plain
+  ResourceBase good, no comps needed for fuel-filter eligibility) and the
+  wider repo's PlantFoodRawBase convention (e.g. FeverWood's RM_RawGiantLeaf)
+  for the two food goods. MarketValue on all three is an INVENTED-BUILD
+  placeholder, same posture RUT_WickStem's own header already documents for
+  this biome ("items pass owns pricing").
+
+  Textures: none of these exist yet (see RM_SumpFlora.xml's header for the
+  art search). Queued this pass via fill_queue.py; DEPLOY_HOLD'd until real
+  art lands, except where the harvested good reuses the plant's own texPath
+  as a placeholder icon (same practice as FeverWood's RM_RawGiantLeaf).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_RawDorvel</defName>
+    <label>dorvel</label>
+    <description>A fist-sized grey-green barrel harvested from a dorvel plant — bland, dense, and reliable. The reason a Sump colony can eat at all.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Dorvel/RM_Dorvel_a</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>0.7</MarketValue>
+      <Mass>0.02</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>18</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_RawSkelver</defName>
+    <label>skelver</label>
+    <description>A waxy, dinner-plate-sized rosette leaf with an oily dark heart, torn from a skelver plant at a pool's edge. Edible raw at the usual penalty — the forage staple of the Sump.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Skelver/RM_Skelver_a</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>0.6</MarketValue>
+      <Mass>0.02</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>8</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_KorvethPitch</defName>
+    <label>korveth pitch</label>
+    <description>A hard black nodule of concentrated bitumen, harvested from a korveth shrub's swollen branches. Waterproofing, adhesive, torch-fuel — small-scale pitch trade without sinking a dig.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Korveth/RM_Korveth_a</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.2</Mass>
+      <Flammability>1.2</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

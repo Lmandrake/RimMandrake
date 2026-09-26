@@ -5978,3 +5978,205 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "scald2_wreckframe_b", "notes": "", "target": "scald2_wreckframe_b", "ts": 1790357022.2290692}
 {"by": "fill_queue", "event": "registered", "source": "SCALD_ART_UPGRADE_WAVE_1", "target": "scald2_wreckframe_c", "ts": 1790357022.2418082}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "scald2_wreckframe_c", "notes": "", "target": "scald2_wreckframe_c", "ts": 1790357022.2589014}
+{"by": "artpiped", "elapsed_s": 89.24055549399782, "event": "generated", "job_id": "scald2_bladderboilcatch_a", "target": "scald2_bladderboilcatch_a", "ts": 1790367065.8956664}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_bladderboilcatch_a", "target": "scald2_bladderboilcatch_a", "ts": 1790367065.911536, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 121.10122617000161, "event": "generated", "job_id": "scald2_bladderboilcatch_b", "target": "scald2_bladderboilcatch_b", "ts": 1790367190.0633905}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_bladderboilcatch_b", "target": "scald2_bladderboilcatch_b", "ts": 1790367190.0824785, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 114.46622452199517, "event": "generated", "job_id": "scald2_bladderboilcatch_c", "target": "scald2_bladderboilcatch_c", "ts": 1790367307.8792107}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_bladderboilcatch_c", "target": "scald2_bladderboilcatch_c", "ts": 1790367307.8979082, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 99.0596281399994, "event": "generated", "job_id": "scald2_dosscatch_a", "target": "scald2_dosscatch_a", "ts": 1790367410.1222415}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_dosscatch_a", "target": "scald2_dosscatch_a", "ts": 1790367410.139324, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 137.82131007499993, "event": "generated", "job_id": "scald2_dosscatch_b", "target": "scald2_dosscatch_b", "ts": 1790367552.7109535}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_dosscatch_b", "target": "scald2_dosscatch_b", "ts": 1790367552.7307003, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 126.63246384000377, "event": "generated", "job_id": "scald2_dosscatch_c", "target": "scald2_dosscatch_c", "ts": 1790367684.0919445}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_dosscatch_c", "target": "scald2_dosscatch_c", "ts": 1790367684.1090786, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 110.65432718499505, "event": "generated", "job_id": "scald2_eeshcatch_a", "target": "scald2_eeshcatch_a", "ts": 1790367798.404874}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_eeshcatch_a", "target": "scald2_eeshcatch_a", "ts": 1790367798.4240105, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 139.78517040400038, "event": "generated", "job_id": "scald2_eeshcatch_b", "target": "scald2_eeshcatch_b", "ts": 1790367942.9172735}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_eeshcatch_b", "target": "scald2_eeshcatch_b", "ts": 1790367942.9324174, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 102.77076041699911, "event": "generated", "job_id": "scald2_eeshcatch_c", "target": "scald2_eeshcatch_c", "ts": 1790368048.7476614}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_eeshcatch_c", "target": "scald2_eeshcatch_c", "ts": 1790368048.764544, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 89.77643672999693, "event": "generated", "job_id": "scald2_ekkelcatch_a", "target": "scald2_ekkelcatch_a", "ts": 1790368141.6234796}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_ekkelcatch_a", "target": "scald2_ekkelcatch_a", "ts": 1790368141.642413, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 115.9131189329928, "event": "generated", "job_id": "scald2_ekkelcatch_b", "target": "scald2_ekkelcatch_b", "ts": 1790368260.6205895}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_ekkelcatch_b", "target": "scald2_ekkelcatch_b", "ts": 1790368260.636672, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 167.62803840099514, "event": "generated", "job_id": "scald2_ekkelcatch_c", "target": "scald2_ekkelcatch_c", "ts": 1790368431.5800543}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_ekkelcatch_c", "target": "scald2_ekkelcatch_c", "ts": 1790368431.6002162, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 98.67436021499452, "event": "generated", "job_id": "scald2_karrashcatch_a", "target": "scald2_karrashcatch_a", "ts": 1790368534.9127417}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_karrashcatch_a", "target": "scald2_karrashcatch_a", "ts": 1790368534.9279664, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 114.71655065300001, "event": "generated", "job_id": "scald2_karrashcatch_b", "target": "scald2_karrashcatch_b", "ts": 1790368653.9667883}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_karrashcatch_b", "target": "scald2_karrashcatch_b", "ts": 1790368653.9816773, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 124.36421842299751, "event": "generated", "job_id": "scald2_karrashcatch_c", "target": "scald2_karrashcatch_c", "ts": 1790368782.536305}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_karrashcatch_c", "target": "scald2_karrashcatch_c", "ts": 1790368782.5526242, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 75.21753146199626, "event": "generated", "job_id": "scald2_muddalcatch_a", "target": "scald2_muddalcatch_a", "ts": 1790368862.1524382}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_muddalcatch_a", "target": "scald2_muddalcatch_a", "ts": 1790368862.1679003, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 152.59491067699855, "event": "generated", "job_id": "scald2_muddalcatch_b", "target": "scald2_muddalcatch_b", "ts": 1790369017.8975604}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_muddalcatch_b", "target": "scald2_muddalcatch_b", "ts": 1790369017.924715, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 149.0842714149985, "event": "generated", "job_id": "scald2_muddalcatch_c", "target": "scald2_muddalcatch_c", "ts": 1790369171.4788082}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_muddalcatch_c", "target": "scald2_muddalcatch_c", "ts": 1790369171.4993732, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 102.67955951900512, "event": "generated", "job_id": "scald2_rainbowpigment_a", "target": "scald2_rainbowpigment_a", "ts": 1790369278.9263546}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_rainbowpigment_a", "target": "scald2_rainbowpigment_a", "ts": 1790369278.941397, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 172.17659504300536, "event": "generated", "job_id": "scald2_rainbowpigment_b", "target": "scald2_rainbowpigment_b", "ts": 1790369455.2150118}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_rainbowpigment_b", "target": "scald2_rainbowpigment_b", "ts": 1790369455.2396767, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 145.43232532300317, "event": "generated", "job_id": "scald2_rainbowpigment_c", "target": "scald2_rainbowpigment_c", "ts": 1790369605.9164405}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_rainbowpigment_c", "target": "scald2_rainbowpigment_c", "ts": 1790369605.9344866, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 89.51921468399814, "event": "generated", "job_id": "scald2_saalcatch_a", "target": "scald2_saalcatch_a", "ts": 1790369699.1654267}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_saalcatch_a", "target": "scald2_saalcatch_a", "ts": 1790369699.187858, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 138.15320413399604, "event": "generated", "job_id": "scald2_saalcatch_b", "target": "scald2_saalcatch_b", "ts": 1790369842.0403323}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_saalcatch_b", "target": "scald2_saalcatch_b", "ts": 1790369842.0595577, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 128.7284863390014, "event": "generated", "job_id": "scald2_saalcatch_c", "target": "scald2_saalcatch_c", "ts": 1790369975.0489988}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_saalcatch_c", "target": "scald2_saalcatch_c", "ts": 1790369975.0635011, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 70.7409550109951, "event": "generated", "job_id": "scald2_shullacatch_a", "target": "scald2_shullacatch_a", "ts": 1790370048.9955828}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_shullacatch_a", "target": "scald2_shullacatch_a", "ts": 1790370049.0114226, "verdict": "fail"}
+{"by": "fill_queue", "event": "registered", "source": "DEEPFIRE_PIGMENT_MOD_1", "target": "deepfire_pigmentjar_a", "ts": 1790378489.4253361}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "deepfire_pigmentjar_a", "notes": "", "target": "deepfire_pigmentjar_a", "ts": 1790378489.4431717}
+{"by": "fill_queue", "event": "registered", "source": "DEEPFIRE_PIGMENT_MOD_1", "target": "deepfire_pigmentjar_b", "ts": 1790378489.4495463}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "deepfire_pigmentjar_b", "notes": "", "target": "deepfire_pigmentjar_b", "ts": 1790378489.4723396}
+{"by": "fill_queue", "event": "registered", "source": "DEEPFIRE_PIGMENT_MOD_1", "target": "deepfire_crowncarpet_a", "ts": 1790378489.4793434}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "deepfire_crowncarpet_a", "notes": "", "target": "deepfire_crowncarpet_a", "ts": 1790378489.5005362}
+{"by": "fill_queue", "event": "registered", "source": "DEEPFIRE_PIGMENT_MOD_1", "target": "deepfire_crowncarpet_b", "ts": 1790378489.508758}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "deepfire_crowncarpet_b", "notes": "", "target": "deepfire_crowncarpet_b", "ts": 1790378489.528214}
+{"by": "artpiped", "elapsed_s": 105.44741559299291, "event": "generated", "job_id": "deepfire_crowncarpet_a", "target": "deepfire_crowncarpet_a", "ts": 1790383448.8478541}
+{"by": "artpiped", "event": "validated", "job_id": "deepfire_crowncarpet_a", "target": "deepfire_crowncarpet_a", "ts": 1790383448.8669004, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 81.59806947299512, "event": "generated", "job_id": "deepfire_crowncarpet_b", "target": "deepfire_crowncarpet_b", "ts": 1790383532.8909526}
+{"by": "artpiped", "event": "validated", "job_id": "deepfire_crowncarpet_b", "target": "deepfire_crowncarpet_b", "ts": 1790383532.989074, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 123.72473159999936, "event": "generated", "job_id": "deepfire_pigmentjar_a", "target": "deepfire_pigmentjar_a", "ts": 1790383660.3698955}
+{"by": "artpiped", "event": "validated", "job_id": "deepfire_pigmentjar_a", "target": "deepfire_pigmentjar_a", "ts": 1790383660.3846724, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 135.83025551200262, "event": "generated", "job_id": "deepfire_pigmentjar_b", "target": "deepfire_pigmentjar_b", "ts": 1790383798.6171336}
+{"by": "artpiped", "event": "validated", "job_id": "deepfire_pigmentjar_b", "target": "deepfire_pigmentjar_b", "ts": 1790383798.631705, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 95.3518035379966, "event": "generated", "job_id": "scald2_shullacatch_b", "target": "scald2_shullacatch_b", "ts": 1790383900.5419414}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_shullacatch_b", "target": "scald2_shullacatch_b", "ts": 1790383900.5577073, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 96.04533957199601, "event": "generated", "job_id": "scald2_shullacatch_c", "target": "scald2_shullacatch_c", "ts": 1790384000.0752277}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_shullacatch_c", "target": "scald2_shullacatch_c", "ts": 1790384000.0935738, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 82.66699949699978, "event": "generated", "job_id": "scald2_steamcatchbuilding_a", "target": "scald2_steamcatchbuilding_a", "ts": 1790384085.6872234}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_steamcatchbuilding_a", "target": "scald2_steamcatchbuilding_a", "ts": 1790384085.7054174, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 83.02967435598839, "event": "generated", "job_id": "scald2_thuumcatch_a", "target": "scald2_thuumcatch_a", "ts": 1790384172.2252526}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_thuumcatch_a", "target": "scald2_thuumcatch_a", "ts": 1790384172.243232, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 141.5473145769938, "event": "generated", "job_id": "scald2_thuumcatch_b", "target": "scald2_thuumcatch_b", "ts": 1790384317.0397854}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_thuumcatch_b", "target": "scald2_thuumcatch_b", "ts": 1790384317.0556915, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 125.83356797300803, "event": "generated", "job_id": "scald2_thuumcatch_c", "target": "scald2_thuumcatch_c", "ts": 1790384446.172096}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_thuumcatch_c", "target": "scald2_thuumcatch_c", "ts": 1790384446.1902082, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 100.72234445800132, "event": "generated", "job_id": "scald2_ventbuilding_a", "target": "scald2_ventbuilding_a", "ts": 1790384550.139142}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_ventbuilding_a", "target": "scald2_ventbuilding_a", "ts": 1790384550.1597772, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 80.30233515900909, "event": "generated", "job_id": "scald2_ventbuilding_b", "target": "scald2_ventbuilding_b", "ts": 1790384634.3854976}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_ventbuilding_b", "target": "scald2_ventbuilding_b", "ts": 1790384634.404802, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 104.22758383299515, "event": "generated", "job_id": "scald2_wreckframe_a", "target": "scald2_wreckframe_a", "ts": 1790384741.6785505}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_wreckframe_a", "target": "scald2_wreckframe_a", "ts": 1790384741.6965728, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 119.65089098799217, "event": "generated", "job_id": "scald2_wreckframe_b", "target": "scald2_wreckframe_b", "ts": 1790384864.2949102}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_wreckframe_b", "target": "scald2_wreckframe_b", "ts": 1790384864.311445, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 107.60623755300185, "event": "generated", "job_id": "scald2_wreckframe_c", "target": "scald2_wreckframe_c", "ts": 1790384976.582387}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_wreckframe_c", "target": "scald2_wreckframe_c", "ts": 1790384976.598317, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 91.2260028640012, "event": "generated", "job_id": "scald2_wreckhull_a", "target": "scald2_wreckhull_a", "ts": 1790385071.1745636}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_wreckhull_a", "target": "scald2_wreckhull_a", "ts": 1790385071.192962, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 106.30846617001225, "event": "generated", "job_id": "scald2_wreckhull_b", "target": "scald2_wreckhull_b", "ts": 1790385180.557942}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_wreckhull_b", "target": "scald2_wreckhull_b", "ts": 1790385180.6689327, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 122.9401847840054, "event": "generated", "job_id": "scald2_wreckhull_c", "target": "scald2_wreckhull_c", "ts": 1790385306.4723399}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_wreckhull_c", "target": "scald2_wreckhull_c", "ts": 1790385306.4883523, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 79.43491165200248, "event": "generated", "job_id": "scald2_wrecktank_a", "target": "scald2_wrecktank_a", "ts": 1790385388.776039}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_wrecktank_a", "target": "scald2_wrecktank_a", "ts": 1790385388.7913265, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 164.11453601700487, "event": "generated", "job_id": "scald2_wrecktank_b", "target": "scald2_wrecktank_b", "ts": 1790385556.1300998}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_wrecktank_b", "target": "scald2_wrecktank_b", "ts": 1790385556.1455436, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 101.563793230991, "event": "generated", "job_id": "scald2_wrecktank_c", "target": "scald2_wrecktank_c", "ts": 1790385660.6186714}
+{"by": "artpiped", "event": "validated", "job_id": "scald2_wrecktank_c", "target": "scald2_wrecktank_c", "ts": 1790385660.6369624, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 84.49114494699461, "event": "generated", "job_id": "crags_kessik_north", "target": "crags_kessik/north", "ts": 1790385748.923086}
+{"by": "artpiped", "event": "validated", "job_id": "crags_kessik_north", "target": "crags_kessik/north", "ts": 1790385749.0310006, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 92.15544223799952, "event": "generated", "job_id": "crags_kessik_south", "target": "crags_kessik/south", "ts": 1790385844.2066343}
+{"by": "artpiped", "event": "validated", "job_id": "crags_kessik_south", "target": "crags_kessik/south", "ts": 1790385844.2239304, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 123.12697321000451, "event": "generated", "job_id": "crags_shekkur_east", "target": "crags_shekkur/east", "ts": 1790385970.2504644}
+{"by": "artpiped", "event": "validated", "job_id": "crags_shekkur_east", "target": "crags_shekkur/east", "ts": 1790385970.267176, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 86.58823519399448, "event": "generated", "job_id": "crags_shekkur_north", "target": "crags_shekkur/north", "ts": 1790386061.0861459}
+{"by": "artpiped", "event": "validated", "job_id": "crags_shekkur_north", "target": "crags_shekkur/north", "ts": 1790386061.1015563, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 82.07797337700322, "event": "generated", "job_id": "crags_shekkur_south", "target": "crags_shekkur/south", "ts": 1790386146.0649135}
+{"by": "artpiped", "event": "validated", "job_id": "crags_shekkur_south", "target": "crags_shekkur/south", "ts": 1790386146.0841653, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 115.27595669099537, "event": "generated", "job_id": "crags_thrizzik_east", "target": "crags_thrizzik/east", "ts": 1790386264.2267168}
+{"by": "artpiped", "event": "validated", "job_id": "crags_thrizzik_east", "target": "crags_thrizzik/east", "ts": 1790386264.3273072, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 93.18399938500079, "event": "generated", "job_id": "crags_thrizzik_north", "target": "crags_thrizzik/north", "ts": 1790386360.4382923}
+{"by": "artpiped", "event": "validated", "job_id": "crags_thrizzik_north", "target": "crags_thrizzik/north", "ts": 1790386360.4541998, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 95.72703747400374, "event": "generated", "job_id": "crags_thrizzik_south", "target": "crags_thrizzik/south", "ts": 1790386459.4285195}
+{"by": "artpiped", "event": "validated", "job_id": "crags_thrizzik_south", "target": "crags_thrizzik/south", "ts": 1790386459.4449408, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 98.99789024899655, "event": "generated", "job_id": "crags_ulkhorr_east", "target": "crags_ulkhorr/east", "ts": 1790386561.659189}
+{"by": "artpiped", "event": "validated", "job_id": "crags_ulkhorr_east", "target": "crags_ulkhorr/east", "ts": 1790386561.6745207, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 97.55373541799781, "event": "generated", "job_id": "crags_ulkhorr_north", "target": "crags_ulkhorr/north", "ts": 1790386663.4013038}
+{"by": "artpiped", "event": "validated", "job_id": "crags_ulkhorr_north", "target": "crags_ulkhorr/north", "ts": 1790386663.4207056, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 87.55086728800961, "event": "generated", "job_id": "crags_ulkhorr_south", "target": "crags_ulkhorr/south", "ts": 1790386753.8912923}
+{"by": "artpiped", "event": "validated", "job_id": "crags_ulkhorr_south", "target": "crags_ulkhorr/south", "ts": 1790386754.002027, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 87.77979389599932, "event": "generated", "job_id": "crags_vrakk_east", "target": "crags_vrakk/east", "ts": 1790386844.6568973}
+{"by": "artpiped", "event": "validated", "job_id": "crags_vrakk_east", "target": "crags_vrakk/east", "ts": 1790386844.672795, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 104.77478235500166, "event": "generated", "job_id": "crags_vrakk_north", "target": "crags_vrakk/north", "ts": 1790386952.4858181}
+{"by": "artpiped", "event": "validated", "job_id": "crags_vrakk_north", "target": "crags_vrakk/north", "ts": 1790386952.501459, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 131.0384831810079, "event": "generated", "job_id": "crags_vrakk_south", "target": "crags_vrakk/south", "ts": 1790387087.1063294}
+{"by": "artpiped", "event": "validated", "job_id": "crags_vrakk_south", "target": "crags_vrakk/south", "ts": 1790387087.1215568, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 89.31504031100485, "event": "generated", "job_id": "crags_zekkra_east", "target": "crags_zekkra/east", "ts": 1790387179.429358}
+{"by": "artpiped", "event": "validated", "job_id": "crags_zekkra_east", "target": "crags_zekkra/east", "ts": 1790387179.4493778, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 84.63784743301221, "event": "generated", "job_id": "crags_zekkra_north", "target": "crags_zekkra/north", "ts": 1790387267.282583}
+{"by": "artpiped", "event": "validated", "job_id": "crags_zekkra_north", "target": "crags_zekkra/north", "ts": 1790387267.4057012, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 82.26962338099838, "event": "generated", "job_id": "crags_zekkra_south", "target": "crags_zekkra/south", "ts": 1790387352.5455446}
+{"by": "artpiped", "event": "validated", "job_id": "crags_zekkra_south", "target": "crags_zekkra/south", "ts": 1790387352.5606446, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 156.5881154339877, "event": "generated", "job_id": "crags_zhurrakor_east", "target": "crags_zhurrakor/east", "ts": 1790387512.1109486}
+{"by": "artpiped", "event": "validated", "job_id": "crags_zhurrakor_east", "target": "crags_zhurrakor/east", "ts": 1790387512.1266775, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 137.01824370499526, "event": "generated", "job_id": "crags_zhurrakor_north", "target": "crags_zhurrakor/north", "ts": 1790387652.4168196}
+{"by": "artpiped", "event": "validated", "job_id": "crags_zhurrakor_north", "target": "crags_zhurrakor/north", "ts": 1790387652.4338207, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 107.73106606399233, "event": "generated", "job_id": "crags_zhurrakor_south", "target": "crags_zhurrakor/south", "ts": 1790387763.3489122}
+{"by": "artpiped", "event": "validated", "job_id": "crags_zhurrakor_south", "target": "crags_zhurrakor/south", "ts": 1790387763.3677018, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 96.3937544060027, "event": "generated", "job_id": "desertportb_graniteslug_east", "target": "desertportb_graniteslug/east", "ts": 1790387863.0944183}
+{"by": "artpiped", "event": "validated", "job_id": "desertportb_graniteslug_east", "target": "desertportb_graniteslug/east", "ts": 1790387863.14692, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 90.11977050598944, "event": "generated", "job_id": "desertportb_graniteslug_north", "target": "desertportb_graniteslug/north", "ts": 1790387956.0390637}
+{"by": "artpiped", "event": "validated", "job_id": "desertportb_graniteslug_north", "target": "desertportb_graniteslug/north", "ts": 1790387956.053938, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 86.52137468100409, "event": "generated", "job_id": "desertportb_graniteslug_south", "target": "desertportb_graniteslug/south", "ts": 1790388045.5894961}
+{"by": "artpiped", "event": "validated", "job_id": "desertportb_graniteslug_south", "target": "desertportb_graniteslug/south", "ts": 1790388045.6057281, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 83.48008526299964, "event": "generated", "job_id": "desertportb_grank_east", "target": "desertportb_grank/east", "ts": 1790388132.0427008}
+{"by": "artpiped", "event": "validated", "job_id": "desertportb_grank_east", "target": "desertportb_grank/east", "ts": 1790388132.0582767, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 92.6822124439932, "event": "generated", "job_id": "desertportb_grank_north", "target": "desertportb_grank/north", "ts": 1790388229.293285}
+{"by": "artpiped", "event": "validated", "job_id": "desertportb_grank_north", "target": "desertportb_grank/north", "ts": 1790388229.3148324, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.37853121499938, "event": "generated", "job_id": "desertportb_grank_south", "target": "desertportb_grank/south", "ts": 1790388335.9103174}
+{"by": "artpiped", "event": "validated", "job_id": "desertportb_grank_south", "target": "desertportb_grank/south", "ts": 1790388336.0356498, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 109.09450559898687, "event": "generated", "job_id": "desertportb_greaterkraytdragon_east", "target": "desertportb_greaterkraytdragon/east", "ts": 1790388448.6787195}
+{"by": "artpiped", "event": "validated", "job_id": "desertportb_greaterkraytdragon_east", "target": "desertportb_greaterkraytdragon/east", "ts": 1790388448.6960604, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 101.28113794600358, "event": "generated", "job_id": "desertportb_greaterkraytdragon_north", "target": "desertportb_greaterkraytdragon/north", "ts": 1790388554.3498487}
+{"by": "artpiped", "event": "validated", "job_id": "desertportb_greaterkraytdragon_north", "target": "desertportb_greaterkraytdragon/north", "ts": 1790388554.374524, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 71.96295517201361, "event": "generated", "job_id": "desertportb_greaterkraytdragon_south", "target": "desertportb_greaterkraytdragon/south", "ts": 1790388630.0585523}
+{"by": "artpiped", "event": "validated", "job_id": "desertportb_greaterkraytdragon_south", "target": "desertportb_greaterkraytdragon/south", "ts": 1790388630.0730288, "verdict": "fail"}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FLORA_ROSTER_1", "target": "RM_Dorvel_a", "ts": 1790398897.0391908}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Dorvel_a", "notes": "", "target": "RM_Dorvel_a", "ts": 1790398897.0571675}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FLORA_ROSTER_1", "target": "RM_Skelver_a", "ts": 1790398897.064158}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Skelver_a", "notes": "", "target": "RM_Skelver_a", "ts": 1790398897.081432}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FLORA_ROSTER_1", "target": "RM_Korveth_a", "ts": 1790398897.0875297}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Korveth_a", "notes": "", "target": "RM_Korveth_a", "ts": 1790398897.1038}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FLORA_ROSTER_1", "target": "RM_Brindeth_a", "ts": 1790398897.1161253}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Brindeth_a", "notes": "", "target": "RM_Brindeth_a", "ts": 1790398897.1325357}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FLORA_ROSTER_1", "target": "RM_Soffeth_a", "ts": 1790398897.139681}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Soffeth_a", "notes": "", "target": "RM_Soffeth_a", "ts": 1790398897.1565943}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FLORA_ROSTER_1", "target": "RM_Tolleth_a", "ts": 1790398897.1646173}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Tolleth_a", "notes": "", "target": "RM_Tolleth_a", "ts": 1790398897.1832616}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FLORA_ROSTER_1", "target": "RM_Velloch_a", "ts": 1790398897.19213}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Velloch_a", "notes": "", "target": "RM_Velloch_a", "ts": 1790398897.211406}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FLORA_ROSTER_1", "target": "RM_Mirrelin_a", "ts": 1790398897.2215476}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Mirrelin_a", "notes": "", "target": "RM_Mirrelin_a", "ts": 1790398897.241028}
+{"by": "fill_queue", "event": "registered", "source": "SUMP_FLORA_ROSTER_1", "target": "RM_Pallick_a", "ts": 1790398897.2493813}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Pallick_a", "notes": "", "target": "RM_Pallick_a", "ts": 1790398897.2690077}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_varnoth", "ts": 1790399249.741588}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_varnoth", "notes": "", "target": "feverwood_plant_varnoth", "ts": 1790399249.7594938}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_plennith", "ts": 1790399249.7660294}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_plennith", "notes": "", "target": "feverwood_plant_plennith", "ts": 1790399249.7822835}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_cistrel", "ts": 1790399249.7896676}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_cistrel", "notes": "", "target": "feverwood_plant_cistrel", "ts": 1790399249.8056676}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_maulith", "ts": 1790399249.8191173}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_maulith", "notes": "", "target": "feverwood_plant_maulith", "ts": 1790399249.8359282}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_nubrith", "ts": 1790399249.8431058}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_nubrith", "notes": "", "target": "feverwood_plant_nubrith", "ts": 1790399249.8578176}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_halquin", "ts": 1790399249.8650074}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_halquin", "notes": "", "target": "feverwood_plant_halquin", "ts": 1790399249.8804455}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_ammeth", "ts": 1790399249.8867447}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_ammeth", "notes": "", "target": "feverwood_plant_ammeth", "ts": 1790399249.9021742}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_claithe", "ts": 1790399249.909061}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_claithe", "notes": "", "target": "feverwood_plant_claithe", "ts": 1790399249.9254665}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_corvath", "ts": 1790399249.9320393}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_corvath", "notes": "", "target": "feverwood_plant_corvath", "ts": 1790399249.9472468}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_sodderel", "ts": 1790399249.9536922}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_sodderel", "notes": "", "target": "feverwood_plant_sodderel", "ts": 1790399249.9696302}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_seepril", "ts": 1790399249.9774458}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_seepril", "notes": "", "target": "feverwood_plant_seepril", "ts": 1790399249.9937105}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_skimmel", "ts": 1790399250.000847}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_skimmel", "notes": "", "target": "feverwood_plant_skimmel", "ts": 1790399250.0165315}
+{"by": "fill_queue", "event": "registered", "source": "FEVERWOOD_FLORA_ROSTER_1", "target": "feverwood_plant_wanlith", "ts": 1790399250.0239184}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "feverwood_plant_wanlith", "notes": "", "target": "feverwood_plant_wanlith", "ts": 1790399250.0397835}

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_SumpFlora.xml                          RM_TheSump · SUMP_FLORA_ROSTER_1
+  ============================================================================
+  The 9 invented flora defs from design/Jawa/worldbuilding/biomes/
+  sump_flora_roster_2026-09-24.md (rows 2-10; row 1, the wick-plant, already
+  ships as RUT_Plant_Wick.xml in ThingDefs_Plants/ next door and is only
+  wired into <wildPlants> by this pass, not redefined). Every row is `RM_`
+  tier, franchise-free, cast inline (Q11a) — the roster doc's own collision
+  sweep found 0 hits for any of these 9 names anywhere else in the repo.
+
+  Ban #3 (roster doc §0, sheet §6): every native plant here is a chemotroph
+  feeding on the tar's energy, never the sun — growMinGlow 0 and
+  completelyIgnoreFertility true on every row, same mechanism wick-plant
+  already proved out (PlantUtility.GrowthRateFactorFor_Light/_Fertility,
+  documented in RUT_Plant_Wick.xml's own header, read again this pass, not
+  re-derived). minGrowthTemperature -8 on every row for the same reason
+  wick-plant carries it: sheet §0's measured range (p10/median/p90
+  -4.3/1.2/14.9 degC) sits mostly above -8, so nothing here needs artificial
+  heat to grow through ordinary Sump cold. Ban §9: nothing below emits light
+  (no glowRadius, no GlowerProps) — the wick-garden/derrick lamps stay the
+  biome's only light source.
+
+  Two rows (RM_Dorvel, RM_Skelver) are farmed/foraged food and carry
+  harvestedThingDef rows into RM_SumpFloraItems.xml (same dir up one level,
+  ThingDefs_Items/). RM_Korveth's bitumen and RM_Brindeth's wood are also
+  harvestable (RM_KorvethPitch, new item; vanilla WoodLog for brindeth,
+  reused def, no new item needed). The remaining five (RM_Soffeth,
+  RM_Tolleth, RM_Velloch, RM_Mirrelin, RM_Pallick) are unharvestable —
+  scenery/index plants, per the roster doc's own "job" column — so they
+  carry no harvestTag/harvestedThingDef/harvestYield at all, same posture
+  as any vanilla decorative flora.
+
+  🔑 Terrain-gating NOT attempted for Mirrelin/Pallick ("grows on cooled-tar
+  terrain only" / "grows out over soft tar") or Soffeth (seep-mouth rings)
+  or Tolleth (dig-lottery-rich cells): the roster doc's own mechanism
+  inventory (§6) marks all four placement rules NEW/PARTIAL and explicitly
+  data-driven GenStep work, not flora-def work, and the RM_TarPan/RM_TarLoam
+  terrain names the doc proposes for "cooled tar" vs "soft tar" (§5) do not
+  exist yet — inventing them here would be terrain authoring out of this
+  item's scope. RM_Velloch DOES get a real wildTerrainTags gate: it grows
+  directly on the tar pools themselves, and RM_TarShallow/RM_TarDeep
+  (src/RimMandrake/FlowWorks LiquidTypes) already carry the vanilla `Water`
+  tag WickPlant's own gate relies on — same justified mechanism, no new
+  terrain needed. Everything else spawns through the biome's existing
+  terrainsByFertility match, same as the wildAnimals/wildPlants rows already
+  shipping.
+
+  Pallick's false-floor collapse comp (roster doc §6: "NEW small comp: on
+  pawn entry, collapse to deep-tar terrain + mire/stun") is NOT built this
+  pass — it is gameplay-mechanism work, not a flora def, and the roster item
+  is scoped to defs. Tracked for a follow-on mechanism item; the plant itself
+  is fully authored and safe to ship inert (visually present, no special
+  behaviour) until that lands.
+
+  Textures: none of these 9 have existing art anywhere in the repo (searched
+  infrastructure/artpipe/registry.jsonl, done/, _artsrc/ for all 9 names plus
+  "wick" as a sanity probe — 0 hits on every one). texPaths below point at
+  art queued this same pass via fill_queue.py
+  (Transient/sump_flora_art_list.json, SUMP_FLORA_ROSTER_1) and not yet
+  generated; every file is listed in src/DEPLOY_HOLD.txt until it lands.
+
+  Commonalities are INVENTED-BUILD except the two the doc names outright:
+  RM_Dorvel 0.05 ("wild dorvel (comm. ~0.05, station-adjacent) is starter
+  stock") and RM_Velloch 0.6 (direct 1:1 replacement of the donor
+  AB_TarPuddle it displaces, §5 — same job, same number). The rest follow
+  the doc's descriptive rarity language (skelver = "the biome's baseline
+  green" -> highest; tolleth/pallick = deliberately rare markers -> lowest)
+  and are not sourced to a named figure.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ================= 2. The farmed fire — food crop ================= -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Dorvel</defName>
+    <label>dorvel</label>
+    <description>Fist-sized grey-green barrels packed like roe, each capped with a waxy rosette; grown in beds it tiles the ground like cobblestone. A cultivable chemotroph raised in worked tar-beds — bland, dense, reliable calories with no sun and no sunlamp. The stations live on it; so can a colony. Grows slowly: the sun's inclination sets a cold that throttles even a chemotroph's chemistry.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Dorvel/RM_Dorvel_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+    </statBases>
+    <ingestible/>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <sowTags>
+        <li>Ground</li>
+        <li>Hydroponic</li>
+      </sowTags>
+      <sowWork>200</sowWork>
+      <sowMinSkill>4</sowMinSkill>
+      <harvestWork>220</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_RawDorvel</harvestedThingDef>
+      <harvestYield>16</harvestYield>
+      <!-- 🔴 RULED slow-growing, owner typed 2026-09-24: "Yes though due to the
+           inclination of the sun it wouldn't grow very fast." growDays 22 is
+           an INVENTED-BUILD patience-crop value (above Potato's 9, below
+           Devilstrand's ~26) satisfying the ruling; plan granaries. -->
+      <growDays>22</growDays>
+      <visualSizeRange>0.65~1.0</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ================= 3. The edge ring — chemotroph margin ============ -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Skelver</defName>
+    <label>skelver</label>
+    <description>A dinner-plate rosette of fat waxy leaves, grey-green with a dark oily heart where the taproot goes down. Grows in arcs along pool edges — never away from black. The forage staple: edible raw at the usual penalty, and the first green thing a hungry caravan learns to find.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Skelver/RM_Skelver_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+    </statBases>
+    <ingestible/>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <harvestWork>140</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_RawSkelver</harvestedThingDef>
+      <harvestYield>8</harvestYield>
+      <growDays>9</growDays>
+      <visualSizeRange>0.6~1.0</visualSizeRange>
+      <topWindExposure>0.2</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>90</wildClusterWeight>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Korveth</defName>
+    <label>korveth</label>
+    <description>A knotted shin-high shrub whose branches swell into glossy black lumps, like a plant growing its own coal. The lumps weep a hard varnish. It concentrates the tar's heavy fraction into harvestable pitch-nodules — small-scale bitumen (waterproofing, adhesive, torch-fuel) without sinking a dig: slow, renewable, unexciting, always wanted.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Korveth/RM_Korveth_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <harvestWork>200</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_KorvethPitch</harvestedThingDef>
+      <harvestYield>6</harvestYield>
+      <growDays>16</growDays>
+      <visualSizeRange>0.7~1.1</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Brindeth</defName>
+    <label>brindeth</label>
+    <description>A waist-high broom of dark wiry twigs with mean little wax-scale leaves, standing in the outermost ring where even the tar's reach thins. Half of every brindeth is dead wood. Twig-fuel and poor wood in a biome with no trees: enough for a derrick splint or a fuse post, never for a hall — the biome's only "tree", and the joke is how thin it is.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Brindeth/RM_Brindeth_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>1.4</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <harvestWork>240</harvestWork>
+      <harvestTag>Wood</harvestTag>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <growDays>18</growDays>
+      <visualSizeRange>0.7~1.15</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>3</wildOrder>
+      <purpose>Misc</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Soffeth</defName>
+    <label>soffeth</label>
+    <description>Ankle-high pale stalks tipped with soft gas-bladders, growing only in rings around seep-mouths where the tar breathes. They nod when a bubble passes below — the only plant here that moves. A soffeth ring means gas below: don't dig here, don't pour a moat here, don't ground a lamp here. ⚠️ Precise seep-keyed placement is a follow-on GenStep scatter rule (sump_flora_roster_2026-09-24.md §6, NEW) — this plant spawns through the biome's ordinary terrain match until that lands.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Soffeth/RM_Soffeth_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0.9</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <growDays>7</growDays>
+      <visualSizeRange>0.5~0.85</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Tolleth</defName>
+    <label>tolleth</label>
+    <description>One waxy off-white bell on a bare black stem, head bowed, growing alone or in twos — never in beds. The only flower in the biome, and it only grows where the tar is holding something: tolleth roots down to entombed organics and feeds on the slow seep of what the tar keeps, so a tolleth marks a body, a hide, a find. Not valuable itself — its worth is where it stands. ⚠️ Placement biased to dig-lottery-rich cells (sump_flora_roster_2026-09-24.md §6, PARTIAL) is a follow-on GenStep — this plant spawns through the biome's ordinary terrain match until that lands.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Tolleth/RM_Tolleth_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Flammability>0.9</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <growDays>10</growDays>
+      <visualSizeRange>0.55~0.9</visualSizeRange>
+      <topWindExposure>0.25</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>20</wildClusterWeight>
+      <purpose>Misc</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ================= 4. The black itself — surface of the tar ======== -->
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Velloch</defName>
+    <label>velloch</label>
+    <description>A living sheen on the still pools — matte rainbow-on-black patches whose edges curl and flake like old paint. Not a plant you notice until you notice it is everywhere. The tar's own micro-flora, the base of the whole chemotroph chain: ungatherable, unkillable, atmospheric. It makes the black read alive. Replaces the donor Alpha Biomes tar puddle this def used to carry (sump_flora_roster_2026-09-24.md §5) — same job, same commonality, ours now.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Velloch/RM_Velloch_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>false</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <pathCost>0</pathCost>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <!-- Grows directly on the tar pools themselves: same wildTerrainTags
+           gate RUT_Plant_Wick.xml's header already justifies field-by-field
+           (PlantUtility.CanEverPlantAt, RimWorld/PlantUtility.cs:140) —
+           RM_TarShallow/RM_TarDeep (FlowWorks LiquidTypes) are the only
+           terrains in this biome carrying the vanilla Water tag. -->
+      <wildTerrainTags>
+        <li>Water</li>
+      </wildTerrainTags>
+      <growDays>4</growDays>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>0</wildOrder>
+      <purpose>Misc</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Mirrelin</defName>
+    <label>mirrelin</label>
+    <description>A frost-like lace of pale grey crust growing flat on the cooled sheet-tar of the glass reaches, in patches the size of rooms. Mouse-gnawed at every edge. The glass-reach graze — what the sump-mice actually eat out there, and its gnawed trails are half of how a mouse-line forms. Walkable ground grows it; soft tar never does. ⚠️ A dedicated "cooled tar" terrain gate is owed once RM_TarPan is authored (sump_flora_roster_2026-09-24.md §5) — this plant spawns through the biome's ordinary terrain match until then.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Mirrelin/RM_Mirrelin_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>false</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <pathCost>0</pathCost>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <growDays>5</growDays>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>0</wildOrder>
+      <purpose>Misc</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Pallick</defName>
+    <label>pallick</label>
+    <description>A pale crust-mat almost indistinguishable from mirrelin — but uniform, ungnawed, unbroken: a perfect skin. Because under a pallick mat there is no cooled glass, only soft deep tar the plant has roofed over. The biome's one lying plant: step on it and the skin fails. The tell is the fauna — mice do not cross pallick, so an unbroken pale patch no mouse-line touches is the lie. 🔴 The false-floor collapse comp (on pawn entry: deep-tar terrain + mire, never lethal alone) is NOT built this pass — sump_flora_roster_2026-09-24.md §6 marks it new gameplay-mechanism work, out of this flora-def item's scope. The plant is fully authored and safe to ship inert until that lands.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Pallick/RM_Pallick_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>false</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <pathCost>0</pathCost>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <growDays>5</growDays>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>0</wildOrder>
+      <purpose>Misc</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+</Defs>

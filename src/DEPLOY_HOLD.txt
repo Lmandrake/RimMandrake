@@ -414,3 +414,16 @@ Droidworks/ArtIncoming/misrouted_droid_from_mycoidcolossus_north.png   # BENCH: 
 # condition the hold ever had. SWBestiary (defs + RimMandrakeBeastMechanicsRSW.dll)
 # went to the game first, then these two. See
 # DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1 for why they must never ship apart.
+
+# --- SUMP_FLORA_ROSTER_1 (2026-09-25): 9 new invented flora defs, no art yet ---
+# Nine new PlantDefs (RM_SumpFlora.xml) and their harvested goods
+# (RM_SumpFloraItems.xml) reference texPaths under TheSump/Textures/Things/
+# Plant/ that do not exist on disk yet. 9 fill_queue.py jobs filed this same
+# pass (infrastructure/artpipe/pending/RM_*_a.json, id per plant + "_a",
+# rimflow_item_id SUMP_FLORA_ROSTER_1) — none had existing generated art
+# anywhere in registry.jsonl/done/_artsrc (searched, 0 hits on all 9 names).
+# => LIFT per-file as each plant's art lands under TheSump/Textures/Things/
+#    Plant/RM_<Name>/RM_<Name>_a.png — def and art deploy together, same
+#    pattern as every other DEPLOY_HOLD entry above.
+TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml   # FOUNDRY: no art yet, 2026-09-25
+TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml   # FOUNDRY: no art yet, 2026-09-25

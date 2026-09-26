@@ -54,6 +54,20 @@
     texture (Biomes/AB_TarPits) is inherited unchanged from the twin, same
     posture as every sibling's donor world-map texture - not this build's scope
     to fix.
+
+    SUMP_FLORA_ROSTER_1 (2026-09-25): plantDensity corrected 0.15 -> 0.25 and
+    forageability corrected 0.0 -> 0.8. Both values contradicted the frozen
+    sheet's own ruling (design/Jawa/worldbuilding/biomes/the_sump.md SS0:
+    "forageability 0.8 re-pointed at the edge-flora... plantDensity 0.25 fits
+    the edge-ring pattern") AND the RUT_Sump twin's OWN header comment two
+    lines above its fields, which already states the correct numbers; the
+    twin's fields themselves were wrong at authoring time and this copy
+    inherited the error verbatim. The frozen RUT_Sump.xml twin is NOT touched
+    (carries the live campaign world; do not edit); this fix lands only on
+    this def, which still carries 0 tiles pending the terminal repaint.
+    forageability 0.8 now has a real referent: RM_Skelver (RM_SumpFlora.xml,
+    this same pass) is "the row that SS0's forageability 0.8 actually points
+    at" per sump_flora_roster_2026-09-24.md SS3 row 3.
   -->
 
   <BiomeDef>
@@ -66,8 +80,8 @@
     <allowRivers>true</allowRivers>
     <allowFarmingCamps>true</allowFarmingCamps>
     <animalDensity>1.0</animalDensity>
-    <plantDensity>0.15</plantDensity>
-    <forageability>0.0</forageability>
+    <plantDensity>0.25</plantDensity>
+    <forageability>0.8</forageability>
     <movementDifficulty>4</movementDifficulty>
     <texture>Biomes/AB_TarPits</texture>
     <diseaseMtbDays>65</diseaseMtbDays>
@@ -130,7 +144,24 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_TarPuddle MayRequire="sarg.alphabiomes">0.6</AB_TarPuddle>  <!-- tar puddle -->
+      <!-- SUMP_FLORA_ROSTER_1 (2026-09-25): AB_TarPuddle replaced 1:1 by our
+           own RM_Velloch, same job same commonality (roster doc SS5). The
+           other 8 rows are new; RUT_Plant_Wick (already shipped, this mod)
+           gains its first wild-presence row here per the roster doc's own
+           "wild [wick/dorvel] at low commonality... starter stock" language.
+           Commonalities: INVENTED-BUILD except RM_Dorvel (0.05) and
+           RM_Velloch (0.6), both named exactly in the doc; see
+           RM_SumpFlora.xml's header for the full rationale. -->
+      <RUT_Plant_Wick>0.03</RUT_Plant_Wick>  <!-- wick-plant - starter stock -->
+      <RM_Dorvel>0.05</RM_Dorvel>  <!-- dorvel - starter stock, doc-named -->
+      <RM_Skelver>0.4</RM_Skelver>  <!-- skelver - forage staple, baseline green -->
+      <RM_Korveth>0.15</RM_Korveth>  <!-- korveth - bitumen accumulator -->
+      <RM_Brindeth>0.2</RM_Brindeth>  <!-- brindeth - outer-ring woody margin -->
+      <RM_Soffeth>0.08</RM_Soffeth>  <!-- soffeth - seep-mouth breather's tell -->
+      <RM_Tolleth>0.03</RM_Tolleth>  <!-- tolleth - rare grave-bloom marker -->
+      <RM_Velloch MayRequire="mandrake.rm.flowworks">0.6</RM_Velloch>  <!-- velloch - tar-surface film, replaces AB_TarPuddle -->
+      <RM_Mirrelin>0.35</RM_Mirrelin>  <!-- mirrelin - glass-reach graze -->
+      <RM_Pallick>0.05</RM_Pallick>  <!-- pallick - rare false-floor lie -->
     </wildPlants>
     <wildPlantRegrowDays>20</wildPlantRegrowDays>
     <modExtensions>
