@@ -67,7 +67,6 @@
          not RimMandrake.Utinni.UtinniPatches; see the file's own header for why
          (RimMandrake-tier content housed here only until BLUEDESERT_RM_MOD_BUILD_1
          scaffolds mandrake.rm.bluedesert). -->
-    <Compile Include="BlueDesertLife.cs" />
     <!-- CRACKED_LANDS_SEALED_WAKE_MECHANISM_1 (2026-09-25): the water-terrain
          wake trigger + crack-wax ground-drop RUT_SealedSleeper.xml's own
          header deferred. See the .cs file's own header for the mechanism. -->

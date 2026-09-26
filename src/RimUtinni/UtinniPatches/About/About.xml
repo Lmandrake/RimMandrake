@@ -63,6 +63,12 @@
     <li>mandrake.rm.greentide</li>                           <!-- DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 80: MayRequire'd by
                                                                    RUT_ToxinSealant.xml (RM_ToxinSealant item, costList) and 5
                                                                    others; same gap as above -->
+    <li>mandrake.rm.bluedesert</li>                          <!-- BLUEDESERT_RM_MOD_BUILD_1: the frozen RUT_BlueDesert.xml's own
+                                                                   wildAnimals/wildPlants reference RM_Dorrak/RM_Krissek/RM_Vekkit/
+                                                                   RM_Palefloss/RM_Glassfern/RM_Chimeglobe, and RUT_PropaneLakeFauna.xml's
+                                                                   RUT_BurnerAscendant reuses RM_CompEffecter_HaloAlways/
+                                                                   RM_DeathActionWorker_BurnerBlast — all now live in this mod's own
+                                                                   assembly, not this mod's -->
 
 
     <!-- Added PATCHMODS_LOADAFTER_SWEEP_1 (2026-09-08): real MayRequire/FindMod

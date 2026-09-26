@@ -1,10 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- FROZEN 2026-09-25 (BLUEDESERT_RM_MOD_BUILD_1) — carrying the world until the
-       terminal paint; content lives in mandrake.rm.bluedesert; do not edit here. -->
-
   <!--
+    RM_BlueDesert                          RimMandrake tier · BLUEDESERT_RM_MOD_BUILD_1 step 2
+
+    Copied from src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml
+    (now frozen there — see that file's own header) with the defName renamed
+    and one row moved out: `Vapaad` is genuinely canon Star Wars content
+    (Vaapad, from "Star Wars Animal Collection (Continued)") and may not ship
+    in the franchise-free RimMandrake tier (Q11a, owner ruling 2026-09-22) — it
+    rides src/RimUtinni/UtinniPatches/Patches/WildAnimals_BlueDesert.xml onto
+    this def instead, MayRequire="mlie.starwarsanimalcollection".
+
+    🔑 CORRECTION to the twin's own comment (carried below for provenance):
+    that comment called BOTH `Vapaad` and `AA_Thunderbeast` "the roster's two
+    owner-ruled Star Wars rows." Only `Vapaad` actually is — `AA_Thunderbeast`
+    is a plain Alpha Animals import (`sarg.alphaanimals`) with no Star Wars IP
+    content at all (design/Jawa/worldbuilding/biomes/noncanon_beast_names_
+    propane_arid_forge_pyre_fever_greentide_rust_lantern_blue.md:244 gives it
+    its own native name, "yuddra," and explicitly separates it from the one
+    canon row on this roster). So it ships INLINE here, MayRequire-gated,
+    exactly like every sibling RM_ biome mod's own non-Star-Wars donor rows
+    (Q9 — see RM_NightsideIce's 7 AA_* rows, RM_ForsakenCrags' 14 Alpha
+    Animals rows). `correctness outranks seat ownership` — fixed here rather
+    than left standing.
+
+    workerClass stays the vanilla Core BiomeWorker_IceSheet: the twin never
+    named a donor type, so this mod owes no RM_BiomeWorker_BlueDesert of its own.
+
+    Everything else — every field, every wildPlants/wildAnimals row, every
+    number — is unchanged from the twin, including the three donor wildPlants
+    rows (AB_ToxiGrass/AB_CrystalHorn/PoisonPlantTallGrass) left unguarded per
+    the twin's own note that the ban-1 tension stays open for the owner.
+
+    The comment block immediately below is the twin's own original authoring
+    note, carried over unedited for provenance; "RUT_BlueDesert" in it refers
+    to history, not to this def.
+
+    ────────────────────────────────────────────────────────────────────────
+
     RUT_BlueDesert                                UtinniPatches · authored 2026-09-09
     Full sheet: design/Jawa/worldbuilding/biomes/the_blue_desert.md (FROZEN,
     BIOME_FREEZE_FABLE_REVIEW_1). Replaces the donor GRiNDTerra Biomes def
@@ -71,7 +105,7 @@
   -->
 
   <BiomeDef>
-    <defName>RUT_BlueDesert</defName>
+    <defName>RM_BlueDesert</defName>
     <label>the Blue Desert</label>
     <description>From orbit the bluest thing on the planet; underfoot, colorless. A plateau of the oldest ice on Ash'karr, its "sand" ice grain, its "snow" that same sand blowing, scoured bare by cold wind draining off higher ground. Nothing here runs on water: what lives is a fuel charge stable only in the cold, and warmth is detonation. It is usually clear, silent, and almost empty — then the ablation line gives something up.</description>
     <workerClass>BiomeWorker_IceSheet</workerClass>
@@ -81,25 +115,13 @@
     <allowRivers>false</allowRivers>
     <allowFarmingCamps>false</allowFarmingCamps>
     <isExtremeBiome>true</isExtremeBiome>
-    <!-- BLUE_DESERT_LIFE_AUTHORING_1 (2026-09-21): restored to the sheet's own
-         donor-read numbers now that the cast exists (RM_Dorrak/RM_Krissek/
-         RM_Vekkit below, and completelyIgnoreFertility flora that actually
-         makes plantDensity mean something on Ice — §1a of the design brief). -->
     <animalDensity>0.5</animalDensity>
     <plantDensity>0.33</plantDensity>
-    <!-- wildPlants: the owner's 2026-09-10 sheet moved AB_CrystalHorn/AB_ToxiGrass/
-         PoisonPlantTallGrass here (SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20,
-         "propane lakes and blue desert only" / "blue desert rare"). Those three rows
-         landed in rosters/the_blue_desert.json and reached the game only through
-         `BiomeFlora_Ashkarr.xml`'s replace operation, which this element existed purely
-         as an anchor for. That operation is retired for biomes whose BiomeDef we author
-         (BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1), so the rows are written out here instead.
-         Left as-is per BLUE_DESERT_LIFE_AUTHORING_1's own §10 (item's default: "leave
-         them as they are; plantDensity restore makes them live too once our plants set
-         the map's completelyIgnoreFertility flag" — not a ruling on whether a
-         water-metabolism donor plant belongs in a ban-1 biome, which stays open for the
-         owner). RM_Palefloss/RM_Glassfern/RM_Chimeglobe are the biome's own ratified
-         flora (design brief §6) added alongside them, not a replacement for them. -->
+    <!-- wildPlants: three donor rows (AB_ToxiGrass/AB_CrystalHorn/PoisonPlantTallGrass)
+         inherited unguarded from the twin — see this mod's own About.xml disclosure.
+         Left as-is, not a ruling on whether a water-metabolism donor plant belongs in a
+         ban-1 biome (that stays open for the owner). RM_Palefloss/RM_Glassfern/
+         RM_Chimeglobe are the biome's own ratified flora, added alongside them. -->
     <wildPlants>
       <AB_ToxiGrass>0.6</AB_ToxiGrass>  <!-- toxigrass -->
       <AB_CrystalHorn>0.4</AB_CrystalHorn>  <!-- crystal horn -->
@@ -146,18 +168,18 @@
       <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
       <Blizzard MayRequire="Ludeon.RimWorld.Odyssey">0</Blizzard>
     </baseWeatherCommonalities>
-    <!-- BLUE_DESERT_LIFE_AUTHORING_1 (2026-09-21): the three resident fauna the sheet
-         ratifies (§3-§5 of the design brief) — superseding the prior "STAYS EMPTY"
-         ruling from BIOME_FAUNA_ASSIGNMENT_SITTING_1, which was correct only until
-         these defs existed. Commonalities per brief §6c: vekkit most common (herd
-         scavenger), dorrak mid (slow, armoured), krissek least common (a hazard, not
-         a background animal). The roster's two owner-ruled Star Wars rows (Vapaad,
-         AA_Thunderbeast) ride the Utinni patch layer, not this element (§0c/§6c of the
-         brief) — not added here, that is a separate wire-up. -->
+    <!-- Resident fauna per the design brief §6c: vekkit most common (herd
+         scavenger), dorrak mid (slow, armoured), krissek least common (a
+         hazard, not a background animal). AA_Thunderbeast is the roster's
+         trace-experiment import (Alpha Animals, non-Star-Wars, see this
+         file's own correction note above) — ships inline, MayRequire-gated.
+         `Vapaad` (genuinely canon) rides the Utinni patch layer instead —
+         see WildAnimals_BlueDesert.xml. -->
     <wildAnimals>
       <RM_Vekkit>0.8</RM_Vekkit>
       <RM_Dorrak>0.5</RM_Dorrak>
       <RM_Krissek>0.35</RM_Krissek>
+      <AA_Thunderbeast MayRequire="sarg.alphaanimals">0.005</AA_Thunderbeast>  <!-- thunderbeast (yuddra) - trace-experiment import -->
     </wildAnimals>
     <coastalWildAnimals />
     <allowedPackAnimals />

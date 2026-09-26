@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_BlueDesert.xml                UtinniPatches — new file 2026-09-25
+  ============================================================================
+
+  Wires the one genuinely canon Star Wars row (Q11a, owner ruling 2026-09-22:
+  a genuinely canon name is IP and must route through the Utinni campaign
+  patch layer, never the franchise-free RimMandrake tier) onto RM_BlueDesert.
+  Shape: WildAnimals_NightsideIce.xml — one PatchOperationAdd, no
+  PatchOperationReplace, since RM_BlueDesert already ships its own real cast
+  (RM_Vekkit/RM_Dorrak/RM_Krissek/AA_Thunderbeast) inline, not a Core-only
+  placeholder.
+
+  `Vapaad` is CANON (Legends): "Vaapad", a brown ball-shaped, multi-tentacled
+  creature, from "Star Wars Animal Collection (Continued)"
+  (packageId mlie.starwarsanimalcollection) —
+  design/Jawa/worldbuilding/biomes/noncanon_beast_names_propane_arid_forge_
+  pyre_fever_greentide_rust_lantern_blue.md:35/246. Weight (0.5) and the
+  "import" action copied verbatim from the roster
+  (design/Jawa/worldbuilding/biomes/rosters/the_blue_desert.json "fauna").
+
+  🔑 CORRECTION: the frozen RUT_BlueDesert.xml's own authoring comment called
+  BOTH `Vapaad` and `AA_Thunderbeast` "the roster's two owner-ruled Star Wars
+  rows." Only `Vapaad` is Star Wars IP — `AA_Thunderbeast` is a plain Alpha
+  Animals import with no franchise content (same source doc, line 244, gives
+  it a native name "yuddra" and explicitly separates it from the one canon
+  row) — so it ships inline on RM_BlueDesert itself instead, MayRequire-gated,
+  matching every sibling RM_ biome mod's own non-Star-Wars donor rows (Q9).
+
+  ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional
+  returns true on no match, and an unmatched PatchOperationAdd is silent. A
+  clean validate_patch.py run is NOT proof the row landed. 🔴 UNVERIFIED
+  AGAINST A LOAD (step 5 is Desktop-only and OWED) — confirm Vapaad actually
+  lands via a post-load def dump before believing this file works.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
+    <xpath>Defs/BiomeDef[defName="RM_BlueDesert"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_BlueDesert"]/wildAnimals</xpath>
+      <value>
+        <Vapaad>0.5</Vapaad>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

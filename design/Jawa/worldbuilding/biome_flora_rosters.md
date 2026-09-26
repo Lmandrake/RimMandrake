@@ -57,7 +57,13 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.1 | **RUT_Vorrel** | | `RUT_Vorrel` · newer than the def dump |
 | 0.06 | **dommo tree** | 🌳 | `RSW_SweetbarkTree` · RimMandrake: SW — Bestiary |
 
-### `RUT_BlueDesert` — 1,029 tiles · -58 … -19 °C (median -43) · plantDensity 0  🔴 **`plantDensity` is near zero — this roster will almost never be seen**
+### `RUT_BlueDesert` — 1,029 tiles · -58 … -19 °C (median -43) · plantDensity 0 at authoring time (snapshot below is historical)
+
+🔑 **Superseded**: `plantDensity` was restored to 0.33 by `BLUE_DESERT_LIFE_AUTHORING_1`
+(2026-09-21) once the fractal flora existed, and the def itself moved to
+`RM_BlueDesert` (`mandrake.rm.bluedesert`) by `BLUEDESERT_RM_MOD_BUILD_1`
+(2026-09-25) — `RUT_BlueDesert` is now the frozen twin. The table below is the
+original commissioning snapshot, kept for provenance, not the live state.
 
 *was 3 inherited plants → now **3** assigned*
 
