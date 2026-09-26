@@ -55,17 +55,15 @@
     <riverbankTerrain>Riverbank</riverbankTerrain>
     <mudTerrain>RM_GreentideChurnmud</mudTerrain>
 
+    <!-- GREENTIDE_FRENZY_DISEASE_1 (2026-09-26): Disease_Flu and Disease_Malaria
+         removed per the owner's own 2026-09-22 ruling — the two routine,
+         easily-tendable illnesses, over the animal-disease pair or the
+         wet-tropical pair — and replaced one-for-one by RM_Greentide_FrenzyDisease.
+         Everything left is severe: plague, gut worms, the two animal
+         diseases, and now the Frenzy. Not stacked on top of seven; still six. -->
     <diseases>
       <li>
-        <diseaseInc>Disease_Flu</diseaseInc>
-        <commonality>75</commonality>
-      </li>
-      <li>
         <diseaseInc>Disease_Plague</diseaseInc>
-        <commonality>75</commonality>
-      </li>
-      <li>
-        <diseaseInc>Disease_Malaria</diseaseInc>
         <commonality>75</commonality>
       </li>
       <li>
@@ -79,6 +77,10 @@
       <li>
         <diseaseInc>Disease_AnimalPlague</diseaseInc>
         <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>RM_Greentide_FrenzyDisease</diseaseInc>
+        <commonality>50</commonality>
       </li>
     </diseases>
 

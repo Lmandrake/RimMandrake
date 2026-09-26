@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_FRENZY_DISEASE_1. The delivery route the owner ruled 2026-09-22
+     ("a harvestable dose the player administers"): harvested from a jungle
+     plant, refined at a bench, used on whoever the player picks.
+
+     Source plant: RM_Gorbeleth (row 14, GREENTIDE_JUNGLE_TREE_ROSTER_1) —
+     that item's own row already reads "Its toxin is worth extracting, which
+     means going close" and explicitly deferred the yield item as owed
+     follow-on work ("shipping as a static, toxin-yielding hazard plant now").
+     This item pays that off: RM_Gorbeleth now carries
+     <harvestedThingDef>RM_GorbelethToxin</harvestedThingDef>
+     (RM_Greentide_TreeRoster.xml), no other row was touched.
+
+     Chain shape copied from vanilla's own raw-plant-resource -> refined-drug
+     pattern (PsychoidLeaves -> Yayo, RimWorld/ThingDefs_Items/
+     Items_Resource_Plant.xml + Items_Drugs.xml, MEASURED via RimSage) rather
+     than invented: a RoughPlantBase raw resource, refined at a DrugLab via an
+     ordinary <recipeMaker> shorthand (same shorthand this mod already uses
+     for RM_SapResin -> RM_ToxinSealant in RM_Greentide_Items.xml).
+
+     No new art queued — infrastructure/artpipe/done/ has nothing keyed to
+     "frenzy" or "toxin", and this mod's own established precedent for a
+     small crafting resource with no dedicated render is a tinted vanilla
+     icon (RM_SapResin/RM_ToxinSealant, same file). Followed here too. -->
+<Defs>
+
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>RM_GorbelethToxin</defName>
+    <label>gorbeleth toxin</label>
+    <description>A vial of thick, faintly luminous toxin milked from a gorbeleth's throat sac. Raw, it is only a hazard. Refined, it is the Frenzy's dose.</description>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Item/Resource/PlantFoodRaw/PsychoidLeaves</texPath>
+      <color>(0.55, 0.75, 0.2)</color>
+    </graphicData>
+    <statBases>
+      <Beauty>-4</Beauty>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>6</DeteriorationRate>
+      <Mass>0.03</Mass>
+      <MarketValue>2.4</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>PlantMatter</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="MakeableDrugBase">
+    <defName>RM_FrenzyDose</defName>
+    <label>frenzy dose</label>
+    <description>A single measured dose of refined gorbeleth toxin. Taken, it drives the body into a rising, feverish burst of work — and, eventually, a collapse. Untreated, the collapse kills. Tended during the coma, the colonist keeps whatever the burst bought them and lives.</description>
+    <allowedArchonexusCount>-1</allowedArchonexusCount>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <burnableByRecipe>true</burnableByRecipe>
+    <category>Item</category>
+    <comps>
+      <li Class="CompProperties_Forbiddable"></li>
+    </comps>
+    <costList>
+      <RM_GorbelethToxin>6</RM_GorbelethToxin>
+    </costList>
+    <descriptionHyperlinks>
+      <HediffDef>RM_Frenzy</HediffDef>
+    </descriptionHyperlinks>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <graphicData>
+      <texPath>Things/Item/Drug/Yayo</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(0.85, 0.2, 0.15)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce>
+      <chairSearchRadius>0</chairSearchRadius>
+      <foodType>Processed, Fluid</foodType>
+      <drugCategory>Hard</drugCategory>
+      <baseIngestTicks>100</baseIngestTicks>
+      <ingestSound>Ingest_Inject</ingestSound>
+      <ingestCommandString>Take {0}</ingestCommandString>
+      <ingestReportString>Taking {0}.</ingestReportString>
+      <useEatingSpeedStat>false</useEatingSpeedStat>
+      <!-- Tunable, not the vanilla IngestionOutcomeDoer_GiveHediff directly:
+           RM_IngestionOutcomeDoer_FrenzyDose (RM_GreentideMod.cs) checks
+           RM_GreentideSettings.frenzyEnabled (skip entirely if off) and
+           scales `severity` by frenzySeverityMultiplier before calling the
+           vanilla base implementation. -->
+      <outcomeDoers>
+        <li Class="RimMandrake.Greentide.RM_IngestionOutcomeDoer_FrenzyDose">
+          <hediffDef>RM_Frenzy</hediffDef>
+          <severity>0.05</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <orderedTakeGroup>Drug</orderedTakeGroup>
+    <pathCost>14</pathCost>
+    <recipeMaker>
+      <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
+      <workSkill>Intellectual</workSkill>
+      <effectWorking>Cook</effectWorking>
+      <soundWorking>Recipe_Drug</soundWorking>
+      <recipeUsers>
+        <li>DrugLab</li>
+      </recipeUsers>
+      <displayPriority>1500</displayPriority>
+    </recipeMaker>
+    <resourceReadoutPriority>Last</resourceReadoutPriority>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Beauty>-4</Beauty>
+      <WorkToMake>400</WorkToMake>
+      <MarketValue>32</MarketValue>
+      <Mass>0.05</Mass>
+    </statBases>
+    <techLevel>Neolithic</techLevel>
+    <thingCategories>
+      <li>Drugs</li>
+    </thingCategories>
+    <thingClass>ThingWithComps</thingClass>
+    <tradeTags>
+      <li>Drugs</li>
+    </tradeTags>
+    <useHitPoints>true</useHitPoints>
+  </ThingDef>
+
+</Defs>

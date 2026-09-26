@@ -51,6 +51,8 @@
     <Compile Include="RM_GreentideMod.cs" />
     <Compile Include="RM_MapComponent_CrossBiomeChurnmud.cs" />
     <Compile Include="RM_WeatherOverlay_GreentideRoil.cs" />
+    <Compile Include="RM_IncidentWorker_FrenzyDisease.cs" />
+    <Compile Include="RM_IngestionOutcomeDoer_FrenzyDose.cs" />
   </ItemGroup>
 
   <ItemGroup>
