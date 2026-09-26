@@ -1,0 +1,23 @@
+biome	verdict	load_s	active_mods	biomedef	def_present	distinct_errors	cfgerr_lines	xref_lines	patchfail_lines	typeload_lines	recovery_lines	note
+bluedesert	PASS	12	9	RM_BlueDesert	PRESENT	4	0	3	0	0	0	
+contagion	PASS	12	9	RM_Contagion	PRESENT	13	0	15	1	0	0	
+feverwood	PASS	12	11	RM_FeverWood	PRESENT	2	1	1	0	0	0	
+floodedcanyon	PASS	12	10	RM_FloodedCanyon	PRESENT	53	102	0	0	0	0	
+forsakencrags	PASS	12	9	RM_ForsakenCrags	PRESENT	10	0	10	0	0	0	
+gelatinousslime	PASS	12	9	RM_GelatinousSlime	PRESENT	5	4	6	0	0	0	
+greentide	PASS	13	10	RM_Greentide	PRESENT	2	0	2	0	0	0	
+leaningscrub	PASS	12	11	RM_LeaningScrub	PRESENT	5	0	5	0	0	0	
+longshade	PASS	12	9	RM_LongShade	PRESENT	0	0	0	0	0	0	
+miasma	PASS	22	11	RM_Miasma	PRESENT	0	0	0	0	0	0	
+nightsideice	PASS	12	9	RM_NightsideIce	PRESENT	0	0	0	0	0	0	
+poisonforest	PASS	12	9	RM_PoisonForest	PRESENT	7	0	7	0	0	0	
+pyrelands	PASS	12	9	RM_Pyrelands	PRESENT	6	12	0	0	0	0	
+rustcathedral	PASS	21	12	RM_RustCathedral	PRESENT	1	0	0	0	0	0	
+stillsand	PASS	12	9	RM_Stillsand	PRESENT	3	0	1	0	0	0	
+terminalbiomes	PASS	13	9	RM_TheScald	PRESENT	1	0	1	0	0	0	
+theforge	PASS	13	11	RM_TheForge	PRESENT	10	0	9	0	0	0	
+therot	PASS	15	11	RM_TheRot	PRESENT	13	0	13	0	0	0	
+thesump	PASS	21	11	RM_TheSump	PRESENT	14	0	13	0	0	0	
+wasteland	PASS	12	9	RM_Wasteland	PRESENT	7	0	7	0	0	0	
+webwork	PASS	12	9	RM_Webwork	PRESENT	30	9	23	0	0	0	
+weepingstones	PASS	12	11	RM_WeepingStones	PRESENT	3	0	12	0	0	0	

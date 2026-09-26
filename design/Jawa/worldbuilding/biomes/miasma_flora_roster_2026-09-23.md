@@ -283,7 +283,10 @@ collapses it has broken the sitting.
   (colour-randomised set), **braskeen** (open and closed).
 - 🔴 **`RM_Velluric` needs a submerged read** — a plant whose body is under water is not a
   solved art problem in this project and should be checked against the existing
-  `RM_DiveEligible` terrain work in `mandrake.rm.divinginteraction` before art is briefed.
+  pocket-map floor work in `mandrake.rm.divinginteraction` before art is briefed.
+  ⚠️ **Not `RM_DiveEligible`** — that shore-terrain tag was deleted from the code when the
+  owner ruled diving ship-only (2026-09-26). The reference point is the sea FLOOR map
+  (`RM_SeaFloorGround`, `RM_SeaDiveGenerator_*`), not a tagged shallow.
 - **Commonalities and `growDays` are slots, not values.** Every number is owed a tuning
   pass, and density must stay thick per the refugee-crowding doctrine.
 - **This document removes nothing from the live biome def.** Replacing the four shipped

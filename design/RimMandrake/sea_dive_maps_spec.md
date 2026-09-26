@@ -6,9 +6,33 @@ actually spawns, one per sea, shared machinery across the four terminal seas (`R
 `RM_GreySea`, `RM_TwilightSea`, `RM_PropaneLake`, all in `src/RimMandrake/TerminalBiomes`).
 
 Status: RULED design, 2026-09-25 (§7), with the Scald floor worked in full (§7a/§7b rulings,
-§8 design; no open questions remain here — gear's are in `exposure_gear_matrix_spec.md` §6).
-Nothing built. Engine claims are labelled **MEASURED** (read in the
+§8 design). Engine claims are labelled **MEASURED** (read in the
 1.6 decompiled source via RimSage this sitting, symbol cited) or **UNMEASURED**.
+
+> 🔴🔴 **SUPERSEDED IN ITS ENTRY MECHANISM — owner ruling, 2026-09-26, verbatim:**
+> *"Please update ALL diving discussions to require the ship to move the player onto the
+> sea floor and to leave again. You can't 'dive' as an individual pawn nor return as one.
+> It's ship or nothing."*
+>
+> **The gravship is the sole way down and the sole way back.** Everywhere below that
+> describes a colonist walking to a shore cell, right-clicking "Dive down", swimming
+> under, and climbing a surface line back up is **DEAD DESIGN**. Read it for the floor
+> content — the maps, the generators, the cast, the weather, the hazards, all of which
+> stand — and ignore every sentence about how a pawn gets there.
+>
+> ⛔ The `RM_DiveEligible` shore-terrain tag, `RM_FloatMenuOptionProvider_Dive` and both
+> JobDrivers are **deleted from the code**, not merely deprecated.
+> ✅ The live mechanism is **`RM_SeaDiveHatch`** — a `MapPortal` subclass in
+> `mandrake.rm.divinginteraction` that picks its pocket-map generator from the parent
+> map's sea biome, and is buildable only on a map carrying a real `GravEngine`
+> (`PlaceWorker_NeedsGravEngine`), i.e. inside a gravship.
+> ⚠️ So "Nothing built" — which this header used to say — is also false: the hatch, the
+> four generators, the floor terrain and the exit all ship today.
+>
+> 🔑 **What the ruling leaves genuinely open**, and what a follow-on item owes: the seas
+> are `impassable=true`, so whether and how a gravship can travel to and hold station over
+> a sea tile is an **engine question this spec does not answer**. The hatch enforces
+> ship-only at CONSTRUCTION time precisely because that travel rule was not assumed.
 
 ## 0. Read first — what already exists (do not re-invent)
 
@@ -25,14 +49,22 @@ Nothing built. Engine claims are labelled **MEASURED** (read in the
 
 ## 1. The experience
 
-**Shared shape (all four seas).** On the shore, right-click any `RM_DiveEligible` shallow cell:
-beside today's "Dive to hunt" / "Dive to commune" is **"Dive down"**. No building. The colonist
-walks there, holds position (the same wait toil the shore jobs use), and goes **under**: the first
-descent generates that sea's floor map (100×100) and it **persists** — animals live on, harvest
-regrows, wrecks stay chiselled; every later dive from any shallow cell of that sea on that map
-lands on the same floor. Below, a **surface line** — a rope trailing up into the murk, the exit —
-is the only way up, and its glow is the only light you did not bring; going up returns you to the
-cell you last dived from. The floor is fully roofed by the water column ("the sea is the roof"):
+**Shared shape (all four seas).**
+
+🔴 **ENTRY AND EXIT ARE THE SHIP. The paragraph that was here is dead** — it described a
+colonist right-clicking a tagged shore cell, swimming down and climbing a rope back up.
+Owner, 2026-09-26: *"You can't 'dive' as an individual pawn nor return as one. It's ship
+or nothing."* It is deleted rather than left standing, because a reader would have built it.
+
+The live shape: the gravship brings the colony to the sea and an **`RM_SeaDiveHatch`** —
+buildable only aboard a ship with a real `GravEngine` — opens onto that sea's floor. The
+first passage generates that sea's floor map (100×100) and it **persists**: animals live on,
+harvest regrows, wrecks stay chiselled. Leaving is the ship's business too, by the same
+route; there is no personal ascent.
+
+⚠️ **UNMEASURED and owed:** what happens to a party on the floor if the ship departs, and
+whether the ship can hold station over an `impassable` sea tile at all. Neither is answered
+here, and neither may be assumed by a build. The floor is fully roofed by the water column ("the sea is the roof"):
 permanently dim, no sky, no flyers, no drop pods, no raids (pocket maps are outside the
 storyteller's target list — MEASURED, `StorytellerUtility.DefaultThreatPointsNow` redirects a
 pocket map to its `sourceMap`). The map edge is open floor running off into murk; the floor cast
@@ -195,7 +227,7 @@ tileMutators = [RM_SeaFloorHabitat] }`, `disableCallAid true`, `ignoreAreaReveal
 `customMapComponents = [RM_MapComponent_SeaFloor, RM_MapComponent_DeepFloraRegrowth]`.
 
 **Anchoring.** The dive job resolves its sea from the clicked cell's terrain: `RM_DiveMapExtension`
-on each sea BiomeDef lists `entryTerrains` (that sea's `RM_DiveEligible` shallows); the one sea
+on each sea BiomeDef lists `entryTerrains` (that sea's `RM_DiveEligible` shallows) — ⛔ DEAD (owner 2026-09-26, diving is ship-only): entry is the ship's hatch, there are no entry terrains; the one sea
 claiming the terrain supplies the `generator`. The persistent floor is owned by the **surface
 map's `RM_MapComponent_DiveSites`**, keyed by sea BiomeDef — so a shore with two hundred dive
 cells still has exactly **one** floor per sea, and a surface map bordering two seas has two. The
@@ -323,7 +355,7 @@ All-off degrades to today's shore-job-only diving. No worldgen-affecting toggle 
 ## 6. Build order — small, each step shippable
 
 1. **Terrain + tags (XML only, TerminalBiomes + DivingInteraction).** `RM_GreySeaShallow/Deep`,
-   `RM_TwilightSeaShallow/Deep`; tag all four seas' shallows `RM_DiveEligible` (one patch file
+   `RM_TwilightSeaShallow/Deep`; ⛔ DEAD (owner 2026-09-26, diving is ship-only): do NOT tag any shallows — the struck instruction was: tag all four seas' shallows `RM_DiveEligible` (one patch file
    per sea, `MayRequire="mandrake.rm.terminalbiomes"`, the existing Scald patch is the shape).
    Ships: the shore hunt/commune jobs now work on all four seas. Verify with `validate_patch.py
    --live --defs`.

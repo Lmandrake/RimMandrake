@@ -1,5 +1,40 @@
 # SEA_FLOOR_AND_CATCH_PASS_1 — a sea is a floor you visit and a catch you pull
 
+## 🔴🔴 ENTRY MECHANISM SUPERSEDED — owner, 2026-09-26
+
+> *"Please update ALL diving discussions to require the ship to move the player onto the
+> sea floor and to leave again. You can't 'dive' as an individual pawn nor return as one.
+> It's ship or nothing."*
+
+**The gravship is the sole way down and the sole way back.** Every line below about
+`RM_DiveEligible`, tagging a sea's shallows, or sending a colonist to "Dive to hunt" /
+"Dive to commune" / "Dive down" is **DEAD** and must not be built. ⛔ That tag, the
+float-menu provider and both JobDrivers are **deleted from the code**, not deprecated.
+
+✅ Live mechanism: **`RM_SeaDiveHatch`**, a `MapPortal` subclass that picks its pocket-map
+generator from the parent map's sea biome and is buildable only on a map carrying a real
+`GravEngine` (`PlaceWorker_NeedsGravEngine`) — i.e. aboard a gravship.
+
+⇒ **Step 2 below ("Wire the diving hook per sea") is VOID.** Per-sea terrain tagging buys
+nothing now; the hatch resolves the sea from the map's biome by itself. What the other three
+seas actually owe is floor CONTENT, not a dive hook.
+
+⇒ **The `## verify` bar changes too:** "a `RM_DiveEligible` floor a pawn can reach" is no
+longer the test. The test is that the ship's hatch opens that sea's floor map and the floor
+is populated.
+
+🔑 **Second ruling the same day, and it widens this item:** *"All the fishables should also
+be alive and moving around in the depths (this is true for ALL seas)."* ⇒ every catch entry
+in every sea owes a LIVING counterpart on the floor map. A catch item with no creature
+swimming down there is unfinished, not a finished species. That is a bigger job than this
+item's original two-defs-per-species line and should be sized honestly.
+
+⚠️ **UNMEASURED, and nobody may assume it:** the seas are `impassable=true`, so whether a
+gravship can travel to and hold station over a sea tile is an open ENGINE question. The
+hatch enforces ship-only at construction time precisely so that this was not guessed.
+
+---
+
 ## the ruling
 
 **Owner, 2026-09-21**, verbatim:
@@ -210,7 +245,8 @@ for these three subjects first.
   for exactly this; (c) the catch tables go on the **land biomes' `fishTypes.saltwater_*`** (Long Shade, Stillsand,
   Nightside Ice, whichever borders which sea), keyed by which sea the coast faces — the sea BiomeDefs' own `fishTypes`
   can stay as documentation but bind nothing.
-- The floor half (diving) is unaffected: `RM_DiveEligible` terrain lives on the land map already.
+- ⛔ STALE: "The floor half (diving) is unaffected: `RM_DiveEligible` terrain lives on the land
+  map already." The floor half IS affected — entry moved to the ship's hatch and that tag is gone.
 
 ## ✅ (a)–(c) BUILT 2026-09-24 — `mandrake.rm.seashores`, commit `fb352d7c6` (authored, NOT live-proven)
 
@@ -252,7 +288,9 @@ Work per sea, in this order — cheapest and most decisive first.
    generated or paintable. The Scald's answer is known (none, and a cove is owed). Record the
    other three. ⛔ A sea with no shore cannot be fished regardless of its table, so this gates
    every catch claim.
-2. **Wire the diving hook per sea.** Tag each sea's floor-reachable terrain `RM_DiveEligible`
+2. ⛔ **VOID — do not do this step** (owner 2026-09-26, ship-only diving; the hatch resolves
+   the sea from the map's biome and needs no terrain tag). Struck text: **Wire the diving hook
+   per sea.** Tag each sea's floor-reachable terrain `RM_DiveEligible`
    so "the floor" is a place a colonist can actually be, per
    `mandrake.rm.divinginteraction`. ⚠️ The Scald's boiling SURFACE stays no-swim (ban 4 in
    `the_scald.md`, superseded only as far as the DEEP interaction) — copy that shape, do not
