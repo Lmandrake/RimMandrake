@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:07:29Z",
+  "drawsize": 1.2,
+  "facing": null,
+  "facings": [],
+  "id": "feverwood_plant_halquin",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, top-down view, painterly vanilla-RimWorld flora art style: two broad blade-leaves lying flat and opposite against bark like a pressed specimen, dark leathery leaves with a swollen resin-beading joint between them. Single mature specimen, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "FEVERWOOD_FLORA_ROSTER_1",
+  "style_notes": ""
+}

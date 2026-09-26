@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:07:29Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "feverwood_plant_plennith",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, top-down view, painterly vanilla-RimWorld flora art style: a flat spreading mat of overlapping grey-green scales lying directly along bark, a spongy bed holding silt and rot, reads as a surface not a plant. Single mature patch, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "FEVERWOOD_FLORA_ROSTER_1",
+  "style_notes": ""
+}

@@ -15,12 +15,14 @@
   ⛔ Star Wars canon fauna/flora do NOT ship here (Q11a) — every RSW_/donor
   row that carries a canon or franchise name rides
   src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml instead (10
-  animal rows, 3 plant rows). VFEI2_Megathrips (non-Star-Wars donor) and
-  AB_KeeningCordax/AB_Iashiphus/AB_Gomphoeria (non-Star-Wars donor,
-  sarg.alphabiomes) stay inline per Q9. RUT_GiantLeaf is duplicated as this
-  mod's own RM_GiantLeaf (Q13 — see Defs/ThingDefs_Plants/RM_GiantLeaf.xml
-  for why this is a duplicate, not a move: the donor def is also an
-  unconditional row in RUT_Greentide.xml).
+  animal rows, 3 plant rows). VFEI2_Megathrips (non-Star-Wars donor) stays
+  inline per Q9. RUT_GiantLeaf is duplicated as this mod's own RM_GiantLeaf
+  (Q13 — see Defs/ThingDefs_Plants/RM_GiantLeaf.xml for why this is a
+  duplicate, not a move: the donor def is also an unconditional row in
+  RUT_Greentide.xml). FEVERWOOD_FLORA_ROSTER_1 cut the 3 AB_* donor
+  placeholder rows (AB_KeeningCordax/AB_Iashiphus/AB_Gomphoeria,
+  sarg.alphabiomes) that used to stay inline here and replaced them with
+  18 RM_-tier invented rows (RM_FeverWoodFlora.xml).
 
   generatesNaturally stays false, unchanged from the twin: the Fever Wood is
   a campaign-placed biome, not one meant to win natural worldgen scoring —
@@ -175,15 +177,53 @@
       <VFEI2_Megathrips MayRequire="oskarpotocki.vfe.insectoid2">0.5</VFEI2_Megathrips>  <!-- megathrips - wood-borer, keep -->
     </wildAnimals>
     <coastalWildAnimals />
-    <!-- The 3 non-Star-Wars-donor rows plus this mod's own RM_GiantLeaf.
-         The other 3 wildPlants rows from the twin (all mlie.starwars-
-         animalcollection canon names) ride WildAnimals_FeverWood.xml
-         instead — Q11a. -->
+    <!-- FEVERWOOD_FLORA_ROSTER_1: the 3 AB_* donor placeholder rows
+         (AB_KeeningCordax/AB_Iashiphus/AB_Gomphoeria, sarg.alphabiomes) are
+         CUT here per the roster doc's own §6 disposition table — they were
+         placeholders to replace, not a base to extend (AB_KeeningCordax's
+         own roster note called it "an interim single-tile body for the
+         tower-trunks"). Replaced by the 18 RM_-tier invented rows below
+         (design/Jawa/worldbuilding/biomes/fever_wood_flora_roster_2026-09-23.md),
+         defs in RM_FeverWoodFlora.xml. RM_GiantLeaf is untouched — it was
+         already RM_-tier invented content, never one of the donor rows this
+         roster replaces. The 3 genuine canon Star Wars rows
+         (Plant_HydenockTree_Wild/Plant_JoganTree_Wild/Plant_Chakroot_Wild)
+         stay on the Utinni patch layer (WildAnimals_FeverWood.xml, Q11a),
+         kept at their existing low commonality as additive flavour —
+         untouched by this change.
+
+         🔴 Commonalities are ENGINEERING DEFAULTS, not owner-set values —
+         the roster doc's own §8 says every number is "a slot, not a value."
+         Ordered by height group per the roster's "at a glance" table. -->
     <wildPlants>
-      <AB_KeeningCordax MayRequire="sarg.alphabiomes">1.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
       <RM_GiantLeaf>0.8</RM_GiantLeaf>  <!-- giant leaf -->
-      <AB_Iashiphus MayRequire="sarg.alphabiomes">0.5</AB_Iashiphus>  <!-- iashiphus -->
-      <AB_Gomphoeria MayRequire="sarg.alphabiomes">0.4</AB_Gomphoeria>  <!-- gomphoeria -->
+
+      <!-- the giants (towers) — rare, huge-canvas flavour, matches the
+           1~2 boles per map RM_LivingBoleBiomeExtension already spawns -->
+      <RM_Thulvane>0.05</RM_Thulvane>  <!-- thulvane - colossal fused column -->
+      <RM_Skethral>0.07</RM_Skethral>  <!-- skethral - arch-thrower, grows the roads -->
+      <RM_Varnoth>0.03</RM_Varnoth>  <!-- varnoth - stilt-tripod in the pool -->
+
+      <!-- the crown (on bough-soil, fertilityMin 1.0) -->
+      <RM_Plennith>0.9</RM_Plennith>  <!-- plennith - makes the bough-soil -->
+      <RM_Ossagrel>0.5</RM_Ossagrel>  <!-- ossagrel - sap-sucker host cane -->
+      <RM_Cistrel>0.3</RM_Cistrel>  <!-- cistrel - the only safe water -->
+      <RM_Maulith>0.3</RM_Maulith>  <!-- maulith - hanging curtain, privacy screen -->
+      <RM_Verrow>0.6</RM_Verrow>  <!-- verrow - the crown's fruit -->
+      <RM_Nubrith>0.25</RM_Nubrith>  <!-- nubrith - the only light -->
+      <RM_Halquin>0.2</RM_Halquin>  <!-- halquin - the medicine -->
+      <RM_Ammeth>0.35</RM_Ammeth>  <!-- ammeth - the roof panels -->
+
+      <!-- the pool margin -->
+      <RM_Claithe>0.3</RM_Claithe>  <!-- claithe - binds the potter's clay -->
+      <RM_Corvath>0.05</RM_Corvath>  <!-- corvath - grows only where it has fed -->
+      <RM_Sodderel>0.25</RM_Sodderel>  <!-- sodderel - the bog-timber -->
+      <RM_Seepril>0.2</RM_Seepril>  <!-- seepril - sits in the oil -->
+
+      <!-- the ground (thin, deliberately) -->
+      <RM_Skimmel>0.4</RM_Skimmel>  <!-- skimmel - hides the sink-mud -->
+      <RM_Wanlith>0.4</RM_Wanlith>  <!-- wanlith - the pale one -->
+      <RM_Tullick>0.25</RM_Tullick>  <!-- tullick - the tuber -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>

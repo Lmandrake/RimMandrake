@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:07:29Z",
+  "drawsize": 2.1,
+  "facing": null,
+  "facings": [],
+  "id": "feverwood_plant_maulith",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, top-down view, painterly vanilla-RimWorld flora art style: a crossbeam of stiff branches carrying a dense hanging curtain of flat ribbon-leaves, olive above and silver-backed, falling like a curtained doorway. Single mature specimen, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and major internal linework.",
+  "reference": null,
+  "rimflow_item_id": "FEVERWOOD_FLORA_ROSTER_1",
+  "style_notes": ""
+}
