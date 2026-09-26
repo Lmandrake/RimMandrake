@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Miasma_RainbowBlooms.xml                        MIASMA_FLORA_ROSTER_1
+
+  The six always-benign rainbow blooms of miasma_flora_roster_2026-09-23.md
+  §4. Hard ban 2 binds this whole file absolutely: never a trap, never a
+  mimic, never toxic — every row here is purely decorative/harvestable, with
+  no downside on any pawn. RM_Ismerrow needs a colour-randomised graphic set
+  (Graphic_Random over 4 variant files), not one sprite, per the roster's own
+  flag — a per-plant colour scheme is the entire point of the row.
+-->
+<Defs>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Ollamane</defName>
+    <label>ollamane</label>
+    <description>Three or four vast fan-leaves on separate stalks, rising far above everything around them — each fan a deep saturated purple shot through with darker veins and rimmed in a hard electric-blue line that reads almost like light. The stalks are so dark they are nearly black, and glossy. This is the Miasma's signature silhouette, the thing you see first standing in the delta; its fans are cut for roofing and for stilt-architecture.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ollamane/RM_Ollamane_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.35, 0.5, 0.28)</volume>
+        <offset>(0,0,-0.4)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Nutrition>1.0</Nutrition>
+      <Mass>70</Mass>
+      <Flammability>0.5</Flammability>
+      <BeautyOutdoors>6</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>18</growDays>
+      <harvestWork>220</harvestWork>
+      <harvestYield>18</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.25</harvestMinGrowth>
+      <visualSizeRange>2.0~3.6</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Vellamine</defName>
+    <label>vellamine</label>
+    <description>A dense clump of broad heart-shaped leaves lying over one another so no stem shows, each leaf carrying colour along its veins — magenta at the midrib bleeding out through crimson and orange into a yellow-green margin. No two leaves on one plant have travelled the same distance. It carries the biome's whole palette in one groundcover, and reads as something circulating.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Vellamine/RM_Vellamine_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.1</Nutrition>
+      <Flammability>0.6</Flammability>
+      <BeautyOutdoors>4</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>6</growDays>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>90</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Ismerrow</defName>
+    <label>ismerrow</label>
+    <description>A knee-high rosette of sharply toothed leaves. Each individual is a different colour scheme — electric blue-teal with a magenta edge, purple over lime, near-black with a lit yellow centre, rose bleeding to cream — while the toothing and posture stay constant. Every plant looks faintly scorched at the leaf-tips. It is the only plant on the planet whose individuals differ, which makes a stand of it look like a garden of many species.</description>
+    <graphicData>
+      <!-- Graphic_Random over RM_IsmerrowA..D — the per-plant colour scheme
+           IS the row's whole point (roster §4 row 7); a single texture here
+           would ship the row with none of its value. -->
+      <texPath>Things/Plant/RM_Ismerrow/RM_Ismerrow</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>45</MaxHitPoints>
+      <Nutrition>0.08</Nutrition>
+      <Flammability>0.5</Flammability>
+      <BeautyOutdoors>5</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.25</fertilitySensitivity>
+      <growDays>6</growDays>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>30</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Aphreen</defName>
+    <label>aphreen</label>
+    <description>An upright bushy thing of narrow leaves in tight whorls. Mature growth is a plain dusty green — and every new tip is flushed hot pink-red and covered in fine pale fur, as if inflamed. The flush fades as each leaf matures, so one plant shows the whole progression at once. It looks diseased and is perfectly healthy: the most common plant in the delta, and the visual ground the rarer blooms sit on.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Aphreen/RM_Aphreen_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>55</MaxHitPoints>
+      <Nutrition>0.1</Nutrition>
+      <Flammability>0.6</Flammability>
+    </statBases>
+    <plant>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>5</growDays>
+      <visualSizeRange>0.6~1.1</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>10</wildClusterRadius>
+      <wildClusterWeight>120</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Nyssolet</defName>
+    <label>nyssolet</label>
+    <description>Concentric rings of glossy blue-green spheres, each ring smaller than the last, closing on a centre of gold and violet filaments. It does not read as a flower — it reads as a growth, or a cluster of eggs, and it is stunning. Individual beads are semi-translucent with a darker fluid visible inside. Ban 2 guarantees it is harmless; it is the roster's most uncanny proof that the guarantee is real. The beads are the delta's luxury attar's fixative.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Nyssolet/RM_Nyssolet_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Nutrition>0.05</Nutrition>
+      <Flammability>0.3</Flammability>
+      <BeautyOutdoors>3</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.15</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>8</growDays>
+      <visualSizeRange>0.5~0.8</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>15</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Sarrash</defName>
+    <label>sarrash</label>
+    <description>Dense soft plumes of fine filaments in flame-orange and hot magenta, held upright in a group with the centre plume tallest, so the outline is a ragged crest. Up close the filaments are damp and slightly clumped, and the base of each plume is browned and spent. Where ollamane works above and vellamine below, sarrash fills the middle and gives the green-gold haze something to burn through — its plume fibre is the delta's cheap textile.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Sarrash/RM_Sarrash_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>45</MaxHitPoints>
+      <Nutrition>0.08</Nutrition>
+      <Flammability>0.7</Flammability>
+      <BeautyOutdoors>2</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>7</growDays>
+      <harvestWork>90</harvestWork>
+      <harvestYield>6</harvestYield>
+      <harvestedThingDef>Cloth</harvestedThingDef>
+      <harvestMinGrowth>0.3</harvestMinGrowth>
+      <visualSizeRange>0.7~1.2</visualSizeRange>
+      <topWindExposure>0.2</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+</Defs>

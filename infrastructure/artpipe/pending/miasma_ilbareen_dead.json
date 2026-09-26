@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 180,
+    "width": 180
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:14:20Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "miasma_ilbareen_dead",
+  "priority": 105,
+  "prompt": "RimWorld top-down game plant sprite: dead standing ilbareen, the same tall bare-stemmed plant as its living form but bleached chalk-white, its single fan collapsed into a drooping dry rag. It has been dead and standing for years.",
+  "reference": null,
+  "rimflow_item_id": "MIASMA_FLORA_ROSTER_1",
+  "style_notes": "Roster-wide law: strangely beautiful but also a little sick looking -- a flush, a crust, a weep or a blotch, and beautiful because of it, not despite it. No Earth-nameable plant name anywhere. MUST SHOW: same silhouette and proportions as the living ilbareen, but bleached white with a collapsed drooping fan -- unmistakably dead and standing, not a fresh kill. Part of a matched pair with miasma_ilbareen_live."
+}

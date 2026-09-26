@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Miasma_Goods.xml                                MIASMA_FLORA_ROSTER_1
+
+  The two raw goods the flora roster names outright: RM_Brelloch's scraped
+  salt crust (§3 row 2, "the cheapest good in the biome, and the one the
+  stills need") and RM_Immarel's root-bed silt (§6 row 16, the luxury
+  attar's precursor). Plain raw resources, no comps, no recipe — a
+  refinery/still recipe for either is owed as follow-on work once a
+  workbench exists to hang it on (same posture as RM_ColdWax's parked
+  refinery recipe, src/RimMandrake/BlueDesert/Defs/ThingDefs_Items/
+  RM_ColdWax.xml). MarketValue left low/unset per that same precedent.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DeltaSalt</defName>
+    <label>delta salt</label>
+    <description>Grey-white salt scraped from a brelloch's crusted bark. Coarse, faintly bitter and cheap — the Miasma's most abundant harvestable good, and the one the stills need most.</description>
+    <possessionCount>20</possessionCount>
+    <tickerType>Never</tickerType>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_DeltaSalt/RM_DeltaSalt</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.65</drawSize>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.02</Mass>
+      <Flammability>0</Flammability>
+      <MarketValue>0.6</MarketValue>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DeltaSilt</defName>
+    <label>delta silt</label>
+    <description>Black, fine and slick silt dug from an immarel bed, extraordinary-smelling and rich with whatever the gradient has carried down. Refines into the delta's luxury attar wherever a still exists to work it.</description>
+    <possessionCount>20</possessionCount>
+    <tickerType>Never</tickerType>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_DeltaSilt/RM_DeltaSilt</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.65</drawSize>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>15</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Mass>0.03</Mass>
+      <Flammability>0</Flammability>
+      <MarketValue>1.2</MarketValue>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

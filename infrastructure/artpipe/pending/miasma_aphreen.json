@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 170,
+    "width": 170
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:14:20Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "miasma_aphreen",
+  "priority": 110,
+  "prompt": "RimWorld top-down game plant sprite: aphreen, an upright bushy plant of narrow leaves in tight whorls, mature growth plain dusty green, every new growing tip flushed hot pink-red and covered in fine pale fur as if inflamed, the flush fading as each leaf matures so one plant shows the whole progression at once.",
+  "reference": null,
+  "rimflow_item_id": "MIASMA_FLORA_ROSTER_1",
+  "style_notes": "Roster-wide law: strangely beautiful but also a little sick looking -- a flush, a crust, a weep or a blotch, and beautiful because of it, not despite it. No Earth-nameable plant name anywhere. MUST SHOW: dusty green whorled bush with every growing TIP flushed pink-red and furred -- the purest 'sick looking but healthy' statement in the roster, most common plant in the biome."
+}

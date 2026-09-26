@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 128,
+    "width": 128
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:14:20Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "miasma_pallasheen",
+  "priority": 110,
+  "prompt": "RimWorld top-down game plant sprite: pallasheen, one single broad thin leaf pressed completely flat to the ground, almost translucent so the soil colour shows through it, edged in a fine pink line, never standing up or clumping.",
+  "reference": null,
+  "rimflow_item_id": "MIASMA_FLORA_ROSTER_1",
+  "style_notes": "Roster-wide law: strangely beautiful but also a little sick looking -- a flush, a crust, a weep or a blotch, and beautiful because of it, not despite it. No Earth-nameable plant name anywhere. MUST SHOW: one broad flat leaf pressed to the ground, near-translucent with soil visible through it, fine pink edge line. Must read as a stain on the ground, not a standing plant."
+}

@@ -1,3 +1,4 @@
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
@@ -75,6 +76,7 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             TerrainDef target = null;
+            bool isLandRepaint = false;
             if (current.IsWater)
             {
                 RM_GradientAxisWaterBand band = PickWaterBand(ext, salinity);
@@ -87,6 +89,7 @@ namespace RimMandrake.EnvironmentalHazards
                 && !ext.landRepaintSource.NullOrEmpty() && ext.landRepaintSource.Contains(current))
             {
                 target = ext.landTerrain;
+                isLandRepaint = true;
             }
 
             if (target == null || target == current)
@@ -95,6 +98,42 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             SetTerrainFloorSafe(grid, c, target);
+
+            if (isLandRepaint)
+            {
+                KillAndReplacePlant(map, c, ext);
+            }
+        }
+
+        // MIASMA_FLORA_ROSTER_1: the salt-line gauge. Fires once, the moment
+        // this exact cell first repaints to landTerrain — the surviving
+        // landRepaintDeadPlant is never itself landRepaintKillPlant, so this
+        // is naturally self-terminating with no extra Scribed state, even
+        // though RepaintCell re-visits every land cell on every throttled
+        // pass for the whole duration of a shift.
+        private static void KillAndReplacePlant(Map map, IntVec3 c, RM_GradientAxisExtension ext)
+        {
+            if (ext.landRepaintKillPlant == null)
+            {
+                return;
+            }
+
+            Plant plant = c.GetPlant(map);
+            if (plant == null || plant.def != ext.landRepaintKillPlant)
+            {
+                return;
+            }
+
+            plant.Destroy();
+
+            if (ext.landRepaintDeadPlant != null && GenPlace.TryPlaceThing(
+                ThingMaker.MakeThing(ext.landRepaintDeadPlant), c, map, ThingPlaceMode.Direct, out Thing placed))
+            {
+                if (placed is Plant deadPlant)
+                {
+                    deadPlant.Growth = 1f;
+                }
+            }
         }
 
         // The floor-exclusion fix itself (see class header). Public so a

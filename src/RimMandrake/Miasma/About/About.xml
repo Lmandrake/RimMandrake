@@ -6,13 +6,6 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <modDependencies>
-    <li>
-      <packageId>sarg.alphabiomes</packageId>
-      <displayName>Alpha Biomes</displayName>
-      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2777849228</steamWorkshopUrl>
-    </li>
-  </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Odyssey</li>
@@ -58,14 +51,20 @@ Environmental Hazards Kit's own settings screen, since Greentide and Sump also
 read those same switches — a second, Miasma-only copy of them here would either
 do nothing or silently diverge from what that screen already promises.
 
-⚠️ Not donor-free: 96.5% of this biome's flora weight is Alpha Biomes' own mangal
-family (AB_MangroveTree/AB_ParasiticMangrove/AB_MangrovePalm), so sarg.alphabiomes
-ships as a hard modDependency rather than an optional MayRequire — without it this
-biome has almost no flora. The two invented native creatures (RUT_Karrobel,
-RUT_Karrathil) and the cross-mod Rot flora import (RUT_Nogtyl) still physically
-live in mandrake.rut.patches/mandrake.rut.rotsporekit respectively and are wired
-here with a fresh MayRequire guard rather than ported outright — a future pass can
-bring them into this mod's own tier.
+MIASMA_FLORA_ROSTER_1 replaced the donor Alpha Biomes mangal family
+(AB_MangroveTree/AB_ParasiticMangrove/AB_MangrovePalm, formerly 96.5% of this
+biome's flora weight) with 19 of this campaign's own invented RM_-tier plants:
+four mangals that are the biome's canopy and terrain, six always-benign rainbow
+blooms, a five-plant carnivorous clade that preys on the arthropod floor (never a
+colonist, never a tame animal), and four muck-and-silt plants naming the delta's
+own goods (delta salt, delta silt). sarg.alphabiomes is therefore no longer a hard
+modDependency — its only remaining role is the MayRequire-gated AB_FertileMud row
+in terrainsByFertility, an optional richer terrain when that mod happens to be
+present. The two invented native creatures (RUT_Karrobel, RUT_Karrathil) and the
+cross-mod Rot flora import (RUT_Nogtyl) still physically live in
+mandrake.rut.patches/mandrake.rut.rotsporekit respectively and are wired here with
+a fresh MayRequire guard rather than ported outright — a future pass can bring
+them into this mod's own tier.
 
 NOT in this mod: the 17 genuine Star Wars wildAnimals rows (mlie.starwarsanimalcollection's
 Runyip/Shiro/Anooba/Grank/Whisperbird/Vornskyr/Zakkeg, and this campaign's own

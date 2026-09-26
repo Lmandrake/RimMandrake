@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 140,
+    "width": 140
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:14:20Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "miasma_nyssolet",
+  "priority": 110,
+  "prompt": "RimWorld top-down game plant sprite: nyssolet, concentric rings of glossy blue-green spheres, each ring smaller than the last, closing on a centre of gold and violet filaments -- reads as a growth or a cluster of eggs, not a flower shape at all. Beads semi-translucent with darker fluid visible inside.",
+  "reference": null,
+  "rimflow_item_id": "MIASMA_FLORA_ROSTER_1",
+  "style_notes": "Roster-wide law: strangely beautiful but also a little sick looking -- a flush, a crust, a weep or a blotch, and beautiful because of it, not despite it. No Earth-nameable plant name anywhere. MUST SHOW: nested concentric rings of glossy beads (NOT petals), gold-violet filament centre, semi-translucent beads with visible internal fluid. Must not read as a flower."
+}
