@@ -20313,11 +20313,29 @@
     "hash": "8061fd856d4a6f02ba3b276ec92178b4fcc930ec252367b6f3a4df24cef69748",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_Bitumen.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "8512419c99bfa8e0241a777c1f402c762cb74f7e7abcca5f1b6b6c571c44a4a8",
+    "sha": "f9b337ec7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_CrackedLandsFish_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "932307c15535e31bb7efc8c70ec66ac5accf35c6da8f18070119ea6e50e019f3",
+    "sha": "f9b337ec7"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_DeadCreep.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
     "hash": "226ab3c064f939e8895e3fb2ff2703ee9c468b0f06d516a2705ad5624773ddf5",
     "sha": "b62604fad"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_DeltaLoam.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "01d7a2579c04115d62a89ccff8e530979c429827ed68fb826e3a65bae9d2d35c",
+    "sha": "f9b337ec7"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_FurnaceHide.xml": {
     "cleanCount": 1,
@@ -20325,11 +20343,53 @@
     "hash": "2f500169cb05f97c9328fe249844a465854a689394b95167bd42d848da5cfba4",
     "sha": "f4b18455a"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_GreySeaFish_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "36c2ba73ae5a44f589e41aecd8e3184886b53ec44115c158025704b0065e6f37",
+    "sha": "f9b337ec7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_Hardwood.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "5b9a4d104e40955d32d98c23d0c4b0d087d4f67d4c71241b131ea78f242f881e",
+    "sha": "f9b337ec7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_ScaldFish.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "585a4c674c0a0acdbb453a9d18ec29532c1cf1d5fc7b832aecf83148d3d32f82",
+    "sha": "f9b337ec7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_ScarlandsItems.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "8076d2d60c48df6b01f5afe757b56f60e4a9626e182014c99491319017670c29",
+    "sha": "f9b337ec7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_Sumpgas.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "f9057d1475d92ce3eff434cfe84ae7f88c56ee57a2feea550fe9df24226424f4",
+    "sha": "f9b337ec7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_Tarred_Solvents.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "1995871eedb0e199758172ef0fc2e202c2b787d97ae6fea6827c2331ecafd085",
+    "sha": "f9b337ec7"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_TibannaGas.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
     "hash": "9f94d0cacb0307afc832d036789e8ffeb490c34abfaa5365b85d687ee9f9142f",
     "sha": "b62604fad"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_TwilightFish_Niim.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a6a3346ad986afa6de271c0aaf14369fc5d0cf4946d18ad4de5748e6ad14aae2",
+    "sha": "f9b337ec7"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WastelandBrine_Items.xml": {
     "cleanCount": 1,
@@ -20390,6 +20450,36 @@
     "date": "2026-09-24",
     "hash": "4fb954d4560e2d1ea9300e2c3c15f5991d4ec2762b0d0f766cc53a6759d9eb5b",
     "sha": "cc0825979"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RareGreyCatches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "387ce82a3c121922ead42e870df91b5efe933daf19e9e2d14b654b649f2321fe",
+    "sha": "f9b337ec7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RareOasisCatches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "772d98c925fc7df12aad438e54df5dc6073a4c8d72b754a2d1227a592460e77d",
+    "sha": "f9b337ec7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RarePropaneCatches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "f5dcb22ef743d08d388fd85e3fa4abef0090b932b93c99f8611a38fe680f4962",
+    "sha": "f9b337ec7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RareScaldCatches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "6a245b6c99dde02a0905436d496c37d216819dbf032ab25db31bff0b081ff835",
+    "sha": "f9b337ec7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RareTwilightCatches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "f4df6274ac0faa2d11c1cda5c2ed07640fbae309673e6cfd16367181af038a38",
+    "sha": "f9b337ec7"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThinkTreeDefs/RUT_ThinkTree_SumpMouseWander.xml": {
     "cleanCount": 1,
