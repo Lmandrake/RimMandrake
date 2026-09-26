@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaFloorScatter.xml          TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  GREYSEA_FLOOR_FORMATIONS_1 — the placement half. RM_GreySeaFormations.xml
+  declares the pillars, domes, chimneys, jacket and crystals; this file puts
+  them on the Grey Sea's floor map.
+
+  ============================================================================
+  SCOPE IS THE GENERATOR LIST, NOT A TAG
+  ============================================================================
+  ⚠️ Deliberately UNLIKE the Scald's own wreck scatter
+  (RUT_ScaldWreckScatter.xml), these GenStepDefs are NOT registered into the
+  global Base_Player genSteps list. They are named only in
+  RM_SeaDiveGenerator_GreySea's <genSteps> (RM_SeaDiveGenerators.xml,
+  mandrake.rm.divinginteraction) — because the terrain tag that would
+  otherwise scope them, RM_SeaFloorGround, is the ONE shared floor terrain of
+  all four sea-dive pocket maps. A tag-scoped registration would grow salt
+  pillars on the Scald's floor and the Propane Lake's. The generator list is
+  the only scope that is actually the Grey.
+
+  terrainValidationAllowed still names RM_SeaFloorGround, as a second belt:
+  it keeps a formation off the dive exit's own terrain and off anything a
+  later per-sea dressing pass paints.
+
+  ============================================================================
+  THREE FIELDS THAT ARE NOT OPTIONAL HERE
+  ============================================================================
+  - allowInWaterBiome TRUE. RM_GreySea is isWaterBiome, and
+    GenStep_Scatterer skips a water-biome map without it. Missing this is a
+    silent zero-scatter, not an error.
+  - spotMustBeStandable TRUE. The floor is walkable sediment; a formation
+    that lands in the dive-exit footprint or on another formation is refused
+    by GenStep_ScatterThings' own IsRotationValid, but standable-first saves
+    the roll.
+  - clusterSize. GenStep_ScatterThings' cluster radius is hardcoded to 4
+    (decompile-read this pass), so clusterSize is how "strange shapes
+    EVERYWHERE" (the owner's density instruction, content doc §2.4) becomes
+    thickets rather than evenly spaced dots. minSpacing is kept clear of 4
+    so one cluster's members do not fight each other.
+
+  ORDER: 860-880, i.e. after RM_SeaFloorTerrain (210) has painted the floor
+  and after RM_PlaceSeaDiveExit (400) has reserved the exit, and BEFORE the
+  vanilla Plants step (900) — so the Salt Chimney Vines and the crystal flora
+  see the formations they are supposed to grow on and beside.
+
+  🔴 EVERY COUNT BELOW IS INVENTED and says so. No source names a pillar
+  density. They are set to read as the reference image (01_pillar_forest_
+  underwater.png: a forest, a diver small between the columns) and are owed a
+  live look. Do not cite them as measured.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- The pillar forest. Densest thing on the floor, in loose stands of
+       three, because that is what the reference image shows and because
+       the navigation law needs a pillar within sight of a pillar. -->
+  <GenStepDef>
+    <defName>RM_GreySeaScatterPillars</defName>
+    <order>860</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_SaltPillar</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <clusterSize>3</clusterSize>
+      <minSpacing>5</minSpacing>
+      <countPer10kCellsRange>10~16</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_SeaFloorGround</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <!-- The domes. Squat, crowding, in bigger clumps than the pillars —
+       "strange shapes everywhere." -->
+  <GenStepDef>
+    <defName>RM_GreySeaScatterDomes</defName>
+    <order>862</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_SaltDome</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <clusterSize>5</clusterSize>
+      <minSpacing>3</minSpacing>
+      <countPer10kCellsRange>14~22</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_SeaFloorGround</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <!-- The chimney field. Few, far apart, in pairs — they are a landmark
+       and the Salt Chimney Vines' only host, so a map wants one or two
+       fields rather than a scattering. -->
+  <GenStepDef>
+    <defName>RM_GreySeaScatterChimneys</defName>
+    <order>864</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_SaltChimney</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <clusterSize>2</clusterSize>
+      <minSpacing>12</minSpacing>
+      <countPer10kCellsRange>1.5~3</countPer10kCellsRange>
+      <terrainValidationRadius>2</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_SeaFloorGround</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <!-- The jacket mineral, as the STATUARY: blobs of salt grown over
+       whatever sank there. Big clusters, few of them, well apart — each
+       one reads as a drowned shape taken by the chemistry.
+       ⚠️ This is the floor-scatter half only. The pool-side placement
+       (a GenMorphology patch around a basin) and the pawn-encasing
+       mechanism are GREYSEA_BRINE_POOL_DEFENCE_1 and need C#. -->
+  <GenStepDef>
+    <defName>RM_GreySeaScatterStatuary</defName>
+    <order>866</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_BrineJacket</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <clusterSize>6</clusterSize>
+      <minSpacing>8</minSpacing>
+      <countPer10kCellsRange>3~6</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_SeaFloorGround</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <!-- The four great crystals. Solitary, well apart, violet rarest —
+       the treasury, and a reason to cross the floor rather than a thing
+       you trip over. GenStep_ScatterThings carries ONE thingDef, so four
+       colours need four steps. -->
+  <GenStepDef>
+    <defName>RM_GreySeaScatterCrystalWhite</defName>
+    <order>870</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_GreatSaltCrystal_White</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <minSpacing>10</minSpacing>
+      <countPer10kCellsRange>1.2~2</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_SeaFloorGround</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GreySeaScatterCrystalPink</defName>
+    <order>872</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_GreatSaltCrystal_Pink</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <minSpacing>10</minSpacing>
+      <countPer10kCellsRange>0.8~1.2</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_SeaFloorGround</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GreySeaScatterCrystalAmber</defName>
+    <order>874</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_GreatSaltCrystal_Amber</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <minSpacing>10</minSpacing>
+      <countPer10kCellsRange>0.8~1.2</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_SeaFloorGround</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GreySeaScatterCrystalViolet</defName>
+    <order>876</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_GreatSaltCrystal_Violet</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <minSpacing>14</minSpacing>
+      <countPer10kCellsRange>0.3~0.6</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RM_SeaFloorGround</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

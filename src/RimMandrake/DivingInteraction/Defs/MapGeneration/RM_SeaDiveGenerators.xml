@@ -57,12 +57,32 @@
         <li>RM_SeaFloorHabitat</li>
       </tileMutators>
     </pocketMapProperties>
+    <!-- GREYSEA_FLOOR_FORMATIONS_1 / _CRYSTAL_FLORA_1, 2026-09-26.
+         🔑 The eight RM_GreySeaScatter* steps and the vanilla Plants step
+         are listed HERE and on no other generator ON PURPOSE. The tag
+         RM_SeaFloorGround is shared by all four sea floors, so a
+         tag-scoped global registration (the shape RUT_ScaldWreckScatter
+         uses) would grow salt pillars on the Scald and the Propane Lake.
+         The generator list is the only scope that is actually the Grey.
+         Steps and their defs: mandrake.rm.terminalbiomes,
+         Defs/MapGeneration/RM_GreySeaFloorScatter.xml.
+         Execution order is the GLOBAL GenStepDef.order, never this list's
+         position: formations 860-876, then Plants 900. -->
     <genSteps>
       <li>ElevationFertility</li>
       <li>RM_SeaFloorTerrain</li>
       <li>RM_PlaceSeaDiveExit</li>
+      <li>RM_GreySeaScatterPillars</li>
+      <li>RM_GreySeaScatterDomes</li>
+      <li>RM_GreySeaScatterChimneys</li>
+      <li>RM_GreySeaScatterStatuary</li>
+      <li>RM_GreySeaScatterCrystalWhite</li>
+      <li>RM_GreySeaScatterCrystalPink</li>
+      <li>RM_GreySeaScatterCrystalAmber</li>
+      <li>RM_GreySeaScatterCrystalViolet</li>
       <li>RM_SeaFloorFauna</li>
       <li>Animals</li>
+      <li>Plants</li>
       <li>RockChunks</li>
       <li>Fog</li>
     </genSteps>

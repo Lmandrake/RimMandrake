@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaFormations.xml            TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  GREYSEA_FLOOR_FORMATIONS_1 — the Grey Sea floor's mineral furniture.
+
+  AUTHORITY: design/Jawa/worldbuilding/biomes/the_grey_deep.md §4b [+2026-09-26]
+  and the owner's own content drop, verbatim, in
+  design/Jawa/worldbuilding/biomes/the_grey_deep_content_2026-09-26.md §2.
+  Reference images: design/Jawa/worldbuilding/reference/grey_sea/
+  01_pillar_forest_underwater.png · 03_salt_domes_mushroom_forms.png ·
+  04_salt_chimneys_brine_vents.png.
+
+  🔴 THE PILLARS EXISTED IN NO DEF OF ANY KIND until this file. Four shipped
+  descriptions already name them — RM_Sorruth ("grazes the film off the Grey
+  Sea's pillar-mason columns"), RUT_SaltCameo ("jacketed in pillar-mineral"),
+  RUT_Karrud ("a plate of pillar-mineral"), RUT_Haarn ("a jacket of
+  pillar-mineral … from pillar to pillar"). Those four stop lying here.
+
+  ============================================================================
+  WHY THESE ARE MINEABLE ROCK AND NOT DECORATIVE BUILDINGS
+  ============================================================================
+  A RimWorld map expresses "an impassable vertical you navigate around and can
+  cut through with effort" as a Mineable, and nothing else does. The sheet's
+  navigation law — "all travel below is pillar-to-pillar … Divers carve
+  waymarks" — is exactly that: they block, they are landmarks, and a diver CAN
+  work them. So the pillar, the dome, the jacket mineral and the four crystal
+  nodes all hang off vanilla RockBase (thingClass Mineable, Impassable,
+  isNaturalRock, fillPercent 1, blockLight).
+
+  mineableScatterCommonality is 0 on every def here: that field is what
+  GenStep_ScatterLumpsMineable's ChooseThingDef() weights by when it picks a
+  rock for a LAND map, and a non-zero value would leak Grey salt into every
+  mountain on the planet. Placement is instead explicit and Grey-only, via
+  RM_GreySeaFloorScatter.xml's GenStepDefs, which are listed ONLY on
+  RM_SeaDiveGenerator_GreySea.
+
+  ⚠️ GenStep_ScatterLumpsMineable is NOT usable for these: its CanScatterAt
+  requires an existing natural-rock edifice in the cell (decompile-read
+  2026-09-26), and the Grey floor is open sediment. GenStep_ScatterThings with
+  a clusterSize is the working route and is what the scatter file uses.
+
+  ============================================================================
+  THE PILLAR-MASON IS FICTION, THE PILLAR IS THE DEF
+  ============================================================================
+  GREYSEA_ANCHOR_CREATURES_1 scoped the mason as "a navigation system, not a
+  creature encounter … terrain/structure generation and a navigation
+  affordance." So there is deliberately no RM_PillarMason PawnKindDef: the
+  mason is the crystal-binding film, and RM_SaltPillar IS its work. Building a
+  pawn for it would be building the wrong thing.
+
+  ============================================================================
+  PLACEHOLDER ART — every texPath here is a vanilla path that is physically
+  present, never a guessed one
+  ============================================================================
+  The five mineables inherit RockBase's own Things/Building/Linked/Rock_Atlas
+  and are separated by <color> alone; the chimney borrows vanilla's
+  Things/Building/Natural/SteamGeyser silhouette. That is a placeholder, not a
+  design: real art is owed and every brief for it carries the owner's one
+  aesthetic rule, verbatim — "marred slightly, don't make them too perfect or
+  they look manufactured."
+
+  ⛔ Do NOT queue artpipe jobs for these without first searching
+  infrastructure/artpipe/done/ and _artsrc/ by subject: the daemon's output
+  regularly sits unused for days (owner ruling 2026-09-20).
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ==================================================================
+       THE PILLAR — "a wonderland of odd pillars and formations"
+       (owner, image 01). The mason's column: mineral rising from the
+       floor toward light it never reaches. Tall where the domes are
+       squat; the only landmark in the murk.
+
+       HP 1500 (the vein-mineable tier, MineableSteel's own number) so a
+       pillar is a day's work to cut, not scenery a stray shot removes —
+       a landmark that can be deleted by accident is not a landmark.
+       ================================================================== -->
+  <ThingDef ParentName="RockBase">
+    <defName>RM_SaltPillar</defName>
+    <label>salt pillar</label>
+    <description>A column of banded white mineral standing off the sea floor, grown rather than deposited — the pillar-mason's crystal-binding film lays it down a hair at a time, reaching toward a light that has never once reached the bottom. Every pillar is chipped, clouded and a little out of true; nothing down here grows straight. They are the only landmarks in the murk, and divers navigate one to the next, cutting waymarks as they go.</description>
+    <graphicData>
+      <color>(232,230,221)</color>
+      <colorTwo>(206,203,192)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1500</MaxHitPoints>
+      <Beauty>4</Beauty>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_RawSalt</mineableThing>
+      <mineableYield>12</mineableYield>
+      <mineableYieldWasteable>false</mineableYieldWasteable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+      <biomeSpecific>true</biomeSpecific>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+  <!-- ==================================================================
+       THE SALT DOME — "salt domes like mushrooms growing, strange shapes
+       everywhere" (owner, image 03). Bulbous, capped, sometimes
+       overhanging; squat where the pillar is tall. "Strange shapes
+       everywhere" is a DENSITY instruction and the scatter file honours
+       it: the Grey floor is crowded with mineral forms, not bare
+       sediment with a few columns on it.
+       ================================================================== -->
+  <ThingDef ParentName="RockBase">
+    <defName>RM_SaltDome</defName>
+    <label>salt dome</label>
+    <description>A cream-white mound of beaded salt, grown outward and upward until the cap overhangs its own base like a mushroom. Some are cones, some are flat-topped terraces, and no two are the same shape. Soft enough to break with a pick, and everywhere on this floor.</description>
+    <graphicData>
+      <color>(240,235,219)</color>
+      <colorTwo>(214,206,184)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <Beauty>3</Beauty>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_RawSalt</mineableThing>
+      <mineableYield>8</mineableYield>
+      <mineableYieldWasteable>false</mineableYieldWasteable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+      <biomeSpecific>true</biomeSpecific>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+  <!-- ==================================================================
+       THE JACKET MINERAL — the salt twin of Odyssey's SolidIce.
+       the_grey_deep.md §4d: "a salt twin of SolidIce (mineable, yields
+       the salt-crystal item), laid by a GenMorphology-style patch around
+       pools and around the statuary. It is what the §7 'jacketed
+       salvage' is jacketed in."
+
+       Its stat envelope is SolidIce's own, read live this pass
+       (Data/Odyssey/Defs/ThingDefs_Misc/Stone_Various.xml): 240 HP,
+       "can be mined through with relative ease", mineableYieldWasteable
+       false, biomeSpecific true. That is the whole point — the pools'
+       loot is "ultra-protected until the player figures out how to get
+       at it", and digging is the first key.
+
+       ⚠️ OWED, and not built here: the pool-side placement (a
+       GenMorphology patch around pool basins) and the PAWN-encasing half
+       of the mechanism, which is C# — GREYSEA_BRINE_POOL_DEFENCE_1.
+       This def is the thing that mechanism encases you IN.
+       ================================================================== -->
+  <ThingDef ParentName="RockBase">
+    <defName>RM_BrineJacket</defName>
+    <label>brine jacket</label>
+    <description>Salt crystallised solid around whatever it caught: a block of the Grey Sea's own chemistry, faintly translucent, with the shape of the thing inside showing through as a shadow. It grows in hours where the brine is strongest, and it does not let go. It can be mined through with relative ease — which is the only reason anything in a pool is ever recovered.</description>
+    <graphicData>
+      <color>(222,232,231)</color>
+      <colorTwo>(198,211,211)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>240</MaxHitPoints>
+      <Beauty>1</Beauty>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_RawSalt</mineableThing>
+      <mineableYield>15</mineableYield>
+      <mineableYieldWasteable>false</mineableYieldWasteable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+      <biomeSpecific>true</biomeSpecific>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+  <!-- ==================================================================
+       THE HUGE SALT CRYSTALS — "huge salt crystals on the sea floor,
+       harvestable and rather valuable" (owner). FOUR defs, one per
+       colour, because his next sentence is "different colours of salt
+       make great [cooking] ingredients": the node you mine decides the
+       salt you get, so the colour is a real harvesting decision and not
+       a texture variant.
+
+       Colours are the owner's own three — pink, violet, amber — plus
+       white. (The sheet marks "plus white" as a BENCH inference, not a
+       ruling; it is the base case, and the Grey is a white sea.)
+
+       These are the treasury, not bulk salt: low yield, high value per
+       unit, and rare on the floor. RM_RawSalt is the bulk; these are
+       the prize.
+       ================================================================== -->
+
+  <ThingDef Name="RM_GreatSaltCrystalBase" ParentName="RockBase" Abstract="True">
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Beauty>10</Beauty>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableYield>8</mineableYield>
+      <mineableYieldWasteable>false</mineableYieldWasteable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+      <biomeSpecific>true</biomeSpecific>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_GreatSaltCrystalBase">
+    <defName>RM_GreatSaltCrystal_White</defName>
+    <label>great salt crystal, white</label>
+    <description>A single evaporite crystal the height of a person, grown out of the sea floor over a span nobody has measured. Its faces are almost flat and almost square, and the almost is the whole of its beauty: a chipped corner here, a clouded band there, a face that stopped growing before it finished. Cut it down and it comes apart along its own planes into coarse white salt worth carrying home.</description>
+    <graphicData>
+      <color>(246,246,244)</color>
+      <colorTwo>(220,222,224)</colorTwo>
+    </graphicData>
+    <building>
+      <mineableThing>RM_SaltWhite</mineableThing>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_GreatSaltCrystalBase">
+    <defName>RM_GreatSaltCrystal_Pink</defName>
+    <label>great salt crystal, pink</label>
+    <description>A person-high crystal the colour of a shell's inside, stained through by whatever trace metal the Grey Sea was dissolving the year it grew. The colour is not on it, it is in it, and it deepens toward the base. Marred everywhere, as all of them are: no face is square and no edge is clean.</description>
+    <graphicData>
+      <color>(238,196,196)</color>
+      <colorTwo>(214,166,170)</colorTwo>
+    </graphicData>
+    <building>
+      <mineableThing>RM_SaltPink</mineableThing>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_GreatSaltCrystalBase">
+    <defName>RM_GreatSaltCrystal_Violet</defName>
+    <label>great salt crystal, violet</label>
+    <description>The rarest of the four and the strangest to look at: a blocky violet solid standing alone on grey sediment, so saturated it reads as artificial until you are close enough to see the flaws. It is not artificial. Nothing down here is, and nothing down here is perfect either.</description>
+    <graphicData>
+      <color>(196,178,226)</color>
+      <colorTwo>(166,148,200)</colorTwo>
+    </graphicData>
+    <building>
+      <mineableThing>RM_SaltViolet</mineableThing>
+      <mineableYield>6</mineableYield>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_GreatSaltCrystalBase">
+    <defName>RM_GreatSaltCrystal_Amber</defName>
+    <label>great salt crystal, amber</label>
+    <description>A warm, honey-coloured block of salt, lit from inside by nothing at all — the colour is the mineral, and the murk around it is as blind as everywhere else on this floor. Amber crystals grow near the chimney fields, where the vented brine carries whatever it has dissolved out of the rock below.</description>
+    <graphicData>
+      <color>(232,198,136)</color>
+      <colorTwo>(206,170,106)</colorTwo>
+    </graphicData>
+    <building>
+      <mineableThing>RM_SaltAmber</mineableThing>
+    </building>
+  </ThingDef>
+
+  <!-- ==================================================================
+       THE SALT CHIMNEY — "real 'salt chimneys' shooting up from the sea
+       floor, shooting out murky white super-brine" (owner, image 04).
+
+       thingClass Building_SteamGeyser, VANILLA and unsubclassed. Read
+       this pass (RimWorld/Building_SteamGeyser.cs): with `harvester`
+       null it runs IntermittentSteamSprayer every tick and throws a
+       white plume with a sustainer — which is exactly "shooting out
+       murky white super-brine" and costs no C# at all. Its one other
+       action, AddSnowRadial(-0.06f), REMOVES snow and is inert here.
+       ⛔ Not RM_Building_ScaldVent: that is the Scald's subclass and
+       carries the Scald's own Mod Settings gate.
+
+       RULED 2026-09-26 (sheet §4b, content doc Q2): chimneys ALSO
+       crystallise, at shorter range — the plume is a standing hazard
+       cluster that jackets whatever walks into it, making the chimneys
+       "the visible teacher of a mechanism the pools deliver invisibly."
+       ⚠️ That hazard is the SAME C# as the pool defence and is NOT built
+       here; it is GREYSEA_BRINE_POOL_DEFENCE_1. What ships today is the
+       chimney, the plume and the vines' host. The chimney is harmless
+       until that item lands.
+
+       isEdifice false + Impassable-free (Standable, like vanilla's own
+       geyser) so the Salt Chimney Vines can grow in the ring around it
+       and a diver can walk up to one. blockPlants false, DELIBERATELY
+       and against vanilla SteamGeyser's own value: the vine's whole
+       spec is that it climbs this thing.
+       ================================================================== -->
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_SaltChimney</defName>
+    <label>salt chimney</label>
+    <description>A crooked tower of cubic salt blocks built by its own exhalation, venting a slow plume of super-brine so dense it hangs in the water as a white smoke before it sinks. The brine it breathes is the same the pools at the bottom are made of, and it carries the sea's dissolved chemistry up off the rock below. Warm to the touch, which nothing else down here is.</description>
+    <thingClass>Building_SteamGeyser</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Natural/SteamGeyser</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(4,4)</drawSize>
+      <color>(236,234,226)</color>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>Floor</altitudeLayer>
+    <rotatable>false</rotatable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Normal</tickerType>
+    <selectable>true</selectable>
+    <size>(2,2)</size>
+    <neverOverlapFloors>true</neverOverlapFloors>
+    <blockPlants>false</blockPlants>
+    <statBases>
+      <Beauty>6</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+</Defs>
