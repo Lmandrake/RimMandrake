@@ -691,3 +691,6 @@
 {"seat":"FOUNDRY","event":"block","id":"SARLACC_HABITAT_BUILD_1","reason":"advanced items 4+7 of Owed list this pass (DBH thirst wiring, water_doctrine amend), commit ed5134abf; still owed: live verify (bridge), pocket-map dungeon interior, world placement, real art, RimUtinni Sun-Debt patch — all out of this pass's offline-only scope","ts":"2026-09-26T15:26:41Z"}
 {"seat":"FOUNDRY","event":"claim","id":"FAUNA_TOLERANCE_NORMALIZATION_1","ts":"2026-09-26T15:26:47Z"}
 {"seat":"FOUNDRY","event":"start","id":"FAUNA_TOLERANCE_NORMALIZATION_1","ts":"2026-09-26T15:26:48Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ASSAILANT_DUNGEON_BUILD_1","ts":"2026-09-26T15:28:02Z"}
+{"seat":"FOUNDRY","event":"start","id":"ASSAILANT_DUNGEON_BUILD_1","ts":"2026-09-26T15:28:03Z"}
+{"seat":"FOUNDRY","event":"block","id":"ASSAILANT_DUNGEON_BUILD_1","reason":"re-verified 2026-09-26: design/Jawa/reconciled_lore/FUTURE_VECTORS.md still states creative lock-in owed with the owner for the dungeons arc; KCSG authoring/turret art/reveal dialogue remain a joint BENCH+owner session, not solo offline FOUNDRY build. No change since 2026-09-06 block. Skipping to next item in lane.","ts":"2026-09-26T15:28:04Z"}
