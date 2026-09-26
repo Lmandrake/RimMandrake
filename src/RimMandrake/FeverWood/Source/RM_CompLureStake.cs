@@ -22,6 +22,13 @@ namespace RimMandrake.FeverWood
         private Pawn stakedPawn;
         private bool wasLiveLastTick;
 
+        /// <summary>FEVERWOOD_TWO_FRONT_LURE_TUNING_1 point 5: true once
+        /// this stake's bait has actually drawn a raid wave. Only matters
+        /// when RM_FeverWoodSettings.twoFrontLureLockOnceTriggered is on
+        /// (default off — see that field); resets whenever new bait is
+        /// staked here.</summary>
+        private bool raidTriggered;
+
         public RM_CompProperties_LureStake Props => (RM_CompProperties_LureStake)props;
 
         public bool HasLiveBait => stakedPawn != null && stakedPawn.Spawned && !stakedPawn.Dead;
@@ -38,6 +45,7 @@ namespace RimMandrake.FeverWood
                 return;
             }
             stakedPawn = bait;
+            raidTriggered = false;
             HediffDef stakedDef = DefDatabase<HediffDef>.GetNamedSilentFail(StakedHediffDefName);
             if (stakedDef != null && !bait.health.hediffSet.HasHediff(stakedDef))
             {
@@ -63,7 +71,15 @@ namespace RimMandrake.FeverWood
             }
             stakedPawn = null;
             wasLiveLastTick = false;
+            raidTriggered = false;
             parent.Map?.GetComponent<RM_MapComponent_TwoFrontLure>()?.Notify_LureCleared(this);
+        }
+
+        /// <summary>Called by RM_MapComponent_TwoFrontLure once a raid wave
+        /// has actually been spawned using this stake as its origin.</summary>
+        public void Notify_RaidTriggered()
+        {
+            raidTriggered = true;
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -132,13 +148,18 @@ namespace RimMandrake.FeverWood
             }
             if (HasLiveBait)
             {
-                yield return new Command_Action
+                Command_Action releaseCommand = new Command_Action
                 {
                     defaultLabel = "Release lure",
                     defaultDesc = $"Frees {stakedPawn.LabelShort} from the stake. It keeps whatever wounds it already has.",
                     icon = TexCommand.ClearPrioritizedWork,
                     action = ReleaseBait,
                 };
+                if (RM_FeverWoodSettings.twoFrontLureLockOnceTriggered && raidTriggered)
+                {
+                    releaseCommand.Disable("This stake has already drawn a raid — the wager is locked in until the bait is freed by other means.");
+                }
+                yield return releaseCommand;
             }
         }
 
@@ -146,6 +167,7 @@ namespace RimMandrake.FeverWood
         {
             base.PostExposeData();
             Scribe_References.Look(ref stakedPawn, "stakedPawn");
+            Scribe_Values.Look(ref raidTriggered, "raidTriggered", false);
         }
     }
 }

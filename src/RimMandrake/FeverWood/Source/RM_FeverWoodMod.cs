@@ -106,6 +106,28 @@ namespace RimMandrake.FeverWood
         public static float twoFrontLureSecondWaveMinHours = 2f;
         public static float twoFrontLureSecondWaveMaxHours = 8f;
 
+        /// <summary>FEVERWOOD_TWO_FRONT_LURE_TUNING_1 point 3: the raid's
+        /// threat-points formula (`Mathf.Max(minThreatPoints,
+        /// DefaultThreatPointsNow(map) * multiplier)`) was hardcoded and
+        /// invented — "check it against a real colony's threat points once
+        /// one exists to stake a lure with." Exposed here instead of
+        /// re-guessed, so that check can happen live, in Mod Settings,
+        /// without a rebuild. INVENTED defaults unchanged from the original
+        /// hardcoded values: multiplier 0.6, floor 80.</summary>
+        public static float twoFrontLureThreatPointsMultiplier = 0.6f;
+        public static float twoFrontLureMinThreatPoints = 80f;
+
+        /// <summary>FEVERWOOD_TWO_FRONT_LURE_TUNING_1 point 5: v1 let a
+        /// staked pawn be released at any time, including after a raid is
+        /// already inbound — a real, if minor, deviation from the design
+        /// sheet's "you are hoping the second column shows up" framing,
+        /// which reads as a commitment. Whether that should be blocked is
+        /// "worth an owner check", not a guess this pass makes for him — so
+        /// it ships here as an opt-in toggle, default OFF (matches shipped
+        /// v1 behavior: release always allowed). Turning it on blocks
+        /// "Release lure" once this specific stake has drawn a raid.</summary>
+        public static bool twoFrontLureLockOnceTriggered = false;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -121,6 +143,9 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref twoFrontLureSecondWaveChance, "twoFrontLureSecondWaveChance", 0.5f);
             Scribe_Values.Look(ref twoFrontLureSecondWaveMinHours, "twoFrontLureSecondWaveMinHours", 2f);
             Scribe_Values.Look(ref twoFrontLureSecondWaveMaxHours, "twoFrontLureSecondWaveMaxHours", 8f);
+            Scribe_Values.Look(ref twoFrontLureThreatPointsMultiplier, "twoFrontLureThreatPointsMultiplier", 0.6f);
+            Scribe_Values.Look(ref twoFrontLureMinThreatPoints, "twoFrontLureMinThreatPoints", 80f);
+            Scribe_Values.Look(ref twoFrontLureLockOnceTriggered, "twoFrontLureLockOnceTriggered", false);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -179,6 +204,15 @@ namespace RimMandrake.FeverWood
                 + " - " + twoFrontLureSecondWaveMaxHours.ToString("0.0"));
             twoFrontLureSecondWaveMinHours = list.Slider(twoFrontLureSecondWaveMinHours, 0.5f, 12f);
             twoFrontLureSecondWaveMaxHours = list.Slider(twoFrontLureSecondWaveMaxHours, 0.5f, 24f);
+            list.Label("Raid strength: max(" + twoFrontLureMinThreatPoints.ToString("0") + ", colony threat points x "
+                + twoFrontLureThreatPointsMultiplier.ToString("0.00") + ")");
+            twoFrontLureMinThreatPoints = list.Slider(twoFrontLureMinThreatPoints, 20f, 300f);
+            twoFrontLureThreatPointsMultiplier = list.Slider(twoFrontLureThreatPointsMultiplier, 0.1f, 2f);
+            list.CheckboxLabeled("Lock the wager in once a raid is drawn", ref twoFrontLureLockOnceTriggered,
+                "Off (shipped default): a staked pawn can be released at any time, even after a raid is "
+              + "already inbound. On: once THIS stake has drawn a raid, 'Release lure' is disabled until "
+              + "the bait dies, is rescued by the raid's own fallout, or the stake is rebuilt — matching "
+              + "the design sheet's 'you are hoping the second column shows up' framing more literally.");
 
             list.End();
         }

@@ -89,7 +89,7 @@ namespace RimMandrake.FeverWood
             }
 
             RM_CompLureStake origin = activeLures.RandomElement();
-            LaunchFirstWave(origin.parent.Position);
+            LaunchFirstWave(origin);
         }
 
         private void TickPendingSecondWave()
@@ -110,8 +110,9 @@ namespace RimMandrake.FeverWood
             }
         }
 
-        private void LaunchFirstWave(IntVec3 originCell)
+        private void LaunchFirstWave(RM_CompLureStake originStake)
         {
+            IntVec3 originCell = originStake.parent.Position;
             bool antsFirst = Rand.Bool;
             FactionDef firstDef = DefDatabase<FactionDef>.GetNamedSilentFail(
                 antsFirst ? AntFactionDefName : FeraliskFactionDefName);
@@ -135,6 +136,12 @@ namespace RimMandrake.FeverWood
                 return;
             }
 
+            // FEVERWOOD_TWO_FRONT_LURE_TUNING_1 point 5: the wager is now
+            // "drawn" for this specific stake, whether or not the settings
+            // toggle actually locks release on it — the comp itself decides
+            // what to do with that fact.
+            originStake.Notify_RaidTriggered();
+
             // "if only one arrives... maybe the other arrives too" — always
             // a separately-scheduled later tick, never the same one.
             if (Rand.Chance(Mathf.Clamp01(RM_FeverWoodSettings.twoFrontLureSecondWaveChance)))
@@ -156,7 +163,8 @@ namespace RimMandrake.FeverWood
                 return false;
             }
 
-            float points = Mathf.Max(80f, StorytellerUtility.DefaultThreatPointsNow(map) * 0.6f);
+            float points = Mathf.Max(RM_FeverWoodSettings.twoFrontLureMinThreatPoints,
+                StorytellerUtility.DefaultThreatPointsNow(map) * RM_FeverWoodSettings.twoFrontLureThreatPointsMultiplier);
             PawnGroupMakerParms parms = new PawnGroupMakerParms
             {
                 groupKind = PawnGroupKindDefOf.Combat,
