@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T15:31:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T15:32:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1215,7 +1215,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  46 mods retrofitted with real, compile-verified Mod Settings (Greentide's cross-biome opt-in included); live in-game verification (cold load / quicktest, confirm toggles work with no errors) not yet run — see item file's progress section
+blocked:  52 mods now carry real, compile-verified Mod Settings (was 46+3; +ShokkweaveEconomy/EggReckoning/WildsteamEggBounty this pass, commit 25015622e); re-swept all 80 Source+csproj mods, 0 gaps beyond the 3 documented dev-tooling exemptions. Live in-game verification (full-list cold load or wide quicktest, confirm toggles work with no errors) still not run -- this pass had no bridge/cold-load access. See item file's 2026-09-26 progress section.
 summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
 prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
 
