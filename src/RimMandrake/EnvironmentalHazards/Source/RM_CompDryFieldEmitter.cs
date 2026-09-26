@@ -142,21 +142,36 @@ namespace RimMandrake.EnvironmentalHazards
 
         // Piece 2: "repels encroachment: writes suppression into the
         // EXPLOSIVE_PLANT_GROWTH_1 engine's suppression grid over a doorway
-        // arc." GREENTIDE_MECHANICS_2's own build-pass brief flags this as a
-        // known external gap: confirmed by grep before this pass started
-        // (`grep -r "PlantSuppression\|ExplosivePlantGrowth" src/`, zero
-        // hits) that no such grid exists anywhere in src/ yet — building it
-        // here would mean building EXPLOSIVE_PLANT_GROWTH_1's whole job
-        // inside this comp, which is a different item's scope, not this
-        // one's. Left as a documented no-op rather than skipped silently.
-        //
-        // TODO(EXPLOSIVE_PLANT_GROWTH_1): once that engine exists, call its
-        // suppression-grid write here for the same arc RepelAnimals already
-        // computes (radius/arc INVENTED values on CompProperties_DryFieldEmitter
-        // above) — do not build a new grid in this method when that day comes,
-        // call into the real one.
+        // arc." WIRED 2026-09-26: that grid now exists
+        // (mandrake.rm.explosivegrowth); the write goes through
+        // RM_ExplosiveGrowthSuppressionBridge by reflection, so without that
+        // mod this is still a no-op. Same arc as RepelAnimals (the spec ties
+        // both to one doorway arc), each cell suppressed for dryRoomHoldTicks
+        // and re-granted every active rare tick — so when the blower stops,
+        // "the green notices within hours", exactly as the room-dry grant does.
         private void SuppressPlantGrowth()
         {
+            Map map = parent.Map;
+            if (map == null || !RM_ExplosiveGrowthSuppressionBridge.Available)
+            {
+                return;
+            }
+
+            Vector2 facing = parent.Rotation.AsVector2;
+            float arcCos = Mathf.Cos(Props.animalRepelArcDegrees * 0.5f * Mathf.Deg2Rad);
+            foreach (IntVec3 cell in GenRadial.RadialCellsAround(parent.Position, Props.animalRepelRadius, useCenter: true))
+            {
+                if (!cell.InBounds(map))
+                {
+                    continue;
+                }
+                Vector2 offset = new Vector2(cell.x - parent.Position.x, cell.z - parent.Position.z);
+                if (offset.sqrMagnitude > 0.0001f && Vector2.Dot(offset.normalized, facing) < arcCos)
+                {
+                    continue;
+                }
+                RM_ExplosiveGrowthSuppressionBridge.Suppress(map, cell, 0, Props.dryRoomHoldTicks);
+            }
         }
 
         // Piece 3: "repels animals ... a periodic scan (interval 250 ticks)
