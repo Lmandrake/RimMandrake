@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GENOME_ORGAN_GROWING_1. Lives on the AA_RedGoo host between
+    injection and completion. Severity climbs via HediffCompProperties_
+    SeverityPerDay at 0.25/day = 4 days total — an expedition timescale
+    (find the amoeba, inject, come back later), not an industry cycle. The
+    host is consumable (owner ruling 2026-09-22): Hediff_AmoebaGestation's
+    PostTick fires AmoebaHostUtility.CompleteGestation once, which kills the
+    host after spawning the organ batch.
+  -->
+
+  <HediffDef>
+    <defName>RM_AmoebaGestation</defName>
+    <hediffClass>RimMandrake.Contagion.Hediff_AmoebaGestation</hediffClass>
+    <label>gestating organ batch</label>
+    <labelNoun>a gestation</labelNoun>
+    <description>An injected genome sample is inducing this amoeba to grow a batch of matched organs. It will not survive producing them.</description>
+    <defaultLabelColor>(0.85, 0.2, 0.2)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <maxSeverity>1.0</maxSeverity>
+    <initialSeverity>0.001</initialSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>0.25</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>early</label>
+        <minSeverity>0</minSeverity>
+      </li>
+      <li>
+        <label>advanced</label>
+        <minSeverity>0.5</minSeverity>
+      </li>
+      <li>
+        <label>imminent</label>
+        <minSeverity>0.9</minSeverity>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

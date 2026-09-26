@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GENOME_ORGAN_GROWING_1. Modeled on vanilla ExtractHemogenPack
+    (RecipeDef read via RimSage) — same shape: a Medicine-skill surgical
+    bill, no anesthesia required, spawns a portable Thing near the patient
+    and costs a small BloodLoss hediff rather than risking surgery failure.
+  -->
+
+  <RecipeDef>
+    <defName>RM_ExtractGenomeSample</defName>
+    <label>extract genome sample</label>
+    <description>Draw a small tissue sample from this colonist for later injection into a Contagion amoeba host. Costs a little blood; leaves no lasting harm.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_GenomeSample</ThingDef>
+    </descriptionHyperlinks>
+    <jobString>Extracting genome sample.</jobString>
+    <workerClass>RimMandrake.Contagion.Recipe_ExtractGenomeSample</workerClass>
+    <workAmount>500</workAmount>
+    <anesthetize>false</anesthetize>
+    <isViolation>false</isViolation>
+    <hideBodyPartNames>true</hideBodyPartNames>
+    <targetsBodyPart>false</targetsBodyPart>
+    <uiIconThing>RM_GenomeSample</uiIconThing>
+    <effectWorking>Surgery</effectWorking>
+    <soundWorking>Recipe_Surgery</soundWorking>
+    <surgeryOutcomeEffect>SurgeryOutcomeBase</surgeryOutcomeEffect>
+    <workSkill>Medicine</workSkill>
+    <workSkillLearnFactor>2</workSkillLearnFactor>
+    <workSpeedStat>MedicalOperationSpeed</workSpeedStat>
+    <recipeUsers>
+      <li>Human</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>

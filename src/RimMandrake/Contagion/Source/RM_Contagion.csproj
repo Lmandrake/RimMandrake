@@ -42,6 +42,15 @@
   <ItemGroup>
     <Compile Include="RM_ContagionMod.cs" />
     <Compile Include="RM_ContagionBiome.cs" />
+    <!-- CONTAGION_GENOME_ORGAN_GROWING_1 -->
+    <Compile Include="RM_ContagionDefOf.cs" />
+    <Compile Include="CompGenomeSample.cs" />
+    <Compile Include="CompGenomeMatched.cs" />
+    <Compile Include="Hediff_AmoebaGestation.cs" />
+    <Compile Include="AmoebaHostUtility.cs" />
+    <Compile Include="Recipe_ExtractGenomeSample.cs" />
+    <Compile Include="JobDriver_RM_InjectGenomeSample.cs" />
+    <Compile Include="FloatMenuOptionProvider_InjectGenomeSample.cs" />
   </ItemGroup>
 
   <ItemGroup>

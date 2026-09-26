@@ -36,10 +36,21 @@ wholesale from the frozen campaign twin (11 `wildAnimals` rows, 10 `wildPlants`
 rows, Alpha Biomes' weather and Alpha Biomes/vanilla disease suite), and a Mod
 Settings screen with the standard worldgen-rarity master toggle
 (MOD_OPTIONS_RETROFIT_1 doctrine — default = shipped behavior, 0 = never
-generates). No mechanics kit exists for this biome yet — the Burn/Bloom weather
-mechanic, the Unfinished's random-mutation spawner and Contagion-touched are all
-unbuilt design work (`CONTAGION_UNFINISHED_SPAWNER_1`,
-`CONTAGION_GENOME_ORGAN_GROWING_1`) and land here later, at any point, with no
+generates).
+
+`CONTAGION_GENOME_ORGAN_GROWING_1` (2026-09-26) added the mod's first real
+mechanic: a colonist can be operated on (`RM_ExtractGenomeSample`, a Medicine
+surgical bill) to draw a genome sample, then carry it to a live `AA_RedGoo` —
+the roster's own "the body" — and inject it (a right-click interaction,
+`RM_InjectGenomeSample`). The amoeba gestates for 4 in-game days
+(`RM_AmoebaGestation`), then dies producing 2-4 ordinary vanilla organs
+(kidney/liver/lung/heart) tagged with the source colonist's identity via a
+comp patched onto those four vanilla ThingDefs — the host is consumable, one
+batch per amoeba, per the owner's ruling. Gated by its own Mod Settings
+toggle, default on. The Burn/Bloom weather mechanic and the Unfinished's
+random-mutation spawner (`CONTAGION_UNFINISHED_SPAWNER_1` — referenced by
+name in earlier design prose but not a filed ledger item as of this build)
+remain unbuilt design work and land here later, at any point, with no
 dependency direction.
 
 Zero Star Wars content lives in this biome's roster at all — the twin's own
