@@ -657,3 +657,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1","ts":"2026-09-26T10:52:42Z"}
 {"seat":"FOUNDRY","event":"start","id":"CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1","ts":"2026-09-26T10:52:43Z"}
 {"seat":"FOUNDRY","event":"close","id":"GREENTIDE_FRENZY_DISEASE_1","sha":"35ac3ab3f871cd21d0dd15f611a64535ede637ca","ts":"2026-09-26T10:54:39Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_GRENADE_WEAPONS_1","ts":"2026-09-26T11:01:51Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREENTIDE_GRENADE_WEAPONS_1","ts":"2026-09-26T11:01:54Z"}
+{"seat":"FOUNDRY","event":"note","id":"GREENTIDE_UNDERSTORY_PLANT_ROSTER_1","text":"GREENTIDE_GRENADE_WEAPONS_1 (stench smoke grenade) shipped RM_StenchSporeExtract crafted from WoodLog as a placeholder feedstock, since RM_Phorrik (row 18, this item's own scope) isn't built yet. Once RM_Phorrik ships, give it <harvestedThingDef>RM_StenchSporeExtract</harvestedThingDef> (same shape as RM_Gorbeleth -> RM_GorbelethToxin) so the grenade's recipe traces to the real plant instead of raw wood.","ts":"2026-09-26T11:02:04Z"}
+{"seat":"FOUNDRY","event":"close","id":"GREENTIDE_GRENADE_WEAPONS_1","sha":"709e1b57e687da9595861fbed0b45d24352ca703","reason":"Built RM_Grenade_StenchSmoke (stench smoke grenade) only, per owner's scope ruling. Seeding and toxin grenades stay designed-but-unbuilt, queued behind this proof.","ts":"2026-09-26T11:02:42Z"}
