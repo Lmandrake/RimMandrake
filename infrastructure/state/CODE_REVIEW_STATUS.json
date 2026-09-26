@@ -2573,6 +2573,60 @@
     "hash": "8b2cbb753a3e1281db3a4d2a943c7084284297185529aa398980a8fd0583ee16",
     "sha": "0e38767e7"
   },
+  "src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "f6e965f11701734f798af50cafbc23839158f15f30afa4bce96c7d2fa164a0a4",
+    "sha": "c29e53323"
+  },
+  "src/RimMandrake/FeverWood/Source/RM_CompProperties_LureStake.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "6b50bcc417f0782853a099780abd546bd486d33a0c6ce2df84ba1ece7e67179f",
+    "sha": "c29e53323"
+  },
+  "src/RimMandrake/FeverWood/Source/RM_Designator_StakeLure.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c98c3d7a76ca5e07880bd88f6b4f24a4ece22a63b8c3740fb8f6181449824269",
+    "sha": "c29e53323"
+  },
+  "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "dd74e18f59dfd5bbafc56899cb554df837fe2ad63998ff9a47a3252f08fd88ed",
+    "sha": "c29e53323"
+  },
+  "src/RimMandrake/FeverWood/Source/RM_JobDriver_HaulToStake.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a0b840e7d0092d73c086990297f3895c4817bc7349e755e56cb7aeef4435b1f1",
+    "sha": "c29e53323"
+  },
+  "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "77bf0584ab0e2cd11341bc904bb2eaf69405f084045e868b15da1168fbb1f20d",
+    "sha": "c29e53323"
+  },
+  "src/RimMandrake/FeverWood/Source/RM_TwoFrontLureDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d1b95d7427a747648973155fabf703dc2663d4db0c7cbe520a0eb2c2013ef7a5",
+    "sha": "c29e53323"
+  },
+  "src/RimMandrake/FeverWood/Source/RM_WorkGiver_HaulToStake.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4a2b0f51950fa104f5d20536dc50eaa7f43c22c9f3f9a729c565dac461c8b7c5",
+    "sha": "c29e53323"
+  },
+  "src/RimMandrake/FeverWood/Source/RM_WorkGiver_StunForStaking.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "62abfe88c6f4212495c07ca4e5ceb0740677f9e4d4630b44b23c1efa456ef43c",
+    "sha": "c29e53323"
+  },
   "src/RimMandrake/FloodedCanyon/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-17",
