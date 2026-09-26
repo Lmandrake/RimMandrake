@@ -455,6 +455,12 @@
     "hash": "559b80c27179e31601bbb03bc2cd8f322a0ba81868d206ef5537a04b2dd6dbc2",
     "sha": "bb73b6bd"
   },
+  "design/Jawa/worldbuilding/water_doctrine.md": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "3d15cb3c661d8a5f3984c01a0b98839e0149ce0f6575fbdb773c451ee6ddf54f",
+    "sha": "ff3e1b860"
+  },
   "infrastructure/dashboards/hub/hub_check.py": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -520,6 +526,12 @@
     "date": "2026-09-09",
     "hash": "32bd246d3e47ba983df08d2785a53dced6745c11234a013609a508d873de84eb",
     "sha": "6a7759f2"
+  },
+  "infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "1721f94f9b145703b1c5d3cf5cd87e372a975558a3e6784ebf411d9ba6cbf253",
+    "sha": "ff3e1b860"
   },
   "skills/deciding-and-superseding/scripts/stale_directives.py": {
     "cleanCount": 1,
@@ -14848,10 +14860,10 @@
     "sha": "e0f4ffdc7"
   },
   "src/RimStarWars/Sarlacc/Source/CompSarlaccCisternBreach.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "7095d6fd73a1f89a91ab8785cf953d6537adc92de3857255343b73a0d36facbf",
-    "sha": "e0f4ffdc7"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "da791d52db850c0caced48cd730c0b8c9d360e6572513457bf6ba95a66d0494a",
+    "sha": "ff3e1b860"
   },
   "src/RimStarWars/Sarlacc/Source/CompSarlaccSwimmer.cs": {
     "cleanCount": 1,
@@ -14859,11 +14871,23 @@
     "hash": "7c3ae13cc71a9076654291ca5a1940f440cbc40bb90ca31598e9923f3f4e51c2",
     "sha": "e0f4ffdc7"
   },
-  "src/RimStarWars/Sarlacc/Source/RSW_SarlaccSettings.cs": {
+  "src/RimStarWars/Sarlacc/Source/MapComponent_SarlaccBreachFlood.cs": {
     "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "e14867408aca2afaef9d30d4e8b82638a3bd0e9e2d71c20fe8c10f8c2ec06e20",
-    "sha": "c4858101e"
+    "date": "2026-09-26",
+    "hash": "a661b250a6ba3bce583e3df4f9255155db7ba771cc5db494168f92f64998e948",
+    "sha": "ff3e1b860"
+  },
+  "src/RimStarWars/Sarlacc/Source/RSW_SarlaccSettings.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "4abf75e1fc99802e71a52f7d78f40a91f3bb0c14c90de80669db20a177b19b9e",
+    "sha": "ff3e1b860"
+  },
+  "src/RimStarWars/Sarlacc/Source/Sarlacc.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "436e1b24ddb4e1773ab21c91fc5ff0c5e76b2aff503f3045de0bcf90a270ed12",
+    "sha": "ff3e1b860"
   },
   "src/RimStarWars/ShiroArtOverride/About/About.xml": {
     "cleanCount": 1,
