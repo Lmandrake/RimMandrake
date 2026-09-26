@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T06:37:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T06:41:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -837,6 +837,15 @@ kind:     task
 summary:  1. Look at it against the newer creature art in the same mod, and against the bar the
 prose:    infrastructure/state/items/STONEBACK_BOKKA_ART_STANDARD_1.md
 
+## HOSTILE_MOBILE_PLANTS_1 Hostile mobile plants as animals - a new creature class
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Design sitting first: answer the five questions above as a card set for him. ⛔ Author nothing
+prose:    infrastructure/state/items/HOSTILE_MOBILE_PLANTS_1.md
+
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing
 row:      unassigned
@@ -1368,6 +1377,16 @@ blocked:  spec explicitly forbids starting solo: needs owner-sat plan/ordering f
 summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
 prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
 
+## HOSTILE_MOBILE_PLANTS_1 Hostile mobile plants as animals - a new creature class
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Item's own spec (step 1) says design sitting first, author nothing before it: 2 of 5 questions still fully unset (how dangerous/to whom, huntable/harvestable), and the most recent design record (design/Jawa/worldbuilding/biomes/greentide_risk_reward_2026-09-22.md) confirms as of 2026-09-22 'concept approved and three of five questions ruled... Nothing authored; the animation mechanism is deliberately unresolved.' Separately, REACTION_MECHANISM_GENERALISE_1 (currently doing) is explicitly the item building this creature's swarm-propagation comp as its step 2, sequenced after GREENTIDE_WASP_SWARM_1 (step 1, not yet done) - building an ad hoc propagation system here now would duplicate/conflict with that in-flight generalized mechanism, which the item text itself says to check before inventing a propagation system. The idle-twitch animation route is also explicitly UNDECIDED pending Desktop/engine verification, not guessable offline. No creature/roster/comp authored; leaving as blocked rather than inventing owner-level scope decisions or racing a concurrent in-flight item. (on REACTION_MECHANISM_GENERALISE_1)
+summary:  1. Design sitting first: answer the five questions above as a card set for him. ⛔ Author nothing
+prose:    infrastructure/state/items/HOSTILE_MOBILE_PLANTS_1.md
+
 ## SUMP_GASLIGHT_1 Sump gaslight: tar+acid reaction makes green gas (Helixien integration OK), warbling lamp light, flame statuary, natural flames, discovery-unlocked techs
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1459,16 +1478,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Design the roster inside the commission's register system — which band each species sits in,
 prose:    infrastructure/state/items/GREENTIDE_EXOTIC_JUNGLE_FISH_1.md
-
-## HOSTILE_MOBILE_PLANTS_1 Hostile mobile plants as animals - a new creature class
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Design sitting first: answer the five questions above as a card set for him. ⛔ Author nothing
-prose:    infrastructure/state/items/HOSTILE_MOBILE_PLANTS_1.md
 
 ## GREENTIDE_BIOME_DENSITY_1 The Greentide is choked with foliage and brutal to cross
 state:    proposed
