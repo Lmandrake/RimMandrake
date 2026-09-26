@@ -2,54 +2,49 @@
 <Defs>
 
   <!--
-    🧊 FROZEN 2026-09-25 (CONTAGION_RM_MOD_BUILD_1) — carrying the world until the
-    terminal paint; content lives in mandrake.rm.contagion; do not edit here.
+    RM_Contagion                        CONTAGION_RM_MOD_BUILD_1, new 2026-09-25
 
-    RUT_Contagion                                  UtinniPatches - authored 2026-09-09
-    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
-    the_contagion.md (FROZEN). Replaces the donor `AB_OcularForest` (Alpha Biomes'
-    "Ocular Forest").
+    Copied verbatim from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
+    RUT_Contagion.xml (156 lines, authored 2026-09-09) per
+    design/RimMandrake/biome_mod_architecture.md §5 Phase A step 2. Every field
+    below is the twin's own content, unchanged, EXCEPT:
 
-    MEASURED (sheet SS0): now painted onto 179 tiles (Dew Horn 87, Scald Spine 44,
-    Ashfall Range 24, Dune Sea 17, Fall Line 5, Anvil 2), arc 18-69 (median 59), temp
-    p10/median/p90 25/32/45 C, rain median 60 mm (max 1,529) — the wettest dayside
-    ground.
+      - workerClass: the donor AlphaBiomes.BiomeWorker_OcularForest becomes this
+        mod's own RimMandrake.Contagion.RM_BiomeWorker_Contagion (§5 step 2 — a
+        donor type in workerClass is a hard dependency the RimMandrake tier may
+        not assume). The new worker's placement ranges are [INVENTED], same
+        footing as the sibling Forsaken Crags/Blue Desert mods' own worker
+        ranges — no worldgen run has been done for this mod and the campaign
+        world is frozen and hand-authored, so one never will be for Ash'karr.
+      - RUT_Sytheclaw gains an explicit MayRequire="mandrake.rut.patches": it
+        is a RimMandrake-tier creature (not Star Wars) whose ThingDef/
+        PawnKindDef still live in the RimUtinni tier
+        (RUT_PyrelandsPortedFauna.xml), shared inline across three biomes
+        (Pyrelands, Greentide, here). Without the gate this def would carry a
+        live cross-tier hard dependency the franchise-free RimMandrake tier
+        may not assume — same caution WildAnimals_Greentide.xml already
+        records for this same creature. `BIOME_SPECIFIC_FAUNA_LAW_1` lists it
+        among 52 unadjudicated multi-homed species; multi-home evictions are
+        stopped by owner ruling, so it is not moved or renamed here.
 
-    Weather: AB_RedFog (Alpha Biomes' own WeatherDef, kept MayRequire-gated) IS the
-    Bloom (SS4b) — the storm-state ranged-accuracy x0.4 penalty ban 5 protects
-    stands unmodified at the donor's own commonality (17, scaled to 70 of the whole
-    table to keep it dominant). The Burn (rare tears letting Clear weather occur) has
-    no bespoke WeatherDef — kept as ordinary Clear at low commonality per the
-    donor's own Clear:8, since "Clear weather is the terrifying weather here" (SS3)
-    reads as a rare state, not a renamed one; a real Burn WeatherDef with the
-    radiation/UV mechanic is un-owed (SS Owed, engine feasibility pass). Rain-type
-    entries kept at the donor's own low values — the Scald rain assignment
-    (`Jawa_ScaldDrizzle/Rain/Fog`) already exists per SS0 but is a SEPARATE
-    already-assigned weather suite this def does not duplicate or override.
+    Everything else — texture, terrain, weather, diseases, all 10 remaining
+    wildAnimals rows, all 10 wildPlants rows — is the twin's content unchanged.
+    Zero RSW_/SW_/mlie.* rows exist in the twin's wildAnimals (MEASURED,
+    CONTAGION_RM_MOD_BUILD_1's own STATE section §3), so nothing moves to a
+    Utinni patch from THIS def — unlike most sibling RM_ biome mods, there is
+    no WildAnimals_Contagion.xml.
 
-    diseases: AB_Disease_SporesAllergy pair kept MayRequire-gated (matches the
-    donor's own spore-heavy read); Malaria/SleepingSickness kept high per the
-    donor's own set — ban 4 ("No edible forage") is matched by forageability 0.
-
-    animalDensity/plantDensity/diseaseMtbDays kept at the donor's own values (sheet
-    SS0 "Donor inventory taken in" lists these as read-in, not disputed).
-
-    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
-    BiomeFlora_Ashkarr.xml against rosters/the_contagion.json. Ban 1 (no green
-    squares taken) and ban 3 (no finished natives beyond the ruled table) are
-    roster/placement-level, not re-verified field-by-field here.
-
-    NOT this pass's scope: `CONTAGION_BIOME_PLACEMENT_1` (the widened peak-by-peak
-    world placement); the Burn as a real radiation/UV WeatherDef;
-    `WATER_KINDS_TAXONOMY_1`; the Unfinished spawner (C#); any world repaint.
-
+    ⚠️ NOT donor-free: terrain/texture and all 10 wildPlants entries carry no
+    MayRequire (inherited from the twin, not this build's scope to fix) — see
+    About.xml for the disclosure. RUT_RustPuff keeps its existing
+    MayRequire="mandrake.rut.rotsporekit" cross-mod dependency, unchanged.
   -->
 
   <BiomeDef>
-    <defName>RUT_Contagion</defName>
+    <defName>RM_Contagion</defName>
     <label>the Contagion</label>
     <description>A red valley on a scalded mountain, roofed by a thunderstorm that has never been known to stop. Under the cloud everything is wet, warm and unfinished: trees half-way to being something else, animals with one design completed and two abandoned. Then the cloud tears -- and the sun comes through like a sterilizing lamp, and everything alive dives for cover, because here the clear sky is the killer.</description>
-    <workerClass>AlphaBiomes.BiomeWorker_OcularForest</workerClass>
+    <workerClass>RimMandrake.Contagion.RM_BiomeWorker_Contagion</workerClass>
     <lakeBeachTerrain>GU_AlienSandFine</lakeBeachTerrain>
     <mudTerrain>GU_AlienSandFine</mudTerrain>
     <riverbankTerrain>GU_AlienSandFine</riverbankTerrain>
@@ -128,7 +123,7 @@
       <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - the-sower, keep -->
       <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>  <!-- blood shrimp - the-drinker, adjust-keep -->
       <AA_Drainer MayRequire="sarg.alphaanimals">0.15</AA_Drainer>  <!-- drainer - the-thieves, adjust-keep -->
-      <RUT_Sytheclaw>0.15</RUT_Sytheclaw>  <!-- sytheclaw - the-pickers, adjust-keep; was the donor AA_Razorjack until PYRELANDS_DONOR_PORT_4 (2026-09-19) re-authored it as ours, so no MayRequire: this mod ships the def -->
+      <RUT_Sytheclaw MayRequire="mandrake.rut.patches">0.15</RUT_Sytheclaw>  <!-- sytheclaw - the-pickers, adjust-keep; RimMandrake-tier creature whose def still lives in RimUtinni (RUT_PyrelandsPortedFauna.xml) — gated per this file's own header note, not evicted (multi-home evictions are stopped) -->
       <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - the-undertaker, adjust-keep -->
       <AA_RoughPlatedMonitor MayRequire="sarg.alphaanimals">0.1</AA_RoughPlatedMonitor>  <!-- rough-plated monitor - the-basker, keep -->
       <AA_Swarmling MayRequire="sarg.alphaanimals">0.1</AA_Swarmling>  <!-- swarmling - the-pickers, adjust-keep -->
@@ -144,12 +139,6 @@
       <AB_GlobularPlant>0.4</AB_GlobularPlant>  <!-- globular aberration -->
       <AB_TentacularPlant>0.4</AB_TentacularPlant>  <!-- tentacular aberration -->
       <AB_BloodBouquet>0.3</AB_BloodBouquet>  <!-- blood bouquet -->
-      <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20: AB_EyeGrass purged outright
-           (no successor authored), RUT_RustPuff moved in from the_rot ("The Contagion...
-           and hatches occular creature when damaged"). Both rulings landed in
-           rosters/the_contagion.json on that date and reached the game only through
-           BiomeFlora_Ashkarr.xml's now-retired replace operation; transplanted here by
-           BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 so this def carries them itself. -->
       <RUT_RustPuff MayRequire="mandrake.rut.rotsporekit">0.3</RUT_RustPuff>  <!-- rust puff -->
       <AB_AlienTree_Polluted>0.15</AB_AlienTree_Polluted>  <!-- mutated ocular tree - tree -->
     </wildPlants>
