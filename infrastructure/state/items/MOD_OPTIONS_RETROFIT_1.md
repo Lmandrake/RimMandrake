@@ -107,11 +107,18 @@ content — `Defs/ThingDefs_Buildings/`, `Defs/ResearchProjectDefs/` and
 `Defs/Specials/`, including a `ResearchProjectDef` and a Research Reinvented
 opportunity. It has real features to toggle.
 
-🔴 Not resolved, though, because two owner rulings collide on it: *"Every mod ships
-superb Mod Settings, no exceptions"* (2026-09-12) against
-`RAKATAN_ARCHOTECH_MACHINES_1` ruling 5, which protects WreckedMachines shipping as
-pure XML — and a settings screen needs a `Mod`/`ModSettings` assembly, so it cannot
-stay XML-only and have one. Owner's call, one line either way.
+✅ **RESOLVED — corrected 2026-09-26 (FOUNDRY).** The "not resolved, owner's call"
+line above is stale: the collision was ruled the same sitting it was raised
+(question card, 2026-09-25 20:20, recorded in this item's own history — "the
+blanket settings rule wins over the earlier XML-only protection"), and the retrofit
+was actually already built and closed *before* that card, at `d9df2cabe`
+(`WRECKEDMACHINES_MOD_SETTINGS_1`, 2026-09-18): `src/RimMandrake/WreckedMachines/
+Source/WreckedMachinesMod.cs` ships a real `WreckedMachinesSettings`/`WreckedMachinesMod`
+with four gates (donor-smelter Architect-menu visibility, research/material cost
+factors, a research-skip toggle), wired into the live defs via a
+`WreckedMachinesPatcher` in the same style as `FungalSoilTradeOptions`. WreckedMachines
+is DONE, not open — move it into the DONE list above whenever this file is next
+touched for that reason.
 
 **NOT YET DONE — owed, and why this is BLOCKED not CLOSED:**
 1. **Live in-game verification.** Everything above is compile-verified only.
@@ -147,3 +154,51 @@ Next FOUNDRY pass: re-verify this list is still current (another window may
 have added mods or closed WRECKAGE_VERMIN_SPAWN_1 in the meantime), then run
 the live verification pass above. Close only once that live check is
 clean.
+
+## Progress 2026-09-26 (FOUNDRY, third pass) — re-swept for new mods, three gaps closed
+
+Re-ran point 4's own instruction ("re-verify this list is still current") by
+scripting a fresh inventory of every `src/{RimMandrake,RimStarWars,RimUtinni}/*`
+folder carrying a `Source/`+`.csproj` (80 total, up from 101 folders/~59 with
+Source at the original 2026-09-12 pass — new mods have landed since) and
+grepping each for `ModSettings`/`DoSettingsWindowContents`. Found exactly
+three real gaps beyond the already-documented dev-tooling exemptions
+(`LoadTracer`, `PlanetPresetPrime`, `RimDefDump` — unchanged, still exempt):
+
+- **`ShokkweaveEconomy`** (`WEBWORK_...`) — ships one runtime mechanic,
+  `GenStep_ScatterWebworkSilk` (scatters Webwork silk-knot/nest nodes on new
+  `RUT_Webwork` maps only). Added `ShokkweaveEconomySettings`/
+  `ShokkweaveEconomyMod` (one `scatterEnabled` toggle, default ON, labeled
+  affects-new-maps-only), gated the GenStep on it. Precedent copied from
+  `FungalSoilTradeOptions`/`GenStep_ScatterFungalGround`.
+- **`EggReckoning`** ("The Reckoning" quest family) and **`WildsteamEggBounty`**
+  (the ollathrix-egg bounty quest) — both fire through native
+  `QuestScriptDef.rootSelectionWeight`/`givenBy` selection with no paired
+  IncidentDef to gate (unlike KyberTradePlot's `RUT_GiveQuest_*` pattern).
+  Added `EggReckoningSettings`/`EggReckoningMod` and
+  `WildsteamEggBountySettings`/`WildsteamEggBountyMod`, each a single
+  `*Enabled` toggle (default ON) wired through a `[StaticConstructorOnStartup]`
+  patcher that zeroes `rootSelectionWeight` (both mods) and clears
+  `RUT_Reckoning_CartelOffer.givenBy` (EggReckoning's trader-offered route)
+  when off, restoring the captured shipped originals when on — same def-
+  mutation pattern `WreckedMachinesPatcher` already established. Off never
+  touches a quest already granted to a colony, only future selection.
+
+All three `.csproj`s rebuild clean (`dotnet build -c Release`, 0 errors) via
+`"C:\Users\Mandrake\.dotnet\dotnet.exe"` (the user-local SDK; the WSL PATH has
+no `dotnet` and `/mnt/c/Program Files/dotnet` has no SDK installed, only the
+runtime). Re-swept after landing these three: 80 mods total, 0 gaps beyond the
+three named exemptions. Also corrected two stale lines in this file's own
+history: the WreckedMachines "not resolved, owner's call" note (already ruled
+*and* already built, `WRECKEDMACHINES_MOD_SETTINGS_1` closed 2026-09-18 —
+predates the 2026-09-25 card that re-confirmed it) and confirmed
+`WRECKAGE_VERMIN_SPAWN_1`'s uncommitted files (point 2's deploy-scope
+concern) are long since committed and closed — that concern is moot.
+
+**Still not done, still why this stays BLOCKED, not closed:** point 1's live
+in-game verification remains the real gate — this pass had no bridge/cold-load
+access (reserved for concurrent agents this wave) and was scoped to offline
+authoring only, so it did not attempt any live check beyond the existing
+2026-09-24 8-mod spot-check. Deploying and running a full-list load (or a
+wide quicktest) against the now-52-mod set (49 prior + Shokkweave/EggReckoning/
+WildsteamEggBounty) remains the single owed step before this item can close.
