@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    EXPLOSIVE_PLANT_GROWTH_1 — the RM-tier roster: only plants and content this
+    tier (or vanilla/DLC, or a gated donor looked up by name) owns. The
+    campaign's own rows (RUT_/RSW_/donor flora the frozen world rosters) ship
+    in mandrake.rut.plantgrowth, loaded only when this mod is active.
+
+    Source of every assignment: design/RimUtinni/explosive_plant_growth_roster.md
+    (regenerated 2026-09-21 against ruling 4, water scarcity decides). CHURN is
+    the default and is never listed. A row naming a plant that is not loaded is
+    skipped silently and counted in the startup log line.
+
+    ⛔ No biome decides a top. noSoakBiomes is the soak CARVE-OUT only
+    (design doc §3) and is empty here: the RM tier names no campaign biome.
+  -->
+  <RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
+    <defName>RM_ExplosiveGrowthRoster_Core</defName>
+
+    <plants>
+      <!-- TINDER — fire-loop genetics (roster §TINDER). Ring: quickgrass. -->
+      <li><plant>RM_FE_Plant_Quickgrass</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant></li>
+      <li><plant>RM_FE_Plant_EmberGrass</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant></li>
+      <li><plant>RM_FE_Plant_ScorchFruit</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant></li>
+
+      <!-- SLIME — slime-fed genetics (roster §SLIME). Ring terrain: the
+           Gelatinous Slime mod's own rich slime ground. -->
+      <li><plant>RM_Plant_SlimeGrass</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
+      <li><plant>RM_Plant_Bellows</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
+      <li><plant>RM_Plant_Thumbstalk</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
+      <li><plant>RM_Plant_Readerbloom</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
+      <li><plant>AB_TallSlimyGrass</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
+      <li><plant>AB_SlimyFern</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
+      <li><plant>AB_Slimecasia</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
+      <li><plant>AB_SlimyTree</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
+      <li><plant>AB_LargeSlimyTree</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
+
+      <!-- RUPTURE — contaminated (roster §RUPTURE, ruling 5). The Contagion's
+           flora; RM_RustPuff is the RM-tier name of the roster's RUT_RustPuff. -->
+      <li><plant>AB_HalfAlienTree</plant><top>Rupture</top></li>
+      <li><plant>AB_AlienTree_Polluted</plant><top>Rupture</top></li>
+      <li><plant>AB_AlienTree</plant><top>Rupture</top></li>
+      <li><plant>AB_AlienGrass</plant><top>Rupture</top></li>
+      <li><plant>AB_RedLeaves</plant><top>Rupture</top></li>
+      <li><plant>AB_RedPlantsTall</plant><top>Rupture</top></li>
+      <li><plant>AB_TentacularPlant</plant><top>Rupture</top></li>
+      <li><plant>AB_GlobularPlant</plant><top>Rupture</top></li>
+      <li><plant>RM_RustPuff</plant><top>Rupture</top></li>
+      <li><plant>RUT_RustPuff</plant><top>Rupture</top></li>
+
+      <!-- NONE — RM-tier and vanilla/DLC plants the roster excludes. -->
+      <li><plant>RM_PaleTree</plant><top>None</top></li>
+      <li><plant>Plant_MagmaCactus</plant><top>None</top></li>   <!-- hoarder, hard call 1 (INVENTED, unruled) -->
+    </plants>
+
+    <!-- R-G5 (PLANT_GROWTH_SPEC.md) plus the blue-desert trio PlantGrowth
+         already exempts for the same reason. -->
+    <exemptPlants>
+      <li>RM_Palefloss</li>
+      <li>RM_Glassfern</li>
+      <li>RM_Chimeglobe</li>
+    </exemptPlants>
+
+    <!-- RUPTURE's spawn: "red slimes, occular entities". Alpha Animals kinds,
+         looked up by name exactly as the Contagion mod itself does
+         (AmoebaHostUtility.HostDefName), so there is no hard dependency. -->
+    <rupturePawnKinds>
+      <li>AA_RedGoo</li>
+      <li>AA_OcularJelly</li>
+    </rupturePawnKinds>
+
+    <!-- RUPTURE's "extra mutation hediffs": the Contagion mod's own
+         unfinished-limb pool (RM_UnfinishedHediffs.xml), whose Hediff_AddedPart
+         shape is already proven safe on a leaf part. -->
+    <ruptureMutationHediffs>
+      <li>RM_UnfinishedClaw</li>
+      <li>RM_UnfinishedSpike</li>
+      <li>RM_UnfinishedFang</li>
+      <li>RM_UnfinishedStump</li>
+      <li>RM_UnfinishedVestigialWing</li>
+      <li>RM_UnfinishedUselessJaw</li>
+    </ruptureMutationHediffs>
+
+    <!-- Fresh FlowWorks fluid that irrigates. Saline/oil fluids never soak. -->
+    <irrigationFluids>
+      <li>RM_Fluid_Water</li>
+      <!-- slime_flood ("Slime floodwater — soaks on its way through", design
+           doc §1): a dug channel carrying one of FlowWorks' slime fluids is the
+           nearest built stand-in for it. 🄸 INVENTED mapping; the Slime biome's
+           own flood event does not exist yet. -->
+      <li>RM_Fluid_SlimeRed</li>
+      <li>RM_Fluid_SlimeGreen</li>
+      <li>RM_Fluid_SlimeWhite</li>
+      <li>RM_Fluid_SlimeYellow</li>
+    </irrigationFluids>
+
+    <soakWeathers />
+  </RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
+
+</Defs>

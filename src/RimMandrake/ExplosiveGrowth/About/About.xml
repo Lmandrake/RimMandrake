@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.explosivegrowth</packageId>
+  <name>RimMandrake: Explosive Plant Growth</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mandrake.rm.flowworks</li>
+    <li>mandrake.rm.environmentalhazards</li>
+    <li>mandrake.rm.contagion</li>
+    <li>mandrake.rm.gelatinousslime</li>
+    <li>mandrake.rm.pyrelands</li>
+    <li>sarg.alphabiomes</li>
+    <li>sarg.alphaanimals</li>
+  </loadAfter>
+  <description>EXPLOSIVE_PLANT_GROWTH_1. Water-soaked plants grow where you can watch them — and every soaked plant is a countdown.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+THE SOAK. Ground becomes SOAKED when qualifying fresh water arrives in quantity, and dries back over hours to a day. Routes: a flood pushed in by another mod (RimMandrake: Flooded Canyon), irrigation (a dug FlowWorks channel holding fresh water soaks the ground beside it — rivers and lakes never do), a salt-line surge's fresh side (Environmental Hazards' gradient axis), and any weather a roster names as soaking. Soaked plants grow x10 ON TOP of whatever ambient rate the rest of your mod list gives them. Salt, fungus, and plants whose slowness is a mechanic (anima, gauranlen, ambrosia) never soak.
+
+THE CHARGE. A soaked plant that reaches full size keeps going: it swells past natural size, and it tells you, in a fixed order — the ground darkens and sprouts, it swells, its hue shifts wrong, it trembles, it creaks, and then it goes silent. Then the top.
+
+THE TOP belongs to the PLANT, never the ground it stands on:
+  - Churn (the default): it splits, dies, drops its produce and sows a ring of sprouts that keep going. It respects your floors and walls.
+  - Burst (dry-adapted plants only): a pop, chaff, bruises and knockdown nearby (never lethal on its own), premium produce scattered — and a sown ring that ignores your zones, floors and doorways.
+  - Tinder: a burst whose debris is fuel.
+  - Slime: the ring turns the ground to slime.
+  - Rupture (contaminated plants): a gas cloud, spawned things, sprouts, and mutations for anyone in the cloud without a full vacuum seal.
+  - Flush (giant trees): it swells inside and survives, silently.
+
+PLAYER VERBS. Harvest a swollen plant for extra produce. Cut it to defuse it — though once it trembles, the last swing is a gamble. Keep ground dry. Grazing animals (and a dry-air blower, where another mod ships one) suppress encroachment for a few days.
+
+Every mechanic has a Mod Settings toggle; defaults are the shipped behaviour. Plant tops are data: an RM_ExplosiveGrowthRosterDef (by name, silently skipping absent plants) or an RM_ExplosiveGrowthExtension on a plant you own. Soak/suppress are exposed as RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI for other mods to call by reflection.
+
+Ships the IncidentWorker behind a map-scale bloom (RM_IncidentWorker_BloomBurst); a campaign layer names the IncidentDef and the bloom plant.
+
+The performance gate (TPS on a jungle-density map under a full-map soak) is OWED to a live session; no density is promised until it runs.</description>
+</ModMetaData>
