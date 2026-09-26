@@ -36,6 +36,14 @@
   for the roster's "the young CALLS. Audible, locatable, and it does not
   stop" — kept generic on the hediff so every deformed stranded animal
   calls, regardless of which mechanism stranded it.
+
+  WARDEN_MOTHER_SUCCESSION_1: also carries RM_HediffCompProperties_SelfTameOnRecord
+  (RimMandrake.Miasma, this mod's own assembly — no MayRequire needed) for
+  the roster's §6a "the babies should be trainable... they should frequently
+  self-tame if there are no hostilities against them," and the water-scoped
+  trained-behaviour backstop that same section rules. See that class's own
+  header (Source/RM_WardenMotherSuccession.cs) for why this is scoped to
+  hediff carriers only, not every rescued nursery juvenile.
 -->
 <Defs>
 
@@ -60,6 +68,9 @@
       <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_HediffCompProperties_LocatableCall">
         <callSound>Pawn_Frog_Call</callSound>
         <callIntervalTicksRange>900~1500</callIntervalTicksRange>
+      </li>
+      <li Class="RimMandrake.Miasma.RM_HediffCompProperties_SelfTameOnRecord">
+        <checkIntervalTicksRange>2000~3200</checkIntervalTicksRange>
       </li>
     </comps>
   </HediffDef>

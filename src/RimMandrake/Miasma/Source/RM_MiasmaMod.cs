@@ -39,10 +39,21 @@ namespace RimMandrake.Miasma
         // 1 = the shipped default.
         public static float biomeRarityFactor = 1f;
 
+        // WARDEN_MOTHER_SUCCESSION_1: unlike the six mechanics above, self-
+        // taming/water-scoped training/succession is implemented entirely in
+        // THIS mod's own assembly (RM_WardenMotherSuccession.cs) — no shared
+        // EnvironmentalHazards switch to point at instead, so it belongs on
+        // this screen. Default = shipped behavior; off degrades gracefully
+        // (the young simply stay wild and the crèche is never inherited).
+        public static bool wardenSuccessionEnabled = true;
+        public static float selfTameChancePerCheck = 0.12f;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
+            Scribe_Values.Look(ref wardenSuccessionEnabled, "wardenSuccessionEnabled", true, true);
+            Scribe_Values.Look(ref selfTameChancePerCheck, "selfTameChancePerCheck", 0.12f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -67,6 +78,19 @@ namespace RimMandrake.Miasma
                       + "switches, so a second, Miasma-only copy of them on this "
                       + "screen would either do nothing or quietly disagree with that "
                       + "one.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Warden mother young: self-taming and succession",
+                ref wardenSuccessionEnabled,
+                "A stranded young may quietly self-tame if the player never harms one "
+                + "of its crèche-mates, becomes trainable for water-bound work only, "
+                + "and can inherit the crèche if the mother dies of old age. Off: the "
+                + "young stay wild and the crèche is never inherited.");
+            if (wardenSuccessionEnabled)
+            {
+                list.Label("  Self-tame chance per check: " + (selfTameChancePerCheck * 100f).ToString("0") + "%");
+                selfTameChancePerCheck = list.Slider(selfTameChancePerCheck, 0.01f, 0.5f);
+            }
 
             list.End();
         }
