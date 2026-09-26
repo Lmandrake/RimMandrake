@@ -54,12 +54,21 @@
   PLACEHOLDER ART — every texPath here is a vanilla path that is physically
   present, never a guessed one
   ============================================================================
-  The five mineables inherit RockBase's own Things/Building/Linked/Rock_Atlas
-  and are separated by <color> alone; the chimney borrows vanilla's
-  Things/Building/Natural/SteamGeyser silhouette. That is a placeholder, not a
-  design: real art is owed and every brief for it carries the owner's one
-  aesthetic rule, verbatim — "marred slightly, don't make them too perfect or
-  they look manufactured."
+  The eight mineables inherit RockBase's own Things/Building/Linked/Rock_Atlas
+  and are separated by <color> alone; the chimney ships a greyscale
+  stacked-cubic-block PNG of this mod's own,
+  Textures/Things/Building/Natural/RM_SaltChimney.png, tinted by <color>.
+
+  ⚠️ The chimney first pointed at vanilla's Things/Building/Natural/
+  SteamGeyser, which exists — inside resources.assets, not as a loose file —
+  and validate_patch.py therefore reads it as a missing path in this mod's
+  own Things/ namespace and errors. Shipping the file settles it rather than
+  arguing with the checker about something neither side can prove offline.
+
+  All of it is placeholder, not design: real art is owed and every brief for
+  it carries the owner's one aesthetic rule, verbatim — "marred slightly,
+  don't make them too perfect or they look manufactured." (The placeholder
+  already has one corner knocked off it for that reason.)
 
   ⛔ Do NOT queue artpipe jobs for these without first searching
   infrastructure/artpipe/done/ and _artsrc/ by subject: the daemon's output
@@ -297,7 +306,7 @@
     <description>A crooked tower of cubic salt blocks built by its own exhalation, venting a slow plume of super-brine so dense it hangs in the water as a white smoke before it sinks. The brine it breathes is the same the pools at the bottom are made of, and it carries the sea's dissolved chemistry up off the rock below. Warm to the touch, which nothing else down here is.</description>
     <thingClass>Building_SteamGeyser</thingClass>
     <graphicData>
-      <texPath>Things/Building/Natural/SteamGeyser</texPath>
+      <texPath>Things/Building/Natural/RM_SaltChimney</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>Transparent</shaderType>
       <drawSize>(4,4)</drawSize>

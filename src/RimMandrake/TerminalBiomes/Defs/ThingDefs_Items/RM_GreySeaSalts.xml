@@ -40,10 +40,18 @@
   violet rarest. They never rot and never deteriorate: the Grey's own law is
   that what the minerals take, they keep.
 
-  PLACEHOLDER ART: all five reuse Things/Item/Resource/Jade (confirmed
-  physically present — vanilla Jade's own path, read from the def this pass)
-  separated by <color>. Graphic_StackCount, so a stack reads as a pile.
-  Real icons are owed; search infrastructure/artpipe/done/ first.
+  PLACEHOLDER ART: one greyscale crystal-shard PNG of this mod's own,
+  Textures/Things/Item/RM_GreySea/RM_SaltCrystalItem.png, tinted per def by
+  <color>. Graphic_StackCount, so a stack reads as a pile.
+
+  ⚠️ It is a REAL FILE on purpose. The first draft pointed all five at
+  vanilla's Things/Item/Resource/Jade, which does exist — in resources.assets,
+  not as a loose file — and validate_patch.py therefore cannot see it and
+  errors: this mod owns a Textures/Things/ tree, so from the validator's side
+  any Things/ path it cannot find is ours and missing. Rather than argue with
+  the checker about a path neither of us can prove from here, the placeholder
+  is a file we actually ship. Real icons are still owed; search
+  infrastructure/artpipe/done/ and _artsrc/ by subject first.
   ============================================================================
 -->
 <Defs>
@@ -58,7 +66,7 @@
     <label>coarse salt</label>
     <description>Grey-white salt broken out of the Grey Sea's own formations, still gritty with the sediment it grew in. The commonest substance on a dying sea's floor and the reason anyone dives it at all: the planet's chemical works, made portable a sackful at a time.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/Jade</texPath>
+      <texPath>Things/Item/RM_GreySea/RM_SaltCrystalItem</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(226,226,222)</color>
     </graphicData>
@@ -91,7 +99,7 @@
 
   <ThingDef Name="RM_CrystalSaltBase" ParentName="ResourceBase" Abstract="True">
     <graphicData>
-      <texPath>Things/Item/Resource/Jade</texPath>
+      <texPath>Things/Item/RM_GreySea/RM_SaltCrystalItem</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <useHitPoints>false</useHitPoints>

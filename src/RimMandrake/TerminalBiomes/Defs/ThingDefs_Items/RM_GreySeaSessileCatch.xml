@@ -18,12 +18,19 @@
   the shellfish register RUT_GreySeaFish_Items.xml's own header sets out
   (0.15/5/0.7/5d), with the shrimp below it because it is small.
 
-  PLACEHOLDER ART: vanilla's own Things/Item/Resource/Jade, separated by
-  <color>. ⚠️ Deliberately NOT the Things/Item/ToxicMeat/ToxicMeat_* paths
-  that RM_GreySeaCatch.xml uses: those come from a DONOR mod
+  PLACEHOLDER ART: one greyscale shell PNG of this mod's own,
+  Textures/Things/Item/RM_GreySea/RM_SeaCatchItem.png, tinted per def by
+  <color>.
+
+  ⚠️ Deliberately NOT Things/Item/ToxicMeat/ToxicMeat_* (the paths
+  RM_GreySeaCatch.xml uses): those are a DONOR mod's loose textures
   (VAEWaste_ToxicMeat), so how many lettered variants exist is UNMEASURED
-  and a guessed _d or _e would render magenta. Jade's path was read straight
-  off the vanilla def this pass and is certain.
+  and a guessed _d would render magenta — and an RM_-tier mod should not
+  lean on a donor for its art anyway. Vanilla's Things/Item/Resource/Jade
+  was the other candidate and fails validate_patch.py: it lives in
+  resources.assets, not as a loose file, and this mod owns a Textures/Things/
+  tree, so the checker reads any Things/ path it cannot find as ours and
+  missing. Shipping the file settles it.
   ============================================================================
 -->
 <Defs>
@@ -34,7 +41,7 @@
     <label>nissik</label>
     <description>A double handful of glass-bodied pickers strained out of the bottom water, still faintly twitching. Individually they are nothing; by the netful they are the most reliable food this sea gives up, and the shore camps eat them boiled whole, shells and all.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/Jade</texPath>
+      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(216,218,206)</color>
     </graphicData>
@@ -61,7 +68,7 @@
     <label>thollim</label>
     <description>Thick grey valves dredged out of the floor sediment, still shut and still heavy. A thollim keeps a fortnight in its own brine without any help, which on a coast with no cold and no rain is most of the reason anybody settles there.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/Jade</texPath>
+      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(150,152,148)</color>
     </graphicData>
@@ -84,7 +91,7 @@
     <label>grusk</label>
     <description>Blue-black wedges knocked off a pillar face with the mineral foot still attached, so every one comes up wearing a chip of the column it grew on. The meat inside is dark and tastes of the whole sea at once. People are divided.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/Jade</texPath>
+      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(62,66,84)</color>
     </graphicData>
