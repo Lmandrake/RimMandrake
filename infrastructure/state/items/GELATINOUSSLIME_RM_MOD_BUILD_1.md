@@ -2,6 +2,42 @@
 
 **the Slime - twin pair, mod EXISTS; TITANOSLIME_SLIME_BIOME_1 builds here**
 
+## ✅ DONE — 2026-09-25 (FOUNDRY)
+
+Steps 3–4 (the only ones genuinely owed; 1–2 were already shipped) plus §10's visitor seed
+pass, all built this session:
+
+- **Freeze** (step 3): `RUT_Slime.xml` got its one-line header, nothing else changed.
+- **Retarget** (step 4), re-derived correctly against §10's "NO donor merge" ruling rather
+  than copying the Contagion/ForsakenCrags pattern blindly: `_def_bindings_2026-09-09.md:41`
+  prose updated to note the freeze and the (donor-free) survivor. `biome_flora.py`'s
+  `RUT_Slime` entry and `the_slime.json`'s `defNames` were **deliberately left pointing at
+  `RUT_Slime`**, with a comment/confidence-entry explaining why: unlike Contagion/
+  ForsakenCrags (straight content copies), `RM_GelatinousSlime` does NOT inherit these 5
+  donor `AB_` plant rows — §10 bans exactly that merge — so retargeting the key would have
+  misattributed donor content to a def that doesn't have it. `biome_flora_rosters.md` needs
+  no change (GENERATED, FAMILIES untouched).
+- **Visitor seed pass** (§10, owner ruling 2026-09-24): `GenStep_SlimeVisitorSeed` in
+  `Source/SlimeVisitors.cs`, registered onto the shared `MapCommonBase` generator via
+  `Patches/RM_SlimeVisitorSeed_MapGenPatch.xml` (order 751, self-gating on
+  `map.Biome == RM_GelatinousSlime`, the same shape `RM_GenStep_LiquidShores`/
+  `RUT_FungalSoilScatter` use). Spawns 3–5 never-hostile arrivals from
+  `MapComponent_SlimeVisitors.BuildNeighbourRoster` (now `internal static`, shared between
+  the ambient trickle and the seed pass) at Slimification severity 0.25–0.7, respecting
+  `MaxVisitorsOnMap`. A GenStep only runs during `MapGenerator.GenerateMap`, never on load —
+  "once per map, never on load" by construction, no Scribe bookkeeping needed.
+- DLL rebuilt (`dotnet.exe build`, 0 warnings/0 errors), `.srchash` sidecar regenerated
+  alongside it. `validate_patch.py --defs <Core+Mods+Workshop>` on the new patch: 1 match in
+  `Core: CommonMapGenerator.xml`, 0 errors (the "not wrapped in Conditional/FindMod" WARN is
+  expected and matches the accepted `RM_LiquidShores` precedent — Core cannot be absent).
+  `deploy_custom_mods.py --mod GelatinousSlime --apply`: 3 of 4 files deployed; the DLL
+  itself is FILE-LOCKED by the running game and did not overwrite — Desktop needs a redeploy
+  after its next restart before step 5 (Desktop-only, unaffected by this).
+- Not touched, per the item's own scope: art (already queued —
+  `infrastructure/artpipe/pending/rmtitanoslime_v1_{east,north,south}.json` exist, so no new
+  `fill_queue.py` job filed, per the standing "search before queuing" rule); Mod Settings
+  master toggle (`MOD_OPTIONS_RETROFIT_1`'s job).
+
 Phase A row 18 of `design/RimMandrake/biome_mod_architecture.md`. Parent:
 `BIOME_MOD_SPLIT_EXECUTION_1`. Governed by `BIOME_PAINT_ONCE_AT_THE_END_1`.
 
