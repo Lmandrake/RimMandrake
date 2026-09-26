@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T06:41:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T06:46:36Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -873,6 +873,15 @@ kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
 
+## FEVERWOOD_SAP_SUCKER_GUILD_1 Three sap-suckers, three defences, and the host plant that feeds them
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6.
+prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_GUILD_1.md
+
 ## SEA_BEASTS_TIER_RULING_1 11 of the 18 sea beasts are invented originals filed as Star Wars IP
 state:    doing
 row:      unassigned
@@ -1559,16 +1568,6 @@ thin:     spec, verify and criteria all present
 summary:  1. Design this as the shared reaction mechanism's first proof, in mandrake.rm.creaturebehaviors,
 prose:    infrastructure/state/items/GREENTIDE_WASP_SWARM_1.md
 
-## FEVERWOOD_SAP_SUCKER_GUILD_1 Three sap-suckers, three defences, and the host plant that feeds them
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6.
-prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_GUILD_1.md
-
 ## FEVERWOOD_ALIEN_BIRD_CHORUS_1 Alien birds whose chorus falls silent only for the water, and some of them steal
 state:    proposed
 row:      unassigned
@@ -1778,6 +1777,16 @@ kind:     design
 thin:     no ## spec
 summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
 prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
+
+## DEEPFIRE_PIGMENT_MOD_1 Deepfire: new RM mod LuminousPigment — expensive glowing pigment (colour from the dye it's mixed with, pigment supplies a dim glow); +1 quality on art items / +beauty on others; paints walls/floors/furniture; extra coats only brighten; personal items light the pawn but make them easier to target in the dark; harvested from rare ocean bacterial mats (Utinni: the Scald); GlowTank grows it slowly; fresh mat decays very fast until refined; RimCuisine uses; god reactions; status via the purple engine; all Mod Settings
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEEPFIRE_PIGMENT_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEPFIRE_PIGMENT_MOD_1.md
 
 ## MIASMA_SCUTTLER_PREDATION_1 Wire the five carnivorous plants to actually eat the arthropod-floor scuttlers
 state:    proposed

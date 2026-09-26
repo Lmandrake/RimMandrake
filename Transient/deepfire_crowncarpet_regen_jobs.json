@@ -1,0 +1,26 @@
+[
+ {
+  "id": "deepfire_crowncarpet_c",
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a thin, low-pile living mat of bacterial/algal biofilm coating the ground in irregular, organic, amoeboid lobes \u2014 NOT concentric neat rings, NOT bright rainbow: the coloration is SEDATE and swampy \u2014 desaturated olive, murky teal, bruised purple-grey, liver-brown, with only a faint, greasy iridescent sheen (like oil film on stagnant water) hinting at the pigment inside, and a very dim glow at the thickest patches. It should look GROSS: slimy, damp, faintly veined, a growth you would not want to step on \u2014 a biofilm, not a decoration, nothing cartoonish. No stems, no leaves, no flowers \u2014 a flat encrusting sheet with a raised velvety nap and wet highlights. Painted as a small low ground clump viewed from directly above at a slight isometric RimWorld camera angle, centered, short soft shadow beneath, dark wet ground implied only by the shadow, no other background scenery. Clean dark outline around the whole silhouette, muted internal boundaries, readable at standard RimWorld zoom. Sprawling asymmetric silhouette with 4-6 uneven lobes.",
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 30,
+  "drawsize": 1.0,
+  "rimflow_item_id": "DEEPFIRE_PIGMENT_MOD_1",
+  "style_notes": "Owner ruling 2026-09-26 on deepfire_pigment_review sheet: 'Needs to be much more sedate in coloration and more organic looking. Seems cartoonish and not gross enough.' Regen of crowncarpet_b (kept as base); all rainbow-loud renders cut.",
+  "canvas_w": 256,
+  "canvas_h": 256
+ },
+ {
+  "id": "deepfire_crowncarpet_d",
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a thin, low-pile living mat of bacterial/algal biofilm coating the ground in irregular, organic, amoeboid lobes \u2014 NOT concentric neat rings, NOT bright rainbow: the coloration is SEDATE and swampy \u2014 desaturated olive, murky teal, bruised purple-grey, liver-brown, with only a faint, greasy iridescent sheen (like oil film on stagnant water) hinting at the pigment inside, and a very dim glow at the thickest patches. It should look GROSS: slimy, damp, faintly veined, a growth you would not want to step on \u2014 a biofilm, not a decoration, nothing cartoonish. No stems, no leaves, no flowers \u2014 a flat encrusting sheet with a raised velvety nap and wet highlights. Painted as a small low ground clump viewed from directly above at a slight isometric RimWorld camera angle, centered, short soft shadow beneath, dark wet ground implied only by the shadow, no other background scenery. Clean dark outline around the whole silhouette, muted internal boundaries, readable at standard RimWorld zoom. Different sibling silhouette: elongated, dribbling downslope like a slow flow, 2-3 ragged tongues.",
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 30,
+  "drawsize": 1.0,
+  "rimflow_item_id": "DEEPFIRE_PIGMENT_MOD_1",
+  "style_notes": "Owner ruling 2026-09-26 on deepfire_pigment_review sheet: 'Needs to be much more sedate in coloration and more organic looking. Seems cartoonish and not gross enough.' Regen of crowncarpet_b (kept as base); all rainbow-loud renders cut.",
+  "canvas_w": 256,
+  "canvas_h": 256
+ }
+]
