@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T04:10:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T04:39:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -810,6 +810,15 @@ kind:     task
 summary:  1. Derive each feature's maxDrawSizeInTiles from its tile count — a curve, not a table,
 prose:    infrastructure/state/items/WORLD_LABEL_SIZE_HIERARCHY_1.md
 
+## SCARLANDS_STANDALONE_MOD_1 Scarlands biome-mod split: RM_Warscar, absorb ScarlandsLadder
+state:    doing
+row:      20
+needs:    offline
+target:   v1
+kind:     build
+summary:  - New biome def: RMWarscar, label Warscar (no article — deliberate, per the
+prose:    infrastructure/state/items/SCARLANDS_STANDALONE_MOD_1.md
+
 ## LONGSHADE_RM_MOD_BUILD_1 Phase A: build RM_LongShade as its own RimMandrake mod (mandrake.rm.longshade) — the Long Shade (the livable desert)
 state:    doing
 row:      unassigned
@@ -819,14 +828,14 @@ kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
-## RUSTCATHEDRAL_RM_MOD_BUILD_1 Phase A: build RM_RustCathedral as its own RimMandrake mod (mandrake.rm.rustcathedral) — the Rust Cathedral - absorbs rustcathedralhum/roaches/walls
+## WEBWORK_RM_MOD_BUILD_1 Phase A: build RM_Webwork as its own RimMandrake mod (mandrake.rm.webwork) — the Webwork
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/RUSTCATHEDRAL_RM_MOD_BUILD_1.md
+prose:    infrastructure/state/items/WEBWORK_RM_MOD_BUILD_1.md
 
 ## STONEBACK_BOKKA_ART_STANDARD_1 Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)
 state:    doing
@@ -1412,16 +1421,6 @@ thin:     no ## verify
 summary:  1. For each of the 71, check the drawCenter against the region's actual tiles.
 prose:    infrastructure/state/items/FEATURE_DRAWCENTER_UNVERIFIED_1.md
 
-## SCARLANDS_STANDALONE_MOD_1 Scarlands biome-mod split: RM_Warscar, absorb ScarlandsLadder
-state:    proposed
-row:      20
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  - New biome def: RMWarscar, label Warscar (no article — deliberate, per the
-prose:    infrastructure/state/items/SCARLANDS_STANDALONE_MOD_1.md
-
 ## GREENTIDE_RM_MOD_BUILD_1 Phase A: build RM_Greentide as its own RimMandrake mod (mandrake.rm.greentide) — the Greentide - twin pair, mod EXISTS (123 vs 287 lines)
 state:    proposed
 row:      unassigned
@@ -1431,46 +1430,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/GREENTIDE_RM_MOD_BUILD_1.md
-
-## WEBWORK_RM_MOD_BUILD_1 Phase A: build RM_Webwork as its own RimMandrake mod (mandrake.rm.webwork) — the Webwork
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/WEBWORK_RM_MOD_BUILD_1.md
-
-## FEVERWOOD_RM_MOD_BUILD_1 Phase A: build RM_FeverWood as its own RimMandrake mod (mandrake.rm.feverwood) — the Fever Wood
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/FEVERWOOD_RM_MOD_BUILD_1.md
-
-## THESUMP_RM_MOD_BUILD_1 Phase A: build RM_TheSump as its own RimMandrake mod (mandrake.rm.thesump) — the Sump
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/THESUMP_RM_MOD_BUILD_1.md
-
-## TERMINALBIOMES_RM_MOD_BUILD_1 Phase A: build RM_TheScald/RM_PropaneLake/RM_TwilightSea/RM_GreySea as its own RimMandrake mod (mandrake.rm.terminalbiomes) — FOUR biomes in ONE mod, each independently toggleable (owner ruling 7 Q1)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/TERMINALBIOMES_RM_MOD_BUILD_1.md
 
 ## FURNACEBEAST_WORLD_MIGRATION_1 Furnace-beast world-scale thermal migration: herd crosses biomes off-map (world leg, split from FURNACEBEAST_THERMAL_CYCLE_1)
 state:    proposed
