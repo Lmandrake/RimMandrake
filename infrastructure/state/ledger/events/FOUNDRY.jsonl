@@ -489,3 +489,6 @@
 {"seat":"FOUNDRY","event":"start","id":"MIASMA_FLORA_ROSTER_1","ts":"2026-09-26T04:57:48Z"}
 {"seat":"FOUNDRY","event":"claim","id":"SUMP_FLORA_ROSTER_1","ts":"2026-09-26T05:02:10Z"}
 {"seat":"FOUNDRY","event":"start","id":"SUMP_FLORA_ROSTER_1","ts":"2026-09-26T05:02:11Z"}
+{"seat":"FOUNDRY","event":"close","id":"SUMP_FLORA_ROSTER_1","sha":"d5c593255","ts":"2026-09-26T05:11:58Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FEVERWOOD_FLORA_ROSTER_1","ts":"2026-09-26T05:11:59Z"}
+{"seat":"FOUNDRY","event":"start","id":"FEVERWOOD_FLORA_ROSTER_1","ts":"2026-09-26T05:12:02Z"}
