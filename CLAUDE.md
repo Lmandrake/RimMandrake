@@ -176,6 +176,18 @@ MEASURED about the live world — the live system is the only instrument for "ri
   Parse it (`ET.parse(p).find("activeMods")`). Snapshots are in
   `infrastructure/state/modlists/`; the live file is a Windows path **unreachable from the Mac**,
   so a laptop claim about the LIVE list is UNMEASURABLE and must say so (2026-09-17).
+- 🔴 **"Is there a mod that does X?" is NOT answered by matching packageIds, and NOT by the
+  ACTIVE list.** Measured 2026-09-26, twice wrong to the owner's face: he said a mod existed
+  that dives a gravship into the ocean; a keyword sweep over active packageIds returned "none"
+  and that was reported as fact. The mod is **`GravTide`** — packageId `gravtide.mod`, which
+  contains no diving substring, **installed but not active**, 665 C# source files and ~140
+  Docs files, and it had already solved the entire problem. ⇒ **Scan every installed
+  `About.xml` by `<name>` AND `<description>`, across BOTH roots** — `…/common/RimWorld/Mods`
+  and `…/workshop/content/294100` (1,434 files; the sweep takes seconds). A packageId is an
+  author's slug, not a description of behaviour, and an inactive mod is still installed
+  evidence. 🔑 Same family as the rule below: give the sweep a **sanity probe** — "53 mods
+  mention gravship" is what proved it could see. ⛔ And when the owner says a thing exists and
+  your instrument says it does not, **suspect the instrument**, not him.
 - 🔴 **An existence test is not an identity test, and a fixed line number is not a field.**
   `[ -e src/RimMandrake/Pits ]` passes while that folder holds only `__pycache__` — the mod
   merged into FlowWorks at `cade628c1`, yet its checklist is **VALIDATED with 12 binding bars**

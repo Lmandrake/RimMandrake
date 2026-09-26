@@ -106,18 +106,22 @@ For scale: of **32** own BiomeDefs parsed, only `RM_GelatinousSlime` and `RM_Pyr
 `terrainPatchMakers` at all, so two working in-repo templates exist if scattering ever is the
 answer.
 
-### ✅ Also measured: the Scald is far ahead of the other three, and they lack the mechanism
+### ✅ Also measured: the Scald's shore terrain is far ahead of the other three
 
 - The Scald already ships **three** Standable water terrains — `RUT_ScaldWaterShallow`,
-  `RUT_ScaldWaterMovingShallow`, `RUT_ScaldWaterMovingChestDeep` — **all three already tagged
-  `RM_DiveEligible`** by `src/RimMandrake/DivingInteraction/Patches/RM_ScaldDiveEligibleTerrain.xml`.
-  Plus `RUT_ScaldMargin` (a real `WaterShallowBase` TerrainDef, `burn 0`, the biome's sole
-  `dbh_water` source).
-- 🔴 **`RUT_GreySea`, `RUT_TwilightSea` and `RUT_PropaneLake` have NO shallow terrain def of any
-  kind and NO `RM_DiveEligible` tagging anywhere.** `RM_DiveEligible` appears in exactly four
-  files, all inside `DivingInteraction`, and its only wiring patch names Scald terrains only.
-  ⇒ Their floor is unreachable by the shipped diving mechanism even if animals do spawn. That
-  gap is **larger than step 2 describes** — it is new terrain defs, not just a tag.
+  `RUT_ScaldWaterMovingShallow`, `RUT_ScaldWaterMovingChestDeep` — plus `RUT_ScaldMargin`
+  (a real `WaterShallowBase` TerrainDef, `burn 0`, the biome's sole `dbh_water` source).
+- 🔴 **`RUT_GreySea`, `RUT_TwilightSea` and `RUT_PropaneLake` have NO shallow terrain def of
+  any kind.** Whatever the shore needs per sea, it is new terrain defs.
+
+> 🔴 **CORRECTED 2026-09-26 (BENCH).** This section previously claimed all three Scald
+> terrains were "already tagged `RM_DiveEligible`" by
+> `src/RimMandrake/DivingInteraction/Patches/RM_ScaldDiveEligibleTerrain.xml`. **That file
+> does not exist and never did — `DivingInteraction` has no `Patches/` directory at all.**
+> The `RM_DiveEligible` tag itself is retired: the shore pawn-dive mechanism was deleted from
+> `src/` under the owner's SHIP-ONLY ruling. Diving is by gravship and nothing else. The
+> tagging claims are removed here rather than struck through, per the standing rule that
+> inaccurate material is deleted, not superseded in place.
 
 ### ⛔ And one thing step 1 must not do: scatter the margin procedurally
 
@@ -132,11 +136,16 @@ lethal, so this constraint is not obviously theirs.)
 **✅ ANSWERED 2026-09-23 from the decompiled engine (section below): the catch is consumed from the LAND map's
 own biome, the shore is the `Coast` tile mutator, and our sea defs never trigger it. Step 1 is re-scoped there.**
 
-⚠️ All four are `impassable=true`. The floor is reached by **diving**, which already exists
-generically: `mandrake.rm.divinginteraction` makes any `RM_DiveEligible`+Standable terrain a
-place a colonist can be sent ("Dive to hunt" / "Dive to commune"), built for the Scald under
-`SCALD_DIVING_MOD_1`. So the mechanism his ruling needs is shipped — it needs wiring per sea,
-not inventing.
+⚠️ All four are `impassable=true`. The floor is reached **by gravship and by nothing else**
+(owner ruling, SHIP-ONLY, 2026-09-26). There is no per-sea shore wiring to do, because there
+is no shore dive.
+
+> 🔴 **CORRECTED 2026-09-26 (BENCH).** This paragraph previously said the floor is reached by
+> a generic shore dive — "makes any `RM_DiveEligible`+Standable terrain a place a colonist can
+> be sent" — and concluded "the mechanism his ruling needs is shipped, it needs wiring per
+> sea, not inventing." **Every part of that is now false.** `RM_DiveEligible`, its float-menu
+> provider and both JobDrivers were deleted from `src/`. Building from that sentence
+> resurrects retired code.
 
 ## 🔴 Two measured blockers this pass must NOT pretend to solve
 
@@ -312,9 +321,10 @@ Work per sea, in this order — cheapest and most decisive first.
 
 ## verify
 
-Each of the four seas: a stated shore verdict; a `RM_DiveEligible` floor a pawn can reach; and
+Each of the four seas: a stated shore verdict; a floor a gravship can reach and land on; and
 for every species in its catch table, either a floor animal or a recorded reason it is
-catch-only. `validate_patch.py` clean on every touched file. ⛔ **No live-verified claim** while
+catch-only. *(Corrected 2026-09-26 — this bar read "a `RM_DiveEligible` floor a pawn can
+reach", which gates closure on the deleted shore-dive mechanism and can never be satisfied.)* `validate_patch.py` clean on every touched file. ⛔ **No live-verified claim** while
 `QUICKTEST_RIVER_WATER_MISSING_1` stands — say "authored, not live-proven" and mean it.
 
 ## criteria
