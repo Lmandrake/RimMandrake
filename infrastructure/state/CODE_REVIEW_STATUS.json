@@ -2645,6 +2645,78 @@
     "hash": "8b2cbb753a3e1281db3a4d2a943c7084284297185529aa398980a8fd0583ee16",
     "sha": "0e38767e7"
   },
+  "src/RimMandrake/ExplosiveGrowth/Source/Debug/RM_ExplosiveGrowthDebugActions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4efcdc2eb785a6b6987e2c97d4ff5fc5215736f0bed0cb21d43b23db49a97552",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/ExplosiveGrowthAPI.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e3edc249dddbc857b08442bb96a73d8b248718bf9d391f3a777a32cf822d16ee",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/ExplosiveGrowthMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "28fdb89801c683a9ff8e6db36ec8403ee815c6eabd8a3d2f7ec4e20f86d2b255",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/RM_ChargeSelfTest.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d77503b045e0aa14c48dd9372869c5a2fcce5bda8e2850ddfaa5dfcb6ac792ab",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowthDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "ad54886d1bb1cb27ea66435e66114c16ea828ce9c612573a73a1ace3713f9766",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowthPatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "9acddb6d6d535361666a12e392fcf19a6b4e0bce0d5e80b0e974fab37b6c910c",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowthRegistry.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e060de71c7cf8254962eb3bbb4172fffbb9567c7f5824e9fab42eef1a732ebc2",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/RM_GrowthTop.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "8a4f7d84f2753eb6fa062ec9cdaa2984f4a388dd51f153c1a62b997c55242838",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/RM_IncidentWorker_BloomBurst.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b5d0c05380b40fa390f4577a3a9662c231ded631a22171dc5be2038641012a12",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/RM_MapComponent_ExplosiveGrowth.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "24c95754f6cfda189ed275e0f9403b0806067d5b4e91b0905932e2c213560cb7",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/RM_SoakSources.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "51449da9512b59e894c8bf1feab41cdb9c0db7905ac0803728b88a2212607549",
+    "sha": "148e46c09"
+  },
+  "src/RimMandrake/ExplosiveGrowth/Source/RM_TopResolver.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a700ab6acc169030f52841d0b75380c10329d13142af5e5c3ffda843cc495119",
+    "sha": "148e46c09"
+  },
   "src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs": {
     "cleanCount": 1,
     "date": "2026-09-26",
@@ -16462,10 +16534,40 @@
     "sha": "e758283f4"
   },
   "src/RimUtinni/EggReckoning/Source/EggReckoningSettings.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-26",
     "hash": "3af2783ec086460dfac93aeff4423cfad9219a0079515c81e1a588afc14a1a93",
-    "sha": "ee388bcd9"
+    "sha": "148e46c09"
+  },
+  "src/RimUtinni/EggReckoning/Source/RM_QuestNode_EggHatch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "97f2ca64d3ad3892bfa5e0813b3be8cb4d412d79cf9c974c30d81403dff2ec58",
+    "sha": "148e46c09"
+  },
+  "src/RimUtinni/EggReckoning/Source/RM_QuestNode_EggPlantWatcher.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "6e8a28e6979a899b024930dc881413fd14b6a4e1069a4ab52940089d71768646",
+    "sha": "148e46c09"
+  },
+  "src/RimUtinni/EggReckoning/Source/RM_QuestNode_GetHuttCartelSettlement.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "54c632ad259abc0d432a46cf054a663eb05a925200297736d457528e282ed2f0",
+    "sha": "148e46c09"
+  },
+  "src/RimUtinni/EggReckoning/Source/RM_QuestPart_EggHatch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b43be3893a4a0a598a6faea7db5e88cc5ae7cfbcaf6d77d3b389dadecdc1741c",
+    "sha": "148e46c09"
+  },
+  "src/RimUtinni/EggReckoning/Source/RM_QuestPart_EggPlantWatcher.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "85edde2f637d4df9c64408db9fbfd6df2143e9200a8a42e458bf04a522078666",
+    "sha": "148e46c09"
   },
   "src/RimUtinni/EmpirePursuit/About/About.xml": {
     "cleanCount": 1,
