@@ -179,9 +179,6 @@ design pass genuinely cannot pick, plus what this pass added:
    beyond the three shipped** — a review-sheet question he was already
    owed by GRAFFITI_GENERIC_MARKS_1's contact sheet
    (`D:\Luke\dev\Rimworld\Transient\graffiti_generic_marks_contact_sheet_2026-09-09.png`).
-5. **Anti-authority stencils and the campaign.** `RM_Graffiti_Stencil_Crown`
-   (crossed-out crown, hostile to Royalty's Empire) is generic RM content —
-   but the campaign's Galactic Empire is reskinned vanilla `Empire`
-   (`galactic-empire-is-reskinned-vanilla`), so it will read as anti-Imperial
-   on Ash'karr for free. Feature or overreach? If feature, RSW may want an
-   Aurebesh/Imperial-cog variant; if overreach, the stencil goes to RUT.
+5. **Anti-authority stencils — RULED 2026-09-25 by card: feature.** `RM_Graffiti_Stencil_Crown`
+   stays generic RM content (reads anti-Imperial on Ash'karr for free), and RSW adds a
+   crossed-out Imperial-cog stencil variant.
