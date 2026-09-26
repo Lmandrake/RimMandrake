@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T17:20:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T17:27:28Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1740,3 +1740,13 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  PROPANELAKEANIMALDENSITYZERO1 — six authored animals that can never spawn
 prose:    infrastructure/state/items/PROPANELAKE_ANIMALDENSITY_ZERO_1.md
+
+## GREYSEA_ANCHOR_CREATURES_1 Grey Deep's two unbuilt anchors (pillar-mason, ossuary shrimp) plus the AA_Aerofleet replacement - the sheet's whole image rests on creatures that have no defs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  GREYSEAANCHORCREATURES1 — build the two anchors the Grey Deep is actually about, plus the Aerofleet replaceme…
+prose:    infrastructure/state/items/GREYSEA_ANCHOR_CREATURES_1.md

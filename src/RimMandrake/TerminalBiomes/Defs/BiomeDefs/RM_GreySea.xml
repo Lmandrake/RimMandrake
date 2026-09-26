@@ -41,11 +41,18 @@
 
     <!-- Reefback (endemic giant, INVENTED — see SEA_BEASTS_TIER_RULING_1)
          ships inline, franchise-free, at the same commonality the Utinni
-         patch used to add it at. AA_Aerofleet (Alpha Animals) stays.
+         patch used to add it at.
          TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
-         verdict 1: the four ruled floor residents (RM_GreySeaFauna.xml). -->
+         verdict 1: the four ruled floor residents (RM_GreySeaFauna.xml).
+
+         🔴 AA_Aerofleet CUT 2026-09-26 (owner, decision by question card at the
+         Grey Sea sitting): the donor drifter is replaced by a new creature of
+         ours, not by re-using a neighbour's. The replacement and the sheet's two
+         unbuilt anchors are GREYSEA_ANCHOR_CREATURES_1.
+         ⛔ This cut is scoped to the GREY SEA ONLY. RM_TwilightSea and
+         RM_TheForge still cast AA_Aerofleet deliberately — a cut in one sheet is
+         never a planet-wide sweep, so do not "fix" those to match. -->
     <wildAnimals>
-      <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>
       <RM_Reefback>0.005</RM_Reefback>
       <RM_Fessk>0.01</RM_Fessk>
       <RM_Sorruth>0.4</RM_Sorruth>
