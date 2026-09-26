@@ -192,6 +192,8 @@
     <Compile Include="RM_PollinationGateExtension.cs" />
     <Compile Include="RM_Patch_PollinationGate.cs" />
     <Compile Include="RM_MapComponent_WaterAgitation.cs" />
+    <Compile Include="RM_CompWaterLocked.cs" />
+    <Compile Include="RM_HediffComp_LocatableCall.cs" />
   </ItemGroup>
 
   <ItemGroup>

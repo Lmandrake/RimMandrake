@@ -68,11 +68,44 @@ namespace RimMandrake.EnvironmentalHazards
 
         public CompProperties_TerritorialAnchor Props => (CompProperties_TerritorialAnchor)props;
 
+        // WARDEN_MOTHER_BEFRIENDING_1: "not so gentle" — tolerance means
+        // exactly one thing, removal from the target set this pawn's own
+        // RM_JobGiver_AnchorDefense reads (see that class's own
+        // ExtraTargetValidator override). Never taming: nothing here lets a
+        // tolerated pawn command, feed, move, bond with, haul, heal, ride,
+        // or safely crowd the anchored pawn. Keyed on thingIDNumber rather
+        // than a Pawn reference so a tolerated colonist who dies and is
+        // replaced does not silently inherit tolerance, and so this survives
+        // save/load without a cross-reference to resolve.
+        private HashSet<int> toleratedPawnIDs;
+
+        public bool AnchorSet => anchorSet;
+
         public void SetAnchor(LocalTargetInfo focus)
         {
             anchor = focus;
             anchorSet = true;
             ApplyDuty();
+        }
+
+        public bool IsTolerated(Pawn p)
+        {
+            return p != null && toleratedPawnIDs != null && toleratedPawnIDs.Contains(p.thingIDNumber);
+        }
+
+        public void GrantTolerance(Pawn p)
+        {
+            if (p == null)
+            {
+                return;
+            }
+
+            if (toleratedPawnIDs == null)
+            {
+                toleratedPawnIDs = new HashSet<int>();
+            }
+
+            toleratedPawnIDs.Add(p.thingIDNumber);
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -118,6 +151,7 @@ namespace RimMandrake.EnvironmentalHazards
             base.PostExposeData();
             Scribe_TargetInfo.Look(ref anchor, "anchor", LocalTargetInfo.Invalid);
             Scribe_Values.Look(ref anchorSet, "anchorSet", false);
+            Scribe_Collections.Look(ref toleratedPawnIDs, "toleratedPawnIDs", LookMode.Value);
         }
 
         // MIASMA_MECHANICS_1 M6 build, §8 "everything living remembers it":
@@ -162,8 +196,34 @@ namespace RimMandrake.EnvironmentalHazards
 
     // Crib: RimWorld/JobGiver_HiveDefense.cs, generalized off Hive onto
     // whatever Thing the pawn's own PawnDuty.focus names.
+    //
+    // WARDEN_MOTHER_BEFRIENDING_1 closes "THE TRAP" RM_AnchorGuard.xml's own
+    // header names: a plain vanilla Animal ThinkTreeDef never consults
+    // mindState.duty, so a DutyDef's own <thinkNode> is dead weight unless
+    // something dispatches to it. Rather than requiring an insect-shaped
+    // ThinkTreeDef per anchored PawnKindDef, this JobGiver (and
+    // RM_JobGiver_AnchorWander below) are inserted directly, GLOBALLY, via
+    // RM_ThinkTree_AnchorBehaviors's insertTag="Animal_PreMain" — the exact
+    // same vanilla Verse.AI.ThinkNode_SubtreesByTag seam this mod's own
+    // RM_ThinkTree_StrandingBehaviors already proved safe for
+    // RM_JobGiver_ReturnToWater. TryGiveJob below is the required guard:
+    // it must no-op instantly for the overwhelming majority of animals in
+    // the game that never carry RM_CompTerritorialAnchor, exactly as that
+    // sibling file's own JobGiver does for pawns RM_MapComponent_
+    // StrandingPools does not track.
     public class RM_JobGiver_AnchorDefense : JobGiver_AIFightEnemies
     {
+        protected override Job TryGiveJob(Pawn pawn)
+        {
+            RM_CompTerritorialAnchor anchor = pawn.TryGetComp<RM_CompTerritorialAnchor>();
+            if (anchor == null || !anchor.AnchorSet)
+            {
+                return null;
+            }
+
+            return base.TryGiveJob(pawn);
+        }
+
         protected override IntVec3 GetFlagPosition(Pawn pawn)
         {
             if (pawn.mindState.duty != null && pawn.mindState.duty.focus.IsValid)
@@ -181,15 +241,69 @@ namespace RimMandrake.EnvironmentalHazards
             }
             return base.GetFlagRadius(pawn);
         }
+
+        // WARDEN_MOTHER_BEFRIENDING_1 spec: "not so gentle" tolerance is a
+        // predicate on this existing target test, not a new AI — exactly
+        // this virtual hook (JobGiver_AIFightEnemy.ExtraTargetValidator).
+        // A tolerated pawn is simply removed from the target set; nothing
+        // else about her behaviour changes. Second half: the water-only
+        // constraint's defensive scoping — she is anchored near water and
+        // must not be found chasing a target that has walked well inland,
+        // so a target is valid only if its own cell or an adjacent cell is
+        // water. This does not by itself guarantee no path segment ever
+        // crosses one land cell to reach a shoreline target; RM_CompWaterLocked
+        // is the backstop for that (see its own header).
+        protected override bool ExtraTargetValidator(Pawn pawn, Thing target)
+        {
+            if (!base.ExtraTargetValidator(pawn, target))
+            {
+                return false;
+            }
+
+            RM_CompTerritorialAnchor anchor = pawn.TryGetComp<RM_CompTerritorialAnchor>();
+            if (target is Pawn targetPawn && anchor != null && anchor.IsTolerated(targetPawn))
+            {
+                return false;
+            }
+
+            Map map = pawn.Map;
+            if (map != null && !RM_CompWaterLocked.IsWaterCell(target.Position, map))
+            {
+                bool nearWater = false;
+                for (int i = 0; i < GenAdj.AdjacentCells.Length; i++)
+                {
+                    if (RM_CompWaterLocked.IsWaterCell(target.Position + GenAdj.AdjacentCells[i], map))
+                    {
+                        nearWater = true;
+                        break;
+                    }
+                }
+
+                if (!nearWater)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 
-    // Crib: RimWorld/JobGiver_WanderHive.cs, same generalization.
+    // Crib: RimWorld/JobGiver_WanderHive.cs, same generalization. See
+    // RM_JobGiver_AnchorDefense's own header for why TryGiveJob is guarded
+    // and why the pawn's own ThinkTreeDef never needs to be insect-shaped.
     public class RM_JobGiver_AnchorWander : JobGiver_Wander
     {
         public RM_JobGiver_AnchorWander()
         {
             wanderRadius = 7.5f;
             ticksBetweenWandersRange = new IntRange(125, 200);
+            wanderDestValidator = IsWaterDest;
+        }
+
+        private static bool IsWaterDest(Pawn pawn, IntVec3 dest, IntVec3 root)
+        {
+            return RM_CompWaterLocked.IsWaterCell(dest, pawn.Map);
         }
 
         protected override IntVec3 GetWanderRoot(Pawn pawn)
@@ -199,6 +313,17 @@ namespace RimMandrake.EnvironmentalHazards
                 return pawn.mindState.duty.focus.Cell;
             }
             return pawn.Position;
+        }
+
+        protected override Job TryGiveJob(Pawn pawn)
+        {
+            RM_CompTerritorialAnchor anchor = pawn.TryGetComp<RM_CompTerritorialAnchor>();
+            if (anchor == null || !anchor.AnchorSet)
+            {
+                return null;
+            }
+
+            return base.TryGiveJob(pawn);
         }
     }
 }

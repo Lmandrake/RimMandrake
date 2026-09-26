@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WardenMother.xml   UtinniPatches - WARDEN_MOTHER_BEFRIENDING_1
+
+  The Miasma's centrepiece giant, ruled by the owner 2026-09-23
+  (miasma_fauna_roster_2026-09-23.md §6): "a not-so-gentle giant who can be
+  befriended when its young call out for it and get stuck... able to lumber
+  along in the water... but cannot get on dry land." Franchise-free per Q11a
+  and SEA_BEASTS_TIER_RULING_1 — she is invented, not canon, so RM_ (the
+  earlier RUT_WardenMother name in RM_CompTerritorialAnchor.cs's own header
+  comment was always wrong for this reason, per that file's own retraction).
+
+  Spawned exclusively via RUT_GenStep_CrecheScatterer
+  (Defs/MapGeneration/RUT_Miasma_CrecheScatterer.xml, RM_GenStep_PlacedSetPieces),
+  never via <wildAnimals> — zero biome wild-spawn commonality, matching the
+  already-shipped GenStep's own "the GenStep is their only entry" posture.
+  That GenStep's own validator (RM_ScattererValidator_BrineShallowWater)
+  places her crèche site on brine-side shallow water, and
+  RM_SetPieceElement_AnchoredPawn's SetAnchor() call anchors her to the
+  RUT_CrecheMarker placed at that same site — "her crèche is in the
+  shallows" is therefore true by construction, not by a separate mechanism.
+
+  bodySize 8: bigger than the evicted AA_OvergrownColossus (6, cast_assignment.csv)
+  per "the giant lane here is owned by warden mothers... a random giant
+  dilutes them" (item's own Watch-out), smaller than the whale-scale
+  RM_Reefback (32, TerminalBiomes/RM_SeaBeasts_Invented.xml) since she is an
+  amphibious melee predator, not a leviathan drifting the open sea.
+  INVENTED-BUILD figure, no size named by the roster beyond "enormous."
+
+  waterSeeker + waterCellCost 1: real vanilla RaceProperties fields
+  (Verse/RaceProperties.cs, used identically by every Odyssey coastal/sea
+  creature and this repo's own RM_Reefback) that bias the normal pathfinder
+  toward water for this race — a genuine, low-risk, zero-new-code nudge
+  layered under the three water-only pieces in RM_CompWaterLocked.cs's own
+  header (wander validator / target validator / tick backstop). It does NOT
+  by itself make land impassable; MEASURED against the decompiled engine
+  before writing this (Source/Verse/AI/Pawn_PathFollower.cs:739,
+  Source/Verse/PathFinderCostTuning.cs:47) — it only ever discounts the cost
+  of a water cell, never inflates a land cell's.
+
+  Wildness 1.0 (same convention as every SEA_BEASTS_TIER_RULING_1 creature,
+  RM_Reefback included): "she is never tamed" per the roster's own repeated
+  ⛔. disableMating true, predator/canBePredatorPrey false: she is a set-piece
+  defender anchored to one site, not part of the map's ordinary food web —
+  same posture as RM_Reefback's own reasoning, reused rather than re-derived.
+
+  lifeExpectancy 45 (INVENTED-BUILD; the roster's §6a rules "she dies of age,
+  foreshadowed hard from the first day" but names no figure) is deliberately
+  short for a creature this size, so a colony that raises her stranded young
+  across a normal campaign has a real chance of outliving her — the
+  succession payoff (§6a) depends on that. Full succession-on-death (the
+  young inheriting the crèche) and the art/UX foreshadowing (slowing
+  measurably, an NPC who tells you) are NOT built here — filed as
+  WARDEN_MOTHER_SUCCESSION_1.
+
+  CompProperties_TerritorialAnchor dutyDef RM_AnchorGuard / anchorRadius 16:
+  her reach. CompProperties_WaterLocked: the movement constraint's own tick
+  backstop (RM_CompWaterLocked.cs). Both MayRequire
+  mandrake.rm.environmentalhazards, matching this file's own hard
+  About.xml dependency on that mod.
+
+  No art: texPath below does not resolve to anything yet (checked
+  infrastructure/artpipe/done/, _artsrc/, registry.jsonl and
+  art_status.json by subject first, per the owner's 2026-09-20 standing
+  rule — nothing found for "warden mother" under any spelling). A
+  fill_queue.py job is owed and not queued by this pass (the daemon does
+  not run on the Mac); same "advisory texPath warning, expected pre-art"
+  posture MIASMA_FLORA_ROSTER_1/MIASMA_FAUNA_FLOOR_ROSTER_1 already shipped
+  under.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_WardenMother</defName>
+    <label>warden mother</label>
+    <description>Barnacled, scarred, and older than anything else that swims these shallows — you can see it in how slowly she moves now. She goes wherever the water goes, and nowhere else; the few metres of dry ground between her and anything on land might as well be another world. Lethal to anything she can reach. Not tame, not tameable, and not gentle — but she remembers who freed her young from a drying pool, and she will not touch you for it.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <MarketValue>0</MarketValue>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.55</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.65</ArmorRating_Sharp>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>crushing bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>flipper slam</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Pinniped</body>
+      <predator>false</predator>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <herdAnimal>false</herdAnimal>
+      <disableMating>true</disableMating>
+      <baseBodySize>8</baseBodySize>
+      <baseHealthScale>7</baseHealthScale>
+      <foodType>OmnivoreAnimal</foodType>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>45</lifeExpectancy>
+      <trainability>None</trainability>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.CompProperties_TerritorialAnchor">
+        <dutyDef>RM_AnchorGuard</dutyDef>
+        <anchorRadius>16</anchorRadius>
+      </li>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked">
+        <checkIntervalTicks>60</checkIntervalTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_WardenMother</defName>
+    <label>warden mother</label>
+    <race>RM_WardenMother</race>
+    <combatPower>1400</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.8</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

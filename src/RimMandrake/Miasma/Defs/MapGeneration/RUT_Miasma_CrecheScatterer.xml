@@ -37,21 +37,39 @@
   to that same marker (anchorMarkerDef, found by def at the shared site
   cell — see that class's own header for why this ordering matters).
 
-  pawnKind RSW_OpeeSeaKiller (mandrake.rsw.swbestiary) is a WIRING
-  PLACEHOLDER — see the pawnKind element's own inline comment. Full
-  reasoning: infrastructure/state/items/MIASMA_MECHANICS_1.md's M6 build
-  pass section.
+  🔴 WARDEN_MOTHER_BEFRIENDING_1: pawnKind is now the REAL content,
+  RM_WardenMother (Defs/ThingDefs_Races/RM_WardenMother.xml, this mod) —
+  replacing the RSW_OpeeSeaKiller WIRING PLACEHOLDER this file shipped with
+  under MIASMA_MECHANICS_1's M6 build pass. That placeholder never carried
+  CompProperties_TerritorialAnchor, so every prior scatter pass logged
+  RM_SetPieceElement_AnchoredPawn's own WarningOnce and anchored nothing —
+  this is the first time this GenStep actually anchors a warden.
+
+  youngSpawnChance/youngKinds/youngDeformationHediff: the roster's own §6
+  ruling, "when it spawns, so do some stranded young (sometimes)" — that
+  item's own text on why this is load-bearing (without it the relationship
+  waits on an irregular surge a colony could miss entirely). 0.35 is
+  INVENTED-BUILD, no figure named by the roster beyond "sometimes." youngKinds
+  lists the two RM_-tier nursery juveniles that exist today post-
+  SEA_BEASTS_TIER_RULING_1 (RM_SiltLampreyJuv, RM_RustNipperJuv,
+  mandrake.rm.terminalbiomes) — the RSW_ juveniles in this biome's own
+  strandedSpawnList (RM_Miasma.xml) are left out deliberately so the
+  franchise-free mod's warden mother never spawns a Star Wars juvenile.
+  youngDeformationHediff is the same RUT_StrandedDeformation this pass
+  authored (Defs/HediffDefs/), matching RM_StrandingPoolsExtension's own
+  field on this biome so a mother-spawned young and a surge-stranded young
+  carry an identical, single condition.
 
   MayRequire is load-bearing on the GenStepDef itself (not per-<li>): every
   referenced Class/def in this file lives in mandrake.rm.environmentalhazards
-  or mandrake.rsw.swbestiary, so the whole def is gated on both being
+  or mandrake.rm.terminalbiomes, so the whole def is gated on both being
   active, same posture as this folder's own RUT_MoatFusePost.xml precedent
   ("gating the entire def is correct... this def's only content is the
   comp itself").
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards,mandrake.rsw.swbestiary">
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.terminalbiomes">
     <defName>RUT_GenStep_CrecheScatterer</defName>
     <order>235</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
@@ -68,20 +86,15 @@
           <markerDef>RUT_CrecheMarker</markerDef>
         </li>
         <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_AnchoredPawn">
-          <!-- PLACEHOLDER - roster pass replaces with the real warden-mother
-               kind. sea_beasts_roster.md's nursery/adult pairing owns this
-               content (miasma_kit_spec.md M6's own scope line: "The
-               warden/juvenile PawnKindDefs are roster content ... this kit
-               ships the scatterer and the marker"). RSW_OpeeSeaKiller
-               chosen as the WIRING placeholder because it is thematically
-               closest among everything already shipped: an ambush sea
-               predator whose own juvenile (RSW_OpeeSeaKillerJuv,
-               SeaBeasts_NurseryJuveniles.xml) is already described as
-               lingering "at the crèche mouths where it hatched" — the
-               crèche framing already exists on this exact species pair,
-               it is simply the wrong scale/species for a "warden mother." -->
-          <pawnKind>RSW_OpeeSeaKiller</pawnKind>
+          <pawnKind>RM_WardenMother</pawnKind>
           <anchorMarkerDef>RUT_CrecheMarker</anchorMarkerDef>
+          <youngSpawnChance>0.35</youngSpawnChance>
+          <youngKinds>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_SiltLampreyJuv</li>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_RustNipperJuv</li>
+          </youngKinds>
+          <youngDeformationHediff>RUT_StrandedDeformation</youngDeformationHediff>
+          <youngSpawnRadius>1~3</youngSpawnRadius>
         </li>
       </elements>
     </genStep>
