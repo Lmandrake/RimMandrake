@@ -45,10 +45,11 @@ namespace RimMandrake.FloodedCanyon
         // in a mod a player added for the biome, not the danger).
         public static bool floodDamageEnabled = true;
 
-        // Soak-driven growth coupling: freshly-flooded ground carries a
-        // temporary GrowthRate multiplier that decays back to normal.
+        // Soak coupling: the flood hands every cell it wets to RimMandrake:
+        // Explosive Plant Growth as SOAKED for the flood's duration plus
+        // soakDecayDays. That mod owns the growth multiplier (its own
+        // setting) and everything after; without it this does nothing.
         public static bool growthCouplingEnabled = true;
-        public static float growthMultiplier = 6f;
         public static float soakDecayDays = 4f;
 
         public override void ExposeData()
@@ -62,7 +63,6 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref floodDurationHours, "floodDurationHours", 6f, true);
             Scribe_Values.Look(ref floodDamageEnabled, "floodDamageEnabled", true, true);
             Scribe_Values.Look(ref growthCouplingEnabled, "growthCouplingEnabled", true, true);
-            Scribe_Values.Look(ref growthMultiplier, "growthMultiplier", 6f, true);
             Scribe_Values.Look(ref soakDecayDays, "soakDecayDays", 4f, true);
         }
 
@@ -99,12 +99,11 @@ namespace RimMandrake.FloodedCanyon
                 + "Never applied after that — standing water is just slow, not dangerous.");
             list.GapLine();
 
-            list.CheckboxLabeled("Soak-driven growth coupling", ref growthCouplingEnabled,
-                "Freshly-flooded ground grows plants faster for a few days, then decays "
-                + "back to normal. A light coupling, not the full explosive-growth engine.");
-            list.Label("Growth multiplier on soaked ground: " + growthMultiplier.ToString("0.0") + "x");
-            growthMultiplier = list.Slider(growthMultiplier, 1f, 20f);
-            list.Label("Soak decays over: " + soakDecayDays.ToString("0.0") + " days");
+            list.CheckboxLabeled("The flood soaks the ground it wets", ref growthCouplingEnabled,
+                "Hands the flooded cells to RimMandrake: Explosive Plant Growth as soaked "
+                + "ground — its plants swell, charge and reach their top. Needs that mod; "
+                + "without it this does nothing. The growth multiplier is that mod's setting.");
+            list.Label("Ground stays soaked for: " + soakDecayDays.ToString("0.0") + " days after the water recedes");
             soakDecayDays = list.Slider(soakDecayDays, 1f, 10f);
 
             list.End();
