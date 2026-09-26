@@ -28,7 +28,7 @@
 
   <BiomeDef>
     <defName>RM_Stillsand</defName>
-    <label>the Extreme Desert</label>
+    <label>the Stillsand</label>
     <description>A corrugated ochre plain under a star that has not moved since the world began, running unbroken to every horizon. Nothing here tracks the sun because the sun does not go anywhere; everything owns a shadow instead, or is buried, or is a giant carrying its own moving shade across a thousand kilometres of nothing. It ends, without a gradient, at a hard green line of river or sea -- and until then, this is the ocean of nothing that line is drawn against.</description>
     <workerClass>RimWorld.BiomeWorker_ExtremeDesert</workerClass>
     <settleWarning>Searing heat and a near total lack of arable land make survival here a challenge. Nothing here pursues, but nothing here forgives a mistake either.</settleWarning>

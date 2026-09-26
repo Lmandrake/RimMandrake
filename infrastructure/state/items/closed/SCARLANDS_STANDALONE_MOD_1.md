@@ -334,3 +334,6 @@ landing) and Greentide (`GREENTIDE_STANDALONE_MOD_1`) already got.
 absorbed into it, the 90 live tiles on the canonical save are not orphaned (re-measure with
 `worldmap.py`, not trusted from this note), and row 20 in `biome_mod_architecture.md` reads
 DONE instead of PROPOSED.
+
+
+🔴 **REVERSED 2026-09-26 — the label is now `the Warscar`.** The owner ruled by question card that the house `the Xxx` form applies to every biome with no exceptions, overturning the article-dropping call recorded above. All 27 RM-tier biome labels now carry the article (MEASURED 2026-09-26). The live authority is `design/RimMandrake/biome_mod_architecture.md` §7 Q5. This item stays closed; only the article changed, not the name.

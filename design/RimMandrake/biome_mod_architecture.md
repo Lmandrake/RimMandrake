@@ -555,9 +555,12 @@ Drafts: `Transient/biome_name_drafts_2026-09-21.md`.
 merges into the RimMandrake mod under the campaign label "the Cracked Lands". One biome,
 one mod. The Cracked Lands does NOT get its own row.
 
-**Q5 — "Scarlands" collides with vanilla: RENAME OURS. RULED 2026-09-21: `Warscar`, no
-article** (owner, verbatim: "Warscar. Drop the 'the'" — every other biome label in this
-table keeps the house `the Xxx` form; this one deliberately doesn't). Not the DLC's label,
+**Q5 — "Scarlands" collides with vanilla: RENAME OURS. RULED 2026-09-21: `Warscar`.**
+🔴 **The no-article exception is REVERSED — the label is now `the Warscar`** (owner,
+decision taken by question card 2026-09-26, when he ruled the house form applies to
+every biome with no exceptions; this overturns his 2026-09-21 "drop the article" call
+on this one label). Every biome label is now `the Xxx` — MEASURED 2026-09-26, 27 of 27.
+Not the DLC's label,
 not keeping the name. `RUT_Scarlands`'s own `<label>` is changed to `Warscar` immediately
 (zero live-tile risk — defName untouched, the 90 live tiles still resolve by shortHash);
 the defName move to `RM_Warscar` is the
