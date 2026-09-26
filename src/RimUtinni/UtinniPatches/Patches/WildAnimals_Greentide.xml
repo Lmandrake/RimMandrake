@@ -92,15 +92,24 @@
      SW_FAUNA_NEVER_IN_RM_TIER_1 audit, 2026-09-25 — this is a real dependency,
      not an oversight.
 
-  ✅ THE fishTypes BLOCK IS NOW DONE, 2026-09-25 (SW_FAUNA_NEVER_IN_RM_TIER_1
-  audit) — added below as Op 5. Unlike the plants, every fishTypes entry
-  already had a real port (RSW_MeeCatch/FaaCatch/LaaCatch), so there was no
-  blocking dependency once the shape was worked out. RUT_FloodedCanyon.xml's
-  header (see SandFishing_CrackedLands.xml) had already built the exact
-  precedent this needed — a PatchOperationAdd of a whole nested
-  <maxFishPopulation>+<fishTypes> block onto a BiomeDef that ships none —
-  so "no existing WildAnimals_*.xml routes one" (as this section used to say)
-  was already stale before this fix; it just hadn't been applied here yet.
+  🔴 REVISED 2026-09-26 (GREENTIDE_EXOTIC_JUNGLE_FISH_1) — the 2026-09-25
+  fishTypes fix below was WRONG in one respect: it added the whole
+  `<maxFishPopulation>` + `<fishTypes>` block unconditionally, which made
+  RM_Greentide's fish catch depend on RUT_ items that only exist when
+  UtinniPatches (the campaign) is loaded — the exact "thin dependency-free
+  fallback" shape §7 Q11a forbids for an RM_ mod, just on the fish axis
+  instead of the fauna axis this whole file otherwise exists to prevent.
+  RM_Greentide_Biome.xml now ships its own franchise-free
+  `maxFishPopulation`/`fishTypes` inline (RM_Zeev/Uvva/Karrun/Dubbol/Lozh/
+  Saava/Tuun/LungerFry, new RM_-tier duplicates of the RUT_ table — never
+  the RUT_ defNames themselves), so Op 5 below now does only what this
+  file's other SW ops already do: ADD the two canon scalefish catches
+  (RSW_FaaCatch/RSW_LaaCatch) and the common one (RSW_MeeCatch) onto the
+  now-existing freshwater buckets, gated on mandrake.rsw.swbestiary same as
+  every other row here. rareCatchesSetMaker is untouched by this file —
+  RM_RareGreentideCatches (the base file's own def) already carries an
+  RSW_LaaCatch bonus option gated on its own `<li>`, so no patch op is
+  needed for the rare table either.
 
   ⚠️ RUT_Sytheclaw is cast under its current live defName. §7 Q10 renames it to
   RM_Sytheclaw as part of its own seven-creature sweep; this file follows that
@@ -221,38 +230,30 @@
     </match>
   </Operation>
 
-  <!-- SW_FAUNA_NEVER_IN_RM_TIER_1, 2026-09-25: RM_Greentide ships no fishTypes
-       of its own (Core-only base, no water fauna at all), so this is a
-       PatchOperationAdd of the whole block onto the BiomeDef itself — same
-       shape as SandFishing_CrackedLands.xml's already-shipped RM_FloodedCanyon
-       op. Values copied verbatim from RUT_Greentide.xml's own fishTypes
-       (frozen, 2026-09-22 snapshot): the two SW rows already have real RSW_
-       ports (no donor names needed), the rest are RUT_ fish that ship inside
-       RimUtinni itself and resolve fine because this patch mod only ever
-       loads alongside it. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/BiomeDef[defName="RM_Greentide"]</xpath>
+  <!-- GREENTIDE_EXOTIC_JUNGLE_FISH_1, 2026-09-26 (revises the 2026-09-25
+       SW_FAUNA_NEVER_IN_RM_TIER_1 op — see the header note above for why).
+       RM_Greentide_Biome.xml now ships fishTypes/maxFishPopulation inline
+       with its own franchise-free RM_ catch defs, so this file only ADDS the
+       three canon scalefish catches onto the buckets that already exist —
+       same MayRequire="mandrake.rsw.swbestiary" gate every other SW row in
+       this file uses, no dependency on RUT_ or on UtinniPatches itself. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_Greentide"]/fishTypes/freshwater_Common</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_Greentide"]</xpath>
+      <xpath>Defs/BiomeDef[defName="RM_Greentide"]/fishTypes/freshwater_Common</xpath>
       <value>
-        <maxFishPopulation>720</maxFishPopulation>
-        <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
-          <freshwater_Common>
-            <RSW_MeeCatch MayRequire="mandrake.rsw.swbestiary">0.4</RSW_MeeCatch>
-            <RUT_Zeev>0.4</RUT_Zeev>
-            <RUT_Uvva>0.3</RUT_Uvva>
-            <RUT_Karrun>0.3</RUT_Karrun>
-            <RUT_Dubbol>0.2</RUT_Dubbol>
-          </freshwater_Common>
-          <freshwater_Uncommon>
-            <RSW_FaaCatch MayRequire="mandrake.rsw.swbestiary">0.3</RSW_FaaCatch>
-            <RSW_LaaCatch MayRequire="mandrake.rsw.swbestiary">0.3</RSW_LaaCatch>
-            <RUT_Lozh>0.3</RUT_Lozh>
-            <RUT_Saava>0.25</RUT_Saava>
-            <RUT_Tuun>0.15</RUT_Tuun>
-          </freshwater_Uncommon>
-          <rareCatchesSetMaker>RUT_RareGreentideCatches</rareCatchesSetMaker>
-        </fishTypes>
+        <RSW_MeeCatch>0.4</RSW_MeeCatch>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_Greentide"]/fishTypes/freshwater_Uncommon</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Greentide"]/fishTypes/freshwater_Uncommon</xpath>
+      <value>
+        <RSW_FaaCatch>0.3</RSW_FaaCatch>
+        <RSW_LaaCatch>0.3</RSW_LaaCatch>
       </value>
     </match>
   </Operation>

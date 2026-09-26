@@ -118,6 +118,34 @@
       <Plant_TallGrass>1.0</Plant_TallGrass>
       <Plant_Berry>0.6</Plant_Berry>
     </wildPlants>
+
+    <!-- GREENTIDE_EXOTIC_JUNGLE_FISH_1 — owner, 2026-09-22: "Create exotic new
+         jungle fish to catch, not base game fish." Weights/species copied
+         verbatim from the campaign's ratified table
+         (fish_bestiary_commission_2026-09-10.md §2C,
+         src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml, frozen)
+         with the two Star Wars-canon scalefish entries (Faa/Laa) left out —
+         they are added by UtinniPatches/Patches/WildAnimals_Greentide.xml
+         under MayRequire="mandrake.rsw.swbestiary" so this base file, and
+         this mod alone, never names an RSW_ def. All 8 species here are new
+         RM_-tier defs (RM_GreentideFish_Items.xml / RM_RareGreentideCatches.xml),
+         not references into RimUtinni — this mod carries no dependency on the
+         campaign or on RimStarWars. -->
+    <maxFishPopulation>720</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <freshwater_Common>
+        <RM_Zeev>0.4</RM_Zeev>
+        <RM_Uvva>0.3</RM_Uvva>
+        <RM_Karrun>0.3</RM_Karrun>
+        <RM_Dubbol>0.2</RM_Dubbol>
+      </freshwater_Common>
+      <freshwater_Uncommon>
+        <RM_Lozh>0.3</RM_Lozh>
+        <RM_Saava>0.25</RM_Saava>
+        <RM_Tuun>0.15</RM_Tuun>
+      </freshwater_Uncommon>
+      <rareCatchesSetMaker>RM_RareGreentideCatches</rareCatchesSetMaker>
+    </fishTypes>
   </BiomeDef>
 
 </Defs>

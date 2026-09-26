@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_EXOTIC_JUNGLE_FISH_1 — the franchise-free half of the Greentide's
+  exotic catch table. Owner, 2026-09-22, verbatim: "Create exotic new jungle
+  fish to catch, not base game fish. Weird aquatic worms, eels, parasitic
+  moving plants, toothy tadpoles, spiked eels... get wild."
+
+  These 8 items are RM_-tier DUPLICATES of the campaign's already-ratified
+  RUT_ catch table (fish_bestiary_commission_2026-09-10.md §2C,
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_GreentideFish_Items.xml,
+  FISH_BESTIARY_BUILD_1 waves 3-4) — same species, same fiction, same stats,
+  renamed into the franchise-free tier so `mandrake.rm.greentide` carries a
+  rich standalone catch table with no dependency on the campaign or on
+  RimStarWars (§7 Q11a: "shared content duplicated then regenerated" per
+  biome_mod_architecture.md's own ruling on this exact split — new commit
+  2026-09-23). RUT_Greentide.xml itself is FROZEN and untouched by this file;
+  RM_Zeev etc. are new, separate defNames, not renames.
+
+  Only the two Star Wars-canon scalefish catches (Faa/Laa — see
+  RUT_GreentideFish_Items.xml's own header for why Mee/Faa/Laa are canon and
+  ship as RSW_) are excluded here; they reach RM_Greentide instead via
+  UtinniPatches/Patches/WildAnimals_Greentide.xml under
+  MayRequire="mandrake.rsw.swbestiary", the same routing that file already
+  uses for the wildAnimals cast (§7 Q11/Q11a: invented name -> RM_ tier
+  inline, genuine canon name -> RSW_ tier, patched on).
+
+  Register stats per the commission's own §0 envelope table (squid 0.25/6/
+  0.4/1.5d; floater 0.10/3/0.2/1d; crustacean 0.20/7/0.6/3d; cucumber 0.20/5/
+  0.5/4d; jellyfish 0.08/4/0.3/1d + FoodPoisonChanceFixedHuman 0.05; octopus
+  0.25/8/0.5/2d). RM_Lozh (eel) carries NO statBases override, same
+  convention as its RUT_ counterpart (vanilla FishBase tier verbatim).
+  RM_LungerFry is the shoal register (FishBase baseline) with the doc's own
+  single deliberate override, MarketValue 12 — "the Greentide's one prize
+  fish."
+
+  Placeholder art (owed, not generated this pass): every texPath below
+  reuses the same non-fish vanilla plant sprite its RUT_ counterpart already
+  cites (validated clean there) — CLAUDE.md's "check for existing art before
+  queuing more" found nothing generated for any of these 8 subjects in
+  infrastructure/artpipe/done/, _artsrc/ or registry.jsonl (MEASURED,
+  2026-09-26), so there is nothing to reuse from a finished job either; the
+  placeholder convention stands until a real art pass lands.
+-->
+<Defs>
+
+  <!-- RM_Zeev — squid, common. "jet." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Zeev</defName>
+    <label>zeev</label>
+    <description>A hand-long river squid, green-gold, that lives in the fast clean reaches and moves the way the river does -- one hard pulse and gone. Shoals of them ride the current down through the root causeways and pulse back up at night. Fast to catch, faster to spoil. Its ink is nothing special. Its cousin's is.</description>
+    <graphicData>
+      <texPath>Things/Plant/AloeVera/AloeVeraA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.25</Nutrition>
+      <MarketValue>6</MarketValue>
+      <Mass>0.4</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_Uvva — floater, common. "fruit-drunk." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Uvva</defName>
+    <label>uvva</label>
+    <description>A bladder-bodied grazer that hangs under the surface with its mouth open, waiting for the fruit-fall. When the canopy drops its crop the uvva rise in a crowd and gorge -- a fed uvva bloats, spins slowly, and passes seed downstream before it starts again. The river's seed-carrier. Sweet, faintly fizzy, and it does the same to you.</description>
+    <graphicData>
+      <texPath>Things/Plant/Peyote/PeyoteA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>3</MarketValue>
+      <Mass>0.2</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_Karrun — crustacean, common. "churn-crab." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Karrun</defName>
+    <label>karrun</label>
+    <description>A flat, wide, root-brown crab-thing that lives in the churnmud between the roots, walking on the same swallowed things the mud hides -- and it finds them. A dropped tool, a lost boot, a coin: the karrun carries it about for a while for reasons of its own. Line-fishers along the causeways pull them up holding things. The claws are the eating; the rest is mud.</description>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.6</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_Dubbol — cucumber, common (weight 0.2). "the sweeper." Flavor only,
+       no clarity mechanic. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Dubbol</defName>
+    <label>dubbol</label>
+    <description>The riverbed is carpeted in filth and sprouts, and this is what eats the filth. A thick, warty, arm-long sweeper of the river floor, moving through the settled muck below the causeways at the pace of a thing that has never been chased. Where the dubbol are thick the water runs clean enough to drink, nearly. Leathery, and it keeps.</description>
+    <graphicData>
+      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>4</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_Lozh — eel, uncommon. "root-eel." Eel register verbatim (vanilla
+       FishBase tier), no statBases override — same convention its RUT_
+       counterpart uses. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Lozh</defName>
+    <label>lozh</label>
+    <description>Lives inside the drowned root causeways, in the channels the roots leave when they rot from within -- an eel the colour of wet bark, thick as a wrist, that hunts along the root-roads at night and ambushes from the same holes travelers step over by day. It is why nobody sleeps with a hand in the water.</description>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_Saava — jellyfish, uncommon. "the roil-veil." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Saava</defName>
+    <label>saava</label>
+    <description>A wide, thin, freshwater bell that rides the standing fog over the river, half in the water and half in the air, trailing stinging threads a body-length down. Under the fog you cannot see them; you feel them. Not lethal. Memorable.</description>
+    <graphicData>
+      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.08</Nutrition>
+      <MarketValue>4</MarketValue>
+      <Mass>0.3</Mass>
+      <FoodPoisonChanceFixedHuman>0.05</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_Tuun — octopus, uncommon (weight 0.15). "root-thief." The scarcest
+       common-water catch in this table. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Tuun</defName>
+    <label>tuun</label>
+    <description>A small, quick, bark-mottled octopus that climbs the root causeways out of the water to reach the fruit-fall, and has been seen on the lower boughs. It steals -- lines, bait, small bright things, a fisher's whole catch left on the bank. Rare on the hook because it is usually the one holding the hook. Good eating, if you can find it.</description>
+    <graphicData>
+      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.25</Nutrition>
+      <MarketValue>8</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_LungerFry — the rare-catch headline prize. Shoal register (FishBase
+       baseline), MarketValue overridden to 12. A fish item, not a creature;
+       this mod's own biome has no Lunger race def to forward-reference, so
+       the fiction stands on its own here rather than naming one. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_LungerFry</defName>
+    <label>lunger fry</label>
+    <description>Something young and outsized for its age, no longer than your arm -- which means whatever it grows into is still under this bank. Eat it now, before it eats you next year. Netted rarer than anything else the river gives up, and the one catch every crew brags about.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>12</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
