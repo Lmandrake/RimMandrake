@@ -39,6 +39,18 @@ namespace RimMandrake.Greentide
         public static string crossBiomeBiomeList = "";
         public static float crossBiomeCoverage = 1f;
 
+        // GREENTIDE_FRENZY_DISEASE_1. Master on/off covers BOTH routes RM_Frenzy
+        // can reach a pawn through — the ambient biome disease
+        // (RM_IncidentWorker_FrenzyDisease) and the deliberate RM_FrenzyDose item
+        // (RM_IngestionOutcomeDoer_FrenzyDose) — since both read this same flag.
+        // The multiplier only tunes the dose route's initial kick; the natural
+        // per-day climb, the coma threshold and tend strength are the disease's
+        // own HediffDef numbers and are not settings (a number that changes the
+        // shape of the death/survival curve, not just its speed, is a design
+        // call, not a player-tuning knob).
+        public static bool frenzyEnabled = true;
+        public static float frenzySeverityMultiplier = 1f;
+
         private string biomeListBuffer;
 
         public override void ExposeData()
@@ -51,6 +63,8 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
+            Scribe_Values.Look(ref frenzyEnabled, "frenzyEnabled", true);
+            Scribe_Values.Look(ref frenzySeverityMultiplier, "frenzySeverityMultiplier", 1f);
         }
 
         /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own — that is native, not "cross").</summary>
@@ -126,6 +140,18 @@ namespace RimMandrake.Greentide
                 }
                 list.Label("  Coverage: " + (crossBiomeCoverage * 100f).ToString("0") + "% of that map's ordinary Mud terrain becomes churnmud");
                 crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
+            }
+            list.GapLine();
+
+            list.Label("The Frenzy");
+            list.CheckboxLabeled("The Frenzy enabled", ref frenzyEnabled,
+                "Covers both routes: the jungle handing it out on its own as an ambient disease, "
+              + "and a colonist taking a harvested RM_FrenzyDose on purpose. Off: neither ever "
+              + "applies the hediff.");
+            if (frenzyEnabled)
+            {
+                list.Label("  Dose strength: " + frenzySeverityMultiplier.ToString("0.00") + "x");
+                frenzySeverityMultiplier = list.Slider(frenzySeverityMultiplier, 0.5f, 2f);
             }
 
             list.End();

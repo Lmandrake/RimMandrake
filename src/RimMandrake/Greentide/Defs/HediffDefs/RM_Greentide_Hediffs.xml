@@ -134,4 +134,130 @@
     </stages>
   </HediffDef>
 
+  <!-- GREENTIDE_FRENZY_DISEASE_1 — "The Frenzy", owner ruling 2026-09-22 verbatim:
+       "'The Frenzy' causes colonist to work feverishly and faster until they
+       totally collapse from exhaustion in a multi-day coma. Can purposely
+       infect someone with this disease. It will kill you if not treated, but
+       you can treat it in the coma stage after benefiting from the rapid
+       work." This project's first authored disease.
+
+       Every mechanism below is MEASURED via RimSage against the installed
+       1.6 decompile, not guessed, closing the item's six UNMEASURED
+       questions:
+
+       1) Staged severity curve — Verse/HediffStage.cs carries a real
+          `severityGainFactor` per stage (consumed by
+          HediffComp_SeverityPerDay.SeverityChangePerDay, which multiplies its
+          base rate by `parent.CurStage.severityGainFactor`). Onset/escalation
+          run at the base rate (2.4 severity/day); the collapse stage sets
+          severityGainFactor 0.07, stretching the remaining climb to lethal
+          across ~2 in-game days — the "multi-day coma" is this slowdown, not
+          a separate timer.
+       2) Work speed — `WorkSpeedGlobal` StatDef exists (label "global work
+          speed") and stages apply it via ordinary `statOffsets`.
+       3) The coma — `Verse/Hediff.cs` derives Downed/unconscious behavior
+          from the Consciousness capacity; vanilla's own PsychicComa
+          ("a form of benign coma") and Anesthetic's "sedated" stage both
+          reach it the same way, `<capacity>Consciousness</capacity>
+          <setMax>` to a near-zero value. Reused verbatim here, plus a
+          matching Moving setMax so the pawn is actually immobile, not just
+          unconscious while still able to shuffle.
+       4) Tend gating — `HediffDef.tendable` is a single top-level bool
+          (Verse/Hediff.cs TendableNow); the engine has NO per-stage tendable
+          flag (HediffStage carries no such field). So nothing stops a doctor
+          tending during onset/escalation — it just does not matter yet,
+          because the disease is not lethal until the collapse stage and
+          tending early only cuts the buff short for no benefit. "You can
+          treat it in the coma stage" is therefore the natural, not an
+          engine-enforced, window: the vanilla Malaria/SleepingSickness
+          pattern (HediffCompProperties_TendDuration racing a rising
+          untended severity toward lethalSeverity) is reused directly, tuned
+          so only sustained tending during collapse pulls it back from 1.0.
+       5) The dose — `IngestionOutcomeDoer_GiveHediff` (RimWorld/
+          IngestionOutcomeDoer_GiveHediff.cs) is the exact vanilla mechanism
+          Luciferium/GoJuice/Yayo use to hand a hediff to whichever pawn eats
+          the item; ordering any pawn to ingest a drug (including a chosen
+          colonist, not just the actor) is already player-facing vanilla UX,
+          so "purposely infect someone" needs no new consent/targeting
+          system. See RM_FrenzyDose (RM_Frenzy_Items.xml).
+       6) "Work already done is kept" — confirmed needing nothing: completed
+          work is Scribed the moment it completes, nothing to add.
+
+       Mod Settings gate (RM_GreentideSettings.frenzyEnabled/
+       frenzySeverityMultiplier) lives on the two consumers of this def
+       (RM_IncidentWorker_FrenzyDisease, RM_IngestionOutcomeDoer_FrenzyDose)
+       rather than on the HediffDef itself — there is no field to disable a
+       HediffDef; gating the routes that ever apply it is the correct place. -->
+  <HediffDef>
+    <defName>RM_Frenzy</defName>
+    <label>the Frenzy</label>
+    <description>A feverish, self-accelerating burn that starts as focus and ends as collapse. Work comes faster and faster the longer it runs — until the body gives out all at once into a coma that can last days. Untreated, the coma deepens until it kills; tended during the coma, the colonist survives, and every hour of work already done stays done. The jungle hands this out on its own from time to time, and a harvested dose lets a colonist take it on purpose.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.9, 0.25, 0.15)</defaultLabelColor>
+    <initialSeverity>0.05</initialSeverity>
+    <lethalSeverity>1.0</lethalSeverity>
+    <isBad>true</isBad>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>2.4</severityPerDay>
+      </li>
+      <li Class="HediffCompProperties_TendDuration">
+        <baseTendDurationHours>24</baseTendDurationHours>
+        <severityPerDayTended>-1.2</severityPerDayTended>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>onset</label>
+        <painFactor>0.85</painFactor>
+        <hungerRateFactorOffset>0.4</hungerRateFactorOffset>
+        <restFallFactorOffset>0.3</restFallFactorOffset>
+        <statOffsets>
+          <li>
+            <stat>WorkSpeedGlobal</stat>
+            <value>0.3</value>
+          </li>
+        </statOffsets>
+      </li>
+      <li>
+        <minSeverity>0.3</minSeverity>
+        <label>escalation</label>
+        <painFactor>0.7</painFactor>
+        <hungerRateFactorOffset>0.9</hungerRateFactorOffset>
+        <restFallFactorOffset>0.7</restFallFactorOffset>
+        <statOffsets>
+          <li>
+            <stat>WorkSpeedGlobal</stat>
+            <value>0.65</value>
+          </li>
+        </statOffsets>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.65</minSeverity>
+        <label>collapse</label>
+        <lifeThreatening>true</lifeThreatening>
+        <blocksMentalBreaks>true</blocksMentalBreaks>
+        <painFactor>0</painFactor>
+        <severityGainFactor>0.07</severityGainFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.05</setMax>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0.05</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
 </Defs>

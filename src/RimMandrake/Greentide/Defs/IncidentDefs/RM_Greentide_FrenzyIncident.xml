@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_FRENZY_DISEASE_1. The ambient half of "The Frenzy" — the jungle
+     hands it out on its own, same as any other biome disease, alongside the
+     deliberate RM_FrenzyDose route (RM_Frenzy_Items.xml). Shape copied
+     directly from the vanilla Disease_Malaria/Disease_Plague IncidentDefs
+     (ParentName="DiseaseIncident", MEASURED via RimSage) — `diseaseIncident`
+     is a plain HediffDef reference (RimWorld/IncidentDef.cs), so a custom
+     HediffDef wires in exactly like a vanilla one; no new engine mechanism.
+
+     workerClass is RM_IncidentWorker_FrenzyDisease, not the vanilla
+     IncidentWorker_DiseaseHuman directly, so RM_GreentideSettings.frenzyEnabled
+     can turn the ambient route off without touching the biome's <diseases>
+     list (RM_GreentideMod.cs). -->
+<Defs>
+
+  <IncidentDef ParentName="DiseaseIncident">
+    <defName>RM_Greentide_FrenzyDisease</defName>
+    <label>the Frenzy</label>
+    <category>DiseaseHuman</category>
+    <diseaseIncident>RM_Frenzy</diseaseIncident>
+    <diseaseVictimFractionRange>0.1~0.2</diseaseVictimFractionRange>
+    <ignoreRecentSelectionWeighting>true</ignoreRecentSelectionWeighting>
+    <letterDef>NegativeEvent</letterDef>
+    <letterLabel>Disease: the Frenzy</letterLabel>
+    <letterText>{0} of your {1} have caught the Frenzy from {2}.\n\nWork will come faster and faster until they collapse into a coma. Untreated, the coma kills — tend them once they go down and they will live.\n\nThe following {1} have caught it</letterText>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+      <li>Map_TempIncident</li>
+      <li>Map_Misc</li>
+      <li>Map_RaidBeacon</li>
+      <li>Caravan</li>
+    </targetTags>
+    <workerClass>RimMandrake.Greentide.RM_IncidentWorker_FrenzyDisease</workerClass>
+  </IncidentDef>
+
+</Defs>

@@ -509,9 +509,15 @@
            HediffComp_PeriodicAreaAttack, feller 2's own hook) and is not
            invented here without engine access to prove it safe — shipping
            as a static, toxin-yielding hazard plant now, with the active
-           attack owed as a follow-on rather than guessed. -->
+           attack owed as a follow-on rather than guessed.
+
+           GREENTIDE_FRENZY_DISEASE_1 (2026-09-26) pays off the yield half of
+           that deferral: harvestedThingDef now names the toxin resource that
+           row's own brief already promised, feeding the Frenzy dose chain
+           (RM_Frenzy_Items.xml). Everything else on this row is unchanged. -->
       <growDays>24</growDays>
       <harvestYield>8</harvestYield>
+      <harvestedThingDef>RM_GorbelethToxin</harvestedThingDef>
       <visualSizeRange>2.0~3.0</visualSizeRange>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>5</wildClusterWeight>

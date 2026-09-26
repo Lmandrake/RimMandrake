@@ -78,7 +78,7 @@ drops them, and that gap is now closed:
 GREENTIDE_JUNGLE_TREE_ROSTER_1 (2026-09-26) gave this biome its own tree
 canopy — 14 invented, franchise-free RM_ jungle trees
 (RM_Greentide_TreeRoster.xml, wired directly into this BiomeDef's own
-<wildPlants>, replacing the rejected Plant_TreeOak/Plant_TreePoplar/
+&lt;wildPlants&gt;, replacing the rejected Plant_TreeOak/Plant_TreePoplar/
 Plant_Bush) plus the franchise-free signature giant, RM_Greatbole
 (RM_Greatbole.xml) — the mature, fellable life stage of the same species as
 the campaign-tier landmark, sharing its visual family and nothing else (no
@@ -89,11 +89,20 @@ used to call "owed separately." RM_Greatbole drops true hardwood
 reference to the campaign's RUT_Hardwood, so this mod still depends on
 nothing Utinni-side) via the shared, def-agnostic RM_FellableTreeExtension /
 RM_TreeFallUtility mechanism in mandrake.rm.environmentalhazards (an
-optional dependency, gated per-<li> with MayRequire, not a hard mod
+optional dependency, gated per-&lt;li&gt; with MayRequire, not a hard mod
 dependency of this mod). The roster's seven non-tree understory plants
 (brakkel, tumbel, sarquin, phorrik, wollick, maddrick, illurin) are a
 follow-on, GREENTIDE_UNDERSTORY_PLANT_ROSTER_1 — this biome's foragedFood
 stays RawBerries until brakkel ships to replace it.
+
+GREENTIDE_FRENZY_DISEASE_1 (2026-09-26) authored this project's first disease,
+RM_Frenzy — a staged work-speed high that ends in a multi-day coma, lethal
+untended and survivable if tended during the coma. Disease_Flu and
+Disease_Malaria came out of this biome's disease list, replaced one-for-one
+by the ambient half of RM_Frenzy (RM_Greentide_FrenzyDisease); the deliberate
+half is a harvested item, RM_FrenzyDose, refined at a Drug Lab from
+RM_GorbelethToxin (RM_Gorbeleth's own harvest, row 14 of the tree roster).
+Both routes are gated by one Mod Settings toggle.
 
 Live proof is OWED at publish time — see the item's own verify record.</description>
 </ModMetaData>
