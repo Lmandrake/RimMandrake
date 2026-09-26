@@ -2009,6 +2009,12 @@
     "hash": "6c7d87d92aa42ea6a74973ae48fd15a502866b1cb713bfb7a5b746e97887611d",
     "sha": "3901f320b"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GroundRefusalBiomeExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "46eb3dc4b45ea6a4c55f477b7e7d93e00db663741a0dfd9d7c908b758d812bf0",
+    "sha": "8f48e6ea6"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_HaulVictimAIUtility.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -2231,6 +2237,12 @@
     "hash": "256f09b2c699527a99473e3135f6efd6bf970d91642add536b011862abbb9d13",
     "sha": "009b887ef"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_WaterAgitation.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "23798cb987ea32f8d525810ddb13cf4e17155a51c7d2a3d2d7b4db325855951f",
+    "sha": "8f48e6ea6"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_WaterTruce.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -2273,6 +2285,12 @@
     "hash": "b016353eebbf1b0aca075b31fcd79d56248e622e921b08ba80bcf41907f22e65",
     "sha": "009b887ef"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_PollinationGate.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "c3d9577cbc594905fa21c0706b181f592c1699f91594b721764f18d3b8433d72",
+    "sha": "8f48e6ea6"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_TreasureSaleConscience.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -2284,6 +2302,12 @@
     "date": "2026-09-13",
     "hash": "cf1bd00cb056c9867a19c0202eb3f28ae5c8965e4d895801c8fec14805190a08",
     "sha": "f4d5c1714"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_PollinationGateExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "7aaf6b672ad0293b7e46c1c909f4eccf4e600fdeee5afb5b38d77a8348bf0db6",
+    "sha": "8f48e6ea6"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_RecipeDef_HediffByproduct.cs": {
     "cleanCount": 1,

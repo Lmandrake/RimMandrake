@@ -4418,3 +4418,64 @@ def-only (`.xml`) clusters still remain across `TerminalBiomes/`, `TheRot/`,
 `Wasteland/`, `UtinniPatches/Defs/` and `UtinniPatches/Patches/`; the `modcheck/`
 Python tools and the `validation.py` sampling pass named in earlier waves are also
 still untouched and worth picking if no comparably cohesive `.cs` cluster surfaces.
+
+## Wave 9 — 2026-09-25
+
+This wave's session runs concurrently with other agents actively building the
+per-biome standalone mods (`RSW_→RM_` split work), so deliberately steered away
+from every biome-specific mod folder (`BlueDesert`, `FeverWood`, `ForsakenCrags`,
+`LeaningScrub`, `LongShade`, `NightsideIce`, `PoisonForest`, `Stillsand`,
+`TerminalBiomes`, `TheRot`, `Wasteland` all had untracked `*Mod.cs`/`BiomeWorker`
+files this wave's `list --show-untracked` surfaced, none picked) and picked instead
+from `EnvironmentalHazards/Source/` — a shared, non-biome-specific mechanics kit
+already partly reviewed in waves 4/5/7/8.
+
+Reviewed 4 files, full-file, first-time review (confirmed NEVER ENTERED via fresh
+`list --show-untracked`): `RM_GroundRefusalBiomeExtension.cs`,
+`RM_PollinationGateExtension.cs`, `RM_Patch_PollinationGate.cs` (Harmony postfix on
+`WildPlantSpawner.CalculatePlantsWhichCanGrowAt`), `RM_MapComponent_WaterAgitation.cs`
+(SCALD_REVIEW's ambient ripple mechanism).
+
+Reachability: all 4 confirmed via live `<Compile Include>` entries in
+`RM_EnvironmentalHazards.csproj` (lines 142, 192-194). Content-wired, not shelf code:
+`RM_GroundRefusalBiomeExtension` is carried by `RUT_FeverWood.xml`'s
+`<modExtensions>` (and its own GenStep registration in
+`RUT_FeverWood_GroundRefusalGenStep.xml`); `RM_PollinationGateExtension` is patched
+onto `AB_MangroveTree`/`AB_ParasiticMangrove` by `RUT_Miasma_PollinationGate.xml`;
+`RM_MapComponent_WaterAgitation` needs no XML registration at all — confirmed by
+checking sibling MapComponents in the same assembly (`RM_MapComponent_GradientAxis`,
+`RM_MapComponent_AcceleratedRot`, etc.) also carry zero `<mapComponents>` XML
+entries, consistent with vanilla RimWorld auto-instantiating every `MapComponent`
+subclass with a `Map` constructor on every map — not a reachability gap.
+
+Traced: `RM_Patch_PollinationGate.cs`'s Harmony postfix against its sibling
+`RM_Patch_LeachmossWildSpawnGate.cs` (same private target method, same
+`mandrake.rm.environmentalhazards` Harmony ID, both postfixing the same method
+concurrently — confirmed Harmony allows multiple postfixes on one target) — the
+reverse-iteration `RemoveAt` pattern, the settings-gate early return, and the
+`AccessTools.FieldRefAccess<WildPlantSpawner, Map>("map")` private-field read all
+match the already-proven sibling shape. `RM_MapComponent_WaterAgitation` traced for
+the exact "MapComponent reads world/tile state too early" bug class this loop
+watches for: constructor does no work, `Rebuild()` (which reads `map.terrainGrid`)
+only runs from `FinalizeInit()` onward — no early read. Confirmed both settings
+toggles (`pollinationGateEnabled`, `waterAgitationEnabled`) exist with defaults,
+Scribe persistence and Mod Settings UI rows in `RM_EnvironmentalHazardsMod.cs`. No
+significant findings in any of the 4; no fixes needed this wave. All 4 marked CLEAN
+at commit following this note.
+
+Re-measured after: `TALLY CLEAN 3295 DIRTY 142 ORPHANED 60 NEVER ENTERED 292` (was
+`CLEAN 3299 DIRTY 134 NEVER ENTERED 296` at wave start — net CLEAN dropped despite
+4 files moving NEVER ENTERED -> CLEAN, i.e. ~8 other files went dirty elsewhere in
+the shared tree during this wave, expected with concurrent agents; only the 4 files
+this wave touched are attributable to this pass).
+
+Next wave: **avoid the biome-specific mod folders while the concurrent biome-split
+build is in flight** (`BlueDesert`, `FeverWood`, `ForsakenCrags`, `LeaningScrub`,
+`LongShade`, `NightsideIce`, `PoisonForest`, `Stillsand`, `TerminalBiomes`, `TheRot`,
+`Wasteland` — all currently carry untracked `*Mod.cs`/`BiomeWorker` files another
+agent may be actively editing). Safer non-biome clusters still NEVER ENTERED this
+wave: `PropaneLakeMechanics/Source/` (10 files, RUT tier mechanics mod),
+`ShipShields/Source/` (2 files), `CreatureBehaviors/Source/`
+(`RM_DamageWorker_StingAccumulate.cs`, `RM_DirectedAssaultExtension.cs`,
+`RM_JobGiver_AvoidOwnKind.cs`). The `modcheck/` Python tools and the `validation.py`
+sampling pass named in earlier waves are also still untouched.
