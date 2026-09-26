@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LureStake.xml                                  FEVERWOOD_TWO_FRONT_LURE_1
+
+  Owner ruling (fever_wood_deep_and_mud_2026-09-23.md §5/§6l): "I like
+  buildable lures. Both enemies like helpless prey chained down and
+  wounded... Shouldn't both come precisely at the same time." A living
+  creature only — a tamed animal, a prisoner, or a nectar-beast from the
+  herd. ⛔ NO crafted decoy: the owner offered one and declined it
+  ("There is no bloodless option, and that exclusion IS the ruling").
+
+  Player flow: RM_Designator_StakeLure flags a tamed animal or prisoner ->
+  RM_WorkGiver_StunForStaking wounds it down if not already Downed (reuses
+  FEVER_WOOD_MECHANICS_1's RM_JobDriver_StunVictim verbatim) ->
+  RM_WorkGiver_HaulToStake/RM_JobDriver_HaulToStake carries the now-Downed
+  pawn here and calls RM_CompLureStake.TryStake, which applies RM_LureStaked
+  (the "chained down" half) and registers the stake with
+  RM_MapComponent_TwoFrontLure, which rolls the staggered two-front raid
+  this building exists to invite.
+
+  PLACEHOLDER ART: one flat-color 64x64 PNG (same posture as
+  RM_SekkulaathTank's own placeholder) — searched artpipe done/,
+  registry.jsonl and _artsrc/ for "lure"/"stake" first; nothing exists for
+  this subject.
+
+  Cost is an invented placeholder (cheap: a post and chain, not a
+  structure), folded into FEVERWOOD_TWO_FRONT_LURE_TUNING_1 alongside the
+  raid-timing numbers in RM_FeverWoodSettings and the explicitly-unset
+  prey-quality gate (design sheet §7).
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LureStake</defName>
+    <label>lure stake</label>
+    <description>A stout post driven into the ground, chain coiled at its base. Whatever gets tied here is meant to be found — by whatever is hunting nearby.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <passability>Standable</passability>
+    <fillPercent>0.15</fillPercent>
+    <coversFloor>false</coversFloor>
+    <useHitPoints>true</useHitPoints>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <designationCategory>Production</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <!-- INVENTED placeholders — see file header. -->
+      <WorkToBuild>700</WorkToBuild>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <Beauty>-8</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>30</WoodLog>
+      <Steel>10</Steel>
+    </costList>
+    <building>
+      <claimable>true</claimable>
+      <deconstructible>true</deconstructible>
+    </building>
+    <graphicData>
+      <texPath>Things/Building/RM_LureStake/RM_LureStake</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_LureStake" />
+    </comps>
+  </ThingDef>
+
+</Defs>

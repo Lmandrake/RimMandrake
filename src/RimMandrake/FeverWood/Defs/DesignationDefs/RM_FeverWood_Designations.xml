@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWood_Designations.xml                      FEVERWOOD_TWO_FRONT_LURE_1
+
+  Player intent marker: "stake this pawn as lure bait" — same targetType/
+  shape as vanilla's own Slaughter designation (RimWorld/
+  DesignationDefOf.cs), read via RimSage this pass. RM_Designator_StakeLure
+  applies it to one of the player's own tamed animals or prisoners;
+  RM_WorkGiver_StunForStaking and RM_WorkGiver_HaulToStake both scan for it
+  and remove it once the pawn is actually staked (RM_CompLureStake.
+  TryStake) or the player cancels via Designator_Cancel (vanilla,
+  works on any Designation with no code from this mod).
+
+  Icon reused from vanilla (no bespoke art commissioned for a toolbar glyph
+  — searched infrastructure/artpipe/done+registry.jsonl for "stake"/"lure"
+  first per the standing rule; nothing exists for a UI designator, and
+  reusing a stock icon is this repo's own established practice for a new
+  Designation, e.g. RM_DesignationDigOutBuried reusing "Designations/Mine").
+-->
+<Defs>
+
+  <DesignationDef>
+    <defName>RM_Designation_StakeLure</defName>
+    <targetType>Thing</targetType>
+    <texturePath>Designations/Slaughter</texturePath>
+  </DesignationDef>
+
+</Defs>

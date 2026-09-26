@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Shokk_FeraliskBrood.xml                       FEVERWOOD_TWO_FRONT_LURE_1
+
+  The second of the Fever Wood's "two hidden FactionDefs" (see
+  RM_FactionDef_KurrethSwarm's own header for the mutual-hostility
+  mechanism they share via permanentEnemy). Lives HERE, not in RM_FeverWood,
+  because the Fever Wood's "Feralisk" is the canon Wyyyschokk under this
+  world's own local name ("Wyyyschokk to the galaxy, Feralisk on this
+  world" — the_webwork.md header ruling) — genuine Star Wars IP, which
+  Q11a routes through the Utinni/RSW patch layer, never hardcoded into the
+  franchise-free RM_ mod. This mod already hard-depends on
+  mlie.starwarsanimalcollection (see this file's own About.xml), so
+  referencing Wyyyschokk directly here is the correct tier, not a shortcut.
+
+  RM_MapComponent_TwoFrontLure (mandrake.rm.feverwood) looks this FactionDef
+  up by defName only — no assembly reference either direction. Absent this
+  mod (or SWAC), that lookup silently returns null and the Fever Wood's
+  raid simply never fires its second front: "ants only", same graceful-
+  degradation posture as every other MayRequire-gated class in this mod
+  set. The franchise-free RM_-tier's OWN second raider (a native, non-canon
+  brood predator — "skreth" is a proposed but NOT owner-ruled candidate
+  name, fever_wood_rm_cast_proposal_2026-09-24.md) is real owed work, not
+  invented here — see FEVERWOOD_FREE_TIER_FERALISK_1.
+-->
+<Defs>
+
+  <FactionDef MayRequire="mlie.starwarsanimalcollection">
+    <defName>RSW_Shokk_FeraliskBrood</defName>
+    <label>feralisk brood</label>
+    <pawnSingular>feralisk</pawnSingular>
+    <pawnsPlural>feralisks</pawnsPlural>
+    <categoryTag>FeverWoodTwoFrontRaiders</categoryTag>
+    <humanlikeFaction>false</humanlikeFaction>
+    <hidden>true</hidden>
+    <permanentEnemy>true</permanentEnemy>
+    <canSiege>false</canSiege>
+    <canStageAttacks>false</canStageAttacks>
+    <canGenerateQuestSites>false</canGenerateQuestSites>
+    <canRequestTraders>false</canRequestTraders>
+    <canRequestMilitaryAid>false</canRequestMilitaryAid>
+    <canRequestOrbitalTrader>false</canRequestOrbitalTrader>
+    <requiredCountAtGameStart>0</requiredCountAtGameStart>
+    <maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>0</startingCountAtWorldCreation>
+    <displayInFactionSelection>false</displayInFactionSelection>
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <li>
+            <kind>Wyyyschokk</kind>
+            <selectionWeight>10</selectionWeight>
+          </li>
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>

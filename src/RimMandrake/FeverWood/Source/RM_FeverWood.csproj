@@ -61,6 +61,14 @@
     <Compile Include="RM_GenStep_AntHiveDungeon.cs" />
     <Compile Include="RM_CompProperties_SapSuckerRefusal.cs" />
     <Compile Include="RM_CompSapSuckerRefusal.cs" />
+    <Compile Include="RM_TwoFrontLureDefOf.cs" />
+    <Compile Include="RM_CompProperties_LureStake.cs" />
+    <Compile Include="RM_CompLureStake.cs" />
+    <Compile Include="RM_MapComponent_TwoFrontLure.cs" />
+    <Compile Include="RM_Designator_StakeLure.cs" />
+    <Compile Include="RM_WorkGiver_StunForStaking.cs" />
+    <Compile Include="RM_WorkGiver_HaulToStake.cs" />
+    <Compile Include="RM_JobDriver_HaulToStake.cs" />
   </ItemGroup>
 
   <ItemGroup>

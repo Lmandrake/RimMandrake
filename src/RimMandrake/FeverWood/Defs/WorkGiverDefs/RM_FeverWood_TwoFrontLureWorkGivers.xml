@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWood_TwoFrontLureWorkGivers.xml             FEVERWOOD_TWO_FRONT_LURE_1
+
+  Both scan RM_Designation_StakeLure. workType Warden fits both steps —
+  handling a designated captive/tamed animal, same category vanilla uses
+  for slaughter/tame/rescue-adjacent animal handling — rather than inventing
+  a new WorkType this feature does not need.
+-->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_StunForStaking</defName>
+    <label>subdue lure bait</label>
+    <giverClass>RimMandrake.FeverWood.RM_WorkGiver_StunForStaking</giverClass>
+    <workType>Warden</workType>
+    <priorityInType>60</priorityInType>
+    <verb>subdue</verb>
+    <gerund>subduing</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <canBeDoneByMechs>false</canBeDoneByMechs>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_HaulToStake</defName>
+    <label>haul lure bait to stake</label>
+    <giverClass>RimMandrake.FeverWood.RM_WorkGiver_HaulToStake</giverClass>
+    <workType>Warden</workType>
+    <priorityInType>55</priorityInType>
+    <verb>haul</verb>
+    <gerund>hauling</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <canBeDoneByMechs>false</canBeDoneByMechs>
+  </WorkGiverDef>
+
+</Defs>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWood_StakeLureOrdersPatch.xml               FEVERWOOD_TWO_FRONT_LURE_1
+
+  Registers RM_Designator_StakeLure in the vanilla "Orders" toolbar, same
+  xpath/shape as this repo's own precedent (Graffiti_OrdersPatch.xml,
+  FlowWorks_OrdersPatch.xml) — that precedent's own header records a real
+  defect it fixes: a Designator with no entry here never reaches the
+  Architect/Orders menu at all (DesignationCategoryDef.ResolveDesignators
+  builds resolvedDesignators only from specialDesignatorClasses, confirmed
+  via RimSage this pass), so this file is written FIRST, before the
+  designator class even compiles, to not repeat that miss.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Ludeon.RimWorld</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses</xpath>
+      <value>
+        <li>RimMandrake.FeverWood.RM_Designator_StakeLure</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
