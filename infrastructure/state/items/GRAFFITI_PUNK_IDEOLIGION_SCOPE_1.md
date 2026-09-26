@@ -165,17 +165,11 @@ designator · protect own+Devotional from auto-clean · rename `Sacred→Devotio
 `Cant→Code` · GenStep v2 · the shipped glyphs get mechanics). The ones a
 design pass genuinely cannot pick, plus what this pass added:
 
-1. **Art register reference.** "Punk style graffiti as seen in urban
-   settlements" spans NYC subway wildstyle, UK stencil (Banksy-adjacent),
-   Berlin wall paste-ups, Latin American muralismo. Which one or two are the
-   reference sheet? The generation prompt and the sigil frames follow it and
-   nothing else. A reference image or two from him beats any description.
-2. **Tone boundary on meme glyphs.** The tier-C table includes `Cannibal`
-   (skull-and-fork), `MaleSupremacy`/`FemaleSupremacy` (crowned gender
-   marks), `Nudism` (bare figure), `Inhuman` (void ring), `PainIsVirtue`
-   (thorn ring). Does any meme get NO glyph on taste grounds, or do all
-   vanilla memes get a mark because the game already ships them as playable
-   choices?
+1. **Art register reference — RULED: NYC subway wildstyle and UK stencil**
+   (owner 2026-09-25: *"One and two and we already ruled this."*). The
+   generation prompt and the sigil frames follow these two.
+2. **Tone boundary on meme glyphs — RULED 2026-09-25 by card: every vanilla
+   meme gets a glyph**, none dropped on taste grounds.
 3. **The mappings this pass is least sure of**: `Loyalist`→banner,
    `Guilty`→chain link, `Collectivist`→linked rings, `Individualist`→dot in a
    ring, `Shipborn` (Odyssey, TradersGuild-only)→? (a hull-and-star was the

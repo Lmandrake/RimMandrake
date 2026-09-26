@@ -78,13 +78,14 @@ was left out.
 ## Open questions for the owner
 Only he can rule these; the doc takes a position on each so his answer is a
 yes/no, not a blank.
-1. **Who speaks.** Doc §1 derives "the droid, first person" from existing rulings
-   (firmware personalities v1, the First Speaker, the bolt as a mute). That is an
-   inference, not a card. Confirm, or rule the Narrator instead.
+1. **Who speaks — RULED 2026-09-25: the Narrator, speaking of the droid in third
+   person** (owner: *"Letters should come from the Narrator. They will speak of the
+   droid in third person."*). Doc §1's first-person derivation is overturned and owes
+   a rewrite.
 2. **Droid budget unit and number.** He rejected per-game-day for the gods; the
    doc proposes a separate `droids` bucket at 2 per real-world hour. His number.
-3. **Latency.** A letter may land up to 2 × timeout (≈2 min default) after the
-   moment. Accept, or set a tighter droid-only timeout with no retry (30 s?).
+3. **Latency — RULED 2026-09-25: a late letter is fine for now** (up to 2 × timeout,
+   ≈2 min).
 4. **Register table (§2.2).** Eight one-line tone choices. The two that most need
    his ear: Battle (comically bad threat assessment) and Power (the gonk syllable).
 5. **Which of the four earn the LLM at all.** R is the only consumer allowed a
@@ -92,6 +93,6 @@ yes/no, not a blank.
    catch. Ship W/B/O live and keep R prescribed-only, or all four.
 6. **Programmable tier.** Doc fires the consumer in a flat status register with
    one crack. Simpler alternative: programmable never fires. His call.
-7. **Prescribed lines now, ahead of un-dormanting?** W and B have built hooks;
-   their three fallback lines each could ship today as a letter with no Oracle
-   involvement at all. That is a scope question for him, not a design one.
+7. **Prescribed lines now — RULED 2026-09-25 by card: yes.** W and B's three
+   fallback lines each ship now as plain letters with no Oracle involvement, in the
+   Narrator's third person per Q1.
