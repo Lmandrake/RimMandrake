@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T08:33:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T08:43:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -881,15 +881,6 @@ target:   v1
 kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
-
-## WEBWORK_WEB_STRUCTURES_1 Real art + build pass for the Anchor/Web/Gutter structures (placeholder Hive texture today) and the deferred commandable-adhesive slick/locked mechanism (kit spec S3)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/WEBWORK_WEB_STRUCTURES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_WEB_STRUCTURES_1.md
 
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
