@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_RM_MOD_BUILD_1. mandrake.rm.rustcathedral's own copy of the
+  Rust Cathedral biome, generalized (franchise-free, campaign-free) per
+  biome_mod_architecture.md §5 Phase A. Source: the FROZEN
+  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml (113
+  lines, unchanged, still carrying the campaign world's own 236 tiles until
+  the terminal repaint — see its own header for the freeze notice).
+
+  Differences from the frozen twin, all deliberate:
+    - defName RM_RustCathedral, own <label>/<description> (already native on
+      the twin, so nothing to duplicate there).
+    - workerClass -> RM_BiomeWorker_RustCathedral (own C#, replacing the
+      donor AlphaBiomes.BiomeWorker_MechanoidIntrusion — a donor type in
+      workerClass is a hard dependency the RimMandrake tier may not assume).
+    - lakeBeachTerrain/mudTerrain/riverbankTerrain -> own
+      RM_RustCathedral_CrackedMetalSoil; terrainsByFertility ->
+      RM_RustCathedral_PolymerFloor. See Defs/TerrainDefs/
+      RM_RustCathedral_Terrain.xml for why these are OWN defs that still
+      borrow the donor's pixels (disclosed, hard modDependency).
+    - <fishTypes>/<maxFishPopulation> are NATIVE here (150, freshwater_Common
+      = RUT_CoolantEel only) rather than arriving by patch — the absorbed
+      RustCathedralHum kit's own RUT_RustCathedral_Fishing.xml patch
+      DISSOLVED into this field per the item's step 2 ("a self-patch is
+      pointless once the def is ours"). See that item's §11 step 2 and the
+      original patch file (git history) for the full field-behavior
+      reasoning (Odyssey FishBase gate, LoadDataFromXmlCustom <li> trap,
+      canal-size curve) — none of it changes by moving from patch to field.
+    - <forceRockTypes> is likewise NATIVE (RM_CathedralDeckPlate,
+      RM_MineableDeadSmartsteel do not exist as separate RM_-prefixed defs —
+      the absorbed Walls kit's own RUT_CathedralDeckPlate/
+      RUT_MineableDeadSmartsteel keep their RUT_ defNames per the item's
+      step 2, since neither is referenced by the frozen twin and both were
+      pre-existing content being relocated, not freshly authored under the
+      naming-scheme migration), dissolved from
+      RUT_RustCathedral_ForceRockTypes.xml the same way.
+    - <wildAnimals>: Ling_Cockroach DROPPED (superseded reading —
+      rosters/the_rust_cathedral.json's 2026-09-07 owner addendum explicitly
+      supersedes the frozen twin's own line keeping it); RUT_CathedralRoach
+      replaced with RM_CathedralRoach (this mod's own duplicate — see
+      Defs/ThingDefs_Races/RM_CathedralRoach.xml's own header for why this
+      is a DUPLICATE, not a rename: the frozen twin's line 103 still needs
+      the RUT_ original to keep working until Phase B); GR_Mecharat
+      unchanged (donor, stays per §3b: only Star Wars fauna route through a
+      Utinni patch, and this is not Star Wars); RUT_LivingBolt/RM_LivingBolt
+      ADDED so §3 of the absorbed kit (the living bolts) can spawn at all —
+      the frozen twin's own copy never wired one (item §5: "wired to
+      NOTHING").
+    - <wildPlants /> stays EMPTY — RULED zero, not owed (frozen sheet hard
+      ban 7, roster's own flora_purged entry, biome_flora.py's PLANTLESS
+      set). Do not "discover" this as a gap; see the item's own "False
+      statements found elsewhere" section.
+    - <texture> kept pointing at the donor's Biomes/AB_MechanoidBiome world
+      icon (disclosed donor-texture reliance, same trade as the terrain
+      above) pending a real world-map icon commission.
+
+  Donor-texture reliance: sarg.alphabiomes ships as a HARD modDependency in
+  About.xml (not MayRequire) for exactly the reasons named above — this
+  biome's floor and world-map icon are literally borrowed pixels until a
+  future art pass. Disclosed in About.xml's own description, same honesty
+  convention RM_Miasma set for its flora textures.
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_RustCathedral</defName>
+    <label>the Rust Cathedral</label>
+    <description>A flat plateau of deck plate and mathematical walls at the foot of the eternal noon -- a complex, circuit-board maze of walls and structures that screams of meaningful complexity and intention. Rust-dust banks in drifts against them, heat shimmer stands as the weather, and almost nothing living remains. And under everything, always, a hum.</description>
+    <workerClass>RimMandrake.RustCathedral.RM_BiomeWorker_RustCathedral</workerClass>
+    <modExtensions>
+      <li Class="RimMandrake.RustCathedral.RM_RustCathedralBiomeRanges" />
+    </modExtensions>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <lakeBeachTerrain>RM_RustCathedral_CrackedMetalSoil</lakeBeachTerrain>
+    <mudTerrain>RM_RustCathedral_CrackedMetalSoil</mudTerrain>
+    <riverbankTerrain>RM_RustCathedral_CrackedMetalSoil</riverbankTerrain>
+    <allowRoads>false</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <animalDensity>0.1</animalDensity>
+    <plantDensity>0.0</plantDensity>
+    <forageability>0.0</forageability>
+    <movementDifficulty>1.5</movementDifficulty>
+    <texture>Biomes/AB_MechanoidBiome</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>RM_RustCathedral_PolymerFloor</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>90</Clear>
+      <DryThunderstorm>4</DryThunderstorm>
+      <Fog>0</Fog>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <maxFishPopulation>150</maxFishPopulation>
+    <fishTypes>
+      <freshwater_Common>
+        <RUT_CoolantEel>1</RUT_CoolantEel>
+      </freshwater_Common>
+    </fishTypes>
+    <forceRockTypes>
+      <li>RUT_CathedralDeckPlate</li>
+      <li>RUT_MineableDeadSmartsteel</li>
+    </forceRockTypes>
+    <wildAnimals>
+      <RM_CathedralRoach MayRequire="mandrake.rm.rustcathedral">0.12</RM_CathedralRoach>
+      <GR_Mecharat MayRequire="vanillaexpanded.vgeneticse">0.5</GR_Mecharat>
+      <RUT_LivingBolt MayRequire="mandrake.rm.rustcathedral">0.06</RUT_LivingBolt>
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+
+    </wildPlants>
+    <wildPlantRegrowDays>25</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

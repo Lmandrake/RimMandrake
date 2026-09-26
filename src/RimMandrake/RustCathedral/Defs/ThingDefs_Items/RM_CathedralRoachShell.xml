@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_RM_MOD_BUILD_1 §6. A DUPLICATE of
+  src/RimUtinni/RustCathedralRoaches/Defs/ThingDefs_Items/RUT_CathedralRoachShell.xml,
+  renamed RUT_CathedralRoachShell -> RM_CathedralRoachShell to match
+  RM_CathedralRoach's own butcherProducts. See that file's own header for
+  the full design rationale (ParentName="ResourceBase", deliberately not
+  watched by any hum/goodwill mechanic).
+
+  Art: placeholder — reuses vanilla ComponentIndustrial's icon path, same as
+  the original.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CathedralRoachShell</defName>
+    <label>roach shell plating</label>
+    <description>A curved plate of mechanoid chitin-analogue, stripped from a dead cathedral roach. Its alloy is a minor curiosity to a trader, more interesting for what its patient, tireless owner used to do than for the metal itself.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentIndustrial</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>12</MarketValue>
+      <Mass>0.3</Mass>
+      <Beauty>0</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

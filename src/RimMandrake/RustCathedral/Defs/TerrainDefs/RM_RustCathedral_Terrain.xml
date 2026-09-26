@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_RM_MOD_BUILD_1 step 2. The frozen RUT_RustCathedral.xml
+  borrowed two Alpha Biomes donor TerrainDefs outright (AB_SoilOnCrackedMetal
+  for lakeBeachTerrain/mudTerrain/riverbankTerrain, GU_MetalFloor1 for its
+  sole terrainsByFertility row) — a donor DEF is a hard dependency the
+  RimMandrake tier may not assume (the def could vanish if Alpha Biomes ever
+  changes that defName). These two OWN TerrainDefs remove that def
+  dependency: no ParentName chain into an Alpha Biomes def, own defNames.
+
+  TEXTURE RELIANCE IS NOT REMOVED, and is disclosed rather than hidden: both
+  texturePaths below point at the SAME pixels Alpha Biomes ships
+  (Terrain/Surfaces/AB_SoilOnCrackedMetal, Terrain/Surfaces/AB_Polymer —
+  vendor/mod_sources/AlphaBiomes_src/1.6/Defs/TerrainDefs/
+  Terrain_MechanoidIntrusion.xml), so sarg.alphabiomes ships as a hard
+  modDependency in About.xml — same trade RM_Miasma already makes for 96.5%
+  of its flora textures, for the same reason: no art pipeline pass has run
+  for this biome's floor yet, and a magenta/missing floor texture is worse
+  than an honest, disclosed donor-texture dependency. A future pass can
+  generate this mod's own floor art and drop the dependency; nothing here
+  blocks that (only texturePath moves).
+
+  Field values (edgeType/renderPrecedence/statBases/affordances/fertility)
+  copied from the donor def (same source file) since this mod's own biome
+  ships identical gameplay behavior for its floor, only the ownership of the
+  def changes.
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_RustCathedral_CrackedMetalSoil</defName>
+    <label>soil on cracked metal</label>
+    <texturePath>Terrain/Surfaces/AB_SoilOnCrackedMetal</texturePath>
+    <color>(100,100,100)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <fertility>0.45</fertility>
+    <takeFootprints>false</takeFootprints>
+    <tags>
+      <li>Soil</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_RustCathedral_PolymerFloor</defName>
+    <label>polymer flooring</label>
+    <texturePath>Terrain/Surfaces/AB_Polymer</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_Polymer_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionFloorSmooth</pollutionOverlayTexturePath>
+    <pollutionColor>(1, 1, 1, 0.1)</pollutionColor>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <statBases>
+      <Beauty>-1</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+    <fertility>0</fertility>
+    <takeFootprints>false</takeFootprints>
+  </TerrainDef>
+
+</Defs>
