@@ -4966,3 +4966,83 @@ folders (same list as wave 14, **plus `DivingInteraction`** — a concurrent
 agent is adding a seabed planet layer on top of wave 14's clean mark right
 now) and `biome_paint_list.md` until told the concurrent biome-split build
 is done.
+
+## Wave 16 — 2026-09-26 (as FOUNDRY)
+
+Fresh `list --show-untracked` survey (`TALLY CLEAN 3149 DIRTY 214 ORPHANED
+211 NEVER ENTERED 676` at start). Briefed to additionally steer clear of
+`FeverWood/Source`, `DivingInteraction`, `TerminalBiomes`, and anything with
+`BrineElder`/`GreySea` in its path (concurrent terminal-seas floor/flora and
+Grey Sea Brine Elder work in flight) — same posture as prior waves, applied
+on top of the full named-biome-folder exclusion list.
+
+Confirmed via `git status --porcelain` that all candidate directories below
+were completely clean (no in-flight edits) before touching anything.
+
+**Cluster A** — `src/RimMandrake/ExplosiveGrowth/Source/` (11 files, all
+NEVER ENTERED, all confirmed wired into `RM_ExplosiveGrowth.csproj`'s
+`<Compile Include>` list): `RM_GrowthTop.cs`,
+`RM_ExplosiveGrowthRegistry.cs`, `RM_ExplosiveGrowthDefOf.cs`,
+`ExplosiveGrowthMod.cs`, `ExplosiveGrowthAPI.cs`,
+`RM_MapComponent_ExplosiveGrowth.cs`, `RM_SoakSources.cs`,
+`RM_TopResolver.cs` (also carries `RM_SproutRing`),
+`RM_ExplosiveGrowthPatches.cs`, `RM_ChargeSelfTest.cs`,
+`RM_IncidentWorker_BloomBurst.cs`, `Debug/RM_ExplosiveGrowthDebugActions.cs`.
+Traced the soak/charge/top state machine end to end (`MapComponentTick` →
+`Pass` → `StartCharge`/`StepCharge`/`UpdateTells` → `RM_TopResolver.Fire`),
+the reflection-soft soak sources (FlowWorks irrigation, EnvironmentalHazards
+gradient-axis surge, roster-named weather), the 4 Harmony patches (growth
+rate, overgrown Print, hue Graphic, harvest jackpot, last-swing gamble), and
+the self-test. Noted that `RM_MapComponent_ExplosiveGrowth.StepCharge`
+already carries a 2026-09-26 dated comment documenting and fixing a real
+"dormant charge decays in the same pass it starts" defect from an earlier
+pass today — re-verified the fix (wet+dormant now correctly HOLDS rather
+than falling into the decay branch) and re-ran the self-test's own math by
+hand; no residual defect. Checked the last-swing-gamble Harmony prefix's
+`return __instance.Spawned` against every top: 5 of 6 tops destroy the
+plant (skip vanilla's own `PlantCollected`, correct); Flush survives its top
+by design, and letting vanilla's collect proceed afterward is also correct
+(the plant is being manually felled/harvested independent of its own silent
+top). No bug found; all 11 marked CLEAN.
+
+**Cluster B** — `src/RimUtinni/EggReckoning/Source/` (6 files, all
+confirmed wired into `RimMandrake.Utinni.EggReckoning.csproj`):
+`EggReckoningSettings.cs`, `RM_QuestNode_GetHuttCartelSettlement.cs`,
+`RM_QuestPart_EggPlantWatcher.cs`, `RM_QuestNode_EggPlantWatcher.cs`,
+`RM_QuestPart_EggHatch.cs`, `RM_QuestNode_EggHatch.cs`. Traced the
+Reckoning-quest Mod Settings patcher (captures shipped baselines once,
+replays them on toggle — matches the documented WreckedMachinesPatcher
+precedent), the Hutt Cartel settlement finder (same shape as
+`RM_QuestNode_GetWildsteamSettlement`, confirmed distance/trade-request
+gating), the egg-plant watcher (roofed+unfogged+undiscovered polling,
+correctly throttled) and the egg-hatch quest part (per-hour discovery roll,
+night-window hatch, `PawnGenerationRequest` with fixed biological age,
+manhunter-permanent spawn). No bug found; all 6 marked CLEAN.
+
+Both clusters (18 files total) marked CLEAN in one status commit
+(`924bd29c0`), pushed and confirmed published on `origin/main` at the same
+sha after retrying past one live `index.lock` contention (a concurrent
+agent's `git commit` on Transient/ + item files) and one non-fast-forward
+push (resolved via `shared_sync.py`, which found nothing local-only left to
+replay — a peer's push had already landed the intervening commits by the
+time `shared_sync.py` ran, and `git merge-base --is-ancestor` confirmed this
+wave's sha on `origin/main` directly).
+
+Re-measured after: `TALLY CLEAN 3163 DIRTY 217 ORPHANED 211 NEVER ENTERED
+663` (concurrent biome-split/seabed/GreySea agents are still moving files
+across buckets independent of this pass; 18 files newly CLEAN this wave, net
+DIRTY count also moved from other agents' concurrent work).
+
+Next wave: re-survey `list --show-untracked` fresh. ⛔ Keep avoiding
+biome-specific mod folders (same list as wave 15) plus `DivingInteraction`,
+`FeverWood/Source`, `TerminalBiomes`, anything with `BrineElder`/`GreySea` in
+its path, and `biome_paint_list.md` until told the concurrent biome-split
+build is done. Also worth a look next wave: a sizeable batch of files
+DIRTY-since-clean-mark (content changed after an earlier clean mark) sitting
+outside any excluded folder — `src/RimMandrake/EnvironmentalHazards/Source/`
+(~20 files), `src/RimMandrake/CreatureBehaviors/Source/` (~7 files), and
+several standalone `Utils/`, `FlowWorks/`, `RimUtinni/ShipShields/Source/`
+and `RimUtinni/PlantGrowth/Source/` files — these were CLEAN once, so a
+diff-scoped review (not full-file) is valid per CLAUDE.md's own rule, and is
+likely a faster way to burn down debt than another full NEVER-ENTERED
+cluster.
