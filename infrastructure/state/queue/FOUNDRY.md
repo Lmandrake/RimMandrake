@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T05:34:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T05:38:16Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -846,15 +846,6 @@ kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
 
-## SUMP_FAUNA_ROSTER_1 Build the invented Sump fauna defs per sump_fauna_roster_2026-09-24.md (incl. the ruled spike-legged flier; wrissen deleted by ruling)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/SUMP_FAUNA_ROSTER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SUMP_FAUNA_ROSTER_1.md
-
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
 row:      unassigned
@@ -1612,16 +1603,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md
 
-## MIASMA_FAUNA_FLOOR_ROSTER_1 The Miasma arthropod floor, the fever-swarm, and the stranded as a condition
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Four scuttler defs — RMKarravel (the flat disc that carpets the mud film),
-prose:    infrastructure/state/items/MIASMA_FAUNA_FLOOR_ROSTER_1.md
-
 ## MLIE_ABSORPTION_BIOME_WIRING_1 98 live biome rows still name the bare donor for 73 creatures we already ported
 state:    proposed
 row:      unassigned
@@ -1841,3 +1822,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/UTINNIPATCHES_LOAD_ORDER_CYCLE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/UTINNIPATCHES_LOAD_ORDER_CYCLE_1.md
+
+## MIASMA_SCUTTLER_PREDATION_1 Wire the five carnivorous plants to actually eat the arthropod-floor scuttlers
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  MIASMASCUTTLERPREDATION1 — wire the five carnivorous plants to actually eat the arthropod floor
+prose:    infrastructure/state/items/MIASMA_SCUTTLER_PREDATION_1.md
