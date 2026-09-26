@@ -29,23 +29,23 @@ generic `PawnKindDef` that spawns near any sweetline tree and guards it.
 
 The tree is the only vertical in a biome that is a knee-high canopy horizon to horizon. Its
 crown is the one place on the plain with sightlines, shade and a hanging larder — the
-giant-wool the bark snags — and the kessrik is what took it. A knuckle-walking climber about
+giant-wool the bark snags — and the bark-warden is what took it. A knuckle-walking climber about
 the mass of a large dog, long-armed, hook-clawed, with a flat wide head and a coat the
 silver-grey of the wool it sleeps in; it is invisible in the crown until it is not. It eats
 what the tree brings it (bark-lickers, the runway animals that come to the trunk, fuzz at the
 foot of the tree when nothing else comes) and never goes far, because the tree is the whole
-of its territory: a kessrik more than a dozen cells from its trunk is a kessrik walking back.
+of its territory: a bark-warden more than a dozen cells from its trunk is a bark-warden walking back.
 
 What it does to you: nothing, until you come within nine cells of the trunk. Then one drops
 from the crown onto you with no warning, and the others follow. Back off past eighteen cells
 and it stops — it wants you gone, not dead — and climbs back up. Cut or harvest the tree and
-every kessrik in it comes down at once on whoever is holding the tool. That is the whole
+every bark-warden in it comes down at once on whoever is holding the tool. That is the whole
 creature: **a valuable hanging harvest, in a dangerous place**, where the danger is
 proportional, local, and readable — you can see the tree from a day's walk, and every Jawa
 knows what lives in it.
 
 Register notes, for the description text: the wild here is quiet and "danger announces itself
-by posture, never by voice" (§5 of the biome sheet) — the kessrik gives no call before the
+by posture, never by voice" (§5 of the biome sheet) — the bark-warden gives no call before the
 drop, and its `soundAngry` should be breath and claws, not a roar. Slots in the size ladder:
 medium, the interface-killer band, alongside Anooba and Massiff; it is the one medium
 predator that hunts DOWN from above rather than across the interface, which is the niche the
@@ -105,7 +105,7 @@ to "my tree". Two engine facts carry it, and both are load-bearing:
 
 And one fact that shapes what the guardian can attack at all: `JobGiver_Manhunter.
 FindPawnTarget`'s validator is `x is Pawn && (int)x.def.race.intelligence >= 1` — ToolUser
-or Humanlike only (RimWorld/JobGiver_Manhunter.cs l.79–84). **A kessrik can never target an
+or Humanlike only (RimWorld/JobGiver_Manhunter.cs l.79–84). **A bark-warden can never target an
 animal.** Your pets grazing under the tree are safe; so is every wild thing. "Defend them from
 human-sized things" is what the engine gives, not something to build.
 
@@ -123,7 +123,7 @@ nearest qualifying pawn becomes `otherPawn` of a forced, force-wake `TryStartMen
 `RM_TerritorialRage`. Cooldown per guardian `600` ticks — short on purpose: a loiterer inside
 the radius gets charged again every ~15 in-game minutes, which is the pressure the loop needs.
 
-Fields, with the shipped defaults for the kessrik: `rageState` (null = inert, as
+Fields, with the shipped defaults for the bark-warden: `rageState` (null = inert, as
 `enrageState` is), `triggerRadius 9`, `disengageRadius 18` (explicit rather than 2×, so a
 race can be given a tight trigger and a long grudge), `rageDurationTicks 2500`,
 `cooldownTicks 600`, `leashRadius 12`, `rehomeSearchRadius 60`,
@@ -204,7 +204,7 @@ carries a handful. Negligible.
   on the fire damage and gets the scoped rage via the harvest hook while it burns.
 - **Tamed:** faction non-null → the comp goes inert (no scan, no leash), the roost prunes it
   on the next rare tick (it checks faction as well as death), and the slot re-spawns on the
-  timer. A tamed kessrik is a normal Advanced-trainable animal from then on. Going feral
+  timer. A tamed bark-warden is a normal Advanced-trainable animal from then on. Going feral
   again re-enters the "spawned any other way" rule.
 - **Save/load:** both references are `Scribe_References`; a `homeTree` that fails to
   resolve reads as null and the re-home rule handles it.
@@ -227,21 +227,21 @@ Defs/ThingDefs_Races/`):
 | `RSW_TunnelSnake` | 2.0 ⚠ | 3.00 | 3.2 | toxic stinger 16/2.6, claws 15/2.0 ×2 (+stun 8 surprise), bite 18/1.4 | 0.25/0.35 | 320 | 1 |
 | `RSW_ShrublandGiant` | 6.0 | 8.50 | 2.8 | bite 26/2.6, feet 22/2.0 ×2 | 0.50/0.45 | 380 | 1–3 |
 | Mudhorn (huge predator icon) | 4.0 | 4.50 | 4.0 | horn 26/2.0, bite 19/2.6 | 0.24/0.24 | 475 | 1 |
-| **kessrik (proposed)** | **1.2** | **1.6** | **4.8** | **bite 15/1.8; hook-claws Scratch 12/2.0 ×2, surpriseAttack Stun 6; head Blunt 6/2.0 (chanceFactor 0.2)** | **0.20/0.15** | **110** | **2–3 per tree** |
+| **bark-warden (proposed)** | **1.2** | **1.6** | **4.8** | **bite 15/1.8; hook-claws Scratch 12/2.0 ×2, surpriseAttack Stun 6; head Blunt 6/2.0 (chanceFactor 0.2)** | **0.20/0.15** | **110** | **2–3 per tree** |
 
 ⚠ `RSW_TunnelSnake` at bodySize 2.0 is inside the banned large band. Found while calibrating,
 not this spec's to fix; reported to the owner (§11). It is NOT used as a ceiling here for that
-reason — the kessrik is calibrated against Anooba (the biome's own medium predator) and the
+reason — the bark-warden is calibrated against Anooba (the biome's own medium predator) and the
 giant (the thing whose wool it lives in).
 
 **Why these numbers.**
 - bodySize 1.2 / healthScale 1.6: about 1.6× an Anooba's hit points, well under the snake's,
-  so a single kessrik dies to two colonists with any weapon but outlasts one unarmed Jawa.
+  so a single bark-warden dies to two colonists with any weapon but outlasts one unarmed Jawa.
 - Speed 4.8 vs Anooba 5.0: a colonist (4.6) with a head start reaches the 18-cell disengage
   line before being caught more often than not; a colonist who dawdles inside the radius does
   not. The rage disengages at the line, so the chase is bounded by design, not by speed.
 - The opener: `surpriseAttack` Stun 6 on the hook-claws is the drop from the crown — a stun of
-  that size is a lost second or two, enough for the second kessrik to arrive, not enough to
+  that size is a lost second or two, enough for the second bark-warden to arrive, not enough to
   chain-lock a pawn (the snake's is 8; that one is an ambusher by trade). No venom: the venom
   register belongs to the small band and the snake, and toxic on a 2–3 pack tips "dangerous"
   into "lethal on contact".
@@ -249,7 +249,7 @@ giant (the thing whose wool it lives in).
   work.
 - combatPower 110 each, so a full tree is 220–330 points — roughly one tunnel snake, or a
   third to half a shrubland giant. That is the weight the loop wants: **one colonist alone
-  should lose; two with guns firing from outside 9 cells win while the kessriks charge (they
+  should lose; two with guns firing from outside 9 cells win while the bark-wardens charge (they
   charge — see manhunterOnDamage below); three in melee take real wounds.** The re-spawn
   timer (8–14 days) makes it a renewable cost, not a one-time clearance.
 - `Wildness 0.95`, `manhunterOnDamageChance 1.0`, `manhunterOnTameFailChance 0.5`: shooting
@@ -260,8 +260,8 @@ giant (the thing whose wool it lives in).
   description text, not `predator true` — a predator's hunt range would drag it off its tree
   and would make it hunt your pets. `maxPreyBodySize` unset.
 - `herdAnimal false`, `wildGroupSize 1` on the PawnKindDef: it must NEVER appear through the
-  biome's `wildAnimals` table (commonality 0 there, and not listed at all) — every kessrik
-  comes from a roost. A kessrik with no tree is the failure mode, not a spawn table entry.
+  biome's `wildAnimals` table (commonality 0 there, and not listed at all) — every bark-warden
+  comes from a roost. A bark-warden with no tree is the failure mode, not a spawn table entry.
 - `lifeStageAges` the ordinary three-stage ladder (adult at 1.0 years); the roost spawns
   adults; `gestationPeriodDays 12`; young born on the map inherit `homeTree` from the mother
   in `RM_CompTreeGuardian.PostSpawnSetup` if she has one and the roost has a vacancy —
@@ -276,12 +276,12 @@ giant (the thing whose wool it lives in).
 - **Tameable: yes, hard.** `trainability Advanced`, `petness 0`, `Wildness 0.95`. Taming
   requires standing inside the trigger radius with food — the rage is the tame-failure
   penalty before the roll ever happens (`onlyToolUserOrHumanlikeTriggers` does not exempt a
-  handler). A tamed kessrik goes inert as a guardian (§3) and is a good guard animal for its
+  handler). A tamed bark-warden goes inert as a guardian (§3) and is a good guard animal for its
   weight; it does not guard anything of the colony's. No `specialTrainables` beyond the
   Odyssey `AttackTarget` the snake already ships.
 - **Drops:** meat and a leather from the donor body the build reskins — the giant precedent
   (`RSW_Leather_Fambaa` / `RSW_Gorg_Meat`) is to reuse rather than mint. **No signature drop.**
-  The reward is the tree's, deliberately: if the kessrik dropped wool, killing them would be
+  The reward is the tree's, deliberately: if the bark-warden dropped wool, killing them would be
   the harvest and the tree would be scenery again. `MarketValue 420` (Anooba 400, Strill 450).
 - **Its bower** is not a Thing. The wool it sleeps in is the wool on the bark; the harvest
   and the roost are one object, which is why harvesting is an attack on it.
@@ -297,9 +297,9 @@ race and the RUT binding carry no settings of their own — SWBestiary's
 
 | setting | type / range | default | on → off, exactly |
 |---|---|---|---|
-| `treeGuardiansEnabled` | bool | **true** | Off: roost comps spawn nothing new; guardian comps stop scanning and stop leashing, so every existing kessrik is an ordinary wild animal from the next rare tick (it is NOT despawned — the owner's animals stay his). A rage already running ends on its own rules. Stats, tools and `manhunterOnDamageChance` are untouched: it is exactly as dangerous as its card says and no more. |
+| `treeGuardiansEnabled` | bool | **true** | Off: roost comps spawn nothing new; guardian comps stop scanning and stop leashing, so every existing bark-warden is an ordinary wild animal from the next rare tick (it is NOT despawned — the owner's animals stay his). A rage already running ends on its own rules. Stats, tools and `manhunterOnDamageChance` are untouched: it is exactly as dangerous as its card says and no more. |
 | `treeGuardianRadiusMultiplier` | slider 0.5–2.0 | **1.0** | Scales `triggerRadius` and `disengageRadius` together (so the hysteresis ratio holds). 0.5 = "you have to touch the trunk"; 2.0 = a 36-cell exclusion zone. Never the leash. |
-| `treeGuardianCountMultiplier` | slider 0–2.0 | **1.0** | Scales the roost `count` range (rounded, floor 0). At 0 a tree spawns and re-spawns nothing; existing kessriks stay. At 2.0 a tree holds 4–6. |
+| `treeGuardianCountMultiplier` | slider 0–2.0 | **1.0** | Scales the roost `count` range (rounded, floor 0). At 0 a tree spawns and re-spawns nothing; existing bark-wardens stay. At 2.0 a tree holds 4–6. |
 | `treeGuardianHarvestRage` | bool | **true** | Off: cutting, harvesting or burning the tree does not rouse them (the PlantAlarm scoped path is skipped); proximity still does. For the player who wants the sentry, not the siege. |
 
 Label the group **"Tree guardians (map generation and wild regrowth)"** — it is not a
@@ -309,7 +309,7 @@ regrown tree spawns, and the standing ruling asks for that class of effect to be
 Graceful degradation, checked case by case: `rageState` null in XML → inert, as
 `enrageState` is; kit absent (`MayRequire` on every block) → the tree is a tree and the race
 loads as a plain animal with no comp; assembly present but the settings file missing →
-defaults; all four at their minimum → a tree with no guardians and a kessrik that is a
+defaults; all four at their minimum → a tree with no guardians and a bark-warden that is a
 slightly tough Anooba.
 
 ## 7. Naming — defName and player-facing label
@@ -341,7 +341,7 @@ the game") is satisfied by keeping the fiction on the ground: the drop from the 
 `surpriseAttack` stun on the claw tool, an animation-free melee opener, not a flight. The
 dive route on the interface is already the fliers' (Whisperbird, Convor, the scrap-nest
 birds), and this creature is the canopy's answer, not the sky's. `MaxFlightTime` is not set;
-`canFlyIntoMap` is false (a kessrik arriving by air would have no tree).
+`canFlyIntoMap` is false (a bark-warden arriving by air would have no tree).
 
 If the owner wants it to glide between trees, that is a different creature: `MaxFlightTime`
 > 0 (a stat, never a bool), a whole-body directional flip-book on the PawnKindDef, and no
@@ -372,7 +372,7 @@ Honest list. Each has a mitigation in the design or a stated acceptance.
    mauled. A wild animal attack costs no goodwill, but a dead trader is a lost trade.
    Accepted as the biome ("every raider knows…"), and it applies to raiders too — players
    will route a raid past a tree on purpose. Emergent, allowed.
-5. **Ranged cheese.** Shoot from 30 cells and the kessrik cannot reach you before it dies.
+5. **Ranged cheese.** Shoot from 30 cells and the bark-warden cannot reach you before it dies.
    `manhunterOnDamageChance 1.0` makes it charge on the first hit, so it costs ammunition and
    a fight, and the roost re-spawns in 8–14 days, so it is a recurring cost, not a one-time
    clearance. Accepted.
@@ -384,7 +384,7 @@ Honest list. Each has a mitigation in the design or a stated acceptance.
    is kept here for consistency; the player learns the rule from the tree's description and
    the first drop. If the owner wants a tell, it is a `soundCall` on the crown, never a
    letter.
-8. **The kessrik that lost its tree.** A free ex-guardian is a 1.2-body wild animal that
+8. **The bark-warden that lost its tree.** A free ex-guardian is a 1.2-body wild animal that
    wanders like any other. Fine. What it must not do is manhunt or vanish; both are covered
    in §3.
 9. **A guardian on a tree the player never visits** costs a radial scan every 250 ticks
@@ -392,7 +392,7 @@ Honest list. Each has a mitigation in the design or a stated acceptance.
    quicktest, not a design change.
 10. **Pets cannot be hurt by it and cannot bait it** (`JobGiver_Manhunter` targets ToolUser+
     only). A player expecting a guard-dog stand-off gets nothing. Accepted: the alternative —
-    a kessrik that kills a passing muffalo — makes every tree a pet-killer and the loop
+    a bark-warden that kills a passing muffalo — makes every tree a pet-killer and the loop
     stops being about the harvest.
 11. **The two-tree overlap.** Two sweetline trees within 18 cells of each other would give
     a single intruder two roosts' worth of rages. `wildClusterRadius 0` / `wildClusterWeight
