@@ -62,10 +62,30 @@
          inline here instead (SEA_BEASTS_TIER_RULING_1).
          TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
          verdict 1: the two ruled floor residents (RM_ScaldFauna.xml). -->
+    <!-- SEA_FISHABLES_ALIVE_IN_DEPTHS_1, 2026-09-26 (owner ruling: every
+         fishable owes a living creature swimming the depths, in EVERY sea):
+         the seven catch-only species below now live here too, authored from
+         their own catch items' descriptions in RM_ScaldFloorFauna.xml. With
+         them the Scald's nine fishTypes entries have nine living residents
+         and the roster's food pyramid inverts the right way up
+         (ECOSYSTEM_PYRAMID_LAW_1 measured this roster at 0.0% small on
+         2026-09-20, when it held two animals; every species added here is
+         baseBodySize 0.05-0.3, far under the law's 1.0 line).
+         ⚠️ Shorthand form only: BiomeAnimalRecord has a custom loader that
+         reads the node NAME as the animal and the node TEXT as the
+         commonality. An <li> wrapper here silently discards the whole
+         roster. -->
     <wildAnimals>
       <RM_ElderSando>0.005</RM_ElderSando>
       <RM_Noohm>0.4</RM_Noohm>
       <RM_Shulla>0.9</RM_Shulla>
+      <RM_Eesh>1.2</RM_Eesh>
+      <RM_Doss>1.0</RM_Doss>
+      <RM_Muddal>0.7</RM_Muddal>
+      <RM_Bladderboil>0.6</RM_Bladderboil>
+      <RM_Thuum>0.5</RM_Thuum>
+      <RM_Karrash>0.45</RM_Karrash>
+      <RM_Ekkel>0.3</RM_Ekkel>
     </wildAnimals>
     <animalDensity>0.15</animalDensity>
     <coastalWildAnimals />
@@ -86,17 +106,17 @@
     <maxFishPopulation>40</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <freshwater_Common>
-        <RM_Eesh>1.5</RM_Eesh>
-        <RM_Muddal>0.8</RM_Muddal>
-        <RM_Doss>0.7</RM_Doss>
-        <RM_Thuum>0.5</RM_Thuum>
+        <RM_EeshCatch>1.5</RM_EeshCatch>
+        <RM_MuddalCatch>0.8</RM_MuddalCatch>
+        <RM_DossCatch>0.7</RM_DossCatch>
+        <RM_ThuumCatch>0.5</RM_ThuumCatch>
         <RM_ShullaCatch>0.6</RM_ShullaCatch>
       </freshwater_Common>
       <freshwater_Uncommon>
-        <RM_Karrash>1</RM_Karrash>
+        <RM_KarrashCatch>1</RM_KarrashCatch>
         <RM_Saal>0.5</RM_Saal>
         <RM_BladderboilCatch>0.5</RM_BladderboilCatch>
-        <RM_Ekkel>0.4</RM_Ekkel>
+        <RM_EkkelCatch>0.4</RM_EkkelCatch>
       </freshwater_Uncommon>
       <rareCatchesSetMaker>RM_RareScaldCatches</rareCatchesSetMaker>
     </fishTypes>
