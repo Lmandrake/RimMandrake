@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ScaldWorking.xml                    TerminalBiomes
+  ==========================================================================
+  SCALD_STEAM_WEATHER_DESIGN_1 step 5. The one research gate on the Scald's
+  protection ladder, and it is the owner's own ruling by question card
+  2026-09-25: *the boil-suit is Industrial research.* Nothing else in the
+  ladder is gated — the wrap is Neolithic and the Royal Rind's gate is a
+  grub fight, not a bench.
+
+  baseCost 1200 and the ComplexClothing prerequisite are INVENTED (the
+  spec's own figures); techLevel Industrial is the ruling.
+-->
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RM_ScaldWorking</defName>
+    <label>scald working</label>
+    <description>Sealing, seaming and rubberizing cloth well enough to keep live steam off skin for a full working day — and the tolerances that tell a seal which holds from one which only looks like it does. Unlocks the boil-suit.</description>
+    <baseCost>1200</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>ComplexClothing</li>
+    </prerequisites>
+    <researchViewX>7.00</researchViewX>
+    <researchViewY>3.60</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>

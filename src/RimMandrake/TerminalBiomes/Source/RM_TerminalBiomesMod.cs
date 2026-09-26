@@ -28,6 +28,7 @@ namespace RimMandrake.TerminalBiomes
     //       Scald.S2 -> RUT_SteamCatch (RM_CompResourceCondenser)
     //       Scald.S4 -> RUT_ScaldVent, as the condenser sees it
     //       Scald.S5 -> RUT_WalkerSurfacing, RUT_GenStep_ScaldSailScatterer
+    //       Scald.S7 -> RUT_ScaldSteamCarrier (GameCondition_EnvironmentalWeather)
     //   - Mechanics whose engine class was vanilla (the vent's
     //     Building_SteamGeyser, the wrecks' GenStep_ScatterThings): thin
     //     subclasses in RM_TerminalBiomesScaldKit.cs read these settings
@@ -62,6 +63,7 @@ namespace RimMandrake.TerminalBiomes
         public static bool scaldS4VentFieldsEnabled = true;
         public static bool scaldS5SailWalkerEnabled = true;
         public static bool scaldS6WreckSalvageEnabled = true;
+        public static bool scaldS7SteamExposureEnabled = true;
 
         // Effective state: a sub-toggle only counts while the mod and the
         // Scald are both on. Everything that gates reads these, never the
@@ -72,6 +74,7 @@ namespace RimMandrake.TerminalBiomes
         public static bool ScaldS4VentFieldsActive => ScaldActive && scaldS4VentFieldsEnabled;
         public static bool ScaldS5SailWalkerActive => ScaldActive && scaldS5SailWalkerEnabled;
         public static bool ScaldS6WreckSalvageActive => ScaldActive && scaldS6WreckSalvageEnabled;
+        public static bool ScaldS7SteamExposureActive => ScaldActive && scaldS7SteamExposureEnabled;
 
         // ── Cross-biome opt-in (Greentide's own shape; WORLDGEN-AFFECTING) ─
         public static bool crossBiomeEnabled = false;
@@ -94,6 +97,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref scaldS4VentFieldsEnabled, "scaldS4VentFieldsEnabled", true);
             Scribe_Values.Look(ref scaldS5SailWalkerEnabled, "scaldS5SailWalkerEnabled", true);
             Scribe_Values.Look(ref scaldS6WreckSalvageEnabled, "scaldS6WreckSalvageEnabled", true);
+            Scribe_Values.Look(ref scaldS7SteamExposureEnabled, "scaldS7SteamExposureEnabled", true);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -145,6 +149,11 @@ namespace RimMandrake.TerminalBiomes
                 "Drifting bubble-sail wrecks and the bottom-walker surfacing sighting.");
             list.CheckboxLabeled("S6 — wreck salvage", ref scaldS6WreckSalvageEnabled,
                 "Salvageable wrecks scattered in the burning shallows.");
+            list.CheckboxLabeled("S7 — steam exposure", ref scaldS7SteamExposureEnabled,
+                "The clock that makes the standing steam lethal to an unprotected pawn. Off: "
+              + "nobody accumulates scald exposure and any exposure already carried heals off. "
+              + "The water still burns to wade in either way — that is S8's own switch, in the "
+              + "Environmental Hazards Kit's settings.");
             list.GapLine();
 
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");
@@ -194,6 +203,7 @@ namespace RimMandrake.TerminalBiomes
             RM_MechanicGates.Register("Scald.S4", () => RM_TerminalBiomesSettings.ScaldS4VentFieldsActive);
             RM_MechanicGates.Register("Scald.S5", () => RM_TerminalBiomesSettings.ScaldS5SailWalkerActive);
             RM_MechanicGates.Register("Scald.S6", () => RM_TerminalBiomesSettings.ScaldS6WreckSalvageActive);
+            RM_MechanicGates.Register("Scald.S7", () => RM_TerminalBiomesSettings.ScaldS7SteamExposureActive);
         }
 
         public override string SettingsCategory()

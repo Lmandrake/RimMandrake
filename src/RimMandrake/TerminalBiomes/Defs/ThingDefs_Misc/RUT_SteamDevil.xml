@@ -46,6 +46,34 @@
       <li Class="RimMandrake.EnvironmentalHazards.RM_WanderingVortexExtension">
         <damageDef>RUT_Scald</damageDef> <!-- same mod as RUT_Scald.xml itself — no MayRequire needed -->
 
+        <!-- SCALD_STEAM_WEATHER_DESIGN_1 step 3, 2026-09-26. Until this
+             list existed the steam devil scalded the Scald's own natives
+             exactly as hard as a colonist: RM_WanderingVortex.DamageCell
+             damaged every Thing in the cell with no species check, and
+             this extension carried no immune list at all (MEASURED
+             2026-09-25 and fixed in the same pass — the field is new).
+             ⚠️ This is a THIRD, separate immunity from the other two, and
+             all three are needed for one creature to be genuinely safe
+             here:
+               water  -> RM_OrganicScaldNative (HediffGiverSetDef, on the
+                         race; drops HediffGiver_Terrain)
+               steam  -> RUT_ScaldExposure / RUT_ScaldSteamCarrier's own
+                         immuneThingDefs
+               vortex -> this list
+             Any future Scald native goes in all three. -->
+        <immuneThingDefs>
+          <li>RM_Noohm</li>
+          <li>RM_Shulla</li>
+          <li>RM_Eesh</li>
+          <li>RM_Doss</li>
+          <li>RM_Muddal</li>
+          <li>RM_Thuum</li>
+          <li>RM_Karrash</li>
+          <li>RM_Ekkel</li>
+          <li>RM_Bladderboil</li>
+          <li>RM_ElderSando</li>
+        </immuneThingDefs>
+
         <!-- All other fields left at RM_WanderingVortexExtension's own INVENTED defaults; see that class. -->
       </li>
     </modExtensions>

@@ -199,6 +199,19 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
+                // SCALD_STEAM_WEATHER_DESIGN_1 step 3, 2026-09-26: a species
+                // the vortex's own def lists as immune is skipped. The Scald's
+                // natives are made of the boil; a steam devil crossing a
+                // shulla used to scald it exactly as hard as a colonist,
+                // because this loop had no species check at all. Only PAWNS
+                // are filtered — buildings, plants and items are not a
+                // species question and keep taking the hit.
+                if (t is Pawn pawn
+                    && !HazardTargeting.Affects(pawn, ext.affects, ext.immuneThingDefs, ext.immunePawnKinds))
+                {
+                    continue;
+                }
+
                 t.TakeDamage(new DamageInfo(ext.damageDef, amount, ext.armorPenetration, -1f, this));
             }
 

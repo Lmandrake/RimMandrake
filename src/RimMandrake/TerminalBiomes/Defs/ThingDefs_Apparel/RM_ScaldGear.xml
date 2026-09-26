@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ScaldGear.xml                       TerminalBiomes
+  ==========================================================================
+  SCALD_STEAM_WEATHER_DESIGN_1 step 5 ("Gear"), built 2026-09-26. The
+  answer to the second half of the owner's brief: the steam is "deadly
+  without protective gear", so the gear has to exist. Before this file the
+  spec's own finding stood — the water's danger was wired and the
+  protections were not: no apparel in the repo carried a Scald stat at all.
+
+  THE LADDER IS THE OWNER'S, typed 2026-09-25, verbatim: *"Industrial
+  research for a boil-suit, but advanced vacsuit-types should be able to
+  handle it too. And then there's the Royal Rind from the fruit of the
+  great Bole."* Three rungs plus the free ones:
+
+    a roof                 free, vanilla, stops the clock dead
+    the still day          free, the lock's own 12-24h Clear burst
+    RM_Apparel_ScaldWrap   Neolithic, tailoring bench, no research  <- HERE
+    Royal Rind gear        Neolithic — NOT BUILT, see below
+    RM_Apparel_BoilSuit    Industrial, RM_ScaldWorking research     <- HERE
+    Odyssey vacsuit        patched, ../Patches/VacsuitScaldProtection.xml
+
+  🔴 RM_Apparel_RindCoat IS DELIBERATELY ABSENT, and this is a real
+  dependency, not an oversight. It is made of `RM_RoyalRind`, a stuff
+  rendered from the greatbole's fruit at a butcher table — and NEITHER the
+  fruit item nor the rind stuff nor the recipe exists anywhere in src/
+  (re-checked 2026-09-26). They are owed by the Greentide's own build
+  (greatbole_harvest_spec.md §9 items 4-5). When they land, the rind coat
+  and the rind stuff's own protection offsets go in with them, in one XML
+  pass, per that spec's §5a. Adding a coat now with no material to make it
+  from would ship a recipe nobody can run.
+
+  ⚠️ EVERY PROTECTION NUMBER HERE IS INVENTED and taken verbatim from the
+  spec's §5 table. They SUM across worn apparel and the comp clamps the sum
+  to 1, then floors the clock at 8% (`minDriveFactor`) — so Ban 3 of the
+  frozen sheet ("no boiling-immune traversal for free") holds structurally:
+  wrap + vacsuit helmet = 0.75 -> clock at 25%; boil-suit alone 0.85 ->
+  15%; boil-suit + helmet clamps at 1.0 -> the 8% floor. Nothing a pawn can
+  wear reaches immunity, by construction rather than by tuning.
+
+  🔑 THREE DIFFERENT STATS, on purpose, all three legitimately on the same
+  garment — do not collapse them:
+    RM_ScaldProtection   slows the standing-steam exposure clock
+    RM_ArmorRating_Scald reduces RUT_Scald damage (the steam devil only)
+    ArmorRating_Heat     reduces the terrain's own wading burn, which is
+                         plain vanilla Burn/Heat (owner ruling 2026-09-25:
+                         wading burns stay ordinary Heat). This is why a
+                         devilstrand duster is already a wading aid today.
+
+  MayRequire on the wrap's chitin cost is load-bearing:
+  RM_ScaldWalkerChitin lives in mandrake.rm.divinginteraction, which this
+  mod only `loadAfter`s — it is not a hard dependency, so the cost line
+  must be able to vanish cleanly rather than dangle.
+-->
+<Defs>
+
+  <!-- =================================================================
+       RM_Apparel_ScaldWrap — the Neolithic rung. No research: anyone who
+       has stood on the shore once can make one.
+       ================================================================= -->
+
+  <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_Apparel_ScaldWrap</defName>
+    <label>scald wrap</label>
+    <description>A hooded cloak of oil-waxed cloth, cut long and stiffened with plate shaved off a walker's back, worn over everything else on the shore. It sheds live steam rather than letting it settle, which is the whole trick — and it is appalling to wear in the Anvil's heat, because the same seal that keeps the boil's breath out keeps your own in.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/Duster/Duster</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Neolithic</techLevel>
+    <costStuffCount>30</costStuffCount>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costList>
+      <RM_ScaldWalkerChitin MayRequire="mandrake.rm.divinginteraction">12</RM_ScaldWalkerChitin>
+    </costList>
+    <tradeability>Sellable</tradeability>
+    <statBases>
+      <MaxHitPoints>110</MaxHitPoints>
+      <WorkToMake>4200</WorkToMake>
+      <Mass>2.2</Mass>
+      <StuffEffectMultiplierArmor>0.3</StuffEffectMultiplierArmor>
+      <StuffEffectMultiplierInsulation_Cold>0.25</StuffEffectMultiplierInsulation_Cold>
+      <EquipDelay>2.5</EquipDelay>
+      <Insulation_Heat>-10</Insulation_Heat>
+      <ArmorRating_Heat>0.30</ArmorRating_Heat>
+      <RM_ScaldProtection>0.45</RM_ScaldProtection>
+    </statBases>
+    <equippedStatOffsets>
+      <MoveSpeed>-0.15</MoveSpeed>
+    </equippedStatOffsets>
+    <thingCategories>
+      <li>ApparelMisc</li>
+    </thingCategories>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+        <li>Neck</li>
+        <li>UpperHead</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Duster/Duster</wornGraphicPath>
+      <layers>
+        <li>Shell</li>
+      </layers>
+      <tags>
+        <li>Tribal</li>
+      </tags>
+      <canBeDesiredForIdeo>false</canBeDesiredForIdeo>
+      <defaultOutfitTags>
+        <li>Worker</li>
+      </defaultOutfitTags>
+    </apparel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>ElectricTailoringBench</li>
+        <li>HandTailoringBench</li>
+        <li>CraftingSpot</li>
+      </recipeUsers>
+      <displayPriority>210</displayPriority>
+    </recipeMaker>
+    <tradeTags>
+      <li>BasicClothing</li>
+    </tradeTags>
+  </ThingDef>
+
+  <!-- =================================================================
+       RM_Apparel_BoilSuit — the Industrial rung, and the only thing that
+       lets a pawn work a full shift at the vents and come in clean.
+       Ruled Industrial research by the owner, 2026-09-25.
+       ================================================================= -->
+
+  <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_Apparel_BoilSuit</defName>
+    <label>boil-suit</label>
+    <description>A sealed one-piece and hood, rubberized and double-seamed, built for people whose work is standing in the Scald's breath all day. It is hot, heavy, slow and ugly, and it is the difference between a shift at the vents and a week in bed. The faceplate fogs. Everyone who wears one complains; nobody takes one off early.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/Parka/Parka</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <costList>
+      <Cloth>60</Cloth>
+      <Steel>30</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+      <RM_ScaldWalkerChitin MayRequire="mandrake.rm.divinginteraction">20</RM_ScaldWalkerChitin>
+    </costList>
+    <tradeability>Sellable</tradeability>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <WorkToMake>16000</WorkToMake>
+      <Mass>6</Mass>
+      <EquipDelay>6</EquipDelay>
+      <Beauty>-3</Beauty>
+      <Insulation_Heat>-20</Insulation_Heat>
+      <Insulation_Cold>18</Insulation_Cold>
+      <ArmorRating_Heat>0.55</ArmorRating_Heat>
+      <ArmorRating_Blunt>0.10</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.20</ArmorRating_Sharp>
+      <RM_ScaldProtection>0.85</RM_ScaldProtection>
+      <RM_ArmorRating_Scald>0.60</RM_ArmorRating_Scald>
+    </statBases>
+    <equippedStatOffsets>
+      <MoveSpeed>-0.35</MoveSpeed>
+    </equippedStatOffsets>
+    <thingCategories>
+      <li>ApparelMisc</li>
+    </thingCategories>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+        <li>Neck</li>
+        <li>Shoulders</li>
+        <li>Arms</li>
+        <li>Legs</li>
+        <li>UpperHead</li>
+        <li>FullHead</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Parka/Parka</wornGraphicPath>
+      <layers>
+        <li>Middle</li>
+        <li>Shell</li>
+      </layers>
+      <tags>
+        <li>IndustrialAdvanced</li>
+      </tags>
+      <canBeDesiredForIdeo>false</canBeDesiredForIdeo>
+      <defaultOutfitTags>
+        <li>Worker</li>
+      </defaultOutfitTags>
+    </apparel>
+    <recipeMaker>
+      <researchPrerequisite>RM_ScaldWorking</researchPrerequisite>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <displayPriority>220</displayPriority>
+    </recipeMaker>
+    <tradeTags>
+      <li>HiTechArmor</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

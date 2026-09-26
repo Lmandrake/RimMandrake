@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScaldSteamCarrier.xml              TerminalBiomes
+  ==========================================================================
+  SCALD_STEAM_WEATHER_DESIGN_1 step 4, built 2026-09-26. The grant half of
+  the steam clock: RUT_ScaldExposure does nothing to a pawn who never
+  carries it, and this is what puts it on them.
+
+  🔴 WHY THIS IS A SECOND CONDITION AND NOT A FIELD ON THE EXISTING LOCK.
+  RUT_ScaldSteamLock uses RM_GameCondition_WeatherPulse, which is what gives
+  the Scald its still days; that class has no carrierHediff field, and the
+  class that does — GameCondition_EnvironmentalWeather — has no periodic
+  lapse. Rather than bolt one onto the other (either edit changes shared
+  behaviour every other kit depends on), the two run side by side:
+
+    RUT_ScaldSteamLock     forces the weather and pulses the still day
+    RUT_ScaldSteamCarrier  grants the exposure hediff, and nothing else
+
+  They cannot fight: this def sets NO forcedWeather, and
+  GameCondition_EnvironmentalWeather.ForcedWeather() returns exactly
+  ext.forcedWeather, i.e. null here (read in full, 2026-09-26) — so the
+  pulse lock remains the only thing deciding what the sky is doing.
+
+  Every other field on EnvironmentalWeatherExtension is deliberately unset.
+  No damageDef, no hediffToApply, no rot, no plant kill, no temperature
+  offset, no density factors: the steam is clean and the WATER is what
+  burns (the frozen sheet's own line). This condition's entire job is one
+  idempotent hediff grant. damageIntervalTicks is the scan cadence for that
+  grant — 2500 ticks, ~1 in-game hour, the same figure RUT_MiasmaWeatherLock
+  uses for the same purpose.
+
+  The S7 gate is what makes the Mod Settings toggle real:
+  GameCondition_EnvironmentalWeather now honours RM_MechanicGateExtension
+  (added 2026-09-26, same pattern RM_GameCondition_WeatherPulse already
+  had). With S7 off the grant stops, and any exposure already carried heals
+  off on its own comp's unexposed rate — nothing is lost and flipping it
+  back resumes.
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ScaldSteamCarrier</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
+    <label>standing steam</label>
+    <description>The boil's breath stands over everything here. Unroofed, it works on a body the way steam does — and the Scald's own life does not feel it at all.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>true</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
+        <carrierHediff>RUT_ScaldExposure</carrierHediff>
+        <carrierHediffSeverity>0.0001</carrierHediffSeverity>
+        <damageIntervalTicks>2500</damageIntervalTicks>
+        <affects>Flesh</affects>
+        <immuneThingDefs>
+          <li>RM_Noohm</li>
+          <li>RM_Shulla</li>
+          <li>RM_Eesh</li>
+          <li>RM_Doss</li>
+          <li>RM_Muddal</li>
+          <li>RM_Thuum</li>
+          <li>RM_Karrash</li>
+          <li>RM_Ekkel</li>
+          <li>RM_Bladderboil</li>
+          <li>RM_ElderSando</li>
+        </immuneThingDefs>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>Scald.S7</gateKey>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>

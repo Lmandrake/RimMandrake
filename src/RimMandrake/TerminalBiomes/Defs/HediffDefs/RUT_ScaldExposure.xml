@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScaldExposure.xml                  TerminalBiomes
+  ==========================================================================
+  SCALD_STEAM_WEATHER_DESIGN_1 step 4 ("Exposure clock", XML only, three
+  defs), built 2026-09-26. The other two are RM_ScaldProtection
+  (EnvironmentalHazards/Defs/StatDefs/) and RUT_ScaldSteamCarrier
+  (../GameConditionDefs/), which grants this hediff to every eligible pawn
+  so its own comp can run at all.
+
+  The owner's brief was one sentence: make the steam "beautiful and
+  interesting (and deadly without protective gear)". This def is the deadly
+  half, and the ruling that sizes it is his, by question card 2026-09-25:
+  **unprotected in the steam, dead in under two days.**
+
+  ⚠️ EVERY NUMBER BELOW IS INVENTED except the shape of that ruling. The
+  spec states them and this file ships them unchanged:
+    severityPerDayExposed  0.6   -> ~1.7 days unprotected to the top stage
+    severityPerDayUnexposed -0.35 -> heals off in ~3 days roofed or on a
+                                     still day
+    minDriveFactor         0.08  -> Ban 3. Gear NEVER zeroes the clock; at
+                                     full protection it still runs at 8%.
+  Stage thresholds 0.15 / 0.35 / 0.6 / 0.85 and their capMods are likewise
+  the spec's own INVENTED ladder. Only the top stage is lethal.
+
+  onlyDuringWeather RUT_ScaldSteam is the whole rhythm of the mechanic: on
+  a still day (RUT_ScaldSteamLock's Clear burst, MTB 96h for 12-24h) the
+  clock STOPS and starts unwinding. That is what makes the still day
+  strategically loud — it is the window to salvage the wrecks, cross the
+  shallows and work the vents without paying.
+
+  The comp additionally stops the clock under a roof (its own onlyUnroofed
+  gate) — so a roof is the free, always-available answer, and the spec's
+  protection table lists it first on purpose.
+
+  🔴 immuneThingDefs are the Scald's own natives. This is the STEAM half of
+  native immunity; the WATER half is a different mechanism entirely
+  (RM_OrganicScaldNative, the HediffGiverSetDef that drops
+  HediffGiver_Terrain, on each race). Both are needed; neither substitutes
+  for the other. Any future Scald native must be added to BOTH — the race
+  file's own header carries the water half's version of this rule.
+  ⚠️ The list below names only the two races that existed before
+  2026-09-26; the seven added by SEA_FISHABLES_ALIVE_IN_DEPTHS_1
+  (RM_ScaldFloorFauna.xml) are here too, because a creature made of the
+  boil should not be scalded by its own sky.
+
+  MayRequire is load-bearing: the comp class and its properties type both
+  live in mandrake.rm.environmentalhazards, and an unresolvable comp class
+  discards the whole def silently (see the same note on
+  RUT_MiasmaExposure.xml).
+-->
+<Defs>
+
+  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ScaldExposure</defName>
+    <label>scald exposure</label>
+    <description>Live steam, breathed and worn. The Scald's sky is the lake's own breath and it is clean — which does not make it safe: it is water at the boil, standing over everything, and skin and lungs take it the way they take any steam. Under a roof, or on one of the rare still days, it starts to come off.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.85,0.95,0.95)</defaultLabelColor>
+    <minSeverity>0.0001</minSeverity>
+    <initialSeverity>0.0001</initialSeverity>
+    <makesSickThought>true</makesSickThought>
+    <tendable>false</tendable>
+    <lethalSeverity>1.0</lethalSeverity>
+    <stages>
+      <li>
+        <label>onset</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <minSeverity>0.15</minSeverity>
+        <label>damp</label>
+        <!-- No effect at all: the warning line, so the player learns the
+             mechanic before it costs anything. -->
+      </li>
+      <li>
+        <minSeverity>0.35</minSeverity>
+        <label>scalded skin</label>
+        <painOffset>0.15</painOffset>
+        <capMods>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.6</minSeverity>
+        <label>steam-burned</label>
+        <painOffset>0.35</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.30</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.20</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.85</minSeverity>
+        <label>boiled</label>
+        <painOffset>0.5</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.60</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.40</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_EnvironmentalExposure">
+        <onlyDuringWeather>RUT_ScaldSteam</onlyDuringWeather>
+        <severityPerDayExposed>0.6</severityPerDayExposed>
+        <severityPerDayUnexposed>-0.35</severityPerDayUnexposed>
+        <protectionStat>RM_ScaldProtection</protectionStat>
+        <minDriveFactor>0.08</minDriveFactor>
+        <affects>Flesh</affects>
+        <immuneThingDefs>
+          <li>RM_Noohm</li>
+          <li>RM_Shulla</li>
+          <li>RM_Eesh</li>
+          <li>RM_Doss</li>
+          <li>RM_Muddal</li>
+          <li>RM_Thuum</li>
+          <li>RM_Karrash</li>
+          <li>RM_Ekkel</li>
+          <li>RM_Bladderboil</li>
+          <li>RM_ElderSando</li>
+        </immuneThingDefs>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>
