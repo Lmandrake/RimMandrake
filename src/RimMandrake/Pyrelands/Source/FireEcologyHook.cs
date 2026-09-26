@@ -6,7 +6,7 @@ using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
-namespace RimMandrake.StarWars.FireEcology
+namespace RimMandrake.Pyrelands
 {
     // 🔴 THE ONE LIGHT C# HOOK budgeted by FIRE_ECOLOGY_LOOP_1's item spec —
     // "the one light C# hook: strike-spawns-prop." Two postfixes sharing one
@@ -62,7 +62,7 @@ namespace RimMandrake.StarWars.FireEcology
         {
             if (target == null)
             {
-                Log.Error("[RimMandrake.StarWars.FireEcology] " + rule + ": TARGET METHOD NOT FOUND — "
+                Log.Error("[RimMandrake.Pyrelands] " + rule + ": TARGET METHOD NOT FOUND — "
                           + "this rule is NOT in effect. A game update renamed it. The other "
                           + "rule in this assembly is unaffected.");
                 return;
@@ -70,11 +70,11 @@ namespace RimMandrake.StarWars.FireEcology
             try
             {
                 h.Patch(target, postfix: new HarmonyMethod(patchClass, "Postfix"));
-                Log.Message("[RimMandrake.StarWars.FireEcology] " + rule + ": " + detail);
+                Log.Message("[RimMandrake.Pyrelands] " + rule + ": " + detail);
             }
             catch (Exception e)
             {
-                Log.Error("[RimMandrake.StarWars.FireEcology] " + rule + ": patch FAILED, rule NOT "
+                Log.Error("[RimMandrake.Pyrelands] " + rule + ": patch FAILED, rule NOT "
                           + "in effect — " + e.Message);
             }
         }
@@ -126,7 +126,7 @@ namespace RimMandrake.StarWars.FireEcology
             }
             catch (Exception e)
             {
-                Log.WarningOnce("[RimMandrake.StarWars.FireEcology] fulgurite-spawn: " + e.Message, 0x46E01);
+                Log.WarningOnce("[RimMandrake.Pyrelands] fulgurite-spawn: " + e.Message, 0x46E01);
             }
         }
     }
@@ -232,7 +232,7 @@ namespace RimMandrake.StarWars.FireEcology
             }
             catch (Exception e)
             {
-                Log.WarningOnce("[RimMandrake.StarWars.FireEcology] fire-tick-ash-scorchfruit: "
+                Log.WarningOnce("[RimMandrake.Pyrelands] fire-tick-ash-scorchfruit: "
                                 + e.Message, 0x46E02);
             }
         }
@@ -442,7 +442,7 @@ namespace RimMandrake.StarWars.FireEcology
             }
             catch (Exception e)
             {
-                Log.WarningOnce("[RimMandrake.StarWars.FireEcology] ashfall-accumulation: "
+                Log.WarningOnce("[RimMandrake.Pyrelands] ashfall-accumulation: "
                                 + e.Message, 0x46E03);
             }
         }
@@ -527,7 +527,7 @@ namespace RimMandrake.StarWars.FireEcology
             }
             catch (Exception e)
             {
-                Log.WarningOnce("[RimMandrake.StarWars.FireEcology] scorch-ruins: " + e.Message, 0x46E04);
+                Log.WarningOnce("[RimMandrake.Pyrelands] scorch-ruins: " + e.Message, 0x46E04);
             }
         }
     }

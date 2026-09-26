@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.StarWars.FireEcology
+namespace RimMandrake.Pyrelands
 {
     // Owner order 2026-09-17: "Make the plant density three times that. I mean
     // it. No more small nudges."

@@ -4,7 +4,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.StarWars.FireEcology
+namespace RimMandrake.Pyrelands
 {
     // ════════════════════════════════════════════════════════════════════
     // THREE-STAGE GROWTH ART FOR A WILD PLANT — QUICKGRASS_GROWTH_STAGES_1.
@@ -32,7 +32,7 @@ namespace RimMandrake.StarWars.FireEcology
     // can opt in with XML alone.
     // ════════════════════════════════════════════════════════════════════
 
-    // TRIGGERED BY: <modExtensions><li Class="RimMandrake.StarWars.FireEcology.PlantGrowthStages">
+    // TRIGGERED BY: <modExtensions><li Class="RimMandrake.Pyrelands.PlantGrowthStages">
     // on a ThingDef whose thingClass is Plant_GrowthStaged.
     //
     // Each path is a FOLDER, exactly like `graphicData/texPath` is for
@@ -111,7 +111,7 @@ namespace RimMandrake.StarWars.FireEcology
                     }
                     if (d.graphicData == null || d.graphic == null)
                     {
-                        Log.Error("[RimMandrake.StarWars.FireEcology] growth-stage art: " + d.defName
+                        Log.Error("[RimMandrake.Pyrelands] growth-stage art: " + d.defName
                                   + " carries PlantGrowthStages but has no resolved graphicData — "
                                   + "stage art NOT in effect for it.");
                         continue;
@@ -122,12 +122,12 @@ namespace RimMandrake.StarWars.FireEcology
                         Build(d, ext.halfGraphicPath),
                     };
                 }
-                Log.Message("[RimMandrake.StarWars.FireEcology] growth-stage art: armed for "
+                Log.Message("[RimMandrake.Pyrelands] growth-stage art: armed for "
                             + Cache.Count + " plant def(s)");
             }
             catch (Exception e)
             {
-                Log.Error("[RimMandrake.StarWars.FireEcology] growth-stage art: resolve FAILED, "
+                Log.Error("[RimMandrake.Pyrelands] growth-stage art: resolve FAILED, "
                           + "staged plants fall back to their own art — " + e.Message);
             }
         }
@@ -161,7 +161,7 @@ namespace RimMandrake.StarWars.FireEcology
         }
     }
 
-    // TRIGGERED BY: <thingClass>RimMandrake.StarWars.FireEcology.Plant_GrowthStaged</thingClass>.
+    // TRIGGERED BY: <thingClass>RimMandrake.Pyrelands.Plant_GrowthStaged</thingClass>.
     public class Plant_GrowthStaged : Plant
     {
         // Not saved: it only exists to decide whether the map mesh needs
