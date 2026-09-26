@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T16:07:46Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-26T17:08:04Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1720,3 +1720,13 @@ kind:     defect
 thin:     spec, verify and criteria all present
 summary:  THING PrimitiveWell appears in 4 design/Jawa/templates/.lua source templates
 prose:    infrastructure/state/items/PRIMITIVEWELL_DEAD_DEFNAME_1.md
+
+## BIOME_DEFNAME_MIGRATION_WAVE_1 Three biomes renamed 2026-09-26 carry defNames that no longer match their labels: RM_NightsideIce/RM_PoisonForest/RM_Wasteland move to Sleeping Ice, Cauldron, Wastes per the Pyrelands precedent
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  Per biome, following 84d42c63b:
+prose:    infrastructure/state/items/BIOME_DEFNAME_MIGRATION_WAVE_1.md

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T16:07:46Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-26T17:08:04Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -738,3 +738,13 @@ kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  WYYYSCHOKKIDENTITYCOLLISION1 — two things named "wyyyschokk" once mandrake.rsw.shokk loads
 prose:    infrastructure/state/items/WYYYSCHOKK_IDENTITY_COLLISION_1.md
+
+## DROID_MASS_PRODUCTION_QUEST_CHAIN_1 Nobody mass-produces droids on Ash'karr: the Hive holds latent factory tech it cannot use, the Enclaves need it badly - build the quest chain that connects them
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify
+summary:  DROIDMASSPRODUCTIONQUESTCHAIN1 — the tech one faction has and cannot use, and another needs and cannot get
+prose:    infrastructure/state/items/DROID_MASS_PRODUCTION_QUEST_CHAIN_1.md
