@@ -1,19 +1,21 @@
 ## spec
-Design (dormant, per `DROID_UNIFIED_FRAMEWORK_DESIGN.md` §0 card 14 / §3.4 E5) for
+Design (LIVE — the owner's 2026-09-25/26 card sitting un-parked it: all four
+consumers ruled live, prescribed lines ship now) for
 four droid Oracle consumers — the wipe reaction (W), the bolt-removal moment (B),
 a wild droid's offer (O), a long-unwiped droid's "I remember" (R) — written at the
 rigor of the one built consumer (Ohm: `OracleRegisterBlocks.cs` block +
 `OracleValidator.cs` lint). Doc: `design/RimMandrake/droid_oracle_voice_design.md`.
 
-**"Dormant" is the owner's ruling, not a backlog state**: design it, do not build
-it. The only thing that un-parks it is his read of the doc. The live path also
-waits on the E2 (`DROIDWORKS_SERVICE_RECORD_DRIFT_1`) and E4
+**Build is live work** (owner card sitting 2026-09-25/26). The O and R consumers
+still wait on the E2 (`DROIDWORKS_SERVICE_RECORD_DRIFT_1`) and E4
 (`DROIDWORKS_WILD_DROIDS_1`) hook points, unbuilt; W and B have built hooks.
 
-Resolved in the doc: the speaker is the DROID itself, first person, in a chassis
-register carried as a slot (seven `chassisClass` families + Primitive),
-tier-gated (mindless/blank never fire; all sapient until B1) — not the Narrator,
-not Ohm, whose droid-online hook stays a separate gods-bucket call. Ships a
+Resolved in the doc (owner TYPED reversal, 2026-09-25): the speaker is the
+NARRATOR, third person, always — the droid's manner surfaces only as reported
+speech plus at most one short quoted line. Chassis register still rides as a
+slot (seven `chassisClass` families + Primitive); tier-gated sapient-only, and
+programmable NEVER fires (dead, not deferred). Ohm's droid-online hook stays a
+separate call, but droid calls share the gods' bucket (Q2 card). Ships a
 `DroidLaw` sibling of `Law`, a shared `TryValidateDroid` lint (Cradle tells reused
 + droid identity/mechanism/meta tells + an invented-person check against the
 map's pawn names), and per consumer: trigger, block, slots, 3 prescribed
@@ -29,7 +31,7 @@ call in flight at a time, never queued; the child's tool sandbox protects the
 install, not the text. Design only — no C#, no defs, nothing deployed.
 
 ## verify
-Design item — nothing runs until un-dormanted; the owner's read is the gate.
+Design ruled live 2026-09-25/26; the build item that follows owns the runtime proof.
 When it IS built, the seam that proves every consumer **with and without the
 LLM** is already in the shipped mod: `OracleSettings.claudeCliPath`. Point it at
 a stub and the real CLI, network and login are never involved. Per consumer
@@ -59,7 +61,7 @@ canned strings, explicit N/N, the Ohm pattern (`jawa/oracle_selftest` shape).
 **With the LLM** — stub that echoes a clean, in-register line → that line is the
 letter body, no fallback log line. Then, once only, the real binary: `enabled`
 on, `claudeCliPath` blank, fire W on a quicktest droid; the letter body is
-generated, first person, passes the lint, arrives within 2 × timeout. The stub
+generated, Narrator third person, passes the lint, arrives within 2 × timeout. The stub
 proves the mechanism; the real call proves only that the machine is logged in.
 
 Owner reads the doc first: §1 who-speaks, §2.5 budget, §2.6 transport, §7 what
