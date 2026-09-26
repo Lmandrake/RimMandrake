@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T08:53:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T09:08:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -719,3 +719,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  GREATBOLEATMOSPHEREANDCROSSOVERS1 — the greatbole's song, thermal sanctuary, pilgrims, and the two opt-in cro…
 prose:    infrastructure/state/items/GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1.md
+
+## WYYYSCHOKK_IDENTITY_COLLISION_1 Decide fate of RSW_Wyyyschokk (MLIE_FAUNA_ABSORPTION_1's full port) now that RM_Ollathrix wears the Wyyyschokk skin (SHOKK_SKIN_SHRINK_1)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  WYYYSCHOKKIDENTITYCOLLISION1 — two things named "wyyyschokk" once mandrake.rsw.shokk loads
+prose:    infrastructure/state/items/WYYYSCHOKK_IDENTITY_COLLISION_1.md

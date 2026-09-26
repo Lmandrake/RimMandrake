@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T08:53:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T09:08:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -900,15 +900,6 @@ kind:     build
 summary:  1. Duckboards (early tier): cheap brindeth-wood plank path (RMBrindeth,
 prose:    infrastructure/state/items/SUMP_WALKWAYS_1.md
 
-## SUMP_TAR_VAULT_1 Sump tar-vault: seal food/corpses/hides into tar for perfect preservation; extraction REQUIRES solvent or contents are useless (owner-ruled)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  - The vault: a buildable tar-pit store (pit or sunk barrel-rack). Anything
-prose:    infrastructure/state/items/SUMP_TAR_VAULT_1.md
-
 ## SUMP_GASLIGHT_1 Sump gaslight: tar+acid reaction makes green gas (Helixien integration OK), warbling lamp light, flame statuary, natural flames, discovery-unlocked techs
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1567,16 +1558,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WEBWORK_NEST_EGG_ECONOMY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WEBWORK_NEST_EGG_ECONOMY_1.md
-
-## SHOKK_SKIN_SHRINK_1 Shrink mandrake.rsw.shokk to the Wyyyschokk skin patch; move bound/spit/sun-scald/emergent-spawn mechanisms into mandrake.rm.webwork (S6 ruling 1, inverts 2026-09-11 kit ruling 6)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SHOKK_SKIN_SHRINK_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SHOKK_SKIN_SHRINK_1.md
 
 ## WEBWORK_EGG_BLACKMARKET_BUILD_1 Build the ruled egg black market: Cartel caravan kind + Bazaar broker channel, tradeability-All patch with leak check, The Reckoning quest family with staged juvenile hatch (S5 rulings 1-6)
 state:    proposed
