@@ -16,6 +16,9 @@ namespace RimMandrake.Pyrelands
         public static JobDef RM_FireHawkCarryEmber;
         public static HediffDef RM_FurnaceWarmth;
 
+        // FURNACEBEAST_WORLD_MIGRATION_1 — the world leg's own WorldObjectDef.
+        public static WorldObjectDef RM_FurnaceHerd;
+
         static PyrelandsMechanicsDefOf() =>
             DefOfHelper.EnsureInitializedInCtor(typeof(PyrelandsMechanicsDefOf));
     }
