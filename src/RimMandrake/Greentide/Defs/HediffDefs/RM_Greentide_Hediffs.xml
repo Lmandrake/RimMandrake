@@ -214,10 +214,7 @@
         <hungerRateFactorOffset>0.4</hungerRateFactorOffset>
         <restFallFactorOffset>0.3</restFallFactorOffset>
         <statOffsets>
-          <li>
-            <stat>WorkSpeedGlobal</stat>
-            <value>0.3</value>
-          </li>
+          <WorkSpeedGlobal>0.3</WorkSpeedGlobal>
         </statOffsets>
       </li>
       <li>
@@ -227,10 +224,7 @@
         <hungerRateFactorOffset>0.9</hungerRateFactorOffset>
         <restFallFactorOffset>0.7</restFallFactorOffset>
         <statOffsets>
-          <li>
-            <stat>WorkSpeedGlobal</stat>
-            <value>0.65</value>
-          </li>
+          <WorkSpeedGlobal>0.65</WorkSpeedGlobal>
         </statOffsets>
         <capMods>
           <li>
