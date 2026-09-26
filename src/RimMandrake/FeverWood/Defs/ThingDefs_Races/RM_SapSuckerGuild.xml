@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SapSuckerGuild.xml                            FEVERWOOD_SAP_SUCKER_GUILD_1
+
+  The sap-drinker guild's four members (fever_wood_deep_and_mud_2026-09-23.md
+  §6/§6g/§6n; the exact defNames/labels/silhouettes below are already
+  authored, not invented here, by fever_wood_fauna_roster_2026-09-23.md §2 —
+  this item builds what that roster named). One rule, four expressions:
+  "clamped to bark, drinks sap, does not flee... they differ only in how
+  they refuse to be bothered." All four are herdable and taming does NOT
+  disarm the refusal (§6n) — every comp below fires regardless of tame
+  status, since it triggers on the pawn taking damage, not on faction.
+
+  1. RM_Thornbug — the nectar contract (existing)  -> RM_ThornbugNectar (live gather)
+  2. RM_Vaulm    — seals in hardened sap           -> RM_VaulmLacquer (butcher only)
+  3. RM_Ollareth — screams for help                -> nothing directly, an alarm
+  4. RM_Drommath — swells until it can't be pulled -> RM_DrommathSap + burst payout
+
+  RM_Thornbug is the ThingDef/PawnKindDef precedent
+  FEVER_WOOD_MECHANICS_1's own F8 build flagged as missing for
+  RM_CompGatherableCalmGated ("This item owns creating that precedent" —
+  this item's own file) — the comp itself is untouched, already compiling.
+
+  RM_Ollareth's scream reuses RimMandrake.CreatureBehaviors'
+  RM_CompProperties_PlantAlarm (ROT_GUARDIAN_GROVES_1) rather than a new
+  class: that comp already does exactly "sets nearby tagged responders to
+  Manhunter toward the disturbance, cooldown-gated, mod-setting-gated" —
+  the same shape as "sets the chorus off, pulls the crown's predators
+  toward whatever is bothering it" — content-blind (no species hardcoded),
+  and mandrake.rm.creaturebehaviors is already a hard modDependency/
+  loadAfter of this mod's own About.xml. ⚠️ No RM_AlarmResponderExtension
+  is tagged onto any Fever Wood race yet — the crown's own predator
+  (RM_Silloch, fauna roster row 7) is not built by any item yet, and the
+  current wait-ambush occupant is the Star Wars-tier RSW_LongtailGorg
+  (WildAnimals_FeverWood.xml, RUT layer) which this franchise-free RM mod
+  may not reference (Q11a). So this pass wires the trigger for real but it
+  currently has zero responders to wake — the same "proved, not yet wired"
+  posture FEVER_WOOD_MECHANICS_1's own F2 shipped in. Tagging
+  RM_Silloch (or, on the RUT/RSW patch layer, RSW_LongtailGorg) with
+  <RM_AlarmResponderExtension><tag>FeverWoodCrown</tag></RM_AlarmResponderExtension>
+  is that future roster/patch item's own one-line finish, not invented here.
+
+  Vaulm/drommath use the new local RM_CompProperties_SapSuckerRefusal (this
+  mod, RM_CompSapSuckerRefusal.cs) — see that class for why a shared hediff-
+  refusal comp beat tripling the fear-scan pattern.
+
+  🔴 Deferred, not guessed: §6n's OTHER refusal trigger ("mishandled" during
+  a failed taming/training attempt, alongside "frightened") — which job/
+  interaction hook fires on a failed handling attempt is a real engine
+  question this pass could not verify (RimSage does not connect from this
+  machine) and did not want to invent. What ships instead is the trigger
+  this pass COULD verify for real: every member's refusal fires on taking
+  damage, deterministically, cooldown-gated, never a random roll (the
+  design doc's own explicit requirement). FEVERWOOD_SAP_SUCKER_TUNING_1
+  owns the mishandling half, plus every INVENTED stat/value in this file
+  and its sibling Hediff/Item defs — none of the numbers below are ruled.
+
+  Body: BeetleLike (11 existing repo uses for small insectoid fauna,
+  Greentide's own RM_GreatboleGrub among them) — the guild's own legibility
+  matrix (fauna roster §6) reads all four by SILHOUETTE state (a thorn, a
+  resin bead, a vent, a swelling sac), not by skeleton, so body plan only
+  gates health/damage here, never the sprite.
+
+  Art: RM_Thornbug ships REAL finished art — three already-generated,
+  validated (registry.jsonl: "verdict": "pass") facings at
+  infrastructure/artpipe/_artsrc/feverwood_thornbug_{south,east,north}/,
+  found by searching artpipe done/_artsrc/registry.jsonl for "thornbug"
+  FIRST per the standing rule, copied into this mod's own Textures/ rather
+  than regenerated. RM_Vaulm/RM_Ollareth/RM_Drommath ship flat-color
+  placeholder PNGs (128x128, Graphic_Single, same posture as
+  RM_Sekkulaath_Juvenile) — searched the same three sources for "vaulm"/
+  "ollareth"/"drommath" first; nothing exists. Real bespoke art for all
+  three is owed to the standing art pipeline.
+-->
+<Defs>
+
+  <ThingDef Name="RM_SapSuckerBase" ParentName="AnimalThingBase" Abstract="true">
+    <statBases>
+      <!-- INVENTED placeholders, all four rows: small clamped bark-dwellers,
+           deliberately sluggish rather than fleeing (§6's "does not flee"
+           read as the closest safe engine approximation — a genuinely
+           locked-in-place animal risks breaking core taming/herding AI). -->
+      <MoveSpeed>1.6</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Flammability>1.0</Flammability>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.25</baseBodySize>
+      <baseHealthScale>0.55</baseHealthScale>
+      <baseHungerRate>0.6</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <!-- §6n: "all four are herdable" — tamable, not vermin-only. -->
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <gestationPeriodDays>2</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.99, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(2.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>5</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Insect_Ambient</soundWounded>
+          <soundDeath>Pawn_Insect_Ambient</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <!-- ============================================================ -->
+  <!-- 1. RM_Thornbug — the nectar contract (existing lore, new def)  -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="RM_SapSuckerBase">
+    <defName>RM_Thornbug</defName>
+    <label>thornbug</label>
+    <description>A great thorn-shaped insect clamped flush to the bark, secreting sweet, nourishing nectar in exchange for safety. The mechanic is the deal: it yields only while it feels safe, and a frightened herd dries up for days. Every raid on the crown costs nectar before it costs blood.</description>
+    <statBases>
+      <MarketValue>140</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_GatherableCalmGated" MayRequire="mandrake.rm.environmentalhazards">
+        <gatherDef>RM_ThornbugNectar</gatherDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Thornbug</defName>
+    <label>thornbug</label>
+    <race>RM_Thornbug</race>
+    <combatPower>15</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>2~5</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thornbug/RM_Thornbug</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thornbug/RM_Thornbug</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.65</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thornbug/RM_Thornbug</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- 2. RM_Vaulm — seals itself in hardened sap                     -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="RM_SapSuckerBase">
+    <defName>RM_Vaulm</defName>
+    <label>vaulm</label>
+    <description>A smooth swollen bead of amber on the bark, no limbs visible. Bothered, it floods its own shell and sets — armour, not flesh — and must be cracked open before anything more can be done to it. Killing and cracking it open yields a usable lacquer.</description>
+    <statBases>
+      <MarketValue>110</MarketValue>
+    </statBases>
+    <race>
+      <!-- "must be cracked open to reach [the lacquer]" — a butcher-only
+           yield, never a live gather. -->
+      <leatherDef>RM_VaulmLacquer</leatherDef>
+    </race>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_SapSuckerRefusal">
+        <refusalHediff>RM_Hediff_SapSealed</refusalHediff>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vaulm</defName>
+    <label>vaulm</label>
+    <race>RM_Vaulm</race>
+    <combatPower>12</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vaulm/RM_Vaulm</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vaulm/RM_Vaulm</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vaulm/RM_Vaulm</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- 3. RM_Ollareth — screams for help                              -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="RM_SapSuckerBase">
+    <defName>RM_Ollareth</defName>
+    <label>ollareth</label>
+    <description>Flat, wide, and ringed with open spiracles — bothered, it screams, and the whole crown answers. It yields nothing of its own; its value is that the biome fights for it, turning a theft raid into a fight the crown joins on your side.</description>
+    <statBases>
+      <MarketValue>90</MarketValue>
+    </statBases>
+    <comps>
+      <!-- Reused, not new — see file header. INVENTED radius/cooldown;
+           no responder is tagged onto any Fever Wood race yet. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_PlantAlarm" MayRequire="mandrake.rm.creaturebehaviors">
+        <radius>24</radius>
+        <tag>FeverWoodCrown</tag>
+        <cooldownTicks>2500</cooldownTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ollareth</defName>
+    <label>ollareth</label>
+    <race>RM_Ollareth</race>
+    <combatPower>10</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ollareth/RM_Ollareth</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ollareth/RM_Ollareth</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ollareth/RM_Ollareth</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- 4. RM_Drommath — swells until it cannot be pulled off          -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="RM_SapSuckerBase">
+    <defName>RM_Drommath</defName>
+    <label>drommath</label>
+    <description>A taut grey sac, visibly inflating. Handled, it swells rather than yield, until it cannot be pulled from its perch. Left calm, it can be milked for a small trickle of sap; burst instead, it pays out once, large — and never again.</description>
+    <statBases>
+      <MarketValue>100</MarketValue>
+    </statBases>
+    <!-- The one-time "burst" payout — plain butcherProducts (a top-level
+         ThingDef field, not nested under <race>), no special bookkeeping:
+         a butchered drommath simply stops producing RM_DrommathSap for
+         good, same as any killed animal. -->
+    <butcherProducts>
+      <RM_DrommathBurstSap>25</RM_DrommathBurstSap>
+    </butcherProducts>
+    <comps>
+      <!-- The renewable trickle — reuses RM_CompGatherableCalmGated
+           (EnvironmentalHazards, F8, already verified/compiling) rather
+           than the vanilla generic CompHasGatherableBodyResource/
+           CompProperties_HasGatherableBodyResource pair, which has zero
+           precedent anywhere in this repo (fauna roster §7's own finding)
+           and whose exact XML-exposed field names this pass could not
+           verify against source (RimSage does not connect from this
+           machine) — reusing a class whose real fields are already read
+           straight from its own .cs file beats guessing a vanilla one's.
+           calmFloor/fearRadius keep the shared class's own already-ruled
+           defaults (card 3, ~40 cells); only gatherDef/amount/interval are
+           set per-species here. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_GatherableCalmGated" MayRequire="mandrake.rm.environmentalhazards">
+        <gatherDef>RM_DrommathSap</gatherDef>
+        <gatherAmount>10</gatherAmount>
+        <gatherIntervalDays>3</gatherIntervalDays>
+      </li>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_SapSuckerRefusal">
+        <refusalHediff>RM_Hediff_Swollen</refusalHediff>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Drommath</defName>
+    <label>drommath</label>
+    <race>RM_Drommath</race>
+    <combatPower>10</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Drommath/RM_Drommath</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Drommath/RM_Drommath</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Drommath/RM_Drommath</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
