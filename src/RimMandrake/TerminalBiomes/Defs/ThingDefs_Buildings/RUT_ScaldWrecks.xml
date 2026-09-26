@@ -62,7 +62,16 @@
   override terrainAffordanceNeeded to Walkable below, the one affordance
   every RUT_ScaldWater*Shallow terrain actually carries.
 
-  Art: one Graphic_Random variant each (_A), artpipe jobs scald_wreck{hull,tank,frame}_v1.
+  Art: SCALD_ART_UPGRADE_WAVE_1, wired 2026-09-26 — THREE Graphic_Random
+  variants each (_A/_B/_C, 512px), from the already-finished artpipe renders
+  scald2_wreck{hull,tank,frame}_{a,b,c}; they replace the single 256px
+  scald_wreck*_v1 sprite each def used to carry. The frame's own three
+  variants carry the pawn-scale visible seat the owner asked for. Shadow
+  volumes below are RE-CALIBRATED on the new art (the old numbers were
+  measured on the retired 256px _A sprites): same ShipChunk-derived
+  ~0.70x/0.63x ratio, now applied to the MEAN alpha-bbox fraction across all
+  three variants, because shadowData is per-def and one box must serve
+  three silhouettes.
   ============================================================================
 -->
 <Defs>
@@ -77,14 +86,15 @@
       <drawSize>(2,2)</drawSize>
       <!-- Owner review 2026-09-25 (SCALD_REVIEW walk): inherited ShipChunk's
            generic (1.39,0.5,1.25) box read as a flat dark box, not the
-           sprite. MEASURED this sprite's own alpha bbox (RUT_ScaldWreckHull_A
-           .png, 256x256): 93% width x 80% height — wide and flat, lying
-           wreckage. Calibrated against ShipChunk's own art-to-shadow ratio
+           sprite. Calibrated against ShipChunk's own art-to-shadow ratio
            (its sprite fills ~97-100% of its canvas for a (1.39,0.5,1.25)
            shadow on drawSize 2 -> ~0.70x width, ~0.63x height of the sprite
-           bbox): 0.70*0.93*2=1.30, 0.63*0.80*2=1.01. -->
+           bbox). MEASURED 2026-09-26 across all three 512px variants
+           (_A/_B/_C), mean alpha bbox 93.5% x 87.0% — wide and flat, lying
+           wreckage: 0.70*0.935*2=1.31, 0.63*0.870*2=1.10. One box must
+           serve three silhouettes, so the mean is the honest input. -->
       <shadowData>
-        <volume>(1.30,0.5,1.01)</volume>
+        <volume>(1.31,0.5,1.10)</volume>
       </shadowData>
     </graphicData>
     <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
@@ -106,10 +116,11 @@
       <texPath>Things/Building/Ruins/RUT_ScaldWreckTank</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(2,2)</drawSize>
-      <!-- Same fix as RUT_ScaldWreckHull, own measurement: 96%x81% bbox ->
-           0.70*0.96*2=1.34, 0.63*0.81*2=1.02. -->
+      <!-- Same fix as RUT_ScaldWreckHull, own measurement (mean of _A/_B/_C,
+           2026-09-26): 96.4% x 84.3% bbox -> 0.70*0.964*2=1.35,
+           0.63*0.843*2=1.06. -->
       <shadowData>
-        <volume>(1.34,0.5,1.02)</volume>
+        <volume>(1.35,0.5,1.06)</volume>
       </shadowData>
     </graphicData>
     <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
@@ -131,12 +142,12 @@
       <texPath>Things/Building/Ruins/RUT_ScaldWreckFrame</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(2,2)</drawSize>
-      <!-- Same fix, own measurement: 93%x94% bbox, nearly square, an
-           upright rib-cage frame rather than lying wreckage, so this one
-           gets the tallest shadow of the three: 0.70*0.93*2=1.30,
-           0.63*0.94*2=1.18. -->
+      <!-- Same fix, own measurement (mean of _A/_B/_C, 2026-09-26): 96.5%
+           x 90.6% bbox, nearly square — an upright rib-cage frame rather
+           than lying wreckage, so this one still gets the tallest shadow of
+           the three: 0.70*0.965*2=1.35, 0.63*0.906*2=1.14. -->
       <shadowData>
-        <volume>(1.30,0.5,1.18)</volume>
+        <volume>(1.35,0.5,1.14)</volume>
       </shadowData>
     </graphicData>
     <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>

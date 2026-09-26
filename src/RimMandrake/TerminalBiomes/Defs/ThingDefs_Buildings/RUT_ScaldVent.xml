@@ -49,8 +49,13 @@
     <description>A shore-side vent of the Scald's own breath — high-pressure steam venting on its own rhythm. A condenser raised here drinks the clean breath for free; a geothermal generator will not recognize it as its own kind of geyser.</description>
     <thingClass>RimMandrake.TerminalBiomes.RM_Building_ScaldVent</thingClass>
     <graphicData>
+      <!-- SCALD_ART_UPGRADE_WAVE_1, 2026-09-26: two distinct rock-mouth
+           silhouettes (artpipe scald2_ventbuilding_a/_b, 1024px) replace the
+           single scald_ventbuilding_v1 sprite, so a geyser field reads as a
+           field and not one shape stamped repeatedly. texPath is now a
+           FOLDER — Graphic_Random loads every texture in it. -->
       <texPath>Things/Building/Natural/RUT_ScaldVent</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shaderType>Transparent</shaderType>
       <drawSize>(4,4)</drawSize>
     </graphicData>
