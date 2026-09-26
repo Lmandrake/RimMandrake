@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T17:08:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T17:15:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1730,3 +1730,13 @@ kind:     task
 thin:     no ## verify
 summary:  Per biome, following 84d42c63b:
 prose:    infrastructure/state/items/BIOME_DEFNAME_MIGRATION_WAVE_1.md
+
+## PROPANELAKE_ANIMALDENSITY_ZERO_1 RM_PropaneLake and RUT_PropaneLake leave animalDensity UNSET so it defaults to 0f - their 6-animal floor roster can never spawn, proven from the decompiled WildAnimalSpawner
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  PROPANELAKEANIMALDENSITYZERO1 — six authored animals that can never spawn
+prose:    infrastructure/state/items/PROPANELAKE_ANIMALDENSITY_ZERO_1.md

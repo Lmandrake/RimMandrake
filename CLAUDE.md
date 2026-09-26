@@ -263,14 +263,25 @@ MEASURED about the live world — the live system is the only instrument for "ri
   well as what you can FISH out of the oceans on the shore. There should be defs made for each
   fish as something swimming around the floor area as well as something you can pull out as a
   fish."* ⇒ each sea species owes **two** defs: a floor resident in `<wildAnimals>` and a
-  catchable entry in `<fishTypes>`. `RUT_TheScald` is the worked precedent (a real `fishTypes`
-  block `MayRequire="Ludeon.RimWorld.Odyssey"` plus 4 floor animals); `RUT_GreySea`,
-  `RUT_TwilightSea` and `RUT_PropaneLake` carry **no `fishTypes` at all** and 2 animals each,
-  so that is owed work inside `TERMINALBIOMES_RM_MOD_BUILD_1`. The floor is reachable via the
-  generic `RM_DiveEligible` terrain mechanism in `mandrake.rm.divinginteraction`. ⚠️ All four
-  seas are `impassable=true`, and whether `<wildAnimals>` actually spawn on an impassable water
-  biome is an ENGINE question — UNMEASURABLE on the Mac; the Scald's 4 entries are somebody's
-  bet, not proof. Test it on the Desktop before authoring the other three.
+  catchable entry in `<fishTypes>`. The floor is reachable via the generic `RM_DiveEligible`
+  terrain mechanism in `mandrake.rm.divinginteraction`.
+  ✅ **RE-MEASURED 2026-09-26 on the RM tier, which is what ships: all four seas now carry
+  `fishTypes` AND a real floor roster** — Scald 3 inline + 3 canon patch-added, Grey Sea 6,
+  Twilight Sea 6, Propane Lake 6. The old "no `fishTypes` at all and 2 animals each" line
+  described the `RUT_` twins and was already stale; the split did that work.
+  🔴 **Parse `<wildAnimals>` as an XML ELEMENT, never by counting `<li>`.** `BiomeAnimalRecord`
+  has a custom loader reading the node NAME as the animal and the node TEXT as the commonality
+  — `<RSW_Faa>0.5</RSW_Faa>`, no `<li>`. A `<li>` count returns **0 for a populated roster**,
+  which is how one pass in this very session first read all four seas as empty.
+  ✅ **The "do wildAnimals spawn on an impassable biome" question is ANSWERED — MEASURED from
+  the decompiled engine 2026-09-26, and `impassable` is a red herring.** Nothing in
+  `GenStep_Animals` or `WildAnimalSpawner` reads it. The real gates are **`animalDensity > 0`**
+  (`DesiredAnimalDensity` multiplies `map.TileInfo.AnimalDensity`, so 0 makes
+  `DesiredTotalAnimalWeight` 0 and `AnimalEcosystemFull` instantly true) and, for ongoing
+  spawns only, a walkable cell that `CanReachMapEdge`.
+  🔴 **So `RM_PropaneLake` and `RUT_PropaneLake` leave `animalDensity` UNSET — it defaults to
+  `0f` and their 6-animal roster is dead content that can never spawn.** Item:
+  `PROPANELAKE_ANIMALDENSITY_ZERO_1`.
 - 🔑 **A review sheet's `cut` is scoped to THAT SHEET'S BIOME, never the planet** — owner
   ruling 2026-09-21. The Lantern Deeps sheet cut `RSW_AaroxisDendoria`, `RSW_PodWorm` and
   `RSW_MossBeetle`; all three legitimately remain admitted elsewhere (the first two in the
