@@ -4479,3 +4479,62 @@ wave: `PropaneLakeMechanics/Source/` (10 files, RUT tier mechanics mod),
 (`RM_DamageWorker_StingAccumulate.cs`, `RM_DirectedAssaultExtension.cs`,
 `RM_JobGiver_AvoidOwnKind.cs`). The `modcheck/` Python tools and the `validation.py`
 sampling pass named in earlier waves are also still untouched.
+
+## Wave 10 — 2026-09-26
+
+Same concurrent-biome-build session as wave 9 — again avoided every biome-specific
+mod folder and `biome_paint_list.md`, and instead picked wave 9's other named
+candidate: the "pipe network" sub-cluster of `PropaneLakeMechanics/Source/` (a
+RUT-tier mechanics mod, not a biome), 6 of its 14 files:
+`MapComponent_PipeNetworks.cs`, `CompPipeNetwork.cs`, `CompPipeValve.cs`,
+`CompPipePump.cs`, `CompProperties_PipeRupture.cs`, `CompPipeRupture.cs`. Left the
+gas-vent/saturation/incident half of the assembly (`CompGasVent.cs`,
+`CompProperties_GasVent.cs`, `MapComponent_GasSaturationTracker.cs`,
+`CompVWakeAgitation.cs`, `Patch_GasSaturationDeflagration.cs`,
+`IncidentWorker_SaturationHeistRaid.cs`, `PropaneLakeMechanicsDefOf.cs`,
+`PropaneLakeMechanicsSettings.cs`, `PropaneLakeMechanicsMod.cs`) for a later wave.
+
+Confirmed all 6 NEVER ENTERED via fresh `list --show-untracked`, and all 6 reachable
+via live `<Compile Include>` entries in
+`RimMandrake.Utinni.PropaneLakeMechanics.csproj`. Content-wired, not shelf code:
+`RUT_PipeInfrastructure.xml` gives `RUT_PipeSegment`/`RUT_PipeValve`/`RUT_PipePump`
+each the matching `CompProperties_Pipe*` in their live `<comps>` blocks.
+
+Traced the mechanism end to end against its own doc-comment claims
+(`propane_gas_deep_design.md` §3/§4/§9 row 3, cited inline): `CompPipeNetwork` is a
+pure membership marker whose `PostSpawnSetup`/`PostDeSpawn` dirty the map's
+`MapComponent_PipeNetworks` — checked `PostDeSpawn` specifically for this loop's
+known despawn-null trap and confirmed it reads the `map` parameter passed in, never
+`parent.Map` (which would already be null post-despawn) — correct. The manager does
+a lazy BFS-by-4-way-adjacency rebuild only when dirty, and `IsNetworkPressurized`
+correctly short-circuits to `false` the instant any valve in the group is closed
+before checking for a running pump, matching the "closing ANY reachable valve
+depressurizes the whole network" comment. `CompPipeRupture.CompTick` re-derives
+`pressurized` from the manager every tick (not cached), so a valve closed or pump
+stopped mid-rupture ends the jet within one tick — matches the "only way to end it
+is to cut supply" design quote. Verified the `pipeNetworksEnabled` mod-setting
+gate exists with a default and Scribe persistence in
+`PropaneLakeMechanicsSettings.cs`, and that toggling it off mid-rupture lets the
+jet lapse quietly (`CompTick`'s `!Enabled` branch) rather than leaving an
+unshutoffable jet. Checked `PostExposeData` on all 3 stateful comps (`CompPipeValve`,
+`CompPipePump`, `CompPipeRupture`) — every field that needs persistence is Scribed.
+No significant findings — no fixes needed. All 6 marked CLEAN at the commit
+following this note.
+
+Re-measured after: `TALLY CLEAN 3282 DIRTY 145 ORPHANED 76 NEVER ENTERED 317`.
+
+Next wave: the remaining `PropaneLakeMechanics/Source/` gas-vent/saturation/incident
+files named above are a natural next cohesive pick from the same assembly. Also
+still untouched: `ShipShields/Source/CompProperties_ShieldCryoEnvelope.cs` +
+`CompShieldCryoEnvelope.cs` (a NEVER-ENTERED pair not named by wave 9, since most of
+`ShipShields/Source/` is already CLEAN or DIRTY-from-content-change rather than
+never-entered), `CreatureBehaviors/Source/` loose files
+(`RM_DamageWorker_StingAccumulate.cs`, `RM_DirectedAssaultExtension.cs` —
+`RM_JobGiver_AvoidOwnKind.cs` is already CLEAN per wave 7's note), and the
+`modcheck/` Python tools / `validation.py` sampling pass named in earlier waves.
+⛔ Keep avoiding biome-specific mod folders (`BlueDesert`, `FeverWood`,
+`ForsakenCrags`, `LeaningScrub`, `LongShade`, `NightsideIce`, `PoisonForest`,
+`Stillsand`, `TerminalBiomes`, `TheForge`, `TheRot`, `Wasteland`, `Miasma`,
+`Contagion`, `Pyrelands`) and `biome_paint_list.md` until told the concurrent
+biome-split build is done. Re-survey `list --show-untracked` fresh rather than
+trusting any carried-forward count.
