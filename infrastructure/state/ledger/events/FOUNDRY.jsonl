@@ -627,3 +627,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_RM_MOD_BUILD_1","ts":"2026-09-26T10:13:02Z"}
 {"seat":"FOUNDRY","event":"start","id":"GREENTIDE_RM_MOD_BUILD_1","ts":"2026-09-26T10:13:04Z"}
 {"seat":"FOUNDRY","event":"close","id":"WEBWORK_EGG_RECKONING_QUEST_1","sha":"720fc2e5a","reason":"The Reckoning quest family built: 3-path QuestScriptDef + plant-watcher/hatch C# verb per S5 rulings 2/3/6/7. Two mechanism gaps (captive delivery, marked bedroom cell) disclosed and simplified rather than guessed; offline-validated only (needs: offline scope), live dev-mode verify still owed.","ts":"2026-09-26T10:13:21Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_JUNGLE_TREE_ROSTER_1","ts":"2026-09-26T10:16:18Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREENTIDE_JUNGLE_TREE_ROSTER_1","ts":"2026-09-26T10:16:19Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_EXOTIC_JUNGLE_FISH_1","ts":"2026-09-26T10:17:36Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREENTIDE_EXOTIC_JUNGLE_FISH_1","ts":"2026-09-26T10:17:37Z"}
+{"seat":"FOUNDRY","event":"close","id":"GREENTIDE_EXOTIC_JUNGLE_FISH_1","sha":"fd2244219","ts":"2026-09-26T10:24:00Z"}
