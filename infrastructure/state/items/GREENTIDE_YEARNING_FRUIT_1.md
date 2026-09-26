@@ -1,4 +1,4 @@
-# GREENTIDE_YEARNING_FRUIT_1 — digestive-accelerant fruit: def + hediff built, filth C# split out
+# GREENTIDE_YEARNING_FRUIT_1 — digestive-accelerant fruit: def + hediff + filth C# built, wired into RM_Greentide
 
 ## what
 
@@ -21,29 +21,32 @@ which is the strategy *working*."
   — real vanilla-stat mechanic: `HungerRateMultiplier` 1.6 and `MoveSpeed`
   0.75 for ~4 hours ("digests fast", "a brief waddle"), both real gameplay
   effects, zero new C#.
-- Wired into `RUT_Greentide.xml`? **NO** — see "not wired" below.
+- Wired into `RUT_Greentide.xml`? **NO, and never will be** — that def is
+  FROZEN (`GREENTIDE_RM_MOD_BUILD_1`); new campaign fauna/flora for the
+  Greentide is wired only onto `RM_Greentide` from now on.
+- Wired into `RM_Greentide`'s `wildPlants`? **YES**, 2026-09-26 — see below.
+- Filth/pass-seed comp: **built**, `GREENTIDE_YEARNING_FRUIT_FILTH_1`
+  (closed `e399e17ca`) — `RM_HediffComp_SeedPassage`
+  (`RimMandrake.CreatureBehaviors`), wired onto `RUT_DigestiveAccelerant` via
+  a `RM_HediffCompProperties_SeedPassage` comp block. Drops `Filth_AnimalFilth`
+  and rolls a chance to germinate a `RUT_YearningFruit` seedling at the
+  eater's cell when the hediff naturally ends. Works on any pawn, colonist
+  or wild grazer alike.
 
-## not wired into the biome yet
+## wired into the biome
 
-`RUT_Greentide.xml` is FROZEN (`GREENTIDE_RM_MOD_BUILD_1`, "content lives in
-`mandrake.rm.greentide`; do not edit here") — the live world still runs on
-that def until the terminal repaint. A prior pass in this same wave
-mistakenly added a different new species (`RSW_CanopySwinger`) directly to
-that frozen file; it has been reverted. `RUT_YearningFruit` needs the same
-route: wiring belongs in
-`src/RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml`-style
-patch content targeting `RM_Greentide`'s `wildPlants` (that patch file
-currently only covers `wildAnimals` — a plants patch is new scope) or
-inside `GREENTIDE_RM_MOD_BUILD_1`'s own build pass, not invented here.
-Cross-referenced to that item.
-
-## split out
-
-The "passes seed quickly, filth follows, ground sprouts" half needs a
-genuinely new comp (same shape as `RUT_VorrelBrood`'s
-`RM_HediffComp_ShadeStagger` — a germinate/filth-on-dispersal comp, but for
-filth-and-seedling rather than shade-and-germinate). Filed as
-`GREENTIDE_YEARNING_FRUIT_FILTH_1`.
+`RUT_YearningFruit` is NOT one of the 8 Star Wars donor plants blocked on
+`DONOR_DEFS_PORT_TO_OURS_1` — it's a wholly new plant defined inside
+UtinniPatches itself, so it needed no `MayRequire` gate, same posture as the
+`RUT_Sytheclaw` wildAnimals row. Added as a new `PatchOperationConditional`
++ `PatchOperationAdd` operation in
+`src/RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml` (that file
+already anticipated a future wildPlants section — see its own "DELIBERATELY
+NOT IN THIS FILE YET" note), targeting `RM_Greentide`'s `wildPlants` at
+commonality 1.2 (matching the weight the roster's own annotation gave this
+design line before it split into its own plant). Validated with
+`validate_patch.py --defs --live` against the 2026-09-26T01-08-12Z capture:
+xpath matches 1 node, 0 errors, 0 warnings on the patch file itself.
 
 ## art
 
