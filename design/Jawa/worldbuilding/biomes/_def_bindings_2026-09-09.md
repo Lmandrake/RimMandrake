@@ -44,7 +44,7 @@ ground**; the tile column sums to 21,872.
 | `RM_PropaneLake` | 57 | `the_propane_lakes.md` (the lake proper; `RUT_Umbra` is the cap it sits under) | no | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_PropaneLake.xml` — 3 `wildAnimals` + 6 `wildPlants` rows since `BLUE_DESERT_LIFE_AUTHORING_1` (done 2026-09-21; re-read 2026-09-23) |
 | `RUT_TheForge` | 44 | `the_forge.md` — one sheet, one massif | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml` |
 | `RUT_FeverWood` | 43 | `the_fever_wood.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml` |
-| `RUT_Sump` | 41 | `the_sump.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml` |
+| `RUT_Sump` | 41 | `the_sump.md` | no | FROZEN 2026-09-25 (`THESUMP_RM_MOD_BUILD_1`) at `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml` — carries the world unchanged until the terminal paint. Content (4 `wildAnimals` + 1 `wildPlants` row, plus its S1-S6 kit) now lives in `mandrake.rm.thesump` (`src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml`); `RSW_Hssiss` rides `WildAnimals_Sump.xml` as a Utinni patch instead |
 
 **§10 tally: 2 of the 27 painted defs sit under a sheet with an enriched bestiary
 §10** (`RUT_CrackedLands`/the_cracked_lands.md, `RUT_WeepingStones`/weeping_stones.md —

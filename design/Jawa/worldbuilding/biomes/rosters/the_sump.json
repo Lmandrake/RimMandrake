@@ -18,7 +18,8 @@
     }
   ],
   "defNames": [
-    "RUT_Sump"
+    "RUT_Sump",
+    "RM_TheSump"
   ],
   "evictions": [
     {

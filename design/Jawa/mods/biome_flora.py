@@ -333,7 +333,12 @@ FAMILIES = {
  },
 
  'E. the tar': {
-  'RUT_Sump': {   # 41 tiles · 1 plants
+  'RM_TheSump': {   # RUT_Sump frozen 2026-09-25 (THESUMP_RM_MOD_BUILD_1) —
+                     # keyed to the RM_ name so `owned_flora()` (scoped to
+                     # src/RimUtinni/UtinniPatches/Defs/BiomeDefs only) no longer
+                     # matches it, same pattern as RM_TheRot/RM_Contagion above: this
+                     # dict stops emitting a patch onto the frozen def. 41 tiles ·
+                     # 1 plant at authoring.
     'AB_TarPuddle': 0.6},
  },
 
