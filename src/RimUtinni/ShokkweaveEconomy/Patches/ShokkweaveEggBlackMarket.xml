@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  ShokkweaveEggBlackMarket.xml    ShokkweaveEconomy · WEBWORK_EGG_BLACKMARKET_BUILD_1
+  ============================================================================
+
+  §1d/§5 ruling 5 of design/Jawa/worldbuilding/biomes/webwork_egg_blackmarket_2026-09-24.md.
+
+  1) Tradeability: RM_OllathrixEgg is Sellable in the free tier (sitting §4a:
+     no trader ever STOCKS it there, only nests do). The campaign layer opens
+     it to All so `RUT_Caravan_HuttCartel_EggMarket` can stock it at all
+     (`TraderCanSell()` is false for Sellable — MEASURED in
+     ShokkweaveTraderStrip.xml against the same TradeabilityUtility.cs this
+     session's sibling item shares).
+
+     🔴 DEPENDENCY, RECORDED HONESTLY: `RM_OllathrixEgg` is
+     `WEBWORK_NEST_EGG_ECONOMY_1`'s own build (in flight concurrently this
+     session, not yet landed as of this file). This design's own §4 items
+     table places an authoring constraint on that item: the egg must carry an
+     EXPLICIT `<tradeability>Sellable</tradeability>` element, not rely on the
+     engine's own All default, "or the campaign patch... is a Replace and must
+     have a node to match" (the sole-source strip's own lesson: "A patch that
+     matches nothing logs nothing" — CLAUDE.md). `PatchOperationConditional`
+     below covers BOTH shapes regardless of which one actually ships: Replace
+     if the element exists, Add if it doesn't. Until the egg item lands this
+     patch's xpath matches nothing and silently no-ops — expected, not a
+     defect; re-verify (validate_patch.py, given the defs root and a live def
+     dump, and confirm the resulting element reads `All`) once
+     `WEBWORK_NEST_EGG_ECONOMY_1` closes.
+
+     Leak check (§5 ruling 5, "leak-checked at build against every live
+     TraderKindDef") — 🔴 CORRECTING the design doc's own §1d claim, found
+     wrong while actually running this check: it asserts the egg "belongs to
+     no stocked category route." MEASURED 2026-09-26, RimSage against the
+     installed 1.6 source: `RM_OllathrixEgg` carries `<thingCategories>
+     ResourcesRaw</thingCategories>` (WEBWORK_NEST_EGG_ECONOMY_1's own file),
+     and `StockGenerator_Category categoryDef=ResourcesRaw` is used by FIVE
+     live vanilla/DLC TraderKindDefs — `TraderKinds_Base_Outlander.xml`,
+     `TraderKinds_Base_Neolithic.xml`, `TraderKinds_Orbital_Misc.xml`
+     (Core), `TraderKinds_Base_Empire.xml`, `TraderKinds_Caravan_Empire.xml`
+     (Royalty) — none excluding it. `StockGenerator_Category.GenerateThings`
+     filters candidates on `tradeability.TraderCanSell()`, which is false for
+     Sellable and TRUE for All (same TradeabilityUtility.cs fact the
+     sole-source strip measured) — so flipping to `All` alone WOULD let any
+     of those five ordinary, extremely common traders randomly roll the
+     black-market egg into their stock. The trade-TAG half of the design's
+     claim is still correct (`RM_Contraband`: MEASURED, `grep -rn
+     "RM_Contraband" src/` across the whole repo returns zero hits outside
+     this design's own docs — no `StockGenerator_Tag` anywhere names it).
+
+     FIX (the belt-and-braces this repo already uses for the reverse case —
+     ShokkweaveTraderStrip.xml strips Hyperweave's ExoticMisc trade tag the
+     same way): campaign-side, strip `ResourcesRaw` off the egg's
+     `thingCategories` below. `StockGenerator_SingleDef.HandlesThingDef` is a
+     bare defName match with no category dependency, so
+     `RUT_Caravan_HuttCartel_EggMarket`'s own stocking is untouched; the five
+     category-route traders above can no longer see the egg at all. The free
+     mod (`mandrake.rm.webwork`) never loads this patch (`MayRequire`), so a
+     player without the campaign layer keeps the sitting's own
+     `ResourcesRaw`-categorized, nests-only, Sellable-only egg untouched.
+
+  2) The Cartel caravan kind is APPENDED to `RUT_Jawa_HuttCartel`'s own
+     `caravanTraderKinds` — Inherit="False" already stands on that def's
+     pawnGroupMakers/xenotypeSet for OTHER reasons, but `caravanTraderKinds`
+     itself has no such opt-out on this def (see
+     UtinniPatches/Defs/FactionDefs/JawaHuttCartel.xml, which already appends
+     `RUT_Caravan_HuttCartel_Captives` the same way), so this Add appends
+     alongside it rather than replacing the list.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.webwork">
+    <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/tradeability</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/tradeability</xpath>
+      <value>
+        <tradeability>All</tradeability>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]</xpath>
+      <value>
+        <tradeability>All</tradeability>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <!-- The leak fix: pull RM_OllathrixEgg out of the ResourcesRaw category
+       route (see the header note above) once it goes tradeability All.
+       Campaign-only, guarded on the same mod. -->
+  <Operation Class="PatchOperationRemove" MayRequire="mandrake.rm.webwork">
+    <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/thingCategories/li[text()="ResourcesRaw"]</xpath>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.webwork">
+    <xpath>Defs/FactionDef[defName="RUT_Jawa_HuttCartel"]/caravanTraderKinds</xpath>
+    <value>
+      <li>RUT_Caravan_HuttCartel_EggMarket</li>
+    </value>
+  </Operation>
+
+</Patch>

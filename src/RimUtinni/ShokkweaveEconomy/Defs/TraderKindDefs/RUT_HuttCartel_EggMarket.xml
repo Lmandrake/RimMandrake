@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_HuttCartel_EggMarket.xml    ShokkweaveEconomy · WEBWORK_EGG_BLACKMARKET_BUILD_1
+  ============================================================================
+
+  §1 of design/Jawa/worldbuilding/biomes/webwork_egg_blackmarket_2026-09-24.md.
+  The commission (webwork_owner_and_nest_2026-09-23.md §6 ruling 5): "add the
+  black market trader (likely hutt / bounty hunter faction related)". §5
+  ruling 1 fronts it as a Hutt Cartel channel — Blackstar (`permanentEnemy
+  true`, R12) cannot trade or ask through vanilla machinery, so it appears in
+  quest fiction only, never mechanically here.
+
+  Shape copied from the existing `RUT_Caravan_HuttCartel_Captives`
+  (UtinniPatches/Defs/TraderKindDefs/RUT_HuttCartel_Captives.xml): a dedicated
+  TraderKindDef appended to `RUT_Jawa_HuttCartel`'s own `caravanTraderKinds`
+  (see ShokkweaveEggBlackMarket.xml, this mod), never a fixed settlement seat
+  (design §1b: "a static buyer next door deletes the [carry-risk] risk").
+
+  🔴 MEASURED, RimSage against the installed 1.6 source (this session,
+  2026-09-26) — this is why the design's own §1e "black market BUYS your eggs
+  at a premium" row is NOT built here:
+
+    `TraderKindDef.PriceTypeFor(ThingDef, TradeAction)` (Source/RimWorld/
+    TraderKindDef.cs) only consults `stockGenerators[i].TryGetPriceType(...)`
+    — and therefore only ever returns a non-Normal `PriceType` — when
+    `action == TradeAction.PlayerBuys`. For `TradeAction.PlayerSells` (the
+    trader buying FROM the player) the method falls straight through to
+    `return PriceType.Normal`, unconditionally, for every trader in the game.
+    A `StockGenerator`'s `<price>` field (VeryCheap..Exorbitant) is therefore
+    LIVE for the sell-to-player side and DEAD for the buy-from-player side —
+    no XML lever exists for "this trader pays a premium for tag X". Confirmed
+    further: `Settlement_TraderTracker.ColonyThingsWillingToBuy` (and the
+    Caravan/TradeShip/Pawn equivalents) hand EVERY carried/caravan item to the
+    trade window regardless of the trader's own StockGenerators — a trader
+    already accepts a sold egg via ordinary tradeability, it just cannot be
+    made to pay MORE for it without a real Harmony patch on
+    `TraderKindDef.PriceTypeFor` or `Tradeable.RecalculatePrices`.
+
+    Consequence: the `StockGenerator_BuyTradeTag` below makes this kind WILL
+    buy anything tagged `RM_Contraband` (as any Sellable/All trader already
+    would), but it prices that purchase at ordinary PriceType.Normal, not the
+    design's ❓×1.5 premium. That premium — and the Wildsteam bounty's own
+    buy-side premium, `WEBWORK_NEST_EGG_ECONOMY_1`'s scope, same engine limit —
+    needs a small Harmony postfix on `TraderKindDef.PriceTypeFor` (or an
+    equivalent `Tradeable` price hook) to build for real. Filed as follow-on
+    work; nothing here fakes the number.
+
+  The SELL side (black market sells you an egg) has no such limit:
+  `PriceType.Expensive` (×2, `PriceTypeUtlity.PriceMultiplier`) DOES apply on
+  `TradeAction.PlayerBuys` and lands inside the design's ruled ×1.6-2.0 sell
+  premium band (§1e row 1) — the closest of the five discrete PriceType steps
+  (VeryCheap .4 / Cheap .7 / Normal 1 / Expensive 2 / Exorbitant 5).
+
+  `commonality` kept low (design §1b: "should feel found, not scheduled" —
+  found tuned relative to `RUT_Caravan_HuttCartel_Captives`'s own 0.3, which
+  is itself a rare-caravan value; this one halves it, since an egg-selling
+  murder-weapon dealer should be rarer than an ordinary debtor-droid fence).
+  ============================================================================
+-->
+<Defs>
+
+  <TraderKindDef MayRequire="mandrake.rm.webwork">
+    <defName>RUT_Caravan_HuttCartel_EggMarket</defName>
+    <label>Hutt Cartel egg broker</label>
+    <commonality>0.15</commonality>
+    <requestable>false</requestable>
+    <orbital>false</orbital>
+    <stockGenerators>
+
+      <!-- The black market SELLS you an egg. PriceType.Expensive = x2,
+           inside the ruled x1.6-2.0 band (§1e row 1). -->
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RM_OllathrixEgg</thingDef>
+        <countRange>1~3</countRange>
+        <price>Expensive</price>
+      </li>
+
+      <!-- The black market BUYS your contraband eggs (and anything else
+           tagged RM_Contraband) at ordinary price — see the engine-limit
+           note above for why no premium lands here yet. Zero live
+           StockGenerator_Tag/_Category anywhere in this repo names
+           RM_Contraband (MEASURED: `grep -rn "RM_Contraband" src/` returns
+           no hits outside this design's own docs, 2026-09-26), so opening
+           the egg's tradeability to All (ShokkweaveEggBlackMarket.xml)
+           cannot leak it onto any other trader's shelf by tag route. -->
+      <li Class="StockGenerator_BuyTradeTag">
+        <tag>RM_Contraband</tag>
+      </li>
+
+    </stockGenerators>
+  </TraderKindDef>
+
+</Defs>
