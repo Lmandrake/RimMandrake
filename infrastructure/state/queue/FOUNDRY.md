@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T02:33:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T02:47:23Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -810,14 +810,14 @@ kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
-## BLUEDESERT_RM_MOD_BUILD_1 Phase A: build RM_BlueDesert as its own RimMandrake mod (mandrake.rm.bluedesert) — the Blue Desert - BLUE_DESERT_LIFE_AUTHORING_1 builds INTO this mod
+## POISONFOREST_RM_MOD_BUILD_1 Phase A: build RM_PoisonForest as its own RimMandrake mod (mandrake.rm.poisonforest) — the Poison Forest
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/BLUEDESERT_RM_MOD_BUILD_1.md
+prose:    infrastructure/state/items/POISONFOREST_RM_MOD_BUILD_1.md
 
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing
@@ -900,14 +900,14 @@ kind:     build
 summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
 prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
 
-## WATERTRUCE_CTOR_BIOME_READ_1 RM_MapComponent_WaterTruce reads map.Biome in its constructor (line ~51): on save load TileInfo is not resolved yet, WorldGrid index throws, and the component fails to instantiate on EVERY map (Player.log 2026-09-25: 'Could not instantiate a MapComponent of type ...RM_MapComponent_WaterTruce', 4-9x per load, also in FOUNDRY's 09-24 log). Water truce is silently off on every loaded map. Move the biome read to FinalizeInit/lazy.
-state:    doing
+## REGROWTH_RECOLOR_MINEABLES_NRE_1 Every full-list save load logs 'Exception from long event: NullReferenceException at ReGrowthCore.Map_FinalizeInit_Patch RecolorMineables' (09-24 and 09-25 logs, 1x per load). Donor mod; likely a mineable def of ours with null/unexpected color/stuff. Find which def trips it; confirm whether the rest of ReGrowth's map-init processing is skipped.
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/WATERTRUCE_CTOR_BIOME_READ_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WATERTRUCE_CTOR_BIOME_READ_1.md
+summary:  (no items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md
 
 ## SCALD_WATER_AGITATION_FLECKS_1 Scald wreck shadowData fix + ambient water-agitation ripple mechanism (margin calm / shallow light / deep heavy)
 state:    doing
@@ -1352,6 +1352,16 @@ blocked:  Blocked on FALL_LINE_ARRIVAL_MECHANISM_1's Band B flee/lurker think-tr
 summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
 prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
 
+## REGROWTH_RECOLOR_MINEABLES_NRE_1 Every full-list save load logs 'Exception from long event: NullReferenceException at ReGrowthCore.Map_FinalizeInit_Patch RecolorMineables' (09-24 and 09-25 logs, 1x per load). Donor mod; likely a mineable def of ours with null/unexpected color/stuff. Find which def trips it; confirm whether the rest of ReGrowth's map-init processing is skipped.
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Real trace (Transient/Player.log.geneticrim_ctor_nre_2026-09-25 L11288-92, and 09-24 before_bacta_swap L14377-81): 'Exception from long event: System.NullReferenceException' at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>g__RecolorMineables|4, called via b__0, via LongEventHandler.UpdateCurrentSynchronousEvent -- only 2 frames, no field named (release DLL, no PDB). RimSage DID connect this session (contra the CLAUDE.md claim) but only indexes Defs/+Source/ for core RimWorld, not 3rd-party mod DLLs -- ReGrowthCore.dll is unindexed. Reverse-engineered the actual IL instead (dnfile+dncil via a throwaway venv, ReGrowthCore.dll 1.6): ProcessMap flood-fills Mineable things with building.isNaturalRock==true into a lumps dict (skipping any defName in ModSettings_PerspectiveOres.skippedMineableDefs), AssociateLumps assigns each lump a Color borrowed from an adjacent isNaturalRock&&!isResourceRock neighbour's DrawColor, then queues RecolorMineables (b__0) and a 2nd independent long-event action (b__1) separately -- so b__0 crashing does NOT stop b__1 or the rest of map load; blast radius is cosmetic-only (some mineables miss their recolor tint) and self-contained, matching the log (1x/load, no crash, no cascade). RecolorMineables throws when accessing thing.Graphic.data (a GraphicData) -- null there is the only NRE-shaped read in the method. Cross-checked EVERY isNaturalRock ThingDef in the current def dump (defs.sqlite, mods=623, captured 2026-09-24) against this exact criterion: 174 total across all mods, 52 of ours (RM_/RSW_/RUT_/mandrake.* -- KOTOR_/RUT_ rock+ore veins, GravTide_ variants) -- ALL 52 have graphicData present with populated texPath/graphicClass and a cachedGraphic whose .data is a valid self-reference (no null, no missing field). Zero anomalies found in ours or in any of the other 571 mods' defs. Caveat: the dump is a post-load snapshot, so a graphic that failed once during FinalizeInit but got rebuilt cleanly afterward by the normal render path would look healthy here too -- a static dump cannot rule that out. What would resolve it: a live Harmony postfix/breakpoint on RecolorMineables (or the exception handler) on the Desktop machine, logging the actual Thing/def whose Graphic.data was null at the moment of the throw -- needs a live debugger or an injected diagnostic DLL, not obtainable from Player.log or the def dump. No fixable defect found on our side; not closing/guessing.
+summary:  (no items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1403,16 +1413,6 @@ kind:     build
 thin:     no ## verify
 summary:  - New biome def: RMWarscar, label Warscar (no article — deliberate, per the
 prose:    infrastructure/state/items/SCARLANDS_STANDALONE_MOD_1.md
-
-## POISONFOREST_RM_MOD_BUILD_1 Phase A: build RM_PoisonForest as its own RimMandrake mod (mandrake.rm.poisonforest) — the Poison Forest
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/POISONFOREST_RM_MOD_BUILD_1.md
 
 ## RUSTCATHEDRAL_RM_MOD_BUILD_1 Phase A: build RM_RustCathedral as its own RimMandrake mod (mandrake.rm.rustcathedral) — the Rust Cathedral - absorbs rustcathedralhum/roaches/walls
 state:    proposed
@@ -2033,13 +2033,3 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FLOWWORKS_DONOR_AFFORDANCE_GAP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FLOWWORKS_DONOR_AFFORDANCE_GAP_1.md
-
-## REGROWTH_RECOLOR_MINEABLES_NRE_1 Every full-list save load logs 'Exception from long event: NullReferenceException at ReGrowthCore.Map_FinalizeInit_Patch RecolorMineables' (09-24 and 09-25 logs, 1x per load). Donor mod; likely a mineable def of ours with null/unexpected color/stuff. Find which def trips it; confirm whether the rest of ReGrowth's map-init processing is skipped.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md
