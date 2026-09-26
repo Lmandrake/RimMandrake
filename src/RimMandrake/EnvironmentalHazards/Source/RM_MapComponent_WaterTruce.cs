@@ -39,7 +39,7 @@ namespace RimMandrake.EnvironmentalHazards
         // that matters).
         private const int RetributionCooldownTicks = 2500;
 
-        private readonly RM_WaterTruceExtension extension;
+        private RM_WaterTruceExtension extension;
 
         private bool[] field;
 
@@ -48,7 +48,12 @@ namespace RimMandrake.EnvironmentalHazards
         public RM_MapComponent_WaterTruce(Map map)
             : base(map)
         {
-            extension = map.Biome?.GetModExtension<RM_WaterTruceExtension>();
+            // Deliberately NOT reading map.Biome here (WATERTRUCE_CTOR_BIOME_READ_1):
+            // on save load, TileInfo/WorldGrid is not yet resolved at MapComponent
+            // construction time, so map.Biome throws and the component fails to
+            // instantiate on every map. The read is deferred to FinalizeInit, which
+            // runs once the map is fully set up.
+            extension = null;
         }
 
         public bool Active => extension != null;
@@ -56,6 +61,7 @@ namespace RimMandrake.EnvironmentalHazards
         public override void FinalizeInit()
         {
             base.FinalizeInit();
+            extension = map.Biome?.GetModExtension<RM_WaterTruceExtension>();
             Rebuild();
         }
 
