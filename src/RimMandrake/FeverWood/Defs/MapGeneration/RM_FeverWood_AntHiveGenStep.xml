@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWood_AntHiveGenStep.xml   FEVERWOOD_ANT_HIVE_DUNGEON_1
+
+  Declares the GenStepDef for RM_GenStep_AntHiveDungeon
+  (src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs).
+  Registration is the separate Patches/RM_FeverWood_AntHiveGenStep_Register.xml,
+  same two-file shape as RUT_FeverWood_ScatterPoolsGenStep.xml /
+  RUT_FeverWood_ScatterPoolsGenStep_Register.xml.
+
+  order 236: after RUT_GenStep_ScatterPools (226) and RUT_GenStep_RootCauseways
+  (228) — see RM_GenStep_AntHiveDungeon.cs's own header for the full ordering
+  rationale (water-avoidance needs pools already registered; the hive should
+  not be overwritten by a later terrain pass).
+
+  The class is a no-op on any biome without RM_AntHiveBiomeExtension (only
+  RM_FeverWood carries it this pass), so registering globally on Base_Player
+  is safe for every other biome too — same posture as every other
+  biome-gated GenStep in this mod set.
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.feverwood">
+    <defName>RM_GenStep_AntHiveDungeon</defName>
+    <order>236</order>
+    <genStep Class="RimMandrake.FeverWood.RM_GenStep_AntHiveDungeon" />
+  </GenStepDef>
+
+</Defs>

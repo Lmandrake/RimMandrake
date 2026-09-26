@@ -59,8 +59,6 @@
     <Compile Include="RM_AntHiveBiomeExtension.cs" />
     <Compile Include="RM_MapComponent_AntHive.cs" />
     <Compile Include="RM_GenStep_AntHiveDungeon.cs" />
-    <Compile Include="RM_CompProperties_SapSuckerRefusal.cs" />
-    <Compile Include="RM_CompSapSuckerRefusal.cs" />
   </ItemGroup>
 
   <ItemGroup>
