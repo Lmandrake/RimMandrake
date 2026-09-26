@@ -1,14 +1,31 @@
-# Four research access classes — mechanism scoping, one class BLOCKED
+# Four research access classes — mechanism scoping, faction-held RULED 2026-09-26
 
-🔴 **PARTIALLY BLOCKED.** Three of the four classes (common, jawa-special,
-ship-only) have a proven, pure-data vanilla mechanism — no new C#/Harmony
-needed for any of them. The fourth, **faction-held**, needs the owner to name
-which of the twelve campaign factions are "tech-aligned" and to which research
-domains before any row can be assigned — no such mapping exists in any design
-doc today, and this file does not invent one, same pattern as
-`DROID_DONOR_PATCH_GATE_1` staying blocked on `DROID_SYSTEM_BUILD_1`.
-No CSV rows were touched by this pass (see "what was NOT written" below) — the
-manifest's `source_gate` column is untouched beyond the 3 `memory_core` rows
+✅ **UNBLOCKED 2026-09-26.** All four classes now have both a mechanism and a
+ruling. Three (common, jawa-special, ship-only) have a proven, pure-data vanilla
+mechanism — no new C#/Harmony needed for any of them. The fourth,
+**faction-held**, waited on the owner naming which of the twelve campaign
+factions are "tech-aligned"; he ruled it at the bench on 2026-09-26 and widened
+it well past a short list (ledger note, his words in full).
+
+🔑 **The ruling is a METHOD, not a table.** A faction's holdings are derived from
+what it needs to survive in its own environment, plus the local tech already
+observable, plus what the roster already documents it as making — Deepwater lives
+in water so it holds rebreathers, Tusken lives in killing heat so it holds
+environment suits, Homestead farms moisture so it holds vaporator manufacture and
+repair. **Only the critical path is normalized; optional tech is deliberate
+side-quest content** (his worked example: nobody has to have bowcasters). The Hutt
+Cartel fences any holder's techprint at a markup and is the only route to Imperial
+goods; drugs/chemfuel/infrastructure split between Imperial and Junker by how
+advanced the item is. The Empire is a permanent enemy, so its tech arrives by
+loot and theft rather than trade.
+
+The full map is being written to
+`design/Jawa/worldbuilding/faction_tech_alignment.md` (Fable design pass,
+spawned 2026-09-26). Row assignment in the manifest is the build step and is NOT
+this item's.
+
+No CSV rows were touched by the mechanism pass (see "what was NOT written" below)
+— the manifest's `source_gate` column is untouched beyond the 3 `memory_core` rows
 `RESEARCH_MANIFEST_DRAFT_1` already wrote.
 
 ## spec
@@ -113,7 +130,18 @@ What's still missing before any row can use it:
    needs.** Searched `design/Jawa/worldbuilding/FACTION_SPEC.md` (948 lines),
    `faction_roster_v2.md` (2847 lines), `faction_equipment_clusters.md`,
    `faction_equipment_guidance.md`: no hits for "techprint" tied to a
-   faction, no "faction X holds research Y" table. The closest analog is
+   faction, no "faction X holds research Y" table.
+
+   🔴 **But the raw material DOES exist and this finding failed to name it**
+   (corrected by BENCH, 2026-09-26). `faction_roster_v2.md` carries a
+   per-faction **`## Technology and economy`** section — a bullet list of what
+   each faction makes, trades and depends on — for ten of the twelve factions.
+   It is not a research-gate table, which is why the search for one came up
+   empty, but it is precisely the evidence the ruling needed, and reporting
+   "none found" without it read as "there is nothing to work from." There was.
+   It is the primary source for `faction_tech_alignment.md`.
+
+   The closest analog for equipment specifically is
    `faction_equipment_clusters.md`'s Part 2 faction × weapon-cluster matrix
    (a retired seat's 2026-08-14 proposal, itself flagged unsettled in its own
    doc — "R6" notes contest even its own one-cluster-per-faction premise):
@@ -177,12 +205,22 @@ commands run, nothing committed/pushed — left for the owner to review.
       Reinvented's own faction system investigated and ruled OUT as the
       mechanism (it's an automatic per-faction "learn from anyone" system,
       not a per-project holder assignment).
-- [x] Faction-tech alignment doc search: none found; the closest artifact
+- [x] Faction-tech alignment doc search: no research-gate table found, but the
+      per-faction `## Technology and economy` sections in `faction_roster_v2.md`
+      ARE the evidence base and were missed by the original search; the closest
+      equipment artifact
       (`faction_equipment_clusters.md`'s weapon-cluster matrix) is named,
       quoted, and explicitly NOT used as a substitute mapping.
-- [ ] BLOCKED — owner rules which factions are tech-aligned and to which
-      research domains/tabs, by name, before any faction-held row is
-      assigned in the manifest.
+- [x] Owner rules faction tech-alignment — RULED 2026-09-26 at the bench, as a
+      derivation method rather than a list (survive-in-your-environment + local
+      tech + what the roster says you make), with critical-path normalized and
+      optional tech deliberately left as side-quest content.
+- [ ] `design/Jawa/worldbuilding/faction_tech_alignment.md` written and read by
+      the owner — its open questions are his to rule (Wildsteam's jungle tech and
+      the Empire's stealable manufacturing plans are TBD by his own words).
+- [ ] Manifest rows assigned against that map (build step, not this item):
+      `categoryTag` per aligned `FactionDef`, `heldByFactionCategoryTags` per
+      research row, `StockGenerator_Techprints` on that faction's traders.
 - [ ] Follow-on build item needed for the ship-only reveal trigger
       (QuestNode or Harmony patch) before that class can be called "working"
       rather than "labeled."
