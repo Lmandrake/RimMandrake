@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySaltSnow.xml                 TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  GREYSEA_SALT_SNOW_WEATHER_1. Owner, 2026-09-26, verbatim:
+
+      "On the sea floor, a special weather event: precipitating salt
+       crystals, like snow."
+
+  Sheet §4c [+2026-09-26]. It is the floor's one visible motion besides the
+  pools breathing; it is the trigger for the Brine Crown's retraction (§4a);
+  and it is the feed that "rains down from the surface" for the sessile layer
+  (§4). This is the biome's signature, not a hazard.
+
+  ============================================================================
+  THE FALLING VISUAL IS PURE XML — the Pyrelands AshFall pattern
+  ============================================================================
+  Read src/RimMandrake/Pyrelands/Defs/WeatherDefs/AshFall.xml's own header
+  before touching this: vanilla tints every active weather overlay with the
+  CURRENT weather's own sky `overlay` colour (Verse/SkyManager.cs:117 takes
+  curSky.colors.overlay for any SkyOverlay with no ForcedOverlayColor, and
+  WeatherOverlay_SnowGentle declares none). So borrowing the gentle-snow
+  particle sheet and setting <overlay> gives falling particles at snow's pace
+  in whatever colour is wanted.
+
+  🔑 For salt that colour is OFF-WHITE, which makes this the one case where
+  the borrowed snow sheet is already almost right — the Pyrelands had to
+  darken it to grey for ash; the Grey Sea barely has to touch it.
+
+  ============================================================================
+  snowRate AND rainRate BOTH STAY 0 — not an oversight
+  ============================================================================
+  snowRate is what makes falling weather ACCUMULATE, and it accumulates into
+  map.snowGrid: literal white snow, drawn as snow, melting above freezing
+  (SteadyEnvironmentEffects AddFallenSnowAt). The Grey's floor sits at +12 degC,
+  so it would melt on contact AND would read as water-snow, which is exactly
+  what terminator_sea.md §6 bans. Accumulation, if ever wanted, is a filth or
+  a terrain tint laid by a map component — the shape the Pyrelands already
+  uses for RM_FE_Filth_LooseAsh — never snowRate.
+
+  rainRate 0 because this is a precipitate out of supersaturated brine, not
+  water falling, and because rainRate > 0.1 changes fire, growth and mood
+  handling across the map for no reason connected to this weather.
+
+  ============================================================================
+  WHY THIS DOES NOT CROSS "NO SNOW, NO ICE"
+  ============================================================================
+  RULED ADDITIVE 2026-09-26 (sheet §4c, content doc §8.2 item 4).
+  terminator_sea.md §6's ban is about WATER weather on the SURFACE and gives
+  its own reason: "at +14 degC with no lift, the only water delivery is thin
+  fog." This is salt, on the floor, out of the water column. The Grey Deep
+  sheet already carried "the crackle of growing crystal" and "scrape-dust
+  falling" in its own §9.
+
+  ⚠️ REACHABILITY: RM_GreySea is impassable, canBuildBase false and
+  isBackgroundBiome — the ONLY map whose Biome is RM_GreySea is the sea-dive
+  pocket map RM_SeaDiveGenerator_GreySea generates. A coastal land tile keeps
+  its own land biome. So putting this in RM_GreySea's baseWeatherCommonalities
+  puts it on the FLOOR and nowhere else, which is what "on the sea floor" asks
+  for. It is not a surface weather by the back door.
+
+  favorability Neutral, not Bad, on purpose: WeatherDecider refuses any
+  weather below Neutral for the first 8 days after settling
+  (WeatherDecider.cs:156), and salt snow is the thing a diver should see
+  early.
+  ============================================================================
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RM_GreySaltSnow</defName>
+    <label>salt snow</label>
+    <description>The brine above has gone past what it can hold, and it is letting go: salt crystallising out of the water column in flat white flakes that turn over slowly as they sink, catching on everything upright and sifting into every crack of the floor. It is the only motion down here besides the pools breathing, and it is the reason anything on this floor gets fed at all. Nothing about it is cold.</description>
+    <durationRange>18000~55000</durationRange>
+    <favorability>Neutral</favorability>
+    <isBad>false</isBad>
+    <perceivePriority>2</perceivePriority>
+    <accuracyMultiplier>0.9</accuracyMultiplier>
+    <moveSpeedMultiplier>1.0</moveSpeedMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <windSpeedFactor>0.6</windSpeedFactor>
+    <windSpeedOffset>0</windSpeedOffset>
+    <preventSkygaze>true</preventSkygaze>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_SnowGentle</li>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <!-- `overlay` IS the salt colour — see the header. `saturation` must
+         never be 0 or WeatherDef.ConfigErrors complains. The sky stays the
+         sheet's "grey-green dimness fading to blind" (§9), never blue: the
+         reference image 01 is bluer than this biome is allowed to be, and
+         the sheet says take its forms and not its colour. -->
+    <skyColorsDay>
+      <sky>(0.46,0.50,0.48)</sky>
+      <shadow>(0.88,0.88,0.88)</shadow>
+      <overlay>(0.90,0.91,0.89)</overlay>
+      <saturation>0.35</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.42,0.46,0.44)</sky>
+      <shadow>(0.88,0.88,0.88)</shadow>
+      <overlay>(0.87,0.88,0.86)</overlay>
+      <saturation>0.35</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.20,0.23,0.22)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.72,0.74,0.72)</overlay>
+      <saturation>0.35</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.18,0.21,0.20)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.68,0.70,0.68)</overlay>
+      <saturation>0.35</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

@@ -63,10 +63,21 @@
     <coastalWildAnimals />
 
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+    <!-- GREYSEA_SALT_SNOW_WEATHER_1, 2026-09-26.
+         🔴 Vanilla `Rain 4` REMOVED, not superseded. It was a pre-existing
+         defect against terminator_sea.md §6's hard ban ("no rain, no
+         thunderstorms, no snow, no ice" — its own reason: at +14 degC with no
+         lift the only water delivery is thin fog), found by the owner's
+         2026-09-26 content drop pass and recorded in sheet §4c. It predates
+         the drop and is not part of it.
+         RM_GreySaltSnow ADDED (Defs/WeatherDefs/RM_GreySaltSnow.xml) —
+         his "precipitating salt crystals, like snow." It lands on the FLOOR
+         and nowhere else: RM_GreySea is impassable/isBackgroundBiome, so the
+         only map carrying this biome is the sea-dive pocket map. -->
     <baseWeatherCommonalities>
       <Clear>12</Clear>
       <Fog>7</Fog>
-      <Rain>4</Rain>
+      <RM_GreySaltSnow>6</RM_GreySaltSnow>
     </baseWeatherCommonalities>
     <terrainsByFertility>
       <li>
