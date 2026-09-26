@@ -76,7 +76,7 @@ DEF_PAIRS = [
     ("RSW_GenStep_KraytGraveyard", "RSW_KraytGraveyard", ["ExtremeDesert"]),
     ("RSW_GenStep_PodracerWreck", "RSW_PodracerWreck", ["Desert", "ExtremeDesert"]),
     ("RSW_GenStep_HuntingLodge", "RSW_HuntingLodge",
-     ["AridShrubland", "ZBiome_Grasslands"]),
+     ["AridShrubland", "ZBiome_Grasslands", "RM_Pyrelands"]),
     ("RSW_GenStep_BanthaGraveyard", "RSW_BanthaGraveyard", None),
     ("RSW_GenStep_MynockRoost", "RSW_MynockRoost", None),
     ("RSW_GenStep_MiningSite", "RSW_MiningSite", None),
