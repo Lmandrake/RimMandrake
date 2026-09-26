@@ -21,21 +21,18 @@ namespace RimMandrake.EnvironmentalHazards
     // started at the condition's End() but must keep moving for 2-4
     // INVENTED days AFTER that condition object is gone — only something
     // that outlives the condition can carry it, so it has to be here.
-    // Owed, not silently skipped (unchanged from the M1 spike, M2 not
-    // touching either):
+    // Owed, not silently skipped:
     //   - the "coarse grid" downsample the spec mentions (perf tuning, not
-    //     an engine fact, deferred to the full build);
-    //   - Scribe save/load of the grid itself (TerrainGrid.
-    //     ExposeTerrainGrid's per-cell ushort-array pattern is the model
-    //     to crib — Verse/TerrainGrid.cs:671 — not reproduced here since
-    //     no per-cell save format decision has been made yet). M2 does NOT
-    //     need this: the per-tick walk only ever ADDS a delta to whatever
-    //     salinity[] already holds, so a save mid-shift loses no more than
-    //     the grid itself already did before this pass — shiftInProgress/
-    //     shiftDeltaRemaining/shiftTicksRemaining/shiftIsRecede are scribed,
-    //     so the SHIFT resumes correctly; only the per-cell field's own
-    //     absolute values (fresh vs brine at any one cell) don't survive a
-    //     save, exactly as already flagged.
+    //     an engine fact, deferred to the full build).
+    // CLOSED 2026-09-26 (MIASMA_MECHANICS_1 continuation): Scribe save/load
+    // of the grid itself. The per-cell `salinity[]` absolute values now
+    // survive a save/load via ExposeData's MapExposeUtility.ExposeUshort
+    // call below — previously EnsureGrid() would silently reallocate an
+    // all-zero grid on every load, so the salt line's real position and
+    // every surge's accumulated shove/recede were being discarded on every
+    // save, even though the shift-in-progress bookkeeping (shiftInProgress/
+    // shiftDeltaRemaining/shiftTicksRemaining/shiftIsRecede) was already
+    // scribed and resumed correctly on its own.
     public class RM_MapComponent_GradientAxis : MapComponent
     {
         private float[] salinity;
@@ -235,6 +232,11 @@ namespace RimMandrake.EnvironmentalHazards
         // absent = mechanism does nothing" fail-safe M1's own gate uses).
         private void TickSurgeRoll()
         {
+            if (!RM_EnvironmentalHazardsSettings.gradientSurgeEnabled)
+            {
+                return;
+            }
+
             RM_GradientSurgeExtension ext = map.Biome != null ? map.Biome.GetModExtension<RM_GradientSurgeExtension>() : null;
             if (ext == null || ext.incidentDef == null)
             {
@@ -287,6 +289,28 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref shiftIsRecede, "shiftIsRecede", false);
             Scribe_Values.Look(ref lastRecedeCompletedTick, "lastRecedeCompletedTick", -1);
             Scribe_Values.Look(ref updateCooldown, "updateCooldown", 0);
+
+            // The per-cell salinity grid itself — closed this pass
+            // (MIASMA_MECHANICS_1 continuation, 2026-09-26). Every prior
+            // pass in this class's own history flagged this as owed: with
+            // no Scribe of `salinity`, EnsureGrid() silently reallocates an
+            // all-zero ("all fresh") array on every load, discarding the
+            // salt line's real position and every surge's accumulated
+            // shove/recede. Cribbed from TerrainGrid.ExposeTerrainGrid's
+            // own per-cell pattern (Verse/TerrainGrid.cs) but through
+            // Verse/MapExposeUtility.ExposeUshort — confirmed real, the
+            // same RLE+deflate-via-DataExposeUtility.LookByteArray route
+            // vanilla's own snow/fertility/roof grids use — rather than
+            // TerrainDef shortHash lookups, since salinity is a continuous
+            // 0..1 scalar, not a def reference. Quantized to ushort
+            // (0..65535, ~1.5e-5 precision) rather than a byte: far finer
+            // than anything ApplyDeltaToAllCells/RepaintCell act on, and
+            // ushort is the primitive MapExposeUtility actually offers.
+            MapExposeUtility.ExposeUshort(
+                map,
+                c => (ushort)Mathf.RoundToInt(SalinityAt(c) * 65535f),
+                (c, val) => SetSalinityAt(c, val / 65535f),
+                "salinity");
         }
     }
 }
