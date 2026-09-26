@@ -44,6 +44,14 @@ namespace RimMandrake.EnvironmentalHazards
         public int crushIntervalTicks = 600;
         public float crushDamagePerHit = 12f;
 
+        // GREATBOLE_HARVEST_LADDER_1: optional "heals faster than you can
+        // mine, past this fraction removed" ladder rung. -1 (default) is a
+        // complete no-op — every other bole built before this field existed
+        // is unaffected. See RM_MapComponent_LivingRegrowth.RegisterBole's
+        // own header for the exact semantics.
+        public float acceleratedRegrowThreshold = -1f;
+        public float acceleratedRegrowSpeedMultiplier = 1f;
+
         // Safety cap on the first-spawn flood fill, in case a malformed
         // heartwood blob (e.g. hand-placed by a future world-editing tool)
         // is accidentally unbounded.
@@ -84,6 +92,12 @@ namespace RimMandrake.EnvironmentalHazards
 
         public CompProperties_LivingBoleMarker Props => (CompProperties_LivingBoleMarker)props;
 
+        // GREATBOLE_HARVEST_LADDER_1: lets a sibling comp on the same marker
+        // Thing (e.g. a content mod's threshold-ladder comp) find this
+        // bole's registration in RM_MapComponent_LivingRegrowth without the
+        // generic component needing to know that comp exists at all.
+        public int BoleId => boleId;
+
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
@@ -108,7 +122,9 @@ namespace RimMandrake.EnvironmentalHazards
                 Props.regrowDaysRange,
                 Props.creakWarningTicks,
                 Props.crushIntervalTicks,
-                Props.crushDamagePerHit);
+                Props.crushDamagePerHit,
+                Props.acceleratedRegrowThreshold,
+                Props.acceleratedRegrowSpeedMultiplier);
         }
 
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)

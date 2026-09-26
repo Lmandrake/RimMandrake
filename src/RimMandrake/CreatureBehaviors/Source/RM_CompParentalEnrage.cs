@@ -56,12 +56,39 @@ namespace RimMandrake.CreatureBehaviors
 				return;
 			}
 
+			int now = Find.TickManager.TicksGame;
+
+			if (ext.GuardsThings)
+			{
+				// Item-guard mode: no young/adult split at all — every pawn
+				// carrying the comp is its own guardian and its own scanner.
+				// "young" above is just this comp's carrier in this mode.
+				if (now - lastTriggerTick < ext.cooldownTicks)
+				{
+					return;
+				}
+
+				Thing guardedThing = FindGuardedThing(young, ext);
+				if (guardedThing == null)
+				{
+					return; // nothing of this comp's watch list is nearby
+				}
+
+				Pawn thingIntruder = FindIntruderNear(guardedThing.Position, young.Map, young, ext);
+				if (thingIntruder == null)
+				{
+					return;
+				}
+
+				TryEnrageForThing(young, guardedThing, thingIntruder, ext, now);
+				return;
+			}
+
 			if (!IsYoung(young, ext))
 			{
 				return; // adults carry the comp and do nothing with it
 			}
 
-			int now = Find.TickManager.TicksGame;
 			if (now - lastTriggerTick < ext.cooldownTicks)
 			{
 				return;
@@ -80,6 +107,143 @@ namespace RimMandrake.CreatureBehaviors
 			}
 
 			TryEnrage(guardian, young, intruder, ext, now);
+		}
+
+		/// <summary>
+		/// Item-guard mode: the nearest spawned Thing of one of
+		/// ext.guardedThingDefNames within ext.guardianSearchRadius of this
+		/// pawn, or null. Cheap in practice — a map carries at most a
+		/// handful of fruit at once.
+		/// </summary>
+		private static Thing FindGuardedThing(Pawn guardian, RM_ParentalEnrageExtension ext)
+		{
+			Map map = guardian.Map;
+			float radiusSq = ext.guardianSearchRadius * ext.guardianSearchRadius;
+
+			Thing best = null;
+			float bestDistSq = float.MaxValue;
+
+			for (int d = 0; d < ext.guardedThingDefNames.Count; d++)
+			{
+				ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(ext.guardedThingDefNames[d]);
+				if (def == null)
+				{
+					continue;
+				}
+				List<Thing> things = map.listerThings.ThingsOfDef(def);
+				for (int i = 0; i < things.Count; i++)
+				{
+					Thing t = things[i];
+					if (t == null || t.Destroyed || !t.Spawned)
+					{
+						continue;
+					}
+					float distSq = (t.Position - guardian.Position).LengthHorizontalSquared;
+					if (distSq > radiusSq || distSq >= bestDistSq)
+					{
+						continue;
+					}
+					bestDistSq = distSq;
+					best = t;
+				}
+			}
+
+			return best;
+		}
+
+		/// <summary>
+		/// Same exemption rules as FindIntruder, centered on an arbitrary
+		/// cell (the guarded thing's position) instead of a young pawn's own
+		/// position.
+		/// </summary>
+		private static Pawn FindIntruderNear(IntVec3 center, Map map, Pawn self, RM_ParentalEnrageExtension ext)
+		{
+			float radius = System.Math.Min(ext.triggerRadius, GenRadial.MaxRadialPatternRadius - 1f);
+
+			Pawn best = null;
+			float bestDistSq = float.MaxValue;
+
+			foreach (Thing thing in GenRadial.RadialDistinctThingsAround(center, map, radius, useCenter: true))
+			{
+				if (!(thing is Pawn candidate) || candidate == self)
+				{
+					continue;
+				}
+
+				if (candidate.Dead || candidate.Downed || !candidate.Spawned)
+				{
+					continue;
+				}
+
+				if (ext.exemptSameRace && candidate.def == self.def)
+				{
+					continue;
+				}
+
+				if (ext.exemptSameFaction && candidate.Faction != null && candidate.Faction == self.Faction)
+				{
+					continue;
+				}
+
+				if (ext.onlyToolUserOrHumanlikeTriggers
+				    && (candidate.RaceProps == null || (int)candidate.RaceProps.intelligence < (int)Intelligence.ToolUser))
+				{
+					continue;
+				}
+
+				if (candidate.IsPsychologicallyInvisible())
+				{
+					continue;
+				}
+
+				if (ext.requireLineOfSight
+				    && !GenSight.LineOfSight(center, candidate.Position, map, skipFirstCell: true))
+				{
+					continue;
+				}
+
+				float distSq = (candidate.Position - center).LengthHorizontalSquared;
+				if (distSq < bestDistSq)
+				{
+					bestDistSq = distSq;
+					best = candidate;
+				}
+			}
+
+			return best;
+		}
+
+		private void TryEnrageForThing(Pawn guardian, Thing guardedThing, Pawn intruder,
+			RM_ParentalEnrageExtension ext, int now)
+		{
+			if (guardian.mindState == null || guardian.mindState.mentalStateHandler == null)
+			{
+				return;
+			}
+
+			string reason = intruder.LabelShortCap + " came too close to " + guardedThing.LabelShort + ".";
+
+			bool started = guardian.mindState.mentalStateHandler.TryStartMentalState(
+				ext.enrageState,
+				reason,
+				forced: true,
+				forceWake: true,
+				causedByMood: false,
+				otherPawn: intruder);
+
+			if (!started)
+			{
+				return;
+			}
+
+			if (guardian.MentalState is RM_MentalState_ParentalEnrage state)
+			{
+				state.guardedThing = guardedThing;
+				state.disengageRadius = ext.triggerRadius * 2f;
+				state.forceRecoverAfterTicks = ext.enrageDurationTicks;
+			}
+
+			lastTriggerTick = now;
 		}
 
 		/// <summary>

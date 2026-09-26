@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREATBOLE_HARVEST_LADDER_1 §2c ruling 3: "a dead standing husk: hollow,
+     no healing, freely buildable inside." Replaces RUT_GreatboleCore at the
+     bole's center once the catastrophe fires — RM_MapComponent_
+     LivingRegrowth has already deregistered the bole by the time this
+     spawns, so there is no regrowth path left for it to opt back into; this
+     def carries no CompProperties_LivingBoleMarker at all, which IS the
+     "dead forever" statement (§2c: "once dead, it's dead").
+
+     Passable, not holdsRoof, drawerType None: a single-cell marker standing
+     in for the husk's presence rather than a modelled multi-cell shell —
+     modelling the actual hollow architecture (walls, floor, roof) a player
+     could really wall off and roof over is real content work this pass does
+     not attempt; "freely buildable inside" is honoured here by NOT blocking
+     construction anywhere in the footprint (this def occupies one cell and
+     obstructs nothing), not by drawing a literal ruin. Same "bookkeeping
+     Thing, no competing sprite" posture RUT_GreatboleCore's own header
+     explains for the exact same reason (GREATBOLE_BARK_EDGE_ART_1). -->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_GreatboleDeadHusk</defName>
+    <label>dead greatbole husk</label>
+    <description>The hollow remains of a greatbole, killed by the wound that opened it to the core. It will never heal, never fruit and never sing again — but nothing in here will ever push back against you either.</description>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <coversFloor>false</coversFloor>
+    <holdsRoof>false</holdsRoof>
+    <useHitPoints>false</useHitPoints>
+    <drawerType>None</drawerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <statBases>
+      <Beauty>-3</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+</Defs>

@@ -57,10 +57,24 @@ Ships the four v1 mechanics the owner ruled MUST ship together, not deferred
      volume-ramp API). Wired onto Warg for the same reason.
 
 NOT in this mod (scoped out by the calling item, not deferred sub rosa): the
-other eight GREENTIDE_MECHANICS_1 mechanics (wet-bulb, dry-air blower, scald/
-steam devils, Roil/Breaklight weather, tree-fall, Lunger, root causeways, the
-Greatbole) — those depend on ALPHA_MECHANICS_KIT_1 / EXPLOSIVE_PLANT_GROWTH_1
-and are a separate build.
+other seven GREENTIDE_MECHANICS_1 mechanics (wet-bulb, dry-air blower, scald/
+steam devils, Roil/Breaklight weather, tree-fall, Lunger, root causeways) —
+those depend on ALPHA_MECHANICS_KIT_1 / EXPLOSIVE_PLANT_GROWTH_1 and are a
+separate build. The Greatbole LANDMARK itself (the mineable ancient bole,
+RUT_GreatboleCore/Heartwood and its threshold-ladder events) is still one of
+those — it lives in mandrake.rm.environmentalhazards + the campaign's
+UtinniPatches, unbuilt for this mod's own biome today.
+
+GREATBOLE_HARVEST_LADDER_1 (2026-09-25) added the fruit's own harvest
+economy here instead, per design/RimMandrake/exposure_gear_matrix_spec.md's
+own naming ruling ("Royal Rind (RM_RoyalRind stuff from RM_GreatboleFruit)"
+is RM_ tier, not campaign tier): RM_GreatboleFruit (the fruit), its three
+butchered products (RM_GreatboleFruitSteak, RM_RoyalRind, RM_GreatboleSeed),
+RM_Apparel_RindCoat, and RM_GreatboleGrub (the fruit's contesting purple
+grub — reuses this mod's own mandrake.rm.creaturebehaviors dependency, no
+new one added). These items exist independently of the landmark that
+currently drops them; a franchise-free source for them in THIS mod's own
+biome (a Greentide fruiting plant, not the ancient bole) is owed separately.
 
 Live proof is OWED at publish time — see the item's own verify record.</description>
 </ModMetaData>

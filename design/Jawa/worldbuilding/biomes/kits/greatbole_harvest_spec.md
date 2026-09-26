@@ -1,8 +1,20 @@
 # The greatbole harvest — spec
 
-**Status: DESIGN, ruled by the owner 2026-09-23 across two card rounds. Nothing built by this
-document.** Item: `GREATBOLE_HARVEST_LADDER_1`. The greatbole itself:
+**Status: PARTIALLY BUILT, 2026-09-25 (`GREATBOLE_HARVEST_LADDER_1`).** Ruled by the owner
+2026-09-23 across two card rounds. Item: `GREATBOLE_HARVEST_LADDER_1`. The greatbole itself:
 `GREATBOLE_BARK_EDGE_ART_1`. The mature tree it seeds: `GREENTIDE_JUNGLE_TREE_ROSTER_1` row 22.
+
+✅ **Built 2026-09-25**: the 40/60/70 threshold ladder and its three events (§1, §2a, §2b, §2c
+minus the exact "how" of a couple of §10's engine questions — see below), Fruitfall (§2d), the
+fruit and its three products (§3a/§3b core protections/§3c seed item, not yet the seed's own
+growth mechanic), the grubs (§4, reusing/widening the three already-shipped mechanisms §9 named),
+and the catastrophe's Wildsteam goodwill hook (§8, the atrocity half only). ⛔ **Still owed, not
+invented here**: the song (§5), thermal sanctuary (§7), the pilgrims (§8a), both opt-in crossovers
+(§8b), the seed's actual planting/growth mechanic (blocked on `GREENTIDE_JUNGLE_TREE_ROSTER_1`
+shipping `RM_Greatbole` — checked 2026-09-25, still OWED, only a mechanism-proof placeholder
+exists), Gorbeleth toxin as the sealant's reagent (blocked on Gorbeleth's own roster entry, not
+built anywhere yet), and the deeper Contagion/Miasma stat wiring on Royal Rind (blocked on
+`scald_steam_and_hazards_spec.md`'s own still-unbuilt `RM_ScaldProtection`/hazard StatDefs).
 
 ---
 

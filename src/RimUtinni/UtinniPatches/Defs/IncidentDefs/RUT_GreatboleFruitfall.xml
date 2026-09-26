@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREATBOLE_HARVEST_LADDER_1 §2d. Ordinary Misc-category incident, same
+     shape RUT_Breaklight.xml already established for this kit — a
+     Storyteller-driven periodic roll, CanFireNowSub refusing outright when
+     no greatbole is registered on the map (see
+     RUT_IncidentWorker_GreatboleFruitfall.cs). baseChance/minRefireDays are
+     INVENTED; the spec gives no cadence, only "a random event." -->
+<Defs>
+
+  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_GreatboleFruitfall</defName>
+    <label>greatbole fruitfall</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.Utinni.UtinniPatches.RUT_IncidentWorker_GreatboleFruitfall</workerClass>
+    <baseChance>1</baseChance>
+    <minRefireDays>2</minRefireDays>
+    <allowedBiomes>
+      <li>RUT_Greentide</li>
+    </allowedBiomes>
+  </IncidentDef>
+
+</Defs>

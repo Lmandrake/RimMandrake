@@ -82,6 +82,18 @@ namespace RimMandrake.EnvironmentalHazards
 
         // footprintCells: every cell this bole owns (its full blob, mined
         // out or not — fixed for the life of the registration).
+        //
+        // acceleratedRegrowThreshold/Multiplier: GREATBOLE_HARVEST_LADDER_1's
+        // own generalisation of "below the line you mine faster than it
+        // heals; above it, it heals faster than you mine" (the greatbole
+        // spec's organising rule, §1). Optional and content-blind: any
+        // living-dungeon bole can opt in by passing a threshold >= 0 — a
+        // fraction of the bole's OWN footprint currently missing its
+        // regrowthThing edifice (see GetRemovedFraction) — past which every
+        // newly-scheduled regrow timer on this bole runs
+        // acceleratedRegrowSpeedMultiplier times faster. Left at the
+        // defaults (-1, 1) this is a complete no-op, unchanged from before
+        // this field existed.
         public int RegisterBole(
             IntVec3 center,
             IEnumerable<IntVec3> footprintCells,
@@ -90,7 +102,9 @@ namespace RimMandrake.EnvironmentalHazards
             IntRange regrowDaysRange,
             int creakWarningTicks,
             int crushIntervalTicks,
-            float crushDamagePerHit)
+            float crushDamagePerHit,
+            float acceleratedRegrowThreshold = -1f,
+            float acceleratedRegrowSpeedMultiplier = 1f)
         {
             BoleRecord rec = new BoleRecord
             {
@@ -103,6 +117,8 @@ namespace RimMandrake.EnvironmentalHazards
                 creakWarningTicks = creakWarningTicks,
                 crushIntervalTicks = crushIntervalTicks,
                 crushDamagePerHit = crushDamagePerHit,
+                acceleratedRegrowThreshold = acceleratedRegrowThreshold,
+                acceleratedRegrowSpeedMultiplier = acceleratedRegrowSpeedMultiplier,
             };
             foreach (IntVec3 c in footprintCells)
             {
@@ -110,6 +126,84 @@ namespace RimMandrake.EnvironmentalHazards
             }
             boles.Add(rec);
             return rec.id;
+        }
+
+        private BoleRecord FindBole(int boleId)
+        {
+            for (int i = 0; i < boles.Count; i++)
+            {
+                if (boles[i].id == boleId)
+                {
+                    return boles[i];
+                }
+            }
+            return null;
+        }
+
+        public bool IsRegistered(int boleId)
+        {
+            return FindBole(boleId) != null;
+        }
+
+        // GREATBOLE_HARVEST_LADDER_1: lets a content mod's own random
+        // incident (Fruitfall) pick one of this map's live boles without
+        // knowing anything about how they got registered.
+        public List<int> AllBoleIds()
+        {
+            List<int> ids = new List<int>(boles.Count);
+            for (int i = 0; i < boles.Count; i++)
+            {
+                ids.Add(boles[i].id);
+            }
+            return ids;
+        }
+
+        // GREATBOLE_HARVEST_LADDER_1: "how much of a bole is missing" reduces
+        // to "what fraction of its footprint no longer carries regrowthThing
+        // as its edifice" — sealed cells never regrow (ScanForNewCandidates
+        // skips them outright), so a sealed cell counts as permanently
+        // removed here too, matching the spec's own reading ("sealing is a
+        // compromise with a living thing", not a way to un-remove wood).
+        // Cheap: bounded by maxFootprintCells (400 by default), called on the
+        // content mod's own polling interval, not every tick.
+        public float GetRemovedFraction(int boleId)
+        {
+            BoleRecord rec = FindBole(boleId);
+            return rec == null ? 0f : ComputeRemovedFraction(rec);
+        }
+
+        private float ComputeRemovedFraction(BoleRecord rec)
+        {
+            if (rec.footprint.Count == 0)
+            {
+                return 0f;
+            }
+            int intact = 0;
+            foreach (IntVec3 c in rec.footprint)
+            {
+                if (!c.InBounds(map))
+                {
+                    continue;
+                }
+                Building edifice = c.GetEdifice(map);
+                if (edifice != null && edifice.def == rec.regrowthThing)
+                {
+                    intact++;
+                }
+            }
+            return 1f - (float)intact / rec.footprint.Count;
+        }
+
+        public IntVec3 GetBoleCenter(int boleId)
+        {
+            BoleRecord rec = FindBole(boleId);
+            return rec != null ? rec.center : IntVec3.Invalid;
+        }
+
+        public IReadOnlyCollection<IntVec3> GetFootprintCells(int boleId)
+        {
+            BoleRecord rec = FindBole(boleId);
+            return rec != null ? (IReadOnlyCollection<IntVec3>)rec.footprint : System.Array.Empty<IntVec3>();
         }
 
         public void DeregisterBole(int boleId)
@@ -182,8 +276,19 @@ namespace RimMandrake.EnvironmentalHazards
                 }
 
                 int days = Rand.RangeInclusive(bole.regrowDaysMin, bole.regrowDaysMax);
+                // livingRegrowthRateMultiplier is a DAYS multiplier (higher = slower — see
+                // RM_EnvironmentalHazardsSettings's own doc, "1x is the def's own authored
+                // days, higher is slower healing"), so it MULTIPLIES ticks. The accelerated-
+                // regrow speed multiplier below is the opposite sense (higher = faster) by its
+                // own name, so it DIVIDES — the two must never be conflated.
                 float rateMult = System.Math.Max(0.01f, RM_EnvironmentalHazardsSettings.livingRegrowthRateMultiplier);
                 int dueTicks = Mathf.RoundToInt(days * GenDate.TicksPerDay * rateMult);
+                if (bole.acceleratedRegrowThreshold >= 0f
+                    && bole.acceleratedRegrowSpeedMultiplier > 1f
+                    && ComputeRemovedFraction(bole) >= bole.acceleratedRegrowThreshold)
+                {
+                    dueTicks = Mathf.Max(1, Mathf.RoundToInt(dueTicks / bole.acceleratedRegrowSpeedMultiplier));
+                }
                 bole.timers[cell] = new CellTimer
                 {
                     State = CellTimer.TimerState.Scheduled,
@@ -400,6 +505,8 @@ namespace RimMandrake.EnvironmentalHazards
         public int creakWarningTicks;
         public int crushIntervalTicks;
         public float crushDamagePerHit;
+        public float acceleratedRegrowThreshold = -1f;
+        public float acceleratedRegrowSpeedMultiplier = 1f;
         public Dictionary<IntVec3, CellTimer> timers = new Dictionary<IntVec3, CellTimer>();
 
         public void ExposeData()
@@ -414,6 +521,8 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref creakWarningTicks, "creakWarningTicks");
             Scribe_Values.Look(ref crushIntervalTicks, "crushIntervalTicks");
             Scribe_Values.Look(ref crushDamagePerHit, "crushDamagePerHit");
+            Scribe_Values.Look(ref acceleratedRegrowThreshold, "acceleratedRegrowThreshold", -1f);
+            Scribe_Values.Look(ref acceleratedRegrowSpeedMultiplier, "acceleratedRegrowSpeedMultiplier", 1f);
             Scribe_Collections.Look(ref timers, "timers", LookMode.Value, LookMode.Deep);
 
             if (Scribe.mode == LoadSaveMode.LoadingVars)

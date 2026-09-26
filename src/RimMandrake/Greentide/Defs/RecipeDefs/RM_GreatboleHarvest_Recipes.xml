@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREATBOLE_HARVEST_LADDER_1 §3: "One fruit, three products… one economy
+     rather than three perks." A full RecipeDef rather than the recipeMaker
+     shorthand because recipeMaker only ever yields ONE product def — this
+     needs a <products> list of three distinct defs from one ingredient,
+     which RecipeDef supports natively. Counts are INVENTED; nothing in the
+     spec gives exact yields per fruit. -->
+<Defs>
+
+  <RecipeDef>
+    <defName>RM_ButcherGreatboleFruit</defName>
+    <label>butcher greatbole fruit</label>
+    <description>Render a greatbole fruit down into its three parts: meat for the table, cured rind for gear and trade, and a seed for planting.</description>
+    <jobString>Butchering greatbole fruit.</jobString>
+    <workAmount>600</workAmount>
+    <workSpeedStat>ButcheryFleshSpeed</workSpeedStat>
+    <workSkill>Cooking</workSkill>
+    <workSkillLearnFactor>0.5</workSkillLearnFactor>
+    <effectWorking>Butcher</effectWorking>
+    <soundWorking>Recipe_Butcher</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_GreatboleFruit</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_GreatboleFruit</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <li>
+        <thingDef>RM_GreatboleFruitSteak</thingDef>
+        <count>4</count>
+      </li>
+      <li>
+        <thingDef>RM_RoyalRind</thingDef>
+        <count>1</count>
+      </li>
+      <li>
+        <thingDef>RM_GreatboleSeed</thingDef>
+        <count>1</count>
+      </li>
+    </products>
+    <recipeUsers>
+      <li>TableButcher</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>

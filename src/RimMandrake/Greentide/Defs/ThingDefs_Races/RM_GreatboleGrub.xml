@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREATBOLE_HARVEST_LADDER_1 §4, "the grubs" —
+     design/Jawa/worldbuilding/biomes/kits/greatbole_harvest_spec.md.
+
+     Per the item's own measured finding, this creature is almost entirely
+     REUSE of mandrake.rm.creaturebehaviors' already-shipped kit
+     (SHIP_VERMIN_MOD_1 / SHRUBLAND_GIANT_ENRAGE_1 / RUST_CATHEDRAL_MECHANICS_1),
+     widened in three small places this same pass:
+       - RM_EatCleanableExtension: unchanged, just pointed at RM_GreatboleFruit.
+       - RM_ParentalEnrageExtension: uses its NEW guardedThingDefNames axis
+         (item-guard mode) instead of the young-pawn mode
+         RSW_ShrublandGiant.xml uses — "attack anyone who comes near the
+         fruit" (§4a), not "defend your own calf".
+       - RM_CompVerminBreeder: uses its NEW breedFoodThingDefNames +
+         famineMentalState fields — "breed fast while there is fruit to eat…
+         when the fruit runs out, they go Manhunter" (§4a).
+
+     Only the grub species itself (this file) and those three widenings are
+     new; the mechanisms they ride on are not.
+
+     Placeholder texPath: no purple spiny grub sprite exists anywhere in this
+     mod set (checked infrastructure/artpipe/done, _artsrc and registry.jsonl
+     this pass — nothing filed for this subject). RUT_FireWasp's shipped
+     insect silhouette is reused as the nearest placeholder already in the
+     mod set, same posture RM_Skerrel (this same assembly) already took for
+     its own wasp. Bespoke arch-backed-grub art is owed to the art pipeline. -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GreatboleGrubSpines</defName>
+    <label>grub spines</label>
+    <description>Stiff, barbed spines stripped from a greatbole grub's arched back. Sharp enough to be dangerous loose in a pocket, and worth enough that people carry them anyway.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+      <li>Leathers</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather/Leather_Plain</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(80, 30, 90)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <!-- RULED: "spines that are a valuable trade good" (spec §4a) — set
+           well above a plain leather (vanilla plain leather ≈ 2.5). -->
+      <MarketValue>16</MarketValue>
+      <Mass>0.15</Mass>
+      <Flammability>0.6</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_GreatboleGrub</defName>
+    <label>greatbole grub</label>
+    <description>An arch-backed, spine-covered grub the same deep purple as a greatbole fruit — deliberately so, since a fallen pile of one looks exactly like the other at a glance. It lives high in the canopy and comes down only with a harvest, to eat the fruit and to defend it. Starve it and it turns vicious; feed it and it breeds fast.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <MarketValue>18</MarketValue>
+      <Flammability>1.0</Flammability>
+      <Wildness>1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.45</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.9</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <!-- The manhunter flip is authored (RM_CompVerminBreeder's
+           famineMentalState), not the wounded/tame-fail roll — leave both of
+           those at vanilla-default-off so the only path to Manhunter is the
+           one the spec actually asks for. -->
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <leatherDef>RM_GreatboleGrubSpines</leatherDef>
+      <gestationPeriodDays>1.5</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1.99, 0)</li>
+          <li>(2, 1)</li>
+          <li>(4, 1)</li>
+          <li>(4.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>3</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>Pawn_Insect_Ambient</soundWounded>
+          <soundDeath>Pawn_Insect_Ambient</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+    <modExtensions>
+      <!-- §4a: "approach and consume fallen fruit immediately." Unchanged
+           mechanism, just pointed at the fruit. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_EatCleanableExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <cleanableThingDefNames>
+          <li>RM_GreatboleFruit</li>
+        </cleanableThingDefNames>
+        <eatsFilth>false</eatsFilth>
+        <searchRadius>20</searchRadius>
+        <nutritionPerMeal>0.4</nutritionPerMeal>
+        <seekChance>0.3</seekChance>
+      </li>
+      <!-- §4a: "attack anyone who comes near the fruit" — item-guard mode,
+           GREATBOLE_HARVEST_LADDER_1's own widening of this extension.
+           enrageState reuses the already-shipped RM_ParentalEnrage
+           MentalStateDef (SHRUBLAND_GIANT_ENRAGE_1) verbatim; nothing about
+           that state names a species. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_ParentalEnrageExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <enrageState>RM_ParentalEnrage</enrageState>
+        <guardedThingDefNames>
+          <li>RM_GreatboleFruit</li>
+        </guardedThingDefNames>
+        <triggerRadius>6</triggerRadius>
+        <guardianSearchRadius>25</guardianSearchRadius>
+        <cooldownTicks>600</cooldownTicks>
+        <exemptSameRace>true</exemptSameRace>
+        <exemptSameFaction>true</exemptSameFaction>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <populationSoftCap>6</populationSoftCap>
+        <populationHardCap>24</populationHardCap>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ParentalEnrage" MayRequire="mandrake.rm.creaturebehaviors" />
+      <!-- §4a: "breed fast while there is fruit to eat… when the fruit runs
+           out, they go Manhunter" — GREATBOLE_HARVEST_LADDER_1's own
+           widening of this comp (food gate + famine flip). famineMentalState
+           is real, unscoped vanilla Manhunter, not the scoped
+           RM_ParentalEnrage rage — "they go Manhunter" (spec's own words),
+           a full swarm, deliberately distinct from the guard rage above. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.creaturebehaviors">
+        <pawnSpawnIntervalDays>0.5~1.0</pawnSpawnIntervalDays>
+        <pawnSpawnRadius>4</pawnSpawnRadius>
+        <breedFoodThingDefNames>
+          <li>RM_GreatboleFruit</li>
+        </breedFoodThingDefNames>
+        <foodSearchRadius>40</foodSearchRadius>
+        <famineMentalState>Manhunter</famineMentalState>
+        <famineGraceTicks>30000</famineGraceTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_GreatboleGrub</defName>
+    <label>greatbole grub</label>
+    <race>RM_GreatboleGrub</race>
+    <combatPower>20</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+          <color>(96, 40, 110)</color>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.85</drawSize>
+          <color>(96, 40, 110)</color>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+          <color>(96, 40, 110)</color>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
