@@ -247,7 +247,10 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 # pink placeholder.
 # => LIFT when the sprite lands under UtinniPatches/Textures/ — def and art
 #    deploy together in one --apply, same pattern as the Scald hold above.
-UtinniPatches/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml   # BENCH: no art yet, 2026-09-13
+# THESUMP_RM_MOD_BUILD_1 (2026-09-25): file physically moved from UtinniPatches
+# into TheSump/ (Phase A split), defName unchanged — path updated below, hold
+# unchanged otherwise.
+TheSump/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml   # BENCH: no art yet, 2026-09-13
 
 # --- SCALD S6 hold ENDED 2026-09-25: files moved out of UtinniPatches ---------
 # RUT_ScaldWrecks/RUT_ScaldWreckScatter(+Register) now ship from TerminalBiomes
@@ -268,15 +271,21 @@ UtinniPatches/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml   # BENCH: no art ye
 # => LIFT all three at once when the bulge sprite lands under
 #    UtinniPatches/Textures/ — def, scatter wiring and art deploy together
 #    in one --apply, same pattern as the Scald wreck hold above.
-UtinniPatches/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml            # BENCH: no art yet, 2026-09-13
-UtinniPatches/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml         # BENCH: held with the ThingDef it scatters, 2026-09-13
-UtinniPatches/Patches/RUT_SumpTarBeastGenStep_Register.xml           # BENCH: held with the ThingDef it scatters, 2026-09-13
+# THESUMP_RM_MOD_BUILD_1 (2026-09-25): all three files physically moved from
+# UtinniPatches into TheSump/ (Phase A split), defNames unchanged — paths
+# updated below, holds unchanged otherwise. The art still needs to land under
+# TheSump/Textures/, not UtinniPatches/Textures/, now that the def lives here.
+TheSump/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml            # BENCH: no art yet, 2026-09-13
+TheSump/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml         # BENCH: held with the ThingDef it scatters, 2026-09-13
+TheSump/Patches/RUT_SumpTarBeastGenStep_Register.xml           # BENCH: held with the ThingDef it scatters, 2026-09-13
 
 # SUMP_MECHANICS_1 S4 (2026-09-14): a 4th file added to the same hold group
 # above — patches RM_CompDreadSource onto RUT_BeastBulge's own comps list,
 # meaningless while the bulge itself is undeployed. Lift together with the
 # three files above.
-UtinniPatches/Patches/RUT_BeastBulge_DreadRegistration.xml           # BENCH: held with RUT_BeastBulge.xml, 2026-09-14
+# THESUMP_RM_MOD_BUILD_1 (2026-09-25): moved from UtinniPatches into TheSump/
+# with the rest of the group, defName unchanged.
+TheSump/Patches/RUT_BeastBulge_DreadRegistration.xml           # BENCH: held with RUT_BeastBulge.xml, 2026-09-14
 
 # SUMP_MECHANICS_1 S4 (2026-09-14): RUT_Filth_MouseTrack.xml repointed to
 # Things/Filth/RUT_MouseTrack after validate_patch.py refused a reuse of
@@ -285,8 +294,10 @@ UtinniPatches/Patches/RUT_BeastBulge_DreadRegistration.xml           # BENCH: he
 # Things/ as OUR namespace and requires a real file (same F2/F5/F6 shape
 # documented above, first time this item hit it).
 # => LIFT when a real low-alpha track sprite lands under
-#    UtinniPatches/Textures/Things/Filth/RUT_MouseTrack.png.
-UtinniPatches/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml           # BENCH: no art yet, 2026-09-14
+#    TheSump/Textures/Things/Filth/RUT_MouseTrack.png.
+# THESUMP_RM_MOD_BUILD_1 (2026-09-25): file physically moved from UtinniPatches
+# into TheSump/ (Phase A split), defName unchanged — path updated below.
+TheSump/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml           # BENCH: no art yet, 2026-09-14
 
 # SUMP_WALKWAYS_1 (2026-09-24): RM_Filth_Tar.xml (FlowWorks) was repointed to
 # Things/Filth/RM_FilthTar after validate_patch.py refused a reuse of

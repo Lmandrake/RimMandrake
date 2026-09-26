@@ -2,6 +2,35 @@
 <Defs>
 
   <!--
+    RUT_Sump - FROZEN, carrying the world until the terminal paint; content
+    lives in mandrake.rm.thesump; do not edit here.
+
+    THESUMP_RM_MOD_BUILD_1 (Phase A, 2026-09-25): this def is unchanged below,
+    byte-for-byte, except this header. The standalone franchise-free sibling,
+    RM_TheSump, now lives in src/RimMandrake/TheSump/Defs/BiomeDefs/
+    RM_TheSump_Biome.xml, carrying the same content (its own RM_BiomeWorker_TheSump
+    replacing the donor AlphaBiomes.BiomeWorker_TarPits, plus AA_BumbledroneQueen
+    added to wildAnimals per the roster, and RSW_Hssiss riding a Utinni patch
+    instead of inline). The kit content this BiomeDef's own modExtensions/the
+    separate wiring patch reference (RUT_SumpWeather, RUT_SumpDuskLock +
+    its BiomeWiring patch, RUT_TarMoat/RUT_TarSpent, RUT_MoatFusePost,
+    RUT_BeastBulge + its GenStep/Register/DreadRegistration, RUT_DigShaft,
+    RUT_DigStratumTable, RUT_Filth_MouseTrack, RUT_Placeholder_SumpMouseRace/
+    RUT_Placeholder_SumpMouse, RUT_ThinkTree_SumpMouseWander, RUT_Plant_Wick,
+    RUT_WickStem) moved with their defNames UNCHANGED into mandrake.rm.thesump's
+    own Defs/ and Patches/ trees — this def's own references below (RUT_Tarred
+    via the shared EnvironmentalHazards modExtension, and the dusk lock wired
+    externally) keep resolving exactly as before, since RUT_SumpDuskLock/
+    RUT_SumpWeather are read by BOTH biome instances under the same defNames.
+    RUT_Tarred (the hediff) and its surgery/solvents/thoughts content, plus the
+    newer Walkways/Bitumen/Sumpgas/Gaslight kit content (SUMP_WALKWAYS_1,
+    SUMP_TAR_NASTINESS_1, SUMP_GASLIGHT_1, all 2026-09-24), are NOT biome-gated
+    and were left in UtinniPatches — not this pass's scope to relocate; the
+    Sumpgas rename and flame-statue ideoligion meaning are explicitly
+    SUMP_UTINNI_LAYER_1's campaign-tier work, not this mod's.
+
+    ORIGINAL HEADER, preserved below for provenance:
+
     RUT_Sump                                       UtinniPatches - authored 2026-09-09
     BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/the_sump.md
     (FROZEN). Replaces the donor `AB_TarPits` (Alpha Biomes). THE TAR'S ORIGIN IS

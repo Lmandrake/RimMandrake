@@ -21,6 +21,20 @@
   RUT_Sump.xml carries no <biomeMapConditions> node at all today (only
   wildAnimals/baseWeatherCommonalities/terrainsByFertility/diseases), so this
   adds the whole element rather than appending an <li> to an existing one.
+
+  THESUMP_RM_MOD_BUILD_1 (Phase A, 2026-09-25): this file physically moved
+  from src/RimUtinni/UtinniPatches into src/RimMandrake/TheSump, defName
+  target and content otherwise UNCHANGED — it still wires RUT_SumpDuskLock
+  onto RUT_Sump alone. The new standalone RM_TheSump def gets the SAME
+  RUT_SumpDuskLock condition baked directly into its own biomeMapConditions
+  (RM_TheSump_Biome.xml), not a second patch op here — biome_mod_
+  architecture.md §5 step 4 offers either shape ("a second op... or bake it
+  natively... now that it's a same-mod dependency"); baking it matches the
+  precedent MIASMA_RM_MOD_BUILD_1 actually shipped (RM_Miasma.xml's own
+  biomeMapConditions lists RUT_MiasmaWeatherLock inline, no patch needed,
+  since the condition def now lives in the SAME mod as the biome). One
+  GameConditionDef, one WeatherDef (both moved here with defNames unchanged),
+  read by both biome instances.
   ============================================================================
 -->
 <Patch>

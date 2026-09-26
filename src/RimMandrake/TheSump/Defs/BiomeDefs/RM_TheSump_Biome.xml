@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_TheSump                                      THESUMP_RM_MOD_BUILD_1 - Phase A
+    Phase A row 23 of design/RimMandrake/biome_mod_architecture.md. Parent:
+    BIOME_MOD_SPLIT_EXECUTION_1. Governed by BIOME_PAINT_ONCE_AT_THE_END_1 - this
+    def is expected to carry 0 tiles until the terminal repaint; that is not a
+    defect.
+
+    Copied from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml
+    (kept, unchanged except a header comment, still carrying the live campaign
+    world's painted tiles). This is a NEW, franchise-free sibling for any other
+    generated RimWorld planet, not a rename of that one.
+
+    RM tier: nothing here knows what campaign or planet uses it. NOT donor-free:
+    terrain (AB_GrassySand/AB_LushGrass), the world-map texture (Biomes/AB_TarPits)
+    and one wildPlants row (AB_TarPuddle) are all Alpha Biomes' own, unchanged from
+    the twin — same honesty standard every sibling RM_ biome mod ships (compare
+    RM_Miasma's own header).
+
+    workerClass: replaces the donor AlphaBiomes.BiomeWorker_TarPits with this
+    mod's own RM_BiomeWorker_TheSump (RM_TheSumpBiome.cs) - a donor type in
+    workerClass is a hard dependency the RimMandrake tier may not assume
+    (biome_mod_architecture.md Sec5 step 2).
+
+    wildAnimals: 4 rows ship inline, all Alpha Animals donor rows individually
+    MayRequire-gated (unchanged from the twin's 3, plus AA_BumbledroneQueen added
+    per rosters/the_sump.json's own "goes with the rest of the bumbledrones" ruling
+    - THESUMP_RM_MOD_BUILD_1 §5/§3). RSW_Hssiss (the biome's one seated canon beast,
+    ruled 2026-09-10) does NOT ship here - it rides Utinni's WildAnimals_Sump.xml as
+    a PatchOperationAdd onto this def instead, MayRequire="mandrake.rsw.swbestiary",
+    per the Q11a naming-tier ruling (SUMP_UTINNI_LAYER_1 §3).
+
+    wildPlants: AB_TarPuddle carries a fresh MayRequire="sarg.alphabiomes" here
+    that the twin's own copy never needed (same-mod, no gate required there) -
+    same posture RM_Miasma's own wildPlants notes already establish for a donor
+    row moved into a standalone mod.
+
+    terrainsByFertility: both rows gain the same MayRequire="sarg.alphabiomes"
+    guard for the same reason.
+
+    biomeMapConditions: RUT_SumpDuskLock baked in directly (not via a second patch
+    op) - it now lives in this SAME mod (Patches/RUT_SumpDuskLock_BiomeWiring.xml
+    wires it onto RUT_Sump alone; this def references it natively), matching the
+    precedent RM_Miasma.xml actually shipped for RUT_MiasmaWeatherLock.
+
+    modExtensions: unchanged in shape from the twin - BiomeGlowMultiplierExtension
+    and RM_CarriedFilthHediffExtension both already live in the shared
+    mandrake.rm.environmentalhazards and reference RUT_Tarred/RM_Filth_Tar, which
+    stay exactly where they are (UtinniPatches / shared EnvironmentalHazards
+    respectively) - nothing here needed retargeting.
+
+    texture (Biomes/AB_TarPits) is inherited unchanged from the twin, same
+    posture as every sibling's donor world-map texture - not this build's scope
+    to fix.
+  -->
+
+  <BiomeDef>
+    <defName>RM_TheSump</defName>
+    <label>the Sump</label>
+    <description>The planet's oil sump: the lowest basin on Ash'karr, filled by every slow black flow off the twilight slopes for geological time. Flat black pools and cooled glassy sheets under permanent dusk, ringed with low waxy plants that glow faintly where the Junker stations keep their lamp-gardens. Mice run the tar without a thought. Nothing else touches it -- because the tar takes slowly, keeps perfectly, and everything that ever blundered in is still in there.</description>
+    <workerClass>RimMandrake.TheSump.RM_BiomeWorker_TheSump</workerClass>
+
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.0</animalDensity>
+    <plantDensity>0.15</plantDensity>
+    <forageability>0.0</forageability>
+    <movementDifficulty>4</movementDifficulty>
+    <texture>Biomes/AB_TarPits</texture>
+    <diseaseMtbDays>65</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li MayRequire="sarg.alphabiomes">
+        <terrain>AB_GrassySand</terrain>
+        <min>-999</min>
+        <max>0.25</max>
+      </li>
+      <li MayRequire="sarg.alphabiomes">
+        <terrain>AB_LushGrass</terrain>
+        <min>0.25</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Fog>50</Fog>
+      <Clear>15</Clear>
+      <DryThunderstorm>1</DryThunderstorm>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>2</SnowGentle>
+      <SnowHard>2</SnowHard>
+    </baseWeatherCommonalities>
+    <biomeMapConditions>
+      <li MayRequire="mandrake.rm.environmentalhazards">RUT_SumpDuskLock</li>
+    </biomeMapConditions>
+    <wildAnimals>
+      <AA_TarGuzzler MayRequire="sarg.alphaanimals">0.5</AA_TarGuzzler>  <!-- tar guzzler - tar-eater, adjust-keep -->
+      <AA_Bumbledrone MayRequire="sarg.alphaanimals">0.35</AA_Bumbledrone>  <!-- bumbledrone - under-layer, keep -->
+      <AA_BumbledroneHierophant MayRequire="sarg.alphaanimals">0.2</AA_BumbledroneHierophant>  <!-- bumbledrone hierophant - under-layer, keep -->
+      <AA_BumbledroneQueen MayRequire="sarg.alphaanimals">0.5</AA_BumbledroneQueen>  <!-- bumbledrone queen - rides the hive verdict, roster round-2 move mapping -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_TarPuddle MayRequire="sarg.alphabiomes">0.6</AB_TarPuddle>  <!-- tar puddle -->
+    </wildPlants>
+    <wildPlantRegrowDays>20</wildPlantRegrowDays>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <glowMultiplier>0.55</glowMultiplier>
+        <suppressSunlightStatAffecter>true</suppressSunlightStatAffecter>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CarriedFilthHediffExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <filthDef>RM_Filth_Tar</filthDef>
+        <hediffDef>RUT_Tarred</hediffDef>
+      </li>
+    </modExtensions>
+  </BiomeDef>
+
+</Defs>
