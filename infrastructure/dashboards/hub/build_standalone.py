@@ -12,16 +12,21 @@ the same shell works with no origin at all.
 
 The two heavyweight tabs (health, maturity) stay as sibling files rather than
 being inlined -- each is a standalone page of its own and together they are
-~470 KB. The output is written NEXT TO them so the <iframe src="tabs/...">
-relative paths still resolve, and a full-path link is added above each iframe
-for the case where the browser declines to load a file:// iframe.
+~700 KB. Their <iframe src="tabs/..."> paths are PUBLISHED paths, not disk
+paths: `tabs/maturity.html` has no file behind it at all, it is published from
+Transient/project_maturity_dashboard.html. So this script resolves every tab
+through publish_ready.json (regen_hub.py's own output, the single source of
+truth for that mapping) and copies each one into tabs/ so the relative path
+resolves off the disk too. A full-path link is added above each iframe for the
+case where the browser declines to load a file:// iframe at all.
 
-Run regen_hub.py first if the data should be fresh; this script only packages
-whatever is on disk right now.
+Run regen_hub.py first -- this script packages whatever is on disk right now,
+and it needs that script's publish_ready.json to exist.
 """
 from __future__ import annotations
 
 import json
+import shutil
 import sys
 from pathlib import Path
 
@@ -38,10 +43,36 @@ DATA = {
     "data/worldmap.json": HUB / "data" / "worldmap.json",
 }
 
-TABS = {
-    "tabs/health.html": HUB / "tabs" / "health.html",
-    "tabs/maturity.html": HUB / "tabs" / "maturity.html",
-}
+READY = HUB / "data" / "publish_ready.json"
+
+# Published paths the shell embeds in an <iframe>. Their real sources are
+# resolved from publish_ready.json, never assumed to live under tabs/.
+TAB_PATHS = ("tabs/health.html", "tabs/maturity.html")
+
+
+def resolve_tabs() -> tuple[dict[str, Path], list[str]]:
+    """published path -> the file on disk it is published FROM."""
+    if not READY.is_file():
+        return {}, [f"{READY} missing -- run regen_hub.py first"]
+    try:
+        entries = json.loads(READY.read_text(encoding="utf-8")).get("files", [])
+    except json.JSONDecodeError as e:
+        return {}, [f"{READY} unparseable: {e}"]
+
+    by_published = {e.get("published"): e.get("source") for e in entries}
+    found: dict[str, Path] = {}
+    problems: list[str] = []
+    for pub in TAB_PATHS:
+        src = by_published.get(pub)
+        if not src:
+            problems.append(f"{pub} not in publish_ready.json")
+            continue
+        p = Path(src)
+        if not p.is_file():
+            problems.append(f"{pub} -> {p} (no such file)")
+            continue
+        found[pub] = p
+    return found, problems
 
 OLD_GRAB = 'async function grab(f){const r=await fetch(f);if(!r.ok)throw new Error(f+" → HTTP "+r.status);return r.json()}'
 NEW_GRAB = (
@@ -97,13 +128,23 @@ def main() -> int:
               file=sys.stderr)
         return 1
 
-    # A file:// iframe may silently refuse to load; always offer the real path.
-    for pub, src in TABS.items():
+    # The iframe srcs are PUBLISHED paths; put a real file behind each one so
+    # the same relative path resolves from the disk. A file:// iframe may still
+    # refuse to load, so always print the openable path above it too.
+    tabs, tab_problems = resolve_tabs()
+    missing.extend(tab_problems)
+    for pub, src in tabs.items():
+        dest = HUB / pub
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        if src.resolve() != dest.resolve():
+            shutil.copyfile(src, dest)
         needle = f'<iframe src="{pub}"'
         if needle in html:
             note = (f'<p class="note">if the panel below is blank, open it '
-                    f'directly: <code>{win_path(src)}</code></p>\n  ')
+                    f'directly: <code>{win_path(dest)}</code></p>\n  ')
             html = html.replace(needle, note + needle, 1)
+        else:
+            missing.append(f"{pub} has no <iframe> in the shell any more")
 
     html = html.replace(
         "<title>Utinni Control Room</title>",
@@ -119,9 +160,12 @@ def main() -> int:
     for pub in inline:
         gen = inline[pub].get("generatedAt") if isinstance(inline[pub], dict) else None
         print(f"        {pub:24} generatedAt={gen}")
+    print(f"      staged {len(tabs)} embedded tab(s)")
+    for pub, src in tabs.items():
+        print(f"        {pub:24} <- {win_path(src)}")
     if missing:
-        print(f"WARN  {len(missing)} data file(s) NOT inlined -- their tabs will "
-              f"read UNMEASURED:")
+        print(f"WARN  {len(missing)} item(s) NOT packaged -- those tabs will be "
+              f"blank or read UNMEASURED:")
         for m in missing:
             print(f"        {m}")
     return 0
