@@ -75,7 +75,8 @@ was left out.
 - [x] Law #1 (text authority only) and Law #2 (game whole with the LLM absent) hold on every path; one block per call, never a blended cast.
 - [x] Transport reconciled against the BUILT client, not an assumed one: every failure the client can raise is named with its fallback; no stale "blocked on the rewrite" line remains.
 - [x] A verify protocol that proves each consumer with and without the LLM using only the shipped `claudeCliPath` seam — no network, no login, no real model needed for the mechanism.
-- [ ] Owner review — the only gate on this item; nothing closes it but his read.
+- [x] Owner review — held 2026-09-25/26. All seven open questions ruled; the last of them
+      (the register table) on 2026-09-26. Design is closed; the build item carries it on.
 
 ## Open questions for the owner
 Only he can rule these; the doc takes a position on each so his answer is a
@@ -88,9 +89,14 @@ yes/no, not a blank.
    separate `droids` bucket.
 3. **Latency — RULED 2026-09-25: a late letter is fine for now** (up to 2 × timeout,
    ≈2 min).
-4. **Register table (§2.2) — Battle RULED 2026-09-25: the tone varies across deadpan comedy,
-   plain report and per-personality** (owner: *"Varies across all these"*). Power (the gonk
-   syllable) and the other six rows are still his to hear.
+4. **Register table (§2.2) — ALL EIGHT ROWS RULED 2026-09-26.** Each family holds one
+   fixed cadence, its characteristic personality showing through every letter; the seven
+   proposed lines ship as written, and Battle is rewritten to *eager to engage,
+   over-prepares and trains, impatient and short-tempered*. The 2026-09-25 "Varies across
+   all these" reading — a tone varying letter-to-letter — was a misread and is overturned:
+   per-droid variance would need the LLM portion that is not wired, so these are the
+   **default personas** (owner, typed: *"To vary them per droid would require the LLM
+   portion that isn't wired yet, so let's just run with these as the default personas."*).
 5. **Which of the four earn the LLM — RULED 2026-09-25 by card: all four live**, R included,
    accepting that a hallucinated past cannot be caught by the validator.
 6. **Programmable tier — RULED 2026-09-25 by card: programmable droids never fire.**

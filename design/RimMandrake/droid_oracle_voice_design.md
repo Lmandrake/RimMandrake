@@ -1,7 +1,10 @@
 <!-- status: RULED, LIVE — DROID_ORACLE_VOICE_DESIGN_1. Fable pass 2026-09-08; rewritten
      2026-09-25/26 to the owner's rulings (ledger notes on the item): Narrator, third person
      (typed, reversing the same evening's card); droid calls share the gods' budget (card);
-     late letters accepted for now (typed); Battle register tone ruled (typed); all four
+     late letters accepted for now (typed); all eight chassis register rows ruled as fixed
+     per-family personas, Battle rewritten to eager/over-prepares/short-tempered (typed
+     2026-09-26, correcting the 09-25 "varies" reading — per-droid variance needs the
+     unwired LLM portion, so these are the defaults); all four
      consumers live (card); programmable droids never fire (card); W/B fixed lines ship now
      (card). Reads on top of (never restates): llm_ingame_wiring_spec.md (the two laws, the
      pipeline), nine_voices_cast_bible.md (the persona-block pattern and the Narrator),
@@ -96,20 +99,22 @@ quoted line** inside the Narrator's letter. Seven families exist as
 This is where §3.4's "mouse-droid/gonk logistics comedy" and "astromech machine
 familiarity" land.
 
-**Only the Battle row is ruled.** Every other row below is an unruled
-proposal — an **open owner question**. Do not build a register line into a
-shipped prompt as settled until its row is ruled.
+**All eight rows are RULED** (owner, 2026-09-26). Each family holds ONE fixed
+cadence — its characteristic personality shines through every letter, and that
+is what makes a chassis recognisable by voice. These are the **default
+personas**; varying a register per individual droid would need the LLM portion
+that is not wired, so nothing does that today.
 
 | chassisClass | family | register line | ruled? |
 |---|---|---|---|
-| 0 | Labour | *proposed:* Plain, dutiful, counts loads and hours; measures everything in what it can lift; apologises for idleness. | OPEN — owner question |
-| 1 | Protocol | *proposed:* Fluent, formal, pedantic, honorifics ("sir", "master"); corrects itself mid-sentence; risk-averse; technically correct at the worst moment. | OPEN — owner question |
-| 2 | Astromech | *proposed:* Terse, machine-familiar; speaks of ships, engines and other droids by feel; territorial about its hangar; its quoted speech reads as a translation of whistles — short clauses, no ornament. | OPEN — owner question |
-| 3 | Battle | **Tone varies across deadpan comedy, plain report, and per-personality** (owner, 2026-09-25: *"Varies across all these"*). The assembler varies the register line per letter — keyed on the droid's traits or rotated — never one fixed cadence. | **RULED** |
-| 4 | Heavy | *proposed:* Slow, few words, each one weight-bearing; thinks in ranges and tonnage. | OPEN — owner question |
-| 5 | Probe | *proposed:* Watchful, reports coordinates and counts, treats its reader as a distant controller; asks where the signal went. | OPEN — owner question |
-| 6 | Power | *proposed:* Simple, one idea at a time; heroic by accident; wanders off to a task nobody set; a single repeated syllable is acceptable once. | OPEN — owner question |
-| 7 (B9) | Primitive | *proposed:* Jury-built and knows it; refers to its own parts by what they were before; cheerful about being wrong. | OPEN — owner question |
+| 0 | Labour | Plain, dutiful, counts loads and hours; measures everything in what it can lift; apologises for idleness. | **RULED** |
+| 1 | Protocol | Fluent, formal, pedantic, honorifics ("sir", "master"); corrects itself mid-sentence; risk-averse; technically correct at the worst moment. | **RULED** |
+| 2 | Astromech | Terse, machine-familiar; speaks of ships, engines and other droids by feel; territorial about its hangar; its quoted speech reads as a translation of whistles — short clauses, no ornament. | **RULED** |
+| 3 | Battle | Eager to engage; over-prepares and trains for it; impatient and short-tempered when it cannot. | **RULED** |
+| 4 | Heavy | Slow, few words, each one weight-bearing; thinks in ranges and tonnage. | **RULED** |
+| 5 | Probe | Watchful, reports coordinates and counts, treats its reader as a distant controller; asks where the signal went. | **RULED** |
+| 6 | Power | Simple, one idea at a time; heroic by accident; wanders off to a task nobody set; a single repeated syllable is acceptable once. | **RULED** |
+| 7 (B9) | Primitive | Jury-built and knows it; refers to its own parts by what they were before; cheerful about being wrong. | **RULED** |
 
 ### 2.3 The shared lint — `TryValidateDroid(text, slots, band, out reason)`
 
@@ -427,4 +432,4 @@ opinion colonist — handed over, so the letter may name them); `rebootCount`;
 2. `DroidLaw` + `TryValidateDroid` + the four `TryValidate*` as pure C# with an offline selftest (the Ohm pattern: canned pass/reject strings per consumer, explicit N/N).
 3. Consumers W and B against their built hooks; their prescribed lines **ship now** (owner card, 2026-09-25), `enabled` off by default. Prove each rung of the §2.6 ladder once through the `claudeCliPath` stub seam (item file, `## verify`).
 4. O rides E4; R rides E2 (+B4a for parts provenance). Each fires its prescribed letter from day one of that packet, Oracle or not.
-5. **Outstanding owner questions:** the seven unruled register rows (§2.2). Nothing above blocks on them — the Battle ruling and the shared `DroidLaw` are enough to ship.
+5. **No outstanding owner questions.** All eight register rows were ruled 2026-09-26 (§2.2); the design is closed and the build has everything it needs.
