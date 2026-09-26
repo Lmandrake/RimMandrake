@@ -28,6 +28,8 @@ namespace RimMandrake.Utinni.PlantGrowth
         public static float treeMultiplier = PlantGrowthConfig.TREE_MULTIPLIER;
         public static float terminatorMultiplier = PlantGrowthConfig.TERMINATOR_MULTIPLIER;
         public static float minGrowDaysToBoost = PlantGrowthConfig.MIN_GROW_DAYS_TO_BOOST;
+        public static float wetAmbientMultiplier = PlantGrowthConfig.WET_AMBIENT_MULTIPLIER;
+        public static float wetAmbientTreeMultiplier = PlantGrowthConfig.WET_AMBIENT_TREE_MULTIPLIER;
 
         public override void ExposeData()
         {
@@ -37,6 +39,8 @@ namespace RimMandrake.Utinni.PlantGrowth
             Scribe_Values.Look(ref treeMultiplier, "treeMultiplier", PlantGrowthConfig.TREE_MULTIPLIER);
             Scribe_Values.Look(ref terminatorMultiplier, "terminatorMultiplier", PlantGrowthConfig.TERMINATOR_MULTIPLIER);
             Scribe_Values.Look(ref minGrowDaysToBoost, "minGrowDaysToBoost", PlantGrowthConfig.MIN_GROW_DAYS_TO_BOOST);
+            Scribe_Values.Look(ref wetAmbientMultiplier, "wetAmbientMultiplier", PlantGrowthConfig.WET_AMBIENT_MULTIPLIER);
+            Scribe_Values.Look(ref wetAmbientTreeMultiplier, "wetAmbientTreeMultiplier", PlantGrowthConfig.WET_AMBIENT_TREE_MULTIPLIER);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -62,6 +66,14 @@ namespace RimMandrake.Utinni.PlantGrowth
               + "1.0x by default. This is the multiplier, not a bonus: 1.0 means vanilla "
               + "speed in that biome, not vanilla plus a bonus.");
             terminatorMultiplier = list.Slider(terminatorMultiplier, 0.1f, 2f);
+            list.Gap();
+
+            list.Label("Wet biomes (Greentide, Miasma, Fever Wood): " + wetAmbientMultiplier.ToString("0.0") + "x growth");
+            list.Label("The always-on groaning, swelling growth of the wet jungles. Replaces the "
+              + "wild-plants band on those biomes (it does not stack on it).");
+            wetAmbientMultiplier = list.Slider(wetAmbientMultiplier, 1f, 20f);
+            list.Label("Wet-biome trees: " + wetAmbientTreeMultiplier.ToString("0.00") + "x growth");
+            wetAmbientTreeMultiplier = list.Slider(wetAmbientTreeMultiplier, 1f, 20f);
             list.GapLine();
 
             list.Label("Skip plants already faster than: " + minGrowDaysToBoost.ToString("0.0") + " grow-days");
