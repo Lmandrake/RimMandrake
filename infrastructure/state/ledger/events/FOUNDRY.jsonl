@@ -654,3 +654,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_YEARNING_FRUIT_1","ts":"2026-09-26T10:46:24Z"}
 {"seat":"FOUNDRY","event":"start","id":"GREENTIDE_YEARNING_FRUIT_1","ts":"2026-09-26T10:46:25Z"}
 {"seat":"FOUNDRY","event":"close","id":"GREENTIDE_YEARNING_FRUIT_1","sha":"fddbdee0a","reason":"wired RUT_YearningFruit into RM_Greentide wildPlants; plant/hediff/filth mechanism already built under GREENTIDE_YEARNING_FRUIT_FILTH_1","ts":"2026-09-26T10:50:51Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1","ts":"2026-09-26T10:52:42Z"}
+{"seat":"FOUNDRY","event":"start","id":"CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1","ts":"2026-09-26T10:52:43Z"}
+{"seat":"FOUNDRY","event":"close","id":"GREENTIDE_FRENZY_DISEASE_1","sha":"35ac3ab3f871cd21d0dd15f611a64535ede637ca","ts":"2026-09-26T10:54:39Z"}

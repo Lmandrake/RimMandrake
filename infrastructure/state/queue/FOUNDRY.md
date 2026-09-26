@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T10:50:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T10:54:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -864,15 +864,6 @@ kind:     task
 summary:  1. Copy RMMapComponentBiomeAttitude's shape — plain MapComponent, per-tick layer decision,
 prose:    infrastructure/state/items/GREENTIDE_HUMMING_GROVE_1.md
 
-## GREENTIDE_FRENZY_DISEASE_1 The Frenzy - a disease you infect yourself with on purpose
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Name the source plant in the 21-row roster (GREENTIDEJUNGLETREEROSTER1) the dose is
-prose:    infrastructure/state/items/GREENTIDE_FRENZY_DISEASE_1.md
-
 ## FEVERWOOD_ANT_HIVE_DUNGEON_1 Ant hives are reactive procedural dungeons
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -980,6 +971,15 @@ target:   v1
 kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
+
+## CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1 Grown limbs and an install-match bonus for the amoeba organ mechanic
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Limbs. The owner's own words were "a plethora of organs and limbs." Vanilla RimWorld
+prose:    infrastructure/state/items/CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1.md
 
 ## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
 state:    doing  (BLOCKED)
@@ -1595,16 +1595,6 @@ kind:     mechanism
 thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
-
-## CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1 Grown limbs and an install-match bonus for the amoeba organ mechanic
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Limbs. The owner's own words were "a plethora of organs and limbs." Vanilla RimWorld
-prose:    infrastructure/state/items/CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1.md
 
 ## WARDEN_MOTHER_PATHFINDER_VERIFY_1 Live-verify the warden mother's water-only movement and load cleanly
 state:    proposed
