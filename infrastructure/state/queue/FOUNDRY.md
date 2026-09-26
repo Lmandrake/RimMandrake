@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T15:25:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T15:26:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -341,6 +341,15 @@ target:   v1
 kind:     build
 summary:  Build RUTScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events
 prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
+
+## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
+prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
 state:    doing
@@ -1155,7 +1164,7 @@ summary:  Owner-said: "Retire-after-harvest." Harvest then retire VQE Cryptoforg
 prose:    infrastructure/state/items/CRYPTOFORGE_HARVEST_RETIRE_1.md
 
 ## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)
-state:    ready  (BLOCKED)
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1180,7 +1189,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  creature/mechanics built + pushed (swimmer/rooting/anchored/7 hediffs/settings/v1 breach); owed: live verify, pocket-map dungeon interior (not built anywhere), DBH water wiring, real art, RUT Sun-Debt patch — world placement correctly left to SARLACC_WORLDMAP_RELOCATE_1
+blocked:  advanced items 4+7 of Owed list this pass (DBH thirst wiring, water_doctrine amend), commit ed5134abf; still owed: live verify (bridge), pocket-map dungeon interior, world placement, real art, RimUtinni Sun-Debt patch — all out of this pass's offline-only scope
 summary:  SARLACCHABITATBUILD1 — build the accepted sarlacc design
 prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
 
