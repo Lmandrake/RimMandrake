@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T08:05:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T08:18:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1467,16 +1467,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/GREENTIDE_RM_MOD_BUILD_1.md
-
-## FURNACEBEAST_WORLD_MIGRATION_1 Furnace-beast world-scale thermal migration: herd crosses biomes off-map (world leg, split from FURNACEBEAST_THERMAL_CYCLE_1)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## criteria
-summary:  FURNACEBEASTWORLDMIGRATION1
-prose:    infrastructure/state/items/FURNACEBEAST_WORLD_MIGRATION_1.md
 
 ## GREENTIDE_JUNGLE_TREE_ROSTER_1 The Greentide gets ten-plus jungle trees of our own, plus its signature giant
 state:    proposed
