@@ -587,3 +587,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"SUMP_TAR_BELCH_EVENT_1","ts":"2026-09-26T08:44:41Z"}
 {"seat":"FOUNDRY","event":"start","id":"SUMP_TAR_BELCH_EVENT_1","ts":"2026-09-26T08:44:42Z"}
 {"seat":"FOUNDRY","event":"close","id":"SUMP_TAR_BELCH_EVENT_1","sha":"d602fdf21a6db48705e50519ee4f9d860001a1e4","reason":"RUT_TarPitBelch incident: finds an RM_TarDeep/RM_TarShallow cell on RM_TheSump and coats a wide radius via RM_TarCoatingUtility. Scenario-scoped v1 per owner's literal words; FlowWorks flood-pulse/glass-front/canal integration deferred to SUMP_TAR_HYDROLOGY_1 (separate, unbuilt, bigger scope). validate_patch.py 0 errors, dotnet build 0 errors, srchash regenerated.","ts":"2026-09-26T08:44:49Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SUMP_TAR_VAULT_1","ts":"2026-09-26T08:49:11Z"}
+{"seat":"FOUNDRY","event":"start","id":"SUMP_TAR_VAULT_1","ts":"2026-09-26T08:49:12Z"}
+{"seat":"FOUNDRY","event":"close","id":"BIOME_ARRIVAL_NARRATION_1","sha":"b6feb2490e6eafbf12761833429ed9264eee463f","reason":"Shared mechanism (extension+GameComponent+GenStep postfix+setting) live; The Sump has real RM+Utinni letter text; other biomes' text is owed at their own sittings per spec","ts":"2026-09-26T08:53:21Z"}
