@@ -1,71 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  WildAnimals_Webwork.xml                   UtinniPatches — new file 2026-09-25
+  WildAnimals_Webwork.xml                   UtinniPatches — retired 2026-09-26
   ============================================================================
 
-  Puts the campaign's Webwork fauna roster onto RM_Webwork, adding to the
-  vanilla Core-only roster that src/RimMandrake/Webwork/Defs/BiomeDefs/
-  RM_Webwork_Biome.xml ships (Rat, Hare, Muffalo, Cobra, Megaspider — kept
-  there so the Webwork mod is self-contained and works with nothing else
-  loaded). The campaign wiring lives HERE, never in the Webwork mod itself.
+  🔴 EMPTY BY RULING, NOT BY OMISSION — WEBWORK_FAUNA_ROSTER_1 executes the
+  disposition this file's own previous header explicitly deferred to it.
 
-  WHY THIS FILE HAS TO EXIST. §7 Q11 (owner, 2026-09-22): "RimMandrake should
-  not name star wars ever." So RM_Webwork may not carry this cast, and at
-  Phase B of design/RimMandrake/biome_mod_architecture.md the RUT_Webwork def
-  that currently carries it dies and RM_Webwork takes the tiles. Without this
-  patch in place by then, the Webwork would lose its entire fauna cast on the
-  live world. WildAnimals_Pyrelands.xml / WildAnimals_Greentide.xml are the
-  shape this copies.
+  This file originally (2026-09-25) carried 4 PatchOperationAdd rows putting
+  Wyyyschokk/RSW_JewelBeetle/Kreetle→RSW_Kreetle/Shyrack onto RM_Webwork, as a
+  stopgap so the Webwork would not lose its Star Wars cast at Phase B's
+  terminal paint (BIOME_PAINT_ONCE_AT_THE_END_1). Its own header named all 4
+  as "WEBWORK_FAUNA_ROSTER_1's call, not this file's."
 
-  🔑 SOURCE OF TRUTH (AT AUTHORING, 2026-09-25): every defName and weight
-  below is a verbatim copy of Defs/BiomeDefs/RUT_Webwork.xml's own wildAnimals
-  block (frozen 2026-09-25, the roster the world runs on today) — 4 rows,
-  ALL Star Wars fauna (MEASURED, WEBWORK_RM_MOD_BUILD_1's own item file §3).
-  This is the roster WEBWORK_FAUNA_ROSTER_1 is scoped to build the invented
-  replacement/addition for and to execute its "3 ruled donor cuts" against —
-  this file is NOT that item; it only wires today's live cast forward so nothing
-  is lost between the freeze above and that item landing. Nothing here is
-  rescaled. This file WILL diverge from the frozen twin going forward, same
-  as WildAnimals_Greentide.xml already does — that is correct, not drift to
-  reconcile.
+  That call is now made: webwork_fauna_roster_2026-09-23.md §7 rules ALL 4
+  CUT (question card 2026-09-24, RSW_JewelBeetle by a same-sitting follow-up
+  card — ledger note on this item: "the 'still owed' clause... is discharged;
+  execute all 4 cuts"), replaced by the 5 invented RM_-tier residents built
+  directly into src/RimMandrake/Webwork/Defs/ThingDefs_Races/
+  RM_WebworkFauna.xml (no MayRequire needed — they are RM_-tier, not
+  third-party). RM_Quarrok explicitly supersedes RSW_JewelBeetle's interim
+  chew-behaviour body (roster doc row 1 "replaces" field).
 
-  `RSW_JewelBeetle` and `RSW_Kreetle` are already our own RSW-tier ports
-  (`mandrake.rsw.swbestiary` — the Kreetle repoint is
-  DUPLICATE_CANON_DEFNAME_PAIRS_1's 2026-09-23 merge, already live in the
-  frozen twin). `Wyyyschokk` and `Shyrack` are still the donor's own bare
-  defNames (`mlie.starwarsanimalcollection`) — porting those, if ever ruled,
-  is WEBWORK_FAUNA_ROSTER_1's call, not this file's.
+  So there is nothing left for this patch layer to add: the post-Phase-B
+  RM_Webwork roster is entirely native RM_-tier content, needing no Utinni
+  patch at all. This file is kept (rather than deleted) as the record of that
+  disposition, per §7's own "execution belongs to the build items" — deleting
+  it would erase the paper trail without changing the outcome. If a genuine
+  canon Star Wars injection is ever ruled for this biome, the roster doc §8
+  already says what bar it would have to clear ("a fourth war") and it lands
+  here, additively, same as before.
 
-  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
-  returns true on no match) — validate against the live def dump and the full
-  active mod set before trusting a clean run as proof a row landed.
+  ⚠️ None of this touches the FROZEN src/RimUtinni/UtinniPatches/Defs/
+  BiomeDefs/RUT_Webwork.xml, which still carries all 4 donor rows unedited on
+  the live world until the terminal paint — the cut is scoped to RM_Webwork's
+  own future roster, not the save the player is on today
+  (BIOME_PAINT_ONCE_AT_THE_END_1). RSW_JewelBeetle itself is untouched and
+  remains wired at RUT_FeverWood 0.2 (MIASMA_FEVERWOOD_GREENTIDE_BMT_1) — a
+  cut here is not a leak there (owner ruling 2026-09-21).
   ============================================================================
 -->
 <Patch>
-
-  <!-- Star Wars Animal Collection (Continued)'s own bare defNames. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
-    <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildAnimals</xpath>
-      <value>
-        <Wyyyschokk>0.4</Wyyyschokk>
-        <Shyrack>0.2</Shyrack>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- Our own RSW-tier ports, from SWBestiary. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildAnimals</xpath>
-      <value>
-        <RSW_JewelBeetle>0.3</RSW_JewelBeetle>
-        <RSW_Kreetle>0.8</RSW_Kreetle>
-      </value>
-    </match>
-  </Operation>
-
 </Patch>

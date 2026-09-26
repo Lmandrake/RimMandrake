@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_WebworkFauna.xml                    RM_Webwork · WEBWORK_FAUNA_ROSTER_1
+  ============================================================================
+  The 5 invented Webwork fauna rows per
+  design/Jawa/worldbuilding/biomes/webwork_fauna_roster_2026-09-23.md — the
+  resident cast besides the Ollathrix (that species is out of scope, owned by
+  webwork_owner_and_nest_2026-09-23.md): quarrok (row 1, anchor war),
+  vennick (row 2, egg war), skennet/cravvet (rows 3-4, trace prey), sivvern
+  (row 5, trace flier, real flight per the standing rule).
+
+  Replaces the vanilla-Core wildAnimals placeholder (Rat/Hare/Muffalo/Cobra/
+  Megaspider) RM_Webwork_Biome.xml shipped at scaffold time — that placeholder
+  comment named this item by name as the thing that would replace it.
+  🔑 "5 rows, no filler... the near-emptiness IS the design" (roster doc READ
+  FIRST) — this is the WHOLE cast, not an addition to the vanilla rows.
+
+  Donor-cut disposition (roster doc §7, all 4 RULED CUT by question card,
+  2026-09-24, ledger note on this item discharging the 4th): Wyyyschokk,
+  RSW_JewelBeetle, Kreetle/RSW_Kreetle, Shyrack. None of the 4 are wired here
+  or via src/RimUtinni/UtinniPatches/Patches/WildAnimals_Webwork.xml (edited
+  this same pass to remove them) — RM_Quarrok explicitly supersedes
+  RSW_JewelBeetle's interim chew-behaviour body (roster doc row 1 "replaces"
+  field); RSW_JewelBeetle itself is untouched and remains wired at RUT_FeverWood
+  0.2 per MIASMA_FEVERWOOD_GREENTIDE_BMT_1 — a cut here is not a leak there
+  (owner ruling 2026-09-21). The frozen RUT_Webwork.xml twin is UNCHANGED and
+  still carries all 4 donor rows on the live world until the terminal paint
+  (BIOME_PAINT_ONCE_AT_THE_END_1) — none of this touches it.
+
+  Bodies: quarrok/BeetleLikeWithClaw (shear-jaw mandibles, already used
+  elsewhere in this repo — grep-confirmed valid); vennick/BeetleLike (tiny,
+  same insect family, no claw); skennet/QuadrupedAnimalWithHooves (stilt-legged
+  pale runner, same family this repo's other fast grazers use); cravvet/
+  TurtleLike (squat domed sheller, same body Sump's skarrid already ships);
+  sivvern/Bird (the biome's one flier, same body Sump's skellarn and TheForge's
+  fleet flier already ship).
+
+  Art: none of the five has existing generated art anywhere (registry.jsonl/
+  done/_artsrc searched this pass, 0 hits on all five names — sanity-probed
+  against "graniteslug", 12/30 hits depending on instrument, so the search
+  itself is live, per confident-wrong-numbers). Flat-colour placeholders
+  generated this pass (art/Fauna/gen_webwork_fauna_placeholder.py) so none of
+  the five renders magenta; real art queued
+  (infrastructure/artpipe/art_lists/webwork_fauna.csv, 15 pending jobs,
+  south/east/north per generating-rimworld-sprites). Never blocks load.
+
+  Mechanism scope — deferred, same convention as SUMP_FAUNA_ROSTER_1's own
+  header ("content-complete... bespoke behaviours are follow-on mechanics
+  work"): quarrok's RM_ChewAnchorsConsumerExtension marker + the
+  Animal_PreWander splice (RM_ThinkTree_ChewAnchors.xml) ARE built this pass —
+  the mechanism was shipped with no consumer race (WEBWORK_KIT_BUILD_1) and
+  this row is explicitly named as that consumer (roster doc row 1). Vennick's
+  RM_JobGiver_RunToEggs ("the living treasure map") is the doc's own "owed" —
+  NOT built here; until it exists vennick is a content-complete ordinary prey
+  animal with no bespoke pathing. Sivvern's prey preference for vennick and
+  its flight animation flip-book are likewise not built — vanilla predator
+  behaviour covers the former, and GetBestFlyAnimation returns null with no
+  frames set, which is correct and never blocks flight.
+
+  Flight (RM_Sivvern only): real flight per the standing rule (owner,
+  2026-09-19) — MaxFlightTime/FlightCooldown are the CORE stat pair
+  (Pawn_FlightTracker.CanEverFly), not a bool. canLeaveMapFlying deliberately
+  OMITTED: the roster doc's own one-home note says it lairs in the sealed
+  canopy, no migration mechanism claimed ("the flier carve-out is narrow and
+  this row does not invoke it"). Numbers are the roster doc's own "❓"
+  estimates (~8 MaxFlightTime, ~5 FlightCooldown, ~2.5 flightSpeedFactor),
+  landed as real values since a def field cannot ship a question mark — same
+  posture as RM_SumpFauna's RM_Skellarn, the closest sibling precedent.
+
+  Commonalities/ecoSystemWeight/wildGroupSize below are engineering defaults
+  (roster doc gives silhouette/role, not tuned numbers), not owner-set values.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- =================================================================
+       QUARROK — the anchor war (row 1)
+       WAR: hates the spiders instinctively, chews web anchors, slowly
+       undoing the networks. USE: herdable corridor-cutter — beetle-cut
+       anchors deregister SenseWeb cells, making a blind corridor.
+       Neutral, never fights the Ollathrix; not a guard animal.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Quarrok</defName>
+    <label>quarrok</label>
+    <description>A great slab-backed jungle beetle, dull bronze-black under a dusting of silk lint, jaws like shears — unhurried, unbothered, and always at work on an anchor. It hates the web on some level too deep to reason with, and will spend a whole day cutting through a single silk line. It never troubles anything with legs.</description>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <MarketValue>65</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <baseBodySize>1.4</baseBodySize>
+      <baseHealthScale>1.2</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <!-- Herdable via the roster doc's "living-tool" lure pattern, not tame
+           commands (row 1's own war/use field: "not a battle-pet"). No
+           herdAnimal-driven grouping mechanism is built here — deferred with
+           the rest of the herding behaviour. -->
+      <lifeExpectancy>10</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+      <butcherProducts>
+        <RM_QuarrokChitin>4</RM_QuarrokChitin>
+      </butcherProducts>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <modExtensions>
+      <!-- WEBWORK_FAUNA_ROSTER_1: gives RM_JobGiver_ChewAnchors (shipped by
+           WEBWORK_KIT_BUILD_1 with no consumer race) its first consumer. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_ChewAnchorsConsumerExtension" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Quarrok</defName>
+    <label>quarrok</label>
+    <race>RM_Quarrok</race>
+    <combatPower>28</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Quarrok/RM_Quarrok</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Quarrok/RM_Quarrok</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Quarrok/RM_Quarrok</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       VENNICK — the egg war (row 2)
+       WAR: runs the silk to seek out and devour Ollathrix eggs. USE: the
+       living treasure map — harmless to a pawn, paths toward the nearest
+       clutch (RM_JobGiver_RunToEggs, OWED — see header).
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vennick</defName>
+    <label>vennick</label>
+    <description>A fist-sized silk-runner, pale grey with a bone-white back that catches the gloom, never alone: vennick read as a current, not as animals. They run the high lines in numbers, hunting one thing — a clutch of eggs, wherever it is hidden. Harmless to anything that walks on two legs.</description>
+    <statBases>
+      <MoveSpeed>4.8</MoveSpeed>
+      <MarketValue>10</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHealthScale>0.15</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>false</predator>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <herdAnimal>true</herdAnimal>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>2</lifeExpectancy>
+      <gestationPeriodDays>3</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vennick</defName>
+    <label>vennick</label>
+    <race>RM_Vennick</race>
+    <combatPower>4</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>6~14</wildGroupSize>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vennick/RM_Vennick</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vennick/RM_Vennick</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.28</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vennick/RM_Vennick</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       SKENNET — the crop, and the visible hunt (row 3)
+       USE only, no war. Gleans fellome pods; huntable small game; keeps
+       the hunts visible with a thin trickle of prey.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Skennet</defName>
+    <label>skennet</label>
+    <description>A nervous, bone-pale runner on stilt legs, built for one sprint it will eventually lose. It gleans fellome pods along the web-lines — the plantation's own livestock, sown and kept by something that is not a farmer. A thin trickle of skennet is most of what moves in the Webwork that is not already dead.</description>
+    <statBases>
+      <MoveSpeed>5.2</MoveSpeed>
+      <MarketValue>35</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>kick</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HindlegsFrontClaws</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <baseHungerRate>0.22</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>5</lifeExpectancy>
+      <gestationPeriodDays>5</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Skennet</defName>
+    <label>skennet</label>
+    <race>RM_Skennet</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>2~4</wildGroupSize>
+    <ecoSystemWeight>0.35</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skennet/RM_Skennet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skennet/RM_Skennet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.65</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skennet/RM_Skennet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.85</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       CRAVVET — the kill-site tell, and the cleanup (row 4)
+       USE only, no war. Follows kills, cracks bones/armour the Ollathrix
+       leaves — a tolerated scavenger, readable danger sign.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Cravvet</defName>
+    <label>cravvet</label>
+    <description>A knuckle-shaped armoured scuttler, mud-dark, jaws built for cracking what mandibles left. Cravvet parked on a stain means a fresh kill site: readable danger, and chitin and meat for whoever shoots it. It never causes the trouble it profits from.</description>
+    <statBases>
+      <MoveSpeed>1.8</MoveSpeed>
+      <MarketValue>45</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <Wildness>0.55</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>jaws</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>TurtleLike</body>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.18</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>11</lifeExpectancy>
+      <gestationPeriodDays>9</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+      <leatherDef>Leather_Light</leatherDef>
+      <soundMeleeHitPawn>Pawn_Melee_SmallBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Cravvet</defName>
+    <label>cravvet</label>
+    <race>RM_Cravvet</race>
+    <combatPower>10</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Cravvet/RM_Cravvet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Cravvet/RM_Cravvet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Cravvet/RM_Cravvet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.95</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       SIVVERN — the third party in the egg war, and an aerial tell (row 5)
+       The biome's one flier. Real flight per the standing rule; predator
+       preference for RM_Vennick is vanilla predation, no bespoke C#.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sivvern</defName>
+    <label>sivvern</label>
+    <description>A slender dusk-flier on taut grey membranes, silent as everything here, tracing the high lines and dipping to pick vennick off the silk. It never perches in the open. Sivvern circling low is a sign of heavy mite traffic beneath — and mite traffic is a sign of eggs, a second, longer-range read on the treasure map. Hunting one is possible; reading one is better.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed>
+      <MarketValue>50</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <Wildness>0.85</Wildness>
+      <!-- Real flight, per the standing rule (owner, 2026-09-19) and the
+           roster doc's own row-5 numbers: "MaxFlightTime ❓ ~8,
+           FlightCooldown ❓ ~5, flightSpeedFactor ❓ ~2.5". Core stat pair
+           (Pawn_FlightTracker.CanEverFly), not a bool. -->
+      <MaxFlightTime>8</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.35</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>0.15</maxPreyBodySize>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>7</lifeExpectancy>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+
+      <flightStartChanceOnJobStart>0.15</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <!-- canLeaveMapFlying deliberately OMITTED: it lairs in the sealed
+           canopy (roster doc's own one-home note) — no migration mechanism
+           claimed, so the flier carve-out (owner ruling 2026-09-21) is not
+           invoked. -->
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sivvern</defName>
+    <label>sivvern</label>
+    <race>RM_Sivvern</race>
+    <combatPower>16</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <!-- No flyingAnimationFramePathPrefix/-FrameCount: the flip-book frame
+         set is OWED later (roster doc's own art row). GetBestFlyAnimation
+         returns null with none set and it flies plainly — never block
+         flight waiting on frames. -->
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sivvern/RM_Sivvern</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sivvern/RM_Sivvern</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sivvern/RM_Sivvern</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

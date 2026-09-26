@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       WEBWORK_FAUNA_ROSTER_1 — gives RM_JobGiver_ChewAnchors (shipped by
+       WEBWORK_KIT_BUILD_1 with no consumer race) its first consumer.
+
+       Same vanilla insertion hook this repo already uses for animal-behaviour
+       splices (Defs/Core/ThinkTreeDefs/Animal.xml's own
+       <li Class="ThinkNode_SubtreesByTag"><insertTag>Animal_PreWander</insertTag></li>,
+       precedent: RimProperty's ThinkTreeDefs_AnimalSteal.xml). No MayRequire:
+       Animal_PreWander is Core. The splice reaches every animal; the
+       per-race gate is the RM_ChewAnchorsConsumerExtension check inside
+       RM_JobGiver_ChewAnchors.TryGiveJob itself, matching this repo's own
+       "no XML per-species hook at this splice point" precedent — not
+       repeated here.
+  ======================================================================== -->
+  <ThinkTreeDef>
+    <defName>RM_ChewAnchors_Consume</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>50</insertPriority>
+    <thinkRoot Class="ThinkNode_Tagger">
+      <tagToGive>Misc</tagToGive>
+      <subNodes>
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_ChewAnchors" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>
