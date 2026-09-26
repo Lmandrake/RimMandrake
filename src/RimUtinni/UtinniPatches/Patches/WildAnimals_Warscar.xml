@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_Warscar.xml                   UtinniPatches — new file, SCARLANDS_STANDALONE_MOD_1
+  ============================================================================
+
+  Wires the ten remaining live-roster rows of the frozen twin's own
+  RUT_Scarlands.xml (see that file's <wildAnimals>, MEASURED fresh this pass —
+  it has moved on since SCARLANDS_STANDALONE_MOD_1's own analysis, which
+  predates COMMISSION_LEDGER_CLEANUP_1's RUT_MortuaryCrawler wiring) into
+  src/RimMandrake/Scarlands' RM_Warscar.xml, exactly as that mod's own three
+  non-Star-Wars, non-RimUtinni donor rows (AA_SpinedGow, RG_Rimclaw,
+  AA_Helixien) already ship inline there.
+
+  WHY THESE TEN GO THROUGH A PATCH, NOT THE BIOME DEF DIRECTLY: an RM-tier def
+  may not name RimStarWars- or RimUtinni-tier content by defName (Q11a,
+  biome_mod_architecture.md §7) — doing so would make the "franchise/
+  campaign-free" mod hard-depend on Star Wars or campaign content. Same shape
+  every other split biome's Star-Wars-fauna routing uses (see
+  WildAnimals_Pyrelands.xml, WildAnimals_Greentide.xml, WildAnimals_CrackedLands.xml).
+
+  ROSTER (all ten, MEASURED against the live RUT_Scarlands.xml, not the stale
+  item analysis):
+
+  Star Wars Animal Collection (Continued) (mlie.starwarsanimalcollection):
+    Mynock                0.5   the donor's own bare defName. Item's own
+                                §5 flagged that our own RSW_Mynock clone
+                                already ships and should probably replace this
+                                row — that swap is DONOR_DEFS_PORT_TO_OURS_1's
+                                scope, not this item's; casting the donor row
+                                unchanged here is not a regression.
+
+  who.vfee.isopodageneline (weapon-descendant insects):
+    SW_Electrictick        0.3
+    SW_Electricgryllotalpa 0.15
+    SW_Juggernautbeetles   0.05
+
+  mandrake.rsw.swbestiary (our own Star Wars-tier ports):
+    RSW_CrystalFairyMole   0.5
+    RSW_MegaphoridLarva    0.5
+    RSW_FoundryBeetle      0.18
+    RSW_Korrum             0.05  (deliberately NOT the roster's 0.5 —
+                                 ECOSYSTEM_PYRAMID_LAW_1, do not "fix" this)
+
+  mandrake.rm.warscar's own RimUtinni-tier campaign fauna (gate is the biome
+  mod itself, since neither row below names a donor mod):
+    RUT_ScarRoach          0.08  the Scarlands sibling of the Rust Cathedral's
+                                 cleaner roaches (src/RimUtinni/
+                                 RustCathedralRoaches) — left untouched there,
+                                 same disposition RUSTCATHEDRAL_RM_MOD_BUILD_1
+                                 gave it ("left for a future Scarlands mod
+                                 build to decide"). Not duplicated into RM
+                                 tier: unlike RM_CathedralRoach, this creature
+                                 has no bespoke Mod-Settings-worthy mechanic of
+                                 its own beyond the shared, already-toggleable
+                                 RM_ThinkNode_EatCleanable — nothing here would
+                                 diverge from the original, so a patch
+                                 reference costs less than a duplicate def.
+    RUT_MortuaryCrawler    0.06  wired into the frozen twin 2026-09-24
+                                 (COMMISSION_LEDGER_CLEANUP_1), after this
+                                 item's own analysis was written. Same
+                                 treatment as RUT_ScarRoach: RimUtinni-owned,
+                                 Scarlands-exclusive, no divergent mechanic to
+                                 justify a duplicate.
+
+  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
+  returns true on no match) — validate with
+  skills/rimworld-modding/scripts/validate_patch.py against the live def dump
+  before trusting these four blocks fired.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
+    <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
+      <value>
+        <Mynock>0.5</Mynock>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="who.vfee.isopodageneline">
+    <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
+      <value>
+        <SW_Electrictick>0.3</SW_Electrictick>
+        <SW_Electricgryllotalpa>0.15</SW_Electricgryllotalpa>
+        <SW_Juggernautbeetles>0.05</SW_Juggernautbeetles>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
+      <value>
+        <RSW_CrystalFairyMole>0.5</RSW_CrystalFairyMole>
+        <RSW_MegaphoridLarva>0.5</RSW_MegaphoridLarva>
+        <RSW_FoundryBeetle>0.18</RSW_FoundryBeetle>
+        <RSW_Korrum>0.05</RSW_Korrum>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.warscar">
+    <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
+      <value>
+        <RUT_ScarRoach>0.08</RUT_ScarRoach>
+        <RUT_MortuaryCrawler>0.06</RUT_MortuaryCrawler>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

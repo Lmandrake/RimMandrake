@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WarscarItems.xml                    SCARLANDS_STANDALONE_MOD_1
+
+  RM_GlowerCrust — own duplicate of the frozen twin's RUT_GlowerCrust
+  (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_ScarlandsItems.xml),
+  the harvested product of RM_Glower (RM_WarscarFlora.xml). Same real
+  radiological handling deferral as the frozen original: a plain sellable raw
+  resource now, the dose-exposure gameplay loop is still owed to
+  SCARLANDS_MECHANICS_2 on the frozen twin's own copy.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GlowerCrust</defName>
+    <label>glower crust</label>
+    <description>A scraped-up chunk of black radiotrophic varnish, still faintly warm. Burned, it makes a crude, hot fuel; reduced to ash, it makes a pigment nothing else on the planet can match -- deep, matte black that doesn't fade. Handling too much of it too long is its own kind of story.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_GlowerCrust</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>50</stackLimit>
+    <statBases>
+      <MarketValue>4.5</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+  </ThingDef>
+
+</Defs>

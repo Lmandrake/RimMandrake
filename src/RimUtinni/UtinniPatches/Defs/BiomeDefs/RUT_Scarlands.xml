@@ -2,6 +2,14 @@
 <Defs>
 
   <!--
+    FROZEN — SCARLANDS_STANDALONE_MOD_1: carrying the world until the
+    terminal paint; content lives in mandrake.rm.warscar; do not edit here.
+    (RUT_Glower/RUT_GlowerCrust and RUT_ScorchedStars stay live too — their
+    RM_ duplicates are separate defs, not renames. RUT_ScarRoach and
+    RUT_MortuaryCrawler are untouched in their own mods. mandrake.rut.
+    scarlandsladder is untouched — see mandrake.rm.warscar's own About.xml
+    for why it was NOT absorbed.)
+
     RUT_Scarlands                                  UtinniPatches - authored 2026-09-09
     BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
     the_scarlands.md (FROZEN). Replaces the donor `Scarlands` — vanilla ODYSSEY, not

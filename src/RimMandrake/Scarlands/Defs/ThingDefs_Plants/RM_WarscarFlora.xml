@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WarscarFlora.xml                    SCARLANDS_STANDALONE_MOD_1
+
+  Own duplicates of the frozen twin's two wildPlants, per RM_Warscar.xml's own
+  header. Neither carries the frozen twin's own gameplay comps (none exist yet
+  — both are still plain harvestable/decorative plants; the "glower-fuel
+  harvest" radiation-dose loop the campaign roster names is real C# still
+  owed to SCARLANDS_MECHANICS_2 on the frozen twin's own copy), so duplicating
+  is a straight field copy with no behavior to diverge yet.
+
+  RM_ScorchedStars: duplicated rather than moved, because the frozen twin's
+  own RUT_ScorchedStars (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/
+  RUT_PollutedFlora.xml) is ALSO shared with the frozen twin's own
+  RUT_Wasteland sibling — moving it would make Wasteland cross-depend on this
+  mod. Own art copy (Textures/Things/Plant/RM_ScorchedStars/), physically
+  copied from the twin's ScorchedStars_a/_b.png, same "own art copy"
+  convention RM_CathedralRoach used (RUSTCATHEDRAL_RM_MOD_BUILD_1).
+
+  RM_Glower: duplicated rather than moved, because the frozen twin's own
+  RUT_Glower must stay live and byte-identical for the frozen campaign world.
+  No art exists for either the frozen original or this duplicate yet (checked
+  infrastructure/artpipe/{done,pending,failed}: rutglower_v1/rutglowercrust_v1
+  are still pending/failed) — this duplicate ships with the same placeholder
+  texPath naming convention, not a regression, since neither copy has real art
+  today.
+-->
+<Defs>
+
+  <ThingDef ParentName="BushBase">
+    <defName>RM_ScorchedStars</defName>
+    <label>scorched stars</label>
+    <description>Rounder cacti covered in sharp spines. They are often said to look like a burnt star.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_ScorchedStars</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.15</drawSize>
+      <shadowData>
+        <volume>(0.55, 0.2, 0.2)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>115</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <uiIconScale>0.85</uiIconScale>
+    <plant>
+      <growDays>5</growDays>
+      <fertilityMin>0.10</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Glower</defName>
+    <label>the Glowers</label>
+    <description>A glassy black varnish of moss and lichen, spread thick over crater bowls and hotspots wherever the ground still runs hot -- it eats the radiation itself, the same trick some radiotrophic molds are said to know. It thickens for centuries undisturbed. Scraped up, it burns crude and hot, and its ash makes a pigment nothing else on the planet can match.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0.1</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Glower</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <selectable>false</selectable>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <plant>
+      <fertilityMin>0.02</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>3</maxMeshCount>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_GlowerCrust</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <harvestWork>220</harvestWork>
+      <harvestAfterGrowth>0.4</harvestAfterGrowth>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>
