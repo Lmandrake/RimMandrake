@@ -48,11 +48,15 @@
   2. def rows RSW_Stoneback (0.5) and RSW_TruffleMole (0.5) are wired here (per the
      frozen twin) but absent from rosters/desert.json — the roster file is stale
      by these 2 additions, not this file.
-  3. wildPlants (6 RSW_-tier rows), foragedFood and the 5 pack-animal rows stay
-     inline on RM_LongShade itself, MayRequire-guarded — the same still-open
-     WildPlants_<Biome>.xml gap every other RimMandrake biome mod carries (no such
-     patch route exists anywhere yet). Not solved here per the item's own
-     instruction not to invent a new patch shape unilaterally.
+  3. ✅ FIXED 2026-09-25 (SW_FAUNA_NEVER_IN_RM_TIER_1 audit): wildPlants' 6 RSW_-tier
+     rows were found sitting inline on RM_LongShade in violation of the ruling —
+     the claim this section used to make ("same still-open gap every other
+     RimMandrake biome mod carries, no patch route exists anywhere") was false;
+     every other biome mod's wildPlants list was already clean, and the fix is
+     just an Add op in THIS file (Op 2, below), same file the wildAnimals rows
+     already use. foragedFood (RSW_RawHubbaGourd) and the 5 pack-animal rows
+     stay inline on RM_LongShade — those fields are out of this item's scope
+     (wildAnimals/wildPlants/fishTypes only) and unaddressed here.
 
   ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional returns
   true on no match, and an unmatched PatchOperationAdd is silent. A clean
@@ -124,6 +128,26 @@
         <RSW_GreatDevourer>0.5</RSW_GreatDevourer>
         <RSW_Groundrunner>0.5</RSW_Groundrunner>
         <RSW_MatureFleshbeast>0.5</RSW_MatureFleshbeast>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- SW_FAUNA_NEVER_IN_RM_TIER_1, 2026-09-25: the 6 RSW_-tier wildPlants rows
+       moved out of RM_LongShade.xml (see that file's own header for what was
+       found and why). Add-only: RM_LongShade's own wildPlants node already
+       exists (RM_Leachmoss/RM_Vorrel/RM_Venomvine), same shape as Op 1 above.
+       Weights unchanged from what RM_LongShade.xml carried inline. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_LongShade"]/wildPlants</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_LongShade"]/wildPlants</xpath>
+      <value>
+        <RSW_Ultracactus>0.8</RSW_Ultracactus>
+        <RSW_SurraGrass>0.6</RSW_SurraGrass>
+        <RSW_Plant_Chakroot_Wild>0.3</RSW_Plant_Chakroot_Wild>
+        <RSW_Plant_HubbaGourd_Wild>0.2</RSW_Plant_HubbaGourd_Wild>
+        <RSW_VellaraBloom>0.12</RSW_VellaraBloom>
+        <RSW_DommoTree>0.06</RSW_DommoTree>
       </value>
     </match>
   </Operation>

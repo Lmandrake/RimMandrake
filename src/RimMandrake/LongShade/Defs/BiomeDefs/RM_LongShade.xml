@@ -29,12 +29,18 @@
         the Long Shade and the Stillsand is unadjudicated (item's own MEASURED
         STATE section 3) — flagged for FOUNDRY/BENCH, not decided here.
       - wildPlants: RUT_Vorrel -> RM_Vorrel, MayRequire dropped (moved into this
-        mod's own Defs per §7 Q8 — see RM_Vorrel.xml's own header). RM_Leachmoss,
-        RM_Venomvine, RSW_Ultracactus and the other five RSW_-tier plants are
-        UNCHANGED, inline, MayRequire-guarded — same still-open wildPlants
-        MayRequire gap every other RimMandrake biome mod currently carries
-        (no WildPlants_<Biome>.xml patch route exists anywhere yet; item's own
-        MEASURED STATE section 4/Blockers).
+        mod's own Defs per §7 Q8 — see RM_Vorrel.xml's own header). RM_Leachmoss
+        and RM_Venomvine stay inline (non-Star-Wars, this mod's own). The 6
+        RSW_-tier rows (RSW_Ultracactus, RSW_SurraGrass, RSW_Plant_Chakroot_Wild,
+        RSW_Plant_HubbaGourd_Wild, RSW_VellaraBloom, RSW_DommoTree) were found
+        sitting inline here in violation of SW_FAUNA_NEVER_IN_RM_TIER_1 (audited
+        2026-09-25) and moved to
+        UtinniPatches/Patches/WildAnimals_LongShade.xml as a PatchOperationAdd —
+        same shape as the wildAnimals rows above. The "no WildPlants_<Biome>.xml
+        patch route exists anywhere yet" claim this comment used to make was
+        false: every other RimMandrake biome mod's wildPlants list was already
+        clean, and the routing goes onto the same WildAnimals_<Biome>.xml file,
+        no new patch shape needed.
 
     Everything else below — terrain, weather, diseases, foragedFood,
     allowedPackAnimals, wildPlantRegrowDays — is byte-for-byte the twin's own
@@ -128,14 +134,11 @@
     <coastalWildAnimals />
     <wildPlants>
       <RM_Leachmoss MayRequire="mandrake.rm.environmentalhazards">1.5</RM_Leachmoss>  <!-- leachmoss: the fertile ground's fastest claimant, DESERT_LEACHMOSS_BUILD_1. -->
-      <RSW_Ultracactus MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Ultracactus>  <!-- ultracactus: the buried canopy holding the open ground, DESERT_SIGNATURE_FLORA_1 -->
       <RM_Vorrel>0.1</RM_Vorrel>  <!-- the cycle plant, moved+renamed from RUT_Vorrel per §7 Q8, this mod's own def now, no MayRequire needed. Working name, see RM_Vorrel.xml's own header. -->
       <RM_Venomvine MayRequire="mandrake.rm.environmentalhazards">0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, VENOMVINE_CONTACT_VENOM_BUILD_1. -->
-      <RSW_SurraGrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_SurraGrass>  <!-- surra grass -->
-      <RSW_Plant_Chakroot_Wild MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
-      <RSW_Plant_HubbaGourd_Wild MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
-      <RSW_VellaraBloom MayRequire="mandrake.rsw.swbestiary">0.12</RSW_VellaraBloom>  <!-- vellara bloom -->
-      <RSW_DommoTree MayRequire="mandrake.rsw.swbestiary">0.06</RSW_DommoTree>  <!-- dommo tree - tree -->
+      <!-- The 6 RSW_-tier rows (SW_FAUNA_NEVER_IN_RM_TIER_1) ride
+           WildAnimals_LongShade.xml as a PatchOperationAdd instead of living
+           here — see this file's header. -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
 
