@@ -1029,3 +1029,78 @@ game access in this task, same posture as every build pass in this item).
 - `src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_AquaticAmbush_Hediffs.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Placeholder_GreentideLungerRace.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/RUT_Placeholder_GreentideLunger.xml` (new)
+
+## Verification + M10 hook pass — 2026-09-26
+
+Re-read this item, `greentide_kit_spec.md`, and `the_greentide.md` §4b/§4c/§5/
+§7b/§8b in full before touching anything, per the calling brief. Found the
+kit further along than this file's own prose (last edited 2026-09-14)
+records: a later commit not reflected here, `1d50f06c9` (2026-09-24), shipped
+M3's remaining "rarely, by the Roil condition itself" spawn route
+(`RM_MapComponent_RoilVortexSpawner`) that the M3/M7 build pass above had
+explicitly deferred — that commit's own message states plainly "M1/M2/M3/
+M4/M5/M6/M7/M9/M12 all shipped in prior waves; M10 stays blocked on
+EXPLOSIVE_PLANT_GROWTH_1, still undesigned." Re-confirmed against
+`infrastructure/state/items/EXPLOSIVE_PLANT_GROWTH_1.md` this pass: still
+`doing`, owned BENCH, design-only (soak/charge/burst design exists, no
+engine/grid built anywhere in `src/` — grepped, zero hits).
+
+**Rebuild verification** (all three assemblies, no source changes needed):
+`RM_EnvironmentalHazards.csproj`, `RM_CreatureBehaviors.csproj`,
+`RM_Greentide.csproj` all rebuild clean, 0 warnings/0 errors, confirming the
+whole prior 5-wave build still compiles after `FEVERWOOD_RM_MOD_BUILD_1`
+(2026-09-25) moved F1/F5/F6/F7's own def/patch files out of UtinniPatches —
+that move didn't touch this kit's C# and `RUT_RootCauseway` stayed put by
+that item's own explicit choice not to duplicate Greentide's own def.
+
+**M10 — built the hook, still correctly blocked on the grid.** Per this
+item's own spec section and M2's own precedent (`RM_CompDryFieldEmitter.
+SuppressPlantGrowth()`, a documented no-op with a `TODO(EXPLOSIVE_PLANT_
+GROWTH_1)` marker), shipped `RM_GrazingSuppressionHookPatch`
+(`src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_
+GrazingSuppressionHook.cs`, new) — a Harmony postfix on the same confirmed
+choke-point this item's own 2026-09-13 spike pass identified,
+`Plant.IngestedCalculateAmounts` (`RimWorld/Plant.cs:603`). The seam is now
+proven and armed (any plant-eater's bite calls `WriteSuppression`); the
+actual grid write stays a documented no-op stub, since building
+`EXPLOSIVE_PLANT_GROWTH_1`'s own suppression grid here would be doing a
+different, larger, BENCH-owned item's whole job inside this hook — the same
+call M2 already made for the identical reason. New settings toggle #56,
+`grazingSuppressionHookEnabled` (`MOD_OPTIONS_RETROFIT_1`), currently a
+no-op in play (honestly labeled as such in its own tooltip and header
+comment) since there's nothing yet for it to gate.
+
+**Concurrency note, for the record (no lasting effect).** This assembly
+(`RM_EnvironmentalHazards`) is being edited live by at least three other
+in-flight passes this session (`SCARLANDS_MECHANICS_2`'s grave-ward GenStep,
+`MIASMA_MECHANICS_1`'s breath-tide surge, and an unrelated lottery-trap
+disarm feature) — settings entries landed as #54/#55 concurrently with this
+pass's own #56, all three additive, no collision. One real mid-pass mistake
+was caught and fixed before it reached the remote: an initial commit here
+captured a sibling's not-yet-committed `.csproj` `<Compile>` line pointing at
+a `.cs` file that wasn't committed yet, which `DLL_SOURCE_STAMP_GUARD_1`
+correctly refused at push (a fresh checkout would have failed to build). Fix
+was to verify + rebuild in an isolated `git worktree` rather than keep fighting
+the live file's own churn; by the time of the next push attempt the sibling
+had committed their own file, resolving it — `dll_source_stamp.py check
+--range origin/main..HEAD` is clean at the final state. No source, DLL, or
+sibling in-flight file was lost or reverted.
+
+**Verdict.** All 12 named mechanics (M1-M9, M11, M12 in full; M3 including
+the Roil-condition spawn route) are shipped and build-verified as of this
+pass. Only M10 remains genuinely incomplete, and only because its named
+cross-item dependency (`EXPLOSIVE_PLANT_GROWTH_1`) has no engine yet — that
+is not this item's job to build (a separate, larger, BENCH-owned world
+mechanic; building it here would be scope creep into someone else's item,
+against this repo's own "review process, not sweeping rules" and seat
+posture). Item stays `doing`. No bridge/quicktest verification this pass
+(no game access in this task, same posture as every prior pass in this
+item).
+
+## files (verification + M10 hook pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_GrazingSuppressionHook.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (1 new `<Compile>` entry)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (1 new settings toggle, #56 `grazingSuppressionHookEnabled`)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll.srchash` (regenerated)
