@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaFloorLife.xml             TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  SEA_FISHABLES_ALIVE_IN_DEPTHS_1 — the GREY SEA portion — plus the Aerofleet
+  replacement owed by GREYSEA_ANCHOR_CREATURES_1.
+
+  Owner, at the bench 2026-09-26, typed:
+      "All the fishables should also be alive and moving around in the depths
+       (this is true for ALL seas)."
+
+  ⇒ A catch item with nothing swimming is HALF a species. The Grey Sea
+  shipped nine fishTypes rows against five floor residents; seven of the nine
+  (sallik, karrud, hessal, oomal, maalu, immu, haarn) existed only as items.
+  This file gives all seven a body.
+
+  ============================================================================
+  🔑 AUTHORED FROM THE CATCH ITEMS' OWN DESCRIPTIONS, NOT INVENTED
+  ============================================================================
+  The item item's own item text is the design. src/RimUtinni/UtinniPatches/
+  Defs/ThingDefs_Items/RUT_GreySeaFish_Items.xml already describes a
+  shell-less crab wearing its own excreted salt, a flat fish that gave up
+  swimming and grows a mineral plate, a bivalve whose shells are grown from
+  the sea's crystal, a blind sick brine-eel, a jelly half turned to stone, a
+  soft thing that lodges in dead shells, and a walking mineral jacket nobody
+  can identify. Every body size, speed, diet and behaviour flag below is read
+  off those sentences. ⛔ Nothing here was made up; if a number looks odd,
+  check the item text before "fixing" it.
+
+  ============================================================================
+  🔴 TIER: THESE ARE RM_, THE CATCH ITEMS ARE RUT_ — deliberate, and OWED
+  ============================================================================
+  The seven catch items ship as RUT_Sallik etc. in the Utinni patch layer,
+  MayRequire-gated on mandrake.rut.patches. Every one of those names is an
+  INVENTED exotic word, not canon IP — and Q11a (biome_mod_architecture.md
+  §7, owner 2026-09-22) rules that invented names are free-tier and belong in
+  RM_: "the top mod without star wars will look precisely the same as the
+  star wars enhanced one."
+
+  So the living counterparts are authored RM_ and cast INLINE on RM_GreySea
+  with no MayRequire, because the free mod's floor has to stand alone. The
+  CATCH side is the half still in the wrong tier.
+
+  ⚠️ OWED, NOT DONE HERE: migrating RUT_Sallik/Karrud/Hessal/Oomal/Maalu/
+  Immu/Haarn (and RUT_RareGreyCatches, RUT_SaltCameo) down to RM_ in this
+  mod, which is a cross-mod rename touching RimUtinni and is not this wave's
+  to make unilaterally. Until then the pairing reads RM_Sallik (floor) <->
+  RUT_Sallik (catch) rather than the RM_Essarn <-> RM_EssarnCatch shape, and
+  a player without mandrake.rut.patches gets the animals but not the catch.
+  ⛔ Do not "fix" this by making the floor animals RUT_ — that would leave
+  the free mod's sea floor with five residents and is backwards.
+
+  ============================================================================
+  EVERY ONE IS SOLITARY
+  ============================================================================
+  the_grey_deep.md ban 2 / terminator_sea.md §6: no herds, flocks, schools,
+  packs or swarms; "anything that schools lives in the Twilight Deep." Every
+  PawnKindDef here is wildGroupSize 1. No exceptions, and none may be added.
+
+  PLACEHOLDER ART: flat texPaths under Things/Pawn/Animal/<defName>/, the
+  posture RM_GreySeaFauna.xml established. Real art is owed via artpipe;
+  search done/ and _artsrc/ by subject before queuing.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ==================================================================
+       RM_SALLIK — "a thumb-sized crab-thing that never grew a shell of
+       its own: it excretes the salt it cannot keep out and wears the
+       crust, layer on layer … Touch the water and every sallik within
+       reach pulls its legs in and becomes a pebble."
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sallik</defName>
+    <label>sallik</label>
+    <description>A thumb-sized crab-thing wearing the salt it could not keep out of itself, layer on layer, until it is a walking lump of the sea's own mineral with legs underneath. Disturb the water and every sallik in reach folds its legs in and becomes a pebble, and stays a pebble for as long as it takes. No two crusts are the same, which is why the shore-folk keep them.</description>
+    <statBases>
+      <MoveSpeed>1.0</MoveSpeed>
+      <MarketValue>7</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.25</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sallik</defName>
+    <label>sallik</label>
+    <race>RM_Sallik</race>
+    <combatPower>5</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Sallik/RM_Sallik</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.18</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Sallik/RM_Sallik</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.25</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Sallik/RM_Sallik</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.33</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_KARRUD — "a slab-flat, palm-wide fish-thing that has given up
+       swimming for lying still. The upper face grows a plate of
+       pillar-mineral … It moves only when the brine at the bottom gets
+       too strong even for it, sliding uphill along the pillar bases a
+       hand's width at a time."
+       MoveSpeed 0.6 is that sentence in a number.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Karrud</defName>
+    <label>karrud</label>
+    <description>A slab-flat, palm-wide thing that stopped swimming a long time ago and now only lies still. The sea builds on anything that holds still long enough, and the karrud holds very still, so its upper face carries a plate of pillar-mineral and from above it is a chip of grey stone with a mouth-slit underneath. It moves when the bottom brine gets too strong even for it, sliding uphill along the pillar bases a hand's width at a time.</description>
+    <statBases>
+      <MoveSpeed>0.6</MoveSpeed>
+      <MarketValue>6</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mouth</label>
+        <capacities><li>Bite</li></capacities>
+        <power>2</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.12</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Karrud</defName>
+    <label>karrud</label>
+    <race>RM_Karrud</race>
+    <combatPower>6</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.08</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Karrud/RM_Karrud</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.22</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Karrud/RM_Karrud</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.32</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Karrud/RM_Karrud</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.44</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_HESSAL — "a bivalve-thing whose two shells are grown from the
+       sea's crystal … It seals itself for years at a stretch when the
+       brine thickens … and nobody has seen one open."
+       The item file's own comment already predicted this def: "Sessile —
+       its floor pairing is a non-moving Pawn, per the doc's own note."
+       MoveSpeed 0.3 rather than 0: a Pawn with literally no movement
+       cannot satisfy its own job graph.
+       ⚠️ RM_Immu below lives inside dead hessal shells, so these two
+       belong on the same floor at similar commonality. Do not cut one
+       without the other.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Hessal</defName>
+    <label>hessal</label>
+    <description>Two shells grown out of the sea's own crystal rather than out of anything living, so a hessal bed reads as a patch of frost lying on the floor. It seals for years at a stretch when the brine thickens and opens again when the fog-season thins it, and nobody has ever watched one do either. Inside is a knot of grey meat that keeps a week in its own salt and tastes of nothing but the sea.</description>
+    <statBases>
+      <MoveSpeed>0.3</MoveSpeed>
+      <MarketValue>5</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.3</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>shell</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>2</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.18</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.08</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>40</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.5</minAge></li>
+        <li><def>AnimalAdult</def><minAge>1.5</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Hessal</defName>
+    <label>hessal</label>
+    <race>RM_Hessal</race>
+    <combatPower>4</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.06</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hessal/RM_Hessal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.2</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hessal/RM_Hessal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.28</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hessal/RM_Hessal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.38</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_OOMAL — "a blind, arm-long brine-eel the colour of boiled
+       paper … It lives in the silt at the pillar feet and does not come
+       up … It is always sick — every oomal carries lesions where the
+       salt has got in — and it is never fast."
+       waterSeeker, because it is an eel of the bottom water.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Oomal</defName>
+    <label>oomal</label>
+    <description>A blind, arm-long brine-eel the colour of boiled paper, translucent enough that the swallowed salt-crust shows as a grey line down the middle of it. It lives in the silt at the pillar feet and does not come up. Every one of them carries lesions where the salt has got in; they are always sick, and they are never fast.</description>
+    <statBases>
+      <MoveSpeed>1.8</MoveSpeed>
+      <MarketValue>5</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.55</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities><li>Bite</li></capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.25</baseBodySize>
+      <baseHealthScale>0.45</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>7</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.15</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.4</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Oomal</defName>
+    <label>oomal</label>
+    <race>RM_Oomal</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oomal/RM_Oomal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.24</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oomal/RM_Oomal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.36</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oomal/RM_Oomal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.5</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_MAALU — "a bell of grey jelly the size of two hands that has
+       half turned to stone … a maalu drifts with the weight of its own
+       mineral edge pulling it down, sagging, tilting, never quite
+       sinking. It is not luminous — nothing down here is."
+       🔴 That last clause is ban 4 written into the owner-facing text.
+       No glower comp here, ever.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Maalu</defName>
+    <label>maalu</label>
+    <description>A bell of grey jelly the size of two hands, half turned to stone: the sea's crystal grows into it from the rim inward, so it drifts with the weight of its own mineral edge pulling it over — sagging, tilting, never quite going down. It is not luminous. Nothing down here is. It is barely alive and it is not dangerous, and the rim, they say, tastes of the pillars.</description>
+    <statBases>
+      <MoveSpeed>0.8</MoveSpeed>
+      <MarketValue>4</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>rim</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>1</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>2</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.08</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.2</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalUncommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Maalu</defName>
+    <label>maalu</label>
+    <race>RM_Maalu</race>
+    <combatPower>3</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Maalu/RM_Maalu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.2</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Maalu/RM_Maalu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Maalu/RM_Maalu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.42</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_IMMU — "a finger-long, soft, eyeless fish-thing that lives
+       inside the shells of dead hessal … It is the most timid thing in
+       the Grey and the only one with any colour, a faint sick pink
+       under the skin."
+       High Wildness, high speed, no fight: timidity in three numbers.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Immu</defName>
+    <label>immu</label>
+    <description>A finger-long, soft, eyeless thing that never grew any armour of its own and borrows the sea's: lift a dead hessal shell and it is in there, curled, and it will not come out. It is the most timid animal in the Grey Sea and the only one with any colour at all — a faint sick pink under the skin, which you only see in a lamp.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <MarketValue>6</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>nip</label>
+        <capacities><li>Bite</li></capacities>
+        <power>1</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.08</baseBodySize>
+      <baseHealthScale>0.2</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>4</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.25</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalUncommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Immu</defName>
+    <label>immu</label>
+    <race>RM_Immu</race>
+    <combatPower>3</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.04</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Immu/RM_Immu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.16</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Immu/RM_Immu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.22</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Immu/RM_Immu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_HAARN — "a jacket of pillar-mineral the size of a helmet,
+       closed all round, that moves … from pillar to pillar, leaving a
+       scrape-line in the silt like a very small version of the giant's
+       … It is the Grey's only true extremophile: it lives in the
+       strongest brine at the bottom, where nothing else survives."
+
+       🔑 The scrape-line matters: the sheet's own always-true line is
+       "fresh scrape-sign means the giant is near", and the haarn is
+       that read at small scale — a false positive a diver learns. That
+       is a fiction hook for a later scrape-sign mechanic, not a def
+       field. Rarest of the seven (0.08) because it lives where nothing
+       goes.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Haarn</defName>
+    <label>haarn</label>
+    <description>Nobody agrees what a haarn is. It is a jacket of pillar-mineral the size of a helmet, closed all round, and it moves — slowly, along the floor, pillar to pillar, leaving a scrape-line in the silt like a very small version of the giant's. Cut one open and there is a soft thing inside with no eyes and a great many small hooks, and it dies at once in open air. It lives in the strongest brine at the bottom, where nothing else survives, and it has plainly been doing so for a very long time.</description>
+    <statBases>
+      <MoveSpeed>0.5</MoveSpeed>
+      <MarketValue>8</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>hooks</label>
+        <capacities><li>Scratch</li></capacities>
+        <power>5</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <lifeExpectancy>60</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>3</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalUncommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Haarn</defName>
+    <label>haarn</label>
+    <race>RM_Haarn</race>
+    <combatPower>14</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.12</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Haarn/RM_Haarn</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.26</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Haarn/RM_Haarn</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Haarn/RM_Haarn</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.56</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
