@@ -360,6 +360,49 @@ TIERS = {
     },
 }
 
+# ------------------------------------------------- BIOME_LOAD_PROOF_WAVE_1
+# One `proof_<biome>` tier per shipped biome mod, generated below so the wave
+# stays uniform and re-runnable. Each wants only BRIDGE + the mod itself;
+# <modDependencies> closure supplies the rest, so whatever a biome genuinely
+# needs comes along and nothing else does.
+#
+# 🔑 Deliberately MINIMAL, because PROVEN is deliberately narrow here. The
+# owner ruled it 2026-09-26: "here PROVEN doesn't mean fully functional, it
+# means PROVEN for donor retirement purposes". The question each tier answers
+# is only "does this mod load clean by itself" — NOT whether its roster is
+# complete, its art final or its mechanics firing. Isolation is the point: an
+# error under one of these tiers has exactly one mod of ours to blame.
+#
+# ⚠️ These do NOT replace the richer hand-written tiers above. `weepingstones`
+# and `leaningscrub` deliberately pull the Utinni patch layer and donor fauna
+# in order to prove the PATCHED roster lands; that is a different and larger
+# question. Keep both.
+#
+# ⛔ LanternDeeps is absent on purpose — LANTERNDEEPS_TIER_COLLISION_1. The
+# live `mandrake.rut.lanterndeeps` exists only in the game folder with no repo
+# copy, and the RM successor deploys to the same folder name. It joins this
+# wave once that migration is done, not before.
+BIOME_PROOF_MODS = [
+    "bluedesert", "contagion", "feverwood", "floodedcanyon", "forsakencrags",
+    "gelatinousslime", "greentide", "leaningscrub", "longshade", "miasma",
+    "nightsideice", "poisonforest", "pyrelands", "rustcathedral", "stillsand",
+    "terminalbiomes", "theforge", "therot", "thesump", "wasteland", "webwork",
+    "weepingstones",
+]
+
+for _biome in BIOME_PROOF_MODS:
+    TIERS["proof_%s" % _biome] = {
+        "why": "BIOME_LOAD_PROOF_WAVE_1: does mandrake.rm.%s load clean on its "
+               "own? Defs resolve, its BiomeDef is present in the loaded def "
+               "set, no cross-reference or XML errors attributable to it. "
+               "Narrow sense of PROVEN (owner, 2026-09-26) — this says nothing "
+               "about playability, cast completeness, art or mechanics; those "
+               "belong to that biome's bedazzle sitting." % _biome,
+        "want": [BRIDGE, "mandrake.rm.%s" % _biome],
+        "dlc": True,
+    }
+del _biome
+
 
 def read_about(path):
     try:
