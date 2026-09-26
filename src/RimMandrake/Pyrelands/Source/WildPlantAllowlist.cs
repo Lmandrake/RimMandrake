@@ -99,7 +99,7 @@ namespace RimMandrake.Pyrelands
         {
             try
             {
-                if (!RM_PyrelandsSettings.wildPlantAllowlistEnabled) return;
+                if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.wildPlantAllowlistEnabled) return;
                 if (___map == null || outPlants == null || outPlants.Count == 0) return;
                 if (___map.Biome == null || ___map.Biome.defName != PyrelandsDefName) return;
 

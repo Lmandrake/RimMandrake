@@ -212,7 +212,7 @@ namespace RimMandrake.Pyrelands
                 {
                     return base.Graphic;
                 }
-                if (!RM_PyrelandsSettings.plantGrowthStagesEnabled)
+                if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.plantGrowthStagesEnabled)
                 {
                     return base.Graphic;
                 }

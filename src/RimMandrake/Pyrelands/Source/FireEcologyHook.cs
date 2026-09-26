@@ -112,7 +112,7 @@ namespace RimMandrake.Pyrelands
         {
             try
             {
-                if (!RM_PyrelandsSettings.fulguriteEnabled) return;
+                if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.fulguriteEnabled) return;
                 if (map == null || !strikeLoc.IsValid || !strikeLoc.InBounds(map)) return;
                 TerrainDef terrain = strikeLoc.GetTerrain(map);
                 if (!FireEcologyHookMod.IsSandFamily(terrain)) return;
@@ -157,6 +157,7 @@ namespace RimMandrake.Pyrelands
         {
             try
             {
+                if (!RM_PyrelandsSettings.pyrelandsEnabled) return;
                 if (!RM_PyrelandsSettings.ashDustingEnabled && !RM_PyrelandsSettings.scorchFruitEnabled) return;
                 if (__instance == null || !__instance.Spawned) return;
                 // Pawn/animal-attached fires (a burning colonist, a boomrat that
@@ -379,7 +380,7 @@ namespace RimMandrake.Pyrelands
 
         public override void MapComponentTick()
         {
-            if (!RM_PyrelandsSettings.ashfallAccumulationEnabled)
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.ashfallAccumulationEnabled)
             {
                 return;
             }
@@ -398,19 +399,26 @@ namespace RimMandrake.Pyrelands
 
             WeatherManager wm = map.weatherManager;
             WeatherDef current = (wm != null) ? wm.curWeather : null;
-            if (current == null)
-            {
-                return;
-            }
+
+            bool isNativeBiome = map.Biome != null && map.Biome.defName == "RM_Pyrelands";
 
             float rate;
-            if (current == ashFallWeather)
+            if (current != null && current == ashFallWeather)
             {
                 rate = 1f;
             }
-            else if (current == cinderfallWeather)
+            else if (current != null && current == cinderfallWeather)
             {
                 rate = CinderfallRateFactor;
+            }
+            else if (!isNativeBiome && RM_PyrelandsSettings.AppliesToBiome(map.Biome))
+            {
+                // Cross-biome opt-in (MOD_OPTIONS_RETROFIT_1 §6a): an
+                // opted-in non-Pyrelands biome gets ambient ash drift
+                // regardless of its own current weather, scaled by
+                // crossBiomeCoverage. Off by default; never fires unless
+                // the owner names this biome or ticks "every biome".
+                rate = RM_PyrelandsSettings.crossBiomeCoverage;
             }
             else
             {
@@ -484,7 +492,7 @@ namespace RimMandrake.Pyrelands
 
         public override void Generate(Map map, GenStepParams parms)
         {
-            if (!RM_PyrelandsSettings.scorchedRuinsEnabled) return;
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.scorchedRuinsEnabled) return;
             if (!MapGenerator.TryGetVar<List<CellRect>>("UsedRects", out var usedRects)
                 || usedRects.NullOrEmpty())
             {

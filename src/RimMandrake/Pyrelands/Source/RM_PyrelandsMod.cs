@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -7,22 +8,42 @@ namespace RimMandrake.Pyrelands
     // ════════════════════════════════════════════════════════════════════
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for Pyrelands.
     //
-    // Precedent: src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs and
-    // src/RimMandrake/Greentide/Source/RM_GreentideMod.cs (static fields
-    // read from everywhere, Scribe_Values in ExposeData, a
-    // DoWindowContents helper called from the Mod subclass).
+    // Precedent: src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs,
+    // src/RimMandrake/Greentide/Source/RM_GreentideMod.cs (cross-biome
+    // shape) and src/RimMandrake/BlueDesert/Source/RM_BlueDesertMod.cs
+    // (master-toggle shape) — static fields read from everywhere,
+    // Scribe_Values in ExposeData, a DoWindowContents helper called from
+    // the Mod subclass.
     //
-    // Five things this gates, each read straight out of FireEcologyHook.cs's
+    // Things this gates, each read straight out of FireEcologyHook.cs's
     // own hardcoded numbers (defaults below = shipped behavior, unchanged):
+    //   0. Master switch — off degrades every mechanic below gracefully;
+    //      the biome and its defs still load (PYRELANDS_RM_MOD_BUILD_1
+    //      §6a: "the BiomeDef still loads"). Biome tile PLACEMENT has its
+    //      own separate, worldgen-affecting switch (5) and is untouched by
+    //      this one.
     //   1. Fulgurite left by a lightning strike on sand-family ground.
     //   2. Loose ash dusting off a burning cell.
     //   3. Scorch-fruit seeded by a burning cell, plus its per-map cap.
     //   4. Ash accumulation (drifts) during Ash Fall / Cinderfall weather.
     //   5. Whether the Pyrelands biome can win tile placement at all —
     //      WORLDGEN-AFFECTING, a new-worlds-only switch.
+    //   6. The four absorbed mandrake.rut.pyrelandsmechanics mechanics
+    //      (burn line, fire-hawk ember spread, furnace-beast thermal
+    //      circuit, fire clock/rite trigger) — PYRELANDS_RM_MOD_BUILD_1 §6.
+    //   7. Cross-biome opt-in for the ash-accumulation mechanic (4) on a
+    //      non-Pyrelands map, WORLDGEN-AFFECTING (applies once, at map
+    //      generation), same shape as RM_GreentideSettings.
     // ════════════════════════════════════════════════════════════════════
     public class RM_PyrelandsSettings : ModSettings
     {
+        /// <summary>Master switch. Off: RM_Pyrelands still loads and can
+        /// still be assigned to a tile (see biomeGenerationEnabled for the
+        /// separate worldgen-placement switch), but every mechanic below
+        /// stops mattering — the per-mechanic toggles keep their own state
+        /// for when this is back on.</summary>
+        public static bool pyrelandsEnabled = true;
+
         public static bool fulguriteEnabled = true;
         public static float fulguriteChance = 0.35f;
 
@@ -56,9 +77,30 @@ namespace RimMandrake.Pyrelands
         // honors it immediately, no restart needed (a map already on disk is untouched).
         public static bool scorchedRuinsEnabled = true;
 
+        // Absorbed from mandrake.rut.pyrelandsmechanics (PYRELANDS_RM_MOD_BUILD_1
+        // §6) — every default matches what shipped there, so the absorption
+        // changes no player-visible behavior for an existing save.
+        public static bool burnLineEnabled = true;
+        public static bool fireHawkSpreadEnabled = true;
+        public static bool furnaceThermalEnabled = true;
+        public static bool fireClockEnabled = true;
+
+        // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
+        // a NON-Pyrelands biome's map without importing the whole biome.
+        // WORLDGEN-AFFECTING: applies once, right after a map generates; an
+        // existing map is never retroactively changed. Same shape as
+        // RM_GreentideSettings' cross-biome block.
+        public static bool crossBiomeEnabled = false;
+        public static bool crossBiomeEverywhere = false;
+        public static string crossBiomeBiomeList = "";
+        public static float crossBiomeCoverage = 1f;
+
+        private string biomeListBuffer;
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref pyrelandsEnabled, "pyrelandsEnabled", true);
             Scribe_Values.Look(ref fulguriteEnabled, "fulguriteEnabled", true);
             Scribe_Values.Look(ref fulguriteChance, "fulguriteChance", 0.35f);
             Scribe_Values.Look(ref ashDustingEnabled, "ashDustingEnabled", true);
@@ -76,12 +118,66 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref wildPlantAllowlistEnabled, "wildPlantAllowlistEnabled", true);
             Scribe_Values.Look(ref plantGrowthStagesEnabled, "plantGrowthStagesEnabled", true);
             Scribe_Values.Look(ref scorchedRuinsEnabled, "scorchedRuinsEnabled", true);
+            Scribe_Values.Look(ref burnLineEnabled, "burnLineEnabled", true);
+            Scribe_Values.Look(ref fireHawkSpreadEnabled, "fireHawkSpreadEnabled", true);
+            Scribe_Values.Look(ref furnaceThermalEnabled, "furnaceThermalEnabled", true);
+            Scribe_Values.Look(ref fireClockEnabled, "fireClockEnabled", true);
+            Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
+            Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
+            Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
+            Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
+        }
+
+        /// <summary>True if the cross-biome ash-accumulation opt-in currently
+        /// applies to this biome (never to Pyrelands' own — that is native,
+        /// not "cross").</summary>
+        public static bool AppliesToBiome(BiomeDef biome)
+        {
+            if (!crossBiomeEnabled || biome == null || biome.defName == "RM_Pyrelands")
+            {
+                return false;
+            }
+            if (crossBiomeEverywhere)
+            {
+                return true;
+            }
+            return ParseBiomeList().Contains(biome.defName);
+        }
+
+        private static List<string> ParseBiomeList()
+        {
+            var result = new List<string>();
+            if (crossBiomeBiomeList.NullOrEmpty())
+            {
+                return result;
+            }
+            string[] parts = crossBiomeBiomeList.Split(',', ';');
+            for (int i = 0; i < parts.Length; i++)
+            {
+                string trimmed = parts[i].Trim();
+                if (trimmed.Length > 0)
+                {
+                    result.Add(trimmed);
+                }
+            }
+            return result;
         }
 
         public void DoWindowContents(Rect inRect)
         {
+            if (biomeListBuffer == null)
+            {
+                biomeListBuffer = crossBiomeBiomeList;
+            }
+
             Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
             list.Begin(inRect);
+
+            list.CheckboxLabeled("Mod enabled", ref pyrelandsEnabled,
+                "Off: RM_Pyrelands still loads and can still be assigned to a tile, but every "
+              + "mechanic below stops mattering (their own toggles still apply if this is back "
+              + "on). Biome tile placement has its own separate switch, further down.");
+            list.GapLine();
 
             list.Label("Fulgurite");
             list.CheckboxLabeled("Lightning leaves fulgurite", ref fulguriteEnabled,
@@ -158,6 +254,43 @@ namespace RimMandrake.Pyrelands
                 "Off: the Pyrelands biome never wins tile placement when generating a NEW world. "
               + "A world already generated, and any Pyrelands tiles already on it, are unaffected — "
               + "this never retroactively changes an existing planet.");
+            list.GapLine();
+
+            list.Label("Absorbed mechanics (mandrake.rut.pyrelandsmechanics)");
+            list.CheckboxLabeled("Standing burn line", ref burnLineEnabled,
+                "The grass fire that walks the map with its own burn intelligence, rather than "
+              + "spreading and dying out like an ordinary vanilla fire. Off: fire behaves vanilla.");
+            list.CheckboxLabeled("Fire-hawk ember carrying", ref fireHawkSpreadEnabled,
+                "A fire-hawk can carry a live ember and drop it to start a new burn elsewhere. "
+              + "Off: fire-hawks never do this job.");
+            list.CheckboxLabeled("Furnace-beast thermal circuit", ref furnaceThermalEnabled,
+                "The furnace-beast's heat-hoarding warmth aura, bed ignition and thermal charge "
+              + "cycle. Off: it behaves as an ordinary heat-immune grazer.");
+            list.CheckboxLabeled("Fire clock (flame harvest / fire raid / fire rite)", ref fireClockEnabled,
+                "The Deep Desert Tribes' incidents that answer the burn. Off: those incidents never "
+              + "fire.");
+            list.GapLine();
+
+            list.Label("Cross-biome ash accumulation (WORLDGEN-AFFECTING — new maps only)");
+            list.Label("Lets the ash-drift mechanic (Ash Fall / Cinderfall accumulation) apply on a "
+              + "NON-Pyrelands biome's map, without adding the whole Pyrelands biome. Applies once, "
+              + "right after a map generates; a map that already exists is never retroactively "
+              + "changed.");
+            list.CheckboxLabeled("Enable outside the Pyrelands biome", ref crossBiomeEnabled,
+                "Master switch for the section below.");
+            if (crossBiomeEnabled)
+            {
+                list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,
+                    "Apply to any non-Pyrelands biome. Off: only the biomes named below.");
+                if (!crossBiomeEverywhere)
+                {
+                    list.Label("  Biome defNames, comma-separated (e.g. RM_Wasteland, AridShrubland):");
+                    biomeListBuffer = list.TextEntry(biomeListBuffer);
+                    crossBiomeBiomeList = biomeListBuffer;
+                }
+                list.Label("  Coverage: " + (crossBiomeCoverage * 100f).ToString("0") + "x of the native ash-accumulation rate");
+                crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
+            }
 
             list.End();
         }
