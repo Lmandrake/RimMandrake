@@ -2,7 +2,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.StarWars.FireEcology
+namespace RimMandrake.Pyrelands
 {
     // ════════════════════════════════════════════════════════════════════
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for Pyrelands.

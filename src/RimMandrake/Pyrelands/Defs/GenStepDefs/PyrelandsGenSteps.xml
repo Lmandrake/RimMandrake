@@ -15,7 +15,7 @@
   -->
   <GenStepDef>
     <defName>RM_FE_ScorchRuins</defName>
-    <genStep Class="RimMandrake.StarWars.FireEcology.GenStep_ScorchPyrelandsRuins" />
+    <genStep Class="RimMandrake.Pyrelands.GenStep_ScorchPyrelandsRuins" />
     <order>760</order>
   </GenStepDef>
 

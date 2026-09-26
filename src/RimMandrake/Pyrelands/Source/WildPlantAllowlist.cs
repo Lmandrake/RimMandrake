@@ -4,7 +4,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.StarWars.FireEcology
+namespace RimMandrake.Pyrelands
 {
     // PYRELANDS_FLORA_LEAK_1 — runtime enforcement, not a per-def patch.
     //
@@ -54,7 +54,7 @@ namespace RimMandrake.StarWars.FireEcology
             var target = AccessTools.Method(typeof(WildPlantSpawner), "CalculatePlantsWhichCanGrowAt");
             if (target == null)
             {
-                Log.Error("[RimMandrake.StarWars.FireEcology] pyrelands-wildplant-allowlist: "
+                Log.Error("[RimMandrake.Pyrelands] pyrelands-wildplant-allowlist: "
                           + "TARGET METHOD NOT FOUND — a game update renamed WildPlantSpawner."
                           + "CalculatePlantsWhichCanGrowAt. The Pyrelands flora leak is NOT guarded "
                           + "this session.");
@@ -63,13 +63,13 @@ namespace RimMandrake.StarWars.FireEcology
             try
             {
                 h.Patch(target, postfix: new HarmonyMethod(typeof(Patch_EnforcePyrelandsWildPlantAllowlist), "Postfix"));
-                Log.Message("[RimMandrake.StarWars.FireEcology] pyrelands-wildplant-allowlist: "
+                Log.Message("[RimMandrake.Pyrelands] pyrelands-wildplant-allowlist: "
                             + "armed; only RM_FE_ grasses may spawn wild on a Pyrelands map, "
                             + "however a foreign plant reaches the candidate list.");
             }
             catch (Exception e)
             {
-                Log.Error("[RimMandrake.StarWars.FireEcology] pyrelands-wildplant-allowlist: "
+                Log.Error("[RimMandrake.Pyrelands] pyrelands-wildplant-allowlist: "
                           + "patch FAILED, rule NOT in effect — " + e.Message);
             }
         }
@@ -113,7 +113,7 @@ namespace RimMandrake.StarWars.FireEcology
             }
             catch (Exception e)
             {
-                Log.WarningOnce("[RimMandrake.StarWars.FireEcology] pyrelands-wildplant-allowlist: "
+                Log.WarningOnce("[RimMandrake.Pyrelands] pyrelands-wildplant-allowlist: "
                                 + e.Message, 0x46E03);
             }
         }

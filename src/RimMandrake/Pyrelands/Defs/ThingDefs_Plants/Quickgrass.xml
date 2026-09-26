@@ -40,7 +40,7 @@
          def's own graphic. Vanilla's immatureGraphicPath cannot do this:
          it is two-stage and gated on !HarvestableNow, which never becomes
          false for a plant with no harvestedThingDef. -->
-    <thingClass>RimMandrake.StarWars.FireEcology.Plant_GrowthStaged</thingClass>
+    <thingClass>RimMandrake.Pyrelands.Plant_GrowthStaged</thingClass>
     <label>quickgrass</label>
     <description>A low, dense forage grass that comes back onto burned ground while the ash is still warm, green against the black inside a day or two. Its roots run absurdly deep for its size — down to the water table, in defiance of everything the surface suggests — and its blades carry more food than any wild grass has a right to. It was engineered that way, twenty-five millennia ago, by gardeners who wanted this ground to feed things. The gardeners are gone. The lawn is still working.</description>
     <statBases>
@@ -95,7 +95,7 @@
       be a single four-way random mixing both stages.
     -->
     <modExtensions>
-      <li Class="RimMandrake.StarWars.FireEcology.PlantGrowthStages">
+      <li Class="RimMandrake.Pyrelands.PlantGrowthStages">
         <sproutGraphicPath>Things/Plant/RM_FE_QuickgrassStages/Sprout</sproutGraphicPath>
         <halfGraphicPath>Things/Plant/RM_FE_QuickgrassStages/Half</halfGraphicPath>
         <sproutMaxGrowth>0.33</sproutMaxGrowth>
