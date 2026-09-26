@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_UNFINISHED_SPAWNER_1 — the_contagion.md §4, "the Unfinished":
+    "What the goo buds: chimeras with one design finished and two abandoned —
+    three good legs and a stump, one wing, a jaw on a thing that cannot eat.
+    Days-long lives, then dissolution back to goo... the most numerous
+    creature and the least permanent."
+
+    Shape cloned from this mod's own AmoebaHostUtility/Hediff_AmoebaGestation
+    (small utility classes calling vanilla APIs directly) and from
+    RM_BlueDesertFauna.xml (ParentName AnimalThingBase + manual race block,
+    ordinary custom-animal idiom already used across this repo).
+
+    NOT wired into RM_Contagion.xml's <wildAnimals> — these are not part of
+    the biome's ambient breeding wildlife pool (they never reproduce; they
+    are budded). CompSpawnerUnfinished (patched onto the donor AA_RedGoo,
+    Patches/RedGooSpawnsUnfinished.xml) is the only thing that ever creates
+    one, matching "what the goo buds" literally.
+
+    Lifespan: CompProperties_RandomizeUnfinished (on this ThingDef, no patch
+    needed since it's our own def) applies RM_UnfinishedUnraveling at a
+    randomised initial severity at spawn — a vanilla HediffCompProperties_
+    SeverityPerDay ticking to a vanilla lethalSeverity kills the pawn within a
+    few in-game days, no custom death-timer class needed.
+
+    Goo dissolve: race.deathAction is vanilla's own DeathActionProperties_Vanish
+    (Verse.DeathActionWorker_Vanish) — destroys the corpse outright and drops
+    Filth_Slime in its place. Zero new C# needed for "dissolves to goo"; it is
+    a declarative vanilla mechanism, the same one already reused by mods for
+    "no corpse left" fleshy creatures.
+
+    Art: PLACEHOLDER — a recolored vanilla Warg body (this mod's own
+    RM_BlueDesertFauna.xml precedent: "recolored placeholder, no new art"),
+    tinted toward the biome's own red-violet/bruise-purple palette
+    (infrastructure/artpipe/done/contagion_brossak_*.json's own prompt
+    language). infrastructure/artpipe/done/, _artsrc/ and registry.jsonl were
+    checked for existing "Unfinished"/"chimera" art before writing this —
+    none exists; every hit was unrelated already-cast Contagion creatures
+    (brossak/fezzira/ghaaz/etc., DONOR_DEFS_PORT_TO_OURS_1). Real bespoke art
+    (the "reads as a draft, asymmetry everywhere" silhouette the sheet's §9
+    calls for) is owed work, not blocking; queue via fill_queue.py separately.
+  -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_TheUnfinished</defName>
+    <label>the Unfinished</label>
+    <description>A chimera budded by the Contagion's red goo, one part finished and the rest abandoned mid-thought — three good legs and a stump, maybe a wing that never had anywhere to go, a jaw on a thing that cannot eat. It will not last the week. Most of them are nuisances. A few, wrongly, are not.</description>
+    <statBases>
+      <MoveSpeed>3.4</MoveSpeed>
+      <Mass>18</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Sharp>0.05</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>flailing limb</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>0.55</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>false</herdAnimal>
+      <trainability>None</trainability>
+      <petness>0</petness>
+      <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
+      <lifeExpectancy>1</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+      <deathAction Class="DeathActionProperties_Vanish">
+        <filth>Filth_Slime</filth>
+        <filthCountRange>2~4</filthCountRange>
+      </deathAction>
+    </race>
+    <comps>
+      <li Class="RimMandrake.Contagion.CompProperties_RandomizeUnfinished">
+        <limbPool>
+          <li>RM_UnfinishedClaw</li>
+          <li>RM_UnfinishedSpike</li>
+          <li>RM_UnfinishedFang</li>
+          <li>RM_UnfinishedStump</li>
+          <li>RM_UnfinishedVestigialWing</li>
+          <li>RM_UnfinishedUselessJaw</li>
+        </limbPool>
+        <limbCountRange>1~3</limbCountRange>
+        <monstrousHediff>RM_UnfinishedMonstrous</monstrousHediff>
+        <monstrousChance>0.12</monstrousChance>
+        <unravelingHediff>RM_UnfinishedUnraveling</unravelingHediff>
+        <unravelingInitialSeverityRange>0~0.5</unravelingInitialSeverityRange>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_TheUnfinished</defName>
+    <label>the Unfinished</label>
+    <race>RM_TheUnfinished</race>
+    <combatPower>25</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.85</drawSize>
+          <color>(168,54,96)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>0.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

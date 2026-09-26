@@ -51,6 +51,9 @@
     <Compile Include="Recipe_ExtractGenomeSample.cs" />
     <Compile Include="JobDriver_RM_InjectGenomeSample.cs" />
     <Compile Include="FloatMenuOptionProvider_InjectGenomeSample.cs" />
+    <!-- CONTAGION_UNFINISHED_SPAWNER_1 -->
+    <Compile Include="CompRandomizeUnfinished.cs" />
+    <Compile Include="CompSpawnerUnfinished.cs" />
   </ItemGroup>
 
   <ItemGroup>
