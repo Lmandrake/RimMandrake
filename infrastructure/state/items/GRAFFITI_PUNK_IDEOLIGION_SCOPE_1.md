@@ -172,8 +172,7 @@ design pass genuinely cannot pick, plus what this pass added:
    meme gets a glyph**, none dropped on taste grounds.
 3. **The mappings this pass is least sure of**: `Loyalist`→banner,
    `Guilty`→chain link, `Collectivist`→linked rings, `Individualist`→dot in a
-   ring, `Shipborn` (Odyssey, TradersGuild-only)→? (a hull-and-star was the
-   only candidate). These are placeholders; the ones he has an image for
+   ring, `Shipborn` (Odyssey, TradersGuild-only)→hull-and-star (RULED 2026-09-25 by card). These are placeholders; the ones he has an image for
    should override.
 4. **Which of the six review-candidate glyph PNGs (if any) become defs
    beyond the three shipped** — a review-sheet question he was already
