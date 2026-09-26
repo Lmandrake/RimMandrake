@@ -62,10 +62,25 @@ namespace RimMandrake.LanternDeeps
         // both GenSteps hardcoded before this setting existed. WORLDGEN-AFFECTING:
         // read once per map generation, so a change applies to new maps only.
         // A name that resolves to no loaded BiomeDef is simply never matched.
+        //
+        // FIX 2026-09-25 (TERMINALBIOMES_RM_MOD_BUILD_1, correcting
+        // LANTERNDEEPS_RM_MOD_BUILD_1 the same day): the RUT_ names were
+        // dropped here on the belief that "both host biomes completed their
+        // RM_ tier moves" made them stale. False — per
+        // BIOME_PAINT_ONCE_AT_THE_END_1 the planet is painted ONCE, at the
+        // end; RUT_NightsideIce/RUT_PropaneLake are FROZEN, not deleted, and
+        // still carry every tile on the live Ash'karr world today (their
+        // RM_ twins sit at 0 tiles, mid-migration — see
+        // infrastructure/state/facts/biome_paint_list.md). Dropping the
+        // RUT_ names is what silently stops every entrance from scattering
+        // on the actual campaign world; both names must ride together until
+        // the terminal repaint retires the RUT_ twins.
         public static readonly string[] UtinniDefaultEntranceBiomes =
         {
             "BiomeGRimond",
+            "RUT_NightsideIce",
             "RM_NightsideIce",
+            "RUT_PropaneLake",
             "RM_PropaneLake",
         };
 
