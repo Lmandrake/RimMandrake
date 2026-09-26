@@ -63,6 +63,19 @@
     <overlayClasses>
       <li>RimMandrake.EnvironmentalHazards.RUT_WeatherOverlay_ScaldSteam</li>
     </overlayClasses>
+    <!-- SCALD_STEAM_WEATHER_DESIGN_1 §3.1 step 7, 2026-09-26: the sheet's
+         §9 "geyser percussion", felt map-wide instead of only beside a
+         vent. WeatherEventMaker rolls 1/averageInterval per tick
+         (MEASURED), so 9000 is a mean of ~4 in-game hours between flashes
+         — INVENTED, and kept in XML rather than the class precisely so it
+         can be retuned without a rebuild. Gated in the event itself on
+         Scald.S1.flash. -->
+    <eventMakers>
+      <li>
+        <eventClass>RimMandrake.EnvironmentalHazards.RUT_WeatherEvent_VentFlash</eventClass>
+        <averageInterval>9000</averageInterval>
+      </li>
+    </eventMakers>
     <skyColorsDay>
       <sky>(0.86,0.90,0.90)</sky>
       <shadow>(0.90,0.93,0.93)</shadow>

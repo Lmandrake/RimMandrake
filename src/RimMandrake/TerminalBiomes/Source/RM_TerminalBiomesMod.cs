@@ -29,6 +29,9 @@ namespace RimMandrake.TerminalBiomes
     //       Scald.S4 -> RUT_ScaldVent, as the condenser sees it
     //       Scald.S5 -> RUT_WalkerSurfacing, RUT_GenStep_ScaldSailScatterer
     //       Scald.S7 -> RUT_ScaldSteamCarrier (GameCondition_EnvironmentalWeather)
+    //       Scald.S1.flash -> RUT_WeatherEvent_VentFlash (no def of its own; the
+    //                         event checks the key directly, since a WeatherEvent
+    //                         is constructed from a Type and carries no Def)
     //   - Mechanics whose engine class was vanilla (the vent's
     //     Building_SteamGeyser, the wrecks' GenStep_ScatterThings): thin
     //     subclasses in RM_TerminalBiomesScaldKit.cs read these settings
@@ -64,6 +67,7 @@ namespace RimMandrake.TerminalBiomes
         public static bool scaldS5SailWalkerEnabled = true;
         public static bool scaldS6WreckSalvageEnabled = true;
         public static bool scaldS7SteamExposureEnabled = true;
+        public static bool scaldS1bVentFlashEnabled = true;
 
         // Effective state: a sub-toggle only counts while the mod and the
         // Scald are both on. Everything that gates reads these, never the
@@ -75,6 +79,8 @@ namespace RimMandrake.TerminalBiomes
         public static bool ScaldS5SailWalkerActive => ScaldActive && scaldS5SailWalkerEnabled;
         public static bool ScaldS6WreckSalvageActive => ScaldActive && scaldS6WreckSalvageEnabled;
         public static bool ScaldS7SteamExposureActive => ScaldActive && scaldS7SteamExposureEnabled;
+        // S1b rides S1: a flash in a sky that is not the boil's breath makes no sense.
+        public static bool ScaldS1bVentFlashActive => ScaldS1SteamSkyActive && scaldS1bVentFlashEnabled;
 
         // ── Cross-biome opt-in (Greentide's own shape; WORLDGEN-AFFECTING) ─
         public static bool crossBiomeEnabled = false;
@@ -98,6 +104,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref scaldS5SailWalkerEnabled, "scaldS5SailWalkerEnabled", true);
             Scribe_Values.Look(ref scaldS6WreckSalvageEnabled, "scaldS6WreckSalvageEnabled", true);
             Scribe_Values.Look(ref scaldS7SteamExposureEnabled, "scaldS7SteamExposureEnabled", true);
+            Scribe_Values.Look(ref scaldS1bVentFlashEnabled, "scaldS1bVentFlashEnabled", true);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -141,6 +148,10 @@ namespace RimMandrake.TerminalBiomes
                        + "apply to newly generated maps.");
             list.CheckboxLabeled("S1 — standing steam sky", ref scaldS1SteamSkyEnabled,
                 "The permanent boil's-breath weather lock and its rare still days.");
+            list.CheckboxLabeled("S1b — vent-flash sky pulses", ref scaldS1bVentFlashEnabled,
+                "Every few hours the whole sky briefly whitens and a geyser is heard letting go "
+              + "off-camera — the shore's rhythm, felt map-wide instead of only beside a vent. "
+              + "Purely cosmetic. Rides S1: with the steam sky off there is nothing to flash.");
             list.CheckboxLabeled("S2 — steam-catch condenser", ref scaldS2SteamCatchEnabled,
                 "The buildable condenser that drinks a vent's clean breath for water.");
             list.CheckboxLabeled("S4 — vent fields", ref scaldS4VentFieldsEnabled,
@@ -204,6 +215,7 @@ namespace RimMandrake.TerminalBiomes
             RM_MechanicGates.Register("Scald.S5", () => RM_TerminalBiomesSettings.ScaldS5SailWalkerActive);
             RM_MechanicGates.Register("Scald.S6", () => RM_TerminalBiomesSettings.ScaldS6WreckSalvageActive);
             RM_MechanicGates.Register("Scald.S7", () => RM_TerminalBiomesSettings.ScaldS7SteamExposureActive);
+            RM_MechanicGates.Register("Scald.S1.flash", () => RM_TerminalBiomesSettings.ScaldS1bVentFlashActive);
         }
 
         public override string SettingsCategory()

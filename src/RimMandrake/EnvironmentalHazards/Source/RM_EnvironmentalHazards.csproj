@@ -96,6 +96,7 @@
     <Compile Include="RM_MapComponent_LivingProduce.cs" />
     <Compile Include="RUT_Plant_FlashFlora.cs" />
     <Compile Include="RUT_WeatherOverlay_ScaldSteam.cs" />
+    <Compile Include="RUT_WeatherEvent_VentFlash.cs" />
     <Compile Include="RM_PlaceWorker_OnRequiredVentComp.cs" />
     <Compile Include="RM_GradientAxisExtension.cs" />
     <Compile Include="RM_GenStep_GradientAxis.cs" />
