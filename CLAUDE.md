@@ -573,6 +573,18 @@ correct and unrelated to the animation defect.
 the dlcs."* No standalone-without-expansion fallback tier is owed (asked about the free mods'
 deluxe gear without Odyssey). `MayRequire` guards stay for load safety, not as a design axis.
 
+🔴 **And that assumption covers the PLAYER, not just us** — owner, 2026-09-26: *"it is assumed
+that future players will have all the Rimworld DLC's currently installed."* ⇒ **Every DLC is a
+hard prerequisite of shipping, exactly like the base game.** Royalty, Ideology, Biotech, Anomaly
+and Odyssey content may be depended on outright in anything we ship — a mechanic, a def, a
+biome roster, a quest, a scenario.
+- ⛔ **Do not design, build or file a DLC-less degradation path**, and do not raise "what if the
+  player lacks X" as a defect, a risk or an open question. It is answered: they have it.
+- ⛔ **Do not spend a review, a test tier or a load round on proving a DLC-absent configuration.**
+  There is no such supported configuration.
+- ✅ `MayRequire` still goes on **mod** guards for load safety. On a DLC it is harmless but
+  decides nothing, so never read one as evidence that a DLC-absent case is supported.
+
 🔑 **ALL TEST MOD LISTS include ALL FIVE EXPANSIONS — no exceptions right
 now.** Owner ruling, 2026-09-19, verbatim: *"Was Odyssey even loaded for this
 test? ALL TEST MOD LISTS should include ALL THE EXPANSIONS; we're not trying
