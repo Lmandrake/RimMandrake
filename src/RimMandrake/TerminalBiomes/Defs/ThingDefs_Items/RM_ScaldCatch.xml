@@ -20,10 +20,14 @@
     <label>shulla</label>
     <description>A hot-white sliver netted from between the Scald's vent plumes, a heat-shimmer still playing off its edge as it cools in the pail. Always comes up in company.</description>
     <graphicData>
-      <!-- SCALD_FLOOR_PASS_1: interim OWNED texture (was Things/Item/Special/
-           JawaClaimRumour, which only exists under RimUtinni/UtinniPatches
-           and pinked a standalone install). Real art queued to the artpipe
-           as scald_shullacatch_v1 (priority 45). -->
+      <!-- SCALD_ART_UPGRADE_WAVE_1, 2026-09-26: owned Graphic_StackCount
+           folder (FishBase's own graphicClass; texPath is a FOLDER).
+           ⚠️ Only TWO variants ship — scald2_shullacatch_b/_c, installed as
+           _a/_b. The small-pile render scald2_shullacatch_a produced no PNG
+           (its _artsrc directory is empty) and is the one genuinely missing
+           job in this wave. Two subGraphics is legal:
+           Graphic_StackCount.SubGraphicForStackCount takes [0] at
+           stackCount 1 and [1] otherwise. -->
       <texPath>Things/Item/Resource/RM_ShullaCatch</texPath>
     </graphicData>
     <statBases>

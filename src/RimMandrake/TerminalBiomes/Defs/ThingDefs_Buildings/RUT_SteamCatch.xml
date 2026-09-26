@@ -40,7 +40,11 @@
   GeothermalGenerator's 6x6 — simplest safe placement shape, not a
   from-source-verified vanilla convention.
 
-  Texture: its own art (artpipe job scald_steamcatchbuilding_v1).
+  Texture: its own art. SCALD_ART_UPGRADE_WAVE_1, 2026-09-26 — replaced
+  scald_steamcatchbuilding_v1 with scald2_steamcatchbuilding_a, the redo the
+  owner asked for: the machine no longer reads blue-tinted (it stands above
+  the water, dry, not an aquatic object) and the vent it sits on is visibly
+  CAPPED.
   ============================================================================
 -->
 <Defs>
