@@ -135,6 +135,8 @@
     <Compile Include="RM_CompProperties_ReactionSource.cs" />
     <Compile Include="RM_CompReactionSource.cs" />
     <Compile Include="RM_DamageWorker_StingAccumulate.cs" />
+    <Compile Include="RM_CompProperties_AdhesiveSlick.cs" />
+    <Compile Include="RM_CompAdhesiveSlick.cs" />
   </ItemGroup>
 
   <ItemGroup>

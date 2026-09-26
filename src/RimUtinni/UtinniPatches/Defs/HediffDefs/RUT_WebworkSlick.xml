@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_WebworkSlick.xml                 UtinniPatches - WEBWORK_WEB_STRUCTURES_1
+  ============================================================================
+  The "commandable-adhesive slick/locked" mechanism webwork_kit_spec.md §3
+  and the owner-and-nest sitting (§1a's mapping table, "commandable adhesive
+  (slick vs locked)") both named and explicitly deferred: "a mechanical
+  slick-vs-locked web state is deferred to the roster/web-Things work, noted
+  here so it is not lost." This is that state, v1, built to what those two
+  passes actually specified and no further.
+
+  Same shape as this campaign's own RM_OllathrixVenom / RSW_ShokkBound
+  hediffs (HediffCompProperties_SeverityPerDay + TendDuration): kit §3's
+  own player-experience line, "a doctor can free them," is
+  HediffCompProperties_TendDuration; "slick vs locked" is two escalating
+  Moving-capacity stages rather than one flat penalty.
+
+  RULED-pattern reuse, not a fresh invention: RM_Hediff_SunScald's own
+  2026-09-11 ruling ("top stage CRIPPLES, never downs — no loot piñata")
+  governs here too. A structure that could down a caught pawn outright
+  would be a much bigger call than "adhesive slick" ever asked for, so the
+  top stage caps Moving hard rather than setting it to (near-)zero outright
+  the way a lethal bind might.
+
+  Refreshed by RM_CompAdhesiveSlick (RimMandrake.CreatureBehaviors) — see
+  RUT_WebworkStructures.xml for the structure wiring (RUT_Webwork_Web, the
+  sheet web, is the one of the three that carries it: a broad plane a pawn
+  actually stands IN, not a thin anchor line or a plumbing gutter).
+
+  ❓INVENTED: all severity numbers, expecting the same live-balance pass
+  every other number in this kit's build carries.
+  ============================================================================
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_Webwork_Slick</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>webbed-slick</label>
+    <labelNoun>a web-slick coating</labelNoun>
+    <description>Silk-sap fouls boots and fur alike, thickening with every second spent against it. Given time it goes from a nuisance to a real hold — a doctor's tend cuts it loose far faster than waiting it out.</description>
+    <defaultLabelColor>(0.85, 0.78, 0.55)</defaultLabelColor>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.6</severityPerDay>
+        <showHoursToRecover>true</showHoursToRecover>
+      </li>
+      <li Class="HediffCompProperties_TendDuration">
+        <severityPerDayTended>-2.4</severityPerDayTended>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>sticky</label>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.85</postFactor>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>slicked</label>
+        <minSeverity>0.35</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.45</postFactor>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>locked</label>
+        <minSeverity>0.75</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0.08</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

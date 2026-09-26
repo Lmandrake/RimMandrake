@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T08:30:25Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "webwork_gutter",
+  "priority": 100,
+  "prompt": "RimWorld top-down game structure sprite: a silk irrigation gutter, a woven channel of dense pale silk carrying water along its length -- a visible trough/channel shape rather than a flat web, running as a directional line. Painterly rendered game art with real volume, a woven-channel texture and a faint wet sheen along the trough, not a flat cartoon outline. No Earth-nameable silhouette -- not a garden hose, not a rain gutter pipe, not a woven basket; keep the silk-channel form alien and structural, reading as plumbing woven from web.",
+  "reference": null,
+  "rimflow_item_id": "WEBWORK_WEB_STRUCTURES_1",
+  "style_notes": "MUST SHOW: woven silk TROUGH/channel shape (directional, plumbing-like, not flat web), faint wet sheen. Replaces the current retinted-Hive placeholder texture. HARD BAN: no garden-hose/rain-gutter-pipe/woven-basket look."
+}
