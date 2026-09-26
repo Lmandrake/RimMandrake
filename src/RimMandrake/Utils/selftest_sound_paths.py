@@ -44,6 +44,13 @@ VANILLA_PACKED = {
     # `Building/VoidNode/VoidNode_Ambience_Loop_A`, character for character.
     "Ambience/Undercave/Undercave_Ambience_Loop_A": "Anomaly Ambient_Undercave",
     "Building/VoidNode/VoidNode_Ambience_Loop_A": "Anomaly VoidNode_Ambient",
+    # Greentide RM_Hum_Thalquith_{Low,Mid,High} (GREENTIDE_HUMMING_GROVE_1).
+    # Ship in ANOMALY, packed in Data/Anomaly/AssetBundles/; verified verbatim
+    # against the donor SoundDefs via RimSage 2026-09-26 --
+    # ObeliskAmbientStageOne/Two/Three's own grains, character for character.
+    "Building/Obelisks/Ambience/Obelisk_Amb_Stage2_A_01": "Anomaly ObeliskAmbientStageOne",
+    "Building/Obelisks/Ambience/Obelisk_Amb_Stage3_A_01": "Anomaly ObeliskAmbientStageTwo",
+    "Building/Obelisks/Ambience/Obelisk_Amb_Stage4_A_01": "Anomaly ObeliskAmbientStageThree",
 }
 
 
