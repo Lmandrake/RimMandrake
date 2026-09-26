@@ -108,6 +108,39 @@ MEASURED about the live world — the live system is the only instrument for "ri
 
 ### Instruments that return a confident wrong number
 
+- 🔴 **A ledger event's key is `id`, NOT `item`.** `e.get("item")` returns `None` for every
+  event, so a hand-rolled census over `model.read()` reports **0** and looks like a real
+  finding. Measured 2026-09-26: a sitting census printed "0 sitting items in the ledger"
+  when there are 9. Inspect one event's keys before deriving anything
+  (`json.dumps(ev[0])`), or use `rimflow show`/`next` and the rendered `queue/*.md`.
+- 🔴 **A creature census must read DESCRIPTIONS, never defNames.** Our naming convention is
+  invented exotic words, so a name-match for `RM_OssuaryShrimp` finds nothing while the
+  creature ships as `RM_Fessk`. Measured 2026-09-26: two of the Grey Deep's three "unbuilt"
+  anchors were fully built, and the wrong answer was stated to the owner before the
+  descriptions were read.
+- 🔴 **`jawa/get_defs` takes `defs` as a STRING `"DefType/DefName"`.** A list raises
+  `System.InvalidCastException: Object must implement IConvertible` and returns
+  `success: false`. ⚠️ And a check that substring-matches the payload reads that FAILED call
+  as **ABSENT** — a false negative that in one pass would have failed all 22 biomes while
+  looking like a catastrophic finding. Read the tool's own `success` / `foundCount` /
+  `notFound` fields, and treat "could not ask" as UNMEASURED, never as "looked and it is
+  not there".
+- ⚠️ **`python.exe` emits CRLF.** A value captured into a shell variable is `"PRESENT\r"`,
+  every `[ "$X" = "PRESENT" ]` fails, and a clean result records as a failure. Pipe through
+  `tr -d '\r\n'`.
+- ⚠️ **`grep -c` prints `0` AND exits 1 on no match**, so `$(grep -c … || echo 0)` emits
+  **two** lines and every count becomes `"0\n0"`. Take `| head -1`.
+- ⚠️ **A `grep -F` spot-check for a quoted phrase fails on LINE WRAPPING.** Verifying that a
+  doc preserved an owner's sentence verbatim reported two of eight phrases missing; both
+  were present, wrapped across lines. Search a distinctive short fragment, not a clause.
+- ⚠️ **`rimbridge_client.py` cannot reach the bridge from WSL at all** — RimBridge binds
+  Windows loopback and WSL2 is NAT-mode, so retrying never helps and the error says nothing
+  about whether the game is running. Any bridge call runs under `python.exe`.
+- ⚠️ **`modset_builder.py --apply` REFUSES while `Player.log` was touched in the last 3
+  minutes.** In a kill-then-swap loop the kill must come FIRST, or the tier write fails
+  every cycle. (Its refusal message used to claim the game rewrites `ModsConfig` on exit —
+  false, corrected 2026-09-26.)
+
 - 🔴 **`northstar.parse()` returns a DICT.** `getattr(w, "must_show")` yields `None` → `len()` 0,
   so all four VALIDATED walks read as "0 bars" — an alarming wrong number that looks like a
   catastrophic finding. Use `w["must_show"]`. 🔑 A count that is conveniently *or* alarmingly
