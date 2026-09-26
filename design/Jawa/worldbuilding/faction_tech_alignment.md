@@ -386,33 +386,40 @@ Growth vats, gene banks, mechanitor gear and cryptosleep all appear in the Imper
 the Enclaves', and the mechanitor rows are already cut. A faction that owns everything holds
 nothing; the Empire holds what only an off-world power could have.
 
-## 6. Open questions for the owner
+## 6. Owner rulings — ALL FIFTEEN RULED 2026-09-26
 
-Each has a position so the answer is yes/no.
+🔴 **This section is no longer a question list.** The owner ruled every row at the bench
+on 2026-09-26. Where a ruling came from a question-card click it is marked *(card)*;
+where he typed his reasoning it is quoted, because the reasoning is the part that
+generalises.
 
-| # | question | position |
+| # | subject | RULING |
 |---|---|---|
-| Q1 | **Wildsteam's jungle tech is the wet-bulb kit** — sealed suit, dry-air blower, boiler/steam-works, blower-door domes — held by them and sold to the player as a survival kit. Yes? | **Yes.** It is already authored as their home-ground culture in `the_greentide.md`, and it is the one thing a fur-bearing people needs to live at 45 °C wet-bulb. Nothing else in their dossier is unique |
-| Q2 | **Tusken heat apparel is cloth, in two tiers**: the cheap heat wrap is common (anyone can sew one), the *Tusken* print is a better wrap with real heat numbers. Yes? | **Yes.** The cheap tier must be reachable without courting a −80 faction that builds no roads; the Tusken-held tier is the adoption chain's reward. A powered "suit" is against their sacrilege rule |
-| Q3 | **Hyperspace is the last theft, in orbit, after the Hutt route** — not a mid-game print. Yes? | **Yes.** It closes the campaign and ties the two endgame factions together |
-| Q4 | **Atmospheric condensers**: the Homestead holds the vaporator print; the Empire's condensers are the same lineage and are NOT a separate Imperial holding. Yes? | **Yes.** One water-from-air print, one holder. The Empire's version is fiction for why garrisons can be anywhere |
-| Q5 | **Hydrogen cracking** for the Enclaves — author it as a new holding (a cracking works that consumes a water tile for fuel), or leave the Enclaves at droid construction only? | **Leave it at droid construction for now.** Droids are the branch; cracking is why they hold water tiles and needs no print to do that job. File it as a v2 want, not a gap |
-| Q6 | **EMP** (a T1 vanilla-adjacent row today): lock it to Deepwater, or leave it common and give Deepwater only the *traps/turrets*? | **Lock the EMP *weapons*; leave the EMP *grenade/basic* row common.** The equipment matrix names EMP as Deepwater's primary harm, but a T1 counter to droids should not require courting anyone |
-| Q7 | **Battle-droid mass production**: Hive (v3's proposal, canon origin) or Enclaves (manifest today, his 2026-09-03 droid ruling)? | **Enclaves.** His ruling is later and explicit; the Hive keeps *hivetech*, and its droids are fiction for its siege doctrine. Do not split the droid branch across two holders |
-| Q8 | **Closed-loop water recycling** as a Helix holding — new content, or drop? | **Drop for now.** The Helix's signature is genes; recycling is a siting excuse. Same disposition as Q5 |
-| Q9 | **Crawler stills / sand-proofing**: techprint from the Moot's traders, or quest-taught (the roster's word)? | **Quest-taught.** The Moot cannot ally, sells at kin prices, and the roster already calls these "keys… taught by quest chains". A techprint in a stall cheapens the kinship beat |
-| Q10 | **Warcasket removal** — Junker-held (manifest today) or common (v3: freeing a welded pawn is a mercy)? | **Common.** Gating a rescue behind allying the welders is the wrong story |
-| Q11 | **Does the fence carry Junker prints?** | **No.** Junker tech is "from the Junkers themselves" by his ruling, and the Junkers are the Cartel's intake, not its supplier |
-| Q12 | **Big flame**: is the Junker unlock the *weapons* (flamethrower, heavy projector) only, with incendiary shells/grenades/launcher common? | **Yes** — that is the 2026-09-04 ruling as recorded; restated here only because the manifest has no big-flame row and the build step will need to split recipes, not move rows |
-| Q13 | **Sump gas / tar**: Junker-held *pumping* print, with tar-digging free in the biome? | **Yes.** The Sump sheet already lets the player dig; the derrick is the Junkers' industry |
-| Q14 | **Spice** (`KOTOR_Research_Spice`): accept that it stays common because an implant row depends on it, or re-point that prerequisite so the Hutts can hold spice? | **Re-point the prerequisite** (`KOTOR_Research_AdvImplants` should not need spice). Spice is the single most Hutt thing on the planet and should be theirs |
-| Q15 | **Blackstar combat drugs** as a holding — yes, or fold into the common drug rows? | **Yes, hold the combat stims only.** The hunter on a water clock is the one pawn who needs them |
+| Q1 | Wildsteam's unique tech | **The wet-bulb kit** — sealed suit, dry-air blower, boiler/steam-works, blower-door domes. *(card)* |
+| Q2 | Tusken heat apparel | **Two cloth tiers**: cheap heat wrap common, the Tusken wrap held and better. No powered suit — it breaks their sacrilege rule. *(card)* |
+| Q3 | Hyperspace | **The last theft, in orbit, after the Hutt route.** Not a mid-game print; it closes the campaign. *(card)* |
+| Q4 | Water from air | **One print, the Homestead holds it.** Imperial condensers are the same lineage and are NOT a separate holding — they stay fiction for why garrisons sit anywhere. *(card)* |
+| Q5 | Enclave hydrogen cracking | 🔴 **AUTHOR IT as a real holding** — reverses the doc's position. Owner, typed: *"and it works on disgusting water, so it's not the 'enemy of all.' They're not cracking THAT much water."* ⇒ the cracking works runs on **foul/contaminated water**, which is why holding it does not make the Enclaves everyone's enemy on a thirsty planet. That constraint is the design, not a footnote. |
+| Q6 | EMP | 🔴 **ALL EMP STAYS COMMON** — reverses the doc's position. Owner, typed: *"We have to do (3) because they WERE common. The Empire certainly already has them too."* Deepwater keeps only the **traps and turrets**. Do not lock EMP weapons. |
+| Q7 | Battle-droid mass production | ⛔ **SUPERSEDED, not answered.** Nobody mass-produces droids on this planet. The Hive holds the factory tech **latent in its databases** and lacks the capacity to use it; the Enclaves are escaped droids who only **repair each other** and want it badly. That gap is a quest chain worth huge Free Droid reputation. Item: `DROID_MASS_PRODUCTION_QUEST_CHAIN_1`. Neither faction gets a production holding here. |
+| Q8 | Helix closed-loop recycling | **Not the Helix.** Owner, typed: *"Not sure what this DOES exactly, but it sounds more like something the Moisture Farmers would have."* ⚠️ He did not rule where it lands — see the open item below. |
+| Q9 | Crawler stills / sand-proofing | 🔴 **TECHPRINT FROM THE MOOT'S TRADERS** — reverses the doc's position. Owner, typed: *"It's (2) because this IS how you treat kin if you're a Jawa."* ⇒ selling to kin at kin prices IS the kinship beat; it does not cheapen it. 🔑 Generalises: **Jawa kinship expresses itself through trade, not through withholding trade.** |
+| Q10 | Warcasket removal | **Common.** Freeing a welded pawn is a mercy and is not gated behind allying with the welders. *(card)* |
+| Q11 | Does the fence carry Junker prints? | 🔴 **YES — the fence carries everything** — reverses the doc's position. One rule: anything is buyable from the Hutts at a price. *(card)* |
+| Q12 | Big flame | **Junkers hold ALL incendiary tech** — wider than the doc proposed — **but with a floor.** Owner, typed: *"but the deep tribes DO light fires in the Pyrelands still... they just don't do it with flamethrowers or industrial firebombs."* ⇒ **primitive fire-lighting stays free to everyone**; what the Junkers hold is the *industrial* tier — flamethrowers, heavy projectors, manufactured firebombs. 🔴 A build that gates "can this pawn light a fire" behind the Junkers has got this wrong. |
+| Q13 | Sump gas / tar | **Junker-held pumping rig; hand tar-digging stays free in the biome.** *(card)* |
+| Q14 | Spice | **Re-point the implant prerequisite so the Hutts hold spice.** `KOTOR_Research_AdvImplants` should not depend on `KOTOR_Research_Spice`. *(card)* |
+| Q15 | Blackstar | **Combat stims only.** ⚠️ Their `Pirate` vessel carries **no `categoryTag`**, so one must be added before they can hold anything at all. *(card)* |
 
-Also flagged, not a question: the manifest today carries two holders that are **not campaign
-factions** — `Rakata` (5 `RUT_Antiq_*` rows) and `RustCathedralDroids` (`GravBionics`,
-`GravWeapon`, plus 2 `source_gate=faction:RustCathedral_boon` rows). Both are event/arc gates
-riding the same column, not faction techprints. They are out of scope here and should not be
-re-tagged by the faction build step.
+### The one thing still open
+
+**Q8 fallout — where does closed-loop water recycling land?** He ruled it off the Helix
+and pointed at the moisture farmers, but did not rule it onto them, and said plainly he
+was not sure what the mechanic does. BENCH's reading, **not his ruling**: it is
+water-reclaimed-from-waste, the same family as water-from-air, and the Homestead already
+holds that print under Q4 — so folding it in is the consistent call and adds no new
+holder. ⇒ **Proposed: Homestead, same print family. He can veto.** Do not build it as a
+separate Helix or standalone holding.
 
 ## 7. What this does NOT decide
 
