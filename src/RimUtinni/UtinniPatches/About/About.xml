@@ -118,6 +118,7 @@
     <li>mandrake.rm.creaturebehaviors</li>
     <li>mandrake.rm.leaningscrub</li>                       <!-- LEANINGSCRUB_RM_MOD_BUILD_1: WildAnimals_LeaningScrub.xml targets Defs/BiomeDef[defName="RM_LeaningScrub"] -->
     <li>mandrake.rm.pyrelands</li>
+    <li>mandrake.rm.thesump</li>                            <!-- BIOME_ARRIVAL_NARRATION_1: BiomeArrivalLetters_TheSump.xml targets Defs/BiomeDef[defName="RM_TheSump"]/modExtensions -->
     <li>mandrake.rut.rotsporekit</li>
     <li>mandrake.rut.rustcathedralroaches</li>
     <li>mlie.preceptsandmemes</li>
