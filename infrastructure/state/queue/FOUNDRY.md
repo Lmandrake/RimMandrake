@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T15:56:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T15:58:02Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1708,5 +1708,15 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_TIER_COLLISION_1.md yet — write one when you have something to say)
+summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
 prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
+
+## PRIMITIVEWELL_DEAD_DEFNAME_1 PrimitiveWell defName referenced by 4 Lua plan templates does not exist in any loaded mod or DLC
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PRIMITIVEWELL_DEAD_DEFNAME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PRIMITIVEWELL_DEAD_DEFNAME_1.md
