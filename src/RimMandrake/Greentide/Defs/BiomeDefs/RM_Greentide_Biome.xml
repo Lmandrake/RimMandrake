@@ -46,7 +46,13 @@
     <wildPlantRegrowDays>16</wildPlantRegrowDays>
     <movementDifficulty>4</movementDifficulty>
     <forageability>0.8</forageability>
-    <foragedFood>RawBerries</foragedFood>
+    <!-- GREENTIDE_UNDERSTORY_PLANT_ROSTER_1 (2026-09-26): moved off the
+         vanilla RawBerries per the owner's 2026-09-22 ruling — brakkel is
+         the biome's own invented forageable staple, and its own
+         RM_BrakkelFruit resource is priced/nourished deliberately rather
+         than inheriting the stock berry's figures (RM_Greentide_
+         UnderstoryRoster_Items.xml). -->
+    <foragedFood>RM_BrakkelFruit</foragedFood>
     <diseaseMtbDays>45</diseaseMtbDays>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>
@@ -152,9 +158,23 @@
       <RM_Thalquith>0.45</RM_Thalquith>
       <RM_Gorbeleth>0.30</RM_Gorbeleth>
       <RM_Greatbole>0.03</RM_Greatbole>
+      <!-- GREENTIDE_UNDERSTORY_PLANT_ROSTER_1 (2026-09-26): the seven
+           invented non-tree understory rows (design doc §3d, rows 15-21).
+           Plant_Berry (vanilla) is dropped outright now that brakkel is a
+           real invented forageable staple occupying the same niche —
+           keeping both was redundant and Plant_Berry is exactly the kind
+           of vanilla-Earth-named row the roster's own ban exists to
+           replace. Plant_Grass/Plant_TallGrass stay as generic floor
+           filler per the tree roster's own build-seat call. -->
+      <RM_Brakkel>1.20</RM_Brakkel>
+      <RM_Tumbel>0.60</RM_Tumbel>
+      <RM_Sarquin>0.70</RM_Sarquin>
+      <RM_Phorrik>0.90</RM_Phorrik>
+      <RM_Wollick>1.60</RM_Wollick>
+      <RM_Maddrick>0.40</RM_Maddrick>
+      <RM_Illurin>0.90</RM_Illurin>
       <Plant_Grass>2.0</Plant_Grass>
       <Plant_TallGrass>1.0</Plant_TallGrass>
-      <Plant_Berry>0.6</Plant_Berry>
     </wildPlants>
 
     <!-- GREENTIDE_EXOTIC_JUNGLE_FISH_1 — owner, 2026-09-22: "Create exotic new

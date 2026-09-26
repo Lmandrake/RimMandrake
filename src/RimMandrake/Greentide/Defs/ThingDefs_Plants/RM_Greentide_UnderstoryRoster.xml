@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Greentide_UnderstoryRoster.xml               GREENTIDE_UNDERSTORY_PLANT_ROSTER_1
+
+  The seven invented non-tree Greentide understory plants of
+  design/Jawa/worldbuilding/biomes/greentide_tree_roster_2026-09-22.md §3d,
+  rows 15-21: brakkel/tumbel/sarquin/phorrik/wollick/maddrick/illurin.
+  Follow-on from GREENTIDE_JUNGLE_TREE_ROSTER_1 (the 14 trees + RM_Greatbole,
+  RM_Greentide_TreeRoster.xml), which explicitly scoped these seven out.
+  All ParentName="PlantBase" per the design doc's own header for this
+  section ("These are Plant defs, not trees") — never TreeBase.
+
+  ============================================================================
+  SIGHT-BLOCKING — MEASURED 2026-09-26 against the decompiled 1.6 source via
+  RimSage, resolving this item's own "confirm before authoring, do not guess"
+  gate. The answer is negative, and it is load-bearing:
+
+  🔴 A Plant ThingDef CANNOT block line of sight in vanilla RimWorld, at ANY
+  fillPercent. GenSight.LineOfSight walks cells via IntVec3.CanBeSeenOverFast
+  (Source/Verse/GenSight.cs), which reads ONLY c.GetEdifice(map)
+  (Source/Verse/GridsUtility.cs:443 -> map.edificeGrid[c]) and asks whether
+  that Building's own Fillage is Full (Source/Verse/GenGrid.cs:237,
+  CanBeSeenOver(this Building b)). The edifice grid is populated exclusively
+  by things whose def.IsEdifice() is true, which itself requires
+  `category == ThingCategory.Building` (Source/Verse/EdificeUtility.cs) — a
+  Plant's category is always Plant, so it can never occupy the edifice grid
+  and is structurally invisible to this check, regardless of fillPercent.
+  fillPercent on a Plant is NOT inert, though — it still feeds
+  CoverGrid.Register (Source/Verse/CoverGrid.cs, any Thing with
+  Fillage != None registers) so it grants real ranged-combat cover via
+  CoverUtility.BaseBlockChance, and at fillPercent > 0.99 it would flip
+  FogGrid's Notify_Unfogged spread behaviour (Source/Verse/FogGrid.cs) — but
+  neither of those is "a colonist cannot see over or past it," which is
+  what the owner's ruling asked for.
+
+  ⇒ fillPercent below is still set deliberately per row (proportionate to
+  each row's described bulk, so ranged cover and general "this is a solid
+  obstruction" read are real) but IT DOES NOT SHIP THE RULING. The actual
+  mechanism — the ONE thing this item's own doc flagged as blocking and
+  which this pass has now proven cannot be a def-only answer — is owed new
+  C# (a Harmony patch on GenSight/CanBeSeenOver, or an equivalent comp, that
+  also consults a tagged non-edifice Plant occupying a cell) and is filed as
+  a follow-on, GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1, rather than guessed or
+  faked here. Building it responsibly needs its own side-effect pass
+  (shooting, pathing, the player's own visibility of colonists) exactly as
+  the item's own Watch-out already named — that is real engineering, not
+  content authoring, and does not belong in this pass.
+  ============================================================================
+
+  Density calibration — GREENTIDE_BIOME_DENSITY_1's own closed note, applied
+  verbatim to all seven ground-cover rows here, MEASURED off vanilla's own
+  Plant_Chokevine (TropicalSwamp's ground-choke row, RimSage-verified this
+  pass): pathCost 42 (tree-tier cost on a ground plant — deliberately, this
+  is what "hack through" means at ground level), wildOrder 1 (Chokevine's
+  own layer, same low pass as grass — spawns densely and early),
+  wildClusterWeight 200 (Chokevine's own value; vs Plant_TallGrass 10,
+  Plant_Bush 5 — deliberately far more common than any tree row). Every row
+  below carries all three unchanged; only wildClusterRadius and the
+  per-species commonality (RM_Greentide_Biome.xml <wildPlants>) vary.
+
+  Food resources: three new PlantFoodRaw-tier items ship alongside
+  (RM_BrakkelFruit, RM_TumbelGourd, RM_SarquinSap, RM_WollickTuber — see
+  RM_Greentide_UnderstoryRoster_Items.xml), each with its own deliberately
+  set Nutrition/MarketValue rather than an inherited vanilla figure, per the
+  item's own spec step 3. RM_Phorrik's harvestedThingDef instead names the
+  ALREADY-SHIPPED RM_StenchSporeExtract (GREENTIDE_GRENADE_WEAPONS_1) — see
+  that ThingDef's own file for the recipe correction this pass makes.
+
+  RM_Sarquin is GREENTIDE_WASP_SWARM_1's own named primary host for
+  RM_Skerrel (checked this pass: that item is still OPEN, RM_Skerrel is not
+  a shipped def) — nothing here invents a different tenant or a wasp
+  mechanism; the description names the role and stops there, per that
+  item's own "do not invent host plants" / "do not design a different
+  tenant" instruction.
+
+  Art: RM_Brakkel and RM_Maddrick carry real generated art, copied from
+  infrastructure/artpipe/_artsrc/ (rm_brakkel_v1, 512x512 — an EXACT
+  128px/cell match for its 4-cell row, no under-resolution defect;
+  rm_maddrick_v1, 384x384 — an exact match for its 3-cell row), both PASS on
+  facts and worker_status ok per their own done/*.json + *.manifest.json.
+  RM_Illurin transfers felucianglowspore_v1 (256x256, under-resolved against
+  its 7-cell brief — same carried-forward defect the tree roster's veluthar/
+  ghemmel/nemmer already recorded, owed re-render, not blocking). The other
+  four (tumbel/sarquin/phorrik/wollick) were queued by the artpipe daemon
+  (rm_tumbel_v1/rm_sarquin_v1/rm_phorrik_v1/rm_wollick_v1) and MEASURED this
+  pass to have failed validation on every one of three attempts each
+  (registry.jsonl, verdict "fail" x3 per subject) — genuinely owed art, not
+  re-queued here since a job already exists and is retrying on its own.
+  texPath below for those four points at where the render will land, same
+  "reads as missing until a job is filed" convention the tree roster used
+  for its own OWED rows.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Brakkel</defName>
+    <label>brakkel</label>
+    <description>A mound of enormous overlapping paddle leaves standing taller than a pawn, with fruit clustered underneath in the dark — you have to push into it to see whether there is anything there, and to see what else is in there with you. The Greentide's own foraged staple, replacing a stock berry bush entirely.</description>
+    <selectable>true</selectable>
+    <neverMultiSelect>True</neverMultiSelect>
+    <fillPercent>0.85</fillPercent>
+    <pathCost>42</pathCost>
+    <graphicData>
+      <texPath>Things/Plant/RM_Brakkel/RM_Brakkel_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <shadowData>
+        <volume>(0.4, 0.5, 0.35)</volume>
+        <offset>(0,0,-0.35)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Flammability>0.09</Flammability>
+      <Nutrition>0.6</Nutrition>
+      <Mass>25</Mass>
+      <BeautyOutdoors>1</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>12</growDays>
+      <harvestWork>180</harvestWork>
+      <harvestYield>10</harvestYield>
+      <harvestedThingDef>RM_BrakkelFruit</harvestedThingDef>
+      <visualSizeRange>2.5~4.0</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Tumbel</defName>
+    <label>tumbel</label>
+    <description>A thick runner arching up on woody props well above pawn height, carrying heavy hollow vessels slung along its length, each the size of a crate, dull and leathery-skinned. You walk under it and cannot see out through the vessels. Its hollow shells are cut into containers once harvested — the roster's own waypoint marker, visible from further away than a flat plant would be.</description>
+    <!-- The vessel-crafting half of "food plus containers" is flavour only
+         here, not a built recipe — same posture as the tree roster's own
+         nemmer/mirrelbole rows, which deferred their secondary mechanisms
+         rather than half-build them without engine access to prove them
+         safe. Owed as a follow-on if the gourd-vessel item is wanted. -->
+    <selectable>true</selectable>
+    <neverMultiSelect>True</neverMultiSelect>
+    <fillPercent>0.7</fillPercent>
+    <pathCost>42</pathCost>
+    <graphicData>
+      <texPath>Things/Plant/RM_Tumbel/RM_Tumbel_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <shadowData>
+        <volume>(0.45, 0.55, 0.3)</volume>
+        <offset>(0,0,-0.32)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0.7</Nutrition>
+      <Mass>30</Mass>
+      <BeautyOutdoors>0</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>16</growDays>
+      <harvestWork>200</harvestWork>
+      <harvestYield>8</harvestYield>
+      <harvestedThingDef>RM_TumbelGourd</harvestedThingDef>
+      <visualSizeRange>3.0~5.0</visualSizeRange>
+      <topWindExposure>0.18</topWindExposure>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Sarquin</defName>
+    <label>sarquin</label>
+    <description>A thick fleshy central whorl at chest height with long hanging tentacle-leaves falling from above it, dripping clear sweet sap continuously, each drip-point glazed and crusted. The curtain of strands is what blocks the view; the mud beneath is sugared and crawling. The sugar source — and the drip is why insects are drawn here, and the insects are why something bigger is.</description>
+    <!-- Primary host of RM_Skerrel per GREENTIDE_WASP_SWARM_1 (checked this
+         pass: that item is OPEN, RM_Skerrel does not exist yet). The galls
+         hang in these drip-tentacles per that item's own design — nothing
+         here invents a wasp, a gall or a different tenant; the sugar
+         economy ships now and the insect wiring is that item's own to add
+         when RM_Skerrel is built. -->
+    <selectable>true</selectable>
+    <neverMultiSelect>True</neverMultiSelect>
+    <fillPercent>0.75</fillPercent>
+    <pathCost>42</pathCost>
+    <graphicData>
+      <texPath>Things/Plant/RM_Sarquin/RM_Sarquin_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <shadowData>
+        <volume>(0.4, 0.5, 0.3)</volume>
+        <offset>(0,0,-0.3)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>110</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0.5</Nutrition>
+      <Mass>22</Mass>
+      <BeautyOutdoors>-1</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>14</growDays>
+      <harvestWork>170</harvestWork>
+      <harvestYield>9</harvestYield>
+      <harvestedThingDef>RM_SarquinSap</harvestedThingDef>
+      <visualSizeRange>2.5~4.0</visualSizeRange>
+      <topWindExposure>0.14</topWindExposure>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Phorrik</defName>
+    <label>phorrik</label>
+    <description>A dense thicket of taut translucent bladders held at head height on springy stalks, each visibly over-full. You cannot see through the mass of them, and pushing through bursts them. Hazard-with-payoff: the spores are medicinal, and walking through a patch fills the air — go around, or pay for what you release.</description>
+    <selectable>true</selectable>
+    <neverMultiSelect>True</neverMultiSelect>
+    <fillPercent>0.8</fillPercent>
+    <pathCost>42</pathCost>
+    <graphicData>
+      <texPath>Things/Plant/RM_Phorrik/RM_Phorrik_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <shadowData>
+        <volume>(0.35, 0.4, 0.25)</volume>
+        <offset>(0,0,-0.28)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Flammability>0.12</Flammability>
+      <Nutrition>0.3</Nutrition>
+      <Mass>15</Mass>
+      <BeautyOutdoors>-1</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <!-- GREENTIDE_GRENADE_WEAPONS_1's own trace target: harvestedThingDef
+           names the ALREADY-SHIPPED RM_StenchSporeExtract directly, same
+           shape as RM_Gorbeleth -> RM_GorbelethToxin (the tree roster's own
+           precedent for "harvest the hazard plant, get the weapon's raw
+           material"). See RM_StenchGrenade_Items.xml for the matching
+           recipe fix this pass makes. -->
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.35</fertilitySensitivity>
+      <growDays>10</growDays>
+      <harvestWork>150</harvestWork>
+      <harvestYield>6</harvestYield>
+      <harvestedThingDef>RM_StenchSporeExtract</harvestedThingDef>
+      <visualSizeRange>2.0~3.0</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Wollick</defName>
+    <label>wollick</label>
+    <description>A rosette of huge leaves standing upright rather than lying flat, each a blade taller than a pawn, fanning out over a deep starchy tuber. From inside a patch you can see nothing but leaf. Bulk carbohydrate — digging it slumps the churnmud around it, a small honest cost rather than a hazard.</description>
+    <selectable>true</selectable>
+    <neverMultiSelect>True</neverMultiSelect>
+    <fillPercent>0.8</fillPercent>
+    <pathCost>42</pathCost>
+    <graphicData>
+      <texPath>Things/Plant/RM_Wollick/RM_Wollick_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <shadowData>
+        <volume>(0.4, 0.5, 0.3)</volume>
+        <offset>(0,0,-0.32)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>110</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0.65</Nutrition>
+      <Mass>28</Mass>
+      <BeautyOutdoors>0</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>13</growDays>
+      <harvestWork>190</harvestWork>
+      <harvestYield>11</harvestYield>
+      <harvestedThingDef>RM_WollickTuber</harvestedThingDef>
+      <visualSizeRange>2.5~4.0</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Maddrick</defName>
+    <label>maddrick</label>
+    <description>A ring of inward-curling leaf blades standing shoulder-high, waxy and wet, around a throat of standing fluid you cannot see into until you are at its lip. It closes on what steps in. Completely static — it does not move toward anything. Pure hazard, with a use: a patch of maddrick is a free perimeter, something to build around rather than clear.</description>
+    <selectable>true</selectable>
+    <neverMultiSelect>True</neverMultiSelect>
+    <fillPercent>0.6</fillPercent>
+    <pathCost>42</pathCost>
+    <graphicData>
+      <texPath>Things/Plant/RM_Maddrick/RM_Maddrick_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <shadowData>
+        <volume>(0.32, 0.32, 0.22)</volume>
+        <offset>(0,0,-0.22)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>130</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0.2</Nutrition>
+      <Mass>18</Mass>
+      <BeautyOutdoors>-2</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <!-- No harvestedThingDef, deliberately — a pure hazard row with no
+           exploitable yield, same posture Plant_Chokevine itself ships
+           (no harvestedThingDef either). -->
+      <fertilityMin>0.25</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>14</growDays>
+      <visualSizeRange>2.0~3.0</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Illurin</defName>
+    <label>illurin</label>
+    <description>A broad fleshy cap held above pawn height on a thick stem, glowing cyan-green from its underside down onto the mud — so it lights the ground beneath it and blocks the view across. The only light under the canopy. Suppresses nothing, reveals everything within its small radius; without it the understory is unreadable.</description>
+    <selectable>true</selectable>
+    <neverMultiSelect>True</neverMultiSelect>
+    <fillPercent>0.55</fillPercent>
+    <pathCost>42</pathCost>
+    <graphicData>
+      <texPath>Things/Plant/RM_Illurin/RM_Illurin_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <shadowData>
+        <volume>(0.3, 0.35, 0.22)</volume>
+        <offset>(0,0,-0.3)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0.25</Nutrition>
+      <Mass>16</Mass>
+      <BeautyOutdoors>1</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <!-- No harvestedThingDef — its job is light, not yield, per the
+           design doc's own framing ("suppresses nothing, reveals
+           everything"). -->
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>16</growDays>
+      <visualSizeRange>4.0~7.0</visualSizeRange>
+      <topWindExposure>0.08</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+    </plant>
+    <!-- CompProperties_Glower on a Plant is a real, working vanilla pattern
+         (Glowstool, Defs/Core/ThingDefs_Plants/Plants_Fungus.xml,
+         RimSage-verified this pass) — not invented. Radius sized above
+         Glowstool's own 5.9 since illurin is explicitly "the only light
+         under the canopy" and the biggest glow-plant on the page. -->
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>7</glowRadius>
+        <glowColor>(70,190,150,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
