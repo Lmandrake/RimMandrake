@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T09:08:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T09:11:52Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -882,6 +882,15 @@ kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
 
+## WEBWORK_NEST_EGG_ECONOMY_1 Build the Webwork nest + egg economy: nest on EVERY map, re-lay 20-30d while mother lives, RM_OllathrixEgg, Wildsteam egg bounty (S6 rulings 2,3,4)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/WEBWORK_NEST_EGG_ECONOMY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_NEST_EGG_ECONOMY_1.md
+
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
 row:      unassigned
@@ -908,6 +917,15 @@ target:   v1
 kind:     build
 summary:  1. The reaction: tar + acid → green gas (Helixien-compatible). One acid, three
 prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
+
+## SUMP_UTINNI_LAYER_1 Sump campaign layer: rename the gas Sumpgas, flame-statue holy act to the evil sun god (ideoligion patch), Hssiss WildAnimals_Sump patch
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. Sumpgas rename: the campaign renames the green gas to Sumpgas — owner,
+prose:    infrastructure/state/items/SUMP_UTINNI_LAYER_1.md
 
 ## FORCE_DISTURBANCE_REFLAVOR_1 Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
 state:    doing
@@ -1549,16 +1567,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md
 
-## WEBWORK_NEST_EGG_ECONOMY_1 Build the Webwork nest + egg economy: nest on EVERY map, re-lay 20-30d while mother lives, RM_OllathrixEgg, Wildsteam egg bounty (S6 rulings 2,3,4)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WEBWORK_NEST_EGG_ECONOMY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_NEST_EGG_ECONOMY_1.md
-
 ## WEBWORK_EGG_BLACKMARKET_BUILD_1 Build the ruled egg black market: Cartel caravan kind + Bazaar broker channel, tradeability-All patch with leak check, The Reckoning quest family with staged juvenile hatch (S5 rulings 1-6)
 state:    proposed
 row:      unassigned
@@ -1568,16 +1576,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WEBWORK_EGG_BLACKMARKET_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WEBWORK_EGG_BLACKMARKET_BUILD_1.md
-
-## SUMP_UTINNI_LAYER_1 Sump campaign layer: rename the gas Sumpgas, flame-statue holy act to the evil sun god (ideoligion patch), Hssiss WildAnimals_Sump patch
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  1. Sumpgas rename: the campaign renames the green gas to Sumpgas — owner,
-prose:    infrastructure/state/items/SUMP_UTINNI_LAYER_1.md
 
 ## SUMP_TAR_HYDROLOGY_1 Sump tar hydrology on FlowWorks: belch floods with glass fronts, full canal-work, network fire with gate firebreaks, outflow seams, the Deep Black mere, living-map responders, tar rain (mod, not this scenario)
 state:    proposed
@@ -1628,16 +1626,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  GREENTIDEYEARNINGFRUIT1 — digestive-accelerant fruit: def + hediff built, filth C split out
 prose:    infrastructure/state/items/GREENTIDE_YEARNING_FRUIT_1.md
-
-## CONTAGION_UNFINISHED_SPAWNER_1 The Unfinished: random-stat short-lived chimera spawner (random Hediff_AddedPart limbs, days-long life, dissolves to goo)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CONTAGION_UNFINISHED_SPAWNER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CONTAGION_UNFINISHED_SPAWNER_1.md
 
 ## DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1 grain-scale commensal fauna riding RM_MirrorGiant's shade
 state:    proposed
