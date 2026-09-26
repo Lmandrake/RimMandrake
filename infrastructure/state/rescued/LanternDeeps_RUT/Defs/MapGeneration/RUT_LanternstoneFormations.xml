@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAVERNS_PARITY_BUILD_1 — our own replacement for the borrowed
+  BMT_CrystalsGenerator, which RUT_LanternDeepGenerator.genSteps used to list.
+
+  order=320 is the donor's own number, kept deliberately: the Deeps-only pyrinth
+  (330) and kyber (335) scatters were both placed relative to it, and genStep
+  execution order is the global GenStepDef.order, never XML list position (see
+  RUT_LanternDeepPyrinthScatter.xml's header for the full mechanism). Changing
+  320 here silently reorders those two.
+
+  The four groups, their weights, cluster radii and coverage are the donor's
+  numbers unchanged, so a Deep's crystal field looks and paths the same.
+
+  The validator is what keeps the big formations on the lanternstone shelves:
+  ScattererValidator_Buildable with our RUT_Lanternstone affordance, which only
+  RUT_LanternstoneFloor grants.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RUT_LanternstoneFormations</defName>
+    <order>320</order>
+    <genStep Class="RimMandrake.Utinni.LanternDeeps.GenStep_ScatterLanternstone">
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <minSpacing>1</minSpacing>
+      <countPer10kCellsRange>15.0~30.0</countPer10kCellsRange>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <allowRoofed>true</allowRoofed>
+      <validators>
+        <li Class="ScattererValidator_Buildable">
+          <radius>1</radius>
+          <affordance>RUT_Lanternstone</affordance>
+        </li>
+      </validators>
+      <groups>
+        <li>
+          <things>
+            <RUT_Lanternstone_Small>0.05</RUT_Lanternstone_Small>
+            <RUT_Lanternstone_Large>0.0333</RUT_Lanternstone_Large>
+            <RUT_Lanternstone_Huge>0.0233</RUT_Lanternstone_Huge>
+          </things>
+          <indoorRuin>false</indoorRuin>
+          <coveredCellsPer10Cells>1.5~3.5</coveredCellsPer10Cells>
+          <clusterRectRadius>3~5</clusterRectRadius>
+        </li>
+        <li>
+          <things>
+            <RUT_Lanternstone_Small>0.05</RUT_Lanternstone_Small>
+            <RUT_Lanternstone_Large>0.0233</RUT_Lanternstone_Large>
+            <RUT_Lanternstone_Huge>0.00433</RUT_Lanternstone_Huge>
+          </things>
+          <indoorRuin>false</indoorRuin>
+          <coveredCellsPer10Cells>1.5~3.5</coveredCellsPer10Cells>
+          <clusterRectRadius>3~5</clusterRectRadius>
+        </li>
+        <li>
+          <things>
+            <RUT_Lanternstone_Medium>0.05</RUT_Lanternstone_Medium>
+            <RUT_Lanternstone_Large>0.0433</RUT_Lanternstone_Large>
+            <RUT_Lanternstone_Huge>0.045</RUT_Lanternstone_Huge>
+          </things>
+          <indoorRuin>false</indoorRuin>
+          <coveredCellsPer10Cells>1.5~3.5</coveredCellsPer10Cells>
+          <clusterRectRadius>4~5</clusterRectRadius>
+        </li>
+        <li>
+          <things>
+            <RUT_Lanternstone_Medium>0.05</RUT_Lanternstone_Medium>
+            <RUT_Lanternstone_Large>0.0433</RUT_Lanternstone_Large>
+            <RUT_Lanternstone_Huge>0.025</RUT_Lanternstone_Huge>
+          </things>
+          <indoorRuin>false</indoorRuin>
+          <coveredCellsPer10Cells>1.5~3.5</coveredCellsPer10Cells>
+          <clusterRectRadius>4~5</clusterRectRadius>
+        </li>
+      </groups>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

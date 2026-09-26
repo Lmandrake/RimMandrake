@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <GenStepDef>
+    <defName>RUT_LanternDeepEmergence_Scatter</defName>
+    <order>320</order>
+    <genStep Class="RimMandrake.Utinni.LanternDeeps.GenStep_ScatterCavePortal">
+      <minSpacing>60</minSpacing>
+      <groups>
+        <li>
+          <things>
+            <RUT_LanternDeepEmergence>1</RUT_LanternDeepEmergence>
+          </things>
+          <coveredCellsPer10Cells>0~0.02</coveredCellsPer10Cells>
+          <clusterRectRadius>3~3</clusterRectRadius>
+        </li>
+      </groups>
+      <validators>
+        <li Class="ScattererValidator_Buildable">
+          <affordance>Heavy</affordance>
+        </li>
+        <li Class="ScattererValidator_NoNonNaturalEdifices" />
+      </validators>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

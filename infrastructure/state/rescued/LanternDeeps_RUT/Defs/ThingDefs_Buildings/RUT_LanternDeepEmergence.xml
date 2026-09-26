@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_LanternDeepEmergence</defName>
+    <label>lanternstone geode</label>
+    <description>A shard of lanternstone has broken through the surface here, its cracked face glowing faintly blue from a void somewhere below. The crystal hums with cold light day and night, and a fissure at its base opens into the dark — a way down into the Lantern Deeps.</description>
+    <size>(6,6)</size>
+    <useHitPoints>false</useHitPoints>
+    <thingClass>MapPortal</thingClass>
+    <rotatable>false</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <canOverlapZones>false</canOverlapZones>
+    <!-- PLACEHOLDER ART: reusing vanilla CaveEntranceA texture; real lanternstone-geode art is owed, see LANTERN_DEEPS_INJECTION_1 -->
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/CaveEntranceA</texPath>
+      <drawSize>(6,6)</drawSize>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <fillPercent>0</fillPercent>
+    <passability>Impassable</passability>
+    <holdsRoof>true</holdsRoof>
+    <destroyable>false</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal>
+      <pocketMapGenerator>RUT_LanternDeepGenerator</pocketMapGenerator>
+      <exitDef>CaveExit</exitDef>
+      <pocketMapSize>66</pocketMapSize>
+    </portal>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="CompProperties_Sealable">
+        <sealTexPath>UI/Commands/FillInCaveEntrance</sealTexPath>
+        <sealCommandLabel>Collapse lanternstone geode</sealCommandLabel>
+        <sealCommandDesc>Choose a colonist to permanently bury the crystal mouth. Anything or anyone left below will be lost forever.</sealCommandDesc>
+        <cannotSealLabel>Cannot collapse</cannotSealLabel>
+        <confirmSealText>Collapsing the lanternstone geode is permanent. Anything or anyone left below will be lost forever.{0}\n\nAre you sure you want to continue?</confirmSealText>
+        <destroyPortal>true</destroyPortal>
+      </li>
+      <li Class="CompProperties_LeaveFilthOnDestroyed">
+        <filthDef>Filth_LooseGround</filthDef>
+        <thickness>2</thickness>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
