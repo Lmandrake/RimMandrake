@@ -1001,6 +1001,18 @@
     "hash": "02270120a41de776595131fb8c89d9f0285c7a2c381106cd5bfbfabf2cbabd97",
     "sha": "81f3fa561"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompHeatCook.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "3028e854d0eaba9c4ee844f6a36ba3803079dbf891d7999a97d805a76ff29eb1",
+    "sha": "d0f90a884"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompHeatPusherGated.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "d82a50d0b7583b7bd66f9a291a4a9eeaa0a6ad4b3908923e476a5f934b09fbe3",
+    "sha": "d0f90a884"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompParentalEnrage.cs": {
     "cleanCount": 1,
     "date": "2026-09-23",
@@ -1072,6 +1084,12 @@
     "date": "2026-09-19",
     "hash": "6aa01d652095f34a92afa6dd67226d84c3824d19d0c37682eca45e25a5325184",
     "sha": "fc438d857"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_SpeciesSpacingCook.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "a15c124f1987b91e48d18604c987492fe91c0f5e941cf0fb0bd5cc39586103e5",
+    "sha": "d0f90a884"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_TameSootheAura.cs": {
     "cleanCount": 1,
@@ -1396,6 +1414,12 @@
     "date": "2026-09-11",
     "hash": "f3a9cb81c9dbd7d5f8db41bd5b24a482bc6291c8430274c9a12a3c1b38d7f72f",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_SpeciesSpacingExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "813a191d15155bcde986b7ccfe2041a4397d2d9787f3cfb8fd779ed73a06aab6",
+    "sha": "d0f90a884"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_ThinkNode_EatCleanable.cs": {
     "cleanCount": 2,

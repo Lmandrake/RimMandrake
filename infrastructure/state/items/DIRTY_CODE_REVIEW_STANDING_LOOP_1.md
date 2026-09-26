@@ -4315,4 +4315,53 @@ distinct, not-yet-reviewed pair), and separately `RM_CompHeatCook.cs` /
 unreviewed def-only (`.xml`) clusters also remain across `TerminalBiomes/`, `TheRot/`,
 `Wasteland/`, `UtinniPatches/Defs/` and `UtinniPatches/Patches/` — none of those were
 picked this wave since the `.cs` reaction cluster was the stronger reachability/
+
+## Wave 7 — 2026-09-25
+
+Picked wave 6's own named next-candidate: the heat/spacing cluster in
+`CreatureBehaviors/Source/` — `RM_CompHeatCook.cs`, `RM_CompHeatPusherGated.cs`,
+`RM_CompProperties_SpeciesSpacingCook.cs`, `RM_SpeciesSpacingExtension.cs` (4 files,
+`WASTELAND_RADIOTHERMAL_SOLITARY_1`'s "keep distance from your own kind or cook each
+other" mechanism). Confirmed all 4 NEVER ENTERED via `list --show-untracked` first.
+
+Reachability: all 4 confirmed via live `<Compile Include>` entries in
+`RM_CreatureBehaviors.csproj` (lines 122, 124-126). Content-wired, not shelf code:
+`RUT_Radiothermal.xml` (`src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/`) carries
+all three comps/modExtension classes in its live `<comps>`/`<modExtensions>` blocks,
+and `RM_ThinkTree_VerminBehaviors.xml` inserts the sibling `RM_JobGiver_AvoidOwnKind`
+(same extension, not in this wave's cluster but read for cross-file consistency) at
+the front of its `Animal_PreMain` subtree list.
+
+Traced the full flow: `RM_JobGiver_AvoidOwnKind` (already CLEAN, reviewed here only
+for consistency) steers a pawn away from the nearest same-`kindDef` pawn once inside
+`avoidRadiusCells`; `RM_CompHeatCook.CompTick` is the failure consequence — every
+`cookIntervalTicks` it re-scans `Map.mapPawns.AllPawnsSpawned` for a same-kindDef pawn
+within the tighter `cookRadiusCells` and, if crowded, applies
+`cookDamagePerInterval * speciesSpacingCookDamageMultiplier` self-damage via
+`self.TakeDamage`. Both halves read the one shared `RM_SpeciesSpacingExtension` —
+verified no duplicated/out-of-sync copy of the tuning fields exists anywhere.
+`RM_CompHeatPusherGated` is a one-line `CompHeatPusher` subclass adding the
+`ambientHeatPusherEnabled` mod-settings gate; checked its doc comment's claim that
+`Campfire` was the calibration reference against the live game install
+(`Data/Core/Defs/ThingDefs_Buildings/Buildings_Temperature.xml`: Campfire's own
+`CompProperties_HeatPusher` is `heatPerSecond=21`/`heatPushMaxTemperature=28`) — matches
+the comment exactly; `RUT_Radiothermal`'s own values (30/24) are a deliberate
+calibration off that baseline, not a copy, so no doc/code mismatch. All three mod
+settings (`ambientHeatPusherEnabled`, `speciesSpacingEnabled`,
+`speciesSpacingCookDamageMultiplier`) confirmed present with defaults, Scribe
+persistence and a Mod Settings UI control in `RM_CreatureBehaviorsMod.cs`. Checked
+`DamageInfo` constructor argument order (def, amount, armorPenetration, angle,
+instigator, hitPart) against vanilla's signature — correct. No significant findings
+— no fixes needed. All 4 marked CLEAN at `d0f90a884`.
+
+Re-measured after: `TALLY CLEAN 3323 DIRTY 104 ORPHANED 60 NEVER ENTERED 302` (was
+`CLEAN 3319 DIRTY 104 NEVER ENTERED 295` at wave start — the tree drifted between
+wave 6's close and this wave's start, expected on a shared tree with concurrent
+agents; only the 4 files this wave touched are attributable to this pass).
+
+Next wave: `RM_CompDefensiveDischarge.cs` + `RM_CompProperties_DefensiveDischarge.cs`
+(the pair wave 6 also named, still unpicked) is the next `CreatureBehaviors/Source`
+candidate. Re-survey `list --show-untracked` fresh rather than trusting any
+carried-forward count — this file's own wave 62 note is the standing warning about
+that.
 cohesion candidate, but they are real backlog, not something ruled out.
