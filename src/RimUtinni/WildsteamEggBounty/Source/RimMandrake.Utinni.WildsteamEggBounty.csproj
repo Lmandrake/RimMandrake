@@ -1,25 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    WEBWORK_RM_MOD_BUILD_1. Same recipe as
-    src/RimMandrake/Greentide/Source/RM_Greentide.csproj — copy that header
-    if this one goes stale.
+    WEBWORK_NEST_EGG_ECONOMY_1. Same recipe as
+    src/RimUtinni/FungalSoilTrade/Source/RimMandrake.Utinni.FungalSoilTrade.csproj —
+    copy that file's header if this one goes stale.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Webwork\Source\RM_Webwork.csproj -c Release
+    Build (dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\WildsteamEggBounty\Source\RimMandrake.Utinni.WildsteamEggBounty.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: every class here is a plain engine extension point (BiomeWorker,
-    ModSettings, ThingComp — RM_CompEmergentSpawnOnDestroy, moved in by
-    SHOKK_SKIN_SHRINK_1 from mandrake.rsw.shokk).
+    No Harmony: the one class here (RM_QuestNode_GetWildsteamSettlement) is a
+    plain QuestNode subclass, an ordinary engine extension point.
   -->
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>RimMandrake.Webwork</AssemblyName>
-    <RootNamespace>RimMandrake.Webwork</RootNamespace>
+    <AssemblyName>RimMandrake.Utinni.WildsteamEggBounty</AssemblyName>
+    <RootNamespace>RimMandrake.Utinni.WildsteamEggBounty</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\Assemblies\</OutputPath>
@@ -39,11 +38,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RM_BiomeWorker_Webwork.cs" />
-    <Compile Include="RM_WebworkMod.cs" />
-    <Compile Include="RM_CompEmergentSpawnOnDestroy.cs" />
-    <Compile Include="RM_GenStep_WebworkNest.cs" />
-    <Compile Include="RM_CompEggClutchRelay.cs" />
+    <Compile Include="RM_QuestNode_GetWildsteamSettlement.cs" />
   </ItemGroup>
 
   <ItemGroup>

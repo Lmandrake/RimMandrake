@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_NEST_EGG_ECONOMY_1. Adds the nest scatter step globally, same shape
+  as ShokkweaveEconomy's own ShokkweaveHarvestScatter_MapGenPatch.xml /
+  RM_FeverWood_AntHiveGenStep_Register.xml: RM_GenStep_WebworkNest self-gates
+  to map.Biome.defName == "RM_Webwork" in its own Generate() override, so
+  adding it to the shared base generator is safe — it no-ops on every other
+  biome's maps. No MayRequire needed: every def it names (RM_Webwork_NestWall,
+  RM_Webwork_EggClutch, RM_OllathrixEgg, RM_Ollathrix) is owned outright by
+  this same mod.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <value>
+      <li>RM_WebworkNestScatter</li>
+    </value>
+  </Operation>
+
+</Patch>

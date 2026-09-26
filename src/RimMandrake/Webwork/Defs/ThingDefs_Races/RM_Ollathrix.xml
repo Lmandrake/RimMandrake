@@ -54,11 +54,17 @@
   Deliberately NOT built here (owned by other items, per the design doc's
   own §1a/§5 table — do not duplicate):
     - web-sense convergence (RM_JobGiver_SenseWebConverge / the race's own
-      ThinkTreeDef), the droid-priority scorer, and the nest's own mother
-      guardian wiring: all WEBWORK_MECHANICS_1 / WEBWORK_NEST_EGG_ECONOMY_1
-      scope, unbuilt today per the design doc's own mechanism table.
-    - the egg economy, the nest cluster, the carried-eggs mark: all
-      WEBWORK_NEST_EGG_ECONOMY_1, a sibling item, not this one.
+      ThinkTreeDef) and the droid-priority scorer: WEBWORK_MECHANICS_1
+      scope, still unbuilt.
+    - ✅ WEBWORK_NEST_EGG_ECONOMY_1 (S6 rulings 2/3/4) has since built the
+      nest cluster, the mother's own guardian wiring, the egg economy and
+      the Wildsteam bounty — see RM_Webwork_Nest.xml,
+      RM_GenStep_WebworkNest.cs, RM_CompEggClutchRelay.cs and
+      RM_OllathrixEgg.xml. The carried-eggs mark (§4c, wiring
+      RM_CompSenseWebNode into the nest) is still owed to
+      WEBWORK_MECHANICS_1/WEBWORK_WEB_STRUCTURES_1 — that item never built
+      any SenseWeb registration, on purpose (see RM_CompEggClutchRelay.cs's
+      own header).
 
   Body: BeetleLikeWithClaw (same body RM_Kurreth/RM_Quarrok already use in
   this repo) — six InsectLeg parts plus a HeadClaw group on the head part,

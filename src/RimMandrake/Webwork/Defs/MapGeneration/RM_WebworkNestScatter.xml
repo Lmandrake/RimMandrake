@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_NEST_EGG_ECONOMY_1. Wires RM_GenStep_WebworkNest.cs into the
+  GenStepDef system. The class self-gates on map.Biome.defName == "RM_Webwork"
+  (see its own header), so adding it to the shared base generator via the
+  sibling Patches/RM_WebworkNestScatter_MapGenPatch.xml is safe — it no-ops on
+  every other biome's maps, the exact pattern ShokkweaveEconomy's own
+  RUT_WebworkSilkScatter/RUT_WebworkNestScatter already use for the campaign
+  twin.
+
+  order 324 matches the campaign twin's own RUT_WebworkNestScatter (both are
+  "scatter something onto our biome's maps" steps that need terrain/elevation
+  already generated but nothing built on top yet); the two never run on the
+  same map (RM_Webwork vs RUT_Webwork are different biome defNames) so an
+  identical order number cannot collide.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WebworkNestScatter</defName>
+    <order>324</order>
+    <genStep Class="RimMandrake.Webwork.RM_GenStep_WebworkNest" />
+  </GenStepDef>
+
+</Defs>
