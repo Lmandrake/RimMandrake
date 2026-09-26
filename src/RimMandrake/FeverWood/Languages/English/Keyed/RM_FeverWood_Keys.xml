@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- FEVERWOOD_ALIEN_BIRD_CHORUS_1: the crown's chorus falling silent
+       for exactly one reason — the thing below the pools has stirred.
+       Same "message, not just a mechanic" posture as Greentide's own
+       RM_Greentide_SilenceCue. -->
+  <RM_FeverWood_ChorusFallsSilent>The crown has gone silent. The water stirred.</RM_FeverWood_ChorusFallsSilent>
+
+</LanguageData>

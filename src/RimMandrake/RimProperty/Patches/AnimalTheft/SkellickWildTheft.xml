@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SkellickWildTheft.xml     AnimalTheft · FEVERWOOD_ALIEN_BIRD_CHORUS_1
+
+  Owner, verbatim (fever_wood_fauna_roster_2026-09-23.md §5): "Some birds
+  here steal items if you have Property mod." Marks the Fever Wood's own
+  RM_Skellick (src/RimMandrake/FeverWood/Defs/ThingDefs_Races/
+  RM_FeverWoodBirds.xml) with WildTheftExtension — same class, same wiring
+  as RaccoonWildTheft.xml right beside this file, which is the pattern
+  this one copies.
+
+  Lives here rather than in FeverWood's own ThingDef so mandrake.rm.
+  feverwood never needs to reference RimMandrake.AnimalTheft at all: this
+  mod (mandrake.rm.property) already owns every other wild-theft grant,
+  and PatchOperationConditional's xpath check means this patch is a silent
+  no-op — not an error — on any mod list where the Fever Wood is absent
+  (PatchOperationConditional matches nothing -> returns true, logs
+  nothing). That is the "clean MayRequire on content we control" shape the
+  roster's own text asked for, just expressed as a patch target rather
+  than a MayRequire attribute in FeverWood's XML.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Skellick"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RM_Skellick"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="RimMandrake.AnimalTheft.WildTheftExtension" />
+        </modExtensions>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
