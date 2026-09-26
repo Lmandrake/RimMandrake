@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.thesump</packageId>
+  <name>RimMandrake: the Sump</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>sarg.alphabiomes</packageId>
+      <displayName>Alpha Biomes</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2777849228</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>sarg.alphabiomes</li>
+    <li>sarg.alphaanimals</li>
+    <li>mandrake.rm.environmentalhazards</li>
+    <li>mandrake.rm.flowworks</li>
+  </loadAfter>
+  <description>THESUMP_RM_MOD_BUILD_1 (Phase A row 23 of
+design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).
+The planet's oil sump: a flat, permanently-dusky black basin filled by every slow
+flow off the twilight slopes for geological time, ringed with low waxy plants that
+glow faintly wherever a lamp-garden keeps them alight. Fully generalized: it names
+no other franchise or campaign. A separate frozen campaign world's own Sump instance
+(RUT_Sump, src/RimUtinni/UtinniPatches) is unaffected and unrelated; this is a new
+sibling biome for everyone else's worlds, not a rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+Ships the biome and its own placement worker (RM_BiomeWorker_TheSump, replacing the
+donor AlphaBiomes.BiomeWorker_TarPits — a donor type in workerClass is a hard
+dependency the RimMandrake tier may not assume), plus the tar-basin kit whose C#
+already lives in the shared RimMandrake: Environmental Hazards Kit
+(mandrake.rm.environmentalhazards): a poured tar moat with a hand-cranked fuse post
+that floods ignition across every connected cell of poured or natural tar; a
+manual-labor dig shaft with a four-stratum salvage lottery, arming traps as it goes
+deeper; a dormant tar-beast set-piece that wakes on damage or nearby construction; a
+sump-mouse placeholder whose faint tracks telegraph where something else has been
+through first; a wick-garden crop that needs no sun, only whatever faint ambient
+light the permanent dusk and station lamps provide; and a permanent-dusk weather
+lock (never rains, never fully dark or light). Ships 4 wildlife rows inline, all
+individually MayRequire-gated Alpha Animals donor rows. A Mod Settings screen gives
+a worldgen-rarity master toggle (MOD_OPTIONS_RETROFIT_1 doctrine — default =
+shipped behavior, 0 = never generates); the kit mechanics' own per-mechanic toggles
+live partly on the shared Environmental Hazards Kit's own settings screen (tar
+coating, tarred hediff, glasswalk slip, warbling glow, glow multiplier — shared
+with Greentide and Miasma) and partly nowhere yet (moat ignition, dig lottery,
+beast-bulge dread, mouse filth-trail have no toggle at all today) — a second,
+Sump-only copy of the covered ones here would either do nothing or silently
+diverge from what that screen already promises.
+
+⚠️ Not donor-free: the world-map texture (Biomes/AB_TarPits), both terrainsByFertility
+rows (AB_GrassySand/AB_LushGrass) and one wildPlants row (AB_TarPuddle) are all Alpha
+Biomes' own, so sarg.alphabiomes ships as a hard modDependency rather than an
+optional MayRequire — without it this biome has almost no terrain or flora. The
+dormant tar-beast building, the dig-shaft, the moat/fuse-post, the sump-mouse
+placeholder, the mouse-track filth and the wick-plant/wick-stem all still carry
+DEPLOY_HOLD (no real art yet, see src/DEPLOY_HOLD.txt) — content proven to compile
+and wire correctly, not yet visually shipped.
+
+NOT in this mod: RSW_Hssiss (the biome's one seated canon beast) rides a Utinni
+patch (WildAnimals_Sump.xml) onto this mod's own RM_TheSump def instead, per the
+Q11a naming-tier ruling (SUMP_UTINNI_LAYER_1 §3). The Sumpgas rename, the flame-
+statue's holy-act-to-the-evil-sun-god ideoligion meaning, and the Junker-station
+campaign labels are SUMP_UTINNI_LAYER_1's own campaign-tier work, not this mod's;
+the tar coating/tarred hediff/surgery/solvents/thoughts content and the Walkways/
+Bitumen/Sumpgas/Gaslight kit content (all shipped 2026-09-24) are not biome-gated
+and stay in mandrake.rut.patches for now.
+
+Live proof (step 5, a scratch-world quicktest with all five expansions) is
+Desktop-only and OWED — see the item's own verify record.</description>
+</ModMetaData>
