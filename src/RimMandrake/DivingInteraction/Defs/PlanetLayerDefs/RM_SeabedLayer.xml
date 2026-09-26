@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  SEABED_PLANET_LAYER_1, Phase 1. The sea floor as a real planet layer, a geometric twin of
+  the surface. See Source/RM_SeabedLayer.cs for the registration and the mirroring step.
+
+  Phase 1 ships TWO biomes on purpose: one placeholder floor, and one "unavailable" default
+  covering every tile with no reachable sea floor under it. Real per-sea seabed biomes are
+  Phase 4. Both are whitelisted to this layer only, so neither can ever appear on the planet.
+
+  Placeholder art: viewGizmoTexPath uses vanilla's own PlaceholderImage (ConfigErrors refuses
+  an empty one and names that texture as the stand-in), and both biomes borrow existing vanilla
+  world textures. Real art is owed before ship.
+-->
+<Defs>
+
+  <GameSetupStepDef>
+    <defName>RM_SeabedLayerRegister</defName>
+    <!-- After Grids (0), which creates the world grid and the surface; before Components (100). -->
+    <order>50</order>
+    <setupStep Class="RimMandrake.DivingInteraction.GameSetupStep_SeabedLayer" />
+  </GameSetupStepDef>
+
+  <WorldGenStepDef>
+    <defName>RM_SeabedLayerMirror</defName>
+    <order>10</order>
+    <worldGenStep Class="RimMandrake.DivingInteraction.WorldGenStep_SeabedLayer" />
+  </WorldGenStepDef>
+
+  <PlanetLayerDef>
+    <defName>RM_SeabedLayer</defName>
+    <label>sea floor</label>
+    <viewGizmoTooltip>View the sea floor.</viewGizmoTooltip>
+    <viewGizmoTexPath>PlaceholderImage</viewGizmoTexPath>
+    <viewGizmoOnlyVisibleWithDirectConnection>false</viewGizmoOnlyVisibleWithDirectConnection>
+    <layerType>SurfaceLayer</layerType>
+    <tileType>SurfaceTile</tileType>
+    <defaultBiome>RM_SeabedUnavailable</defaultBiome>
+    <defaultMapWorldObject>RM_SeabedSite</defaultMapWorldObject>
+    <onlyAllowWhitelistedBiomes>true</onlyAllowWhitelistedBiomes>
+    <!-- The owner's ship-only ruling, enforced with one bool: nothing walks to or from a floor. -->
+    <canFormCaravans>false</canFormCaravans>
+    <alwaysRaycastable>false</alwaysRaycastable>
+    <elevationString>{0}m</elevationString>
+    <gerundLabel>on the</gerundLabel>
+    <worldGenSteps>
+      <li>RM_SeabedLayerMirror</li>
+    </worldGenSteps>
+    <worldDrawLayers>
+      <li>WorldDrawLayer_CurrentMapTile</li>
+      <li>WorldDrawLayer_SelectedTile</li>
+      <li>WorldDrawLayer_SettleTile</li>
+      <li>WorldDrawLayer_MouseTile</li>
+      <li>WorldDrawLayer_ClosestTile</li>
+      <li>WorldDrawLayer_UngeneratedPlanetParts</li>
+      <li>WorldDrawLayer_WorldObjects_Expandable</li>
+      <li>WorldDrawLayer_WorldObjects_NonExpandable</li>
+      <li>WorldDrawLayer_Hills</li>
+      <li>WorldDrawLayer_Terrain</li>
+    </worldDrawLayers>
+    <worldTabs>
+      <li>WITab_Terrain</li>
+      <li>WITab_Planet</li>
+    </worldTabs>
+  </PlanetLayerDef>
+
+  <BiomeDef Name="RM_SeabedBiomeBase" Abstract="True">
+    <generatesNaturally>false</generatesNaturally>
+    <canAutoChoose>false</canAutoChoose>
+    <allowRoads>false</allowRoads>
+    <allowRivers>false</allowRivers>
+    <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+    <!-- Whitelisted to this layer alone, so no seabed biome can be chosen for the planet. -->
+    <layerWhitelist>
+      <li>RM_SeabedLayer</li>
+    </layerWhitelist>
+  </BiomeDef>
+
+  <BiomeDef ParentName="RM_SeabedBiomeBase">
+    <defName>RM_SeabedUnavailable</defName>
+    <label>bedrock</label>
+    <description>Solid rock, buried under the weight of a continent. There is no sea floor to reach here.</description>
+    <texture>World/Biomes/ExtremeDesert</texture>
+    <impassable>true</impassable>
+    <canBuildBase>false</canBuildBase>
+    <canExitMap>false</canExitMap>
+    <animalDensity>0</animalDensity>
+    <plantDensity>0</plantDensity>
+    <maxFishPopulation>0</maxFishPopulation>
+  </BiomeDef>
+
+  <!--
+    The one placeholder floor biome. Phase 4 replaces it with a real biome per sea; nothing
+    should be tuned here, and nothing depends on its numbers.
+
+    animalDensity and plantDensity are 0 in Phase 1 for a reason beyond emptiness:
+    MapPlantGrowthRateCalculator.BuildFor(Map) takes map.Tile straight to OutdoorTemperatureAt,
+    which indexes an array by tile id, and throws out of Map.FinalizeInit AFTER the map is
+    already in Find.Maps — the map then never finishes and MapDrawer NREs every frame. It is
+    safe in vanilla only because the off-surface biomes have no wild plants between them.
+    Phase 3 gives the floor real plants and MUST guard for this first.
+  -->
+  <BiomeDef ParentName="RM_SeabedBiomeBase">
+    <defName>RM_SeabedFloor</defName>
+    <label>sea floor</label>
+    <description>The floor of a sea, far below the surface. Nothing has been surveyed here yet.</description>
+    <texture>World/Biomes/Ocean</texture>
+    <animalDensity>0</animalDensity>
+    <plantDensity>0</plantDensity>
+    <maxFishPopulation>0</maxFishPopulation>
+  </BiomeDef>
+
+  <!--
+    worldObjectClass MUST be a MapParent: WorldObjectCompProperties_Abandon.ConfigErrors
+    rejects the def otherwise, and the default worldObjectClass is plain WorldObject.
+    That one comp IS the "keep it or discard it, exactly like the land" requirement.
+  -->
+  <WorldObjectDef ParentName="StaticWorldObjectBase">
+    <defName>RM_SeabedSite</defName>
+    <label>sea floor</label>
+    <description>A place on the floor of a sea. What is built here stands apart from the water above it.</description>
+    <worldObjectClass>RimWorld.Planet.MapParent</worldObjectClass>
+    <texture>World/WorldObjects/Sites/GenericSite</texture>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>70</expandingIconPriority>
+    <canBePlayerHome>true</canBePlayerHome>
+    <comps>
+      <li Class="WorldObjectCompProperties_Abandon" />
+    </comps>
+  </WorldObjectDef>
+
+</Defs>

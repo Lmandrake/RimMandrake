@@ -52,6 +52,7 @@
     <Compile Include="GenStep_GreySeaFloorDressing.cs" />
     <Compile Include="RM_BrineEncasement.cs" />
     <Compile Include="MapComponent_BrineCrystallisation.cs" />
+    <Compile Include="RM_SeabedLayer.cs" />
   </ItemGroup>
 
   <ItemGroup>
