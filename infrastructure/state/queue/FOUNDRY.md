@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T04:02:08Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-26T04:10:17Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -827,15 +827,6 @@ target:   v1
 kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/RUSTCATHEDRAL_RM_MOD_BUILD_1.md
-
-## LANTERNDEEPS_RM_MOD_BUILD_1 Phase A: build RM_LanternDeeps as its own RimMandrake mod (mandrake.rm.lanterndeeps) — the Lantern Deeps - an INJECTION layer, no RUT_ twin; skips Phase A step 3
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/LANTERNDEEPS_RM_MOD_BUILD_1.md
 
 ## STONEBACK_BOKKA_ART_STANDARD_1 Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)
 state:    doing
