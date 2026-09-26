@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SeveredTentacleFlesh.xml                      FEVERWOOD_TENTACLE_BESTIARY_1
+
+  "A severed tentacle is the only renewable source of the animal's body" —
+  design sheet §2b/§6j: the canon dianoga food line (pie from the meat, tea
+  from spleen chemicals, cream) needs dianoga BODY, and this is the only way
+  to get it without killing the elder being (which cannot be killed, only
+  driven off — §2b's own permanent-kill row is per-map, not per-animal).
+  Dropped by RM_CompTentacleLimb.Sever()/RM_CompTentacleEye's two upper
+  rungs whenever a limb takes severe damage before it can withdraw.
+
+  A plain raw organic resource, same shape as RM_DrainedFluids
+  (CreatureBehaviors) — no recipe consumes it yet. The actual pie/tea/cream
+  product chain is Cuisine mod territory (FEVERWOOD_DIANOGA_PRISON_1's own
+  note: "the owner's 2026-09-14 ruling on that entry already assigned this
+  material to the Star Wars Cuisine mod"), out of this item's scope. It IS
+  perishable (CompRottable) — real tentacle flesh, not a mineral — same
+  posture as vanilla raw meat.
+
+  PLACEHOLDER ART: vanilla meat has no static texPath to crib — it is
+  generated per-race by RimWorld/ThingDefGenerator_Meat.cs, which branches on
+  body size/flesh type onto one of four fixed atlas paths. RimSage-read this
+  pass (Lines 7-127): a non-humanlike, non-insectoid race at baseBodySize
+  >= 0.7 gets "Things/Item/Resource/MeatFoodRaw/Meat_Big" — the fitting
+  bracket for a limb off something vast — deep-purple tinted, the canon-
+  confirmed dianoga colour ("deep purple skin, purple-staining tea",
+  FEVERWOOD_DIANOGA_PRISON_1) carried to the free-tier Sekkulaath too, since
+  colour is not IP. Same borrowed-texture-plus-tint posture as
+  RM_DrainedFluids/RM_ScaldWalkerChitin.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SeveredTentacleFlesh</defName>
+    <label>severed tentacle flesh</label>
+    <description>A length of thick, rubbery flesh, still faintly warm, cut from a limb of whatever vast thing lives beneath the Fever Wood's pools. It grows back — eventually, on the animal, not in the pack. Traders who know the biome pay well for it; it renders into a rich meat and a strange, purple-tinged tea.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Big</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(90, 30, 110)</color>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>14</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0.7</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <stackLimit>50</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

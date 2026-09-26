@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Sekkulaath_Tentacles.xml                     FEVERWOOD_TENTACLE_BESTIARY_1
+
+  The six limb-types of RM_Sekkulaath, the franchise-free eldritch pool-
+  dweller named by the owner 2026-09-23 (mapped to the dianoga when the
+  Star Wars tier is active — that swap is FEVERWOOD_DIANOGA_PRISON_1's own
+  scope, not this file's). "The animal is never rendered... only tentacles
+  are ever drawn, and they behave as separate pseudo-species" (design sheet
+  §2/§2b, owner verbatim).
+
+  Modelled as stationary Building-category Things, not Pawns: nothing here
+  moves, paths, or needs a Faction/ThinkTree/JobDriver — every behaviour
+  (grip, ranged strike, item deposit, silence, the eye's ladder) is a plain
+  ThingComp CompTick, the same "no AI surface to misconfigure" shape
+  RM_CompPlantAlarm/RM_CompDryFieldEmitter already use in this codebase.
+  This also sidesteps needing a BodyDef, a PawnKindDef, or any of the
+  pawn-specific downed/rescue/corpse machinery that does not apply to a
+  limb (only the pawn IT GRABS needs that, via the Snare role riding
+  RUT_MapComponent_TheTenant's own rescue window).
+
+  Ladder mechanics: RM_CompProperties_TentacleLimb (five roles) /
+  RM_CompProperties_TentacleEye (Bloom) — see those classes' own headers
+  for the full retreat/sever/drive-off/permanent-kill shape. All damage
+  thresholds and cooldowns are INVENTED tuning (flagged per-field on the
+  comp itself); the design sheet rules the LADDER's shape (§2b) and each
+  role's FLAVOUR (§2) but gives no numbers.
+
+  PLACEHOLDER ART: six flat-color 128x128 PNGs, this mod's own Things/
+  namespace (own texture ownership, not a donor reuse) — real bespoke art
+  is owed to the standing art pipeline; searched infrastructure/artpipe/
+  done + registry.jsonl for "sekkulaath"/"tentacle" first (standing rule)
+  and found none for this species (canon_dianoga_v1_* is the SEPARATE
+  campaign-layer dianoga art, FEVERWOOD_DIANOGA_PRISON_1's own asset, not
+  reusable here — Q11a keeps the two tiers visually independent).
+
+  All six carry no <costList>/<designationCategory> (never player-buildable
+  — summoned only by RM_MapComponent_TentacleWatch's ambient roll) and no
+  MayRequire (this mod's own content, wired to its own comps).
+-->
+<Defs>
+
+  <ThingDef Name="RM_SekkulaathTentacleBase" ParentName="BuildingBase" Abstract="true">
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <passability>Impassable</passability>
+    <fillPercent>0.4</fillPercent>
+    <coversFloor>false</coversFloor>
+    <useHitPoints>true</useHitPoints>
+    <tickerType>Normal</tickerType>
+    <drawerType>MapMeshOnly</drawerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <statBases>
+      <Flammability>0.4</Flammability>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SekkulaathTentacleBase">
+    <defName>RM_Sekkulaath_Feeler</defName>
+    <label>feeler tentacle</label>
+    <description>Thin, blind, and slow — it rises out of a still pool to search the shore after any loud noise. Harmless on its own; it is the one you see most, and the first sign that something enormous is paying attention.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_Sekkulaath/RM_Sekkulaath_Feeler</texPath>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_TentacleLimb">
+        <role>Feeler</role>
+        <harvestThing>RM_SeveredTentacleFlesh</harvestThing>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SekkulaathTentacleBase">
+    <defName>RM_Sekkulaath_Snare</defName>
+    <label>snare tentacle</label>
+    <description>Thick, fast, and gripping — canon dianoga tentacles are suckered, and this one shows why. It reaches for whatever wades too close and drags it toward the water. The killer of the six, and the reason nothing drinks at these pools unbothered.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_Sekkulaath/RM_Sekkulaath_Snare</texPath>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_TentacleLimb">
+        <role>Snare</role>
+        <harvestThing>RM_SeveredTentacleFlesh</harvestThing>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SekkulaathTentacleBase">
+    <defName>RM_Sekkulaath_Lash</defName>
+    <label>lash tentacle</label>
+    <description>Long and barbed — the giant form's own tentacles are barbed, canon-confirmed, and this limb is why. It never grips; it strikes at maximum reach and withdraws, punishing anyone who lingers at the margin rather than crossing it.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_Sekkulaath/RM_Sekkulaath_Lash</texPath>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_TentacleLimb">
+        <role>Lash</role>
+        <harvestThing>RM_SeveredTentacleFlesh</harvestThing>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SekkulaathTentacleBase">
+    <defName>RM_Sekkulaath_Porter</defName>
+    <label>porter tentacle</label>
+    <description>More slender and delicate than its kin — a courier, not a hunter. It rises just long enough to set something down at the water's edge: whatever was stripped from the great thing's last meal. Shoot it and the pool goes quiet on you forever; it never brings anything again.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_Sekkulaath/RM_Sekkulaath_Porter</texPath>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_TentacleLimb">
+        <role>Porter</role>
+        <harvestThing>RM_SeveredTentacleFlesh</harvestThing>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SekkulaathTentacleBase">
+    <defName>RM_Sekkulaath_Sentinel</defName>
+    <label>sentinel tentacle</label>
+    <description>Motionless, raised just above the water. It does nothing — it listens. Canon dianoga have excellent hearing, and while this one is up the whole crown's chorus above falls silent to watch it. That silence is the loudest warning the Fever Wood has.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_Sekkulaath/RM_Sekkulaath_Sentinel</texPath>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_TentacleLimb">
+        <role>Sentinel</role>
+        <harvestThing>RM_SeveredTentacleFlesh</harvestThing>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SekkulaathTentacleBase">
+    <defName>RM_Sekkulaath_Bloom</defName>
+    <label>bloom tentacle</label>
+    <description>Vast. It does not reach — it opens, the way a mouth not unlike a sarlacc's opens, and for one long moment the eye beneath the Fever Wood is exposed. This is the near-glimpse of the thing itself, and the only moment it can truly be hurt.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_Sekkulaath/RM_Sekkulaath_Bloom</texPath>
+      <drawSize>2.2</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <Beauty>-8</Beauty>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_TentacleEye">
+        <harvestThing>RM_SeveredTentacleFlesh</harvestThing>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
