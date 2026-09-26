@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T06:35:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T06:37:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -186,7 +186,7 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-summary:  Design (dormant, per DROIDUNIFIEDFRAMEWORKDESIGN.md §0 card 14 / §3.4 E5) for
+summary:  Design (LIVE — the owner's 2026-09-25/26 card sitting un-parked it: all four
 prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
 
 ## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
@@ -864,15 +864,6 @@ kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
 
-## FEVERWOOD_DIANOGA_PRISON_1 A prison tank, not a pen: it teaches, it produces, and it can get out
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6j, §6m.
-prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_PRISON_1.md
-
 ## SEA_BEASTS_TIER_RULING_1 11 of the 18 sea beasts are invented originals filed as Star Wars IP
 state:    doing
 row:      unassigned
@@ -1084,7 +1075,7 @@ needs:    owner
 target:   v1
 kind:     task
 blocked:  dormant design per owner card 14 (design now, do not build); nothing closes it but the owner's read of droid_oracle_voice_design.md
-summary:  Design (dormant, per DROIDUNIFIEDFRAMEWORKDESIGN.md §0 card 14 / §3.4 E5) for
+summary:  Design (LIVE — the owner's 2026-09-25/26 card sitting un-parked it: all four
 prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint

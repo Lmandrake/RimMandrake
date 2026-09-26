@@ -533,3 +533,4 @@
 {"seat":"FOUNDRY","event":"file","id":"FEVERWOOD_DIANOGA_TANK_TUNING_1","title":"Sekkulaath prison tank — real numbers, not placeholders","kind":"task","target":"v1","needs":"owner","caused_by":"FEVERWOOD_DIANOGA_PRISON_1","for":"FOUNDRY","ts":"2026-09-26T06:32:06Z"}
 {"seat":"FOUNDRY","event":"claim","id":"GREATBOLE_HARVEST_LADDER_1","ts":"2026-09-26T06:32:34Z"}
 {"seat":"FOUNDRY","event":"start","id":"GREATBOLE_HARVEST_LADDER_1","ts":"2026-09-26T06:32:40Z"}
+{"seat":"FOUNDRY","event":"close","id":"FEVERWOOD_DIANOGA_PRISON_1","sha":"6318074f5","reason":"prison tank shipped: teaches/produces/escapes; taming numbers + grudge mechanism + maturation timing deferred to FEVERWOOD_DIANOGA_TANK_TUNING_1","ts":"2026-09-26T06:37:22Z"}
