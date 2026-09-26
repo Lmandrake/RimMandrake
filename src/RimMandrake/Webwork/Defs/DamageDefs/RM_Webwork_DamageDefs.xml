@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Webwork_DamageDefs.xml          RM_Webwork · OLLATHRIX_OWNER_SPECIES_1
+
+  The ollathrix's venom, per the owner-and-nest doc §1a: "venom on bite for
+  large prey." Shape copied from RM_Damages_ContactVenom.xml (Core's own
+  ScratchToxic pattern, MEASURED 2026-09-20): a ParentName DamageDef plus
+  additionalHediffs is all a bite needs to carry a hediff, no C# involved.
+
+  victimSeverityScalingByInvBodySize is left FALSE here (unlike the
+  contact-venom scratch, which scales UP for small victims): the doc's own
+  language is "venom on bite for large prey" — the read is a predator's
+  venom meant to put down something ITS size or bigger, not a defensive
+  scratch that punishes something small. A flat severityPerDamageDealt
+  against a serious mandible bite already delivers a heavy dose regardless
+  of the target's size; no threshold field exists on a DamageDef to gate by
+  body size outright (flagged UNCERTAIN in the design doc itself, ❓), so
+  this ships the closest stock-field shape rather than inventing new C# for
+  a threshold this pass does not need.
+-->
+<Defs>
+
+  <DamageDef ParentName="Bite">
+    <defName>RM_Damage_OllathrixVenom</defName>
+    <label>ollathrix venom</label>
+    <deathMessage>{0} has died of ollathrix venom.</deathMessage>
+    <additionalHediffs>
+      <li>
+        <hediff>RM_OllathrixVenom</hediff>
+        <severityPerDamageDealt>0.15</severityPerDamageDealt>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+
+  <HediffDef>
+    <defName>RM_OllathrixVenom</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>ollathrix venom</label>
+    <labelNoun>ollathrix venom</labelNoun>
+    <description>Venom from an ollathrix's mandibles, meant for prey far larger than a person. It burns through the blood fast and hits the heart before it hits anything else — cardiac symptoms outrun the pain.</description>
+    <defaultLabelColor>(0.55, 0.85, 0.35)</defaultLabelColor>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.4</severityPerDay>
+        <showHoursToRecover>true</showHoursToRecover>
+      </li>
+      <li Class="HediffCompProperties_TendDuration">
+        <severityPerDayTended>-1.4</severityPerDayTended>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>mild</label>
+        <minSeverity>0</minSeverity>
+        <painFactor>1.3</painFactor>
+      </li>
+      <li>
+        <label>serious</label>
+        <minSeverity>0.4</minSeverity>
+        <painFactor>1.6</painFactor>
+        <capMods>
+          <li>
+            <capacity>BloodPumping</capacity>
+            <postFactor>0.6</postFactor>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.6</postFactor>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>cardiac arrest</label>
+        <minSeverity>0.85</minSeverity>
+        <lethal>true</lethal>
+        <capMods>
+          <li>
+            <capacity>BloodPumping</capacity>
+            <setMax>0.0</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

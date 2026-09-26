@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Shokk_OllathrixSkin.xml                    mandrake.rsw.shokk
+
+  OLLATHRIX_OWNER_SPECIES_1 (design/Jawa/worldbuilding/biomes/
+  webwork_owner_and_nest_2026-09-23.md §1c, S6 rulings 1 and 6). The
+  free-tier Webwork's owner species, RM_Ollathrix (mandrake.rm.webwork), is
+  an invented spider that maps to the canon Wyyyschokk when this campaign
+  layer is active — same shape as the Fever Wood's Sekkulaath -> dianoga.
+  ONE defName, RM_Ollathrix, in both tiers: this patch swaps only the
+  identity fields (label, labelPlural, description, the three lifeStages'
+  bodyGraphicData.texPath) onto that same def. It never touches mechanics —
+  RM_Ollathrix's stats, tools, comps and race fields are unchanged by this
+  patch, per S6 ruling 6 ("the skin patch lives RSW, tier-correct for a Star
+  Wars creature's LOOK") and per this item's own scope note (new mechanics —
+  the bound hediff, spit, sun-scald, emergent-spawn — belong to
+  SHOKK_SKIN_SHRINK_1, which moves them onto this same def from their
+  current home in RSW_Shokk_Wyyyschokk.xml; NOT duplicated here).
+
+  Every operation below is wrapped in PatchOperationConditional with match
+  only (no nomatch) — same posture as the sibling RSW_Shokk_Wyyyschokk.xml
+  in this mod: a patch that matches nothing logs nothing, so a player
+  running this mod without mandrake.rm.webwork's def present (should not
+  happen — it is a hard modDependency/loadAfter, About.xml) gets a quiet
+  no-op instead of a red error on every launch.
+
+  Reuses the Wyyyschokk's already-shipped art path (swanimals/Wyyyschokk/
+  Wyyyschokk{,_east,_north}) rather than commissioning new art — the same
+  texPath RSW_Wyyyschokk's own PawnKindDef already uses, shipped by the
+  donor mod `mlie.starwarsanimalcollection` (already a modDependency of
+  this mod) and/or `mandrake.rsw.wyyyschokkartoverride`.
+
+  🔴 NOTE FOR WHOEVER TOUCHES THIS NEXT: the owner-and-nest doc's §1c
+  premise ("there is no RUT_-owned Wyyyschokk def anywhere in this repo to
+  relocate") was true when the Shokk mod's own About.xml was written
+  (2026-09-11) but is STALE now — MLIE_FAUNA_ABSORPTION_1 Wave C
+  (2026-09-18, 609daf5ad) separately ported the donor's Wyyyschokk in full
+  as `RSW_Wyyyschokk` (its own BodyDef, egg-laying, ability, TrophyCraft
+  fang-drop recipe — src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
+  RSW_Wyyyschokk.xml), landing 5 days before this doc. That absorbed port
+  is a SEPARATE, independent def not currently wired into any biome's
+  wildAnimals — this patch does not touch it, reference it, or retire it.
+  The two "wyyyschokk"s that will now exist in a full campaign install (the
+  absorbed RSW_Wyyyschokk race, still homeless, and RM_Ollathrix wearing the
+  same look under this patch) is a real open question, flagged rather than
+  resolved here — this item's scope is the skin patch only, not adjudicating
+  the absorption.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/label</xpath>
+      <value>
+        <label>wyyyschokk</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/labelPlural</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/labelPlural</xpath>
+      <value>
+        <labelPlural>wyyyschokk</labelPlural>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/description</xpath>
+      <value>
+        <description>Wyyyschokk to the galaxy, feralisk on this world — a species of gigantic spider first catalogued on Kashyyyk, both highly intelligent and extremely hostile. Whatever web-thick world it is found on, it hunts the same way: by feel, through silk, never by sight.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/label</xpath>
+      <value>
+        <label>wyyyschokk</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/labelPlural</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/labelPlural</xpath>
+      <value>
+        <labelPlural>wyyyschokk</labelPlural>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Art swap, one lifeStage at a time (baby/juvenile/adult, in that
+       order in RM_Ollathrix.xml) — indices are positional, not a defName
+       lookup, so a reordered lifeStages list on RM_Ollathrix simply
+       stops matching (quiet no-op via the Conditional wrapper) rather
+       than swapping the wrong stage's art. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+      <value>
+        <texPath>swanimals/Wyyyschokk/Wyyyschokk</texPath>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+      <value>
+        <texPath>swanimals/Wyyyschokk/Wyyyschokk</texPath>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+      <value>
+        <texPath>swanimals/Wyyyschokk/Wyyyschokk</texPath>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
