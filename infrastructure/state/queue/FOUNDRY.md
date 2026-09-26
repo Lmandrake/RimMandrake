@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T10:25:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T10:50:51Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -846,15 +846,6 @@ kind:     task
 summary:  1. Look at it against the newer creature art in the same mod, and against the bar the
 prose:    infrastructure/state/items/STONEBACK_BOKKA_ART_STANDARD_1.md
 
-## GREENTIDE_JUNGLE_TREE_ROSTER_1 The Greentide gets ten-plus jungle trees of our own, plus its signature giant
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Design the roster first, on paper: ≥10 jungle TREE species with bizarre Star Wars names,
-prose:    infrastructure/state/items/GREENTIDE_JUNGLE_TREE_ROSTER_1.md
-
 ## HOSTILE_MOBILE_PLANTS_1 Hostile mobile plants as animals - a new creature class
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -863,6 +854,24 @@ target:   v1
 kind:     task
 summary:  1. Design sitting first: answer the five questions above as a card set for him. ⛔ Author nothing
 prose:    infrastructure/state/items/HOSTILE_MOBILE_PLANTS_1.md
+
+## GREENTIDE_HUMMING_GROVE_1 A grove that hums at differing pitches as you walk through it
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  1. Copy RMMapComponentBiomeAttitude's shape — plain MapComponent, per-tick layer decision,
+prose:    infrastructure/state/items/GREENTIDE_HUMMING_GROVE_1.md
+
+## GREENTIDE_FRENZY_DISEASE_1 The Frenzy - a disease you infect yourself with on purpose
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Name the source plant in the 21-row roster (GREENTIDEJUNGLETREEROSTER1) the dose is
+prose:    infrastructure/state/items/GREENTIDE_FRENZY_DISEASE_1.md
 
 ## FEVERWOOD_ANT_HIVE_DUNGEON_1 Ant hives are reactive procedural dungeons
 state:    doing  (BLOCKED)
@@ -1477,46 +1486,6 @@ thin:     no ## spec
 summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
 prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
 
-## GREENTIDE_BIOME_DENSITY_1 The Greentide is choked with foliage and brutal to cross
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Establish the real mechanism on the Desktop first. Which field(s) govern total plant coverage,
-prose:    infrastructure/state/items/GREENTIDE_BIOME_DENSITY_1.md
-
-## GREENTIDE_HUMMING_GROVE_1 A grove that hums at differing pitches as you walk through it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Copy RMMapComponentBiomeAttitude's shape — plain MapComponent, per-tick layer decision,
-prose:    infrastructure/state/items/GREENTIDE_HUMMING_GROVE_1.md
-
-## GREENTIDE_RISK_REWARD_EXCHANGE_1 The jungle is terrifying, and pays accordingly
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Audit both sides first, against the items above, and say what each axis already has. ⛔ Do not
-prose:    infrastructure/state/items/GREENTIDE_RISK_REWARD_EXCHANGE_1.md
-
-## GREENTIDE_FRENZY_DISEASE_1 The Frenzy - a disease you infect yourself with on purpose
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Name the source plant in the 21-row roster (GREENTIDEJUNGLETREEROSTER1) the dose is
-prose:    infrastructure/state/items/GREENTIDE_FRENZY_DISEASE_1.md
-
 ## GREENTIDE_GRENADE_WEAPONS_1 Jungle grenades: stench, seeding and toxin
 state:    proposed
 row:      unassigned
@@ -1576,16 +1545,6 @@ kind:     build
 thin:     no ## spec, no ## criteria
 summary:  PYRELANDSBURROWERGRAZER1 — dedicated burrower-grazer for the Pyrelands' fire-web
 prose:    infrastructure/state/items/PYRELANDS_BURROWER_GRAZER_1.md
-
-## GREENTIDE_YEARNING_FRUIT_1 Digestive-accelerant fruit (the fruit that yearns): plant def + eat-fast/pass-seed hediff + filth C#
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  GREENTIDEYEARNINGFRUIT1 — digestive-accelerant fruit: def + hediff built, filth C split out
-prose:    infrastructure/state/items/GREENTIDE_YEARNING_FRUIT_1.md
 
 ## DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1 grain-scale commensal fauna riding RM_MirrorGiant's shade
 state:    proposed
@@ -1696,3 +1655,43 @@ kind:     design
 thin:     no ## spec
 summary:  SUMPTARLIVINGSYSTEMS1 — living-map responders, and tar rain (mod vs scenario)
 prose:    infrastructure/state/items/SUMP_TAR_LIVING_SYSTEMS_1.md
+
+## GREENTIDE_UNDERSTORY_PLANT_ROSTER_1 the seven invented non-tree Greentide understory plants
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Confirm the sight-blocking mechanism on the Desktop (fillPercent/cover) before
+prose:    infrastructure/state/items/GREENTIDE_UNDERSTORY_PLANT_ROSTER_1.md
+
+## GREENTIDE_DENSITY_SETTINGS_1 Mod Settings sliders for Greentide plantDensity/movementDifficulty
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Add (or extend, if mandrake.rm.greentide already has a settings class) a ModGreentideSettings
+prose:    infrastructure/state/items/GREENTIDE_DENSITY_SETTINGS_1.md
+
+## GREENTIDE_FEVER_SPECIALISTS_1 Survivors become specialists: Greentide fevers as a qualification, not just attrition
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     spec, verify and criteria all present
+summary:  1. Answer U1 and U2 on the Desktop first. ⛔ Author nothing before that — the answers decide
+prose:    infrastructure/state/items/GREENTIDE_FEVER_SPECIALISTS_1.md
+
+## GREENTIDE_CANOPY_SWARM_1 The Greentide's insect axis: a new canopy-hazard swarm, driving the Gnawer/Shatterer tree-fall mechanics
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     spec, verify and criteria all present
+summary:  1. Design the creature concept as a card set first, per this project's standing practice for a new
+prose:    infrastructure/state/items/GREENTIDE_CANOPY_SWARM_1.md
