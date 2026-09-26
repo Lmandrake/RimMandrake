@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T06:46:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T06:48:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -881,15 +881,6 @@ target:   v1
 kind:     task
 summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §6.
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_GUILD_1.md
-
-## SEA_BEASTS_TIER_RULING_1 11 of the 18 sea beasts are invented originals filed as Star Wars IP
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Rename the 11 ThingDefs / PawnKindDefs and their juveniles from RSW to RM, with the C
-prose:    infrastructure/state/items/SEA_BEASTS_TIER_RULING_1.md
 
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
