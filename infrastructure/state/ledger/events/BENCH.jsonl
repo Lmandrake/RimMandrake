@@ -223,3 +223,6 @@
 {"seat":"BENCH","event":"note","id":"SEA_DIVE_MAPS_BUILD_1","text":"Gear matrix Q5 (17:11, decision taken by question card): patch the KotOR flight suits with our dive + heat offsets. All gear-matrix questions answered; exposure_gear_matrix_spec.md §6 needs folding (Q1 all-DLC, Q2-Q5 per notes).","ts":"2026-09-26T00:50:50Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"owner walks SCALD_REVIEW.rws (Scald bedazzle sitting)","ts":"2026-09-26T00:53:10Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-26T01:08:29Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-26T02:27:47Z"}
+{"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-26T02:27:57Z"}
+{"seat":"BENCH","event":"note","id":"SEA_DIVE_MAPS_BUILD_1","text":"Decision taken by question card 2026-09-25 19:27: hand to FOUNDRY only after the owner walks SCALD_REVIEW, since the walk may change floor visuals.","ts":"2026-09-26T02:32:47Z"}

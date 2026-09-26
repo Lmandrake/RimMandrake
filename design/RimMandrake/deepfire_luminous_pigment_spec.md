@@ -1,7 +1,7 @@
 # Deepfire — luminous pigment mod (`LuminousPigment`) — design spec
 
 **Status: RULED 2026-09-25 (three §11 cards, 15:42–16:16) — nothing built.** Every ruling cited
-is from the ledger item; the one choice still open is §11 Q5, which FOUNDRY starts on its default.
+is from the ledger item; every §11 question is ruled.
 Mod folder `src/RimMandrake/LuminousPigment` · packageId `mandrake.rm.luminouspigment` ·
 prefix `RM_` · namespace `RimMandrake.LuminousPigment` · RimMandrake tier (no Star Wars IP).
 Authority on rulings: `DEEPFIRE_PIGMENT_MOD_1` (ledger). Research it builds on:
@@ -231,16 +231,21 @@ Deepfire per tank per 12 days**: two coats on a chair a quadrum, which is "very 
   false while unfuelled. The mat's own clock does not run inside the tank (it is alive in culture).
   Losing power for `tankPowerGraceHours` (default 6 h) kills the four plants (vanilla
   hydroponics behaviour) *and* the seed culture, so a blackout costs a mat, not just a crop.
-- **Ocean water (FlowWorks present only — card ruling: none needed without it):** when
-  `mandrake.rm.flowworks` is loaded, `RM_PlaceWorker_GlowTankWater` requires at least one cell
-  orthogonally adjacent to the tank to carry a FlowWorks liquid terrain of `RM_Liquid_SaltWater`
-  or `RM_Liquid_BoilingWater` (the two ocean liquids in `RM_LiquidDefRegistry.xml`; brine is
-  §11 Q5), and the same check runs each rare tick — dry tank = growth paused, inspect string says
-  so. Resolution of "which liquid is on this cell" goes through FlowWorks by reflection
-  (`RM_WorldComponent_LiquidTags`/terrain→liquid lookup — the exact accessor is UNMEASURED; the
-  binding is soft, one `Type.GetType` with a warn-once, the `NinefoldBandBridge` shape). Without
-  FlowWorks the tank needs nothing but power. `tankNeedsOceanWater` is a setting that can turn the
-  requirement off even with FlowWorks present.
+- **Ocean water (FlowWorks present only — card ruling: none needed without it; Q5 ruled
+  2026-09-25: salt or boiling only, and the tank may stand away from the sea if the water is
+  carried to it):** when `mandrake.rm.flowworks` is loaded the tank needs salt or boiling water —
+  `RM_Liquid_SaltWater` or `RM_Liquid_BoilingWater`, the two ocean liquids in
+  `RM_LiquidDefRegistry.xml`; brine and fresh water do not count. It gets it one of two ways:
+  (1) a cell orthogonally adjacent to the tank carries one of those liquid terrains, or
+  (2) it is placed anywhere and colonists haul ocean water to it — a second fill bar the tank
+  drinks down while growing, refilled by a haul job. How water becomes a haulable thing is
+  UNMEASURED: check FlowWorks for an existing carried-liquid item before inventing one. The
+  check runs each rare tick — no adjacent ocean and an empty fill bar = growth paused, inspect
+  string says so. Resolution of "which liquid is on this cell" goes through FlowWorks by
+  reflection (`RM_WorldComponent_LiquidTags`/terrain→liquid lookup — the exact accessor is
+  UNMEASURED; the binding is soft, one `Type.GetType` with a warn-once, the `NinefoldBandBridge`
+  shape). Without FlowWorks the tank needs nothing but power. `tankNeedsOceanWater` is a setting
+  that can turn the requirement off even with FlowWorks present.
 - Look: a squat glass-and-iron vat, two by two, the culture visible as banded colour inside, a
   dim glow (`CompGlower 2.0`, colour from the culture — static, pale) when seeded and powered.
 
@@ -770,9 +775,5 @@ Flight of any kind: none — nothing here flies. Bridge holds per step, released
 
 ## 11 Open questions for the owner
 
-One remains; FOUNDRY starts on its default. (Q1–Q4 and Q6–Q12 were ruled on the three cards of
-2026-09-25 15:42–16:16 and are folded into the sections above — the numbering is kept so the
-ledger notes still resolve.)
-
-- **Q5 — GlowTank water when FlowWorks is present.** (a) salt or boiling water (**default**,
-  §2.5); (b) brine also (the Grey Sea's liquid); (c) any water at all.
+None. Q1–Q12 are all ruled and folded into the sections above; the numbering is kept so the
+ledger notes still resolve.
