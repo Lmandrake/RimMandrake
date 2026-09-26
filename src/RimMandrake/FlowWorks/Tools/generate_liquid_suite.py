@@ -531,6 +531,25 @@ def load_leaf(defs_by_name, leaf_name):
     return d["fields"]
 
 
+# FLOWWORKS_DONOR_AFFORDANCE_GAP_1: the frozen leaf's affordance list is
+# POST-PATCH against whatever mods were active at capture time, so it
+# unions in affordances that belong to OTHER mods entirely. Referencing
+# those bare would make every liquid terrain fail to resolve that affordance
+# (spammed "could not resolve cross-reference" + the affordance silently
+# dropped) on a mod list without the donor. Both known donor affordances
+# only matter to a THING or RECIPE the donor mod itself owns (a bridge
+# buildable on any water depth; a meditation stone placeable on shallow
+# water) — nothing FlowWorks ships checks for either — so there is no
+# "our own affordance" substitute that would do anything: keep the exact
+# donor defName (so the donor's own gameplay still works when it IS loaded)
+# and gate the <li> with MayRequire so it degrades to "affordance simply
+# absent" rather than a load error when the donor is not present.
+DONOR_AFFORDANCE_MAYREQUIRE = {
+    "BMT_DeepWaterBridgeable": "biomesteam.biomescore",       # Biomes! Core
+    "TST_TerrainForMeditationStone": "toastyman.moreritualseats",  # More Ritual Seats
+}
+
+
 def union_tags_affordances(leaf_fields, extra_tags):
     tags = list(dict.fromkeys((leaf_fields.get("tags") or []) + extra_tags))
     # Drop the vanilla salinity/ocean tags that don't apply to a still pool;
@@ -563,7 +582,11 @@ def build_terrain_xml(defname, label, description, leaf_fields,
     if affordances:
         lines.append("    <affordances>")
         for a in affordances:
-            lines.append(f"      <li>{a}</li>")
+            donor = DONOR_AFFORDANCE_MAYREQUIRE.get(a)
+            if donor:
+                lines.append(f'      <li MayRequire="{donor}">{a}</li>')
+            else:
+                lines.append(f"      <li>{a}</li>")
         lines.append("    </affordances>")
     if tags:
         lines.append("    <tags>")
@@ -617,7 +640,11 @@ def generate(liquid_key, defs_by_name, out_dir: Path):
   Source leaf: frozen dump OFFICIAL-2026-08-29 (2026-08-29T13-30-02Z),
   defs/TerrainDef.json, WaterShallow/WaterDeep as the live mod stack resolved
   them (POST-PATCH — tags/affordances union-carried from BMT, DBH, TST, as
-  measured directly from that capture, not re-typed by hand).
+  measured directly from that capture, not re-typed by hand). Donor-owned
+  affordances (BMT_DeepWaterBridgeable -> biomesteam.biomescore,
+  TST_TerrainForMeditationStone -> toastyman.moreritualseats) carry a
+  MayRequire so this mod stays standalone without those donors
+  (FLOWWORKS_DONOR_AFFORDANCE_GAP_1).
 
   This regenerates from the LIQUID_ROWS table in
   src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py; edit the table,
