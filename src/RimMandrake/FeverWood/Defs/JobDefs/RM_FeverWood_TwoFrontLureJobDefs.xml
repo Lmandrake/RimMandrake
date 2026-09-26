@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWood_TwoFrontLureJobDefs.xml                FEVERWOOD_TWO_FRONT_LURE_1
+
+  RM_StunForStaking reuses RM_JobDriver_StunVictim
+  (mandrake.rm.environmentalhazards, FEVER_WOOD_MECHANICS_1 F9 spike) UNCHANGED
+  — that driver's own header already calls it generic/content-blind ("any
+  pawn can non-lethally down any other pawn"); wiring it to a new JobDef here
+  is the first WorkGiver that ever assigns it. RM_HaulToStake drives the new
+  RM_JobDriver_HaulToStake (this item, FeverWood-tier since it targets the
+  FeverWood-specific lure stake building).
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_StunForStaking</defName>
+    <driverClass>RimMandrake.EnvironmentalHazards.RM_JobDriver_StunVictim</driverClass>
+    <reportString>subduing TargetA for staking.</reportString>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_HaulToStake</defName>
+    <driverClass>RimMandrake.FeverWood.RM_JobDriver_HaulToStake</driverClass>
+    <reportString>hauling TargetA to the lure stake.</reportString>
+  </JobDef>
+
+</Defs>

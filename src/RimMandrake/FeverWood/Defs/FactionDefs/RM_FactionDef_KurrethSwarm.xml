@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FactionDef_KurrethSwarm.xml                    FEVERWOOD_TWO_FRONT_LURE_1
+
+  The first of the "two hidden FactionDefs" the item's own already-built
+  note names ("Setting it on both the ant swarm and the feralisk brood
+  delivers hostile to the player AND each other — permanentEnemy makes a
+  faction hostile to everyone including another permanentEnemy faction",
+  FEVER_WOOD_MECHANICS_1 F9, engine-verified). Never surfaced in diplomacy
+  or world faction generation (hidden, requiredCountAtGameStart 0,
+  displayInFactionSelection false) — created lazily by
+  RM_MapComponent_TwoFrontLure the first time a raid actually needs one,
+  same pattern vanilla uses for Faction.OfInsects.
+
+  humanlikeFaction false: LordJob_AssaultColony's own kidnap/steal/timeout-
+  and-flee subgraphs are all gated on humanlikeFaction, so a swarm that
+  "forever swarms" (the_fever_wood.md) simply never gets those options —
+  it fights until dead or the map stops being hostile, no extra code
+  needed to keep ants from politely retreating.
+
+  RM_Kurreth (this mod, franchise-free per Q11a) is the whole roster: its
+  own file header already flags itself as populating "the off-map raiding
+  faction (FEVERWOOD_TWO_FRONT_LURE_1)" alongside the ant hive dungeon.
+-->
+<Defs>
+
+  <FactionDef>
+    <defName>RM_FactionDef_KurrethSwarm</defName>
+    <label>kurreth swarm</label>
+    <pawnSingular>kurreth</pawnSingular>
+    <pawnsPlural>kurreth</pawnsPlural>
+    <categoryTag>FeverWoodTwoFrontRaiders</categoryTag>
+    <humanlikeFaction>false</humanlikeFaction>
+    <hidden>true</hidden>
+    <permanentEnemy>true</permanentEnemy>
+    <canSiege>false</canSiege>
+    <canStageAttacks>false</canStageAttacks>
+    <canGenerateQuestSites>false</canGenerateQuestSites>
+    <canRequestTraders>false</canRequestTraders>
+    <canRequestMilitaryAid>false</canRequestMilitaryAid>
+    <canRequestOrbitalTrader>false</canRequestOrbitalTrader>
+    <requiredCountAtGameStart>0</requiredCountAtGameStart>
+    <maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>0</startingCountAtWorldCreation>
+    <displayInFactionSelection>false</displayInFactionSelection>
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <li>
+            <kind>RM_Kurreth</kind>
+            <selectionWeight>10</selectionWeight>
+          </li>
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>

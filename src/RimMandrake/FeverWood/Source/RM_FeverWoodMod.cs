@@ -77,6 +77,35 @@ namespace RimMandrake.FeverWood
         /// able to retune without a rebuild.</summary>
         public static float antHiveChanceMultiplier = 1f;
 
+        /// <summary>FEVERWOOD_TWO_FRONT_LURE_1 master toggle. Off: the lure
+        /// stake can still be built and a pawn can still be staked to it
+        /// (the designator/WorkGiver chain is unaffected), but
+        /// RM_MapComponent_TwoFrontLure never rolls an arrival for any
+        /// staked lure on this map — an inert prop, not a working feature,
+        /// same "all-off degrades gracefully" posture as this mod's other
+        /// toggles. Default ON.</summary>
+        public static bool twoFrontLureEnabled = true;
+
+        /// <summary>Mean hours between first-wave rolls while at least one
+        /// RM_LureStake on the map carries live bait (Rand.MTBEventOccurs
+        /// unit: days, converted in RM_MapComponent_TwoFrontLure). INVENTED
+        /// default: 6 — no number is given in the design sheet for how long
+        /// a staked lure takes to be found.</summary>
+        public static float twoFrontLureRaidMtbHours = 6f;
+
+        /// <summary>Chance, once a first wave has arrived, that a second
+        /// wave also comes. INVENTED default: 0.5 — the design sheet's own
+        /// "if only ONE arrives, that is bad" (§5) rules out both 0 and 1;
+        /// a coin flip is the simplest number that keeps both outcomes real.</summary>
+        public static float twoFrontLureSecondWaveChance = 0.5f;
+
+        /// <summary>Delay range (hours) from the first wave's arrival to the
+        /// second wave's, so the two can never land on the same tick —
+        /// "Shouldn't both come precisely at the same time... maybe the
+        /// other arrives too" (owner, §5). INVENTED default: 2-8 hours.</summary>
+        public static float twoFrontLureSecondWaveMinHours = 2f;
+        public static float twoFrontLureSecondWaveMaxHours = 8f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -87,6 +116,11 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref sekkulaathEscapeRiskMultiplier, "sekkulaathEscapeRiskMultiplier", 1f);
             Scribe_Values.Look(ref antHiveDungeonEnabled, "antHiveDungeonEnabled", true);
             Scribe_Values.Look(ref antHiveChanceMultiplier, "antHiveChanceMultiplier", 1f);
+            Scribe_Values.Look(ref twoFrontLureEnabled, "twoFrontLureEnabled", true);
+            Scribe_Values.Look(ref twoFrontLureRaidMtbHours, "twoFrontLureRaidMtbHours", 6f);
+            Scribe_Values.Look(ref twoFrontLureSecondWaveChance, "twoFrontLureSecondWaveChance", 0.5f);
+            Scribe_Values.Look(ref twoFrontLureSecondWaveMinHours, "twoFrontLureSecondWaveMinHours", 2f);
+            Scribe_Values.Look(ref twoFrontLureSecondWaveMaxHours, "twoFrontLureSecondWaveMaxHours", 8f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -130,6 +164,21 @@ namespace RimMandrake.FeverWood
               + "its plain hostile defenders.");
             list.Label("Hive frequency multiplier (lower = rarer): " + antHiveChanceMultiplier.ToString("0.00"));
             antHiveChanceMultiplier = list.Slider(antHiveChanceMultiplier, 0f, 3f);
+            list.GapLine();
+            list.CheckboxLabeled("Two-front lure raids", ref twoFrontLureEnabled,
+                "A buildable stake for staking a tamed animal or prisoner as living bait. While bait is "
+              + "staked, the Fever Wood's two raiders (the kurreth swarm, and — with the Star Wars "
+              + "animal collection installed — the feralisk/Wyyyschokk brood) may converge on it one "
+              + "after the other, never both at once. Off: the stake and staking still work, but no "
+              + "raid is ever rolled.");
+            list.Label("Mean hours until a first wave answers a staked lure: " + twoFrontLureRaidMtbHours.ToString("0.0"));
+            twoFrontLureRaidMtbHours = list.Slider(twoFrontLureRaidMtbHours, 1f, 24f);
+            list.Label("Chance a second wave follows the first: " + twoFrontLureSecondWaveChance.ToString("0.00"));
+            twoFrontLureSecondWaveChance = list.Slider(twoFrontLureSecondWaveChance, 0f, 1f);
+            list.Label("Second-wave delay range (hours): " + twoFrontLureSecondWaveMinHours.ToString("0.0")
+                + " - " + twoFrontLureSecondWaveMaxHours.ToString("0.0"));
+            twoFrontLureSecondWaveMinHours = list.Slider(twoFrontLureSecondWaveMinHours, 0.5f, 12f);
+            twoFrontLureSecondWaveMaxHours = list.Slider(twoFrontLureSecondWaveMaxHours, 0.5f, 24f);
 
             list.End();
         }

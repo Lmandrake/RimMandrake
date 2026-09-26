@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Hediff_LureStaked.xml                          FEVERWOOD_TWO_FRONT_LURE_1
+
+  Owner ruling (fever_wood_deep_and_mud_2026-09-23.md §6l, verbatim): "Both
+  enemies like helpless prey chained down and wounded." The staking chain
+  (RM_Designator_StakeLure flags a tamed animal or prisoner ->
+  RM_WorkGiver_StunForStaking wounds it down if not already Downed, reusing
+  RM_JobDriver_StunVictim verbatim -> RM_WorkGiver_HaulToStake/
+  RM_JobDriver_HaulToStake carries it here) already guarantees the target is
+  Downed before RM_CompLureStake.TryStake is ever called — that IS "wounded"
+  in mechanical terms. This hediff is the "chained down" half: it keeps the
+  staked pawn at the stake
+  rather than letting it get back up and wander off once Downed naturally
+  clears, by holding both Moving and Consciousness capacities below the
+  vanilla Downed threshold for as long as it is staked. Removed only by
+  RM_CompLureStake (on release, on the bait's death, or on the stake's own
+  destruction) — never naturally curable.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_LureStaked</defName>
+    <hediffClass>Hediff</hediffClass>
+    <label>staked as lure</label>
+    <description>Chained down at a lure stake, wounded and unable to break free. Whatever finds it first is not going to check whether it agreed to this.</description>
+    <defaultLabelColor>(0.5, 0.15, 0.1)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <maxSeverity>1.0</maxSeverity>
+    <initialSeverity>1.0</initialSeverity>
+    <stages>
+      <li>
+        <painOffset>0.15</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0</setMax>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.1</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>
