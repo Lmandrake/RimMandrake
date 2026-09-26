@@ -109,6 +109,41 @@ A stated verdict with the reason — kept, or regenerated with the old and new s
 - [ ] New art put in front of him beside the old, once the Desktop daemon has run.
 - [ ] Only then swapped in, with his permission.
 
+## status — 2026-09-25 (FOUNDRY)
+
+**Still pending — the regen has NOT completed.** All three
+`infrastructure/artpipe/pending/RSW_Stoneback_{south,east,north}.json` jobs are still sitting in
+`pending/`, unclaimed. `infrastructure/artpipe/done/` has no Stoneback entries, and the three
+`_artsrc/RSW_Stoneback_{south,east,north}/` directories are empty (dated 2026-09-23, i.e. created
+at queue time, never filled).
+
+🔴 **Not just waiting in line — the daemon already tried twice and both attempts were rejected by
+its own offline validator**, not by a human. `registry.jsonl` shows, for all three facings:
+- 2026-09-23 21:18 local: `generated` → `validated verdict:"fail"` (immediate, `elapsed_s: null` on
+  the generate event — looks like a quota/early-abort attempt, not a real render).
+- 2026-09-23 23:02 local: `generated` (real render, ~5s elapsed) → `validated verdict:"fail"`
+  (near-instant after) — a genuine generation that the pipeline's automated gate then rejected.
+
+Both times the reconcile logic returned the job to `pending/` for retry (consistent with them
+sitting there now with no `attempts` counter or reject reason recorded in the job JSON, and no
+rejected image kept anywhere to inspect why). So there is nothing to put in front of the owner yet
+— no successful generation has ever completed for this creature.
+
+**Queue position**: `pending/` holds **434** jobs total; the daemon claims by ascending
+`(priority, name)`, and **337 of those 434 carry a priority number lower than our 120** (lower
+number = claimed first), so all three Stoneback jobs are well back in the queue even before
+counting the 5 jobs tied at exactly 120. This is on top of already having failed its own validator
+twice.
+
+Registry-search caveat from the section above still holds and was re-confirmed: the six stale
+`2026-09-20T16:51:43Z` / `DESERT_FAMILY_PORT_EXECUTION_1` rows are the korrum's, not this item's —
+disambiguated by timestamp before drawing any conclusion above.
+
+No swap, no comparison sheet, no art to show him — none of that is possible until a generation
+attempt actually clears the automated validator. Left in `doing`, not `needs=owner`, since the
+owner-facing checklist items are still unreachable. Re-check `pending/`/`registry.jsonl` for these
+three job ids before doing anything else on this item.
+
 ## criteria
 
 The bokka looks like it belongs beside the creatures we are making now.

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T03:31:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T03:41:20Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -819,6 +819,15 @@ kind:     task
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
+## STONEBACK_BOKKA_ART_STANDARD_1 Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Look at it against the newer creature art in the same mod, and against the bar the
+prose:    infrastructure/state/items/STONEBACK_BOKKA_ART_STANDARD_1.md
+
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing
 row:      unassigned
@@ -1424,16 +1433,6 @@ thin:     spec, verify and criteria all present
 summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
 prose:    infrastructure/state/items/GREENTIDE_RM_MOD_BUILD_1.md
 
-## CONTAGION_RM_MOD_BUILD_1 Phase A: build RM_Contagion as its own RimMandrake mod (mandrake.rm.contagion) — the Contagion
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/CONTAGION_RM_MOD_BUILD_1.md
-
 ## WEBWORK_RM_MOD_BUILD_1 Phase A: build RM_Webwork as its own RimMandrake mod (mandrake.rm.webwork) — the Webwork
 state:    proposed
 row:      unassigned
@@ -1513,16 +1512,6 @@ kind:     build
 thin:     no ## spec, no ## criteria
 summary:  FURNACEBEASTWORLDMIGRATION1
 prose:    infrastructure/state/items/FURNACEBEAST_WORLD_MIGRATION_1.md
-
-## STONEBACK_BOKKA_ART_STANDARD_1 Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Look at it against the newer creature art in the same mod, and against the bar the
-prose:    infrastructure/state/items/STONEBACK_BOKKA_ART_STANDARD_1.md
 
 ## SW_FAUNA_NEVER_IN_RM_TIER_1 Route every Star Wars fauna row out of RM_-tier biome defs into the Utinni patch layer (97 rows, 12 biomes) — owner ruling Q11, taken by question card
 state:    proposed
