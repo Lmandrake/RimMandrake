@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaFlora.xml                 TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  GREYSEA_CRYSTAL_FLORA_1 — the seven crystalline forms of the Grey Sea floor.
+
+  🔴 THE AUTHORITY IS THE OWNER'S OWN TEXT, NOT THIS FILE.
+  Five of the seven are specified verbatim by him in
+  design/Jawa/worldbuilding/biomes/the_grey_deep_content_2026-09-26.md
+  §4.2-§4.6, and the sheet says outright: "that text is the authority for any
+  def." ⛔ Do not paraphrase a spec into a def without going back to the
+  quote. Each block below carries his sentence that decided it.
+
+  MEASURED before authoring: no crystal plant existed in any Grey def, and
+  RM_GreySea shipped no <wildPlants> at all. The closest shipped pattern for
+  a pocket-floor flora set is the Lantern Deeps' RM_DeepFlora.xml.
+
+  ============================================================================
+  🔴 THE IDEA, IN ONE SENTENCE OF HIS
+  ============================================================================
+      "Green plants growing INSIDE the crystal, using proteins to force-align
+       the salt outside them as armour. Pink, violet and amber geometric
+       solids sitting on the sea floor with striking natural beauty."
+
+  🔴 AND HIS ONE AESTHETIC RULE, VERBATIM, WHICH GOES ON EVERY ART BRIEF FOR
+  THIS BIOME:
+      "marred slightly, don't make them too perfect or they look
+       manufactured."
+  Every crystal form is chipped, clouded or asymmetric somewhere. A clean
+  render of any of these is a WRONG render, not a nice one.
+
+  ============================================================================
+  THE THREE ENGINE FACTS THAT MAKE A FLOOR PLANT POSSIBLE AT ALL
+  ============================================================================
+  All three MEASURED this pass against the decompiled engine. Any one of them
+  missed and the whole set silently never spawns — no error, no log line.
+
+  1. 🔴 completelyIgnoreFertility TRUE on every def here. The floor's one
+     terrain, RM_SeaFloorGround, is fertility 0. WildPlantSpawner.
+     CheckSpawnWildPlantAt bails on `fertilityGrid.FertilityAt(c) <= 0f`
+     UNLESS the biome has at least one plant with this flag, and
+     GetDesiredPlantsCountAt then substitutes fertility 1 for such a cell.
+     PlantUtility.CanEverPlantAt skips its own fertilityMin check on the same
+     flag. Remove it from all seven and the Grey floor has no flora, forever.
+
+  2. 🔴 BiomeDef.plantDensity DEFAULTS TO 0 and RM_GreySea never set it.
+     GetDesiredPlantsCountAt multiplies by it, so zero desired plants
+     everywhere. Set on the biome def in the same commit as this file.
+
+  3. 🔴 The vanilla `Plants` GenStepDef was not in the sea-dive generator's
+     genSteps. Added to RM_SeaDiveGenerator_GreySea (order 900, after the
+     formation scatter at 860-876) so the flora sees the pillars and domes
+     it clusters against.
+
+  growMinGlow/growOptimalGlow are 0 on every def: the pocket map is
+  isUnderground and the sheet's murk is blind. cavePlant stays FALSE —
+  WildPlantSpawner requires plant.cavePlant to match GoodRoofForCavePlant for
+  the cell, and the Grey floor generates unroofed.
+
+  ============================================================================
+  BAN 4 HOLDS: NOTHING HERE EMITS LIGHT
+  ============================================================================
+  the_grey_deep.md ban 4 — "No light-source flora, no bioluminescent dressing
+  … the murk stays blind." Every one of the seven USES filtered light or
+  chemistry and none produces any. No glower comp anywhere in this file, and
+  none may be added. (Sheet §4a states this explicitly for all seven.)
+
+  Two forms LOOK like they cross the inherited "no heliotropism, no
+  sun-tracking, no plants that open and close" and do not — RULED ADDITIVE
+  2026-09-26: the Brine Crown retracts on a CHEMICAL cue (salt snow, a
+  chimney venting), never on light or clock, and the fan's panes are built
+  facing up and track nothing. The ban's object is a plant keeping a DAY on a
+  world that has none.
+
+  ============================================================================
+  TWO OF THE SEVEN HURT — and only two
+  ============================================================================
+  RULED 2026-09-26: the sphere plant does LOW contact damage (Q6) and the
+  Brine Crown impales. Five do not. "A diver learns to read the crystal by
+  shape" is the design goal, so the two that hurt must be the two that LOOK
+  spiny.
+
+  Mechanism: CompProperties_ContactVenom, the shipped RM_Venomvine shape
+  (src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Plants/RM_Venomvine.xml
+  — read its header before touching this). It registers the cell with
+  MapComponent_ContactVenom, which sweeps every 15 ticks; a comp watching its
+  own cell on PlantBase's Long ticker would miss essentially every crossing.
+  ⚠️ MayRequire on the comp li: the class lives in the shared
+  mandrake.rm.environmentalhazards assembly, which this mod loadAfters rather
+  than hard-depends on, and a <li Class="..."> whose type cannot resolve
+  DISCARDS THE WHOLE DEF silently. damageDef is vanilla Stab, deliberately —
+  a crystal spine is a stab, and a new DamageDef here would buy nothing.
+
+  ============================================================================
+  TWO PLANTS WAIT ON TERRAIN THAT A GENSTEP MUST PAINT
+  ============================================================================
+  ⚠️ RM_GlassVeilKelp (wildTerrainTags RM_GreyBrineChannel) and
+  RM_SaltChimneyVine (wildTerrainTags RM_GreyChimneySeep) are deliberately
+  gated on terrain that exists as a def (RM_GreySeaTerrains.xml) but is not
+  yet PAINTED on the floor map. That painting — brine channels running from
+  the chimney fields downhill to a pool, and a seep apron around each chimney
+  — is the one genuinely-owed C# genstep of this wave
+  (GREYSEA_FLOOR_FORMATIONS_1). Until it lands, those two defs load clean and
+  spawn nowhere. That is deliberate and honest: the kelp's own spec places it
+  "over trenches and brine rivers" and the vine's says it grows "ONLY around
+  warm mineral seeps," so shipping them unbound would ship something he did
+  not ask for.
+
+  🔑 Once the terrain is painted, the vanilla Plants step grows both by
+  itself — no plant-placement code is needed, only terrain.
+
+  ============================================================================
+  PLACEHOLDER ART
+  ============================================================================
+  Seven distinct vanilla succulent/houseplant texPaths, every one confirmed
+  physically present (each is already in use by a shipped RUT_ Grey Sea catch
+  item, so nothing here can render magenta), separated further by <color>
+  into the owner's pink/violet/amber/white palette. Real art is owed; before
+  queuing any artpipe job, search infrastructure/artpipe/done/ and _artsrc/
+  by subject first (owner ruling 2026-09-20).
+  ============================================================================
+-->
+<Defs>
+
+  <!-- Shared shape: everything true of a Grey floor crystal plant and
+       nothing that distinguishes one from another. -->
+  <ThingDef Name="RM_GreyCrystalFloraBase" ParentName="PlantBaseNonEdible" Abstract="True">
+    <statBases>
+      <Flammability>0</Flammability>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <plant>
+      <!-- See header fact 1. Without this the whole set never spawns. -->
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <!-- Blind murk. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>-20</minGrowthTemperature>
+      <maxGrowthTemperature>58</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>0</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>35</maxOptimalGrowthTemperature>
+      <!-- A crystal does not wilt on a schedule; it stands until something
+           breaks it. 0 = no age limit. -->
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <interferesWithRoof>false</interferesWithRoof>
+      <topWindExposure>0.05</topWindExposure>
+      <purpose>Misc</purpose>
+      <allowAutoCut>false</allowAutoCut>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       1. CRYSTALLINE CUBIC SCULPTURES — the general form.
+       Owner, verbatim: "Beautiful crystalline cubic sculptures: green
+       plants growing INSIDE the crystal, using proteins to force-align
+       the salt outside them as armour. Pink, violet and amber geometric
+       solids sitting on the sea floor with striking natural beauty —
+       marred slightly, don't make them too perfect or they look
+       manufactured."
+
+       Graphic_Random, so the three colours are art variants of ONE def
+       rather than three defs — the same call the sheet makes for the
+       fan palm's "some species."
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_CubicSculpture</defName>
+    <label>cubic sculpture</label>
+    <description>A knot of green living tissue sealed inside a block of its own making. The plant secretes proteins that force the salt around it to grow in register, so what sits on the floor is a geometric solid — pink, violet or amber, depending on what the water was carrying — with the organism visible somewhere inside it like something set in resin. Not one of them is square. A corner is always chipped, a face always clouded, an edge always a few degrees out; that is how you know nobody made it.</description>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Beauty>9</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(214,186,228)</color>
+    </graphicData>
+    <plant>
+      <growDays>22</growDays>
+      <harvestWork>260</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.6~1.1</visualSizeRange>
+      <!-- They grow in the lee of the formations, in loose company. -->
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>6</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       2. SPHERE PLANTS.
+       Owner, verbatim: "Sphere plants propped up by radial thin spines
+       surrounding them, both armour and weaponry — like a huge version
+       of a microscopic creature."
+
+       A radiolarian read at macro scale. RULED 2026-09-26 (Q6): the
+       "weaponry" IS low contact damage. One of only two plants on this
+       floor that hurt.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_SpherePlant</defName>
+    <label>sphere plant</label>
+    <description>A pale sphere the size of a helmet, held clear of the sediment on a radial burst of needle-thin mineral spines that run right through it and out the other side. It is a microscopic thing built at the wrong scale, and the spines do both jobs at once: they hold it up off the floor and they make it not worth touching. They are brittle, and they break off in whatever broke them.</description>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Beauty>5</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(236,232,220)</color>
+    </graphicData>
+    <plant>
+      <growDays>16</growDays>
+      <harvestWork>200</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+    <pathCost>25</pathCost>
+    <comps>
+      <!-- LOW, per the ruling. The Brine Crown below is the one that
+           genuinely maims. MayRequire: see the header — an unresolvable
+           comp class discards the whole def, silently. -->
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom" MayRequire="mandrake.rm.environmentalhazards">
+        <damageDef>Stab</damageDef>
+        <damageAmount>2</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================================================================
+       3. GLASS VEIL KELP.
+       Owner, verbatim: "A plant-equivalent that grows in tall
+       curtain-like stands over trenches and brine rivers. It anchors
+       deep and grows long flexible sheets of transparent tissue. Along
+       every strand it precipitates cubic crystal beads and razor-thin
+       plates, making each frond into a hanging chain of salt prisms. The
+       living photosynthetic cells lie in thin shadowed channels behind
+       the crystals, using filtered light. When currents move through
+       them, the crystal-laced veils clatter softly. Entire forests
+       shimmer like hanging bead curtains in a palace ruin. Star Wars
+       vibe: elegant, eerie, slightly ceremonial."
+
+       wildTerrainTags RM_GreyBrineChannel — "over trenches and brine
+       rivers" is a PLACEMENT instruction, and the brine channel is the
+       ruled engine form of a brine river (sheet §4b, Q3). Until the
+       channel is painted this def spawns nowhere; see the header.
+
+       ⚠️ "Clatter softly" is art direction. Whether any shipped plant
+       carries an ambient sound is UNMEASURED; do not invent a field for
+       it.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_GlassVeilKelp</defName>
+    <label>glass veil kelp</label>
+    <description>Anchored deep in the channel walls and hanging in sheets to the height of two people: long flexible veils of tissue so clear you can see the far side of a stand through six of them. Every strand precipitates cubic beads and plates of salt along its length, so a frond is a hanging chain of prisms and a stand is a bead curtain in a palace nobody remembers. The living cells hide in shadowed grooves behind the crystal, taking what light gets this far. When the brine moves through a stand it clatters, very softly, for a long time.</description>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Beauty>12</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(226,236,234)</color>
+      <drawSize>(1.6,1.6)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>26</growDays>
+      <harvestWork>340</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <!-- "Tall … stands": on a 2-D map, height reads as size. -->
+      <visualSizeRange>1.1~1.7</visualSizeRange>
+      <!-- Curtains, not scattering. -->
+      <wildClusterRadius>7</wildClusterRadius>
+      <wildClusterWeight>20</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <wildTerrainTags>
+        <li>RM_GreyBrineChannel</li>
+      </wildTerrainTags>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       4. BRINE CROWN ANEMOFLORA.
+       Owner, verbatim: "A plant-animal ambiguous organism that resembles
+       an anemone made of crystal thorns. A squat base anchors it into
+       the bottom. Around the living core rises a crown of long cubic
+       spines grown from salt and other evaporites. Between these spines
+       hang fleshy, dark membranes that capture both light and dissolved
+       nutrients. When the salinity shifts, the membranes retract deep
+       into the 'crown,' leaving only a deadly mineral porcupine behind.
+       Small bottom-dwelling grazers get impaled or trapped in salt
+       pockets around it, and decay then feeds the plant. So it is not
+       purely photosynthetic; it's partly a detritus-harvester."
+
+       The one that genuinely maims. Its prey is the sessile layer
+       (RM_GreySeaSessile.xml) — the "small bottom-dwelling grazers" his
+       own sentence names.
+
+       ⚠️ THE TWO-STATE RETRACTION IS NOT BUILT. Membranes-out vs
+       membranes-retracted, keyed to a salinity shift (the salt-snow
+       weather, or a chimney venting), is a graphic swap driven by a
+       comp — small C#, deliberately deferred with the rest of this
+       wave's C#. What ships is the porcupine: the def, the damage, the
+       detritus-harvester fiction. ⛔ Do NOT implement retraction as a
+       day/night or light cue — that is the exact thing the inherited
+       ban forbids, and the ruling that let this plant exist at all turns
+       on the cue being CHEMICAL.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_BrineCrown</defName>
+    <label>brine crown</label>
+    <description>An anemone made of knives. A squat base grips the sediment, and out of it rises a crown of long cubic spines grown from salt and whatever else the water was giving up that season; between them hang dark fleshy membranes that take in light and dissolved food together. When the salinity shifts the membranes withdraw deep into the crown and what is left standing is a mineral porcupine with nothing soft on it at all. Small grazers get impaled, or trapped in the salt pockets that grow around its base, and what they rot down into is most of what it lives on.</description>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Beauty>6</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(212,196,206)</color>
+    </graphicData>
+    <plant>
+      <growDays>20</growDays>
+      <harvestWork>420</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~1.2</visualSizeRange>
+      <!-- Solitary. A crown holds a patch of floor to itself; that is
+           what the trapping is for. -->
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+    <pathCost>55</pathCost>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom" MayRequire="mandrake.rm.environmentalhazards">
+        <damageDef>Stab</damageDef>
+        <damageAmount>7</damageAmount>
+        <armorPenetration>0.15</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================================================================
+       5. MOSAIC FAN PALMS.
+       Owner, verbatim: "Broad fan-shaped bottom flora that open toward
+       weak filtered light from above. Their 'leaves' are not continuous
+       tissue. Instead they are arrays of small square crystal panes, each
+       grown at slightly different angles. Beneath each pane is a thin
+       layer of pigmented living tissue. The fan looks like a tiled mosaic
+       or ceremonial shield. Some species can rotate portions of the fan
+       by swelling internal canals, changing how light is directed
+       inward. These would look very artistic and strongly fit that
+       psychedelic / ritual / alien-arid aesthetic."
+
+       🔑 "Open toward weak filtered light from above" is a POSE, not
+       heliotropism — the pocket map's light is directionless and the
+       palm is BUILT facing up. It tracks nothing (sheet §4a). The
+       pane-rotation is description, not a mechanic.
+       "Some species" = colour/pattern variants of ONE def, per the
+       sheet — Graphic_Random, not three defs.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_MosaicFanPalm</defName>
+    <label>mosaic fan palm</label>
+    <description>A broad fan held up off the floor and open to whatever light gets down this far. The blade is not one sheet of anything: it is an array of small square crystal panes, each set at a slightly different angle, each with a film of pigmented tissue behind it — so the whole fan reads as tiled work, a mosaic or a ceremonial shield, and the colour shifts as you move past it. Some of them can swell canals inside the blade and turn a section of panes a few degrees, which changes what the tissue behind them gets. Nobody has worked out what decides when.</description>
+    <statBases>
+      <MaxHitPoints>170</MaxHitPoints>
+      <Beauty>14</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantB</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(232,196,152)</color>
+      <drawSize>(1.3,1.3)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>24</growDays>
+      <harvestWork>300</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.8~1.4</visualSizeRange>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>5</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       6. SALT CHIMNEY VINES.
+       Owner, verbatim: "These grow only around warm mineral seeps or
+       chemical vents in the saline depths. They begin as creeping mats.
+       Once they find a seep, they climb it by growing spiraled cubic
+       bracing around the chimney. Their main energy source is a
+       combination of dim-light harvesting and chemosynthetic symbionts.
+       Delicate inner tissues remain hidden in moist protected channels
+       inside the mineral spiral. From outside they resemble white
+       angular vines twining around black vent rock. This gives a more
+       industrial, harsh, 'mustafar-meets-salt-sea' feel."
+
+       🔴 "GROW ONLY around warm mineral seeps" is the whole def. It is
+       enforced by wildTerrainTags RM_GreyChimneySeep — the apron terrain
+       a genstep paints around each RM_SaltChimney. No apron, no vine,
+       which is correct behaviour and not a bug. ⛔ Never add this plant
+       to the biome's wildPlants without the terrain gate; an unbound
+       vine is a different plant from the one he specified.
+
+       "Chemosynthetic symbionts" vs the inherited "no cold gas vents":
+       RULED ADDITIVE 2026-09-26. The chimneys are WARM mineral seeps
+       venting BRINE; the ban's object is the poison forest's cold-gas
+       chemistry.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_SaltChimneyVine</defName>
+    <label>salt chimney vine</label>
+    <description>It starts as a creeping mat on the sediment and goes nowhere until it finds a warm seep. Then it climbs, laying down a spiral of cubic bracing around the chimney as it goes, so from outside it is a white angular vine wound hard around black vent rock. The living tissue is nowhere on the surface: it runs in wet channels inside the mineral spiral, fed partly by whatever light reaches the bottom and mostly by symbionts working the chemistry coming out of the vent. It is the only thing on this floor that looks industrial.</description>
+    <statBases>
+      <MaxHitPoints>190</MaxHitPoints>
+      <Beauty>7</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantB</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(240,238,230)</color>
+    </graphicData>
+    <plant>
+      <growDays>18</growDays>
+      <harvestWork>280</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~1.2</visualSizeRange>
+      <!-- Wraps a chimney: tight, heavy clustering inside a small apron. -->
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>30</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <wildTerrainTags>
+        <li>RM_GreyChimneySeep</li>
+      </wildTerrainTags>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       7. CRUCIBLE PODS.
+       Owner, verbatim: "Round bottom-dwelling plants that use salt
+       architecture as incubators. The main body is a lobed sphere
+       embedded in sediment. It grows a thick cubical crystal cage around
+       a central chamber. Inside the chamber are its photosynthetic and
+       reproductive organs. When mature, it dissolves one face of the
+       cube and releases drifting seed-cysts or buoyant larvae. Juveniles
+       settle in cracks between salt blocks and begin growing their own
+       tiny geometric shells. This gives a lifecycle that feels alien and
+       visually memorable."
+
+       The fully-specified case of form 1. Three visible stages — sealed
+       cube, one face dissolved, empty cage — map straight onto vanilla
+       plant growth graphics with no C#: maxMeshCount + visualSizeRange
+       carry the size progression today, and a real three-stage art set
+       is the art job, not a code job.
+
+       "Juveniles settle in cracks between salt blocks" is the
+       reproduction rule, so the clustering is set to favour company —
+       a pod field grows where a pod field already is, which on this
+       floor means beside the crystals and domes.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_CruciblePod</defName>
+    <label>crucible pod</label>
+    <description>A lobed sphere half-buried in the sediment, growing a thick cubical cage of crystal around a chamber it keeps to itself. Everything that matters to it — the photosynthetic tissue, the reproductive organs — is inside that cage, out of reach of anything with a mouth. When it is ready it dissolves one face of the cube and lets go a drift of seed-cysts, and the empty cages stand around the floor for years afterward with nothing in them. The young settle in cracks between salt blocks and start building cages of their own, very small ones, which is how you can tell a pod field is old.</description>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Beauty>10</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(228,206,222)</color>
+    </graphicData>
+    <plant>
+      <growDays>28</growDays>
+      <harvestWork>320</harvestWork>
+      <maxMeshCount>3</maxMeshCount>
+      <visualSizeRange>0.4~1.0</visualSizeRange>
+      <!-- "Juveniles settle in cracks between salt blocks": pods breed
+           beside pods, and the floor's cracks are between the
+           formations. -->
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>14</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>

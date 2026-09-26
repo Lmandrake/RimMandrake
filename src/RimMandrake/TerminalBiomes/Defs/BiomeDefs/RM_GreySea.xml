@@ -62,6 +62,39 @@
     <animalDensity>0.1</animalDensity>
     <coastalWildAnimals />
 
+    <!-- GREYSEA_CRYSTAL_FLORA_1, 2026-09-26 — the owner's seven crystalline
+         forms (Defs/ThingDefs_Plants/RM_GreySeaFlora.xml; HIS verbatim specs
+         are the authority, in the content doc §4.2-§4.6).
+
+         🔴 plantDensity WAS UNSET, i.e. 0f. WildPlantSpawner.
+         GetDesiredPlantsCountAt multiplies the biome's plantDensity, so a
+         biome that never sets it wants ZERO plants everywhere no matter what
+         its wildPlants list says. Authoring the flora without this line
+         would have shipped seven defs that can never appear. 0.14 is low on
+         purpose: the floor is crowded with MINERAL forms (the scatter steps)
+         and sparse with living ones.
+
+         🔴 The shorthand <DefName>commonality</DefName> form, NOT <li>.
+         BiomePlantRecord/BiomeAnimalRecord use a custom loader that reads
+         the node NAME as the def and the node TEXT as the commonality; an
+         <li> wrapper silently discards the whole entry.
+
+         ⚠️ RM_GlassVeilKelp and RM_SaltChimneyVine are ABSENT from this list
+         DELIBERATELY. Both are terrain-gated (wildTerrainTags
+         RM_GreyBrineChannel / RM_GreyChimneySeep) and listing them here
+         without their terrain painted would put them on open sediment,
+         which contradicts both specs ("over trenches and brine rivers";
+         "grow ONLY around warm mineral seeps"). They join this list in the
+         same change that paints their terrain. -->
+    <plantDensity>0.14</plantDensity>
+    <wildPlants>
+      <RM_CubicSculpture>0.6</RM_CubicSculpture>
+      <RM_CruciblePod>0.5</RM_CruciblePod>
+      <RM_MosaicFanPalm>0.4</RM_MosaicFanPalm>
+      <RM_SpherePlant>0.35</RM_SpherePlant>
+      <RM_BrineCrown>0.15</RM_BrineCrown>
+    </wildPlants>
+
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
     <!-- GREYSEA_SALT_SNOW_WEATHER_1, 2026-09-26.
          🔴 Vanilla `Rain 4` REMOVED, not superseded. It was a pre-existing
