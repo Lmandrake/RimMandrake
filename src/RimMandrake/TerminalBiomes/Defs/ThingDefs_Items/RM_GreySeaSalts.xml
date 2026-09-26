@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaSalts.xml                 TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  GREYSEA_FLOOR_FORMATIONS_1 (the bulk salt) + GREYSEA_SALT_CUISINE_1 (the
+  four coloured salts). The harvest side of RM_GreySeaFormations.xml: every
+  mineable there yields one of these.
+
+  AUTHORITY — the owner, verbatim, in his 2026-09-26 content drop §2.2/§2.3:
+    "Huge salt crystals on the sea floor, harvestable and rather valuable."
+    "Different colours of salt make great RimCuisine ingredients."
+
+  ============================================================================
+  🔴 RIMCUISINE IS NOT IN THE MOD LIST — read his sentence correctly
+  ============================================================================
+  MEASURED 2026-09-26 (content doc §2.3, against the newest full-list
+  snapshot, 620 active): the only packageId matching "cuisine" is OURS —
+  mandrake.rsw.cuisine, "RimStarWars: Cuisine". So "great RimCuisine
+  ingredients" means "great ingredients for our cuisine mod", and the sheet
+  §4b rules it: the salts are RM_-tier items of the Grey's own mod, consumed
+  by our cuisine mod through MayRequire-guarded recipes, with NO hard
+  dependency in either direction. ⛔ Nothing here may reference a workshop
+  RimCuisine packageId.
+
+  The recipes live in Patches/RM_GreySaltCuisine.xml (this mod), guarded on
+  mandrake.rsw.cuisine, so this file stays a plain item file.
+
+  ============================================================================
+  THE PALETTE
+  ============================================================================
+  Pink, violet and amber are the owner's own three (content doc §4.1, the
+  crystalline flora spec) — deliberately the SAME three the flora uses, so
+  ingredient and plant read as one mineralogy. White is the base case and is
+  marked in the sheet as a BENCH inference, not a ruling.
+
+  Value ladder: RM_RawSalt is bulk (the pillars and domes are made of it and
+  there is a floor's worth); the four crystal salts are the treasury — "rather
+  valuable", his words — at roughly an order of magnitude more per unit, with
+  violet rarest. They never rot and never deteriorate: the Grey's own law is
+  that what the minerals take, they keep.
+
+  PLACEHOLDER ART: all five reuse Things/Item/Resource/Jade (confirmed
+  physically present — vanilla Jade's own path, read from the def this pass)
+  separated by <color>. Graphic_StackCount, so a stack reads as a pile.
+  Real icons are owed; search infrastructure/artpipe/done/ first.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ==================================================================
+       BULK SALT — what a pillar, a dome or a brine jacket comes apart
+       into. Cheap, heavy, everywhere. This is the sheet's §7 "soluble
+       minerals … the planet's evaporite treasury" at its common end.
+       ================================================================== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_RawSalt</defName>
+    <label>coarse salt</label>
+    <description>Grey-white salt broken out of the Grey Sea's own formations, still gritty with the sediment it grew in. The commonest substance on a dying sea's floor and the reason anyone dives it at all: the planet's chemical works, made portable a sackful at a time.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Jade</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(226,226,222)</color>
+    </graphicData>
+    <useHitPoints>false</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <soundInteract>ChunkRock_Drop</soundInteract>
+    <soundDrop>ChunkRock_Drop</soundDrop>
+    <statBases>
+      <MarketValue>0.9</MarketValue>
+      <Mass>0.04</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <stackLimit>150</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <!-- ==================================================================
+       THE FOUR CRYSTAL SALTS — one per great-crystal colour. The node
+       you choose to cut decides which you get, which is what makes
+       "different colours of salt" a harvesting decision rather than a
+       texture variant.
+       ================================================================== -->
+
+  <ThingDef Name="RM_CrystalSaltBase" ParentName="ResourceBase" Abstract="True">
+    <graphicData>
+      <texPath>Things/Item/Resource/Jade</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <useHitPoints>false</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <soundInteract>ChunkRock_Drop</soundInteract>
+    <soundDrop>ChunkRock_Drop</soundDrop>
+    <statBases>
+      <Mass>0.05</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Beauty>2</Beauty>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_CrystalSaltBase">
+    <defName>RM_SaltWhite</defName>
+    <label>white crystal salt</label>
+    <description>Salt cleaved off a great crystal along its own planes: flat-faced flakes that catch what little light there is, clean of the sediment that fouls the coarse stuff. It is worth carrying up from the bottom of a sea, which coarse salt is not, and a cook who has used it will not go back.</description>
+    <graphicData>
+      <color>(248,248,246)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>9</MarketValue>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_CrystalSaltBase">
+    <defName>RM_SaltPink</defName>
+    <label>pink crystal salt</label>
+    <description>Shell-coloured salt from the pink crystals, the stain running right through each flake rather than sitting on it. It tastes of iron behind the salt, faintly, and it colours anything it is cooked into.</description>
+    <graphicData>
+      <color>(240,198,198)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>12</MarketValue>
+      <Beauty>3</Beauty>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_CrystalSaltBase">
+    <defName>RM_SaltViolet</defName>
+    <label>violet crystal salt</label>
+    <description>The rarest of the four, and the one that looks least like it grew. Violet salt comes only from the deep crystals near the pool margins, it comes in small quantities, and it is traded by weight against silver. It tastes sharp and slightly mineral and it is a very long way from anywhere.</description>
+    <graphicData>
+      <color>(200,182,230)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>18</MarketValue>
+      <Beauty>4</Beauty>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_CrystalSaltBase">
+    <defName>RM_SaltAmber</defName>
+    <label>amber crystal salt</label>
+    <description>Honey-coloured salt from the crystals that grow in the chimney fields, carrying whatever the vented brine dissolved out of the rock beneath. Smoky, warm, and the only one of the four that tastes of somewhere rather than of salt.</description>
+    <graphicData>
+      <color>(234,202,144)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>11</MarketValue>
+      <Beauty>3</Beauty>
+    </statBases>
+  </ThingDef>
+
+</Defs>
