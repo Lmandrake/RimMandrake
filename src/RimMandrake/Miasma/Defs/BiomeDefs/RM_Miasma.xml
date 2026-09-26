@@ -23,7 +23,7 @@
     workerClass is a hard dependency the RimMandrake tier may not assume
     (biome_mod_architecture.md Sec5 step 2).
 
-    wildAnimals: 11 rows ship inline -
+    wildAnimals: 14 rows ship inline -
       - 9 non-Star-Wars donor rows (Alpha Animals / VFE Insectoids 2), each already
         MayRequire-gated on its own donor mod, unchanged from the twin (Q9).
       - RUT_Karrobel / RUT_Karrathil, this campaign's own invented (non-canon,
@@ -34,6 +34,12 @@
         needed (same-mod, no gate required there). A future pass can port them
         into this mod outright (they are invented names, RM tier per Q11a) and
         drop the gate.
+      - RM_Karravel / RM_Karrimeth / RM_Karrolun (MIASMA_FAUNA_FLOOR_ROSTER_1):
+        the arthropod floor's other three scuttlers, native to this mod from the
+        start since it already exists (unlike when Karrobel/Karrathil shipped).
+        All four scuttlers share one population pool via
+        RM_VerminPressureExtension's "RM_MiasmaScuttlers" group tag - see
+        RM_Miasma_ArthropodFloor.xml and the retrofit on RUT_Karrobel.xml.
     The 17 genuine Star Wars rows the twin also carries do NOT ship here - they
     ride Utinni's WildAnimals_Miasma.xml as a PatchOperationAdd onto this def,
     MayRequire-gated per row's real source mod, per the Q11a naming-tier ruling.
@@ -218,6 +224,10 @@
     <wildAnimals>
       <RUT_Karrobel MayRequire="mandrake.rut.patches">0.6</RUT_Karrobel>  <!-- karrobel - delta-loam composter, this campaign's own invented species, still authored in mandrake.rut.patches -->
       <RUT_Karrathil MayRequire="mandrake.rut.patches">0.9</RUT_Karrathil>  <!-- karrathil - fever-swarm vector/pollinator, same as above -->
+      <!-- MIASMA_FAUNA_FLOOR_ROSTER_1 - the other three arthropod-floor scuttlers, native RM_ tier -->
+      <RM_Karravel>3.5</RM_Karravel>  <!-- karravel - the carpet; the bulk of the floor, cheap protein for everything -->
+      <RM_Karrimeth>0.8</RM_Karrimeth>  <!-- karrimeth - the mass; an event, not background, wildGroupSize carries the "carpet crossing" read -->
+      <RM_Karrolun>1.2</RM_Karrolun>  <!-- karrolun - the harvest; the arthropod industry's actual target -->
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin -->
       <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin -->
       <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- lockjaw - channel-predator -->

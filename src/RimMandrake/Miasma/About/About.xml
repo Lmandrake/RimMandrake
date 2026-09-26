@@ -15,6 +15,7 @@
     <li>oskarpotocki.vfe.insectoid2</li>
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rm.flowworks</li>
+    <li>mandrake.rm.creaturebehaviors</li>
     <li>mandrake.rut.patches</li>
     <li>mandrake.rut.rotsporekit</li>
   </loadAfter>

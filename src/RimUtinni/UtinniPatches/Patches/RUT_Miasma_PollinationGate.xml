@@ -16,16 +16,18 @@
   same assembly) already proves patchable.
 
   Targets: AB_MangroveTree and AB_ParasiticMangrove — the Alpha Biomes
-  donor ThingDefs RUT_Miasma.xml's own <wildPlants> currently carries
-  (miasma_flora_roster_2026-09-23.md §3 calls these "the mangals, the
-  canopy" and marks them for eventual replacement by RM_Thessamor/
-  RM_Quennath — neither exists yet, so this pass gates the LIVE species,
-  not the unbuilt roster names; whoever lands MIASMA_FLORA_ROSTER_1 should
-  move this same modExtension onto the new defNames rather than re-deciding
-  which species gate from scratch). AB_MangrovePalm is deliberately left
-  out: its own roster successor (RM_Ilbareen) is recast around dying in
-  place as a salt-line gauge, a different mechanism from the flowering
-  bargain this item covers.
+  donor ThingDefs RUT_Miasma.xml (the frozen campaign twin, still carrying
+  the live save's painted tiles) still carries in its own <wildPlants> —
+  PLUS, 🔴 added by MIASMA_FAUNA_FLOOR_ROSTER_1 once MIASMA_FLORA_ROSTER_1
+  landed RM_Thessamor/RM_Quennath as real ThingDefs (exactly the follow-on
+  this header used to ask for): RM_Thessamor and RM_Quennath, RM_Miasma's
+  own replacements for AB_MangroveTree/AB_ParasiticMangrove respectively
+  (miasma_flora_roster_2026-09-23.md §3). Both sets of operations stay —
+  the AB_ pair for the frozen twin's still-live wildPlants, the RM_ pair for
+  the franchise-free mod's own flora — so the fever bargain is real on
+  both. AB_MangrovePalm is deliberately left out: its own roster successor
+  (RM_Ilbareen) is recast around dying in place as a salt-line gauge, a
+  different mechanism from the flowering bargain this item covers.
 
   PatchOperationAddModExtension (a real vanilla class, confirmed against
   the live 1.6 decompile — Verse/PatchOperationAddModExtension.cs) rather
@@ -58,6 +60,34 @@
     <xpath>/Defs/ThingDef[defName="AB_ParasiticMangrove"]</xpath>
     <match Class="PatchOperationAddModExtension">
       <xpath>/Defs/ThingDef[defName="AB_ParasiticMangrove"]</xpath>
+      <value>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+          <pollinatorRace>RUT_Karrathil</pollinatorRace>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- MIASMA_FAUNA_FLOOR_ROSTER_1: RM_Miasma's own flora roster replacements
+       for the two AB_ mangals above. RM_Thessamor/RM_Quennath only exist
+       once mandrake.rm.miasma is active, so this is conditional the same
+       way. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Thessamor"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="RM_Thessamor"]</xpath>
+      <value>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+          <pollinatorRace>RUT_Karrathil</pollinatorRace>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Quennath"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="RM_Quennath"]</xpath>
       <value>
         <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
           <pollinatorRace>RUT_Karrathil</pollinatorRace>
