@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RSW_GreySaltCuisine.xml             RimStarWars: Cuisine · authored 2026-09-26
+  ============================================================================
+  GREYSEA_SALT_CUISINE_1 — the consuming half. The Grey Sea's four coloured
+  crystal salts (mandrake.rm.terminalbiomes, RM_GreySeaSalts.xml) get
+  something to be an ingredient FOR.
+
+  Owner, 2026-09-26, verbatim:
+      "Different colours of salt make great RimCuisine ingredients."
+
+  ============================================================================
+  🔴 "RIMCUISINE" MEANS OUR CUISINE MOD. RimCuisine IS NOT INSTALLED.
+  ============================================================================
+  MEASURED 2026-09-26 against the newest full-list snapshot
+  (infrastructure/state/modlists/ModsConfig_full_plus_gelatinousslime_
+  2026-09-21.xml, 620 active): the ONLY packageId matching "cuisine" is ours,
+  mandrake.rsw.cuisine — this mod. The sheet (§4b) rules accordingly: the
+  salts are RM_-tier items of the Grey Sea's own mod; this mod consumes them
+  through MayRequire-guarded recipes; NO hard dependency in either direction.
+  ⛔ Nothing here may reference a workshop RimCuisine packageId, and the
+  terminalbiomes dependency stays a loadAfter + MayRequire, never a
+  modDependency — a cook with no Grey Sea should simply not see these
+  recipes.
+
+  ============================================================================
+  WHY FOUR ITEMS AND FOUR RECIPES RATHER THAN ONE OF EACH
+  ============================================================================
+  Because the COLOUR is the point. His sentence is about colours, plural, and
+  the Grey Sea ships four great-crystal nodes so that which node a diver cuts
+  is a real decision (RM_GreySeaFormations.xml). If all four salts fed one
+  recipe, the colour would be decoration. Instead each salt cures its own
+  ration, at its own value, with its own flavour — so violet salt being rare
+  and deep-water actually reaches the table.
+
+  ⛔ RM_RawSalt is deliberately NOT an accepted ingredient anywhere here. The
+  bulk salt is what a pillar is made of; the treasury is the crystal. Letting
+  coarse salt cure a ration would collapse the whole economy the sheet's §7
+  "evaporite treasury" line sets up.
+
+  The rations never rot — a cured ration is the point — but they DO
+  deteriorate outdoors, like MealSurvivalPack, so they are not free storage.
+
+  PLACEHOLDER ART: one greyscale wrapped-slab PNG of this mod's own,
+  Textures/Things/Item/Meal/RSW_SaltCured/RSW_SaltCured.png, tinted per def
+  by <color> into the owner's pink/violet/amber/white palette. Real art owed;
+  search infrastructure/artpipe/done/ and _artsrc/ by subject first.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ===================== the thought ===================== -->
+
+  <ThoughtDef MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RSW_AteCrystalSaltCured</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages>
+      <li>
+        <label>seasoned with crystal salt</label>
+        <description>Whatever that was, it was cured with salt somebody dived a dying sea for. You can taste the difference and you can taste the trouble.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- ===================== the rations ===================== -->
+
+  <ThingDef Name="RSW_SaltCuredRationBase" ParentName="MealBase" Abstract="True" MayRequire="mandrake.rm.terminalbiomes">
+    <graphicData>
+      <texPath>Things/Item/Meal/RSW_SaltCured/RSW_SaltCured</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <DeteriorationRate>0.25</DeteriorationRate>
+      <Mass>0.35</Mass>
+      <WorkToMake>420</WorkToMake>
+      <Nutrition>0.9</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealSimple</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+      <specialThoughtDirect>RSW_AteCrystalSaltCured</specialThoughtDirect>
+    </ingestible>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RSW_SaltCuredRation_White</defName>
+    <label>white-cured ration</label>
+    <description>Food packed in flaked white crystal salt and left to give up its water. It keeps indefinitely, it travels, and it tastes clean in a way nothing cured in coarse salt ever does. The cheapest of the four, which on this planet still means somebody went to the bottom of the Grey Sea for it.</description>
+    <graphicData>
+      <color>(244,244,240)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>26</MarketValue>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RSW_SaltCuredRation_Pink</defName>
+    <label>pink-cured ration</label>
+    <description>Cured in pink crystal salt, which colours whatever it touches and leaves an iron note behind the salt. It comes out of the crock faintly rose all the way through, which people either find appetising or do not.</description>
+    <graphicData>
+      <color>(238,202,202)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>32</MarketValue>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RSW_SaltCuredRation_Violet</defName>
+    <label>violet-cured ration</label>
+    <description>Cured in violet crystal salt from the deep crystals at the pool margins — the rarest salt on the planet, traded against silver by weight, and here it is on a plate. Sharp, mineral, and slightly absurd. Served to people you are trying to impress or trying to owe something to.</description>
+    <graphicData>
+      <color>(204,186,232)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>48</MarketValue>
+      <WorkToMake>520</WorkToMake>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RSW_SaltCuredRation_Amber</defName>
+    <label>amber-cured ration</label>
+    <description>Cured in amber crystal salt off the chimney fields, which carries whatever the vents dissolved out of the rock beneath. Smoky and warm, and the only one of the four that tastes of a place rather than of salt.</description>
+    <graphicData>
+      <color>(234,206,152)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>34</MarketValue>
+    </statBases>
+  </ThingDef>
+
+  <!-- ===================== the recipes =====================
+       Parent CookMealBase (a real vanilla Core RecipeDef — this mod's own
+       RecipeDefs_Cuisine.xml confirmed that on disk before using it, and
+       this file reuses the same parent for the same reason).
+
+       Raw food 0.5 nutrition + 4 crystal salt -> 1 ration. The salt count
+       is what makes the treasury get spent; the nutrition count is
+       MealSimple's own.
+       ⛔ fixedIngredientFilter pins the salt to ONE colour per recipe.
+       Without it, allowMixingIngredients would let a cook satisfy the salt
+       slot from any pile in the stockpile and the colours would stop
+       meaning anything.
+  -->
+
+  <RecipeDef Name="RSW_SaltCureBase" ParentName="CookMealBase" Abstract="True" MayRequire="mandrake.rm.terminalbiomes">
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>90</displayPriority>
+    <recipeUsers>
+      <li>ElectricStove</li>
+      <li>FueledStove</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RSW_CureWithWhiteSalt</defName>
+    <label>cure ration in white crystal salt</label>
+    <description>Pack raw food in white crystal salt from the Grey Sea floor and draw the water out of it.</description>
+    <jobString>Curing a ration in white crystal salt.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Foods</li>
+          </categories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_SaltWhite</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_SaltWhite</li>
+      </thingDefs>
+      <categories>
+        <li>Foods</li>
+      </categories>
+      <disallowedCategories>
+        <li>FoodMeals</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_SaltCuredRation_White>1</RSW_SaltCuredRation_White>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RSW_CureWithPinkSalt</defName>
+    <label>cure ration in pink crystal salt</label>
+    <description>Pack raw food in pink crystal salt from the Grey Sea floor and draw the water out of it.</description>
+    <jobString>Curing a ration in pink crystal salt.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Foods</li>
+          </categories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_SaltPink</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_SaltPink</li>
+      </thingDefs>
+      <categories>
+        <li>Foods</li>
+      </categories>
+      <disallowedCategories>
+        <li>FoodMeals</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_SaltCuredRation_Pink>1</RSW_SaltCuredRation_Pink>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RSW_CureWithVioletSalt</defName>
+    <label>cure ration in violet crystal salt</label>
+    <description>Pack raw food in violet crystal salt — the rarest the Grey Sea gives up — and draw the water out of it.</description>
+    <jobString>Curing a ration in violet crystal salt.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Foods</li>
+          </categories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_SaltViolet</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_SaltViolet</li>
+      </thingDefs>
+      <categories>
+        <li>Foods</li>
+      </categories>
+      <disallowedCategories>
+        <li>FoodMeals</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_SaltCuredRation_Violet>1</RSW_SaltCuredRation_Violet>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RSW_CureWithAmberSalt</defName>
+    <label>cure ration in amber crystal salt</label>
+    <description>Pack raw food in amber crystal salt off the Grey Sea's chimney fields and draw the water out of it.</description>
+    <jobString>Curing a ration in amber crystal salt.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Foods</li>
+          </categories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_SaltAmber</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_SaltAmber</li>
+      </thingDefs>
+      <categories>
+        <li>Foods</li>
+      </categories>
+      <disallowedCategories>
+        <li>FoodMeals</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_SaltCuredRation_Amber>1</RSW_SaltCuredRation_Amber>
+    </products>
+  </RecipeDef>
+
+</Defs>

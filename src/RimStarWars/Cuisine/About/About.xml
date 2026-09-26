@@ -13,5 +13,11 @@ This mod is the intended eventual home for the rest of high_cuisine_deep_design.
     <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>ludeon.rimworld.odyssey</li>
     <li>vanillaexpanded.vplantse</li>
+    <!-- GREYSEA_SALT_CUISINE_1, 2026-09-26: RSW_GreySaltCuisine.xml's recipes
+         take the Grey Sea's four coloured crystal salts as ingredients. It is
+         a loadAfter + MayRequire, never a modDependency — the sheet's §4b
+         ruling is "no hard dependency in either direction", so a cook with no
+         Grey Sea simply never sees those four recipes. -->
+    <li>mandrake.rm.terminalbiomes</li>
   </loadAfter>
 </ModMetaData>
