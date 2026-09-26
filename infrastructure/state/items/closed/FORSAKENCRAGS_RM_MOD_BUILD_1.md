@@ -269,3 +269,48 @@ message naming what the twin got wrong; and the mod is appended to
 - ⛔ **Do not delete the `RUT_` def.** Deleting a painted def before Phase B destroys the
   save.
 - ⚠️ A `<li>` in the wrong place discards the WHOLE def, silently.
+
+## Step 5 load-clean proof — 2026-09-26, FOUNDRY (retry after coordinator challenge)
+
+The close above (`948b482c8`) had relied on `deploy_custom_mods.py` sync alone — the live
+quicktest never completed, having twice crashed on a pre-existing, unrelated engine defect
+before it could prove anything about `RM_ForsakenCrags` itself. Retried per the coordinator's
+instruction. `rimflow bridge who` was busy (LEANINGSCRUB's own quicktest, idle 0-3 min);
+waited ~3 min for it to go idle, then it read FREE.
+
+**Root-caused both prior crashes (neither is this item's content):**
+- Attempt 1/2's crash was `OuterRimCore.OuterRimCoreMod.get_VersionDir()` throwing a
+  `NullReferenceException` in its own constructor — `Neronix17.OuterRim.Core` was present in
+  the scratch list only because it was copied wholesale from
+  `infrastructure/state/modlists/ModsConfig.MINIMAL.xml`'s own baseline, not because anything
+  here needs it. Dropped it from the scratch list.
+- Attempt 3 (still crashed) root-caused to a DIFFERENT pre-existing defect: RimWorld's own
+  generic safety net (`Caught exception while loading play data but there are active mods
+  other than Core. Resetting mods config and trying again.`) fired on a `NullReferenceException`
+  inside `AlphaGenes.AlphaGenes_GeneDefGenerator_ImpliedGeneDefs_Patch` (a `sarg.alphagenes`
+  Harmony postfix over `GeneDefGenerator.ImpliedGeneDefs`) — a compatibility bug in that donor
+  mod against this specific reduced mod list, unrelated to any RM_ForsakenCrags content.
+  `sarg.alphagenes` was in the list only for the two donor `AG_Gamma`/`AG_Septimum` wildPlants
+  rows, already disclosed in About.xml/the def's own header as an inherited, unguarded, not-
+  this-build's-scope-to-fix dependency — dropping it costs nothing this test needs to prove.
+
+**Attempt 4, without `Neronix17.OuterRim.Core` or `sarg.alphagenes` — LOADED CLEAN:**
+32-mod scratch list (MINIMAL baseline + `sarg.alphabiomes`/`alphaanimals` +
+`mlie.starwarsanimalcollection` + `mandrake.rm.weathersuite`/`creaturebehaviors` +
+`mandrake.rsw.swbestiary` + `mandrake.rut.patches` + `mandrake.rm.forsakencrags`, all 5
+expansions). `jawa/mod_inventory` confirms all 32 active including `mandrake.rm.forsakencrags`
+at load order 31. `jawa/get_def BiomeDef RM_ForsakenCrags` returns success: correct label,
+description, `packageId: mandrake.rm.forsakencrags`, `terrainsByFertility` resolved
+(`AB_FineForsakenSand`/`AB_ForsakenSand`, confirming `sarg.alphabiomes` cross-refs are live).
+**Zero occurrences of "ForsakenCrags" anywhere in the load's `Player.log`** — no config error,
+no patch failure, no "Could not find a type named" for `RM_BiomeWorker_ForsakenCrags`, no
+failure line for `ForsakenCrags_WildSpawns.xml`. `jawa/biome_probe` on `RM_ForsakenCrags`
+(to directly confirm the Cindermare/Skarnix wiring) hit the exact same
+`BiomeDef.CommonalityOfAnimal` / `AlphaBehavioursAndEvents.AlphaAnimals_BiomeDef_
+CommonalityOfAnimal_Patch` `NullReferenceException` already documented in the closed
+`FLOODEDCANYON_RM_MOD_BUILD_1` precedent as a pre-existing defect reproducing on ANY biome
+under a reduced scratch list — not evidence against this def or its patch. Restored
+`ModsConfig.FULL.LATEST.xml` (626 active) and released the bridge clean afterward.
+
+**Verdict: `RM_ForsakenCrags` genuinely loads clean.** The closure stands; this note supplies
+the load-clean evidence the earlier close reason was missing.
