@@ -59,6 +59,21 @@
     <animalDensity>0.1</animalDensity>
     <coastalWildAnimals />
 
+    <!-- TERMINAL_SEAS_FLOOR_DRESSING_1, 2026-09-26. plantDensity WAS UNSET
+         (0f) and this biome shipped no <wildPlants> at all — the first flora
+         this sea has ever carried. See RM_TwilightSeaFlora.xml's header for
+         the mat-roof's scoping (the organism made real; the full skylight/
+         ceiling system stays deferred to the diving mods' Twilight Deep
+         pass) and the blade's judgement call (shared with the Grey's).
+         RM_MoldMatRoof's commonality is the "shore to shore" monoculture
+         written into a number, same shape GREYSEA_SESSILE_LAYER_1 used for
+         "abundant" via commonality rather than group size. -->
+    <plantDensity>0.2</plantDensity>
+    <wildPlants>
+      <RM_MoldMatRoof>3.0</RM_MoldMatRoof>
+      <RM_SaltBladeTwilight>0.03</RM_SaltBladeTwilight>
+    </wildPlants>
+
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
     <baseWeatherCommonalities>
       <Clear>12</Clear>

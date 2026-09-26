@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaSaltBlade.xml             TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  TERMINAL_SEAS_FLOOR_DRESSING_1 — slug 2 of 3 remaining (pillar-mason was
+  already built same-day by GREYSEA_ANCHOR_CREATURES_1; condensate-drinker is
+  explicitly OUT per that item's owner-approved closed roster).
+
+  AUTHORITY: terminator_sea.md §4/§9 (the base sheet every terminal sea
+  inherits) and the_grey_sea.json's own new_defs row: "salt-rimed blade
+  flora, Grey shore variant (distinct def from the Twilight's — endemism)."
+
+  🔴 HIS TEXT, NOT INVENTED — terminator_sea.md §4:
+      "the surface that intercepts most light is a vertical plate facing it
+       … the result is not a palisade: it is isolated blades, tens of metres
+       tall, spaced hundreds of metres apart, each one centuries old and
+       each one alone." … "The blades are dark inside and white outside …
+       a rime of white crystal over dark tissue, flaking off in the wind and
+       rebuilding, so the ground downwind of every blade is a salt drift
+       shaped like the blade." §9: "one black sail on a white pan."
+
+  ============================================================================
+  JUDGEMENT CALL — WHERE THIS LIVES, RECORDED HONESTLY
+  ============================================================================
+  §4/§9's blade is written as a SHORE/SURFACE feature (wind, a fixed star
+  bearing, long shadows, homestead settlements built in its lee) — none of
+  which exists on the underwater sea-floor pocket map. TERMINAL_SEAS_FLOOR_
+  DRESSING_1's own "watch out" flagged this as unconfirmed. Rather than block
+  on it or reach into an unrelated LAND biome's roster (a cross-biome edit
+  this project's own practice reserves for that biome's own sitting, per
+  GREYSEA_ANCHOR_CREATURES_1's note on the Aerofleet replacement), this ships
+  as sparse floor-adjacent flora on the Grey Sea's OWN pocket map — the same
+  working mechanism the crystal flora already proved (RM_GreySeaFlora.xml),
+  at the sea-floor's shallow/shoreward reading rather than the open murk. If
+  a future pass determines the blade truly belongs on the bordering land
+  biome instead, this is a relocation of working content, not new invention.
+
+  Reuses RM_GreyCrystalFloraBase (RM_GreySeaFlora.xml) for the three engine
+  facts that make a floor plant spawn at all (completelyIgnoreFertility,
+  blind-murk growth params, biomeDensity) rather than restating them.
+
+  PLACEHOLDER ART: Things/Plant/SnakePlant/SnakePlantA, the same texPath
+  RM_GlassVeilKelp already uses and which is confirmed physically present
+  (that file's own header); told apart from the kelp by <color> and by
+  living on open floor rather than gated to brine-channel terrain. Real art
+  queued via artpipe fill_queue.py, subject checked against done/_artsrc
+  first (none found).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_SaltBladeGrey</defName>
+    <label>salt-rimed blade</label>
+    <description>A single flat blade of tissue standing alone on the floor, dark green-black inside and rimed white outside where it has spent a lifetime pushing salt out through its own skin. There is only ever one in sight at a time — the next stands so far off it is lost in the murk — and the crust flakes and rebuilds without ever quite matching the blade beneath it. Centuries old, and never crowded by another of its own kind.</description>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Beauty>8</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(238,238,232)</color>
+      <colorTwo>(40,48,44)</colorTwo>
+      <drawSize>(1.4,1.4)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>30</growDays>
+      <harvestWork>360</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>1.1~1.8</visualSizeRange>
+      <!-- "Hundreds of metres apart": the sparsest thing this floor grows. -->
+      <wildClusterRadius>14</wildClusterRadius>
+      <wildClusterWeight>1</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>
