@@ -1,5 +1,60 @@
 # DEEPFIRE_PAINT_STATUS_CUISINE_1
 
+## CLOSED PARTIAL — what actually shipped
+
+Built and validated (`src/RimMandrake/LuminousPigment/`, `mandrake.rm.luminouspigment`):
+
+- **Cuisine (§6), in full**: 14 `HediffDef` glow families with 3 severity tiers each
+  (`Defs/HediffDefs/RM_DeepfireGlowHediffs.xml`), 15 `RecipeDef`s on any stove
+  (`Defs/RecipeDefs/RM_RecipeDeepfireMeals.xml` + `Patches/DeepfireMealsOnStoves.xml`, since
+  `RecipeDef` has no `recipeUsers` field — RimSage-verified), the generic chef-skill-steered
+  comp/doer pair (`CompSkillSteeredOutcome.cs` + `IngestionOutcomeDoer_SteeredFamily.cs` +
+  `GenRecipePatch.cs`'s postfix on `GenRecipe.MakeRecipeProducts`), the vermilion's
+  steered-only/never-random/Cooking-14 gate, the 3-family cap, and mood-linked ThoughtDefs.
+  Two named-UNMEASURED cells shipped with their own named XML-only fallback (eye-glow's
+  darkness exemption, gut-glow III's diet); several purely cosmetic sub-details were trimmed
+  (filth reskin, breath flecks, rest-cap/lit-dreams) — see the file header comment in
+  `RM_DeepfireGlowHediffs.xml` for the exact list. All offline-verifiable; no live test needed
+  for any of it (RimSage confirmed every stat/class/field referenced against the decompiled
+  1.6 source, and `validate_patch.py --defs` against the live 628-mod active list found 0
+  errors).
+- **Ninefold god reactions (§5), partial**: `NinefoldDeltaBridge.cs` (the reusable
+  reflection-bound `ApplyDelta` wrapper) and `DeepfireGodExtension` (the statue hook, unused
+  but ready) ship. Only the two §5.2 event rows wireable without `CompDeepfire` are wired: "a
+  Deepfire dish eaten" (Zizzik/Ozzik +Small) and the vermilion's "cannot be hidden — Ishko
+  −Medium on reaching III". The coat/worn/sold/statue-coat deltas need `CompDeepfire`
+  (piece 1, deferred).
+- **The purple engine / sumptuary status (§4), partial**: `RM_SumptuaryEngine`'s generic
+  machinery ships (`SumptuaryEngine.cs`'s `StatusGoodExtension` + `SumptuaryUtility`, rank via
+  Royalty title / Ideology role, degrading gracefully with neither DLC) plus three of its five
+  ThoughtDefs (`RM_WearingDeepfireTitled/Common`, `RM_WearsAboveStation`,
+  `RM_SawCommonerInDeepfire`) — all real and testable, currently inert because nothing is yet
+  tagged with `RM_StatusGoodExtension` (exactly the standing Mod Settings rule's "all-off
+  degrades gracefully", not a stub). `RM_DeepfireBedroom` and `RM_ImpressedByDeepfire` need a
+  room-stat hook over painted furniture, deferred with painting.
+- Real Mod Settings for everything above (Cuisine/Gods/Status groups in
+  `LuminousPigmentMod.cs`), including a genuine recipe-visibility gate (`cuisineEnabled`
+  removes/restores the 15 recipes from `ElectricStove`/`FueledStove` at startup, since a
+  `RecipeDef` has no hide flag of its own) and live skill-requirement sync
+  (`steerMinSkill`/`vermilionMinSkill`).
+
+**Deferred to `DEEPFIRE_PAINT_LIVE_VERIFY_1`** (filed, `needs: bridge`): painting (§3) and
+worn-item glow + the darkness-targeting combat tradeoff (§3.4) — both explicitly gated by the
+spec's own live proxy-glower quicktest (§10 step 1) and, for the combat tradeoff, a live
+`ShotReport.HitReportFor` comparison (§10 step 8). Building `HediffCompProperties_
+DeepfireGlow`'s soft `DeepfireLightsBridge` and `SumptuaryUtility`'s extension point in THIS
+pass means that follow-on's light/status work slots in without redesigning either.
+
+Build: `"%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\
+LuminousPigment\Source\RM_LuminousPigment.csproj -c Release` — 0 warnings, 0 errors.
+`validate_patch.py --defs` against the live 627-active-mod install (Data + Mods + Workshop
+content) — 0 errors, advisory warnings only (vanilla-asset texPath, unbuilt-DLL class-not-
+found info lines matching the mod's own already-shipped defs' pattern).
+
+---
+
+## Original prose
+
 Deferred out of `DEEPFIRE_PIGMENT_MOD_1` (the LuminousPigment mod's Phase 1 build,
 `src/RimMandrake/LuminousPigment/`, ships the chain: crowncarpet, its one-day
 clock, the Deepfire press + hidden research, Deepfire itself, and the GlowTank).

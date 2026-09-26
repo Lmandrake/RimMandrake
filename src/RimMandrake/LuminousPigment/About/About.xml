@@ -45,15 +45,22 @@ refining recipe, Deepfire itself (a resource that glows faintly in a stockpile),
 GlowTank (a slow, low-yield cultured source). Every number is a Mod Settings toggle; the whole
 gate can be turned to Buildable or Unbuildable instead of Research.
 
-NOT YET IN THIS BUILD — filed as DEEPFIRE_PAINT_STATUS_CUISINE_1: painting Deepfire onto walls,
-floors, furniture, art, apparel and weapons (the designator/comp/beauty-and-quality mechanism);
-worn Deepfire's moving light and its darkness-targeting tradeoff; the sumptuary status engine
-("the purple engine"); the Ninefold god reactions; and the Cuisine glow-hediff families. Those
-five mechanisms each need Harmony postfixes into engine internals the spec itself flags
-UNMEASURED (BeautyUtility.CellBeauty, ShotReport.HitReportFor, GenRecipe.MakeRecipeProducts, the
-styling-station dialog) plus the live bridge quicktests the spec's own §10 build plan requires
-before anything else may depend on them — real, separately-buildable work, not owner-blocked, but
-too large to force into one unverified pass with the chain above.
+THIS BUILD ALSO SHIPS (DEEPFIRE_PAINT_STATUS_CUISINE_1, partial): Cuisine's 14 glow-hediff
+families (§6) with 15 recipes on any stove and the chef-skill-steered outcome mechanism; the
+Ninefold god bridge (§5) wired for the two events that do not need painting (a dish eaten; the
+vermilion family reaching tier III); and the sumptuary "purple engine" (§4) as a real, generic,
+currently-inert reusable system (its own thoughts fire once something is tagged with
+RM_StatusGoodExtension — nothing is yet).
+
+STILL NOT IN THIS BUILD — filed as DEEPFIRE_PAINT_LIVE_VERIFY_1: painting Deepfire onto walls,
+floors, furniture, art, apparel and weapons (the designator/comp/beauty-and-quality mechanism, §3)
+and worn Deepfire's moving light with its darkness-targeting combat tradeoff (§3.4). Both need the
+spec's own live proxy-glower quicktest (§10 step 1) before anything else may be built on the
+light-proxy shape it decides, plus (for the combat tradeoff) a live bridge comparison of
+ShotReport.HitReportFor numbers the spec's own build plan calls for (§10 step 8) — not owner-
+blocked, but genuinely needing a live game, not a def dump. The gods' coat/sold/statue-coat deltas
+and the status engine's room-stat thoughts (RM_DeepfireBedroom, RM_ImpressedByDeepfire) wait on
+CompDeepfire from that same follow-on, not a new design question.
 
 The Scald's Utinni-tier sourcing (the bottom-walkers laying crowncarpet as they pass, and the
 Stillfluid/Thornwillow fixative recipe) is a patch in the Utinni layer, not this mod — this mod

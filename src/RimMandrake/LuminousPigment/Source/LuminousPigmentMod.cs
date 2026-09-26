@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using RimWorld;
 using UnityEngine;
@@ -19,11 +20,17 @@ namespace RimMandrake.LuminousPigment
     // no restart -- SlimeMod's own precedent, src/RimMandrake/GelatinousSlime/
     // Source/SlimeMod.cs).
     //
-    // Only the Chain is here. Painting, worn-item lighting, the status
-    // engine, Ninefold and Cuisine settings groups ship with that work
-    // (DEEPFIRE_PAINT_STATUS_CUISINE_1) -- a toggle for a mechanism that
-    // does not exist yet would be a stub, which the standing Mod Settings
-    // rule forbids.
+    // The Chain (Phase 1, DEEPFIRE_PIGMENT_MOD_1) plus the three pieces of
+    // DEEPFIRE_PAINT_STATUS_CUISINE_1 this build ships: Cuisine's 14
+    // glow-hediff families, the Ninefold god-bridge's two wireable deltas,
+    // and the sumptuary status engine's worn-goods thoughts. Painting and
+    // worn-item lighting (spec §3) are NOT here -- deferred to
+    // DEEPFIRE_PAINT_LIVE_VERIFY_1, which needs the spec's own live
+    // proxy-glower quicktest first. Their settings ship with that follow-on;
+    // a toggle for a mechanism that does not exist yet would be a stub,
+    // which the standing Mod Settings rule forbids -- same reasoning also
+    // keeps godDeltaIshko/godDeltaStatue and Cuisine's per-family weight
+    // sliders and effectScale out of this pass (unwired numbers).
     public class LuminousPigmentSettings : ModSettings
     {
         public static bool shoreMatsEnabled = true;
@@ -46,6 +53,35 @@ namespace RimMandrake.LuminousPigment
         public static float tankPower = 180f;
         public static float tankPowerGraceHours = 6f;
 
+        // Cuisine (spec §6, §7 "Cuisine" group)
+        public static bool cuisineEnabled = true;
+        public static int steerMinSkill = 10;
+        public static int vermilionMinSkill = 14;
+        public static int maxFamiliesPerPawn = 3;
+        public static bool hediffGlowEnabled = true;
+        public static bool[] familyEnabled = NewFamilyEnabledArray();
+
+        private static bool[] NewFamilyEnabledArray()
+        {
+            bool[] arr = new bool[DeepfireFamilies.All.Count];
+            for (int i = 0; i < arr.Length; i++) arr[i] = true;
+            return arr;
+        }
+
+        // Gods (spec §7 "Gods" group) -- only the two constants this build's
+        // two wired deltas actually use (dish-eaten Small, vermilion-III
+        // Medium reused for Ishko's penalty).
+        public static bool godsReact = true;
+        public static float godDeltaLike = 3f;
+        public static float godDeltaAdore = 8f;
+
+        // Status -- the purple engine (spec §7 "Status" group)
+        public static bool statusEnabled = true;
+        public static int displayCap = 6;
+        public static int offenceThreshold = 2;
+        public static float opinionAboveStation = -15f;
+        public static bool ranklessColoniesEnjoyIt = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -65,6 +101,28 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref tankYield, "tankYield", 2);
             Scribe_Values.Look(ref tankPower, "tankPower", 180f);
             Scribe_Values.Look(ref tankPowerGraceHours, "tankPowerGraceHours", 6f);
+
+            Scribe_Values.Look(ref cuisineEnabled, "cuisineEnabled", true);
+            Scribe_Values.Look(ref steerMinSkill, "steerMinSkill", 10);
+            Scribe_Values.Look(ref vermilionMinSkill, "vermilionMinSkill", 14);
+            Scribe_Values.Look(ref maxFamiliesPerPawn, "maxFamiliesPerPawn", 3);
+            Scribe_Values.Look(ref hediffGlowEnabled, "hediffGlowEnabled", true);
+            List<bool> familyEnabledList = new List<bool>(familyEnabled);
+            Scribe_Collections.Look(ref familyEnabledList, "familyEnabled", LookMode.Value);
+            if (familyEnabledList != null && familyEnabledList.Count == familyEnabled.Length)
+            {
+                familyEnabled = familyEnabledList.ToArray();
+            }
+
+            Scribe_Values.Look(ref godsReact, "godsReact", true);
+            Scribe_Values.Look(ref godDeltaLike, "godDeltaLike", 3f);
+            Scribe_Values.Look(ref godDeltaAdore, "godDeltaAdore", 8f);
+
+            Scribe_Values.Look(ref statusEnabled, "statusEnabled", true);
+            Scribe_Values.Look(ref displayCap, "displayCap", 6);
+            Scribe_Values.Look(ref offenceThreshold, "offenceThreshold", 2);
+            Scribe_Values.Look(ref opinionAboveStation, "opinionAboveStation", -15f);
+            Scribe_Values.Look(ref ranklessColoniesEnjoyIt, "ranklessColoniesEnjoyIt", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -124,6 +182,53 @@ namespace RimMandrake.LuminousPigment
                 "Off: the GlowTank does not appear in the build menu. Existing tanks keep working.");
             list.Label("Power outage before it kills the culture: " + tankPowerGraceHours.ToString("0") + " h");
             tankPowerGraceHours = list.Slider(tankPowerGraceHours, 0f, 48f);
+            list.GapLine();
+
+            list.Label("CUISINE");
+            list.CheckboxLabeled("Deepfire dishes", ref cuisineEnabled,
+                "Off: every deepfire recipe disappears from the cookery bill list. Existing glow " +
+                "hediffs on pawns who already ate one are unaffected.");
+            list.Label("Steered-recipe skill requirement: " + steerMinSkill.ToString());
+            steerMinSkill = Mathf.RoundToInt(list.Slider(steerMinSkill, 4f, 18f));
+            list.Label("Vermilion (whole-body) recipe skill requirement: " + vermilionMinSkill.ToString());
+            vermilionMinSkill = Mathf.RoundToInt(list.Slider(vermilionMinSkill, 10f, 20f));
+            list.Label("Glow-hediff families a pawn can carry at once: " + maxFamiliesPerPawn.ToString());
+            maxFamiliesPerPawn = Mathf.RoundToInt(list.Slider(maxFamiliesPerPawn, 1f, 14f));
+            list.CheckboxLabeled("Glow-hediffs give off light", ref hediffGlowEnabled,
+                "Off: the stat/mood effects of every glow-hediff family still apply, but none of " +
+                "them light up.");
+            list.Label("Families available to roll or steer toward:");
+            for (int i = 0; i < DeepfireFamilies.All.Count; i++)
+            {
+                bool enabled = familyEnabled[i];
+                list.CheckboxLabeled("  " + DeepfireFamilies.All[i].key, ref enabled);
+                familyEnabled[i] = enabled;
+            }
+            list.GapLine();
+
+            list.Label("GODS (Ninefold)");
+            list.CheckboxLabeled("Gods react to deepfire", ref godsReact,
+                "Off: no Ninefold satiation deltas from deepfire at all. Inert with Ninefold absent " +
+                "regardless of this setting.");
+            list.Label("Small reaction (a dish eaten): " + godDeltaLike.ToString("0.#"));
+            godDeltaLike = list.Slider(godDeltaLike, 0f, 20f);
+            list.Label("Medium reaction (the vermilion cannot be hidden): " + godDeltaAdore.ToString("0.#"));
+            godDeltaAdore = list.Slider(godDeltaAdore, 0f, 30f);
+            list.GapLine();
+
+            list.Label("STATUS (the purple engine)");
+            list.CheckboxLabeled("Sumptuary reactions", ref statusEnabled,
+                "Off: no status thoughts from deepfire goods at all.");
+            list.Label("Display score cap: " + displayCap.ToString());
+            displayCap = Mathf.RoundToInt(list.Slider(displayCap, 1f, 12f));
+            list.Label("Commoner display score that offends a titled pawn: " + offenceThreshold.ToString());
+            offenceThreshold = Mathf.RoundToInt(list.Slider(offenceThreshold, 1f, 6f));
+            list.Label("Opinion penalty for wearing above one's station: " + opinionAboveStation.ToString("0"));
+            opinionAboveStation = list.Slider(opinionAboveStation, -40f, 0f);
+            list.CheckboxLabeled("Colonies with no Royalty or Ideology still enjoy it", ref ranklessColoniesEnjoyIt,
+                "On (default): with neither DLC active nobody can be titled, so the engine degrades " +
+                "to a plain 'nice clothes' mood for everyone. Off: with neither DLC active, nobody " +
+                "gets a thought at all.");
 
             list.End();
         }
@@ -218,6 +323,94 @@ namespace RimMandrake.LuminousPigment
             {
                 crowncarpetCultured.plant.growDays = LuminousPigmentSettings.tankGrowDays;
                 crowncarpetCultured.plant.harvestYield = LuminousPigmentSettings.tankYield;
+            }
+
+            ApplyCuisineSkillRequirements();
+            ApplyCuisineRecipeVisibility();
+            ApplyStatusThoughtNumbers();
+        }
+
+        // The 14 steered recipes' skillRequirements (Cooking) track
+        // steerMinSkill / vermilionMinSkill live -- spec §7 lists both as
+        // Mod Settings, not fixed def numbers.
+        private static readonly string[] SteeredRecipeDefNames =
+        {
+            "RM_MealDeepfire_Skin", "RM_MealDeepfire_Eyes", "RM_MealDeepfire_Cranial",
+            "RM_MealDeepfire_Neural", "RM_MealDeepfire_Mouth", "RM_MealDeepfire_Products",
+            "RM_MealDeepfire_Blood", "RM_MealDeepfire_Marrow", "RM_MealDeepfire_Hair",
+            "RM_MealDeepfire_Gut", "RM_MealDeepfire_Nerves", "RM_MealDeepfire_Pulse",
+            "RM_MealDeepfire_Lungs",
+        };
+
+        private static readonly string[] AllDeepfireRecipeDefNames =
+        {
+            "RM_MealDeepfirePlain",
+            "RM_MealDeepfire_Skin", "RM_MealDeepfire_Eyes", "RM_MealDeepfire_Cranial",
+            "RM_MealDeepfire_Neural", "RM_MealDeepfire_Mouth", "RM_MealDeepfire_Products",
+            "RM_MealDeepfire_Blood", "RM_MealDeepfire_Marrow", "RM_MealDeepfire_Hair",
+            "RM_MealDeepfire_Gut", "RM_MealDeepfire_Nerves", "RM_MealDeepfire_Pulse",
+            "RM_MealDeepfire_Lungs", "RM_MealDeepfire_Vermilion",
+        };
+
+        private static void ApplyCuisineSkillRequirements()
+        {
+            foreach (string defName in SteeredRecipeDefNames)
+            {
+                SetCookingRequirement(defName, LuminousPigmentSettings.steerMinSkill);
+            }
+            SetCookingRequirement("RM_MealDeepfire_Vermilion", LuminousPigmentSettings.vermilionMinSkill);
+        }
+
+        private static void SetCookingRequirement(string recipeDefName, int level)
+        {
+            RecipeDef recipe = DefDatabase<RecipeDef>.GetNamedSilentFail(recipeDefName);
+            SkillRequirement req = recipe?.skillRequirements?.Find(r => r.skill == SkillDefOf.Cooking);
+            if (req != null) req.minLevel = level;
+        }
+
+        // Spec §7: "cuisineEnabled ... all recipes hidden when off". A
+        // RecipeDef has no visibility flag of its own -- vanilla wires a
+        // meal recipe to a bench purely by listing it on the bench's
+        // <recipes> (RimSage-verified, no recipeUsers field exists), so
+        // toggling membership in that list IS the real, standing-rule-
+        // compliant gate.
+        private static void ApplyCuisineRecipeVisibility()
+        {
+            ApplyCuisineRecipeVisibilityTo(ThingDef.Named("ElectricStove"));
+            ApplyCuisineRecipeVisibilityTo(ThingDef.Named("FueledStove"));
+        }
+
+        private static void ApplyCuisineRecipeVisibilityTo(ThingDef stove)
+        {
+            if (stove == null) return;
+            if (stove.recipes == null) stove.recipes = new List<RecipeDef>();
+
+            foreach (string defName in AllDeepfireRecipeDefNames)
+            {
+                RecipeDef recipe = DefDatabase<RecipeDef>.GetNamedSilentFail(defName);
+                if (recipe == null) continue;
+                bool present = stove.recipes.Contains(recipe);
+                if (LuminousPigmentSettings.cuisineEnabled && !present)
+                {
+                    stove.recipes.Add(recipe);
+                }
+                else if (!LuminousPigmentSettings.cuisineEnabled && present)
+                {
+                    stove.recipes.Remove(recipe);
+                }
+            }
+        }
+
+        // opinionAboveStation is the one status number baked into a def
+        // (RM_WearsAboveStation's single stage) rather than read live by
+        // SumptuaryUtility -- same reapply-at-startup shape as
+        // deepfireMarketValue above.
+        private static void ApplyStatusThoughtNumbers()
+        {
+            ThoughtDef aboveStation = DefDatabase<ThoughtDef>.GetNamedSilentFail("RM_WearsAboveStation");
+            if (aboveStation != null && aboveStation.stages.Count > 0)
+            {
+                aboveStation.stages[0].baseOpinionOffset = LuminousPigmentSettings.opinionAboveStation;
             }
         }
 

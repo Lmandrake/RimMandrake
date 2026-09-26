@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  DeepfireMealsOnStoves.xml          LuminousPigment · DEEPFIRE_PAINT_STATUS_CUISINE_1
+  ============================================================================
+  RecipeDef has no recipeUsers field (RimSage-verified against
+  Recipes_Meals.xml/Buildings_Production.xml) — vanilla wires a meal recipe
+  to a bench by listing it on the BENCH's own <recipes>. ElectricStove and
+  FueledStove are the two benches carrying CookMealFine (MEASURED,
+  Buildings_Production.xml lines 673/767) — the same two get all 15 deepfire
+  recipes here.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[defName="ElectricStove"]/recipes</xpath>
+    <value>
+      <li>RM_MealDeepfirePlain</li>
+      <li>RM_MealDeepfire_Skin</li>
+      <li>RM_MealDeepfire_Eyes</li>
+      <li>RM_MealDeepfire_Cranial</li>
+      <li>RM_MealDeepfire_Neural</li>
+      <li>RM_MealDeepfire_Mouth</li>
+      <li>RM_MealDeepfire_Products</li>
+      <li>RM_MealDeepfire_Blood</li>
+      <li>RM_MealDeepfire_Marrow</li>
+      <li>RM_MealDeepfire_Hair</li>
+      <li>RM_MealDeepfire_Gut</li>
+      <li>RM_MealDeepfire_Nerves</li>
+      <li>RM_MealDeepfire_Pulse</li>
+      <li>RM_MealDeepfire_Lungs</li>
+      <li>RM_MealDeepfire_Vermilion</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[defName="FueledStove"]/recipes</xpath>
+    <value>
+      <li>RM_MealDeepfirePlain</li>
+      <li>RM_MealDeepfire_Skin</li>
+      <li>RM_MealDeepfire_Eyes</li>
+      <li>RM_MealDeepfire_Cranial</li>
+      <li>RM_MealDeepfire_Neural</li>
+      <li>RM_MealDeepfire_Mouth</li>
+      <li>RM_MealDeepfire_Products</li>
+      <li>RM_MealDeepfire_Blood</li>
+      <li>RM_MealDeepfire_Marrow</li>
+      <li>RM_MealDeepfire_Hair</li>
+      <li>RM_MealDeepfire_Gut</li>
+      <li>RM_MealDeepfire_Nerves</li>
+      <li>RM_MealDeepfire_Pulse</li>
+      <li>RM_MealDeepfire_Lungs</li>
+      <li>RM_MealDeepfire_Vermilion</li>
+    </value>
+  </Operation>
+
+</Patch>
