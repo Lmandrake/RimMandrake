@@ -265,6 +265,10 @@ infrastructure/state/*.lock
 infrastructure/state/*.tmp.*
 infrastructure/artpipe/_codex_homes/
 infrastructure/artpipe/*.lock
+# ARTPIPE_CONSOLE_REDESIGN_1: per-run plain-text logs and live status JSON —
+# both uncommitted, pruned/rewritten by the daemon itself.
+infrastructure/artpipe/logs/
+infrastructure/artpipe/status/
 
 # derived: cloned prototypes under Transient/triposr_prototype (owner: local imagegen track PARKED 2026-09-05)
 Transient/triposr_prototype/TripoSR/
