@@ -147,24 +147,13 @@ dive. The free `RM_` matrix must be complete without them (Q11a).
    for existing saves). Defaults = shipped; all-off = vanilla apparel only, diving at the naked
    clock.
 
-## 6. Open questions for the owner (choices, not rulings)
+## 6. Owner rulings on this matrix (2026-09-25, SEA_DIVE_MAPS_BUILD_1 ledger notes)
 
-1. **Deluxe without Odyssey.** The free `RM_` mods load without any expansion; today the deluxe
-   set is Odyssey's vacsuit. (a) *Reuse only* — deluxe exists when Odyssey does, otherwise the
-   free matrix tops out at moderate (this spec's default: "space suits are well known" names the
-   vacsuit). (b) *Our own* `RM_Apparel_SealedSuit` (Spacer, `OrbitalTech`, own art) that carries
-   the `RM_` stats always and `VacuumResistance` by patch — more work, one more suit in the wardrobe.
-   (c) The Royal Rind vacuum garment (`greatbole_harvest_spec.md` §3b use 2) *is* the free deluxe
-   — but that use is ruled Odyssey-gated, so (c) is really (a) in rind.
-2. **One liquid stat or two.** (a) One new `RM_DiveProtection` for all four seas (default). (b)
-   The Scald floor keeps using `RM_ScaldProtection` as its dive clock too (the old §8.6 collapse),
-   and only the other three seas take the new stat — fewer stats on a Scald tooltip, but a
-   boil-suit then protects the Grey floor for a reason nobody can explain.
-3. **The moderate liquid head.** (a) A separate `RM_Apparel_Rebreather` stacking with the
-   boil-suit (default — one more local craft, and it combines with rind). (b) The boil-suit's own
-   hood is the seal and carries the whole 0.75; no rebreather def.
-4. **Grey/Twilight locals.** (a) No local sea gear beyond the Scald's in v1 (default). (b) A Grey
-   brine-cured hide (from the Grey's floor cast) as a second source for the cheap liquid cell,
-   so a Grey colony need not hunt the Scald.
-5. **Star Wars skins.** (a) Patch the KotOR flight suits with our offsets so they dive (§4b,
-   default). (b) Leave them cosmetic; only `RM_` gear protects.
+1. **Deluxe is Odyssey's vacsuit set.** Design assumes every DLC is present (*"Always assume all
+   the dlcs."*, CLAUDE.md) — no expansion-free top tier is owed; `MayRequire` guards remain for
+   load safety only.
+2. **One `RM_DiveProtection` stat for all four seas**; heat stays on its own stats.
+3. **A separate `RM_Apparel_Rebreather`** at the moderate liquid tier, stacking with any body
+   piece (boil-suit or Royal Rind coat).
+4. **Local sea gear is the Scald's only in v1**; the other seas get theirs when their floors are built.
+5. **The KotOR flight suits are patched** with our dive and heat offsets so they protect divers.
