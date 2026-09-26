@@ -1,0 +1,261 @@
+{
+  "success": true,
+  "message": "1 biome(s) probed",
+  "biomesProbed": 1,
+  "notFound": [],
+  "searched": [],
+  "absentFromEveryProbedBiome": [],
+  "biomes": [
+    {
+      "defName": "RM_LeaningScrub",
+      "label": "the leaning scrub",
+      "modName": "RimMandrake: Leaning Scrub",
+      "implemented": true,
+      "generatesNaturally": true,
+      "canBuildBase": true,
+      "canAutoChoose": true,
+      "isExtremeBiome": false,
+      "isWaterBiome": false,
+      "impassable": false,
+      "animalDensity": 1.8,
+      "plantDensity": 0.35,
+      "diseaseMtbDays": 65.0,
+      "forageability": 0.5,
+      "foragedFood": null,
+      "settlementSelectionWeight": 1.0,
+      "wildAnimalCount": 45,
+      "wildPlantCount": 7,
+      "animalsListed": 45,
+      "plantsListed": 7,
+      "animals": [
+        {
+          "defName": "FrilledGorg",
+          "commonality": 1.0
+        },
+        {
+          "defName": "Gorg",
+          "commonality": 1.0
+        },
+        {
+          "defName": "Iriaz",
+          "commonality": 1.0
+        },
+        {
+          "defName": "LongtailGorg",
+          "commonality": 1.0
+        },
+        {
+          "defName": "Eopie",
+          "commonality": 0.8
+        },
+        {
+          "defName": "Lothcat",
+          "commonality": 0.8
+        },
+        {
+          "defName": "Mudhorn",
+          "commonality": 0.8
+        },
+        {
+          "defName": "Ronto",
+          "commonality": 0.8
+        },
+        {
+          "defName": "Scurrier",
+          "commonality": 0.8
+        },
+        {
+          "defName": "Sketto",
+          "commonality": 0.8
+        },
+        {
+          "defName": "RSW_Kreetle",
+          "commonality": 0.8
+        },
+        {
+          "defName": "Terrorworm",
+          "commonality": 0.7
+        },
+        {
+          "defName": "Igitz",
+          "commonality": 0.7
+        },
+        {
+          "defName": "Urusai",
+          "commonality": 0.7
+        },
+        {
+          "defName": "RSW_ImperialToad",
+          "commonality": 0.7
+        },
+        {
+          "defName": "Kybuck",
+          "commonality": 0.6
+        },
+        {
+          "defName": "Massiff",
+          "commonality": 0.6
+        },
+        {
+          "defName": "Bantha",
+          "commonality": 0.5
+        },
+        {
+          "defName": "Pufferpig",
+          "commonality": 0.5
+        },
+        {
+          "defName": "RSW_TunnelSnake",
+          "commonality": 0.5
+        },
+        {
+          "defName": "RSW_ScrapNestBird",
+          "commonality": 0.45
+        },
+        {
+          "defName": "Anooba",
+          "commonality": 0.4
+        },
+        {
+          "defName": "Corinathoth",
+          "commonality": 0.4
+        },
+        {
+          "defName": "RSW_Gizka",
+          "commonality": 0.4
+        },
+        {
+          "defName": "RSW_Nuna",
+          "commonality": 0.4
+        },
+        {
+          "defName": "RSW_Worrt",
+          "commonality": 0.4
+        },
+        {
+          "defName": "RSW_ShrublandGiant",
+          "commonality": 0.35
+        },
+        {
+          "defName": "RSW_MossBeetle",
+          "commonality": 0.3
+        },
+        {
+          "defName": "Grank",
+          "commonality": 0.2
+        },
+        {
+          "defName": "Qormot",
+          "commonality": 0.2
+        },
+        {
+          "defName": "Strill",
+          "commonality": 0.2
+        },
+        {
+          "defName": "Cannok",
+          "commonality": 0.16
+        },
+        {
+          "defName": "Whisperbird",
+          "commonality": 0.15
+        },
+        {
+          "defName": "AA_Cactipine",
+          "commonality": 0.125
+        },
+        {
+          "defName": "Pikobis",
+          "commonality": 0.1
+        },
+        {
+          "defName": "Vulptex",
+          "commonality": 0.08
+        },
+        {
+          "defName": "Convor",
+          "commonality": 0.08
+        },
+        {
+          "defName": "Skalder",
+          "commonality": 0.08
+        },
+        {
+          "defName": "AA_Needlepost",
+          "commonality": 0.05
+        },
+        {
+          "defName": "AA_Wildpawn",
+          "commonality": 0.05
+        },
+        {
+          "defName": "Porg",
+          "commonality": 0.04
+        },
+        {
+          "defName": "FeralNerf",
+          "commonality": 0.04
+        },
+        {
+          "defName": "Voorpak",
+          "commonality": 0.02
+        },
+        {
+          "defName": "AA_Wildpod",
+          "commonality": 0.0125
+        },
+        {
+          "defName": "KowakianMonkeyLizard",
+          "commonality": 0.01
+        }
+      ],
+      "plants": [
+        {
+          "defName": "RM_Fuzz",
+          "commonality": 0.9
+        },
+        {
+          "defName": "Plant_Brambles",
+          "commonality": 0.3
+        },
+        {
+          "defName": "RM_Grellbush",
+          "commonality": 0.3
+        },
+        {
+          "defName": "RM_Grellspine",
+          "commonality": 0.3
+        },
+        {
+          "defName": "RM_WildHealroot",
+          "commonality": 0.25
+        },
+        {
+          "defName": "Plant_Nysyllin_Wild",
+          "commonality": 0.22
+        },
+        {
+          "defName": "RM_VenomvineThicket",
+          "commonality": 0.15
+        }
+      ],
+      "findResults": null
+    }
+  ],
+  "ticksGame": 1,
+  "operation": {
+    "OperationId": "op_2e1f7d3b30a242b5a66250063dc408e1",
+    "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-09-26T00:07:33.273071+00:00",
+    "CompletedAtUtc": "2026-09-26T00:07:33.3173916+00:00",
+    "DurationMs": 44,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}
