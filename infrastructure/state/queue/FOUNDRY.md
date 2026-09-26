@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T07:30:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T07:48:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -873,6 +873,15 @@ kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
 
+## FEVERWOOD_TWO_FRONT_LURE_1 Staked living bait, and two raiders who arrive one after the other
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §5, §6l.
+prose:    infrastructure/state/items/FEVERWOOD_TWO_FRONT_LURE_1.md
+
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
 row:      unassigned
@@ -1530,16 +1539,6 @@ thin:     spec, verify and criteria all present
 summary:  1. Build the stench smoke only (ruled above). ⛔ Do not open the seeding grenade or either toxin
 prose:    infrastructure/state/items/GREENTIDE_GRENADE_WEAPONS_1.md
 
-## CONTAGION_GENOME_ORGAN_GROWING_1 Grow a colonist's organs inside a Contagion amoeba
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Read the Contagion's roster and design doc first and propose the host creature. ⛔ No new
-prose:    infrastructure/state/items/CONTAGION_GENOME_ORGAN_GROWING_1.md
-
 ## GREENTIDE_WASP_SWARM_1 Jungle wasps: tiny, numerous, hives on plants, stings that stack
 state:    proposed
 row:      unassigned
@@ -1549,16 +1548,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. Design this as the shared reaction mechanism's first proof, in mandrake.rm.creaturebehaviors,
 prose:    infrastructure/state/items/GREENTIDE_WASP_SWARM_1.md
-
-## FEVERWOOD_TWO_FRONT_LURE_1 Staked living bait, and two raiders who arrive one after the other
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md §5, §6l.
-prose:    infrastructure/state/items/FEVERWOOD_TWO_FRONT_LURE_1.md
 
 ## DEBUG_GAME_READY_WORLDUI_CRASH_1 start_debug_game_ready leaves the game in a broken world/map-UI NullReferenceException loop at 623 mods, distinct from the closed NINEFOLD_DEBUG_GAME_READY_CRASH_1 repro
 state:    proposed
@@ -1799,3 +1788,13 @@ kind:     mechanism
 thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
+
+## CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1 Grown limbs and an install-match bonus for the amoeba organ mechanic
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Limbs. The owner's own words were "a plethora of organs and limbs." Vanilla RimWorld
+prose:    infrastructure/state/items/CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1.md
