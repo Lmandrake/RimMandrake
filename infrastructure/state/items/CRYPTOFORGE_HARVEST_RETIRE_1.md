@@ -1,6 +1,9 @@
 ## spec
 Owner-said: "Retire-after-harvest." Harvest then retire VQE Cryptoforge:
-(1) reproduce the 18 SALVAGE_PALETTE-cited props as owned RUT_/RSW_
+(1) reproduce the SALVAGE_PALETTE-cited props (the original filing said 18;
+verified 2026-09-26 at **21** unique defNames tagged "Vanilla Quests
+Expanded - Cryptoforge" in `SALVAGE_PALETTE.md`, each needing its own
+sprite — see the item's own note below) as owned RUT_/RSW_
 ThingDefs with OWNED art (citation swap — Workshop art is not ours to
 ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as
 authoring reference, strip to owned symbols before any shipping use; (3)
@@ -34,31 +37,45 @@ step 4's resave must also confirm no VQE_ entry survives in `futureQuests`.
   shippable until every cell's third-party SymbolDef is stripped/repointed
   (same pattern as `gen_vault_layouts.py`'s existing wrapper symbols).
 
-## NOT done, and why — steps 1, 4, 5 need their own passes
-- **Step 1 (18 owned-art props)** is a real content-authoring task, not a
-  mechanical cut — each of the 18 SALVAGE_PALETTE-cited Cryptoforge props
-  needs a correctly-sized, validated, RimWorld-styled sprite (the
-  `generating-rimworld-sprites` skill's whole workflow), not a quick
-  reskin. Rushing 18 pieces in the tail of an unrelated belt session risks
-  shipping placeholder-quality art. ⚠️ Note for whoever picks this up: the
-  palette table under "Vanilla Quests Expanded - Cryptoforge" actually
-  lists **22** unique defNames in `SALVAGE_PALETTE.md`, not 18 — some are
-  almost certainly state-variant pairs sharing one piece of art (e.g.
-  `AncientShieldedTurret`/`BustedShieldedTurret`,
-  `AncientAirlock`/`ForcedAncientAirlock`/`JammedAncientAirlock`) rather
-  than 22 separate sprites, which is probably where "18" came from — but
-  that needs confirming against the donor's own texPaths before assuming
-  it, not guessing from the name pattern.
-- **Step 4 (ModsConfig removal, cold-load check, canonical resave)**
-  needs a real restart. Held back this session for the same reason as
-  `RUT_SCAVENGEREVENTS_BUILD_1` and `BOOM_FAMILY_CUT_1` — the owner was
-  mid-session on the live campaign map throughout, and a cold load would
-  have pulled the game out from under him. The `futureQuests`
-  `VQE_Cryptoforge_Chapter1` check BENCH flagged is folded into this step,
-  not done separately.
-- **Step 5 (IceCrawler/Megamidge fauna-sheet ruling)** explicitly needs the
-  owner's live review per the item's own text — not applied.
+## NOT done, and why — steps 1, 4 need their own passes; step 5 is now DONE
+
+- **Step 5 (IceCrawler/Megamidge fauna-sheet ruling) — DONE, verified against
+  the live decisions record, FOUNDRY 2026-09-26.** The prior session's "needs
+  the owner's live review" was already stale the day it was written: both
+  rows were ruled at the "homeless disposition sitting," frozen 2026-09-10
+  (same day this item was filed) —
+  `design/Jawa/worldbuilding/review/round2/decisions_propagated.json` (the
+  LIVE register per `creature-art-register-retired-2026-09-11`) carries
+  `homeless:VQE_IceCrawler` and `homeless:VQE_Megamidge` both
+  `"decision": "out"`, note `"CUT at the disposition sitting (homeless
+  disposition sitting, frozen 2026-09-10)"`; the raw
+  `homeless_disposition_register.decisions.json` agrees (`"decision":
+  "cut"` for both). **"Applying" it needed no further edit**: `grep -rl
+  "VQE_IceCrawler\|VQE_Megamidge" src/` returns nothing — the only live
+  reference was the `MegafaunaYield.xml` patch this item's own step 3
+  already deleted this session. Nothing left to do here.
+- **Step 1 (owned-art props) — corrected count and a false hypothesis
+  removed, still not started.** `grep` of `SALVAGE_PALETTE.md` for rows
+  tagged exactly "Vanilla Quests Expanded - Cryptoforge" gives **21** unique
+  defNames (not 18, not 22 — both prior guesses were off). The previous
+  session's guess that airlock/turret state-variant pairs "almost certainly"
+  share one piece of art is **checked and FALSE**: the donor's own
+  `Buildings_Structure.xml` gives `VQE_AncientAirlock` a distinct
+  `AncientAirlock_Top` texture, `VQE_JammedAncientAirlock` its own
+  `AncientAirlock_Locked`, and the `_Large` variants their own
+  `LargeAncientAirlock_*` set — every state is genuinely separate art, not a
+  shared asset with a tint. So this is honestly **21 separate sprites**,
+  each needing the full `generating-rimworld-sprites` workflow — a
+  dedicated art pass, not a tail-end task, exactly the prior session's
+  judgment (still correct, now on firmer evidence). Not attempted this
+  session either, for the same reason: rushing 21 pieces risks shipping
+  placeholder-quality art against the project's own standard.
+- **Step 4 (ModsConfig removal, cold-load check, canonical resave)** needs a
+  real restart, which this session is explicitly not authorized to run
+  (offline authoring only). Unaffected by anything above; still owed
+  entire, including the `futureQuests` `VQE_Cryptoforge_Chapter1` check.
 
 ## verify
 Steps 2/3: `validate_patch.py` 0 errors (done); reference copy exists and
-is documented (done). Steps 1/4/5: not started.
+is documented (done). Step 5: confirmed against the live decisions record
+and a live-source grep (done). Steps 1/4: not started.
