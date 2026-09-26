@@ -276,10 +276,12 @@ namespace RimMandrake.ExplosiveGrowth
 
         private static void Mutate(Pawn p, HediffDef def)
         {
-            // A random un-missing LEAF part, never one with children — same
-            // rule the Contagion's own Unfinished spawner uses, so an added-part
-            // mutation never amputates anything else.
-            List<BodyPartRecord> leaves = p.health.hediffSet.GetNotMissingParts()
+            // A random un-missing OUTSIDE LEAF part, never one with children —
+            // the Contagion's own Unfinished-spawner rule, so an added-part
+            // mutation never amputates anything else — and never an internal
+            // organ: a claw budding in place of a heart is a death sentence,
+            // which is past this mechanic's brief (mutation, not execution).
+            List<BodyPartRecord> leaves = p.health.hediffSet.GetNotMissingParts(depth: BodyPartDepth.Outside)
                 .Where(r => r.parts.Count == 0 && !p.health.hediffSet.PartOrAnyAncestorHasDirectlyAddedParts(r))
                 .ToList();
             if (leaves.Count == 0) return;
