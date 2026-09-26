@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_SOUNDSCAPE_1 — "the hush" (ambient near-silence bed) and "the
+  web-thrum" (a one-shot cue when the sense-web trips).
+
+  Shape and clip-reuse convention copied verbatim from LanternDeeps'
+  DEEPCALM_AMBIENT_SOUND_1 precedent (Defs/SoundDefs/RM_DeepAmbience.xml,
+  read in full before writing this file): NO new audio asset. Both grains
+  below point clipPath at clips already shipped in the Anomaly DLC (owned
+  expansion; design assumes every DLC is present, owner ruling 2026-09-25),
+  the same two clip paths RM_DeepAmbience.xml already proved resolve
+  (Data/Anomaly/Defs/SoundDefs/World_Sustainers_Misc.xml's Ambient_Undercave,
+  and Buildings_Misc.xml's VoidNode_Ambient). Cross-content-pack SoundDef
+  reference and clip reuse are the proven, shipped pattern here — a fresh
+  audio pass swaps these two clipPaths later; nothing else needs to change.
+
+  RM_Webwork_Hush  — the biome's own ambient bed, wired into
+                     RM_Webwork_Biome.xml's <soundsAmbient> the same way
+                     Greentide/Pyrelands wire Ambient_NightInsects_Standard
+                     (BiomeDef.soundsAmbient -> AmbientSoundManager, vanilla
+                     mechanism, no C# needed). Much lower volumeRange than
+                     the Lantern Deeps hum — the_webwork.md's own biome
+                     description is "eerily silent... most of the animals
+                     have been eaten" — this is a near-silence bed, not a
+                     drone.
+
+  RM_Webwork_Thrum — one-shot cue for "the sense-web trips" (the moment a
+                     pawn standing in a RM_MapComponent_SenseWeb-registered
+                     cell, or carrying the egg, gets the felt-mark hediff —
+                     RM_MapComponent_SenseWeb.ScanAndMark in
+                     RimMandrake.CreatureBehaviors, read in full before this
+                     pass; no other trip trigger exists in this mod set).
+                     sustain=false: plays through once at the tripping
+                     pawn's position and stops, no loop management needed.
+-->
+<Defs>
+
+  <SoundDef>
+    <defName>RM_Webwork_Hush</defName>
+    <sustain>True</sustain>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Ambience/Undercave/Undercave_Ambience_Loop_A</clipPath>
+          </li>
+        </grains>
+        <volumeRange>0.6~1</volumeRange>
+        <pitchRange>0.7~0.8</pitchRange>
+        <sustainAttack>6</sustainAttack>
+        <sustainRelease>6</sustainRelease>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_AmbientVolume" />
+            <outParam Class="SoundParamTarget_Volume" />
+          </li>
+        </paramMappings>
+        <randomStartPoint>true</randomStartPoint>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_Webwork_Thrum</defName>
+    <sustain>False</sustain>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Building/VoidNode/VoidNode_Ambience_Loop_A</clipPath>
+          </li>
+        </grains>
+        <volumeRange>2~3</volumeRange>
+        <pitchRange>1.1~1.3</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>

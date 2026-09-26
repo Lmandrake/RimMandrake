@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
+using Verse.Sound;
 
 namespace RimMandrake.CreatureBehaviors
 {
@@ -121,6 +122,13 @@ namespace RimMandrake.CreatureBehaviors
 
             ThingDef eggDef = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_Webwork_Egg");
 
+            // WEBWORK_SOUNDSCAPE_1 — "the web-thrum when sense-web trips".
+            // Same soft, name-blind lookup as feltMarkDef/eggDef above: a
+            // mod set without RM_Webwork_Thrum loaded (or a future biome's
+            // kit under a different name) just gets no cue rather than an
+            // error.
+            SoundDef thrum = DefDatabase<SoundDef>.GetNamedSilentFail("RM_Webwork_Thrum");
+
             IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < pawns.Count; i++)
             {
@@ -144,6 +152,7 @@ namespace RimMandrake.CreatureBehaviors
                 }
 
                 pawn.health.AddHediff(feltMarkDef);
+                thrum?.PlayOneShot(SoundInfo.InMap(new TargetInfo(pawn.Position, map)));
             }
         }
     }
