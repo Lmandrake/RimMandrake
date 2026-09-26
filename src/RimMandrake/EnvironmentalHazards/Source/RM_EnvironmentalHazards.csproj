@@ -116,6 +116,7 @@
     <Compile Include="RM_HediffComp_SeverityFloor.cs" />
     <Compile Include="RM_LordJob_DefendPerimeter.cs" />
     <Compile Include="RUT_LordJob_SentinelDefend.cs" />
+    <Compile Include="RUT_GenStep_ScatterSentinelGraveWards.cs" />
     <Compile Include="RM_MapComponent_VaporColumns.cs" />
     <Compile Include="RM_CompVaporDrifter.cs" />
     <Compile Include="RM_GenStep_TerrainChannels.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="RM_BiomeArrivalLetterExtension.cs" />
     <Compile Include="RM_GameComponent_BiomeArrivalLetters.cs" />
     <Compile Include="RM_Patch_GravshipArrivalLetter.cs" />
+    <Compile Include="RM_Patch_GrazingSuppressionHook.cs" />
   </ItemGroup>
 
   <ItemGroup>

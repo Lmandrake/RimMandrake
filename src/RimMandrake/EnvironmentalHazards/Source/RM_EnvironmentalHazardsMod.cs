@@ -319,6 +319,27 @@ namespace RimMandrake.EnvironmentalHazards
     //      survival-reads letter, and nothing is marked "seen" while off, so
     //      turning it back on still introduces every biome the player has
     //      not yet landed in. A letter already delivered is never recalled.
+    //  54. sentinelGraveWardsEnabled — RUT_GenStep_ScatterSentinelGraveWards
+    //      (SCARLANDS_MECHANICS_2 §4). WORLDGEN-AFFECTING: off means no
+    //      Sentinel grave-ward is placed on any Scarlands map generated
+    //      while it is off. Maps already generated keep whatever grave-ward
+    //      (and its already-spawned Sentinels) they already have.
+    //  55. gradientSurgeEnabled — RM_MapComponent_GradientAxis.TickSurgeRoll
+    //      (MIASMA_MECHANICS_1 M2). Off: the MTB clock stops rolling for a
+    //      new breath-tide surge on any map carrying RM_GradientSurgeExtension;
+    //      a surge already in progress (its shove and its later recede) runs
+    //      to completion rather than snapping off mid-shift, the same
+    //      posture every other timed condition in this kit takes (see
+    //      breaklightEnabled above). M1's own always-on gradient axis
+    //      (salinity storage/repaint) is unaffected either way — this only
+    //      gates whether the axis ever gets SHOVED again.
+    //  56. grazingSuppressionHookEnabled — RM_GrazingSuppressionHookPatch
+    //      (GREENTIDE_MECHANICS_2 M10). Off: a plant-eating pawn's bite is
+    //      never recorded as suppression at all. On (default) is currently
+    //      STILL a no-op in play — the hook is armed and proven, but the
+    //      grid it writes into (EXPLOSIVE_PLANT_GROWTH_1) doesn't exist yet,
+    //      so this toggle has nothing visible to gate today; it ships now so
+    //      no later pass has to retrofit MOD_OPTIONS_RETROFIT_1 onto it.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -384,6 +405,9 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool tarBelchEnabled = true;
         public static float tarBelchRadius = 9f;
         public static bool biomeArrivalLettersEnabled = true;
+        public static bool sentinelGraveWardsEnabled = true;
+        public static bool gradientSurgeEnabled = true;
+        public static bool grazingSuppressionHookEnabled = true;
 
         public override void ExposeData()
         {
@@ -444,6 +468,9 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref tarBelchEnabled, "tarBelchEnabled", true);
             Scribe_Values.Look(ref tarBelchRadius, "tarBelchRadius", 9f);
             Scribe_Values.Look(ref biomeArrivalLettersEnabled, "biomeArrivalLettersEnabled", true);
+            Scribe_Values.Look(ref sentinelGraveWardsEnabled, "sentinelGraveWardsEnabled", true);
+            Scribe_Values.Look(ref gradientSurgeEnabled, "gradientSurgeEnabled", true);
+            Scribe_Values.Look(ref grazingSuppressionHookEnabled, "grazingSuppressionHookEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -462,7 +489,10 @@ namespace RimMandrake.EnvironmentalHazards
             // Bumped 4540->4600 for setting #51 (waterAgitationEnabled).
             // Bumped 4600->4680 for setting #52 (tarBelchEnabled + radius slider).
             // Bumped 4680->4740 for setting #53 (biomeArrivalLettersEnabled).
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4740f);
+            // Bumped 4740->4800 for setting #54 (sentinelGraveWardsEnabled).
+            // Bumped 4800->4860 for setting #55 (gradientSurgeEnabled).
+            // Bumped 4860->4920 for setting #56 (grazingSuppressionHookEnabled).
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4920f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -626,6 +656,19 @@ namespace RimMandrake.EnvironmentalHazards
               + "announcing it. A letter already delivered this save is never recalled, and nothing "
               + "is marked as seen while this is off, so turning it back on still introduces every "
               + "biome not yet landed in.");
+            list.CheckboxLabeled("Sentinel grave-ward placement (WORLDGEN-AFFECTING)", ref sentinelGraveWardsEnabled,
+                "A biome built with a Forgotten Sentinel grave-ward stops placing new ones on any map "
+              + "generated while this is off. Maps already generated keep whatever grave-ward (and "
+              + "whatever Sentinels it already spawned) they already have.");
+            list.CheckboxLabeled("Breath-tide surge", ref gradientSurgeEnabled,
+                "A biome built with a fresh-to-brine salinity axis stops rolling for a new storm-driven "
+              + "surge. A surge already under way (its shove and its later recede) finishes on its own "
+              + "schedule rather than stopping mid-shift; the salt line itself keeps whatever position "
+              + "it last reached.");
+            list.CheckboxLabeled("Grazing suppression hook", ref grazingSuppressionHookEnabled,
+                "A plant-eating pawn's bite stops being recorded as encroachment suppression. Has no "
+              + "visible effect yet on any install — the hook is armed but the suppression system it "
+              + "feeds hasn't shipped.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
