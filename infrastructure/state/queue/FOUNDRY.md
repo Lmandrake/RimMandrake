@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T18:42:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T18:50:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1790,3 +1790,73 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOME_CONFIG_ERROR_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_CONFIG_ERROR_TRIAGE_1.md
+
+## GREYSEA_FLOOR_FORMATIONS_1 Grey Sea floor formations: salt chimneys venting super-brine, mushroom-like salt domes, and the pillar wonderland the sheet's navigation law depends on - all owner-referenced with images, none exist
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREYSEA_FLOOR_FORMATIONS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_FLOOR_FORMATIONS_1.md
+
+## GREYSEA_CRYSTAL_FLORA_1 Grey Sea crystalline flora: seven owner-specced plants (Glass Veil Kelp, Brine Crown Anemoflora, Mosaic Fan Palms, Salt Chimney Vines, Crucible Pods, cubic sculptures, spine-spheres) - the biome ships zero plants today
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREYSEA_CRYSTAL_FLORA_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_CRYSTAL_FLORA_1.md
+
+## GREYSEA_SALT_SNOW_WEATHER_1 Grey Sea floor weather: precipitating salt crystals like snow, plus the pre-existing defect that RM_GreySea carries vanilla Rain on a hypersaline dying sea
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREYSEA_SALT_SNOW_WEATHER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_SALT_SNOW_WEATHER_1.md
+
+## GREYSEA_BRINE_POOL_DEFENCE_1 Brine pools as the Grey's central mechanism: protein-shower crystallisation that freezes and may smother, triggered by touching a pool or by its creatures, making pool loot ultra-protected
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREYSEA_BRINE_POOL_DEFENCE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_BRINE_POOL_DEFENCE_1.md
+
+## GREYSEA_BRINE_ELDERS_1 The Brine Elders: colossal branching salt-crystal organisms with area discharges, geological memory, a novelty-only trade economy and one-of-each millennial treasures
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREYSEA_BRINE_ELDERS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_BRINE_ELDERS_1.md
+
+## GREYSEA_SALT_CUISINE_1 Harvestable valuable sea-floor salt crystals in several colours as cooking ingredients - RimCuisine is NOT installed, so these ship RM_ with recipes MayRequire our own mandrake.rsw.cuisine
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREYSEA_SALT_CUISINE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_SALT_CUISINE_1.md
+
+## GREYSEA_SESSILE_LAYER_1 The Grey's sessile layer: abundant shrimp, clam and mussel equivalents picking through organic matter raining from the surface, among the formations
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREYSEA_SESSILE_LAYER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_SESSILE_LAYER_1.md
