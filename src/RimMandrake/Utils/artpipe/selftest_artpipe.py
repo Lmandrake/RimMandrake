@@ -116,6 +116,11 @@ class Queue:
         self.artsrc = tmp / "_artsrc"
         self.codex_homes = tmp / "_codex_homes"
         self.throughput_log = tmp / "throughput.jsonl"
+        # ARTPIPE_CONSOLE_REDESIGN_1: every scenario gets its own logs/status
+        # dirs under this tempdir — never the real infrastructure/artpipe/
+        # logs//status/ (which production daemons write to concurrently).
+        self.logs_dir = tmp / "logs"
+        self.status_dir = tmp / "status"
         common.ensure_queue_dirs(self.pending, self.active, self.done,
                                   self.failed, self.artsrc)
         self.reference = tmp / "reference.png"
@@ -171,6 +176,7 @@ class Queue:
                 "--gemini-worker-script", str(MOCK_GEMINI_WORKER),
                 "--validator-script", str(VALIDATOR),
                 "--manifest-schema", str(SCHEMA), "--poll-interval", "0.1",
+                "--logs-dir", str(self.logs_dir), "--status-dir", str(self.status_dir),
                 *extra]
 
     def run(self, control: dict, *extra: str, timeout: float = 60) -> subprocess.CompletedProcess:
@@ -281,7 +287,7 @@ def test_row1_rate_limit_hard_stop():
         # so this run correctly exits nonzero.
         ok("row1: daemon exits NONZERO — real work is still pending",
            proc.returncode != 0, proc.stdout + proc.stderr)
-        ok("row1: the final line says WORK REMAINS", "WORK REMAINS" in proc.stdout,
+        ok("row1: the final line says work remains", "work remains" in proc.stdout,
            proc.stdout)
         ok("row1: ratelimited1 failed", (q.failed / "ratelimited1.json").is_file())
 
@@ -809,13 +815,18 @@ def test_meters_flow_end_to_end_through_codex_grumpiness():
     with tempfile.TemporaryDirectory() as td:
         q = Queue(Path(td))
         make_job(q.pending, "meterjob", q.reference)
-        # Override into the WEEKLY_WARN..WEEKLY_REFUSE band specifically, so
-        # the print is unambiguous evidence the real value was read, not
-        # just any bucket.
-        warn_band_value = (artpiped.WEEKLY_WARN + artpiped.WEEKLY_REFUSE) / 2.0
-        proc = q.run({"meterjob": {"behavior": "ok", "weekly": warn_band_value}}, "--once", "--workers", "1")
+        # ARTPIPE_CONSOLE_REDESIGN_1: the old row-2 WARN-band print (fired at
+        # bare WEEKLY_WARN, no ceiling) is gone entirely — a mid WARN..REFUSE
+        # reading now produces no console line at all; only an actual
+        # admission-affecting transition does (console._quota_diff_lines).
+        # Overridden into the REFUSE band instead, so this still proves the
+        # real value was read AND that it surfaces as a live console line —
+        # the job itself was already claimed before this reading lands, so
+        # refuse_new (which only blocks a NEW claim) never touches it.
+        refuse_band_value = artpiped.WEEKLY_REFUSE + 0.5
+        proc = q.run({"meterjob": {"behavior": "ok", "weekly": refuse_band_value}}, "--once", "--workers", "1")
         ok("meters e2e: daemon exits 0", proc.returncode == 0, proc.stderr)
-        ok("meters e2e: job succeeds (a mid-WARN-band weekly warn doesn't fail the job)",
+        ok("meters e2e: job succeeds (a refuse-band weekly reading doesn't fail the job itself)",
            (q.done / "meterjob.json").is_file())
 
         manifest = q.done / "meterjob.manifest.json"
@@ -825,9 +836,9 @@ def test_meters_flow_end_to_end_through_codex_grumpiness():
             ok("meters e2e: meter_after was actually read (ok:True) through codex_grumpiness",
                after.get("ok") is True, str(after))
             ok("meters e2e: secondary_used_percent reflects the mock's override",
-               after.get("secondary_used_percent") == warn_band_value, str(after))
-        ok("meters e2e: row 2's warn message fired for the WARN..REFUSE band",
-           "WARNING weekly Codex usage" in proc.stderr, proc.stderr)
+               after.get("secondary_used_percent") == refuse_band_value, str(after))
+        ok("meters e2e: the refuse-band transition surfaces as a 'codex: weekly' console line",
+           "codex: weekly" in proc.stdout, proc.stdout)
 
 
 def test_meter_after_never_reads_a_previous_jobs_rollout():
@@ -969,7 +980,7 @@ def test_codex_sandbox_preflight_matching_allows_codex_jobs():
         ok("sandbox-preflight match: the codex job actually ran",
            (q.done / "sandboxok.json").is_file())
         ok("sandbox-preflight match: logged as ok, naming the matched build",
-           "codex sandbox preflight ok" in proc.stdout and "9.9.9" in proc.stdout,
+           "codex sandbox ok" in proc.stdout and "9.9.9" in proc.stdout,
            proc.stdout)
 
 
@@ -997,12 +1008,14 @@ def test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini():
            not q.codex_homes.is_dir() or not any(q.codex_homes.iterdir()))
         ok("sandbox-preflight mismatch: the gemini job in the SAME queue still ran",
            (q.done / "geminifine.json").is_file(), proc.stdout + proc.stderr)
-        ok("sandbox-preflight mismatch: the log names the CHANNEL DISABLED state",
-           "CODEX CHANNEL DISABLED" in proc.stderr, proc.stderr)
+        # ARTPIPE_CONSOLE_REDESIGN_1 §3: one stream — everything the console
+        # prints (warnings included) goes to stdout now, never stderr.
+        ok("sandbox-preflight mismatch: the log names the channel-disabled state",
+           "codex channel disabled" in proc.stdout, proc.stdout)
         ok("sandbox-preflight mismatch: the log names BOTH builds",
-           "0.153.1" in proc.stderr and "0.153.4" in proc.stderr, proc.stderr)
+           "0.153.1" in proc.stdout and "0.153.4" in proc.stdout, proc.stdout)
         ok("sandbox-preflight mismatch: the log names the recapture command",
-           "cp -r" in proc.stderr, proc.stderr)
+           "cp -r" in proc.stdout, proc.stdout)
 
 
 def test_codex_sandbox_preflight_missing_bin_refuses_not_passes():
@@ -1020,9 +1033,9 @@ def test_codex_sandbox_preflight_missing_bin_refuses_not_passes():
            proc.returncode != 0, proc.stdout + proc.stderr)
         ok("sandbox-preflight no-bin: job still sitting in pending/",
            (q.pending / "nobinjob.json").is_file())
-        ok("sandbox-preflight no-bin: logged as CHANNEL DISABLED, not as ok",
-           "CODEX CHANNEL DISABLED" in proc.stderr
-           and "codex sandbox preflight ok" not in proc.stdout, proc.stderr)
+        ok("sandbox-preflight no-bin: logged as channel-disabled, not as ok",
+           "codex channel disabled" in proc.stdout
+           and "codex sandbox ok" not in proc.stdout, proc.stdout)
 
 
 def test_reference_less_job_size_mismatch_is_caught():
@@ -1082,8 +1095,11 @@ def test_worker_self_report_folded_into_manifest_and_detects_row1():
         # contrasting case where real work IS left pending).
         ok("self-report: daemon exits 0 — the hard stop happened but nothing "
            "was left pending behind it", proc.returncode == 0, proc.stdout + proc.stderr)
-        ok("self-report: the final line still reports hard_stop=True honestly",
-           "hard_stop=True" in proc.stdout, proc.stdout)
+        # ARTPIPE_CONSOLE_REDESIGN_1: the old field-dump line ("hard_stop=True
+        # ...") is gone; the equivalent honest surface is §4.3's own
+        # transition line, fired the moment note_rate_limited() latches it.
+        ok("self-report: the hard stop still surfaces honestly as a console line",
+           "codex: TooManyRequests" in proc.stdout, proc.stdout)
         manifest = q.failed / f"{job_id}.manifest.json"
         ok("self-report: job fails", manifest.is_file())
         if manifest.is_file():
@@ -1255,7 +1271,9 @@ def test_exit_code_zero_on_clean_drain_with_healthy_meters():
         proc = q.run({"healthyjob": {"behavior": "ok", "weekly": 10.0}}, "--once", "--workers", "1")
         ok("exit-code: a genuinely clean drain exits 0", proc.returncode == 0,
            proc.stdout + proc.stderr)
-        ok("exit-code: the final line says CLEAN DRAIN", "CLEAN DRAIN" in proc.stdout, proc.stdout)
+        # ARTPIPE_CONSOLE_REDESIGN_1 §4.5: "CLEAN DRAIN" -> "clean drain"
+        # inside the new "■ stopped — ..." summary line.
+        ok("exit-code: the final line says clean drain", "clean drain" in proc.stdout, proc.stdout)
 
 
 def test_per_job_scratch_directory_is_real_not_shared():
@@ -1314,8 +1332,8 @@ def test_codex_retry_never_applied_to_rate_limited():
         # exits 0. hard_stop is still reported honestly in the log line.
         ok("no-retry: daemon exits 0 — nothing was left pending behind the wedge",
            proc.returncode == 0, proc.stdout + proc.stderr)
-        ok("no-retry: hard_stop is still reported honestly", "hard_stop=True" in proc.stdout,
-           proc.stdout)
+        ok("no-retry: hard_stop is still reported honestly",
+           "codex: TooManyRequests" in proc.stdout, proc.stdout)
         counter = q.artsrc / job_id / f".{job_id}.invocations"
         ok("no-retry: rate_limited is invoked EXACTLY ONCE — never retried",
            counter.is_file() and counter.read_text().strip() == "1",
@@ -1581,7 +1599,7 @@ def test_gemini_budget_is_durable_across_restarts():
            proc2.returncode != 0, proc2.stdout + proc2.stderr)
         ok("gemini-restart: second job never claimed", (q.pending / "restart2.json").is_file())
         ok("gemini-restart: the refusal is logged before any claim attempt",
-           "already at/over its $0.10 budget" in proc2.stderr, proc2.stderr)
+           "already at/over its $0.10 budget" in proc2.stdout, proc2.stdout)
 
 
 def test_gemini_default_budget_is_zero_and_refuses_the_channel():
@@ -1600,7 +1618,7 @@ def test_gemini_default_budget_is_zero_and_refuses_the_channel():
         ok("gemini-default: job was never claimed — still in pending/",
            (q.pending / "defaultblocked.json").is_file())
         ok("gemini-default: the refusal names the $0.00 budget",
-           "$0.00 budget" in (proc.stderr or ""), proc.stderr)
+           "$0.00 budget" in proc.stdout, proc.stdout)
 
 
 def test_gemini_never_touches_codex_homes():
@@ -1630,8 +1648,8 @@ def test_mixed_channel_queue_codex_wedge_does_not_block_gemini():
         # though the codex channel genuinely wedged along the way.
         ok("mixed: daemon exits 0 — nothing left pending despite the codex wedge",
            proc.returncode == 0, proc.stdout + proc.stderr)
-        ok("mixed: hard_stop is still reported honestly", "hard_stop=True" in proc.stdout,
-           proc.stdout)
+        ok("mixed: hard_stop is still reported honestly",
+           "codex: TooManyRequests" in proc.stdout, proc.stdout)
         ok("mixed: the codex job hard-stopped", (q.failed / "codexratelimited.json").is_file())
         ok("mixed: the UNRELATED gemini job still got claimed and finished",
            (q.done / "geminihealthy.json").is_file())
@@ -2207,7 +2225,11 @@ def test_recovered_throttle_note_never_fails_a_successful_job():
             ok("recovered: status is ok", m.get("status") == "ok", str(m))
             ok("recovered: detector_row is NOT 1 — no hard-stop for a success",
                m.get("detector_row") != 1, str(m))
-        ok("recovered: hard_stop is NOT latched", "hard_stop=False" in proc.stdout, proc.stdout)
+        # ARTPIPE_CONSOLE_REDESIGN_1: no more "hard_stop=False" field dump —
+        # the equivalent honest absence is that the hard-stop transition
+        # line never fires at all for a job that recovered on its own retry.
+        ok("recovered: hard_stop is NOT latched",
+           "codex: TooManyRequests" not in proc.stdout, proc.stdout)
 
 
 def test_detector_unwedges_via_direct_meter_reread_without_a_new_job():

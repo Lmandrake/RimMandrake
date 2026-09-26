@@ -65,6 +65,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import common  # noqa: E402
+import console  # noqa: E402 — ARTPIPE_CONSOLE_REDESIGN_1: presentation only, no job logic
 import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.jsonl;
                 # imported in-process (not shelled out) so a hot per-job
                 # finalize doesn't pay a subprocess spawn each time.
@@ -306,16 +307,32 @@ class Detector:
         self.wall_clock_history: dict[str, list[float]] = {}  # keyed by mode ("generate"/"edit")
         self._slow_streak: dict[str, int] = {}
         self.effective_n = None      # row 4: halved on a sustained slowdown (one-way ratchet)
+        # ARTPIPE_CONSOLE_REDESIGN_1: read-only bookkeeping, no decision logic
+        # of its own — these exist purely so quota_state() (below) can build
+        # a console.QuotaState snapshot without the console ever reaching
+        # into Detector internals directly. Nothing here changes what any
+        # threshold decides.
+        self.last_weekly_pct: float | None = None       # last note_meters() weekly reading
+        self.last_five_h_pct: float | None = None        # last note_meters() 5h reading
+        self.last_slowdown_mode: str | None = None        # mode that most recently tripped row 4
+        self.last_slowdown_median_s: float | None = None  # its rolling median at that moment
+        self.last_slowdown_baseline_s: float | None = None  # that mode's baseline
 
     def note_rate_limited(self) -> None:
         self.hard_stop = True
 
-    def note_meters(self, meters: dict | None) -> None:
+    def note_meters(self, meters: dict | None, warn=None) -> None:
         """`meters` is codex_grumpiness.read_meters()'s own return shape —
         `{"ok": bool, "secondary_used_percent":.., "primary_used_percent":..,
         "primary_resets_at":..}` — not a raw rate_limits object. `ok: False`
         (no rollout yet, or none new enough) is ignorance: state is left
-        UNCHANGED, neither reset to healthy nor held at whatever it was."""
+        UNCHANGED, neither reset to healthy nor held at whatever it was.
+
+        `warn`, if given, is a `Callable[[str], None]` (in practice
+        `console.Console.warn`) the caller wires in so this method's own
+        infrastructure warning (an unusable `primary_resets_at`) reaches the
+        console/log surface without Detector importing or knowing about
+        Console at all — ARTPIPE_CONSOLE_REDESIGN_1, §8 line 352."""
         if not meters or not meters.get("ok"):
             return
         weekly = meters.get("secondary_used_percent")
@@ -324,6 +341,7 @@ class Detector:
         weekly_resets_raw = meters.get("secondary_resets_at")
 
         if weekly is not None:
+            self.last_weekly_pct = weekly
             self.stop_all = weekly >= WEEKLY_STOP
             self.refuse_new = (not self.stop_all) and weekly >= WEEKLY_REFUSE
             # ARTPIPE_QUOTA_RESET_WEDGE_1: remember the best-known weekly
@@ -335,24 +353,27 @@ class Detector:
             if coerced_weekly_reset is not None:
                 self.weekly_resets_at = coerced_weekly_reset
             if weekly >= WEEKLY_WARN:
-                if not self.warn_logged:
-                    print(f"artpiped: WARNING weekly Codex usage at {weekly:.0f}% "
-                          f"(row 2, warn threshold {WEEKLY_WARN:.0f})", file=sys.stderr)
-                    self.warn_logged = True
+                # ARTPIPE_CONSOLE_REDESIGN_1, §8 line 339: the once-only
+                # WARNING print here is REPLACED by Console.quota()'s own
+                # refuse/stop transition lines — warn_logged itself stays
+                # (still de-escalates below 80 so it can refire), it just no
+                # longer prints anything on its own.
+                self.warn_logged = True
             else:
                 self.warn_logged = False  # de-escalate: a fresh low reading can warn again later
 
         if five_h is not None:
+            self.last_five_h_pct = five_h
             if five_h >= FIVE_H_SLEEP:
                 coerced = _coerce_epoch(resets_raw)
                 if coerced is not None:
                     self.sleep_until = coerced
                     self.n_override = None
                 else:
-                    print(f"artpiped: WARNING primary_resets_at is not a usable epoch "
-                          f"({resets_raw!r}) — five-hour usage is >= {FIVE_H_SLEEP:.0f}% "
-                          f"but falling back to N=1 instead of a sleep gate I cannot trust",
-                          file=sys.stderr)
+                    if warn is not None:
+                        warn(f"primary_resets_at is not a usable epoch "
+                             f"({resets_raw!r}) — five-hour usage is >= {FIVE_H_SLEEP:.0f}% "
+                             f"but falling back to N=1 instead of a sleep gate I cannot trust")
                     self.sleep_until = None
                     self.n_override = 1
             elif five_h >= FIVE_H_DROP_N1:
@@ -406,6 +427,13 @@ class Detector:
             base = self.effective_n if self.effective_n is not None else configured_n
             self.effective_n = max(1, base // 2)
             self._slow_streak[mode] = 0  # don't re-trigger every single tick thereafter
+            # ARTPIPE_CONSOLE_REDESIGN_1: read-only bookkeeping only — lets
+            # quota_state() render the "sustained slowdown (edit median
+            # 340s vs 150s baseline)" console line without this method
+            # gaining any console/logic dependency.
+            self.last_slowdown_mode = mode
+            self.last_slowdown_median_s = median
+            self.last_slowdown_baseline_s = baseline
 
     def _weekly_window_should_have_reset(self) -> bool:
         """ARTPIPE_QUOTA_RESET_WEDGE_1: True once wall-clock time has passed
@@ -438,17 +466,49 @@ class Detector:
         return max(1, n)
 
 
+def quota_state(detector: Detector, configured_n: int, *, slowdown: bool = False) -> console.QuotaState:
+    """Build the console's own `QuotaState` snapshot from `Detector`'s
+    public fields — the ONLY place artpiped.py hands codex quota facts to
+    the console. `slowdown=True` is passed only at the call site right
+    after `detector.note_wall_clock()` (see `console.QuotaState`'s own
+    docstring for why that call site, specifically, is what makes the
+    row-4/row-3 concurrency-drop distinction unambiguous for
+    `console._quota_diff_lines`)."""
+    return console.QuotaState(
+        weekly_pct=detector.last_weekly_pct,
+        five_h_pct=detector.last_five_h_pct,
+        weekly_resets_at=detector.weekly_resets_at,
+        sleep_until=detector.sleep_until,
+        refuse_new=detector.refuse_new,
+        stop_all=detector.stop_all,
+        hard_stop=detector.hard_stop,
+        admission_blocked=detector.admission_blocked(),
+        current_n=detector.current_n(configured_n),
+        slowdown_mode=detector.last_slowdown_mode if slowdown else None,
+        slowdown_median_s=detector.last_slowdown_median_s if slowdown else None,
+        slowdown_baseline_s=detector.last_slowdown_baseline_s if slowdown else None,
+    )
+
+
 # --------------------------------------------------------------------------
 # gemini budget — an independent, non-de-escalating dollar cap
 # --------------------------------------------------------------------------
 
-def _gemini_model_cost(model: str) -> float:
+def _gemini_model_cost(model: str) -> tuple[float, str | None]:
+    """Returns (cost_usd, note). `note` is non-None only for an unrecognised
+    model — ARTPIPE_CONSOLE_REDESIGN_1 §8/§9: this used to print straight to
+    stderr, but runs in a WORKER thread (process_gemini_job), and worker
+    threads never touch the console (see console.py's own module
+    docstring). The caller stashes `note` on the result dict for
+    finalize_job (main thread) to hand to `console.note()` — log-only,
+    gemini, per §9."""
     if model not in GEMINI_MODEL_COST_USD:
-        print(f"artpiped: WARNING unrecognised gemini model {model!r} — billing it at "
-              f"the only known price point (${GEMINI_MODEL_COST_USD[DEFAULT_GEMINI_MODEL]:.3f}, "
-              f"{DEFAULT_GEMINI_MODEL}), which may be wrong and would silently skew "
-              f"the dollar budget if it is", file=sys.stderr)
-    return GEMINI_MODEL_COST_USD.get(model, GEMINI_MODEL_COST_USD[DEFAULT_GEMINI_MODEL])
+        note = (f"unrecognised gemini model {model!r} — billed at the only known "
+                f"price point (${GEMINI_MODEL_COST_USD[DEFAULT_GEMINI_MODEL]:.3f}, "
+                f"{DEFAULT_GEMINI_MODEL}), which may be wrong and would silently "
+                f"skew the dollar budget if it is")
+        return GEMINI_MODEL_COST_USD[DEFAULT_GEMINI_MODEL], note
+    return GEMINI_MODEL_COST_USD[model], None
 
 
 def read_gemini_spend(throughput_log: Path) -> tuple[float, int]:
@@ -646,7 +706,7 @@ class GeminiBudget:
     """
 
     def __init__(self, cap_usd: float, throughput_log: Path, spent_so_far: float = 0.0,
-                 ledger_strict: bool = True):
+                 ledger_strict: bool = True, warn=None):
         self.cap_usd = cap_usd
         self.throughput_log = throughput_log
         self.spent_usd = spent_so_far  # last known reading; _refresh_spent() keeps it live
@@ -658,6 +718,13 @@ class GeminiBudget:
         self._warned_skip = False
         self.backoff_sleep_until = 0.0
         self._backoff_streak = 0
+        # ARTPIPE_CONSOLE_REDESIGN_1: same pattern as Detector.note_meters —
+        # an optional Callable[[str], None] (in practice console.Console.warn)
+        # so this class's own infrastructure warning reaches the console/log
+        # without GeminiBudget importing or knowing about Console at all.
+        # _refresh_spent() always runs on the main thread (called only from
+        # admission_blocked()/reserve(), both main-thread-only call sites).
+        self._warn = warn
 
     def _refresh_spent(self) -> float:
         spent, skipped = read_gemini_spend_locked(self.throughput_log, self._spend_cache)
@@ -665,12 +732,12 @@ class GeminiBudget:
         self.ledger_skipped = skipped
         if skipped:
             if not self._warned_skip:
-                print(f"artpiped: WARNING throughput.jsonl has {skipped} unparseable "
-                      f"line(s) — a torn row makes the ledger's true spend UNKNOWN, "
-                      f"never LOWER than what's readable"
-                      + (" — refusing gemini admission until a human looks "
-                         "(--gemini-ledger-strict)" if self.ledger_strict else ""),
-                      file=sys.stderr)
+                if self._warn is not None:
+                    self._warn(f"throughput.jsonl has {skipped} unparseable "
+                              f"line(s) — a torn row makes the ledger's true spend "
+                              f"UNKNOWN, never LOWER than what's readable"
+                              + (" — refusing gemini admission until a human looks "
+                                 "(--gemini-ledger-strict)" if self.ledger_strict else ""))
                 self._warned_skip = True
         else:
             self._warned_skip = False  # a later clean read can warn again if it recurs
@@ -789,6 +856,18 @@ def _channel_of(path: Path) -> str:
         return ch if isinstance(ch, str) else "codex"
     except (OSError, ValueError, TypeError):
         return "codex"
+
+
+def _mode_of(path: Path) -> str:
+    """ARTPIPE_CONSOLE_REDESIGN_1: "edit" if the job carries a reference,
+    else "generate" — read straight off the job file the same defensive
+    way `_channel_of` does, so `console.job_started` can be told a job's
+    mode right after claim_next() returns, without process_job having to
+    report it back first."""
+    try:
+        return "edit" if json.loads(path.read_text()).get("reference") else "generate"
+    except (OSError, ValueError, TypeError):
+        return "generate"
 
 
 def claim_next(pending_dir: Path, active_dir: Path, channel_blocked=None) -> Path | None:
@@ -1894,7 +1973,11 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
     # Now, and only now, with a real file confirmed to exist: this is
     # billable regardless of what the size check / validator decide next —
     # the API call itself succeeded and returned pixels.
-    result["cost_usd"] = _gemini_model_cost(actual_model)
+    result["cost_usd"], unrecognised_model_note = _gemini_model_cost(actual_model)
+    if unrecognised_model_note:
+        # Internal-only key: finalize_job (main thread) pops this and hands
+        # it to console.note() — never written into the manifest itself.
+        result["_console_note"] = unrecognised_model_note
 
     return _check_size_and_validate(result, job, reference, out_png, ctx.validator_script)
 
@@ -1962,18 +2045,33 @@ def process_job(job_path: Path, ctx: RunCtx) -> dict:
 def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
                   active_dir: Path, throughput_log: Path, detector: Detector,
                   gemini_budget: GeminiBudget, configured_n: int,
-                  reserved_usd: float = 0.0) -> None:
+                  reserved_usd: float = 0.0,
+                  console_obj: "console.Console | None" = None) -> None:
     """`reserved_usd` MUST be the exact amount THIS job's own claim-time
     reserve() call actually reserved — 0.0 for anything that never
     reserved at all (a non-gemini job, or a gemini job from the
     JobError/exception fallbacks that never got a chance to claim/reserve
     in the first place). Releasing a fixed constant regardless used to
     let a job that never reserved anything "release" (steal) budget out
-    of a DIFFERENT job's real, outstanding reservation."""
+    of a DIFFERENT job's real, outstanding reservation.
+
+    `console_obj`, if given, is ARTPIPE_CONSOLE_REDESIGN_1's presentation
+    hook — optional (default None) so any other/future caller that builds
+    no Console at all still works unchanged."""
     job_id = result.get("id", job_path.stem)
     channel = result.get("channel", "codex")
     ok = result.get("status") == "ok"
     target_dir = done_dir if ok else failed_dir
+
+    # A note stashed by a WORKER THREAD (process_gemini_job's
+    # _gemini_model_cost call) that could not reach the console itself —
+    # worker threads never touch it (see console.py's module docstring).
+    # Popped here, on the main thread, before anything below writes
+    # `result` to the manifest, so the manifest never carries this
+    # internal-only key.
+    deferred_note = result.pop("_console_note", None)
+    if deferred_note and console_obj is not None:
+        console_obj.warn(deferred_note)
 
     # Throughput FIRST, before the manifest write or the job-file move: a
     # crash in between those two steps used to lose the cost row entirely
@@ -2026,10 +2124,17 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
             artreg.record_generated(job_id, elapsed_s=result.get("elapsed_s"), by="artpiped")
             artreg.record_validated(job_id, "pass" if ok else "fail", by="artpiped")
         except artreg.RegError as exc:
-            print(f"artpiped: NOTE artreg event skipped for {job_id}: {exc}", file=sys.stderr)
+            # §8.1: log-only — the daemon's operator cannot act on this
+            # (no --target to pass), so it never reaches the live console.
+            note_text = (f"registry skipped for {job_id}: no queued event on record — job "
+                         f"filed before the ART_REGEN_REGISTRY_1 wiring or by hand, so "
+                         f"artreg cannot resolve its target (artreg: {exc})")
+            if console_obj is not None:
+                console_obj.note_registry_skipped(note_text)
         except Exception as exc:  # never let registry bookkeeping take the daemon down
-            print(f"artpiped: WARNING artreg event emit raised {type(exc).__name__} "
-                  f"for {job_id}: {exc}", file=sys.stderr)
+            warn_text = (f"artreg event emit raised {type(exc).__name__} for {job_id}: {exc}")
+            if console_obj is not None:
+                console_obj.warn(warn_text)
 
     dest_job = target_dir / f"{job_id}.json"
     manifest_path = target_dir / f"{job_id}.manifest.json"
@@ -2040,9 +2145,10 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
         # job_path vanished from under us — never let one job's bookkeeping
         # surprise crash the whole daemon and abandon everything else it
         # was running. `--repair` completes this exact state afterward.
-        print(f"artpiped: WARNING {job_id}'s active/ file disappeared before "
-              f"it could be filed to {target_dir.name}/ — manifest written, "
-              f"job file itself is now unaccounted for (run --repair)", file=sys.stderr)
+        if console_obj is not None:
+            console_obj.warn(f"{job_id}'s active/ file disappeared before it could be "
+                             f"filed to {target_dir.name}/ — manifest written, job file "
+                             f"itself is now unaccounted for (run --repair)")
 
     stray = active_dir / f"{job_id}.worker_last_message.json"
     if stray.is_file():
@@ -2050,6 +2156,12 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
             stray.unlink()
         except OSError:
             pass
+
+    # ARTPIPE_CONSOLE_REDESIGN_1: the permanent per-job record line, once,
+    # regardless of which channel branch below runs next — everything above
+    # this point (throughput, manifest, job-file move) is common to both.
+    if console_obj is not None:
+        console_obj.job_finished(result)
 
     if channel == "gemini":
         # Drops EXACTLY what this job's own claim-time reserve() call
@@ -2066,7 +2178,12 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
 
     if result.get("detector_row") == 1:
         detector.note_rate_limited()
-    detector.note_meters(result.get("meter_after"))
+        if console_obj is not None:
+            console_obj.quota(quota_state(detector, configured_n))
+    detector.note_meters(result.get("meter_after"),
+                          warn=console_obj.warn if console_obj is not None else None)
+    if console_obj is not None:
+        console_obj.quota(quota_state(detector, configured_n))
     # PER-ATTEMPT elapsed (never the retry-summed total — a job that used
     # its one retry would otherwise report double a normal request's real
     # cost) and per-MODE (generate vs edit have different measured
@@ -2077,6 +2194,8 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
     attempt_elapsed = result.get("attempt_elapsed_s", result.get("elapsed_s"))
     if attempt_elapsed is not None:
         detector.note_wall_clock(attempt_elapsed, configured_n, mode=result.get("mode", "generate"))
+        if console_obj is not None:
+            console_obj.quota(quota_state(detector, configured_n, slowdown=True))
 
 
 # --------------------------------------------------------------------------
@@ -2129,6 +2248,18 @@ def parse_args(argv=None) -> argparse.Namespace:
     ap.add_argument("--dry-run", action="store_true",
                      help="report what pending/ would run and exit — reads "
                           "only, never claims, reconciles, or moves anything")
+    ap.add_argument("--status", action="store_true",
+                     help="report every running daemon's live status (from "
+                          "--status-dir) and exit — never touches the queue, "
+                          "creates no directories, takes no lock")
+    ap.add_argument("--json", dest="status_json", action="store_true",
+                     help="with --status, print the raw snapshots as a JSON list")
+    ap.add_argument("--logs-dir", type=Path, default=common.QUEUE_ROOT / "logs",
+                     help="per-run plain-text log directory (ARTPIPE_CONSOLE_REDESIGN_1) "
+                          "— gitignored, pruned at startup")
+    ap.add_argument("--status-dir", type=Path, default=common.QUEUE_ROOT / "status",
+                     help="live status JSON directory, one file per running daemon "
+                          "(ARTPIPE_CONSOLE_REDESIGN_1) — gitignored")
     ap.add_argument("--reconcile-only", action="store_true",
                      help="run crash reconciliation (and --repair) and exit")
     ap.add_argument("--repair", action="store_true",
@@ -2218,6 +2349,103 @@ def run_dry_run(args: argparse.Namespace) -> int:
     return 0
 
 
+def _status_pid_alive(pid) -> bool:
+    if not isinstance(pid, int):
+        return False
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True  # exists, just owned by someone else
+    except OSError:
+        return False
+    return True
+
+
+def _status_fmt_age(seconds: float) -> str:
+    seconds = max(0, int(seconds))
+    if seconds < 60:
+        return f"{seconds}s"
+    if seconds < 3600:
+        return f"{seconds // 60}m"
+    return f"{seconds // 3600}h"
+
+
+def _status_format_block(snap: dict, now: float) -> str:
+    pid = snap.get("pid")
+    host = snap.get("host", "?")
+    phase = snap.get("phase", "?")
+    workers = snap.get("workers") or {}
+    current_n = workers.get("current_n", "?")
+    pending = snap.get("pending", 0)
+    session = snap.get("session") or {}
+    ok_n = session.get("ok", 0)
+    failed_n = session.get("failed", 0)
+    codex = snap.get("codex") or {}
+    wk = console._pct(codex.get("weekly_pct"))  # already renders None as "—"
+    in_flight = snap.get("in_flight") or []
+    age = now - (snap.get("updated_at") or now)
+    lines = [f"artpiped {pid} on {host} — {phase} {len(in_flight)}/{current_n}, "
+             f"{pending} pending, {ok_n} ok / {failed_n} failed this session, "
+             f"codex weekly {wk}  (heartbeat {_status_fmt_age(age)} ago)"]
+    for f in in_flight:
+        lines.append(f"  {str(f.get('id', '')):<34} {str(f.get('mode', '')):<9} "
+                     f"{f.get('elapsed_s', 0)}s / {f.get('timeout_s', 0)}s")
+    if snap.get("log_path"):
+        lines.append(f"  log: {snap['log_path']}")
+    return "\n".join(lines)
+
+
+def run_status(args: argparse.Namespace) -> int:
+    """§7: reads every `<status_dir>/artpiped_*.json`, never touches the
+    queue, creates no directories, takes no lock. Exit 0 if at least one
+    live daemon, 1 if none, 2 if the directory holds only stale files."""
+    try:
+        files = sorted(args.status_dir.glob("artpiped_*.json"))
+    except OSError:
+        files = []
+
+    now = time.time()
+    live: list[dict] = []
+    stale_removed: list[dict] = []
+    for p in files:
+        try:
+            snap = json.loads(p.read_text())
+        except (OSError, ValueError):
+            continue
+        updated_at = snap.get("updated_at") or 0.0
+        if (now - updated_at) > 60.0 and not _status_pid_alive(snap.get("pid")):
+            try:
+                p.unlink()
+            except OSError:
+                pass
+            stale_removed.append(snap)
+            continue
+        live.append(snap)
+
+    if getattr(args, "status_json", False):
+        print(json.dumps(live, indent=2, sort_keys=True, default=str))
+    else:
+        if not live and not stale_removed:
+            print("no live artpiped daemon")
+        for snap in live:
+            print(_status_format_block(snap, now))
+        for snap in stale_removed:
+            age = now - (snap.get("updated_at") or now)
+            print(f"artpiped {snap.get('pid')} on {snap.get('host', '?')} — STALE, "
+                  f"last heartbeat {_status_fmt_age(age)} ago, pid dead — "
+                  f"status file removed")
+        if not live and stale_removed:
+            print("no live artpiped daemon")
+
+    if live:
+        return 0
+    if stale_removed:
+        return 2
+    return 1
+
+
 def prune_old_scratch_dirs(artsrc_dir: Path, done_dir: Path, failed_dir: Path,
                             max_age_days: float) -> list[str]:
     """Remove `_artsrc/<id>/` scratch directories for jobs that are already
@@ -2259,6 +2487,23 @@ def prune_old_scratch_dirs(artsrc_dir: Path, done_dir: Path, failed_dir: Path,
     return pruned
 
 
+def _report_batch(console_obj: "console.Console", collapsed_label: str,
+                   items: list, detail_of) -> None:
+    """§4.4: pruned/repaired/reconciled collapse to one line with a count
+    when more than 3 items — the per-id lines still go to the run log
+    either way (via `info()`'s own log write when not collapsed, or
+    explicitly via `note()` when collapsed)."""
+    if not items:
+        return
+    if len(items) <= 3:
+        for item in items:
+            console_obj.info(detail_of(item))
+    else:
+        console_obj.info(collapsed_label)
+        for item in items:
+            console_obj.note(detail_of(item))
+
+
 def main(argv=None) -> int:
     args = parse_args(argv)
 
@@ -2270,31 +2515,55 @@ def main(argv=None) -> int:
     if args.dry_run:
         return run_dry_run(args)
 
+    # §7: --status is read-only over --status-dir alone — never touches the
+    # queue, creates no directories, takes no lock. Returns before
+    # ensure_queue_dirs, exactly like --dry-run above.
+    if args.status:
+        return run_status(args)
+
     common.ensure_queue_dirs(args.pending_dir, args.active_dir, args.done_dir,
                               args.failed_dir, args.artsrc_dir)
 
+    # ARTPIPE_CONSOLE_REDESIGN_1: RunLog + StatusFile + Console built before
+    # anything else prints, so every subsequent line (prune/repair/reconcile
+    # included) goes through the same presentation layer, log included —
+    # a run that ends in --repair-only/--reconcile-only never starts the
+    # renderer thread (there is no long-running loop to render), but still
+    # gets a real per-run log and console lines for what it actually did.
+    started_at = time.time()
+    run_log = console.RunLog.open(args.logs_dir)
+    status_file = console.StatusFile(args.status_dir)
+    console_obj = console.Console(
+        pending_count=lambda: len(_job_files(args.pending_dir)),
+        configured_n=args.workers, log=run_log, status=status_file, started_at=started_at)
+    console_obj.info(f"artpiped {os.getpid()} — {args.workers} workers, "
+                     f"{len(_job_files(args.pending_dir))} pending, log {run_log.path}")
+
     pruned = prune_old_scratch_dirs(args.artsrc_dir, args.done_dir, args.failed_dir,
                                      args.prune_scratch_days)
-    for job_id in pruned:
-        print(f"artpiped: pruned old scratch dir for {job_id}")
+    _report_batch(console_obj,
+                  f"pruned {len(pruned)} scratch dir(s) older than {args.prune_scratch_days:g}d",
+                  pruned, lambda job_id: f"pruned old scratch dir for {job_id}")
 
     fixed: list[tuple[str, str]] = []
     if args.repair or args.reconcile_only:
         fixed = repair(args.active_dir, args.done_dir, args.failed_dir)
-        for job_id, why in fixed:
-            print(f"artpiped: repaired {job_id} — {why}")
+        _report_batch(console_obj, f"repaired {len(fixed)} job(s)",
+                      fixed, lambda item: f"repaired {item[0]} — {item[1]}")
         if args.repair and not args.reconcile_only:
-            print(f"artpiped: repair-only, {len(fixed)} job(s) completed")
+            console_obj.info(f"repair-only, {len(fixed)} job(s) completed")
+            console_obj.close()
             return 0
 
     moved = reconcile(args.active_dir, args.pending_dir, args.done_dir,
                        args.failed_dir, args.throughput_log, args.reconcile_min_age)
-    for job_id, why in moved:
-        print(f"artpiped: reconciled {job_id} — {why}")
+    _report_batch(console_obj, f"reconciled {len(moved)} job(s)",
+                  moved, lambda item: f"reconciled {item[0]} — {item[1]}")
 
     if args.reconcile_only:
-        print(f"artpiped: reconcile-only, {len(moved)} job(s) recovered, "
-              f"{len(fixed)} repaired")
+        console_obj.info(f"reconcile-only, {len(moved)} job(s) recovered, "
+                         f"{len(fixed)} repaired")
+        console_obj.close()
         return 0
 
     slots: "queue.Queue[int]" = queue.Queue()
@@ -2303,14 +2572,15 @@ def main(argv=None) -> int:
 
     gemini_spent, gemini_skipped_at_start = read_gemini_spend(args.throughput_log)
     gemini_budget = GeminiBudget(args.gemini_budget_usd, args.throughput_log, gemini_spent,
-                                  ledger_strict=args.gemini_ledger_strict)
+                                  ledger_strict=args.gemini_ledger_strict,
+                                  warn=console_obj.warn)
     if gemini_skipped_at_start:
-        print(f"artpiped: WARNING throughput.jsonl has {gemini_skipped_at_start} "
-              f"unparseable line(s) at startup", file=sys.stderr)
+        console_obj.warn(f"throughput.jsonl has {gemini_skipped_at_start} "
+                         f"unparseable line(s) at startup")
     if gemini_budget.hard_stop:
-        print(f"artpiped: gemini channel already at/over its ${args.gemini_budget_usd:.2f} "
-              f"budget (${gemini_spent:.2f} spent, per throughput.jsonl) — gemini jobs "
-              f"will not be claimed this run", file=sys.stderr)
+        console_obj.warn(f"gemini channel already at/over its ${args.gemini_budget_usd:.2f} "
+                         f"budget (${gemini_spent:.2f} spent, per throughput.jsonl) — gemini "
+                         f"jobs will not be claimed this run")
 
     # CODEX_UAC_STORM_1: one fingerprint check, before ANY worker home is
     # leased — never per-slot, never per-job. A stale/missing seed template
@@ -2321,10 +2591,10 @@ def main(argv=None) -> int:
     # gemini channel is entirely unaffected.
     codex_sandbox_ok, codex_sandbox_msg = common.codex_sandbox_preflight(args.codex_sandbox_base)
     if codex_sandbox_ok:
-        print(f"artpiped: codex sandbox preflight ok — {codex_sandbox_msg}")
+        console_obj.info(f"codex sandbox ok — {codex_sandbox_msg}")
     else:
-        print(f"artpiped: CODEX CHANNEL DISABLED for this run — {codex_sandbox_msg}",
-              file=sys.stderr)
+        console_obj.warn(f"codex channel disabled for this run — {codex_sandbox_msg}")
+        console_obj.mark_codex_channel_disabled()
 
     # codex_home leases are NOT acquired here — RunCtx acquires each slot's
     # lease lazily, on that slot's first CODEX job (see codex_home_for_slot).
@@ -2337,10 +2607,22 @@ def main(argv=None) -> int:
                  throughput_log=args.throughput_log)
     detector = Detector()
     stop_event = threading.Event()
+    render_stop = threading.Event()
+
+    def _render_loop():
+        while not render_stop.is_set():
+            console_obj.tick()
+            render_stop.wait(0.25)
+
+    render_thread = threading.Thread(target=_render_loop, daemon=True, name="artpiped-console")
+    render_thread.start()
+
+    futures: dict = {}  # future -> (job_path, channel, reserved_usd) — bound before
+                        # _handle_signal so its closure sees the real, live dict
 
     def _handle_signal(signum, _frame):
-        print(f"artpiped: signal {signum} received, draining in-flight work then exiting",
-              file=sys.stderr)
+        console_obj.info(f"signal {signum} received — draining {len(futures)} "
+                         f"in-flight jobs, then exiting")
         stop_event.set()
 
     signal.signal(signal.SIGTERM, _handle_signal)
@@ -2355,7 +2637,6 @@ def main(argv=None) -> int:
 
     try:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
-            futures: dict = {}  # future -> (job_path, channel, reserved_usd)
             while True:
                 if not stop_event.is_set():
                     while len(futures) < args.workers:
@@ -2399,11 +2680,17 @@ def main(argv=None) -> int:
                                         os.rename(job_path, dest)
                                     except FileNotFoundError:
                                         pass
-                                print(f"artpiped: claimed {job_path.name} as gemini but "
-                                      f"the reservation was refused moments later (a fresh "
-                                      f"cross-process spend landed in between) — returned "
-                                      f"to pending/, never run unreserved", file=sys.stderr)
+                                console_obj.warn(
+                                    f"claimed {job_path.name} as gemini but the "
+                                    f"reservation was refused moments later (a fresh "
+                                    f"cross-process spend landed in between) — returned "
+                                    f"to pending/, never run unreserved")
                                 break
+                        mode = _mode_of(job_path)
+                        timeout_s = (args.gemini_timeout if ch == "gemini"
+                                     else (args.timeout_edit if mode == "edit"
+                                           else args.timeout_generate))
+                        console_obj.job_started(job_path.stem, mode, ch, timeout_s)
                         futures[pool.submit(process_job, job_path, ctx)] = (job_path, ch, reserved_usd)
 
                 # Finding 4: an independent meter refresh. note_meters()'s
@@ -2423,7 +2710,9 @@ def main(argv=None) -> int:
                         last_meter_refresh = now_mono
                         home = ctx.any_leased_codex_home()
                         if home is not None and _codex_jobs_pending(args.pending_dir):
-                            detector.note_meters(codex_grumpiness.read_meters(home))
+                            detector.note_meters(codex_grumpiness.read_meters(home),
+                                                  warn=console_obj.warn)
+                            console_obj.quota(quota_state(detector, args.workers))
 
                 if not futures:
                     exhausted = (_queue_empty(args.pending_dir) or
@@ -2453,7 +2742,8 @@ def main(argv=None) -> int:
                                   "note": f"process_job raised: {type(exc).__name__}: {exc}"}
                     finalize_job(job_path, result, args.done_dir, args.failed_dir,
                                  args.active_dir, args.throughput_log, detector,
-                                 gemini_budget, args.workers, reserved_usd)
+                                 gemini_budget, args.workers, reserved_usd,
+                                 console_obj=console_obj)
 
                 if stop_event.is_set() and not futures:
                     break
@@ -2465,13 +2755,16 @@ def main(argv=None) -> int:
                 fh.close()
             except OSError:
                 pass
+        render_stop.set()
+        render_thread.join(timeout=1.0)
 
     # Exit nonzero IFF work actually remains — never merely because a wedge
     # occurred at some point during the run. `hard_stop`/`stop_all`/a
-    # gemini budget hard-stop are worth REPORTING (the printed fields below
-    # still show them honestly), but a wedge whose queue nonetheless
-    # drained clean (nothing left pending) is not abandonment — reporting
-    # it as one is a claim the actual queue state doesn't back up.
+    # gemini budget hard-stop are worth REPORTING (Console.stopped()'s own
+    # parenthetical still names the reason honestly), but a wedge whose
+    # queue nonetheless drained clean (nothing left pending) is not
+    # abandonment — reporting it as one is a claim the actual queue state
+    # doesn't back up.
     #
     # Deliberately pending/ ALONE, not active/ too: active/ is SHARED
     # between concurrent daemons, and a job sitting there might be another
@@ -2481,13 +2774,11 @@ def main(argv=None) -> int:
     # daemon's still-processing job in active/ and wrongly reported
     # "work remains"). pending/ has no such ambiguity: a file is either
     # still there (unclaimed) or it isn't, full stop.
-    pending_remaining = not _queue_empty(args.pending_dir)
-    work_remains = pending_remaining
+    pending_remaining_n = len(_job_files(args.pending_dir))
+    work_remains = pending_remaining_n > 0
     exit_code = 1 if work_remains else 0
-    print(f"artpiped: stopped. hard_stop={detector.hard_stop} refuse_new={detector.refuse_new} "
-          f"stop_all={detector.stop_all} gemini_hard_stop={gemini_budget.hard_stop} "
-          f"gemini_spent=${gemini_budget.spent_usd:.2f} pending_remaining={pending_remaining} — "
-          f"{'WORK REMAINS' if work_remains else 'CLEAN DRAIN'} (exit {exit_code})")
+    console_obj.stopped(pending_remaining_n, work_remains)
+    console_obj.close()
     return exit_code
 
 
