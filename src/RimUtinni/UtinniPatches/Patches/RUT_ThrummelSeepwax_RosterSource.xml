@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ThrummelSeepwax_RosterSource.xml  UtinniPatches — SUMP_TAR_NASTINESS_1
+                                         reconciliation
+
+  RUT_ThrummelSeepwax (Defs/ThingDefs_Items/RUT_Tarred_Solvents.xml) shipped
+  with no recipeMaker, "awaiting its real source, the hive raid" — the
+  thrummel creature/hive did not exist yet. SUMP_FAUNA_ROSTER_1 has since
+  shipped the thrummel family as real wildlife (RM_Thrummel/
+  RM_ThrummelWarden/RM_ThrummelBroodmother, RM_TheSump), but their own
+  butcherProducts award a SEPARATE RM-tier good, RM_Seepwax — RM tier may
+  not depend on RUT tier (Q11a), so the free mod's own creatures could never
+  drop this campaign-tier def directly. That roster item's own header named
+  exactly this reconciliation as owed to "whoever next picks up
+  SUMP_TAR_NASTINESS_1."
+
+  The two goods are the same substance under two names, by design (compare
+  descriptions: RUT_ThrummelSeepwax "warm, waxy secretion harvested from a
+  thrummel mound"; RM_Seepwax "warm, waxy comb-secretion cracked from a
+  thrummel mound... worked from tar-sugars by the workers") — so this is a
+  cheap render step, not a refinement, matching that near-identity: 1:1,
+  low WorkToMake (60, well under RUT_WeakTarSolvent's own 150 for an actual
+  chemical conversion). Same PatchOperationConditional/PatchOperationSequence
+  shape as RUT_Bitumen_KorvethSource.xml's own sibling reconciliation —
+  RUT_Tarred_Solvents.xml itself is left untouched.
+
+  This does not touch "the hive raid" as a source — RUT_ThrummelSeepwax
+  remains tradeable/debug-spawnable with no live raid mechanic to attach to
+  (SUMP_FAUNA_ROSTER_1's own deferred list: "thrummel mound + defend-radius
+  comp... UNMEASURED, flagged for the Desktop") — it adds a second, real,
+  working path via ordinary wildlife butchering, which the roster pass DID
+  ship.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.thesump">
+    <xpath>Defs/ThingDef[defName="RUT_ThrummelSeepwax"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RUT_ThrummelSeepwax"]</xpath>
+          <value>
+            <recipeMaker>
+              <recipeUsers>
+                <li>TableMachining</li>
+              </recipeUsers>
+              <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+              <workSkill>Crafting</workSkill>
+              <displayPriority>415</displayPriority>
+              <productCount>1</productCount>
+            </recipeMaker>
+            <costList>
+              <RM_Seepwax>1</RM_Seepwax>
+            </costList>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RUT_ThrummelSeepwax"]/statBases</xpath>
+          <value>
+            <WorkToMake>60</WorkToMake>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

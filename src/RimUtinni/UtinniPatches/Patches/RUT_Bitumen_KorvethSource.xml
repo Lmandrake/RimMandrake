@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Bitumen_KorvethSource.xml         UtinniPatches — SUMP_WALKWAYS_1 /
+                                         SUMP_TAR_NASTINESS_1 reconciliation
+
+  Both items' own headers flagged the SAME gap: RUT_Bitumen
+  (Defs/ThingDefs_Items/RUT_Bitumen.xml, SUMP_TAR_NASTINESS_1) shipped with
+  no recipeMaker and no harvest job, "tradeable/debug-spawnable in the
+  meantime" — its own header explicitly named the korveth plant's harvest
+  as the exact real source it was waiting for, not yet built at the time.
+
+  SUMP_FLORA_ROSTER_1 has since shipped that plant — but as a SEPARATE
+  ThingDef, RM_KorvethPitch (RM_TheSump, mandrake.rm.thesump), not literally
+  RUT_Bitumen itself: RM tier may not depend on RUT tier (the free mod must
+  stand rich alone, Q11a), so the korveth's own harvest could never BE this
+  campaign-tier good directly. The correct join, same shape this repo's own
+  RUT_TarVault.xml already uses for a different Sump good (MayRequire=
+  "mandrake.rm.thesump" wherever this mod references a RM_TheSump defName):
+  a real recipe refining the free mod's raw pitch into this campaign's own
+  engineered building material — "solid black pitch, rendered from raw tar
+  until it sets hard" (RUT_Bitumen's own description) is quite literally
+  what a bench recipe on top of "a hard black nodule of concentrated
+  bitumen" (RM_KorvethPitch's own description) already reads as.
+
+  PatchOperationConditional (silent no-op if RM_TheSump is ever absent,
+  matching WildAnimals_Sump.xml's own idiom) wrapping a
+  PatchOperationSequence — one Add for recipeMaker+costList onto the
+  ThingDef itself, a second Add for WorkToMake onto its existing
+  <statBases> (RUT_Bitumen.xml's own file is left untouched; this is an
+  isolated patch, per this repo's own "correctness outranks seat ownership"
+  practice of fixing a flagged gap without editing another pass's file
+  directly where a patch does the same job more safely). productCount 1
+  (a straight refine, not the deliberately-generous 4:1 SUMP_GASLIGHT_1
+  ruling gave the solvent) off 2 pitch — RUT_Bitumen's own MarketValue (1.8)
+  sits below 2x RM_KorvethPitch's (1.2), so refining costs real value, same
+  as any vanilla smelting step. WorkToMake 200, same order of magnitude
+  RUT_WeakTarSolvent's own 150 uses for a comparable bench conversion.
+
+  RUT_Bitumen is still tradeable/debug-spawnable with no korveth pitch on
+  hand — this patch adds a real production path, it does not remove the
+  existing placeholder-sourcing posture for a colony without RM_TheSump's
+  korveth crop established yet.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.thesump">
+    <xpath>Defs/ThingDef[defName="RUT_Bitumen"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RUT_Bitumen"]</xpath>
+          <value>
+            <recipeMaker>
+              <recipeUsers>
+                <li>TableMachining</li>
+              </recipeUsers>
+              <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+              <workSkill>Crafting</workSkill>
+              <displayPriority>425</displayPriority>
+              <productCount>1</productCount>
+            </recipeMaker>
+            <costList>
+              <RM_KorvethPitch>2</RM_KorvethPitch>
+            </costList>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RUT_Bitumen"]/statBases</xpath>
+          <value>
+            <WorkToMake>200</WorkToMake>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

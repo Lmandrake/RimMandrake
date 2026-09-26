@@ -1224,3 +1224,127 @@ throughout, and every "owed" line accumulated across all six passes above).
 - `src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/RUT_Placeholder_SumpMouse.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/ThinkTreeDefs/RUT_ThinkTree_SumpMouseWander.xml` (new)
 - `src/DEPLOY_HOLD.txt` (edited: 2 new hold entries appended)
+
+## Note on file paths above — superseded by THESUMP_RM_MOD_BUILD_1, 2026-09-26
+
+Every "files" list above (S1-S6, spike pass) predates `THESUMP_RM_MOD_BUILD_1`
+(closed), which moved most of this item's own content XML from
+`src/RimUtinni/UtinniPatches/` into the new top-level `RM_TheSump` mod
+(`src/RimMandrake/TheSump/`, `mandrake.rm.thesump`) — e.g. `RUT_BeastBulge.xml`,
+`RUT_DigShaft.xml`, `RUT_DigStratumTable.xml`, `RUT_SumpTarBeastGenStep*.xml`,
+`RUT_SumpDuskLock*.xml`, `RUT_SumpWeather.xml`, `RUT_Plant_Wick.xml`,
+`RUT_WickStem.xml`, `RUT_Filth_MouseTrack.xml`, `RUT_TarMoat.xml`,
+`RUT_MoatFusePost.xml`, `RUT_ThinkTree_SumpMouseWander.xml` now all live under
+`src/RimMandrake/TheSump/Defs/` and `Patches/`, not under UtinniPatches. The
+placeholder mouse (`RUT_Placeholder_SumpMouse*.xml`) was **deleted** by
+`SUMP_FAUNA_ROSTER_1` and replaced with the real `RM_SumpMouse`
+(`RM_SumpFauna.xml`, same new mod). This item's own generic C# (the
+`RM_Comp*`/`RM_JobGiver*`/`RM_WorkGiver*` classes) is unaffected — it still
+lives in the shared `mandrake.rm.environmentalhazards` assembly, unmoved.
+Do not follow the file paths above literally; use `find`/`grep` to locate
+current locations before editing anything this item names.
+
+## Owner card 2 build pass — FOUNDRY, 2026-09-26
+
+Closes the one piece of this item's own long-standing "owed" list that was
+genuinely unblocked and self-contained: owner card 2 (RULED 2026-09-12,
+`sump_kit_spec.md` "Open owner cards" — "era traps are disarmable: high
+skill gate, failure detonates"). `RM_CompWorkedLottery.TryDisarmPendingTrap`
+has been a real, callable API since the 2026-09-13 spike pass; every build
+pass since (S2, S3, S4) flagged its float-menu/work-type UI as owed,
+"content/UI work for the full build, not an engine-fact question" — this
+pass builds it.
+
+**Checked first, per this item's own established discipline**: the roster
+pass has landed since this item's last note (`SUMP_FAUNA_ROSTER_1`,
+`SUMP_FLORA_ROSTER_1`, `THESUMP_RM_MOD_BUILD_1`, all closed) — re-read
+before touching anything. Confirmed via `BIOME_KITS_PUSH_TO_TEST_1`: the
+real tar-beast is still explicitly named "roster-blocked" there, and reading
+`RM_SumpFauna.xml` in full confirms none of the 9 shipped fauna rows
+(`RM_SumpMouse`, `RM_Gulveth`, `RM_Thrummel`/`Warden`/`Broodmother`,
+`RM_Brommet`, `RM_Dredgel`, `RM_Skarrid`, `RM_Skellarn`) is the Patient-family
+tar beast the_sump.md §4 describes (huge, dormant, station-eating) —
+`RM_Gulveth` reads as ordinary wildlife (a placid grazer, `combatPower 70`,
+`manhunterOnDamageChance 0.2`) despite the superficially matching name. So
+`RUT_BeastBulge.xml`'s own Thrumbo placeholder (`emergePawnKind`) is
+correctly left untouched this pass — still genuinely roster-blocked, not
+overlooked.
+
+**New C# (both generic, `RM_`, matching this item's own posture
+throughout)**: `RM_WorkGiver_DisarmLotteryTrap` + `RM_JobDriver_
+DisarmLotteryTrap`, cribbed from this item's own `RM_WorkGiver_WorkLottery`/
+`RM_JobDriver_WorkLottery` shape (S2 build pass) — the opposite-sense
+sibling: that pair refuses an armed trap as a work site, this pair exists
+ONLY for one. `RM_CompWorkedLottery` gained one new field,
+`disarmSkillThreshold` (INVENTED-BUILD default 15 on the 0-20 Mining scale —
+the ruling names no figure, only "high"), configurable per instance rather
+than hardcoded in the WorkGiver/JobDriver.
+
+**Design choice, documented in the WorkGiver's own header, not an
+oversight**: the WorkGiver does NOT pre-filter on the pawn's Mining skill
+before assigning the disarm job. "High skill gate, failure detonates" reads
+as a real stake, not a filtered non-event that could never actually trigger
+in ordinary play — a colony sends whoever has Mining work enabled and free
+(the player's own work-priority assignment IS "the click is a decision," per
+the spec's own framing), and `TryDisarmPendingTrap`'s own deterministic
+skill check decides Disarmed vs Detonated for real. No new Mod Settings
+toggle: this item's own already-shipped dig-lottery mechanic has none today
+(`RM_TheSump`'s own About.xml, verbatim: "moat ignition, dig lottery,
+beast-bulge dread, mouse filth-trail have no toggle at all today") — adding
+one to only this extension of that same mechanic would be inconsistent, not
+completionist.
+
+**Also built this pass — two long-standing "owed" reconciliations, now
+genuinely unblocked by the roster landing**, one per sibling item's own
+scope (`SUMP_TAR_NASTINESS_1`/`SUMP_WALKWAYS_1`, both worked this same
+session — see their own item files for the full account):
+
+- `RUT_Bitumen_KorvethSource.xml` (new patch) — `RUT_Bitumen` (no real
+  source since `SUMP_TAR_NASTINESS_1` shipped it) now has a real recipeMaker
+  refining `RM_KorvethPitch` (`RM_TheSump`'s own korveth-plant harvest,
+  `SUMP_FLORA_ROSTER_1`) into it, 2:1, `MayRequire="mandrake.rm.thesump"`
+  via `PatchOperationConditional` (that packageId is only a `loadAfter`
+  entry in UtinniPatches' own About.xml, not a hard dependency — confirmed
+  before writing, not assumed).
+- `RUT_ThrummelSeepwax_RosterSource.xml` (new patch) — same shape,
+  `RUT_ThrummelSeepwax` now renders 1:1 from `RM_Seepwax` (the real
+  thrummel-family butcher product, `SUMP_FAUNA_ROSTER_1`).
+
+**Build.** `dotnet build RM_EnvironmentalHazards.csproj -c Release` — 0
+warnings, 0 errors (2 new `.cs` files + 2 new `<Compile>` entries; the
+shared `.csproj` had gained 2 unrelated lines from a concurrent window
+between this pass's read and its edit — `git diff --stat` confirmed only
+this pass's own 2 lines differ from HEAD at commit time, no collision to
+navigate).
+
+**Validate.** `validate_patch.py` against the live 628-active-mod set
+(Data + Mods + Workshop): all 4 new files (2 JobDef/WorkGiverDef XML, 2
+patches) — 0 errors, 0 warnings.
+
+**Not done, honestly, still owed**: any live/quicktest proof that the
+WorkGiver actually offers the job, that a low-skill pawn attempting it
+actually detonates the trap on themselves, or that a high-skill pawn
+actually disarms it (no bridge access this pass); the real tar-beast/
+station-eating wiring onto `RUT_BeastBulge` (roster-blocked, confirmed
+again this pass, see above); S6b's pump-variant content (no derrick
+ThingDef exists yet to carry `isPumpVariant: true`); the mouse-line's own
+remaining deferred items (`SUMP_FAUNA_ROSTER_1`'s own list: mobile dread
+registration for skarrid, dredgel attract-mode wander, skellarn flight
+frames); not deployed this pass (out of this pass's own scope — no
+bridge/restart). Item stays in `doing`: this closes card 2 in full and two
+cross-item reconciliations, but the roster-blocked S3 wiring and every
+live-verification line accumulated across every prior pass in this item
+still stand.
+
+## files (owner card 2 build pass, 2026-09-26)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompWorkedLottery.cs` (edited: +1 field, `disarmSkillThreshold`)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_WorkGiver_DisarmLotteryTrap.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_DisarmLotteryTrap.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompStationEater.cs` (edited: +1 DefOf field)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (edited: 2 new `<Compile>` entries)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimMandrake/EnvironmentalHazards/Defs/JobDefs/RM_JobDefs_DisarmLotteryTrap.xml` (new)
+- `src/RimMandrake/EnvironmentalHazards/Defs/WorkGiverDefs/RM_WorkGiverDefs_DisarmLotteryTrap.xml` (new)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_Bitumen_KorvethSource.xml` (new)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_ThrummelSeepwax_RosterSource.xml` (new)

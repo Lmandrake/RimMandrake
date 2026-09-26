@@ -129,3 +129,41 @@ of this):
 6. Not touched: ship-buildable placement aboard the gravship specifically
    (`BIOME_SHIP_CONTRIBUTIONS_1`) — should work automatically (ordinary
    Light-affordance floor) but unverified in-engine.
+
+## Reconciliation pass — FOUNDRY, 2026-09-26
+
+Closes owed line 5's second half (the bitumen supply chain — `RM_Brindeth`
+itself, item 5's first half, now exists too via `SUMP_FLORA_ROSTER_1` but
+`RUT_Duckboards`' own costList was not repointed this pass; flagged below,
+not silently left). `SUMP_FLORA_ROSTER_1` (closed) shipped `RM_Korveth`
+(`RM_TheSump`) whose harvest, `RM_KorvethPitch`, is described almost
+verbatim as `RUT_Bitumen` itself ("a hard black nodule of concentrated
+bitumen... waterproofing, adhesive, torch-fuel" vs. `RUT_Bitumen`'s own
+"solid black pitch, rendered from raw tar... waterproofing, adhesive,
+torch-fuel, road-metal") — `RUT_Bitumen.xml`'s own header had already named
+exactly this def as the source it was waiting for.
+
+New patch `src/RimUtinni/UtinniPatches/Patches/RUT_Bitumen_KorvethSource.xml`
+(`PatchOperationConditional MayRequire="mandrake.rm.thesump"`,
+`RUT_Bitumen.xml` itself left untouched): gives `RUT_Bitumen` a real
+recipeMaker, 2 `RM_KorvethPitch` -> 1 `RUT_Bitumen`, `WorkToMake 200`. So
+`RUT_Glasswalk`'s own costList (already pointed at `RUT_Bitumen` since the
+2026-09-24 pass) is now backed by a real, in-biome production chain for a
+colony with `RM_TheSump` active — not only debug-spawn/trade.
+
+**Owed line 5's first half is ALREADY closed, verified this pass, no edit
+needed**: `RUT_Duckboards`' own costList was flagged as "a `WoodLog`
+placeholder for `RM_Brindeth`, which does not exist yet." `RM_Brindeth` now
+exists (`SUMP_FLORA_ROSTER_1`, `RM_SumpFlora.xml`) and its own
+`<plant><harvestedThingDef>` is, verbatim, vanilla `WoodLog`
+(`harvestWork 240`, `harvestYield 4`) — that roster item's own header states
+this directly: "vanilla WoodLog for brindeth, reused def, no new item
+needed." So the "placeholder" was never actually wrong; it already names
+the real economic loop with zero edit required. Checked before writing
+anything (per this repo's own "read the source before designing" rule) to
+avoid a needless repoint.
+
+Every live-verification line from the 2026-09-24 pass above still stands;
+item stays in `doing`. Full session account (disarm interaction + the
+sibling bitumen reconciliation): `SUMP_MECHANICS_1.md`'s "Owner card 2 build
+pass" section, same commit.

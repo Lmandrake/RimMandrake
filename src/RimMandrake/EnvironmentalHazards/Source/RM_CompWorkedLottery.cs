@@ -62,6 +62,17 @@ namespace RimMandrake.EnvironmentalHazards
         /// table, so derricks and dig shafts share one class."</summary>
         public bool isPumpVariant;
 
+        /// <summary>Owner card 2's own "high skill gate" — RULED 2026-09-12
+        /// with no figure named, so INVENTED-BUILD here: 15 on the 0-20
+        /// Mining scale ("very skilled" and above, vanilla's own skill-level
+        /// band naming), the same order of magnitude "high" reads as
+        /// elsewhere in this repo's skill-gated content. Configurable per
+        /// instance (a pump/derrick variant could reasonably want a
+        /// different gate later) rather than hardcoded in the WorkGiver/
+        /// JobDriver that reads it — RM_WorkGiver_DisarmLotteryTrap.cs's own
+        /// header explains why the WorkGiver does not pre-filter on it.</summary>
+        public int disarmSkillThreshold = 15;
+
         public CompProperties_WorkedLottery()
         {
             compClass = typeof(RM_CompWorkedLottery);

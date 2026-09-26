@@ -174,3 +174,29 @@ after the fix-forward round above.
 Item stays in `doing` — all 4 pieces have real, deployed, offline-validated content,
 but "done" per this item's own `verify` section needs the live checks above, which
 this pass had no bridge access to run.
+
+## Reconciliation pass — FOUNDRY, 2026-09-26
+
+Closes owed line 6 (`RUT_ThrummelSeepwax`'s real source) in part. Since the pass
+above, `SUMP_FAUNA_ROSTER_1` (closed) shipped the real thrummel family
+(`RM_Thrummel`/`RM_ThrummelWarden`/`RM_ThrummelBroodmother`, `RM_TheSump`) with
+their own butcher product `RM_Seepwax` — a separate RM-tier def from this item's
+own `RUT_ThrummelSeepwax`, by necessity (RM tier may not depend on RUT tier,
+Q11a), and that roster item's own header explicitly named reconciling the two as
+follow-on work for "whoever next picks up `SUMP_TAR_NASTINESS_1`."
+
+New patch `src/RimUtinni/UtinniPatches/Patches/RUT_ThrummelSeepwax_RosterSource.xml`
+(`PatchOperationConditional MayRequire="mandrake.rm.thesump"`, `RUT_Tarred_
+Solvents.xml` itself left untouched): gives `RUT_ThrummelSeepwax` a real
+recipeMaker, 1:1 off `RM_Seepwax`, `WorkToMake 60` (a cheap render, not a
+refinement — the two goods' own descriptions read as the same substance under
+two names). `RUT_WeakTarSolvent`'s own crafting chain (seepwax -> solvent) is
+now reachable from ordinary wildlife butchering, not only debug-spawn/trade, for
+a colony with `RM_TheSump` active. **Still not built**: the actual "hive raid"
+source (`SUMP_FAUNA_ROSTER_1`'s own deferred item — mound + defend-radius comp,
+UNMEASURED engine feasibility) and the tar->green-gas reaction chemistry
+(`SUMP_GASLIGHT_1`'s own scope, untouched). `validate_patch.py` against the live
+628-active-mod set: 0 errors, 0 warnings. Full account and the sibling bitumen
+reconciliation: `SUMP_MECHANICS_1.md`'s own "Owner card 2 build pass" section,
+same commit. Item stays in `doing` — every live-verification line from the
+2026-09-24 pass above still stands.
