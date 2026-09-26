@@ -955,3 +955,130 @@ any of these six have cleared — the evidence this wave is that "over an
 hour has passed" is not, by itself, a sign of quiet: this repo currently
 has several FOUNDRY/BENCH-family sessions and a live bridge-driving process
 running concurrently across exactly this remaining set.
+
+## Wave 15 (2026-09-26, FOUNDRY) — verification pass: 5 of 6 remaining groups
+re-checked against a full day of other agents' concurrent work; 9 of 22
+slugs resolved (found already built elsewhere), 5 re-filed as
+`TERMINAL_SEAS_FLOOR_DRESSING_1`, 7 confirmed still genuinely owed and
+untouched, 1 skipped for biome-collision. No files touched except this item
+file and the new item's prose — no defs/XML/C# authored this wave, per this
+session's own scope (verify-first, avoid four named contended biomes).
+
+Checked `git status`/`git log` and the full merged ledger (all seat shards)
+for same-day activity naming each remaining group — a stronger instrument
+than wave 14's process-list check, since it surfaces same-session
+close/note events even after the process exits.
+
+- **`the_fever_wood`** (1 slug) — **skipped, untouched.** Named explicitly
+  in this session's own briefing as off-limits (collision with a concurrent
+  `DIRTY_CODE_REVIEW_STANDING_LOOP_1` sibling also avoiding
+  Greentide/PoisonForest/FeverWood/BlueDesert). The artpipe daemon is
+  actively rendering `feverwood_grolth_*` art RIGHT NOW (live process
+  caught this session) — genuinely hot, not just on the avoid-list on
+  paper.
+- **`the_contagion`** (1 slug, `the-unfinished-random-stat-short-lived-
+  chimera-spawns-goo-co`) — **RESOLVED, built by another agent today.**
+  Ledger shows `CONTAGION_UNFINISHED_SPAWNER_1` (this item's own
+  wave-11-era spawn, per the causal chain) claimed/started/closed today
+  09:11:34–09:11:37Z: "Spawner+randomized-limb+lifespan+goo-dissolve
+  mechanics built and validated" — matches the slug's own text
+  (unfinished/random-stat/short-lived/spawns-goo) precisely. `the_contagion`
+  sheet's own art batch (13 species, uncommitted since ~7.6h before wave 14)
+  is unrelated flavor-roster art, not this slug; a fresh CONTAGION_GENOME_*
+  chain (organ-growing, limb-and-match-bonus) closed as recently as
+  10:52–11:10Z today, so this area is still hot generally — nothing else
+  touched here.
+- **`the_rot`** (4 slugs) — **ALL RESOLVED, already built by
+  `THEROT_RM_MOD_BUILD_1`** (closed), contradicting this item's own wave-14
+  read that `the_rot` was "still an active build, not an abandoned stage."
+  Read that closed item's own §5 first — it claims "5 new_defs (heat gene,
+  guardian mushrooms, symbiont pairs, pale tree, health-share tagging) ...
+  all nine tickets done" — then verified directly against the live XML
+  rather than trusting the claim on its own, per this repo's own
+  confident-wrong-numbers discipline:
+  - `heat-generating-gene` → BUILT, `RM_RotSporeKit_Furnaceblood.xml`
+    (`ROT_WARM_MAT_1`, a GeneDef, `-20 ComfyTemperatureMin`).
+  - `tea-source-guardian-mushrooms-per-species-defense-repertoire` → BUILT,
+    `RM_RotSporeKit_GuardianGroves.xml` + `_Hediffs`/`_Ingredients` (orlath/
+    mirrash/lussa caps, each a distinct live-prep ingredient feeding the tea
+    chain).
+  - `symbiont-parasites-three-ratified-bargain-pairs` → BUILT,
+    `RM_RotSporeKit_LivePrepHediffs.xml`: `RM_Sym_Quickflesh`/
+    `RM_Sym_Nightwake`/`RM_Sym_Sheenblood` are exactly the three the design
+    doc (`the_rot.md` §7) calls "the ratified pairs" (a 4th, `RM_Sym_Mycoid`,
+    is the Slime-kit's own bonus symbiont, not one of the three, correctly
+    not double-counted).
+  - `health-share-species-tagging-both-variants` → BUILT as the slug's own
+    text actually asks: the two rot-species variants are tagged/described
+    in `RotSpecies_NamesAndSizes.xml` ("heals fastest... only in company" /
+    "kin heal faster near it" — both variants present). The underlying
+    health-share C# COMP itself is a separate, still-open engine-
+    feasibility item named in `the_rot.md`'s own "Owed" section (line 284,
+    "health-share comp (C#, two variants)") — not re-filed here since it's
+    already tracked there and the slug's own title is specifically about
+    tagging, not the mechanism.
+  `the_rot` sheet is now fully closed out for this item's purposes.
+- **`terminator_sea+the_grey_deep`** (4 slugs) and **`terminator_sea+
+  the_twilight_deep`** (6 slugs) — **partially resolved.** Both were built
+  on heavily by `TERMINALBIOMES_RM_MOD_BUILD_1` (closed) and
+  `SEA_DIVE_MAPS_BUILD_1` (closed today, `mandrake.rm.divinginteraction`)
+  since wave 14 flagged them as "still contended" — re-verified against the
+  actual live `RM_GreySeaFauna.xml`/`RM_TwilightSeaFauna.xml` descriptions
+  and the roster JSONs (`the_grey_sea.json`/`the_twilight_sea.json`)
+  rather than guessing from species names alone:
+  - Grey: `the-ossuary-shrimp-...` → BUILT, `RM_Fessk` ("man-sized,
+    bone-white... never tamed... already leaving" = skeletal-seeming/shy/
+    evasive, word for word). `shadow-lane-detritivore-condensate-drinker-
+    grey-shore-distin...` (one combined roster row) → BUILT, `RM_Sorruth`/
+    `RM_Otheska` (detritivores, explicit "grazes"/"grazes for a living") +
+    `RM_Essarn` ("cruising the density interface... osmoregulates in the
+    open murk" = the condensate-drinker half).
+  - Twilight: `shadow-lane-detritivore` → BUILT, `RM_Lunoowa` ("a drifting
+    detritivore"). `shore-scavenger-on-stranded-carcasses-...` → BUILT,
+    `RM_Weloon` (shell-picker working the "mat-fall," soft-shelled,
+    hermit-crab-shaped niche). `the-twilight-deep-set-deferred-...` →
+    already self-deferred per its own text (roster's own row: "DEFERRED to
+    diving mods," unchanged).
+  - **Genuinely NOT built, re-filed as `TERMINAL_SEAS_FLOOR_DRESSING_1`**:
+    Grey's `the-pillar-mason-...` and `salt-rimed-blade-flora` (Grey
+    variant); Twilight's `salt-rimed-blade-flora` (Twilight variant), `the-
+    mold-mat-roof-organism-...`, and `condensate-drinker-fog-lick-fauna`
+    (Twilight — checked every description in `RM_TwilightSeaFauna.xml` for
+    "condensate"/"dew"/"fog," no match; that file's own header states its
+    cast is a CLOSED, owner-approved set of exactly 4 species, so a 5th
+    cannot be added without a fresh ruling). Both sea `BiomeDef`s are
+    confirmed `isWaterBiome=true`/`hasVirtualPlants=false` with no
+    `<wildPlants>` block at all, so the ordinary "plain PlantDef" shape this
+    item used in prior waves (e.g. `RUT_Fuzz`) does not fit — these five
+    read as sea-floor-pocket-map dressing content, the exact class
+    `SEA_DIVE_MAPS_BUILD_1`'s own close note named as deferred, not as a
+    thing this item should force into the wrong shape. Full reasoning in
+    the new item's own prose.
+- **`nightside_ice`** (6 slugs) — **confirmed still fully unbuilt, none
+  resolved.** `NIGHTSIDEICE_RM_MOD_BUILD_1` closed today but only shipped
+  the mod-scaffold/biome-split move (`src/RimMandrake/NightsideIce/` has
+  only `About.xml` and the BiomeDef — no `ThingDefs_Races` or
+  `ThingDefs_Plants` folder at all). The stale uncommitted art jobs wave 14
+  saw (`nightside_mahllik_*`/`nightside_zhissa_*`, pending since ~35h+
+  before this check with zero matching commits) are still sitting
+  unconsumed — no ThingDef anywhere in the repo references either name.
+  This looks abandoned rather than mid-flight (35+ hours, no commits, no
+  live process), but authoring the actual 6 creature/mechanic concepts
+  (chemical frosts, sessile catalytic sheets, icy insects, the one-move
+  animal, blind thermal tunnelers, thermal-sensing seam striker) is
+  genuine new design/commission work this wave's own scope (verify, don't
+  build) didn't budget time for. **Left untouched and still fully owed** —
+  whoever picks this up next should decide whether to finish authoring
+  `mahllik`/`zhissa` (if their queued art still fits a slug) or start clean,
+  and should re-check for a live process before assuming the art is
+  abandoned rather than paused.
+
+**Net effect this wave**: 22 slugs in → 9 resolved (1 contagion + 4 rot +
+4 sea-biome fauna already built elsewhere, verified not invented by this
+note), 5 re-filed with a scoped successor item, 1 skipped for biome
+collision (fever_wood), 6 confirmed still fully owed (nightside_ice) and
+1 already self-deferred (twilight-deep-set, no change). **7 slugs remain
+directly owed to this item's own remaining scope** (6 nightside_ice + the
+still-open fever_wood, which is not this item's to drop, only to defer
+past this session); the other 5 owed slugs now live under
+`TERMINAL_SEAS_FLOOR_DRESSING_1`. This item stays open (doing).
