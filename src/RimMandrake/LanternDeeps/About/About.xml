@@ -32,14 +32,14 @@ Also ships the darkness mechanic (carried light draws what lives down there) and
          src/RimUtinni/UtinniPatches/ with this tier move; that mod's own
          About.xml now carries the ordering. -->
     <!-- LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1: GenStep_ScatterCavePortal's host-biome
-         allowlist checks map.Biome.defName against RM_NightsideIce and RM_PropaneLake
-         (mandrake.rut.patches) and BiomeGRimond (grimterra.biomesmod, "GRiNDTerra
-         Biomes" - the_blue_desert.md's donor). Neither was declared here, so on most
-         lists neither host mod was guaranteed present/ordered relative to this one.
-         Soft loadAfter, not modDependencies: the GenStep already self-gates to a no-op
-         when a host biome is absent (see the .cs), so this mod stays fully loadable
-         without any of them - it just never scatters. -->
-    <li>mandrake.rut.patches</li>
+         allowlist compares map.Biome.defName at RUNTIME (LanternDeepsMod.cs) against
+         the Nightside Ice / Propane Lake biomes and BiomeGRimond (grimterra.biomesmod).
+         A runtime string compare needs no load order; the GenStep self-gates to a
+         no-op when a host biome is absent.
+         LANTERNDEEPS_TIER_COLLISION_1: mandrake.rut.patches is deliberately NOT listed
+         here. It declares loadAfter mandrake.rm.lanterndeeps (its
+         RUT_LanternDeepGateKyber.xml patches RM_LanternDeepGenerator), so listing it
+         here too made a load-order cycle. -->
     <li>grimterra.biomesmod</li>
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>ludeon.rimworld.ideology</li>
