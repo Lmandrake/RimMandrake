@@ -1,0 +1,1662 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SeaBeasts_Invented.xml           TerminalBiomes — SEA_BEASTS_TIER_RULING_1
+  ============================================================================
+  Owner ruling 2026-09-23 (decision taken by question card): 11 of the 18
+  design/Jawa/worldbuilding/sea_beasts_roster.md creatures are invented
+  originals ("honest originals where [a canon name] does not [exist]"), not
+  genuine Star Wars IP, and were mis-filed under the RSW_ tier and the
+  mandrake.rsw.swbestiary mod. Per Q11a (design/RimMandrake/
+  biome_mod_architecture.md §7): an invented exotic name is not franchise IP
+  and belongs in the franchise-free RM_ tier.
+
+  Re-verified independently this pass (Wookieepedia search API,
+  action=query&list=search&srsearch=<name>, 2026-09-25): none of these 11
+  names return a real canon hit — only unrelated partial-word matches (e.g.
+  "starmaw" -> Maw Cluster; "shale gorger" -> unrelated Aftermath novels).
+  The item's own "11 of 18" count stands.
+
+  These are NEW ThingDef/PawnKindDef pairs, not renames of the originals.
+  The original RSW_ pairs (SeaBeasts_Opee.xml/Colo.xml/Sando.xml/Swarm.xml/
+  Colossi.xml, mandrake.rsw.swbestiary) are UNTOUCHED and stay live: the
+  frozen 🔴-marked campaign twins RUT_GreySea.xml/RUT_TheScald.xml/
+  RUT_TwilightSea.xml (UtinniPatches, "stays as it is, byte-for-byte... do
+  not edit here") still reference RSW_Reefback/RSW_ElderSando/
+  RSW_Lanternwhale directly in their own inline wildAnimals, and two
+  generated balance files (AnimalTolerances_Ashkarr.xml,
+  Doctrine/Patches/MegafaunaYield.xml) carry PatchOperationConditional
+  entries keyed to all 11 RSW_ defNames. Renaming those defNames outright
+  would silently break the live campaign save's currently-painted biome
+  defs (dangling wildAnimals cross-reference) and orphan two generated
+  patch files thousands of lines long. Duplicating instead of renaming is
+  the same pattern TERMINALBIOMES_RM_MOD_BUILD_1 already used for
+  RM_Vaunoom/RUT_VWake (RM_PropaneLakeFauna.xml) — "a Q13 duplicate of the
+  campaign RUT_VWake, which stays until Phase B; the two diverge from here."
+
+  Stats/tools/race blocks below are copied verbatim from the RSW_ originals
+  (SW_SEA_MONSTERS_ART_1's own body/numbers work is unchanged — see each
+  source file's own header for body-type provenance). Only defName/label
+  identity moves tier; nothing about behaviour, size or art changes. Art is
+  final-concept per the 2026-08-31 ruling ("They're exceptional. Don't get
+  rid of any of them") and is COPIED (not moved) from
+  src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/<Name>/
+  into this mod's own Textures tree at the same relative texPath, so the
+  SWBestiary copy keeps serving the untouched RSW_ pair and this copy serves
+  the standalone/franchise-free wiring (RM_GreySea.xml, RM_TheScald.xml,
+  RM_TwilightSea.xml, RM_Miasma.xml).
+
+  Two generated balance passes (ComfyTemperature tolerance pins,
+  MeatAmount/BoneAmount megafauna-yield scaling) that exist for the RSW_
+  originals are NOT replicated onto these new defs — extending that tuning
+  pass to the RM_ copies is separate, un-owed balance work, not part of
+  this tier-classification fix.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ===================== silt ambushers — the opee family's originals ===================== -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_CrimsonOpee</defName>
+    <label>crimson opee</label>
+    <description>A warm-shallows morph of the opee, barnacled and rust-red, that hunts with its tongue already out. Where the brown opee waits, the crimson one provokes — it will strike at a lamp, a splash, a shadow. The reef-cut shallows belong to it.</description>
+    <statBases>
+      <MoveSpeed>3.4</MoveSpeed>
+      <MarketValue>450</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.20</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.40</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.26</ArmorRating_Heat>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>adhesive tongue</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Crab</body>
+      <predator>true</predator>
+      <maxPreyBodySize>1.4</maxPreyBodySize>
+      <baseBodySize>1.7</baseBodySize>
+      <baseHealthScale>1.5</baseHealthScale>
+      <baseHungerRate>0.28</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <canFishForFood>true</canFishForFood>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <manhunterOnDamageChance>0.75</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      <lifeExpectancy>40</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_CrimsonOpee</defName>
+    <label>crimson opee</label>
+    <race>RM_CrimsonOpee</race>
+    <combatPower>150</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.36</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.36</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.98</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.98</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.48</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.48</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_ShaleGorger</defName>
+    <label>shale gorger</label>
+    <description>The heavy benthic cousin: slate plates instead of shell, eyes long since gone pale in the dark below the silt line. It sits in scree and swallows what settles onto it. The slowest thing in the trench, and the hardest to kill.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <MarketValue>500</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.35</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.55</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.30</ArmorRating_Heat>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>swallowing bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>2.1</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Crab</body>
+      <predator>true</predator>
+      <maxPreyBodySize>1.6</maxPreyBodySize>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>2.2</baseHealthScale>
+      <baseHungerRate>0.32</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <canFishForFood>true</canFishForFood>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <manhunterOnDamageChance>0.4</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.3</manhunterOnTameFailChance>
+      <lifeExpectancy>40</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_ShaleGorger</defName>
+    <label>shale gorger</label>
+    <race>RM_ShaleGorger</race>
+    <combatPower>170</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.48</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.48</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.15</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.15</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.69</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.69</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ===================== harpooners — the colo family's originals ===================== -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_AbyssalColo</defName>
+    <label>abyssal colo</label>
+    <description>A deep-trench morph of the colo, spotted in rows of blue bioluminescence that it can dim to nothing. It hunts in full dark below the silt line, where a lamp is not a tool but an invitation.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>
+      <MarketValue>900</MarketValue>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <Wildness>0.98</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>54</power>
+        <cooldownTime>2.85</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <predator>true</predator>
+      <maxPreyBodySize>2.4</maxPreyBodySize>
+      <baseBodySize>3.6</baseBodySize>
+      <baseHealthScale>3.4</baseHealthScale>
+      <baseHungerRate>0.50</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <canFishForFood>true</canFishForFood>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <manhunterOnDamageChance>0.6</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      <lifeExpectancy>60</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_AbyssalColo</defName>
+    <label>abyssal colo</label>
+    <race>RM_AbyssalColo</race>
+    <combatPower>320</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.8</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.98</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.98</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.88</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.88</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.60</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.60</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_ThornbackColo</defName>
+    <label>thornback colo</label>
+    <description>A spined, purple-dark shallows morph, shorter and faster than its pale cousin. It ambushes from wreck hulls and reef cuts and rakes with the dorsal thorns as it passes. The one you meet on the way down.</description>
+    <statBases>
+      <MoveSpeed>4.6</MoveSpeed>
+      <MarketValue>700</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>39</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>thorn rake</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <predator>true</predator>
+      <maxPreyBodySize>1.8</maxPreyBodySize>
+      <baseBodySize>2.6</baseBodySize>
+      <baseHealthScale>2.6</baseHealthScale>
+      <baseHungerRate>0.42</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <canFishForFood>true</canFishForFood>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <manhunterOnDamageChance>0.75</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      <lifeExpectancy>60</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_ThornbackColo</defName>
+    <label>thornback colo</label>
+    <race>RM_ThornbackColo</race>
+    <combatPower>250</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.8</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.68</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.68</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.45</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.45</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.06</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.06</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ===================== leviathans — the sando family's originals ===================== -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_ElderSando</defName>
+    <label>elder sando</label>
+    <description>A scarred bull sando, barnacle-crusted, carrying old harpoon wounds it has outlived by a century. One per sea, if that. Named by every crew that has seen it and survived, which is how it came to have so many names.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>
+      <MarketValue>9000</MarketValue>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.50</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.70</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.75</ArmorRating_Heat>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>300</power>
+        <cooldownTime>6.7</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>80</power>
+        <cooldownTime>3.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>80</power>
+        <cooldownTime>3.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>40</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <maxPreyBodySize>20</maxPreyBodySize>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <disableMating>true</disableMating>
+      <baseBodySize>20</baseBodySize>
+      <baseHealthScale>16</baseHealthScale>
+      <baseHungerRate>3.2</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <canFishForFood>true</canFishForFood>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>60</gestationPeriodDays>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+      <lifeExpectancy>300</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_ElderSando</defName>
+    <label>elder sando</label>
+    <race>RM_ElderSando</race>
+    <combatPower>1200</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>3.0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.68</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.68</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.50</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.50</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_StormSando</defName>
+    <label>storm sando</label>
+    <description>A pelagic morph, blue-striped with bioluminescence and finned for open water rather than trench. Faster than the grey, ranging the upper column where it attacks from above like weather. Sailors call the first sign of one "the sky going out".</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <MarketValue>5000</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.40</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.55</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.75</ArmorRating_Heat>
+      <Wildness>0.99</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>180</power>
+        <cooldownTime>5.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>50</power>
+        <cooldownTime>2.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>50</power>
+        <cooldownTime>2.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>25</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <maxPreyBodySize>20</maxPreyBodySize>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <baseBodySize>12</baseBodySize>
+      <baseHealthScale>10</baseHealthScale>
+      <baseHungerRate>2.4</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <canFishForFood>true</canFishForFood>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>60</gestationPeriodDays>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+      <lifeExpectancy>150</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_StormSando</defName>
+    <label>storm sando</label>
+    <race>RM_StormSando</race>
+    <combatPower>800</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>3.0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/StormSando/StormSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.62</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/StormSando/StormSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.62</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/StormSando/StormSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.26</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/StormSando/StormSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.26</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/StormSando/StormSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6.58</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/StormSando/StormSando</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6.58</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ===================== scavenger swarm — the invented half ===================== -->
+
+  <ThingDef ParentName="AnimalThingBase" Name="RM_SiltLamprey">
+    <defName>RM_SiltLamprey</defName>
+    <label>silt lamprey</label>
+    <description>A black, round-mawed eel of the silt beds that latches on to whatever is bleeding — and, unlike the shrimp, does not wait for it to die. The swarm's nasty edge: the wound you took on the way down is the one it finds.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>
+      <MarketValue>45</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>round maw</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1.5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>0.35</maxPreyBodySize>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.10</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <canFishForFood>true</canFishForFood>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>5.661</gestationPeriodDays>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2.5, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>8</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase" Name="RM_SiltLamprey_Kind">
+    <defName>RM_SiltLamprey</defName>
+    <label>silt lamprey</label>
+    <race>RM_SiltLamprey</race>
+    <combatPower>40</combatPower>
+    <wildGroupSize>4~10</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- Juvenile, moved from SeaBeasts_NurseryJuveniles.xml/RSW_SiltLampreyJuv:
+       parent creature is invented, so this Miasma-nursery juvenile moves with
+       it (RM_Miasma.xml's own wildAnimals + RM_StrandingPoolsExtension). -->
+  <ThingDef ParentName="RM_SiltLamprey">
+    <defName>RM_SiltLampreyJuv</defName>
+    <label>young silt lamprey</label>
+    <description>A silt lamprey not yet grown into the round maw that makes the adult the swarm's nasty edge. Still working the shallows for what it can latch onto.</description>
+    <race>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RM_SiltLamprey_Kind">
+    <defName>RM_SiltLampreyJuv</defName>
+    <label>young silt lamprey</label>
+    <race>RM_SiltLampreyJuv</race>
+    <lifeStages Inherit="False">
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase" Name="RM_RustNipper">
+    <defName>RM_RustNipper</defName>
+    <label>rust nipper</label>
+    <description>A red-shelled spiky crab with faintly glowing eyes, armored well enough to ignore a boot. Timid in ones; in a massed crawl over a wreck it turns on anything that steps in the middle of it.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <MarketValue>70</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.55</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.10</ArmorRating_Heat>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Crab</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.25</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.10</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <canFishForFood>true</canFishForFood>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>5.661</gestationPeriodDays>
+      <manhunterOnDamageChance>0.75</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2.5, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>8</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase" Name="RM_RustNipper_Kind">
+    <defName>RM_RustNipper</defName>
+    <label>rust nipper</label>
+    <race>RM_RustNipper</race>
+    <combatPower>60</combatPower>
+    <wildGroupSize>4~9</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- Juvenile, moved from SeaBeasts_NurseryJuveniles.xml/RSW_RustNipperJuv:
+       parent creature is invented, so this Miasma-nursery juvenile moves with
+       it (RM_Miasma.xml's own wildAnimals). -->
+  <ThingDef ParentName="RM_RustNipper">
+    <defName>RM_RustNipperJuv</defName>
+    <label>young rust nipper</label>
+    <description>A rust nipper too small yet to join a massed crawl over a wreck, its shell not hardened, its eyes barely glowing.</description>
+    <race>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RM_RustNipper_Kind">
+    <defName>RM_RustNipperJuv</defName>
+    <label>young rust nipper</label>
+    <race>RM_RustNipperJuv</race>
+    <lifeStages Inherit="False">
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ===================== colossal neutrals — all-original family ===================== -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Reefback</defName>
+    <label>reefback</label>
+    <description>So old the reef grows on it: coral, kelp, a hundred hangers-on that never leave. A moving ecosystem, and the one place in the deep where a crew can rest in the light of something else's garden — as long as nobody puts a harpoon in the garden.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>8000</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.60</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.70</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.75</ArmorRating_Heat>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tail sweep</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>480</power>
+        <cooldownTime>8.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>bulk</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>120</power>
+        <cooldownTime>6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Pinniped</body>
+      <predator>false</predator>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <disableMating>true</disableMating>
+      <baseBodySize>32</baseBodySize>
+      <baseHealthScale>20</baseHealthScale>
+      <foodType>None</foodType>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>120</gestationPeriodDays>
+      <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+      <lifeExpectancy>500</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Reefback</defName>
+    <label>reefback</label>
+    <race>RM_Reefback</race>
+    <combatPower>2000</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>4.0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.89</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.89</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.56</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.56</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>10.7</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>10.7</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Starmaw</defName>
+    <label>starmaw</label>
+    <description>A filter-feeder the size of a hull, spotted in bioluminescent patterns that read like a night sky when it rises. Sailors navigate by it, and by the crews that vanished trying to.</description>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <MarketValue>10000</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.60</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.70</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.75</ArmorRating_Heat>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tail sweep</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>540</power>
+        <cooldownTime>9.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>bulk</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>130</power>
+        <cooldownTime>6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Pinniped</body>
+      <predator>false</predator>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <disableMating>true</disableMating>
+      <baseBodySize>36</baseBodySize>
+      <baseHealthScale>22</baseHealthScale>
+      <foodType>None</foodType>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>120</gestationPeriodDays>
+      <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+      <lifeExpectancy>500</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Starmaw</defName>
+    <label>starmaw</label>
+    <race>RM_Starmaw</race>
+    <combatPower>2200</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>4.0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6.27</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6.27</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>9.12</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>9.12</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>11.4</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>11.4</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Lanternwhale</defName>
+    <label>lanternwhale</label>
+    <description>Moss-shrouded and trailing blue lantern tendrils that draw the plankton it strains, the lanternwhale is the largest living thing in the seas. It does not notice you. That is the whole of its character, until you make it.</description>
+    <statBases>
+      <MoveSpeed>1.8</MoveSpeed>
+      <MarketValue>12000</MarketValue>
+      <ComfyTemperatureMin>-35</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.65</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.70</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.75</ArmorRating_Heat>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tail sweep</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>600</power>
+        <cooldownTime>9.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>bulk</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>150</power>
+        <cooldownTime>6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Pinniped</body>
+      <predator>false</predator>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <disableMating>true</disableMating>
+      <baseBodySize>40</baseBodySize>
+      <baseHealthScale>25</baseHealthScale>
+      <foodType>None</foodType>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>120</gestationPeriodDays>
+      <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+      <lifeExpectancy>500</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Lanternwhale</defName>
+    <label>lanternwhale</label>
+    <race>RM_Lanternwhale</race>
+    <combatPower>2500</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>4.0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6.60</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6.60</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>9.60</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>9.60</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>12.0</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>12.0</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

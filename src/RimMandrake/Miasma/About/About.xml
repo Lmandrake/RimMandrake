@@ -18,6 +18,7 @@
     <li>mandrake.rm.creaturebehaviors</li>
     <li>mandrake.rut.patches</li>
     <li>mandrake.rut.rotsporekit</li>
+    <li>mandrake.rm.terminalbiomes</li>
   </loadAfter>
   <description>MIASMA_RM_MOD_BUILD_1 (Phase A row 19 of
 design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).

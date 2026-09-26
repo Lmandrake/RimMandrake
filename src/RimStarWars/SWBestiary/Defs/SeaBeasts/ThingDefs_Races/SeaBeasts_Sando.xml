@@ -2,7 +2,24 @@
 <!-- SW_SEA_MONSTERS_ART_1 — leviathans, the sando family. Body
      QuadrupedAnimalWithPawsAndTail (Core, Bodies_Animal_Quadruped.xml).
      Numbers per sea_beasts_def_spec.md §5.3. Thick-hide register: YES,
-     ArmorRating_Heat capped at 0.75 on all three per Law 4. -->
+     ArmorRating_Heat capped at 0.75 on all three per Law 4.
+
+     🔴 SEA_BEASTS_TIER_RULING_1 (2026-09-25): RSW_ElderSando and
+     RSW_StormSando are INVENTED, not canon (verified via Wookieepedia's
+     search API: no hit for either name) — they now also ship under the
+     franchise-free RM_ tier as RM_ElderSando/RM_StormSando
+     (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/
+     RM_SeaBeasts_Invented.xml), wired inline into RM_TheScald.xml/
+     RM_ElderSando and left otherwise unwired (StormSando isn't currently
+     spawned by any biome, same as before this pass). The RSW_ElderSando
+     below is left UNTOUCHED rather than renamed: the frozen
+     RUT_TheScald.xml still references it directly in its own inline
+     wildAnimals ("stays as it is, byte-for-byte... do not edit here"), and
+     MegafaunaYield.xml/AnimalTolerances_Ashkarr.xml (Doctrine/UtinniPatches,
+     generated) key tuning to both exact defNames — renaming would break the
+     live save's biome def and silently orphan that tuning. RSW_StormSando is
+     untouched for the same generated-tuning reason. RSW_SandoAquaMonster
+     (this file's other creature) is genuine canon and is untouched/unmoved. -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">

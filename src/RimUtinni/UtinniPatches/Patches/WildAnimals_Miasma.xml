@@ -29,7 +29,9 @@
     RSW_Vornskyr    0.15  strange
     RSW_Zakkeg      0.05  big-wanderer
 
-  mandrake.rsw.swbestiary (this repo's own Star Wars ports), 10 further rows:
+  mandrake.rsw.swbestiary (this repo's own Star Wars ports), 8 further rows —
+  all juveniles of a genuine CANON parent (mee/faa/laa scalefish, pale
+  yobshrimp, opee sea killer):
     RSW_PodWorm          0.5   large grazer (bodySize 4, not a predator)
     RSW_CrestedDragon    0.4   channel-predator
     RSW_MeeJuv           0.4   nursery, juvenile-locked (MIASMA_NURSERY_KINDS_1)
@@ -37,9 +39,18 @@
     RSW_FaaJuv           0.3   nursery, juvenile-locked
     RSW_LaaJuv           0.3   nursery, juvenile-locked
     RSW_YobshrimpJuv     0.3   nursery, juvenile-locked
-    RSW_RustNipperJuv    0.25  nursery, juvenile-locked
-    RSW_SiltLampreyJuv   0.25  nursery, juvenile-locked
     RSW_OpeeSeaKillerJuv 0.05  nursery-guard, juvenile-locked
+
+  🔴 SEA_BEASTS_TIER_RULING_1 (2026-09-25): RSW_RustNipperJuv and
+  RSW_SiltLampreyJuv were removed from this list — their parents (rust
+  nipper, silt lamprey) are two of the roster's 11 INVENTED sea beasts
+  (verified against Wookieepedia's search API: no canon hit), so gating
+  their juveniles on mandrake.rsw.swbestiary left the franchise-free Miasma
+  without two of its seven nursery juveniles. Both now ship inline in
+  RM_Miasma.xml's own wildAnimals as `RM_RustNipperJuv`/`RM_SiltLampreyJuv`
+  (RM_SeaBeasts_Invented.xml, mandrake.rm.terminalbiomes), at the same
+  0.25 commonality, MayRequire-gated on that mod instead since the parent
+  adults live there.
 
   LEFT OUT (roster eviction, not carried into either mod - rosters/
   the_miasma.json's own evictions[]): RSW_Kreetle (-> AridShrubland),
@@ -68,8 +79,6 @@
         <RSW_FaaJuv>0.3</RSW_FaaJuv>
         <RSW_LaaJuv>0.3</RSW_LaaJuv>
         <RSW_YobshrimpJuv>0.3</RSW_YobshrimpJuv>
-        <RSW_RustNipperJuv>0.25</RSW_RustNipperJuv>
-        <RSW_SiltLampreyJuv>0.25</RSW_SiltLampreyJuv>
         <RSW_OpeeSeaKillerJuv>0.05</RSW_OpeeSeaKillerJuv>
       </value>
     </match>

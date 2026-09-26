@@ -3,12 +3,18 @@
   ============================================================================
   WildAnimals_TheScald.xml                  UtinniPatches — new file 2026-09-25
   ============================================================================
-  TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Wires the four Star Wars residents
-  RM_TheScald.xml (src/RimMandrake/TerminalBiomes) does NOT carry — item §3/
-  §6/criteria: "the Star Wars fauna ride a Utinni patch rather than the
-  RimMandrake def." Values are the exact commonalities RUT_TheScald.xml (now
-  frozen) shipped for these same four rows — nothing re-derived.
-  WildAnimals_Pyrelands.xml is the shape this follows.
+  TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Wires the THREE genuine canon Star
+  Wars residents RM_TheScald.xml (src/RimMandrake/TerminalBiomes) does NOT
+  carry — item §3/§6/criteria: "the Star Wars fauna ride a Utinni patch
+  rather than the RimMandrake def." Values are the exact commonalities
+  RUT_TheScald.xml (now frozen) shipped for these same rows — nothing
+  re-derived. WildAnimals_Pyrelands.xml is the shape this follows.
+
+  SEA_BEASTS_TIER_RULING_1 (2026-09-25): RSW_ElderSando was originally a
+  fourth row here, but it is one of the roster's 11 INVENTED sea beasts
+  (verified against Wookieepedia's search API: no canon hit) — it now ships
+  inline in RM_TheScald.xml as `RM_ElderSando` (RM_SeaBeasts_Invented.xml),
+  no MayRequire, so a franchise-free install still gets it.
 
   ⚠️ No <li>: BiomeAnimalRecord's custom loader reads the node NAME as the
   animal and the node TEXT as the commonality — an <li> wrapper would
@@ -21,7 +27,6 @@
     <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/wildAnimals</xpath>
     <value>
       <RSW_SandoAquaMonster MayRequire="mandrake.rsw.swbestiary">0.03</RSW_SandoAquaMonster>
-      <RSW_ElderSando MayRequire="mandrake.rsw.swbestiary">0.005</RSW_ElderSando>
       <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Faa>
       <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Mee>
     </value>

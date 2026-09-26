@@ -2,7 +2,23 @@
      mockups kept, each its own creature ("They're exceptional. Don't get rid of any
      of them"); BENCH picked the alignment on his word. Art source of truth:
      src/RimStarWars/SeaBeasts/art/mockups/<slug>_opt<n>.png (committed 6a02f477).
-     Roles and size bands: depths_concept.md §5. Tier RimStarWars (RSW_). -->
+     Roles and size bands: depths_concept.md §5.
+
+     🔴 TIER CORRECTED by SEA_BEASTS_TIER_RULING_1 (owner ruling 2026-09-23,
+     re-verified 2026-09-25 against Wookieepedia's search API): this roster is
+     NOT uniformly Tier RimStarWars. Only the 7 genuine canon creatures (opee
+     sea killer, colo claw fish, sando aqua monster, mee/faa/laa scalefish,
+     pale yobshrimp) are RSW_, mandrake.rsw.swbestiary. The other 11 — crimson
+     opee, shale gorger, abyssal colo, thornback colo, elder sando, storm
+     sando, silt lamprey, rust nipper, reefback, starmaw, lanternwhale — are
+     INVENTED originals and ship as RM_, mandrake.rm.terminalbiomes
+     (RM_SeaBeasts_Invented.xml), per Q11a: an invented exotic name is not
+     franchise IP. Both the original RSW_ pair and the new RM_ pair exist for
+     the 3 of these 11 that a still-frozen campaign biome twin references
+     directly (reefback, elder sando, lanternwhale) — see that file's own
+     header for why duplication, not rename, was the safe move. The "canon?"
+     column in the tables below already recorded this split; only the file's
+     own top-of-doc tier tag was stale. -->
 # Sea beasts roster — 18 creatures, six roles, three each
 
 Each role becomes a small family: the three mockups are cast as related species

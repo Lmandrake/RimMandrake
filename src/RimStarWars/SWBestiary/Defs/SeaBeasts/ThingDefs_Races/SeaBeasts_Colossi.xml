@@ -8,7 +8,23 @@
      All three carry a full 4-facing set under
      Things/Pawn/Animal/SeaBeasts/<Slug>/<Slug>. Graphic_Multi fails SILENTLY
      on a missing facing — it renders nothing and no magenta fires — so any
-     edit to a texPath here must keep all four files together. -->
+     edit to a texPath here must keep all four files together.
+
+     🔴 SEA_BEASTS_TIER_RULING_1 (2026-09-25): all three of this family
+     (RSW_Reefback, RSW_Starmaw, RSW_Lanternwhale) are INVENTED, not canon
+     (verified via Wookieepedia's search API: no hit for any of the three
+     names) — every colossus in this file now also ships under the
+     franchise-free RM_ tier as RM_Reefback/RM_Starmaw/RM_Lanternwhale
+     (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/
+     RM_SeaBeasts_Invented.xml, art copied from this file's own texture
+     folders), wired inline into RM_GreySea.xml/RM_TwilightSea.xml. The RSW_
+     trio below is left UNTOUCHED rather than renamed: the frozen
+     RUT_GreySea.xml/RUT_TwilightSea.xml twins still reference
+     RSW_Reefback/RSW_Lanternwhale directly in their own inline wildAnimals
+     ("stays as it is, byte-for-byte... do not edit here"), and
+     MegafaunaYield.xml (Doctrine/Patches, generated) keys its meat/bone
+     yield tuning to all three exact defNames — renaming would break the
+     live save's biome defs and silently orphan that tuning. -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
