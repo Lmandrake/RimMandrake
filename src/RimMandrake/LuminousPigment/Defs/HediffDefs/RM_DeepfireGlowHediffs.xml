@@ -61,18 +61,18 @@
       <li>
         <minSeverity>0</minSeverity>
         <label>tier I</label>
-        <statOffsets><li><stat>Beauty</stat><value>1</value></li></statOffsets>
+        <statOffsets><Beauty>1</Beauty></statOffsets>
       </li>
       <li>
         <minSeverity>1</minSeverity>
         <label>tier II</label>
-        <statOffsets><li><stat>Beauty</stat><value>2</value></li></statOffsets>
+        <statOffsets><Beauty>2</Beauty></statOffsets>
       </li>
       <li>
         <minSeverity>2</minSeverity>
         <label>tier III</label>
-        <statOffsets><li><stat>Beauty</stat><value>3</value></li></statOffsets>
-        <statFactors><li><stat>SocialImpact</stat><value>1.10</value></li></statFactors>
+        <statOffsets><Beauty>3</Beauty></statOffsets>
+        <statFactors><SocialImpact>1.10</SocialImpact></statFactors>
       </li>
     </stages>
   </HediffDef>
@@ -172,13 +172,13 @@
       <li>
         <minSeverity>0</minSeverity>
         <label>tier I</label>
-        <statOffsets><li><stat>MoveSpeed</stat><value>0.1</value></li></statOffsets>
+        <statOffsets><MoveSpeed>0.1</MoveSpeed></statOffsets>
         <capMods><li><capacity>Manipulation</capacity><offset>-0.04</offset></li></capMods>
       </li>
       <li>
         <minSeverity>1</minSeverity>
         <label>tier II</label>
-        <statOffsets><li><stat>MoveSpeed</stat><value>0.25</value></li></statOffsets>
+        <statOffsets><MoveSpeed>0.25</MoveSpeed></statOffsets>
         <capMods><li><capacity>Manipulation</capacity><offset>-0.10</offset></li></capMods>
         <restFallFactor>1.25</restFallFactor>
       </li>
@@ -186,8 +186,8 @@
         <minSeverity>2</minSeverity>
         <label>tier III</label>
         <statOffsets>
-          <li><stat>MoveSpeed</stat><value>0.4</value></li>
-          <li><stat>ShootingAccuracyPawn</stat><value>-0.05</value></li>
+          <MoveSpeed>0.4</MoveSpeed>
+          <ShootingAccuracyPawn>-0.05</ShootingAccuracyPawn>
         </statOffsets>
         <capMods><li><capacity>Manipulation</capacity><offset>-0.20</offset></li></capMods>
         <restFallFactor>1.5</restFallFactor>
@@ -216,26 +216,26 @@
       <li>
         <minSeverity>0</minSeverity>
         <label>tier I</label>
-        <statOffsets><li><stat>Beauty</stat><value>-1</value></li></statOffsets>
-        <statFactors><li><stat>NegotiationAbility</stat><value>1.10</value></li></statFactors>
+        <statOffsets><Beauty>-1</Beauty></statOffsets>
+        <statFactors><NegotiationAbility>1.10</NegotiationAbility></statFactors>
       </li>
       <li>
         <minSeverity>1</minSeverity>
         <label>tier II</label>
-        <statOffsets><li><stat>Beauty</stat><value>-2</value></li></statOffsets>
+        <statOffsets><Beauty>-2</Beauty></statOffsets>
         <statFactors>
-          <li><stat>NegotiationAbility</stat><value>1.25</value></li>
-          <li><stat>TradePriceImprovement</stat><value>1.05</value></li>
+          <NegotiationAbility>1.25</NegotiationAbility>
+          <TradePriceImprovement>1.05</TradePriceImprovement>
         </statFactors>
       </li>
       <li>
         <minSeverity>2</minSeverity>
         <label>tier III</label>
-        <statOffsets><li><stat>Beauty</stat><value>-3</value></li></statOffsets>
+        <statOffsets><Beauty>-3</Beauty></statOffsets>
         <statFactors>
-          <li><stat>NegotiationAbility</stat><value>1.40</value></li>
-          <li><stat>TradePriceImprovement</stat><value>1.10</value></li>
-          <li><stat>SocialImpact</stat><value>1.15</value></li>
+          <NegotiationAbility>1.40</NegotiationAbility>
+          <TradePriceImprovement>1.10</TradePriceImprovement>
+          <SocialImpact>1.15</SocialImpact>
         </statFactors>
       </li>
     </stages>
@@ -259,17 +259,17 @@
       <li>
         <minSeverity>0</minSeverity>
         <label>tier I</label>
-        <statOffsets><li><stat>Beauty</stat><value>-1</value></li></statOffsets>
+        <statOffsets><Beauty>-1</Beauty></statOffsets>
       </li>
       <li>
         <minSeverity>1</minSeverity>
         <label>tier II</label>
-        <statOffsets><li><stat>Beauty</stat><value>-2</value></li></statOffsets>
+        <statOffsets><Beauty>-2</Beauty></statOffsets>
       </li>
       <li>
         <minSeverity>2</minSeverity>
         <label>tier III</label>
-        <statOffsets><li><stat>Beauty</stat><value>-3</value></li></statOffsets>
+        <statOffsets><Beauty>-3</Beauty></statOffsets>
       </li>
     </stages>
   </HediffDef>
@@ -299,18 +299,18 @@
       <li>
         <minSeverity>0</minSeverity>
         <label>tier I</label>
-        <statOffsets><li><stat>MedicalTendQualityOffset</stat><value>0.10</value></li></statOffsets>
+        <statOffsets><MedicalTendQualityOffset>0.10</MedicalTendQualityOffset></statOffsets>
       </li>
       <li>
         <minSeverity>1</minSeverity>
         <label>tier II</label>
-        <statOffsets><li><stat>MedicalTendQualityOffset</stat><value>0.20</value></li></statOffsets>
+        <statOffsets><MedicalTendQualityOffset>0.20</MedicalTendQualityOffset></statOffsets>
         <totalBleedFactor>1.15</totalBleedFactor>
       </li>
       <li>
         <minSeverity>2</minSeverity>
         <label>tier III</label>
-        <statOffsets><li><stat>MedicalTendQualityOffset</stat><value>0.30</value></li></statOffsets>
+        <statOffsets><MedicalTendQualityOffset>0.30</MedicalTendQualityOffset></statOffsets>
         <totalBleedFactor>1.4</totalBleedFactor>
       </li>
     </stages>
@@ -332,21 +332,21 @@
       <li>
         <minSeverity>0</minSeverity>
         <label>tier I</label>
-        <statFactors><li><stat>ImmunityGainSpeed</stat><value>1.10</value></li></statFactors>
+        <statFactors><ImmunityGainSpeed>1.10</ImmunityGainSpeed></statFactors>
         <hungerRateFactor>1.1</hungerRateFactor>
       </li>
       <li>
         <minSeverity>1</minSeverity>
         <label>tier II</label>
-        <statFactors><li><stat>ImmunityGainSpeed</stat><value>1.25</value></li></statFactors>
+        <statFactors><ImmunityGainSpeed>1.25</ImmunityGainSpeed></statFactors>
         <hungerRateFactor>1.25</hungerRateFactor>
       </li>
       <li>
         <minSeverity>2</minSeverity>
         <label>tier III</label>
-        <statFactors><li><stat>ImmunityGainSpeed</stat><value>1.45</value></li></statFactors>
+        <statFactors><ImmunityGainSpeed>1.45</ImmunityGainSpeed></statFactors>
         <hungerRateFactor>1.5</hungerRateFactor>
-        <statOffsets><li><stat>ComfyTemperatureMin</stat><value>5</value></li></statOffsets>
+        <statOffsets><ComfyTemperatureMin>5</ComfyTemperatureMin></statOffsets>
       </li>
     </stages>
   </HediffDef>
@@ -376,17 +376,17 @@
       <li>
         <minSeverity>0</minSeverity>
         <label>tier I</label>
-        <statOffsets><li><stat>Beauty</stat><value>1</value></li></statOffsets>
+        <statOffsets><Beauty>1</Beauty></statOffsets>
       </li>
       <li>
         <minSeverity>1</minSeverity>
         <label>tier II</label>
-        <statOffsets><li><stat>Beauty</stat><value>2</value></li></statOffsets>
+        <statOffsets><Beauty>2</Beauty></statOffsets>
       </li>
       <li>
         <minSeverity>2</minSeverity>
         <label>tier III</label>
-        <statOffsets><li><stat>Beauty</stat><value>2</value></li></statOffsets>
+        <statOffsets><Beauty>2</Beauty></statOffsets>
       </li>
     </stages>
   </HediffDef>
@@ -419,7 +419,7 @@
         <label>tier II</label>
         <foodPoisoningChanceFactor>0</foodPoisoningChanceFactor>
         <hungerRateFactor>1.15</hungerRateFactor>
-        <statOffsets><li><stat>Beauty</stat><value>-1</value></li></statOffsets>
+        <statOffsets><Beauty>-1</Beauty></statOffsets>
       </li>
       <li>
         <!-- UNMEASURED cell (spec §6.3): "eats anything" via a robust-
@@ -432,7 +432,7 @@
         <foodPoisoningChanceFactor>0</foodPoisoningChanceFactor>
         <pctConditionalThoughtsNullified>1</pctConditionalThoughtsNullified>
         <hungerRateFactor>1.3</hungerRateFactor>
-        <statOffsets><li><stat>Beauty</stat><value>-2</value></li></statOffsets>
+        <statOffsets><Beauty>-2</Beauty></statOffsets>
       </li>
     </stages>
   </HediffDef>
@@ -461,14 +461,14 @@
         <label>tier II</label>
         <painFactor>1.35</painFactor>
         <capMods><li><capacity>Consciousness</capacity><offset>0.06</offset></li></capMods>
-        <statOffsets><li><stat>MentalBreakThreshold</stat><value>0.03</value></li></statOffsets>
+        <statOffsets><MentalBreakThreshold>0.03</MentalBreakThreshold></statOffsets>
       </li>
       <li>
         <minSeverity>2</minSeverity>
         <label>tier III</label>
         <painFactor>1.6</painFactor>
         <capMods><li><capacity>Consciousness</capacity><offset>0.10</offset></li></capMods>
-        <statFactors><li><stat>WorkSpeedGlobal</stat><value>1.05</value></li></statFactors>
+        <statFactors><WorkSpeedGlobal>1.05</WorkSpeedGlobal></statFactors>
       </li>
     </stages>
   </HediffDef>
@@ -505,7 +505,7 @@
         <minSeverity>1</minSeverity>
         <label>tier II</label>
         <capMods><li><capacity>BloodPumping</capacity><offset>0.12</offset></li></capMods>
-        <statOffsets><li><stat>MoveSpeed</stat><value>0.05</value></li></statOffsets>
+        <statOffsets><MoveSpeed>0.05</MoveSpeed></statOffsets>
       </li>
       <li>
         <minSeverity>2</minSeverity>
@@ -555,7 +555,7 @@
           <li><capacity>Talking</capacity><offset>0.30</offset></li>
           <li><capacity>Breathing</capacity><offset>-0.20</offset></li>
         </capMods>
-        <statFactors><li><stat>ToxicEnvironmentResistance</stat><value>1.20</value></li></statFactors>
+        <statFactors><ToxicEnvironmentResistance>1.20</ToxicEnvironmentResistance></statFactors>
       </li>
     </stages>
   </HediffDef>
@@ -587,19 +587,19 @@
       <li>
         <minSeverity>0</minSeverity>
         <label>tier I</label>
-        <statOffsets><li><stat>Beauty</stat><value>3</value></li></statOffsets>
+        <statOffsets><Beauty>3</Beauty></statOffsets>
       </li>
       <li>
         <minSeverity>1</minSeverity>
         <label>tier II</label>
-        <statOffsets><li><stat>Beauty</stat><value>5</value></li></statOffsets>
-        <statFactors><li><stat>SocialImpact</stat><value>1.15</value></li></statFactors>
+        <statOffsets><Beauty>5</Beauty></statOffsets>
+        <statFactors><SocialImpact>1.15</SocialImpact></statFactors>
         <restFallFactor>1.2</restFallFactor>
       </li>
       <li>
         <minSeverity>2</minSeverity>
         <label>tier III</label>
-        <statOffsets><li><stat>Beauty</stat><value>8</value></li></statOffsets>
+        <statOffsets><Beauty>8</Beauty></statOffsets>
         <restFallFactor>1.4</restFallFactor>
       </li>
     </stages>
