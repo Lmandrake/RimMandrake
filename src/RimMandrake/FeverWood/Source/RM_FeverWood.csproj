@@ -45,6 +45,13 @@
   <ItemGroup>
     <Compile Include="RM_BiomeWorker_FeverWood.cs" />
     <Compile Include="RM_FeverWoodMod.cs" />
+    <Compile Include="RM_TentacleRole.cs" />
+    <Compile Include="RM_CompProperties_TentacleLimb.cs" />
+    <Compile Include="RM_CompTentacleLimb.cs" />
+    <Compile Include="RM_CompProperties_TentacleEye.cs" />
+    <Compile Include="RM_CompTentacleEye.cs" />
+    <Compile Include="RM_TentacleLoot.cs" />
+    <Compile Include="RM_MapComponent_TentacleWatch.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -62,6 +69,17 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- FEVERWOOD_TENTACLE_BESTIARY_1: the snare limb rides
+         RUT_MapComponent_TheTenant's own rescue-window mechanism
+         (BeginRescueWindow/CleanSplashDespawn, made public for this reuse)
+         and RM_LurkingWaterExtension's pool registration — this mod already
+         loadAfters mandrake.rm.environmentalhazards for its 3 modExtensions,
+         so a compile-time reference to its assembly is the same cross-mod
+         shape, not a new dependency. -->
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

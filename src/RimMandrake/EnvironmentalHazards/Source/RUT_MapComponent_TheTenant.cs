@@ -96,7 +96,11 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
-        private bool IsRegisteredWater(IntVec3 c)
+        // FEVERWOOD_TENTACLE_BESTIARY_1: made public so a limb-spawning
+        // system (the tentacle bestiary's ambient watch component) can find
+        // registered pool cells without re-deriving this check — same
+        // "registered water" definition as everything else in this class.
+        public bool IsRegisteredWater(IntVec3 c)
         {
             TerrainDef t = c.GetTerrain(map);
             return t?.GetModExtension<RM_LurkingWaterExtension>() != null;
@@ -244,22 +248,38 @@ namespace RimMandrake.EnvironmentalHazards
             bool colonistOrTamed = pawn.Faction != null && (pawn.IsColonist || pawn.Faction.IsPlayer);
             if (!colonistOrTamed)
             {
-                // Wild animal: the clean splash — no corpse, no filth, the
-                // sheet's "terribly lost" (§4). Despawn only; flecks/sound
-                // are F2 content, not this spike's concern.
-                if (pawn.Spawned)
-                {
-                    pawn.DeSpawn(DestroyMode.Vanish);
-                }
+                CleanSplashDespawn(pawn);
                 return;
             }
 
+            BeginRescueWindow(pawn);
+        }
+
+        // FEVERWOOD_TENTACLE_BESTIARY_1: extracted from Strike() so the
+        // tentacle bestiary's snare limb can ride the exact same rescue-
+        // window mechanism ("the snare's drag... rides that same
+        // mechanism" — this item's own reuse note) instead of duplicating
+        // it. Behaviour unchanged for every existing caller (Strike still
+        // calls these two).
+        public void BeginRescueWindow(Pawn pawn)
+        {
             // Card 2, ruling B: colonists/tamed go down with a drowning
             // clock in the shallows rather than being subtracted outright.
             // Non-lethal (DamageUntilDowned never kills, Verse/
             // HealthUtility.cs:246) — a real vanilla utility, not invented.
             HealthUtility.DamageUntilDowned(pawn, allowBleedingWounds: false);
             drowningDeadline[pawn] = Find.TickManager.TicksGame + (int)DrownRescueWindowTicks;
+        }
+
+        public void CleanSplashDespawn(Pawn pawn)
+        {
+            // Wild animal: the clean splash — no corpse, no filth, the
+            // sheet's "terribly lost" (§4). Despawn only; flecks/sound are
+            // F2 content, not this class's concern.
+            if (pawn.Spawned)
+            {
+                pawn.DeSpawn(DestroyMode.Vanish);
+            }
         }
 
         private void TickDrowning()
