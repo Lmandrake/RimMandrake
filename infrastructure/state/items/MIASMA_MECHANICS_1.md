@@ -1225,3 +1225,129 @@ whole kit next.
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (modified: `strandingPoolsEnabled` setting)
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (modified: 3 new `<Compile>` entries — this pass's own only, landed inside another concurrent window's own commit to the same shared file)
 - `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml` (modified: `RM_StrandingPoolsExtension` added to `modExtensions`, with the placeholder `Yobshrimp` spawn entry)
+
+## Continuation pass — 2026-09-26 (FOUNDRY)
+
+Picked back up after a long gap in which the ecosystem around this item
+moved a lot. Read this file in full plus the frozen spec before touching
+anything; inventoried what already exists before authoring.
+
+**State inherited, confirmed by reading, not re-derived:**
+
+- All 6 mechanics (M1-M6) already had a real build pass landed (above),
+  every one of them offline-verified (build + `validate_patch.py`), 0
+  errors/warnings each time.
+- **`MIASMA_RM_MOD_BUILD_1` (filed 2026-09-21, closed) already shipped a
+  full standalone franchise-free mod, `mandrake.rm.miasma`
+  (`src/RimMandrake/Miasma/`), reusing this item's shared mechanics kit
+  wholesale** (loadAfter `mandrake.rm.environmentalhazards`) plus its own
+  flora/fauna roster, its own translation keys
+  (`src/RimMandrake/Miasma/Languages/English/Keyed/RUT_Miasma_Mechanics.xml`
+  — the letter/marker keys this item's own M4/M5/M6 passes flagged as
+  "referenced but not yet added" are in fact already shipped there), and a
+  `RM_WardenMotherSuccession.cs` that belongs to the `WARDEN_MOTHER_*` item
+  family — **not touched this pass**, per this pass's own scope fence.
+- **The RC4 hediff fields `SCARLANDS_MECHANICS_2` depends on are the M4
+  build pass's own `EnvironmentalWeatherExtension` class**
+  (`src/RimMandrake/EnvironmentalHazards/Source/EnvironmentalWeatherExtension.cs`),
+  specifically the `carrierHediff`/`carrierHediffSeverity` fields (plus the
+  pre-existing `hediffToApply`/`hediffSeverityPerInterval`). Confirmed real
+  and unchanged by reading the file directly; `SCARLANDS_MECHANICS_2`'s own
+  item text already says "zero RC4 changes needed" and is actively
+  consuming these exact fields (`RUT_ScarlandsMark`'s carrier route). **No
+  new work was needed here — this item's RC4 surface was already complete
+  and is confirmed still correct.** Final shape, for the record:
+  `EnvironmentalWeatherExtension : DefModExtension` — `public HediffDef
+  carrierHediff;` / `public float carrierHediffSeverity = 0.0001f;`
+  (granted once per `damageIntervalTicks` to every `HazardTargeting.Affects`
+  pawn via `GameCondition_EnvironmentalWeather.EnsureCarrierHediff`, NOT
+  gated by `onlyUnroofed`), alongside `public HediffDef hediffToApply;` /
+  `public float hediffSeverityPerInterval;` for the periodic-severity route.
+  `ConfigErrors()` refuses `carrierHediff == hediffToApply` (double-apply
+  guard).
+
+**Real gap found and closed this pass**: `RM_MapComponent_GradientAxis`'s
+per-cell `salinity[]` array was never Scribed — every prior pass in this
+item's own history flagged this as "owed," reasoning it was safe because
+the shift-in-progress bookkeeping (`shiftDeltaRemaining`/
+`shiftTicksRemaining`/`shiftIsRecede`) was scribed and would resume a
+mid-shift save correctly. That reasoning covers a save *during* a shift,
+but not the (much more common) case of no shift in progress at save time:
+`EnsureGrid()` silently reallocates an all-zero ("all fresh") grid whenever
+`salinity` is null, which it always is after a load, so **every save/load
+was quietly resetting the entire salt line to "all fresh," discarding every
+surge's accumulated position** — a real, previously-undetected correctness
+bug, not a live-test-only concern. Fixed via `Verse.MapExposeUtility.
+ExposeUshort` (confirmed real against the decompile,
+`Verse/MapExposeUtility.cs` — the same RLE+deflate-via-`DataExposeUtility.
+LookByteArray` per-cell route `TerrainGrid.ExposeTerrainGrid` itself uses),
+quantizing salinity to a ushort (0..65535, ~1.5e-5 precision). No new
+mod-settings surface needed — this is a save-correctness fix, not a
+toggleable feature.
+
+**Second gap closed**: M2's own build pass explicitly flagged that it,
+alone among this kit's mechanisms, shipped with no Mod Settings toggle
+("`MOD_OPTIONS_RETROFIT_1`'s territory, not scope-crept into here"),
+which is a real inconsistency against this repo's standing "every mod
+ships superb Mod Settings, no exceptions" rule (M3/M4/M5/M6 all got one).
+Added `gradientSurgeEnabled` (default true) to
+`RM_EnvironmentalHazardsSettings` — item #55 on that shared settings
+screen (concurrent windows landed #54 `sentinelGraveWardsEnabled` and #56
+`grazingSuppressionHookEnabled` in the same file at the same time; all
+three now present and building clean). Off stops `TickSurgeRoll` from
+rolling a new surge; an already-running shift (shove or recede) still
+finishes on its own schedule — same posture every other timed condition
+in this kit takes.
+
+**Confirmed still true (not re-derived from scratch, but not contradicted
+by anything read this pass either)**: the honest "not done" lists under
+each of the six mechanic sections above are still accurate — sound design
+(no `SoundDef` named by the spec, none exists), native-fauna immunity
+roster on `RUT_MiasmaExposure` (content judgement against the now-real
+31-row Miasma wildAnimals roster, not this kit's to invent), Swarm-marked's
+two behavioral halves (blocked on a fever-swarm mechanism that still
+doesn't exist anywhere in `src/`), Salt-blooded's food-poison/corpse-rot
+halves (would need Harmony patches, explicitly out of this kit's "clean
+XML hediff" scope), and — the load-bearing one — **no live/quicktest
+verification of any of the six mechanics has ever been done**, and none
+was attempted this pass (no bridge access, per this pass's own
+assignment).
+
+**Build**: `RM_EnvironmentalHazards.csproj` — this pass hit heavy
+concurrent-window contention (at least 3 other windows editing the same
+shared `RM_EnvironmentalHazardsMod.cs`/`.csproj` inside the same few
+minutes: `SCARLANDS_MECHANICS_2`'s Sentinel grave-ward GenStep,
+`GREENTIDE_MECHANICS_2` M10's grazing-suppression hook, and one more
+lottery-trap-disarm change caught mid-flight). One of those windows'
+commits (`df03de34d`) landed a csproj `<Compile>` entry for
+`RUT_GenStep_ScatterSentinelGraveWards.cs` without ever committing the
+file itself — a genuine pre-existing break blocking every push out of this
+shared tree, not introduced by this pass. Fixed on sight (the file on disk
+was that window's own complete, unmodified work) by committing it as-is,
+then rebuilding and committing the DLL+`.srchash` from a private detached
+worktree at exactly the then-current commits (`git worktree add
+--detach`), per this repo's own "no real merge/rebuild in the shared
+tree" doctrine — never against the live dirty working tree, which had
+unrelated in-flight files that would have bled into the DLL. Verified
+clean with `dll_source_stamp.py check` before pushing. Local tree
+re-synced via `shared_sync.py` afterward (one genuinely new local commit
+from `SCARLANDS_MECHANICS_2` replayed and pushed in the same pass).
+
+**Commits** (pushed, `origin/main` at `fe54418208807f2d0115e35f0b8748562a5e2d23`
+as this pass ends): `524a1e6df`/`8eefb86be` (salinity Scribe fix +
+`gradientSurgeEnabled`), `ef5f47f48`/`cff3fc6b6` (the missing GenStep
+source, committed on sight to unblock the shared tree — not this item's
+own content), `832ef0715` (DLL rebuild). Some SHAs appear twice because
+the publish path was a cherry-pick replay into a private worktree
+(`shared_sync.py`'s documented remedy for an interleaved shared tree) —
+both represent the same change.
+
+**Item stays `doing`.** Every one of this item's six mechanics has a real,
+building, offline-verified implementation, its RC4 dependency for
+`SCARLANDS_MECHANICS_2` is confirmed complete and correct, and a real
+save/load correctness bug is now fixed — but the verify checklist's last
+bullet (a live quicktest actually showing the haze, the salt line, a
+stranding, a placed warden) has never been attempted by any pass in this
+item's history and still cannot be attempted without bridge access. Closing
+this item is a judgment call for whoever next has bridge access to run
+that live pass — not done here, per this pass's own no-bridge constraint.
