@@ -427,3 +427,17 @@ Droidworks/ArtIncoming/misrouted_droid_from_mycoidcolossus_north.png   # BENCH: 
 #    pattern as every other DEPLOY_HOLD entry above.
 TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml   # FOUNDRY: no art yet, 2026-09-25
 TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml   # FOUNDRY: no art yet, 2026-09-25
+
+# --- SUMP_FAUNA_ROSTER_1 (2026-09-26): 9 new invented fauna defs, no art yet ---
+# Nine new races+PawnKindDefs (RM_SumpFauna.xml) reference bespoke texPaths
+# under TheSump/Textures/Things/Pawn/Animal/ that do not exist on disk yet.
+# 27 fill_queue.py jobs filed this same pass (infrastructure/artpipe/pending/
+# RM_<Name>_{south,east,north}.json, rimflow_item_id SUMP_FAUNA_ROSTER_1) —
+# none had existing generated art anywhere in registry.jsonl/done/_artsrc
+# (searched, 0 hits on all 9 names; sanity-probed against "graniteslug", 30
+# hits, so the search itself is live). RM_SumpFaunaItems.xml needs NO hold —
+# every good in it reuses a core-guaranteed vanilla icon or a LeatherBase/
+# WoolBase parent's own default, zero new art.
+# => LIFT per-facing as each animal's art lands under TheSump/Textures/
+#    Things/Pawn/Animal/RM_<Name>/RM_<Name>_{south,east,north}.png.
+TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml   # FOUNDRY: no art yet, 2026-09-26

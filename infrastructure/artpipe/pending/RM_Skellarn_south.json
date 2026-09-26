@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:32:34Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Skellarn_south",
+  "priority": 100,
+  "prompt": "RimWorld top-down game animal sprite: the skellarn, grounded pose, a crane-sized twilight flier with a soot-dark body and horizon-amber throat standing impossibly high on four absurdly long spike-tipped stilt-legs.",
+  "reference": null,
+  "rimflow_item_id": "SUMP_FAUNA_ROSTER_1",
+  "style_notes": "the stilts ARE the sprite - four long spike-tipped stilt-legs holding a small dark bird body high up; horizon-amber throat accent; painterly vanilla-RimWorld animal art style"
+}

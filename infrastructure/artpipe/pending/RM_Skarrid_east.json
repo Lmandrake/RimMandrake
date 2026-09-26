@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:32:34Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Skarrid_east",
+  "priority": 100,
+  "prompt": "RimWorld top-down game animal sprite: the skarrid, a flat, glossy, glass-smooth hummock with a faint seam along its back - a bulge slightly too small to be mistaken for a much bigger beast at a glance.",
+  "reference": null,
+  "rimflow_item_id": "SUMP_FAUNA_ROSTER_1",
+  "style_notes": "flat glossy black hummock silhouette with a faint seam; must read as a smaller, subtly-wrong cousin of a much larger tar-bulge shape at a glance; painterly vanilla-RimWorld animal art style"
+}

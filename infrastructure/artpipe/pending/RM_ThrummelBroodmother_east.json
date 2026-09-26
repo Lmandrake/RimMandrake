@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:32:34Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_ThrummelBroodmother_east",
+  "priority": 100,
+  "prompt": "RimWorld top-down game animal sprite: the thrummel broodmother, a pale wax-sheened matriarch the size of a dog, swollen glistening abdomen dragging a small fore-body, rarely surfaced.",
+  "reference": null,
+  "rimflow_item_id": "SUMP_FAUNA_ROSTER_1",
+  "style_notes": "swollen wax-pale abdomen dragging a small fore-body; glistening comb-like sheen; painterly vanilla-RimWorld animal art style"
+}

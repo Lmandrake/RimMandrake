@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T05:32:34Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Thrummel_south",
+  "priority": 100,
+  "prompt": "RimWorld top-down game animal sprite: the thrummel, a fist-and-a-half of dense-furred, soot-dark, comically round burrower with soft heat-shimmer edges, hurrying.",
+  "reference": null,
+  "rimflow_item_id": "SUMP_FAUNA_ROSTER_1",
+  "style_notes": "round furred bumbler silhouette, soft edges; soot-dark fur; painterly vanilla-RimWorld animal art style"
+}
